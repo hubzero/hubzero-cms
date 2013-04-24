@@ -212,7 +212,7 @@ if ($author_ids && is_array($author_ids))
 							
 						<?php foreach($subs as $sub) : ?>
 							<?php $info2 = pathinfo($sub); ?>
-							<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $content_folder . DS . $sub; ?>"></div>
+							<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $content_folder . DS . $sub; ?>?v=<?php echo filemtime( JPATH_ROOT . $content_folder . DS . $sub ); ?>"></div>
 						<?php endforeach; ?>
 						
 					</video>

@@ -1154,7 +1154,7 @@ HUB.Presenter = {
 		}
 
 		// do we have a time component (time=00:00:00 or time=00%3A00%3A00)
-		if(timeComponent != '')
+		if(timeComponent != '' && timeComponent != '')
 		{
 			//get the hours, minutes, seconds
 			var timeParts = timeComponent.split("=")[1].replace(/%3A/g, ':').split(':');
