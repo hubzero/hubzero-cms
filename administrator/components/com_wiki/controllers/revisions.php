@@ -220,7 +220,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$revision = JRequest::getVar('revision', array());
+		$revision = JRequest::getVar('revision', array(), 'post', 'none', 2);
 		$revision = array_map('trim', $revision);
 
 		// Initiate extended database class
