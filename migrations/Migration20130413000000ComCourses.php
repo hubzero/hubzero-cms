@@ -31,7 +31,7 @@ class Migration20130413000000ComCourses extends Hubzero_Migration
 		if ($runExtra)
 		{
 			// Get the form id from the asset content fields
-			$db->setQuery = "SELECT `id`, `content` FROM `#__courses_assets` WHERE `type`='exam';";
+			$db->setQuery("SELECT `id`, `content` FROM `#__courses_assets` WHERE `type`='exam';");
 			$rows = $db->loadObjectList();
 
 			// Now insert those into the new forms asset_id field
