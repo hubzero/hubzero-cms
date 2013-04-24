@@ -26,11 +26,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
+ximport('Hubzero_Plugin');
 
 /**
  * Groups Plugin class for usage
  */
-class plgGroupsUsage extends JPlugin
+class plgGroupsUsage extends Hubzero_Plugin
 {
 	/**
 	 * Short description for 'plgGroupsUsage'
@@ -121,10 +122,10 @@ class plgGroupsUsage extends JPlugin
 			if ($juser->get('guest') 
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
-				ximport('Hubzero_Module_Helper');
-				$arr['html']  = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)) . '</p>';
-				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
-				return $arr;
+				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
+				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+				return;
 			}
 
 			//check to see if user is member and plugin access requires members
@@ -553,7 +554,7 @@ class plgGroupsUsage extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 
-		$query = "SELECT COUNT(*) FROM jos_xgroups_events WHERE gidNumber=" . $gid;
+		$query = "SELECT COUNT(*) FROM #__events WHERE scope=".$database->quote('group')." AND scope_id=" . $database->quote($gid) . " AND state=1";
 		$database->setQuery($query);
 		return $database->loadResult();
 	}
