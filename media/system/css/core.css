@@ -60,22 +60,6 @@ img.align-left {
     position: relative;
 }
 
-.withleft .subject {
-    float: right;
-    margin-right: 0;
-	margin-left: -250px;
-}
-
-.withleft .subjectWrap {
-	margin-right: 0;
-    margin-left: 249px;
-}
-
-.withleft .aside {
-    float: left;
-    width: 220px;
-}
-
 /* Typography */
 
 h1, h2, h3, h4, h5, h6 {
