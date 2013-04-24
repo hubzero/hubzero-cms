@@ -192,6 +192,7 @@ class Hubzero_Group_Helper
 		
 		//var to hold count
 		$count = 0;
+		$totalCount = 0;
 		
 		//import wiki parser
 		ximport('Hubzero_Wiki_Parser');
@@ -329,11 +330,16 @@ class Hubzero_Group_Helper
 			
 			//increment counter
 			$count++;
+			$totalCount++;
 			
 			//move to next line depending on num columns
 			if( ($cls == "second" && $columns == "two") || ($cls == "third" && $columns == "three") || ($cls == "fourth" && $columns == "four") ) 
 			{
-				$count = 0;				
+				$count = 0;
+				if (sizeof($groups) > $totalCount) 
+				{
+					$html .= "<br class=\"clear\" /><hr />";	
+				}
 			}
 		}
 		

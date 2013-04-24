@@ -530,6 +530,10 @@
 		padding: 0;
 		margin: 0;
 	}
+	.contributor h4 a {
+		color: #333;
+		border: none;
+	}
 	.contributor-photo {
 		margin: 1em 1em 0 0;
 		padding: 0;

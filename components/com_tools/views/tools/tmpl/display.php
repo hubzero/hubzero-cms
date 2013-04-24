@@ -34,22 +34,7 @@ $juri =& JURI::getInstance();
 </div>
 
 <div id="introduction" class="section">
-	<div class="subject">
-    	<div class="subjectWrap">
-			<h3>Tool Development</h3>
-			<p>
-				Welcome to <?php echo $this->escape($this->forgeName); ?>, the tool
-		        development area of <a href="<?php echo $juri->base(); ?>"><?php echo $this->escape($jconfig->getValue('config.sitename')); ?></a>.
-		        The following pages are maintained by the various owners of each
-		        tool.  Many of these tools are available as Open Source, and
-		        you can download the code via Subversion from this site.  Some
-		        tools are closed source at the request of the authors, and only
-		        a restricted development team has access to the code.  See each
-		        tool page for details.
-			</p>
-     	</div><!-- / .subjectWrap -->
-	</div><!-- / .subject -->
-    <div class="aside">
+	<div class="aside">
 		<h3>Help</h3>
 		<ul>
 <?php
@@ -61,6 +46,19 @@ if ($juser->get('guest')) {
 			<li><a href="http://subversion.tigris.org/" rel="external">Learn about Subversion</a></li>
 		</ul>
 	</div><!-- / .aside -->
+	<div class="subject">
+			<h3>Tool Development</h3>
+			<p>
+				Welcome to <?php echo $this->escape($this->forgeName); ?>, the tool
+		        development area of <a href="<?php echo $juri->base(); ?>"><?php echo $this->escape($jconfig->getValue('config.sitename')); ?></a>.
+		        The following pages are maintained by the various owners of each
+		        tool.  Many of these tools are available as Open Source, and
+		        you can download the code via Subversion from this site.  Some
+		        tools are closed source at the request of the authors, and only
+		        a restricted development team has access to the code.  See each
+		        tool page for details.
+			</p>
+	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 

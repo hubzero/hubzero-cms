@@ -51,45 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<li<?php if ($this->task == 'day') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
 	</ul>
 
-<div class="main section theclearfix">
-	
-		<div class="subject">
-        	<div class="subjectWrap">
-				<?php
-                if (count($this->rows) > 0) {
-                ?>
-                            <ul class="events">
-                                <li>
-                                    <dl class="event-details">
-                                        <dt><?php echo JHTML::_('date',$this->year.'-'.$this->month.'-'.$this->day.' 00:00:00', '%d %b, %Y', 0); ?></dt>
-                                    </dl>
-                                    <div class="ewrap">
-                                        <ul class="events">
-                <?php
-                    foreach ($this->rows as $row)
-                    {
-                        $view = new JView( array('name'=>'browse','layout'=>'item') );
-                        $view->option = $this->option;
-                        $view->task = $this->task;
-                        $view->row = $row;
-                        $view->fields = $this->fields;
-                        $view->categories = $this->categories;
-                        $view->showdate = 0;
-                        if ($this->getError()) {
-                            $view->setError( $this->getError() );
-                        }
-                        $view->display();
-                    }
-                ?>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                <?php } else { ?>
-                            <p class="warning"><?php echo JText::_('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.EventsHtml::getDateFormat($this->year,$this->month,$this->day,0).'</strong>'; ?></p>
-                <?php } ?>
-    	</div><!-- / .subjectWrap -->            
-	</div><!-- / .subject -->
+<div class="main section">
 	<div class="aside">
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day); ?>" method="get" id="event-categories">
 			<fieldset>
@@ -143,4 +105,40 @@ defined('_JEXEC') or die( 'Restricted access' );
 				?>
 			</div><!-- / .calendarwrap -->
 		</div><!-- / .aside -->
+		<div class="subject">
+<?php
+if (count($this->rows) > 0) {
+?>
+			<ul class="events">
+				<li>
+					<dl class="event-details">
+						<dt><?php echo JHTML::_('date',$this->year.'-'.$this->month.'-'.$this->day.' 00:00:00', '%d %b, %Y', 0); ?></dt>
+					</dl>
+					<div class="ewrap">
+						<ul class="events">
+<?php
+	foreach ($this->rows as $row)
+	{
+		$view = new JView( array('name'=>'browse','layout'=>'item') );
+		$view->option = $this->option;
+		$view->task = $this->task;
+		$view->row = $row;
+		$view->fields = $this->fields;
+		$view->categories = $this->categories;
+		$view->showdate = 0;
+		if ($this->getError()) {
+			$view->setError( $this->getError() );
+		}
+		$view->display();
+	}
+?>
+						</ul>
+					</div>
+				</li>
+			</ul>
+<?php } else { ?>
+			<p class="warning"><?php echo JText::_('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.EventsHtml::getDateFormat($this->year,$this->month,$this->day,0).'</strong>'; ?></p>
+<?php } ?>
+	</div><!-- / .subject -->
+	<div class="clear"></div>
 </div><!-- / .main section -->

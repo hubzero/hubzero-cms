@@ -44,11 +44,11 @@ $show_weight = array_key_exists('show_weight', $_GET);
 
 <div class="main section">
 	<div class="aside">
-		<?php if ($this->results->get_total_count()): ?>
-			<div class="container">	
+		<div class="container">
 			<h3>
 				Filter results
 			</h3>
+		<?php if ($this->results->get_total_count()): ?>
 			<ul class="sub-nav">
 				<li>
 					<?php if ($this->plugin): ?>
@@ -85,15 +85,17 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				<?php endif; ?>
 			<?php endforeach; ?>
 			</ul>
-			</div><!-- / .container -->
-		<?php endif; ?>		
+		<?php endif; ?>
+		</div><!-- / .container -->
 	</div><!-- / .aside -->
 	<div class="subject">
 		<form action="/ysearch/" method="get" class="container data-entry">
-			<input type="submit" value="Search" class="entry-search-submit" />
-			<fieldset class="entry-search">
-				<label id="search-terms" for="terms">Search terms</label>
-				<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?>/>
+			<fieldset>
+				<p>
+					<input type="submit" value="Search" class="search-submit" />
+					<label id="search-terms" for="terms">Search terms</label>
+					<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?>/>
+				</p>
 			</fieldset>
 		</form>
 <?php if ($this->results->valid()) : ?>

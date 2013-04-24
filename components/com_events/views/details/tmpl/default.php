@@ -52,10 +52,26 @@ $juser =& JFactory::getUser();
 		<li<?php if ($this->task == 'day') { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month.'&day='.$this->day); ?>"><span><?php echo JText::_('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
 	</ul>
 
-<div class="main section theclearfix">
-		
-	<div class="subject">
-    	<div class="subjectWrap">    
+<div class="main section">
+	<div class="aside">
+			<div class="calendarwrap">
+				<?php
+				$view = new JView( array('name'=>'browse','layout'=>'calendar') );
+				$view->option = $this->option;
+				$view->task = $this->task;
+				$view->year = $this->year;
+				$view->month = $this->month;
+				$view->day = $this->day;
+				$view->offset = $this->offset;
+				$view->shownav = 0;
+				if ($this->getError()) {
+					$view->setError( $this->getError() );
+				}
+				$view->display();
+				?>
+			</div><!-- / .calendarwrap -->
+		</div><!-- / .aside -->
+		<div class="subject">
 <?php
 if ($this->row) {
 	$html  = '<h3>'. stripslashes($this->row->title);
@@ -203,24 +219,6 @@ if ($this->row) {
 } else { ?>
 			<p class="warning"><?php echo JText::_('EVENTS_CAL_LANG_REP_NOEVENTSELECTED'); ?></p>
 <?php } ?>
-		</div><!-- / .subjectWrap -->
 	</div><!-- / .subject -->
-	<div class="aside">
-			<div class="calendarwrap">
-				<?php
-				$view = new JView( array('name'=>'browse','layout'=>'calendar') );
-				$view->option = $this->option;
-				$view->task = $this->task;
-				$view->year = $this->year;
-				$view->month = $this->month;
-				$view->day = $this->day;
-				$view->offset = $this->offset;
-				$view->shownav = 0;
-				if ($this->getError()) {
-					$view->setError( $this->getError() );
-				}
-				$view->display();
-				?>
-			</div><!-- / .calendarwrap -->
-		</div><!-- / .aside -->
+	<div class="clear"></div>
 </div><!-- / .main section -->

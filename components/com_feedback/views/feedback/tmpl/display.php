@@ -37,14 +37,8 @@ $jconfig =& JFactory::getConfig();
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
-<div id="introduction" class="section theclearfix">
-	<div class="subject">
-    	<div class="subjectWrap">
-            <h3><?php echo JText::_('Have something to say?'); ?></h3>
-            <p><?php echo JText::sprintf('COM_FEEDBACK_INTRO', $jconfig->getValue('config.sitename')); ?></p>
-        </div><!-- / .subjectWrap -->
-	</div><!-- / .subject -->
-    <div class="aside">
+<div id="introduction" class="section">
+	<div class="aside">
 		<h3><?php echo JText::_('Participate in the Community'); ?></h3>
 		<ul>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>"><?php echo JText::_('Questions &amp; Answers'); ?></a></li>
@@ -52,6 +46,10 @@ $jconfig =& JFactory::getConfig();
 			<li><a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>"><?php echo JText::_('Groups'); ?></a></li>
 		</ul>
 	</div><!-- / .aside -->
+	<div class="subject">
+		<h3><?php echo JText::_('Have something to say?'); ?></h3>
+		<p><?php echo JText::sprintf('COM_FEEDBACK_INTRO', $jconfig->getValue('config.sitename')); ?></p>
+	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 
