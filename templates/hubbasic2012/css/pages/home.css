@@ -322,6 +322,7 @@
 		position: relative;
 		z-index: 1;
 		margin-bottom: 1em;
+		*zoom: 1;
 	}
 	.resources-section .two {
 		background: #fff;
