@@ -37,6 +37,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="css" type="radio" default="0" label="Enable CSS diagnostics" description="If yes, display styles that highlight empty tags, empty attributes, deprecated tags and attributes">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="language_files" type="radio" default="1" label="Display loaded language files" description="If yes, display a list of the language files loaded">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

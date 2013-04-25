@@ -348,6 +348,12 @@ class plgSystemDebug extends JPlugin
 		$debug = ob_get_clean();
 
 		$body = JResponse::getBody();
+		/* [!] HUBZERO - Add CSS diagnostics */
+		if ($this->params->get('css', 0) && is_file(JPATH_ROOT . '/media/system/css/diagnostics.css'))
+		{
+			$cssdebug = '<link rel="stylesheet" href="/media/system/css/diagnostics.css" type="text/css" />' . "\n";
+			$body = str_replace('</head>', $cssdebug.'</head>', $body);
+		}
 		$body = str_replace('</body>', $debug.'</body>', $body);
 		echo str_replace('</body>', $debug.'</body>', $contents);
 	}
