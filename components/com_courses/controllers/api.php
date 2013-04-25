@@ -866,6 +866,19 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 
+		// Now check to see if this exam has already been deployed
+		$this->db->setQuery("SELECT `id` FROM `#__courses_form_deployments` WHERE `form_id` = " . $this->db->Quote($formId));
+
+		// Get the form ID from the content
+		$result = $this->db->loadResult();
+
+		if ($result)
+		{
+			// Return message
+			$this->setMessage('Deployment already exists', 204, 'No content');
+			return;
+		}
+
 		// Return message
 		$this->setMessage(array('form_id' => $formId), 200, 'OK');
 	}

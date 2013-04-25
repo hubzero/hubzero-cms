@@ -646,6 +646,17 @@ HUB.CoursesOutline = {
 									});
 								}
 							});
+						},
+						204: function() {
+							$.ajax({
+								url: '/api/courses/asset/save',
+								data: form.serialize(),
+								statusCode: {
+									200: function(data){
+										toggle();
+									}
+								}
+							});
 						}
 					}
 				});
