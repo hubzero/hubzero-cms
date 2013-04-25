@@ -940,13 +940,14 @@ HUB.CoursesOutline = {
 							} else if(json.handlers.length > 1) {
 								// Iterate counter (for uniqueness)
 								HUB.CoursesOutline.counter++;
+								var counter = HUB.CoursesOutline.counter;
 
 								// Handle multiple handlers for extension
 								message += '<ul class="handlers-list">';
 								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
 									message += '<li class="handler-item">';
-									message += '<a id="handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname + '" class="dialog-button">';
+									message += '<a id="handler-item-' + counter + '-' + value.classname + '" class="dialog-button">';
 									message += value.message;
 									message += '</a>';
 									message += '</li>';
@@ -958,7 +959,7 @@ HUB.CoursesOutline = {
 
 								// Bind click events to the message buttons
 								$.each(json.handlers, function (index, value){
-									targetName = '#handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname;
+									targetName = '#handler-item-' + counter + '-' + value.classname;
 									dialog.on('click', targetName, function(){
 										fileupload.fileupload(
 											'option',
@@ -975,7 +976,7 @@ HUB.CoursesOutline = {
 											}
 										);
 
-										fileSubmit(data);
+										fileSubmit(data, counter);
 
 										// Remove the ul for this file
 										$(this).parents('ul').remove();
@@ -1002,12 +1003,13 @@ HUB.CoursesOutline = {
 								}
 							} else {
 								HUB.CoursesOutline.counter++;
-								fileSubmit(data);
+								var counter = HUB.CoursesOutline.counter;
+								fileSubmit(data, counter);
 							}
 
 							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
-							function fileSubmit(data) {
-								var progressBarId = 'progress-bar-'+HUB.CoursesOutline.counter;
+							function fileSubmit(data, counter) {
+								var progressBarId = 'progress-bar-'+counter;
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {
