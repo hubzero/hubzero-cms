@@ -363,7 +363,7 @@ HUB.Presenter = {
 		});
 		
 		//define height of list   
-		jQ('#list_items').height( 238 );  
+		jQ('#list_items').height( (jQ('#slides').height() - jQ('#media').height() - 1) );  //238
 		
 		//bind click events to scene selector
 		jQ('#list_items li').bind('click', function(e) {
