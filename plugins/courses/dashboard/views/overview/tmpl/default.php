@@ -89,7 +89,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<tr>
 							<td>
 								<span>
-									<strong><?php echo $this->offering->members(array('count' => true)); ?></strong> enrolled
+									<strong><?php echo $this->offering->members(array('count' => true, 'student'=>1)); ?></strong> enrolled
 								</span>
 							</td>
 						</tr>
