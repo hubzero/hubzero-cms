@@ -231,20 +231,23 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		// Compute course grade
 		$grade = $this->_tbl->calculateScore($score_criteria, 'loadResult');
 
-		// First, check to see if a score for this asset and user already exists
-		$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$course_id, 'scope'=>'course'));
-		$gb_id   = ($results) ? $results[0]->id : null;
-
-		// Save the score to the grade book
-		$gradebook = new CoursesModelGradeBook($gb_id);
-		$gradebook->set('user_id', $user_id);
-		$gradebook->set('score', round($grade, 2));
-		$gradebook->set('scope', 'course');
-		$gradebook->set('scope_id', $course_id);
-
-		if (!$gradebook->store())
+		if (!is_null($grade))
 		{
-			return false;
+			// First, check to see if a score for this asset and user already exists
+			$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$course_id, 'scope'=>'course'));
+			$gb_id   = ($results) ? $results[0]->id : null;
+
+			// Save the score to the grade book
+			$gradebook = new CoursesModelGradeBook($gb_id);
+			$gradebook->set('user_id', $user_id);
+			$gradebook->set('score', round($grade, 2));
+			$gradebook->set('scope', 'course');
+			$gradebook->set('scope_id', $course_id);
+
+			if (!$gradebook->store())
+			{
+				return false;
+			}
 		}
 
 		// Now, get unit scores
