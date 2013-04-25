@@ -36,7 +36,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 $this->course->offering()->gradebook()->refresh($this->juser->get('id'));
 $grades   = $this->course->offering()->gradebook()->grades(null, $this->juser->get('id'));
 $progress = $this->course->offering()->gradebook()->progress($this->juser->get('id'));
-$passing   = $this->course->offering()->gradebook()->passing(true, $this->juser->get('id'))->passing;
+$passing  = $this->course->offering()->gradebook()->passing(true, $this->juser->get('id'))->passing;
 
 $gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
 
@@ -276,7 +276,11 @@ $progress_timeline .= '</div>';
 				<p class="grading-policy"><?= JText::_('grading policy') ?></p>
 				<p class="title"><?= JText::_('Your current score') ?></p>
 				<p class="score<?= ($passing) ? ' passing' : ' failing' ?>">
-					<?= $grades[$this->juser->get('id')]['course'][$this->course->get('id')] . '%' ?>
+					<?=
+						(isset($grades[$this->juser->get('id')]['course'][$this->course->get('id')]))
+							? $grades[$this->juser->get('id')]['course'][$this->course->get('id')] . '%'
+							: '--'
+					?>
 				</p>
 			</div>
 		</div>
