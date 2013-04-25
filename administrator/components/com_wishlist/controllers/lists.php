@@ -238,107 +238,54 @@ class WishlistControllerLists extends Hubzero_Controller
 	 */
 	public function removeTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
-		$step = JRequest::getInt('step', 1);
-		$step = (!$step) ? 1 : $step;
+		$ids = JRequest::getVar('id', array());
 
-		// What step are we on?
-		switch ($step)
+		// Make sure we have an ID to work with
+		if (!count($ids)) 
 		{
-			case 1:
-				// Incoming
-				$ids = JRequest::getVar('id', array(0));
-				if (is_array($ids) && !empty($ids)) 
-				{
-					$id = $ids[0];
-				}
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_WISHLIST_NO_ID'),
+				'error'
+			);
+			return;
+		}
 
-				$this->view->id = $id;
+		// Create a Wishlist object
+		$wishlist = new Wishlist($this->database);
 
-				// Set any errors
-				if ($this->getError()) 
-				{
-					$this->view->setError($this->getError());
-				}
+		$i = 0;
+		foreach ($ids as $id)
+		{
+			// Delete the list
+			if (!$wishlist->delete($id))
+			{
+				$this->setError($wishlist->getError());
+			}
+			else
+			{
+				$i++;
+			}
+		}
 
-				// Output the HTML
-				$this->view->display();
-			break;
-
-			case 2:
-				// Check for request forgeries
-				JRequest::checkToken() or jexit('Invalid Token');
-
-				// Incoming
-				$id = JRequest::getInt('id', 0);
-
-				// Make sure we have an ID to work with
-				if (!$id) 
-				{
-					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						JText::_('COM_WISHLIST_NO_ID'),
-						'error'
-					);
-					return;
-				}
-
-				// Check if we're deleting collection and all FAQs or just the collection page
-				$action = JRequest::getVar('action', 'removefaqs');
-
-				// Create an article object
-				/*$article = new Wishlist($this->database);
-
-				// Get all the articles in this collection
-				$faqs = $article->getCollection($id);
-
-				if ($faqs) 
-				{
-					// Loop through the articles
-					foreach ($faqs as $faq)
-					{
-						if ($action == 'deletefaqs') 
-						{
-							$article->delete($faq->id);
-						} 
-						else 
-						{
-							// Load the article
-							$a = new KbArticle($this->database);
-							$a->load($faq->id);
-							// Make some changes
-							if ($faq->category == $id) 
-							{
-								$a->category = 0;
-							} 
-							else 
-							{
-								$a->section = 0;
-							}
-							// Check and store the changes
-							if (!$a->check()) 
-							{
-								return $a->getError();
-							}
-							if (!$a->store()) 
-							{
-								return $a->getError();
-							}
-						}
-					}
-				}*/
-
-				// Create a category object
-				$wishlist = new Wishlist($this->database);
-
-				// Delete the category
-				$wishlist->delete($id);
-
-				// Set the redirect
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-				);
-			break;
+		if ($i)
+		{
+			// Set the redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::sprintf('%s Item(s) successfully removed.', $i)
+			);
+		}
+		else
+		{
+			// Set the redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			);
 		}
 	}
 	
@@ -380,6 +327,9 @@ class WishlistControllerLists extends Hubzero_Controller
 	 */
 	public function accessTask($access=0)
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
@@ -395,9 +345,9 @@ class WishlistControllerLists extends Hubzero_Controller
 		}
 
 		// Load the article
-		$row = new KbArticle($this->database);
+		$row = new Wishlist($this->database);
 		$row->load($id);
-		$row->access = $access;
+		$row->public = $access;
 
 		// Check and store the changes
 		if (!$row->check()) 
@@ -476,7 +426,7 @@ class WishlistControllerLists extends Hubzero_Controller
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new KbCategory($this->database);
+			$row = new Wishlist($this->database);
 			$row->load($id);
 			$row->state = $state;
 			$row->store();
