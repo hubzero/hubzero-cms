@@ -53,9 +53,6 @@ HUB.Plugins.CoursesProgress = {
 			var element = $(this);
 			var unitId  = element.parent('.unit').attr('class').match(/unit_([0-9]+)/);
 
-			console.log(unitId[1]);
-			console.log(marker[1]);
-
 			if (unitId[1] <= marker[1]) {
 				setTimeout(function() {
 					progress.find('.unit').removeClass('current');

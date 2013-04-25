@@ -82,14 +82,24 @@
 .progress-timeline .end {
 	width: 5%;
 }
-.progress-timeline .start {
-	background: url('/components/com_courses/assets/img/person.png') 50% 0 no-repeat;
+.progress-timeline .person {
+	width: 50px;
+	height: 75px;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -25px;
 }
-.progress-timeline .end {
-	background: url('/components/com_courses/assets/img/jumping_incomplete.png') 50% 0 no-repeat;
+.progress-timeline .start .person {
+	background: url('/components/com_courses/assets/img/person.png') -152px -50px no-repeat;
 }
-.progress-timeline .current {
-	background: url('/components/com_courses/assets/img/running.png') 50% 2px no-repeat;
+.progress-timeline .end .person {
+	background: url('/components/com_courses/assets/img/person.png') -92px -138px no-repeat;
+}
+.progress-timeline .current .person {
+	background: url('/components/com_courses/assets/img/person.png') -11px -50px no-repeat;
+	width: 65px;
+	margin-left: -30px;
 }
 .progress-timeline .start-inner,
 .progress-timeline .end-inner {

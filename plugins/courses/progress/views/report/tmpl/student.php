@@ -217,7 +217,7 @@ $current_i = 0;
 
 // Build the progress timeline bar
 $progress_timeline  = "<div class=\"progress-timeline length_{$num_units}\">";
-$progress_timeline .= '<div class="start"><div class="start-inner"></div></div>';
+$progress_timeline .= '<div class="start"><div class="person"></div><div class="start-inner"></div></div>';
 foreach ($units as $unit)
 {
 	$first    = ($index == 1) ? ' first' : '';
@@ -237,7 +237,9 @@ foreach ($units as $unit)
 		$current_i = $index;
 	}
 
-	$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\"><div class=\"unit-inner{$first}{$last}{$past}\">";
+	$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\">";
+	$progress_timeline .= "<div class=\"person\"></div>";
+	$progress_timeline .= "<div class=\"unit-inner{$first}{$last}{$past}\">";
 	$progress_timeline .= "<div class=\"unit-fill\">";
 	$progress_timeline .= "<div class=\"unit-fill-inner{$done}\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
 	$progress_timeline .= "</div>";
@@ -246,7 +248,7 @@ foreach ($units as $unit)
 
 	++$index;
 }
-$progress_timeline .= '<div class="end"><div class="end-inner"></div></div>';
+$progress_timeline .= '<div class="end"><div class="person"></div><div class="end-inner"></div></div>';
 $progress_timeline .= '</div>';
 
 // Check/get info about whether or not a badge is offerred for this course
