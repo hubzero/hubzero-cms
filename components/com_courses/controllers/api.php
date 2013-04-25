@@ -527,6 +527,16 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$asset->set('content', $content);
 		}
 
+		// If we have type or subtype
+		if ($type = JRequest::getWord('type', false))
+		{
+			$asset->set('type', $type);
+		}
+		if ($subtype = JRequest::getWord('subtype', false))
+		{
+			$asset->set('subtype', $subtype);
+		}
+
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
 		if(!$id)
 		{

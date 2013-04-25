@@ -54,7 +54,29 @@ endforeach;
 			<label for="title">Title:</label>
 			<input type="text" name="title" value="<?= $asset->get('title') ?>" placeholder="Asset Title" />
 		</p>
-
+		<p>
+			<label for="type">Type:</label>
+			<select name="type">
+				<option value="video"<?php if ($asset->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
+				<option value="file"<?php if ($asset->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
+				<option value="form"<?php if ($asset->get('type') == 'form') { echo ' selected="selected"'; } ?>><?php echo JText::_('Form'); ?></option>
+				<option value="text"<?php if ($asset->get('type') == 'text') { echo ' selected="selected"'; } ?>><?php echo JText::_('Text'); ?></option>
+				<option value="url"<?php if ($asset->get('type') == 'url') { echo ' selected="selected"'; } ?>><?php echo JText::_('URL'); ?></option>
+			</select>
+		</p>
+		<p>
+			<label for="subtype">Subtype:</label>
+			<select name="subtype">
+				<option value="video"<?php if ($asset->get('subtype') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
+				<option value="embedded"<?php if ($asset->get('subtype') == 'embedded') { echo ' selected="selected"'; } ?>><?php echo JText::_('Embedded'); ?></option>
+				<option value="file"<?php if ($asset->get('subtype') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
+				<option value="exam"<?php if ($asset->get('subtype') == 'exam') { echo ' selected="selected"'; } ?>><?php echo JText::_('Exam'); ?></option>
+				<option value="quiz"<?php if ($asset->get('subtype') == 'quiz') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz'); ?></option>
+				<option value="homework"<?php if ($asset->get('subtype') == 'homework') { echo ' selected="selected"'; } ?>><?php echo JText::_('Homework'); ?></option>
+				<option value="note"<?php if ($asset->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
+				<option value="wiki"<?php if ($asset->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('Wiki'); ?></option>
+			</select>
+		</p>
 		<p>
 			<label for="scope_id">Attach to:</label>
 			<select name="scope_id">
