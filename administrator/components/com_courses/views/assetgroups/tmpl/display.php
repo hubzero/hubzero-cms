@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
-				<th colspan="6">
+				<th colspan="7">
 					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
@@ -93,13 +93,14 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Alias'); ?></th>
+				<th scope="col"><?php echo JText::_('State'); ?></th>
 				<th scope="col"><?php echo JText::_('Ordering'); ?></th>
 				<th scope="col"><?php echo JText::_('Assets'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -113,6 +114,25 @@ foreach ($this->rows as $row)
 	$tip = '[coming soon]';
 	//$assetgroups = $row->assetgroups()->total();
 	$assets = $row->assets()->total();
+	
+	switch ($row->get('state'))
+	{
+		case 1:
+			$class = 'publish';
+			$task = 'unpublish';
+			$alt = JText::_('COM_WISHLIST_PUBLISHED');
+		break;
+		case 2:
+			$class = 'expire';
+			$task = 'publish';
+			$alt = JText::_('COM_WISHLIST_TRASHED');
+		break;
+		case 0:
+			$class = 'unpublish';
+			$task = 'publish';
+			$alt = JText::_('COM_WISHLIST_UNPUBLISHED');
+		break;
+	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -124,7 +144,7 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo $row->treename; ?>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 <?php } else { ?>
@@ -135,7 +155,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
 					</a>
 <?php } else { ?>
@@ -144,12 +164,22 @@ foreach ($this->rows as $row)
 					</span>
 <?php } ?>
 				</td>
+				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK',$task);?>">
+						<span><?php echo $alt; ?></span>
+					</a>
+<?php } else { ?>
+					<span class="state <?php echo $class; ?>">
+						<span><?php echo $alt; ?></span>
+					</span>
+<?php } ?>
+				</td>
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $row->treename; ?>
 					<?php echo $row->get('ordering'); ?>
-					<span><?php //echo $this->pageNav->orderUpIcon( $i, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i-1]->get('parent'), 'orderup', 'Move Up', $ordering ); ?></span>
-					<span><?php //echo $this->pageNav->orderDownIcon( $i, $n, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i+1]->get('parent'), 'orderdown', 'Move Down', $ordering ); ?></span>
-					
+					<span><?php echo $this->pageNav->orderUpIcon( $i, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i-1]->get('parent'), 'orderup', 'Move Up', $ordering ); ?></span>
+					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i+1]->get('parent'), 'orderdown', 'Move Down', $ordering ); ?></span>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
