@@ -77,9 +77,9 @@ if ($this->row) {
 	$html  = '<h3>'. stripslashes($this->row->title);
 	if ($this->authorized || $this->row->created_by == $juser->get('id')) {
 		$html .= '&nbsp;&nbsp;';
-		$html .= '<a class="delete" href="'. JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.JText::_('EVENTS_EDIT').'">'.strtolower(JText::_('EVENTS_EDIT')).'</a>'."\n";
+		$html .= '<a class="edit" href="'. JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.JText::_('EVENTS_EDIT').'">'.strtolower(JText::_('EVENTS_EDIT')).'</a>'."\n";
 		$html .= '&nbsp;&nbsp;'."\n";
-		$html .= '<a class="edit" href="'. JRoute::_('index.php?option='.$this->option.'&task=delete&id='.$this->row->id) .'" title="'.JText::_('EVENTS_DELETE').'">'.strtolower(JText::_('EVENTS_DELETE')).'</a>'."\n";
+		$html .= '<a class="delete" href="'. JRoute::_('index.php?option='.$this->option.'&task=delete&id='.$this->row->id) .'" title="'.JText::_('EVENTS_DELETE').'">'.strtolower(JText::_('EVENTS_DELETE')).'</a>'."\n";
 	}
 	$html .= '</h3>'."\n";
 	if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00') {
