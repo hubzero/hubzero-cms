@@ -12,6 +12,7 @@
 .outline-main {
 	overflow: hidden;
 	position: relative;
+	min-height: 352px;
 }
 .placeholder {
 	margin-top: 10px;
@@ -150,7 +151,7 @@
 	top: 0;
 	width: 300px;
 	margin-left: -285px;
-	height: 50px;
+	height: 350px;
 	border-left: 1px solid #CCCCCC;
 	border-top: 1px solid #CCCCCC;
 	border-bottom: 1px solid #CCCCCC;
@@ -252,7 +253,6 @@
 	display: none;
 	margin: 10px;
 	list-style: none;
-	height: 100%;
 }
 .open .assets-deleted {
 	display: inherit;

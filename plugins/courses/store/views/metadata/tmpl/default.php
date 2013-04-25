@@ -51,7 +51,7 @@ else
 	$offering = new CoursesModelOffering(0, $this->course->get('id'));
 }
 
-if ($offering->exists()) 
+if (is_object($offering) && $offering->exists()) 
 {
 	$product = null;
 

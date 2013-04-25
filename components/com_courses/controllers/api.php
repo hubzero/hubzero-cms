@@ -915,15 +915,11 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		$offering = $course->offering($this->offering_alias);
 		$this->course = $course;
 
-		if ($course->access('manage') || $offering->access('manage'))
+		if ($course->access('manage'))
 		{
 			$authorized['view']   = true;
 			$authorized['manage'] = true;
 			$authorized['admin']  = true;
-		}
-		elseif ($course->offering($this->offering_alias)->access('view'))
-		{
-			$authorized['view'] = true;
 		}
 
 		return $authorized;

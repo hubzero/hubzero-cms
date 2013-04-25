@@ -55,6 +55,9 @@
 	#course-outline .outline-head {
 		padding: 20px;
 	}
+	#course-outline .outline-head .btn {
+		line-height: 1.5em;
+	}
 	#course-outline .unit-availability {
 		padding: 5px 0;
 	}

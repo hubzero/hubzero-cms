@@ -95,27 +95,28 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php if (count($this->rows) > 0) : ?>
+	<?php $i = 1; ?>
 	<?php foreach ($this->rows as $page) : ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $this->escape($page['id']); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $this->escape($page->id); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<?php echo $this->escape($page['id']); ?>
+					<?php echo $this->escape($page->id); ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $this->escape($page['id']); ?>">
-						<?php echo $this->escape(stripslashes($page['title'])); ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $this->escape($page->id); ?>">
+						<?php echo $this->escape(stripslashes($page->title)); ?>
 					</a>
 <?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($page['title'])); ?>
+						<?php echo $this->escape(stripslashes($page->title)); ?>
 					</span>
 <?php } ?>
 				</td>
 				<td>
-				<?php if ($page['active']) { ?>
+				<?php if ($page->active) { ?>
 					<span class="state publish">
 						<span class="text"><?php echo JText::_('Published'); ?></span>
 					</span>
