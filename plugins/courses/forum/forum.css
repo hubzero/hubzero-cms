@@ -227,22 +227,7 @@
 	.comment-add .reply-anonymous-label {
 		width: 50%;
 	}
-	.sort-options {
-		text-align: right;
-		color: #aaa;
-		margin-top: -2.8em;
-	}
-	.sort-options a {
-		color: #aaa;
-		border: none;
-	}
-	.sort-options a:hover {
-		color: #333;
-		border: none;
-	}
-	.sort-options .active {
-		font-weight: bold;
-	}
+
 	/*#comments-container {
 		margin: 20px -20px;
 		padding: 0;
@@ -258,16 +243,101 @@
 		background: rgba(0, 0, 0, 0.05);
 		margin-top: 0;
 	}*/
+	#comments-container {
+		margin-top: 30px;
+	}
+	#commentform {
+		background: #f1f1f1;
+		background: #f9f9f9;
+		position: relative;
+		margin: 0 -20px;
+		padding: 20px;
+		border-top: 1px solid #e1e1e1;
+		border-bottom: 1px solid #e9e9e9;
+	}
+	#commentform:after {
+		content: "";
+		display: block;
+		background: -webkit-linear-gradient(rgba(0, 0, 0, .1),rgba(0, 0, 0, .05) 1px,rgba(0, 0, 0, .05) 1px,transparent 5px,transparent 100%);
+		background: -moz-linear-gradient(rgba(0, 0, 0, .1),rgba(0, 0, 0, .05) 1px,rgba(0, 0, 0, .05) 1px,transparent 5px,transparent 100%);
+		background: -ms-linear-gradient(rgba(0, 0, 0, .1),rgba(0, 0, 0, .05) 1px,rgba(0, 0, 0, .05) 1px,transparent 5px,transparent 100%);
+		background: -o-linear-gradient(rgba(0, 0, 0, .1),rgba(0, 0, 0, .05) 1px,rgba(0, 0, 0, .05) 1px,transparent 5px,transparent 100%);
+		background: linear-gradient(rgba(0, 0, 0, .1),rgba(0, 0, 0, .05) 1px,rgba(0, 0, 0, .05) 1px,transparent 5px,transparent 100%);
+		width: auto;
+		height: 20px;
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		left: 0px;
+		border: 0;
+		_display: none;
+	}
 	#comments-container .post-comment-title {
 		display: none;
 	}
+	#comments-container .below {
+		margin-top: 0;
+	}
 	#comments-container .comments-title {
-		border-bottom: 1px solid #ddd;
+		background: #f9f9f9;
+		border-bottom: 1px solid #e1e1e1;
 		padding: 0 0 0.2em 0;
+		margin: 0 -20px 20px -20px;
+		padding: 20px;
 	}
 	#commentform .comment-title {
 		display: none;
 	}
+	
+	.sort-options {
+		text-align: right;
+		color: #aaa;
+		position: absolute;
+		top: 20px;
+		right: 0;
+		margin: 0;
+		padding: 0;
+	}
+	.sort-options a {
+		color: #aaa;
+		border: none;
+	}
+	.sort-options a.active small.fontcon-before,
+	.sort-options a.active:before {
+		position: absolute;
+		width: 0px;
+		height: 0px;
+		display: block;
+		content: "";
+		border: 8px solid #e1e1e1;
+		border-color: transparent transparent #e1e1e1 transparent;
+		overflow: hidden;
+		bottom: -20px;
+		left: 50%;
+		margin-left: -16px;
+	}
+	.sort-options a.active small.fontcon-after,
+	.sort-options a.active:after {
+		position: absolute;
+		width: 0px;
+		height: 0px;
+		display: block;
+		content: "";
+		border: 8px solid #fff;
+		border-color: transparent transparent #fff transparent;
+		overflow: hidden;
+		bottom: -22px;
+		left: 50%;
+		margin-left: -16px;
+	}
+	.sort-options a:hover {
+		color: #333;
+		border: none;
+	}
+	.sort-options .active {
+		font-weight: bold;
+	}
+	
 	ol.comments {
 		margin-top: 2em;
 	}

@@ -110,7 +110,7 @@ var typewatch = (function(){
 		jQuery.fn.stickyNotes.container = jQuery(container);
 
 		if (jQuery.fn.stickyNotes.options.controls) {
-			jQuery.fn.stickyNotes.container.append('<button id="add_note">Add Note</button>');
+			jQuery.fn.stickyNotes.container.find('.video-meta').append('<button id="add_note">Add Note</button>');
 			jQuery("#add_note").on('click', function() {
 				jQuery.fn.stickyNotes.createNote();
 				return false;

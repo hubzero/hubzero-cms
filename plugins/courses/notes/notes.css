@@ -142,8 +142,8 @@
 /* Add note button */
 	button#add_note {
 		position: absolute;
-		top: 10em;
-		right: 40px;
+		top: 15px;
+		right: 15px;
 		display: block;
 		border: 1px solid #fee9aa;
 		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
