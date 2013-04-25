@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
-				<th colspan="10">
+				<th colspan="11">
 					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
@@ -90,8 +90,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Alias'); ?></th>
-				<!-- <th scope="col"><?php echo JText::_('Starts'); ?></th>
-				<th scope="col"><?php echo JText::_('Ends'); ?></th> -->
+				<th scope="col"><?php echo JText::_('State'); ?></th>
 				<th scope="col" colspan="2"><?php echo JText::_('Ordering'); ?></th>
 				<th scope="col"><?php echo JText::_('Asset groups'); ?></th>
 				<th scope="col"><?php echo JText::_('Assets'); ?></th>
@@ -99,7 +98,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="11"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -112,6 +111,25 @@ foreach ($this->rows as $row)
 	$tip = '[coming soon]';
 	$assetgroups = $row->assetgroups()->total();
 	$assets = $row->assets()->total();
+	
+	switch ($row->get('state'))
+	{
+		case 1:
+			$class = 'publish';
+			$task = 'unpublish';
+			$alt = JText::_('COM_WISHLIST_PUBLISHED');
+		break;
+		case 2:
+			$class = 'expire';
+			$task = 'publish';
+			$alt = JText::_('COM_WISHLIST_TRASHED');
+		break;
+		case 0:
+			$class = 'unpublish';
+			$task = 'publish';
+			$alt = JText::_('COM_WISHLIST_UNPUBLISHED');
+		break;
+	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -142,12 +160,17 @@ foreach ($this->rows as $row)
 					</span>
 <?php } ?>
 				</td>
-				<?php /*<td>
-					<?php echo JHTML::_('date', $row->get('start_date'), '%d %b %Y'); ?>
-				</td>
 				<td>
-					<?php echo ($row->get('end_date') && $row->get('end_date') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('end_date'), '%d %b %Y') : JText::_('(never)'); ?>
-				</td>*/ ?>
+<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;offering=<?php echo $this->offering->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK',$task);?>">
+						<span><?php echo $alt; ?></span>
+					</a>
+<?php } else { ?>
+					<span class="state <?php echo $class; ?>">
+						<span><?php echo $alt; ?></span>
+					</span>
+<?php } ?>
+				</td>
 				<td>
 					<?php 
 					$prv = $this->rows->fetch('prev');

@@ -304,6 +304,128 @@ class CoursesControllerUnits extends Hubzero_Controller
 	}
 
 	/**
+	 * Calls stateTask to publish entries
+	 * 
+	 * @return     void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+	
+	/**
+	 * Calls stateTask to unpublish entries
+	 * 
+	 * @return     void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Set the state of an entry
+	 * 
+	 * @param      integer $state State to set
+	 * @return     void
+	 */
+	public function stateTask($state=0)
+	{
+		// Incoming
+		$ids = JRequest::getVar('id', array(0));
+		if (!is_array($ids)) 
+		{
+			$ids = array(0);
+		}
+
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
+				($state == 1 ? JText::_('COM_COURSES_SELECT_PUBLISH') : JText::_('COM_COURSES_SELECT_UNPUBLISH')),
+				'error'
+			);
+			return;
+		}
+
+		// Update record(s)
+		foreach ($ids as $id)
+		{
+			// Updating a category
+			$row = new CoursesModelUnit($id);
+			$row->set('state', $state);
+			$row->store();
+		}
+
+		// Set message
+		switch ($state)
+		{
+			case '-1': 
+				$message = JText::sprintf('COM_COURSES_ARCHIVED', count($ids));
+			break;
+			case '1':
+				$message = JText::sprintf('COM_COURSES_PUBLISHED', count($ids));
+			break;
+			case '0':
+				$message = JText::sprintf('COM_COURSES_UNPUBLISHED', count($ids));
+			break;
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
+			$message
+		);
+	}
+
+	/**
+	 * Reorder a record up
+	 * 
+	 * @return     void
+	 */
+	public function orderupTask()
+	{
+		$this->orderTask();
+	}
+
+	/**
+	 * Reorder a record up
+	 * 
+	 * @return     void
+	 */
+	public function orderdownTask()
+	{
+		$this->orderTask();
+	}
+
+	/**
+	 * Reorder a plugin
+	 * 
+	 * @param      integer $access Access level to set
+	 * @return     void
+	 */
+	public function orderTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		$id = JRequest::getVar('id', array(0), 'post', 'array');
+		JArrayHelper::toInteger($id, array(0));
+
+		$uid = $id[0];
+		$inc = ($this->_task == 'orderup' ? -1 : 1);
+
+		$row = new CoursesTableUnit($this->database);
+		$row->load($uid);
+		$row->move($inc, 'offering_id=' . $this->database->Quote($row->offering_id));
+
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0)
+		);
+	}
+
+	/**
 	 * Cancel a task (redirects to default task)
 	 *
 	 * @return	void
