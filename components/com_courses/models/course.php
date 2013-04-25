@@ -721,9 +721,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 		{
 			$tbl = new CoursesTablePage($this->_db);
 
-			if (!($results = $tbl->find($filters)))
+			$results = array();
+
+			if (($data = $tbl->find($filters)))
 			{
-				$results = array();
+				foreach ($data as $key => $result)
+				{
+					$results[] = new CoursesModelPage($result);
+				}
 			}
 
 			$this->_pages = $results;

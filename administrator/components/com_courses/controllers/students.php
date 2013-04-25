@@ -189,7 +189,10 @@ class CoursesControllerStudents extends Hubzero_Controller
 				$id = 0;
 			}
 
-			$this->view->row = CoursesModelMember::getInstance($id, $offering);
+			$course_id = $this->view->offering->get('course_id');
+			$section_id = $this->view->offering->section()->get('id');
+
+			$this->view->row = CoursesModelMember::getInstance($id, $course_id, $offering, $section_id);
 		}
 
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
@@ -241,6 +244,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 		}
 
 		$offering = JRequest::getInt('offering', 0);
+		$offeringObj = CoursesModelOffering::getInstance($offering);
 
 		foreach ($user_ids as $user_id)
 		{
@@ -254,7 +258,9 @@ class CoursesControllerStudents extends Hubzero_Controller
 				$fields['user_id'] = $user_id;
 			}
 			// Instantiate the model
-			$model = CoursesModelMember::getInstance($fields['user_id'], $offering);
+			$course_id = $offeringObj->get('course_id');
+			$section_id = $offeringObj->section()->get('id');
+			$model = CoursesModelMember::getInstance($fields['user_id'], $course_id, $offering, $section_id);
 
 			// Bind posted data
 			if (!$model->bind($fields))
@@ -283,7 +289,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'],
-				JText::_('COM_COURSES_SAVED')
+				JText::_('COM_COURSES_MEMBER_SAVED')
 			);
 			return;
 		}

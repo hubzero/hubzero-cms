@@ -607,24 +607,19 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$dbh = JFactory::getDBO();
 
 		$dbh->setQuery(
-			'SELECT ca.course_id, o.id
-			FROM #__courses_assets as ca
-			INNER JOIN #__courses_asset_associations as caa ON caa.asset_id = ca.id
-			INNER JOIN #__courses_asset_groups as cag ON cag.id = caa.scope_id
-			INNER JOIN #__courses_units as u ON u.id = cag.unit_id
-			INNER JOIN #__courses_offerings as o ON o.id = u.offering_id
-			WHERE `content` LIKE ' . $dbh->Quote('%{"form_id":"'.$fid.'"}%')
+			'SELECT ca.course_id
+			FROM `#__courses_assets` AS ca
+			LEFT JOIN `#__courses_forms` AS cf ON cf.asset_id = ca.id
+			WHERE cf.id = ' . $dbh->Quote($fid)
 		);
 
-		if($result = $dbh->loadAssoc())
+		if($result = $dbh->loadResult())
 		{
 			// Get course model
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-			$course = CoursesModelCourse::getInstance($result['course_id']);
-			$course->offering($result['id']);
-			$course->access('manage');
+			$course = CoursesModelCourse::getInstance((int) $result);
 
-			return $course->offering()->access('manage');
+			return $course->access('manage');
 		}
 		else
 		{
