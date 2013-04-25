@@ -81,36 +81,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				.'com_publications' . DS . 'tables' . DS . 'publication.php')
 			&& JPluginHelper::isEnabled('projects', 'publications')
 			? 1 : 0;
-					
-		// Enable publication management
-		if ($this->_publishing)
-		{						
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'version.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'access.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'audience.level.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'audience.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'author.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'license.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'category.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . DS.'master.type.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . DS.'screenshot.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . DS.'attachment.php');
-			require_once( JPATH_ROOT . DS . 'components'.DS
-				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');
+		
+		// Include scripts
+		$this->_inlcudeScripts();
+		
+		// Check for necessary db setup
+		if ($this->_config->get( 'dbcheck', 1 ))
+		{
+			$this->_checkTables();
 		}
-	
+										
 		// Incoming
 		$this->_task 		= strtolower(JRequest::getVar( 'task', '' ));
 		$this->_gid   		= JRequest::getVar( 'gid', 0 );
@@ -140,21 +120,24 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				$this->_setup(); 		
 				break;
 			
-			// Project
+			// Project views
 			case 'view':   				
 				$this->_view();   		
 				break;
-				
+			
+			// Edit project	
 			case 'edit':   				
 				$this->_edit();   		
 				break;
-				
+			
+			// Change of state	
 			case 'suspend':   			
 			case 'reinstate':   		
-			case 'fixownership':   		
+			case 'fixownership':  
+			case 'delete':   	 		
 				$this->_changeState();  
 				break;
-			
+							
 			// Listings
 			case 'intro':  		
 				// Front-face projects		
@@ -209,11 +192,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				
 			case 'wikipreview':			
 				$this->_wikiPreview(); 	
-				break;				
+				break;			
 			
 			// Authentication for outside services	
 			case 'auth':			
 				$this->_auth(); 	
+				break;
+				
+			// Stats reports
+			case 'reports':			
+				$this->_reports(); 	
 				break;
 									
 			default: 
@@ -277,6 +265,134 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_name);
 	}
 	
+	/**
+	 * Check for necessary db tables
+	 * 
+	 * @return     void
+	 */
+	protected function _checkTables()
+	{
+		$tables = $this->database->getTableList();
+		$prefix = $this->database->_table_prefix;
+
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_projects' . DS . 'helpers' . DS . 'install.php');
+		
+		$installHelper = new ProjectsInstall($this->database, $tables);
+		
+		// Initial install
+		if (!in_array($prefix . 'projects', $tables)) 
+		{
+			$installHelper->runInstall();
+		}
+		
+		// Enable project logs
+		if (!in_array($prefix . 'project_logs', $tables)) 
+		{
+			$installHelper->installLogs();
+		}
+
+		// Enable project stats
+		if (!in_array($prefix . 'project_stats', $tables)) 
+		{
+			$installHelper->installStats();
+		}
+
+		// Enable project files remote connections
+		if (!in_array($prefix . 'project_remote_files', $tables)) 
+		{
+			$installHelper->installRemotes();
+		}
+		
+		// Enable publications
+		if ($this->_publishing && !in_array($prefix . 'publications', $tables)) 
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+				. DS . 'com_publications' . DS . 'helpers' . DS . 'install.php');
+			
+			$pubInstallHelper = new PubInstall($this->database, $tables);
+			$pubInstallHelper->installPublishing();
+		}
+		elseif (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'projects'. DS
+				.'publications.php'))
+		{
+			// Make entry for projects publications plugin
+			$installHelper->installPlugin('publications', 0);
+		}		
+	}
+	
+	/**
+	 * Include necessary scripts
+	 * 
+	 * @return     void
+	 */
+	protected function _inlcudeScripts()
+	{		
+		// Enable publication management
+		if ($this->_publishing)
+		{						
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'publication.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'version.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'access.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'audience.level.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'audience.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'author.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'license.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'category.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'master.type.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'screenshot.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'attachment.php');
+			require_once( JPATH_ROOT . DS . 'components'.DS
+				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');
+		}
+		
+		// Database development on?
+		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+				.'com_projects' . DS . 'tables' . DS . 'project.database.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+					.'com_projects' . DS . 'tables' . DS . 'project.database.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+					.'com_projects' . DS . 'tables' . DS . 'project.database.version.php');
+		}
+		
+		// Logging
+		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+				.'com_projects' . DS . 'tables' . DS . 'project.log.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+					.'com_projects' . DS . 'tables' . DS . 'project.log.php');
+		}
+		
+		// Stats
+		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+				.'com_projects' . DS . 'tables' . DS . 'project.stats.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+					.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+		}
+		
+		// Remote connections support (new)
+		if ( is_file(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php' );
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
+			require_once( JPATH_SITE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php' );			
+		}				
+	}
+	
 	//----------------------------------------------------------
 	// Views
 	//----------------------------------------------------------
@@ -319,7 +435,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->_login();
 			return;
 		}
-		
+										
 		// Instantiate a new view
 		$view = new JView( array('name'=>'intro') );
 		$view->filters = array();
@@ -716,8 +832,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				
 				// Log activity
 				$this->_logActivity($pid, 'setup', $what, 'save', $authorized);
-				$jsession->set('projects-nolog', 1);
-				
+				if ($this->_config->get('logging', 0))
+				{
+					$jsession->set('projects-nolog', 1);					
+				}
+					
 				// Redirect to next stage (for prettier URL)
 				if ($stage == 0) 
 				{
@@ -758,7 +877,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Allow future logging
-		$jsession->set('projects-nolog', 0);
+		if ($this->_config->get('logging', 0))
+		{
+			$jsession->set('projects-nolog', 0);					
+		}
 		
 		// Do we need to ask about restricted data up front?
 		if ($this->_config->get('restricted_upfront', 0) == 1 && !$this->_identifier) 
@@ -1262,7 +1384,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Allow future logging
-		$jsession->set('projects-nolog', 0);
+		if ($this->_config->get('logging', 0))
+		{
+			$jsession->set('projects-nolog', 0);					
+		}
 		
 		// Go through plugins
 		$view->content = '';
@@ -1306,11 +1431,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				
 				// Need this to direct to correct repository
 				$extraParam = '';				
-				$case = JRequest::getVar( 'case', '' );			
+				$case = JRequest::getVar( 'case', '' );	
+				$pagename = JRequest::getVar( 'pagename', '' );			
 				
-				// Are we trying to load app source code?
+				// Are we trying to load app source code or wiki?
 				if ((($this->active == 'apps' && $action == 'source') 
-					|| ($this->active == 'files' && preg_match("/apps:/", $case)))
+					|| ($this->active == 'files' && preg_match("/apps:/", $case))
+					|| ($this->active == 'notes' && preg_match("/app:/", $pagename))
+					|| ($this->active == 'apps' && $action == 'wiki'))
 					&& 	is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 					. DS . 'com_apps' . DS . 'tables' . DS . 'app.php') 
 					&& JPluginHelper::isEnabled('projects', 'apps'))
@@ -1328,11 +1456,19 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$app = new App( $this->database );
 					$app->loadApp($appname, $project->id);
 					
-					// Get status of dev instance
-					if ($app && $app->status > 1)
+					// Direct to relevant plugin
+					if (($action == 'source' || $this->active == 'files') && $app && $app->status > 1)
 					{
 						$plugin = 'files';
 						$extraParam = 'apps:' . $app->name;
+						$action = JRequest::getVar( 'do', '' );
+						$this->active = 'apps';
+					}
+					if ($app && ($action == 'wiki' || $this->active == 'notes'))
+					{
+						$plugin = 'notes';
+						$extraParam = $app->name;
+						$this->active = 'apps';
 					}
 				}				
 				
@@ -1376,7 +1512,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						}
 						elseif (isset($section['referer']) && $section['referer'] != '') 
 						{
-							$jsession->set('projects-nolog', 1); // log only once for this request
+							if ($this->_config->get('logging', 0))
+							{
+								$jsession->set('projects-nolog', 1);					
+							}
 							$this->_redirect = $section['referer'];
 							return;
 						}
@@ -1588,7 +1727,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Allow future logging
-		$jsession->set('projects-nolog', 0);
+		if ($this->_config->get('logging', 0))
+		{
+			$jsession->set('projects-nolog', 0);					
+		}
 				
 		// Instantiate a new view
 		$view = new JView( array('name'=>'edit') );		
@@ -1680,7 +1822,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					. $this->_option . a . 'alias=' . $project->alias . a . 'active=info'), 'project' );
 			}
 			
-			$jsession->set('projects-nolog', 1); // Log only once
+			if ($this->_config->get('logging', 0))
+			{
+				$jsession->set('projects-nolog', 1);					
+			}
 			$url = JRoute::_('index.php?option=' . $this->_option
 				. a . 'task=edit' . a . 'alias='.$project->alias) . '?edit=' . $this->active;
 			$this->_redirect = $url;
@@ -2316,7 +2461,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Already suspended
-		if (($this->_task == 'suspend') && $obj->state == 0)	
+		if ($this->_task == 'suspend' && $obj->state == 0)	
 		{					
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $obj->alias);
 			return;
@@ -2391,6 +2536,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if ($this->_task != 'fixownership')	
 		{
 			$obj->state = $this->_task == 'suspend' ? 0 : 1;
+			$obj->state = $this->_task == 'delete' ? 2 : $obj->state;
 		}
 		
 		if (!$obj->store()) 
@@ -2408,6 +2554,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$what = ($this->_task == 'suspend') 
 				? JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED') 
 				: JText::_('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED');
+				
+			if ($this->_task == 'delete')
+			{
+				$what = JText::_('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
+			}
 			$objAA->recordActivity( $obj->id, $this->juser->get('id'), $what );
 		}
 		
@@ -2417,9 +2568,71 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->_msg = $this->_task == 'suspend' 
 				? JText::_('COM_PROJECTS_PROJECT_SUSPENDED') 
 				: JText::_('COM_PROJECTS_PROJECT_REINSTATED');
+			
+			if ($this->_task == 'delete')
+			{
+				$this->setError(JText::_('COM_PROJECTS_PROJECT_DELETED'));
+				$this->_task = 'intro';
+				$this->_intro();
+				return;
+			}
 		}
 		$this->_task = 'view';
 		$this->_view();	
+	}
+	
+	/**
+	 * Stats
+	 * 
+	 * @return     void
+	 */
+	protected function _reports() 
+	{
+		// Incoming
+		$period = JRequest::getVar( 'period', 'alltime');
+		
+		// Instantiate a project and related classes
+		$obj = new Project( $this->database );
+		$objAA = new ProjectActivity ( $this->database );
+		
+		// Is user in special admin group to view advanced stats?
+		$admin = $this->checkReviewerAuth('general');
+							
+		// Get all test projects
+		$testProjects = $obj->getTestProjects();
+							
+		// Instantiate a new view
+		$view = new JView( array('name'=>'reports') );
+		
+		// Add the CSS to the template
+		$this->_getStyles();
+
+		// Set the pathway
+		$this->_buildPathway(null);
+
+		// Set the page title
+		$this->_buildTitle(null);
+		$view->title = $this->title;
+		
+		// Log activity
+		$this->_logActivity();		
+
+		// Output HTML
+		$view->task 		= $this->_task;
+		$view->admin 		= $admin;
+		$view->option 		= $this->_option;
+		$view->config 		= $this->_config;
+		$view->uid 			= $this->juser->get('id');
+		$view->guest 		= $this->juser->get('guest');
+		$view->stats		= $obj->getStats($period, $admin, $this->_config, $testProjects, $this->_publishing);
+		$view->publishing	= $this->_publishing;
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		$view->msg = isset($this->_msg) ? $this->_msg : '';
+		$view->display();
+		return;		
 	}
 	
 	/**
@@ -2464,26 +2677,28 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$return	= JRoute::_('index.php?option=' . $this->_option . a . 'alias=' 
 				. $this->_identifier . a . 'active=files') . '?action=connect';
-			$return .= a . 'service=' . $service;
-			$return .= a . 'code=' . $code;	
+			$return .= '&service=' . $service;
+			$return .= '&code=' . $code;	
 		}
-		else
+		elseif (isset($json->return))
 		{
-			$return .= $json->return . a . 'service=' . $service;
+			$return = $json->return . '&service=' . $service;
 		}
-		
+				
 		// Catch errors
 		if ($error)
 		{
+			$error =  $error == 'access_denied' 
+				? JText::_('Sorry, we cannot connect you to external file service without your permission')
+				: JText::_('Sorry, we cannot connect you to external file service at this time');
 			$this->setNotification($error, 'error');
-			print_r($error);
-			return false;	
+			$return = $json->return;
 		}
 		
 		$this->_redirect = $return;
 		return;		
 	}
-	
+		
 	//----------------------------------------------------------
 	// Reviewers
 	//----------------------------------------------------------
@@ -2811,7 +3026,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 */
 	protected function checkReviewerAuth($reviewer)
 	{
-		if ($reviewer != 'sponsored' && $reviewer != 'sensitive')
+		if ($reviewer != 'sponsored' && $reviewer != 'sensitive' && $reviewer != 'general')
 		{
 			return false;
 		}
@@ -2823,6 +3038,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		$sdata_group 	= $this->_config->get('sdata_group', '');
 		$ginfo_group 	= $this->_config->get('ginfo_group', '');
+		$admingroup 	= $this->_config->get('admingroup', '');
 		$group      	= '';
 		$authorized 	= false;
 		
@@ -2834,6 +3050,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		elseif ($reviewer == 'sponsored' && $ginfo_group)
 		{
 			$group = Hubzero_Group::getInstance($ginfo_group);
+		}
+		elseif ($reviewer == 'general' && $admingroup)
+		{
+			$group = Hubzero_Group::getInstance($admingroup);
 		}
 			
 		if ($group)
@@ -2874,6 +3094,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$pid 	= $pid ? $pid : JRequest::getInt( 'pid', 0 );
 		$ajax 	= $ajax == 1 ? 1 : JRequest::getInt( 'ajax', 0 );
 		$tool 	= JRequest::getInt( 'tool', 0 );
+		$app 	= JRequest::getInt( 'app', 0 );
 		$class 	= 'verify_failed';
 		
 		// Set name length
@@ -2883,7 +3104,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Array of reserved names (task names and default dirs)
 		$reserved = array();
 		$names = $this->_config->get('reserved_names', '');
-		$tasks = array(	'start', 'setup', 'browse', 'intro', 'features', 'deleteimg');
+		$tasks = array(	'start', 'setup', 'browse', 'intro', 'features', 'deleteimg', 'reports', 'stats');
 		
 		if ($names) 
 		{
@@ -2926,7 +3147,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				. DS . 'com_apps' . DS . 'tables' . DS . 'app.php');
 				
 			$objA = new App( $this->database );
-			if ($objA->checkUniqueName($name))
+			if ($objA->checkUniqueName($name, $app))
 			{
 				if (!$ajax) { return false; }
 				$result = JText::_('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE');
@@ -3050,7 +3271,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
 		}
-		$path  = $prefix.$webdir;
+		$path  = $prefix . $webdir;
 		$path .= !$id && $tempid ? DS . 'temp' : '';
 		$path .= DS . $dir . DS . 'images';
 		
@@ -3435,6 +3656,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if (!$file) 
 		{
 			$file = JRequest::getVar( 'file', '', 'get' );
+			
+			// clean up file value
+			$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
+			$file  = preg_replace($regex, '', $file);
 		}
 		if (!$tempid) 
 		{
@@ -3504,6 +3729,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$group_tasks 	= array('start', 'setup', 'view');	
 		
 		// Add group
+
 		if (is_object($group) && in_array($this->_task, $group_tasks) ) 
 		{
 			$pathway->setPathway(array());
@@ -3519,9 +3745,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				JText::_('COM_PROJECTS_PROJECTS'),
 				JRoute::_('index.php?option=com_groups' . a . 'cn=' . $group->cn . a . 'active=projects')
 			);
-		}
-					
-		if (count($pathway->getPathWay()) <= 0) 
+		}					
+		elseif (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
 				JText::_('COMPONENT_LONG_NAME'),

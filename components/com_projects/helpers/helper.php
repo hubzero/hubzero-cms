@@ -75,15 +75,18 @@ class ProjectsHelper extends JObject {
 	 * @param      string $masterscope
 	 * @param      int $limit
 	 * @param      string $orderby
-	 * @return     void
+	 * @return     object list
 	 */	
 	public function getNotes( $group, $masterscope, $limit = 0, $orderby = 'p.scope, p.times_rated ASC, p.id' ) 
-	{
+	{		
+		$orderby 	= $orderby ? $orderby : 'p.scope, p.times_rated ASC, p.id';
+		
 		$query = "SELECT DISTINCT p.pagename, p.title, p.scope, p.times_rated 
 		          FROM #__wiki_page AS p 
 				  WHERE p.group_cn='" . $group . "' 
 				  AND p.scope LIKE '" . $masterscope . "%' 
-				  AND p.pagename NOT LIKE 'Template:%'
+				  AND p.pagename NOT LIKE 'Template:%' 
+				  AND p.state!=2
 				  ORDER BY $orderby ";
 		$query.= intval($limit) ? " LIMIT $limit" : '';
 				
@@ -97,11 +100,12 @@ class ProjectsHelper extends JObject {
 	 * @param      string $group cn of project group
 	 * @return     void
 	 */	
-	public function getNoteCount( $group ) 
+	public function getNoteCount( $group, $scope = '' ) 
 	{
 		$query = "SELECT COUNT(*) FROM #__wiki_page AS p 
-				  WHERE p.group_cn='" . $group . "' 
+				  WHERE p.group_cn='" . $group . "' AND p.state!=2 
 				  AND p.pagename NOT LIKE 'Template:%'";
+		$query.= $scope ? " AND p.scope LIKE '" . $scope . "%'" : "";
 				
 		$this->_db->setQuery($query);				
 		return $this->_db->loadResult();
@@ -123,7 +127,7 @@ class ProjectsHelper extends JObject {
 		{
 			$query = "SELECT DISTINCT p.pagename, p.title, p.scope ";
 			$query.= "FROM #__wiki_page AS p ";
-			$query.= "WHERE p.group_cn='" . $group . "' ";
+			$query.= "WHERE p.group_cn='" . $group . "' AND p.state!=2 ";
 			$k = 1;
 			$where = '';
 			foreach ($remaining as $r) 
@@ -147,14 +151,16 @@ class ProjectsHelper extends JObject {
 	 * 
 	 * @param      string $group cn of project group
 	 * @param      string $masterscope
+	 * @param      string $prefix
 	 * @return     void
 	 */	
-	public function getFirstNote( $group, $masterscope ) 
+	public function getFirstNote( $group, $masterscope, $prefix = '' ) 
 	{
 		$query = "SELECT p.pagename FROM #__wiki_page AS p 
-				  WHERE p.group_cn='" . $group . "' 
-				  AND p.scope='" . $masterscope . "' 
-				  ORDER BY p.times_rated, p.id ASC LIMIT 1";
+				  WHERE p.group_cn='" . $group . "' AND p.state!=2
+				  AND p.scope='" . $masterscope . "'";
+		$query.= $prefix ? "AND p.pagename LIKE '" . $prefix . "%'" : "";
+		$query.= " ORDER BY p.times_rated, p.id ASC LIMIT 1";				  
 				
 		$this->_db->setQuery($query);				
 		return $this->_db->loadResult();
@@ -369,7 +375,7 @@ class ProjectsHelper extends JObject {
 	 * @param      string $webdir
 	 * @param      boolean $offroot
 	 * @param      string $case
-	 * @return     void
+	 * @return     string
 	 */	
 	public function getProjectPath( $projectAlias = '', $webdir = '', $offroot = 0, $case = 'files' ) 
 	{		
@@ -403,22 +409,26 @@ class ProjectsHelper extends JObject {
 	 */
 	public function getParamArray($param = '')
 	{
-		$array = explode(',', $param);
-		return array_map('trim', $array);		
+		if ($param)
+		{
+			$array = explode(',', $param);
+			return array_map('trim', $array);		
+		}
+		return array();
 	}
 	
 	/**
 	 * Send hub message
 	 * 
-	 * @param      string $option
-	 * @param      array $config
-	 * @param      object $project
-	 * @param      array $addressees
-	 * @param      string $subject
-	 * @param      string $component
-	 * @param      string $layout
-	 * @param      string $message
-	 * @param      string $reviewer
+	 * @param      string 	$option
+	 * @param      array 	$config
+	 * @param      object 	$project
+	 * @param      array 	$addressees
+	 * @param      string 	$subject
+	 * @param      string 	$component
+	 * @param      string 	$layout
+	 * @param      string 	$message
+	 * @param      string 	$reviewer
 	 * @return     void
 	 */	
 	public function sendHUBMessage( 
@@ -480,11 +490,11 @@ class ProjectsHelper extends JObject {
 	/**
 	 * Show Git info
 	 * 
-	 * @param      string $gitpath
-	 * @param      string $path
-	 * @param      string $fhash
-	 * @param      string $file
-	 * @param      int $showstatus
+	 * @param      string 	$gitpath
+	 * @param      string 	$path
+	 * @param      string 	$fhash
+	 * @param      string 	$file
+	 * @param      int 		$showstatus
 	 * @return     void
 	 */	
 	public function showGitInfo ($gitpath = '', $path = '', $fhash = '', $file = '', $showstatus = 1) 
@@ -590,6 +600,197 @@ class ProjectsHelper extends JObject {
 	}
 	
 	/**
+	 * Parse html of external web page
+	 * 
+	 * @param      string 		$html
+	 * @param      string 		$tag
+	 * @param      boolean 		$selfclosing
+	 * @param      boolean 		$return_the_entire_ta
+	 * @param      string 		$charset
+	 * @return     array
+	 */	
+	public function extract_tags( $html, $tag, $selfclosing = null, $return_the_entire_tag = false, $charset = 'ISO-8859-1' ){
+
+		if ( is_array($tag) )
+		{
+			$tag = implode('|', $tag);
+		}
+
+		//If the user didn't specify if $tag is a self-closing tag we try to auto-detect it
+		//by checking against a list of known self-closing tags.
+		$selfclosing_tags = array( 'area', 'base', 'basefont', 'br', 'hr', 'input', 'img', 'link', 'meta', 'col', 'param' );
+		if ( is_null($selfclosing) )
+		{
+			$selfclosing = in_array( $tag, $selfclosing_tags );
+		}
+
+		//The regexp is different for normal and self-closing tags because I can't figure out 
+		//how to make a sufficiently robust unified one.
+		if ( $selfclosing )
+		{
+			$tag_pattern = 
+				'@<(?P<tag>'.$tag.')			# <tag
+				(?P<attributes>\s[^>]+)?		# attributes, if any
+				\s*/?>					# /> or just >, being lenient here 
+				@xsi';
+		} 
+		else 
+		{
+			$tag_pattern = 
+				'@<(?P<tag>'.$tag.')			# <tag
+				(?P<attributes>\s[^>]+)?		# attributes, if any
+				\s*>					# >
+				(?P<contents>.*?)			# tag contents
+				</(?P=tag)>				# the closing </tag>
+				@xsi';
+		}
+
+		$attribute_pattern = 
+			'@
+			(?P<name>\w+)							# attribute name
+			\s*=\s*
+			(
+				(?P<quote>[\"\'])(?P<value_quoted>.*?)(?P=quote)	# a quoted value
+				|							# or
+				(?P<value_unquoted>[^\s"\']+?)(?:\s+|$)			# an unquoted value (terminated by whitespace or EOF) 
+			)
+			@xsi';
+
+		// Find all tags 
+		if ( !preg_match_all($tag_pattern, $html, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) )
+		{
+			//Return an empty array if we didn't find anything
+			return array();
+		}
+
+		$tags = array();
+		
+		foreach ($matches as $match)
+		{
+			//Parse tag attributes, if any
+			$attributes = array();
+			if ( !empty($match['attributes'][0]) )
+			{ 
+				if ( preg_match_all( $attribute_pattern, $match['attributes'][0], $attribute_data, PREG_SET_ORDER ) )
+				{
+					//Turn the attribute data into a name->value array
+					foreach ($attribute_data as $attr)
+					{
+						if ( !empty($attr['value_quoted']) )
+						{
+							$value = $attr['value_quoted'];
+						} 
+						elseif ( !empty($attr['value_unquoted']) )
+						{
+							$value = $attr['value_unquoted'];
+						} 
+						else 
+						{
+							$value = '';
+						}
+
+						//Passing the value through html_entity_decode is handy when you want
+						//to extract link URLs or something like that. You might want to remove
+						//or modify this call if it doesn't fit your situation.
+						$value = html_entity_decode( $value, ENT_QUOTES, $charset );
+
+						$attributes[$attr['name']] = $value;
+					}
+				}
+			}
+
+			$tag = array(
+				'tag_name' => $match['tag'][0],
+				'offset' => $match[0][1], 
+				'contents' => !empty($match['contents']) ? $match['contents'][0] : '', //empty for self-closing tags
+				'attributes' => $attributes, 
+			);
+			
+			if ( $return_the_entire_tag )
+			{
+				$tag['full_tag'] = $match[0][0]; 			
+			}
+
+			$tags[] = $tag;
+		}
+
+		return $tags;
+	}
+	
+	/**
+	 * check values
+	 * 
+	 * @param      string	$value	
+	 *
+	 * @return     response string
+	 */
+	public function checkValues ($value)
+	{
+		$value = trim($value);
+		if (get_magic_quotes_gpc())
+		{
+			$value = stripslashes($value);
+		}
+		$value = strtr($value, array_flip(get_html_translation_table(HTML_ENTITIES)));
+		$value = strip_tags($value);
+		$value = htmlspecialchars($value);
+		return $value;
+	}	
+	
+	/**
+	 * Run cURL
+	 * 
+	 * @param      string	$url
+	 * @param      string	$method
+	 * @param      array	$postvals	
+	 *
+	 * @return     response string
+	 */	
+	public function runCurl($url, $method = 'GET', $postvals = null)
+	{
+	    $ch = curl_init($url);
+
+	    //GET request: send headers and return data transfer
+	    if ($method == 'GET')
+		{
+	        
+			$headers   = array();
+			$headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';
+			$headers[] = 'Connection: Keep-Alive';
+			$headers[] = 'Content-type: text/html;charset=UTF-8';
+			
+			$options = array(
+	            CURLOPT_URL => $url,
+	            CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_HTTPHEADER => $headers,
+				CURLOPT_HEADER => 0,
+				CURLOPT_USERAGENT => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.0.3705; .NET CLR 1.1.4322; Media Center PC 4.0)',
+				CURLOPT_COOKIEFILE => '/tmp/cookies.txt',
+				CURLOPT_ENCODING => 'gzip',
+				CURLOPT_TIMEOUT => 30,
+				CURLOPT_HTTPGET => true,
+				CURLOPT_FOLLOWLOCATION => 1
+	        );
+	        curl_setopt_array($ch, $options);
+	    } 
+		else 
+		{
+	        $options = array(
+	            CURLOPT_URL => $url,
+	            CURLOPT_POST => 1,
+	            CURLOPT_POSTFIELDS => $postvals,
+	            CURLOPT_RETURNTRANSFER => 1
+	        );
+	        curl_setopt_array($ch, $options);
+	    }
+
+	    $response = curl_exec($ch);
+	    curl_close($ch);
+
+	    return $response;
+	}
+	
+	/**
 	 * Check file for viruses
 	 * 
 	 * @param      string 	$fpath		Full path to scanned file
@@ -607,5 +808,5 @@ class ProjectsHelper extends JObject {
 		}
 		
 		return false;
-	}	
+	}
 }

@@ -70,6 +70,15 @@ else
 }
 
 ?>
+
+   <?php if(!$this->reviewer) { ?>
+<div id="content-header-extra">
+	<ul id="useroptions">
+	  	<li><a class="browse" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>	
+		<li><a class="add" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>		
+	</ul>
+</div><!-- / #content-header-extra -->
+<?php } ?>
 <div id="project-wrap">
  <div class="main section">
 	<?php if(($this->authorized or $this->project->owner) && !$this->reviewer) {
@@ -85,12 +94,7 @@ else
 		</div>	
 	<?php } ?>
   <div class="aside">
-	<?php if(!$this->reviewer) { ?>
-	<ul id="useroptions">
-      	<li><a class="allprojects" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>	
-		<li><a class="addnew" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>		
-	</ul>
-	<?php } ?>
+	
 	<div class="clear"></div>
 	<div class="external">
 		<ul class="statusbox">

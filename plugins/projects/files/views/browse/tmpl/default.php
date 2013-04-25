@@ -38,20 +38,27 @@ $desect_path = explode(DS, $this->subdir);
 $path_bc = '';
 $url = '';
 $parent = '';
-if(count($desect_path) > 0) {
-	for($p = 0; $p < count($desect_path); $p++) {
+if ($this->subdir && count($desect_path) > 0) {
+	for ($p = 0; $p < count($desect_path); $p++) {
 		$parent .= count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
 		$url .= DS.$desect_path[$p];
 		$path_bc .= ' &raquo; <span><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=files').'/?subdir='.urlencode($url).'" class="folder">'.$desect_path[$p].'</a></span> ';
 	}
 }
 
+// Remote folder?
+if ($this->remotedir)
+{
+	$bits = explode(':', $this->remoteid);
+	$remoteservice = $bits[0];
+	
+	$path_bc .= ' &raquo; <span><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=files').'/?subdir='.urlencode($this->subdir). a . 'remotedir=' . $this->remotedir . a. 'remoteid=' . $this->remoteid.'" class="remotedir"><span class="s-google"> '.$this->remotedir.' [' . JText::_('COM_PROJECTS_FILES_REMOTE_FOLDER') . ']</span></a></span> ';
+}
+
 $class = $this->case == 'apps' ? 'apps' : 'files';
 $publishing = $this->publishing && $this->case == 'files' ? 1 : 0;
 
-// Use alias or id in urls?
-$use_alias = $this->config->get('use_alias', 0);
-$goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+$goto  = 'alias='.$this->project->alias;
 
 $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 
@@ -68,12 +75,28 @@ $approachingQuota = $this->config->get('approachingQuota', 85);
 $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
 $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
+// Determine which external services are enabled
+$google 	= $this->connect->getConfigs('google');
+$dropbox 	= $this->connect->getConfigs('dropbox');
+$gConnected = $google && $google['active'] && $this->oparams->get('google_token') ? 1 : 0;
+$dConnected = $dropbox && $dropbox['active'] && $this->oparams->get('dropbox_token') ? 1 : 0;
+$sharing	= !$this->app ? $this->remote_active : 0;
+
+$services = $this->connect->getActive();
+
 ?>
 <div id="preview-window"></div>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . '&active=files'); ?>" method="post" enctype="multipart/form-data" id="plg-form" class="file-browser submit-ajax" >	
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . '&active=files'); ?>" method="post" enctype="multipart/form-data" id="plg-form" class="file-browser submit-ajax" >
+	<input type="hidden" name="case" id="case" value="<?php echo $this->case; ?>" />
+	<input type="hidden" name="subdir" id="subdir" value="<?php echo urlencode($this->subdir); ?>" />
+	<input type="hidden" name="remotedir" id="remotedir" value="<?php echo urlencode($this->remotedir); ?>" />
+	<input type="hidden" name="remoteid" id="remoteid" value="<?php echo urlencode($this->remoteid); ?>" />
+	<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />	
+	<input type="hidden" name="sync" id="sync" value="<?php echo $this->sync; ?>" />
+	<input type="hidden" name="sharing" id="sharing" value="<?php echo $sharing; ?>" />
 	<?php if($this->case == 'files') { ?>
 	<div id="plg-header">
-		<h3 class="<?php echo $class; ?>"><?php if($this->subdir) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active='.$this->case); ?>"><?php } ?><?php echo $this->title; ?><?php if($this->subdir) { ?></a> <?php echo $path_bc; ?><?php } ?><?php if($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?></h3>
+		<h3 class="<?php echo $class; ?>"><?php if($this->subdir || $this->sdir) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active='.$this->case); ?>"><?php } ?><?php echo $this->title; ?><?php if($this->subdir || $this->sdir) { ?></a> <?php echo $path_bc; ?><?php } ?><?php if($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?></h3>
 	</div>
 	<?php } ?>
 	<?php if($this->app && $this->app->name ) { 
@@ -111,39 +134,40 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 	?>
 
 	<?php } ?>
-	<?php if(!$this->app) { ?>
-	<p class="editing mini pale"><?php echo JText::_('COM_PROJECTS_FILES_MAX_UPLOAD').' '.$this->sizelimit; ?></p>
+	<?php if (!$this->app) { ?>
+		<?php 
+			// NEW: connections to external services
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'projects',
+					'element'=>'files',
+					'name'=>'connect',
+					'layout' => 'link'
+				)
+			);
+			$view->option = $this->option;
+			$view->project = $this->project;
+			$view->uid = $this->uid;
+			$view->database = $this->database;
+			$view->connect = $this->connect;
+			$view->oparams = $this->oparams;
+			echo $view->loadTemplate();
+		 ?>
 	<?php } ?>
+
 	<div class="list-editing">
-	 <p>	
-		<span id="file-manage" class="manage-options">			
-			<span id="manage_assets">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'?action=newdir' . $subdirlink . a . 'case=' . $this->case; ?>" id="a-folder" title="<?php echo JText::_('COM_PROJECTS_FOLDER_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?></span></a>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'?action=download'; ?>" class="fmanage js" id="a-download" title="<?php echo JText::_('COM_PROJECTS_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DOWNLOAD'); ?></span></a>
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . a.'task=view'.a.$goto.a.'active=files').'?action=move'; ?>" class="fmanage js" id="a-move" title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_MOVE'); ?></span></a>		
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'?action=delete'; ?>" class="fmanage js" id="a-delete" title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DELETE'); ?></span></a>
-				<noscript>
-					<span class="nojs"><?php echo JText::_('COM_PROJECTS_JS_OPTIONS'); ?></span>
-				</noscript>
-				<label class="addnew">
-					<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $this->config->get('maxUpload', '104857600'); ?>" />
-					<input name="upload[]" type="file" size="20" class="option uploader" id="uploader" multiple="multiple" /> 
-				</label>
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="id" id="pid" value="<?php echo $this->project->id; ?>" />
-					<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
-					<input type="hidden" name="active" value="files" />
-					<input type="hidden" name="case" id="case" value="<?php echo $this->case; ?>" />
-					<input type="hidden" name="action" value="save" />
-					<input type="hidden" name="subdir" id="subdir" value="<?php echo urlencode($this->subdir); ?>" />
-					<input type="hidden" name="expand_zip" id="expand_zip" value="0" />
-					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" class="btn yesbtn" id="f-upload" />
-			</span>	
-		</span>
-		<span id="u-hd">
-	<?php if(!$this->subdir) { ?><span class="prominent"> <?php echo $this->total; ?></span> <?php echo JText::_('COM_PROJECTS_FILES_S'); ?> <?php echo JText::_('COM_PROJECTS_TOTAL'); ?> <?php } ?>
+		<p>			
+		<span id="manage_assets">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'/?action=upload' . $subdirlink . a . 'case=' . $this->case; ?>" class="fmanage" id="a-upload" title="<?php echo JText::_('COM_PROJECTS_UPLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_UPLOAD'); ?></span></a>
+			<?php if (!$this->remotedir)
+			{ ?>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'/?action=newdir' . $subdirlink . a . 'case=' . $this->case; ?>" id="a-folder" title="<?php echo JText::_('COM_PROJECTS_FOLDER_TOOLTIP'); ?>" class="fmanage<?php if($this->task == 'newdir') { echo ' inactive'; } ?>"><span><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?></span></a>
+			<?php } ?>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'/?action=download'; ?>" class="fmanage js" id="a-download" title="<?php echo JText::_('COM_PROJECTS_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DOWNLOAD'); ?></span></a>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . a.'task=view'.a.$goto.a.'active=files').'/?action=move'; ?>" class="fmanage js" id="a-move" title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_MOVE'); ?></span></a>		
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'/?action=delete'; ?>" class="fmanage js" id="a-delete" title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DELETE'); ?></span></a>
 		</span>	
-	 </p>
+	</p>
 	</div>
 	<table id="filelist" class="listing">
 		<thead>
@@ -152,24 +176,23 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 				<th class="asset_doc <?php if($this->filters['sortby'] == 'filename') { echo ' activesort'; } ?>">
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . a
 					. 'task=view' . a . $goto . a . 'active=' . $this->case) . '?action=browse' . a . 'sortby=filename'
-					. a . 'sortdir='.$sortbyDir . a . 'subdir='.urlencode($this->subdir); ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_NAME'); ?>">
+					. a . 'sortdir='.$sortbyDir . a . 'subdir='.urlencode($this->subdir) . a . 'sync=1'; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_NAME'); ?>">
 					<?php echo JText::_('COM_PROJECTS_NAME'); ?></a></th>
-				<th class="js"></th>
-				<th <?php if($this->filters['sortby'] == 'sizes') { echo 'class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active='.$this->case).'?action=browse'.a.'sortby=sizes'.a.'sortdir='.$sortbyDir.a.'subdir='.urlencode($this->subdir); ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_SIZE'); ?>"><?php echo JText::_('COM_PROJECTS_SIZE'); ?></a></th>
+				<th <?php if($this->filters['sortby'] == 'sizes') { echo 'class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active='.$this->case).'?action=browse'.a.'sortby=sizes'.a.'sortdir='.$sortbyDir.a.'subdir='.urlencode($this->subdir) . a . 'sync=1'; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_SIZE'); ?>"><?php echo JText::_('COM_PROJECTS_SIZE'); ?></a></th>
 				<th <?php if($this->filters['sortby'] == 'modified') { echo 'class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active='.$this->case).'?action=browse'.a.'sortby=modified'.a.'sortdir='.$sortbyDir.a.'subdir='.urlencode($this->subdir); ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . ucfirst(JText::_('COM_PROJECTS_MODIFIED')); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_MODIFIED')); ?></a></th>
 				<th><?php echo ucfirst(JText::_('COM_PROJECTS_BY')); ?></th>
-				<th class="centeralign"><?php echo JText::_('COM_PROJECTS_REVISIONS'); ?></th>
+				<th class="centeralign nojs"></th>
 				<?php if($publishing) { ?>
-				<th class="asset_resource"><?php echo JText::_('COM_PROJECTS_ASSOCIATED_PUBLICATION'); ?></th>
+				<th><?php echo JText::_('COM_PROJECTS_FILES_PUBLISHED'); ?></th>
 				<?php } ?>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody>			
 			<?php 
-			if($this->task == 'newdir') { ?>
+			if ($this->task == 'newdir') { ?>
 				<tr class="newfolder">
 					<td></td>
-					<td colspan="<?php echo $publishing ? 7 : 6; ?>">
+					<td colspan="<?php echo $publishing ? 6 : 5; ?>">
 							<fieldset>
 								<input type="hidden" name="action" value="savedir" />
 								<label>
@@ -184,10 +207,10 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 				</tr>	
 			<?php } ?>
 			<?php 
-			if($this->subdir) { ?>
+			if ($this->subdir) { ?>
 				<tr>
 					<td></td>
-					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active='.$this->case).'/?action=browse'.a.'subdir='.$parent; ?>" class="uptoparent"><?php echo JText::_('COM_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a></td>
+					<td colspan="<?php echo $publishing ? 6 : 5; ?>" class="mini"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active='.$this->case).'/?action=browse'.a.'subdir='.$parent; ?>" class="uptoparent"><?php echo JText::_('COM_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a></td>
 				</tr>
 			<?php }
 			if (count($this->combined) > 0) {
@@ -200,11 +223,11 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 						$dirpath = $this->subdir ? $this->subdir . DS . $dir : $dir;
 					?>
 						<tr class="mini faded mline">
-							<td><input type="checkbox" value="<?php echo urlencode($dir); ?>" name="folder[]" class="checkasset js dir" /></td>
+							<td><input type="checkbox" value="<?php echo urlencode($dir); ?>" name="folder[]" class="checkasset js dirr" /></td>
 							<td class="top_valign nobsp"><img src="/plugins/projects/files/images/folder.gif" alt="<?php echo $dir; ?>" />
 								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active='.$this->case.a.$goto).'/?action=browse'.a.'subdir='.urlencode($dirpath); ?>" class="dir:<?php echo urlencode($dir); ?>" title="<?php echo JText::_('COM_PROJECTS_FILES_GO_TO_DIR') . ' ' . $dir; ?>" id="edit-c-<?php echo $c; ?>"><?php echo $dir; ?></a>
+								<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_DIR_TOOLTIP'); ?>">&nbsp;</span>
 							</td>
-							<td class="js"><span id="rename-c-<?php echo $c; ?>" class="rename" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_DIR_TOOLTIP'); ?>">&nbsp;</span></td>
 							<td colspan="<?php echo $publishing ? 5 : 4; ?>"></td>
 						</tr>					
 					<?php
@@ -212,6 +235,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					elseif ($combined['type'] == 'document')
 					{	
 						$file = $combined['item'];
+						$remote = $combined['remote'];
 						
 						// Hide gitignore file
 						if($file['name'] == '.gitignore')
@@ -222,41 +246,69 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 							}
 							continue;
 						}
+						
 					?>
-							<tr class="mini faded mline">
-								<td><input type="checkbox" value="<?php echo urlencode($file['name']); ?>" name="asset[]" class="checkasset js <?php if($publishing && $file['pid']) { echo 'publ'; } ?>" /></td>
-								<td class="top_valign nobsp">
-									<img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" />
-									<a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=files' . a . $goto) 
-									. '/?action=download' . a . 'case='.$this->case . a . 'subdir='.urlencode($this->subdir) 
-									. a . 'file='.urlencode($file['name']); ?>" 
-									class="preview file:<?php echo urlencode($file['name']); ?>" id="edit-c-<?php echo $c; ?>">
-									<?php echo ProjectsHtml::shortenFileName($file['name'], 20); ?></a>
-								</td>
-								<td class="js"><span id="rename-c-<?php echo $c; ?>" class="rename" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span></td>
-								<td><?php echo $file['size']; ?></td>
-								<td><?php echo $file['date']; ?></td>
-								<td><?php echo $file['author']; ?></td>
-								<td class="centeralign"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=files' . a . $goto) 
-								. '/?action=history' . a . 'case='.$this->case . a . 'subdir='.urlencode($this->subdir) 
-								. a . 'asset[]='.urlencode($file['name']); ?>" 
-								class="showinbox" title="<?php echo JText::_('COM_PROJECTS_HISTORY_TOOLTIP'); ?>"><?php echo $file['revisions']; ?></a></td>
-								<?php if($publishing) { ?>
-								<td><?php if($file['pid'] && $file['pub_title']) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=publications' . a . $goto . a . 'pid='.$file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($file['pub_title'], 30, 0); ?></a><?php } ?></td>
-								<?php } ?>
-							</tr>
-					<?php }	
+					<?php 
+						if (!$remote) 
+						{ 	
+							// Local file
+							$view = new Hubzero_Plugin_View(
+								array(
+									'folder'=>'projects',
+									'element'=>'files',
+									'name'=>'item',
+									'layout' => 'document'
+								)
+							);
+							$view->subdir 		= $this->subdir;
+							$view->item 		= $combined['item'];
+							$view->option 		= $this->option;
+							$view->project 		= $this->project;
+							$view->juser 		= $this->juser;
+							$view->gConnected 	= $gConnected;
+							$view->c			= $c;
+							$view->connect 		= $this->connect;
+							$view->publishing 	= $publishing;
+							$view->oparams 		= $this->oparams;
+							$view->case 		= $this->case;
+							echo $view->loadTemplate();
+						} 
+				 	}	
+					elseif ($combined['type'] == 'remote')
+					{
+						// Google file
+						$view = new Hubzero_Plugin_View(
+							array(
+								'folder'=>'projects',
+								'element'=>'files',
+								'name'=>'item',
+								'layout' => $combined['remote']
+							)
+						);
+						$view->subdir 		= $this->subdir;
+						$view->item 		= $combined['item'];
+						$view->option 		= $this->option;
+						$view->project 		= $this->project;
+						$view->sync 		= $this->sync;
+						$view->connected 	= $gConnected;
+						$view->connect 		= $this->connect;
+						$view->publishing 	= $publishing;
+						$view->oparams 		= $this->oparams;
+						echo $view->loadTemplate();
+					}
+					
 			 		$c++;
 				}
 			}
-						
+			
+			// Show directory as empty			
 			if(count($this->combined) == 0 || $empty) { ?>
 				<tr>
-					<td colspan="<?php echo $publishing ? 8 : 7; ?>" class="mini faded">
-						<?php if($this->subdir || $this->app) 
+					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini faded">
+						<?php if ($this->subdir || $this->app || $this->remotedir) 
 							{ 
 								echo JText::_('COM_PROJECTS_THIS_DIRECTORY_IS_EMPTY'); 
-								if (!$this->app)
+								if (!$this->app && !$this->remotedir)
 								{
 									echo ' <a href="' . JRoute::_('index.php?option=' . $this->option . a . 'active=files' 
 									. a . $goto) . '/?action=deletedir' . a . 'case='.$this->case . a 
@@ -286,3 +338,4 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 		</span>
 	</p>
 </form>
+<div id="sync-msg" class="hidden"><?php echo $this->sync_message; ?></div>

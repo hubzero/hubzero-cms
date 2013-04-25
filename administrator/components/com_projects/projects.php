@@ -71,22 +71,44 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo
 include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php' );
 include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php' );
 
+include_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'install.php' );
+
 // Check to make sure component is installed
 $database =& JFactory::getDBO();
 $tables = $database->getTableList();
+$installHelper = new ProjectsInstall($database, $tables);
+
 if (!in_array($database->_table_prefix . 'projects', $tables)) 
 {
-	include_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'install.php' );
-	$installHelper = new ProjectsInstall($database, $tables);
 	$installHelper->runInstall();
 }
 
-// Latest: enable project logs
+// Enable project logs
 if (!in_array($database->_table_prefix . 'project_logs', $tables)) 
 {
-	include_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'install.php' );
-	$installHelper = new ProjectsInstall($database, $tables);
 	$installHelper->installLogs();
+}
+
+// Enable project stats
+if (!in_array($database->_table_prefix . 'project_stats', $tables)) 
+{
+	$installHelper->installStats();
+}
+
+// Enable project files remote connections
+if (!in_array($database->_table_prefix . 'project_remote_files', $tables)) 
+{
+	$installHelper->installRemotes();
+}
+
+// Database development on?
+if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+		.'com_projects' . DS . 'tables' . DS . 'project.database.php'))
+{
+	require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+			.'com_projects' . DS . 'tables' . DS . 'project.database.php');
+	require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+			.'com_projects' . DS . 'tables' . DS . 'project.database.version.php');
 }
 
 ximport('Hubzero_View_Helper_Html');

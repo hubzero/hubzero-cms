@@ -168,7 +168,7 @@ class ProjectsHtml
 		$parts = explode(' ',$text);
 
 		$text  = $parts[0].' '.$parts[1];
-		if ($text == '0 seconds') 
+		if ($text == '0 seconds' || $parts[0] < 0) 
 		{
 			$text = JText::_('COM_PROJECTS_JUST_A_MOMENT');
 		}
@@ -464,6 +464,10 @@ class ProjectsHtml
 			case 'application/vnd.google-apps.form':
 				$icon = 'form';
 				break;
+				
+			case 'application/vnd.google-apps.folder':
+				$icon = 'folder';
+				break;
 						
 			default: 
 				$icon = 'gdrive';
@@ -494,6 +498,10 @@ class ProjectsHtml
 				$icon = 'page_white_acrobat';
 				break;
 			case 'txt':
+			case 'css':
+			case 'rtf':
+			case 'sty':
+			case 'cls':
 				$icon = 'page_white_text';
 				break;
 			case 'sql':
@@ -505,6 +513,10 @@ class ProjectsHtml
 				break;
 			case 'php':
 				$icon = 'page_white_php';
+				break;
+			case 'tex':
+			case 'ltx':
+				$icon = 'page_white_tex';
 				break;
 			case 'swf':
 				$icon = 'page_white_flash';
@@ -524,6 +536,7 @@ class ProjectsHtml
 				break;
 			case 'xls':
 			case 'xlsx':
+			case 'csv':
 				$icon = 'page_white_excel';
 				break;
 			case 'ppt':
@@ -537,6 +550,7 @@ class ProjectsHtml
 				$icon = 'page_white_film';
 				break;
 			case 'jpg':
+			case 'jpeg':
 			case 'gif':
 			case 'tiff':
 			case 'bmp':
@@ -817,7 +831,8 @@ class ProjectsHtml
 		$in = str_replace('&quote;','&quot;',$in);
 		$in = htmlspecialchars($in);
 
-		if (!strstr( $in, '</p>' ) && !strstr( $in, '<pre class="wiki">' )) {
+		if (!strstr( $in, '</p>' ) && !strstr( $in, '<pre class="wiki">' )) 
+		{
 			$in = str_replace("<br />","",$in);
 		}
 		return $in;
@@ -846,7 +861,7 @@ class ProjectsHtml
 	 * @param      string $haystack
 	 * @return     boolean
 	 */	
-	public function myArraySearch($needle, $haystack) 
+	public function myArraySearch( $needle, $haystack ) 
 	{
 	    if (empty($needle) || empty($haystack)) 
 		{
@@ -871,6 +886,184 @@ class ProjectsHtml
         }
 
         return false;
+	}
+	
+	/**
+	 * Get appended to file name random string
+	 * 
+	 * @param      string $path
+	 * 
+	 * @return     string
+	 */
+	public function getAppendedNumber ( $path = null )
+	{
+		$append = '';
+		
+		$dirname 	= dirname($path);
+		$filename 	= basename($path);
+		$name 		= '';
+		$file = explode('.', $filename);
+		
+		$n = count($file);
+		if ($n > 1) 
+		{
+			$name = $file[$n-2];
+		}
+		else
+		{
+			$name = $path;
+		}
+		
+		$parts = explode('-', $name);
+		if (count($parts) > 1)
+		{
+			$append = intval(end($parts));
+		}
+		
+		return $append;
+	}
+	
+	/**
+	 * Replace file ending
+	 * 
+	 * @param      string $path
+	 * @param      string $end
+	 * @param      string $delim
+	 * @return     string
+	 */
+	public function cleanFileNum ( $path = null, $end = '', $delim = '-' )
+	{
+		$newpath = $path;
+		
+		if ($end)
+		{
+			$file = explode('.', $path);
+			$n = count($file);
+			$ext = '';
+			if ($n > 1) 
+			{
+				$name = $file[$n-2];
+				$ext  = array_pop($file);			
+			}
+			else
+			{
+				$name = $path;
+			}
+			
+			$parts = explode($delim, $name);
+			if (count($parts) > 1)
+			{
+				$oldnum = intval(end($parts));
+				if ($oldnum == $end)
+				{
+					$out = array_pop($parts);
+					$name = implode('', $parts);
+				}
+			}
+			
+			$newpath = $ext ? $name . '.' . $ext : $name;
+		}
+		
+		return $newpath;
+	}
+	
+	/**
+	 * Append random string to file name
+	 * 
+	 * @param      string $path
+	 * @param      string $append
+	 * @param      string $ext
+	 * @return     string
+	 */
+	public function fixFileName ( $path = null, $append = '', $ext = '' )
+	{
+		if (!$path) 
+		{
+			$this->setError( JText::_('No path set.') );
+			return false;
+		}
+		if (!$append) 
+		{
+			return $path;
+		}
+		
+		$newname 	= '';
+		$dirname 	= dirname($path);
+		$filename 	= basename($path);
+		
+		$file = explode('.', $filename);
+		$n = count($file);
+		if ($n > 1) 
+		{
+			$file[$n-2] .= $append;
+			
+			$end = array_pop($file);
+			$file[] = $end;
+			$filename = implode('.',$file);
+		}
+		else
+		{
+			$filename = $filename . $append;
+		}
+		
+		if ($ext)
+		{
+			$filename = $filename . '.' . $ext;
+		}
+		
+		$newname = $dirname && $dirname != '.' ? $dirname . DS . $filename : $filename;
+		
+		return $newname;
+	}
+	
+	/**
+	 * Return filename without extension
+	 * 
+	 * @param      string  $file      String to shorten
+	 * @return     string 
+	 */
+	public function takeOutExt($file = '')
+	{
+		// Take out extention
+		if ($file)
+		{
+			$parts = explode('.', $file);			
+			
+			if (count($parts) > 1) 
+			{
+				$end = array_pop($parts);
+			}
+			
+			if (count($parts) > 1) 
+			{
+				$end = array_pop($parts);
+			}
+			
+			$file = implode($parts);
+		}
+		
+		return $file;
+	}
+	
+	/**
+	 * Shorten a string to a max length, preserving whole words
+	 * 
+	 * @param      string  $text      String to shorten
+	 * @param      integer $chars     Max length to allow
+	 * @return     string 
+	 */
+	public static function shortenText($text, $chars=300)
+	{
+		$text = trim($text);
+
+		if (strlen($text) > $chars)
+		{
+			$text = $text . ' ';
+			$text = substr($text, 0, $chars);
+			$text = substr($text, 0, strrpos($text, ' '));
+		}
+
+		return $text;
 	}
 	
 	/**
@@ -901,7 +1094,27 @@ class ProjectsHtml
 		}
 	
 		return $name;
-	}	
+	}
+	
+	/**
+	 * Shorten user full name
+	 * 
+	 * @param      string $name
+	 * @param      int $chars
+	 * @return     string
+	 */	
+	public function shortenUrl( $name, $chars = 40 ) 
+	{
+		$name = trim($name);
+
+		if (strlen($name) > $chars) 
+		{
+			$name = substr($name, 0, $chars);
+			$name = $name . '...';
+		}
+	
+		return $name;
+	}		
 	
 	/**
 	 * Shorten file name
@@ -910,19 +1123,19 @@ class ProjectsHtml
 	 * @param      int $chars
 	 * @return     string
 	 */
-	public function shortenFileName( $name, $chars = 20 ) 
+	public function shortenFileName( $name, $chars = 30 ) 
 	{
 		$name = trim($name);
+		$original = $name;
+		
+		$chars = $chars < 10 ? 10 : $chars;
 
 		if (strlen($name) > $chars) 
 		{
-			$parts = explode('.', $name);
-			$name = substr($parts[0], 0, $chars);
-			$name = $name.'(&#8230;)';
-			if (isset($parts[1])) 
-			{
-				$name = $name.'.'.$parts[1];
-			}
+			$cutFront = $chars - 10;
+			$name = substr($name, 0, $cutFront);
+			$name = $name . '&#8230;';
+			$name = $name . substr($original, -10, 10);
 		}
 		if ($name == '') 
 		{

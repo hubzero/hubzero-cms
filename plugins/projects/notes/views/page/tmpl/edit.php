@@ -47,7 +47,8 @@ $templates = $this->page->getTemplates();
 // Incoming
 $scope   = JRequest::getVar('scope', '');
 $app 	 = JRequest::getVar( 'app', '', 'request', 'object' );	
-$project = JRequest::getVar( 'project', '', 'request', 'object' );	
+$project = JRequest::getVar( 'project', '', 'request', 'object' );
+$canDelete = JRequest::getVar('candelete', 0);	
 
 ?>
 <div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
@@ -104,27 +105,10 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 	</div><div class="clear"></div>
 <?php } ?>
 <?php if ($app && $app->id) { ?>
-<p class="notice"><?php echo JText::_('This is an app wiki page.'); ?></p>	
+
 <?php } ?>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
-<?php if (!$this->sub) {  ?>
-	<div class="explaination">
-	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
-		<p>To change the page name (the portion used for URLs), go <a class="page-rename" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&action=rename'); ?>">here</a>.</p>
-	<?php } ?>
-		<p><a href="<?php echo JRoute::_('index.php?option=option=com_wiki&pagename=Help:WikiMacros#image'); ?>" rel="external">[[Image(filename.jpg)]]</a> to include an image.</p>
-		<p><a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file'); ?>" rel="external">[[File(filename.pdf)]]</a> to include a file.</p>
-
-		<div id="file-uploader" data-action="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-		</div>
-		<div id="file-uploader-list"></div>
-	</div>
-<?php } else { ?>
-	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
-		<p>To change the page name (the portion used for URLs), go <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=notes&scope='.$scope.'&pagename='.$this->page->pagename.'&action=rename'); ?>">here</a>.</p>
-	<?php } ?>
-<?php } ?>
 	<fieldset>
 		<?php if ($templates) { ?>
 		<div class="group">
@@ -312,3 +296,7 @@ if ($this->config->get('access-edit')) {
 		}
 	</style>
 </div><!-- / .main section -->
+	
+	<?php if ($this->page->id && strtolower($this->page->getNamespace()) != 'special' && $canDelete) { ?>
+		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&task=delete'); ?>"><?php echo JText::_('Delete this page'); ?></a></p>
+	<?php } ?>

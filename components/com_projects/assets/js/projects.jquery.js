@@ -75,9 +75,9 @@ HUB.Projects = {
 				{
 					$("#status-msg").animate({opacity:0.0}, 2000, function() {
 					    $('#status-msg').html('');
-					 });	
+					});	
 				}
-			}), 2000);
+			}), 4000);
 		}		
 	},
 	
@@ -91,6 +91,15 @@ HUB.Projects = {
 			HUB.Projects.addConfirm($('#suspend'), 
 			'Are you sure you want to suspend this project?', 
 			'Yes, suspend', 'No, do not suspend');
+		});
+		
+		// Confirm delete
+		$('#delproject').on('click', function(e) 
+		{
+			e.preventDefault();			
+			HUB.Projects.addConfirm($('#delproject'), 
+			'Are you sure you want to delete this project? <br />This is a permanent action and cannot be undone.', 
+			'Yes, delete', 'No, do not delete');
 		});
 
 		// Confirm revert
@@ -142,6 +151,8 @@ HUB.Projects = {
 	launchBox: function() 
 	{
 		var $ = this.jQuery;
+		var bWidth = 600;
+		var bHeight = 500;
 		$('.showinbox').each(function(i, item) {
 			// Clean up
 			$(item).off('click');
@@ -153,7 +164,12 @@ HUB.Projects = {
 			if (href.search('&ajax=1') == -1) {
 				href = href + '&ajax=1';
 			}
-			$(item).attr('href', href);			
+			$(item).attr('href', href);	
+			
+			if ($(item).hasClass('tex-menu'))
+			{
+				bWidth = 800;
+			}		
 			
 			// Open box on click
 			$(item).on('click', function(e) {
@@ -163,8 +179,8 @@ HUB.Projects = {
 					// Modal box for actions
 					$.fancybox(this,{
 						type: 'ajax',
-						width: 600,
-						height: 500,
+						width: bWidth,
+						height: bHeight,
 						autoSize: false,
 						fitToView: false,
 						wrapCSS: 'sbp-window',

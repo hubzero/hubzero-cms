@@ -48,8 +48,10 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	} ?>
 </div>
 <?php } ?>
+<div class="clear block">&nbsp;</div>
 <div id="introduction" class="section">
-	<div>
+ <div id="introbody">
+	<div class="subject">
 		<div class="two columns first">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_MADE_EASY'); ?></h3>
 			<p><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_HOW'); ?></p>
@@ -67,8 +69,9 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			<p class="subnote">*<?php echo JText::_('COM_PROJECTS_INTRO_PUBLISHING_NOTE'); ?></p>
 			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=features'); ?>" id="projects-intro-features"><?php echo JText::_('COM_PROJECTS_LEARN_MORE'); ?></a></p>
 		</div>
-	<div class="clear"></div>
 	</div>
+	<div class="clear"></div>
+ </div>
 </div><!-- / #introduction.section -->
 
 <div class="clear"></div>

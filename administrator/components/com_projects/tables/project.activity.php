@@ -308,7 +308,7 @@ class ProjectActivity extends JTable
 		}
 		
 		// Collapse some repeated activities by the same actor
-		if($class != 'quote' && $class != 'blog' && $class != 'todo') 
+		if($class != 'quote' && $class != 'blog' && $class != 'todo' && $class != 'apps') 
 		{
 			$this->_db->setQuery( "UPDATE $this->_tbl SET state = 2 WHERE class='$class' 
 					AND activity='$activity' AND userid=$by AND projectid=$projectid 
@@ -326,7 +326,7 @@ class ProjectActivity extends JTable
 			$this->loadActivityByRef($projectid, $referenceid, $class,
 				JText::_('COM_PROJECTS_ACTIVITY_TODO_ADDED').'&#58;');
 		}
-				
+		
 		$this->projectid 	= $projectid;
 		$this->userid 		= $by;
 		$this->recorded 	= date( 'Y-m-d H:i:s' );
@@ -479,6 +479,103 @@ class ProjectActivity extends JTable
 	
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
+	}
+	
+	/**
+	 * Get top active projects
+	 * 
+	 * @param      array 	$exclude
+	 * @return     mixed
+	 */	
+	public function getTopActiveProjects ( $exclude = array(), $limit = 3, $publicOnly = false) 
+	{
+		$query  = " SELECT p.id, p.alias, p.title, p.picture, p.private, COUNT(PA.id) as activity ";	
+		$query .= " FROM #__projects AS p";
+		$query .= " JOIN $this->_tbl as PA ON PA.projectid = p.id WHERE PA.projectid = p.id ";
+		
+		if ($publicOnly)
+		{
+			$query .= " AND p.private = 0 ";
+		}
+		
+		if (!empty($exclude))
+		{
+			$query .= " AND p.id NOT IN ( ";
+
+			$tquery = '';
+			foreach ($exclude as $ex)
+			{
+				$tquery .= "'".$ex."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$query .= $tquery.") ";
+		}
+		
+		$query .= " GROUP BY p.id ";
+		$query .= " ORDER BY activity DESC ";
+		$query .= " LIMIT 0," . $limit;
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+		
+	}
+	
+	/**
+	 * Get activity stats
+	 * 
+	 * @param      array 	$validProjects
+	 * @param      string 	$get
+	 * @return     mixed
+	 */	
+	public function getActivityStats ( $validProjects = array(), $get = 'total') 
+	{	
+		if (empty($validProjects))
+		{
+			return NULL;
+		}
+		
+		$query  = " SELECT COUNT(*) as activity ";	
+		$query .= " FROM $this->_tbl ";
+		
+		if (!empty($validProjects))
+		{
+			$query .= " WHERE projectid IN ( ";
+
+			$tquery = '';
+			foreach ($validProjects as $v)
+			{
+				$tquery .= "'".$v."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$query .= $tquery.") ";
+		}
+				
+		if ($get == 'average')
+		{
+			$query .= " GROUP BY projectid ";
+		}
+		
+		$this->_db->setQuery( $query );
+		
+		if ($get == 'total')
+		{
+			return $this->_db->loadResult();
+		}
+		elseif ($get == 'average')
+		{
+			$result = $this->_db->loadObjectList();
+			
+			$c = 0;
+			$d = 0;
+			
+			foreach ($result as $r)
+			{
+				$c = $c + $r->activity;
+				$d++;
+			}
+
+			return number_format($c/$d,0);
+		}		
 	}
 	
 	/**

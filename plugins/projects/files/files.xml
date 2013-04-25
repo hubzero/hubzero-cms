@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/projects/blog.xml
+@file           plugins/projects/files.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -45,7 +45,47 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="display_limit" type="text" menu="hide" label="Display limit" default="50" description="Number of items to return" />
 				<field name="maxUpload" type="text" menu="hide" label="Max file upload (bytes)" default="104857600" description="Maximum upload file size for project files in bites (master default set to 100MB (104857600 bytes))" />
 				<field name="maxDownload" type="text" menu="hide" label="Max file download  (bytes)" default="104857600" description="Maximum download file size for project files in bites (master default set to 100MB (104857600 bytes))" />
-				<field name="tempPath" type="text" menu="hide" default="/site/projects/temp" label="Temp file directory" description="File path for storing temp files during batch download" />	
+				<field name="tempPath" type="text" menu="hide" default="/site/projects/temp" label="Temp file directory" description="File path for storing temp files during batch download" />
+				<field name="reservedNames" type="text" menu="hide" default="google , dropbox, shared, temp" label="Reserved directory names" description="Reserved directory names" />
+				<field name="connectedProjects" type="text" menu="hide" default="" label="Connected projects" description="Comma-separated aliases of projects that may connect to outside services (empty means all projects may connect)" />
+				<field name="enable_google" type="radio" default="0" label="Google Connection Enabled" description="Allow projects to connect with Google docs">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="google_clientId" type="text" menu="hide" default="" label="Google client ID" description="Google client ID" />
+				<field name="google_clientSecret" type="text" menu="hide" default="" label="Google client Secret" description="Google client Secret" />
+				<field name="google_appKey" type="text" menu="hide" default="" label="Google app key" description="Google app key" />
+				<field name="google_folder" type="text" menu="hide" default="Google" label="Local Google folder" description="Name of local google folder" />
+				<field name="enable_dropbox" type="radio" default="0" label="Dropbox Connection Enabled" description="Allow projects to connect with Dropbox">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="dropbox_key" type="text" menu="hide" default="" label="Dropbox app key" description="Dropbox app key" />
+				<field name="dropbox_secret" type="text" menu="hide" default="" label="Dropbox app secret" description="Dropbox app secret" />
+				<field name="dropbox_folder" type="text" menu="hide" default="Dropbox" label="Local Dropbox folder" description="Name of local dropbox folder" />	
+				<field name="sync_lock" type="radio" default="0" label="Sync lock (in minutes)" description="Disallow repeated sync within specified period after last sync">
+					<option value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="5">5</option>
+					<option value="10">10</option>
+				</field>
+				<field name="auto_sync" type="radio" default="0" label="Auto sync" description="Initiate new sync automatically within specified time period after previous sync">
+					<option value="0">No auto sync</option>
+					<option value="0.15">Every 10 minutes</option>
+					<option value="0.5">Every half hour</option>
+					<option value="1">Every hour</option>
+					<option value="2">Every 2 hours</option>
+					<option value="6">Every 6 hours</option>
+				</field>
+				<field name="latex" type="radio" default="0" label="Enable LaTeX" description="Enable LaTeX compile">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="texpath" type="text" menu="hide" default="" label="Path to LaTeX" description="Path to LaTeX" />
+				<field name="gspath" type="text" menu="hide" default="" label="Path to Ghostscript" description="Path to Ghostscript" />
+				<field name="helplink" type="text" menu="hide" default="" label="Interface help link" description="URL to page describing interface features" />
 			</fieldset>
 		</fields>
 	</config>

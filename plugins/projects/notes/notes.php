@@ -521,10 +521,13 @@ class plgProjectsNotes extends JPlugin
 		$pagename = $this->_task == 'new' ? 'New Note' : $pagename;
 		
 		// Add app prefix to name
-		if ($pagePrefix && !preg_match('/' . $pagePrefix . '/', $pagename) && $this->_task != 'new')
+		if ($pagePrefix && !preg_match('/' . $pagePrefix . '/', $pagename) && $this->_task != 'new' && !$firstnote)
 		{
 			$pagename = $pagePrefix . $pagename;
 		}
+		
+		// Can delete page?
+		$canDelete = ($this->_app && $this->_app->id && $scope == $masterscope) ? 0 : 1;
 		
 		JRequest::setVar('pagename', $pagename);
 		JRequest::setVar('task', $this->_task);
@@ -532,6 +535,7 @@ class plgProjectsNotes extends JPlugin
 		
 		JRequest::setVar('app', $this->_app);
 		JRequest::setVar('project', $this->_project);
+		JRequest::setVar('candelete', $canDelete);
 		
 		// Instantiate controller
 		$controller = new $this->_controllerName(array(
@@ -587,9 +591,9 @@ class plgProjectsNotes extends JPlugin
 		
 		// Fix pathway (com_wiki screws it up)
 		$this->fixupPathway();
-		
+				
 		// Get all notes
-		$view->notes = $projectsHelper->getNotes($this->_group, $masterscope, $pagePrefix);
+		$view->notes = $projectsHelper->getNotes($this->_group, $masterscope);
 		
 		// Get parent notes
 		$view->parent_notes = $projectsHelper->getParentNotes($this->_group, $scope, $this->_task);

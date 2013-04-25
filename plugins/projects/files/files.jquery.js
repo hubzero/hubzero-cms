@@ -37,7 +37,10 @@ HUB.ProjectFiles = {
 	bfolders: new Array(),
 	pub: 0,
 	remote: 0,
+	service: '',
+	sConflict: 0,
 	dir: 0,
+	syncTimer: '',
 	
 	initialize: function() 
 	{
@@ -64,9 +67,12 @@ HUB.ProjectFiles = {
 		// Enable rename
 		HUB.ProjectFiles.enableRename();
 		
-		// Check what's uploaded
-		HUB.ProjectFiles.checkWhatsUploaded();
-		
+		// Extended upload		
+		if (HUB.ProjectUploadFiles)
+		{
+			HUB.ProjectUploadFiles.initialize();
+		}
+							
 		// File management
 		if ($('#file-manage').length) 
 		{
@@ -113,12 +119,52 @@ HUB.ProjectFiles = {
 		HUB.ProjectFiles.activateFileOptions();	
 		
 		// Load shared files info
-		HUB.ProjectFiles.loadSharedFiles();	
+		HUB.ProjectFiles.iniSync();	
 		
 		// Show more/less version history
-		HUB.ProjectFiles.showRevisions();			
+		HUB.ProjectFiles.showRevisions();
+		
+		// Show diffs
+		HUB.ProjectFiles.showDiffs();
+		
+		$('html').on('click', function(e) 
+		{
+			if ($('#more-options').length && !$('#more-options').hasClass('hidden'))
+			{
+				$('#more-options').addClass('hidden');
+			}
+		});
 	},
 	
+	showDiffs: function() 
+	{
+		var $ = this.jQuery
+			ndiff = $('.diff-new'),
+			odiff = $('.diff-old');
+			
+		var form = $('#hubForm-ajax').length ? $('#hubForm-ajax') : $('#plg-form');
+		
+		if ($('#rundiff').length > 0 && ndiff.length > 0 && odiff.length > 0)
+		{
+			$('#rundiff').on('click', function(e) 
+			{
+				e.preventDefault();
+				var selNew  = $(".diff-new:checked").val();
+				var selOld  = $(".diff-old:checked").val();
+				
+				var selectedIndex = odiff.index(odiff.filter(':checked'));
+				
+				if (selNew == selOld && odiff.eq(selectedIndex + 1).length > 0)
+				{
+					$(".diff-old:checked").val(odiff.eq(selectedIndex + 1).val());
+				}
+				
+				form.submit();
+
+			});
+		}
+	},
+		
 	showRevisions: function() 
 	{
 		var $ = this.jQuery
@@ -158,67 +204,230 @@ HUB.ProjectFiles = {
 			});
 		}		
 	},
+	
+	checkSyncStatus: function(action)
+	{		
+		clearTimeout(HUB.ProjectFiles.typingTimer);
+		var repeat = action == 'progress' ? 20 : 50000;
 		
-	loadSharedFiles: function() 
+		if (action == 'progress' && !$('#sync-wrap').hasClass('syncing'))
+		{
+			$('#sync-wrap').addClass('syncing');
+		}
+		else if (action != 'progress' && $('#sync-wrap').hasClass('syncing'))
+		{
+			$('#sync-wrap').removeClass('syncing');
+		}	
+		
+		var projectid = $('#projectid').length ? $('#projectid').val() : 0;
+		var sortdir   = $('#sortdir').length ? $('#sortdir').val() : 0;
+		var sortby    = $('#sortby').length ? $('#sortby').val() : 0;
+		var subdir    = $('#subdir').length ? $('#subdir').val() : '';
+		
+		var statusUrl = '/projects/' + projectid + '/files/?action=sync_status&no_html=1&ajax=1&subdir=' + subdir;
+		if (sortby)
+		{
+			statusUrl = statusUrl + '&sortby=' + sortby;
+		}
+	
+		if (sortdir)
+		{
+			statusUrl = statusUrl + '&sortdir=' + sortdir;
+		}
+		
+		HUB.ProjectFiles.typingTimer = setTimeout((function() 
+		{  
+			var status = $.get(statusUrl, {}, function(response) 
+			{
+				if (response)
+				{
+				    try {
+				        response = $.parseJSON(response);
+				    } 
+					catch (e) 
+					{
+						return;
+				    }
+				}
+				
+				if (response.msg)
+				{
+					$('#sync-status').html(response.msg);
+				}
+				
+				if (response.status == 'progress')
+				{
+					action = 'progress';
+				}
+				else
+				{
+					action = 'complete';
+				}
+				
+				if (response.output)
+				{
+					$('#plg-content').html(response.output);
+
+					// Make sure everything works again
+					HUB.Projects.initialize();
+					HUB.ProjectFiles.initialize();
+					HUB.ProjectFiles.preSelect();
+				}
+				
+				// Timed sync request
+				if (response.auto)
+				{
+					HUB.ProjectFiles.loadSharedFiles(1, 0);
+				}
+								
+				// Repeat call
+				HUB.ProjectFiles.checkSyncStatus(action);	
+			});
+		}), repeat);
+	},
+	
+	iniSync: function() 
 	{
 		var $ = this.jQuery;
 		var sharing 	= $('#sharing').length ? $('#sharing').val() : 0;
 		var sync 		= $('#sync').length ? $('#sync').val() : 0;
-		var subdir	 	= $('#subdir').length ? $('#subdir').val() : '';
-
-		if (sharing == 1 && sync == 1)
-		{				
-			var projectid = $('#projectid') ? $('#projectid').val() : 0;
-			var url = '/projects/' + projectid + '/files/?sync=1';
-			url = url + '&no_html=1&ajax=1';
-			url = url + '&subdir=' + subdir;
-			
-			var keyupTimer = setTimeout((function() 
-			{  	
-				// Set loading msg
-				var log = $('#status-msg').empty().addClass('ajax-loading');
-				$('#status-msg').css({'opacity':100});
-				$('#status-msg').html(HUB.ProjectFiles.loadingIma('Syncing with remote service... Please wait'));
+		
+		// Check that we have connections
+		if (sharing != 1 || !$('#a-sync').length)
+		{
+			return false;
+		}
 				
-				var ajax = $.get(url, {}, function(data) 
-				{					
-					if (data) 
-					{
-						$('#plg-content').html(data);
-						$('#status-msg').empty().removeClass('ajax-loading');
+		// Check sync status every 5 minutes
+		HUB.ProjectFiles.checkSyncStatus('check');
+		
+		$('#a-sync').unbind();
+		
+		// Initiate sync manually		
+		$('#a-sync').on('click', function(e) 
+		{
+			e.preventDefault();
+			HUB.ProjectFiles.loadSharedFiles(0, 0);
+		});
+		
+		// Sync request on page load (usually after local change)
+		if (sync == 1)
+		{
+			HUB.ProjectFiles.loadSharedFiles(1, 1);
+		}
+	},
+		
+	loadSharedFiles: function(auto, queue) 
+	{
+		var $ = this.jQuery;
+			
+		// Can't stop syncing
+		if ($('#sync-wrap').hasClass('syncing'))
+		{
+			return false;
+		}
+			
+		var projectid = $('#projectid').length ? $('#projectid').val() : 0;
+		var sortdir   = $('#sortdir').length ? $('#sortdir').val() : '';
+		var sortby    = $('#sortby').length ? $('#sortby').val() : '';
+		var subdir    = $('#subdir').length ? $('#subdir').val() : '';
+		var url = '/projects/' + projectid + '/files/?action=sync';
+		url = url + '&no_html=1&ajax=1';
+		url = url + '&subdir=' + subdir;
+		
+		if (sortby)
+		{
+			url = url + '&sortby=' + sortby;
+		}
+	
+		if (sortdir)
+		{
+			url = url + '&sortdir=' + sortdir;
+		}
+		
+		if (auto)
+		{
+			url = url + '&auto=1';
+		}
+		
+		if (queue)
+		{
+			url = url + '&queue=1';
+		}
+		
+		$('#sync_output').addClass('hidden');			
+		
+		HUB.ProjectFiles.checkSyncStatus('progress');
+								
+		var ajax = $.get(url, {}, function(response) 
+		{									
+			if (response)
+			{
+			    try {
+			        response = $.parseJSON(response);
+			    } 
+				catch (e) 
+				{
+			        alert(response);
+					return;
+			    }
+			}
+			else
+			{
+				$('#status-msg').css({'opacity':100});
+				$('#status-msg').html('<p class="witherror">Oups! Unknown sync error, please try again!</p>');
+				return false;
+			}
+				
+			if (response.output)
+			{
+				$('#plg-content').html(response.output);
 
-						// Make sure everything works again
-						HUB.Projects.initialize();
-						HUB.ProjectFiles.initialize();
-						HUB.ProjectFiles.preSelect();
-						
-						if ($('#sync-msg').length > 0)
-						{
-							$('#status-msg').html($('#sync-msg').html());
-						}
-					}
-				});	
-			}), 500);
-		}		
+				// Make sure everything works again
+				HUB.Projects.initialize();
+				HUB.ProjectFiles.initialize();
+				HUB.ProjectFiles.preSelect();
+			}
+			
+			if (response.debug)
+			{
+				$('#sync_output').removeClass('hidden');
+				$('#sync_output').html(response.debug);
+			}
+			
+			if (response.error && !response.auto)
+			{
+				$('#status-msg').css({'opacity':100});
+				$('#status-msg').html('<p class="witherror">' + response.error + '</p>');
+			}
+			else if (response.message && !response.auto)
+			{
+				$('#status-msg').css({'opacity':100});
+				$('#status-msg').html('<p>' + response.message + '</p>');
+			}				
+		});
 	},
 	
 	preSelect: function() 
 	{
-		var $ = this.jQuery
-			boxes = $('.checkasset');
+		var $ = this.jQuery;
+		var boxes = $('.checkasset');
 		var idx = -1;
 			
 		if (HUB.ProjectFiles.bchecked > 0 && boxes.length > 0)
 		{
+			HUB.ProjectFiles.remote = 0;
+			HUB.ProjectFiles.service = '';
+			
 			boxes.each(function(i, el) 
 			{	
 				if ($(el).hasClass('dirr')) {
-					var idx = HUB.Projects.getArrayIndex($(el).val(), bfolders);
 					//var idx = HUB.ProjectFiles.bfolders.indexOf($(el).val());
+					var idx = HUB.Projects.getArrayIndex($(el).val(), HUB.ProjectFiles.bfolders);
 				}
 				else {
-					var idx = HUB.Projects.getArrayIndex($(el).val(), bselected);
 					//var idx = HUB.ProjectFiles.bselected.indexOf($(el).val());
+					var idx = HUB.Projects.getArrayIndex($(el).val(), HUB.ProjectFiles.bselected);
 				}
 				
 				if (idx != -1 && $(el).attr('checked') != 'checked')
@@ -284,8 +493,9 @@ HUB.ProjectFiles = {
 		{
 			return;
 		}
-		var log = $('#status-msg').empty().addClass('ajax-loading');
+		
 		$('#status-msg').css({'opacity':100});	
+		var log = $('#status-msg').empty().addClass('ajax-loading');
 		
 		if (!txt)
 		{
@@ -294,6 +504,7 @@ HUB.ProjectFiles = {
 		
 		// Add element
 		$('#status-msg').html(HUB.ProjectFiles.loadingIma(txt));
+		$('#status-msg').css({'opacity':100});
 	},
 	
 	loadingIma: function(txt)
@@ -322,8 +533,10 @@ HUB.ProjectFiles = {
 		var dir 		= this.dir;
 		var remote 		= this.remote;
 		
-		var manage = $('#file-manage'),
-			ops = $('.fmanage')
+		var manage 		= $('#file-manage');
+		var	ops 		= $('.fmanage');
+			
+		var bWidth 		= 600;
 		
 		// File options 
 		ops.each(function(i, item) 
@@ -336,9 +549,10 @@ HUB.ProjectFiles = {
 			}
 			
 			var connected = true;
+
 			if (aid == 'a-share')
 			{
-				if (!$(item).hasClass('connection-active'))
+				if ($(item).hasClass('service-google') && $('#service-google').length > 0 && $('#service-google').val() == '0' )
 				{
 					connected = false;
 				}
@@ -346,7 +560,7 @@ HUB.ProjectFiles = {
 						
 			// Not every action happens in a light box 
 			if (aid != 'a-download' && aid != 'a-history' 
-				&& aid != 'a-folder' && connected == true) 
+				 && connected == true) 
 			{
 				var href = $(item).attr('href');
 				if (href.search('&no_html=1') == -1) {
@@ -359,10 +573,10 @@ HUB.ProjectFiles = {
 			}
 			
 			$(item).on('click', function(e) 
-			{
+			{	
 				var aid = $(item).attr('id');
 				if (aid != 'a-download' && aid != 'a-history' 
-					&& aid != 'a-folder' && connected == true) 
+					 && connected == true) 
 				{
 					e.preventDefault();
 				}
@@ -370,7 +584,7 @@ HUB.ProjectFiles = {
 				if ($(item).hasClass('inactive')) {
 					e.preventDefault();
 				}
-				else if (aid != 'a-folder') 
+				else
 				{	
 					// Clean up url
 					var clean = $(item).attr('href').split('&asset[]=', 1);
@@ -394,7 +608,7 @@ HUB.ProjectFiles = {
 					}
 					
 					// Add case and subdir
-					var subdir = $('#subdir') ? $('#subdir').val() : '';
+					var subdir  = $('#subdir') ? $('#subdir').val() : '';
 					var fcase   = $('#case') ? $('#case').val() : '';
 					
 					if (subdir) {
@@ -404,12 +618,36 @@ HUB.ProjectFiles = {
 						$(item).attr('href', $(item).attr('href') +	'&case=' + fcase);
 					}
 					
+					if (aid == 'a-share')
+					{
+						converted = 2;
+						if ($(item).hasClass('stop-sharing'))
+						{
+							converted = 1;
+						}
+												
+						$(item).attr('href', $(item).attr('href') +	'&converted=' + converted);
+					}
+					
+					if (aid == 'a-compile' || aid == 'a-upload')
+					{
+						bWidth = 800;
+					}
+					
+					// Show more options
+					if (aid == 'a-more')
+					{
+						HUB.ProjectFiles.showExtraOptions($(item).attr('href'));
+						e.stopPropagation();
+						return;
+					}
+										
 					// make AJAX call
 					if (aid != 'a-download' && aid != 'a-history' && connected == true)  
 					{
 						$.fancybox(this,{
 							type: 'ajax',
-							width: 600,
+							width: bWidth,
 							height: 'auto',
 							autoSize: false,
 							fitToView: false,
@@ -422,30 +660,18 @@ HUB.ProjectFiles = {
 									});
 								}
 								var proceed = 1;
-								
-								// Close box if no file to upload
-								if (aid == 'a-upload' && $('#f-upload').length > 0)
+																
+								if (proceed == 1 && aid != 'a-upload')
 								{
-									$('#f-upload').on('click', function(e) {
-										if ($('#uploader').val() == '') 
-										{
-											$.fancybox.close();
-											e.preventDefault();
-											proceed = 0;
-										}
-									});
-								}
-								
-								if (proceed == 1)
-								{
-									$('#hubForm-ajax').submit(function() {
-									    $.fancybox.close();
+									$('#hubForm-ajax').submit(function() 
+									{    
 										var txt = '';
 										if (aid == 'a-delete')
 										{
 											txt = 'Deleting file(s)...';
 										}
 										HUB.ProjectFiles.submitViaAjax($('#hubForm-ajax'), txt);
+										$.fancybox.close();
 									});
 								}
 							}
@@ -455,50 +681,39 @@ HUB.ProjectFiles = {
 			});								  												  
 		});
 	},
-			
-	checkWhatsUploaded: function ()
+		
+	showExtraOptions: function (url)
 	{
 		var $ = this.jQuery;
 		
-		// Check what's uploaded
-		var bu = $('#f-upload');
-		if (bu) {
-			bu.on('click', function(e) {
-				e.preventDefault();
-				if ($('#uploader').val() != '') 
-				{
-					// Check extension
-					var re = /[^.]+$/;
-				    var ext = $('#uploader').val().match(re);
-
-					// Compressed file extensions
-					var tar = {
-					  'gz'  	: 1,
-					  '7z'      : 1,
-					  'zip' 	: 1,
-					  'zipx' 	: 1,
-					  'sit' 	: 1,
-					  'sitx' 	: 1,
-					  'rar' 	: 1
-					};
-
-					if (tar[ext]) 
-					{
-						// Confirm further action - extract files?
-						HUB.ProjectFiles.addQuestion();
-					}
-					else if ($('#plg-form')) 
-					{						
-						if ($('#plg-form').hasClass('submit-ajax'))
-						{
-							HUB.ProjectFiles.submitViaAjax($('#plg-form'), 'Uploading file(s)... Please wait');
-						}
-
-						$('#plg-form').submit();
-					}				
-				}
-			});
+	 	if (!$('#more-options').length)
+		{
+			return false;
 		}
+		
+		if (!$('#more-options').hasClass('hidden'))
+		{
+			$('#more-options').addClass('hidden');
+			$('#more-options').html('');
+			return;
+		}
+		
+		// Move close to item
+		var coord = $('#a-more').position();			
+		$('#more-options').css('left', coord.left);		
+				
+		$.get(url, {}, function(data) 
+		{
+			if (data && data != 'NA') 
+			{
+				if ($('#more-options').hasClass('hidden'))
+				{
+					$('#more-options').removeClass('hidden');
+				}
+				$('#more-options').html(data);
+			}
+		});
+								
 	},
 	
 	enableRename: function ()
@@ -562,13 +777,16 @@ HUB.ProjectFiles = {
 			original = dir;
 		}	
 		
+		var fcase   = $('#case') ? $('#case').val() : '';
+		var action  = fcase == 'files' ? 'action' : 'do';
+		
 		// Add form
 		el.parent().append('<label id="editv">' + 
-			'<input type="hidden" name="action" value="renameit" />' +
+			'<input type="hidden" name="' + action + '" value="renameit" />' +
 			'<input type="hidden" name="rename" value="' + rename + '" />' +  
 			'<input type="hidden" name="oldname" value="' + original + '" />' + 
 			'<input type="text" name="newname" value="' + original + '" maxlength="100" class="vlabel" />' +
-			'<input type="submit" value="rename" />' +
+			'<input type="submit" value="rename" id="submit-rename" />' +
 			'<input type="button" value="cancel" class="cancel" id="cancel-rename" />' +
 		'</label>');
 		
@@ -577,7 +795,12 @@ HUB.ProjectFiles = {
 			$('#editv').remove();
 			el.removeClass('hidden');
 			link.removeClass('hidden');
-		});		
+		});	
+		
+		$('#submit-rename').on('click', function(e){
+			
+			HUB.ProjectFiles.submitViaAjax($('#hubForm-ajax'), 'Renaming selected item');
+		});	
 	},
 	
 	collectSelections: function (el, tog) 
@@ -589,6 +812,8 @@ HUB.ProjectFiles = {
 		var pub 		= this.pub;
 		var dir 		= this.dir;
 		var remote 		= this.remote;
+		var service 	= this.service;
+		var sConflict 	= this.sConflict;
 				
 		// Is item checked?
 		if ($(el).attr('checked') == 'checked' || tog == 2) 
@@ -598,6 +823,15 @@ HUB.ProjectFiles = {
 			}
 			if ($(el).hasClass('remote')) {
 				remote = remote + 1;
+				
+				// Service is determined by first selected remote item
+				if ($(el).hasClass('service-google') && remote == 1) {
+					service = 'google';
+				}
+				// TBD indicate conflict with other services
+				if ($(el).hasClass('notconnected')) {
+					sConflict = 1;
+				}
 			}
 			if ($(el).hasClass('dirr')) 
 			{	
@@ -623,16 +857,26 @@ HUB.ProjectFiles = {
 		}
 		else 
 		{		 	
+			// Item unchecked
 			if ($(el).hasClass('publ')) {
 				pub = pub - 1;
 			}
-			if ($(el).hasClass('remote')) {
+			if ($(el).hasClass('remote')) 
+			{
 				remote = remote - 1;
+				
+				// Clean up service
+				if ($(el).hasClass('service-google') && remote == 0) {
+					service = '';
+				}
+				if (remote == 0) {
+					sConflict = 0;
+				}
 			}
 			if ($(el).hasClass('dirr')) {
 				dir = dir - 1;
-				//var idx = bfolders.indexOf($(el).val());
 				var idx = HUB.Projects.getArrayIndex($(el).val(), bfolders);
+				//var idx = bfolders.indexOf($(el).val());
 				if (idx!=-1) bfolders.splice(idx, 1);
 			}
 			else {
@@ -662,6 +906,8 @@ HUB.ProjectFiles = {
 		HUB.ProjectFiles.dir = dir;
 		HUB.ProjectFiles.pub = pub;
 		HUB.ProjectFiles.remote = remote;
+		HUB.ProjectFiles.service = service;
+		HUB.ProjectFiles.sConflict = sConflict;
 	},
 	
 	addConfirms: function ()
@@ -788,6 +1034,70 @@ HUB.ProjectFiles = {
 		});
 	},
 	
+	getFileExt: function(val)
+	{
+		var $ = this.jQuery;
+		var re = /[^.]+$/;
+	    var ext = val.match(re);
+		return ext;	
+	},
+	
+	getConvertable: function(ext)
+	{
+		var array = {
+		  'doc'  	: 1,
+		  'docx'    : 1,
+		  'html' 	: 1,
+		  'txt' 	: 1,
+		  'rtf' 	: 1,
+		  'xls' 	: 1,
+		  'xlsx' 	: 1,
+		  'ods'  	: 1,
+		  'csv'     : 1,
+		  'tsv' 	: 1,
+		  'tab' 	: 1,
+		  'ppt' 	: 1,
+		  'pptx' 	: 1,
+		  'wmf' 	: 1,
+		  'jpg' 	: 1,
+		  'gif' 	: 1,
+		  'png' 	: 1,
+		  'pdf' 	: 1,
+		  'tex'		: 1
+		};
+	
+		if (array[ext]) 
+		{
+			return true;
+		}
+		
+		return false;
+	},
+	
+	getPreviewable: function(ext)
+	{
+		var array = {
+		  'html' 	: 1,
+		  'txt'		: 1,
+		  'sty'		: 1,
+		  'cls'	    : 1,
+		  'css'		: 1,
+		  'jpg' 	: 1,
+		  'jpeg'	: 1,
+		  'gif' 	: 1,
+		  'png' 	: 1,
+		  'pdf' 	: 1,
+		  'tex'		: 1
+		};
+	
+		if (array[ext]) 
+		{
+			return true;
+		}
+		
+		return false;
+	},
+	
 	watchSelections: function () 
 	{
 		var $ = this.jQuery;
@@ -797,22 +1107,26 @@ HUB.ProjectFiles = {
 		var pub 		= this.pub;
 		var dir 		= this.dir;
 		var remote 		= this.remote;
+		var service 	= this.service;
+		var sConflict 	= this.sConflict;
 		var ops = $('.fmanage');
 		
 		// Is selected file remote?
-		if (remote > 0 && $('#a-share').length > 0 && bchecked == 1)
+		if (remote > 0 && $('#a-share').length > 0 && bchecked > 0 && remote == bchecked)
 		{
 			$('#a-share').addClass('stop-sharing');
-			$('#a-share').attr('title', 'Stop sharing');
+			$('#a-share').attr('title', 'Stop collaborative editing');
 		}
 		else if ($('#a-share').length > 0)
 		{
 			$('#a-share').removeClass('stop-sharing');
-			$('#a-share').attr('title', 'Share remotely');
+			$('#a-share').attr('title', 'Start collaborative editing');
 		}
 		
-		if (bchecked == 0) {
-			ops.each(function(i, w) {
+		if (bchecked == 0) 
+		{
+			ops.each(function(i, w) 
+			{
 				if (!$(w).hasClass('inactive') && $(w).attr('id') != 'a-folder' && $(w).attr('id') != 'a-upload') {	
 					$(w).addClass('inactive');
 				}	
@@ -822,47 +1136,97 @@ HUB.ProjectFiles = {
 				$('#a-folder').removeClass('inactive');
 			}
 		}
-		else if (bchecked == 1) {
-			if ($('#a-delete') && $('#a-delete').hasClass('inactive')) {
+		else if (bchecked == 1) 
+		{
+			if ($('#a-delete').length && $('#a-delete').hasClass('inactive')) {
 				$('#a-delete').removeClass('inactive');
 			}
-			if ($('#a-move') && $('#a-move').hasClass('inactive')) {
+			if ($('#a-move').length && $('#a-move').hasClass('inactive') && (remote == 0)) {
 				$('#a-move').removeClass('inactive');
 			}	
-			if ($('#a-download') && $('#a-download').hasClass('inactive') && dir == 0) {
+			if ($('#a-download').length && $('#a-download').hasClass('inactive') && dir == 0) {
 				$('#a-download').removeClass('inactive');
 			}
-			if ($('#a-history') && $('#a-history').hasClass('inactive') && dir == 0) {
+			if ($('#a-history').length && $('#a-history').hasClass('inactive') && dir == 0) {
 				$('#a-history').removeClass('inactive');
 			}
 			if ($('#a-folder').length && !$('#a-folder').hasClass('inactive')) {
 				$('#a-folder').addClass('inactive');
 			}
-			if ($('#a-share').length && $('#a-share').hasClass('inactive')) {
-				$('#a-share').removeClass('inactive');
+						
+			if ($('#a-more').length && $('#a-more').hasClass('inactive') && dir == 0) {
+				$('#a-more').removeClass('inactive');
 			}
+			
+			// Sharing
+			if ($('#a-share').length && $('#a-share').hasClass('inactive') && dir == 0) 
+			{
+				var selected = bselected[0];
+				
+				var ext = HUB.ProjectFiles.getFileExt(selected);
+				
+				// Only allow for certain file types
+				if ((ext && HUB.ProjectFiles.getConvertable(ext)) || remote > 0)
+				{
+					$('#a-share').removeClass('inactive');
+				}
+			}
+			
+			// Compile preview
+			if ($('#a-compile').length && $('#a-compile').hasClass('inactive') && dir == 0) 
+			{
+				var selected = bselected[0];
+				
+				var ext = HUB.ProjectFiles.getFileExt(selected);
+				
+				// Only allow for certain file types
+				if ((ext && HUB.ProjectFiles.getPreviewable(ext)) || remote > 0)
+				{
+					$('#a-compile').removeClass('inactive');
+				}
+			}
+			
 		}
-		else if (bchecked > 1) {
-			if ($('#a-delete') && $('#a-delete').hasClass('inactive')) {
+		else if (bchecked > 1) 
+		{
+			if($('#a-more').length && !$('#a-more').hasClass('inactive') )
+			{
+				$('#a-more').addClass('inactive');
+			}
+			
+			if ($('#a-delete').length && $('#a-delete').hasClass('inactive')) 
+			{
 				$('#a-delete').removeClass('inactive');
 			}
-			if ($('#a-move') && $('#a-move').hasClass('inactive')) {
+			if ($('#a-move').length && $('#a-move').hasClass('inactive') && remote == 0) {
 				$('#a-move').removeClass('inactive');
+			}
+			else if($('#a-move').length && !$('#a-move').hasClass('inactive') && (remote > 0))
+			{
+				$('#a-move').addClass('inactive');
 			}			
-			if ($('#a-download') && $('#a-download').hasClass('inactive') && dir == 0) {
+			if ($('#a-download').length && $('#a-download').hasClass('inactive') && dir == 0 && remote == 0) {
 				$('#a-download').removeClass('inactive');
 			}
-			else if($('#a-download') && !$('#a-download').hasClass('inactive') && dir != 0)
+			else if($('#a-download').length && !$('#a-download').hasClass('inactive') && (dir != 0 || remote > 0))
 			{
 				$('#a-download').addClass('inactive');
 			}
+			if ($('#a-compile').length && !$('#a-compile').hasClass('inactive')) {
+				$('#a-compile').addClass('inactive');
+			}
+			
 			if ($('#a-history').length && !$('#a-history').hasClass('inactive')) {
 				$('#a-history').addClass('inactive');
 			}
+			
 			if ($('#a-folder').length && !$('#a-folder').hasClass('inactive')) {
 				$('#a-folder').addClass('inactive');
 			}
-			if ($('#a-share').length && !$('#a-share').hasClass('inactive')) {
+			
+			// Sharing for collaborative editing is available for individually selected files only
+			if($('#a-share').length && !$('#a-share').hasClass('inactive') )
+			{
 				$('#a-share').addClass('inactive');
 			}
 		}

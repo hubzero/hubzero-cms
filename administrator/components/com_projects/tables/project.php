@@ -243,15 +243,14 @@ class Project extends JTable
 			$query .= " OR p.params LIKE '%followup=yes%') ";
 			$query .= " AND p.state != 2 AND p.setup_stage = ".$setup_complete." ) ";
 		}
-		else if ($reviewer == 'sponsored')
+		elseif ($reviewer == 'sponsored')
 		{
 			$query .= " WHERE ((( p.params LIKE '%grant_title=%' AND p.params NOT LIKE '%grant_title=\\n%') ";
-		//	$query .= " OR ( p.params LIKE '%grant_PI=%' AND p.params NOT LIKE '%grant_PI=\\n%') ";
 			$query .= " OR ( p.params LIKE '%grant_agency=%' AND p.params NOT LIKE '%grant_agency=\\n%') ";
 			$query .= " OR ( p.params LIKE '%grant_budget=%' AND p.params NOT LIKE '%grant_budget=\\n%') ";
 			$query .= " ) AND p.state=1 AND p.setup_stage = ".$setup_complete." ) ";
 		}		
-		else if ($admin) 
+		elseif ($admin) 
 		{	
 			$query .= " WHERE p.provisioned = 0 ";
 			$query .= $showall ? "" : " AND p.state != 2 ";
@@ -442,6 +441,300 @@ class Project extends JTable
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Get projects stats
+	 * 
+	 * @param      string 	$period
+	 * @param      boolean 	$admin
+	 * @param      array 	$config
+	 * @param      array 	$exclude
+	 * @param      integer 	$publishing
+	 * @return     array
+	 */
+	public function getStats($period, $admin = false, $config = array(), $exclude = array(), $publishing = 0)
+	{
+		$stats   = array();
+		$lastLog = NULL;
+		$saveLog = 0;
+		$updated = NULL;
+		
+		$pastMonth 		= date('Y-m-d', time() - (32 * 24 * 60 * 60));		
+		
+		$thisYearNum 	= date('y', time());
+		$thisMonthNum 	= date('m', time());
+		$thisWeekNum	= date('W', time());
+		
+		// Do we have a recent saved stats log?
+		$logged = (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.stats.php')) ? 1 : 0;
+			
+		if ($logged)
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+			
+			$objStats = new ProjectStats($this->_db);
+			if ($objStats->loadLog($thisYearNum, $thisMonthNum, $thisWeekNum ))
+			{
+				$lastLog = json_decode($objStats->stats, true);
+				$updated = $objStats->processed;
+			}
+			else
+			{
+				// Save stats
+				$saveLog = 1;
+			}
+		}
+		
+		$validProjects 	 = $this->getValidProjects($exclude, array(), $config, false, 'alias' );
+		$validProjectIds = $this->getValidProjects($exclude, array(), $config, false, 'id' );
+		
+		$active = count($validProjects);
+		$setup = $this->getValidProjects($exclude, array('setup' => 1), $config, 1 );
+		$total = $active + $setup;
+		
+		$publicOnly = $admin ? false : true;
+		$limit = 3;
+		
+		// Collect overview stats
+		$stats['general'] = array(
+			'total' 	=> $total,
+			'setup' 	=> $setup,
+			'active'	=> $active,
+			'public'	=> $this->getValidProjects($exclude, array('private' => '0'), $config, 1 ),
+			'sponsored'	=> $this->getValidProjects($exclude, array('sponsored' => 1), $config, 1 ),
+			'sensitive'	=> $this->getValidProjects($exclude, array('sensitive' => 1), $config, 1 ),
+			'new'		=> $this->getValidProjects($exclude, array('created' => date('Y-m', time()), 'all' => 1), $config, 1 )
+		);
+		
+		// Collect activity stats
+		$objAA = new ProjectActivity( $this->_db );
+		$recentlyActive = count($this->getValidProjects($exclude, array('timed' => $pastMonth, 'active' => 1), $config ));
+		$perc = round(($recentlyActive * 100)/$active) . '%';
+		$stats['activity'] = array(
+			'total' => $objAA->getActivityStats($validProjectIds, 'total'),
+			'average' => $objAA->getActivityStats($validProjectIds, 'average'),
+			'usage'=> $perc
+		);
+		
+		$stats['topActiveProjects'] = $objAA->getTopActiveProjects($exclude, 5, $publicOnly);
+		
+		// Collect team stats
+		$objO = new ProjectOwner( $this->_db );
+		$multiTeam = $objO->getTeamStats($exclude, 'multi');
+		$activeTeam = $objO->getTeamStats($exclude, 'registered');
+		$invitedTeam = $objO->getTeamStats($exclude, 'invited');
+		$multiProjectUsers = $objO->getTeamStats($exclude, 'multiusers');
+		
+		$teamTotal = $activeTeam + $invitedTeam;
+		
+		$perc = round(($multiTeam * 100)/$total) . '%';
+		$stats['team'] = array(
+			'total' => $teamTotal,
+			'average' => $objO->getTeamStats($exclude, 'average'),
+			'multi' => $perc,
+			'multiusers' => $multiProjectUsers
+		);
+				
+		$stats['topTeamProjects'] = $objO->getTopTeamProjects($exclude, $limit, $publicOnly);
+				
+		// Collect files stats
+		if ($lastLog)
+		{
+			$stats['files'] = $lastLog['files'];
+		}
+		else
+		{
+			// Compute
+			JPluginHelper::importPlugin( 'projects', 'files');
+			$dispatcher =& JDispatcher::getInstance();
+			$fTotal 	= $dispatcher->trigger( 'getStats', array($validProjects) );
+			$fTotal 	= $fTotal[0];
+			$fAverage 	= number_format($fTotal/count($validProjects), 0);
+			$fUsage 	= $dispatcher->trigger( 'getStats', array($validProjects, 'usage') );
+			$fUsage 	= $fUsage[0];
+			$fDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'diskspace') );
+			$fDSpace 	= $fDSpace[0];
+			$fCommits 	= $dispatcher->trigger( 'getStats', array($validProjects, 'commitCount') );
+			$fCommits 	= $fCommits[0];
+			$pDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'pubspace') );
+			$pDSpace 	= $pDSpace[0];
+
+			$perc = round(($fUsage * 100)/$active) . '%';
+
+			$stats['files'] = array(
+				'total' => $fTotal,
+				'average' => $fAverage,
+				'usage' => $perc,
+				'diskspace' => ProjectsHtml::formatSize($fDSpace),
+				'commits' => $fCommits,
+				'pubspace' => ProjectsHtml::formatSize($pDSpace)
+			);
+		}
+				
+		// Collect publication stats
+		if ($publishing)
+		{			
+			$objP = new Publication( $this->_db );
+			$objPV = new PublicationVersion( $this->_db );
+			$prPub = $objP->getPubStats($validProjectIds, 'usage');
+			$perc = round(($prPub * 100)/$total) . '%';
+			
+			$stats['pub'] = array(
+				'total' => $objP->getPubStats($validProjectIds, 'total'),
+				'average' => $objP->getPubStats($validProjectIds, 'average'),
+				'usage' => $perc,
+				'released' => $objP->getPubStats($validProjectIds, 'released'),
+				'versions' => $objPV->getPubStats($validProjectIds)
+			);
+		}
+		
+		// Save weekly stats
+		if ($saveLog)
+		{
+			$objStats = new ProjectStats($this->_db);
+			$objStats->year 		= $thisYearNum;
+			$objStats->month 		= $thisMonthNum;
+			$objStats->week 		= $thisWeekNum;
+			$objStats->processed 	= date('Y-m-d H:i:s');
+			$objStats->stats 		= json_encode($stats);
+			$objStats->store();
+		}
+		
+		$stats['updated'] = $updated ? $updated : NULL;
+				
+		return $stats;
+	}
+	
+	/**
+	 * Get test project ids
+	 * 
+	 * @return     array
+	 */
+	public function getTestProjects()
+	{
+		$ids = array();
+		
+		$query  = "SELECT DISTINCT p.id ";
+		$query .= "FROM $this->_tbl AS p ";
+		$query .= "LEFT JOIN #__tags_object AS RTA ON p.id = RTA.objectid ";
+		$query .= "LEFT JOIN #__tags AS TA ON RTA.tagid = TA.id AND RTA.tbl='projects' ";
+		$query .= "WHERE TA.tag = 'test' ";
+		
+		$this->_db->setQuery( $query );
+		$result = $this->_db->loadObjectList();
+		if ($result) 
+		{
+			foreach ($result as $r) 
+			{
+				$ids[] = $r->id;
+			}
+		}
+		
+		return $ids;
+	}
+	
+	/**
+	 * Get non-test projects
+	 * 
+	 * @param      array $exclude
+	 * @param      array $filters
+	 * @param      array $config
+	 * @param      boolean $count
+	 * @return     mixed
+	 */
+	public function getValidProjects($exclude = array(), $filters = array(), $config = array(), $count = false, $get = '' )
+	{		
+		
+		$setup_complete = !empty($config) && $config->get('confirm_step', 0) ? 3 : 2;
+		
+		$query  = $count ? "SELECT count(DISTINCT p.id) " : "SELECT DISTINCT p.* ";
+		$query .= "FROM $this->_tbl AS p ";
+		
+		if (isset($filters['timed']) && isset($filters['active']))
+		{
+			$query .= " JOIN #__project_activity AS pa 
+						ON pa.projectid=p.id AND pa.state != 2 ";
+			$query .= "AND pa.recorded >= ' " . $filters['timed'] . " ' ";
+		}
+			
+		$query .= "WHERE p.state != 2 AND p.provisioned = 0 ";
+		
+		if (isset($filters['created']))
+		{
+			$query .= "AND p.created LIKE '" . $filters['created'] . "%' ";
+		}
+		
+		if (isset($filters['setup']) && $filters['setup'] == 1)
+		{
+			$query .= "AND p.setup_stage < $setup_complete ";
+		}
+		elseif (isset($filters['all']) && $filters['all'] == 1)
+		{
+			// all projects
+		}
+		else
+		{
+			$query .= "AND p.setup_stage >= $setup_complete ";
+		}
+		
+		if (isset($filters['private']))
+		{
+			$query .= " AND p.private = " .$filters['private'];
+		}
+		
+		if (isset($filters['sponsored']) && $filters['sponsored'] == 1)
+		{
+			$query .= " AND (p.params LIKE '%grant_status=1%') ";
+		}
+		
+		if (isset($filters['sensitive']) && $filters['sensitive'] == 1)
+		{
+			$query .= " AND (p.params LIKE '%hipaa_data=yes%' ";
+			$query .= " OR p.params LIKE '%ferpa_data=yes%' ";
+			$query .= " OR p.params LIKE '%export_data=yes%' ";
+			$query .= " OR p.params LIKE 'restricted_data=maybe%' ";
+			$query .= " OR p.params LIKE '%followup=yes%') ";
+		}
+				
+		if (!empty($exclude))
+		{
+			$query .= " AND p.id NOT IN ( ";
+
+			$tquery = '';
+			foreach ($exclude as $ex)
+			{
+				$tquery .= "'".$ex."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$query .= $tquery.") ";
+		}
+		
+		if (isset($filters['timed']) && isset($filters['active']))
+		{
+			$query .= " GROUP BY p.id ";
+		}
+		
+		$this->_db->setQuery( $query );
+		if ($count)
+		{
+			return $this->_db->loadResult();
+		}
+		
+		$results = $this->_db->loadObjectList();
+		
+		if ($get == 'alias' || $get == 'id')
+		{
+			$out = array();
+			foreach ($results as $r)
+			{
+				$out[] = $get == 'alias' ? $r->alias : $r->id;
+			}
+			return $out;
+		}	
+		return $results;	
 	}
 	
 	/**

@@ -31,6 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// Incoming
+$scope   = JRequest::getVar('scope', '');
+$app 	 = JRequest::getVar( 'app', '', 'request', 'object' );	
+$project = JRequest::getVar( 'project', '', 'request', 'object' );	
+
 $mode = $this->page->params->get('mode', 'wiki');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
@@ -79,9 +84,6 @@ if ($mode != 'static') {
 	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } else { ?>
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>" method="post" id="hubForm">
-		<div class="explaination">
-			<p><?php echo JText::_('WIKI_DELETE_PAGE_EXPLANATION'); ?></p>
-		</div>
 		<fieldset>
 			<legend><?php echo JText::_('WIKI_DELETE_PAGE'); ?></legend>
 			<label>
@@ -93,7 +95,7 @@ if ($mode != 'static') {
 			</p>
 
 			<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-			<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
+			<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
 			<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="action" value="delete" />

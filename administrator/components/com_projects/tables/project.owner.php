@@ -367,6 +367,29 @@ class ProjectOwner extends JTable
 	}
 	
 	/**
+	 * Get email from user profile
+	 * 
+	 * @param      integer $projectid
+	 * @param      integer $uid
+	 * @return     integer or NULL
+	 */
+	public function getProfileEmail( $name = '', $projectid = NULL )
+	{
+		if ($projectid === NULL or !$name) 
+		{
+			return false;
+		}
+		
+		$query   =  "SELECT x.email ";
+		$query  .=  " FROM #__xprofiles as x ";
+		$query  .=  " JOIN $this->_tbl AS o ON x.uidNumber=o.userid AND o.projectid=$projectid ";
+		$query  .= " WHERE x.name = '" . $name . "' ";
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();		
+	}
+	
+	/**
 	 * Get names of project owners
 	 * 
 	 * @param      integer $projectid
@@ -426,7 +449,85 @@ class ProjectOwner extends JTable
 		}
 		return $names;
 	}
-
+	
+	/**
+	 * Get project creator
+	 * 
+	 * @param      integer $projectid
+	 * 
+	 * @return     object
+	 */
+	public function getCreator( $projectid = NULL )
+	{
+		if ($projectid === NULL) 
+		{
+			return false;
+		}
+		
+		$query   = "SELECT o.* ";
+		$query  .= " FROM $this->_tbl AS o ";
+		$query  .= " JOIN #__projects as p ON o.projectid=p.id ";
+		$query  .= " AND o.userid=p.created_by_user ";
+		$query  .= " WHERE p.id=" . $projectid;
+		$query  .= " LIMIT 1";
+		$this->_db->setQuery( $query );
+		$results =  $this->_db->loadObjectList();
+		return $results ? $results[0] : NULL;
+	}
+	
+	/**
+	 * Get params of owners connected to external service
+	 * 
+	 * @param      integer 	$projectid
+	 * @param      string 	$service
+	 * @param      array 	$exclude
+	 * 
+	 * @return     object
+	 */
+	public function getConnected( $projectid = NULL , $service = 'google', $exclude = array())
+	{
+		if ($projectid === NULL) 
+		{
+			return false;
+		}
+		
+		$query   = "SELECT o.* FROM $this->_tbl AS o ";
+		$query  .= " JOIN #__projects as p ON o.projectid=p.id";
+		$query  .= " WHERE o.userid > 0";
+		$query  .= " AND p.id=" . $projectid;
+		$query  .= " AND o.params LIKE '%google_token=%'";
+		if (!empty($exclude))
+		{
+			$query  .= " AND o.userid NOT IN (";
+			$k = 1;
+			foreach ($exclude as $ex)
+			{
+				$query  .= $ex;
+				$query  .= $k < count($exclude) ? ',' : '';
+				$k++;
+			}
+			$query  .= ")";
+		}
+		$this->_db->setQuery( $query );
+		$results =  $this->_db->loadObjectList();
+		
+		$connected = array();
+		foreach ($results as $result)
+		{
+			$params = new JParameter( $result->params );
+			$name	= utf8_decode($params->get($service . '_name', ''));
+			$email	= $params->get($service . '_email', '');
+			
+			if ($name && $email)
+			{
+				$connected[$name] = $email; 
+			}
+		}
+		
+		return $connected;
+		
+	}
+	
 	/**
 	 * Get project owners
 	 * 
@@ -448,8 +549,10 @@ class ProjectOwner extends JTable
 		$limitstart = isset($filters['start']) 		? $filters['start'] : 0;
 		$select 	= isset($filters['select']) 	? $filters['select'] : '';
 		$native 	= isset($filters['native']) 	? $filters['native'] : '-';
-		$pub		= isset($filters['pub_versionid']) && intval($filters['pub_versionid']) 
+		$pub		= isset($filters['pub_versionid']) 
+					  && intval($filters['pub_versionid']) 
 													? $filters['pub_versionid'] : '';
+		$connected  = isset($filters['connected'])  ? $filters['connected'] : 0;
 		
 		$query   =  "SELECT DISTINCT ";
 		if (!$select) 
@@ -504,6 +607,11 @@ class ProjectOwner extends JTable
 		if (isset($filters['role'])) 
 		{
 			$query .= " AND o.role=".intval($filters['role']);
+		}
+		if ($connected)
+		{
+			$query .= " AND o.userid > 0";
+			$query .= " AND o.params LIKE '%google_token=%'";
 		}
 		if ($pub) 
 		{
@@ -716,8 +824,8 @@ class ProjectOwner extends JTable
 			$group->set('managers', $managers);	
 			$group->set('type', 2 );
 			$group->set('published', 1 );
-			$group->set('discoverability', 1 );
-						
+			$group->set('discoverability', 1 );				
+			
 			$group->update();
 		}				
 	}
@@ -734,6 +842,7 @@ class ProjectOwner extends JTable
 		if ($projectid === NULL or $uid === NULL ) {
 			return false;
 		}
+		
 		$query  = "SELECT * FROM $this->_tbl WHERE projectid='$projectid' AND userid='$uid' LIMIT 1";
 		$this->_db->setQuery( $query );	 
 		
@@ -741,14 +850,15 @@ class ProjectOwner extends JTable
 		{
 			$this->bind( $result );
 			
-			$now = date( 'Y-m-d H:i:s' );
 			$timecheck = date('Y-m-d H:i:s', time() - (6 * 60 * 60)); // visit in last 6 hours
 			if ($this->num_visits == 0 or $this->lastvisit < $timecheck) 
 			{
 				$this->num_visits = $this->num_visits + 1; // record visit in a day
 				$this->prev_visit = $this->lastvisit;
 			}
-			$this->lastvisit = $now;
+			
+			$this->lastvisit = date( 'Y-m-d H:i:s', time());
+			
 			if (!$this->store()) 
 			{
 				$this->setError( JText::_('Failed to record user last visit.') );
@@ -1175,5 +1285,161 @@ class ProjectOwner extends JTable
 		$query = 'SELECT id FROM #__users WHERE name = ' . $this->_db->Quote( $name );
 		$this->_db->setQuery($query, 0, 1);
 		return $this->_db->loadResult();
+	}
+	
+	/**
+	 * Get team stats
+	 * 
+	 * @param      array 	$exclude
+	 * @param      string 	$get
+	 * @return     mixed
+	 */	
+	public function getTeamStats ( $exclude = array(), $get = 'total') 
+	{	
+		if ($get == 'multiusers')
+		{
+			$query  = " SELECT DISTINCT p.userid, (SELECT COUNT(*) FROM $this->_tbl 
+						AS pp WHERE pp.userid = p.userid) as projects FROM $this->_tbl AS p                                               
+			  			WHERE p.userid > 0 AND p.STATUS != 2";
+			
+			if (!empty($exclude))
+			{
+				$query .= " AND p.id NOT IN ( ";
+
+				$tquery = '';
+				foreach ($exclude as $ex)
+				{
+					$tquery .= "'".$ex."',";
+				}
+				$tquery = substr($tquery,0,strlen($tquery) - 1);
+				$query .= $tquery.") ";
+			}
+			
+			$this->_db->setQuery( $query );
+			
+			$result = $this->_db->loadObjectList();
+			
+			$n = 0;
+			foreach ($result as $r)
+			{
+				if ($r->projects > 1)
+				{
+					$n++;
+				}
+			}
+			return $n;
+		}
+				
+		$query  = " SELECT COUNT(*) as members ";
+		if ($get == 'registered')
+		{
+			$query  = " SELECT COUNT(DISTINCT userid) as members ";
+		}
+		if ($get == 'invited')
+		{
+			$query  = " SELECT COUNT(DISTINCT invited_email) as members ";
+		}
+		$query .= " FROM $this->_tbl WHERE status != 2 ";
+				
+		if (!empty($exclude))
+		{
+			$query .= " AND projectid NOT IN ( ";
+
+			$tquery = '';
+			foreach ($exclude as $ex)
+			{
+				$tquery .= "'".$ex."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$query .= $tquery.") ";
+		}
+						
+		if ($get == 'average' || $get == 'multi')
+		{
+			$query .= " GROUP BY projectid ";
+		}
+		elseif ($get == 'registered')
+		{
+			$query .= " AND userid != 0 ";
+		}
+		elseif ($get == 'invited')
+		{
+			$query .= " AND userid = 0 ";
+		}
+				
+		$this->_db->setQuery( $query );
+		
+		if ($get == 'total' || $get == 'registered' || $get == 'invited')
+		{
+			return $this->_db->loadResult();
+		}
+		
+		elseif ($get == 'multi')
+		{
+			$i = 0;
+			$result = $this->_db->loadObjectList();
+			
+			foreach ($result as $r)
+			{
+				if ($r->members > 1)
+				{
+					$i++;
+				}
+			}
+			return $i;
+		}
+		elseif ($get == 'average')
+		{
+			$result = $this->_db->loadObjectList();
+			
+			$c = 0;
+			$d = 0;
+			
+			foreach ($result as $r)
+			{
+				$c = $c + $r->members;
+				$d++;
+			}
+
+			return number_format($c/$d,0);
+		}		
+	}
+	
+	/**
+	 * Get top projects by team size
+	 * 
+	 * @param      array 	$exclude
+	 * @return     mixed
+	 */	
+	public function getTopTeamProjects ( $exclude = array(), $limit = 3, $publicOnly = false) 
+	{
+		$query  = " SELECT p.id, p.alias, p.title, p.picture, p.private, COUNT(T.id) as team ";	
+		$query .= " FROM #__projects AS p";
+		$query .= " JOIN $this->_tbl as T ON T.projectid = p.id WHERE T.status != 2 ";
+		
+		if ($publicOnly)
+		{
+			$query .= " AND p.private = 0 ";
+		}
+		
+		if (!empty($exclude))
+		{
+			$query .= " AND p.id NOT IN ( ";
+
+			$tquery = '';
+			foreach ($exclude as $ex)
+			{
+				$tquery .= "'".$ex."',";
+			}
+			$tquery = substr($tquery,0,strlen($tquery) - 1);
+			$query .= $tquery.") ";
+		}
+		
+		$query .= " GROUP BY p.id ";
+		$query .= " ORDER BY team DESC, p.private ASC, p.id DESC ";
+		$query .= " LIMIT 0," . $limit;
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();		
 	}
 }

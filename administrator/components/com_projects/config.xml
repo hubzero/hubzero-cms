@@ -88,6 +88,7 @@
 			<option value="1">Log all activity except for AJAX calls</option>
 			<option value="2">Log all activity</option>
 		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="messaging" type="list" default="0" label="Messaging" description="Enable hub messaging">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
@@ -103,5 +104,10 @@
 			<option value="1">Project Alias</option>
 		</param>
 		<param name="documentation" type="text" menu="hide" default="/projects/features" label="URL to documentation" description="URL to a page with the user guide" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</param>
 	</params>
 </config>

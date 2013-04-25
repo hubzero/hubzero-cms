@@ -97,6 +97,17 @@ if (substr($default_thumb, 0, 1) != DS) {
 								? '<span class="online">' . JText::_('COM_PROJECTS_TEAM_ONLINE_NOW') . '</span>' 
 								: $lastvisit;
 								
+					// User deleted?
+					// Edge case!
+					if ($owner->userid && !$owner->username)
+					{
+						$objO = new ProjectOwner($this->database);
+						$objO->load($owner->id);
+						$objO->status = 2;
+						$objO->store();
+						continue;
+					}
+								
 					$creator = $this->project->created_by_user == $owner->userid ? 1 : 0;
 					
 					// Determine css class for user

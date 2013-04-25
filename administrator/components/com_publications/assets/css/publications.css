@@ -1,0 +1,391 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/components/com_publicatons/assets/css/publications.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+    - - - - - - - - -
+    com_publications
+    - - - - - - - - -
+*/
+	.yes,
+	.enabled,
+	.writeable,
+	.public, a.public {
+		color: green;
+		}
+	.no,
+	.disabled,
+	.unwriteable,
+	.registered, 
+	a.registered {
+		color: red;
+		}
+	.special, 
+	a.special { 
+		color: black; 
+		}
+	.enabled,
+	.writeable,
+	.disabled,
+	.unwriteable {
+		font-weight: bold;
+		}
+	
+	.clear {
+		clear: both;
+		margin: 0;
+		padding: 0;
+		}
+	
+	.draft,
+	.draftinternal,
+	.draftexternal,
+	.new,
+	.check,
+	.published,
+	.pending,
+	.expired,
+	.unpublished,
+	.deleted,
+	.upload,
+	.archived,
+	.ready { 
+		padding: 0; 
+		display: block; 
+		width: 12px; 
+		height: 12px; 
+		}
+	
+	.draft span,
+	.draftinternal span,
+	.draftexternal span,
+	.new span,
+	.hasassoc span,
+	.noassoc span,
+	.published span,
+	.pending span,
+	.expired span,
+	.unpublished span,
+	.deleted span,
+	.upload span,
+	.ready span,
+	.archived span { 
+		display: none; 
+		}	
+	
+	/*
+	.check,
+	.published { background: url("../img/check.gif") 0 0 no-repeat; }
+	.posted { background: url("../img/check_blue.gif") 0 0 no-repeat; }
+	.pending { background: url("../img/check_circle.gif") 0 0 no-repeat; }
+	.expired { background: url("../img/check_star.gif") 0 0 no-repeat; }
+	.unpublished { background: url("../img/check_disabled.gif") 0 0 no-repeat; }
+	.upload { background: url("../img/upload.gif") 0 0 no-repeat; }
+	.new { background: url("../img/pending.gif") 0 0 no-repeat; }
+	.draftexternal, .draft { background: url("../img/draft_external.gif") 0 0 no-repeat; }
+	.draftinternal { background: url("../img/draft_internal.gif") 0 0 no-repeat; }
+	.deleted { background: url("../img/deleted.gif") 0 0 no-repeat; }
+	.ready { background: url("../img/draft_ready.gif") 0 0 no-repeat; }
+	.archived { background: url("../img/archive.gif") 0 0 no-repeat; }
+	*/
+	
+	/* Status color 
+	--------------------------------------------- */
+	.published {
+		color: #52ad4b;
+	}
+	.draft, .ready {
+		color: #dd861e;
+	}
+	.posted {
+		color: #34b0d9;
+	}
+	.archived {
+		color: #333;
+	}
+	.unpublished {
+		color: #999;
+	}
+	.pending, .new {
+		color: red;
+	}
+	
+	/* Publication status
+	--------------------------------------------- */
+	.draft, .published, .unpublished, .expired, .pending, .posted, .archived, .ready {
+		padding: 0.2em 0.5em;
+	}
+	.archived:before,
+	.ready:before,
+	.posted:before,
+	.expired:before,
+	.unpublished:before,
+	.published:before,
+	.draft:before,
+	.pending:before,
+	.new:before,
+	.archival:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		padding: 0 !important;
+		margin-right: 0.3em;
+		vertical-align: middle;
+	}
+	.archived:before, .archival:before {
+		content: "\f005";
+	}
+	.published:before, 
+	.ready:before,
+	.unpublished:before,
+	.pending:before,
+	.new:before,
+	.archived:before {
+		content: "\f058";
+	}
+	.draft:before {
+		content: "\f05d";
+	}
+			
+	td.status {
+		width: 100px;
+	}
+	.status span, .v-status span {
+		padding-left: 2em;
+	}
+	.v-status span {
+		width: auto;
+	}
+	.status a span {
+		color: #666;
+		border: none;
+	}
+	
+	.hasassoc,
+	.noassoc { 
+		padding: 0;
+		margin: 0;
+		display: block;
+		width: 12px;
+		height: 12px;
+		border: none;
+		}
+	.hasassoc { background: url("../img/tags.gif") 0 0 no-repeat; }
+	.noassoc { background: url("../img/tags.gif") 0 -12px no-repeat; }
+	.hasassoc:hover,
+	.noassoc:hover { border: none; }
+
+	.key {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		}
+	.key li.draft,
+	.key li.draftinternal,
+	.key li.draftexternal,
+	.key li.new,
+	.key li.published,
+	.key li.pending,
+	.key li.expired,
+	.key li.deleted,
+	.key li.unpublished,
+	.key li.archived,
+	.key li.ready { 
+		margin: 0;
+		padding-left: 18px;
+		width: auto;
+		height: auto;
+		}
+	
+	.draft:hover,
+	.draftinternal:hover,
+	.draftexternal:hover,
+	.new:hover,
+	.published:hover,
+	.pending:hover,
+	.expired:hover,
+	.unpublished:hover,
+	.deleted:hover,
+	.ready:hover,
+	.archived:hover,
+	.upload:hover { border: none; }
+	
+	.check { text-indent: 50px; overflow: hidden; }
+	
+	#author-list, .content-list { 
+		list-style: none;
+		margin: 0.5em;
+		padding-left: 0;
+		}
+	#author-list li, .content-list li {
+		border: 1px solid #ddd;
+		background: #efefef;
+		margin: 0 0 3px 0;
+		padding: 3px;
+		position: relative;
+		}
+	.content-list li.summary {
+		background: #FFF;
+		border: none;
+		border-bottom: 2px solid #ddd;
+	}
+	#author-list li .handle {
+		cursor:move;
+		float: right;
+		font-weight: bold;
+		color: #999;
+		}
+		
+	.notice {
+		padding: 0.3em 1em;
+		border: 1px solid #f6bc56;
+		background: #ffefd3;
+		color: #7f3e0f;
+		margin: 0.5em 0;
+	}
+	.adminform label {
+		font-style: italic;
+	}
+	.editing label {
+		background: #E2E2E2;
+		width: 100%;
+		display: block;
+		margin: 1em 0;
+	}
+	.ctitle, .org {
+		color: #666;
+	}
+	.org {
+		font-style: italic;
+	}
+	td.puboptions {
+		background: #CCC;
+		border-top: 4px solid #CCC;
+		border-bottom: 4px solid #CCC;
+	}
+	.adminform fieldset {
+		margin-top: 2em;
+	}
+	.allowed, .disallowed {
+		display: block;
+		margin-top: 1em;
+	}
+	.allowed {
+		color: green;
+		background: #dffedc;
+	}
+	.disallowed {
+		color: red;
+		background: #fedfdc;
+	}
+	.adminlist tr.attention td {
+		background: #fbeec5 !important;
+		border: 1px solid #fbeec5 !important;
+	}
+	.block {
+	 	display: block;	
+	}
+	.faded {
+		color: #CCC;
+	}
+	.centeralign {
+		text-align: center;
+	}
+	.centeralign span {
+		display: inline;
+		padding: 0.2em 0.5em;
+	}
+	.hint {
+		display: block;
+		color: #999;
+		margin-top: 0.5em;
+	}
+	.required {
+		color: red;
+	}
+	.archival-package {
+		text-align: center;
+	}
+	
+/* Publication editing
+--------------------------------------------- */
+	#system-message .message {
+		background: none;
+		width: auto;
+	}
+	.editform td.key {
+		padding-left: 1em;
+		width: 20%;
+	}
+	.editform td {
+		padding: 0.5em 1em;
+		border-bottom: 1px dotted #CCCCCC;
+	}
+	.editform caption {
+		text-align: left;
+		display: block;
+		float: none;
+		margin: 0.5em;
+		font-weight: bold;
+		padding: 0.2em 0.5em;
+		background: #e2e2e2;
+		height: 15px;
+		width: 100px;
+	}
+	.editform input, .editform textarea {
+		width: 100%;
+	}
+	.editform input.short {
+		width: 6em;
+	}
+	.editform td {
+		vertical-align: top;
+	}
+	.editform td.holdtbl {
+		width: 45%;
+		padding: 0.5em;
+	}
+	.editform table.statustable {
+		padding: 1em;
+		border: 1px solid #CCC;
+		margin-top: 1.5em;
+		width: 100%;
+		background: #f5f7f8;
+	}
+	.editform span.active {
+		font-weight: bold;
+		color: green;
+	}
+	.editform span.setup {
+		font-weight: bold;
+		color: orange;
+	}
+	.editform span.inactive, #adminForm span.inactive  {
+		font-weight: bold;
+		color: red;
+	}
+	.editform span.deleted, #adminForm span.deleted {
+		font-weight: bold;
+		color: #000;
+	}
+	.editform tr.division td, .division {
+		padding-top: 2em;
+	}
+	.editform td.checkoption {
+		width: 15px;
+		padding: 0 0 0 0.5em;
+	}
+	.editform input.btn {
+		width: auto;
+	}
+	.editform span.breaker {
+		padding: 0 2em;
+	}
+	
+	
+

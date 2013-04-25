@@ -109,7 +109,6 @@ class plgProjectsTodo extends JPlugin
 	 * @param      integer $error 			Error
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
-	 * @param      string  $case			Directory where .git sits ('files' or 'app:appname')
 	 * @return     array   Return array of html
 	 */
 	public function onProject ( $project, $option, $authorized, 
@@ -167,8 +166,10 @@ class plgProjectsTodo extends JPlugin
 			
 			// Get JS and css
 			$document =& JFactory::getDocument();
+			$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
+						
 			Hubzero_Document::addPluginScript('projects', 'todo');
-			Hubzero_Document::addPluginStylesheet('projects', 'todo');
+			Hubzero_Document::addPluginStylesheet('projects', 'todo');	
 			
 			$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
 			$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;

@@ -51,8 +51,7 @@ if (substr($default_thumb, 0, 1) != DS) {
 }
 $shown = array();
 ?>
-<div id="pick-authors">
-	<form action="<?php echo JRoute::_($route . a . 'active=publications'); ?>" method="post" id="addmember-form">
+<div>	
 		<ul id="c-browser" 	<?php if(count($this->team) == 0) { echo 'class="hidden"'; } ?>>
 			<?php 
 			if(count($this->team) > 0) {		
@@ -81,7 +80,7 @@ $shown = array();
 					$username = $owner->username ? $owner->username : JText::_('COM_PROJECTS_AUTHOR_UNCONFIRMED');
 					
 					 ?>
-					<li class="c-click  user:<?php echo $owner->userid; ?> owner:<?php echo $owner->id; ?>  name:<?php echo urlencode(htmlspecialchars($name)); ?> org:<?php echo urlencode(htmlspecialchars($org)); ?> credit:<?php echo urlencode(htmlspecialchars($owner->credit)); ?>">
+					<li id="owner:<?php echo $owner->id; ?>" class="c-click  user:<?php echo $owner->userid; ?> owner:<?php echo $owner->id; ?>  name:<?php echo urlencode(htmlspecialchars($name)); ?> org:<?php echo urlencode(htmlspecialchars($org)); ?> credit:<?php echo urlencode(htmlspecialchars($owner->credit)); ?>">
 						<img width="30" height="30" src="<?php echo $thumb; ?>" class="a-ima" alt="<?php echo htmlentities($name); ?>" />
 						<span class="a-name"><?php echo $name; ?> <span class="block prominent"><?php echo $username; ?></span></span>
 					</li>
@@ -127,7 +126,7 @@ $shown = array();
 			// Add missing items
 			if(count($missing) > 0) {
 				foreach ($missing as $miss) { ?>
-					<li class="c-click  user:<?php echo $miss['userid']; ?> owner:<?php echo $miss['owner']; ?>  name:<?php echo urlencode($miss['name']); ?> org:<?php echo urlencode($miss['organization']); ?> credit:<?php echo urlencode($miss['credit']); ?> i-missing">
+					<li id="owner:<?php echo $miss['owner']; ?>" class="c-click  user:<?php echo $miss['userid']; ?> owner:<?php echo $miss['owner']; ?>  name:<?php echo urlencode($miss['name']); ?> org:<?php echo urlencode($miss['organization']); ?> credit:<?php echo urlencode($miss['credit']); ?> i-missing">
 						<img width="30" height="30" src="<?php echo $miss['thumb']; ?>" class="a-ima" alt="<?php echo htmlentities($miss['name']); ?>" />
 						<span class="a-name"><?php echo $miss['name']; ?> <span class="block prominent"><?php echo $miss['username']; ?></span></span>
 						<span class="c-missing"><?php echo JText::_('COM_PROJECTS_AUTHORS_MISSING'); ?></span>
@@ -136,45 +135,4 @@ $shown = array();
 			}	
 			?>
 		</ul>
-		<label class="addnew">
-			<?php 
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher =& JDispatcher::getInstance();
-			
-				$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'newmember', 'newmember')) );
-				if (count($mc) > 0) {
-					echo $mc[0];
-				} else { ?>
-					<input type="text" name="newmember" id="newmember" value="" size="35" />
-				<?php } ?>
-		</label>
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />
-		<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
-		<input type="hidden" name="versionid" value="<?php echo $this->versionid; ?>" />
-		<input type="hidden" name="active" value="team" />
-		<input type="hidden" name="action" value="save" />
-		<input type="hidden" name="view" value="browser" />
-		<input type="hidden" name="ajax" value="1" />
-		<input type="hidden" name="no_html" value="1" />
-		<input type="hidden" name="authors" value="1" />
-		<input type="hidden" name="role" value="2" />
-		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pid; ?>" />
-		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
-		<input type="hidden" name="task" value="submit" />
-		<?php } ?>
-		<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" id="add-author" />
-		<p class="a-tip"><?php echo JText::_('COM_PROJECTS_AUTHORS_SELECT_TIP'); ?></p>
-		<div class="status-msg">
-		<?php 
-			// Display error or success message
-			if ($this->getError()) { 
-				echo ('<p class="witherror">' . $this->getError().'</p>');
-			}
-			else if($this->msg) {
-				echo ('<p>' . $this->msg . '</p>');
-			} ?>
-		</div>
-	</form>
 </div>

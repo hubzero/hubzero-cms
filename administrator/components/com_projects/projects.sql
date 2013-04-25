@@ -28,6 +28,24 @@ INSERT INTO `jos_xmessage_component` (`id`,`component`,`action`,`title`) VALUES 
 INSERT INTO `jos_xmessage_component` (`id`,`component`,`action`,`title`) VALUES ('','com_projects','projects_new_project_admin','Receive notifications about project(s) you monitor as an admin or reviewer');
 INSERT INTO `jos_xmessage_component` (`id`,`component`,`action`,`title`) VALUES ('','com_projects','projects_admin_message','Receive administrative messages about your project(s)');
 
+
+CREATE TABLE `jos_project_shared_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectid` int(11) NOT NULL DEFAULT '0',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_by` int(11) DEFAULT '0',
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `local_path` varchar(255) DEFAULT NULL,
+  `local_subdir` varchar(255) DEFAULT NULL,
+  `service` varchar(50) NOT NULL,
+  `type` varchar(50) NOT NULL DEFAULT 'file',
+  `remote_control` tinyint(1) NOT NULL,
+  `remote_id` varchar(255) NOT NULL,
+  `remote_resource` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8;
+
 # Dump of table jos_project_activity
 # ------------------------------------------------------------
 

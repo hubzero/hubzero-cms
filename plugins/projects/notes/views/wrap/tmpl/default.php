@@ -65,11 +65,32 @@ if ($this->notes)
 {
 	foreach ($this->notes as $note) 
 	{ 
+		$show = 1;
+		
+		// For app wiki, only show app pages
+		if ($app && $app->id)
+		{
+			$show = 0;
+			$startScope = trim(str_replace('projects' . DS . $this->project->alias . DS . 'notes', '', $note->scope), DS);
+
+			// Does this page belong to an app?
+			if ((preg_match("/^app:" . $app->name . "/", $note->pagename) || preg_match("/^app:" . $app->name . "/", $startScope) ))
+			{
+				$show = 1;
+			}
+		}
+		
+		if (!$show)
+		{
+			// Skip
+			continue;
+		}
+		
 		$parts = explode ( '/', $note->scope );	
 		$remaining = array_slice($parts, 3);
 		$level = count($remaining) + 1;
 		$parent = $level > 1 ? array_shift($remaining) : '';
-
+		
 		if($level == 1) {
 			$notes[$note->pagename] = array( $level => array($note));
 		}
@@ -135,8 +156,8 @@ $parentScope = $this->scope . DS . $this->pagename;
 		<?php } ?>
 		<div class="sidebox">
 			<h4><?php echo $appOpt ? ucfirst(JText::_('COM_PROJECTS_NOTES_APP_WIKI_PAGES')) : ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
-			<ul>
-			<?php if($notes) { ?>
+			<ul <?php echo $appOpt ? 'class="appindex"' : ''; ?>>
+			<?php if ($notes) { ?>
 				<?php foreach ($notes as $note) { 
 					    foreach ($note as $level => $parent) {
 						 foreach ($parent as $entry) { ?>

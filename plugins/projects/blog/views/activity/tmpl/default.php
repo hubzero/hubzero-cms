@@ -26,6 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (count($this->activities) > 0 ) {
+	
 ?>
 <ul>
 <?php
@@ -39,6 +40,7 @@ if (count($this->activities) > 0 ) {
 		$ebody = $activity['body'];
 		$comments = $activity['comments'];
 		$timeclass = $activity['timeclass'];
+
 		?>
 			<li id="li_<?php echo $a->id; ?>">
 			<div class="mline" id="tr_<?php echo $a->id; ?>">

@@ -46,9 +46,44 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
 ?>
 <?php if($this->action != 'admin') { ?>
+	<?php if ($this->case == 'files') { ?>
 	<div id="plg-header">
 		<h3 class="<?php echo $class; ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('COM_PROJECTS_FILES_DISK_USAGE'); ?></span></h3>
 	</div>
+	<?php } ?>
+	<?php if ($this->app && $this->app->name) 
+	{ 
+		// App-only tab menu 
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'apps',
+				'name'=>'view'
+			)
+		);
+		
+		// Load plugin parameters
+		$app_plugin 	= JPluginHelper::getPlugin( 'projects', 'apps' );
+		$view->plgparams = new JParameter($app_plugin->params);
+		
+		$view->route 	= 'index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps';
+		$view->url 		= JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps');
+		$view->app 		= $this->app;
+		$view->active 	= 'source';
+		$view->title 	= 'Apps';
+		
+		// Get path for app thumb image
+		$projectsHelper = new ProjectsHelper( $this->database );
+		
+		$p_path 			= ProjectsHelper::getProjectPath($this->project->alias, 
+							$this->config->get('imagepath'), 1, 'images');			
+		$imagePath 			=  $p_path . DS . 'apps';
+		$view->projectPath 	= $imagePath;
+		$view->path_bc 		= '&raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_DISK_USAGE') . '</span>';
+		$view->ih 			= new ProjectsImgHandler();				
+		echo $view->loadTemplate();
+		
+	 } ?>
 <?php } ?>
 	<div id="disk-usage" <?php if($warning) { echo 'class="quota-warning"'; } ?>>
 		<div class="disk-usage-wrapper">

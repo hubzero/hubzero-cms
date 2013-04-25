@@ -89,8 +89,6 @@ HUB.ProjectTodo = {
 		if ( $('#tdpage').val() == '' ) { 
 			HUB.ProjectTodo.addDragging();
 		}		
-						
-	//	$( "#pinboard" ).disableSelection();
 		
 		// Comment form
 		HUB.ProjectTodo.styleCommentForm();

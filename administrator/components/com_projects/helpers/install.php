@@ -63,13 +63,28 @@ class ProjectsInstall extends JObject {
 	}
 	
 	/**
+	 * Run query
+	 * 
+	 * @return     void
+	 */	
+	public function runQuery( $query = '' ) 
+	{
+		if (!$query)
+		{
+			return false;
+		}
+		
+		$this->_db->setQuery( $query );
+		$this->_db->query();
+	}
+	
+	/**
 	 * Install project logs
 	 * 
 	 * @return     void
 	 */	
 	public function installLogs( ) 
 	{
-		// Create jos_project_activity
 		$query = "CREATE TABLE `jos_project_logs` (
 		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 		  `projectid` int(11) unsigned NOT NULL DEFAULT '0',
@@ -86,8 +101,82 @@ class ProjectsInstall extends JObject {
 		  KEY `projectid` (`projectid`)
 		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8";
 		
-		$this->_db->setQuery( $query );
-		$this->_db->query();
+		$this->runQuery($query);
+	}
+	
+	/**
+	 * Install project stats
+	 * 
+	 * @return     void
+	 */	
+	public function installStats( ) 
+	{
+		$query = "CREATE TABLE `jos_project_stats` (
+		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		  `month` int(2) DEFAULT NULL,
+		  `year` int(2) DEFAULT NULL,
+		  `week` int(2) DEFAULT NULL,
+		  `processed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+		  `stats` text,
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
+		
+		$this->runQuery($query);
+	}
+	
+	/**
+	 * Install remote connections
+	 * 
+	 * @return     void
+	 */	
+	public function installRemotes( ) 
+	{
+		$query = "CREATE TABLE `jos_project_remote_files` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `projectid` int(11) NOT NULL DEFAULT '0',
+		  `created_by` int(11) NOT NULL DEFAULT '0',
+		  `modified_by` int(11) DEFAULT '0',
+		  `paired` int(11) DEFAULT '0',
+		  `created` datetime DEFAULT NULL,
+		  `modified` datetime DEFAULT NULL,
+		  `synced` datetime DEFAULT NULL,
+		  `local_path` varchar(255) NOT NULL,
+		  `original_path` varchar(255) NOT NULL,
+		  `original_format` varchar(200) NOT NULL,
+		  `local_dirpath` varchar(255) NOT NULL DEFAULT '',
+		  `local_format` varchar(200) DEFAULT NULL,
+		  `local_md5` varchar(32) DEFAULT NULL,
+		  `service` varchar(50) NOT NULL,
+		  `type` varchar(25) NOT NULL DEFAULT 'file',
+		  `remote_editing` tinyint(1) NOT NULL DEFAULT '0',
+		  `remote_id` varchar(100) NOT NULL,
+		  `original_id` varchar(100) NOT NULL,
+		  `remote_parent` varchar(100) DEFAULT NULL,
+		  `remote_title` varchar(140) DEFAULT NULL,
+		  `remote_md5` varchar(32) DEFAULT NULL,
+		  `remote_format` varchar(200) DEFAULT NULL,
+		  `remote_author` varchar(100) DEFAULT NULL,
+		  `remote_modified` datetime DEFAULT NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
+		
+		$this->runQuery($query);
+	}
+	
+	/**
+	 * Install project plugin
+	 * 
+	 * @return     void
+	 */	
+	public function installPlugin( $name = '', $active = 0) 
+	{
+		$query = "INSERT INTO `jos_plugins`(`name`, `element`, `folder`, `access`, 
+			`ordering`, `published`, `iscore`, `client_id`, `checked_out`, 
+			`checked_out_time`, `params`) SELECT 'Projects - " . ucfirst($name) . "', 
+			'" . strtolower($name) . "', 'projects', 0, 8, $active, 0, 0, 0, NULL, '' 
+			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE name = 'Projects - " . ucfirst($name) . "')";
+		
+		$this->runQuery($query);
 	}
 	
 	/**

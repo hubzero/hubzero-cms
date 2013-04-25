@@ -24,6 +24,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+
 ?>
 <div id="abox-content">
 <h3><?php echo JText::_('COM_PROJECTS_FILES_GIT_STATUS'); ?></h3>
@@ -31,7 +34,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<fieldset >	
 		<?php echo $this->status; ?>
 		<p class="submitarea">
-			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<?php if ($this->ajax) { ?>
+				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<?php } else {  ?>
+				<span class="btn btncancel">
+					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('Go back'); ?></a>
+				</span>
+			<?php } ?>
 		</p>
 	</fieldset>
 </form>

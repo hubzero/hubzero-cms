@@ -562,6 +562,23 @@ class plgProjectsBlog extends JPlugin
 						$etbl = 'todo';
 						$deletable = 0; // Cannot delete to-do related activity
 					}
+					
+					// Get app log
+					if ($class == 'apps')
+					{
+						require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+							. DS . 'com_apps' . DS . 'tables' . DS . 'app.log.php');
+							
+						$objLog = new AppLog( $this->_database );
+						$aLog = $objLog->getLog($a->referenceid, $a->id);
+						
+						if ($aLog)
+						{
+							$aLog = rtrim(stripslashes($aLog));
+							$aLog = Hubzero_View_Helper_Html::purifyText($aLog);
+							$body = Hubzero_View_Helper_Html::shortenText($aLog, 200, 0);
+						}
+					}
 
 					// Embed links
 					if ($body) 

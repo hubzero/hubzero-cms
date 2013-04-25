@@ -60,7 +60,7 @@ $goto  = 'alias=' . $this->project->alias;
 		}
 ?>
 				<li<?php if($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
-					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=' . $tab['name']); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
+					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
 						<span><?php echo $tab['title']; ?></span> 
 <?php if (isset($this->project->counts[$tab['name']]) 
 && $this->project->counts[$tab['name']] != 0) { ?>

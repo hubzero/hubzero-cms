@@ -54,7 +54,6 @@
 	.wiki-submit input {
 		padding: 0.1em 0.6em;
 		border: 1px solid #999;
-		background: url("/components/com_projects/assets/img/backgrounds/bg_btn.gif") 0 0 repeat-x;
 		margin-right: 0.5em;
 		margin-top: 0.5em;
 		color: #000;
@@ -159,21 +158,39 @@
 		padding: 1em;
 		text-align: center;
 	}
-	#notes-content .s-notes a {
-		padding: 2em;
-		padding-left: 4em;
-		border: none;
-		background: transparent url("/components/com_projects/assets/img/features/notes.png") 5px center no-repeat;
+	#notes-content .s-notes a:before {
+		width: 48px;
+		height: 48px;
+		font-size: 48px;
+		font-family: 'Fontcons';
+		content: "\f0c1";
+		color: #8f8faa;
 	}
-	.note {
-		padding: 0.3em 0;
-		padding-left: 20px;
-		background: transparent url("images/wikipage.png") 0 center no-repeat !important;
-	}
+	.note,
 	.wikitemplate {
 		padding: 0.3em 0;
 		padding-left: 20px;
-		background: transparent url("images/wikitemplate.png") 0 center no-repeat;
+	}
+	#notes-wrap .sidebox .note:before,
+	#notes-wrap .sidebox .wikitemplate:before,
+	#notes-wrap .sidebox .appindex .note:before,
+	#notes-wrap .sidebox .appindex .wikitemplate:before {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		position: absolute;
+		content: "\f0c1";
+		color: #8f8faa;
+		margin-top: -1em;
+	}
+	#notes-wrap .sidebox .wikitemplate:before,
+	#notes-wrap .sidebox .appindex .wikitemplate:before {
+		color: #97bf9b;
+	}
+	#notes-wrap .sidebox .appindex .note:before,
+	#notes-wrap .sidebox .appindex .wikitemplate:before {
+		content: "\f06f";
 	}
 	.wikilevel_2, .wikilevel_3, .wikilevel_4 {
 		margin-left: 2em;
@@ -184,6 +201,14 @@
 	}
 	.wikilevel_4 {
 		margin-left: 6em;
+	}
+	#notes-wrap .sidebox .wikilevel_2:before, 
+	#notes-wrap .sidebox .wikilevel_3:before, 
+	#notes-wrap .sidebox .wikilevel_4:before,
+	#notes-wrap .sidebox .appindex .wikilevel_2:before, 
+	#notes-wrap .sidebox .appindex .wikilevel_3:before, 
+	#notes-wrap .sidebox .appindex .wikilevel_4:before {
+		content: "";
 	}
 	.withside #notes-content .warning {
 		width: 50%;

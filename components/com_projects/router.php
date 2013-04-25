@@ -95,7 +95,7 @@ function ProjectsBuildRoute(&$query)
     }
 	if (!empty($query['pagename'])) 
 	{
-        $segments[] = $query['pagename'];
+		$segments[] = $query['pagename'];
         unset($query['pagename']);
     }
 	if (!empty($query['action'])) 
@@ -127,7 +127,8 @@ function ProjectsParseRoute($segments)
 	// Valid tasks
 	$tasks = array(	'start', 'setup', 'edit', 
 		'browse', 'intro', 'features', 'auth',
-		'deleteimg', 'wikipreview', 'fixownership'
+		'deleteimg', 'wikipreview', 'fixownership', 
+		'stats', 'reports'
 	);
 	
 	// Views (plugins or view panels)
@@ -141,13 +142,13 @@ function ProjectsParseRoute($segments)
 		'deletefolder', 'deletefile', 'view', 
 		'new', 'edit', 'save', 'cancel', 
 		'delete', 'deleteversion', 'approve', 
-		'renamepage', 'saverename', 'history', 
+		'rename', 'saverename', 'history', 
 		'compare', 'comments', 'editcomment', 
 		'addcomment', 'savecomment', 'removecomment', 
 		'reportcomment', 'deleterevision' 
 	);
 	
-	// App actioms
+	// App actions
 	$app_actions = array('status', 'history', 'wiki', 'browse', 
 		'edit', 'start', 'save', 'register', 'attach', 'source',
 		'cancel', 'update', 'message'

@@ -26,6 +26,13 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $f = 1;
 $i = 1;
+$skipped = 0;
+
+// Get remote connection
+$objRFile = new ProjectRemoteFile ($this->database);
+
+$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+
 ?>
 <div id="abox-content">
 <h3><?php echo JText::_('COM_PROJECTS_DELETE_PROJECT_FILES'); ?></h3>
@@ -38,42 +45,75 @@ if ($this->getError()) {
 <?php
 if (!$this->getError()) { 
 ?>
-<form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'id='.$this->project->id); ?>">
+<form id="hubForm-ajax" method="post" class="" action="<?php echo $this->url; ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
-		<input type="hidden" name="action" value="removeit" />
+		<input type="hidden" name="<?php echo $this->do ?>" value="removeit" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="case" value="<?php echo $this->case; ?>" />
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<!--<p class="anote"><?php echo JText::_('COM_PROJECTS_DELETE_FILES_NOTE'); ?></p> -->
+
 		<p><?php echo JText::_('COM_PROJECTS_DELETE_FILES_CONFIRM'); ?></p>
-		<?php if(count($this->folders) > 0 && $this->folders[0] != '') { ?>
-			<p class="warning"><?php echo JText::_('COM_PROJECTS_DELETE_FILES_CONFIRM_WARNING'); ?></p>
+		
+		<ul class="sample"> 
+		<?php foreach ($this->items as $element) 
+		{ 
+			$skip 	= false;
+			$remote = NULL;
+			
+			foreach ($element as $type => $item)
+			{
+				// Get type and item name
+			} 
+			
+			// Remote file?
+			if (!empty($this->services))
+			{
+				foreach ($this->services as $servicename)
+				{		
+					// Get stored remote connection to file	
+					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item; 		
+					$remote = $objRFile->getConnection($this->project->id, '', $servicename, $fpath);
+					if ($remote)
+					{
+						break;
+					}
+				}
+			}
+				
+			// Display list item with file data
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'projects',
+					'element'=>'files',
+					'name'=>'selected'
+				)
+			);
+			$view->skip 		= $skip;
+			$view->item 		= $item;
+			$view->remote		= $remote;
+			$view->type			= $type;
+			$view->action		= 'delete';
+			$view->multi		= 'multi';
+			echo $view->loadTemplate();
+		} ?>
+		</ul>
+		
+		<?php if (!empty($this->services) && $skipped > 0)  { ?>
+			<p class="notice"><?php echo JText::_('COM_PROJECTS_FILES_DELETE_REMOTE_NEED_CONNECTION'); ?></p>
 		<?php } ?>
-		<ul>
-		<?php if(count($this->folders) > 0 && $this->folders[0] != '') { foreach ($this->folders as $folder) {  ?>
-		<li>	<img src="/plugins/projects/files/images/folder.gif" alt="<?php echo urldecode($folder); ?>" />
-		<?php	
-			echo urldecode($folder); 
-			$f++; 
-			echo '<input type="hidden" name="folder[]" value="'.$folder.'" /></li>';
-		} } ?></ul>
-		<ul>
-	<?php if(count($this->checked) > 0 && $this->checked[0] != '') { foreach ($this->checked as $checked) { 
-		$path = $this->subdir ? $this->path.DS.$this->subdir : $this->path;
-		$ext = ProjectsHtml::getFileAttribs( $checked, $path, 'ext' );
-		 ?>
-		<li>	<img src="<?php echo ProjectsHtml::getFileIcon($ext); ?>" alt="<?php echo urldecode($checked); ?>" />
-		<?php
-			echo urldecode($checked); 
-			$f++; 
-			echo '<input type="hidden" name="asset[]" value="'.$checked.'" /></li>';
-		} } ?></ul>
+		
 		<p class="submitarea">
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" id="submit-ajaxform" />
-			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<?php if ($this->ajax) { ?>
+				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<?php } else {  ?>
+				<span class="btn btncancel">
+					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+				</span>
+			<?php } ?>
 		</p>		
 	</fieldset>
 </form>

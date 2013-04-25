@@ -45,10 +45,11 @@ if(count($desect_path) > 0) {
 }
 
 $shown = array();
+$skipped = 0;
 	
 ?>
 <form action="<?php echo JRoute::_($route).'?active=publications'; ?>" method="post" enctype="multipart/form-data" id="upload-form" >
-	<ul id="c-browser" 	<?php if(count($this->files) == 0) { echo 'class="hidden"'; } ?>>
+	<ul id="c-browser" 	<?php if(count($this->files) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?>>
 		<?php 
 		if($this->subdir) { ?>
 			<li><a href="<?php echo $p_url.'/?action=browser'.a.'subdir='.$parent; ?>" class="uptoparent gotodir"><?php echo JText::_('COM_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a></li>
@@ -63,17 +64,18 @@ $shown = array();
 			array_multisort($this->files, SORT_ASC, SORT_STRING, $names, SORT_ASC );			
 			$i = 0;
 			foreach($this->files as $file) {
-				if($this->images) {
-				//	if(!in_array(strtolower($file['ext']), $this->image_ext)) {
-					if(!in_array(strtolower($file['ext']), $this->image_ext) && !in_array(strtolower($file['ext']), $this->video_ext)) {
-						// Skip non-image/video files
+				if ($this->images) 
+				{
+					// Skip non-image/video files
+					if (!in_array(strtolower($file['ext']), $this->image_ext) && !in_array(strtolower($file['ext']), $this->video_ext)) {
 						continue;
 					}
 				}
-				if(in_array($file['fpath'], $this->exclude)) {
-					// Skip files attached in another role
+				// Skip files attached in another role
+				if (in_array($file['fpath'], $this->exclude)) {
 					continue;
 				}
+								
 				// Ignore hidden files
 				if(substr(basename($file['fpath']), 0, 1) == '.')
 				{
@@ -82,7 +84,7 @@ $shown = array();
 				$shown[] = $file['fpath'];
 			
 				 ?>
-			<li class="c-click item|file::<?php echo urlencode($file['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo $file['fpath']; ?></li>
+			<li class="c-click" id="file::<?php echo urlencode($file['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($file['fpath'], 50); ?></li>
 		<?php		
 			$i++;
 		?>
@@ -125,11 +127,12 @@ $shown = array();
 	// Add missing items
 	if(count($missing) > 0) {
 		foreach ($missing as $miss) { ?>
-			<li class="c-click item|file::<?php echo urlencode($miss['fpath']); ?> i-missing"><img src="<?php echo ProjectsHtml::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo $miss['fpath']; ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
+			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
 	<?php	}
 	}		
 	 ?>
 	</ul>
+	<?php if ($this->project->provisioned) { ?>
 		<label class="addnew">
 			<input name="upload[]" type="file" size="20" class="option" id="uploader" /> 
 		</label>
@@ -151,4 +154,14 @@ $shown = array();
 			<input type="hidden" name="task" value="submit" />
 			<?php } ?>
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" class="btn yesbtn" id="b-upload" />
+			<p id="statusmsg"></p>
+	<?php } ?>	
 </form>	
+
+<?php if ((count($shown) + count($missing)) == 0) { ?>
+	<p class="noresults"><?php echo $this->images ? JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_IMAGES') : JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_FILES'); ?></p>
+<?php } ?>
+
+<?php if (!$this->project->provisioned) { ?>
+	<p class="addnew">Go to <a href="<?php echo JRoute::_($route).'?active=files'; ?>">Files</a> browser to upload <?php if (count($shown) > 0) { echo 'more'; } ?> files</p>
+<?php } ?>

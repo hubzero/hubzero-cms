@@ -107,8 +107,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$app =& JFactory::getApplication();
 		
 		// Push some styles to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addComponentStylesheet('com_projects');
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet(DS .'components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'projects.css');
 			
 		// Get filters
 		$view->filters = array();
@@ -167,9 +167,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Push some styles to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addComponentStylesheet('com_projects');	
-		Hubzero_Document::addPluginStylesheet('projects', 'files');	
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet(DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'projects.css');
+		$document->addStyleSheet(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'files.css');		
 		
 		// Do we need to incule extra scripts?
 		$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
@@ -177,12 +177,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		if (!$plugin || !$p_params->get('activateAdmin'))
 		{
-			$document =& JFactory::getDocument();
 			$document->addScript(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'files.js');
 		}
 		else
 		{
-			Hubzero_Document::addPluginScript('projects', 'files');
+			$document->addScript(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'files.jquery.js');
 		}
 		
 		// Instantiate a new view
@@ -512,11 +511,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
 		
-		if(is_file(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php')) 
+		if (is_file(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php')) 
 		{
 			include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php');
 		}
-		$masterscope = 'projects' . DS . $alias.DS.'notes';
+		$masterscope = 'projects' . DS . $alias . DS . 'notes';
 		
 		// Get all notes
 		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p 
