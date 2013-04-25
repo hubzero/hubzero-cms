@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * 
  * Long description (if any) ...
  */
-Class Hubzero_Group_Invite_Email extends JTable
+Class Hubzero_Group_InviteEmail extends JTable
 {
 
 	/**
@@ -154,5 +154,25 @@ Class Hubzero_Group_Invite_Email extends JTable
 		$return['exists'] = $exists;
 		$return['added'] = $added;
 	    return $return; 
+	}
+	
+	/**
+	 * Remove Invite Emails
+	 * 
+	 * @param      int $gid Parameter description (if any) ...
+	 * @param      array $emails Parameter description (if any) ...
+	 * @return     array Return description (if any) ...
+	 */
+	public function removeInvites( $gid, $emails )
+	{
+		foreach ($emails as $email)
+		{
+			$sql = "DELETE FROM {$this->_tbl} WHERE gidNumber=" . $this->_db->quote( $gid ) . " AND email=" . $this->_db->quote( $email );
+			$this->_db->setQuery( $sql );
+			$this->_db->query();
+			echo "<pre>";
+			print_r($this->_db);
+			echo "</pre>";
+		}
 	}
 }

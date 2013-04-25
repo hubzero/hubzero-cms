@@ -238,7 +238,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 				$db->setQuery($sql);
 				$view->member_roles = $db->loadAssocList();
 
-				$group_inviteemails = new Hubzero_Group_Invite_Email($this->database);
+				$group_inviteemails = new Hubzero_Group_InviteEmail($this->database);
 				$view->current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
 
 				switch ($view->filter)
