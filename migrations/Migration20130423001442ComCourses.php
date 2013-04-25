@@ -22,7 +22,7 @@ class Migration20130423001442ComCourses extends Hubzero_Migration
 			$query .= "UPDATE `#__courses_assets` SET `subtype` = `type`;
 						UPDATE `#__courses_assets` SET `subtype` = 'quiz' WHERE `type` = 'exam' AND `title` LIKE '%quiz%';
 						UPDATE `#__courses_assets` SET `subtype` = 'homework' WHERE `type` = 'exam' AND `title` LIKE '%homework%';
-						UPDATE `#__courses_assets` SET `subtype` = 'embedded' WHERE `type` = 'video' AND `content` IS NOT NULL;
+						UPDATE `#__courses_assets` SET `subtype` = 'embedded' WHERE `type` = 'video' AND `content` IS NOT NULL AND `content` != '';
 
 						UPDATE `#__courses_assets` SET `type` = 'form' WHERE `type` = 'exam';
 						UPDATE `#__courses_assets` SET `type` = 'text' WHERE `type` = 'note';
