@@ -224,3 +224,7 @@
 		content: "\f00b";
 		top: 0;
 	}
+	.columns,
+	.grid .col {
+		*behavior: url(/media/system/css/boxsizing.htc);
+	}
