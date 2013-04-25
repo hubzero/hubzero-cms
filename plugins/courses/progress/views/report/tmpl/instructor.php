@@ -38,7 +38,7 @@ ximport('Hubzero_User_Profile_Helper');
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
 // Get all section members
-$members = $this->course->offering()->section()->members();
+$members = $this->course->offering()->section()->members(array('student'=>1));
 
 // Refresh the grades
 $this->course->offering()->gradebook()->refresh();
