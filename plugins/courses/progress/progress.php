@@ -117,7 +117,7 @@ class plgCoursesProgress extends JPlugin
 			$this->$action();
 		}
 
-		$layout = ($course->offering()->access('manage')) ? 'instructor' : 'student';
+		$layout = ($course->offering()->section()->access('manage')) ? 'instructor' : 'student';
 
 		// If this is an instructor, see if they want the overall view, or an individual student
 		if($layout == 'instructor')
@@ -130,7 +130,7 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		// Check to see if user is member and plugin access requires members
-		if (!$course->offering()->access('view')) 
+		if (!$course->offering()->section()->access('view')) 
 		{
 			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 			return $arr;
@@ -171,7 +171,7 @@ class plgCoursesProgress extends JPlugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 
 		// Only allow for instructors
-		if (!$this->course->offering()->access('manage'))
+		if (!$this->course->offering()->section()->access('manage'))
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
