@@ -143,14 +143,27 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '3': $type = 'Partner'; break;
 		case '4': $type = 'Course';  break;
 	}
-
-	$members = count($group->get('members'));
-
+	
+	//get group invite emails
+	ximport('Hubzero_Group_InviteEmail');
+	$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail( $this->database );
+	$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
+	
+	//get group membership
+	$members    = $group->get('members');
+	$managers   = $group->get('managers');
+	$applicants = $group->get('applicants');
+	$invitees   = $group->get('invitees');
+	
+	//remove any managers from members list
+	$true_members = array_diff($members, $managers);
+	
+	//build membership tooltip
 	$tip  = '<table><tbody>';
-	$tip .= '<tr><th>' . JText::_('COM_GROUPS_MEMBERS') . '</th><td>' . $members . '</td></tr>';
-	$tip .= '<tr><th>' . JText::_('COM_GROUPS_MANAGERS') . '</th><td>' . count($group->get('managers')) . '</td></tr>';
-	$tip .= '<tr><th>' . JText::_('COM_GROUPS_APPLICANTS') . '</th><td>' . count($group->get('applicants')) . '</td></tr>';
-	$tip .= '<tr><th>' . JText::_('COM_GROUPS_INVITEES') . '</th><td>' . count($group->get('invitees')) . '</td></tr>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_MEMBERS') . '</th><td>' . count($true_members) . '</td></tr>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_MANAGERS') . '</th><td>' . count($managers) . '</td></tr>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_APPLICANTS') . '</th><td>' . count($applicants) . '</td></tr>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_INVITEES') . '</th><td>' . (count($invitees) + count($inviteemails)) . '</td></tr>';
 	$tip .= '</tbody></table>';
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -218,11 +231,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>
 					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=membership&amp;gid=<?php echo $row->cn; ?>" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
-						<?php echo $members; ?>
+						<?php echo count($members); ?>
 					</a>
 <?php } else { ?>
 					<span class="glyph member" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
-						<?php echo $members; ?>
+						<?php echo count($members); ?>
 					</span>
 <?php } ?>
 				</td>

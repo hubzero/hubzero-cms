@@ -43,7 +43,8 @@
 	.adminlist tbody .pending {
 		background-color: #AA3300;
 	}
-	.adminlist tbody .invitee {
+	.adminlist tbody .invitee,
+	.adminlist tbody .inviteemail {
 		background-color: #aaaaaa;
 	}
 

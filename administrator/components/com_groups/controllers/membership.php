@@ -122,7 +122,28 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$this->view->total = $tbl->countMembers($this->view->filters);
 
 		$this->view->rows = $tbl->findMembers($this->view->filters);
+		
+		//add invite emails to list
+		if ($this->view->filters['status'] == '' || $this->view->filters['status'] == 'invitee')
+		{
+			//get group invite emails
+			ximport('Hubzero_Group_InviteEmail');
+			$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail( $this->database );
+			$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
 
+			//add invite emails to list
+			foreach ($inviteemails as $inviteemail)
+			{
+				$this->view->rows[$inviteemail['email']]            = new stdClass;
+				$this->view->rows[$inviteemail['email']]->name      = $inviteemail['email'];
+				$this->view->rows[$inviteemail['email']]->username  = null;
+				$this->view->rows[$inviteemail['email']]->email     = $inviteemail['email'];
+				$this->view->rows[$inviteemail['email']]->uidNumber = null;
+				$this->view->rows[$inviteemail['email']]->role      = 'inviteemail';
+			}
+		}
+		
+		
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -665,6 +686,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$authorized = $this->authorized;
 
 		$users = array();
+		$useremails = array();
 
 		// Get all the group's invitees
 		$invitees = $this->group->get('invitees');
@@ -674,27 +696,42 @@ class GroupsControllerMembership extends Hubzero_Controller
 
 		foreach ($mbrs as $mbr)
 		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
+			//check to see if we are uninviting email
+			if (filter_var($mbr, FILTER_VALIDATE_EMAIL))
 			{
-				$uid = $targetuser->get('id');
-
-				if (in_array($uid,$invitees))
-				{
-					$users[] = $uid;
-				}
+				$useremails[] = $mbr;
 			}
 			else
 			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				// Retrieve user's account info
+				$targetuser =& JUser::getInstance($mbr);
+				
+				// Ensure we found an account
+				if (is_object($targetuser))
+				{
+					$uid = $targetuser->get('id');
+					if (in_array($uid,$invitees))
+					{
+						$users[] = $uid;
+					}
+				}
+				else
+				{
+					$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
+				}
 			}
 		}
-
+		
 		// Remove users from members list
 		$this->group->remove('invitees', $users);
+		
+		//remove any invite emails
+		if (count($useremails) > 0)
+		{
+			ximport('Hubzero_Group_InviteEmail');
+			$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail( $this->database );
+			$hubzeroGroupInviteEmail->removeInvites( $this->group->get('gidNumber'), $useremails );
+		}
 
 		// Save changes
 		$this->group->update();

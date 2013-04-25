@@ -42,10 +42,10 @@ JToolBarHelper::spacer();
 switch ($this->filters['status'])
 {
 	case 'invitee':
-		if ($canDo->get('core.edit')) 
-		{
-			JToolBarHelper::custom('accept', 'publish', JText::_('Accept'), JText::_('Accept'), false, false);
-		}
+		//if ($canDo->get('core.edit')) 
+		//{
+			//JToolBarHelper::custom('accept', 'publish', JText::_('Accept'), JText::_('Accept'), false, false);
+		//}
 		if ($canDo->get('core.delete')) 
 		{
 			JToolBarHelper::custom('uninvite', 'unpublish', JText::_('Uninvite'), JText::_('Uninvite'), false, false);
@@ -102,7 +102,7 @@ function submitbutton(pressbutton)
 		<label for="filter-status"><?php echo JText::_('Status'); ?>:</label> 
 		<select name="status" id="filter-status">
 			<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('User status...'); ?></option>
-			<option value="member"<?php echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option>
+			<!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option> -->
 			<option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>>Manager</option>
 			<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>>Applicant</option>
 			<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>>Invitee</option>
@@ -138,70 +138,46 @@ $k = 0;
 $i = 0;
 foreach ($this->rows as $row)
 {
-	//$row = &$this->rows[$i];
-
-	$reason = new GroupsReason($database);
-	$reason->loadReason($row->username, $this->filters['gidNumber']);
-	if ($reason) {
-		$reasonforjoin = stripslashes($reason->reason);
-	} else {
+	if (isset($row->username))
+	{
+		$reason = new GroupsReason($database);
+		$reason->loadReason($row->username, $this->filters['gidNumber']);
 		$reasonforjoin = '';
+		if ($reason) 
+		{
+			$reasonforjoin = stripslashes( $reason->reason );
+		}
 	}
 	
-	/*$status = 'member';
-	if ($row->applicant)
-	{
-		$status = 'applicant';
-	}
-	if ($row->invitee)
-	{
-		$status = 'invitee';
-	}
-	if ($row->manager)
-	{
-		$status = 'manager';
-	}*/
 	$status = $row->role;
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->uidNumber; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($row->uidNumber); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+<?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
 					<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->uidNumber; ?>">
 						<?php echo $this->escape(stripslashes($row->name)); ?>
 					</a>
-<?php } else { ?>
+<?php else : ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->name)); ?>
 					</span>
-<?php } ?>
+<?php endif; ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->uidNumber; ?>">
-						<?php echo $this->escape(stripslashes($row->username)); ?>
-					</a>
-<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->username)); ?>
 					</span>
-<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->uidNumber; ?>">
-						<?php echo $this->escape(stripslashes($row->email)); ?>
-					</a>
-<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->email)); ?>
 					</span>
-<?php } ?>
 				</td>
 				<td>
 					<span class="status <?php echo $status; ?>">
@@ -214,15 +190,14 @@ foreach ($this->rows as $row)
 	switch ($status)
 	{
 		case 'invitee':
+		case 'inviteemail':
 	?>
-					<a class="state publish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=accept&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('accept'); ?></span>
+					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invintation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+						<span><?php echo JText::_('uninvite'); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invintation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('uninvite'); ?></span>
-					</a>
+					
 	<?php
 		break;
 		case 'applicant':
