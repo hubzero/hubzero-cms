@@ -77,7 +77,7 @@ class plgCoursesOutline extends Hubzero_Plugin
 	{
 		$html = '';
 
-		if ($offering->access('manage'))
+		if ($offering->section()->access('manage'))
 		{
 			$url = 'index.php?option=com_courses'
 				. '&controller=offering'
@@ -205,7 +205,7 @@ class plgCoursesOutline extends Hubzero_Plugin
 	 */
 	private function _build()
 	{
-		if (!$this->course->offering()->access('manage'))
+		if (!$this->course->offering()->section()->access('manage'))
 		{
 			JError::raiseError(401, JText::_('Not Authorized'));
 			return;
