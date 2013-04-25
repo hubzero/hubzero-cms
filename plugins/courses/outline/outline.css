@@ -259,3 +259,43 @@
 	.wiki:after {
 		content: "\f072";
 	}
+
+/* lecture */
+	.video-meta {
+		background: #f9f9f9;
+		padding: 15px;
+		margin: 0;
+		border-right: 1px solid #e1e1e1;
+		border-left: 1px solid #e1e1e1;
+		border-bottom: 1px solid #e1e1e1;
+		position: relative;
+	}
+	.video-meta h3 {
+		margin: 0;
+		padding: 0;
+	}
+	.lecture-nav {
+		padding: 15px;
+		margin: 0;
+	}
+	.lecture-nav .edit {
+		float: right;
+	}
+	.lecture-nav:before,
+	.lecture-nav:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.lecture-nav:after {
+		clear: both;
+	}
+	.lecture-assets {
+		margin: 1em 0;
+		float: none;
+	}
+	.lecture-assets li {
+		display: inline;
+		margin: 0 1em 0 0;
+		padding: 0;
+	}

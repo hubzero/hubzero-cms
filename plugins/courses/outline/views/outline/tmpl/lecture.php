@@ -56,23 +56,9 @@ if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
-	<!-- <div id="steps" class="section">
-		<p>
-			<?php echo $this->escape(stripslashes($unit->get('title'))); ?>
-		</p>
-		<ol class="steps-<?php echo $unit->assetgroups()->total(); ?> active-<?php echo ($current + 1); ?>">
-		<?php foreach ($unit->assetgroups() as $key => $assetgroup) { ?>
-			<li id="step-<?php echo ($key + 1); ?>"<?php echo ($assetgroup->get('id') == $lecture->get('id')) ? ' class="active"' : ($key <= $current ? ' class="completed"' : ''); ?>><?php echo $this->escape(stripslashes($assetgroup->get('title'))); ?></li>
-		<?php } ?>
-		</ol>
-	</div> -->
-
-	<div class="video container" style="text-align: center;">
-		<div class="video-wrap" style="margin: 0 auto; text-align: left;">
-			<h3>
-				<?php echo $lecture->get('title'); ?>
-			</h3>
-
+	<div class="video container">
+		<div class="video-wrap">
+			<div class="video-player-wrap">
 			<?php
 			$used = 0;
 			if ($lecture->assets()->total())
@@ -91,9 +77,16 @@ if (!$this->course->offering()->access('view')) { ?>
 				}
 			}
 			?>
+			</div><!-- / .video-player-wrap -->
+			<div class="video-meta">
+				<h3>
+					<?php echo $lecture->get('title'); ?>
+				</h3>
+			
 
 			<ul class="lecture-assets">
 				<?php
+				$exams = array();
 				// Are there any assets?
 				if ($lecture->assets()->total())
 				{
@@ -115,12 +108,16 @@ if (!$this->course->offering()->access('view')) { ?>
 						if ($a->get('type') == 'exam')
 						{
 							$cls = 'edit';
+							$exams[] = '<a class="' . $cls . ' btn" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a>';
 						}
-						if ($a->get('type') == 'link')
+						else
 						{
-							$cls = 'link';
+							if ($a->get('type') == 'link')
+							{
+								$cls = 'link';
+							}
+							echo '<li><a class="' . $cls . '" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 						}
-						echo '<li><a class="' . $cls . ' btn" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 					}
 				}
 				else
@@ -129,6 +126,7 @@ if (!$this->course->offering()->access('view')) { ?>
 				}
 				?>
 			</ul>
+			</div>
 
 			<p class="lecture-nav">
 			<?php 
@@ -188,6 +186,11 @@ if (!$this->course->offering()->access('view')) { ?>
 					<?php echo JText::_('Next'); ?>
 				</a>
 			<?php } ?>
+			<?php 
+			if (count($exams) > 0) {
+				echo implode("\n", $exams);
+			}
+			?>
 			</p>
 
 		<?php if ($lecture->get('description')) { ?>
