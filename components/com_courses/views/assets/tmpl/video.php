@@ -41,7 +41,7 @@ $manifest_path_xml  = null;
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 
 // Check to make sure we have a presentation document defining cuepoints, slides, and media
-if(is_dir(JPATH_ROOT . $path))
+if (is_dir(JPATH_ROOT . $path))
 {
 	$manifest_path_json = JFolder::files(JPATH_ROOT . $path, 'presentation.json', true, true);
 	$manifest_path_xml  = JFolder::files(JPATH_ROOT . $path, 'presentation.xml', true, true);
@@ -153,6 +153,11 @@ if ($type == 'hubpresenter')
 	// Content folder
 	$content_folder = ltrim(rtrim($media_path, DS), JPATH_ROOT);
 
+	if (is_dir($content_folder))
+	{
+		$subs = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT', true, true);
+	}
+
 	// Decode the json formatted manifest so we can use the information
 	$presentation = json_decode($contents);
 	$presentation = $presentation->presentation;
@@ -164,14 +169,14 @@ if ($type == 'hubpresenter')
 	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter");
 	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
 }
-elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
+elseif ($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 {
 	// Instanticate our variables
 	$videos    = array();
 	$video_mp4 = array();
 	$subs      = array();
 
-	if(is_dir(JPATH_ROOT . $path))
+	if (is_dir(JPATH_ROOT . $path))
 	{
 		// Look for video files and subtitle files in our path
 		$videos    = JFolder::files(JPATH_ROOT . $path, '.m4v|.M4V|.mpeg|.MPEG|.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
@@ -195,35 +200,33 @@ elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 }
 
 // Include media tracking for html5 and hubpresenter videos
-if ($type == 'html5' || $type == 'hubpresenter')
+// Media tracking object
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+$mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
+
+// Get tracking for this user for this resource
+$tracking = $mediaTracking->getTrackingInformationForUserAndResource(JFactory::getUser()->get('id'), $this->asset->id, 'course');
+
+// Check to see if we already have a time query param
+$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+
+// Do we want to redirect user with time added to url
+if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 {
-	// Media tracking object
-	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
-	$mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
+	$redirect = JURI::current();
 
-	// Get tracking for this user for this resource
-	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(JFactory::getUser()->get('id'), $this->asset->id, 'course');
+	$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
 
-	// Check to see if we already have a time query param
-	$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+	// Append current position to redirect
+	$redirect .= $delimeter . "time=" . gmdate("H:i:s", $tracking->current_position);
 
-	// Do we want to redirect user with time added to url
-	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
-	{
-		$redirect = JURI::current();
-
-		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
-
-		// Append current position to redirect
-		$redirect .= $delimeter . "time=" . gmdate("H:i:s", $tracking->current_position);
-
-		// Redirect
-		JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
-	}
+	// Redirect
+	JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
 }
+
 ?>
 
-<?php if($type == 'html5') : ?>
+<?php if ($type == 'html5') : ?>
 	<div id="video-container">
 		<?php if (isset($videos) && is_array($videos) && count($videos) > 0) : ?>
 			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->get('id'); ?>">
@@ -244,10 +247,10 @@ if ($type == 'html5' || $type == 'hubpresenter')
 
 				<a href="<?php echo $path . DS . $video_mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$width}px;height:{$height}px;"; ?>"></a>
 
-				<?php if (count($subs) > 0) : ?>
+				<?php if (isset($subs) && count($subs) > 0) : ?>
 					<?php foreach ($subs as $s) : ?>
 						<?php $info2 = pathinfo($s); ?>
-						<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $path . DS . $s; ?>"></div>
+						<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $path . DS . $s; ?>?v=<?php echo filemtime( JPATH_ROOT . $path . DS . $s ); ?>"></div>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</video>
@@ -335,6 +338,14 @@ if ($type == 'html5' || $type == 'hubpresenter')
 								<source src="<?php echo $content_folder . DS . $source->source; ?>" type='<?php echo $type; ?>'>
 							<?php endforeach; ?>
 							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer"></a>
+
+							<?php if (isset($subs) && count($subs) > 0) : ?>
+								<?php foreach($subs as $sub) : ?>
+									<?php $info2 = pathinfo($sub); ?>
+									<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $content_folder . DS . $sub; ?>?v=<?php echo filemtime( JPATH_ROOT . $content_folder . DS . $sub ); ?>"></div>
+								<?php endforeach; ?>
+							<?php endif; ?>
+
 						</video>
 					<?php else : ?>
 						<audio id="player" preload="auto" controls="controls">
