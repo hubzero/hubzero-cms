@@ -3292,7 +3292,7 @@ CREATE TABLE `viewperm` (
   PRIMARY KEY (`sessnum`,`viewuser`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY DEFINER VIEW `#__resource_contributors_view` AS
+CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY INVOKER VIEW `#__resource_contributors_view` AS
     select `m`.`uidNumber` AS `uidNumber`, count(`AA`.`authorid`) AS `count`
     from ((`#__xprofiles` `m`
         left join `#__author_assoc` `AA` ON (((`AA`.`authorid` = `m`.`uidNumber`)
@@ -3302,7 +3302,7 @@ CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY DEFINER VIEW `#
             and (`R`.`standalone` = 1))))
     where (`m`.`public` = 1) group by `m`.`uidNumber`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY DEFINER VIEW `#__wiki_contributors_view` AS
+CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY INVOKER VIEW `#__wiki_contributors_view` AS
     select `m`.`uidNumber` AS `uidNumber`, count(`w`.`id`) AS `count`
     from (`#__xprofiles` `m`
         left join `#__wiki_page` `w` ON (((`w`.`access` <> 1)
@@ -3311,13 +3311,13 @@ CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY DEFINER VIEW `#
             and (`w`.`authors` like concat(_utf8'%', `m`.`username`, _utf8'%')))))))
     where ((`m`.`public` = 1) and (`w`.`id` is not null)) group by `m`.`uidNumber`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY DEFINER VIEW `#__contributor_ids_view` AS
+CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY INVOKER VIEW `#__contributor_ids_view` AS
     select `#__resource_contributors_view`.`uidNumber` AS `uidNumber`
     from `#__resource_contributors_view` 
     union select `#__wiki_contributors_view`.`uidNumber` AS `uidNumber`
     from`#__wiki_contributors_view`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY DEFINER VIEW `#__contributors_view` AS
+CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY INVOKER VIEW `#__contributors_view` AS
     select `c`.`uidNumber` AS `uidNumber`,
         coalesce(`r`.`count`, 0) AS `resource_count`,
         coalesce(`w`.`count`, 0) AS `wiki_count`,
