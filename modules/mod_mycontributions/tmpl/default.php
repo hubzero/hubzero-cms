@@ -102,7 +102,7 @@ if ($this->show_tools && $tools) {
 					$html .= '</span>'."\n";
 				}
 			}
-			$html .= '<span class="under">'.JText::_('Status').': <span class="status_'.$this->getState($tools[$i]->state).'"><a href="'.JRoute::_('index.php?option=tools&controller=pipeline&task=status&app='.$tools[$i]->toolname).'" title="'.JText::_('This tool is now in').' '.$this->getState($tools[$i]->state).' '.JText::_('status').$urgency.'">'.$this->getState($tools[$i]->state).'</a></span></span>'."\n";
+			$html .= '<span class="under">'.JText::_('Status').': <span class="status_'.$this->getState($tools[$i]->state).'"><a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline&task=status&app='.$tools[$i]->toolname).'" title="'.JText::_('This tool is now in').' '.$this->getState($tools[$i]->state).' '.JText::_('status').$urgency.'">'.$this->getState($tools[$i]->state).'</a></span></span>'."\n";
 			$html .= '</li>'."\n";
 		}
 	}
