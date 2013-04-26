@@ -61,11 +61,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="subject">
 		<div class="two columns first">
 			<h3>Why be a member?</h3>
-			<p>Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exists for a specific interest or topic. If you can't find one you like, feel free to start your own.</p>
+			<p>As a member, you instantly become part of a community designed
+for you and your colleagues.  Being part of the community provides quick and easy access to share knowledge with
+fellow researchers around the world helping you achieve more of your
+goals.  Membership is free, get started today!</p>
 		</div>
 		<div class="two columns second">
 			<h3>How do I become a member?</h3>
-			<p>Groups can either be public, restricted (users may read a brief description or overview but not view content) or completely private. Every group has a wiki, a pool for resources, and a discussion board for talking.</p>
+			<p>To become a member, click on the register link at the top of the page,
+create a username and password, and complete the rest of the form.  After
+submitting, you will receive a confirmation email momentarily; please
+follow the instructions within.  You are now part of the unique experience
+that is the HUB!</p>
 		</div>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
