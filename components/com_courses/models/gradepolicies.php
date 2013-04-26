@@ -73,18 +73,27 @@ class CoursesModelGradePolicies extends CoursesModelAbstract
 	/**
 	 * Replace placeholders in criteria strings
 	 *
-	 * @param      string $field to replace values in
-	 * @param      array $placeholders values to replace with
-	 * @return     string with replacements in place
+	 * @param      string $field        - to replace values in
+	 * @param      array  $placeholders - values to replace with
+	 * @return     string $field        - with replacements in place (i.e. should be a valid SQL statement)
 	 **/
-	public function replacePlaceholders($field, $placholders)
+	public function replacePlaceholders($field, $placeholders)
 	{
 		$field = $this->get($field);
 
-		foreach ($placholders as $p=>$v)
+		// Loop through our placeholders and insert real values
+		foreach ($placeholders as $p=>$v)
 		{
-			$field = str_replace("[[{$p}]]", $v, $field);
+			if (!is_null($v) && $v !== false)
+			{
+				$field = preg_replace('/(\[\[:'.$p.':)((?!\{\{).*?)(\{\{var\}\})((?!\[\[).*?)(\]\])/i', '${2}'.$v.'${4}', $field);
+				$field = preg_replace('/(\[\[::'.$p.'::)((?!\[\[).*?)(\]\])/i', '${2}', $field);
+			}
 		}
+
+		// Now get rid of any placeholders that aren't being used
+		$field = preg_replace('/(\[\[:.*:)(.*)(\]\])/i', '', $field);
+		$field = preg_replace('/(\[\[::.*::)(.*)(\]\])/i', '', $field);
 
 		return $field;
 	}

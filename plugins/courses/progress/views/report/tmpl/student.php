@@ -278,7 +278,18 @@ $progress_timeline .= '</div>';
 			<div class="current-score-inner">
 				<p class="grading-policy"><?= JText::_('grading policy') ?></p>
 				<p class="title"><?= JText::_('Your current score') ?></p>
-				<p class="score<?= ($passing) ? ' passing' : ' failing' ?>">
+				<?
+					$cls = '';
+					if ($passing === '1')
+					{
+						$cls = ' passing';
+					}
+					elseif ($passing === '0')
+					{
+						$cls = ' failing';
+					}
+				?>
+				<p class="score<?= $cls ?>">
 					<?=
 						(isset($grades[$this->juser->get('id')]['course'][$this->course->get('id')]))
 							? $grades[$this->juser->get('id')]['course'][$this->course->get('id')] . '%'

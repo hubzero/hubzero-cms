@@ -106,14 +106,15 @@ $policy = $gradePolicy->get('description');
 						</div>
 						<div class="progress-bar-container">
 							<div class="progress-bar-inner">
-								<? if (isset($grades[$m->get('user_id')]['course'][$this->course->get('id')])) : ?>
+								<? if (isset($grades[$m->get('user_id')]) && isset($grades[$m->get('user_id')]['course'][$this->course->get('id')])) : ?>
 									<?
 										$cls = '';
-										if($passing[$m->get('user_id')]->passing)
+
+										if(isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')]->passing === '1')
 										{
 											$cls = ' go';
 										}
-										else
+										elseif (isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')]->passing === '0')
 										{
 											$cls = ' stop';
 										}

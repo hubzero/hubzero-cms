@@ -179,15 +179,12 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 	/**
 	 * Calculate scores for each unit and the course as a whole
-	 *
-	 * This should be expanded to account for a scenario where only
-	 * a midterm and final count toward the grade (as an example).
 	 * 
 	 * @param      int $user_id
 	 * @param      int $asset_id
 	 * @return     boolean true on success, false otherwise
 	 */
-	public function calculateScores($user_id, $asset_id=null)
+	public function calculateScores($user_id=null, $asset_id=null)
 	{
 		// We need one of $course or $asset_id
 		if (is_null($this->course) && is_null($asset_id))
@@ -218,73 +215,26 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		// Get a grade policy object
-		$policy  = $course->offering()->section()->get('grade_policy_id');
-		$gradePolicy = new CoursesModelGradePolicies($policy);
+		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'));
 
 		// Get the grading policy score criteria
-		$score_criteria = json_decode($gradePolicy->get('score_criteria'));
+		$placeholders   = array('course_id'=>$course_id, 'scope'=>'course', 'user_id'=>$user_id);
+		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', $placeholders);
 
-		// Add user and course to query
-		$score_criteria->where[] = (object) array('field'=>'user_id','operator'=>'=','value'=>$user_id);
-		$score_criteria->where[] = (object) array('field'=>'course_id','operator'=>'=','value'=>$course_id);
-
-		// Compute course grade
-		$grade = $this->_tbl->calculateScore($score_criteria, 'loadResult');
-
-		if (!is_null($grade))
+		// Compute course grades
+		if (!$this->_tbl->updateScores($score_criteria))
 		{
-			// First, check to see if a score for this asset and user already exists
-			$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$course_id, 'scope'=>'course'));
-			$gb_id   = ($results) ? $results[0]->id : null;
-
-			// Save the score to the grade book
-			$gradebook = new CoursesModelGradeBook($gb_id);
-			$gradebook->set('user_id', $user_id);
-			$gradebook->set('score', round($grade, 2));
-			$gradebook->set('scope', 'course');
-			$gradebook->set('scope_id', $course_id);
-
-			if (!$gradebook->store())
-			{
-				return false;
-			}
+			return false;
 		}
 
-		// Now, get unit scores
-		$score_criteria = json_decode($gradePolicy->get('score_criteria'));
-
-		// Add a few things to the select, from, and group by clauses to correctly calculate unit scores
-		$score_criteria->select[] = (object) array('value'=>'cag.unit_id as unit_id');
-		$score_criteria->from[]   = (object) array('value'=>'LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id');
-		$score_criteria->from[]   = (object) array('value'=>'LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id');
-		$score_criteria->where[]  = (object) array('field'=>'user_id','operator'=>'=','value'=>$user_id);
-		$score_criteria->where[]  = (object) array('field'=>'course_id','operator'=>'=','value'=>$course_id);
-		$score_criteria->group[]  = (object) array('value'=>'cag.unit_id');
+		// Get the grading policy score criteria
+		$placeholders   = array('course_id'=>$course_id, 'scope'=>'unit', 'user_id'=>$user_id, 'unit'=>true);
+		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', $placeholders);
 
 		// Compute unit grades
-		$grades = $this->_tbl->calculateScore($score_criteria, 'loadObjectList');
-
-		// Now, loop through the course units and save unit scores
-		foreach ($grades as $g)
+		if (!$grades = $this->_tbl->updateScores($score_criteria))
 		{
-			if (!is_null($g->average))
-			{
-				// First, check to see if a score for this asset and user already exists
-				$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$g->unit_id, 'scope'=>'unit'));
-				$gb_id   = ($results) ? $results[0]->id : null;
-
-				// Save the score to the grade book
-				$gradebook = new CoursesModelGradeBook($gb_id);
-				$gradebook->set('user_id', $user_id);
-				$gradebook->set('score', round($g->average, 2));
-				$gradebook->set('scope', 'unit');
-				$gradebook->set('scope_id', $g->unit_id);
-
-				if (!$gradebook->store())
-				{
-					return false;
-				}
-			}
+			return false;
 		}
 
 		// Success
@@ -301,20 +251,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	{
 		$this->_tbl->syncGrades($this->course->get('id'), $user_id);
 
-		if (is_null($user_id))
-		{
-			$members = $this->course->offering()->section()->members();
-
-			foreach ($members as $m)
-			{
-				// Compute unit and course scores as well
-				$this->calculateScores($m->get('user_id'));
-			}
-		}
-		else
-		{
-			$this->calculateScores($user_id);
-		}
+		// Compute unit and course scores as well
+		$this->calculateScores($user_id);
 	}
 
 	/**
@@ -322,11 +260,9 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 *
 	 * @param      int $user_id (optional)
 	 * @param      bool $section only (optional)
-	 * @param      bool $count (optional)
-	 * @param      string $status (passing or failing)
 	 * @return     array
 	 **/
-	public function passing($section=true, $user_id=null, $count=false, $status=null)
+	public function passing($section=true, $user_id=null)
 	{
 		// Get the course id
 		if (!is_object($this->course))
@@ -338,42 +274,28 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$queryType = 'loadObjectList';
 
 		// Get a grade policy object
-		$policy  = $this->course->offering()->section()->get('grade_policy_id');
-		$gradePolicy = new CoursesModelGradePolicies($policy);
+		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
 
 		// Get the grading policy score criteria
-		$grade_criteria = json_decode($gradePolicy->get('grade_criteria'));
-		$grade_criteria->select[] = (object) array('value'=>'cgb.user_id AS user_id');
-		$grade_criteria->where[]  = (object) array('field'=>'cgb.scope_id','operator'=>'=','value'=>$this->course->get('id'));
-
-		if ($count && !is_null($status))
-		{
-			if ($status != 'passing' && $status != 'failing')
-			{
-				return false;
-			}
-			$grade_criteria->select[] = (object) array('value'=>'COUNT(*) AS count');
-			$grade_criteria->group[]  = (object) array('value'=>'passing');
-			$key = 'passing';
-		}
+		$placeholders = array('scope_id'=>$this->course->get('id'));
 
 		// If section only, add appropriate joins to limit by section
 		if ($section)
 		{
-			$grade_criteria->from[]  = (object) array('value'=>'LEFT JOIN #__courses_members AS cm ON cgb.user_id = cm.user_id');
-			$grade_criteria->where[] = (object) array('field'=>'cm.section_id','operator'=>'=','value'=>$this->course->offering()->section()->get('id'));
+			$placeholders['section_id'] = $this->course->offering()->section()->get('id');
 		}
 
 		// Add the user_id to the query if it's set
 		if (!is_null($user_id) && is_numeric($user_id))
 		{
-			$grade_criteria->where[] = (object) array('field'=>'cgb.user_id','operator'=>'=','value'=>$user_id);
+			$placeholders['user_id'] = $user_id;
 			$queryType = 'loadObject';
 			$key       = '';
 		}
 
 		// Get passing data
-		$passing = $this->_tbl->calculateScore($grade_criteria, $queryType, $key);
+		$grade_criteria = $gradePolicy->replacePlaceholders('grade_criteria', $placeholders);
+		$passing = $this->_tbl->getPassing($grade_criteria, $queryType, $key);
 
 		return $passing;
 	}
@@ -386,9 +308,24 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 **/
 	public function countPassing($section=true)
 	{
-		$rows = $this->passing($section, null, true, 'passing');
+		if ($rows = $this->passing($section))
+		{
+			$countPassing = 0;
 
-		return (isset($rows) && isset($rows[1])) ? $rows[1]->count : '--';
+			foreach ($rows as $r)
+			{
+				if ($r->passing === '1')
+				{
+					$countPassing++;
+				}
+			}
+
+			return $countPassing;
+		}
+		else
+		{
+			return '--';
+		}
 	}
 
 	/**
@@ -399,9 +336,24 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 **/
 	public function countFailing($section=true)
 	{
-		$rows = $this->passing($section, null, true, 'failing');
+		if ($rows = $this->passing($section))
+		{
+			$countFailing = 0;
 
-		return (isset($rows) && isset($rows[0])) ? $rows[0]->count : '--';
+			foreach ($rows as $r)
+			{
+				if ($r->passing === '0')
+				{
+					$countFailing++;
+				}
+			}
+
+			return $countFailing;
+		}
+		else
+		{
+			return '--';
+		}
 	}
 
 	/**
