@@ -147,7 +147,25 @@ ximport('Hubzero_User_Profile_Helper');
 <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
+<?php
+	$watching = new SupportTableWatching(JFactory::getDBO());
+	/*$res = $watching->count(array(
+		'ticket_id' => $this->row->id,
+		'user_id'   => $juser->get('id')
+	));*/
+	$watching->load($this->row->id, $juser->get('id'));
+	/*if ($watching->id)
+	{
+	?>
+	<div id="watching">
+		<p>This ticket is saved in your watch list. <a class="stop-watching" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start'] . '&watch=stop'); ?>">Remove it</a></p>
+	</div>
+	<?php
+	}*/
+	?>
+
 <div class="main section">
+
 	<div class="aside">
 		<div class="ticket-status">
 			<p class="<?php echo (!$this->row->open) ? 'closed' : 'open'; ?>"><strong><?php echo (!$this->row->open) ? JText::_('TICKET_STATUS_CLOSED_TICKET') : JText::_('TICKET_STATUS_OPEN_TICKET'); ?></strong></p>
@@ -156,6 +174,19 @@ ximport('Hubzero_User_Profile_Helper');
 <?php } ?>
 			<!-- <p class="entry-number">#<strong><?php echo $this->row->id; ?></strong></p> -->
 		</div><!-- / .entry-status -->
+	
+		<div class="ticket-watch">
+		<?php if ($watching->id) { ?>
+			<div id="watching">
+				<p>This ticket is saved in your watch list.</p>
+				<p><a class="stop-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start'] . '&watch=stop'); ?>">Stop watching</a></p>
+			</div>
+		<?php } ?>
+		<?php if (!$watching->id) { ?>
+			<p><a class="start-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start'] . '&watch=start'); ?>">Watch ticket</a></p>
+		<?php } ?>
+			<p>When watching a ticket, you will be notified of any comments added or changes made. You may stop watching at any time.</p>
+		</div>
 	</div><!-- / .aside -->
 
 	<div class="subject">

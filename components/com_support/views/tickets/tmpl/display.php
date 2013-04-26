@@ -104,6 +104,13 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 <?php //} ?>
 			<h3><span>Mine</span></h3>
 			<ul id="my-views" class="views">
+			<?php if ($this->acl->check('read', 'tickets')) { ?>
+				<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0'); ?>">
+						<?php echo $this->escape(JText::_('Watch list')); ?> <span><?php echo $this->watchcount; ?></span>
+					</a>
+				</li>
+			<?php } ?>
 	<?php if (count($this->queries['mine']) > 0) { ?>
 		<?php foreach ($this->queries['mine'] as $query) { ?>
 				<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
@@ -117,7 +124,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 				<?php } ?>
 				</li>
 		<?php } ?>
-	<?php } else { ?>
+	<?php } else if (!$this->acl->check('read', 'tickets')) { ?>
 				<li>
 					<span class="none">(none)</span>
 				</li>

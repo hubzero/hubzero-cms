@@ -41,6 +41,11 @@ include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Emailtoken.p
  */
 class SupportControllerTickets extends Hubzero_Controller
 {
+	/**
+	 * Determine task and execute it
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->acl = SupportACL::getACL();
@@ -669,6 +674,30 @@ class SupportControllerTickets extends Hubzero_Controller
 					// Get the records
 					$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
 				}
+			}
+		}
+
+		$watching = new SupportTableWatching($this->database);
+		$this->view->watchcount = $watching->count(array(
+			'user_id'   => $this->juser->get('id')
+		));
+		if ($this->view->filters['show'] == -1)
+		{
+			$records = $watching->find(array(
+				'user_id'   => $this->juser->get('id')
+			));
+			if (count($records))
+			{
+				$ids = array();
+				foreach ($records as $record)
+				{
+					$ids[] = $record->ticket_id;
+				}
+				$this->view->rows = $obj->getRecords("(f.id IN ('" . implode("','", $ids) . "'))", $this->view->filters);
+			}
+			else
+			{
+				$this->view->rows = array();
 			}
 		}
 
@@ -1726,6 +1755,37 @@ class SupportControllerTickets extends Hubzero_Controller
 			//$this->view->row->report = preg_replace('/  /', ' &nbsp;', $this->view->row->report);
 		//}
 
+		if ($watch = JRequest::getWord('watch', ''))
+		{
+			$watch = strtolower($watch);
+
+			$watching = new SupportTableWatching($this->database);
+			$watching->load($this->view->row->id, $this->juser->get('id'));
+
+			// Not already watching
+			if (!$watching->id) 
+			{
+				// Start watching?
+				if ($watch == 'start')
+				{
+					$watching->ticket_id = $this->view->row->id;
+					$watching->user_id   = $this->juser->get('id');
+					$watching->store();
+				}
+				// Otherwise, do nothing
+			}
+			else
+			// Already watching
+			{
+				// Stop watching?
+				if ($watch == 'stop')
+				{
+					$watching->delete();
+				}
+				// Otherwise, do nothing
+			}
+		}
+
 		$this->view->lists = array();
 
 		// Get resolutions
@@ -2140,6 +2200,20 @@ class SupportControllerTickets extends Hubzero_Controller
 					JPluginHelper::importPlugin('xmessage');
 					$dispatcher =& JDispatcher::getInstance();
 
+					// Find a list of everyone watching this ticket
+					$watching = new SupportTableWatching($this->database);
+					$watchers = $watching->find(array('ticket_id' => $row->id));
+
+					$watcher_ids = array();
+					if (count($watchers) > 0)
+					{
+						foreach ($watchers as $watcher)
+						{
+							$watcher_ids[] = $watcher->user_id;
+						}
+					}
+					$watcher_found = array();
+
 					// Send e-mail to ticket submitter?
 					$email_submitter = JRequest::getInt('email_submitter', 0);
 					if ($email_submitter == 1) 
@@ -2152,6 +2226,11 @@ class SupportControllerTickets extends Hubzero_Controller
 							// Make sure there even IS an e-mail and it's valid
 							if (is_object($zuser) && $zuser->get('id')) 
 							{
+								// Track everyone already messaged so we don't message them twice
+								if (in_array($zuser->get('id'), $watcher_ids))
+								{
+									$watcher_found[] = $zuser->get('id');
+								}
 								$type = 'support_reply_submitted';
 								if ($row->status == 1) 
 								{
@@ -2219,6 +2298,12 @@ class SupportControllerTickets extends Hubzero_Controller
 						{
 							$juser =& JUser::getInstance($row->owner);
 
+							// Track everyone already messaged so we don't message them twice
+							if (in_array($juser->get('id'), $watcher_ids))
+							{
+								$watcher_found[] = $juser->get('id');
+							}
+
 							// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 							if ($allowEmailResponses)
 							{
@@ -2261,6 +2346,11 @@ class SupportControllerTickets extends Hubzero_Controller
 								// Did we find an account?
 								if (is_object($juser)) 
 								{
+									// Track everyone already messaged so we don't message them twice
+									if (in_array($juser->get('id'), $watcher_ids))
+									{
+										$watcher_found[] = $juser->get('id');
+									}
 
 									if ($allowEmailResponses)
 									{
@@ -2335,6 +2425,13 @@ class SupportControllerTickets extends Hubzero_Controller
 							echo SupportHtml::alert($rowc->getError());
 							exit();
 						}
+					}
+
+					// Message people watching this ticket
+					$watch = array_diff($watcher_ids, $watcher_found);
+					if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, $watch, $this->_option))) 
+					{
+						$this->setError(JText::_('Failed to message watchers.'));
 					}
 				}
 			}
