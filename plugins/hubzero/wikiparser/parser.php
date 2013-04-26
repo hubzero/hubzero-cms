@@ -438,7 +438,7 @@ class WikiParser
 		$this->alinks = array();
 		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 		$text = preg_replace_callback("/$UrlPtrn/", array(&$this, 'linkAuto'), $text);
-		$text = preg_replace_callback("/([\s]*)[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", array(&$this, 'linkAuto'), $text);
+		$text = preg_replace_callback("/([\s]*)[\._a-zA-Z0-9-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}/i", array(&$this, 'linkAuto'), $text);
 
 		// Camelcase links (e.g. MyLink) 
 		//$camelcase = false;
