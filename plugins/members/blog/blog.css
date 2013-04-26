@@ -49,6 +49,13 @@
 	ol.blog-entries li li {
 	    margin-left: 20px;
 	}
+	ol.blog-entries .expired .entry-title:before {
+		content: "\f070";
+		font-family: "Fontcons";
+	}
+	ol.blog-entries .expired .entry-content {
+		color: #ccc;
+	}
 	ol.blog-entries dl.entry-meta {
 		margin: 0.5em 0;
 		padding: 0;

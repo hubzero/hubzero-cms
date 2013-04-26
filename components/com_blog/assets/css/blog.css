@@ -88,6 +88,13 @@
 		margin: -0.5em 0 0 0;
 		padding: 0;
 	}
+	ol.blog-entries .expired .entry-title:before {
+		content: "\f070";
+		font-family: "Fontcons";
+	}
+	ol.blog-entries .expired .entry-content {
+		color: #ccc;
+	}
 	ol.blog-entries li dl.entry-meta dt a.comment-counter:link,
 	ol.blog-entries li dl.entry-meta dt a.comment-counter:visited,
 	ol.blog-entries li dl.entry-meta dt a.comment-counter:active {

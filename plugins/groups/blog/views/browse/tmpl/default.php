@@ -244,6 +244,11 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						$cls = "private";
 						break;
 				}
+				$date =& JFactory::getDate();
+				if ($row->publish_down != '0000-00-00 00:00:00' && $row->publish_down <= $date->toMySQL())
+				{
+					$cls .= ' expired';
+				}
 ?>
 				<li class="<?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
 					<h4 class="entry-title">

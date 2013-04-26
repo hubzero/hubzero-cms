@@ -178,6 +178,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->view->filters['scope']    = 'site';
 		$this->view->filters['group_id'] = 0;
 		$this->view->filters['search']   = JRequest::getVar('search', '');
+		$this->view->filters['authorized'] = false;
 
 		$this->view->filters['state'] = 'public';
 		if (!$this->juser->get('guest')) 
@@ -187,6 +188,7 @@ class BlogControllerEntries extends Hubzero_Controller
 			if ($this->view->config->get('access-manage-component')) 
 			{
 				$this->view->filters['state'] = 'all';
+				$this->view->filters['authorized'] = true;
 			}
 		}
 

@@ -229,6 +229,7 @@ class plgMembersBlog extends JPlugin
 		$filters['scope'] = 'member';
 		$filters['group_id'] = 0;
 		$filters['search'] = JRequest::getVar('search','');
+		$filters['authorized'] = false;
 
 		$juri =& JURI::getInstance();
 		$path = $juri->getPath();
@@ -252,6 +253,10 @@ class plgMembersBlog extends JPlugin
 			{
 				$filters['state'] = 'registered';
 			}
+		}
+		if ($juser->get('id') == $this->member->get('uidNumber'))
+		{
+			$filters['authorized'] = true;
 		}
 
 		$be = new BlogEntry($this->database);

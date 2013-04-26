@@ -288,6 +288,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$filters['scope']      = 'group';
 		$filters['group_id']   = $this->group->get('gidNumber');
 		$filters['search']     = JRequest::getVar('search','');
+		$filters['authorized'] = false;
 
 		$juri =& JURI::getInstance();
 		$path = $juri->getPath();
@@ -314,6 +315,10 @@ class plgGroupsBlog extends Hubzero_Plugin
 			 && $this->authorized != 'admin') 
 			{
 				$filters['state'] = 'registered';
+			}
+			else
+			{
+				$filters['authorized'] = true;
 			}
 		}
 
