@@ -318,7 +318,15 @@ class plgGroupsBlog extends Hubzero_Plugin
 			}
 			else
 			{
-				$filters['authorized'] = true;
+				if ($this->authorized == 'manager' 
+				 || $this->authorized == 'admin')
+				{
+					$filters['authorized'] = true;
+				}
+				else
+				{
+					$filters['authorized'] = $juser->get('id');
+				}
 			}
 		}
 
