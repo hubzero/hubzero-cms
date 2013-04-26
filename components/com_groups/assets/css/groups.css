@@ -911,7 +911,9 @@ span.group-pending {
 	display: block;
 	padding: 0;
 	background: transparent;
-	/*max-width: 100%;*/
+	max-width: 100%;
+	max-width: 600px\9;
+	*max-width: 600px\9;
 }
 #page_content .figcaption {
 	display: block;
