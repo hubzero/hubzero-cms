@@ -57,6 +57,20 @@ class CronControllerJobs extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		ximport('Hubzero_Environment');
+		$ip = Hubzero_Environment::ipAddress();
+
+		$ips = explode(',', $this->config->get('whitelist', '127.0.0.1'));
+		$ips = array_map('trim', $ips);
+
+		if (!in_array($ip, $ips))
+		{
+			JError::raiseError(404, JText::_('Page not found.'));
+			return;
+		}
+
+		JRequest::setVar('no_html', 1);
+		JRequest::setVar('tmpl', 'component');
 		$this->view->no_html = JRequest::getInt('no_html', 0);
 
 		$model = new CronModelJobs();
