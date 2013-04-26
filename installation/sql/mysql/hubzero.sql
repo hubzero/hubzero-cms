@@ -2264,8 +2264,8 @@ CREATE TABLE `#__tags` (
   `description` text,
   `admin` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  FULLTEXT KEY `description` (`description`),
-  FULLTEXT KEY `#__tags_raw_tag_alias_description_ftidx` (`raw_tag`,`description`)
+  FULLTEXT KEY `ftidx_description` (`description`),
+  FULLTEXT KEY `ftidx_raw_tag_description` (`raw_tag`,`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_group` (
@@ -2297,7 +2297,10 @@ CREATE TABLE `#__tags_object` (
   `tbl` varchar(255) DEFAULT NULL,
   `label` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `#__tags_object_objectid_tbl_idx` (`objectid`,`tbl`)
+  KEY `idx_objectid_tbl` (`objectid`,`tbl`),
+  KEY `idx_label_tagid` (`label`,`tagid`),
+  KEY `idx_tbl_objectid_label_tagid` (`tbl`,`objectid`,`label`,`tagid`),
+  KEY `idx_tagid` (`tagid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_substitute` (
@@ -2307,7 +2310,8 @@ CREATE TABLE `#__tags_substitute` (
   `raw_tag` varchar(100) DEFAULT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_tag_id` (`tag_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__templates_menu` (
