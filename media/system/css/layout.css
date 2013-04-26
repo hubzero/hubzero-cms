@@ -135,6 +135,8 @@
 		outline: none;
 		display: inline-block;
 		*display: inline;
+		padding: 7px 5px 8px 5px\9;
+		*padding: 7px 5px 8px 5px;
 	}
 	.data-entry input.entry-search-submit {
 		width: auto;
@@ -179,7 +181,10 @@
 	.data-entry .applied-tags {
 		margin-top: 0px;
 		padding: 0.5em 1em;
+		background-color: #888;
 		background-color: rgba(255, 255, 255, 0.2);
+		background-color: #888\9;
+		*background-color: #888;
 		-webkit-border-radius: 0 0 0.25em 0.25em;
 		-moz-border-radius: 0 0 0.25em 0.25em;
 		-ms-border-radius: 0 0 0.25em 0.25em;

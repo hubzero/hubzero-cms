@@ -55,9 +55,11 @@
 		display: block;
 		margin: 0;
 		padding: 0;
+		width: 15em\9;
 	}
 	.course_notes fieldset.filters input {
 		padding: 0.35em 0.41em;
+		padding: 0.35em 0.41em 0.7em 0.41em\9;
 		background: #f1f1f1;
 		margin: 0;
 		border: 1px solid #bbb;
@@ -77,6 +79,7 @@
 	}
 	.course_notes fieldset.filters input.filter-submit {
 		background: #f1f1f1;
+		padding: 0.35em 0.41em\9;
 		-webkit-border-radius: 0 0.25em 0.25em 0;
 		-moz-border-radius: 0 0.25em 0.25em 0;
 		-ms-border-radius: 0 0.25em 0.25em 0;
@@ -282,6 +285,7 @@
 		padding: 1em;
 		resize: none;
 		font-weight: bold;
+		overflow: auto; /* For IE */
 	}
 	.jSticky-medium p {
 		font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;

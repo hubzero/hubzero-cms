@@ -228,6 +228,9 @@
 	.announcements form label span {
 		display: none;
 	}
+	.announcements form label textarea {
+		width: 100%;
+	}
 	.announcements form .submit {
 		clear: both;
 		margin: -1.5em 0 1em 0;
