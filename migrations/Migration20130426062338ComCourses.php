@@ -13,6 +13,7 @@ class Migration20130426062338ComCourses extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
+		$query  = "";
 		$query .= "DELETE FROM `#__courses_grade_policies` WHERE `id` = 1;";
 		$query .= "INSERT INTO `jos_courses_grade_policies` (`id`, `alias`, `description`, `type`, `grade_criteria`, `score_criteria`, `badge_criteria`)
 					VALUES (1, 'passfail', 'Scores are based on the average of all exams.  An average exam score of 70% or greater is required to pass.', 'passfail', 'SELECT IF(score >= 70, TRUE, FALSE) as passing, cgb.user_id\nFROM #__courses_grade_book AS cgb\n[[::section_id::LEFT JOIN #__courses_members AS cm ON cgb.user_id = cm.user_id]]\nWHERE scope = \'course\'\n[[:scope_id:AND scope_id = \'{{var}}\']]\n[[:section_id:AND cm.section_id = \'{{var}}\']]\n[[:user_id:AND cgb.user_id = \'{{var}}\']]\n[[::section_id::AND cm.student = 1]]', 'SELECT user_id, AVG(cgb.score) as average[[:scope:, \'{{var}}\' as scope]][[:scope:, {{var}}_id as scope_id]]\nFROM #__courses_grade_book AS cgb\nLEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id\n[[::unit::LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id]]\n[[::unit::LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id]]\nWHERE ca.subtype = \'exam\'\nAND ca.state = 1\nAND cgb.scope = \'asset\'\n[[:user_id:AND cgb.user_id = \'{{var}}\']]\n[[:course_id:AND ca.course_id = \'{{var}}\']]\nGROUP BY user_id[[::unit::, cag.unit_id]]', 'pass');";
