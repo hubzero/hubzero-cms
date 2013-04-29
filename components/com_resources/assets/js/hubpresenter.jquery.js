@@ -586,13 +586,7 @@ HUB.Presenter = {
 	{
 		var active = HUB.Presenter.activeSlide,
 			next = parseInt(active) + 1;
-
-		//get the active list item
-		if( !jQ("#list_" + next).length ) {
-			next = HUB.Presenter.getListItem( next, "forward" );
-			next = parseInt(next.substr(6));
-		}
-
+		
 		//if we have a next slide to move to, seek to that slide
 		if( jQ('#slide_' + next ).length ) {
 			var next_slide_time = jQ("#slide_" + next).attr("time"),
