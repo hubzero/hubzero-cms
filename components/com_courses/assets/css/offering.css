@@ -124,6 +124,7 @@
 		border: none;
 	}
 	/*#page_menu li a:after,*/
+	#page_menu li small.page_menu-before,
 	#page_menu li a:before,
 	#page_menu li span:before,
 	#page_menu li span:after {
@@ -997,8 +998,9 @@
 	}
 	#page_menu {
 		margin: 6em 0;
-		margin: 0 0 -50000px;
-		padding: 0 0 50000px;
+		margin: 0 0 -50000px 0;
+		padding: 0 0 50000px 0;
+		*zoom: 1;
 		border: none;
 		background: #3a3a3a;
 	}
@@ -1023,6 +1025,7 @@
 		position: relative;
 		border-bottom: 1px solid rgba(0,0,0,0.05);
 		border-bottom: 1px solid rgba(255,255,255,0.15);
+		*border-bottom: 1px solid #666;
 		-webkit-transition: background 0.1s ease-in-out;
 		-moz-transition: background 0.1s ease-in-out;
 		transition: background 0.1s ease-in-out;
@@ -1032,6 +1035,7 @@
 		background: #47a3da;
 		color: #fff;
 		border-bottom: 1px solid rgba(0,0,0,0.05);
+		*border-bottom: 1px solid #666;
 	}
 	#page_menu li a:hover:before {
 		color: #fff;
@@ -1056,6 +1060,7 @@
 		color: #333;
 	}
 
+	#page_menu li small.page_menu-before,
 	#page_menu li a:before {
 		speak: none;
 		font-style: normal;
@@ -1069,6 +1074,28 @@
 		font-size: 2em;
 		-webkit-font-smoothing: antialiased;
 		text-align: center;
+	}
+	/* [!] HACKS - IE 7 and older */
+	#page_menu li .outline {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#xf0ae;</small>' + this.innerHTML);
+	}
+	#page_menu li .announcements {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#xf095;</small>' + this.innerHTML);
+	}
+	#page_menu li .forum {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#xf086;</small>' + this.innerHTML);
+	}
+	#page_menu li .progress {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#xf012;</small>' + this.innerHTML);
+	}
+	#page_menu li .dashboard {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#xf083;</small>' + this.innerHTML);
+	}
+	#page_menu li .notes {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#x270D;</small>' + this.innerHTML);
+	}
+	#page_menu li .pages {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="page_menu-before">&#xf016;</small>' + this.innerHTML);
 	}
 	#page_menu li a.page:before {
 		content: "\f016";

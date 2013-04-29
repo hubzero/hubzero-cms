@@ -150,7 +150,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<span class="glyph member" title="<?php echo JText::_('Manage membership'); ?>">
-						<?php echo count($row->get('managers')); ?>
+						<?php echo $row->managers(array('count' => true)); ?>
 					</span>
 				</td>
 				<td>
