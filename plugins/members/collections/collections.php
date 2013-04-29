@@ -1099,6 +1099,7 @@ class plgMembersCollections extends JPlugin
 		$view->dateFormat = $this->dateFormat;
 		$view->timeFormat = $this->timeFormat;
 		$view->tz         = $this->tz;
+		$view->no_html     = $no_html;
 
 		$id = JRequest::getInt('post', 0);
 

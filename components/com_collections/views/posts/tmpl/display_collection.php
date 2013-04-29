@@ -60,11 +60,11 @@ switch ($collection->get('object_type'))
 		ximport('Hubzero_Group');
 		$group = new Hubzero_Group();
 		$group->read($collection->get('object_id'));
-		$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
+		$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
 	break;
 	
 	default:
-		$url = 'index.php?option=com_collections&task=collection&id=' . $collection->get('id');
+		$url = 'index.php?option=com_collections&task=all&id=' . $collection->get('id');
 	break;
 }
 ?>

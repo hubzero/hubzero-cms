@@ -39,7 +39,7 @@ $item = $this->post->item();
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
 ximport('Hubzero_Wiki_Parser');
 
@@ -227,6 +227,12 @@ $now = date('Y-m-d H:i:s', time());
 						<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
 						<input type="hidden" name="comment[item_type]" value="collection" />
 						<input type="hidden" name="comment[state]" value="1" />
+						
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+						<input type="hidden" name="scope" value="post/<?php echo $this->post->get('id'); ?>/savecomment" />
+						<input type="hidden" name="action" value="savecomment" />
+						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
 						<input type="submit" class="comment-submit" value="<?php echo JText::_('Save'); ?>" />

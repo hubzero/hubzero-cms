@@ -124,7 +124,7 @@ HUB.Plugins.MembersCollections = {
 				}
 			});
 
-			/*$('#posts a.delete').fancybox({
+			$('#posts a.delete').fancybox({
 				type: 'ajax',
 				width: 300,
 				height: 'auto',
@@ -137,7 +137,7 @@ HUB.Plugins.MembersCollections = {
 				beforeLoad: function() {
 					href = $(this).attr('href');
 
-					$(this).attr('href', href.nohtml());
+					$(this).attr('href', href.nohtml());	
 				},
 				afterShow: function() {
 					var el = this.element;
@@ -151,7 +151,7 @@ HUB.Plugins.MembersCollections = {
 						});
 					}
 				}
-			});*/
+			});
 
 			$('#posts a.comment').fancybox({
 				type: 'ajax',

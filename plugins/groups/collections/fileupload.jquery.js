@@ -27,6 +27,16 @@ HUB.Plugins.GroupsFileUpload = {
 
 		if ($("#ajax-uploader").length) {
 
+			$('a.delete')
+				.unbind('click')
+				.on('click', function(event){
+					event.preventDefault();
+					$.get($(this).attr('href'), {}, function(data) {
+						HUB.Plugins.GroupsFileUpload.updateFileList();
+						//$('#ajax-uploader-list').sortable('enable');
+					});
+				});
+
 			if ($('#link-adder').length > 0) {
 				$('#link-adder').append(
 					'<div class="linker">' +
@@ -87,16 +97,19 @@ HUB.Plugins.GroupsFileUpload = {
 		var $ = HUB.Plugins.GroupsFileUpload.jQuery;
 
 		if ($('#ajax-uploader')) {
-			$('#ajax-uploader-list').sortable('enable');
-
 			$.get($('#ajax-uploader').attr('data-list') + $('#field-dir').val(), {}, function(data) {
-				$('#ajax-uploader-list').html(data);
+				$('#ajax-uploader-list')
+					.html(data)
+					.sortable('enable');
 				$('a.delete')
 					.unbind('click')
 					.on('click', function(event){
 						event.preventDefault();
+						//console.log($(this).attr('href'));
 						$.get($(this).attr('href'), {}, function(data) {
+							//console.log(data);
 							HUB.Plugins.GroupsFileUpload.updateFileList();
+							//$('#ajax-uploader-list').sortable('enable');
 						});
 					});
 			});

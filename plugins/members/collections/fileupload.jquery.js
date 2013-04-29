@@ -106,9 +106,9 @@ HUB.Plugins.MembersFileUpload = {
 					.unbind('click')
 					.on('click', function(event){
 						event.preventDefault();
-						console.log($(this).attr('href'));
+						//console.log($(this).attr('href'));
 						$.get($(this).attr('href'), {}, function(data) {
-							console.log(data);
+							//console.log(data);
 							HUB.Plugins.MembersFileUpload.updateFileList();
 							//$('#ajax-uploader-list').sortable('enable');
 						});

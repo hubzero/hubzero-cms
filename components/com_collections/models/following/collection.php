@@ -82,7 +82,9 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 		switch ($this->_obj->get('object_type'))
 		{
 			case 'group':
-				$this->_baselink = 'index.php?option=com_groups&gid=' . $this->_obj->get('object_id') . '&active=collections&scope=' . $this->_obj->get('alias');
+				ximport('Hubzero_Group');
+				$group = Hubzero_Group::getInstance($this->_obj->get('object_id'));
+				$this->_baselink = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->_obj->get('alias');
 			break;
 
 			case 'member':

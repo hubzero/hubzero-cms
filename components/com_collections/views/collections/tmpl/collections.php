@@ -192,11 +192,11 @@ if ($this->rows->total() > 0)
 				<?php } ?>
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id') . '&active=collections'); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
 

@@ -79,7 +79,7 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 
 		$this->_obj = Hubzero_Group::getInstance($oid);
 
-		$this->_baselink = 'index.php?option=com_groups&gid=' . $this->_obj->get('following_id') . '&active=collections';
+		$this->_baselink = 'index.php?option=com_groups&cn=' . $this->_obj->get('cn') . '&active=collections';
 	}
 
 	/**

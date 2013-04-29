@@ -200,7 +200,7 @@
 		padding: 0;
 	}
 	fieldset.filters input {
-		padding: 0.25em 0.41em;
+		padding: 0.45em 0.41em;
 		background: #f1f1f1;
 		margin: 0;
 		border: 1px solid #bbb;
@@ -303,7 +303,8 @@
 		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		
+		border: 1px solid #ddd\9; /* [!] IE 8 */
+		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 		/*width: 28.5em;*/
 		margin: 0 10px 20px;
 		

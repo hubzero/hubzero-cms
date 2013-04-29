@@ -257,7 +257,7 @@ if (!$dir)
 				<?php } ?>
 				</label>
 			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
-				<p class="error"><?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
+				<p class="error"><?php echo JText::_(strtoupper($this->option) . '_ERROR_PROVIDE_CONTENT'); ?></p>
 			<?php } ?>
 				<input type="hidden" name="fields[type]" value="file" />
 			</div><!-- / #post-file -->
@@ -286,14 +286,14 @@ if (!$dir)
 
 <?php if ($this->entry->get('original')) { ?>
 			<label>
-				<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
+				<?php echo JText::_(strtoupper($this->option) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
 				<?php 
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else { ?>
 					<input type="text" name="tags" value="<?php echo $item->tags('string'); ?>" />
 				<?php } ?>
-				<span class="hint"><?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
+				<span class="hint"><?php echo JText::_(strtoupper($this->option) . '_FIELD_TAGS_HINT'); ?></span>
 			</label>
 		</div>
 		<div class="clear"></div>

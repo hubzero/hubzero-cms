@@ -613,7 +613,7 @@ class CollectionsModelCollection extends JObject
 		{
 			case 'group':
 				$group = Hubzero_Group::getInstance($this->get('object_id'));
-				$href = 'index.php?option=com_groups&cn=' . $group->get('alias') . '&active=collections&scope=' . $this->get('alias');
+				$href = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
 			break;
 
 			case 'member':
