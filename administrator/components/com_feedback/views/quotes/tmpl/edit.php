@@ -115,6 +115,10 @@ function checkState(checkboxname)
 						<td>
 <?php if ($this->type == 'regular') { ?>
 						<input type="checkbox" name="replacequote" id="replacequote" value="1" checked="checked" /> <?php if ($this->row->id) { echo JText::_('FEEDBACK_REPLACE_ORIGINAL_QUOTE'); } else {echo JText::_('FEEDBACK_SAVE_IN_ARCHIVE');} ?>  <br />
+							<br />
+							<?php echo JText::_('Choosing one of the below options will <strong>copy</strong> the contents of this quote to the "selected" section.'); ?>
+							<br />
+							<br />
 <?php } ?>
 							<input type="checkbox" name="notable_quotes" id="notable_quotes" value="1" <?php if ($this->type =='selected' && $this->row->notable_quotes == 1)  { echo 'checked="checked"'; } ?> /> <?php echo JText::_('FEEDBACK_SELECT_FOR_QUOTES'); ?> <br />
 							<input type="checkbox" name="flash_rotation" id="flash_rotation" value="1" <?php if ($this->type =='selected' && $this->row->flash_rotation == 1)  { echo 'checked="checked"'; } ?> /> <?php echo JText::_('FEEDBACK_SELECT_FOR_ROTATION'); ?>
