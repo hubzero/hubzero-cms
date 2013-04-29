@@ -168,6 +168,7 @@
 		color: #000;
 		-moz-border-radius: 10px;
 		border-radius: 10px;
+		background: #FFFFFF;
 	}
 	input[type="submit"].disabled {
 		-webkit-animation: none;
@@ -215,7 +216,7 @@
 	}
 	input[type="submit"].disabled, input[type="submit"].hover {
 		cursor: default !important;
-		background: #f0f0f0 !important;
+		background: #f0f0f0;
 		border: 1px solid #e2e2e2;
 		color: #CCC;
 	}
