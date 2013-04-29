@@ -918,7 +918,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			SELECT 1 FROM #__users u 
 			INNER JOIN #__core_acl_aro caa ON caa.section_value = \'users\' AND caa.value = u.id 
 			INNER JOIN #__core_acl_groups_aro_map cagam ON cagam.aro_id = caa.id 
-			INNER JOIN #__core_acl_aro_groups caag ON caag.id = cagam.group_id AND caag.name = \'Super Administrator\'
+			INNER JOIN #__core_acl_aro_groups caag ON caag.id = cagam.group_id AND (caag.name = \'Super Administrator\' OR caag.name = \'Administrator\')
 			WHERE u.id = ' . $this->juser->id
 		);
 		if (!$this->database->loadResult()) 
