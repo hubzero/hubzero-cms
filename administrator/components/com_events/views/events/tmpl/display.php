@@ -52,6 +52,7 @@ JHTML::_('behavior.tooltip');
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
 		<?php echo $this->clist; ?>
+		<?php echo $this->glist; ?>
 
 		<input type="submit" name="submitsearch" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
@@ -219,9 +220,25 @@ $row = &$this->rows[$i];
 					<?php echo $times; ?>
 				</td>
 				<td>
-					<span>
-						<?php echo $this->escape(stripslashes($row->groupname)); ?>
-					</span>
+					
+					<?php if($row->scope == 'group') : ?>
+						<?php
+							ximport('Hubzero_Group');
+							$group = Hubzero_Group::getInstance( $row->scope_id );
+							if (is_object($group))
+							{
+								echo "Group: <a href='" . JRoute::_('index.php?option=com_events&group_id=' . $group->get('gidNumber')) . "'>" . $group->get('description') . "</a>";
+							}
+							else
+							{
+								echo "Group: NOT FOUND({$row->scope_id})";
+							}
+						?>
+					<?php else : ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->groupname)); ?>
+						</span>
+					<?php endif; ?>
 				</td>
 				<td style="white-space: nowrap;">
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;id[]=<?php echo $row->id; ?>">

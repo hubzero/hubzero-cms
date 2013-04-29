@@ -54,6 +54,20 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param type="spacer" />
+		<param name="allow_registrations" type="list" default="1" label="Event Registrations" description="Allow group events to capture event registrations.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="allow_subscriptions" type="list" default="1" label="Calendar Subscriptions" description="Allow groups to publish calendars.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param type="spacer" />
+		<param name="allow_quick_create" type="list" default="1" label="Event Quick Create" description="Allow users to double click on calendar date and create event.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </install>
 

@@ -56,6 +56,27 @@ class EventsEvent extends JTable
 	 * @var integer
 	 */
 	var $catid            = NULL;
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $calendar_id      = NULL;
+	
+	/**
+	 * varchar(100)
+	 * 
+	 * @var integer
+	 */
+	var $scope            = NULL;
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $scope_id         = NULL;
 
 	/**
 	 * varchar(255)
@@ -407,7 +428,7 @@ class EventsEvent extends JTable
 	public function getEvents($period='month', $filters=array())
 	{
 		$gid = (isset($filters['gid'])) ? intval($filters['gid']) : 0;
-
+		
 		// Build the query
 		switch ($period)
 		{
@@ -425,8 +446,28 @@ class EventsEvent extends JTable
 							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
 							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down >= '" . $this->_db->getEscaped($select_date_fin) . "%')) 
 							AND $this->_tbl.state = '1'";
-				$sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) : "";
-				$sql .= ") ORDER BY publish_up ASC";
+				$sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) . ")" : ")";
+				
+				//did we pass in a scope filter
+				if (isset($filters['scope']) && $filters['scope'] != '')
+				{
+					if ($filters['scope'] == 'event')
+					{
+						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")"; 
+					}
+					else
+					{
+						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+					}
+				}
+				
+				//did we pass in a scope id filter
+				if (isset($filters['scope_id']) && $filters['scope_id'] != '')
+				{
+					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] ); 
+				}
+				
+				$sql .= " ORDER BY publish_up ASC";
 			break;
 
 			case 'year':
@@ -436,6 +477,26 @@ class EventsEvent extends JTable
 						WHERE $this->_tbl.catid = b.id AND b.access <= $gid AND $this->_tbl.access <= $gid
 						AND publish_up LIKE '" . $this->_db->getEscaped($year) . "%' AND (publish_down >= '" . $this->_db->getEscaped($year) . "%' OR publish_down = '0000-00-00 00:00:00')
 						AND $this->_tbl.state = '1'";
+				
+				//did we pass in a scope filter
+				if (isset($filters['scope']) && $filters['scope'] != '')
+				{
+					if ($filters['scope'] == 'event')
+					{
+						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")"; 
+					}
+					else
+					{
+						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+					}
+				}
+				
+				//did we pass in a scope id filter
+				if (isset($filters['scope_id']) && $filters['scope_id'] != '')
+				{
+					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] ); 
+				}
+				
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) : "";
 				$sql .= " ORDER BY publish_up ASC";
 				//$sql .= " LIMIT ".$filters['start'].", ".$filters['limit'];
@@ -450,7 +511,28 @@ class EventsEvent extends JTable
 					OR (publish_down >= '" . $this->_db->getEscaped($startdate) . "%' AND publish_down <= '" . $this->_db->getEscaped($enddate) . "%') 
 					OR (publish_up >= '" . $this->_db->getEscaped($startdate) . "%' AND publish_down <= '" . $this->_db->getEscaped($enddate) . "%') 
 					OR (publish_down >= '" . $this->_db->getEscaped($enddate) . "%' AND publish_up <= '" . $this->_db->getEscaped($startdate) . "%')) 
-					AND state = '1' ORDER BY publish_up ASC";
+					AND state = '1'";
+					
+					//did we pass in a scope filter
+					if (isset($filters['scope']) && $filters['scope'] != '')
+					{
+						if ($filters['scope'] == 'event')
+						{
+							$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")"; 
+						}
+						else
+						{
+							$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+						}
+					}
+
+					//did we pass in a scope id filter
+					if (isset($filters['scope_id']) && $filters['scope_id'] != '')
+					{
+						$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] ); 
+					}
+					
+					$sql .= "ORDER BY publish_up ASC";
 			break;
 
 			case 'day':
@@ -463,10 +545,31 @@ class EventsEvent extends JTable
 							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down >= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
 							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')";
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
-				$sql .= ") AND $this->_tbl.state = '1' ORDER BY publish_up ASC";
+				$sql .= ") AND $this->_tbl.state = '1'";
+				
+				//did we pass in a scope filter
+				if (isset($filters['scope']) && $filters['scope'] != '')
+				{
+					if ($filters['scope'] == 'event')
+					{
+						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")"; 
+					}
+					else
+					{
+						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+					}
+				}
+				
+				//did we pass in a scope id filter
+				if (isset($filters['scope_id']) && $filters['scope_id'] != '')
+				{
+					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] ); 
+				}
+				
+				$sql .= " ORDER BY publish_up ASC";
 			break;
 		}
-
+		
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
@@ -489,8 +592,15 @@ class EventsEvent extends JTable
 		{
 			$where[] = "LOWER(a.title) LIKE '%".$this->_db->getEscaped($filters['search'])."%'";
 		}
+		
+		//did we pass in a scope id filter
+		if (isset($filters['scope_id']) && $filters['scope_id'] != '' && $filters['scope_id'] != 0)
+		{
+			$where[] = "a.scope=" . $this->_db->quote('group');
+			$where[] = "a.scope_id=" . $this->_db->quote( $filters['scope_id'] ); 
+		}
+		
 		$query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
-
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -506,8 +616,8 @@ class EventsEvent extends JTable
 		$query = "SELECT a.*, cc.name AS category, u.name AS editor, g.name AS groupname 
 				FROM $this->_tbl AS a 
 				LEFT JOIN #__users AS u ON u.id = a.checked_out 
-				LEFT JOIN #__groups AS g ON g.id = a.access, 
-				#__categories AS cc";
+				LEFT JOIN #__groups AS g ON g.id = a.access
+				LEFT JOIN #__categories AS cc ON a.catid=cc.id";
 
 		$where = array();
 		if ($filters['catid'] > 0) 
@@ -518,11 +628,17 @@ class EventsEvent extends JTable
 		{
 			$where[] = "LOWER(a.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
 		}
-		$where[] = "a.catid=cc.id";
-
+		
+		//did we pass in a scope id filter
+		if (isset($filters['scope_id']) && $filters['scope_id'] != '' && $filters['scope_id'] != 0)
+		{
+			$where[] = "a.scope=" . $this->_db->quote('group');
+			$where[] = "a.scope_id=" . $this->_db->quote( $filters['scope_id'] ); 
+		}
+		
 		$query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
 		$query .= " ORDER BY a.publish_up DESC LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
-
+		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}

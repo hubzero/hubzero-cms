@@ -117,6 +117,36 @@ function GroupsBuildRoute(&$query)
 		unset($query['pagename']);
 	}
 	
+	//are we on the group calendar
+	if (in_array('calendar', $segments)) 
+	{
+		if (!empty($query['year']))
+		{
+			$segments[] = $query['year'];
+			unset($query['year']);
+		}
+		if (!empty($query['month']))
+		{
+			$segments[] = $query['month'];
+			unset($query['month']);
+		}
+		if (!empty($query['action']))
+		{
+			$segments[] = $query['action'];
+			unset($query['action']);
+		}
+		if (!empty($query['event_id']))
+		{
+			$segments[] = $query['event_id'];
+			unset($query['event_id']);
+		}
+		if (!empty($query['calendar_id']))
+		{
+			$segments[] = $query['calendar_id'];
+			unset($query['calendar_id']);
+		}
+	}
+	
 	return $segments;
 }
 
@@ -197,6 +227,41 @@ function GroupsParseRoute($segments)
 		else 
 		{
 			$vars['action'] = $segments[2];
+		}
+	}
+	
+	//are we on the calendar
+	if ($vars['active'] == 'calendar')
+	{
+		if (isset($segments[2]))
+		{
+			if (is_numeric($segments[2]))
+			{
+				$vars['year'] = $segments[2];
+			}
+			else
+			{
+				$vars['action'] = $segments[2];
+			}
+		}
+		
+		if (isset($segments[3]))
+		{
+			if (isset($vars['year']))
+			{
+				$vars['month'] = $segments[3];
+			}
+			else
+			{
+				if (in_array($vars['action'], array('editcalendar','deletecalendar', 'subscribe')))
+				{
+					$vars['calendar_id'] = $segments[3];
+				}
+				else
+				{
+					$vars['event_id'] = $segments[3];
+				}
+			}
 		}
 	}
 	

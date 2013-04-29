@@ -340,6 +340,7 @@ class modEventsCalendar
 				. "\n AND ((publish_up >= '$selected_date 00:00:00' AND publish_up <= '$selected_date 23:59:59')"
 				. "\n OR (publish_down >= '$selected_date 00:00:00' AND publish_down <= '$selected_date 23:59:59')"
 				. "\n OR (publish_up <= '$selected_date 00:00:00' AND publish_down >= '$selected_date 23:59:59')) AND state='1'"
+				. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
 				. "\n ORDER BY publish_up ASC";
 
 			$database->setQuery($sql);

@@ -369,8 +369,9 @@ class modEventsLatest
 			. "\n	OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
 			. "\n   OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"
 			. "\n   OR (publish_down <= '$endDate%' AND publish_down >= '$todayBegin%'))"
+			. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
 			. "\nORDER BY publish_up ASC";
-
+		
 		// Retrieve the list of returned records as an array of objects
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
@@ -418,6 +419,7 @@ class modEventsLatest
 				. "\n	OR (publish_up <= '$yesterdayEnd%' AND publish_down >= '$yesterdayEnd%')"
 				. "\n   OR (publish_up <= '$yesterdayEnd%' AND publish_up >= '$beginDate%')"
 				. "\n   OR (publish_down <= '$yesterdayEnd%' AND publish_down >= '$beginDate%'))"
+				. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
 				. "\n  ORDER BY publish_up DESC";
 
 			// Initialise the query in the $database connector

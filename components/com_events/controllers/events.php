@@ -344,7 +344,8 @@ class EventsControllerEvents extends Hubzero_Controller
 		$filters['gid'] = $gid;
 		$filters['year'] = $year;
 		$filters['category'] = $this->category;
-
+		$filters['scope'] = 'event';
+		
 		// Retrieve records
 		$ee = new EventsEvent($this->database);
 		$rows = $ee->getEvents('year', $filters);
@@ -417,6 +418,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$filters['select_date'] = $select_date;
 		$filters['select_date_fin'] = $select_date_fin;
 		$filters['category'] = $this->category;
+		$filters['scope'] = 'event';
 
 		// Retrieve records
 		$ee = new EventsEvent($this->database);
@@ -504,6 +506,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$filters = array();
 		$filters['gid'] = $this->gid;
 		$filters['category'] = $this->category;
+		$filters['scope'] = 'event';
 
 		$ee = new EventsEvent($this->database);
 
@@ -588,6 +591,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$filters['gid'] = $this->gid;
 		$filters['select_date'] = sprintf("%4d-%02d-%02d", $year, $month, $day);
 		$filters['category'] = $this->category;
+		$filters['scope'] = 'event';
 
 		$ee = new EventsEvent($this->database);
 		$rows = $ee->getEvents('day', $filters);
@@ -669,12 +673,47 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Load event
 		$row = new EventsEvent($this->database);
 		$row->load($id);
-
+		
 		// Ensure we have an event
 		if (!$row) 
 		{
 			JError::raiseError(404, JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_THIS_DAY'));
 			return;
+		}
+		
+		//is this a group rescricted event
+		if ($row->scope == 'group')
+		{
+			ximport('Hubzero_Group');
+			$group = Hubzero_Group::getInstance( $row->scope_id );
+			
+			//if we have a group and we are a member
+			if (is_object($group))
+			{
+				//if we are a member of that group
+				if (in_array($this->juser->get('id'), $group->get('members')))
+				{
+					//get the events publish up month and year so we can jump to that month/year
+					$publishUpDate  = strtotime( $row->publish_up );
+					$publishUpMonth = date("n", $publishUpDate);
+					$publishUpYear  = date("Y", $publishUpDate);
+					
+					//redirect to group calendar
+					$redirect = JRoute::_( 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&month=' . $publishUpMonth . '&year=' . $publishUpYear, false );
+					$this->setRedirect( $redirect );
+					return;
+				}
+				else
+				{
+					JError::raiseError(403, JText::_('Event is group restricted.'));
+					return;
+				}
+			}
+			else
+			{
+				JError::raiseError(404, JText::_('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . JText::_('EVENTS_CAL_LANG_THIS_DAY'));
+				return;
+			}
 		}
 
 		$event_up = new EventsDate($row->publish_up);
@@ -1984,6 +2023,9 @@ class EventsControllerEvents extends Hubzero_Controller
 			$this->edit($row);
 			return;
 		}
+		
+		//set the scope to be regular events
+		$row->scope = 'event';
 
 		if (!$row->check()) 
 		{

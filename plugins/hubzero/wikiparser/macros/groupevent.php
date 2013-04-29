@@ -46,7 +46,12 @@ class GroupEventMacro extends WikiMacro
 		$txt = array();
 		$txt['wiki'] = "Displays group events";
 		$txt['html'] = '<p>Displays group events.</p>';
-
+		$txt['html'] = '<p>Examples:</p>
+							<ul>
+								<li><code>[[Groupevent(number=3)]]</code> - Displays the next three group events</li>
+								<li><code>[[Groupevent(title=Group Events, number=2)]]</code> - Adds title above event list. Displays 2 events.</li>
+								<li><code>[[Groupevent(id=123)]]</code> - Displays single group event with ID # 123</li>
+							</ul>';
 		return $txt['html'];
 	}
 
@@ -59,119 +64,152 @@ class GroupEventMacro extends WikiMacro
 	{
 		//get the args passed in
 		$args = explode(',', $this->args);
-
+		
 		//parse each arg into key value pair
 		foreach($args as $a) 
 		{
 			$kv[] = explode('=', trim($a));
 		}
-
+		
 		//set final args
 		foreach ($kv as $k) 
 		{
 			$arg[$k[0]] = (isset($k[1])) ? $k[1] : $k[0];
 		}
-
+		
 		//set a default
-		$default_events = 3;
-
+		//$default_events = 3;
+		
 		//get the user defined # of events
-		$user_events = (isset($arg['number'])) ? $arg['number'] : $default_events;
-
-		//decide whether or not to use default number of events
-		$num_events = (is_int($user_events) && $user_events != 0) ? $user_events : $default_events;
-
+		//$num_events = (isset($arg['number']) && is_numeric($arg['number']) && $arg['number'] > 0) ? $arg['number'] : $default_events;
+		
 		//get the group
-		$gid = JRequest::getVar('gid');
-
+		$cn = JRequest::getVar('cn');
+		
 		//import the Hubzero Group Library
 		ximport('Hubzero_Group');
-
+		
 		//get the group object based on gid
-		$group = Hubzero_Group::getInstance($gid);
-
+		$group = Hubzero_Group::getInstance($cn);
+		
 		//check to make sure we have a valid group
 		if (!is_object($group)) 
 		{
 			return '[This macro is designed for Groups only]';
 		}
-
+		
+		//array of filters
+		$filters = array(
+			'id' => (isset($arg['id'])) ? $arg['id'] : null,
+			'limit' => (isset($arg['number'])) ? $arg['number'] : 3
+		);
+		
+		//get group events
+		$events =  $this->getGroupEvents( $group, $filters );
+		
 		//create the html container
 		$html  = '<div class="upcoming_events">';
-
+		
 		//display the title
-		$html .= isset($arg['title']) ? '<h3>' . $arg['title'] . '</h3>' : '';
-
+		$html .= (isset($arg['title']) && $arg['title'] != '') ? '<h3>' . $arg['title'] . '</h3>' : '';
+		
 		//render the events
-		$html .= $this->renderGroupEvents($group, $num_events);
-
+		$html .= $this->renderEvents( $group, $events );
+		
 		//close the container
 		$html .= '</div>';
-
+		
 		//return rendered events
 		return $html;
+	}
+	
+	private function getGroupEvents( $group, $filters = array() )
+	{
+		//instantiate database
+		$database =& JFactory::getDBO();
+
+		//build query
+		$sql = "SELECT * FROM #__events 
+				WHERE publish_up >= NOW()
+				AND scope=" . $database->quote('group') . "
+				AND scope_id=" . $database->Quote($group->get('gidNumber')) . " 
+				AND state=1";
+		
+		//do we have an ID set
+		if (isset($filters['id']))
+		{
+			$sql .= " AND id=" . $database->Quote( $filters['id'] );
+		}
+		
+		//add ordering
+		$sql .= " ORDER BY publish_up ASC";
+		
+		//do we have a limit set
+		if (isset($filters['number']))
+		{
+			$sql .= " LIMIT " . $filters['number'];
+		}
+		
+		//return result
+		$database->setQuery($sql);
+		return $database->loadObjectList();
 	}
 
 	/**
 	 * Render the events
 	 * 
-	 * @param      object  $group      Group to display events for
-	 * @param      integer $num_events Number of events to display
+	 * @param      array     Array of group events
 	 * @return     string 
 	 */
-	private function renderGroupEvents($group, $num_events)
+	private function renderEvents( $group, $events )
 	{
-		//instantiate database
-		$db =& JFactory::getDBO();
-
-		//build query
-		$sql = "SELECT * FROM #__xgroups_events 
-				WHERE end >= NOW()
-				AND gidNumber=" . $db->Quote($group->get('gidNumber')) . " 
-				AND active=1 
-				ORDER BY start ASC
-				LIMIT " . $num_events;
-		$db->setQuery($sql);
-		$events = $db->loadAssocList();
-
 		$content = '';
-
 		if (count($events) > 0) 
 		{
 			foreach ($events as $event) 
 			{
-				$content .= '<div class="event">';
-
-				$link = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&month=' . date("m", strtotime($event['start'])) . '&year=' . date("Y", strtotime($event['start'])));
+				//build link
+				$link = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
 				
-				$content .= '<a class="title" href="' . $link . '">' . stripslashes($event['title']) . '</a>';
-
-				if (date("d", strtotime($event['start'])) == date("d", strtotime($event['end']))) 
+				//build date
+				$date = '';
+				$publishUp = strtotime($event->publish_up);
+				$publishDown = strtotime($event->publish_down);
+				if (date("z", $publishUp) == date("z", $publishDown))
 				{
-					$date = date("M d, Y",strtotime($event['start'])) . ' @ ' . date("g:ia", strtotime($event['start'])) .' to '. date("g:ia", strtotime($event['end']));
-				} 
-				else 
-				{
-					$date = date("M d, Y g:ia",strtotime($event['start'])) . ' to <br>' . date("M d, Y g:ia", strtotime($event['end']));
+					$date  = date('m/d/Y @ g:i a', $publishUp);
+					$date .= ' &mdash; ' . date('g:i a', $publishDown);
 				}
-
-				$content .= '<span class="date">' . $date . '</span>';
-
-				$details = nl2br($event['details']);
+				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
+				{
+					$date  = date('m/d/Y @ g:i a', $publishUp);
+					$date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . date('m/d/Y @ g:i a', $publishDown);
+				}
+				else
+				{
+					$date  = date('m/d/Y @ g:i a', $publishUp);
+				}
+				
+				//shorten content
+				$details = nl2br($event->content);
 				if (strlen($details) > 150) 
 				{
 					$details = substr($details, 0, 150) . '...';
 				}
-
-				$content .= '<span class="details">' . $details . '</span>';
-				$content .= '</div>';
+				
+				//create list
+				$content .= '<div class="event">';
+				$content .= '<strong><a class=" title" href="' . $link . '">' . stripslashes($event->title) . '</a></strong>';
+				$content .= '<br /><span class="date">' . $date . '</span>';
+				$content .= '<br /><span class="details">' . $details . '</span>';
+				$content .= '</div><br />';
 			}
 		} 
 		else 
 		{
-			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&task=add') . '">clicking here.</a></p>';
+			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
 		}
-
+		
 		return $content;
 	}
 }

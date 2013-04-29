@@ -122,7 +122,8 @@ class EventsControllerEvents extends Hubzero_Controller
 			'search', 
 			''
 		));
-		$this->view->filters['catid']  = JRequest::getVar('catid', 0, '', 'int');
+		$this->view->filters['catid']    = JRequest::getVar('catid', 0, '', 'int');
+		$this->view->filters['scope_id'] = JRequest::getVar('group_id', 0, '', 'int');
 
 		$ee = new EventsEvent($this->database);
 
@@ -141,12 +142,21 @@ class EventsControllerEvents extends Hubzero_Controller
 		);
 
 		// Get list of categories
-		$categories[] = JHTML::_('select.option', '0', '- '.JText::_('EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
+		$categories[] = JHTML::_('select.option', '0', '- ' . JText::_('EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
 		$this->database->setQuery("SELECT id AS value, title AS text FROM #__categories WHERE section='$this->_option' ORDER BY ordering");
 		$categories = array_merge($categories, $this->database->loadObjectList());
-
 		$this->view->clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
-
+		
+		//get list of groups
+		$groups[] = JHTML::_('select.option', '0', '- ' . JText::_('All Groups'), 'value', 'text');
+		$sql = "SELECT DISTINCT(g.gidNumber) AS value, g.description AS text
+				FROM jos_events AS e, jos_xgroups AS g
+				WHERE e.scope='group'
+				AND e.scope_id=g.gidNumber";
+		$this->database->setQuery($sql);
+		$groups = array_merge($groups, $this->database->loadObjectList());
+		$this->view->glist = JHTML::_('select.genericlist', $groups, 'group_id', 'class="inputbox"','value', 'text', $this->view->filters['scope_id'], false, false);
+		
 		// Set any errors
 		if ($this->getError()) 
 		{

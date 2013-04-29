@@ -27,113 +27,209 @@ HUB.Plugins.GroupCalendar = {
 	jQuery: jq,
 	
 	initialize: function() {
-		HUB.Plugins.GroupCalendar.datePicker();
-		HUB.Plugins.GroupCalendar.calendarPopup();
+		//fancy calendar picker
+		HUB.Plugins.GroupCalendar.calendarPicker();
+		
+		//double click to create event
+		HUB.Plugins.GroupCalendar.quickEventCreate();
+		
+		//edit event js
+		HUB.Plugins.GroupCalendar.editEvent();
+		
+		//handle subscribe url changing
+		HUB.Plugins.GroupCalendar.subscribeUrl();
 	},
 	
-	datePicker: function()
+	calendarPicker: function()
 	{
 		var $ = this.jQuery;
 		
-		//hide helpers
-		$('.cal-date-help').hide();
-		
-		//show date picker
-		$('#event_start_date, #event_end_date').datepicker({
-			showAnim: 'slideDown',
-			showOn: "button",
-			buttonImage: "/plugins/groups/calendar/images/calendar_icon.png",
-			buttonImageOnly: true
+		//refresh cal on change
+		$(".group_calendar").on('change', '#month-picker, #year-picker, #calendar-picker', function(event) {
+			HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
 		});
+		
+		//fancy select box for cal picker
+		if ($('#calendar-picker').length)
+		{
+			$('#calendar-picker').HUBfancyselect({
+				onSelected: function() {
+					//refresh calendar
+					HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
+				}
+			});
+		}
 	},
 	
-	calendarPopup: function()
+	quickEventCreate: function()
 	{
 		var $ = this.jQuery;
 		
-		$(".calendar-row .event")
-			.on("mouseover", function(event){
-				event.preventDefault();
-				if(!$(this).hasClass("active"))
+		//quick create event - double click
+		$('#calendar.quick-create').disableSelection();
+		$('.group_calendar')
+			.on('click', '#calendar.quick-create tbody .calendar-row td:not(.no-date)', function(event) {
+				var clickedElement = (event.srcElement) ? event.srcElement : event.target,
+					clickedElementType = $(clickedElement).prop('tagName').toLowerCase();
+				
+				if (clickedElementType == 'td')
 				{
-					$(this).next("ul").css("left", "-9999px");
+					event.preventDefault();
+					$('.calendar-row td').removeClass('active');
+					$(clickedElement).addClass('active');
 				}
 			})
-			.on("click", function(event){
+			.on('dblclick', '#calendar.quick-create tbody .calendar-row td:not(.no-date)', function(event) {
 				event.preventDefault();
-				if($(this).hasClass("active"))
-				{
-					$(this).removeClass("active");
-					$(this).next("ul").css("left", "-9999px");
-				}
-				else
-				{
-					HUB.Plugins.GroupCalendar.hideCalendarPopup();
-					$(this).addClass("active");
-					var popup = $(this).next("ul");
-					popup.css("left", "100px");
-					HUB.Plugins.GroupCalendar.repositionCalendarPopup(popup);
-				}
+				
+				//get the current location
+				var redirectPath = '',
+					redirectHref = '',
+					protocol = window.location.protocol,
+					host = window.location.host,
+					path = window.location.pathname
+					start = $(this).attr('data-date');
+				
+				//get needed part of path
+				redirectPath = path.replace(/calendar\/[\d]{4}\/[\d]{2}/gi, 'calendar')
+				
+				//create href for adding event
+				redirectLocation = protocol + '//' + host + redirectPath + '/add?start=' + start;
+				
+				//redirect user
+				window.location.href = redirectLocation;
 			});
 	},
 	
-	repositionCalendarPopup: function(popup)
+	subscribeUrl: function()
 	{
 		var $ = this.jQuery;
 		
-		var threshold = 10,
-			marginTop = 0,
-			marginLeft = 0,
-			popup = $(popup),
-			popupCoordinates = {
-				top: popup.offset().top,
-				right: (popup.offset().left + popup.outerWidth(true)),
-				bottom: (popup.offset().top + popup.outerHeight(true)),
-				left: popup.offset().left
-				},
-			calendarBox = $("#calendar-box"),
-			calendarBoxCoordinates = {
-				top: calendarBox.offset().top,
-				right: (calendarBox.offset().left + calendarBox.outerWidth(true)),
-				bottom: (calendarBox.offset().top + calendarBox.outerHeight(true)),
-				left: calendarBox.offset().left
-				};
+		//select subscribe url when clicking in field
+		$('.group_calendar').on('click', '#subscribe-link input[type=text]', function(event) {
+			$(this).select();
+		});
 		
-		if(popupCoordinates.bottom > calendarBoxCoordinates.bottom)
-		{
-			marginTop = calendarBoxCoordinates.bottom - popupCoordinates.bottom - threshold;
-			popup.css("margin-top", marginTop);
-		}
-		
-		if(popupCoordinates.right > calendarBoxCoordinates.right)
-		{
-			marginLeft = calendarBoxCoordinates.right - popupCoordinates.right - threshold;
-			popup.css("margin-left", marginLeft);
-		}
+		//adjust url and subscribe button url when editing calendar choices
+		$('.group_calendar').on('click', '#subscribe input[type=checkbox]', function(event) {
+			var calendars = [],
+				calendarParamString = '';
+			$('#subscribe :checkbox:checked').map(function() { 
+				calendars.push( $(this).val() );
+			});
+			
+			//build calendar param string from selected calendars
+			calendarParamString = calendars.join(',');
+			
+			//we can only subscribe to a calendar if we have one selected
+			if (calendarParamString == '')
+			{
+				$('#subscribe-link').slideUp();
+			}
+			else
+			{
+				$('#subscribe-link').slideDown();
+			}
+			
+			//get rid of protocol off current url
+			var newSubscribeUrl = window.location.href.replace(window.location.protocol + '//', '');
+			
+			//remove anything after /calendar in current url
+			newSubscribeUrl = newSubscribeUrl.replace(/calendar.+/, 'calendar');
+			
+			//append subscribe and calendar param string
+			newSubscribeUrl = newSubscribeUrl + '/subscribe/' + calendarParamString + '.ics';
+			
+			//set the subscribe value and webcal button
+			$('#subscribe-link input[type=text]').val('https://' + newSubscribeUrl);
+			$('#subscribe-link a.https').attr('href', 'https://' + newSubscribeUrl)
+			$('#subscribe-link a.webcal').attr('href', 'webcal://' + newSubscribeUrl)
+		});
 	},
 	
-	hideCalendarPopup: function()
+	refresh: function( callback )
 	{
 		var $ = this.jQuery;
 		
-		$(".calendar-row a.active").each(function(i, el) {
-			$(el).removeClass("active");
-			$(el).next("ul").css("left", "-9999px");
+		//show activity indicator
+		$("#calendar-box").css('position', 'relative').append('<div id="calendar-update" />');
+		
+		//get values of month and year pickers
+		var monthVal = $('#month-picker').val(),
+			yearVal = $('#year-picker').val(),
+			calendarVal = $('#calendar-picker').val();
+		
+		var protocol = window.location.protocol,
+			host = window.location.host,
+			path = window.location.pathname;
+		
+		//build new url
+		newUrl = protocol + '//' + host + path.replace(/calendar\/[\d]{4}\/[\d]{2}/gi, 'calendar') + '/' + yearVal + '/' + monthVal;
+		if(calendarVal != '' && calendarVal != 0)
+		{
+			newUrl += '?calendar=' + calendarVal;
+		}
+		
+		//write date change to history
+		if (window.history)
+		{
+			window.history.pushState(null,null, newUrl);
+		}
+		
+		//load new cal
+		$(".group_calendar").load( newUrl + ' .group_calendar > *', function(){
+			$("#calendar-box").css('position', 'static').find("#calendar-update").remove();
+			
+			if (typeof callback == 'function')
+			{
+				callback();
+			}
 		});
+	},
+	
+	editEvent: function()
+	{
+		var $ = this.jQuery;
+		
+		//show date picker for end and start
+		if ($('#event_start_date, #event_end_date').length)
+		{
+			$('#event_start_date, #event_end_date').attr('autocomplete', 'OFF');
+			$('#event_start_date, #event_end_date').datetimepicker({
+				controlType: 'slider',
+				dateFormat: 'mm/dd/yy',
+				timeFormat: '@ h:mm tt'
+			});
+		}
+		
+		//show date picker for register by
+		if ($('#event_registerby').length)
+		{
+			$('#event_registerby').attr('autocomplete', 'OFF');
+			$('#event_registerby').datetimepicker({
+				controlType: 'slider',
+				dateFormat: 'mm/dd/yy',
+				timeFormat: '@ h:mm tt'
+			});
+		}
+		
+		//make calendar picker fancy select
+		if ($('#event-calendar-picker').length)
+		{
+			$('#event-calendar-picker').HUBfancyselect();
+		}
+		
+		//show/hide registration fields
+		$('#include-registration-toggle').on('change', function(event) {
+			$('#registration-fields').slideToggle();
+		});
+		
+		//remove tooltips from registration fields labels
+		$('.group_calendar #hubForm table.paramlist td label').removeClass('hasTip');
 	}
 };
 
 //----------------------------------------------------------
-
-jQuery(document).on("click", function(event) {
-	var element = (event.srcElement) ? event.srcElement : event.target,
-		cls = element.className;
-	
-	if(!cls.match(/event/gi))
-	{
-		HUB.Plugins.GroupCalendar.hideCalendarPopup();
-	}
-});
 
 jQuery(document).ready(function(){
 	HUB.Plugins.GroupCalendar.initialize();
