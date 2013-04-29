@@ -886,19 +886,41 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * @param     array $value List of IDs or usernames
 	 * @return    void
 	 */
-	public function add($data = array(), $role_id=0)
+	public function add($data = array(), $role_id='student')
 	{
+		if (!is_array($data))
+		{
+			$data = array($data);
+		}
+
+		$role = new CoursesTableRole($this->_db);
+		$role->load($role_id);
+		if (is_string($role_id))
+		{
+			$role_id = $role->get('id');
+		}
+
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
 
-			$this->_managers[$user_id] = new CoursesModelManager($result, $this->get('id'));
-			$this->_managers[$user_id]->set('user_id', $user_id);
-			$this->_managers[$user_id]->set('course_id', $this->get('course_id'));
-			$this->_managers[$user_id]->set('offering_id', $this->get('id'));
-			$this->_managers[$user_id]->set('section_id', $this->section()->get('id'));
-			$this->_managers[$user_id]->set('role_id', $role_id);
-			$this->_managers[$user_id]->store();
+			$model = CoursesModelMember::getInstance($result, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+			$model->set('user_id', $user_id);
+			$model->set('course_id', $this->get('course_id'));
+			$model->set('offering_id', $this->get('id'));
+			$model->set('section_id', $this->section()->get('id'));
+			$model->set('role_id', $role_id);
+			if ($role->get('alias') == 'student')
+			{
+				$model->set('student', 1);
+			}
+			if (!$model->store())
+			{
+				$this->setError($model->getError());
+				continue;
+			}
+
+			$this->_managers[$user_id] = $model;
 		}
 	}
 
@@ -910,20 +932,25 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function remove($data = array())
 	{
+		if (!is_array($data))
+		{
+			$data = array($data);
+		}
 		if (count($data) > 0)
 		{
-			$this->managers();
+			$this->members();
 
 			foreach ($data as $result)
 			{
 				$user_id = $this->_userId($result);
 
-				if (isset($this->_managers[$user_id]))
+				if (isset($this->_members[$user_id]))
 				{
-					$this->_managers[$user_id]->delete();
-					unset($this->_managers[$user_id]);
+					$this->_members[$user_id]->delete();
+					unset($this->_members[$user_id]);
 				}
 			}
+			$this->_managers = null;
 		}
 	}
 

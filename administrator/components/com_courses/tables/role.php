@@ -83,6 +83,43 @@ class CoursesTableRole extends JTable
 	}
 
 	/**
+	 * Load a record and bind to $this
+	 * 
+	 * @param      string $oid Record alias
+	 * @return     boolean True on success
+	 */
+	public function load($oid=NULL, $offering_id=null)
+	{
+		if ($oid === NULL) 
+		{
+			return false;
+		}
+		if (is_numeric($oid))
+		{
+			return parent::load($oid);
+		}
+		$oid = trim($oid);
+
+		$query  = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
+		if (!is_null($offering_id)) 
+		{
+			$query .= " AND offering_id=" . $this->_db->Quote(intval($offering_id));
+		}
+		$query .= " LIMIT 1";
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
 	 * Validate data
 	 * 
 	 * @return     boolean True if data is valid

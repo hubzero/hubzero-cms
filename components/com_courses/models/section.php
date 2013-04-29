@@ -440,15 +440,31 @@ class CoursesModelSection extends CoursesModelAbstract
 	 * @param     array $value List of IDs or usernames
 	 * @return    void
 	 */
-	public function add($data = array(), $role_id=0)
+	public function add($data = array(), $role_id='student')
 	{
+		if (!is_array($data))
+		{
+			$data = array($data);
+		}
+		$role = new CoursesTableRole($this->_db);
+		$role->load($role_id);
+		if (is_string($role_id))
+		{
+			$role_id = $role->get('id');
+		}
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
 
 			// Create the entry
-			$model = new CoursesModelMember($result, $this->get('id'));
+			$model = new CoursesModelMember($result, null, null, $this->get('id'));
 			$model->set('role_id', $role_id);
+			$model->set('offering_id', $this->get('offering_id'));
+			$model->set('section_id', $this->get('id'));
+			if ($role->get('alias') == 'student')
+			{
+				$model->set('student', 1);
+			}
 			if (!$model->store())
 			{
 				$this->setError($model->getError());
@@ -471,6 +487,10 @@ class CoursesModelSection extends CoursesModelAbstract
 	 */
 	public function remove($data = array())
 	{
+		if (!is_array($data))
+		{
+			$data = array($data);
+		}
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);

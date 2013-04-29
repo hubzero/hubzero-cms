@@ -104,12 +104,6 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 
 		$model->add($users, $role_id);
 
-		// Save changes
-		/*if (!$model->store())
-		{
-			$this->setError($model->getError());
-		}*/
-
 		// Push through to the hosts view
 		$this->displayTask($model);
 	}
