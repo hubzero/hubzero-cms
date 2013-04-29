@@ -1086,6 +1086,8 @@
 		padding: 0.2em 0.5em 0.2em 0;
 		border: 1px solid #7dddee;
 		background: #eff8f9;
+		width: auto;
+		min-width: 150px;
 	}
 	#connector .i-new  {
 		font-size: 0.9em;
@@ -1095,6 +1097,7 @@
 		float: right;
 		width: 30px;
 		padding-left: 1em;
+		margin-left: 1em;
 		display: block;
 	}
 	.connect-email {

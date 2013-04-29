@@ -832,7 +832,8 @@ class ProjectsGoogleHelper extends JObject
 					if (preg_match("/.folder/", $item['mimeType']))
 					{
 						// Recurse
-						$remotes = ProjectsGoogleHelper::getFolderContent($apiService, $item['id'], $remotes, $fpath, $since, $connections, &$duplicates);
+						$remotes = ProjectsGoogleHelper::getFolderContent($apiService, $item['id'], 
+							$remotes, $fpath, $since, $connections, &$duplicates);
 					}
 				}					
 			}

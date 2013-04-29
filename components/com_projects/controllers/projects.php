@@ -305,7 +305,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Enable publications
-		if ($this->_publishing && !in_array($prefix . 'publications', $tables)) 
+		if ($this->_publishing) 
 		{
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 				. DS . 'com_publications' . DS . 'helpers' . DS . 'install.php');

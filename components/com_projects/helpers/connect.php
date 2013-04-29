@@ -351,13 +351,14 @@ class ProjectsConnectHelper extends JObject {
 	{
 		if ($service == 'google')
 		{
+			$srcDir = 'src';
 			require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client' . DS . 'src_r' . DS . 'Google_Client.php');
 			require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client' 
-				. DS . 'src_r' . DS . 'contrib' . DS . 'Google_DriveService.php');
+				. DS . $srcDir . DS . 'contrib' . DS . 'Google_DriveService.php');
 			require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client' 
-				. DS . 'src_r' . DS . 'contrib' . DS . 'Google_Oauth2Service.php');
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client' 
-				. DS . 'src_r' . DS . 'io' . DS . 'Google_HttpRequest.php');
+				. DS . $srcDir . DS . 'contrib' . DS . 'Google_Oauth2Service.php');
+			/*require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client' 
+				. DS . $srcDir . DS . 'io' . DS . 'Google_HttpRequest.php');*/
 		}
 	}
 	

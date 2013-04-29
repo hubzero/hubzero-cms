@@ -2842,7 +2842,7 @@ class plgProjectsFiles extends JPlugin
 			// Sort by time, most recent first	
 			array_multisort($timestamps, SORT_DESC, $versions);							
 		}
-		
+				
 		// Get status for each version
 		$versions = $this->_git->getVersionStatus($versions);
 		
@@ -2859,7 +2859,7 @@ class plgProjectsFiles extends JPlugin
 				$versions[$i]['preview'] = $preview;
 			}
 			$i++;
-		}
+		}		
 		
 		//$layout = $this->_case == 'files' ? 'default' : 'advanced';
 		$layout = 'advanced';
@@ -4087,7 +4087,7 @@ class plgProjectsFiles extends JPlugin
 				$obj->saveParam($this->_project->id, $service . '_sync_queue', 0);
 				
 				// Sync request
-				$this->_sync( $service, '', false, true);
+				//$this->_sync( $service, '', false, true);
 			}
 			
 			return true;
@@ -4111,7 +4111,7 @@ class plgProjectsFiles extends JPlugin
 			// Add request to queue
 			if ($queue && $syncQueue == 0)
 			{
-				$obj->saveParam($this->_project->id, $service . '_sync_queue', 1);
+				//$obj->saveParam($this->_project->id, $service . '_sync_queue', 1);
 				return false;	
 			}
 				
@@ -4418,7 +4418,7 @@ class plgProjectsFiles extends JPlugin
 		
 		// Get changes via List feed (to make sure we get ALL changes)
 		// We need this because Changes feed is not 100% reliable
-		$from = date("c", strtotime($synced) - (1 * 60));
+		$from = date("c", strtotime($synced) - (10));
 		$timedRemotes = $this->_connect->getRemoteItems($service, $projectCreator, $from, $connections);
 		
 		// Record timed remote changes (for debugging)
@@ -4427,7 +4427,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			foreach ($timedRemotes as $tr => $trinfo)
 			{
-				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . "\n";
+				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . ' status ' . $trinfo['status'] . "\n";
 			}
 			
 			// Pick up missed changes			
@@ -5064,7 +5064,7 @@ class plgProjectsFiles extends JPlugin
 			$ih->set('maxHeight', $maxHeight);
 			if (!$ih->process()) 
 			{
-				$this->setError( $ih->getError() );
+				//$this->setError( $ih->getError() );
 			}
 			else 
 			{
@@ -5329,7 +5329,9 @@ class plgProjectsFiles extends JPlugin
 	 *
 	 * @return     array
 	 */
-	public function getFolders($path = '', $subdir = '', $prefix = '', $recurse = false, $fullpath = false, $exclude = array('.git')) 
+	public function getFolders($path = '', $subdir = '', 
+		$prefix = '', $recurse = false, 
+		$fullpath = false, $exclude = array('.git')) 
 	{
 		// Check path format
 		$subdir = trim($subdir, DS);
