@@ -31,31 +31,83 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+//base url for the resource
+$base = DS . trim($this->config->get('uploadpath'), DS);
+
+//presentation manifest
+$presentation = $this->manifest->presentation;
+
+//determine height and width
+$width  = (isset($presentation->width) && $presentation->width != 0) ? $presentation->width . 'px' : 'auto';
+$height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
 ?>
 
 <div id="video-container">
-	<?php if(count($this->videos) > 0) : ?>
+	<?php if(count($presentation->media) > 0) : ?>
 		<video controls="controls" id="video-player" data-mediaid="<?php echo $this->resource->id; ?>">
-			<?php foreach($this->videos as $v) : ?>
+			<?php foreach($presentation->media as $video) : ?>
 				<?php
-					$info = pathinfo($v);
-					$type = "";
-					switch( $info['extension'] )
+					switch( $video->type )
 					{
-						case 'mp4': 	$type = "video/mp4;";		break;
-						case 'ogv':		$type = "video/ogg;";		break;
-						case 'webm':	$type = "video/webm;";		break;
+						case 'ogg':
+						case 'ogv':     $type = "video/ogg;";    break;
+						case 'webm':    $type = "video/webm;";   break;
+						case 'mp4':
+						case 'm4v':
+						default:        $type = "video/mp4;";    break;
+					}
+					
+					//video source
+					$source = $video->source;
+					
+					//is this the mp4 (need for flash)
+					if (in_array($video->type, array('mp4','m4v')))
+					{
+						$mp4 = $video->source;
+					}
+					
+					//if were playing local files
+					if (substr($video->source, 0, 4) != 'http')
+					{
+						$source = $base . $source;
+						if (in_array($video->type, array('mp4','m4v')))
+						{
+							$mp4 = $base . $mp4;
+						}
 					}
 				?>
-				<source src="<?php echo $this->path . DS . $v; ?>" type="<?php echo $type; ?>" />
+				<source src="<?php echo $source; ?>" type="<?php echo $type; ?>" />
 			<?php endforeach; ?>
 		
-			<a href="<?php echo $this->path . DS . $this->mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$this->width}px;height:{$this->height}px;"; ?>"  data-mediaid="<?php echo $this->resource->id; ?>"></a>
+			<a href="<?php echo $mp4; ?>"
+				id="video-flowplayer"
+				style="<?php echo "width:{$width};height:{$height};"; ?>"
+				data-mediaid="<?php echo $this->resource->id; ?>"></a>
 		
-			<?php if(count($this->subs) > 0) : ?>
-				<?php foreach($this->subs as $s) : ?>
-					<?php $info2 = pathinfo($s); ?>
-					<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $this->path . DS . $s; ?>?v=<?php echo filemtime( JPATH_ROOT . $this->path . DS . $s ); ?>"></div>
+			<?php if(count($presentation->subtitles) > 0) : ?>
+				<?php foreach($presentation->subtitles as $subtitle) : ?>
+					<?php
+						//get file modified time
+						$source = $subtitle->source;
+						$auto   = $subtitle->autoplay;
+						
+						//if were playing local files
+						if (substr($video->source, 0, 4) != 'http')
+						{
+							$source   = $base . $source;
+							$modified = filemtime( JPATH_ROOT . $source );
+						}
+						else
+						{
+							$modified = filemtime( $source );
+						}
+					?>
+					<div
+						data-autoplay="<?php echo $auto; ?>"
+						data-type="subtitle"
+						data-lang="<?php echo $subtitle->name; ?>" 
+						data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</video>

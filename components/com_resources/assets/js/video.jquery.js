@@ -758,20 +758,19 @@ HUB.Video = {
 			$jQ("#full-screen").after("<ul id=\"subtitle-picker\"><li><a href=\"javascript:void(0);\">CC</a><ul id=\"cc\"><li><a class=\"active\" rel=\"\" href=\"#\">None</a></ul></li></ul>");
 
 			for(n=0; n<sub_titles.length; n++) {
-				var sub = sub_titles[n];
-				var sub_lang = sub.lang;
+				var sub = sub_titles[n],
+					sub_lang = sub.lang.toLowerCase(),
+					sub_lang_text = sub.lang;
 				
-				//do we automatically want to show a sub
-				if( sub_lang.substr(sub_lang.length - 4) == "auto" ) {
-					lang_text = sub_lang.substr(0, (sub_lang.length - 5))
-					track = sub_lang;
+				//do we auto play
+				if(parseInt(sub.auto))
+				{
 					auto = true;
-				} else {
-					lang_text = sub_lang
+					track = sub_lang;
 				}
 				
 				$jQ("#video-subtitles").append("<div id=\"" + sub_lang + "\"></div>");
-				$jQ("#cc").append("<li><a rel=\"" + sub_lang + "\" class=\"" + sub_lang + "\" href=\"javascript:void(0);\">" + HUB.Video.ucfirst(lang_text) + "</a></li>");
+				$jQ("#cc").append("<li><a rel=\"" + sub_lang + "\" class=\"" + sub_lang + "\" href=\"javascript:void(0);\">" + sub_lang_text + "</a></li>");
 			}
 			
 			//if we are auto showing subs make sure picker reflects that
@@ -780,7 +779,6 @@ HUB.Video = {
 				$jQ("#cc a").removeClass("active");
 				$jQ("#cc a." + track).addClass("active");
 			}
-			
 			
 			$jQ("#subtitle-picker ul a").live("click", function(e) {
 				track = this.rel;
@@ -812,7 +810,7 @@ HUB.Video = {
 		
 		//get the subs for the track we have selected
 		for(i in sub_titles) {
-			if(sub_titles[i].lang == track) {
+			if(sub_titles[i].lang.toLowerCase() == track) {
 				var subs = sub_titles[i].subs;
 			}
 		}
@@ -841,15 +839,16 @@ HUB.Video = {
 		
 		//loop through each subs file and get the contents then add to subs object
 		sub_files.each(function(i){
-			var lang = $jQ(this).attr("data-lang").toLowerCase(),
-				src = $jQ(this).attr("data-src");
+			var lang = $jQ(this).attr("data-lang"),
+				src  = $jQ(this).attr("data-src"),
+				auto = $jQ(this).attr("data-autoplay"); 
 			
 			$jQ.ajax({
 				url: src,
 				async: false,
 				success: function( content ) {
 					parsed = HUB.Video.parseSubtitles( content );
-					sub = { "lang" : lang, "subs" : parsed };
+					sub = { "lang" : lang, "subs" : parsed, "auto" : auto };
 					subs.push(sub);
 					count++;
 				}

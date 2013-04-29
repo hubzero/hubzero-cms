@@ -1032,30 +1032,16 @@ class ResourcesControllerResources extends Hubzero_Controller
 		//load resource
 		$activechild = new ResourcesResource($this->database);
 		$activechild->load($child);
-
-		//base url for the resource
-		$base = DS . trim($this->config->get('uploadpath'), DS);
 		
-		//param object
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		//check to see if we have a manifest
+		if (!$this->videoManifestExistsForResource( $activechild ))
 		{
-			$paramsClass = 'JRegistry';
+			$this->createVideoManifestForResource( $activechild );
 		}
-
-		//get the hieght and width
-		$attribs = new $paramsClass($activechild->attribs);
-		$width  = intval($attribs->get('width', 0));
-		$height = intval($attribs->get('height', 0));
-
-		//build the rest of the resource path and combine with base
-		$path = ResourcesHtml::build_path($activechild->created, $activechild->id, '');
-		$path = $base . $path;
-
-		//get the videos
-		$videos = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
-		$video_mp4 = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4');
-		$subs = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
+		
+		//get manifest
+		$manifest = $this->getVideoManifestForResource( $activechild );
+		$manifest = json_decode( file_get_contents( JPATH_ROOT . $manifest ) );
 		
 		//media tracking object
 		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
@@ -1092,15 +1078,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$view->option   = $this->_option;
 		$view->config   = $this->config;
 		$view->database = $this->database;
-
 		$view->resource = $activechild;
-		$view->path     = $path;
-		$view->videos   = $videos;
-		$view->mp4		= $video_mp4;
-		$view->subs     = $subs;
-
-		$view->width    = $width;
-		$view->height   = $height;
+		$view->manifest = $manifest;
 
 		// Output HTML
 		if ($this->getError()) 
@@ -1111,6 +1090,117 @@ class ResourcesControllerResources extends Hubzero_Controller
 			}
 		}
 		$view->display();
+	}
+	
+	/**
+	 * Get Video Manifest for resource
+	 * 
+	 * @param      $resource     HUB Resource
+	 * @return     BOOL
+	 */
+	private function getVideoManifestForResource( $resource )
+	{
+		//base url for the resource
+		$base = DS . trim($this->config->get('uploadpath'), DS);
+		
+		//build the rest of the resource path and combine with base
+		$path = ResourcesHtml::build_path($resource->created, $resource->id, '');
+		
+		//get manifests
+		$manifests = JFolder::files( JPATH_ROOT . DS . $base . $path, '.json' );
+		
+		//return path to manifest if we have one
+		return (count($manifests) > 0) ? $base.$path.DS.$manifests[0] : array();
+	}
+	
+	
+	/**
+	 * Check for Video manifest file
+	 * 
+	 * @param      $resource     HUB Resource
+	 * @return     BOOL
+	 */
+	private function videoManifestExistsForResource( $resource )
+	{
+		//get video manifest 
+		$manifest = $this->getVideoManifestForResource( $resource );
+		
+		//do we have a manifest already?
+		return (count($manifest) < 1) ? false : true;
+	}
+	
+	
+	/**
+	 * Create manifest file for video
+	 * 
+	 * @param      $resource     HUB Resource
+	 * @return     Void
+	 */
+	private function createVideoManifestForResource( $resource )
+	{
+		//var to hold manifest data
+		$manifest = new stdClass;
+		
+		//base url for the resource
+		$base = DS . trim($this->config->get('uploadpath'), DS);
+		
+		//build the rest of the resource path and combine with base
+		$path = ResourcesHtml::build_path( $resource->created, $resource->id, '' );
+		
+		//instantiate params object then parse resource attributes
+		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
+		$attributes  = new $paramsClass( $resource->attribs );
+		
+		//set vars for manifest
+		$manifest->presentation->title     = $resource->title;
+		$manifest->presentation->type      = 'Video';
+		$manifest->presentation->width     = intval($attributes->get('width', 0));
+		$manifest->presentation->height    = intval($attributes->get('height', 0));
+		$manifest->presentation->duration  = intval($attributes->get('duration', 0));
+		$manifest->presentation->media     = array();
+		$manifest->presentation->subtitles = array();
+		
+		//get the videos
+		$videos = JFolder::files(JPATH_ROOT . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+		
+		//add each video to manifest
+		foreach ($videos as $k => $video)
+		{
+			$videoInfo = pathinfo( $video );
+			$manifest->presentation->media[$k]->type   = $videoInfo['extension'];
+			$manifest->presentation->media[$k]->source = $path . DS . $video;
+		}
+		
+		//get the subs
+		$subtitles = JFolder::files(JPATH_ROOT . DS . $base . $path, '.srt|.SRT');
+		
+		//add each subtitle to manifest
+		foreach ($subtitles as $k => $subtitle)
+		{
+			//get name
+			$info = pathinfo( $subtitle );
+			$name = str_replace('-auto', '', $info['filename']);
+			$name = ucfirst( $name );
+			
+			$manifest->presentation->subtitles[$k]->type     = 'SRT';
+			$manifest->presentation->subtitles[$k]->name     = $name;
+			$manifest->presentation->subtitles[$k]->source   = $path . DS . $subtitle;
+			$manifest->presentation->subtitles[$k]->autoplay = 0;
+			
+			//do we want to autoplay
+			if (strstr($subtitle, '-'))
+			{
+				$manifest->presentation->subtitles[$k]->autoplay = 1;
+			}
+		}
+		
+		//attempt to create manifest file
+		if (!JFile::write(JPATH_ROOT . DS . $base . $path . DS . 'presentation.json', json_encode($manifest)))
+		{
+			return false;
+		}
+		
+		return true;
 	}
 
 	/**
