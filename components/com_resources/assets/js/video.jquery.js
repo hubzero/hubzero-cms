@@ -483,6 +483,10 @@ HUB.Video = {
 			time_hash = '&time=' + time;
 		}
 		
+		//remove current time form media tracking
+		url = url.replace(/%3A/g, ':');
+		url = url.replace(/&time=\d{2}:\d{2}:\d{2}/, '');
+		
 		//promt user with link to this spot in video
 		prompt("Link to Current Position in Presentation", url + time_hash);
 	},
@@ -544,7 +548,7 @@ HUB.Video = {
 		if (!$jQ("#video-container #resume").length)
 		{
 			//video container must be position relatively 
-			$jQ("#video-container").css('position', 'relative');
+			//$jQ("#video-container").css('position', 'relative');
 		
 			//build replay content
 			var resume = "<div id=\"resume\"> \
@@ -589,7 +593,7 @@ HUB.Video = {
 			$jQ(this).remove();
 			
 			//reset video containter positioning
-			$jQ("#video-container").css("position","static");
+			//$jQ("#video-container").css("position","static");
 			
 			//play video
 			var p = HUB.Video.getPlayer();
@@ -605,7 +609,7 @@ HUB.Video = {
 	replay: function()
 	{
 		//video container must be position relatively 
-		$jQ("#video-container").css('position', 'relative');
+		//$jQ("#video-container").css('position', 'relative');
 		
 		//build replay content
 		var replay = "<div id=\"replay\"> \
@@ -654,7 +658,7 @@ HUB.Video = {
 			$jQ(this).remove();
 			
 			//reset video containter positioning
-			$jQ("#video-container").css("position","static");
+			//$jQ("#video-container").css("position","static");
 			
 			//seek to beginning
 			HUB.Video.seek( 0 ); 
