@@ -93,14 +93,14 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 						$auto   = $subtitle->autoplay;
 						
 						//if were playing local files
-						if (substr($video->source, 0, 4) != 'http')
+						if (substr($subtitle->source, 0, 4) != 'http')
 						{
 							$source   = $base . $source;
 							$modified = filemtime( JPATH_ROOT . $source );
 						}
 						else
 						{
-							$modified = filemtime( $source );
+							$modified = '123456789';
 						}
 					?>
 					<div
