@@ -142,7 +142,7 @@
 		left: 0;
 		right: 0;
 	}
-/* Add note button */
+/* Add note button 
 	button#add_note {
 		position: absolute;
 		top: 15px;
@@ -357,42 +357,120 @@
 	}
 /* Note list */
 	#notes-list-container {
-		background: #f9f9f9;
+		/*background: #f9f9f9;
 		border-top: 1px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		padding: 10px 15px;
-		margin: 20px -20px;
+		margin: 20px -20px;*/
+		background: #222;
+		padding: 0 10px;
+		border-top: 1px solid #444;
+	}
+	#notes-list-container:before,
+	#notes-list-container:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	#notes-list-container:after {
+		clear: left;
 	}
 	#notes-list-container .jSticky-medium.thumbnail {
-		width: 30px;
-		height: 30px;
+		width: 26px;
+		height: 26px;
+		padding: 2px;
 		overflow: hidden;
-		position: static;
+		position: relative;
 		float: left;
-		margin: 0 5px;
-		text-indent: 5em;
+		margin: 5px;
+		font-size: 5px;
+		/*text-indent: 5em;
 		white-space: nowrap;
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* IE 8 */
-		filter: alpha(opacity=50); /* IE 5-7 */
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+		filter: alpha(opacity=50);
 		-webkit-opacity: 0.50;
 		-moz-opacity: 0.50;
-		opacity: 0.50;
+		opacity: 0.50;*/
+	}
+	#notes-list-container .jSticky-medium.thumbnail p {
+		margin: 0;
+		padding: 0;
+		font-size: 5px;
 	}
 	#notes-list-container .jSticky-medium.thumbnail:focus,
 	#notes-list-container .jSticky-medium.thumbnail:hover {
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; /* IE 8 */
-		filter: alpha(opacity=100); /* IE 5-7 */
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		filter: alpha(opacity=100);
 		-webkit-opacity: 1;
 		-moz-opacity: 1;
 		opacity: 1;
 		cursor: pointer;
 	}
-	#notes-list-container p.notes-controls {
+	/*#notes-list-container .jSticky-medium.thumbnail:after {
+		content: "\f036  \f036";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		width: 20px;
+		height: 20px;
+		font-size: 16px;
+		line-height: 14px;
+		color: #bca71e;
+		text-indent: 0;
+		white-space: normal;
+		overflow: hidden;
+		display: block;
+	}*/
+	#notes-list-container #notes-controls {
 		float: right;
 		margin: 0;
-		padding: 0;
+		padding: 5px 5px;
 	}
-	#notes-list:before {
+	#notes-list-container #notes-controls button {
+		background-color: #444;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		display: inline-block;
+		padding: 0.4em 0.6em;
+		margin: 0.4em 0 0 1em;
+		color: #aaa;
+		line-height: 1;
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.9);
+		border: none;
+		text-decoration: none;
+		outline: 0;
+		font-size: 1em;
+		white-space: nowrap;
+		word-wrap: normal;
+		text-align: center;
+		font-weight: normal;
+		vertical-align: middle;
+		cursor: pointer;
+	}
+	@-moz-document url-prefix() {
+		#notes-list-container #notes-controls button {
+			margin: 0.3em 0 0 1em;
+		}
+	}
+	#notes-list-container #notes-controls button:hover {
+		background-color: #ccc;
+		color: #666;
+		border: none;
+		text-decoration: none;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	}
+	button#add_note:before {
+		font-family: 'Fontcons';
+		content: "\270D";
+		margin-right: 0.4em;
+		color: #777;
+		line-height: 1.1em;
+	}
+	/*#notes-list:before {
 		content: "\270D";
 		font-family: "Fontcons";
 		display: block;
@@ -404,7 +482,7 @@
 		float: left;
 		color: #ccc;
 		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
-	}
+	}*/
 /* Instructions */
 	#notes-introduction {
 		width: 32em;

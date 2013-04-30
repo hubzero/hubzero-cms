@@ -63,6 +63,7 @@ jQuery(document).ready(function(jQuery){
 		?>,
 		resizable: true,
 		controls: true,
+		controlBar: true,
 		editCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
 			//console.log(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text);

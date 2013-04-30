@@ -35,20 +35,23 @@ jQuery(document).ready(function(jq){
 		});
 	});
 	$('.reply').each(function(i, item) {
-		$(item).click(function (e) {
+		$(item).on('click', function (e) {
 			e.preventDefault();
-			var frm = '#' + $(this).attr('rel');
-			if ($(frm).hasClass('hide')) {
+			var frm = $('#' + $(this).attr('rel'));
+			/*if ($(frm).hasClass('hide')) {
 				$(frm).removeClass('hide');
 			} else {
 				$(frm).addClass('hide');
-			}
+			}*/
+			frm.toggleClass('hide');
 		});
 	});
 	$('.cancelreply').each(function(i, item) {
-		$(item).click(function (e) {
+		$(item).on('click', function (e) {
 			e.preventDefault();
-			$(this).closest('.comment-add').addClass('hide');
+			$(this)
+				.closest('.comment-add')
+				.addClass('hide');
 		});
 	});
 });

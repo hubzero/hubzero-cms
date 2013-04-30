@@ -23,26 +23,11 @@
 	margin: 0 auto;
 }
 
-.video.container {
-	padding: 0;
-	text-align: center;
-}
-.video-wrap {
-	margin: 0 auto;
-	text-align: left;
-}
-.video-player-wrap {
-	background: #222;
-	-webkit-border-radius: 0.25em 0.25em 0 0;
-	-moz-border-radius: 0.25em 0.25em 0 0;
-	border-radius: 0.25em 0.25em 0 0;
-}
-
-#presenter-container #list ul li {
+/*#presenter-container #list ul li {
 	border-bottom: 1px solid #444;
 	background: #333;
 	color: #999;
-}
+}*/
 
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1160px) {

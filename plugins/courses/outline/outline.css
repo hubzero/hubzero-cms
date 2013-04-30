@@ -262,6 +262,23 @@
 	}
 
 /* lecture */
+	.video.container {
+		padding: 0;
+		text-align: center;
+	}
+	.video-wrap {
+		margin: 0 auto;
+		text-align: left;
+	}
+	.video-player-wrap {
+		background: #222;
+		-webkit-border-radius: 0.25em 0.25em 0 0;
+		-moz-border-radius: 0.25em 0.25em 0 0;
+		border-radius: 0.25em 0.25em 0 0;
+	}
+	.video-player-wrap .warning {
+		margin: 0;
+	}
 	.video-meta {
 		background: #f9f9f9;
 		padding: 15px;
@@ -299,4 +316,9 @@
 		display: inline;
 		margin: 0 1em 0 0;
 		padding: 0;
+	}
+	.lecture-assets li:before {
+		content: "\2514";
+		color: #ccc;
+		margin-right: 0.5em;
 	}
