@@ -718,12 +718,23 @@ HUB.Video = {
 				playerTime = HUB.Video.getCurrent();
 				playerDuration = HUB.Video.getDuration();
 			}
-			
+
+			//craft post url
+			var component = 'resources';
+			var componentSearch = window.location.href.match(/\.org\/([a-z]+)\//);
+
+			if(componentSearch && componentSearch[1].length)
+			{
+				component = componentSearch[1];
+			}
+
+			var url = '/index.php?option=com_'+component+'&controller=media&task=tracking&no_html=1';
+
 			//make ajax call
 			$jQ.ajax({
 				type: 'POST',
 				data: { event: eventType, resourceid: resourceId, time: playerTime, duration: playerDuration },
-				url: '/index.php?option=com_resources&controller=media&task=tracking&no_html=1',
+				url: url,
 				error: function( jqXHR, status, error )
 				{
 					console.log(error);
