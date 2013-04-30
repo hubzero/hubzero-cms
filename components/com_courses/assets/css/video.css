@@ -1,0 +1,12 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_courses/assets/css/video.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Overrides of default video.css for courses */
+
+.video-player-wrap {
+	background: black;
+}

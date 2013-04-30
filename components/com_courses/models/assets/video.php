@@ -46,7 +46,7 @@ class VideoFileAssetHandler extends FileAssetHandler
 	 **/
 	protected static $info = array(
 			'action_message' => 'As an HTML5/HUBpresenter Video',
-			'responds_to'    => array('zip', 'mp4', 'mov', 'm4v'),
+			'responds_to'    => array('zip', 'mp4', 'mov', 'm4v', 'json'),
 		);
 
 	/**

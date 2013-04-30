@@ -32,53 +32,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Set a few defaults
-$type               = 'html5';
-$manifest_path_json = null;
-$manifest_path_xml  = null;
-
 // Set the path
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 
-// Check to make sure we have a presentation document defining cuepoints, slides, and media
-if (is_dir(JPATH_ROOT . $path))
+// Get the manifest
+$manifests = JFolder::files(JPATH_ROOT . $path, '.json', true, true);
+$manifest  = (count($manifests) > 0) ? $manifests[0] : array();
+
+if (is_file($manifest))
 {
-	$manifest_path_json = JFolder::files(JPATH_ROOT . $path, 'presentation.json', true, true);
-	$manifest_path_xml  = JFolder::files(JPATH_ROOT . $path, 'presentation.xml', true, true);
+	$media_path = $manifest;
+	$media_dir  = dirname($manifest);
+	$manifest   = json_decode(file_get_contents($manifest));
 }
 
-// Check if the formatted json exists (for hubpresenter)
-if (empty($manifest_path_json))
-{
-	// We don't have the JSON manifest, but check to see if we just havent converted it yet
-	if (empty($manifest_path_xml))
-	{
-		// This is redundant, but reinforcing that we're not trying to display a hubpresenter video
-		$type = 'html5';
-	} 
-	else 
-	{
-		// We do have an XML file, try to convert
-		// Inlude the HUBpresenter library
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'hubpresenter.php');
-
-		// Try to create json manifest
-		$job = HUBpresenterHelper::createJsonManifest(rtrim($manifest_path_xml[0], 'presentation.xml'), $manifest_path_xml[0]);
-		if ($job != '') 
-		{
-			$this->setError($job);
-		}
-		else
-		{
-			$type = 'hubpresenter';
-		}
-	}
-}
-else
-{
-	// We have a formatted JSON manifest, therefore we must be doing a hubpresenter video
-	$type = 'hubpresenter';
-}
+$type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
 
 // Add Jquery to the page if the system plugin isn't enabled
 if (!JPluginHelper::isEnabled('system', 'jquery'))
@@ -93,14 +61,11 @@ if (!JPluginHelper::isEnabled('system', 'jquery'))
 // If the video type is 'hubpresenter', perform next steps
 if ($type == 'hubpresenter')
 {
-	// Set media path
-	$media_path = rtrim($manifest_path_json[0], 'presentation.json');
-
 	// Check if path exists
-	if (is_dir($media_path))
+	if (is_dir($media_dir))
 	{
 		// Get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-		$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
+		$media = JFolder::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
 		foreach ($media as $m) 
 		{
 			$ext[] = array_pop(explode('.', $m));
@@ -113,7 +78,7 @@ if ($type == 'hubpresenter')
 		}
 
 		// Make sure if any slides are video we have three formats of video and backup image for mobile
-		$slide_path = $media_path . 'slides';
+		$slide_path = $media_dir . DS . 'slides';
 		$slides = JFolder::files($slide_path, '', false, false);
 
 		// Array to hold slides with video clips
@@ -148,10 +113,10 @@ if ($type == 'hubpresenter')
 	}
 
 	// Get the manifest for the presentation
-	$contents = file_get_contents($manifest_path_json[0]);
+	$contents = file_get_contents($media_path);
 
 	// Content folder
-	$content_folder = ltrim(rtrim($media_path, DS), JPATH_ROOT);
+	$content_folder = ltrim(rtrim($media_dir, DS), JPATH_ROOT);
 
 	if (is_dir($content_folder))
 	{
@@ -169,38 +134,22 @@ if ($type == 'hubpresenter')
 	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter");
 	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
 }
-elseif ($type == 'html5') // Not hubpresenter, now try standard HTML5 video
+elseif ($type == 'html5')
 {
-	// Instanticate our variables
-	$videos    = array();
-	$video_mp4 = array();
-	$subs      = array();
+	Hubzero_Document::addComponentStylesheet('com_resources', "/assets/css/video.css");
+	Hubzero_Document::addComponentStylesheet('com_courses', "/assets/css/video.css");
 
-	if (is_dir(JPATH_ROOT . $path))
-	{
-		// Look for video files and subtitle files in our path
-		$videos    = JFolder::files(JPATH_ROOT . $path, '.m4v|.M4V|.mpeg|.MPEG|.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
-		$video_mp4 = JFolder::files(JPATH_ROOT . $path, '.mp4|.MP4|.m4v|.M4V');
-		$subs      = JFolder::files(JPATH_ROOT . $path, '.srt|.SRT');
-	}
+	Hubzero_Document::addComponentScript('com_resources', "assets/js/video");
+	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
 
-	// If there was a video, let's put it in the page
-	if (isset($videos) && !empty($videos))
-	{
-		// Add HTML5 video-specific scripts and css
-		Hubzero_Document::addComponentStylesheet('com_resources', "/assets/css/video.css");
+	$presentation = $manifest->presentation;
 
-		Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter");
-		Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
-
-		// @TODO: it might be nice to detect the native resolution of the video?
-		$width = 854;
-		$height = 480;
-	}
+	// Determine height and width
+	$width  = (isset($presentation->width) && $presentation->width != 0) ? $presentation->width . 'px' : 'auto';
+	$height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
 }
 
 // Include media tracking for html5 and hubpresenter videos
-// Media tracking object
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
 $mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
 
@@ -228,34 +177,73 @@ if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tra
 
 <?php if ($type == 'html5') : ?>
 	<div id="video-container">
-		<?php if (isset($videos) && is_array($videos) && count($videos) > 0) : ?>
-			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->get('id'); ?>">
-				<?php foreach ($videos as $v) : ?>
+		<?php if(count($presentation->media) > 0) : ?>
+			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->id; ?>">
+				<?php foreach($presentation->media as $video) : ?>
 					<?php
-						$info = pathinfo($v);
-						$type = '';
-						switch (strtolower($info['extension']))
+						switch( $video->type )
 						{
+							case 'ogg':
+							case 'ogv':     $type = "video/ogg;";    break;
+							case 'webm':    $type = "video/webm;";   break;
+							case 'mp4':
 							case 'm4v':
-							case 'mp4':  $type = "video/mp4;";  break;
-							case 'ogv':  $type = "video/ogg;";  break;
-							case 'webm': $type = "video/webm;"; break;
+							default:        $type = "video/mp4;";    break;
+						}
+
+						//video source
+						$source = $video->source;
+
+						//is this the mp4 (need for flash)
+						if (in_array($video->type, array('mp4','m4v')))
+						{
+							$mp4 = $video->source;
+						}
+
+						//if were playing local files
+						if (substr($video->source, 0, 4) != 'http')
+						{
+							$source = $base . $source;
+							if (in_array($video->type, array('mp4','m4v')))
+							{
+								$mp4 = $base . $mp4;
+							}
 						}
 					?>
-					<source src="<?php echo $path . DS . $v; ?>" type="<?php echo $type; ?>" />
+					<source src="<?php echo $source; ?>" type="<?php echo $type; ?>" />
 				<?php endforeach; ?>
 
-				<a href="<?php echo $path . DS . $video_mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$width}px;height:{$height}px;"; ?>"></a>
+				<a href="<?php echo $mp4; ?>"
+					id="video-flowplayer"
+					style="<?php echo "width:{$width};height:{$height};"; ?>"
+					data-mediaid="<?php echo $this->resource->id; ?>"></a>
 
-				<?php if (isset($subs) && count($subs) > 0) : ?>
-					<?php foreach ($subs as $s) : ?>
-						<?php $info2 = pathinfo($s); ?>
-						<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $path . DS . $s; ?>?v=<?php echo filemtime( JPATH_ROOT . $path . DS . $s ); ?>"></div>
+				<?php if(count($presentation->subtitles) > 0) : ?>
+					<?php foreach($presentation->subtitles as $subtitle) : ?>
+						<?php
+							//get file modified time
+							$source = $subtitle->source;
+							$auto   = $subtitle->autoplay;
+							
+							//if were playing local files
+							if (substr($video->source, 0, 4) != 'http')
+							{
+								$source   = $base . $source;
+								$modified = filemtime( JPATH_ROOT . $source );
+							}
+							else
+							{
+								$modified = filemtime( $source );
+							}
+						?>
+						<div
+							data-autoplay="<?php echo $auto; ?>"
+							data-type="subtitle"
+							data-lang="<?php echo $subtitle->name; ?>" 
+							data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</video>
-		<?php else : ?>
-			<p class="warning">There are no playable videos associated with this lecture</p>
 		<?php endif; ?>
 	</div><!-- /#video-container -->
 <?php elseif($type == 'hubpresenter') : ?>
