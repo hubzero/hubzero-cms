@@ -30,6 +30,12 @@ HUB.ProjectFilesFileUpload = {
 	initialize: function() {
 		var $ = this.jQuery;
 		
+		var isMSIE = /*@cc_on!@*/0;
+		if (isMSIE) {
+		  	// Turn it off in IE
+		 	return false;
+		} 
+		
 		if ($("#archiveCheck").length) 
 		{
 			$("#archiveCheck").remove();

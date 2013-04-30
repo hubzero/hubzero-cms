@@ -96,8 +96,9 @@
 	}
 	.google {
 		padding-left: 20px;
+		*background: url("images/gdrive.gif") 0 0 no-repeat;
 	}
-	
+		
 /* File preview window 
 --------------------------------------------- */
 	#preview-window {
@@ -847,9 +848,14 @@
 	}
 	#manage_sync a span {
 		display: none;
+		*display: block;
 	}
 	#a-sync:before {
 		content: "\f021";
+	}
+	#a-sync {
+		*padding-left: 20px;
+		*background: url("images/gdrive.gif") 0 0 no-repeat;
 	}
 	@-o-keyframes Rotate {
 	  from {-o-transform:rotate(0deg);}
@@ -1088,6 +1094,8 @@
 		background: #eff8f9;
 		width: auto;
 		min-width: 150px;
+		*width: 150px;
+		*padding: 0.2em 4em 0.2em 1em;
 	}
 	#connector .i-new  {
 		font-size: 0.9em;
@@ -1349,3 +1357,10 @@
 	#manage_assets a span {
 		*display: inline;
 	}
+	#connector .google {
+		*padding-left: 10px;
+		*width: 10px;
+		*background: url("images/gdrive.gif") 0 0 no-repeat;
+		*display: inline-block;
+	}
+	

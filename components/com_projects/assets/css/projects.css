@@ -1208,6 +1208,7 @@
 		background: #FFFFFF;
 		padding: 1.5em 1.3em;
 		padding-left: 60px;	
+		*padding-left: 1.3em;
 		border: 2px solid #d4eeed;
 		-moz-border-radius: 15px;
 		border-radius: 15px;
@@ -3388,7 +3389,7 @@
 	.addnew, .add {
 		*background: url("../img/icons/plus.gif") 0 center no-repeat;
 		*padding-left: 20px !important;
-		*margin-left: 5px;
+		*margin-left: 10px !important;
 	}
 	.wykiwyg {
 		*height: 300px;
@@ -3452,9 +3453,21 @@
 		*padding: 2px 8px;
 		*padding-left: 20px;
 	}
+	.databases {		
+		*background: url("../img/icons/database.gif") 0 center no-repeat;
+		*padding-left: 20px;
+	}
 	
 	#introduction li {
 		*margin: 0.3em 0;
 		*padding: 0 0 0 20px;
 		*background: transparent url("../img/icons/checker.gif") 0 0 no-repeat; 
+	}
+	.aside:before,
+	.subject small.subject-before,
+	.aside small.aside-after,
+	.aside small.aside-before,
+	#hubForm small.hubform-after,
+	#hubForm small.hubform-before {
+		display: none;
 	}

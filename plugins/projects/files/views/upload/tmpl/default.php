@@ -86,12 +86,10 @@ if (!$this->getError()) {
 			<div class="asset-uploader">
 		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 					<div id="ajax-uploader" data-action="<?php echo $this->url . '?' . $this->do . '=save&amp;no_html=1&amp;ajax=1'  . $subdirlink; ?>" >
-						<noscript>
 						<label class="addnew">
 							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" /> 
 							<p class="hint ipadded"><?php echo JText::_('COM_PROJECTS_FILES_MAX_UPLOAD').' '.$slimit; ?></p>
 						</label>
-						</noscript>
 						<div id="upload-body">
 							<ul id="u-selected" class="qq-upload-list">
 							</ul>

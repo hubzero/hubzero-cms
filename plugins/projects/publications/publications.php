@@ -6009,11 +6009,13 @@ class plgProjectsPublications extends JPlugin
 		
 		// Get project path
 		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
-			$this->_config->get('webpath'), $this->_config->get('offroot', 0));
-		
-		if (!is_dir( $path )) 
+			$this->_config->get('webpath'), 1);
+			
+		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
+					
+		if (!is_dir( $prefix . $path )) 
 		{
-			if (!JFolder::create( $path, 0777 )) 
+			if (!JFolder::create( $prefix . $path, 0777 )) 
 			{
 				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -6021,24 +6023,23 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		// Build .git repo
-		$gitRepoBase = $path. DS .'.git';
+		$gitRepoBase = $prefix . $path. DS .'.git';
 		
 		if (!is_dir( $gitRepoBase )) 
 		{
-			$clone = $this->_getClonePath();
+			// Git helper
+			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
+			$this->_git = new ProjectsGitHelper(
+				$this->_config->get('gitpath', '/opt/local/bin/git'), 
+				0,
+				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
+			);
 			
-			if (!is_dir($clone))
-			{
-				$this->setError( JText::_('COM_PROJECTS_CLONE_DIR_DOES_NOT_EXIST') );
-				return false;	
-			}
-				
-			if (!JFolder::copy($clone, $gitRepoBase)) 
-			{
-				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_GIT_REPO') );
-				return false;
-			}
+			// Initialize Git
+			$this->_git->iniGit($path);
 		}
+		
+		$path = $prefix . $path;
 		
 		// Copy files from member directory
 		if (!JFolder::copy($memberPath, $path, '', true)) 
