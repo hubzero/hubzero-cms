@@ -282,7 +282,7 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 			{
 				if (!empty($user['password']))
 				{
-					$result = Hubzero_User_Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'), true);
+					$result = Hubzero_User_Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
 				}
 				$userId = $target_juser->get('id');
 				
@@ -406,7 +406,7 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 			if (!empty($user['password']))
 			{
 				ximport('Hubzero_User_Password');
-				$result = Hubzero_User_Password::changePassword($userProfile->get('username'), $xregistration->get('password'), true);
+				$result = Hubzero_User_Password::changePassword($userProfile->get('username'), $xregistration->get('password'));
 			}
 		}		
 		

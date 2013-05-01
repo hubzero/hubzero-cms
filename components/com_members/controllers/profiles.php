@@ -801,7 +801,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		// Encrypt the password and update the profile
-		$result = Hubzero_User_Password::changePassword($profile->get('uidNumber'), $newpass, true);
+		$result = Hubzero_User_Password::changePassword($profile->get('uidNumber'), $newpass);
 
 		// Save the changes
 		if (!$result)

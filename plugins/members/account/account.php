@@ -624,7 +624,7 @@ class plgMembersAccount extends Hubzero_Plugin
 		}
 
 		// No errors, so let's move on - encrypt the password and update the profile
-		$result = Hubzero_User_Password::changePassword($profile->get('uidNumber'), $password1, true);
+		$result = Hubzero_User_Password::changePassword($profile->get('uidNumber'), $password1);
 
 		// Save the changes
 		if (!$result)
