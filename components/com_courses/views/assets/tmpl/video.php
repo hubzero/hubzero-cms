@@ -216,7 +216,7 @@ if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tra
 				<a href="<?php echo $mp4; ?>"
 					id="video-flowplayer"
 					style="<?php echo "width:{$width};height:{$height};"; ?>"
-					data-mediaid="<?php echo $this->resource->id; ?>"></a>
+					data-mediaid="<?php echo $this->asset->id; ?>"></a>
 
 				<?php if(count($presentation->subtitles) > 0) : ?>
 					<?php foreach($presentation->subtitles as $subtitle) : ?>
@@ -226,14 +226,14 @@ if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tra
 							$auto   = $subtitle->autoplay;
 							
 							//if were playing local files
-							if (substr($video->source, 0, 4) != 'http')
+							if (substr($subtitle->source, 0, 4) != 'http')
 							{
 								$source   = $base . $source;
 								$modified = filemtime( JPATH_ROOT . $source );
 							}
 							else
 							{
-								$modified = filemtime( $source );
+								$modified = '123456789';
 							}
 						?>
 						<div
