@@ -17,7 +17,7 @@ class Migration20130430112401ComCourses extends Hubzero_Migration
 
 		if (!$db->tableHasField('#__courses_member_notes', 'timestamp'))
 		{
-			$query .= "ALTER TABLE `#__support_watching` ADD `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `state`;";
+			$query .= "ALTER TABLE `#__courses_member_notes` ADD `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `state`;";
 		}
 
 		if (!empty($query))
