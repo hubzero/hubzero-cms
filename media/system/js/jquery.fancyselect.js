@@ -27,7 +27,7 @@
 			var $this = $(this),
 				dropdown = '',
 				options = $("option", $this),
-				selected = $this.find("option[selected]")
+				selected = $this.find('option[selected="selected"]');
 			
 			//make sure we have a selected index
 			if ($(selected).text() == undefined || $(selected).text() == '')
