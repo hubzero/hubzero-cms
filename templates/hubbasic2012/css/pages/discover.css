@@ -12,9 +12,17 @@
 		position: relative;
 	}
 	#content .four {
+		/*margin-right: 0;
+		padding-right: 5%;*/
 		margin-right: 0;
-		padding-right: 5%;
+		*margin-right: 0;
+		width: 25%;
+		padding-right: 3.225806451612903%;
+		*padding-right: 3.172043010752688%;
 		border-top: 1px dashed #bAbAbA;
+	}
+	#content .four.second.third.fourth {
+		width: 75%;
 	}
 	#content .fourth {
 		padding-right: 0;
