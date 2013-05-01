@@ -39,6 +39,17 @@ if ($assets->total() > 0)
 	$i = 0;
 	foreach ($assets as $asset)
 	{
+		$view = new JView(array(
+			'name'   => 'media',
+			'layout' => '_item'
+		));
+		$view->i          = $i;
+		$view->option     = $this->option;
+		$view->controller = $this->controller;
+		$view->asset      = $asset;
+		$view->no_html    = $no_html;
+		$view->display();
+		/*
 ?>
 		<p class="item-asset">
 			<span class="asset-handle">
@@ -61,6 +72,7 @@ if ($assets->total() > 0)
 			</span>
 		</p>
 <?php 
+		*/
 		$i++;
 	}
 }

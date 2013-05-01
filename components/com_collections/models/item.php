@@ -637,10 +637,12 @@ class CollectionsModelItem extends JObject
 				$k++;
 
 				$a = new CollectionsModelAsset($asset['id']);
-				if (!$a->exists())
+				/*if (!$a->exists())
 				{
 					continue;
-				}
+				}*/
+				$a->set('type', $asset['type']);
+				$a->set('item_id', $this->get('id'));
 				$a->set('ordering', $k);
 				$a->set('filename', $asset['filename']);
 				//$a->set('description', $asset['description']);
@@ -658,7 +660,10 @@ class CollectionsModelItem extends JObject
 			}
 			$a->reorder();
 		}
-
+if ($this->getError())
+{
+	echo $this->getError(); die();
+}
 		/*if ($this->get('_files'))
 		{
 			$config = JComponentHelper::getParams('com_collections');

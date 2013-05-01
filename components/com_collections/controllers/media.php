@@ -444,12 +444,23 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			return;
 		}
 
+		$view = new JView(array(
+			'name'   => 'media',
+			'layout' => '_asset'
+		));
+		$view->i          = JRequest::getInt('i', 0);
+		$view->option     = $this->_option;
+		$view->controller = $this->_controller;
+		$view->asset      = $asset;
+		$view->no_html    = 1;
+
 		//echo result
 		echo json_encode(array(
 			'success'   => true, 
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
-			'id'        => $listdir
+			'id'        => $listdir,
+			'html'      => $view->loadTemplate()
 		));
 	}
 

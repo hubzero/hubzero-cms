@@ -19,104 +19,68 @@ if (!jq) {
 	var jq = $;
 }
 
-HUB.Plugins.GroupsFileUpload = {
-	jQuery: jq,
+jQuery(document).ready(function(jq){
+	var $ = jq;
 
-	initialize: function() {
-		var $ = this.jQuery;
+	if ($("#ajax-uploader").length) {
 
-		if ($("#ajax-uploader").length) {
-
-			$('a.delete')
-				.unbind('click')
-				.on('click', function(event){
-					event.preventDefault();
-					$.get($(this).attr('href'), {}, function(data) {
-						HUB.Plugins.GroupsFileUpload.updateFileList();
-						//$('#ajax-uploader-list').sortable('enable');
-					});
-				});
-
-			if ($('#link-adder').length > 0) {
-				$('#link-adder').append(
-					'<div class="linker">' +
-						'<div class="linker-button"><span>Click to add link</span></div>' + 
-					'</div>'
-				);
-				$('.linker-button').on('click', function(){
-					/*$('#ajax-uploader-list').append(
-						'<p class="item-asset">' +
-							'<span class="asset-file">' + 
-								'<input type="text" name="asset[' + i + '][description]" size="35" value="http://" />' +
-								'<input type="text" name="asset[' + i + '][description]" size="35" value="http://" />' +
-							'</span>' + 
-						'</p>'
-					);*/
-					$.get($('#link-adder').attr('data-action') + $('#field-dir').val(), {}, function(data){
-						var response = jQuery.parseJSON(data);
-
-						if (response.id != $('#field-dir').val()) {
-							$('#field-id').val(response.id);
-							$('#field-dir').val(response.id);
-						}
-
-						HUB.Plugins.GroupsFileUpload.updateFileList();
-					});
-				});
-			}
-
-			var uploader = new qq.FileUploader({
-				element: $("#ajax-uploader")[0],
-				action: $("#ajax-uploader").attr("data-action"),
-				params: {dir: $('#field-dir').val()},
-				multiple: true,
-				debug: true,
-				template: '<div class="qq-uploader">' +
-							'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
-							'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
-							'<ul class="qq-upload-list"></ul>' + 
-						   '</div>',
-				onSubmit: function(id, file) {
-					//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
-				},
-				onComplete: function(id, file, response) {
-					if (response.id != $('#field-dir').val()) {
-						$('#field-id').val(response.id);
-						$('#field-dir').val(response.id);
-						
-						uploader.setParams({dir: $('#field-dir').val()});
-					}
-
-					HUB.Plugins.GroupsFileUpload.updateFileList();
+		$('#ajax-uploader-list')
+			.on('click', 'a.delete', function (e){
+				e.preventDefault();
+				if ($(this).attr('data-id')) {
+					$.get($(this).attr('href'), {}, function(data) {});
 				}
+				$(this).parent().parent().remove();
 			});
-		}
-	},
-	
-	updateFileList: function() {
-		var $ = HUB.Plugins.GroupsFileUpload.jQuery;
 
-		if ($('#ajax-uploader')) {
-			$.get($('#ajax-uploader').attr('data-list') + $('#field-dir').val(), {}, function(data) {
-				$('#ajax-uploader-list')
-					.html(data)
-					.sortable('enable');
-				$('a.delete')
-					.unbind('click')
-					.on('click', function(event){
-						event.preventDefault();
-						//console.log($(this).attr('href'));
-						$.get($(this).attr('href'), {}, function(data) {
-							//console.log(data);
-							HUB.Plugins.GroupsFileUpload.updateFileList();
-							//$('#ajax-uploader-list').sortable('enable');
-						});
-					});
+		if ($('#link-adder').length > 0) {
+			$('#link-adder').append(
+				'<div class="linker">' +
+					'<div class="linker-button"><span>Click to add link</span></div>' + 
+				'</div>'
+			);
+			$('.linker-button').on('click', function(){
+				var i = $('.item-asset').length;
+				$('#ajax-uploader-list').append(
+					'<p class="item-asset">' +
+						'<span class="asset-handle"></span>' +
+						'<span class="asset-file">' +
+							'<input type="text" name="assets[' + i + '][filename]" size="35" value="http://" placeholder="http://" />' +
+						'</span>' +
+						'<span class="asset-description">' +
+							'<input type="hidden" name="assets[' + i + '][type]" value="link" />' +
+							'<input type="hidden" name="assets[' + i + '][id]" value="0" />' +
+							'<a class="delete" href="/collections/delete/asset/" data-id="" title="Delete this asset">delete</a>' +
+						'</span>' +
+					'</p>'
+				);
 			});
 		}
+
+		var uploader = new qq.FileUploader({
+			element: $("#ajax-uploader")[0],
+			action: $("#ajax-uploader").attr("data-action"), // + $('#field-dir').val()
+			params: {dir: $('#field-dir').val(), i: $('.item-asset').length},
+			multiple: true,
+			debug: false,
+			template: '<div class="qq-uploader">' +
+						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+						'<ul class="qq-upload-list"></ul>' + 
+					'</div>',
+			onSubmit: function(id, file) {
+				//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
+			},
+			onComplete: function(id, file, response) {
+				if (response.id != $('#field-dir').val()) {
+					$('#field-id').val(response.id);
+					$('#field-dir').val(response.id);
+
+					uploader.setParams({dir: $('#field-dir').val()});
+				}
+
+				$('#ajax-uploader-list').append(response.html);
+			}
+		});
 	}
-};
-
-jQuery(document).ready(function($){
-	HUB.Plugins.GroupsFileUpload.initialize();
 });
