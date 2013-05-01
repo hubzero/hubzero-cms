@@ -768,7 +768,7 @@ class ResourcesHtml
 	 */
 	public function tabs($option, $id, $cats, $active='about', $alias='')
 	{
-		$html  = "\t" . '<ul class="sub-menu">' . "\n";
+		$html  = "\t" . '<ul id="sub-menu" class="sub-menu">' . "\n";
 		$i = 1;
 		foreach ($cats as $cat)
 		{
