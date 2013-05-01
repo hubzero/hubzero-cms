@@ -57,13 +57,15 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<option value="0"><?php echo JText::_('Select ...'); ?></option>
 				<optgroup label="<?php echo JText::_('My collections'); ?>">
 <?php 
+$i = 0;
 if ($this->myboards)
 {
 	foreach ($this->myboards as $board)
 	{
 ?>
-					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+					<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
+		$i++;
 	}
 }
 ?>
@@ -79,8 +81,9 @@ if ($this->groupboards)
 		foreach ($boards as $board)
 		{
 ?>
-					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+					<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
+			$i++;
 		}
 ?>
 				</optgroup>

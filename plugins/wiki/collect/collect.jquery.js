@@ -97,7 +97,7 @@ smaller area with "overflow: scroll" enabled?
 
 		$.growl.settings.noticeDisplay(notice);
 		instance.append(notice);
-		$('a[rel="close"]', notice).click(function() {
+		$('a[rel="close"]', notice).on('click', function() {
 			notice.remove();
 		});
 		if ($.growl.settings.displayTimeout > 0) {
@@ -147,6 +147,14 @@ smaller area with "overflow: scroll" enabled?
 	};
 })(jQuery);
 
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+};
+
 if (!jq) {
 	var jq = $;
 }
@@ -166,8 +174,8 @@ jQuery(document).ready(function(jq){
 				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 			},
 			beforeLoad: function() {
-				var rid = $('#rid').val();
-				$(this).attr('href', '/index.php?option=com_resources&task=plugin&trigger=onResourcesFavorite&no_html=1&rid='+rid);	
+				var href = $(this).attr('href').nohtml();
+				$(this).attr('href', href);
 			},
 			afterShow: function() {
 				var el = this.element;
@@ -176,6 +184,8 @@ jQuery(document).ready(function(jq){
 						e.preventDefault();
 						$.post($(this).attr('action'), $(this).serialize(), function(data) {
 							var response = jQuery.parseJSON(data);
+							//$.fancybox.close();
+							//$.growl("Collected", "Wiki page collected!");
 							if (data.code == 1) {
 								$('#sbox-content').html('<p class="error" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>')
 							} else {

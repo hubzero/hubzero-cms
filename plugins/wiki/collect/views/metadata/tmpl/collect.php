@@ -40,7 +40,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=plugin&trigger=onResourcesFavorite&no_html=1&rid=' . $this->resource->id); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&action=repost'); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Collect'); ?></legend>
 
@@ -137,14 +137,13 @@ if ($this->groupboards)
 		</label>
 	</fieldset>
 
-	<input type="hidden" name="bulletin" value="<?php echo $this->item_id; ?>" />
+	<input type="hidden" name="item" value="<?php echo $this->item_id; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-	<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
+	<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
+	<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="trigger" value="onResourcesFavorite" />
-	<input type="hidden" name="task" value="plugin" />
+	<input type="hidden" name="task" value="display" />
 	<input type="hidden" name="action" value="collect" />
 
 	<p class="submit">

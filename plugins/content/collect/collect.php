@@ -297,14 +297,18 @@ class plgContentCollect extends JPlugin
 		// Display updated bulletin stats if called via AJAX
 		if ($no_html)
 		{
+			$response = new stdClass();
+			$response->code = 0;
 			if ($this->getError())
 			{
-				echo $this->getError();
+				$response->code = 1;
+				$response->message = $this->getError();
 			}
 			else
 			{
-				echo JText::sprintf('Article collected! %s', $item_id);
+				$response->message = JText::sprintf('Article collected! %s', $item_id);
 			}
+			echo json_encode($response);
 			exit;
 		}
 	}

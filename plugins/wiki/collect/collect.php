@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Resources Plugin class for favoriting a resource
+ * Resources Plugin class for favoriting a wiki page
  */
-class plgResourcesCollect extends JPlugin
+class plgWikiCollect extends JPlugin
 {
 	/**
 	 * Constructor
@@ -53,40 +53,70 @@ class plgResourcesCollect extends JPlugin
 	}
 
 	/**
-	 * Return the alias and name for this category of content
+	 * prepare content method
 	 * 
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param      object $page     Wiki page
+	 * @param      object $revision Wiki revision
+	 * @param      object $config   Wiki config
+	 * @return     string
 	 */
-	public function onResourcesAreas($model)
+	public function onPrepareContent($page, $revision, $config)
 	{
-		return array();
 	}
 
 	/**
-	 * Return data on a resource view (this will be some form of HTML)
+	 * After display title method
+	 * Method is called by the view and the results are imploded and displayed in a placeholder
 	 * 
-	 * @param      object  $resource Current resource
-	 * @param      string  $option    Name of the component
-	 * @param      array   $areas     Active area(s)
-	 * @param      string  $rtrn      Data to be returned
-	 * @return     array
+	 * @param      object $page     Wiki page
+	 * @param      object $revision Wiki revision
+	 * @param      object $config   Wiki config
+	 * @return     string
 	 */
-	public function onResources($model, $option, $areas, $rtrn='all')
+	public function onAfterDisplayTitle($page, $revision, $config)
 	{
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		return '';
+	}
+
+	/**
+	 * Before display content method
+	 * Method is called by the view and the results are imploded and displayed in a placeholder
+	 * 
+	 * @param      object $page     Wiki page
+	 * @param      object $revision Wiki revision
+	 * @param      object $config   Wiki config
+	 * @return     string
+	 */
+	public function onBeforeDisplayContent($page, $revision, $config)
+	{
+		return '';
+	}
+
+	/**
+	 * After display content method
+	 * Method is called by the view and the results are imploded and displayed in a placeholder
+	 * 
+	 * @param      object $page     Wiki page
+	 * @param      object $revision Wiki revision
+	 * @param      object $config   Wiki config
+	 * @return     string
+	 */
+	public function onAfterDisplayContent($page, $revision, $config)
+	{
+		$this->page = $page;
+		$this->revision = $revision;
+
+		// Incoming action
+		$action = JRequest::getVar('action', '');
+		if ($action && $action == 'collect') 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
-			{
-				$rtrn = 'metadata';
-			}
+			// Check the user's logged-in status
+			return $this->fav();
 		}
 
 		$arr = array(
-			'area'     => $this->_name,
-			'html'     => '',
+			'area' => $this->_name,
+			'html' => '',
 			'metadata' => ''
 		);
 
@@ -94,64 +124,49 @@ class plgResourcesCollect extends JPlugin
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
-			if ($rtrn == 'all' || $rtrn == 'metadata') 
-			{
+			//if ($rtrn == 'all' || $rtrn == 'metadata') 
+			//{
 				// Push some scripts to the template
 				ximport('Hubzero_Document');
-				Hubzero_Document::addPluginScript('resources', $this->_name);
-				Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+				Hubzero_Document::addPluginScript('wiki', $this->_name);
+				Hubzero_Document::addPluginStylesheet('wiki', $this->_name);
+
+				/*ximport('Hubzero_Favorite');
+				if (!class_exists('Hubzero_Favorite')) 
+				{
+					return $arr;
+				}
+
+				$database =& JFactory::getDBO();
+
+				$fav = new Hubzero_Favorite($database);
+				$fav->loadFavorite($juser->get('id'), $resource->id, 'resources');
+				if (!$fav->id) 
+				{
+					$txt = JText::_('Repost');
+					$cls = '';
+				} 
+				else 
+				{
+					$txt = JText::_('Unpost');
+					$cls = 'faved';
+				}*/
 
 				ximport('Hubzero_Plugin_View');
 				$view = new Hubzero_Plugin_View(
 					array(
-						'folder'  => 'resources',
+						'folder'  => 'wiki',
 						'element' => $this->_name,
 						'name'    => 'metadata'
 					)
 				);
-				$view->option = $option;
-				if (is_a($model, 'ResourcesResource'))
-				{
-					$view->resource = $model;
-				}
-				else
-				{
-					$view->resource = $model->resource;
-				}
-				$arr['metadata'] = $view->loadTemplate();
-			}
+				$view->option = 'com_wiki';
+				$view->page = $page;
+				return $view->loadTemplate();
+			//}
 		}
 
-		return $arr;
-	}
-
-	/**
-	 * Set an item's favorite status
-	 * 
-	 * @param      string $option Component name
-	 * @return     void
-	 */
-	public function onResourcesFavorite($option)
-	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
-
-		$this->option = $option;
-		$this->juser = JFactory::getUser();
-		$this->database = JFactory::getDBO();
-
-		$rid = JRequest::getInt('rid', 0);
-
-		$this->resource = new ResourcesResource($this->database);
-		$this->resource->load($rid);
-
-		$arr = array('html' => '');
-		if ($rid) 
-		{
-			$arr['html'] = $this->fav();
-		}
-		return $arr;
+		return '';
 	}
 
 	/**
@@ -162,6 +177,14 @@ class plgResourcesCollect extends JPlugin
 	 */
 	public function fav()
 	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
+
+		$this->option = 'com_wiki';
+		$this->juser = JFactory::getUser();
+		$this->database = JFactory::getDBO();
+
 		// Incoming
 		$item_id       = JRequest::getInt('item', 0);
 		$collection_id = JRequest::getInt('collection', 0);
@@ -172,16 +195,19 @@ class plgResourcesCollect extends JPlugin
 		//if (!$item_id && $collection_id)
 		//{
 			$b = new CollectionsTableItem($this->database);
-			$b->loadType($this->resource->id, 'resource');
+			$b->loadType($this->page->id, 'wiki');
 			if (!$b->id)
 			{
 				$row = new CollectionsTableCollection($this->database);
 				$row->load($collection_id);
 
-				$b->type        = 'resource';
-				$b->object_id   = $this->resource->id;
-				$b->title       = $this->resource->title;
-				$b->description = $this->resource->introtext;
+				ximport('Hubzero_View_Helper_Html');
+
+				$b->url         = JRoute::_('index.php?option=com_wiki&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename);
+				$b->type        = 'wiki';
+				$b->object_id   = $this->page->id;
+				$b->title       = $this->page->title;
+				$b->description = Hubzero_View_Helper_Html::shortenText(strip_tags($this->revision->pagehtml), 300, 0, 1);
 				if (!$b->check()) 
 				{
 					$this->setError($b->getError());
@@ -202,27 +228,22 @@ class plgResourcesCollect extends JPlugin
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
-					'folder'  => 'resources',
+					'folder'  => 'wiki',
 					'element' => $this->_name,
 					'name'    => 'metadata',
 					'layout'  => 'collect'
 				)
 			);
 
-			if (!$model->collections(array('count' => true)))
-			{
-				$collection = $model->collection();
-				$collection->setup($this->juser->get('id'), 'member');
-			}
-
 			$view->myboards      = $model->mine();
 			$view->groupboards   = $model->mine('groups');
 
-			$view->name        = $this->_name;
-			$view->option      = $this->option;
-			$view->resource    = $this->resource;
-			$view->no_html     = $no_html;
-			$view->item_id = $item_id;
+			$view->name     = $this->_name;
+			$view->option   = $this->option;
+			$view->page     = $this->page;
+			$view->revision = $this->revision;
+			$view->no_html  = $no_html;
+			$view->item_id  = $item_id;
 
 			if ($no_html)
 			{
@@ -259,7 +280,7 @@ class plgResourcesCollect extends JPlugin
 				// No record found -- we're OK to add one
 				$stick->item_id       = $item_id;
 				$stick->collection_id = $collection_id;
-				$stick->description   = JRequest::getVar('description', '');
+				$stick->description = JRequest::getVar('description', '');
 				if ($stick->check()) 
 				{
 					// Store new content
@@ -271,27 +292,22 @@ class plgResourcesCollect extends JPlugin
 			}
 		}
 
-		$response = new stdClass();
-		$response->code = 0;
-		if ($this->getError())
-		{
-			$response->code = 1;
-			$response->message = $this->getError();
-		}
-		else
-		{
-			$response->message = 'Resource collected! ' . $item_id;
-		}
-		echo json_encode($response);
-
 		// Display updated bulletin stats if called via AJAX
-		/*if ($no_html)
+		if ($no_html)
 		{
-			echo JText::sprintf('%s reposts', $stick->getCount(array('item_id' => $stick->item_id, 'original' => 0)));
+			$response = new stdClass();
+			$response->code = 0;
+			if ($this->getError())
+			{
+				$response->code = 1;
+				$response->message = $this->getError();
+			}
+			else
+			{
+				$response->message = JText::sprintf('Wiki collected! %s', $item_id);
+			}
+			echo json_encode($response);
 			exit;
 		}
-
-		// Display the main listing
-		return $this->_browse();*/
 	}
 }

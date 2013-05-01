@@ -122,7 +122,8 @@ smaller area with "overflow: scroll" enabled?
 		},
 		noticeTemplate: 
 			'<div class="notice" style="text-align:center;-webkit-border-radius:12px;-moz-border-radius:12px;border-radius:12px;min-height: 146px;padding:15px;">' +
-			' <p><img src="%image%" alt="" /></p>' +
+			//' <p><img src="%image%" alt="" /></p>' +
+			' <p style="margin:20px 0 0 0;padding:0;color:#fff;text-align:center;font-size:50px;line-height:1;font-family:Fontcons;">&#xf005;</p>' +
 			' <h3 style="margin-top: 15px; color: #fff;">%title%</h3>' +
 			'</div>',
 		noticeCss: {
@@ -146,61 +147,57 @@ smaller area with "overflow: scroll" enabled?
 	};
 })(jQuery);
 
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?nohtml=1';
+	} else {
+		return this + '&nohtml=1';
+	}
+};
+
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Plugins.ContentCollect = {
-	jQuery: jq,
-	
-	initialize: function() {
-		var $ = this.jQuery;
-		
-		// Add to favorites
-		var fav = $('#fav-this');
-		if ($(fav)) {
-			$('#fav a.collect').fancybox({
-				type: 'ajax',
-				width: 500,
-				height: 'auto',
-				autoSize: false,
-				fitToView: false,
-				titleShow: false,
-				tpl: {
-					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-				},
-				beforeLoad: function() {
-					//var rid = $('#rid').val();
-					//$(this).attr('href', 'index.php?option=com_resources&task=plugin&trigger=onResourcesFavorite&no_html=1&rid='+rid);	
-					href = $(this).attr('href');
-					if (href.indexOf('?') == -1) {
-						href += '?nohtml=1';
-					} else {
-						href += '&nohtml=1';
-					}
-					$(this).attr('href', href);
-				},
-				afterShow: function() {
-					var el = this.element;
-					if ($('#hubForm')) {
-						$('#hubForm').submit(function(e) {
-							e.preventDefault();
-							$.post($(this).attr('action'), $(this).serialize(), function(data) {
-								//console.log(data);
-								$.fancybox.close();
-							});
-						});
-					}
-				}
-			});
-		}
-	} // end initialize
-}
+jQuery(document).ready(function(jq){
+	var $ = jq;
 
-jQuery(document).ready(function($){
-	HUB.Plugins.ContentCollect.initialize();
+	if ($('#fav-this').length) {
+		$('#fav a.collect').fancybox({
+			type: 'ajax',
+			width: 500,
+			height: 'auto',
+			autoSize: false,
+			fitToView: false,
+			titleShow: false,
+			tpl: {
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+			},
+			beforeLoad: function() {
+				var href = $(this).attr('href').nohtml();
+				$(this).attr('href', href);
+				console.log(href);
+			},
+			afterShow: function() {
+				var el = this.element;
+				if ($('#hubForm')) {
+					$('#hubForm').on('submit', function(e) {
+						e.preventDefault();
+						$.post($(this).attr('action'), $(this).serialize(), function(data) {
+							var response = jQuery.parseJSON(data);
+							if (data.code == 1) {
+								$('#sbox-content').html('<p class="error" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>')
+							} else {
+								$('#sbox-content').html('<p class="passed" style="margin-left: 1em; margin-right: 1em;">Item collected!</p>');
+							}
+							setTimeout(function(){
+								$.fancybox.close();
+							}, 2 * 1000);
+						});
+					});
+				}
+			}
+		});
+	}
 });
 
