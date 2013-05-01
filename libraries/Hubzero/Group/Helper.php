@@ -271,13 +271,11 @@ class Hubzero_Group_Helper
 			$gdescription .= (strlen($description) > $description_char_limit && $description_char_limit != 0) ? "&hellip;" : "";
 			
 			//get the group logo
-			if($hg->logo)
+			$logo = "/components/com_groups/assets/img/group_default_logo.png";
+			$group_logo = $config->get('uploadpath') . DS . $hg->gidNumber . DS . $hg->logo;
+			if(isset($hg->logo) && file_exists(JPATH_ROOT . DS . $group_logo))
 			{
-				$logo = $config->get('uploadpath') . DS . $hg->gidNumber . DS . $hg->logo;
-			}
-			else 
-			{
-				$logo = "/components/com_groups/assets/img/group_default_logo.png";
+				$logo = $group_logo;
 			}
 			
 			//build the html
