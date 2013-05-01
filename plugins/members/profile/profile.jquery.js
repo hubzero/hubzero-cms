@@ -211,7 +211,8 @@ HUB.Members.Profile = {
 	editBiographyConvert: function()
 	{
 		//if we have any active wykiwyg editors we want to auto-convert html to wiki before submitting
-		if (typeof(wykiwygs) === 'undefined') {
+		if (typeof(wykiwygs) === 'undefined') 
+		{
 			return;
 		}
 		if (wykiwygs.length) 
@@ -224,41 +225,27 @@ HUB.Members.Profile = {
 	},
 
 	//-------------------------------------------------------------
-
+	
 	editBiographyEditorReinstantiate: function()
 	{
 		var $ = this.jQuery;
 		
 		if ($("#profile_bio").length)
 		{
-			if (typeof(wykiwygs) === 'undefined') 
+			//reset wiki toolbar editor
+			if (typeof(wyktoolbar) !== 'undefined') 
 			{
-				if(HUB.Plugins.WikiEditorToolbar)
-				{
-					HUB.Plugins.WikiEditorToolbar.initialize();
-				}
+				wyktoolbar   = [];
 			}
-			else
+			
+			//reset wiki wysiwyg editor
+			if (typeof(wykiwygs) !== 'undefined') 
 			{
-				var edtr = new WYKIWYG.editor.edit('editor',{
-					id: "profile_bio",
-					controls: [
-								'bold','italic','underline','strikethrough','|',
-								'subscript','superscript','|',
-								'orderedlist','unorderedlist','|',
-								'outdent','indent','|',
-								'unformat','|',
-								'style','|',
-								'hr','link','unlink'
-							],
-					footer: true,
-					toggle: true,
-					resize: true,
-					xhtml: true,
-					cssfile: '/plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.css'
-				});
-				wykiwygs.push(edtr);
+				wykiwygs   = [];
 			}
+			
+			//call ajaxLoad which triggers re-apply
+			jQuery(document).trigger('ajaxLoad');
 		}
 	},
 	

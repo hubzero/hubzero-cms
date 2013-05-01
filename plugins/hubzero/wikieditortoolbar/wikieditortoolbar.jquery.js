@@ -230,7 +230,7 @@ if (!jq) {
 	var jq = $;
 }
 
-var wykiwygs = [];
+var wyktoolbar = [];
 
 function initWikitoolbar() {
 	//console.log('init wiki toolbar');
@@ -238,16 +238,16 @@ function initWikitoolbar() {
 	jQuery('.wiki-toolbar').each(function(i, toolbar) {
 		var id = jQuery(toolbar).attr('id').split('-').pop();
 
-		for (var i = 0; i < wykiwygs.length; i++) 
+		for (var i = 0; i < wyktoolbar.length; i++) 
 		{
-			if (wykiwygs[i] == id) {
+			if (wyktoolbar[i] == id) {
 				return;
 			}
 		}
 
 		jQuery(toolbar).wikitoolbar();
 
-		wykiwygs.push(id);
+		wyktoolbar.push(id);
 	});
 };
 
