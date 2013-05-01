@@ -113,7 +113,7 @@ if($this->event->id)
 					$publish_up = ($this->event->publish_up) ? $this->event->publish_up : $start; 
 					$publish_up = date("m/d/Y @ g:i a", strtotime($publish_up));
 				?>
-				<input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $publish_up; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" />
+				<input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $publish_up; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
 			</label>
 		
 			<label><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
@@ -124,7 +124,7 @@ if($this->event->id)
 						$publish_down = date("m/d/Y @ g:i a", strtotime($this->event->publish_down));
 					}
 				?>
-				<input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $publish_down; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" />
+				<input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $publish_down; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
 			</label> 
 		
 			<label><?php echo JText::_('Timezone:'); ?> <span class="optional">Optional</span>
@@ -155,7 +155,7 @@ if($this->event->id)
 							$register_by = date("m/d/Y @ g:i a", strtotime($this->event->registerby));
 						}
 					?>
-					<input type="text" name="event[registerby]" id="event_registerby" value="<?php echo $register_by; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" />
+					<input type="text" name="event[registerby]" id="event_registerby" value="<?php echo $register_by; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
 					<span class="hint"><?php echo JText::_('Deadlines are on Eastern Standard Time (EST).'); ?></span>
 				</label>
 			

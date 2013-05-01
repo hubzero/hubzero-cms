@@ -82,12 +82,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="submit" value="Go" />
 			</noscript>
 			
+			<!--[if IE 8]>
+				<input type="submit" value="Go" />
+			<![endif]-->
+			
 			<label>
 				<select name="calendar" id="calendar-picker">
 					<option value="0"><?php echo JText::_('All Calendars'); ?></option>
 					<?php foreach ($this->calendars as $calendar) : ?>
 						<?php $sel = ($calendar->id == $this->calendar) ? 'selected="selected"' : ''; ?>
-						<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo strtolower($calendar->color); ?>.png" value="<?php echo $calendar->id; ?>"><?php echo $calendar->title; ?></option>
+						<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->color) ? strtolower($calendar->color) : 'gray'; ?>.png" value="<?php echo $calendar->id; ?>"><?php echo $calendar->title; ?></option>
 					<?php endforeach; ?>
 				</select>
 			</label>
@@ -118,6 +122,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</div>
 			</div>
 			<div id="subscribe">
+				
+				<p class="info">
+					<?php echo JText::_('If you are prompted to enter a username & password when subscribing to a calendar, enter you HUB credentials.'); ?>
+				</p>
+				<br />
 				<p><strong><?php echo JText::_('Select the calendars you wish to subscribe to:'); ?></strong></p>
 				
 				<label>
@@ -137,7 +146,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 					?>
 					<label <?php echo (!$enabled) ? 'class="disabled"' : '' ?>>
 						<input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?> name="subscribe[]"  type="checkbox" value="<?php echo $calendar->id; ?>" />
-						<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" />
+						<?php if ($calendar->color) : ?>
+							<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" />
+						<?php else : ?>
+							<img src="/plugins/groups/calendar/images/swatch-gray.png" />
+						<?php endif; ?>
 						<?php echo $calendar->title; ?>
 						<?php
 							if(!$enabled)
@@ -154,7 +167,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$webcalLink = 'webcal://' . $link;
 				?>
 				<br />
-				<label id="subscribe-link"><strong><?php echo JText::_('Click the subscribe button to the right or add the link below to as a calendar subscription:'); ?></strong>
+				<label id="subscribe-link"><strong><?php echo JText::_('Click the subscribe button to the right or add the link below to add as a calendar subscription:'); ?></strong>
 					<input type="text" value="<?php echo $httpsLink; ?>" /> 
 					<a class="btn feed download https" href="<?php echo $httpsLink; ?>">Download</a>
 					<a class="btn feed subscribe-webcal webcal" href="<?php echo $webcalLink; ?>">Subscribe</a>

@@ -45,8 +45,11 @@ HUB.Plugins.GroupCalendar = {
 		var $ = this.jQuery;
 		
 		//refresh cal on change
-		$(".group_calendar").on('change', '#month-picker, #year-picker, #calendar-picker', function(event) {
-			HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
+		$(".group_calendar").on('change', '#month-picker, #year-picker', function(event) {
+			if (!$('html').hasClass('ie8'))
+			{
+				HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
+			}
 		});
 		
 		//fancy select box for cal picker
@@ -55,7 +58,10 @@ HUB.Plugins.GroupCalendar = {
 			$('#calendar-picker').HUBfancyselect({
 				onSelected: function() {
 					//refresh calendar
-					HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
+					if (!$('html').hasClass('ie8'))
+					{
+						HUB.Plugins.GroupCalendar.refresh( HUB.Plugins.GroupCalendar.calendarPicker );
+					}
 				}
 			});
 		}
@@ -171,7 +177,7 @@ HUB.Plugins.GroupCalendar = {
 		}
 		
 		//write date change to history
-		if (window.history)
+		if (window.history && window.history.pushState)
 		{
 			window.history.pushState(null,null, newUrl);
 		}
@@ -184,6 +190,7 @@ HUB.Plugins.GroupCalendar = {
 			{
 				callback();
 			}
+			return false;
 		});
 	},
 	

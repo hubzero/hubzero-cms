@@ -91,17 +91,8 @@ if (isset($this->register['degree'])) {
 if (isset($this->register['sex'])) {
 	$message .= 'Gender: '. $this->register['sex'] ."\n\n";
 }
-if ($this->race) {
-	//$message .= 'Race: '.implode(', ',$race) ."\n\n";
-	$message .= 'Race: ';
-	foreach ($this->race as $r=>$t)
-	{
-		$message .= ($r != 'nativetribe') ? $r.', ' : '';
-	}
-	if ($this->race['nativetribe'] != '') {
-		$message .= $this->race['nativetribe'];
-	}
-	$message .= "\n\n";
+if (isset($this->race)) {
+	$message .= 'Race: '.implode(', ',$this->race) ."\n\n";
 }
 
 if ($this->disability) {

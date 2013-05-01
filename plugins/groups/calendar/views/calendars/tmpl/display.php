@@ -58,7 +58,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<tr>
 			<th><?php echo JText::_('Name'); ?></th>
 			<th><?php echo JText::_('Color'); ?></th>
-			<th><?php echo JText::_('Publishing Events?'); ?></th>
+			<th><?php echo JText::_('Publish Events to Subscribers?'); ?></th>
 			<th><?php echo JText::_('Actions'); ?></th>
 		</tr>
 	</thead>
@@ -67,7 +67,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php foreach ($this->calendars as $calendar) : ?>
 				<tr>
 					<td><?php echo $calendar->title; ?></td>
-					<td><img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" /></td>
+					<td>
+						<?php if ($calendar->color): ?>
+							<img src="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" />
+						<?php else: ?>
+							<img src="/plugins/groups/calendar/images/swatch-gray.png" />
+						<?php endif; ?>
+					</td>
 					<td>
 						<?php
 							if ($calendar->published == 1)

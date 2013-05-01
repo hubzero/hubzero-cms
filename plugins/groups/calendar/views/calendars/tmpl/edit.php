@@ -64,7 +64,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</select>
 		</label>
 		
-		<label><?php echo JText::_('Publish Events?:'); ?> <span class="optional">Optional</span>
+		<label><?php echo JText::_('Publish Events to Subscribers?:'); ?>
 			<select name="calendar[published]">
 				<option value="1">Yes</option>
 				<option <?php echo ($this->calendar->published == 0) ? 'selected="selected"' : ''; ?> value="0">No</option>
