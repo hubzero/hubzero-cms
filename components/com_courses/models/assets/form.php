@@ -129,6 +129,8 @@ class FormAssetHandler extends ContentAssetHandler
 					autoResize: false,
 					autoSize: false,
 					height: ($(window).height())*2/3,
+					closeBtn: false,
+					modal: true,
 					type: 'iframe',
 					href: '/courses/form?task=layout&formId=" . $id . "&tmpl=component',
 					afterShow: function() {
@@ -137,31 +139,49 @@ class FormAssetHandler extends ContentAssetHandler
 							e.preventDefault();
 
 							$.fancybox.close();
+
+							// Remove progress bar
+							HUB.CoursesOutline.resetProgresBar(progressBarId, 0);
+
+							// Get the form data and set the published value to 2 for deleted
+							var formData = form.serializeArray();
+							formData.push({'name':'published', 'value':'2'});
+							formData.push({'name':'id', 'value':'" . $this->assoc['asset_id'] . "'});
+
+							// We've already saved the asset, so we need to mark asset as deleted
+							$.ajax({
+								url: '/api/courses/asset/save',
+								data: formData,
+							});
 						});
-					},
-					afterClose: function() {
-						if(assetslist.find('li:first').hasClass('nofiles'))
-						{
-							assetslist.find('li:first').remove();
-						}
 
-						var callback = function() {
-							// Insert in our HTML (uses 'underscore.js')
-							var li = _.template(HUB.CoursesOutline.Templates.asset, " . json_encode($return['assets']) . ");
-							assetslist.append(li);
+						// Listen for savesuccessful call from iframe
+						$('body').on('savesuccessful', function() {
+							$.fancybox.close();
 
-							var newAsset = assetslist.find('.asset-item:last');
+							if(assetslist.find('li:first').hasClass('nofiles'))
+							{
+								assetslist.find('li:first').remove();
+							}
 
-							newAsset.find('.uniform').uniform();
-							newAsset.find('.toggle-editable').show();
-							newAsset.find('.title-edit').hide();
-							HUB.CoursesOutline.showProgressIndicator();
-							HUB.CoursesOutline.resizeFileUploader();
-							HUB.CoursesOutline.makeAssetsSortable();
-						}
+							var callback = function() {
+								// Insert in our HTML (uses 'underscore.js')
+								var li = _.template(HUB.CoursesOutline.Templates.asset, " . json_encode($return['assets']) . ");
+								assetslist.append(li);
 
-						// Reset progress bar
-						HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);
+								var newAsset = assetslist.find('.asset-item:last');
+
+								newAsset.find('.uniform').uniform();
+								newAsset.find('.toggle-editable').show();
+								newAsset.find('.title-edit').hide();
+								HUB.CoursesOutline.showProgressIndicator();
+								HUB.CoursesOutline.resizeFileUploader();
+								HUB.CoursesOutline.makeAssetsSortable();
+							}
+
+							// Reset progress bar
+							HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);
+						});
 					}
 				});";
 		}

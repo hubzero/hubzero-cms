@@ -44,8 +44,8 @@
 		<ol id="page-tabs">
 			<? echo implode("\n", $tabs); ?>
 		</ol>
-		<div><a href="" id="save">Save</a></div>
-		<div><a href="/courses/form" id="done">Done</a></div>
+		<div><a href="" id="save">Save and Close</a></div>
+		<div><a href="/courses/form" id="done">Cancel</a></div>
 		<div class="question-info">
 			<p>
 				<span class="questions-total"><?= $this->pdf->getQuestionCount() ?></span> question(s) total, <span class="questions-unsaved">0</span> changes unsaved

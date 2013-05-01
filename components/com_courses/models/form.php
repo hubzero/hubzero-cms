@@ -263,7 +263,7 @@ class PdfForm
 				$im->setImageFormat('png');
 				$im->trimImage(0);
 				$im->scaleImage(582,0);
-				$im->sharpenImage(1,.5);
+				$im->sharpenImage(2,1);
 				$im->borderImage('white', 15, 15);
 				$im->writeImage($this->base . $fid . DS . $this->pages  . '.png');
 			}

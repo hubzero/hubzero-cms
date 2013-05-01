@@ -170,7 +170,7 @@ jQuery(function($) {
 			$('#title-error').text('Please enter a title for this document').show();
 			$('#title').addClass('fieldWithErrors').focus();
 			location.hash = '#title';
-			saveButton.text('Save').attr('disabled', false);
+			saveButton.text('Save and Close').attr('disabled', false);
 			return;
 		}
 		var errors = false;
@@ -221,12 +221,14 @@ jQuery(function($) {
 		if (!errors) {
 			$('.error').hide();
 			$.post('/courses/form', serialized, function(response) {
-				saveButton.text('Save').attr('disabled', false);
+				saveButton.text('Save and Close').attr('disabled', false);
 				$('#saved-notification').slideDown('slow');
 				if (response && response.result && response.result == 'success') {
 					setTimeout(function() {
 						$('#saved-notification').slideUp('slow');
-					}, 3000);
+						parent.$('body').trigger('savesuccessful');
+						window.location.href = '/courses/form';
+					}, 2000);
 				}
 			}, 'JSON');
 			$('.questions-unsaved').html(0);
