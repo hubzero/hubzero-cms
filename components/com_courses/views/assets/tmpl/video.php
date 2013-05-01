@@ -36,17 +36,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 
 // Get the manifest
-$manifests = JFolder::files(JPATH_ROOT . $path, '.json', true, true);
-$manifest  = (count($manifests) > 0) ? $manifests[0] : array();
+if (is_dir(JPATH_ROOT . $path))
+{
+	$manifests = JFolder::files(JPATH_ROOT . $path, '.json', true, true);
+	$manifest  = (count($manifests) > 0) ? $manifests[0] : array();
+}
 
-if (is_file($manifest))
+if (isset($manifest) && is_file($manifest))
 {
 	$media_path = $manifest;
 	$media_dir  = dirname($manifest);
 	$manifest   = json_decode(file_get_contents($manifest));
-}
 
-$type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
+	$type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
+}
+else
+{
+	$type = 'none';
+}
 
 // Add Jquery to the page if the system plugin isn't enabled
 if (!JPluginHelper::isEnabled('system', 'jquery'))
@@ -149,28 +156,31 @@ elseif ($type == 'html5')
 	$height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
 }
 
-// Include media tracking for html5 and hubpresenter videos
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
-$mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
-
-// Get tracking for this user for this resource
-$tracking = $mediaTracking->getTrackingInformationForUserAndResource(JFactory::getUser()->get('id'), $this->asset->id, 'course');
-
-// Check to see if we already have a time query param
-$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
-
-// Do we want to redirect user with time added to url
-if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
+if ($type != 'none')
 {
-	$redirect = JURI::current();
+	// Include media tracking for html5 and hubpresenter videos
+	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+	$mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
 
-	$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
+	// Get tracking for this user for this resource
+	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(JFactory::getUser()->get('id'), $this->asset->id, 'course');
 
-	// Append current position to redirect
-	$redirect .= $delimeter . "time=" . gmdate("H:i:s", $tracking->current_position);
+	// Check to see if we already have a time query param
+	$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
 
-	// Redirect
-	JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
+	// Do we want to redirect user with time added to url
+	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
+	{
+		$redirect = JURI::current();
+
+		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
+
+		// Append current position to redirect
+		$redirect .= $delimeter . "time=" . gmdate("H:i:s", $tracking->current_position);
+
+		// Redirect
+		JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
+	}
 }
 
 ?>
@@ -379,4 +389,6 @@ if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tra
 		</div><!-- /#content -->
 	</div>
 	<div id="twofinger">Use two Fingers to Scroll</div>
+<?php else : ?>
+	<p class="warning">This lecture has no playable videos associated with it</p>
 <?php endif; ?>
