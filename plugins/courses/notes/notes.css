@@ -365,6 +365,7 @@
 		background: #222;
 		padding: 0 10px;
 		border-top: 1px solid #444;
+		min-height: 46px;
 	}
 	#notes-list-container:before,
 	#notes-list-container:after {
