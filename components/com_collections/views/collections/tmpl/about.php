@@ -101,7 +101,7 @@ $base = 'index.php?option=' . $this->option;
 		<div class="about-odd following">
 			<h3>Follow</h3>
 			<p>
-				When you follow someone, their posts show up in your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount&active=collections'); ?>">live feed</a>. You can follow all of someone's collections or just the ones you like best. To manage who you're following, go to your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">profile</a>, find <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount/collections'); ?>">Collections</a>, and click Following.
+				When you follow someone, their posts show up in your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount/collections'); ?>">live feed</a>. You can follow all of someone's collections or just the ones you like best. To manage who you're following, go to your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">profile</a>, find <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount/collections'); ?>">Collections</a>, and click Following.
 			</p>
 		</div>
 

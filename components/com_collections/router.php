@@ -63,6 +63,12 @@ function CollectionsBuildRoute(&$query)
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
+	if (!empty($query['asset'])) 
+	{
+		$segments[] = 'asset';
+		$segments[] = $query['asset'];
+		unset($query['asset']);
+	}
 	if (!empty($query['file'])) 
 	{
 		$segments[] = $query['file'];
@@ -108,10 +114,18 @@ function CollectionsParseRoute($segments)
 					$vars['post'] = $segments[1];
 					$vars['controller'] = 'posts';
 				}
-				if (isset($segments[2])) 
+				else if ($segments[1] == 'asset')
+				{
+					if (isset($segments[2])) 
+					{
+						$vars['asset'] = $segments[2];
+					}
+					$vars['controller'] = 'media';
+				}
+				/*if (isset($segments[2])) 
 				{
 					$vars['task'] = $segments[2];
-				}
+				}*/
 			}
 		}
 	}
@@ -119,6 +133,7 @@ function CollectionsParseRoute($segments)
 	{
 		$vars['file'] = $segments[3];
 		$vars['controller'] = 'media';
+		$vars['task'] = 'download';
 	}
 
 	return $vars;

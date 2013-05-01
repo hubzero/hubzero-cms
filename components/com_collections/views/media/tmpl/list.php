@@ -54,7 +54,7 @@ if ($assets->total() > 0)
 			<span class="asset-description">
 				<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $asset->get('type'); ?>" />
 				<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $asset->get('id'); ?>" />
-				<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&id=' . $asset->get('id') . '&file=asset&no_html=' . $no_html); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
+				<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $asset->get('id') . '&no_html=' . $no_html); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
 					delete
 				</a>
 				<!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->

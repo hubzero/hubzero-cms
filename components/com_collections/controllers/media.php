@@ -556,13 +556,13 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		}
 
 		// Incoming
-		$listdir = JRequest::getInt('dir', 0, 'get');
+		/*$listdir = JRequest::getInt('dir', 0, 'get');
 		if (!$listdir) 
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
 			$this->displayTask();
 			return;
-		}
+		}*/
 
 		// Incoming asset
 		$id = JRequest::getInt('asset', 0, 'get');
@@ -571,7 +571,8 @@ class CollectionsControllerMedia extends Hubzero_Controller
 
 		if ($model->exists())
 		{
-			if (!$model->remove())
+			$model->set('state', 2);
+			if (!$model->store())
 			{
 				$this->setError($model->getError());
 			}
@@ -589,7 +590,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 	public function ajaxDeleteTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = JRequest::getInt('asset', 0);
 
 		if ($id)
 		{
@@ -597,7 +598,8 @@ class CollectionsControllerMedia extends Hubzero_Controller
 
 			if ($model->exists())
 			{
-				if (!$model->remove())
+				$model->set('state', 2);
+				if (!$model->store())
 				{
 					echo json_encode(array(
 						'success' => false,
