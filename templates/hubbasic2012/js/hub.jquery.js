@@ -137,7 +137,7 @@ HUB.Base = {
 		//if we dont have placeholder support mimic it with focus and blur events
 		if(!placeholder_supported)
 		{
-			$('input[type=text]').each(function(i, el) {
+			$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
 				var placeholderText = $(this).attr('placeholder');
 				
 				//make sure we have placeholder text
