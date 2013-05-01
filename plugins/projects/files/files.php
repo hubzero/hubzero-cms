@@ -3197,7 +3197,7 @@ class plgProjectsFiles extends JPlugin
 				if ($ASCII)
 				{
 					$content = $this->_git->showTextContent($fpath);
-					$content = $content ? Hubzero_View_Helper_Html::shortenText($content, 200, 0) : '';
+					$content = $content ? ProjectsHtml::shortenText($content, 200) : '';
 				}
 			}
 			
@@ -4194,18 +4194,15 @@ class plgProjectsFiles extends JPlugin
 		$failed			= array();
 		$deletes		= array();
 		$timedRemotes	= array();
-		
+						
 		// Sync start time
 		$startTime = date('Y-m-d H:i:s');	
 		$passed = $synced != 1 ? ProjectsHtml::timeDifference(strtotime($startTime) - strtotime($synced)) : 'N/A';
-		
-		// MIME types		
-		ximport('Hubzero_Content_Mimetypes');
-		$mt = new Hubzero_Content_Mimetypes();
-		
+				
 		// Start debug output
 		$output  = ucfirst($service) . "\n";
-		$output .= $synced != 1 ? 'Last sync (local): ' . $synced . ' | (UTC): ' . gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
+		$output .= $synced != 1 ? 'Last sync (local): ' . $synced . ' | (UTC): ' 
+				. gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
 		$output .= 'Last sync ID: ' . $lastSyncId . "\n";
 		$output .= 'Time passed since last sync: ' . $passed . "\n";		
 		$output .= 'Local sync start time: '.  $startTime . "\n";
@@ -4224,174 +4221,18 @@ class plgProjectsFiles extends JPlugin
 				
 		// Record sync status
 		$this->_writeToFile( JText::_('Collecting local changes') );
-		
-		// Get all local changes since last sync
-		$since 			= $synced != 1 ? ' --since="'. $synced . '"' : '';
-		$where 			= $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';
-		$changes 		= $this->_git->callGit( $path, 'rev-list ' . $where . $since);
 						
-		// Empty repo or no changes?
-		if (empty($changes) || trim(substr($changes[0], 0, 5)) == 'usage')
-		{
-			$changes = array();
-		}
-		
 		// Collector for local renames
 		$localRenames 	= array();
 		
-		// Parse Git file list to find which items changed since last sync
-		if (count($changes) > 0) 
-		{
-			$timestamps = array();
-			
-			// Get files involved in each commit
-			foreach ($changes as $hash) 
-			{								
-				// Get time and author of commit
-				$date = $this->_git->gitLog($path, '', $hash, 'date');
-				$time = strtotime($date);				
-				$author = $this->_git->gitLog($path, '', $hash, 'author');
-					
-				// Get filename and change
-				$fileinfo = $this->_git->callGit( $path, 'diff --name-status ' . $hash . '^ ' . $hash );
-				
-				// First commit
-				if ($fileinfo[0] && substr($fileinfo[0], 0, 5) == 'fatal')
-				{
-					$fileinfo = $this->_git->callGit( $path, 'log --pretty=oneline --name-status --root' );
-					
-					if (!empty($fileinfo))
-					{
-						// Remove first line
-						array_shift($fileinfo);
-					}
-				}
-				
-				// Go through files
-				foreach ($fileinfo as $line) 
-				{
-					$n = substr($line, 0, 1);
-					
-					if ($n == 'f')
-					{
-						// First file in repository
-						$finfo = $this->_git->callGit( $path, 'log --pretty=oneline --name-status ' . $hash );
-						$status = 'A';
-						$filename = trim(substr($finfo[1], 1));	
-						break;
-					}
-					else
-					{
-						$status = $n;
-						$filename = trim(substr($line, 1));	
-					}
-														
-					$type = 'file';
-					$rename = '';
-					
-					// Detect a rename
-					if (isset($localRenames[$filename]))
-					{
-						$rename = $localRenames[$filename];
-					}
-					else
-					{
-						$rename = $this->_git->getRename($path, $filename, $hash, $since);
-						
-						if ($rename && $status == 'A')
-						{			
-							// Rename or move?
-							if (basename($rename) == basename($filename))
-							{
-								$status = 'W'; // this means 'move'
-							}
-							else
-							{
-								$status = 'R';
-							}
-							
-							$localRenames[$filename] = $rename;						
-						}
-					}
-										
-					// Hidden file in local directory - treat as directory
-					if (preg_match("/.gitignore/", $filename))
-					{ 
-						$filename = dirname($filename);
-						
-						// Skip home directory
-						if ($filename == '.')
-						{
-							continue;
-						}
-						
-						$type = 'folder';
-					}
-					
-					// Specific local directory is synced?
-					$lFilename = $localDir ? preg_replace( "/^" . $localDir. "\//", "", $filename) : $filename;
-									
-					$conn 		= $connections['paths'];
-					$search 	= $status == 'R' || $status == 'W' ? $rename : $filename;
-					$found 		= isset($conn[$search]) && $conn[$search]['type'] == $type ? $conn[$search] : false;
-																				
-					// Rename/move connection not found  - check against new name in case of repeat sync
-					if (!$found && ($status == 'R' || $status == 'W'))
-					{
-						$found 	= isset($conn[$filename]) && $conn[$filename]['type'] == $type ? $conn[$filename] : false;
-					}
-										
-					$remoteid 	= $found ? $found['remote_id'] : NULL;					
-					$converted 	= $found ? $found['converted']: 0;
-					$rParent	= $found ? $found['rParent'] : NULL;
-					$syncT		= $found ? $found['synced'] : NULL;
-										
-					$md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename) 
-						? hash_file('md5', $localPath . DS . $filename) : NULL;
+		// Get all local changes since last sync
+		$locals = $this->_git->getChanges($path, $localPath, $synced, $localDir, &$localRenames, $connections );
 											
-					$mimeType = NULL;
-					if ($type == 'file')
-					{
-						$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));	
-						$mimeType = $mTypeParts[0];
-					}
-										
-					// We are only interested in last local change on the file
-					if (!isset($locals[$lFilename]))
-					{	
-						$locals[$lFilename] = array(
-							'status' 		=> $status, 
-							'time' 			=> $time, 
-							'type' 			=> $type,
-							'remoteid' 		=> $remoteid,
-							'converted' 	=> $converted,
-							'rParent'		=> $rParent,
-							'local_path'	=> $filename,
-							'title'			=> basename($filename),
-							'author'		=> $author,
-							'modified' 		=> gmdate('Y-m-d H:i:s', $time), 
-							'synced'		=> $syncT,
-							'fullPath' 		=> $localPath . DS . $filename,
-							'mimeType'		=> $mimeType,
-							'md5' 			=> $md5Checksum,
-							'rename'		=> $rename
-						);
-						
-						$timestamps[] = $time;
-					}
-				}			
-			}
-			
-			// Sort by time, most recent first	
-			array_multisort($timestamps, SORT_DESC, $locals);
-		}
-										
-		$newSyncId = 0;
-		
 		// Record sync status
-		$this->_writeToFile( JText::_('Collecting remote changes') );	
+		$this->_writeToFile( JText::_('Collecting remote changes') );
 						
-		// Get all remote files that changed since last sync		
+		// Get all remote files that changed since last sync
+		$newSyncId = 0;			
 		if ($lastSyncId > 1)
 		{
 			// Via Changes feed
@@ -4480,17 +4321,6 @@ class plgProjectsFiles extends JPlugin
 					&& isset($remotes[$filename]) 
 					&& $local['type'] == $remotes[$filename]['type'] 
 					? $remotes[$filename] : NULL;
-				
-				// Check against individual item sync time (to avoid repeat sync)
-				/*
-				if ($local['synced'] && $local['synced'] > $local['modified'])
-				{
-					$output .= 'item in sync: '. $filename . ' local: ' 
-						. $local['modified'] . ' synced: ' . $local['synced'] . "\n";
-					$processedLocal[$filename] = $local;
-					continue;	
-				}
-				*/
 												
 				// Item renamed
 				if ($local['status'] == 'R')
@@ -4664,7 +4494,7 @@ class plgProjectsFiles extends JPlugin
 		$ih = new ProjectsImgHandler();	
 		
 		// Make sure we have thumbnails for updates from local repo
-		if (!empty($newRemotes))
+		if (!empty($newRemotes) && $synced != 1)
 		{
 			foreach ($newRemotes as $filename => $nR)
 			{
@@ -4683,7 +4513,7 @@ class plgProjectsFiles extends JPlugin
 		$output .= 'Remote changes:' . "\n";
 		
 		// Go through remote changes
-		if (count($remotes) > 0)
+		if (count($remotes) > 0 && $synced != 1)
 		{						
 			// Get email/name pairs of connected project owners
 			$objO = new ProjectOwner( $this->_database );
@@ -4959,7 +4789,7 @@ class plgProjectsFiles extends JPlugin
 				$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);
 			}
 		}
-		
+				
 		// Unlock sync
 		$this->lockSync($service, true);
 		

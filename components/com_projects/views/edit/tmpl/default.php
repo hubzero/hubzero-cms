@@ -222,7 +222,7 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 				</div><!-- / .subject -->
 				<?php if($this->active == 'info') { ?>
 				<div id="cancel-project">
-					<p><span class="prominent"><?php echo JText::_('COM_PROJECTS_CANCEL_PROJECT_NEED'); ?></span> <?php echo JText::_('COM_PROJECTS_CANCEL_YOU_CAN'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=suspend'); ?>" id="suspend"><?php echo JText::_('COM_PROJECTS_CANCEL_PROJECT_SUSPEND'); ?></a> <?php echo JText::_('COM_PROJECTS_CANCEL_THIS_PROJECT'); ?><?php echo JText::_('COM_PROJECTS_CANCEL_LEAVE_OPTION'); ?>; <?php echo JText::_('COM_PROJECTS_CANCEL_OR_YOU_CAN'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=delete'); ?>" id="delproject"><?php echo JText::_('permanently delete'); ?></a> <?php echo JText::_('your project.'); ?></p>
+					<p class="right_align"><?php echo JText::_('Need to cancel project? You have an option to permanently '); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=delete'); ?>" id="delproject"><?php echo strtolower(JText::_('delete')); ?></a> <?php echo JText::_('your project.'); ?></p>
 				</div>
 				<?php } ?>
 			</div><!-- / #edit-project-content -->

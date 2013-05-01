@@ -562,6 +562,244 @@ class ProjectsGitHelper extends JObject {
 	}
 	
 	/**
+	 * Get file change for sync
+	 * 
+	 * @param      string	$path		Repo path
+	 *
+	 * @return     array
+	 */
+	public function buildChangeArray() 
+	{
+	
+	
+	}
+	
+	/**
+	 * Get changes for sync
+	 * 
+	 * @param      string	$path		Repo path
+	 *
+	 * @return     array
+	 */
+	public function getChanges ($path = '', $localPath = '', $synced = '', $localDir = '', &$localRenames, $connections) 
+	{
+		// Collector array
+		$locals = array();
+		
+		// MIME types		
+		ximport('Hubzero_Content_Mimetypes');
+		$mt = new Hubzero_Content_Mimetypes();
+		
+		// Initial sync
+		if ($synced == 1)
+		{
+			$files = $this->callGit( $path, 'ls-files --exclude-standard --full-name ' . escapeshellarg($localDir));
+			$files = $files && substr($files[0], 0, 5) == 'fatal' ? array() : $files;
+			
+			if (empty($files))
+			{
+				return $locals;
+			}
+			
+			foreach ($files as $filename)
+			{
+				$type = 'file';
+								
+				// We are only interested in last local change on the file
+				if (!isset($locals[$filename]))
+				{	
+					$time = strtotime(date('Y-m-d H:i:s', time() ));
+					
+					$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));	
+					$mimeType = $mTypeParts[0];
+					
+					$locals[$filename] = array(
+						'status' 		=> 'A', 
+						'time' 			=> $time, 
+						'type' 			=> $type,
+						'remoteid' 		=> 0,
+						'converted' 	=> 0,
+						'rParent'		=> NULL,
+						'local_path'	=> $filename,
+						'title'			=> basename($filename),
+						'author'		=> NULL,
+						'modified' 		=> gmdate('Y-m-d H:i:s', $time), 
+						'synced'		=> NULL,
+						'fullPath' 		=> $localPath . DS . $filename,
+						'mimeType'		=> $mimeType,
+						'md5' 			=> NULL,
+						'rename'		=> NULL
+					);
+				}
+			}			
+		}
+		// Repeat sync
+		else
+		{
+			// Collect 
+			$since 			= $synced != 1 ? ' --since="'. $synced . '"' : '';
+			$where 			= $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';
+			$changes 		= $this->callGit( $path, 'rev-list ' . $where . $since);
+			
+			// Empty repo or no changes?
+			if (empty($changes) || trim(substr($changes[0], 0, 5)) == 'usage')
+			{
+				$changes = array();
+			}
+			
+			// Parse Git file list to find which items changed since last sync
+			if (count($changes) > 0) 
+			{
+				$timestamps = array();
+
+				// Get files involved in each commit
+				foreach ($changes as $hash) 
+				{															
+					// Get time and author of commit
+					$date = $this->gitLog($path, '', $hash, 'date');
+					$time = strtotime($date);				
+					$author = $this->gitLog($path, '', $hash, 'author');
+
+					// Get filename and change
+					$fileinfo = $this->callGit( $path, 'diff --name-status ' . $hash . '^ ' . $hash );
+
+					// First commit
+					if ($fileinfo[0] && substr($fileinfo[0], 0, 5) == 'fatal')
+					{
+						$fileinfo = $this->callGit( $path, 'log --pretty=oneline --name-status --root' );
+
+						if (!empty($fileinfo))
+						{
+							// Remove first line
+							array_shift($fileinfo);
+						}
+					}
+
+					// Go through files
+					foreach ($fileinfo as $line) 
+					{
+						$n = substr($line, 0, 1);
+
+						if ($n == 'f')
+						{
+							// First file in repository
+							$finfo = $this->callGit( $path, 'log --pretty=oneline --name-status ' . $hash );
+							$status = 'A';
+							$filename = trim(substr($finfo[1], 1));	
+							break;
+						}
+						else
+						{
+							$status = $n;
+							$filename = trim(substr($line, 1));	
+						}
+
+						$type = 'file';
+						$rename = '';
+
+						// Detect a rename
+						if (isset($localRenames[$filename]))
+						{
+							$rename = $localRenames[$filename];
+						}
+						else
+						{
+							$rename = $this->getRename($path, $filename, $hash, $since);
+
+							if ($rename && $status == 'A')
+							{			
+								// Rename or move?
+								if (basename($rename) == basename($filename))
+								{
+									$status = 'W'; // this means 'move'
+								}
+								else
+								{
+									$status = 'R';
+								}
+
+								$localRenames[$filename] = $rename;						
+							}
+						}
+
+						// Hidden file in local directory - treat as directory
+						if (preg_match("/.gitignore/", $filename))
+						{ 
+							$filename = dirname($filename);
+
+							// Skip home directory
+							if ($filename == '.')
+							{
+								continue;
+							}
+
+							$type = 'folder';
+						}
+
+						// Specific local directory is synced?
+						$lFilename = $localDir ? preg_replace( "/^" . $localDir. "\//", "", $filename) : $filename;
+
+						$conn 		= $connections['paths'];
+						$search 	= $status == 'R' || $status == 'W' ? $rename : $filename;
+						$found 		= isset($conn[$search]) && $conn[$search]['type'] == $type ? $conn[$search] : false;
+
+						// Rename/move connection not found  - check against new name in case of repeat sync
+						if (!$found && ($status == 'R' || $status == 'W'))
+						{
+							$found 	= isset($conn[$filename]) && $conn[$filename]['type'] == $type ? $conn[$filename] : false;
+						}
+
+						$remoteid 	= $found ? $found['remote_id'] : NULL;					
+						$converted 	= $found ? $found['converted']: 0;
+						$rParent	= $found ? $found['rParent'] : NULL;
+						$syncT		= $found ? $found['synced'] : NULL;
+
+						$md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename) 
+							? hash_file('md5', $localPath . DS . $filename) : NULL;
+
+						$mimeType = NULL;
+						if ($type == 'file')
+						{
+							$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));	
+							$mimeType = $mTypeParts[0];
+						}
+
+						// We are only interested in last local change on the file
+						if (!isset($locals[$lFilename]))
+						{	
+							$locals[$lFilename] = array(
+								'status' 		=> $status, 
+								'time' 			=> $time, 
+								'type' 			=> $type,
+								'remoteid' 		=> $remoteid,
+								'converted' 	=> $converted,
+								'rParent'		=> $rParent,
+								'local_path'	=> $filename,
+								'title'			=> basename($filename),
+								'author'		=> $author,
+								'modified' 		=> gmdate('Y-m-d H:i:s', $time), 
+								'synced'		=> $syncT,
+								'fullPath' 		=> $localPath . DS . $filename,
+								'mimeType'		=> $mimeType,
+								'md5' 			=> $md5Checksum,
+								'rename'		=> $rename
+							);
+
+							$timestamps[] = $time;
+						}
+					}			
+				}
+
+				// Sort by time, most recent first	
+				array_multisort($timestamps, SORT_DESC, $locals);
+			}
+			
+		}
+								
+		return $locals;		
+	}
+	
+	/**
 	 * Run Git status
 	 * 
 	 * @param      string	$path

@@ -818,9 +818,12 @@ class ProjectOwner extends JTable
 				$group->create();
 				$group = Hubzero_Group::getInstance( $cn );
 			}
-			$members = $this->getIds ( $alias, $role = '0', 1 );
-			$managers = $this->getIds ( $alias, $role = '1', 1 );	
-			$group->set('members', $members);		
+			$members  = $this->getIds ( $alias, $role = '0', 1 );
+			$managers = $this->getIds ( $alias, $role = '1', 1 );
+			$all 	  = array_merge( $members, $managers);
+			$all 	  = array_unique($all);
+				
+			$group->set('members', $all);		
 			$group->set('managers', $managers);	
 			$group->set('type', 2 );
 			$group->set('published', 1 );
