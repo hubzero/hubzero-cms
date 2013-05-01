@@ -807,11 +807,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$path =  $base . $path;
 
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
-		$manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
+		//$manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
+		$manifests = JFolder::files( JPATH_ROOT . DS . $path, '.json' );
+		$manifest_path_json = (isset($manifests[0])) ? $manifests[0] : null;
 		$manifest_path_xml  = JPATH_ROOT . $path . DS . 'presentation.xml';
 
 		//check if the formatted json exists
-		if (!file_exists($manifest_path_json)) 
+		if (!file_exists(JPATH_ROOT . $path . DS . $manifest_path_json)) 
 		{
 			//check to see if we just havent converted yet
 			if (!file_exists($manifest_path_xml)) 
@@ -894,8 +896,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$return = array();
 		$return['errors'] = $this->getErrors();
 		$return['content_folder'] = $path;
-		$return['manifest'] = $manifest_path_json;
-
+		$return['manifest'] = $path . DS . $manifest_path_json;
+		
 		return $return;
 	}
 
@@ -950,7 +952,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			
 			//redirect
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_($redirect), '','',false);
+			$app->redirect(JRoute::_($redirect, false), '','',false);
 		}
 		
 		//do we have javascript?
@@ -1067,7 +1069,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			
 			//redirect
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_($redirect), '','',false);
+			$app->redirect(JRoute::_($redirect, false), '','',false);
 		}
 		
 		// Instantiate a new view
@@ -1193,6 +1195,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$manifest->presentation->subtitles[$k]->autoplay = 1;
 			}
 		}
+		
+		//reset array of subs and media
+		$manifest->presentation->media     = array_values($manifest->presentation->media);
+		$manifest->presentation->subtitles = array_values($manifest->presentation->subtitles);
 		
 		//attempt to create manifest file
 		if (!JFile::write(JPATH_ROOT . DS . $base . $path . DS . 'presentation.json', json_encode($manifest)))

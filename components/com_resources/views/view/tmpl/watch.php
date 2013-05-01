@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get the manifest for the presentation
-$contents = file_get_contents($this->manifest);
+$contents = file_get_contents(JPATH_ROOT.$this->manifest);
 
 //content folder
 $content_folder = $this->content_folder;
@@ -83,9 +83,6 @@ if($rt->type == "Series" || $rt->type == "Courses") {
 	$children = NULL;
 }
 
-//get all subtitles
-$subs = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT');
-
 //get the contributors for the resource
 $sql = "SELECT authorid FROM #__author_assoc "
 	 . "WHERE subtable='resources' "
@@ -105,6 +102,33 @@ if ($author_ids && is_array($author_ids))
 		$authors[] = $author->name;
 	}
 }
+
+
+//check to see if already have subtitles
+if (!isset($presentation->subtitles))
+{
+	$presentation->subtitles = array();
+}
+
+//get all local subtitles
+$localSubtitles = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT');
+
+foreach ($localSubtitles as $k => $subtitle)
+{
+	$info     = pathinfo($subtitle);
+	$name     = str_replace('-auto','', $info['filename']);
+	$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
+	$source   = $content_folder . DS . $subtitle;
+	
+	//add each subtitle
+	$presentation->subtitles[$k]->type     = 'SRT';
+	$presentation->subtitles[$k]->name     = ucfirst($name);
+	$presentation->subtitles[$k]->source   = $source;
+	$presentation->subtitles[$k]->autoplay = $autoplay;
+}
+
+//reset keys
+$presentation->subtitles = array_values($presentation->subtitles);
 ?>
 
 <div id="presenter-nav-bar">
@@ -197,24 +221,67 @@ if ($author_ids && is_array($author_ids))
 			<div id="media" class="<?php echo $cls; ?>">
 				<?php if(strtolower($presentation->type) == 'video') : ?>
 					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">
-						<?php foreach($presentation->media as $source): ?>
+						<?php foreach($presentation->media as $media): ?>
 						   	<?php
-								switch( $source->type )
+								switch( $media->type )
 								{
-									case 'mp4': 	$type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';	break;
-									case 'ogv':		$type = 'video/ogg; codecs="theora, vorbis"';			break;
-									case 'webm':	$type = 'video/webm; codecs="vp8, vorbis"';				break;
+									case 'ogg':
+									case 'ogv':     $type = "video/ogg;";    break;
+									case 'webm':    $type = "video/webm;";   break;
+									case 'mp4':
+									case 'm4v':
+									default:        $type = "video/mp4;";    break;
+								}
+								
+								//get the source
+								$source = $media->source;
+								
+								//is this the mp4 (need for flash)
+								if (in_array($media->type, array('mp4','m4v')))
+								{
+									$mp4 = $media->source;
+								}
+								
+								//if were playing local files
+								if (substr($media->source, 0, 4) != 'http')
+								{
+									$source = $content_folder . DS . $source;
+									if (in_array($media->type, array('mp4','m4v')))
+									{
+										$mp4 = $content_folder . DS . $mp4;
+									}
 								}
 							?>
-						   	<source src="<?php echo $content_folder.DS.$source->source; ?>" type='<?php echo $type; ?>'>
-						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" data-mediaid="<?php echo $rr->id; ?>"></a>
-							
-						<?php foreach($subs as $sub) : ?>
-							<?php $info2 = pathinfo($sub); ?>
-							<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $content_folder . DS . $sub; ?>?v=<?php echo filemtime( JPATH_ROOT . $content_folder . DS . $sub ); ?>"></div>
+						   	<source src="<?php echo $source; ?>" type="<?php echo $type; ?>">
 						<?php endforeach; ?>
 						
+						<a href="<?php echo $mp4; ?>" 
+							id="flowplayer" 
+							data-mediaid="<?php echo $rr->id; ?>"></a>
+						<?php if(count($presentation->subtitles) > 0) : ?>
+							<?php foreach($presentation->subtitles as $subtitle) : ?>
+								<?php
+									//get file modified time
+									$source = $subtitle->source;
+									$auto   = $subtitle->autoplay;
+									
+									//if were playing local files
+									if (substr($subtitle->source, 0, 4) != 'http')
+									{
+										$modified = filemtime( JPATH_ROOT . $source );
+									}
+									else
+									{
+										$modified = '123456789';
+									}
+								?>
+								<div
+									data-autoplay="<?php echo $auto; ?>"
+									data-type="subtitle"
+									data-lang="<?php echo $subtitle->name; ?>" 
+									data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
+							<?php endforeach; ?>
+						<?php endif; ?>
 					</video>
 				<?php else : ?>
 					<audio id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">          
