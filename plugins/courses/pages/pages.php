@@ -182,7 +182,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		$page = $this->view->offering->page($active);
 		if (!$active || !$page->exists())
 		{
-			$page = $pages[0];
+			$page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
 		}
 		$this->view->page  = $page;
 	}

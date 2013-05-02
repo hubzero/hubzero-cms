@@ -109,12 +109,12 @@ class CoursesControllerPages extends Hubzero_Controller
 
 		if ($this->view->offering->exists())
 		{
-			$list = $this->view->offering->pages();
+			$list = $this->view->offering->pages(array('active' => array(0, 1)));
 		}
 		else
 		{
 			
-			$list = $this->view->course->pages();
+			$list = $this->view->course->pages(array('active' => array(0, 1)));
 		}
 
 		$this->view->total = count($list);

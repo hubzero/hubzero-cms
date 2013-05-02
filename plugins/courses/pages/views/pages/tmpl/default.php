@@ -3,26 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
 
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => '',
-	'pagename' => DS . $this->page->get('url'),
-	'pageid'   => $this->course->get('id'),
-	'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS),
-	'domain'   => $this->course->get('alias')
-);
-
-ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
-
-//$layout = 'page';
-$pathway =& JFactory::getApplication()->getPathway();
-$pathway->addItem(
-	stripslashes($this->page->get('title')), 
-	$base . '&unit=' . $this->page->get('url')
-);
-
-ximport('Hubzero_Wiki_Parser');
 $view = new Hubzero_Plugin_View(
 	array(
 		'folder'  => 'courses',
@@ -40,6 +20,39 @@ $view->display();
 ?>
 <div class="pages-wrap">
 	<div class="pages-content">
+<?php
+if (!$this->page)
+{
+	?>
+	<div id="pages-introduction">
+		<div class="instructions">
+			<p><?php echo JText::_('No supplementary pages found.'); ?></p>
+		</p>
+	</div>
+	<?php
+}
+else
+{
+
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => '',
+		'pagename' => DS . $this->page->get('url'),
+		'pageid'   => $this->course->get('id'),
+		'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS),
+		'domain'   => $this->course->get('alias')
+	);
+
+	ximport('Hubzero_Wiki_Parser');
+	$p =& Hubzero_Wiki_Parser::getInstance();
+
+	//$layout = 'page';
+	$pathway =& JFactory::getApplication()->getPathway();
+	$pathway->addItem(
+		stripslashes($this->page->get('title')), 
+		$base . '&unit=' . $this->page->get('url')
+	);
+?>
 <?php if ($this->offering->access('manage')) { ?>
 		<ul class="manager-options">
 			<li>
@@ -55,5 +68,8 @@ $view->display();
 		</ul>
 <?php } ?>
 <?php echo $p->parse($this->page->get('content'), $wikiconfig); ?>
+<?php
+}
+?>
 	</div><!-- / .pages-content -->
 </div><!-- / .pages-wrap -->

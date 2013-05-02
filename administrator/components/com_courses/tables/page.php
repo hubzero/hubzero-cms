@@ -139,6 +139,7 @@ Class CoursesTablePage extends JTable
 		{
 			$high = $this->getHighestPageOrder($this->offering_id);
 			$this->porder = ($high + 1);
+			$this->active = 1;
 		}
 
 		return true;
@@ -189,7 +190,15 @@ Class CoursesTablePage extends JTable
 		}
 		if (isset($filters['active']))
 		{
-			$where[] = "r.`active`=" . $this->_db->getEscaped(intval($filters['active']));
+			if (is_array($filters['active']))
+			{
+				$filters['active'] = array_map('intval', $filters['active']);
+				$where[] = "r.`active` IN (" . implode(',', $filters['active']) . ")";
+			}
+			else
+			{
+				$where[] = "r.`active`=" . $this->_db->getEscaped(intval($filters['active']));
+			}
 		}
 
 		if (count($where) > 0)

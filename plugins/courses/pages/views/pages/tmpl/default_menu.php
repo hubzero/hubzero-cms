@@ -30,6 +30,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 ?>
 <div class="pages-menu">
 	<ul>
+<?php if (count($pages) > 0) { ?>
 		<?php
 		foreach ($pages as $page)
 		{
@@ -40,6 +41,11 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<?php
 		}
 		?>
+<?php } else { ?>
+		<li>
+			<a class="active" href="<?php echo $base; ?>"><?php echo JText::_('Notice!'); ?></a>
+		</li>
+<?php } ?>
 	</ul>
 <?php if ($this->offering->access('manage')) { ?>
 	<p>
