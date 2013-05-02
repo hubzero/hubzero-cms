@@ -56,6 +56,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
+		<param name="params_whitelist" type="text" menu="hide" label="Directory parameter whitelist" default="/home" description="White-list of directories acceptable to include in tool parameter passing feature" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="contribtool_on" type="radio" default="1" label="Contribtool" description="Indicate whether the component is active or not">
