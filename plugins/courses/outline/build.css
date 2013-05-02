@@ -901,6 +901,9 @@ ul {
 }
 
 /* Styles for popup edit pages */
+.unit-edit {
+	padding: 15px;
+}
 .unit-edit input {
 	width: 100%;
 	margin-bottom: 10px;

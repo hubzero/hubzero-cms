@@ -451,8 +451,19 @@ class CoursesModelUnit extends CoursesModelAbstract
 		{
 			$dt = new CoursesTableSectionDate($this->_db);
 			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+
 			$dt->set('publish_up', $this->get('publish_up'));
 			$dt->set('publish_down', $this->get('publish_down'));
+
+			if (!$dt->get('id'))
+			{
+				$dt->set('section_id', $this->get('section_id'));
+				$dt->set('scope', $this->_scope);
+				$dt->set('scope_id', $this->get('id'));
+				$dt->set('created', date("Y-m-d H:i:s"));
+				$dt->set('created_by', JFactory::getUser()->get('id'));
+			}
+
 			if (!$dt->store())
 			{
 				$this->setError($dt->getError());

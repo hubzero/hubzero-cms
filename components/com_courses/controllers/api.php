@@ -134,6 +134,11 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 
+		if ($section_id = JRequest::getInt('section_id', false))
+		{
+			$unit->set('section_id', $section_id);
+		}
+
 		// We'll always save the title again, even if it's just to the same thing
 		$title = $unit->get('title');
 		$title = (!empty($title)) ? $title : 'New Unit';
@@ -145,11 +150,11 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		$unit->set('alias', strtolower(str_replace(' ', '', $unit->get('title'))));
 
 		// If we have dates coming in, save those
-		if($publish_up = JRequest::getCmd('publish_up', false))
+		if($publish_up = JRequest::getVar('publish_up', false))
 		{
 			$unit->set('publish_up', $publish_up);
 		}
-		if($publish_down = JRequest::getCmd('publish_down', false))
+		if($publish_down = JRequest::getVar('publish_down', false))
 		{
 			$unit->set('publish_down', $publish_down);
 		}
