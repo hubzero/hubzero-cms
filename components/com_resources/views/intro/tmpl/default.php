@@ -39,7 +39,11 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="aside">
 		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('Submit a resource'); ?></a></p>
 		<ul>
-			<li><a href="/kb/resources/faq"><?php echo JText::_('Resources FAQ'); ?></a></li>
+			<li>
+				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=resources&page=index'); ?>">
+					<?php echo JText::_('Need Help?'); ?>
+				</a>
+			</li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">

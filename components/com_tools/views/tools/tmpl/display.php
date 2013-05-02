@@ -44,6 +44,7 @@ if ($juser->get('guest')) {
 			<li><a href="/register">Sign up for free!</a></li>
 <?php } ?>
 			<li><a href="http://subversion.tigris.org/" rel="external">Learn about Subversion</a></li>
+			<li><a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=tools&page=index'); ?>">Need Help?</a></li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">

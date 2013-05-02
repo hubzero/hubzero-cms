@@ -41,6 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<h3>Quick Links</h3>
 		<ul>
+			<li><a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=support&page=faqs'); ?>">Support FAQ's</a></li>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>">Knowledge Base</a></li>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">Report Problems</a></li>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">Track Tickets</a></li>

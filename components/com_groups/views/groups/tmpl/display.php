@@ -58,10 +58,9 @@ defined('_JEXEC') or die('Restricted access');
 		<h3>Questions?</h3>
 		<ul>
 			<li>
-				<a class="group-intro-faqs" href="/kb/groups/faq"><?php echo JText::_('COM_GROUPS_INTRO_FAQS_BUTTON_TEXT'); ?></a>
-			</li>
-			<li>
-				<a class="group-intro-guidelines" href="/kb/groups/guide"><?php echo JText::_('COM_GROUPS_INTRO_QUESTIONS_BUTTON_TEXT'); ?></a>
+				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=index'); ?>">
+					<?php echo JText::_('Need Help?'); ?>
+				</a>
 			</li>
 		</ul>
 	</div><!-- / .aside -->

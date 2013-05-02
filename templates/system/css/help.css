@@ -124,7 +124,7 @@ li ol {
 	}
 ul, 
 ol {
-	margin: 0 1.5em 1.5em 1.5em;
+	margin: 0 1.5em 1.5em 2em;
 }
 ul {
 	list-style-type: disc;
@@ -142,6 +142,10 @@ ul.unstyled,
 ol.unstyled {
 	list-style: none;
 	margin: 0 1.5em 1.5em 0;
+}
+ul li,
+ol li {
+	margin: 0.5em 0;
 }
 dl {
 	margin: 0 0 1.5em 0;
@@ -224,4 +228,12 @@ img {
 }
 .help-footer .modified {
 	color: #ccc;
+}
+hr {
+	height: 0;
+	width: 100%;
+	padding: 0;
+	margin: 30px 0;
+	border: none;
+	border-top:1px solid #efefef;
 }

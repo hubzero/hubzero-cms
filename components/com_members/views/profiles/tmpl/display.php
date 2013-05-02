@@ -54,6 +54,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<a href="/user/reset">Forgot your password?</a>
 			</li>
 			<li>
+				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=members'); ?>">Need Help?</a>
+			</li>
+			<li>
 				<a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">Groups</a>
 			</li>
 		</ul>

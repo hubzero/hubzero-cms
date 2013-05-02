@@ -39,7 +39,11 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="aside">
 		<h3><?php echo JText::_('COM_TAGS_QUESTIONS'); ?></h3>
 		<ul>
-			<li><a href="/kb/tags/faq"><?php echo JText::_('COM_TAGS_FAQ'); ?></a></li>
+			<li>
+				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=tags&page=index'); ?>">
+					<?php echo JText::_('Need Help?'); ?>
+				</a>
+			</li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
