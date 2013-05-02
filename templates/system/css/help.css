@@ -212,3 +212,16 @@ figcaption {
 img {
 	max-width: 100%;
 }
+.help-footer {
+	border-top: 1px solid #ccc;
+	font-size: 0.85em;
+	padding: 10px 0 0 0;
+	margin: 10px 0 0 0;
+}
+.help-footer a.top {
+	float: right;
+	color: #0FA1CA;
+}
+.help-footer .modified {
+	color: #ccc;
+}

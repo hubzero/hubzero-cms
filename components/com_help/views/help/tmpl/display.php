@@ -30,7 +30,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-//output content
-echo $this->content;
 ?>
+<a name="help-top"></a>
+
+<?php echo $this->content; ?>
+
+<div class="help-footer">
+	<a class="top" href="#help-top">Back to Top</a>
+	<p class="modified">
+		Last Modified: <?php echo date('l, F d, Y @ g:ia', $this->modified); ?>
+	</p>
+</div>
