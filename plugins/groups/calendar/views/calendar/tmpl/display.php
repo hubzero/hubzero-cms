@@ -81,12 +81,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<noscript>
 				<input type="submit" value="Go" />
 			</noscript>
-			
 			<!--[if IE 8]>
 				<input type="submit" value="Go" />
 			<![endif]-->
 			
 			<label>
+				<!--[if IE 8]>
+					<input type="submit" value="Go" />
+				<![endif]-->
 				<select name="calendar" id="calendar-picker">
 					<option value="0"><?php echo JText::_('All Calendars'); ?></option>
 					<?php foreach ($this->calendars as $calendar) : ?>
@@ -95,6 +97,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<?php endforeach; ?>
 				</select>
 			</label>
+			
 			<br class="clear" />
 		</div>
 		

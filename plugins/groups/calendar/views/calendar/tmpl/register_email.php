@@ -92,7 +92,14 @@ if (isset($this->register['sex'])) {
 	$message .= 'Gender: '. $this->register['sex'] ."\n\n";
 }
 if (isset($this->race)) {
-	$message .= 'Race: '.implode(', ',$this->race) ."\n\n";
+	if (isset($this->race['nativetribe']))
+	{
+		$tribe = $this->race['nativetribe'];
+		unset($this->race['nativetribe']);
+	}
+	$message .= 'Race: '.implode(', ',$this->race);
+	$message .= ($tribe != '') ? ', '.$tribe : '';
+	$message .= "\n\n";
 }
 
 if ($this->disability) {

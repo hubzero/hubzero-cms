@@ -44,7 +44,7 @@
 	font-size: 18px;
 	line-height:14px;
 	margin-top:5px;
-	}
+}
 #calendar-nav label {
 	float: right;
 }
@@ -54,7 +54,12 @@
 #calendar-nav .fs-dropdown {
 	width: 250px;
 }
-
+.ie8 #calendar-nav label {
+	width: 300px;
+}
+#calendar-nav label input[type=submit] {
+	float:right;
+}
 
 #calendar { 
 	}

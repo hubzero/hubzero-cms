@@ -237,30 +237,30 @@ $month = date("m", strtotime($this->event->publish_up));
 						<?php echo JText::_('Select one or more that apply.'); ?>
 					</p>
 					<label>
-						<input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="nativeamerican" /> 
+						<input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="Native American" /> 
 						<?php echo JText::_('American Indian or Alaska Native'); ?>
 					</label>
 					<label class="indent"><?php echo JText::_('Tribal Affiliation(s):'); ?>
 						<input name="race[nativetribe]" id="racenativetribe" type="text" value="" />
 					</label>
 					<label>
-						<input type="checkbox" class="option" name="race[asian]" id="raceasian" /> 
+						<input type="checkbox" class="option" name="race[asian]" id="raceasian" value="Asian" /> 
 						<?php echo JText::_('Asian'); ?>
 					</label>
 					<label>
-						<input type="checkbox" class="option" name="race[black]" id="raceblack" />
+						<input type="checkbox" class="option" name="race[black]" id="raceblack" value="African American" />
 						<?php echo JText::_('Black or African American'); ?>
 					</label>
 					<label>
-						<input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" />
+						<input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" value="Hawaiian" />
 						<?php echo JText::_('Native Hawaiian or Other Pacific Islander'); ?>
 					</label>
 					<label>
-						<input type="checkbox" class="option" name="race[white]" id="racewhite" />
+						<input type="checkbox" class="option" name="race[white]" id="racewhite" value="White" />
 						<?php echo JText::_('White'); ?>
 					</label>
 					<label>
-						<input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" />
+						<input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" value="Hispanic" />
 						<?php echo JText::_('Hispanic or Latino'); ?>
 					</label>
 					<label>

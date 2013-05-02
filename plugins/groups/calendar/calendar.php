@@ -1222,7 +1222,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$disability = JRequest::getVar('disability', NULL, 'post');
 		$race       = JRequest::getVar('race', NULL, 'post');
 		$event_id   = JRequest::getInt('event_id', NULL, 'post');
-
+		
 		//array to hold any errors
 		$errors = array();
 
