@@ -111,12 +111,12 @@ class plgYSearchWiki extends YSearchPlugin
 			FROM #__wiki_version wv
 			INNER JOIN #__wiki_page wp 
 				ON wp.id = wv.pageid
-			LEFT JOIN jos_xgroups xg ON xg.cn = wp.group_cn
+			LEFT JOIN #__xgroups xg ON xg.cn = wp.group_cn
 			WHERE
 				$authorization AND
 				$weight > 0 AND 
 				wp.state < 2 AND
-				wv.id = (SELECT MAX(wv2.id) FROM jos_wiki_version wv2 WHERE wv2.pageid = wv.pageid) " .
+				wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version wv2 WHERE wv2.pageid = wv.pageid) " .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		);

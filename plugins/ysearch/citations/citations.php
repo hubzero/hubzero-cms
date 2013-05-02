@@ -58,7 +58,7 @@ class plgYSearchCitations extends YSearchPlugin
 						c.abstract AS description,
 					 	concat('/citations/view/', c.id) AS link,
 						$weight AS weight
-					FROM jos_citations c
+					FROM #__citations c
 					WHERE 
 						c.published=1 AND $weight > 0
 					ORDER BY $weight DESC";
@@ -71,9 +71,9 @@ class plgYSearchCitations extends YSearchPlugin
 						c.abstract as description,
 						concat('/citations/view/', c.id) AS link
 					 FROM 
-						jos_citations c,
-						jos_tags as tag,
-						jos_tags_object as tago
+						#__citations c,
+						#__tags as tag,
+						#__tags_object as tago
 					WHERE
 						tago.objectid=c.id
 					AND
@@ -91,7 +91,7 @@ class plgYSearchCitations extends YSearchPlugin
 						c.abstract AS description,
 					 	concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link,
 						$weight AS weight
-					FROM jos_citations c
+					FROM #__citations c
 					WHERE 
 						c.published=1 AND $weight > 0
 					ORDER BY $weight DESC";
@@ -103,9 +103,9 @@ class plgYSearchCitations extends YSearchPlugin
 						c.abstract as description,
 						concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link
 					 FROM 
-						jos_citations c,
-						jos_tags as tag,
-						jos_tags_object as tago
+						#__citations c,
+						#__tags as tag,
+						#__tags_object as tago
 					WHERE
 						tago.objectid=c.id
 					AND
@@ -118,7 +118,7 @@ class plgYSearchCitations extends YSearchPlugin
 		}
 		
 		//add final query to ysearch
-		$sql_result_one = "SELECT c.id as id FROM jos_citations c WHERE c.published=1 AND $weight > 0 ORDER BY $weight DESC";
+		$sql_result_one = "SELECT c.id as id FROM #__citations c WHERE c.published=1 AND $weight > 0 ORDER BY $weight DESC";
 		$sql2 .= " AND c.id NOT IN(" . $sql_result_one . ")";
 		$results->add(new YSearchResultSQL($sql2));
 	}

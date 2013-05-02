@@ -136,8 +136,8 @@ class plgYSearchMembers extends YSearchPlugin
 				NULL AS date,
 				'Members' AS section,
 				CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
-			FROM jos_xprofiles p
-			LEFT JOIN jos_xprofiles_bio b 
+			FROM #__xprofiles p
+			LEFT JOIN #__xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
 				public AND $weight > 0" .
@@ -183,8 +183,8 @@ class plgYSearchMembers extends YSearchPlugin
 				NULL AS date,
 				'Members' AS section,
 				CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
-			FROM jos_xprofiles p
-			LEFT JOIN jos_xprofiles_bio b 
+			FROM #__xprofiles p
+			LEFT JOIN #__xprofiles_bio b 
 				ON b.uidNumber = p.uidNumber
 			WHERE 
 				public AND " . join(' AND ', $addtl_where)
@@ -250,18 +250,18 @@ class plgYSearchMembers extends YSearchPlugin
 						ELSE
 							-1
 					END AS ordering
-					FROM jos_author_assoc aa
-					LEFT JOIN jos_resources r
+					FROM #__author_assoc aa
+					LEFT JOIN #__resources r
 						ON aa.subtable = 'resources' AND r.id = aa.subid AND r.published = 1
-					LEFT JOIN jos_resource_assoc ra
+					LEFT JOIN #__resource_assoc ra
 						ON ra.child_id = r.id
-					LEFT JOIN jos_resource_types rt 
+					LEFT JOIN #__resource_types rt 
 						ON rt.id = r.type
-					LEFT JOIN jos_content c
+					LEFT JOIN #__content c
 						ON aa.subtable = 'content' AND c.id = aa.subid AND c.state = 1
-					LEFT JOIN jos_sections s 
+					LEFT JOIN #__sections s 
 						ON s.id = c.sectionid
-					LEFT JOIN jos_categories ca
+					LEFT JOIN #__categories ca
 						ON ca.id = c.catid
 					WHERE aa.authorid = " . $row->get('id')
 			);

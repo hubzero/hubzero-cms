@@ -83,7 +83,7 @@ class plgYSearchEvents extends YSearchPlugin
 				$weight AS weight,
 				publish_up AS date,
 				'Events' AS section
-			FROM jos_events e
+			FROM #__events e
 			WHERE 
 				state = 1 AND 
 				approved AND $weight > 0".

@@ -94,10 +94,10 @@ class plgYSearchContent extends YSearchPlugin
 				ca.title AS section,
 				(SELECT group_concat(u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
 				(SELECT group_concat(ids.authorid separator '\\n') FROM jos_author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
-			FROM jos_content c 
-			LEFT JOIN jos_sections s 
+			FROM #__content c 
+			LEFT JOIN #__sections s 
 				ON s.id = c.sectionid
-			LEFT JOIN jos_categories ca
+			LEFT JOIN #__categories ca
 				ON ca.id = c.catid
 			WHERE 
 				state = 1 AND 
@@ -124,8 +124,8 @@ class plgYSearchContent extends YSearchPlugin
 				ca.title AS section,
 				(SELECT group_concat(u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
 				(SELECT group_concat(ids.authorid separator '\\n') FROM jos_author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
-			FROM jos_content c 
-			LEFT JOIN jos_categories ca
+			FROM #__content c 
+			LEFT JOIN #__categories ca
 				ON ca.id = c.catid
 			WHERE 
 				state = 1 AND 

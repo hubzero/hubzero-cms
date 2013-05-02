@@ -209,16 +209,16 @@ class plgYSearchResources extends YSearchPlugin
 				$weight AS weight,
 				r.publish_up AS date,
 				rt.type AS section,
-				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM jos_author_assoc anames LEFT JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
 				AS contributors,
-				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM jos_author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
+				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
 				AS contributor_ids,
 				(select group_concat(concat(parent_id, '|', ordering)) 
-					from jos_resource_assoc ra2 
-					left join jos_resources re3 on re3.id = ra2.parent_id and re3.standalone 
+					from #__resource_assoc ra2 
+					left join #__resources re3 on re3.id = ra2.parent_id and re3.standalone 
 					where ra2.child_id = r.id) AS parents
-			FROM jos_resources r
-			LEFT JOIN jos_resource_types rt 
+			FROM #__resources r
+			LEFT JOIN #__resource_types rt 
 				ON rt.id = r.type
 			WHERE 
 				r.published = 1 AND r.standalone AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down) 
@@ -258,16 +258,16 @@ class plgYSearchResources extends YSearchPlugin
 						r.publish_up AS date,
 						0.5 as weight,
 						rt.type AS section,
-						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM jos_author_assoc anames LEFT JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
 							AS contributors,
-						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM jos_author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
+						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
 							AS contributor_ids,
 						(select group_concat(concat(parent_id, '|', ordering))
-							from jos_resource_assoc ra2
-							left join jos_resources re3 on re3.id = ra2.parent_id and re3.standalone
+							from #__resource_assoc ra2
+							left join #__resources re3 on re3.id = ra2.parent_id and re3.standalone
 							where ra2.child_id = r.id) AS parents
-					FROM jos_resources r
-					LEFT JOIN jos_resource_types rt
+					FROM #__resources r
+					LEFT JOIN #__resource_types rt
 					ON rt.id = r.type
 					WHERE
 						r.published = 1 AND r.standalone AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)

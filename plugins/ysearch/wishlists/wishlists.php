@@ -79,8 +79,8 @@ class plgYSearchWishlists extends YSearchPlugin
 				WHEN wli.anonymous THEN NULL 
 				ELSE wli.proposed_by 
 				END AS contributor_ids
-			FROM jos_wishlist_item wli
-			INNER JOIN jos_wishlist wl
+			FROM #__wishlist_item wli
+			INNER JOIN #__wishlist wl
 				ON wl.id = wli.wishlist AND wl.public = 1
 			WHERE 
 				NOT wli.private AND $weight > 0".

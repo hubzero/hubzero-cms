@@ -118,8 +118,8 @@ class plgYSearchQuestions extends YSearchPlugin
 				when r.anonymous > 0 then null
 				else (SELECT id FROM jos_users WHERE username = r.created_by)
 			END AS rcontributor_ids
-			FROM jos_answers_questions q 
-			LEFT JOIN jos_answers_responses r ON r.qid = q.id AND r.state != 2
+			FROM #__answers_questions q 
+			LEFT JOIN #__answers_responses r ON r.qid = q.id AND r.state != 2
 			WHERE $qweight > 0 AND q.state != 2
 			UNION
 			SELECT 
@@ -140,9 +140,9 @@ class plgYSearchQuestions extends YSearchPlugin
 				when r.anonymous > 0 then null
 				else (SELECT id FROM jos_users WHERE username = r.created_by)
 			END AS rcontributor_ids
-			FROM jos_answers_responses r2 
-			INNER JOIN jos_answers_questions q ON q.id = r2.qid AND q.state != 2
-			LEFT JOIN jos_answers_responses r ON r.qid = q.id AND r.state != 2
+			FROM #__answers_responses r2 
+			INNER JOIN #__answers_questions q ON q.id = r2.qid AND q.state != 2
+			LEFT JOIN #__answers_responses r ON r.qid = q.id AND r.state != 2
 			WHERE $r2weight > 0 AND r2.state != 2
 			ORDER BY q_created, r_created"
 		);

@@ -54,7 +54,7 @@ class plgYSearchGroups extends YSearchPlugin
 			$juser =& JFactory::getUser();
 			if (!$juser->authorise('core.view', 'com_groups'))
 			{
-				$from = " JOIN jos_xgroups_members AS m ON m.gidNumber=g.gidNumber AND m.uidNumber=" . $juser->get('id');
+				$from = " JOIN #__xgroups_members AS m ON m.gidNumber=g.gidNumber AND m.uidNumber=" . $juser->get('id');
 			}
 		}
 		
@@ -76,7 +76,7 @@ class plgYSearchGroups extends YSearchPlugin
 				$weight AS weight,
 				NULL AS date,
 				'Groups' AS section
-			FROM jos_xgroups g $from
+			FROM #__xgroups g $from
 			WHERE
 				(g.type = 1 OR g.type = 3) AND g.discoverability = 0 AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .

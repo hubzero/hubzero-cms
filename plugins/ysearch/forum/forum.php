@@ -122,12 +122,12 @@ class plgYSearchForum extends YSearchPlugin
 				$weight AS weight,
 				f.created AS date,
 				concat(s.alias, ', ', c.alias) AS section
-			FROM jos_forum_posts f
-			LEFT JOIN jos_forum_categories c 
+			FROM #__forum_posts f
+			LEFT JOIN #__forum_categories c 
 				ON c.id = f.category_id
-			LEFT JOIN jos_forum_sections s
+			LEFT JOIN #__forum_sections s
 				ON s.id = c.section_id
-			LEFT JOIN jos_xgroups g
+			LEFT JOIN #__xgroups g
 				ON g.gidNumber = f.scope_id
 			WHERE 
 				f.state = 1 AND 

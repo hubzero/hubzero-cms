@@ -97,10 +97,10 @@ class plgYSearchKB extends YSearchPlugin
 					WHEN c.alias IS NULL THEN s.alias
 					ELSE concat(s.alias, ', ', c.alias) 
 				END AS section
-			FROM jos_faq f
-			LEFT JOIN jos_faq_categories s 
+			FROM #__faq f
+			LEFT JOIN #__faq_categories s 
 				ON s.id = f.section
-			LEFT JOIN jos_faq_categories c
+			LEFT JOIN #__faq_categories c
 				ON c.id = f.category
 			WHERE 
 				f.state = 1 AND 
