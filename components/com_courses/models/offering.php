@@ -902,9 +902,9 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		foreach ($data as $result)
 		{
-			$user_id = $this->_userId($result);
+			$user_id = (int) $this->_userId($result);
 
-			$model = CoursesModelMember::getInstance($result, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+			$model = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
 			$model->set('user_id', $user_id);
 			$model->set('course_id', $this->get('course_id'));
 			$model->set('offering_id', $this->get('id'));

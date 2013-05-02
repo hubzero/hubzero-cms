@@ -249,7 +249,7 @@ class CoursesTableOffering extends JTable
 		{
 			$where[] = "c.alias=" . $this->_db->Quote($filters['course_alias']);
 		}
-		else if (isset($filters['course_id']) && $filters['course_id']) 
+		else if (isset($filters['course_id'])) // && $filters['course_id']) 
 		{
 			$where[] = "c.id=" . $this->_db->Quote(intval($filters['course_id']));
 		}
