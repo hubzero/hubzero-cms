@@ -15,9 +15,9 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	 */
 	function testMigrateWithHelpFlagShowsHelpInfo()
 	{
-		$output = shell_exec("migrate run --help");
+		$output = shell_exec("migration run --help");
 
-		$this->assertRegExp('/^[\s]*usage: migrate.*/is', $output, "Migrate execution with --help flag did not result in help information being displayed");
+		$this->assertRegExp('/^[\s]*usage: migration.*/is', $output, "Migrate execution with --help flag did not result in help information being displayed");
 	}
 
 	/**
@@ -25,7 +25,7 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	 */
 	function testMigrateWithBadDirectionGivesError()
 	{
-		$output = shell_exec("migrate run -d=badarg -n");
+		$output = shell_exec("migration run -d=badarg -n");
 
 		$this->assertRegExp('/^[\s]*Error.*/is', $output, "Migrate execution with -d flag set to non up|down should give an error, but doesn't");
 	}
@@ -35,7 +35,7 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	 */
 	function testMigrateWithBadDocumentRootGivesError()
 	{
-		$output = shell_exec("migrate run -r=\"/baddir/baddir\" -n");
+		$output = shell_exec("migration run -r=\"/baddir/baddir\" -n");
 
 		$this->assertRegExp('/^[\s]*Error.*/is', $output, "Migrate execution with invalid document root should give an error, but doesn't");
 	}
@@ -45,7 +45,7 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	 */
 	function testMigrateWithForceFlagButNoExtensionGivesError()
 	{
-		$output = shell_exec("migrate run -f -n");
+		$output = shell_exec("migration run -f -n");
 
 		$this->assertRegExp('/^[\s]*Error.*/is', $output, "Migrate execution with force flag but no extension specified should give an error, but doesn't");
 	}
@@ -56,9 +56,9 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	function testMigrateWithBadExtensionGivesError()
 	{
 		$output   = array();
-		$output[] = shell_exec("migrate run -e=com_courses_blah -n");
-		$output[] = shell_exec("migrate run -e=mod_courses_blah -n");
-		$output[] = shell_exec("migrate run -e=plg_blah -n");
+		$output[] = shell_exec("migration run -e=com_courses_blah -n");
+		$output[] = shell_exec("migration run -e=mod_courses_blah -n");
+		$output[] = shell_exec("migration run -e=plg_blah -n");
 
 		foreach ($output as $o)
 		{
