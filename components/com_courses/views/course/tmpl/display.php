@@ -79,6 +79,20 @@ else
 	<div class="aside">
 		<div class="offering-info">
 	<?php if ($offering->exists()) { ?>
+		<?php
+		$controls = '';
+		if ($this->sections)
+		{
+			foreach ($this->sections as $section)
+			{
+				if (isset($section['controls']) && $section['controls'] != '') 
+				{
+					$controls = $section['controls'];
+				}
+			}
+		}
+		if (!$controls) {
+		?>
 			<table>
 				<tbody>
 					<tr>
@@ -95,48 +109,10 @@ else
 					</tr>
 				</tbody>
 			</table>
-			<?php /* <table>
-				<tbody>
-					<tr>
-					<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
-						<td>
-							You are enrolled in this course.
-						</td>
-					<?php } else { 
-						switch ($offering->section()->get('enrollment'))
-						{
-							case 1:
-					?>
-						<th>
-							RESTRICTED
-						</th>
-						<td>
-							<!-- This course has restricted enrollment. --> An enrollment code may be required.
-						</td>
-					<?php
-							break;
-
-							case 0:
-							default:
-					?>
-						<th>
-							OPEN
-						</th>
-						<td>
-							This course has open enrollment.
-						</td>
-					<?php
-							break;
-						}
-						?>
-					<?php } ?>
-					</tr>
-				</tbody>
-			</table> */ ?>
 		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
 			<p>
 				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
-					Start course
+					Enter course
 				</a>
 			</p>
 		<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
@@ -146,6 +122,11 @@ else
 				</a>
 			</p>
 		<?php } ?>
+		<?php
+		} else {
+			echo $controls;
+		}
+		?>
 	<?php } else { ?>
 			<p>
 				No offering available.
@@ -157,27 +138,8 @@ else
 		<p>
 			<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
 		</p>
-		<!-- <h4>Categories</h4> -->
+
 		<?php echo $this->course->tags('cloud'); ?>
-
-	<?php /*if ($offering->exists()) { ?>
-		<table>
-			<caption>Current offering</caption>
-			<tbody>
-				<tr>
-					<th scope="row">Starts</th>
-					<td>
-						<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
-					</td>
-
-					<th scope="row">Ends</th>
-					<td>
-						<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	<?php }*/ ?>
 	</div>
 	<div class="clear"></div>
 </div>
@@ -244,42 +206,6 @@ else
 				}
 			}
 		}
-		/*else
-		{
-			if ($offering->exists()) { ?>
-					<div class="offering-info">
-						<table>
-							<tbody>
-								<tr>
-									<th scope="row">Starts</th>
-									<td>
-										<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">Ends</th>
-									<td>
-										<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
-						<p>
-							<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
-								View outline
-							</a>
-						</p>
-					<?php } else { ?>
-						<p>
-							<a class="enroll btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . '&task=enroll'); ?>">
-								Enroll
-							</a>
-						</p>
-					<?php } ?>
-					</div>
-			<?php }
-		}*/
 		?>
 	</div>
 	

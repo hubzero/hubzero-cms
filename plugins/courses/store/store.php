@@ -66,7 +66,8 @@ class plgCoursesStore extends JPlugin
 		$arr = array(
 			'name'     => $this->_name,
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => '',
+			'controls' => ''
 		);
 
 		ximport('Hubzero_Plugin_View');
@@ -81,7 +82,7 @@ class plgCoursesStore extends JPlugin
 		$view->controller = JRequest::getWord('controller', 'course');
 		$view->course     = $course;
 
-		$arr['metadata'] = $view->loadTemplate();
+		$arr['controls'] = $view->loadTemplate();
 
 		return $arr;
 	}

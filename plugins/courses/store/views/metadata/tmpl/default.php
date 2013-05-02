@@ -51,7 +51,7 @@ else
 	$offering = new CoursesModelOffering(0, $this->course->get('id'));
 }
 
-if (is_object($offering) && $offering->exists()) 
+if ($offering->exists()) 
 {
 	$product = null;
 
@@ -61,9 +61,15 @@ if (is_object($offering) && $offering->exists())
 		$url = 'index.php?option=com_storefront/product/' . $product->pId;
 	}
 ?>
-		<div class="offering-info">
 			<table>
 				<tbody>
+<?php if ($product) { ?>
+					<tr>
+						<td colspan="2">
+							<strong><?php echo $product->price; ?></strong>
+						</td>
+					</tr>
+<?php } ?>
 					<tr>
 						<th scope="row">Starts</th>
 						<td>
@@ -91,5 +97,4 @@ if (is_object($offering) && $offering->exists())
 				</a>
 			</p>
 		<?php } ?>
-		</div>
 <?php }
