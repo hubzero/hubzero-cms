@@ -575,7 +575,7 @@ ul {
 	overflow: visible;
 	border: 1px dotted #AAA;
 	margin: 10px 0 1px 0;
-	background: #F7F7F7;
+	background-color: #F7F7F7;
 	padding-left: 10px;
 }
 .asset-group-item:not(.add-new) {
@@ -583,6 +583,23 @@ ul {
 }
 .asset-group-item:not(.add-new):before {
 	margin-top: -10px;
+}
+.asset-group .unpublished {
+	opacity: 0.8;
+
+	background-image: url("/media/system/images/light-stripes.png");
+	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
+	background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: -moz-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: -ms-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: -o-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+
+	-webkit-background-size: 30px 30px;
+	-moz-background-size: 30px 30px;
+	-ms-background-size: 30px 30px;
+	-o-background-size: 30px 30px;
+	background-size: 30px 30px;
 }
 .toggle-editable {
 	display: none;
@@ -592,12 +609,15 @@ ul {
 	margin: 10px 210px 10px 10px;
 }
 .uploadfiles {
-	position: relative;
+	position: absolute;
 	background: #FDFDFD;
 	border-left: 1px dotted #AAA;
 	padding: 15px;
 	text-align: center;
-	float: right;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 160px;
 }
 .uploadfiles p {
 	margin: 0;
@@ -656,7 +676,7 @@ ul {
 	top: 0;
 	left: 0;
 }
-.published:before {
+.assets-list .published:before {
 	color: #49BF0A;
 	content: "\f058";
 }

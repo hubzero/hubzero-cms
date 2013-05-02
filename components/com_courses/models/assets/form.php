@@ -175,7 +175,6 @@ class FormAssetHandler extends ContentAssetHandler
 								newAsset.find('.toggle-editable').show();
 								newAsset.find('.title-edit').hide();
 								HUB.CoursesOutline.showProgressIndicator();
-								HUB.CoursesOutline.resizeFileUploader();
 								HUB.CoursesOutline.makeAssetsSortable();
 							}
 

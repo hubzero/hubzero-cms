@@ -40,7 +40,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.setupAssetEdit();
 		HUB.CoursesOutline.setupAuxAttach();
 		HUB.CoursesOutline.setupFileUploader();
-		HUB.CoursesOutline.resizeFileUploader(null, HUB.CoursesOutline.resizeDeleteTray());
+		HUB.CoursesOutline.resizeDeleteTray();
 		HUB.CoursesOutline.setupErrorMessage();
 		HUB.CoursesOutline.calendar();
 		HUB.CoursesOutline.preview();
@@ -111,7 +111,6 @@ HUB.CoursesOutline = {
 				$('.asset-group-type-list').slideUp(500);
 				$('.unit-title-arrow').removeClass('unit-title-arrow-active');
 				$(this).siblings('.asset-group-type-list').slideDown(500, function() {
-					HUB.CoursesOutline.resizeFileUploader();
 					HUB.CoursesOutline.resizeDeleteTray();
 					$('html, body').animate({scrollTop: $(this).parents('li').offset().top - 10}, 1000);
 				});
@@ -164,30 +163,6 @@ HUB.CoursesOutline = {
 		}
 
 		$('.unit-item').each(resizeProgressBar);
-	},
-
-	resizeFileUploader: function(selector, callback)
-	{
-		var $ = this.jQuery;
-
-		// Set default
-		selector = (selector) ? selector : '.asset-group-item:not(.add-new)';
-		callback = (callback) ? callback : function(){};
-
-		$(selector).each(resize);
-
-		callback();
-
-		function resize () {
-			var high = $(this).height();
-				high -= $(this).children('.uploadfiles').css('margin-top').replace("px", "");
-				high -= $(this).children('.uploadfiles').css('margin-bottom').replace("px", "");
-				high -= $(this).children('.uploadfiles').css('padding-bottom').replace("px", "");
-				high -= $(this).children('.uploadfiles').css('padding-top').replace("px", "");
-				//high -= 4; // For borders - this is hacky
-
-			$(this).children('.uploadfiles').css('min-height', high);
-		}
 	},
 
 	resizeDeleteTray: function()
@@ -280,9 +255,6 @@ HUB.CoursesOutline = {
 					$(this).append(_.template(HUB.CoursesOutline.Templates.emptyasset));
 				}
 
-				// @FIXME: we should only resize the one we're currently changing
-				HUB.CoursesOutline.resizeFileUploader();
-
 				// Update a few styles
 				ui.item.find('.sortable-assets-handle').css("display", "none");
 				ui.item.css("margin-left", 0);
@@ -355,9 +327,6 @@ HUB.CoursesOutline = {
 								// Add an empty asset back
 								assetgroup.append(_.template(HUB.CoursesOutline.Templates.emptyasset));
 							}
-
-							// @FIXME: we should only resize the one we're currently changing
-							HUB.CoursesOutline.resizeFileUploader();
 						});
 					}
 				}
@@ -390,11 +359,7 @@ HUB.CoursesOutline = {
 
 		// Make this a sortable list (even though we won't actually sort the trash), so that we can connect with the assets list
 		$('.assets-deleted').sortable({
-			'handle': '.sortable-assets-handle',
-			over: function(){
-				// @FIXME: we should only resize the one we're currently changing
-				HUB.CoursesOutline.resizeFileUploader();
-			}
+			'handle': '.sortable-assets-handle'
 		});
 
 		// Toggle the delete tray lock
@@ -436,9 +401,7 @@ HUB.CoursesOutline = {
 							$.uniform.restore(html.find('.uniform'));
 							html.find('.uniform').uniform();
 
-							html.slideDown('fast', 'linear', function(){
-								HUB.CoursesOutline.resizeFileUploader();
-							});
+							html.slideDown('fast', 'linear');
 						});
 					}
 				}
@@ -555,9 +518,7 @@ HUB.CoursesOutline = {
 							$('.sortable').sortable('refresh');
 
 							// Finally, show the new item
-							newAssetGroupItem.slideDown('fast', 'linear', function() {
-								HUB.CoursesOutline.resizeFileUploader(newAssetGroupItem);
-							});
+							newAssetGroupItem.slideDown('fast', 'linear');
 						}
 						else if(itemClass == 'unit-item') {
 							// Insert in our HTML (uses "underscore.js")
@@ -1066,7 +1027,6 @@ HUB.CoursesOutline = {
 												newAsset.find('.toggle-editable').show();
 												newAsset.find('.title-edit').hide();
 												HUB.CoursesOutline.showProgressIndicator();
-												HUB.CoursesOutline.resizeFileUploader();
 												HUB.CoursesOutline.makeAssetsSortable();
 											};
 
@@ -1236,7 +1196,6 @@ HUB.CoursesOutline = {
 			newAsset.find('.toggle-editable').show();
 			newAsset.find('.title-edit').hide();
 			HUB.CoursesOutline.showProgressIndicator();
-			HUB.CoursesOutline.resizeFileUploader();
 			HUB.CoursesOutline.makeAssetsSortable();
 		});
 	},
@@ -1262,10 +1221,7 @@ HUB.CoursesOutline = {
 
 			$('#assetgroupitem_'+data.files[0].scope_id+' .assets-list').append(clone);
 
-			clone.slideDown('fast', function() {
-				HUB.CoursesOutline.resizeFileUploader(clone.parents('.asset-group-item'));
-				HUB.CoursesOutline.resizeFileUploader(assetGroupItem);
-			});
+			clone.slideDown('fast');
 		}
 	},
 
