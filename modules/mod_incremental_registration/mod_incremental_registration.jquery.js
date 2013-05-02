@@ -16,18 +16,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-jQuery(function($) {
-	var timer = null;
-	$('#curl').mouseover(function() {
-		if (timer) {
-			clearInterval(timer);
-		}
-		document.getElementById('curl-img').setAttribute('src', '/modules/mod_incremental_registration/images/bigcurl.png');
-	});
+/* For compatibility mode */
+if (!jq) {
+	var jq = $;
+}
 
-	$('#curl').mouseout(function() {
-		timer = setTimeout(function() {
-			document.getElementById('curl-img').setAttribute('src', '/modules/mod_incremental_registration/images/smallcurl.png');
-		}, 800);
-	});
+jQuery(document).ready(function(jq) {
+	var $ = jq,
+		timer = null;
+
+	if ($('#curl').length > 0) {
+		$('#curl')
+			.on('mouseover', function() {
+				if (timer) {
+					clearInterval(timer);
+				}
+				$('#curl-img').attr('src', '/modules/mod_incremental_registration/images/bigcurl.png');
+			})
+			.on('mouseout', function() {
+				timer = setTimeout(function() {
+					$('#curl-img').attr('src', '/modules/mod_incremental_registration/images/smallcurl.png');
+				}, 800);
+			});
+	}
 });

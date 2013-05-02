@@ -12,24 +12,23 @@
 	-- -- -- -- -- -- --
 
 */
-
+	#name-inp {
+		margin-top: 0;
+		margin-left: 0;
+		padding: 0 !important;
+	}
+	#name-inp span {
+		display: inline-block;
+		width: 4em;
+		text-align: right;
+	}
+	.indented {
+		margin-left: 4em;
+	}
+	#questions input[type="text"] {
+		width: 400px;
+	}
 /* Page curl */
-#name-inp {
-	margin-top: 0;
-	margin-left: 0;
-	padding: 0 !important;
-}
-#name-inp span {
-	display: inline-block;
-	width: 4em;
-	text-align: right;
-}
-.indented {
-	margin-left: 4em;
-}
-#questions input[type="text"] {
-	width: 400px;
-}
 	#curl {
 		position: absolute;
 		top: 0;
