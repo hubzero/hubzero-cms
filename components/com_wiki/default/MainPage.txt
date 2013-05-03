@@ -55,7 +55,7 @@ Anyone with an account can create a new article. When creating a new article, th
 					<p>
 						<input type="text" name="terms" value="" />
 						<input type="submit" value="Search" />
-						<input type="hidden" name="category" value="topics" />
+						<input type="hidden" name="section" value="wiki" />
 					</p>
 				</fieldset>
 			</form>
