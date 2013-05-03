@@ -73,7 +73,7 @@ if($this->event->id)
 					<option value=""><?php echo JText::_('- Select Calendar for Event &mdash;'); ?></option>
 					<?php foreach ($this->calendars as $calendar) : ?>
 						<?php $sel = ($calendar->id == $this->event->calendar_id) ? 'selected="selected"' : ''; ?>
-						<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo $calendar->color; ?>.png" value="<?php echo $calendar->id; ?>"><?php echo $calendar->title; ?></option>
+						<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->color) ? $calendar->color : 'gray'; ?>.png" value="<?php echo $calendar->id; ?>"><?php echo $calendar->title; ?></option>
 					<?php endforeach; ?>
 				</select>
 				
