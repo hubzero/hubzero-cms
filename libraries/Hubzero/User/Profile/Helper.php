@@ -123,7 +123,7 @@ class Hubzero_User_Profile_Helper
 
 		$thumb = '';
 		$thumbAlt = '';
-		if (!$anonymous && $member->get('picture')) 
+		if (!$anonymous && is_object($member) && $member->get('picture')) 
 		{
 			$thumb .= DS . trim($config->get('webpath', '/site/members'), DS);
 			$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber'));
