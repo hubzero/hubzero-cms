@@ -278,6 +278,12 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $assetGroup->get('title'));
 		$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
 
+		$state = JRequest::getInt('state', null);
+		if (!is_null($state))
+		{
+			$assetGroup->set('state', $state);
+		}
+
 		// When creating a new asset group
 		if(!$id)
 		{
@@ -302,6 +308,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			array(
 				'assetgroup_id'    => $assetGroup->get('id'),
 				'assetgroup_title' => $assetGroup->get('title'),
+				'assetgroup_state' => (int) $assetGroup->get('state'),
 				'assetgroup_style' => 'display:none',
 				'course_id'        => $this->course_id,
 				'offering_alias'   => $this->offering_alias

@@ -34,6 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <li class="asset-group-item <?= ($this->ag->isPublished()) ? 'published' : 'unpublished' ?>" id="assetgroupitem_<?= $this->ag->get('id') ?>">
 	<div class="sortable-handle"></div>
+	<div class="asset-group-edit"></div>
 	<div class="uploadfiles">
 		<p>Drag files here to upload</p>
 		<p>or</p>

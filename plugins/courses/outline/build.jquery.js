@@ -37,7 +37,6 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.addNewItem();
 		HUB.CoursesOutline.makeUniform();
 		HUB.CoursesOutline.togglePublished();
-		HUB.CoursesOutline.setupAssetEdit();
 		HUB.CoursesOutline.setupAuxAttach();
 		HUB.CoursesOutline.setupFileUploader();
 		HUB.CoursesOutline.resizeDeleteTray();
@@ -50,7 +49,8 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
-		//$('.asset-preview, .asset-edit, .asset-delete').tooltip();
+		HUB.CoursesOutline.initAssetGroupEdit();
+		HUB.CoursesOutline.initAssetEdit();
 	},
 
 	setDefaults: function()
@@ -198,6 +198,7 @@ HUB.CoursesOutline = {
 
 		function over () {
 			$(this).find('.sortable-handle').show('slide', 250);
+			$(this).find('.asset-group-edit').show('slide', 250);
 			$(this).not('.add-new').animate({"padding-left":60}, 250);
 			$(this).find('.sortable-assets-handle').show('slide', 250);
 			$(this).find('.asset:not(.nofiles)').animate({"margin-left":30}, 250);
@@ -206,6 +207,7 @@ HUB.CoursesOutline = {
 
 		function out () {
 			$(this).find('.sortable-handle').hide('slide', 250);
+			$(this).find('.asset-group-edit').hide('slide', 250);
 			$(this).not('.add-new').animate({"padding-left":10}, 250);
 			$(this).find('.sortable-assets-handle').hide('slide', 250);
 			$(this).find('.asset:not(.nofiles)').animate({"margin-left":10}, 250);
@@ -648,70 +650,112 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	setupAssetEdit: function()
+	/* Initialize the ability to edit asset groups
+	 * Listener attached to the entire outline,
+	 * therefore should not need to be reinitialized
+	 */
+	initAssetGroupEdit: function()
 	{
 		var $ = this.jQuery;
-		var contentBox = $('.content-box');
 
-		function contentBoxClose() {
-			contentBox.hide('slide', {'direction':'down'}, 500, function() {
-				$('.content-box-overlay').fadeOut(100);
-			});
-			contentBox.find('iframe').attr('src', '');
-		}
+		$('.unit').on('click', '.asset-group-edit', editAssetGroup);
 
-		// Add close on escape
-		$(document).bind('keydown', function (e) {
-			if(e.which == 27) {
-				contentBoxClose();
-			}
-		});
-
-		// Add close on click of close button
-		$('.content-box-close').on('click', function() {
-			contentBoxClose();
-		});
-
-		$('.unit').on('click', '.asset-edit', function (e) {
+		function editAssetGroup( e ) {
 			e.preventDefault();
 
+			// Establish some needed vars
+			var ag    = $(this).parent('.asset-group-item');
+			var form  = $(this).siblings('.uploadfiles').find('.uploadfiles-form');
+			// ex: src = /courses/nanotransistors/selfpaced/outline?action=build&scope=assetgroup&scope_id=4&tmpl=component
+			var src   = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
+				src  += '&scope=assetgroup&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
+
+			$(this).contentBox({
+				src         : src,
+				title       : 'Edit Asset Group',
+				onAfterLoad : function( content ) {
+					var t = $(this);
+					content.find('.cancel').click(function() {
+						// Close the content box
+						t.contentBox('close');
+					});
+
+					content.find('.edit-form').submit(function (e) {
+						e.preventDefault();
+
+						// Create ajax call post save
+						$.ajax({
+							url: $(this).attr('action'),
+							data: $(this).serializeArray(),
+							statusCode: {
+								// 200 OK
+								200: function ( data, textStatus, jqXHR ){
+									// Close box
+									t.contentBox('close');
+
+									// Get the current state from the response
+									var state = (data.assetgroup_state == 1) ? 'published' : 'unpublished';
+
+									// Set corresponding class for state value
+									ag.removeClass('published unpublished').addClass(state);
+									// @TODO: eventually this should be a general updateAssetGroupInPage function
+								}
+							}
+						});
+					});
+				}
+			});
+		}
+	},
+
+	/* Initialize the ability to edit assets
+	 * Listener attached to the entire outline,
+	 * therefore should not need to be reinitialized
+	 */
+	initAssetEdit: function()
+	{
+		var $ = this.jQuery;
+
+		$('.unit').on('click', '.asset-edit', editAsset);
+
+		function editAsset( e ) {
+			e.preventDefault();
+
+			// Establish some variables
 			var form  = $(this).siblings('.next-step-publish');
 			var src   = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
 				src  += '&scope=asset&scope_id='+form.find('input[name="scope_id"]').val()+'&asset_id='+form.find('.asset_id').val()+'&tmpl=component';
 
-			$('.content-box-header span').html('Edit Asset');
+			$(this).contentBox({
+				src         : src,
+				title       : 'Edit Asset',
+				onAfterLoad : function( content ) {
+					var t = $(this);
+					content.find('.cancel').click(function() {
+						// Close the content box
+						t.contentBox('close');
+					});
 
-			contentBox.show('slide', {'direction':'down'}, 500, function () {
-				$(this).siblings('.content-box-overlay').fadeIn(100);
-				$(this).find('iframe').attr('src', src);
+					content.find('.edit-form').submit(function ( e ) {
+						e.preventDefault();
+
+						// Create ajax call to change info in the database
+						$.ajax({
+							url: $(this).attr('action'),
+							data: $(this).serializeArray(),
+							statusCode: {
+								// 200 OK
+								200: function ( data, textStatus, jqXHR ){
+									// Close the content box
+									t.contentBox('close');
+									HUB.CoursesOutline.updateAssetInPage(data);
+								}
+							}
+						});
+					});
+				}
 			});
-		});
-
-		// Attach submit and cancel buttons
-		contentBox.find('iframe').load(function() {
-			var content = $(this).contents();
-			content.find('.cancel').click(function() {
-				contentBoxClose();
-			});
-
-			content.find('.edit-form').submit(function (e) {
-				e.preventDefault();
-
-				// Create ajax call to change info in the database
-				$.ajax({
-					url: $(this).attr('action'),
-					data: $(this).serializeArray(),
-					statusCode: {
-						// 200 OK
-						200: function (data, textStatus, jqXHR){
-							// Close box
-							contentBoxClose();
-							HUB.CoursesOutline.updateAssetInPage(data);
-						}
-					}
-				});
-			});
-		});
+		}
 	},
 
 	setupAuxAttach: function()
@@ -1274,6 +1318,7 @@ HUB.CoursesOutline = {
 		assetgroupitem : [
 			'<li class="asset-group-item" id="assetgroupitem_<%= assetgroup_id %>" style="<%= assetgroup_style %>">',
 				'<div class="sortable-handle"></div>',
+				'<div class="asset-group-edit"></div>',
 				'<div class="uploadfiles">',
 					'<p>Drag files here to upload</p>',
 					'<p>or</p>',
@@ -1380,3 +1425,66 @@ HUB.CoursesOutline = {
 jQuery(document).ready(function($){
 	HUB.CoursesOutline.initialize();
 });
+
+(function( $ ) {
+
+	var settings = {},
+		methods  = {
+		init : function( options ) {
+			// Create some defaults, extending them with any options that were provided
+			settings = $.extend( {
+				element     : $('.content-box'),
+				title       : 'Edit Item',
+				src         : '/courses',
+				onAfterLoad : function( content ) {}
+			}, options);
+
+			// Add close on escape
+			$(document).bind('keydown', function ( e ) {
+				if(e.which == 27) {
+					methods.close();
+				}
+			});
+
+			// Add close on click of close button
+			settings.element.find('.content-box-close').on('click', function() {
+				methods.close();
+			});
+
+			// Finally, execute show
+			methods.show();
+
+			// Execute after load function
+			settings.element.find('iframe').load(function() {
+				var content = $(this).contents();
+
+				settings.onAfterLoad( content );
+			});
+		},
+		show : function() {
+			$('.content-box-header span').html(settings.title);
+
+			settings.element.show('slide', {'direction':'down'}, 500, function () {
+				$(this).siblings('.content-box-overlay').fadeIn(100);
+				$(this).find('iframe').attr('src', settings.src);
+			});
+		},
+		close : function() {
+			settings.element.hide('slide', {'direction':'down'}, 500, function() {
+				$('.content-box-overlay').fadeOut(100);
+			});
+			settings.element.find('iframe').attr('src', '');
+		}
+	};
+
+	$.fn.contentBox = function( method ) {
+		// Method calling logic
+		if ( methods[ method ] ) {
+			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || !method ) {
+			return methods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' + method + ' does not exist on jQuery.contentBox' );
+		}
+	};
+})( jQuery );
