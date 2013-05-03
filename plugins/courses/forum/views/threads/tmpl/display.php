@@ -312,6 +312,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[scope]" value="course" />
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->offering->get('id'); ?>" />
+			<input type="hidden" name="fields[object_id]" value="<?php echo $this->post->object_id; ?>" />
 			<input type="hidden" name="fields[id]" value="" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
