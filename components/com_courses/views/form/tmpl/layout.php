@@ -3,7 +3,7 @@
 	<h2><?php echo 'Layout: ' . $this->title; ?></h2>
 </div>
 
-<div class="main section">
+<div class="main section courses-form">
 	<noscript>
 		<div class="error">You must enable JavaScript to annotate PDFs for deployment as forms, sorry.</div>
 	</noscript>

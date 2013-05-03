@@ -574,6 +574,7 @@ HUB.CoursesOutline = {
 			var form            = $(this).parents('form');
 			var label           = form.find('span.published-label-text');
 			var item            = form.parent('.asset-item');
+			var t               = $(this);
 
 			// If this is an Exam, we also want to set deployment info
 			if(item.hasClass('form') && item.hasClass('notpublished')){
@@ -592,20 +593,62 @@ HUB.CoursesOutline = {
 								fitToView: false,
 								autoResize: false,
 								autoSize: false,
+								closeBtn: false,
+								modal: true,
 								height: ($(window).height())*2/3,
 								type: 'iframe',
 								href: '/courses/form?task=deploy&formId='+formId+'&tmpl=component',
-								afterClose: function() {
-									$.ajax({
-										url: '/api/courses/asset/save',
-										data: form.serialize(),
-										statusCode: {
-											200: function(data){
-												// Update the link
-												assetA.attr('href', data.files[0].asset_url);
-												toggle();
+								afterShow: function() {
+									var contents = $('.fancybox-iframe').contents();
+
+									// Highjack the 'cancel' button to close the iframe
+									contents.find('#cancel').bind('click', function(e) {
+										e.preventDefault();
+
+										// Close fancybox
+										$.fancybox.close();
+
+										// Reset check box
+										t.attr('checked', false);
+										$.uniform.restore(t);
+										t.uniform();
+									});
+
+									// Listen for deployment create call from iframe
+									$('body').on('deploymentsave', function() {
+										// Close fancybox
+										$.fancybox.close();
+
+										$.ajax({
+											url: '/api/courses/asset/save',
+											data: form.serialize(),
+											statusCode: {
+												200: function(data){
+													assetA.attr('href', data.files[0].asset_url);
+													toggle();
+												}
 											}
-										}
+										});
+									});
+
+									// Fallback...if for some reason the deploymentsave trigger isn't fired
+									$('.fancybox-iframe').load(function() {
+										var content = $(this).contents();
+										content.find('#done').click(function() {
+											// Close fancybox
+											$.fancybox.close();
+
+											$.ajax({
+												url: '/api/courses/asset/save',
+												data: form.serialize(),
+												statusCode: {
+													200: function(data){
+														assetA.attr('href', data.files[0].asset_url);
+														toggle();
+													}
+												}
+											});
+										});
 									});
 								}
 							});

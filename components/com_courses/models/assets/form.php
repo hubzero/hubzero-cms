@@ -151,7 +151,7 @@ class FormAssetHandler extends ContentAssetHandler
 							// We've already saved the asset, so we need to mark asset as deleted
 							$.ajax({
 								url: '/api/courses/asset/save',
-								data: formData,
+								data: formData
 							});
 						});
 
@@ -176,7 +176,7 @@ class FormAssetHandler extends ContentAssetHandler
 								newAsset.find('.title-edit').hide();
 								HUB.CoursesOutline.showProgressIndicator();
 								HUB.CoursesOutline.makeAssetsSortable();
-							}
+							};
 
 							// Reset progress bar
 							HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);

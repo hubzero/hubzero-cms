@@ -330,8 +330,9 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 		else
 		{
+			$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_courses&controller=form&task=showDeployment&id='.$dep->save($deploymentId).'&formId='.$pdf->getId(), false),
+				JRoute::_('index.php?option=com_courses&controller=form&task=showDeployment&id='.$dep->save($deploymentId).'&formId='.$pdf->getId().$tmpl, false),
 				JText::_('Deployment successfully updated'),
 				'passed'
 			);

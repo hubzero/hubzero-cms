@@ -18,6 +18,7 @@ jQuery(function($) {
 			'background': '#222'
 		});
 		$('.navbar .question-info').css('color', '#FFF');
+		$('.main.section.courses-form').css("margin-bottom", 60);
 
 		iframeHack = 20;
 	}
