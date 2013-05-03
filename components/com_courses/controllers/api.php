@@ -83,6 +83,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 				{
 					case 'handlers':        $this->assetHandlers();        break;
 					case 'new':             $this->assetNew();             break;
+					case 'edit':            $this->assetEdit();            break;
 					case 'save':            $this->assetSave();            break;
 					case 'delete':          $this->assetDelete();          break;
 					case 'reorder':         $this->assetReorder();         break;
@@ -461,6 +462,49 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		// Return message
 		$this->setMessage(array('assets'=>$return), 201, 'Created');
+	}
+
+	/**
+	 * Retrieve the asset edit page
+	 * 
+	 * @return 200 OK
+	 */
+	private function assetEdit()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Require authorization
+		$authorized = $this->authorize();
+		if (!$authorized['manage'])
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Not Authorized');
+			return;
+		}
+
+		// Make sure we have an asset id
+		if (!$asset_id = JRequest::getInt('id', false))
+		{
+			$this->setMessage("No asset id provided.", 500, 'Internal server error');
+			return;
+		}
+
+		// Initiate our file handler
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+		$assetHandler = new AssetHandler($this->db);
+
+		// Edit the asset
+		$return = $assetHandler->edit($asset_id);
+
+		// Check for errors in response
+		if (is_array($return) && array_key_exists('error', $return))
+		{
+			$this->setMessage($return['error'], 500, 'Internal server error');
+			return;
+		}
+
+		// Return message
+		$this->setMessage($return, 200, 'OK');
 	}
 
 	/**

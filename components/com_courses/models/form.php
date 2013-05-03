@@ -99,6 +99,27 @@ class PdfForm
 	}
 
 	/**
+	 * Load by asset id
+	 *
+	 * @return bool
+	 **/
+	public function loadByAssetId($asset_id)
+	{
+		$dbh = self::getDbh();
+		$dbh->setQuery('SELECT `id` FROM `#__courses_forms` WHERE `asset_id` = ' . $asset_id);
+
+		if ($result = $dbh->loadResult())
+		{
+			$id = (int) $result;
+			return new self($id);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
 	 * Get database handle
 	 *
 	 * @return Joomla database object

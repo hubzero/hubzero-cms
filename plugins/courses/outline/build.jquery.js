@@ -769,33 +769,50 @@ HUB.CoursesOutline = {
 			var src   = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
 				src  += '&scope=asset&scope_id='+form.find('input[name="scope_id"]').val()+'&asset_id='+form.find('.asset_id').val()+'&tmpl=component';
 
-			$(this).contentBox({
-				src         : src,
-				title       : 'Edit Asset',
-				onAfterLoad : function( content ) {
-					var t = $(this);
-					content.find('.cancel').click(function() {
-						// Close the content box
-						t.contentBox('close');
-					});
+			// Create ajax call to edit asset
+			$.ajax({
+				url: '/api/courses/asset/edit',
+				data: form.serializeArray(),
+				statusCode: {
+					// 200 OK
+					200: function ( data, textStatus, jqXHR ) {
+						switch ( data.type ) {
+							case 'js' :
+								eval(data.value);
+							break;
 
-					content.find('.edit-form').submit(function ( e ) {
-						e.preventDefault();
+							default :
+								$(this).contentBox({
+									src         : src,
+									title       : 'Edit Asset',
+									onAfterLoad : function( content ) {
+										var t = $(this);
+										content.find('.cancel').click(function () {
+											// Close the content box
+											t.contentBox('close');
+										});
 
-						// Create ajax call to change info in the database
-						$.ajax({
-							url: $(this).attr('action'),
-							data: $(this).serializeArray(),
-							statusCode: {
-								// 200 OK
-								200: function ( data, textStatus, jqXHR ){
-									// Close the content box
-									t.contentBox('close');
-									HUB.CoursesOutline.updateAssetInPage(data);
-								}
-							}
-						});
-					});
+										content.find('.edit-form').submit(function ( e ) {
+											e.preventDefault();
+
+											// Create ajax call to change info in the database
+											$.ajax({
+												url: $(this).attr('action'),
+												data: $(this).serializeArray(),
+												statusCode: {
+													// 200 OK
+													200: function ( data, textStatus, jqXHR ) {
+														// Close the content box
+														t.contentBox('close');
+														HUB.CoursesOutline.updateAssetInPage(data);
+													}
+												}
+											});
+										});
+									}
+								});
+						}
+					}
 				}
 			});
 		}

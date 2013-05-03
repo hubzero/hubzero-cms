@@ -82,7 +82,7 @@ class AssetHandler
 	 *
 	 * @return void
 	 **/
-	public function __construct(&$db, $fileType)
+	public function __construct(&$db, $fileType=null)
 	{
 		// Set the database object
 		$this->db = $db;
@@ -238,30 +238,25 @@ class AssetHandler
 	/**
 	 * Edit an asset
 	 *
-	 * @return null
+	 * @return array
 	 **/
-	public function edit()
+	public function edit($id)
 	{
-		// @TODO: impliment me!
-	}
+		// Look up asset type from id
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		$asset = new CoursesModelAsset($id);
 
-	/**
-	 * Delete an asset
-	 *
-	 * @return null
-	 **/
-	public function delete()
-	{
-		// @TODO: impliment me!
-	}
+		// Classname
+		$class = ucfirst($asset->get('type')) . 'AssetHandler';
 
-	/**
-	 * Render
-	 *
-	 * @return null
-	 **/
-	public function render()
-	{
-		// @TODO: impliment me!
+		if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'edit'))
+		{
+			return $class::edit($asset);
+		}
+		else
+		{
+			// Default edit page
+			return array('type'=>'default');
+		}
 	}
 }
