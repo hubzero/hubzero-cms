@@ -32,11 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Set date time format
-$dateFormat = '%d %b %Y';
+$dateFormat = '%b %Y'; //%d 
 $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'd M Y';
+	$dateFormat = 'M Y'; //d 
 	$tz = true;
 }
 
@@ -231,7 +231,7 @@ if ($results)
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 				<p class="total">
 					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
-					<span><?php echo JText::_('in'); ?> <span id="users-overview-date"><time datetime="<?php echo $result->datetime; ?>"><?php echo JHTML::_('date', $result->datetime, $dateFormat, $tz); ?></time></span></span>
+					<span id="users-overview-date"><time datetime="<?php echo $result->datetime; ?>"><?php echo JHTML::_('date', $result->datetime, $dateFormat, $tz); ?></time></span></span>
 				</p>
 			</div><!-- / .four columns first -->
 			<div class="four columns second third fourth">
@@ -651,7 +651,7 @@ if ($results)
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
 				<p class="total">
 					<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
-					<span><?php echo JText::_('in'); ?> <span id="runs-overview-date"><time datetime="<?php echo $result->datetime; ?>"><?php echo JHTML::_('date', $result->datetime, $dateFormat, $tz); ?></time></span></span>
+					<span id="runs-overview-date"><time datetime="<?php echo $result->datetime; ?>"><?php echo JHTML::_('date', $result->datetime, $dateFormat, $tz); ?></time></span></span>
 				</p>
 			</div><!-- / .four columns first -->
 			<div class="four columns second third fourth">
@@ -874,13 +874,17 @@ if ($results)
 							if (item) {
 								var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
 								var yyyy = item.series.data[item.dataIndex][0].getFullYear();
+								var mnth = month_short[mm - 1];
 								// Prepend 0s
 								if (mm < 10) {
 									mm = '0' + mm
 								}
 
 								$('#users-overview-total').text(item.datapoint[1]);
+								$('#users-overview-date').text(mnth + ' ' + yyyy);
+
 								$('#runs-overview-total').text(datasets[1].data[item.dataIndex][1]);
+								$('#runs-overview-date').text(mnth + ' ' + yyyy);
 
 								updateTables(yyyy, mm);
 
@@ -949,13 +953,17 @@ if ($results)
 							if (item) {
 								var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
 								var yyyy = item.series.data[item.dataIndex][0].getFullYear();
+								var mnth = month_short[mm - 1];
 								// Prepend 0s
 								if (mm < 10) {
 									mm = '0' + mm
 								}
 
 								$('#runs-overview-total').text(item.datapoint[1]);
+								$('#runs-overview-date').text(mnth + ' ' + yyyy);
+
 								$('#users-overview-total').text(datasets[0].data[item.dataIndex][1]);
+								$('#users-overview-date').text(mnth + ' ' + yyyy);
 
 								updateTables(yyyy, mm);
 
