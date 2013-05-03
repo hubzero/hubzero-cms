@@ -56,13 +56,6 @@ class TagsControllerTags extends Hubzero_Controller
 			{
 				JRequest::setVar('task', 'view');
 			}
-			$tagobj = new TagsTag($this->database);
-			$tagobj->loadTag($tagstring);
-			if (!$tagobj->get('id'))
-			{
-				JError::raiseError(404, JText::_('COM_TAGS_NOT_FOUND'));
-				return;
-			}
 		}
 
 		parent::execute();
