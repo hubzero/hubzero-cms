@@ -499,8 +499,9 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		}
 
 		// We'll always save the title again, even if it's just to the same thing
-		$title = $asset->get('title');
-		$title = (!empty($title)) ? $title : 'New asset';
+		$orgTitle = $asset->get('title');
+		$title    = $asset->get('title');
+		$title    = (!empty($title)) ? $title : 'New asset';
 
 		// Set or variables
 		$asset->set('title', JRequest::getString('title', $title));
@@ -547,6 +548,26 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		if ($subtype = JRequest::getWord('subtype', false))
 		{
 			$asset->set('subtype', $subtype);
+		}
+		else
+		{
+			$title = JRequest::getString('title', false);
+			// If we don't have a subtype incoming, but the type is form, try to guess subtype from title
+			if ($asset->get('type') == 'form' && $title && $title != $orgTitle)
+			{
+				if (strpos(strtolower($title), 'exam') !== false)
+				{
+					$asset->set('subtype', 'exam');
+				}
+				elseif (strpos(strtolower($title), 'quiz') !== false)
+				{
+					$asset->set('subtype', 'quiz');
+				}
+				elseif (strpos(strtolower($title), 'homework') !== false)
+				{
+					$asset->set('subtype', 'homework');
+				}
+			}
 		}
 
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
