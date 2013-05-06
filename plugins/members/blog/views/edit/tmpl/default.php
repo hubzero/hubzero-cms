@@ -64,7 +64,7 @@ if ($this->entry->publish_down && $this->entry->publish_down == '0000-00-00 00:0
 
 			<label for="entrycontent">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
-				<span class="syntax hint"><a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
+				<span class="syntax hint"><a class="tooltips popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
 					<tbody>
 						<tr>
 							<td>'''bold'''</td>

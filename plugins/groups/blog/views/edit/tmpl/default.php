@@ -69,7 +69,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		
 		<label for="entry_content">
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?>
-			<span class="syntax hint"><a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
+			<span class="syntax hint"><a class="tooltips popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
 				<tbody>
 					<tr>
 						<td>'''bold'''</td>

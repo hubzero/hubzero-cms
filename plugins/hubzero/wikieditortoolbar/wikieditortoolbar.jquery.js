@@ -114,7 +114,7 @@ if (!HUB.Plugins) {
 
 				var a = jQuery(document.createElement('a'))
 					.attr('title', item.speedTip)
-					.attr('href', "/wiki/Help:WikiFormatting")
+					.attr('href', "/wiki/Help:WikiFormatting?tmpl=component")
 					.html(item.speedTip)
 					.addClass(item.imageFile + " popup")
 					.on('click', function() {
