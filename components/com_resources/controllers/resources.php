@@ -1271,26 +1271,29 @@ class ResourcesControllerResources extends Hubzero_Controller
 			ximport('Hubzero_Group');
 			$group = Hubzero_Group::getInstance($this->model->resource->group_owner);
 
-			$pathway =& $app->getPathway();
-			$pathway->_pathway = array();
-			$pathway->_count = 0;
+			if ($group)
+			{
+				$pathway =& $app->getPathway();
+				$pathway->_pathway = array();
+				$pathway->_count = 0;
 
-			$pathway->addItem(
-				'Groups',
-				JRoute::_('index.php?option=com_groups')
-			);
-			$pathway->addItem(
-				stripslashes($group->get('description')),
-				JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)
-			);
-			$pathway->addItem(
-				'Resources',
-				JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources')
-			);
-			$pathway->addItem(
-				stripslashes($this->model->type->type),
-				JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
-			);
+				$pathway->addItem(
+					'Groups',
+					JRoute::_('index.php?option=com_groups')
+				);
+				$pathway->addItem(
+					stripslashes($group->get('description')),
+					JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)
+				);
+				$pathway->addItem(
+					'Resources',
+					JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources')
+				);
+				$pathway->addItem(
+					stripslashes($this->model->type->type),
+					JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
+				);
+			}
 		} 
 		else 
 		{

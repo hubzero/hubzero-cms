@@ -1277,7 +1277,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		if (!$id) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				JRoute::_('index.php?option=' . $this->_option . '&task=new')
 			);
 			return;
 		}
@@ -1322,9 +1322,34 @@ class ResourcesControllerCreate extends Hubzero_Controller
 				// Did they confirm the deletion?
 				if ($confirm != 'confirmed') 
 				{
-					$this->setRedirect(
+					$this->setError(JText::_('Please confirm.'));
+					/*$this->setRedirect(
 						JRoute::_('index.php?option=' . $this->_option)
-					);
+					);*/
+					$this->_getStyles($this->_option, $this->_controller . '.css');
+
+					// Check progress
+					$this->_checkProgress($id);
+
+					// Load the resource
+					$this->view->row = new ResourcesResource($this->database);
+					$this->view->row->load($id);
+					$this->view->row->typetitle = $this->view->row->getTypeTitle(0);
+
+					// Output HTML
+					$this->view->title    = $this->_title;
+					$this->view->step     = 'discard';
+					$this->view->steps    = $this->steps;
+					$this->view->id       = $id;
+					$this->view->progress = $this->progress;
+					if ($this->getError()) 
+					{
+						foreach ($this->getErrors() as $error)
+						{
+							$this->view->setError($error);
+						}
+					}
+					$this->view->display();
 					return;
 				}
 

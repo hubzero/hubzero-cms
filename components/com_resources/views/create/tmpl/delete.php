@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form name="hubForm" id="hubForm" method="post" action="index.php" class="contrib">
+	<form name="hubForm" id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=discard&step=2&id=' . $this->row->id); ?>" class="contrib">
 		<div class="explaination">
 			<p class="warning"><?php echo JText::_('COM_CONTRIBUTE_DELETE_WARNING'); ?><p>
 		</div>
@@ -68,6 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 			<legend><?php echo JText::_('COM_CONTRIBUTE_DELETE_LEGEND'); ?></legend>
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="discard" />
 			<input type="hidden" name="step" value="2" />
 			

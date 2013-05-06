@@ -73,8 +73,8 @@
 	.com_resources .four .columns div {
 		padding-left: 25px;
 	}
-	.extracontent .topicpage:before,
-	.extracontent .wiki:before,
+	/*.extracontent .topicpage:before,
+	.extracontent .wiki:before,*/
 	.com_resources .four div.topicpage:before {
 		content: "\f072";
 	}
