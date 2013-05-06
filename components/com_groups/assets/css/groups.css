@@ -1240,6 +1240,9 @@ span.group-pending {
 .preview img { 
 	max-width: 100%;
 }
+.firefox .preview img {
+	width: 100%;
+}
 
 
 
