@@ -66,7 +66,7 @@ foreach ($this->related as $line)
 		if ($line->group_cn != '' && $line->scope != '') {
 			$sef = JRoute::_('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
 		} else {
-			$sef = JRoute::_('index.php?option=com_topics&scope='.$line->scope.'&pagename='.$line->alias);
+			$sef = JRoute::_('index.php?option=com_wiki&scope='.$line->scope.'&pagename='.$line->alias);
 		}
 	}
 
