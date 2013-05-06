@@ -412,19 +412,7 @@
 	.com_resources .results .resource .title {
 		margin-right: 200px;
 	}
-	#sub-menu {
-		padding: 0;
-	}
-	#sub-menu ul {
-		padding: 0 15px;
-	}
-	#sub-menu li a span {
-		padding-left: 11px;
-		padding-right: 11px;
-	}
-	#sub-sub-menu ul {
-		border: none !important;
-	}
+	
 	.license {
 		margin-bottom: 0 !important;
 		margin-top: 1em !important;
@@ -469,7 +457,7 @@
 	.com_resources .tabbed .section {
 		padding: 0.1em;
 	}
-	.com_resources .tabbed #sub-menu li a {
+	.com_resources .sub-menu {
 		font-size: 88%;
 	}
 
