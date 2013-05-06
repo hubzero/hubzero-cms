@@ -188,6 +188,39 @@ class ToolsControllerSessions extends Hubzero_Controller
 	}
 
 	/**
+	 * Show an Bad Parameters error
+	 * 
+	 * @return     void
+	 */
+	public function badparamsTask($badparams = '')
+	{
+		$this->view->setLayout('badparams');
+
+		// Set the page title
+		$this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		$this->_getStyles($this->_option, 'assets/css/tools.css');
+
+		// Instantiate the view
+		$this->view->title = $this->_title;
+
+		$this->view->badparams = $badparams;
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		$this->view->display();
+	}
+
+	/**
 	 * Show a quota exceeded warning and list of sessions
 	 * 
 	 * @return     void
@@ -259,6 +292,42 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$this->view->display();
 	}
 
+	function normalize_path($path, $isFile = false) 
+	{
+		if (!isset($path[0]) || $path[0] != '/')
+			return false;
+
+		$parts = explode('/', $path);
+
+		$result = array();
+
+		foreach($parts as $part) 
+		{
+			if ($part === '' || $part == '.')
+			{
+				continue;
+			} 
+
+			if ($part == '..') 
+			{
+				array_pop($result);
+			} 
+			else 
+			{
+				$result[] = $part;
+			}
+		}
+
+		if ($isFile) // Files can't end with directory separator or special directory names
+		{
+			if ($part == '' || $part == '.' || $part == '..')
+				return false;
+		}
+
+		return "/" . implode('/', $result) . ($isFile ? '' : '/');
+
+	}
+
 	/**
 	 * Invoke a tool session
 	 * 
@@ -274,6 +343,102 @@ class ToolsControllerSessions extends Hubzero_Controller
 		}
 
 		ximport('Hubzero_Environment');
+
+		$params = JRequest::getString('params','','default',JREQUEST_ALLOWRAW);
+
+		$params_whitelist = explode(',',$this->config->get('params_whitelist',''));
+
+		$separator = "\r\n";
+
+		$line = trim( strtok($params, $separator) );
+
+		$verified_params = array();
+
+		while ($line !== false) 
+		{
+			$re = "/\s*(directory|file)\s*(?:\:|\(\s*(.*?)\s*\)\s*:)\s*(.*?)\s*$/";
+			
+			if (preg_match($re, $line, $matches) !== false)
+			{
+				$type = $matches[1];
+				$key  = $matches[2];
+				$value = $matches[3];
+
+				// Replace ~/ prefix with user's home directory
+				if (strncmp($value,"~/",2) === 0)
+				{
+					$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+	
+					$homeDirectory = rtrim($xprofile->get('homeDirectory'),"/");
+	
+					if (!isset($homeDirectory[0]) || $homeDirectory[0] !== '/')
+					{
+						break;
+					}
+
+					$value = substr_replace($value,$homeDirectory,0,1);
+				}
+
+				// Fail if $value doesn't start with '/'
+				if ($value[0] != '/')
+				{
+					break;
+				}
+
+				// Fail if unable to normalize $value
+				$value = $this->normalize_path($value, $type == 'file');
+
+				if ($value === false)
+				{
+					break;
+				}
+
+				// Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
+				if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0)
+				{
+					break;
+				}
+
+				// Fail if $value isn't prefixed with a whitelisted directory
+				foreach($params_whitelist as $wl)
+				{
+					$wl = rtrim($wl,'/') . '/'; 	// make sure we compare against a full path element
+
+					if (strncmp($wl,$value,strlen($wl)) === 0)
+					{
+						$match = $wl;
+						break;
+					}
+				}
+
+				if (!isset($match))
+				{
+					break;
+				}
+
+				// Add verified parameter to array
+				if ($key)		
+				{
+					$verified_params[] = $type . "(" . $key . "):" .$value;
+				}
+				else
+				{
+					$verified_params[] = $type . ":" . $value;
+				}
+			} 
+			else if (!empty($line)) // Fail if unrecognized non-empty parameter line
+			{
+				break;
+			}
+
+			$line = strtok( $separator );  // Get next line
+		}
+
+		if ($line !== false)
+		{
+			$this->badparamsTask($params);
+			return;
+		}
 
 		// Incoming
 		$app = new stdClass;
@@ -425,8 +590,15 @@ class ToolsControllerSessions extends Hubzero_Controller
 		// Trigger any events that need to be called before session invoke
 		$dispatcher->trigger('onBeforeSessionInvoke', array($app->toolname, $app->version));
 
+		$toolparams = '';
+
+		if (!empty($params))
+		{
+			$toolparams = " params=" . rawurlencode($params) . " ";
+		}
+
 		// We've passed all checks so let's actually start the session
-		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
+		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version . $toolparams, $output);
 		if ($this->getError())
 		{
 			//JError::raiseError(500, $this->getError());
@@ -438,7 +610,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			);
 			return;
 		}
-		$app->sess = $output->session;
+		$app->sess = !empty($output->session) ? $output->session : '';
 
 		// Trigger any events that need to be called after session invoke
 		$dispatcher->trigger('onAfterSessionInvoke', array($app->toolname, $app->version));
@@ -1108,7 +1280,9 @@ class ToolsControllerSessions extends Hubzero_Controller
 	public function middleware($comm, &$output)
 	{
 		$retval = true; // Assume success.
-		$output = new stdClass();
+
+		$comm = escapeshellcmd($comm);
+
 		$cmd = "/bin/sh components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
@@ -1120,6 +1294,8 @@ class ToolsControllerSessions extends Hubzero_Controller
 			$retval = false;
 			$this->setError($results[0]);
 		}
+
+		$output = new stdClass();
 
 		if (is_array($results))
 		{
