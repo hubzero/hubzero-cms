@@ -94,6 +94,11 @@ JHTML::_('behavior.tooltip');
 		</ul>
 		<h3><span>Mine</span></h3>
 		<ul id="my-views" class="views">
+			<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
+				<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=-1&amp;limitstart=0'); ?>">
+					<?php echo $this->escape(JText::_('Watch list')); ?> <span><?php echo $this->watchcount; ?></span>
+				</a>
+			</li>
 <?php if (count($this->queries['mine']) > 0) { ?>
 	<?php foreach ($this->queries['mine'] as $query) { ?>
 			<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
@@ -223,21 +228,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row = &$this->rows[$i];
 
 	$comments = 0;
-	/*$comments = $sc->countComments(true, $row->id);
-	
-	if ($comments > 0) {*/
-		$lastcomment = '0000-00-00 00:00:00';
-		if (isset($lastactivities[$row->id]))
-		{
-			$lastcomment = $lastactivities[$row->id]['lastactivity']; //
-		}
-		// Was there any activity on this item?
-		if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
-		{
-			$comments = 1;
-		}
-		//$lastcomment = $sc->newestComment(true, $row->id);
-	//}
+
+	$lastcomment = '0000-00-00 00:00:00';
+	if (isset($lastactivities[$row->id]))
+	{
+		$lastcomment = $lastactivities[$row->id]['lastactivity']; //
+	}
+	// Was there any activity on this item?
+	if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
+	{
+		$comments = 1;
+	}
 
 	switch ($row->open)
 	{
@@ -260,34 +261,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$status = 'closed';
 		break;
 	}
-	/*if ($row->status == 2) 
-	{
-		$status = 'closed';
-	} 
-	elseif ($comments == 0 && $row->status == 0 && $row->owner == '' && $row->resolved == '') 
-	{
-		$status = 'new';
-	} 
-	elseif ($row->status == 1) {
-		$status = 'waiting';
-	} else {
-		if ($row->resolved != '') {
-			$status = 'reopened';
-		} else {
-			$status = 'open';
-		}
-	}*/
-	
+
 	$row->severity = ($row->severity) ? $row->severity : 'normal';
-	
-	//if (!trim($row->summary)) 
-	//{
-		$row->summary = substr($row->report, 0, 200);
-		if (strlen($row->summary) >= 200) 
-		{
-			$row->summary .= '...';
-		}
-	//}
+
+	$row->summary = substr($row->report, 0, 200);
+	if (strlen($row->summary) >= 200) 
+	{
+		$row->summary .= '...';
+	}
+	if (!trim($row->summary))
+	{
+		$row->summary = JText::_('(no content found)');
+	}
 
 	$tags = '';
 	if (isset($alltags[$row->id]))
@@ -321,7 +306,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</p>
 					<p>
 						<a class="ticket-content" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
-							<?php echo $this->escape(stripslashes($row->summary)); ?>
+							<?php echo $this->escape($row->summary); ?>
 						</a>
 					</p>
 <?php if ($tags || $row->owner) { ?>

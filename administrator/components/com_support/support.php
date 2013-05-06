@@ -61,6 +61,7 @@ else
 
 // Include scripts
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'ticket.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'watching.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'comment.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'message.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'resolution.php');

@@ -208,7 +208,7 @@ if ($this->row->id) {
 					echo JText::_('TICKET_STATUS_OPEN_TICKET');
 				} ?></dd>
 		</dl>
-		
+
 		<table class="meta" summary="<?php echo JText::_('meta_tbl_summary'); ?>">
 			<tbody>
 				<tr>
@@ -242,6 +242,23 @@ if ($this->row->id) {
 				</tr>
 			</tbody>
 		</table>
+
+		<?php
+			$watching = new SupportTableWatching(JFactory::getDBO());
+			$watching->load($this->row->id, $juser->get('id'));
+		?>
+		<div class="ticket-watch">
+		<?php if ($watching->id) { ?>
+			<div id="watching">
+				<p>This ticket is saved in your watch list.</p>
+				<p><a class="stop-watching btn" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $this->row->id; ?>&amp;watch=stop">Stop watching</a></p>
+			</div>
+		<?php } ?>
+		<?php if (!$watching->id) { ?>
+			<p><a class="start-watching btn" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $this->row->id; ?>&amp;watch=start">Watch ticket</a></p>
+		<?php } ?>
+			<p>When watching a ticket, you will be notified of any comments added or changes made. You may stop watching at any time.</p>
+		</div>
 	</div><!-- / .col width-30 fltlft -->
 	<div class="clr"></div>
 
@@ -296,7 +313,7 @@ if ($this->row->id) {
 <?php if ($comment->comment) { ?>
 					<blockquote class="comment-content" cite="<?php echo $cite; ?>">
 						<p><?php 
-							$comment->comment = str_replace("<br />", '', stripslashes($comment->comment));
+							$comment->comment = str_replace("<br />", '', $comment->comment);
 							$comment->comment = nl2br($comment->comment);
 							$comment->comment = str_replace("\t", ' &nbsp; &nbsp;', $comment->comment);
 

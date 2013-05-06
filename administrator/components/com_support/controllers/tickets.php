@@ -124,6 +124,10 @@ class SupportControllerTickets extends Hubzero_Controller
 				{
 					$query->query = $sq->getQuery($query->conditions);
 				}
+				if ($query->id != $this->view->filters['show'])
+				{
+					$filters['search'] = '';
+				}
 				// Get a record count
 				$this->view->queries[$key][$k]->count = $obj->getCount($query->query);
 				// The query is the current active query
@@ -148,6 +152,46 @@ class SupportControllerTickets extends Hubzero_Controller
 					// Get the records
 					$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
 				}
+			}
+		}
+
+		$watching = new SupportTableWatching($this->database);
+		$this->view->watchcount = $watching->count(array(
+			'user_id'   => $this->juser->get('id')
+		));
+		if ($this->view->filters['show'] == -1)
+		{
+			if (!isset($this->view->filters['sort']) || !$this->view->filters['sort'])
+			{
+				$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.sort', 
+					'filter_order', 
+					'created'
+				));
+			}
+			if (!isset($this->view->filters['sortdir']) || !$this->view->filters['sortdir'])
+			{
+				$this->view->filters['sortdir']         = trim($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.sortdir', 
+					'filter_order_Dir', 
+					'DESC'
+				));
+			}
+			$records = $watching->find(array(
+				'user_id'   => $this->juser->get('id')
+			));
+			if (count($records))
+			{
+				$ids = array();
+				foreach ($records as $record)
+				{
+					$ids[] = $record->ticket_id;
+				}
+				$this->view->rows = $obj->getRecords("(f.id IN ('" . implode("','", $ids) . "'))", $this->view->filters);
+			}
+			else
+			{
+				$this->view->rows = array();
 			}
 		}
 
@@ -267,17 +311,17 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Do some text cleanup
-		$row->summary = html_entity_decode(stripslashes($row->summary), ENT_COMPAT, 'UTF-8');
-		$row->summary = str_replace('&quote;','&quot;',$row->summary);
-		$row->summary = htmlentities($row->summary, ENT_COMPAT, 'UTF-8');
+		//$row->summary = html_entity_decode(stripslashes($row->summary), ENT_COMPAT, 'UTF-8');
+		//$row->summary = str_replace('&quote;','&quot;',$row->summary);
+		//$row->summary = htmlentities($row->summary, ENT_COMPAT, 'UTF-8');
 
-		$row->report  = html_entity_decode(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
-		$row->report  = str_replace('&quote;','&quot;',$row->report);
-		$row->report  = str_replace("<br />","",$row->report);
-		$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
+		//$row->report  = html_entity_decode(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
+		//$row->report  = str_replace('&quote;','&quot;',$row->report);
+		//$row->report  = str_replace("<br />","",$row->report);
+		//$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
 		$row->report  = nl2br($row->report);
-		$row->report  = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
-		$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
+		$row->report  = str_replace("\t",' &nbsp; &nbsp;',$row->report);
+		//$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
 
 		if ($id)
 		{
@@ -325,6 +369,37 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$this->view->row = $row;
 		$this->view->comments = $comments;
+
+		if ($watch = JRequest::getWord('watch', ''))
+		{
+			$watch = strtolower($watch);
+
+			$watching = new SupportTableWatching($this->database);
+			$watching->load($this->view->row->id, $this->juser->get('id'));
+
+			// Not already watching
+			if (!$watching->id) 
+			{
+				// Start watching?
+				if ($watch == 'start')
+				{
+					$watching->ticket_id = $this->view->row->id;
+					$watching->user_id   = $this->juser->get('id');
+					$watching->store();
+				}
+				// Otherwise, do nothing
+			}
+			else
+			// Already watching
+			{
+				// Stop watching?
+				if ($watch == 'stop')
+				{
+					$watching->delete();
+				}
+				// Otherwise, do nothing
+			}
+		}
 
 		// Set any errors
 		if ($this->getError())
@@ -416,8 +491,8 @@ class SupportControllerTickets extends Hubzero_Controller
 		if ($id)
 		{
 			// Incoming comment
-			$comment = JRequest::getVar('comment', '');
-			$comment = Hubzero_Filter::cleanXss($comment);
+			$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
+			//$comment = Hubzero_Filter::cleanXss($comment);
 			if ($comment)
 			{
 				// If a comment was posted to a closed ticket, re-open it.
