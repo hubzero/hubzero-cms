@@ -76,6 +76,7 @@ jQuery(document).ready(function(jQuery){
 			});
 		},
 		createCallback: function(note) {
+			var id = $('#note-' + note.id).attr('data-id');
 			var tme = null;
 			//if (typeof HUB.Presenter !== 'undefined') {
 			if (note.timestamp && note.timestamp != '00:00:00') {
@@ -85,6 +86,7 @@ jQuery(document).ready(function(jQuery){
 			//console.log(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
 			$.getJSON(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				//$('#note' + note.id).attr('data-id', data);
+				//console.log(data);
 				if (id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}

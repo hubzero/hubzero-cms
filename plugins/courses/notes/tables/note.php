@@ -154,11 +154,11 @@ class CoursesTableMemberNote extends JTable
 		}
 
 		$this->content = trim($this->content);
-		if (!$this->content) 
+		/*if (!$this->content) 
 		{
 			$this->setError(JText::_('Missing content'));
 			return false;
-		}
+		}*/
 
 		$this->pos_x  = intval($this->pos_x);
 		$this->pos_y  = intval($this->pos_y);
