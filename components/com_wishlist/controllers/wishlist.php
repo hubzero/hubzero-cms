@@ -493,14 +493,16 @@ class WishlistController extends JObject
 	 */
 	public function login()
 	{
-		$view = new JView(array('name'=>'login'));
-		$view->title = $this->_title;
-		$view->msg   = $this->_msg;
-		if ($this->getError()) 
+		if (JFactory::getUser()->get('guest')) 
 		{
-			$view->setError($this->getError());
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->getTask(), false, true), 'server'));
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_login&return=' . $return),
+				$this->_msg,
+				'warning'
+			);
+			return;
 		}
-		$view->display();
 	}
 
 	/**
