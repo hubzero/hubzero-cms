@@ -167,7 +167,7 @@ foreach ($letters as $letter)
 						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
-					<?php if ($this->courses) { ?>
+					<?php if ($this->courses->total() > 0) { ?>
 						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
 					<?php } ?>
 					</caption>
@@ -184,7 +184,7 @@ foreach ($letters as $letter)
 					</thead>
 					<tbody>
 <?php
-if ($this->courses) 
+if ($this->courses->total() > 0) 
 {
 	ximport('Hubzero_User_Profile_Helper');
 	ximport('Hubzero_View_Helper_Html');
