@@ -329,5 +329,5 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 			<?php echo $this->pagenavhtml; ?>
 		</div>
 	</div><!-- / .subject -->
-</div><!-- /.main -->
+</form><!-- /.main -->
 
