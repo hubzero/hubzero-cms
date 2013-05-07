@@ -191,13 +191,21 @@ class plgCoursesProgress extends JPlugin
 
 		if (($exam_weight + $quiz_weight + $homework_weight) != 1)
 		{
-			// Redirect with message
-			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
-				'The sum of all weights should be 100.',
-				'error'
-			);
-			return;
+			if (JRequest::getInt('no_html', false))
+			{
+				echo json_encode(array('error'=>true, 'message'=>'The sum of all weights should be 100.'));
+				exit();
+			}
+			else
+			{
+				// Redirect with message
+				JFactory::getApplication()->redirect(
+					JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+					'The sum of all weights should be 100.',
+					'error'
+				);
+				return;
+			}
 		}
 
 		$saveSection = false;
@@ -210,7 +218,7 @@ class plgCoursesProgress extends JPlugin
 		else
 		{
 			// Create new and save
-			$gp = new CoursesModelGradePolicies();
+			$gp = new CoursesModelGradePolicies(null);
 			$saveSection = true;
 		}
 
@@ -238,13 +246,21 @@ class plgCoursesProgress extends JPlugin
 			$section->store();
 		}
 
-		// Redirect with message
-		JFactory::getApplication()->redirect(
-			JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
-			'Scoring policy successfully saved!',
-			'passed'
-		);
-		return;
+		if (JRequest::getInt('no_html', false))
+		{
+			echo json_encode(array('success'=>true, 'message'=>'Scoring policy successfully saved!'));
+			exit();
+		}
+		else
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+				'Scoring policy successfully saved!',
+				'passed'
+			);
+			return;
+		}
 	}
 
 	/**

@@ -697,6 +697,9 @@
 .instructor .grade-policy-header:hover .grade-policy-edit {
 	display: block;
 }
+.instructor .grade-policy-inner {
+	margin: 0 30px;
+}
 .instructor .grade-policy .label-input-pair {
 	display: block;
 	margin: 10px 0;
@@ -709,7 +712,7 @@
 	padding: 5px;
 	border-radius: 3px;
 	box-shadow: inset 0 1px 5px #FFF;
-	margin-bottom: 10px;
+	margin: 0 0 20px 0;
 	line-height: 1.6em;
 	border: none;
 }
@@ -717,12 +720,6 @@
 .instructor .grade-policy .restore-defaults:hover {
 	cursor: pointer;
 	box-shadow: 0 0 4px #555;
-
-	-webkit-transition: 1s box-shadow ease-in-out;
-	-moz-transition: 1s box-shadow ease-in-out;
-	-ms-transition: 1s box-shadow ease-in-out;
-	-o-transition: 1s box-shadow ease-in-out;
-	transition: 1s box-shadow ease-in-out;
 }
 .instructor .grade-policy form button:active,
 .instructor .grade-policy .restore-defaults:active {
@@ -730,16 +727,21 @@
 }
 .instructor .grade-policy form button {
 	font-size: 105%;
+	border: 1px solid #444;
+	box-shadow: inset 0 1px 5px #AAA;
 
-	background: #0000FF;
-	background: -webkit-gradient(linear, left top, left bottom, from(#0000FF), to(#0000BF));
-	background: -webkit-linear-gradient(#0000FF, #0000BF);
-	background: -moz-linear-gradient(center top, #0000FF 0%, #0000BF 100%);
-	background: -moz-gradient(center top, #0000FF 0%, #0000BF 100%);
-	background: -o-linear-gradient(#0000FF, #0000BF);
-	background-image: -ms-linear-gradient(top, #0000FF 0%, #0000BF 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#0000FF,endColorstr=#0000BF);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#0000FF, endColorstr=#0000BF)";
+	background: #666;
+	background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#555));
+	background: -webkit-linear-gradient(#666, #555);
+	background: -moz-linear-gradient(center top, #666 0%, #555 100%);
+	background: -moz-gradient(center top, #666 0%, #555 100%);
+	background: -o-linear-gradient(#666, #555);
+	background-image: -ms-linear-gradient(top, #666 0%, #555 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666,endColorstr=#555);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666, endColorstr=#555)";
+}
+.instructor .grade-policy .ajax-message {
+	display: none;
 }
 .instructor .grade-policy .restore-defaults {
 	color: #555;
