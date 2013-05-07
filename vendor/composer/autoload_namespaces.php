@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Hubzero' => $baseDir . '/libraries',
+    'HTMLPurifier' => $vendorDir . '/ezyang/htmlpurifier/library',
 );

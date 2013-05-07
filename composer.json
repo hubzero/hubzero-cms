@@ -55,6 +55,7 @@
         "source": "http://hubzero.org/download"
     },
     "require": {
+        "ezyang/htmlpurifier": "dev-master"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },
