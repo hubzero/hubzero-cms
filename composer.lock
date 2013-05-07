@@ -3,11 +3,11 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "433f5d991a8ebdd0c27287d839bde189",
+    "hash": "aa3dded72bebedf19f0361e08d7a0c51",
     "packages": [
         {
             "name": "ezyang/htmlpurifier",
-            "version": "dev-master",
+            "version": "v4.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
@@ -57,9 +57,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ezyang/htmlpurifier": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": [
 
     ],
