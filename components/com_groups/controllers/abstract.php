@@ -96,7 +96,7 @@ class GroupsControllerAbstract extends Hubzero_Controller
 		
 		//redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($return) ),
+			JRoute::_('index.php?option=com_user&view=login&return=' . base64_encode($return) ),
 			$message,
 			'warning'
 		);
