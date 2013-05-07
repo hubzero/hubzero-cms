@@ -1,0 +1,63 @@
+{
+    "name": "hubzero/cms",
+    "description": "HUBzero CMS",
+    "version": "1.1.4",
+    "type": "project",
+    "keywords": [ "cms" , "hubzero" ],
+    "homepage": "http://hubzero.org",
+    "time": "2013-05-07 10:13:22",
+    "license": "LGPL-2.1",
+    "authors": [
+        {
+            "name": "Nicholas J. Kisseberth",
+            "email": "nkissebe@purdue.edu",
+            "role": "Senior Software Engineer"
+        },
+        {
+            "name": "Shawn Rice",
+            "email": "zooley@purdue.edu",
+            "role": "Senior Web Application Programmer"
+        },
+        {
+            "name": "Alissa Nedossekina",
+            "email": "alisa@purdue.edu",
+            "role": "Senior Web Application Programmer"
+        },
+        {
+            "name": "Chris Smoak",
+            "email": "csmoak@purdue.edu",
+            "role": "Web Application Programmer"
+        },
+        {
+            "name": "Ilya Shunko",
+            "email": "ishunko@purdue.edu",
+            "role": "Web Application Programmer"
+        },
+        {
+            "name": "Steve Snyder",
+            "email": "snyder13@purdue.edu",
+            "role": "Web Application Programmer"
+        },
+        {
+            "name": "Sam Wilson",
+            "email": "spwilson@purdue.edu",
+            "role": "Software Engineer"
+        },
+        {
+            "name": "Dave Benham",
+            "email": "dbenham@purdue.edu",
+            "role": "Software Engineer"
+        }
+    ],
+    "support": {
+        "email": "support@hubzero.org",
+        "issues": "http://hubzero.org/support/ticket/new",
+        "source": "http://hubzero.org/download"
+    },
+    "require": {
+    },
+    "autoload": {
+	"psr-0": { "Hubzero": "libraries/" },
+        "classmap": [ "libraries/joomla" ]
+    }
+}
