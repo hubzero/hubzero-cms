@@ -1132,7 +1132,7 @@ class ForumPost extends JTable
 			}
 
 			// Get the reposition data for shifting the tree and re-inserting the node.
-			if (!($repositionData = $this->_getTreeRepositionData($parent, 2, 'after')))
+			if (!($repositionData = $this->_getTreeRepositionData($parent, 2, 'last-child')))
 			{
 				// Error message set in getNode method.
 				return false;
