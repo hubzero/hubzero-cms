@@ -58,6 +58,41 @@ $policy = $gradePolicy->get('description');
 	<div class="extra">
 
 	</div>
+	<div class="grade-policy">
+		<div class="grade-policy-header">
+			Scoring policy<span class="details">: <?= $gradePolicy->get('description') ?></span>
+			<div class="grade-policy-edit">
+				edit
+			</div>
+		</div>
+		<div class="grade-policy-inner">
+			<form action="<?= JRoute::_($base . '&active=progress') ?>" method="POST">
+				<div class="label-input-pair">
+					<label for="exam-weight">Exam Weight:</label>
+					<input type="text" name="exam-weight" value="<?= $gradePolicy->get('exam_weight') * 100 ?>" class="slider" size="4" />
+				</div>
+				<div class="label-input-pair">
+					<label for="quiz-weight">Quiz Weight:</label>
+					<input type="text" name="quiz-weight" value="<?= $gradePolicy->get('quiz_weight') * 100 ?>" class="slider" size="4" />
+				</div>
+				<div class="label-input-pair">
+					<label for="homework-weight">Homework Weight:</label>
+					<input type="text" name="homework-weight" value="<?= $gradePolicy->get('homework_weight') * 100 ?>" class="slider" size="4" />
+				</div>
+				<div class="label-input-pair">
+					<label for="threshold">Passing Threshold:</label>
+					<input type="text" name="threshold" value="<?= $gradePolicy->get('threshold') * 100 ?>" class="slider" size="4" />
+				</div>
+				<div class="label-input-pair">
+					<label for="description">Policy Description:</label>
+					<textarea name="description" cols="50" rows="2"><?= $gradePolicy->get('description') ?></textarea>
+				</div>
+				<input type="hidden" name="action" value="policysave" />
+				<button type="submit">Submit</button>
+				<a class="restore-defaults" href="<?= JRoute::_($base. '&active=progress&action=restoredefaults') ?>">Restore Defaults</a>
+			</form>
+		</div>
+	</div>
 	<div class="headers">
 		<div class="header-student-name">Name</div>
 		<div class="header-sub">
@@ -110,11 +145,11 @@ $policy = $gradePolicy->get('description');
 									<?
 										$cls = '';
 
-										if(isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')]->passing === '1')
+										if(isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')] === 1)
 										{
 											$cls = ' go';
 										}
-										elseif (isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')]->passing === '0')
+										elseif (isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')] === 0)
 										{
 											$cls = ' stop';
 										}

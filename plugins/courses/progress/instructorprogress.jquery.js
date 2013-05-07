@@ -46,6 +46,29 @@ HUB.Plugins.CoursesProgress = {
 		$('.instructor .unit-fill, .instructor .headers span').tooltip({
 			predelay: 250
 		});
+
+		$('.instructor .grade-policy-inner').hide();
+
+		$('.instructor .grade-policy-header').click(function() {
+			$(this).siblings('.grade-policy-inner').slideToggle();
+			$(this).find('span.details').fadeToggle();
+		});
+
+		var sliders = $('.slider');
+
+		sliders.each(function() {
+			var t = $(this);
+			t.attr('readonly', true);
+
+			var slider = $('<div class="slider"></div>').insertAfter(t).slider({
+				min   : 0,
+				max   : 100,
+				value : $(this).val(),
+				slide : function( event, ui ) {
+					t.val(ui.value);
+				}
+			});
+		});
 	} // end initialize
 };
 

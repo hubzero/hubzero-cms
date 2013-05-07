@@ -91,6 +91,9 @@ class CoursesTableGradeBook extends JTable
 	protected function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS gb";
+		$query .= " LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id";
+		$query .= " LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id";
+		$query .= " LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id";
 
 		$where = array();
 
@@ -108,7 +111,7 @@ class CoursesTableGradeBook extends JTable
 			{
 				$filters['scope'] = array($filters['scope']);
 			}
-			$where[] = "scope IN ('" . implode('\',\'', $filters['scope']) . "')";
+			$where[] = "gb.scope IN ('" . implode('\',\'', $filters['scope']) . "')";
 		}
 		if (isset($filters['scope_id']) && $filters['scope_id'])
 		{
@@ -116,7 +119,11 @@ class CoursesTableGradeBook extends JTable
 			{
 				$filters['scope_id'] = array($filters['scope_id']);
 			}
-			$where[] = "scope_id IN (" . implode(',', $filters['scope_id']) . ")";
+			$where[] = "gb.scope_id IN (" . implode(',', $filters['scope_id']) . ")";
+		}
+		if (isset($filters['course_id']) && $filters['course_id'])
+		{
+			$where[] = "ca.course_id = " . $this->_db->Quote($filters['course_id']);
 		}
 
 		if (count($where) > 0)
@@ -136,44 +143,68 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function find($filters=array(), $key=null)
 	{
-		$query = "SELECT *" . $this->_buildQuery($filters);
+		$query = "SELECT gb.*, cag.unit_id, ca.subtype" . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList($key);
 	}
 
 	/**
-	 * Run query to figure out if user(s) is|are passing
+	 * Get passing info
 	 * 
-	 * @param      string $query  - to execute
-	 * @param      string $return - joomla load method to execute
-	 * @param      string $key    - array key to use for returned results
+	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
-	public function getPassing($query, $return, $key)
+	public function passing($filters=array(), $key=null)
 	{
-		$this->_db->setQuery("SET @num := 0, @user_id := 0;");
-		$this->_db->Query();
+		$query = "SELECT gb.user_id, score";
+		$query .= " FROM $this->_tbl AS gb";
+		$query .= " LEFT JOIN `#__courses_members` cm ON cm.user_id = gb.user_id";
+
+		$where = array();
+
+		if (isset($filters['user_id']) && $filters['user_id'])
+		{
+			if(!is_array($filters['user_id']))
+			{
+				$filters['user_id'] = array($filters['user_id']);
+			}
+			$where[] = "gb.user_id IN (" . implode(',', $filters['user_id']) . ")";
+		}
+		if (isset($filters['scope']) && $filters['scope'])
+		{
+			if(!is_array($filters['scope']))
+			{
+				$filters['scope'] = array($filters['scope']);
+			}
+			$where[] = "gb.scope IN ('" . implode('\',\'', $filters['scope']) . "')";
+		}
+		if (isset($filters['scope_id']) && $filters['scope_id'])
+		{
+			if(!is_array($filters['scope_id']))
+			{
+				$filters['scope_id'] = array($filters['scope_id']);
+			}
+			$where[] = "gb.scope_id IN (" . implode(',', $filters['scope_id']) . ")";
+		}
+		if (isset($filters['section_id']) && $filters['section_id'])
+		{
+			if(!is_array($filters['section_id']))
+			{
+				$filters['section_id'] = array($filters['section_id']);
+			}
+			$where[] = "cm.section_id IN (" . implode(',', $filters['section_id']) . ")";
+		}
+		$where[] = "cm.student = 1";
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
 
 		$this->_db->setQuery($query);
-		return $this->_db->$return($key);
-	}
-
-	/**
-	 * Run query to update unit and course scorse
-	 * 
-	 * @param      string $query - to execute
-	 * @return     array
-	 */
-	public function updateScores($query)
-	{
-		$this->_db->setQuery("INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`)
-
-			{$query}
-
-		ON DUPLICATE KEY UPDATE score = VALUES(score);");
-
-		return $this->_db->query();
+		return $this->_db->loadObjectList($key);
 	}
 
 	/**
@@ -208,5 +239,32 @@ class CoursesTableGradeBook extends JTable
 			GROUP BY name, email, deployment_id, version
 
 		ON DUPLICATE KEY UPDATE score = VALUES(score);");
+	}
+
+	/**
+	 * Query to save unit and course totals to gradebook
+	 * 
+	 * @param      array $data - values to compose update query
+	 * @param      int $course_id = course id
+	 * @return     void
+	 */
+	public function saveGrades($data, $course_id)
+	{
+		$valeus = array();
+
+		foreach ($data as $user_id=>$user)
+		{
+			foreach ($user['units'] as $unit_id=>$unit)
+			{
+				$values[] = "('$user_id', '{$unit['unit_weighted']}', 'unit', '$unit_id')";
+			}
+			$values[] = "('$user_id', '{$user['course_weighted']}', 'course', '$course_id')";
+		}
+
+		$query  = "INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`) VALUES\n";
+		$query .= implode(",\n", $values);
+		$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
+
+		$this->_db->execute($query);
 	}
 }

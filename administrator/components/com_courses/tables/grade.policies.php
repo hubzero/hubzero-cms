@@ -44,13 +44,6 @@ class CoursesTableGradePolicies extends JTable
 	var $id = NULL;
 
 	/**
-	 * varchar(255)
-	 * 
-	 * @var string
-	 */
-	var $alias = NULL;
-
-	/**
 	 * mediumtext
 	 * 
 	 * @var string
@@ -58,32 +51,32 @@ class CoursesTableGradePolicies extends JTable
 	var $description = NULL;
 
 	/**
-	 * varchar(255)
+	 * decimal(3,2)
 	 * 
-	 * @var string
+	 * @var decimal
 	 */
-	var $type = NULL;
+	var $threshold = NULL;
 
 	/**
-	 * mediumtext
+	 * decimal(3,2)
 	 * 
-	 * @var string
+	 * @var decimal
 	 */
-	var $grade_criteria = NULL;
+	var $exam_weight = NULL;
 
 	/**
-	 * mediumtext
+	 * decimal(3,2)
 	 * 
-	 * @var string
+	 * @var decimal
 	 */
-	var $score_criteria = NULL;
+	var $quiz_weight = NULL;
 
 	/**
-	 * mediumtext
+	 * decimal(3,2)
 	 * 
-	 * @var string
+	 * @var decimal
 	 */
-	var $badge_criteria = NULL;
+	var $homework_weight = NULL;
 
 	/**
 	 * Constructor
@@ -94,59 +87,5 @@ class CoursesTableGradePolicies extends JTable
 	public function __construct(&$db)
 	{
 		parent::__construct('#__courses_grade_policies', 'id', $db);
-	}
-
-	/**
-	 * Loads a row from the database and binds the fields to the object properties
-	 *
-	 * @access	public
-	 * @param	mixed	Optional primary key.  If not specifed, the value of current key is used
-	 * @return	boolean	True if successful
-	 */
-	public function load($oid=null)
-	{
-		$k = $this->_tbl_key;
-
-		if ($oid !== null)
-		{
-			$this->$k = $oid;
-		}
-
-		$oid = $this->$k;
-
-		if ($oid === null)
-		{
-			return false;
-		}
-
-		$this->reset();
-
-		$query  = 'SELECT *';
-		$query .= ' FROM ' . $this->_tbl;
-
-		if (is_numeric($oid))
-		{
-			$query .= ' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->Quote($oid);
-		}
-		elseif (is_string($oid))
-		{
-			$query .= ' WHERE `alias` = ' . $this->_db->Quote($oid);
-		}
-		else
-		{
-			return false;
-		}
-
-		$this->_db->setQuery($query);
-
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
 	}
 }

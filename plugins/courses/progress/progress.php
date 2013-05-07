@@ -162,6 +162,147 @@ class plgCoursesProgress extends JPlugin
 	}
 
 	/**
+	 * Save grading policy
+	 *
+	 * @return void
+	 **/
+	private function policysave()
+	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
+
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'), false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
+		// Get the grading policy id
+		$gpId = $this->course->offering()->section()->get('grade_policy_id');
+
+		$exam_weight     = JRequest::getInt('exam-weight') / 100;
+		$quiz_weight     = JRequest::getInt('quiz-weight') / 100;
+		$homework_weight = JRequest::getInt('homework-weight') / 100;
+
+		if (($exam_weight + $quiz_weight + $homework_weight) != 1)
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+				'The sum of all weights should be 100.',
+				'error'
+			);
+			return;
+		}
+
+		$saveSection = false;
+
+		// If the section is using a policy other than the default, just update it
+		if ($gpId != 1)
+		{
+			$gp = new CoursesModelGradePolicies($gpId);
+		}
+		else
+		{
+			// Create new and save
+			$gp = new CoursesModelGradePolicies();
+			$saveSection = true;
+		}
+
+		$gp->set('exam_weight',     $exam_weight);
+		$gp->set('quiz_weight',     $quiz_weight);
+		$gp->set('homework_weight', $homework_weight);
+		$gp->set('threshold',       (JRequest::getInt('threshold') / 100));
+		$gp->set('description',     trim(JRequest::getVar('description')));
+
+		if (!$gp->store())
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+				'Something went wrong!',
+				'error'
+			);
+			return;
+		}
+
+		if ($saveSection)
+		{
+			$section = $this->course->offering()->section();
+			$section->set('grade_policy_id', $gp->get('id'));
+			$section->store();
+		}
+
+		// Redirect with message
+		JFactory::getApplication()->redirect(
+			JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+			'Scoring policy successfully saved!',
+			'passed'
+		);
+		return;
+	}
+
+	/**
+	 * Restore grading policy back to default
+	 *
+	 * @return void
+	 **/
+	private function restoredefaults()
+	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
+
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'), false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
+		$section = $this->course->offering()->section();
+
+		// Get the grading policy id
+		$gpId = $section->get('grade_policy_id');
+		$gp = new CoursesModelGradePolicies($gpId);
+
+		// If they're not already using the default, let's delete it
+		if ($gpId != 1)
+		{
+			if (!$gp->delete())
+			{
+				// Redirect with message
+				JFactory::getApplication()->redirect(
+					JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+					'Something went wrong!',
+					'error'
+				);
+				return;
+			}
+		}
+
+		// Now set them back to the default
+		$section->set('grade_policy_id', 1);
+		$section->store();
+
+		// Redirect with message
+		JFactory::getApplication()->redirect(
+			JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+			'Scoring policy successfully restored to the default configuration!',
+			'passed'
+		);
+		return;
+	}
+
+	/**
 	 * Refresh grades
 	 *
 	 * @return void

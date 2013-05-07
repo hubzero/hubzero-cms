@@ -37,7 +37,7 @@ $this->course->offering()->gradebook()->refresh($this->juser->get('id'));
 $grades   = $this->course->offering()->gradebook()->grades(null, $this->juser->get('id'));
 $progress = $this->course->offering()->gradebook()->progress($this->juser->get('id'));
 $passing  = $this->course->offering()->gradebook()->passing(true, $this->juser->get('id'));
-$passing  = (is_object($passing)) ? $passing->passing : '';
+$passing  = (isset($passing[$this->juser->get('id')])) ? $passing[$this->juser->get('id')] : null;
 
 $gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
 
@@ -280,11 +280,11 @@ $progress_timeline .= '</div>';
 				<p class="title"><?= JText::_('Your current score') ?></p>
 				<?
 					$cls = '';
-					if ($passing === '1')
+					if ($passing === 1)
 					{
 						$cls = ' passing';
 					}
-					elseif ($passing === '0')
+					elseif ($passing === 0)
 					{
 						$cls = ' failing';
 					}

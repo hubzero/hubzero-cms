@@ -217,25 +217,144 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		// Get a grade policy object
 		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'));
 
-		// Get the grading policy score criteria
-		$placeholders   = array('course_id'=>$course_id, 'scope'=>'course', 'user_id'=>$user_id);
-		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', $placeholders);
+		// Calculate course grades, start by getting all grades
+		$filters = array('scope'=>'asset', 'user_id'=>$user_id, 'course_id'=>$course_id);
+		$results = $this->_tbl->find($filters);
+		$grades  = array();
+		$scores  = array();
 
-		// Compute course grades
-		if (!$this->_tbl->updateScores($score_criteria))
+		foreach ($results as $grade)
 		{
-			return false;
+			if (is_null($grade->score))
+			{
+				continue;
+			}
+
+			$grades[$grade->user_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->score, 'type'=>$grade->subtype);
 		}
 
-		// Get the grading policy score criteria
-		$placeholders   = array('course_id'=>$course_id, 'scope'=>'unit', 'user_id'=>$user_id, 'unit'=>true);
-		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', $placeholders);
-
-		// Compute unit grades
-		if (!$grades = $this->_tbl->updateScores($score_criteria))
+		foreach ($grades as $user_id=>$values)
 		{
-			return false;
+			$scores[$user_id]['course_exam_count']     = 0;
+			$scores[$user_id]['course_quiz_count']     = 0;
+			$scores[$user_id]['course_homework_count'] = 0;
+			$scores[$user_id]['course_exam_sum']       = 0;
+			$scores[$user_id]['course_quiz_sum']       = 0;
+			$scores[$user_id]['course_homework_sum']   = 0;
+
+			// Loop through units and compute scores
+			foreach ($values as $unit_id=>$val)
+			{
+				$scores[$user_id]['units'][$unit_id]['exam_count']     = 0;
+				$scores[$user_id]['units'][$unit_id]['quiz_count']     = 0;
+				$scores[$user_id]['units'][$unit_id]['homework_count'] = 0;
+				$scores[$user_id]['units'][$unit_id]['exam_sum']       = 0;
+				$scores[$user_id]['units'][$unit_id]['quiz_sum']       = 0;
+				$scores[$user_id]['units'][$unit_id]['homework_sum']   = 0;
+
+				foreach ($val as $grade)
+				{
+					switch ($grade['type'])
+					{
+						case 'exam':
+							$scores[$user_id]['course_exam_count']++;
+							$scores[$user_id]['course_exam_sum'] += $grade['score'];
+							$scores[$user_id]['units'][$unit_id]['exam_count']++;
+							$scores[$user_id]['units'][$unit_id]['exam_sum'] += $grade['score'];
+						break;
+						case 'quiz':
+							$scores[$user_id]['course_quiz_count']++;
+							$scores[$user_id]['course_quiz_sum'] += $grade['score'];
+							$scores[$user_id]['units'][$unit_id]['quiz_count']++;
+							$scores[$user_id]['units'][$unit_id]['quiz_sum'] += $grade['score'];
+						break;
+						case 'homework':
+							$scores[$user_id]['course_homework_count']++;
+							$scores[$user_id]['course_homework_sum'] += $grade['score'];
+							$scores[$user_id]['units'][$unit_id]['homework_count']++;
+							$scores[$user_id]['units'][$unit_id]['homework_sum'] += $grade['score'];
+						break;
+					}
+				}
+
+				if ($scores[$user_id]['units'][$unit_id]['exam_count'] > 0)
+				{
+					$scores[$user_id]['units'][$unit_id]['exam_score']    = round(($scores[$user_id]['units'][$unit_id]['exam_sum'] / $scores[$user_id]['units'][$unit_id]['exam_count']), 2);
+					$scores[$user_id]['units'][$unit_id]['exam_weighted'] = round($scores[$user_id]['units'][$unit_id]['exam_score'] * $gradePolicy->get('exam_weight'), 2);
+				}
+				else
+				{
+					$scores[$user_id]['units'][$unit_id]['exam_score']    = null;
+					$scores[$user_id]['units'][$unit_id]['exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
+				}
+				if ($scores[$user_id]['units'][$unit_id]['quiz_count'] > 0)
+				{
+					$scores[$user_id]['units'][$unit_id]['quiz_score']    = round(($scores[$user_id]['units'][$unit_id]['quiz_sum'] / $scores[$user_id]['units'][$unit_id]['quiz_count']), 2);
+					$scores[$user_id]['units'][$unit_id]['quiz_weighted'] = round($scores[$user_id]['units'][$unit_id]['quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
+				}
+				else
+				{
+					$scores[$user_id]['units'][$unit_id]['quiz_score']    = null;
+					$scores[$user_id]['units'][$unit_id]['quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
+				}
+				if ($scores[$user_id]['units'][$unit_id]['homework_count'] > 0)
+				{
+					$scores[$user_id]['units'][$unit_id]['homework_score']    = round(($scores[$user_id]['units'][$unit_id]['homework_sum'] / $scores[$user_id]['units'][$unit_id]['homework_count']), 2);
+					$scores[$user_id]['units'][$unit_id]['homework_weighted'] = round($scores[$user_id]['units'][$unit_id]['homework_score'] * $gradePolicy->get('homework_weight'), 2);
+				}
+				else
+				{
+					$scores[$user_id]['units'][$unit_id]['homework_score']    = null;
+					$scores[$user_id]['units'][$unit_id]['homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
+				}
+
+				// Finally, compute unit weighted score
+				$scores[$user_id]['units'][$unit_id]['unit_weighted'] = 
+					$scores[$user_id]['units'][$unit_id]['exam_weighted'] + 
+					$scores[$user_id]['units'][$unit_id]['quiz_weighted'] + 
+					$scores[$user_id]['units'][$unit_id]['homework_weighted'];
+			}
+
+			// Now calculate overall course scores
+			if ($scores[$user_id]['course_exam_count'] > 0)
+			{
+				$scores[$user_id]['course_exam_score']    = round(($scores[$user_id]['course_exam_sum'] / $scores[$user_id]['course_exam_count']), 2);
+				$scores[$user_id]['course_exam_weighted'] = round($scores[$user_id]['course_exam_score'] * $gradePolicy->get('exam_weight'), 2);
+			}
+			else
+			{
+				$scores[$user_id]['course_exam_score']    = null;
+				$scores[$user_id]['course_exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
+			}
+			if ($scores[$user_id]['course_quiz_count'] > 0)
+			{
+				$scores[$user_id]['course_quiz_score']    = round(($scores[$user_id]['course_quiz_sum'] / $scores[$user_id]['course_quiz_count']), 2);
+				$scores[$user_id]['course_quiz_weighted'] = round($scores[$user_id]['course_quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
+			}
+			else
+			{
+				$scores[$user_id]['course_quiz_score']    = null;
+				$scores[$user_id]['course_quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
+			}
+			if ($scores[$user_id]['course_homework_count'] > 0)
+			{
+				$scores[$user_id]['course_homework_score']    = round(($scores[$user_id]['course_homework_sum'] / $scores[$user_id]['course_homework_count']), 2);
+				$scores[$user_id]['course_homework_weighted'] = round($scores[$user_id]['course_homework_score'] * $gradePolicy->get('homework_weight'), 2);
+			}
+			else
+			{
+				$scores[$user_id]['course_homework_score']    = null;
+				$scores[$user_id]['course_homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
+			}
+
+			// Get course weighted average
+			$scores[$user_id]['course_weighted']          = 
+				$scores[$user_id]['course_exam_weighted'] + 
+				$scores[$user_id]['course_quiz_weighted'] + 
+				$scores[$user_id]['course_homework_weighted'];
 		}
+
+		$this->_tbl->saveGrades($scores, $course_id);
 
 		// Success
 		return true;
@@ -270,32 +389,33 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return false;
 		}
 
-		$key       = 'user_id';
-		$queryType = 'loadObjectList';
+		$passing = array();
+		$filters = array('scope'=>'course', 'scope_id'=>$this->course->get('id'));
 
 		// Get a grade policy object
 		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
 
-		// Get the grading policy score criteria
-		$placeholders = array('scope_id'=>$this->course->get('id'));
-
 		// If section only, add appropriate joins to limit by section
 		if ($section)
 		{
-			$placeholders['section_id'] = $this->course->offering()->section()->get('id');
+			// Only compute section
+			$filters['section_id'] = $this->course->offering()->section()->get('id');
 		}
 
 		// Add the user_id to the query if it's set
 		if (!is_null($user_id) && is_numeric($user_id))
 		{
-			$placeholders['user_id'] = $user_id;
-			$queryType = 'loadObject';
-			$key       = '';
+			// Only include requested user_id
+			$filters['user_id'] = $user_id;
 		}
 
-		// Get passing data
-		$grade_criteria = $gradePolicy->replacePlaceholders('grade_criteria', $placeholders);
-		$passing = $this->_tbl->getPassing($grade_criteria, $queryType, $key);
+		// Calculate course passing info
+		$results = $this->_tbl->passing($filters, 'user_id');
+
+		foreach ($results as $result)
+		{
+			$passing[$result->user_id] = ($result->score >= $gradePolicy->get('threshold') * 100) ? 1 : 0;
+		}
 
 		return $passing;
 	}
@@ -314,7 +434,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 			foreach ($rows as $r)
 			{
-				if ($r->passing === '1')
+				if ($r === 1)
 				{
 					$countPassing++;
 				}
@@ -342,7 +462,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 			foreach ($rows as $r)
 			{
-				if ($r->passing === '0')
+				if ($r === 0)
 				{
 					$countFailing++;
 				}
