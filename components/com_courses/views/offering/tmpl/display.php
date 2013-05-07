@@ -55,6 +55,9 @@ if (!$no_html && !$tmpl) : ?>
 		</p>
 		<?php } ?>
 		<p id="page_identity">
+			<a class="prev" href="<?php echo JRoute::_($base); ?>">
+				<?php echo JText::_('Course overview'); ?>
+			</a>
 			<strong>
 				Offering:
 			</strong>
@@ -89,7 +92,7 @@ if (!$no_html && !$tmpl) : ?>
 			</span>
 		</p>
 	</div>
-	<div id="content-header-extra">
+	<?php /*<div id="content-header-extra">
 		<ul>
 			<li>
 				<a class="browse btn" href="<?php echo JRoute::_($base); ?>">
@@ -98,7 +101,7 @@ if (!$no_html && !$tmpl) : ?>
 			</li>
 		</ul>
 	</div>
-<?php /*if ($this->course->offering()->access('manage', 'section')) { ?>
+if ($this->course->offering()->access('manage', 'section')) { ?>
 	<div id="manager_options">
 		<ul id="course_options">
 			<li class="no-float">

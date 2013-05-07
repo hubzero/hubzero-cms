@@ -86,7 +86,10 @@ class ForumControllerApi extends Hubzero_Api_Controller
 
 		$filters['section']  = JRequest::getCmd('section', '');
 		$filters['category'] = JRequest::getCmd('category', '');
-		//$filters['parent']   = 0; //JRequest::getInt('thread', 0);
+		if ($thread = JRequest::getInt('thread', 0))
+		{
+			$filters['thread'] = $thread;
+		}
 
 		$filters['state']     = JRequest::getInt('state', 1);
 		$filters['scope']     = JRequest::getWord('scope', '');
@@ -124,12 +127,14 @@ class ForumControllerApi extends Hubzero_Api_Controller
 
 		if ($find == 'count')
 		{
-			/*if ($this->getError())
+			if (isset($filters['thread']))
 			{
-				$data->code = 1;
-				$data->errors = $this->getErrors();
-			}*/
-			$data->count = $post->count($filters);
+				$data->count = $post->countTree($filters['thread'], $filters);
+			}
+			else
+			{
+				$data->count = $post->count($filters);
+			}
 		}
 		else
 		{

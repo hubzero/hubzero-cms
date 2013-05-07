@@ -64,8 +64,13 @@ else
 		<img src="/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
 	</p>
 	<?php } ?>
+	<p id="page_identity">
+		<a class="browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
+			<?php echo JText::_('Course catalog'); ?>
+		</a>
+	</p>
 </div>
-<div id="content-header-extra">
+<?php /* <div id="content-header-extra">
 	<ul>
 		<li>
 			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
@@ -73,7 +78,7 @@ else
 			</a>
 		</li>
 	</ul>
-</div>
+</div> */ ?>
 
 <div class="course section intro">
 	<div class="aside">

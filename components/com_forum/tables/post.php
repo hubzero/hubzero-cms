@@ -172,6 +172,20 @@ class ForumPost extends JTable
 	var $object_id = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $lft = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $rgt = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -324,6 +338,12 @@ class ForumPost extends JTable
 		{
 			$this->modified = date('Y-m-d H:i:s', time());  // use gmdate() ?
 			$this->modified_by = $juser->get('id');
+		}
+
+		if (!$this->parent) 
+		{
+			$this->lft = 0;
+			$this->rgt = 1;
 		}
 
 		return true;
@@ -1079,5 +1099,326 @@ class ForumPost extends JTable
 		}
 
 		return $thread;
+	}
+
+	/**
+	 * Method to store a node in the database table.
+	 *
+	 * @param   boolean  True to update null values as well.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link    http://docs.joomla.org/JTableNested/store
+	 * @since   11.1
+	 */
+	public function store($updateNulls = false)
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+
+		/*
+		 * If the primary key is empty, then we assume we are inserting a new node into the
+		 * tree.  From this point we would need to determine where in the tree to insert it.
+		 */
+		if (empty($this->$k) && $this->parent)
+		{
+			$parent = new ForumPost($this->_db);
+			$parent->load($this->parent);
+
+			if (!$parent)
+			{
+				$this->setError(JText::_('Parent node does not exist.'));
+				return false;
+			}
+
+			// Get the reposition data for shifting the tree and re-inserting the node.
+			if (!($repositionData = $this->_getTreeRepositionData($parent, 2, 'after')))
+			{
+				// Error message set in getNode method.
+				return false;
+			}
+
+			// Shift left values.
+			$this->_db->setQuery("UPDATE $this->_tbl SET lft = lft + 2 WHERE " . $repositionData->left_where . " AND scope=" . $this->_db->Quote($parent->scope) . " AND scope_id=" . $this->_db->Quote($parent->scope_id) . " AND object_id=" . $this->_db->Quote($parent->object_id));
+			if (!$this->_db->query())
+			{
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+
+			// Shift right values.
+			$this->_db->setQuery("UPDATE $this->_tbl SET rgt = rgt + 2 WHERE " . $repositionData->right_where . " AND scope=" . $this->_db->Quote($parent->scope) . " AND scope_id=" . $this->_db->Quote($parent->scope_id) . " AND object_id=" . $this->_db->Quote($parent->object_id));
+			if (!$this->_db->query())
+			{
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+
+			$this->lft = $repositionData->new_lft;
+			$this->rgt = $repositionData->new_rgt;
+		}
+
+		// Store the row to the database.
+		/*if (!parent::store($updateNulls))
+		{
+			return false;
+		}
+
+		if ($this->state == 2)
+		{
+			$this->_db->setQuery("UPDATE $this->_tbl AS n SET n.state = ? WHERE (n.lft > ".(int) $this->lft." AND n.rgt < ".(int) $this->rgt.") OR n.".$k." = ".(int) $this->id);
+			if (!$this->_db->query())
+			{
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}*/
+
+		return parent::store($updateNulls);
+	}
+
+	/**
+	 * Method to get various data necessary to make room in the tree at a location
+	 * for a node and its children.  The returned data object includes conditions
+	 * for SQL WHERE clauses for updating left and right id values to make room for
+	 * the node as well as the new left and right ids for the node.
+	 *
+	 * @param   object   $referenceNode  A node object with at least a 'lft' and 'rgt' with
+	 *                                   which to make room in the tree around for a new node.
+	 * @param   integer  $nodeWidth      The width of the node for which to make room in the tree.
+	 * @param   string   $position       The position relative to the reference node where the room
+	 *	                                 should be made.
+	 *
+	 * @return  mixed    Boolean false on failure or data object on success.
+	 *
+	 * @since   11.1
+	 */
+	protected function _getTreeRepositionData($referenceNode, $nodeWidth, $position = 'before')
+	{
+		// Make sure the reference an object with a left and right id.
+		if (!is_object($referenceNode) && isset($referenceNode->lft) && isset($referenceNode->rgt)) 
+		{
+			return false;
+		}
+
+		// A valid node cannot have a width less than 2.
+		if ($nodeWidth < 2)
+		{
+			return false;
+		}
+
+		// Initialise variables.
+		$k = $this->_tbl_key;
+		$data = new stdClass;
+
+		// Run the calculations and build the data object by reference position.
+		switch ($position)
+		{
+			case 'first-child':
+				$data->left_where		= 'lft > '.$referenceNode->lft;
+				$data->right_where		= 'rgt >= '.$referenceNode->lft;
+
+				$data->new_lft			= $referenceNode->lft + 1;
+				$data->new_rgt			= $referenceNode->lft + $nodeWidth;
+				//$data->new_parent_id	= $referenceNode->$k;
+				//$data->new_level		= $referenceNode->level + 1;
+				break;
+
+			case 'last-child':
+				$data->left_where		= 'lft > '.($referenceNode->rgt);
+				$data->right_where		= 'rgt >= '.($referenceNode->rgt);
+
+				$data->new_lft			= $referenceNode->rgt;
+				$data->new_rgt			= $referenceNode->rgt + $nodeWidth - 1;
+				//$data->new_parent_id	= $referenceNode->$k;
+				//$data->new_level		= $referenceNode->level + 1;
+				break;
+
+			case 'before':
+				$data->left_where		= 'lft >= '.$referenceNode->lft;
+				$data->right_where		= 'rgt >= '.$referenceNode->lft;
+
+				$data->new_lft			= $referenceNode->lft;
+				$data->new_rgt			= $referenceNode->lft + $nodeWidth - 1;
+				//$data->new_parent_id	= $referenceNode->parent_id;
+				//$data->new_level		= $referenceNode->level;
+				break;
+
+			default:
+			case 'after':
+				$data->left_where		= 'lft > '.$referenceNode->rgt;
+				$data->right_where		= 'rgt > '.$referenceNode->rgt;
+
+				$data->new_lft			= $referenceNode->rgt + 1;
+				$data->new_rgt			= $referenceNode->rgt + $nodeWidth;
+				//$data->new_parent_id	= $referenceNode->parent_id;
+				//$data->new_level		= $referenceNode->level;
+				break;
+		}
+
+		if ($this->_debug)
+		{
+			echo "\nRepositioning Data for $position" .
+					"\n-----------------------------------" .
+					"\nLeft Where:    $data->left_where" .
+					"\nRight Where:   $data->right_where" .
+					"\nNew Lft:       $data->new_lft" .
+					"\nNew Rgt:       $data->new_rgt".
+					"\n";
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Method to get a node and all its child nodes.
+	 *
+	 * @param   integer  $pk          Primary key of the node for which to get the tree.
+	 * @return  mixed    Boolean false on failure or array of node objects on success.
+	 */
+	public function countTree($pk = null, $filters=array())
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+		$pk = (is_null($pk)) ? $this->$k : $pk;
+
+		// Get the node and children as a tree.
+		$query = "SELECT COUNT(n.id)
+					FROM $this->_tbl AS n, $this->_tbl AS p 
+					WHERE n.lft BETWEEN p.lft AND p.rgt 
+					AND p." . $k . ' = ' . (int) $pk . " 
+					AND n.scope=p.scope 
+					AND n.scope_id=p.scope_id 
+					AND n.object_id=p.object_id ";
+		if (isset($filters['start_at']) && $filters['start_at']) 
+		{
+			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
+		}
+
+		$this->_db->setQuery($query);
+		$tree = $this->_db->loadResult();
+
+		// Check for a database error.
+		if ($this->_db->getErrorNum())
+		{
+			$this->setError(JText::_('Failed to get tree.'));
+			return false;
+		}
+
+		return $tree;
+	}
+
+/**
+	 * Method to get a node and all its child nodes.
+	 *
+	 * @param   integer  $pk          Primary key of the node for which to get the tree.
+	 * @return  mixed    Boolean false on failure or array of node objects on success.
+	 */
+	public function getTree($pk = null, $filters=array())
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+		$pk = (is_null($pk)) ? $this->$k : $pk;
+
+		// Get the node and children as a tree.
+		$query = "SELECT n.*, 
+					0 AS replies, 
+					(SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id) AS reports 
+					FROM $this->_tbl AS n, $this->_tbl AS p 
+					WHERE n.lft BETWEEN p.lft AND p.rgt 
+					AND p." . $k . ' = ' . (int) $pk . " 
+					AND n.scope=p.scope 
+					AND n.scope_id=p.scope_id 
+					AND n.object_id=p.object_id ";
+		if (isset($filters['start_at']) && $filters['start_at']) 
+		{
+			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
+		}
+		$query .= " ORDER BY n.lft";
+
+		$this->_db->setQuery($query);
+		$tree = $this->_db->loadObjectList();
+
+		// Check for a database error.
+		if ($this->_db->getErrorNum())
+		{
+			$this->setError(JText::_('Failed to get tree.'));
+			return false;
+		}
+
+		return $tree;
+	}
+
+	/**
+	 * Method to get nested set properties for a node in the tree.
+	 *
+	 * @param   integer  $id   Value to look up the node by.
+	 * @param   string   $key  Key to look up the node by.
+	 * @return  mixed    Boolean false on failure or node object on success.
+	 */
+	protected function _getNode($id, $key = null)
+	{
+		// Determine which key to get the node base on.
+		switch ($key)
+		{
+			case 'parent':
+				$k = 'parent';
+				break;
+			case 'left':
+				$k = 'lft';
+				break;
+			case 'right':
+				$k = 'rgt';
+				break;
+			default:
+				$k = $this->_tbl_key;
+				break;
+		}
+
+		// Get the node data.
+		$query = "SELECT " . $this->_tbl_key . ", parent, lft, rgt FROM $this->_tbl WHERE " . $k . ' = '. (int) $id . " LIMIT 1";
+		$this->_db->setQuery($query);
+
+		$row = $this->_db->loadObject();
+
+		// Check for a database error or no $row returned
+		if ((!$row) || ($this->_db->getErrorNum()))
+		{
+			$this->setError(JText::_('Get node failed'));
+			return false;
+		}
+
+		// Do some simple calculations.
+		$row->numChildren = (int) ($row->rgt - $row->lft - 1) / 2;
+		$row->width = (int) $row->rgt - $row->lft + 1;
+
+		return $row;
+	}
+
+	/**
+	 * Method to determine if a node is a leaf node in the tree (has no children).
+	 *
+	 * @param   integer  $pk  Primary key of the node to check.
+	 *
+	 * @return  boolean  True if a leaf node.
+	 *
+	 * @link    http://docs.joomla.org/JTableNested/isLeaf
+	 * @since   11.1
+	 */
+	public function isLeaf($pk = null)
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+		$pk = (is_null($pk)) ? $this->$k : $pk;
+
+		// Get the node by primary key.
+		if (!$node = $this->_getNode($pk)) 
+		{
+			// Error message set in getNode method.
+			return false;
+		}
+
+		// The node is a leaf node.
+		return (($node->rgt - $node->lft) == 1);
 	}
 }

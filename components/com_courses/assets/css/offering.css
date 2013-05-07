@@ -26,6 +26,21 @@
 		padding: 0;
 		color: #999;
 	}
+	#content-header p a {
+		color: #999;
+		text-decoration: none;
+		border: none;
+		margin: 0 2em 0 0;
+	}
+	#content-header p a:before {
+		font-weight: normal;
+		content: "\f05a"; /*\2190*/
+		font-family: "Fontcons";
+	}
+	#content-header p a:hover {
+		color: #333;
+		border-bottom: 1px dotted #333;
+	}
 	#content-header p span {
 		margin: 0 2em 0 0.2em;
 	}
