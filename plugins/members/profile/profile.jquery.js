@@ -45,6 +45,10 @@ HUB.Members.Profile = {
 		
 		//edit profile section if we have section specified in window hash
 		HUB.Members.Profile.editProfileSectionWithHash();
+		
+		//profile address section
+		HUB.Members.Profile.addresses();
+		HUB.Members.Profile.locateMe();
 	},
 	
 	//-------------------------------------------------------------
@@ -619,7 +623,146 @@ HUB.Members.Profile = {
 				}, 800);
 			}
 		}
+	},
+	
+	addresses: function()
+	{
+		var $ = this.jQuery;
+		
+		//delete confirmation
+		$('.com_members').on('click','.delete-address', function(event) {
+			if (!confirm("Are you sure you want to delete this member Address?"))
+			{
+				event.preventDefault();
+			}
+		});
+		
+		//add/edit addresses
+		$('.add-address, .edit-address').fancybox({
+			type: 'ajax',
+			width: 700,
+			height: 'auto',
+			autoSize: false,
+			fitToView: false,  
+			titleShow: false,
+			tpl: {
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+			},
+			beforeLoad: function() {
+				href = $(this).attr('href');
+				if (href.indexOf('?') == -1) {
+					href += '?no_html=1';
+				} else {
+					href += '&no_html=1';
+				}
+				$(this).attr('href', href);
+			},
+			afterShow: function() {
+				if ($('#hubForm-ajax')) {
+					$('#hubForm-ajax').submit(function(e) {
+						e.preventDefault();
+						$.post($(this).attr('action'),$(this).serialize(), function(data) {
+							$.fancybox.close();
+							HUB.Members.Profile.editReloadSections();
+						});
+					});
+				}
+			}
+		});
+	},
+	
+	locateMe: function()
+	{
+		//locate me
+		$('body').on('click', '#locate-me', function(event) {
+			event.preventDefault();
+			
+			//make sure we have the ability
+			if (!navigator.geolocation) 
+			{
+				alert('You browser is not capable of gettting you location.');
+				return;
+			}
+				
+			//use the browser geo location
+			navigator.geolocation.getCurrentPosition(
+				HUB.Members.Profile.locateMeGotLocation,
+				HUB.Members.Profile.locateMeGotError,
+				{
+					enableHighAccuracy: true,
+					timeout: 1000 * 5,
+					maximumAge: 0
+				}
+			);
+		});
+	},
+	
+	locateMeGotLocation: function( location )
+	{
+		var latitude      = location.coords.latitude,
+			longitude     = location.coords.longitude,
+			reverseGeoUrl = 'https://maps.google.com/maps/api/geocode/json?sensor=true&latlng=' + latitude + ',' + longitude;
+		
+		var address_parts = [];
+		
+		$.getJSON(reverseGeoUrl, function(json){
+			var result = json.results[0].address_components;
+			
+			for (var i=0, n=result.length; i<n; i++)
+			{
+				//do we have a street
+				if (jQuery.inArray('street_number', result[i].types) > -1)
+				{
+					address_parts['address1'] = result[i].long_name;
+				}
+				
+				//do we have a street
+				if (jQuery.inArray('route', result[i].types) > -1)
+				{
+					address_parts['address1'] += ' ' + result[i].long_name;
+				}
+				
+				//do we have a state / region
+				if (jQuery.inArray('locality', result[i].types) > -1)
+				{
+					address_parts['city'] = result[i].long_name;
+				}
+				
+				//do we have a state / region
+				if (jQuery.inArray('administrative_area_level_1', result[i].types) > -1)
+				{
+					address_parts['region'] = result[i].long_name;
+				}
+				
+				//do we have a postal code
+				if (jQuery.inArray('postal_code', result[i].types) > -1)
+				{
+					address_parts['postal'] = result[i].long_name;
+				}
+				
+				//do we have a country
+				if (jQuery.inArray('country', result[i].types) > -1)
+				{
+					address_parts['country'] = result[i].long_name.toUpperCase();
+				}
+			}
+			
+			//set values
+			$('.member-address-form').find('#address1').val(address_parts['address1']);
+			$('.member-address-form').find('#addressCity').val(address_parts['city']);
+			$('.member-address-form').find('#addressRegion').val(address_parts['region']);
+			$('.member-address-form').find('#addressPostal').val(address_parts['postal']);
+			$('.member-address-form').find('#addressCountry').val(address_parts['country']);
+			$('.member-address-form').find('#addressLatitude').val(latitude);
+			$('.member-address-form').find('#addressLongitude').val(longitude);
+		});
+	},
+	
+	locateMeGotError: function( error )
+	{
+		alert('Geo Location Error: ' + error.message);
 	}
+	
 };
 
 //-------------------------------------------------------------

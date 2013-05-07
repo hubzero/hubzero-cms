@@ -62,6 +62,10 @@ $incrOpts = new ModIncrementalRegistrationOptions;
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 ?>
 
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
+
 <div id="profile-page-content">
 	<h3 class="section-header">
 		<?php echo JText::_('PROFILE'); ?>
@@ -566,6 +570,71 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
+		
+		<?php if ($this->registration->address != REG_HIDE) : ?>
+			<?php if ($this->params->get('access_address') == 0 
+			 		|| ($this->params->get('access_address') == 1 && $loggedin) 
+			 		|| ($this->params->get('access_address') == 2 && $isUser)
+				) : ?>
+				<?php
+					//get member addresses
+					$membersAddress = new MembersAddress( JFactory::getDBO() );
+					$addresses = $membersAddress->getAddressesForMember( $this->profile->get("uidNumber") );
+				
+					$cls = "";
+					if($this->params->get('access_address') == 2) 
+					{
+						$cls .= "private";
+					}                     
+					if(count($addresses) < 1)
+					{
+						$cls .= ($isUser) ? " hidden" : " hide";
+					}
+					if(isset($update_missing) && in_array("address",array_keys($update_missing))) 
+					{            
+						$cls = str_replace(" hide", "", $cls);
+						$cls .= " missing";
+					}
+				?>
+				<li class="profile-address section <?php echo $cls; ?>">
+					<div class="section-content">
+						<div class="key">
+							<?php echo JText::_('Address(s)'); ?>
+						</div>
+						<div class="value">
+							<?php echo $membersAddress->formatAddressesForProfile( $addresses, $isUser ); ?>
+						</div>
+						<br class="clear" />
+						<?php
+							ximport('Hubzero_Plugin_View');
+							$editview = new Hubzero_Plugin_View(
+								array(
+									'folder'  => 'members',
+									'element' => 'profile',
+									'name'    => 'edit'
+								)
+							);
+							
+							$addAddressLink = '<a class="btn add add-address" href="'.JRoute::_('index.php?option=com_members&id='.JFactory::getUser()->get('id').'&active=profile&action=addaddress').'">Add Address</a>';
+							
+							$editview->registration_field = "address";
+							$editview->profile_field = "address";
+							$editview->title = JText::_('test');
+							$editview->profile = $this->profile;
+							$editview->isUser = $isUser;
+							$editview->inputs = '<label for="profile_bio">Address<br />'.$addAddressLink.'</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[address]',$this->params->get('access_address'),'input-select') . '</label>';
+							$editview->display();
+						?>
+					</div>
+					<?php if($isUser) : ?>
+						<div class="section-edit">
+							<a class="edit-profile-section" href="#">Edit</a>
+						</div>
+					<?php endif; ?>
+				</li>
+			<?php endif; ?>
+		<?php endif; ?>
 	
 		<?php if ($this->params->get('access_bio') == 0 
 		 		|| ($this->params->get('access_bio') == 1 && $loggedin) 
@@ -767,7 +836,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						
 							ximport('Hubzero_Geo');
 							$co = Hubzero_Geo::getcountries();
-						
+							
 							$countries = '<select name="corigin" id="corigin" class="input-select">';
 							$countries .= '<option value="">'.JText::_('(select from list)').'</option>';
 							foreach ($co as $c)

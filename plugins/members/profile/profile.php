@@ -34,7 +34,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Members Plugin class for profile
  */
-class plgMembersProfile extends JPlugin
+class plgMembersProfile extends Hubzero_Plugin
 {
 	/**
 	 * Constructor
@@ -89,12 +89,15 @@ class plgMembersProfile extends JPlugin
 				$returnhtml = false;
 			}
 		}
+		
+		//include address library
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php' );
 
 		$arr = array(
 			'html' => '',
 			'metadata' => ''
 		);
-
+		
 		// Build the final HTML
 		if ($returnhtml) 
 		{   
@@ -103,7 +106,18 @@ class plgMembersProfile extends JPlugin
 			$this->member = $member;
 			$this->option = $option;
 			$this->areas  = $areas;
-			$arr['html'] = $this->view();
+			
+			//get task
+			$this->task = JRequest::getVar('action', 'view');
+			switch( $this->task )
+			{
+				case 'addaddress':       $arr['html'] = $this->addAddress();         break;
+				case 'editaddress':      $arr['html'] = $this->editAddress();        break;
+				case 'saveaddress':      $arr['html'] = $this->saveAddress();        break;
+				case 'deleteaddress':    $arr['html'] = $this->deleteAddress();      break;
+				case 'view':
+				default:                 $arr['html'] = $this->view();
+			}
 		}
 		return $arr;
 	} 
@@ -121,22 +135,23 @@ class plgMembersProfile extends JPlugin
 		ximport('Hubzero_Registration');
 
 		// Find out which fields are hidden, optional, or required
-		$registration = new JObject();
-		$registration->Fullname = $this->_registrationField('registrationFullname','RRRR','edit');
-		$registration->Email = $this->_registrationField('registrationEmail','RRRR','edit');
-		$registration->URL = $this->_registrationField('registrationURL','HHHH','edit');
-		$registration->Phone = $this->_registrationField('registrationPhone','HHHH','edit');
-		$registration->Employment = $this->_registrationField('registrationEmployment','HHHH','edit');
+		$registration               = new JObject();
+		$registration->Fullname     = $this->_registrationField('registrationFullname','RRRR','edit');
+		$registration->Email        = $this->_registrationField('registrationEmail','RRRR','edit');
+		$registration->URL          = $this->_registrationField('registrationURL','HHHH','edit');
+		$registration->Phone        = $this->_registrationField('registrationPhone','HHHH','edit');
+		$registration->Employment   = $this->_registrationField('registrationEmployment','HHHH','edit');
 		$registration->Organization = $this->_registrationField('registrationOrganization','HHHH','edit');
-		$registration->Citizenship = $this->_registrationField('registrationCitizenship','HHHH','edit');
-		$registration->Residency = $this->_registrationField('registrationResidency','HHHH','edit');
-		$registration->Sex = $this->_registrationField('registrationSex','HHHH','edit');
-		$registration->Disability = $this->_registrationField('registrationDisability','HHHH','edit');
-		$registration->Hispanic = $this->_registrationField('registrationHispanic','HHHH','edit');
-		$registration->Race = $this->_registrationField('registrationRace','HHHH','edit');
-		$registration->Interests = $this->_registrationField('registrationInterests','HHHH','edit');
-		$registration->Reason = $this->_registrationField('registrationReason','HHHH','edit');
-		$registration->OptIn = $this->_registrationField('registrationOptIn','HHHH','edit');
+		$registration->Citizenship  = $this->_registrationField('registrationCitizenship','HHHH','edit');
+		$registration->Residency    = $this->_registrationField('registrationResidency','HHHH','edit');
+		$registration->Sex          = $this->_registrationField('registrationSex','HHHH','edit');
+		$registration->Disability   = $this->_registrationField('registrationDisability','HHHH','edit');
+		$registration->Hispanic     = $this->_registrationField('registrationHispanic','HHHH','edit');
+		$registration->Race         = $this->_registrationField('registrationRace','HHHH','edit');
+		$registration->Interests    = $this->_registrationField('registrationInterests','HHHH','edit');
+		$registration->Reason       = $this->_registrationField('registrationReason','HHHH','edit');
+		$registration->OptIn        = $this->_registrationField('registrationOptIn','HHHH','edit');
+		$registration->address      = $this->_registrationField('registrationAddress','OOOO','edit');
 
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -241,6 +256,7 @@ class plgMembersProfile extends JPlugin
 		$hconfig =& JComponentHelper::getParams('com_register');
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
+		
 		if (empty($configured)) 
 		{
 			$configured = $default;
@@ -254,14 +270,14 @@ class plgMembersProfile extends JPlugin
 		{
 			$value = substr($default, $index, 1);
 		}
-
+		
 		switch ($value)
 		{
 			case 'R': return(REG_REQUIRED);
 			case 'O': return(REG_OPTIONAL);
-			case 'H': return(REG_HIDE);
-			case '-': return(REG_HIDE);
 			case 'U': return(REG_READONLY);
+			case 'H':
+			case '-':
 			default : return(REG_HIDE);
 		}
 	}
@@ -338,5 +354,164 @@ class plgMembersProfile extends JPlugin
 
 		//return percentage
 		return number_format(($num_filled_fields/$num_fields) * 100, 0);
+	}
+	
+	
+	/**
+	 * Method to add a user address
+	 * 
+	 * @return     void
+	 */
+	public function addAddress()
+	{
+		return $this->editAddress();
+	}
+	
+	
+	/**
+	 * Method to edit a user address
+	 * 
+	 * @return     void
+	 */
+	public function editAddress()
+	{
+		ximport('Hubzero_Plugin_View');
+		$this->view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => 'profile',
+				'name'    => 'address',
+				'layout'  => 'edit'
+			)
+		);
+		
+		//get request vars
+		$this->view->addressId = JRequest::getInt('addressid', 0);
+		
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('members', 'profile');
+		Hubzero_Document::addPluginScript('members', 'profile');
+		
+		//get member addresses
+		$this->view->address = new MembersAddress( JFactory::getDBO() );
+		$this->view->address->load( $this->view->addressId );
+		
+		//are we passing back the vars from save
+		if (isset($this->address))
+		{
+			$this->view->address = $this->address;
+		}
+		
+		//set vars for view
+		$this->view->member = $this->member;
+		
+		//set errors and display
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+		return $this->view->loadTemplate();
+	}
+	
+	
+	/**
+	 * Method to save a user address
+	 * 
+	 * @return     void
+	 */
+	public function saveAddress()
+	{
+		//get request vars
+		$address = JRequest::getVar('address', array());
+		
+		//set up objects
+		$database       = JFactory::getDBO();
+		$juser          = JFactory::getUser();
+		$membersAddress = new MembersAddress( $database );
+		
+		//create object from vars
+		$addressObj                   = new stdClass;
+		$addressObj->id               = $address['id'];
+		$addressObj->uidNumber        = $juser->get('id');
+		$addressObj->addressTo        = $address['addressTo'];
+		$addressObj->address1         = $address['address1'];
+		$addressObj->address2         = $address['address2'];
+		$addressObj->addressCity      = $address['addressCity'];
+		$addressObj->addressRegion    = $address['addressRegion'];
+		$addressObj->addressPostal    = $address['addressPostal'];
+		$addressObj->addressCountry   = $address['addressCountry'];
+		$addressObj->addressLatitude  = $address['addressLatitude'];
+		$addressObj->addressLongitude = $address['addressLongitude'];
+		
+		//attempt to save
+		if (!$membersAddress->save($addressObj))
+		{
+			$this->address = $addressObj;
+			$this->setError( $membersAddress->getError() );
+			return $this->editAddress();
+		}
+		
+		//inform and redirect
+		$this->redirect( 
+			JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'), 
+			JText::_('Member address successfully saved.'), 
+			'passed'
+		);
+		return;
+	}
+	
+	
+	/**
+	 * Method to delete a user address
+	 * 
+	 * @return     void
+	 */
+	public function deleteAddress()
+	{
+		//get request vars
+		$addressId = JRequest::getInt('addressid', 0);
+		
+		//set up objects
+		$database       = JFactory::getDBO();
+		$juser          = JFactory::getUser();
+		$membersAddress = new MembersAddress( $database );
+		
+		//load address object
+		$membersAddress->load( $addressId );
+		
+		//make sure we have a valid member address object
+		if (!is_object($membersAddress) || !$membersAddress->id)
+		{
+			return $this->view();
+		}
+		
+		//make sure user can delete this address
+		if ($membersAddress->uidNumber != $juser->get('id'))
+		{
+			$this->setError( JText::_('You don\'t have permission to delete this member address.') );
+			return $this->view();
+		}
+		
+		//make sure we dont have another stimulation 
+		if (!$membersAddress->canDelete())
+		{
+			$this->setError( $membersAddress->getError() );
+			return $this->view();
+		}
+		
+		//attempt to delete address
+		if (!$membersAddress->delete($addressId))
+		{
+			$this->setErrror( $membersAddress->getError() );
+			return $this->view();
+		}
+		
+		//inform and redirect
+		$this->redirect( 
+			JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'), 
+			JText::_('Member address successfully deleted.'), 
+			'passed'
+		);
+		return;
 	}
 }

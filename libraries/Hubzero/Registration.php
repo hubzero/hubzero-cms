@@ -183,6 +183,7 @@ class Hubzero_Registration
 		$this->_registration['mailPreferenceOption'] = null;
 		$this->_registration['captcha'] = null;
 		$this->_registration['interests'] = null;
+		$this->_registration['address'] = null;
 	}
 
 	/**
@@ -443,6 +444,10 @@ class Hubzero_Registration
 		$database =& JFactory::getDBO();
 		$mt = new MembersTags($database);
 		$tag_string = $mt->get_tag_string( $xprofile->get('uidNumber') );
+		
+		//get member addresses
+		$membersAddress = new MembersAddress( JFactory::getDBO() );
+		$addresses = $membersAddress->getAddressesForMember( $xprofile->get("uidNumber") );
 
 		$this->set('countryresident', $xprofile->get('countryresident'));
 		$this->set('countryorigin', $xprofile->get('countryorigin'));
@@ -472,6 +477,7 @@ class Hubzero_Registration
 		$this->set('usageAgreement', $xprofile->get('usageAgreement'));
 		$this->set('mailPreferenceOption', $xprofile->get('mailPreferenceOption'));
 		$this->set('interests', $tag_string);
+		$this->set('address', $addresses);
 
 		$this->_checked = false;
 	}
@@ -656,6 +662,7 @@ class Hubzero_Registration
 		$registrationOptIn = $this->registrationField('registrationOptIn','HHHH',$task);
 		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA','HHHH',$task);
 		$registrationTOU = $this->registrationField('registrationTOU','HHHH',$task);
+		$registrationAddress = $this->registrationField('registrationAddress','OOOO',$task);
 
 		if ($task == 'update')
 		{
@@ -1127,6 +1134,14 @@ class Hubzero_Registration
 				$this->_invalid['usageAgreement'] = 'Usage Agreement has not been Read and Accepted';
 		*/
 		
+		if ($registrationAddress == REG_REQUIRED)
+		{
+			if (count($registration['address']) == 0)
+			{
+				$this->_missing['address'] = 'Member Address';
+				$this->_invalid['address'] = 'Member Address';
+			}
+		}
 		
 		if(!empty($field_to_check))
 		{   

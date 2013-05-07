@@ -560,3 +560,26 @@
 		background: url('/components/com_store/assets/img/coin.gif') no-repeat 0 4px;
 		line-height: 40px;
 	}
+	
+/*
+Member Address
+*/
+.member-address-form {
+}
+.member-address-form fieldset legend {
+	padding: 0.5em 2% !important;
+	width: 96% !important;
+}
+.member-address-form fieldset p {
+	margin: 0 !important;
+	padding: 1em !important;
+}
+.locate:before {
+	content: "\f041";
+}
+.section .address-links {
+	display: none;
+}
+.section.active .address-links {
+	display: block;
+}
