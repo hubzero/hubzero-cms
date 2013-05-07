@@ -155,6 +155,9 @@ class JLoader
  * @return  boolean
  * @since   1.5
  */
+
+include_once(JPATH_ROOT . DS . 'vendor' . DS . 'autoload.php');
+
 function __autoload($class)
 {
 	if(JLoader::load($class)) {
