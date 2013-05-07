@@ -2374,7 +2374,8 @@ class WishlistController extends JObject
 			// get admin priviliges
 			$this->authorize_admin($wishlist->id);
 
-			if (!$this->_admin) 
+			$objWish->load($wishid);
+			if (!$this->_admin && $objWish->proposed_by != $juser->get('id')) 
 			{
 				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 				return;
