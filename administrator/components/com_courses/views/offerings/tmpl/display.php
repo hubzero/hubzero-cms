@@ -122,7 +122,7 @@ foreach ($this->rows as $row)
 	$managers = $row->members(array('count' => true, 'student' => 0));
 	$units    = $row->units(array('count' => true));
 	$students = $row->members(array('count' => true, 'student' => 1));
-	$pages    = $row->pages(array('count' => true));
+	$pages    = $row->pages(array('count' => true, 'active' => array(0, 1)));
 	$sections = $row->sections(array('count' => true));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -212,7 +212,7 @@ foreach ($this->rows as $row)
 						<?php echo $pages; ?>
 						<?php if ($canDo->get('core.manage')) { ?>
 						&nbsp;
-						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;offering=<?php echo $row->get('id'); ?>&amp;task=add">
+						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;course=<?php echo $this->course->get('id'); ?>&amp;offering=<?php echo $row->get('id'); ?>&amp;task=add">
 							<span><?php echo JText::_('[ + ]'); ?></span>
 						</a>
 						<?php } ?>

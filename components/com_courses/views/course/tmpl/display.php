@@ -98,6 +98,7 @@ else
 		}
 		if (!$controls) {
 		?>
+			<?php if ($offering->get('publish_up') && $offering->get('publish_up') != '0000-00-00 00:00:00') { ?>
 			<table>
 				<tbody>
 					<tr>
@@ -114,6 +115,7 @@ else
 					</tr>
 				</tbody>
 			</table>
+			<?php } ?>
 		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
 			<p>
 				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">

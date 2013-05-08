@@ -44,7 +44,7 @@ $tmpl    = JRequest::getWord('tmpl', false);
 
 $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 
-if (!$no_html && !$tmpl) : ?>
+if (!$no_html) : // && !$tmpl ?>
 	<div id="content-header">
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
@@ -145,7 +145,7 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 				</div><!-- / .post-type -->
 			</div><!-- / #collection-introduction -->
 <?php } else { ?>
-	<?php if (!$no_html && !$tmpl) : ?>
+	<?php if (!$no_html) : // && !$tmpl ?>
 			<div id="page_sidebar">
 
 				<ul id="page_menu">
@@ -287,12 +287,12 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 					}
 					?>
 
-		<?php if (!$no_html && !$tmpl) : ?>
+		<?php if (!$no_html) : // && !$tmpl?>
 				</div><!-- /#page_content -->
 			</div><!-- /#page_main -->
 		<?php endif; ?>
 <?php } ?>
-	<?php if (!$no_html && !$tmpl) : ?>
+	<?php if (!$no_html) : // && !$tmpl?>
 		</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
 	<?php endif; ?>

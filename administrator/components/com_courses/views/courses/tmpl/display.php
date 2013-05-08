@@ -102,7 +102,7 @@ $k = 0;
 foreach ($this->rows as $row)
 {
 	$offerings = $row->offerings(array('count' => true));
-	$pages     = $row->pages(array('count' => true));
+	$pages     = $row->pages(array('count' => true, 'active' => array(0, 1)));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

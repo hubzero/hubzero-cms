@@ -180,6 +180,11 @@ class CoursesControllerOffering extends Hubzero_Controller
 			return;
 		}
 
+		if ($tmpl = $this->config->get('tmpl', ''))
+		{
+			JRequest::setVar('tmpl', $tmpl);
+		}
+
 		// Get the active tab (section)
 		$default = 'outline';
 		if ($this->course->offering()->access('manage', 'section'))
