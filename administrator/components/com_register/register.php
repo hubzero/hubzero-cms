@@ -30,7 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
@@ -63,6 +62,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS .  $option . DS . 'tables' . DS
 include_once(JPATH_ROOT . DS . 'components' . DS .  $option . DS . 'tables' . DS . 'organization.php');
 
 $controllerName = JRequest::getCmd('controller', 'config');
+
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'config';
@@ -87,6 +87,11 @@ JSubMenuHelper::addEntry(
 	JText::_('Incremental Registration'), 
 	'index.php?option=' .  $option . '&controller=incremental',
 	($controllerName == 'incremental')
+);
+JSubMenuHelper::addEntry(
+	JText::_('PREMIS Data Import'), 
+	'index.php?option=' .  $option . '&controller=premis',
+	($controllerName == 'premis')
 );
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

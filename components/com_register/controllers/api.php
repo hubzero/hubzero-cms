@@ -117,215 +117,19 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 		
 		$courses['add'] = JRequest::getVar('addRegistration', '', 'post');
 		$courses['drop'] = JRequest::getVar('dropRegistration', '', 'post');
-				
-		// Check all minimally required data
-		if ((empty($user['premisId']) && empty($user['casId'])) || empty($user['email']) || (empty($courses['add']) && empty($courses['drop'])))
+		
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'helpers' . DS . 'Premis.php');
+		$return = Hubzero_Register_Premis::doRegistration($user, $courses);
+		
+		if ($return['status'] != 'ok')		
 		{
-			$this->errorMessage(400, 'Some required data missing. Please check the API specs.');
-			return;
+			$this->errorMessage($return['code'], $return['message']);	
 		}
-		
-		// Clean and parse add and drop requests		
-		$courses['add'] = preg_replace("/[^A-Za-z0-9_,\.]/", '', $courses['add']);
-		$courses['drop'] = preg_replace("/[^A-Za-z0-9_,\.]/", '', $courses['drop']);		
-		$add = explode(',', $courses['add']);
-		$drop = explode(',', $courses['drop']);
-		
-		// *** Check if there is already a hub user
-		
-		// Initialize matched hub user ID
-		$userId = NULL;
-				
-		// first check if there is a Purdue ID match
-		if (!empty($user['casId']))
-		{
-			// do the CAS match	
-			ximport('Hubzero_Auth_Domain');
-			ximport('Hubzero_Auth_Link');
-			
-			$authDomain = Hubzero_Auth_Domain::getInstance('authentication', 'pucas', NULL);
-			$auth = Hubzero_Auth_Link::getInstance($authDomain->__get('id'), $user['casId']);
-			
-			if (!empty($auth))
-			{
-				$userId = $auth->__get('user_id');
-			}
-		}	
-				
-		// -- if no Purdue ID match -- match the PREMIS ID
-		if (empty($userId))
-		{
-			// do the PREMIS ID match
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'helpers' . DS . 'Premis.php');
-			$userId = Hubzero_Course_Premis::getPremisUser($user['premisId']);
+		else {
+			// Success message
+			$this->successMessage($return['code'], $return['message']);	
 		}
-		
-		
-		// -- if no match -- match the email
-		if (empty($userId))
-		{
-			ximport('Hubzero_Registration');
-			
-			// do the email match	
-			$userId = Hubzero_Registration::getEmailId($user['email']);	
-		}
-		
-		// No hub account found -- create new account set the password 
-		if (empty($userId))
-		{
-			// Create new account
-			
-			// Generate a username
-			if (!empty($user['casId']))
-			{
-				$preferredUsername = $user['casId'];
-			}
-			else {
-				$preferredUsername = $user['email'];
-			}
-			$user['username'] = Hubzero_Registration::generateUsername($preferredUsername);
-			
-			ximport('Hubzero_User_Password');
-			
-			// Instantiate a new registration object
-			$xregistration = new Hubzero_Registration();
-			
-			$xregistration->set('login', $user['username']);
-			$xregistration->set('name', $user['fName'] . ' ' . $user['lName']);
-			$xregistration->set('email', $user['email']);
-			$xregistration->set('confirmEmail', $user['email']);
-			if (!empty($user['password']))
-			{
-				$xregistration->set('password', $user['password']);
-				$xregistration->set('confirmPassword', $user['password']);
-			}			
-	
-			// Perform field validation
-			if (!$xregistration->check('proxy')) 
-			{				
-				foreach ($xregistration->_missing as $k => $val)
-				{
-					// ignore password if CAS
-					if (($k == 'password' || $k == 'confirmPassword') && !empty($user['casId']))
-					{
-						continue;	
-					}
-					
-					$this->errorMessage(400, 'Some required data missing. Please check the API specs.');
-					return;
-				}
 				
-				foreach ($xregistration->_invalid as $k => $val)
-				{
-					// ignore weak password message
-					if ($k == 'password' || $k == 'confirmPassword')
-					{
-						continue;	
-					}
-					$this->errorMessage(400, 'Bad data. Please check the API specs.');
-					return;
-				}				
-			}			
-			
-			//ximport('Hubzero_Factory');
-			jimport('joomla.plugin.helper');
-			
-			//$xprofile =& Hubzero_Factory::getProfile();
-
-			// Get some settings
-			$jconfig =& JFactory::getConfig();
-			$this->jconfig = $jconfig;
-			$params =& JComponentHelper::getParams('com_members');
-			$hubHomeDir = rtrim($params->get('homedir'), '/');
-			
-			jimport('joomla.application.component.helper');
-			$config   =& JComponentHelper::getParams('com_users');
-			$usertype = $config->get('new_usertype', 'Registered');
-	
-			$acl =& JFactory::getACL();
-	
-			// Create a new Joomla user
-			$target_juser = new JUser();
-			$target_juser->set('id', 0);
-			$target_juser->set('name', $xregistration->get('name'));
-			$target_juser->set('username', $xregistration->get('login'));
-			$target_juser->set('email', $xregistration->get('email'));
-			$target_juser->set('gid', $acl->get_group_id('', $usertype));
-			$target_juser->set('usertype', $usertype);
-			$target_juser->save();
-			
-			// Attempt to retrieve the new user
-			$target_xprofile = Hubzero_User_Profile::getInstance($target_juser->get('id'));
-			$result = is_object($target_xprofile);
-				
-			// Did we successully create an account?
-			if ($result) 
-			{
-				$target_xprofile->loadRegistration($xregistration);
-				$target_xprofile->set('homeDirectory', $hubHomeDir . '/' . $target_xprofile->get('username'));
-				$target_xprofile->set('jobsAllowed', 3);
-				$target_xprofile->set('regIP', JRequest::getVar('REMOTE_ADDR','','server'));
-				$target_xprofile->set('emailConfirmed', 1);
-				
-				if (isset($_SERVER['REMOTE_HOST'])) 
-				{
-					$target_xprofile->set('regHost', JRequest::getVar('REMOTE_HOST','','server'));
-				}
-	
-				$target_xprofile->set('registerDate', date('Y-m-d H:i:s'));
-	
-				// Update the account
-				$result = $target_xprofile->update();
-			}
-	
-			if ($result) 
-			{
-				if (!empty($user['password']))
-				{
-					$result = Hubzero_User_Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'));
-				}
-				$userId = $target_juser->get('id');
-				
-				// Associate newly created profile with Premis account ID and save all info
-				if (!empty($user['premisId']))
-				{
-					Hubzero_Course_Premis::savePremisUser($user, $userId);
-				}
-				
-				// Associate newly created profile with CAS account ID
-				if( !empty($user['casId'])) 
-				{
-					$authDomain = Hubzero_Auth_Domain::getInstance('authentication', 'pucas', NULL);
-					
-					$auth = Hubzero_Auth_Link::createInstance($authDomain->__get('id'), $user['casId']);
-					$auth = Hubzero_Auth_Link::getInstance($authDomain->__get('id'), $user['casId']);
-					$auth->__set('user_id', $userId);
-					$auth->__set('email', $target_xprofile->get('email'));
-					$auth->update();
-				}
-
-			}
-			
-			// Did we successully create/update an account?
-			if (!$result) 
-			{
-				$this->errorMessage(500, 'Failed to create a new user.');
-				return;
-			}
-		}
-		
-		// Do we have a user ID?
-		if (empty($userId))
-		{
-			$this->errorMessage(500, 'Registration failed. Reason unknown.');
-			return;
-		}
-		
-		// Do the adds/drops
-		
-		// Success message
-		$this->successMessage(201, 'Success. User ID ' . $userId . ' registered.');
-		
 	}
 		
 	private function premisUpdateProfile()
@@ -342,76 +146,23 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 		
-		$user['premisId'] = JRequest::getVar('premisId', '', 'post');
+		$user['email'] = JRequest::getVar('email', '', 'post');
 		$user['fName'] = JRequest::getVar('fName', '', 'post');
 		$user['lName'] = JRequest::getVar('lName', '', 'post');
 		$user['password'] = JRequest::getVar('password', '', 'post');
 		
 		/* Testing
-		$user['premisId'] = 'zuki';
+		$user['email'] = 'ilya@shunko.com';
 		$user['fName'] = 'Илья';
 		$user['lName'] = 'Шунько';
 		$user['password'] = ''; //eblan
 		*/
 		
-		// Check all minimally required data
-		if (empty($user['premisId']) || ( empty($user['fName']) && empty($user['lName']) && empty($user['password'])))
-		{
-			$this->errorMessage(400, 'Some required data missing. Please check the API specs.');
-			return;
-		}
-		
-		if ((!empty($user['fName']) || !empty($user['lName'])) && (empty($user['fName']) || empty($user['lName'])))
-		{
-			$this->errorMessage(400, 'Please provide both first and last names.');
-			return;
-		}
-		
-		// ** Update profile
-		
-		// Find premis user match
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'helpers' . DS . 'Premis.php');
-		$userId = Hubzero_Register_Premis::getPremisUser($user['premisId']);
+		$return = Hubzero_Register_Premis::doProfileUpdate($user);
 		
-		// Error if not found
-		if (!$userId)
-		{
-			$this->errorMessage(400, 'Bad user ID.');
-			return;	
-		}
-				
-		// Uppdate profile
-		$userProfile = Hubzero_User_Profile::getInstance($userId);
-		$result = is_object($userProfile);
-				
-		// Did we successully get an account?
-		if ($result) 
-		{
-			jimport('joomla.plugin.helper');
-			ximport('Hubzero_Registration');
-			$xregistration = new Hubzero_Registration();
-			
-			if (!empty($user['fName']))
-			{
-				$xregistration->set('name', $user['fName'] . ' ' . $user['lName']);
-			}
-			if (!empty($user['password']))
-			{
-				$xregistration->set('password', $user['password']);
-			}
-			
-			$userProfile->loadRegistration($xregistration);
-			$result = $userProfile->update();
-			
-			if (!empty($user['password']))
-			{
-				ximport('Hubzero_User_Password');
-				$result = Hubzero_User_Password::changePassword($userProfile->get('username'), $xregistration->get('password'));
-			}
-		}		
 		
-		// Success
-		$this->successMessage(201, 'Success. User profile updated.');
+				
 	}
 	
 	//--------------------------

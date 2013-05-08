@@ -334,20 +334,21 @@ class CartControllerCart extends ComponentController
 		$curl_err = '';
 		
 		//$url = ('https://dev26.hubzero.org/api/courses/premisRegister');
-		$url = ('https://dev26.hubzero.org/api/register/premisRegister');
-		//$url = 'https://dev.purduehub-u.purdue.edu/api/courses/premisRegister';
+		//$url = ('https://dev26.hubzero.org/api/register/premisRegister');
+		$url = 'https://dev.purduehub-u.purdue.edu/api/register/premisRegister';
 		
 		// !! $value = urlencode(stripslashes($value));
 		
-		$data['fName'] = 'Mr.';
+		$data['fName'] = 'Tolik';
 		$data['lName'] = 'Dusik';
 		$data['email'] = 'ilya@zuki.com';
-		//$data['premisId'] = 'zero0';
-		$data['casId'] = 'ishunko';
-		//$data['password'] = '';
+		$data['premisId'] = 'zero0';
+		$data['premisEnrollmentId'] = 'primus0';
+		//$data['casId'] = 'ishunko';
+		$data['password'] = '';
 		
-		$data['addRegistration'] = 'one, two, three$%^!_nice';
-		$data['dropRegistration'] = 'two';
+		$data['addRegistration'] = 'nanoscaletransistors';
+		$data['dropRegistration'] = '';
 		
 		$req = 'ss=VezefruchASpEdruvE_RAmE4pesWep!A';
 		
@@ -373,7 +374,7 @@ class CartControllerCart extends ComponentController
 		curl_close($ch);
 	
 		print_r(json_decode($curl_result));
-		//print_r($curl_result);
+		print_r($curl_result);
 		die('+');
 		
 		$doc =& JFactory::getDocument();
