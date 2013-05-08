@@ -583,3 +583,13 @@ Member Address
 .section.active .address-links {
 	display: block;
 }
+.profile-address .grid {
+	padding: 20px 0 0 0;
+	margin: 20px 0 0 0;
+	border-top: 1px solid #efefef;
+}
+.profile-address .grid:first-child {
+	margin: 0;
+	padding: 0;
+	border-top: none;
+}
