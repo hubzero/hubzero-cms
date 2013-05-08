@@ -23,7 +23,7 @@ if (!HUB.Plugins) {
 
 			var toolbar = jQuery(this),
 				id = toolbar.attr('id').split('-').pop(),
-				textbox = jQuery(id),
+				textbox = jQuery('#'+id),
 				editButtons = new Array(),
 				helpButtons = new Array();
 
@@ -33,6 +33,7 @@ if (!HUB.Plugins) {
 				return false;
 			}
 
+			textbox.css('margin-top', '0');
 			toolbar.removeClass('hide');
 
 			addButton("wiki-button-bold","Bold text","\'\'\'","\'\'\'","Bold text","mw-editbutton-bold-"+id);
@@ -42,18 +43,22 @@ if (!HUB.Plugins) {
 			addButton("wiki-button-subscript","Subscript",",,",",,","","mw-editbutton-subscript-"+id);
 			addButton("wiki-button-strikethrough","Strikethrough","~~","~~","","mw-editbutton-strikethrough-"+id);
 			addButton("wiki-button-link","Internal link","[","]","Link title","mw-editbutton-link-"+id);
-			addButton("wiki-button-headline","Level 2 headline","\n== "," ==\n","Headline text","mw-editbutton-headline-"+id);
-			if (!textbox.hasClass("no-image-macro")) {
-				addButton("wiki-button-image","Embedded image","[[Image(",")]]","Example.jpg","mw-editbutton-image-"+id);
+			if (!textbox.hasClass('minimal')) {
+				addButton("wiki-button-headline","Level 2 headline","\n== "," ==\n","Headline text","mw-editbutton-headline-"+id);
+				if (!textbox.hasClass("no-image-macro")) {
+					addButton("wiki-button-image","Embedded image","[[Image(",")]]","Example.jpg","mw-editbutton-image-"+id);
+				}
+				if (!textbox.hasClass("no-file-macro")) {
+					addButton("wiki-button-file","Embedded file","[[File(",")]]","File.doc","mw-editbutton-file-"+id);
+				}
+				addButton("wiki-button-resource","Embedded resource","[[Resource(",")]]","123","mw-editbutton-resource-"+id);
 			}
-			if (!textbox.hasClass("no-file-macro")) {
-				addButton("wiki-button-file","Embedded file","[[File(",")]]","File.doc","mw-editbutton-file-"+id);
-			}
-			addButton("wiki-button-resource","Embedded resource","[[Resource(",")]]","123","mw-editbutton-resource-"+id);
 			addButton("wiki-button-math","Mathematical formula (LaTeX)","\x3cmath\x3e","\x3c/math\x3e","Insert formula here","mw-editbutton-math-"+id);
 			addButton("wiki-button-nowiki","Ignore wiki formatting","{{{","}}}","Insert non-formatted text here","mw-editbutton-nowiki-"+id);
-			addButton("wiki-button-hr","Horizontal line (use sparingly)","\n----\n","","","mw-editbutton-hr-"+id);
-			addButton("wiki-button-table","Table","\n||cell1||cell2||\n||cell3||cell4||\n","","","mw-editbutton-table-"+id);
+			if (!textbox.hasClass('minimal')) {
+				addButton("wiki-button-hr","Horizontal line (use sparingly)","\n----\n","","","mw-editbutton-hr-"+id);
+				addButton("wiki-button-table","Table","\n||cell1||cell2||\n||cell3||cell4||\n","","","mw-editbutton-table-"+id);
+			}
 
 			helpButtons[helpButtons.length] = {
 				"imageId": "mw-editbutton-help-"+id,
