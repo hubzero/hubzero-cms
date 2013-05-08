@@ -77,7 +77,7 @@ if (!$this->getError()) {
 	?>
 </ul>
 <?php } ?>
-<?php if ($this->data && !$this->binary) { 
+<?php if ($this->data && !$this->binary && $this->cType != 'application/pdf') { 
 	
 	// Clean up data from Windows characters - important!
 	$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
