@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Emailtoken.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'EmailToken.php');
 
 /**
  * Manage support tickets
@@ -1277,7 +1277,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			//$message .= $attach->parse($comment)."\r\n\r\n";
 
 			// Prepare message to allow email responses to be parsed and added to the ticket
-			if ($this->config->get('email_processing'))
+			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
 			{
 				$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
 
@@ -1302,7 +1302,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$juser =& JUser::getInstance($row->owner);
 
 			// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
-			if ($this->config->get('email_processing'))
+			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
 			{
 				$encryptor = new Hubzero_EmailToken();
 				// The reply-to address contains the token 
@@ -1932,7 +1932,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		//$params = &JComponentHelper::getParams($this->_option);
 		$allowEmailResponses = $this->config->get('email_processing');
 
-		if ($allowEmailResponses)
+		if ($allowEmailResponses and file_exists("/etc/hubmail_gw.conf"))
 		{
 			$encryptor = new Hubzero_EmailToken();
 		}

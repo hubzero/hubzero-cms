@@ -2099,7 +2099,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			$forum_message = $p->parse("\n".stripslashes($forum_message), $wikiconfig);		
 			*/
 
-			ximport('Hubzero_Emailtoken');
+			ximport('Hubzero_EmailToken');
 			// Figure out who should be notified about this comment (all course members for now)
 			$userIDsToEmail = array();
 
@@ -2139,7 +2139,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			// Email each course member separately, each needs a user specific token
 			foreach ($userIDsToEmail as $userID)
 			{
-				ximport('Hubzero_Emailtoken');
+				ximport('Hubzero_EmailToken');
 				$encryptor = new Hubzero_Email_Token();
 				$jconfig =& JFactory::getConfig();
 

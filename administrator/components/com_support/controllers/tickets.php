@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'query.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Emailtoken.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'EmailToken.php');
 
 /**
  * Support controller class for tickets

@@ -1491,7 +1491,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Email the group and insert email tokens to allow them to respond to group posts via email
 		if ($params->get('email_comment_processing'))
 		{
-			ximport('Hubzero_Emailtoken');
+			ximport('Hubzero_EmailToken');
 			// Figure out who should be notified about this comment (all group members for now)
 			$userIDsToEmail = array();
 
@@ -1529,7 +1529,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Email each group member separately, each needs a user specific token
-			ximport('Hubzero_Emailtoken');
+			ximport('Hubzero_EmailToken');
 			foreach ($userIDsToEmail as $userID)
 			{
 				$encryptor = new Hubzero_EmailToken();
