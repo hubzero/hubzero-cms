@@ -47,14 +47,6 @@
 		<param name="google_appKey" type="text" menu="hide" default="" label="Google app key" description="Google app key" />
 		<param name="google_folder" type="text" menu="hide" default="Google" label="Local Google folder" description="Name of local google folder" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="enable_dropbox" type="radio" default="0" label="Dropbox Connection Enabled" description="Allow projects to connect with Dropbox">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="dropbox_key" type="text" menu="hide" default="" label="Dropbox app key" description="Dropbox app key" />
-		<param name="dropbox_secret" type="text" menu="hide" default="" label="Dropbox app secret" description="Dropbox app secret" />
-		<param name="dropbox_folder" type="text" menu="hide" default="Dropbox" label="Local Dropbox folder" description="Name of local dropbox folder" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="sync_lock" type="list" default="0" label="Sync lock (in minutes)" description="Disallow repeated sync within specified period after last sync">
 			<option value="0">0</option>
 			<option value="1">1</option>
