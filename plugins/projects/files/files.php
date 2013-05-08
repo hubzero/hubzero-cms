@@ -1003,6 +1003,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			$z 	   = 0;
 			$cSize = 0;
+			$ext   = strtolower($ext);
 			if ($ext == 'tar' || $ext == 'gz')
 			{	
 				// Expand tar file
@@ -1173,9 +1174,11 @@ class plgProjectsFiles extends JPlugin
 																
 				// Check file size
 				$sizelimit = ProjectsHtml::formatSize($this->_config->get('maxUpload', '104857600'));
-				if ($files['size'][$i] == 0 
-					|| ($files['size'][$i] > intval($this->_config->get('maxUpload', '104857600')))
-				) 
+				if ($files['size'][$i] == 0)
+				{
+					$this->setError( JText::_('Cannot accept zero-byte files.'));
+				}
+				if ( $files['size'][$i] > intval($this->_config->get('maxUpload', '104857600')))
 				{
 					$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
 						. $sizelimit . '. ' . JText::_('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
@@ -1201,7 +1204,8 @@ class plgProjectsFiles extends JPlugin
 				if (!$this->getError() && $zipfile && $expand) 
 				{					
 					$commitMsgZip 	= 'Added as part of archive ' . basename($file) . "\n";	
-					$z				= 0;			
+					$z				= 0;
+					$ext   			= strtolower($ext);			
 					
 					if ($ext == 'tar' || $ext == 'gz')
 					{	
@@ -2375,6 +2379,7 @@ class plgProjectsFiles extends JPlugin
 			// Get file extention
 			$parts = explode('.', $file);
 			$ext   = count($parts) > 1 ? array_pop($parts) : '';
+			$ext   = strtolower($ext);
 			$title = $file;				
 			
 			// Get convertable formats
@@ -2497,10 +2502,15 @@ class plgProjectsFiles extends JPlugin
 								
 				if (!$this->getError())
 				{																
-					// LaTeX? Convert to text file first
 					if ($tex)
 					{
+						// LaTeX? Convert to text file first
 						$mimeType = 'text/plain';
+					}
+					if ($ext == 'wmf')
+					{
+						// WMF files need this mime type specified for conversion to Google drawing
+						$mimeType = 'application/x-msmetafile';
 					}
 										
 					// Get local file information
@@ -2549,7 +2559,7 @@ class plgProjectsFiles extends JPlugin
 						$sync = 1;
 					}
 					else
-					{
+					{	
 						// Something went wrong
 						$this->setError(JText::_('COM_PROJECTS_FILES_SHARE_ERROR_NO_CONVERT'));
 
@@ -3449,6 +3459,7 @@ class plgProjectsFiles extends JPlugin
 		$ext 		= NULL;
 		$tex		= NULL;
 		$image		= NULL;
+		$binary		= false;
 		
 		// Build URL
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
@@ -3475,7 +3486,7 @@ class plgProjectsFiles extends JPlugin
 		$view->oWidth = '780';
 		$view->oHeight= '460';
 		$view->url	  = $url;
-				
+						
 		// Make sure we have a file to work with
 		if (!$file) 
 		{		
@@ -3499,6 +3510,9 @@ class plgProjectsFiles extends JPlugin
 			
 			// Include subdir in path
 			$fpath = $subdir ? $subdir. DS . $file : $file;
+			
+			// Binary?
+			$binary = $this->_git->isBinary($this->prefix . $path . DS . $fpath);
 			
 			// Check for remote connection
 			if (!empty($this->_rServices) && $this->_case == 'files')
@@ -3577,7 +3591,7 @@ class plgProjectsFiles extends JPlugin
 			elseif (!$this->getError() && $data)
 			{				
 				// Make sure we can handle preview of this type of file				
-				if ($ext == 'pdf' || in_array($cType, $formats['images']) || in_array($cType, $formats['text']))
+				if ($ext == 'pdf' || in_array($cType, $formats['images']) || !$binary)
 				{
 					JFile::copy($this->prefix. $path . DS . $fpath, JPATH_ROOT . $outputDir . DS . $tempBase);
 					$content = $tempBase;
@@ -3715,6 +3729,9 @@ class plgProjectsFiles extends JPlugin
 		$view->case 		= $this->_case;
 		$view->option 		= $this->_option;
 		$view->image		= $image;
+		$view->binary		= is_file ( JPATH_ROOT . $outputDir . DS . $content ) 
+							? $this->_git->isBinary(JPATH_ROOT . $outputDir . DS . $content)
+							: $binary;
 		
 		$view->do   = ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
 		
@@ -4166,8 +4183,12 @@ class plgProjectsFiles extends JPlugin
 		$pparams = new JParameter( $obj->params );		
 		$synced = $pparams->get($service . '_sync', 1);
 		
+		// Last synced remote change
+		$lastSyncedChange = $pparams->get($service . '_last_synced_change', NULL);
+		
 		// Get last change ID for project creator
-		$lastSyncId = $pparams->get($service . '_sync_id', NULL);	
+		$lastSyncId = $pparams->get($service . '_sync_id', NULL);
+		$prevSyncId = $pparams->get($service . '_prev_sync_id', NULL);	
 		
 		// User ID of project creator
 		$projectCreator = $this->_project->created_by_user;
@@ -4203,7 +4224,9 @@ class plgProjectsFiles extends JPlugin
 		$output  = ucfirst($service) . "\n";
 		$output .= $synced != 1 ? 'Last sync (local): ' . $synced . ' | (UTC): ' 
 				. gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
-		$output .= 'Last sync ID: ' . $lastSyncId . "\n";
+		$output .= 'Previous sync ID: ' . $prevSyncId . "\n";
+		$output .= 'Current sync ID: ' . $lastSyncId . "\n";
+		$output .= 'Last synced remote change: '.  $lastSyncedChange . "\n";
 		$output .= 'Time passed since last sync: ' . $passed . "\n";		
 		$output .= 'Local sync start time: '.  $startTime . "\n";
 		$output .= 'Initiated by (user ID): '.  $this->_uid . ' [';
@@ -4232,11 +4255,13 @@ class plgProjectsFiles extends JPlugin
 		$this->_writeToFile( JText::_('Collecting remote changes') );
 						
 		// Get all remote files that changed since last sync
-		$newSyncId = 0;			
+		$newSyncId  = 0;	
+		$nextSyncId = 0;		
 		if ($lastSyncId > 1)
 		{
 			// Via Changes feed
-			$newSyncId = $this->_connect->getChangedItems($service, $projectCreator, $lastSyncId, &$remotes, &$deletes, $connections);
+			$newSyncId = $this->_connect->getChangedItems($service, $projectCreator, 
+				$lastSyncId, &$remotes, &$deletes, $connections);
 		}
 		else
 		{
@@ -4249,35 +4274,50 @@ class plgProjectsFiles extends JPlugin
 		$this->_writeToFile( JText::_('Verifying remote changes') );
 		
 		// Possible that we've missed a change?
-		if ($lastSyncId != $newSyncId && empty($remotes))
+		if ( $newSyncId > $lastSyncId)
 		{
-			$output .= 'Some changes might have been missed (new change ID ' . $newSyncId . ' but no changes output)'. "\n";
-			
-			// We'll try again
-			$newSyncId = $lastSyncId - 1;
+			$output .= '!!! Changes detected - new change ID: ' . $newSyncId . "\n";
 		}
+		
+		$output .= empty($remotes) 
+				? 'No changes brought in by Changes feed' . "\n"
+				: 'Changes feed has ' . count($remotes) . ' changes' . "\n";
+		
+		$from = ($synced == $lastSyncedChange || !$lastSyncedChange) 
+				? date("c", strtotime($synced) - (10)) : date("c", strtotime($lastSyncedChange));
 		
 		// Get changes via List feed (to make sure we get ALL changes)
 		// We need this because Changes feed is not 100% reliable
-		$from = date("c", strtotime($synced) - (10));
-		$timedRemotes = $this->_connect->getRemoteItems($service, $projectCreator, $from, $connections);
+		if ( $newSyncId > $lastSyncId)
+		{
+			$timedRemotes = $this->_connect->getRemoteItems($service, $projectCreator, $from, $connections);
+		}		
 		
 		// Record timed remote changes (for debugging)
-		$output .= 'Timed remote changes since ' . $from . "\n";
 		if (!empty($timedRemotes))
 		{
+			$output .= 'Timed remote changes since ' . $from . ' (' . count($timedRemotes) . '):' . "\n";
 			foreach ($timedRemotes as $tr => $trinfo)
 			{
 				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . ' status ' . $trinfo['status'] . "\n";
 			}
 			
 			// Pick up missed changes			
-			if (empty($remotes))
+			if ($remotes != $timedRemotes)
 			{
-				$remotes = $timedRemotes;
-			}
-		}	
+				$output .= empty($remotes) 
+					? 'Using exclusively timed changes ' . "\n"
+					: 'Mixing in timed changes ' . "\n";
 				
+				$remotes = array_merge($remotes, $timedRemotes);
+				array_unique($remotes);
+			}
+		}
+		else
+		{
+			$output .= 'No timed changes since ' . $from . "\n";
+		}
+						
 		// Error!
 		if ($lastSyncId > 1 && !$newSyncId)
 		{
@@ -4308,6 +4348,8 @@ class plgProjectsFiles extends JPlugin
 			{							
 				// Record sync status
 				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
+				
+				$output .= 'Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . "\n";
 				
 				// Skip renamed files (local renames are handled later)
 				if (in_array($filename, $localRenames) && !file_exists($local['fullPath']))
@@ -4398,12 +4440,12 @@ class plgProjectsFiles extends JPlugin
 							);
 							
 							// Delete from remote
-							$output .= 'deleted from remote: '. $filename . "\n";
+							$output .= '-- deleted from remote: '. $filename . "\n";
 						}
 						else
 						{
 							// skip (deleted non-synced file)
-							$output .= 'skipped deleted non-synced item: '. $filename . "\n";
+							$output .= '## skipped deleted non-synced item: '. $filename . "\n";
 							$deleted = 1;
 						}
 						
@@ -4424,7 +4466,7 @@ class plgProjectsFiles extends JPlugin
 						// Not updating converted files via sync
 						if ($local['converted'] == 1)
 						{
-							$output .= 'skipped converted locally changed file: '. $filename . "\n";
+							$output .= '## skipped converted locally changed file: '. $filename . "\n";
 						}
 						else
 						{
@@ -4440,7 +4482,7 @@ class plgProjectsFiles extends JPlugin
 									$local['remoteid'], $local, $parentId
 								);
 
-								$output .= 'sent update from local to remote: '. $filename . "\n";
+								$output .= '++ sent update from local to remote: '. $filename . "\n";
 							}
 							else
 							{
@@ -4453,7 +4495,7 @@ class plgProjectsFiles extends JPlugin
 										basename($filename), $filename,  $parentId, &$remoteFolders
 									);
 
-									$output .= 'created remote folder: '. $filename . "\n";
+									$output .= '++ created remote folder: '. $filename . "\n";
 
 								}
 								elseif ($local['type'] == 'file')
@@ -4464,7 +4506,7 @@ class plgProjectsFiles extends JPlugin
 										$local,  $parentId
 									);
 
-									$output .= 'added new file to remote: '. $filename . "\n";
+									$output .= '++ added new file to remote: '. $filename . "\n";
 								}
 							}						
 						}
@@ -4487,7 +4529,20 @@ class plgProjectsFiles extends JPlugin
 		// Get new change ID after local changes got sent to remote
 		if (!empty($locals))
 		{
-			$newSyncId 	  = $this->_connect->getChangedItems($service, $projectCreator, $newSyncId, &$newRemotes, &$deletes, $connections);			
+			$newSyncId = $this->_connect->getChangedItems($service, $projectCreator, 
+				$newSyncId, &$newRemotes, &$deletes, $connections);			
+		}
+		
+		// Get very last received remote change
+		if (!empty($remotes))
+		{
+			$tChange = NULL;
+			foreach ($remotes as $r => $ri)
+			{
+				$tChange = $ri['time'] > $tChange ? $ri['time'] : $tChange;
+			}
+
+			$lastSyncedChange = $tChange ? date('Y-m-d H:i:s', $tChange) : date('Y-m-d H:i:s');	
 		}
 		
 		// Image handler for generating thumbnails
@@ -4496,15 +4551,21 @@ class plgProjectsFiles extends JPlugin
 		// Make sure we have thumbnails for updates from local repo
 		if (!empty($newRemotes) && $synced != 1)
 		{
+			$tChange = NULL;
 			foreach ($newRemotes as $filename => $nR)
 			{
 				// Generate local thumbnail
 				if ($nR['thumb'])
 				{
 					// Download thumbnail
-					$this->_connect->generateThumbnail($service, $projectCreator, $nR, $this->_config, $this->_project->alias, $ih);																			
+					$this->_connect->generateThumbnail($service, $projectCreator, 
+						$nR, $this->_config, $this->_project->alias, $ih);																			
 				}
+				
+				$tChange = $nR['time'] > $tChange ? $nR['time'] : $tChange;
 			}
+			
+			$lastSyncedChange = $tChange ? date('Y-m-d H:i:s', $tChange) : date('Y-m-d H:i:s');
 		}
 										
 		// Record sync status
@@ -4524,6 +4585,8 @@ class plgProjectsFiles extends JPlugin
 			{												
 				// Record sync status
 				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
+				
+				$output .= 'Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'] . "\n";
 				
 				// Do we have a matching local change?
 				$match = !empty($locals) 
@@ -4565,7 +4628,7 @@ class plgProjectsFiles extends JPlugin
 					else
 					{
 						// Error
-						$output .= 'failed to provision local directory for: '. $filename . "\n";
+						$output .= '[error] failed to provision local directory for: '. $filename . "\n";
 						$failed[] = $filename;
 						continue;
 					}
@@ -4584,12 +4647,12 @@ class plgProjectsFiles extends JPlugin
 							$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 							
 							// Delete local file or directory
-							$output .= 'deleted from local: '. $filename . "\n";
+							$output .= '-- deleted from local: '. $filename . "\n";
 						}
 						else
 						{
 							// Error
-							$output .= 'failed to delete from local: '. $filename . "\n";
+							$output .= '[error] failed to delete from local: '. $filename . "\n";
 							$failed[] = $filename;
 							continue;
 						}						
@@ -4598,8 +4661,8 @@ class plgProjectsFiles extends JPlugin
 					{
 						// skip (deleted non-synced file)
 						$output .= $remote['converted'] == 1 
-									? 'deleted converted: '. $filename . "\n"
-									: 'skipped deleted non-synced item: '. $filename . "\n";
+									? '-- deleted converted: '. $filename . "\n"
+									: '## skipped deleted non-synced item: '. $filename . "\n";
 						$deleted = 1;		
 					}
 					
@@ -4612,21 +4675,21 @@ class plgProjectsFiles extends JPlugin
 				}
 				elseif ($remote['status'] == 'R' || $remote['status'] == 'W')
 				{
-					// Rename/move in Git
+					// Rename/move in Git	
 					if (file_exists($this->prefix . $path . DS . $remote['rename']))
-					{	
+					{
 						$output .= 'rename from: '. $remote['rename'] . ' to ' . $filename . "\n";
 						
 						if ($this->_git->gitMove($path, $remote['rename'], $filename, $remote['type'], &$commitMsg))
 						{
 							$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
-							$output .= 'renamed/moved item locally: '. $filename . "\n";
+							$output .= '>> renamed/moved item locally: '. $filename . "\n";
 							$updated = 1;
 						}
 						else
 						{
 							// Error
-							$output .= 'failed to rename/move item locally: '. $filename . "\n";
+							$output .= '[error] failed to rename/move item locally: '. $filename . "\n";
 							$failed[] = $filename;
 							continue;
 						}
@@ -4634,7 +4697,7 @@ class plgProjectsFiles extends JPlugin
 					
 					if ($remote['converted'] == 1)
 					{
-						$output .= 'renamed/moved item locally converted: '. $filename . "\n";
+						$output .= '>> renamed/moved item locally converted: '. $filename . "\n";
 						$updated = 1;
 					}
 				}
@@ -4643,7 +4706,7 @@ class plgProjectsFiles extends JPlugin
 					if ($remote['converted'] == 1)
 					{			
 						// Not updating converted files via sync
-						$output .= 'skipped converted remotely changed file: '. $filename . "\n";
+						$output .= '## skipped converted remotely changed file: '. $filename . "\n";
 						$updated = 1;						
 					}					
 					elseif (file_exists($this->prefix . $path . DS . $filename))
@@ -4656,7 +4719,7 @@ class plgProjectsFiles extends JPlugin
 							if ($remote['md5'] == $md5Checksum)
 							{
 								// Skip update
-								$output .= 'update skipped: local and remote versions identical: '
+								$output .= '## update skipped: local and remote versions identical: '
 										. $filename . "\n";
 								$updated = 1;
 							}
@@ -4669,13 +4732,13 @@ class plgProjectsFiles extends JPlugin
 									$this->_git->gitAdd($path, $filename, &$commitMsg);
 									$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 									
-									$output .= 'sent update from remote to local: '. $filename . "\n";
+									$output .= '++ sent update from remote to local: '. $filename . "\n";
 									$updated = 1;
 								}
 								else
 								{
 									// Error
-									$output .= 'failed to update local file with remote change: '. $filename . "\n";
+									$output .= '[error] failed to update local file with remote change: '. $filename . "\n";
 									$failed[] = $filename;
 									continue;
 								}								
@@ -4683,7 +4746,7 @@ class plgProjectsFiles extends JPlugin
 						}
 						else
 						{
-							$output .= 'skipped folder in sync: '. $filename . "\n";
+							$output .= '## skipped folder in sync: '. $filename . "\n";
 							$updated = 1;
 						}
 					}
@@ -4697,13 +4760,13 @@ class plgProjectsFiles extends JPlugin
 								$created = $this->_git->makeEmptyFolder($path, $filename);				
 								$commitMsg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($filename);
 								$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
-								$output .= 'created local folder: '. $filename . "\n";
+								$output .= '++ created local folder: '. $filename . "\n";
 								$updated = 1;
 							}
 							else
 							{
 								// error
-								$output .= 'failed to create local folder: '. $filename . "\n";
+								$output .= '[error] failed to create local folder: '. $filename . "\n";
 								$failed[] = $filename;
 								continue;
 							}
@@ -4717,13 +4780,13 @@ class plgProjectsFiles extends JPlugin
 								$this->_git->gitAdd($path, $filename, &$commitMsg);
 								$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 								
-								$output .= 'added new file to local: '. $filename . "\n";
+								$output .= '++ added new file to local: '. $filename . "\n";
 								$updated = 1;
 							}
 							else
 							{
 								// Error
-								$output .= 'failed to add new local file: '. $filename . "\n";
+								$output .= '[error] failed to add new local file: '. $filename . "\n";
 								$failed[] = $filename;
 								continue;
 							}
@@ -4764,16 +4827,12 @@ class plgProjectsFiles extends JPlugin
 		$output .= 'Local time: '. $endTime . "\n";
 		$output .= 'UTC time: '.  gmdate('Y-m-d H:i:s', strtotime($endTime)) . "\n";
 		$output .= 'Sync completed in: '.  $length . "\n";
-		$output .= 'Next sync ID: ' . ($newSyncId + 1) . "\n";
-				
-		// Debug output
-		//$this->_rSync['debug'] = '<pre>' . $output . '</pre>'; // on-screen debugging
-		$temp = $this->getProjectPath ($this->_project->alias, 'logs');
-		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . date('Y-m') . '.log', true);
 		
-		// Record sync status
-		$this->_writeToFile( JText::_('Sync complete! Updating view...') );
-									
+		if (!$nextSyncId)
+		{
+			$nextSyncId  = $newSyncId > $lastSyncId ? ($newSyncId + 1) : $lastSyncId;
+		}
+														
 		// Save sync time and last sync ID
 		if (empty($failed))
 		{
@@ -4783,12 +4842,22 @@ class plgProjectsFiles extends JPlugin
 			$obj->saveParam($this->_project->id, $service . '_sync', $endTime);
 			
 			// Save change id for next sync
-			if ($newSyncId && $newSyncId != $lastSyncId)
-			{
-				$obj->saveParam($this->_project->id, $service . '_sync_id', $newSyncId + 1);
-				$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);
-			}
+			$obj->saveParam($this->_project->id, $service . '_sync_id', ($nextSyncId));
+			$output .= 'Next sync ID: ' . ($newSyncId + 1) . "\n";
+			
+			$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);			
 		}
+		
+		$output .= 'Saving last synced change at: ' . $lastSyncedChange . "\n";
+		$obj->saveParam($this->_project->id, $service . '_last_synced_change', $lastSyncedChange);
+		
+		// Debug output
+		//$this->_rSync['debug'] = '<pre>' . $output . '</pre>'; // on-screen debugging
+		$temp = $this->getProjectPath ($this->_project->alias, 'logs');
+		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . date('Y-m') . '.log', true);
+		
+		// Record sync status
+		$this->_writeToFile( JText::_('Sync complete! Updating view...') );
 				
 		// Unlock sync
 		$this->lockSync($service, true);
@@ -4879,12 +4948,15 @@ class plgProjectsFiles extends JPlugin
 			$image_formats = array('png', 'gif', 'jpg', 'jpeg', 'tiff', 'bmp');
 			
 			// Make sure it's an image file
-			if (!in_array(strtolower($ext), $image_formats))
+			if (!in_array(strtolower($ext), $image_formats) || !is_file($from_path. $file))
 			{
 				return false;
 			}											
 			
-			JFile::copy($from_path. $file, JPATH_ROOT . $to_path . DS . $hashed);
+			if (!JFile::copy($from_path. $file, JPATH_ROOT . $to_path . DS . $hashed))
+			{
+				return false;
+			}
 			
 			// Resize the image if necessary
 			$ih->set('image',$hashed);

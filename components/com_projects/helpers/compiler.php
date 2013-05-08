@@ -93,7 +93,8 @@ class ProjectsCompiler extends JObject
 			'text'  => array (
 		      'text/plain',
 		      'text/css',
-			  'text/x-tex'
+			  'text/x-tex',
+			  'text/html'
 			)
 		);
 		

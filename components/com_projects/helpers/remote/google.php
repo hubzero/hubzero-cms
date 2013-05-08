@@ -716,10 +716,6 @@ class ProjectsGoogleHelper extends JObject
 		
 		// Search param
 		$q = "'" . $folderID . "' in parents";
-		if ($since)
-		{
-			//$q .= " and modifiedDate > '" . date("c", strtotime($since)) . "'";
-		}
 		
 		$parameters = array(
 			'q' => $q,
@@ -742,7 +738,7 @@ class ProjectsGoogleHelper extends JObject
 					
 					// Check against modified date
 					$changed = (strtotime(date("c", strtotime($item['modifiedDate'])))  - strtotime($since));
-					if ($since && $changed < 0)
+					if ($since && $changed <= 0)
 					{
 						$skip = 1;
 					}					
@@ -1096,7 +1092,7 @@ class ProjectsGoogleHelper extends JObject
 			case 'doc':				
 				$type 	= 'application/msword'; 		
 				break;
-				
+								
 			case 'xlsx': 				
 				$type 	= 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; 	
 				break;

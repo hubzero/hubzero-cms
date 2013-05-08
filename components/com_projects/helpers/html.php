@@ -509,6 +509,7 @@ class ProjectsHtml
 				break;
 			case 'eps':
 			case 'ai':
+			case 'wmf':
 				$icon = 'page_white_vector';
 				break;
 			case 'php':

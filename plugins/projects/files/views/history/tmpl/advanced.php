@@ -219,7 +219,7 @@ if ($this->getError()) {
 					$status .= ' <span class="crev">' . JText::_('COM_PROJECTS_FILE_STATUS_CURRENT') . '</span>';					
 				}
 				
-				$charLimit = $last == true ? 300 : 100;
+				$charLimit = $last == true ? 400 : 400;
 				
 				$trclass = $last ? 'current-revision' : '';
 				$trclass = $version['commitStatus'] == 'D' ? 'deleted-revision' : $trclass;
@@ -268,7 +268,8 @@ if ($this->getError()) {
 						<div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], array('A', 'M'))) 
 						{	
 							$over = strlen($version['content']) >= $charLimit ? 1 : 0;
-							$content = $over ? Hubzero_View_Helper_Html::shortenText($version['content'], $charLimit, 0, 1) : $version['content'];
+							$content = $over ? Hubzero_View_Helper_Html::shortenText($version['content'], $charLimit, 0) : $version['content'];
+							
 							echo '<div class="short-txt" id="short-' . $i . '"><pre>' . $content . '</pre>';
 							if ($over)
 							{

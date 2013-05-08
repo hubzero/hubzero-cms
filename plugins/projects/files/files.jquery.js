@@ -1037,8 +1037,9 @@ HUB.ProjectFiles = {
 	getFileExt: function(val)
 	{
 		var $ = this.jQuery;
-		var re = /[^.]+$/;
-	    var ext = val.match(re);
+		/*var re = /[^.]+$/;
+	    var ext = val.match(re);*/
+		var ext = val.split('.').pop().toLowerCase();
 		return ext;	
 	},
 	
@@ -1082,6 +1083,7 @@ HUB.ProjectFiles = {
 		  'sty'		: 1,
 		  'cls'	    : 1,
 		  'css'		: 1,
+		  'xml'		: 1,
 		  'jpg' 	: 1,
 		  'jpeg'	: 1,
 		  'gif' 	: 1,

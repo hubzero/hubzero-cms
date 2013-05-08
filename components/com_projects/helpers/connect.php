@@ -1706,11 +1706,10 @@ class ProjectsConnectHelper extends JObject {
 	 * @param      integer	$uid			User ID
 	 * @param      string	$since			last sync date
 	 * @param      array	$connections	Array of local-remote connections
-	 * @param      string	$path			Path
 	 *
 	 * @return     array
 	 */
-	public function getRemoteItems ($service = 'google', $uid = 0, $since = '', $connections = array(), $path = '' ) 
+	public function getRemoteItems ($service = 'google', $uid = 0, $since = '', $connections = array() ) 
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
@@ -1754,7 +1753,8 @@ class ProjectsConnectHelper extends JObject {
 			$duplicates = array();		
 			
 			// Get files in main project remote directory
-			$remotes = ProjectsGoogleHelper::getFolderContent ($apiService, $folderID, $remotes, $path, $since, $connections, &$duplicates);			
+			$remotes = ProjectsGoogleHelper::getFolderContent ($apiService, $folderID, 
+				$remotes, '', $since, $connections, &$duplicates);			
 		}
 		
 		return $remotes;

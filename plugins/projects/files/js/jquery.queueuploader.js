@@ -167,7 +167,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 			$('#f-upload').removeClass('disabled');
 		}
 	},
-	_checkArchive: function(ext)
+	_checkArchive: function()
 	{
 		var isArchive = 0;
 		
@@ -179,7 +179,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		for (var i=0; i< this._sFiles.length; i++)
 		{
 			fileName = this._sFiles[i];
-			ext = fileName.split('.').pop().toLowerCase();
+			var ext = fileName.split('.').pop().toLowerCase();
 			if (ext == 'zip' || ext == 'tar' || ext =='gz')
 			{
 				isArchive = 1;

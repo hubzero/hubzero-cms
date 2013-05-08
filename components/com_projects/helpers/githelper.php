@@ -302,9 +302,14 @@ class ProjectsGitHelper extends JObject {
 				$what = $hash . ':' . escapeshellarg($file);
 				break;
 				
-			case 'content':
+			case 'diff':
 				$exec = ' diff -M -C  ';
 				$what = $hash . '^ ' . $hash . ' -- '. escapeshellarg($file);
+				break;
+			
+			case 'content':
+				$exec = ' show  ';
+				$what = $hash . ':'. escapeshellarg($file);
 				break;
 								
 			case 'rename':
@@ -560,20 +565,7 @@ class ProjectsGitHelper extends JObject {
 				
 		return $out && substr($out[0], 0, 5) == 'fatal' ? array() : $out;
 	}
-	
-	/**
-	 * Get file change for sync
-	 * 
-	 * @param      string	$path		Repo path
-	 *
-	 * @return     array
-	 */
-	public function buildChangeArray() 
-	{
-	
-	
-	}
-	
+		
 	/**
 	 * Get changes for sync
 	 * 
@@ -970,9 +962,9 @@ class ProjectsGitHelper extends JObject {
 				// Exctract file content for certain statuses
 				if (in_array($revision['commitStatus'], array('A', 'M', 'R')) && $content)
 				{
-					$filterColor = $revision['commitStatus'] == 'M' ? true : false;
-					$content = $this->filterASCII($content, true, $filterColor);
-					$revision['content'] = $content;
+				//	$filterColor = $revision['commitStatus'] == 'M' ? true : false;
+				//	$content = $this->filterASCII($content, true, $filterColor);
+					$revision['content'] = $this->filterASCII($content);
 				}
 										
 				$versions[] = $revision;
@@ -1060,17 +1052,25 @@ class ProjectsGitHelper extends JObject {
 						if (substr($line, 0, 1) == '+')
 						{
 							$line = trim($line, '+');
-							$line = '<span class="rev-added">' . $line . '</span>';
+							$line = '<span class="rev-added">' . htmlentities($line) . '</span>';
 						}
 						if (substr($line, 0, 1) == '-')
 						{
 							$line = trim($line, '-');
-							$line = '<span class="rev-removed">' . $line . '</span>';
+							$line = '<span class="rev-removed">' . htmlentities($line) . '</span>';
 						}
+					}
+					else
+					{
+						$line = htmlentities($line);
 					}
 					
 					$line = trim($line, '+');
 					$line = trim($line, '-');
+				}
+				else
+				{
+					$line = htmlentities($line);
 				}
 				
 				$text.=  $line != '' ? $line . "\n" : "\n";

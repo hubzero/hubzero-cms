@@ -116,7 +116,7 @@ HUB.ProjectFilesFileUpload = {
 				else
 				{					
 					// Archive file present?
-					var arch = HUB.ProjectFilesFileUpload._checkArchive(files);
+					var arch = uploader._checkArchive();
 					
 					if (arch)
 					{
@@ -171,30 +171,6 @@ HUB.ProjectFilesFileUpload = {
 		}
 	},
 
-	_checkArchive: function(files)
-	{
-		var $ = this.jQuery;
-		var isArchive = 0;
-		
-		if (files.length == 0)
-		{
-			return 0;
-		}
-		
-		for (var i=0; i< files.length; i++)
-		{
-			var re = /[^.]+$/;
-		    var ext = files[i].match(re);
-		
-			if (ext == 'zip' || ext == 'tar' || ext =='gz')
-			{
-				isArchive = 1;
-			}
-		}
-
-		return isArchive;
-	},
-	
 	addConfirm: function () 
 	{	
 		var $ = this.jQuery;

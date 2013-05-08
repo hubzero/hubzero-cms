@@ -24,6 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 ?>
 <div id="abox-content">
 <?php
@@ -76,8 +77,13 @@ if (!$this->getError()) {
 	?>
 </ul>
 <?php } ?>
-<?php if ($this->data && in_array($this->cType, $this->formats['text'])) { ?>
-	<pre><?php echo $this->data; ?></pre>
+<?php if ($this->data && !$this->binary) { 
+	
+	// Clean up data from Windows characters - important!
+	$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
+
+?>
+	<pre><?php echo htmlentities($this->data); ?></pre>
 <?php } elseif ($this->embed && file_exists(JPATH_ROOT . $this->outputDir . DS . $this->embed)) { ?>
 	<div id="compiled-doc" embed-src="<?php echo $this->outputDir . DS . $this->embed; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
 	  <object width="<?php echo $this->oWidth; ?>" height="<?php echo $this->oHeight; ?>" type="<?php echo $this->cType; ?>" data="<?php echo $this->outputDir . DS . $this->embed; ?>" id="pdf_content">
