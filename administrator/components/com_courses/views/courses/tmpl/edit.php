@@ -69,10 +69,10 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if (form.getElementById('field-description').value == '') {
+	if (document.getElementById('field-title').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
-	} else if (form.getElementById('field-alias').value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
+	//} else if (form.getElementById('field-alias').value == '') {
+	//	alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -187,7 +187,202 @@ function submitbutton(pressbutton)
 				$pics = explode(DS, $pics);
 				$file = end($pics);
 			?>
-			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+			<div style="padding-top: 2.5em">
+				<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;task=upload&amp;id=<?php echo $this->row->get('id'); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
+					<noscript>
+						<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+					</noscript>
+				</div>
+			</div>
+				<?php 
+				$width = 0;
+				$height = 0;
+				$this_size = 0;
+				if ($this->row->get('logo')) {
+					$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
+
+					$this_size = filesize(JPATH_ROOT . $path . DS . $file);
+					list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $path . DS . $file);
+					$pic = $this->row->get('logo');
+				}
+				else
+				{
+					$pic = 'blank.png';
+					$path = '/administrator/images';
+				}
+				?>
+				<table class="formed">
+					<tbody>
+						<tr>
+							<td rowspan="6">
+								<img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo JText::_('COM_COURSES_LOGO'); ?>" />
+							</td>
+							<td><?php echo JText::_('FILE'); ?>:</td>
+							<td><span id="img-name"><?php echo $this->row->get('logo', '[ none ]'); ?></span></td>
+						</tr>
+						<tr>
+							<td><?php echo JText::_('SIZE'); ?>:</td>
+							<td><span id="img-size"><?php echo Hubzero_View_Helper_Html::formatsize($this_size); ?></span></td>
+						</tr>
+						<tr>
+							<td><?php echo JText::_('WIDTH'); ?>:</td>
+							<td><span id="img-width"><?php echo $width; ?></span> px</td>
+						</tr>
+						<tr>
+							<td><?php echo JText::_('HEIGHT'); ?>:</td>
+							<td><span id="img-height"><?php echo $height; ?></span> px</td>
+						</tr>
+						<tr>
+							<td><input type="hidden" name="currentfile" id="currentfile" value="<?php echo $file; ?>" /></td>
+							<td><a id="img-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $this->row->get('logo'); ?>&amp;id=<?php echo $this->row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<script type="text/javascript" src="/media/system/js/jquery.js"></script>
+				<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
+				<script type="text/javascript" src="/media/system/js/jquery.fileuploader.js"></script>
+				<script type="text/javascript">
+				String.prototype.nohtml = function () {
+					if (this.indexOf('?') == -1) {
+						return this + '?no_html=1';
+					} else {
+						return this + '&no_html=1';
+					}
+				};
+				jQuery(document).ready(function(jq){
+					var $ = jq;
+					
+					if ($("#ajax-uploader").length) {
+						var uploader = new qq.FileUploader({
+							element: $("#ajax-uploader")[0],
+							action: $("#ajax-uploader").attr("data-action"), // + $('#field-dir').val()
+							//params: {listdir: $('#listdir').val()},
+							multiple: true,
+							debug: true,
+							template: '<div class="qq-uploader">' +
+										'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+										'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+										'<ul class="qq-upload-list"></ul>' + 
+									   '</div>',
+							/*onSubmit: function(id, file) {
+								//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
+							},*/
+							onComplete: function(id, file, response) {
+								if (response.success) {
+									$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
+									$('#img-name').text(response.file);
+									$('#img-size').text(response.size);
+									$('#img-width').text(response.width);
+									$('#img-height').text(response.height);
+
+									$('#img-delete').show();
+								//$('#imgManager').attr('src', $('#imgManager').attr('src'));
+								}
+							}
+						});
+					}
+					$('#img-delete').on('click', function (e) {
+						e.preventDefault();
+						var el = $(this);
+						$.getJSON(el.attr('href').nohtml(), {}, function(response) {
+							if (response.success) {
+								$('#img-display').attr('src', '../administrator/images/blank.png');
+								$('#img-name').text('[ none ]');
+								$('#img-size').text('0');
+								$('#img-width').text('0');
+								$('#img-height').text('0');
+							}
+							el.hide();
+						});
+					});
+				});
+				</script>
+				<style>
+				/* Drag and drop file upload */
+					.qq-uploading {
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 107px;
+						color: #fff;
+						font-size: 18px;
+						padding: 75px 0 0 0;
+						text-align: center;
+						background: rgba(0,0,0,0.75);
+					}
+					.qq-uploader {
+						position: relative;
+						margin: 0;
+						padding: 0;
+					}
+					.qq-upload-button,
+					.qq-upload-drop-area {
+						background: #f7f7f7;
+						border: 3px dashed #ddd;
+						text-align: center;
+						color: #bbb;
+						text-shadow: 0 1px 0 #FFF;
+						padding: 0;
+						margin: 1em;
+						-webkit-border-radius: 3px;
+						-moz-border-radius: 3px;
+						-ms-border-radius: 3px;
+						-o-border-radius: 3px;
+						border-radius: 3px;
+						font-size: 1.1em;
+						font-weight: bold;
+					}
+					/*.asset-uploader:hover {
+						border: 3px solid #333;
+					}*/
+					.asset-uploader .columns {
+						margin-top: 0;
+						padding-top: 0;
+					}
+					.qq-upload-button,
+					.qq-upload-drop-area {
+						text-align: center;
+						padding: 0.4em 0;
+					}
+					.qq-upload-button span,
+					.qq-upload-drop-area span {
+						position: relative;
+						padding-left: 1.5em;
+					}
+					.qq-upload-button span:before,
+					.qq-upload-drop-area span:before {
+						display: block;
+						position: absolute;
+						top: 0em;
+						left: -0.2em;
+						font-family: "Fontcons";
+						content: "\f08c"; /*"\f046";*/
+						font-size: 1.1em;
+						line-height: 1;
+						content: "\f016";
+						left: 0;
+						font-weight: normal;
+					}
+					.qq-upload-button:hover,
+					.qq-upload-drop-area:hover,
+					.qq-upload-drop-area-active {
+						/*background: #fdfce4;*/
+						border: 3px solid #333;
+						color: #333;
+						cursor: pointer;
+					}
+					.qq-upload-drop-area {
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+					}
+					.qq-upload-list {
+						display: none;
+					}
+				</style>
 			<?php
 			} else {
 				echo '<p class="warning">'.JText::_('COM_COURSES_PICTURE_ADDED_LATER').'</p>';

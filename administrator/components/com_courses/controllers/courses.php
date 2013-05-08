@@ -157,6 +157,8 @@ class CoursesControllerCourses extends Hubzero_Controller
 			}
 		}
 
+		$this->view->config = $this->config;
+
 		// Output the HTML
 		$this->view->display();
 	}
