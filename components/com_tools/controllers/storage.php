@@ -60,6 +60,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		// Check if middleware is enabled
 		if ($this->_task != 'image'
 		 && $this->_task != 'css'
+		 && $this->_task != 'diskusage'
 		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin'))) 
 		{
 			// Redirect to home page

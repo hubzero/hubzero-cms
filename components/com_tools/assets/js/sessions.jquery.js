@@ -302,7 +302,7 @@ HUB.Mw = {
 		var holdTheInterval = setInterval(function(){
 			$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
 				$('#diskusage').html(data);
-			});
+			}, 'html');
 		}, 60000); 
 	},
 	
