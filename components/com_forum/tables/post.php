@@ -703,6 +703,16 @@ class ForumPost extends JTable
 			$where[] = "c.created >" . $this->_db->Quote($filters['start_at']);
 		}
 
+		if (isset($filters['id']) && $filters['id']) 
+		{
+			if (!is_array($filters['id']))
+			{
+				$filters['id'] = array($filters['id']);
+			}
+			$filters['id'] = array_map('intval', $filters['id']);
+			$where[] = "c.id IN (" . implode(',', $filters['id']) . ")";
+		}
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";

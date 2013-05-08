@@ -127,14 +127,24 @@ class ForumControllerApi extends Hubzero_Api_Controller
 
 		if ($find == 'count')
 		{
+			$data->count = 0;
+			$data->threads = 0;
+
 			if (isset($filters['thread']))
 			{
 				$data->count = $post->countTree($filters['thread'], $filters);
 			}
-			else
+			/*else
 			{
 				$data->count = $post->count($filters);
+			}*/
+			$post->loadByObject($filters['object_id'], $filters['scope_id'], $filters['scope']);
+			if ($post->id)
+			{
+				$filters['start_at'] = JRequest::getVar('threads_start', '');
+				$filters['parent'] = $post->id;
 			}
+			$data->threads = $post->count($filters);
 		}
 		else
 		{
