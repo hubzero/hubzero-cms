@@ -61,10 +61,12 @@ class CitationFormat
 		"booktitle" => "{BOOK TITLE}",
 		"chapter" => "{CHAPTER}",
 		"journal" => "{JOURNAL}",
+		"journaltitle" => "{JOURNAL TITLE}",
 		"volume" => "{VOLUME}",
 		"number" => "{ISSUE/NUMBER}",
 		"pages" => "{PAGES}",
 		"isbn" => "{ISBN/ISSN}",
+		"issn" => "{ISSN}",
 		"doi" => "{DOI}",
 		"series" => "{SERIES}",
 		"edition" => "{EDITION}",
@@ -91,18 +93,19 @@ class CitationFormat
 	 * @var array
 	 */
 	protected $_coins_keys = array(
-		'title' => 'rft.atitle',
-		//'journal' => 'rft.jtitle',
-		'date_publish' => 'rft.date',
-		'volume' => 'rft.volume',
-		'number' => 'rft.issue',
-		'pages' => 'rft.pages',
-		'isbn' => 'rft.issn',
-		//'type' => 'rft.genre',
-		'author' => 'rft.au',
-		'url' => 'rft_id',
-		'doi' => 'rft_id=info:doi/',
-		'author' => 'rft.au'
+		'title' 		=> 'rft.atitle',
+		'journaltitle' 	=> 'rft.jtitle',
+		'date_publish' 	=> 'rft.date',
+		'volume' 		=> 'rft.volume',
+		'number' 		=> 'rft.issue',
+		'pages' 		=> 'rft.pages',
+		'issn' 			=> 'rft.issn',
+		'isbn' 			=> 'rft.isbn',
+		'type' 			=> 'rft.genre',
+		'author' 		=> 'rft.au',
+		'url' 			=> 'rft_id',
+		'doi' 			=> 'rft_id=info:doi/',
+		'author' 		=> 'rft.au'
 	);
 
 	/**
@@ -111,8 +114,8 @@ class CitationFormat
 	 * @var array
 	 */
 	protected $_default_format = array(
-		'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: pg. {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
-		'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: pg. {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})"
+		'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
+		'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})"
 	);
 
 	/**
@@ -172,9 +175,10 @@ class CitationFormat
 	 * @param      string  $highlight     String that we want to highlight
 	 * @param      boolean $include_coins Include COINs?
 	 * @param      object  $config        JParameter
+	 * @param      boolean $coins_only 	  Only output COINs?
 	 * @return     string Formatted citation
 	 */
-	public function formatCitation($citation, $highlight = NULL, $include_coins = true, $config)
+	public function formatCitation($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
 	{
 		//get hub specific details
 		$jconfig = JFactory::getConfig();
@@ -247,18 +251,18 @@ class CitationFormat
 					//key specific
 					switch($k)
 					{
-						case 'isbn':
-							$coins_data[] = ($c_type == 'book') ? "rft.isbn={$citation->$k}" : "rft.issn={$citation->$k}";
-							break;
 						case 'title':
 							break;
-						//	$coins_data[] = ($c_type == 'book') ? "rft.btitle={$citation->$k}" : "rft.atitle={$citation->$k}";
-						//	break;
 						case 'doi':
 							$coins_data[] = $this->_coins_keys[$k] . $citation->$k;
 							break;
 						case 'url':
 							$coins_data[] = $this->_coins_keys[$k] . '=' . htmlentities($citation->$k);
+							break;
+						case 'journaltitle':
+							$jt = html_entity_decode($citation->$k);
+							$jt = (!preg_match('!\S!u', $jt)) ? utf8_encode($jt) : $jt;
+							$coins_data[] = $this->_coins_keys[$k] . '=' . $jt;
 							break;
 						default:
 							$coins_data[] = $this->_coins_keys[$k] . '=' . $citation->$k;
@@ -362,7 +366,7 @@ class CitationFormat
 					
 					//do we want to display single citation
 					$singleCitationView = $config->get('citation_single_view', 1);
-					if ($singleCitationView)
+					if ($singleCitationView && isset($citation->id))
 					{
 						$title = '<a href="'.JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id).'">' . $t . '</a>';
 					}
@@ -380,8 +384,12 @@ class CitationFormat
 				}
  			}
 		}
+		
+		// Add more to coins
+		
 
-		$cite = strtr($template, $replace_values);
+		$tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;
+		$cite = strtr($tmpl, $replace_values);
 
 		// Strip empty tags
 		$pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";
@@ -447,14 +455,22 @@ class CitationFormat
 		}
 		
 		//percent encode chars
-		$chars = array(' ', '%', '/', ':', '"', '&amp;');
+		$chars = array('%', ' ', '/', ':', '"', '&amp;');
 		$replace = array("%20", "%20", "%2F", "%3A", "%22", "%26");
 		$coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 		
+		$cite = preg_replace('/, :/', ':', $cite);
+		
 		//if we want coins add them
-		if ($include_coins) 
+		if ($include_coins || $coins_only) 
 		{
-			$cite .= '<span class="Z3988" title="' . $coins_data . '"></span>';
+			$coins = '<span class="Z3988" title="' . $coins_data . '"></span>';
+			if ($coins_only == true)
+			{
+				return $coins;
+			}
+			
+			$cite .= $coins;
 		}
 		
 		//output the citation

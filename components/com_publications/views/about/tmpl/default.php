@@ -84,6 +84,7 @@ if ($this->params->get('show_tags')) {
 	}
 }
 
+
 // Show version notes
 if($this->publication->release_notes) {
 	$notes = $this->parser->parse( stripslashes($this->publication->release_notes), $this->wikiconfig );
@@ -96,6 +97,7 @@ $html .= "\t".' </tbody>'."\n";
 $html .= "\t".'</table>'."\n";
 $html .= '</div><!-- / .subject -->'."\n";
 $html .= '<div class="clear"></div>'."\n";
+
 $html .= '<input type="hidden" name="rid" id="rid" value="'.$this->publication->id.'" />'."\n";
 echo $html;
 	

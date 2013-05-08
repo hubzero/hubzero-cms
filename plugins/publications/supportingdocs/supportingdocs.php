@@ -67,7 +67,7 @@ class plgPublicationsSupportingDocs extends JPlugin
 	 */	
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true ) 
 	{
-		if ($publication->_category->_params->get('plg_supportingdocs') && $extended) 
+		if ($publication->_category->_params->get('plg_supportingdocs')) 
 		{
 			$areas = array(
 				'supportingdocs' => JText::_('PLG_PUBLICATION_SUPPORTINGDOCS')
@@ -110,10 +110,10 @@ class plgPublicationsSupportingDocs extends JPlugin
 		}
 		
 		// Only applicable to latest published version
-		if (!$extended) 
+		/*if (!$extended) 
 		{
 			return $arr;
-		}
+		}*/
 				
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('publications', 'supportingdocs');
