@@ -346,100 +346,103 @@ class ToolsControllerSessions extends Hubzero_Controller
 
 		$params = JRequest::getString('params','','default',JREQUEST_ALLOWRAW);
 
-		$params_whitelist = explode(',',$this->config->get('params_whitelist',''));
-
-		$separator = "\r\n";
-
-		$line = trim( strtok($params, $separator) );
-
-		$verified_params = array();
-
-		while ($line !== false) 
+		if (!empty($params))
 		{
-			$re = "/\s*(directory|file)\s*(?:\:|\(\s*(.*?)\s*\)\s*:)\s*(.*?)\s*$/";
-			
-			if (preg_match($re, $line, $matches) !== false)
+			$params_whitelist = explode(',',$this->config->get('params_whitelist',''));
+	
+			$separator = "\r\n";
+	
+			$line = trim( strtok($params, $separator) );
+	
+			$verified_params = array();
+	
+			while ($line !== false) 
 			{
-				$type = $matches[1];
-				$key  = $matches[2];
-				$value = $matches[3];
-
-				// Replace ~/ prefix with user's home directory
-				if (strncmp($value,"~/",2) === 0)
+				$re = "/\s*(directory|file)\s*(?:\:|\(\s*(.*?)\s*\)\s*:)\s*(.*?)\s*$/";
+				
+				if (preg_match($re, $line, $matches) !== false)
 				{
-					$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+					$type = $matches[1];
+					$key  = $matches[2];
+					$value = $matches[3];
 	
-					$homeDirectory = rtrim($xprofile->get('homeDirectory'),"/");
+					// Replace ~/ prefix with user's home directory
+					if (strncmp($value,"~/",2) === 0)
+					{
+						$xprofile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		
+						$homeDirectory = rtrim($xprofile->get('homeDirectory'),"/");
+		
+						if (!isset($homeDirectory[0]) || $homeDirectory[0] !== '/')
+						{
+							break;
+						}
 	
-					if (!isset($homeDirectory[0]) || $homeDirectory[0] !== '/')
+						$value = substr_replace($value,$homeDirectory,0,1);
+					}
+	
+					// Fail if $value doesn't start with '/'
+					if ($value[0] != '/')
 					{
 						break;
 					}
-
-					$value = substr_replace($value,$homeDirectory,0,1);
-				}
-
-				// Fail if $value doesn't start with '/'
-				if ($value[0] != '/')
-				{
-					break;
-				}
-
-				// Fail if unable to normalize $value
-				$value = $this->normalize_path($value, $type == 'file');
-
-				if ($value === false)
-				{
-					break;
-				}
-
-				// Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
-				if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0)
-				{
-					break;
-				}
-
-				// Fail if $value isn't prefixed with a whitelisted directory
-				foreach($params_whitelist as $wl)
-				{
-					$wl = rtrim($wl,'/') . '/'; 	// make sure we compare against a full path element
-
-					if (strncmp($wl,$value,strlen($wl)) === 0)
+	
+					// Fail if unable to normalize $value
+					$value = $this->normalize_path($value, $type == 'file');
+	
+					if ($value === false)
 					{
-						$match = $wl;
 						break;
 					}
-				}
-
-				if (!isset($match))
+	
+					// Fail if $value contains a control charcater (0x00-0x1F) or an invalid utf-8 string
+					if (preg_match('/^[^\x00-\x1f]*$/u', $value) == 0)
+					{
+						break;
+					}
+	
+					// Fail if $value isn't prefixed with a whitelisted directory
+					foreach($params_whitelist as $wl)
+					{
+						$wl = rtrim($wl,'/') . '/'; 	// make sure we compare against a full path element
+	
+						if (strncmp($wl,$value,strlen($wl)) === 0)
+						{
+							$match = $wl;
+							break;
+						}
+					}
+	
+					if (!isset($match))
+					{
+						break;
+					}
+	
+					// Add verified parameter to array
+					if ($key)		
+					{
+						$verified_params[] = $type . "(" . $key . "):" .$value;
+					}
+					else
+					{
+						$verified_params[] = $type . ":" . $value;
+					}
+				} 
+				else if (!empty($line)) // Fail if unrecognized non-empty parameter line
 				{
 					break;
 				}
-
-				// Add verified parameter to array
-				if ($key)		
-				{
-					$verified_params[] = $type . "(" . $key . "):" .$value;
-				}
-				else
-				{
-					$verified_params[] = $type . ":" . $value;
-				}
-			} 
-			else if (!empty($line)) // Fail if unrecognized non-empty parameter line
-			{
-				break;
+	
+				$line = strtok( $separator );  // Get next line
 			}
-
-			$line = strtok( $separator );  // Get next line
+	
+			if ($line !== false)
+			{
+				$this->badparamsTask($params);
+				return;
+			}
 		}
-
-		if ($line !== false)
-		{
-			$this->badparamsTask($params);
-			return;
-		}
-
+		
 		// Incoming
 		$app = new stdClass;
 		$app->name    = trim(str_replace(':', '-', JRequest::getVar('app', '')));
