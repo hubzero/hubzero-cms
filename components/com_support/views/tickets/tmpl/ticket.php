@@ -321,7 +321,7 @@ ximport('Hubzero_User_Profile_Helper');
 					</p><!-- / .comment-head -->
 <?php 		if ($comment->comment) { ?>
 					<div class="comment-body" cite="<?php echo $cite; ?>">
-						<p><?php echo preg_replace('/  /', ' &nbsp;', $comment->comment); ?></p>
+						<p><?php echo $comment->comment; ?></p>
 					</div><!-- / .comment-body -->
 <?php 		} ?>
 				</div><!-- / .comment-content -->
@@ -358,14 +358,20 @@ ximport('Hubzero_User_Profile_Helper');
 					$comment->changelog = str_replace('E-mailed', JText::_('Messaged'), $comment->changelog);
 					$clog .= str_replace('emaillog', 'notifications', $comment->changelog);
 				}
+				if (!$clog) {
+					$clog = '<ul class="changes"><li>No changes made.</li></ul>';
+				}
 ?>
 <?php 			if ($clog) { ?>
 					<div class="comment-changelog">
 						<?php echo $clog; ?>
 					</div><!-- / .changelog -->
 <?php 			} ?>
-<?php 		}  // if (trim($comment->changelog))  ?>
-
+<?php 		} else { // if (trim($comment->changelog))  ?>
+				<div class="comment-changelog">
+					<ul class="changes"><li>No changes made.</li></ul>
+				</div><!-- / .changelog -->
+<?php 		} ?>
 			</li>
 <?php
 		}  // foreach 
