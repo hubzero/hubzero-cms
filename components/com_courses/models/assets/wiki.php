@@ -32,9 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
-* Note Asset handler class
+* Wiki page asset handler class
 */
-class NoteAssetHandler extends ContentAssetHandler
+class WikiAssetHandler extends ContentAssetHandler
 {
 	/**
 	 * Class info
@@ -45,8 +45,8 @@ class NoteAssetHandler extends ContentAssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'A textual note',
-			'responds_to'    => array('note')
+			'action_message' => 'A textual wiki page',
+			'responds_to'    => array('wiki')
 		);
 
 	/**
@@ -58,7 +58,7 @@ class NoteAssetHandler extends ContentAssetHandler
 	{
 		$this->asset['title']   = JRequest::getString('title', '');
 		$this->asset['type']    = 'text';
-		$this->asset['subtype'] = JRequest::getWord('style', 'note');
+		$this->asset['subtype'] = 'wiki';
 
 		// Make sure content is provided
 		if (!JRequest::getVar('content', false))

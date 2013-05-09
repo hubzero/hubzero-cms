@@ -435,8 +435,8 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 				case 'object':
 					$ext = 'object';
 					break;
-				case 'note':
-					$ext = 'note';
+				case 'wiki':
+					$ext = 'wiki';
 					break;
 			}
 		}

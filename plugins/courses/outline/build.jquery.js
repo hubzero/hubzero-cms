@@ -827,11 +827,11 @@ HUB.CoursesOutline = {
 		$('.aux-attachments a').tooltip();
 
 		// Add a click to show URL attach form
-		$('.unit').on('click', '.aux-attachments a:not(.browse-files, .attach-note)', function (e) {
+		$('.unit').on('click', '.aux-attachments a:not(.browse-files, .attach-wiki)', function (e) {
 			e.preventDefault();
 			$(this).siblings('.aux-attachments-form').find('.aux-attachments-content-label').html(e.originalEvent.target.title);
 			$(this).siblings('.aux-attachments-form').find('.input-type').val(e.originalEvent.target.className.replace(/attach-/, ""));
-			$(this).siblings('.aux-attachments-form').removeClass('attach-link attach-object attach-note browse-files').addClass(e.originalEvent.target.className);
+			$(this).siblings('.aux-attachments-form').removeClass('attach-link attach-object attach-wiki browse-files').addClass(e.originalEvent.target.className);
 			$(this).siblings('.aux-attachments-form').fadeIn();
 		});
 
@@ -861,14 +861,14 @@ HUB.CoursesOutline = {
 			contentBoxClose();
 		});
 
-		$('.unit').on('click', '.aux-attachments a.attach-note', function (e) {
+		$('.unit').on('click', '.aux-attachments a.attach-wiki', function (e) {
 			e.preventDefault();
 
 			var form       = $(this).siblings('.aux-attachments-form');
 			var src        = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
 				src       += '&scope=wiki&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
 
-			$('.content-box-header span').html('Create a Note');
+			$('.content-box-header span').html('Create a wiki page');
 
 			contentBox.show('slide', {'direction':'down'}, 500, function () {
 				$(this).siblings('.content-box-overlay').fadeIn(100);
@@ -883,7 +883,7 @@ HUB.CoursesOutline = {
 				contentBoxClose();
 			});
 
-			content.find('.wiki-edit-form').submit(function (e) {
+			content.find('.edit-form').submit(function (e) {
 				e.preventDefault();
 
 				// Create ajax call to change info in the database
@@ -1395,7 +1395,7 @@ HUB.CoursesOutline = {
 						'</form>',
 						'<a href="#" title="Attach a link" class="attach-link"></a>',
 						'<a href="#" title="Embed a Kaltura or YouTube Object" class="attach-object"></a>',
-						'<a href="#" title="Include a note" class="attach-note"></a>',
+						'<a href="#" title="Include a wiki page" class="attach-wiki"></a>',
 						'<a href="#" title="Browse for files" class="browse-files"></a>',
 					'</div>',
 					'<form action="/api/courses/asset/new" class="uploadfiles-form">',

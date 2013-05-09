@@ -248,7 +248,8 @@
 	.homework:after {
 		content: "\270e";
 	}
-	.note:after {
+	.note:after,
+	.wiki:after {
 		content: "\f02a";
 	}
 	.link:after {
@@ -256,9 +257,6 @@
 	}
 	.object:after {
 		content: "\f0c3";
-	}
-	.wiki:after {
-		content: "\f072";
 	}
 
 /* lecture */

@@ -314,7 +314,7 @@
 .aux-attachments form.attach-object {
 	right: 128px;
 }
-.aux-attachments form.attach-note {
+.aux-attachments form.attach-wiki {
 	right: 92px;
 }
 .aux-attachments form.browse-files {
@@ -387,7 +387,7 @@
 .aux-attachments a.attach-link:before {
 	content: "\26D3";
 }
-.aux-attachments a.attach-note:before {
+.aux-attachments a.attach-wiki:before {
 	content: "\f02a";
 }
 .aux-attachments a.attach-object:before {
@@ -724,7 +724,8 @@ ul {
 .homework:after {
 	content: "\270e";
 }
-.note:after {
+.note:after,
+.wiki:after {
 	content: "\f02a";
 }
 .link:after {
@@ -732,9 +733,6 @@ ul {
 }
 .object:after {
 	content: "\f0c3";
-}
-.wiki:after {
-	content: "\f072";
 }
 
 .asset-group-item .checker {
