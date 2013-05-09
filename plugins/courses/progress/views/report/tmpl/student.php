@@ -59,6 +59,7 @@ $asset  = new CoursesTableAsset(JFactory::getDBO());
 $assets = $asset->find(
 	array(
 		'w' => array(
+			'course_id'  => $this->course->get('id'),
 			'section_id' => $this->course->offering()->section()->get('id'),
 			'asset_type' => 'form',
 			'state'      => 1
