@@ -33,6 +33,9 @@ input.placeholder {
 	margin: 0;
 	padding: 0;
 }
+label {
+	display: block;
+}
 #group-box {
 	opacity: 0.5;
 	background: #ddd;

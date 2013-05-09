@@ -14,6 +14,14 @@
 		<input type="text" class="required" id="title" value="<?= str_replace('"', '&quot;', $this->title) ?>" />
 		<p id="title-error" class="error"></p>
 	</label>
+	<label>
+		Type:
+		<select name="type" id="asset-type">
+			<option value="exam"<?= ($this->pdf->getAssetType() == 'exam') ? 'selected=selected': '' ?>>Exam</option>
+			<option value="quiz"<?= ($this->pdf->getAssetType() == 'quiz') ? 'selected=selected': '' ?>>Quiz</option>
+			<option value="homework"<?= ($this->pdf->getAssetType() == 'homework') ? 'selected=selected': '' ?>>Homework</option>
+		</select>
+	</label>
 	<ol id="pages">
 		<? 
 			$tabs = array();

@@ -70,6 +70,13 @@ class PdfForm
 	private $title = NULL;
 
 	/**
+	 * Form type
+	 *
+	 * @var string
+	 **/
+	private $type = NULL;
+
+	/**
 	 * Base path for form images
 	 *
 	 * @var string
@@ -435,7 +442,43 @@ class PdfForm
 			}
 		}
 
+		// Save form type as well
+		$this->setAssetType();
+
 		return $this;
+	}
+
+	/**
+	 * Save asset type
+	 *
+	 * @return object
+	 **/
+	public function setAssetType()
+	{
+		$dbh = self::getDbh();
+		$dbh->setQuery('UPDATE `#__courses_assets` SET `subtype` = ' . $dbh->Quote(JRequest::getWord('type', 'quiz')) . ' WHERE id = ' . $this->getAssetId());
+
+		$dbh->query();
+	}
+
+	/**
+	 * Get asset type
+	 *
+	 * @return object
+	 **/
+	public function getAssetType()
+	{
+		if (isset($this->type))
+		{
+			return $this->type;
+		}
+
+		$dbh = self::getDbh();
+		$dbh->setQuery('SELECT subtype FROM `#__courses_assets` WHERE id = ' . $this->getAssetId());
+
+		$this->type = $dbh->loadResult();
+
+		return $this->type;
 	}
 
 	/**

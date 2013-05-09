@@ -163,9 +163,10 @@ jQuery(function($) {
 		saveButton.text('Saving...').attr('disabled', true);
 		var serialized = {
 			'formId': window.location.search.toString().match(/formId=(\d+)/)[1],
-			'task': 'saveLayout',
-			'pages': [],
-			'title': $('#title').val().replace(/^\s+|\s+$/g, '')
+			'task'  : 'saveLayout',
+			'pages' : [],
+			'title' : $('#title').val().replace(/^\s+|\s+$/g, ''),
+			'type'  : $('#asset-type').val()
 		};
 		if (serialized.title == '') {
 			$('#title-error').text('Please enter a title for this document').show();
