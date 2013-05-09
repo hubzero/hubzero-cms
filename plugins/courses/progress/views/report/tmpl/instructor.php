@@ -97,10 +97,10 @@ $policy = $gradePolicy->get('description');
 		<div class="header-student-name">Name</div>
 		<div class="header-sub">
 			<div class="header-progress">Unit Progress
-				<span title="This reflects what students have viewed, not the actual scores that they may have received.">(details)</span>
+				<span title="This reflects what students have viewed, not the actual scores that they may have received.">details</span>
 			</div>
 			<div class="header-score">Current Score
-				<span title="<?= $policy ?>">(details)</span>
+				<span title="<?= $policy ?>">details</span>
 			</div>
 		</div>
 	</div>

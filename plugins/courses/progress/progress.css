@@ -394,6 +394,7 @@
 	font-size: 16px;
 	text-transform: uppercase;
 	border-bottom: 1px solid #AAA;
+	padding-bottom: 6px;
 }
 .instructor .headers .header-sub {
 	margin-left: 200px;
@@ -403,12 +404,41 @@
 .instructor .headers .header-student-name {
 	width: 190px;
 }
-.instructor .headers .header-progress {
+.instructor .headers div.header-progress {
 	width: 50%;
+	padding-bottom: 2px;
 }
-.instructor .header-score {
+.instructor .headers div.header-score {
 	width: 48%;
 	margin-left: 2%;
+	padding-bottom: 2px;
+}
+.instructor .header-score span,
+.instructor .header-progress span {
+	display: inline-block;
+	margin: 0 0 2px 10px;
+	position: relative;
+	padding: 0 5px;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 5px #FFF;
+	color: #555;
+	border: 1px solid #ccc;
+
+	background: #EEE;
+	background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#DDD));
+	background: -webkit-linear-gradient(#EEE, #DDD);
+	background: -moz-linear-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -moz-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -o-linear-gradient(#EEE, #DDD);
+	background-image: -ms-linear-gradient(top, #EEE 0%, #DDD 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE,endColorstr=#DDD);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE, endColorstr=#DDD)";
+}
+.instructor .header-score span:before,
+.instructor .header-progress span:before {
+	margin-right: 3px;
+	font-family: "Fontcons";
+	content: "\f05a";
 }
 .instructor .headers div.header-units {
 	float: none;
