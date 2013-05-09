@@ -37,7 +37,7 @@ $publish_down = (!is_null($unit->get('publish_down')) && $unit->get('publish_dow
 ?>
 
 <div class="main section <?php echo $this->scope; ?>-edit">
-	<form action="/api/courses/unit/save" class="unit-details-form">
+	<form action="/api/courses/unit/save" class="edit-form unit-edit-form">
 		<input type="text" value="<?php echo $publish_up; ?>"   name="publish_up"   id="publish_up"   class="datepicker" placeholder="Start publishing on" />
 		<input type="text" value="<?php echo $publish_down; ?>" name="publish_down" id="publish_down" class="datepicker" placeholder="Stop publishing on" />
 

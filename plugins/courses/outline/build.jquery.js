@@ -1228,7 +1228,7 @@ HUB.CoursesOutline = {
 						dateFormat: 'yy-mm-dd'
 					});
 
-					var detailsForm = $('.unit-details-form');
+					var detailsForm = $('.unit-edit-form');
 					detailsForm.submit(function(e){
 						e.preventDefault();
 

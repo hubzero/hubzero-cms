@@ -994,6 +994,14 @@ ul {
 	font-size: 14px;
 	font-weight: bolder;
 }
+.unit-edit-form input,
+.unit-edit-form input[type="submit"] {
+	width: 100%;
+	margin-bottom: 20px;
+}
+.unit-edit-form {
+	padding: 10px;
+}
 .wiki-edit .wiki-include-assets {
 	margin: 10px 0;
 	width: 99%;
