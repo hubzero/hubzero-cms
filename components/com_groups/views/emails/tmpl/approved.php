@@ -41,13 +41,6 @@ if (substr($sef,0,1) == '/') {
 $message  = JText::sprintf('GROUPS_EMAIL_MSG_APPROVED', $this->sitename)."\n\n";
 $message .= JText::_('GROUPS_ID').': '. $this->group->get('cn') ."\n";
 $message .= JText::_('GROUPS_TITLE').': '. $this->group->get('description') ."\n";
-switch ($this->group->get('access'))
-{
-	case 4: $privacy = JText::_('GROUPS_ACCESS_PRIVATE');   break;
-	case 3: $privacy = JText::_('GROUPS_ACCESS_PROTECTED'); break;
-	case 0: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
-}
-$message .= JText::_('GROUPS_PRIVACY').': '. $privacy ."\n";
 $message .= "\n";
 $message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_GROUP')."\n";
 $message .= $juri->base().$sef."\n";
