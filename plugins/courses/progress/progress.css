@@ -250,24 +250,32 @@
 	margin: 0;
 }
 .grades .grading-policy {
-	background: #F5F5F5;
 	display: block;
-	float: right;
 	padding: 5px;
-	border-radius: 5px;
+	float: right;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 5px #FFF;
 	margin: 20px;
-	border: 1px solid #C9C9C9;
-	box-shadow: 0 0 2px #DDD;
+	line-height: 1.6em;
+	color: #555;
+	border: 1px solid #ccc;
+
+	background: #EEE;
+	background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#DDD));
+	background: -webkit-linear-gradient(#EEE, #DDD);
+	background: -moz-linear-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -moz-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -o-linear-gradient(#EEE, #DDD);
+	background-image: -ms-linear-gradient(top, #EEE 0%, #DDD 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE,endColorstr=#DDD);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE, endColorstr=#DDD)";
 }
 .grades .grading-policy:hover {
-	border: 1px solid #BBB;
-	box-shadow: 0 0 6px #CCC;
 	cursor: pointer;
+	box-shadow: 0 0 6px #CCC;
 }
 .grades .grading-policy.active {
-	border: 1px solid #999;
-	background: #EEEEEE;
-	box-shadow: inset 0 0 2px #555;
+	box-shadow: inset 1px 1px 1px #111;
 }
 .grades .title {
 	text-transform: uppercase;
@@ -325,18 +333,50 @@
 	margin-top: 20px;
 	padding: 20px;
 	overflow: hidden;
-	border: 2px solid #CCC;
-	box-shadow: 0 0 3px #AAA;
-	background: url('/components/com_courses/assets/img/samplebadge.png') 10px 8px no-repeat;
-	border-radius: 5px;
+	border: 2px dotted #AAA;
+	opacity: 0.8;
+}
+.badge.earned {
+	opacity: 1;
 }
 .badge h3 {
-	padding-left: 100px;
-	margin: 0;
+	padding-left: 150px;
+	margin: 10px 0 0 0;
 }
 .badge p {
-	padding-left: 100px;
+	padding-left: 150px;
 	margin-bottom: 0;
+}
+.badge img {
+	float: left;
+}
+.badge .claim-badge {
+	display: block;
+	padding: 10px;
+	float: left;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 5px #FFF;
+	margin: 0 0 20px 0;
+	line-height: 1.6em;
+	color: #555;
+	border: 1px solid #ccc;
+
+	background: #EEE;
+	background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#DDD));
+	background: -webkit-linear-gradient(#EEE, #DDD);
+	background: -moz-linear-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -moz-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -o-linear-gradient(#EEE, #DDD);
+	background-image: -ms-linear-gradient(top, #EEE 0%, #DDD 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE,endColorstr=#DDD);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE, endColorstr=#DDD)";
+}
+.badge .claim-badge:hover {
+	cursor: pointer;
+	box-shadow: 0 0 6px #CCC;
+}
+.badge .claim-badge:active {
+	box-shadow: inset 1px 1px 1px #111;
 }
 
 /* instructor interface styles */
@@ -719,7 +759,7 @@
 .instructor .grade-policy form button:hover,
 .instructor .grade-policy .restore-defaults:hover {
 	cursor: pointer;
-	box-shadow: 0 0 4px #555;
+	box-shadow: 0 0 6px #CCC;
 }
 .instructor .grade-policy form button:active,
 .instructor .grade-policy .restore-defaults:active {

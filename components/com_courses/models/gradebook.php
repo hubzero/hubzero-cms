@@ -36,6 +36,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php');
@@ -477,12 +478,79 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
-	 * Check whether or not the student has earned a badge
+	 * Check whether or not the student(s) have earned a badge
 	 *
 	 * @param      int $user_id
 	 * @return     bool
 	 **/
 	public function hasEarnedBadge($user_id=null)
 	{
+		// Check whether or not their eligable for a badge at this point
+		// First, does this course even offers a badge
+		if (!is_null($this->course->offering()->badge()->get('id')))
+		{
+			// Get a grade policy object
+			$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+
+			// Get count of forms take
+			$results = $this->_tbl->getFormCompletionCount($this->course->get('id'), $user_id);
+
+			// Restructure data
+			foreach ($results as $r)
+			{
+				$counts[$r->user_id][$r->subtype] = $r->count;
+			}
+
+			// Get weights to determine what counts toward the final grade
+			$exam_weight     = $gradePolicy->get('exam_weight');
+			$quiz_weight     = $gradePolicy->get('quiz_weight');
+			$homework_weight = $gradePolicy->get('homework_weight');
+
+			// Get count of total forms
+			$totals = $this->_tbl->getFormCount();
+
+			if (!is_null($user_id) && !is_array($user_id))
+			{
+				$user_id = (array)$user_id;
+			}
+			else
+			{
+				$user_id = array();
+				foreach ($this->course->offering()->section()->members() as $m)
+				{
+					$user_id[] = $m->get('id');
+				}
+			}
+
+			// Loop though the users
+			foreach ($user_id as $u)
+			{
+				$passing = $this->passing(true, $u);
+
+				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
+				if (
+					($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']->count     == $counts[$u]['exam']))     &&
+					($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']->count     == $counts[$u]['quiz']))     &&
+					($homework_weight == 0 || ($homework_weight > 0 && $totals['homework']->count == $counts[$u]['homework'])) &&
+					$passing[$u]
+					)
+				{
+					// Mark student as having earned badge
+					$member_id = $this->course->offering()->section()->member($u)->get('id');
+					$badge = CoursesModelMemberBadge::loadByMemberId($member_id);
+					if (!$badge->hasEarned())
+					{
+						$badge->set('member_id', $u);
+						$badge->set('earned', 1);
+						$badge->set('earned_on', date("Y-m-d H:i:s"));
+						$badge->store();
+					}
+				}
+			}
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

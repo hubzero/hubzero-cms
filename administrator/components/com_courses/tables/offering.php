@@ -81,6 +81,13 @@ class CoursesTableOffering extends JTable
 	var $state = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $badge_id = NULL;
+
+	/**
 	 * Start date for instance
 	 * 
 	 * @var date

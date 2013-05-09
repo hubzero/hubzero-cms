@@ -39,6 +39,10 @@ $progress = $this->course->offering()->gradebook()->progress($this->juser->get('
 $passing  = $this->course->offering()->gradebook()->passing(true, $this->juser->get('id'));
 $passing  = (isset($passing[$this->juser->get('id')])) ? $passing[$this->juser->get('id')] : null;
 
+// See if the student has qualified for the badge
+$this->course->offering()->gradebook()->hasEarnedBadge($this->juser->get('id'));
+$student  = $this->course->offering()->section()->member($this->juser->get('id'));
+
 $gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
 
 $details = array();
@@ -251,9 +255,6 @@ foreach ($units as $unit)
 $progress_timeline .= '<div class="end"><div class="person"></div><div class="end-inner"></div></div>';
 $progress_timeline .= '</div>';
 
-// Check/get info about whether or not a badge is offerred for this course
-// @TODO: attach badge to offering?
-
 ?>
 
 <div class="progress">
@@ -272,6 +273,26 @@ $progress_timeline .= '</div>';
 	<?= $progress_timeline ?>
 
 	<div class="clear"></div>
+
+<? if (!is_null($this->course->offering()->badge()->get('id')) && $student->badge()->hasEarned()) : ?>
+	<div class="badge earned">
+		<img src="<?= $this->course->offering()->badge()->get('img_url') ?>" />
+		<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
+		<p>
+			You've completed all of the requirements of <?= $this->course->get('title') ?>, qualifying you to receive
+			a special badge.
+		</p>
+		<? if ($student->badge()->get('claim_url')) : ?>
+			<p>
+				<a class="claim-badge" href="<?= $student->badge()->get('claim_url') ?>">Claim your badge!</a>
+			</p>
+		<? else : ?>
+			<p>
+				Watch your email in the next few days for details on how to claim your badge.
+			</p>
+		<? endif; ?>
+	</div>
+<? endif; ?>
 
 	<div class="grades">
 		<div class="current-score">
@@ -397,7 +418,9 @@ $progress_timeline .= '</div>';
 	<? endforeach; ?>
 	</div>
 
+<? if (!is_null($this->course->offering()->badge()->get('id')) && !$student->badge()->hasEarned()) : ?>
 	<div class="badge">
+		<img src="<?= $this->course->offering()->badge()->get('img_url') ?>" />
 		<h3>Work hard. Earn a badge.</h3>
 		<p>
 			Upon successful completion of this course, you will be awarded a special <?= $this->course->get('title') ?> badge.
@@ -405,4 +428,5 @@ $progress_timeline .= '</div>';
 			Badges, please visit the <a href="http://openbadges.org/" target="_blank">Open Badges website</a>.
 		</p>
 	</div>
+<? endif; ?>
 </div>

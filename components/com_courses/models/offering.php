@@ -42,6 +42,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'page.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offeringBadge.php');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 
@@ -140,6 +141,20 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * @var object
 	 */
 	private $_student = NULL;
+
+	/**
+	 * CoursesModelGradebook
+	 * 
+	 * @var object
+	 */
+	private $_gradebook = NULL;
+
+	/**
+	 * CoursesModelOfferingBadge
+	 * 
+	 * @var object
+	 */
+	private $_badge = NULL;
 
 	/**
 	 * CoursesModelIterator
@@ -562,6 +577,21 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		return $this->_gradebook; 
+	}
+
+	/**
+	 * Get offering badge
+	 * 
+	 * @return     obj
+	 */
+	public function badge()
+	{
+		if (!isset($this->_badge))
+		{
+			$this->_badge = new CoursesModelOfferingBadge($this->get('badge_id'));
+		}
+
+		return $this->_badge; 
 	}
 
 	/**

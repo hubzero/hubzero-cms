@@ -267,4 +267,45 @@ class CoursesTableGradeBook extends JTable
 
 		$this->_db->execute($query);
 	}
+
+	/**
+	 * Get asset completion count
+	 * 
+	 * @param      int $course_id
+	 * @param      int $user_id
+	 * @return     void
+	 */
+	public function getFormCompletionCount($course_id, $user_id=null)
+	{
+		$user = (!is_null($user_id)) ? "AND gb.user_id = {$user_id}" : '';
+		$query   = "SELECT gb.user_id, ca.subtype, count(*) as count
+					FROM $this->_tbl AS gb
+					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
+					WHERE scope='asset'
+					AND ca.course_id = '{$course_id}'
+					AND score IS NOT NULL
+					{$user}
+					GROUP BY user_id, subtype";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get asset count
+	 * 
+	 * @param      int $user_id
+	 * @return     void
+	 */
+	public function getFormCount()
+	{
+		$query   = "SELECT subtype, count(*) as count
+					FROM `#__courses_assets`
+					WHERE type = 'form'
+					AND state = 1
+					GROUP BY subtype;";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList('subtype');
+	}
 }

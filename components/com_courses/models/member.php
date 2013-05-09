@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php');
 
 /**
  * Courses model class for a course
@@ -53,6 +54,13 @@ class CoursesModelMember extends CoursesModelAbstract
 	 * @var string
 	 */
 	protected $_scope = 'manager';
+
+	/**
+	 * CoursesModelMemberBadge
+	 * 
+	 * @var object
+	 */
+	private $_badge = NULL;
 
 	/**
 	 * Constructor
@@ -155,6 +163,21 @@ class CoursesModelMember extends CoursesModelAbstract
 		}
 
 		return $instances[$oid . '_' . $uid];
+	}
+
+	/**
+	 * Get member badge
+	 * 
+	 * @return     obj
+	 */
+	public function badge()
+	{
+		if (!isset($this->_badge))
+		{
+			$this->_badge = CoursesModelMemberBadge::loadByMemberId($this->get('id'));
+		}
+
+		return $this->_badge; 
 	}
 
 	/**
