@@ -1409,7 +1409,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		// Process tags
-		if (isset($tags))
+		if (isset($tags) && in_array('interests', $field_to_check))
 		{
 			$mt = new MembersTags($this->database);
 			$mt->tag_object($id, $id, $tags, 1, 1);
