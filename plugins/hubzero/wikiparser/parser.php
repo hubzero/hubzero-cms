@@ -1183,8 +1183,8 @@ class WikiParser
 
 				case 'default':
 				default:
-					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
-					$txt = trim($txt, "\n\r\t");
+					//$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+					//$txt = trim($txt, "\n\r\t");
 					return '<pre>' . $this->encode_html($txt) . '</pre>';
 				break;
 			}
