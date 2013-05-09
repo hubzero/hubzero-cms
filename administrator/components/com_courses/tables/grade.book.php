@@ -250,7 +250,7 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function saveGrades($data, $course_id)
 	{
-		$valeus = array();
+		$values = array();
 
 		foreach ($data as $user_id=>$user)
 		{
@@ -261,11 +261,14 @@ class CoursesTableGradeBook extends JTable
 			$values[] = "('$user_id', '{$user['course_weighted']}', 'course', '$course_id')";
 		}
 
-		$query  = "INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`) VALUES\n";
-		$query .= implode(",\n", $values);
-		$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
+		if (count($values) > 0)
+		{
+			$query  = "INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`) VALUES\n";
+			$query .= implode(",\n", $values);
+			$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
 
-		$this->_db->execute($query);
+			$this->_db->execute($query);
+		}
 	}
 
 	/**
