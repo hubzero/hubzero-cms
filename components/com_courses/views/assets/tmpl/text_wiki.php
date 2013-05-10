@@ -44,10 +44,12 @@ ximport('Hubzero_Wiki_Parser');
 $p =& Hubzero_Wiki_Parser::getInstance();
 ?>
 
-<div>
+<div id="content-header">
+	<h2><?= $this->asset->title ?></h2>
+</div>
 
-<h4><?= $this->asset->title ?></h4>
-
-<?= $p->parse(stripslashes($this->asset->content), $wikiconfig) ?>
-
+<div class="wiki-page-body">
+	<p>
+		<?= $p->parse(stripslashes($this->asset->content), $wikiconfig) ?>
+	</p>
 </div>

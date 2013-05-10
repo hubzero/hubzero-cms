@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		<p>
 			<label for="title">Title:</label>
-			<input type="text" name="title" placeholder="Wiki page title - will defeault to first 25 characters of wiki body" />
+			<input type="text" name="title" placeholder="Wiki page title - will default to first 25 characters of wiki body" />
 		</p>
 
 		<label for="content">Content: </label><span class="required">*required</span>
