@@ -1266,7 +1266,7 @@ class ForumPost extends JTable
 				break;
 		}
 
-		/*if ($this->_debug)
+		if ($this->_debug)
 		{
 			echo "\nRepositioning Data for $position" .
 					"\n-----------------------------------" .
@@ -1275,7 +1275,7 @@ class ForumPost extends JTable
 					"\nNew Lft:       $data->new_lft" .
 					"\nNew Rgt:       $data->new_rgt".
 					"\n";
-		}*/
+		}
 
 		return $data;
 	}
@@ -1288,6 +1288,10 @@ class ForumPost extends JTable
 	 */
 	public function countTree($pk = null, $filters=array())
 	{
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = 1;
+		}
 		// Initialise variables.
 		$k = $this->_tbl_key;
 		$pk = (is_null($pk)) ? $this->$k : $pk;
@@ -1303,6 +1307,10 @@ class ForumPost extends JTable
 		if (isset($filters['start_at']) && $filters['start_at']) 
 		{
 			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
+		}
+		if (isset($filters['state'])) 
+		{
+			$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 
 		$this->_db->setQuery($query);
@@ -1326,6 +1334,10 @@ class ForumPost extends JTable
 	 */
 	public function getTree($pk = null, $filters=array())
 	{
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = 1;
+		}
 		// Initialise variables.
 		$k = $this->_tbl_key;
 		$pk = (is_null($pk)) ? $this->$k : $pk;
@@ -1343,6 +1355,10 @@ class ForumPost extends JTable
 		if (isset($filters['start_at']) && $filters['start_at']) 
 		{
 			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
+		}
+		if (isset($filters['state'])) 
+		{
+			$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 		$query .= " ORDER BY n.lft";
 
