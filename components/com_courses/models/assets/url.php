@@ -75,4 +75,33 @@ class UrlAssetHandler extends ContentAssetHandler
 		// Return info
 		return parent::create();
 	}
+
+	/**
+	 * Preview method for this handler
+	 *
+	 * @param  object $asset - asset
+	 * @return array((string) type, (string) text)
+	 **/
+	public function preview($asset)
+	{
+		if (preg_match('/http[s]*:\/\/(www\.)?youtube.com\/watch\?v=([0-9A-Za-z_-]+)/', $asset->get('url'), $matches))
+		{
+			if (isset($matches[2]) && !empty($matches[2]))
+			{
+				$content  = '';
+				$content .= '<iframe width="560" height="315" src="http://www.youtube.com/embed/';
+				$content .= $matches[2];
+				$content .= '?rel=0" frameborder="0" allowfullscreen></iframe>';
+				return array('type'=>'content', 'value'=>$content);
+			}
+			else
+			{
+				return array('type'=>'default');
+			}
+		}
+		else
+		{
+			return array('type'=>'default');
+		}
+	}
 }

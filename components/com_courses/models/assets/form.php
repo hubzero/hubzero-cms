@@ -234,4 +234,47 @@ class FormAssetHandler extends ContentAssetHandler
 
 		return array('type'=>'js', 'value'=>$js);
 	}
+
+	/**
+	 * Preview method for this handler
+	 *
+	 * @param  object $asset - asset
+	 * @return array((string) type, (string) text)
+	 **/
+	public function preview($asset)
+	{
+		// Get form object
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
+		$form = PdfForm::loadByAssetId($asset->get('id'));
+
+		// Make sure we got a proper object
+		if (!is_object($form))
+		{
+			return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
+		}
+
+		// Compile our return var
+		$js =
+			"// Open up forms in a lightbox
+			$.fancybox({
+				fitToView: false,
+				autoResize: false,
+				autoSize: false,
+				height: ($(window).height())*2/3,
+				closeBtn: false,
+				modal: true,
+				type: 'iframe',
+				href: '/courses/form?task=layout&formId=" . $form->getId() . "&readonly=1&tmpl=component',
+				afterShow: function() {
+					// Highjack the 'done' button to close the iframe
+					$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
+						e.preventDefault();
+
+						$.fancybox.close();
+					});
+				}
+			});";
+
+		return array('type'=>'js', 'value'=>$js);
+	}
 }

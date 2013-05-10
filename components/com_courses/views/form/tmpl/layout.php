@@ -1,4 +1,3 @@
-
 <div id="content-header" class="full">
 	<h2><?php echo 'Layout: ' . $this->title; ?></h2>
 </div>
@@ -11,18 +10,27 @@
 	<div id="saved-notification" class="passed-box">Save complete</div>
 	<label>
 		Title:
-		<input type="text" class="required" id="title" value="<?= str_replace('"', '&quot;', $this->title) ?>" />
+		<? if (!$this->readonly) : ?>
+			<input type="text" class="required" id="title" value="<?= str_replace('"', '&quot;', $this->title) ?>" />
+		<? else : ?>
+			<?= $this->title ?>
+		<? endif; ?>
+			<span>
 		<p id="title-error" class="error"></p>
 	</label>
 	<label>
 		Type:
-		<select name="type" id="asset-type">
-			<option value="exam"<?= ($this->pdf->getAssetType() == 'exam') ? 'selected=selected': '' ?>>Exam</option>
-			<option value="quiz"<?= ($this->pdf->getAssetType() == 'quiz') ? 'selected=selected': '' ?>>Quiz</option>
-			<option value="homework"<?= ($this->pdf->getAssetType() == 'homework') ? 'selected=selected': '' ?>>Homework</option>
-		</select>
+		<? if (!$this->readonly) : ?>
+			<select name="type" id="asset-type">
+				<option value="exam"<?= ($this->pdf->getAssetType() == 'exam') ? 'selected=selected': '' ?>>Exam</option>
+				<option value="quiz"<?= ($this->pdf->getAssetType() == 'quiz') ? 'selected=selected': '' ?>>Quiz</option>
+				<option value="homework"<?= ($this->pdf->getAssetType() == 'homework') ? 'selected=selected': '' ?>>Homework</option>
+			</select>
+		<? else : ?>
+			<?= $this->pdf->getAssetType() ?>
+		<? endif; ?>
 	</label>
-	<ol id="pages">
+	<ol id="pages"<?= ($this->readonly) ? ' class="readonly"' : '' ?>>
 		<? 
 			$tabs = array();
 			$layout = $this->pdf->getPageLayout();
@@ -52,13 +60,17 @@
 		<ol id="page-tabs">
 			<? echo implode("\n", $tabs); ?>
 		</ol>
-		<div><a href="" id="save">Save and Close</a></div>
-		<div><a href="/courses/form" id="done">Cancel</a></div>
-		<div class="question-info">
-			<p>
-				<span class="questions-total"><?= $this->pdf->getQuestionCount() ?></span> question(s) total, <span class="questions-unsaved">0</span> changes unsaved
-			</p>
-		</div>
+		<? if (!$this->readonly) : ?>
+			<div><a href="" id="save">Save and Close</a></div>
+		<? endif; ?>
+		<div><a href="/courses/form" id="done"><?= ($this->readonly) ? 'Done' : 'Cancel' ?></a></div>
+		<? if (!$this->readonly) : ?>
+			<div class="question-info">
+				<p>
+					<span class="questions-total"><?= $this->pdf->getQuestionCount() ?></span> question(s) total, <span class="questions-unsaved">0</span> changes unsaved
+				</p>
+			</div>
+		<? endif; ?>
 	</div>
 	<p id="layout-error" class="error"></p>
 	<div class="clear"></div>

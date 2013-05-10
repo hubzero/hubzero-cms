@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
 * Video Asset handler class
 */
-class VideoFileAssetHandler extends FileAssetHandler
+class VideoAssetHandler extends FileAssetHandler
 {
 	/**
 	 * Class info

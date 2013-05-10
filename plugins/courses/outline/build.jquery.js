@@ -83,6 +83,13 @@ HUB.CoursesOutline = {
 				}
 			}
 		});
+
+		// Hack for ie iframe height issue
+		if ($.browser.msie && parseInt($.browser.version, 10) < 9) {
+			$('.content-box iframe').css({
+				'height' : $('.content-box').height() * 0.85
+			});
+		}
 	},
 
 	toggleUnits: function()
@@ -1252,32 +1259,60 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		// Setup preview links to open in lightbox
-		$('.outline-main').on('click', 'a.asset-preview', function(e){
+		$('.outline-main').on('click', 'a.asset-preview', preview);
+
+		function preview( e ) {
 			e.preventDefault();
 			var loaded = false;
+			var form   = $(this).siblings('.next-step-publish');
+			var t      = $(this);
 
-			$.fancybox({
-				type: 'iframe',
-				autoSize: false,
-				width: ($(window).width())*5/6,
-				height: ($(window).height())*5/6,
-				href: $(this).attr('href'),
-				beforeLoad: function() {
-					setTimeout(function(){
-						if (!loaded) {
-							$.fancybox.close();
-							var msg  = 'Oops, something went wrong trying to preview this asset. ';
-								msg += 'It may be that preview isn\'t available for this asset, ';
-								msg += 'or that trying again will solve the problem.';
-							HUB.CoursesOutline.errorMessage(msg, 7500);
+			// Create ajax call to preview asset
+			$.ajax({
+				url: '/api/courses/asset/preview',
+				data: form.serializeArray(),
+				statusCode: {
+					// 200 OK
+					200: function ( data, textStatus, jqXHR ) {
+						switch ( data.type ) {
+							case 'js' :
+								eval(data.value);
+							break;
+
+							case 'content':
+								$.fancybox({
+									type: 'ajax',
+									content: data.value
+								});
+							break;
+
+							default :
+								$.fancybox({
+									type: 'iframe',
+									autoSize: false,
+									width: ($(window).width())*5/6,
+									height: ($(window).height())*5/6,
+									href: t.attr('href'),
+									beforeLoad: function() {
+										setTimeout(function(){
+											if (!loaded) {
+												$.fancybox.close();
+												var msg  = 'Oops, something went wrong trying to preview this asset. ';
+													msg += 'It may be that preview isn\'t available for this asset, ';
+													msg += 'or that trying again will solve the problem.';
+												HUB.CoursesOutline.errorMessage(msg, 7500);
+											}
+										},5000);
+									},
+									afterLoad: function() {
+										loaded = true;
+									}
+								});
 						}
-					},5000);
-				},
-				afterLoad: function() {
-					loaded = true;
+					}
 				}
 			});
-		});
+		}
 	},
 
 	errorMessage: function(message, timeout)

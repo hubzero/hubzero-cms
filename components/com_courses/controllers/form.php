@@ -202,8 +202,9 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->pdf   = new PdfForm($this->assertFormId());
-		$this->view->title = $this->view->pdf->getTitle();
+		$this->view->pdf      = new PdfForm($this->assertFormId());
+		$this->view->title    = $this->view->pdf->getTitle();
+		$this->view->readonly = JRequest::getInt('readonly', false);
 		$this->view->display();
 	}
 

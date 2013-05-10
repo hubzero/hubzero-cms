@@ -50,7 +50,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<div class="content-box-close"></div>
 	</h3>
 	<div class="content-box-inner">
-		<iframe src="/" frameborder="0"></iframe>
+		<iframe src=""></iframe>
 	</div>
 </div>
 

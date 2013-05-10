@@ -358,3 +358,16 @@ input[type=number] {
 #ui-datepicker-div {
 	z-index: 999 !important;
 }
+
+/* Hide stuff in read-only mode */
+#pages.readonly {
+	cursor: default;
+}
+#pages.readonly .group-marker {
+	background: transparent;
+	border: 2px solid transparent;
+	cursor: default;
+}
+#pages.readonly .group-marker .remove {
+	visibility: hidden;
+}

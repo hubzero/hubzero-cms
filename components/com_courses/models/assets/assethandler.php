@@ -259,4 +259,29 @@ class AssetHandler
 			return array('type'=>'default');
 		}
 	}
+
+	/**
+	 * Preview an asset
+	 *
+	 * @return array
+	 **/
+	public function preview($id)
+	{
+		// Look up asset type from id
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		$asset = new CoursesModelAsset($id);
+
+		// Classname
+		$class = ucfirst($asset->get('type')) . 'AssetHandler';
+
+		if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'preview'))
+		{
+			return $class::preview($asset);
+		}
+		else
+		{
+			// Default edit page
+			return array('type'=>'default');
+		}
+	}
 }

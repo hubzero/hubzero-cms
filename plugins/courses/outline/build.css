@@ -983,6 +983,9 @@ ul {
 .wiki-edit input[type="text"] {
 	width: 99%;
 }
+.wiki-edit h3 {
+	display: none;
+}
 .wiki-edit .wiki-asterisk {
 	font-size: 11px;
 }
