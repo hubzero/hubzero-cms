@@ -260,6 +260,10 @@
 	}
 
 /* lecture */
+	.embedded-video iframe {
+		display: block;
+		margin: auto;
+	}
 	.video.container {
 		padding: 0;
 		text-align: center;

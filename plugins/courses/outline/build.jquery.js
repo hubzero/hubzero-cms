@@ -1254,18 +1254,33 @@ HUB.CoursesOutline = {
 		// Setup preview links to open in lightbox
 		$('.outline-main').on('click', 'a.asset-preview', function(e){
 			e.preventDefault();
+			var loaded = false;
 
 			$.fancybox({
 				type: 'iframe',
 				autoSize: false,
 				width: ($(window).width())*5/6,
 				height: ($(window).height())*5/6,
-				href: $(this).attr('href')
+				href: $(this).attr('href'),
+				beforeLoad: function() {
+					setTimeout(function(){
+						if (!loaded) {
+							$.fancybox.close();
+							var msg  = 'Oops, something went wrong trying to preview this asset. ';
+								msg += 'It may be that preview isn\'t available for this asset, ';
+								msg += 'or that trying again will solve the problem.';
+							HUB.CoursesOutline.errorMessage(msg, 7500);
+						}
+					},5000);
+				},
+				afterLoad: function() {
+					loaded = true;
+				}
 			});
 		});
 	},
 
-	errorMessage: function(message)
+	errorMessage: function(message, timeout)
 	{
 		var $ = this.jQuery;
 
@@ -1274,6 +1289,12 @@ HUB.CoursesOutline = {
 
 		error.html(message);
 		errorBox.slideDown('fast');
+
+		if (timeout) {
+			setTimeout(function(){
+				errorBox.slideUp('fast');
+			},timeout);
+		}
 	},
 
 	insertAssetInPage: function(data, assetslist)
@@ -1394,7 +1415,7 @@ HUB.CoursesOutline = {
 							'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
 						'</form>',
 						'<a href="#" title="Attach a link" class="attach-link"></a>',
-						'<a href="#" title="Embed a Kaltura or YouTube Object" class="attach-object"></a>',
+						'<a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>',
 						'<a href="#" title="Include a wiki page" class="attach-wiki"></a>',
 						'<a href="#" title="Browse for files" class="browse-files"></a>',
 					'</div>',

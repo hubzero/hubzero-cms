@@ -60,7 +60,7 @@ class ObjectAssetHandler extends ContentAssetHandler
 
 		// Check if valid youtube or kaltura video
 		// @FIXME: we need a safer way!
-		if(preg_match('/\<object.*name="movie" value\=\"http[s]*\:\/\/www\.youtube\.com\/.*\<embed src\=\"http[s]*\:\/\/www\.youtube\.com\//', $object))
+		if(preg_match('/<iframe width="[0-9]+" height="[0-9]+" src="http[s]*:\/\/www\.youtube(-nocookie)?\.com\/embed\/[a-zA-Z0-9]+(\?rel=0)?" frameborder="[0-9]+" allowfullscreen><\/iframe>/', $object))
 		{
 			$this->asset['title'] = 'New YouTube video';
 		}
