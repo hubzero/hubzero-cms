@@ -1266,7 +1266,7 @@ class ForumPost extends JTable
 				break;
 		}
 
-		if ($this->_debug)
+		/*if ($this->_debug)
 		{
 			echo "\nRepositioning Data for $position" .
 					"\n-----------------------------------" .
@@ -1275,7 +1275,7 @@ class ForumPost extends JTable
 					"\nNew Lft:       $data->new_lft" .
 					"\nNew Rgt:       $data->new_rgt".
 					"\n";
-		}
+		}*/
 
 		return $data;
 	}
