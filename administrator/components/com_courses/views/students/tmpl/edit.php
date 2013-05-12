@@ -182,6 +182,7 @@ function submitbutton(pressbutton)
 					<th><?php echo JText::_('User ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
 				</tr>
+			<?php if ($profile) { ?>
 				<tr>
 					<th><?php echo JText::_('Name'); ?></th>
 					<td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>
@@ -194,6 +195,7 @@ function submitbutton(pressbutton)
 					<th><?php echo JText::_('Email'); ?></th>
 					<td><?php echo $this->escape(stripslashes($profile->get('email'))); ?></td>
 				</tr>
+			<?php } ?>
 			</tbody>
 		</table>
 	</div>

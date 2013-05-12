@@ -142,7 +142,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 			if ($post->id)
 			{
 				$filters['start_at'] = JRequest::getVar('threads_start', '');
-				$filters['parent'] = $post->id;
+				$filters['parent'] = 0; //$post->id;
 			}
 			$data->threads = $post->count($filters);
 		}
@@ -199,7 +199,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 			$data->code   = 1;
 			$data->errors = $this->getErrors();
 		}*/
-
+//print_r($this->database); die();
 		//encode results and return response
 		$this->setMessageType($format);
 		$this->setMessage($data);

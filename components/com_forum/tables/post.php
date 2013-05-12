@@ -186,6 +186,13 @@ class ForumPost extends JTable
 	var $rgt = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $thread = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -418,6 +425,10 @@ class ForumPost extends JTable
 			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
 			{
 				$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			}
+			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+			{
+				$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 			}
 			//if (!isset($filters['authorized']) || !$filters['authorized']) {
 			//	$query .= "c.access=0 AND ";
@@ -685,6 +696,10 @@ class ForumPost extends JTable
 		{
 			$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
 		}
+		if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+		{
+			$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+		}
 		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
 		{
 			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
@@ -697,6 +712,10 @@ class ForumPost extends JTable
 		if (isset($filters['parent']) && (int) $filters['parent'] >= 0) 
 		{
 			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
+		}
+		if (isset($filters['thread']) && (int) $filters['thread'] >= 0) 
+		{
+			$where[] = "c.thread=" . $this->_db->Quote(intval($filters['thread']));
 		}
 		if (isset($filters['start_at']) && $filters['start_at']) 
 		{
@@ -1183,8 +1202,22 @@ class ForumPost extends JTable
 				return false;
 			}
 		}*/
-
-		return parent::store($updateNulls);
+		$result = parent::store($updateNulls);
+		if ($result)
+		{
+			if ($this->parent == 0)
+			{
+				//UPDATE $this->_tbl SET thread=id WHERE parent=0 AND thread=0
+				$this->_db->setQuery("UPDATE $this->_tbl SET thread=id WHERE parent=0 AND id=" . $this->_db->Quote($this->id));
+				if (!$this->_db->query())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+				$this->thread = $this->id;
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -1266,7 +1299,7 @@ class ForumPost extends JTable
 				break;
 		}
 
-		if ($this->_debug)
+		/*if ($this->_debug)
 		{
 			echo "\nRepositioning Data for $position" .
 					"\n-----------------------------------" .
@@ -1275,7 +1308,7 @@ class ForumPost extends JTable
 					"\nNew Lft:       $data->new_lft" .
 					"\nNew Rgt:       $data->new_rgt".
 					"\n";
-		}
+		}*/
 
 		return $data;
 	}
@@ -1297,13 +1330,16 @@ class ForumPost extends JTable
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
 		// Get the node and children as a tree.
-		$query = "SELECT COUNT(n.id)
+		/*$query = "SELECT COUNT(n.id)
 					FROM $this->_tbl AS n, $this->_tbl AS p 
 					WHERE n.lft BETWEEN p.lft AND p.rgt 
 					AND p." . $k . ' = ' . (int) $pk . " 
 					AND n.scope=p.scope 
 					AND n.scope_id=p.scope_id 
-					AND n.object_id=p.object_id ";
+					AND n.object_id=p.object_id ";*/
+		$query = "SELECT COUNT(n.id)
+					FROM $this->_tbl AS n 
+					WHERE n.thread=" . (int) $pk;
 		if (isset($filters['start_at']) && $filters['start_at']) 
 		{
 			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
@@ -1343,7 +1379,7 @@ class ForumPost extends JTable
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
 		// Get the node and children as a tree.
-		$query = "SELECT n.*, 
+		/*$query = "SELECT n.*, 
 					0 AS replies, 
 					(SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id) AS reports 
 					FROM $this->_tbl AS n, $this->_tbl AS p 
@@ -1351,7 +1387,10 @@ class ForumPost extends JTable
 					AND p." . $k . ' = ' . (int) $pk . " 
 					AND n.scope=p.scope 
 					AND n.scope_id=p.scope_id 
-					AND n.object_id=p.object_id ";
+					AND n.object_id=p.object_id ";*/
+		$query = "SELECT n.*, 0 AS replies, (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id) AS reports 
+					FROM $this->_tbl AS n 
+					WHERE n.thread=" . (int) $pk;
 		if (isset($filters['start_at']) && $filters['start_at']) 
 		{
 			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
@@ -1360,7 +1399,7 @@ class ForumPost extends JTable
 		{
 			$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
 		}
-		$query .= " ORDER BY n.lft";
+		$query .= " ORDER BY n.created ASC";
 
 		$this->_db->setQuery($query);
 		$tree = $this->_db->loadObjectList();

@@ -162,7 +162,8 @@
 	#page_menu li .wiki:before { content: "\f072"; }
 	#page_menu li .announcements:before { content: "\f095"; }
 	#page_menu li .messages:before { content: "\2709"; }
-	#page_menu li .forum:before { content: "\f086"; }
+	#page_menu li .forum:before,
+	#page_menu li .discussions:before { content: "\f086"; }
 	#page_menu li .syllabus:before { content: "\f05a"; } /*  \f0cb \f071*/
 	#page_menu li .wishlist:before { content: "\f078"; }
 	#page_menu li .calendar:before { content: "\f073"; }

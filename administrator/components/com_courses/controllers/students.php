@@ -251,6 +251,12 @@ class CoursesControllerStudents extends Hubzero_Controller
 			if (!is_int($user_id))
 			{
 				$user = JUser::getInstance($user_id);
+				if (!is_object($user))
+				{
+					$this->addComponentMessage(JText::sprintf('User %s does not exist.', $user_id));
+					$this->editTask( );
+					return;
+				}
 				$fields['user_id'] = $user->get('id');
 			}
 			else
