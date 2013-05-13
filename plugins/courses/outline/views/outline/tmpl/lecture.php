@@ -36,6 +36,7 @@ $juser = JFactory::getUser();
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Profile_Helper');
 
+$units = $this->course->offering()->units();
 $unit = $this->course->offering()->unit($this->unit);
 
 if (!$unit)
