@@ -120,7 +120,7 @@ class MembersAddress extends JTable
 		if (count($addresses) < 1)
 		{
 			$formattedAddresses .= '<div class="col span4">';
-			$formattedAddresses .= '<em>' . JText::_('Enter an Address') . '</em>';
+			$formattedAddresses .= JText::_('Enter an Address');
 			$formattedAddresses .= '</div>';
 		}
 		else
