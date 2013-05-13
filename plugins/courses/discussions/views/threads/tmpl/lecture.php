@@ -121,10 +121,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 							'layout'  => '_threads'
 						)
 					);
-					if ($category)
-					{
-						$cview->category   = $category;
-					}
+					$cview->category   = 'category' . $this->post->category_id;
 					$cview->option     = $this->option;
 					$cview->threads    = $this->threads;
 					$cview->unit       = $this->unit->get('alias');

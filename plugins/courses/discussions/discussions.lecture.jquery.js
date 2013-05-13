@@ -126,6 +126,9 @@ HUB.Plugins.CoursesForum = {
 
 							var list = feed.find('div.category-results ul.discussions');//last = $('#threads_lastchange');
 							//list.empty();
+							if (list.find('li.comments-none').length) {
+								list.empty();
+							}
 
 							for (var i = 0; i< data.threads.posts.length; i++) 
 							{

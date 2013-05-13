@@ -137,7 +137,7 @@ if (!$this->course->offering()->access('view')) { ?>
 				<span class="prev btn">
 					<?php echo JText::_('Prev'); ?>
 				</span>
-			<?php } else { ?>
+			<?php } else if ($lecture->sibling('prev')) { ?>
 				<a class="prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
 					<?php echo JText::_('Prev'); ?>
 				</a>

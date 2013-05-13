@@ -364,6 +364,14 @@
 		-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 	}*/
+	ol.comments .start > .comment-content, 
+	ol.comments .author > .comment-content {
+		border-color: #d9d9d9;
+	}
+	ol.comments .start > .comment-content:before, 
+	ol.comments .author > .comment-content:before {
+		border-color: transparent #d9d9d9 transparent transparent;
+	}
 	ol.comments .comment-options a {
 		visibility: hidden;
 	}

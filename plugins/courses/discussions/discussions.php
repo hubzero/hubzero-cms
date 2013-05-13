@@ -571,7 +571,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 					$data->thread = $this->_thread($view->post, $view->filters);
 
 					$view->filters['start_at'] = JRequest::getVar('threads_start', '');
-
+//$view->filters['category_id'] = $view->post->category_id;
 					$data->threads = $this->_threads($view->post, $view->filters);
 
 					//echo $view->thread . '<br />';
@@ -853,6 +853,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$threads->html = null;
 		$threads->total = 0;
 
+		$filters['parent'] = 0;
 		$filters['sort'] = 'created';
 		$filters['sort_Dir'] = 'ASC'; // Needs to be reverse order that items are prepended with AJAX
 
@@ -1305,6 +1306,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 										$cat->scope       = 'course';
 										$cat->scope_id    = $this->offering->get('id');
 										$cat->object_id   = $ag->get('id');
+										$cat->threads = 0;
+										$cat->posts = 0;
 										if ($cat->check())
 										{
 											$cat->store();
