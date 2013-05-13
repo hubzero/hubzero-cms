@@ -1265,6 +1265,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// Build the pathway
 		$app =& JFactory::getApplication();
+		$pathway =& $app->getPathway();
 		if ($this->model->inGroup()) 
 		{
 			// Alter the pathway to reflect a group owned resource
@@ -1273,7 +1274,6 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 			if ($group)
 			{
-				$pathway =& $app->getPathway();
 				$pathway->_pathway = array();
 				$pathway->_count = 0;
 
@@ -1294,10 +1294,16 @@ class ResourcesControllerResources extends Hubzero_Controller
 					JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
 				);
 			}
+			else
+			{
+				$pathway->addItem(
+					stripslashes($this->model->type->type),
+					JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
+				);
+			}
 		} 
 		else 
 		{
-			$pathway =& $app->getPathway();
 			$pathway->addItem(
 				stripslashes($this->model->type->type),
 				JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
