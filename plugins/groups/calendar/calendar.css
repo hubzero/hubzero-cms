@@ -98,18 +98,15 @@
 	}
 #calendar table tbody td .day {
 	padding:0 4px 0 2px;
-	}
+}
 #calendar table tbody td.today {
-	position: relative;
 	background: #e9eff7;
-	}
-#calendar table tbody td.active {
-	background: #fdffe5;
-	}
+}
 #calendar table tbody td.today .day {
+	position: relative;
 	color: #2592f2;
 }
-#calendar table tbody .today:before {
+#calendar table tbody .today .day:before {
 	content: 'Today';
 	position: absolute;
 	top: 0px;
@@ -123,7 +120,10 @@
 }
 #calendar table tbody td.no-date {
 	background-color: #efefef;
-	}
+}
+#calendar table tbody td.active {
+	background: #fdffe5;
+}
 #calendar ul {
 	list-style: none;
 	text-align: left;
@@ -135,6 +135,9 @@
 	padding: 0;
 	position: relative;
 	}
+#calendar ul a.event {
+	background-image: none;
+}
 #calendar ul a {
 	display: block;
 	font-size: 12px;
@@ -387,6 +390,9 @@
 	background-color: #fff;
 	border-color: #999;
 	border-bottom: 1px solid #fff;
+}
+table.group-event-details {
+	border: none;
 }
 .group-event-details th {
 	font-size: 1.5em;

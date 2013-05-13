@@ -566,7 +566,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		//instantiate new event object
 		$eventsEvent = new EventsEvent( $this->database );
 		$eventsEvent->bind( $event );
-
+		
 		//check to make sure we have valid info
 		if (!$eventsEvent->check())
 		{
@@ -602,7 +602,14 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			return $this->edit();
 		}
 		
-		
+		//make sure registration email is valid
+		if ($registration && (!isset($event['registerby']) || $event['registerby'] == ''))
+		{
+			$this->setError('You must enter a valid event registration deadline to require registration.');
+			JRequest::setVar('includeRegistration', 1);
+			$this->event = $eventsEvent;
+			return $this->edit();
+		}
 
 		//save event
 		if (!$eventsEvent->save( $event ))
@@ -1412,9 +1419,35 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$registrants = $eventsRespondent->getRecords();
 
 		//var to hold output
-		$output = 'First Name,Last Name,Register Date,Affiliation,Email,Telephone,Arrival Info,Departure Info,Disability Needs,Dietary Needs,Attending Dinner' . "\n";
+		$output = 'First Name,Last Name,Title,Affiliation,Email,Website,Telephone,Fax,City,State,Zip,Country,Current Position,Highest Degree Earned,Gender,Race,Arrival Info,Departure Info,Disability Needs,Dietary Needs,Attending Dinner,Abstract,Comments,Register Date' . "\n";
 
-		$fields = array('first_name','last_name','registered','affiliation','email','telephone','arrival','departure','disability_needs','dietary_needs','attending_dinner');
+		$fields = array(
+			'first_name',
+			'last_name',
+			'title',
+			'affiliation',
+			'email',
+			'website',
+			'telephone',
+			'fax',
+			'city',
+			'state',
+			'zip',
+			'country',
+			'position_description',
+			'highest_degree',
+			'gender',
+			'race',
+			'arrival',
+			'departure',
+			'disability_needs',
+			'dietary_needs',
+			'attending_dinner',
+			'abstract',
+			'comment',
+			'registered'
+		);
+		
 		foreach($registrants as $registrant)
 		{
 			foreach($fields as $field)
@@ -1427,13 +1460,16 @@ class plgGroupsCalendar extends Hubzero_Plugin
 					case 'attending_dinner':
 						$output .= ($registrant->attending_dinner == 1) ? 'Yes,' : 'No,';
 						break;
+					case 'race':
+						$output .= 'Race Information not included,';
+						break;
 					default:
-						$output .= $registrant->$field . ',';
+						$output .= $this->escapeCsv($registrant->$field) . ',';
 				}
 			}
 			$output .= "\n";
 		}
-
+		
 		//set the headers for output
 		header("Content-type: text/csv");
 		header("Content-Disposition: attachment; filename=event_rsvp.csv");
@@ -1441,6 +1477,30 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		header("Expires: 0");
 		echo $output;
 		exit();
+	}
+	
+	
+	/**
+	 * Escape string for csv output
+	 * 
+	 * @return     string
+	 */
+	private function escapeCsv( $value )
+	{
+		// First off escape all " and make them ""
+		$value = str_replace('"', '""', $value);
+		
+		// Check if I have any commas or new lines
+		if (preg_match('/,/', $value) || preg_match("/\n/", $value) || preg_match('/"/', $value)) 
+		{
+			// If I have new lines or commas escape them
+			return '"'.$value.'"';
+		}
+		else
+		{
+			// If no new lines or commas just return the value
+			return $value;
+		}
 	}
 	
 	

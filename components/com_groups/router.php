@@ -231,7 +231,7 @@ function GroupsParseRoute($segments)
 	}
 	
 	//are we on the calendar
-	if ($vars['active'] == 'calendar')
+	if (isset($vars['active']) && $vars['active'] == 'calendar')
 	{
 		if (isset($segments[2]))
 		{

@@ -131,11 +131,11 @@ if ($this->dinner) {
 	$message .= '[ ] Attending dinner.'."\n\n";
 }
 
-if (isset($this->register['additional'])) {
-	$message .= 'Additional: '. $this->register['additional'] ."\n\n";
+if (isset($this->register['abstract'])) {
+	$message .= 'Additional: '. $this->register['abstract'] ."\n\n";
 }
 
-if (isset($this->register['comments'])) {
-	$message .= 'Comments: '. $this->register['comments'] ."\n\n";
+if (isset($this->register['comment'])) {
+	$message .= 'Comments: '. $this->register['comment'] ."\n\n";
 }
 echo $message;

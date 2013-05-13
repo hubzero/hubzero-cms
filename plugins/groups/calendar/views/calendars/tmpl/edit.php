@@ -71,7 +71,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</select>
 		</label>
 	</fieldset>
-	
+	<br class="clear" />
 	<p class="submit">
 		<input type="submit" value="Submit" />
 	</p>

@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+//include registration
+$includeRegistration = JRequest::getVar('includeRegistration', 0);
+
 //set button and form title
 $formTitle = JText::_('Add Group Event');
 $submitBtn = JText::_('Submit New Event');
@@ -119,7 +122,7 @@ if($this->event->id)
 			<label><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
 				<?php
 					$publish_down = '';
-					if (isset($this->event->publish_down) && $this->event->publish_down != '0000-00-00 00:00:00')
+					if (isset($this->event->publish_down) && $this->event->publish_down != '' && $this->event->publish_down != '0000-00-00 00:00:00')
 					{
 						$publish_down = date("m/d/Y @ g:i a", strtotime($this->event->publish_down));
 					}
@@ -141,7 +144,7 @@ if($this->event->id)
 			<legend><?php echo JText::_('Registration Settings'); ?></legend>
 			
 			<label id="include-registration-toggle">
-				<?php $ckd = ($this->event->registerby != '0000-00-00 00:00:00' && $this->event->registerby != '') ? 'checked="checked"' : ''; ?>
+				<?php $ckd = (($this->event->registerby != '0000-00-00 00:00:00' && $this->event->registerby != '') || $includeRegistration) ? 'checked="checked"' : ''; ?>
 				<input class="option" type="checkbox" id="include-registration" name="include-registration" value="1" <?php echo $ckd; ?> /> 
 				<?php echo JText::_('Include registration for this event.'); ?>
 			</label>
@@ -150,7 +153,7 @@ if($this->event->id)
 				<label><?php echo JText::_('Deadline:'); ?> <span class="required">Required for Registration Tab to Appear</span>
 					<?php
 						$register_by = '';
-						if (isset($this->event->registerby) && $this->event->registerby != '0000-00-00 00:00:00')
+						if (isset($this->event->registerby) && $this->event->registerby != '' && $this->event->registerby != '0000-00-00 00:00:00')
 						{
 							$register_by = date("m/d/Y @ g:i a", strtotime($this->event->registerby));
 						}
@@ -186,7 +189,7 @@ if($this->event->id)
 	<input type="hidden" name="active" value="calendar" />
 	<input type="hidden" name="action" value="save" />
 	<input type="hidden" name="event[id]" value="<?php echo $this->event->id; ?>" />
-	
+	<br class="clear" />
 	<p class="submit">
 		<input type="submit" name="event_submit" value="<?php echo $submitBtn; ?>" />
 	</p>
