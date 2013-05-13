@@ -118,6 +118,12 @@ function submitbutton(pressbutton)
 							<span class="hint"><?php echo JText::_('This is a longer, detailed description of the course.'); ?></span>
 						</td>
 					</tr>
+					<tr>
+						<td class="key" valign="top"><label for="field-tags"><?php echo JText::_('Tags'); ?>:</label></td>
+						<td>
+							<textarea name="tags" id="field-tags" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>

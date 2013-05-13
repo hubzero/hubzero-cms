@@ -204,6 +204,10 @@ class CoursesControllerCourses extends Hubzero_Controller
 			return;
 		}
 
+		$tags = JRequest::getVar('tags', '', 'post');
+		$tagger = new CoursesTags($this->database);
+		$tagger->tag_object($this->juser->get('id'), $row->get('id'), $tags, 1);
+
 		if ($redirect)
 		{
 			// Output messsage and redirect
