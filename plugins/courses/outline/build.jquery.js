@@ -1560,7 +1560,7 @@ HUB.CoursesOutline = {
 							'<div class="asset-group-type-item-container">',
 								'<div class="asset-group-title-container">',
 									'<div class="asset-group-title title">',
-										'<div class="asset-group-title-edit">edit</div>',
+										'<div class="asset-group-title-edit edit">edit</div>',
 										'<div class="title"><%= assetgroup.assetgroup_title %></div>',
 									'</div>',
 									'<form action="/api/courses/assetgroup/save">',

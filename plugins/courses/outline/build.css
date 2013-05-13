@@ -621,7 +621,6 @@ ul {
 	color: #555;
 	font-weight: normal;
 	text-transform: lowercase;
-	font-style: italic;
 }
 .asset-group-title {
 	padding: 3px;
@@ -631,6 +630,9 @@ ul {
 	background: #F7F7F7;
 	border: 1px dotted #AAA;
 	cursor: pointer;
+}
+.asset-group-title-container:hover .asset-group-title-edit {
+	display: block;
 }
 .asset-group-title-container form {
 	padding: 10px;
@@ -719,10 +721,11 @@ ul {
 	background-color: #F7F7F7;
 	padding-left: 10px;
 }
-.asset-group-item:not(.add-new) {
+.asset-group-item {
 	min-height: 115px;
-	height: auto !important;
-	height: 115px;
+}
+.asset-group-item.add-new {
+	min-height: 20px;
 }
 .asset-group-item:not(.add-new):before {
 	margin-top: -10px;

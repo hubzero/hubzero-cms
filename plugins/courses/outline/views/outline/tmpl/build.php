@@ -132,7 +132,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					<div class="asset-group-type-item-container">
 						<div class="asset-group-title-container">
 							<div class="asset-group-title title">
-								<div class="asset-group-title-edit">edit</div>
+								<div class="asset-group-title-edit edit">edit</div>
 								<div class="title"><?php echo $agt->get('title'); ?></div>
 							</div>
 							<form action="/api/courses/assetgroup/save">
