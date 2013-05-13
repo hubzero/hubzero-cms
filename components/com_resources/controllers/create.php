@@ -1556,6 +1556,8 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			}
 		}
 
+		$row->id = $id;
+
 		// Delete associations to the resource
 		$row->deleteExistence();
 
