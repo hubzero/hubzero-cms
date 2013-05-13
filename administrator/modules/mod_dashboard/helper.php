@@ -124,7 +124,7 @@ class modDashboard
 		$threemonths 	= date( 'Y-m-d H:i:s', time() - (92 * 24 * 60 * 60));
 		$onemonth 		= date( 'Y-m-d H:i:s', time() - (30 * 24 * 60 * 60) );
 
-		if($banking) {
+		if ($banking && JComponentHelper::isEnabled('com_store')) {
 			// get new store orders
 			$database->setQuery( "SELECT count(*) FROM #__orders WHERE status=0");
 			$orders = $database->loadResult();

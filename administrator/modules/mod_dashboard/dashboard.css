@@ -6,10 +6,10 @@
  */
 
 /* Dashboard //==================================================================== */
-	table.adminform #dashboard {
+	table.adminform #moddashboard {
 		margin-bottom: 1em;
 	}
-	#dashboard .title {
+	#moddashboard .title {
 		color: #666;
 		border: 1px solid #dfdfdf;
 		background: #dfdfdf;
@@ -19,10 +19,10 @@
 	/*#dashboard h3 {
 		padding: 0.2em 2em 0.2em 1.7em; margin: 0; color:#666666;
 	}*/
-	#dashboard a {
+	#moddashboard a {
 		color:#666666;
 	}
-	#dashboard a:hover {
+	#moddashboard a:hover {
 		border-bottom:1px solid #d3d3d3;
 	}
 	.hed-store 
@@ -47,23 +47,23 @@
 	.p-attention {
 		color:#af723c; background-color:#f8f1eb; border-top:1px solid #dfc6b1; border-bottom:1px solid #dfc6b1;padding:0.2em;
 	}
-	#dashboard .p-attention a {
+	#moddashboard .p-attention a {
 		color:#ca4402;border:none;
 	}
-	#dashboard .p-attention a:hover {
+	#moddashboard .p-attention a:hover {
 		border-bottom:1px solid #dfc6b1;
 	}
 	#element-box table.adminform { border:none; background:none; }
 
-	#dashboard .adminlist thead th {
+	#moddashboard .adminlist thead th {
 		text-align: left;
 		padding: 0.7em;
 	}
-	#dashboard .adminlist thead th.numerical-data,
-	#dashboard .adminlist tbody td {
+	#moddashboard .adminlist thead th.numerical-data,
+	#moddashboard .adminlist tbody td {
 		text-align: right;
 	}
-	#dashboard .adminlist tbody th,
-	#dashboard .adminlist tbody td {
+	#moddashboard .adminlist tbody th,
+	#moddashboard .adminlist tbody td {
 		padding: 0.7em;
 	}

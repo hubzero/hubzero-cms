@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $app = JFactory::getApplication();
 ?>
-<div id="dashboard">
+<div id="moddashboard">
 <?php if ($app->getTemplate() == 'khepri' && $this->module->showtitle) : ?>
 	<h3 class="title"><?php echo $this->module->title; ?></h3>
 <?php endif; ?>
@@ -67,6 +67,7 @@ $app = JFactory::getApplication();
 					<a href="../index.php?option=com_tools"><?php echo $contribtool; ?></a>
 				</td>
 			</tr>
+		<?php if ($banking && JComponentHelper::isEnabled('com_store')) { ?>
 			<tr class="row1">
 				<th scope="row">
 					<a href="index.php?option=com_store">Store orders</a>
@@ -75,6 +76,7 @@ $app = JFactory::getApplication();
 					<a href="index.php?option=com_store"><?php echo $orders; ?></a>
 				</td>
 			</tr>
+		<?php } ?>
 			<tr class="row0">
 				<th scope="row">
 					<a href="index.php?option=com_feedback">Success stories</a>
@@ -85,7 +87,7 @@ $app = JFactory::getApplication();
 			</tr>
 			<tr class="row1">
 				<th scope="row">
-					<a href="../wishlist">Wishes (<?php echo $hubname; ?> list)</a>
+					<a href="../wishlist">Wishes (<?php echo $sitename; ?> list)</a>
 				</th>
 				<td>
 					<a href="../wishlist"><?php echo $wishes; ?></a>
