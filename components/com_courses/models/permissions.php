@@ -395,15 +395,15 @@ class CoursesModelPermissions extends JObject
 		}
 
 		// If they're not logged in
-		/*if (!$juser->get('guest'))
-		{*/
+		if (!$juser->get('guest'))
+		{
 			// List of actions
 			$actions = array(
 				'admin', 'manage', 'create', 'delete', 'edit', 'edit-state', 'edit-own', 'view'
 			);
 
 			// Check if they're a site admin
-			/*if (version_compare(JVERSION, '1.6', 'lt')) // Joomla 1.5.x
+			if (version_compare(JVERSION, '1.6', 'lt')) // Joomla 1.5.x
 			{
 				// If they're a site admin
 				if ($juser->authorize('com_courses', 'manage')) 
@@ -438,7 +438,7 @@ class CoursesModelPermissions extends JObject
 					$this->config()->set('access-checked-section', true);
 				}
 			}
-		}*/
+		}
 
 		// Are they an admin?
 		if ($this->config()->get('access-admin-course') 
