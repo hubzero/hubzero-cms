@@ -39,7 +39,7 @@ $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 if (is_dir(JPATH_ROOT . $path))
 {
 	$manifests = JFolder::files(JPATH_ROOT . $path, '.json', true, true);
-	$manifest  = (count($manifests) > 0) ? $manifests[0] : array();
+	$manifest  = (count($manifests) > 0) ? $manifests[0] : '';
 }
 
 if (isset($manifest) && is_file($manifest))
