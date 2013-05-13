@@ -79,7 +79,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$url .= ($blob) ? '&area='. stripslashes($blob) : '';
 				$url .= ($this->filters['sort']) ? '&sort='.$this->filters['sort'] : '';
 				$sef = JRoute::_($url);
-				$sef = str_replace('%20','+',$sef);
+				$sef = str_replace('%20',',',$sef);
+				$sef = str_replace(' ',',',$sef);
+				$sef = str_replace('+',',',$sef);
 
 				// Is this the active category?
 				$a = '';
@@ -120,7 +122,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 							// Build the HTML
 							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
-							$sef = str_replace('%20','+',$sef);
+							$sef = str_replace('%20',',',$sef);
+							$sef = str_replace(' ',',',$sef);
+							$sef = str_replace('+',',',$sef);
 							$k[] = "\t\t\t".'<li><a'.$a.' href="'.$sef.'">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">'.$subcat['total'].'</span></a></li>';
 						}
 					}
@@ -198,7 +202,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<li>
 					<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php 
 						$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=title');
-						$sef = str_replace('%20','+',$sef);
+						$sef = str_replace('%20',',',$sef);
+						$sef = str_replace(' ',',',$sef);
+						$sef = str_replace('+',',',$sef);
 						echo $sef;
 					?>" title="Sort by title">
 						&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?>
@@ -207,7 +213,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<li>
 					<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php 
 						$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=date');
-						$sef = str_replace('%20','+',$sef);
+						$sef = str_replace('%20',',',$sef);
+						$sef = str_replace(' ',',',$sef);
+						$sef = str_replace('+',',',$sef);
 						echo $sef;
 					?>" title="Sort by newest to oldest">
 						&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?>
