@@ -59,21 +59,11 @@ class PublicationUtilities
 		
 		// Get configs
 		$jconfig 	=& JFactory::getConfig();
-		$service    = $config->get('doi_service', 'https://n2t.net/ezid' );
+		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
 		
 		// Collect metadata
 		$metadata['publisher']  = $config->get('doi_publisher', $jconfig->getValue('config.sitename') );
 		$metadata['pubYear'] 	= date( 'Y' );
-
-		// Clean up paths
-		if (substr($service, -1, 1) == DS) 
-		{
-			$service = substr($service, 0, (strlen($service) - 1));
-		}
-		if (substr($shoulder, -1, 1) == DS) 
-		{
-			$shoulder = substr($shoulder, 0, (strlen($shoulder) - 1));
-		}
 		
 		// Get config
 		$livesite = $jconfig->getValue('config.live_site');
@@ -171,7 +161,7 @@ class PublicationUtilities
 		// Get configs
 		$jconfig 	=& JFactory::getConfig();
 		$shoulder   = $do == 'doi' ? $config->get('doi_shoulder', '10.5072' ) : $config->get('ark_shoulder', '/99999' );
-		$service    = $config->get('doi_service', 'https://n2t.net/ezid' );
+		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
 		$prefix     = $do == 'doi' ? $config->get('doi_prefix', '' ) : $config->get('ark_prefix', '' );
 		$handle     = '';
 		$doi 		= '';
@@ -179,17 +169,7 @@ class PublicationUtilities
 		// Collect metadata
 		$metadata['publisher']  = $config->get('doi_publisher', '' );
 		$metadata['pubYear'] 	= date( 'Y' );
-		
-		// Clean up paths
-		if (substr($service, -1, 1) == DS) 
-		{
-			$service = substr($service, 0, (strlen($service) - 1));
-		}
-		if (substr($shoulder, -1, 1) == DS) 
-		{
-			$shoulder = substr($shoulder, 0, (strlen($shoulder) - 1));
-		}
-		
+				
 		// Make service path
 		$which = $do == 'doi' ? 'doi:' : 'ark:';
 		$call  = $service . DS . 'shoulder' . DS . $which . $shoulder;

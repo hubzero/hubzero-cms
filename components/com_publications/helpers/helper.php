@@ -248,7 +248,7 @@ class PublicationHelper extends JObject
 				
 				$name = str_replace( '"', '&quot;', $name );
 				if($contributor->user_id && $contributor->open) {
-					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->user_id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->user_id).'" title="View the profile of '.$name.'">'.$name.'</a>';
 				}
 				else {
 					$link = $name;
@@ -377,8 +377,8 @@ class PublicationHelper extends JObject
 						$ih->set('image','thumb.gif');
 						$ih->set('overwrite',true);
 						$ih->set('path',JPATH_ROOT.$path.DS);
-						$ih->set('maxWidth', 50);
-						$ih->set('maxHeight', 50);
+						$ih->set('maxWidth', 100);
+						$ih->set('maxHeight', 100);
 						$ih->set('cropratio', '1:1');
 						if ($ih->process()) {
 							return $path . DS . 'thumb.gif';

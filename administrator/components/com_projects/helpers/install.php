@@ -168,12 +168,12 @@ class ProjectsInstall extends JObject {
 	 * 
 	 * @return     void
 	 */	
-	public function installPlugin( $name = '', $active = 0) 
+	public function installPlugin( $name = '', $active = 0, $ordering = 8) 
 	{
 		$query = "INSERT INTO `jos_plugins`(`name`, `element`, `folder`, `access`, 
 			`ordering`, `published`, `iscore`, `client_id`, `checked_out`, 
 			`checked_out_time`, `params`) SELECT 'Projects - " . ucfirst($name) . "', 
-			'" . strtolower($name) . "', 'projects', 0, 8, $active, 0, 0, 0, NULL, '' 
+			'" . strtolower($name) . "', 'projects', 0, $ordering, $active, 0, 0, 0, NULL, '' 
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE name = 'Projects - " . ucfirst($name) . "')";
 		
 		$this->runQuery($query);

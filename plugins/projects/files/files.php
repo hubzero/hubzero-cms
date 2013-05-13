@@ -3063,6 +3063,7 @@ class plgProjectsFiles extends JPlugin
 		$file 	 	= urldecode(JRequest::getVar('file', '')); 
 		$multifile	= 0;
 		$deleteTemp = 0; 
+		$remote 	= NULL;
 		$revision 	= JRequest::getVar('revision', '');
 				
 		// Get path and initialize Git
@@ -3090,12 +3091,7 @@ class plgProjectsFiles extends JPlugin
 				// Multi-file download
 				$multifile = 1;
 				$archive = $this->_archiveFiles($checked, $folders, $this->prefix . $path, $subdir);
-				
-				/*
-				print_r($archive);
-				return 'test';
-				*/
-				
+
 				if (!$archive)
 				{
 					$this->setError($this->getError() . ' ' .JText::_('COM_PROJECTS_FILES_ARCHIVE_ERROR'));
@@ -3107,9 +3103,7 @@ class plgProjectsFiles extends JPlugin
 		if ($file)
 		{
 			$fpath = $subdir ? $subdir. DS . $file : $file;
-			
 			// Check for remote connection
-			$remote = NULL;
 			if (!empty($this->_rServices) && $this->_case == 'files')
 			{
 				foreach ($this->_rServices as $servicename)
@@ -3131,13 +3125,13 @@ class plgProjectsFiles extends JPlugin
 		// Are we previewing or downloading?
 		if (($render == 'thumb' || $render == 'inline' || $render == 'medium') && $file && file_exists($this->prefix. $path . DS . $fpath)) 
 		{
-			$hash  = ($remote && $remote['converted'] == 1) ? '' : $this->_git->gitLog($path, $fpath, '' , 'hash');
+			$hash   = ($remote && $remote['converted'] == 1) ? '' : $this->_git->gitLog($path, $fpath, '' , 'hash');
 			$medium = $render == 'medium' ? true : false;
-			$image = $render == 'thumb' && in_array(strtolower($ext), $image_formats)
+			$image  = ($render == 'thumb' || $render == 'medium')  
 					? $this->_getFilePreview($file, $hash, $path, $subdir, $remote, $medium)
 					: $path . DS . $fpath;
-			$image = $render == 'thumb' || $render == 'medium' ? JPATH_ROOT . $image : $this->prefix . $image;
-
+			$image = ($render == 'thumb' || $render == 'medium') ? JPATH_ROOT . $image : $this->prefix . $image;
+			
 			// Serve image
 			if ($image && file_exists($image))
 			{				
@@ -3339,7 +3333,7 @@ class plgProjectsFiles extends JPlugin
 			if (!file_exists($fullpath)) 
 			{				
 				// Throw error
-				JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND') . ' ' . $file );
+				JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND') . ' ' . $fullpath );
 				return;
 			}			
 			
@@ -4901,8 +4895,12 @@ class plgProjectsFiles extends JPlugin
 	{	
 		$image = NULL;
 		$ih = new ProjectsImgHandler();	
-				
-		$rthumb = substr($remote['id'], 0, 20) . '_' . strtotime($remote['modified']) . '.png';						
+		
+		$rthumb	= NULL;
+		if ($remote)
+		{
+			$rthumb = substr($remote['id'], 0, 20) . '_' . strtotime($remote['modified']) . '.png';						
+		}	
 		$hash  	= $hash ? substr($hash, 0, 10) : '';	
 		
 		if ($medium)

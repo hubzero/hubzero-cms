@@ -39,10 +39,8 @@ defined('_JEXEC') or die('Restricted access');
 </div><!-- / #introduction.section -->
 
 <div class="section">	
-	<div class="four columns first">
-		<h2><?php echo JText::_('COM_PUBLICATIONS_RECENT_PUBLICATIONS'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
+	<div class="two columns first">
+		<h3><?php echo JText::_('Recent Publications'); ?></h3>
 		<?php if($this->results && count($this->results) > 0) { ?>
 			<ul class="mypubs">
 				<?php foreach($this->results as $row) {
@@ -58,14 +56,44 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 				<li>
 					<span class="pub-thumb"><img src="<?php echo $pubthumb; ?>" alt=""/></span>
-					<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id);?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 60, 0); ?></a>
-					<span class="block details"><?php echo implode(' <span>|</span> ',$info); ?></span>
+					<span class="pub-details">
+						<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 100, 0); ?></a>
+						<span class="block details"><?php echo implode(' <span>|</span> ', $info); ?></span>
+					</span>
 				</li>	
 				<?php }?>
 			</ul>
 		<?php } else { 
 			echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>'); 
 		} ?>
-	</div><!-- / .four columns second third fourth -->
+	</div>
+	<div class="two columns second">
+		<h3><?php echo JText::_('Popular Publications'); ?></h3>
+		<?php if ($this->best && count($this->best) > 0) { ?>
+			<ul class="mypubs">
+				<?php foreach($this->best as $row) {
+					// Get version authors
+					$pa = new PublicationAuthor( $this->database );
+					$authors = $pa->getAuthors($row->version_id); 
+					$info = array();
+					$info[] =  JHTML::_('date', $row->published_up, '%d %b %Y');	
+					$info[] = $row->cat_name;	
+					$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
+					
+					$pubthumb = $this->helper->getThumb($row->id, $row->version_id, $this->config);			
+				?>
+				<li>
+					<span class="pub-thumb"><img src="<?php echo $pubthumb; ?>" alt=""/></span>
+					<span class="pub-details">
+						<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 100, 0); ?></a>
+						<span class="block details"><?php echo implode(' <span>|</span> ', $info); ?></span>
+					</span>
+				</li>	
+				<?php }?>
+			</ul>
+		<?php } else { 
+			echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>'); 
+		} ?>
+	</div>
 	<div class="clear"></div>
 </div><!-- / .section -->

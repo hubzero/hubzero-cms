@@ -360,16 +360,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			return;
 		}
 		else 
-		{
-			/*
-			$view = new JView( array('name'=>'error') );
-			$error = JText::_('COM_PUBLICATIONS_PRIVATE_NO_ACCESS').' ';
-			$error.= JText::_('COM_PUBLICATIONS_BROWSE').' <a href="'.
-			JRoute::_('index.php?option='.$this->_option.a.'task=browse').'">'.
-			JText::_('COM_PUBLICATIONS_PUBLIC_RESOURCES').'</a>.';
-			$view->setError($error);
-			*/
-			
+		{			
 			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
 			$this->_intro();
 			return;
@@ -421,6 +412,10 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		
 		// Run query with limit
 		$view->results = $rr->getRecords( $view->filters );
+		
+		// Run query with limit
+		$view->filters['sortby'] = 'popularity';
+		$view->best = $rr->getRecords( $view->filters );
 		
 		// Get publications helper
 		$helper = new PublicationHelper($this->database);

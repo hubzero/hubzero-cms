@@ -451,6 +451,9 @@
 		width: auto;
 		float: none;
 	}
+	#introduction .columns {
+		padding-top: 0.5em;
+	}
 	#introduction .subject {
 		width: 80%;
 	}
@@ -1878,10 +1881,9 @@
 	}
 	ul.mypubs li {
 		margin: 0.2em 0 0.2em 0;
-		padding: 0.2em 0.5em;
+		padding: 0.5em 0.5em;
 		border-bottom: 1px dotted #e2e2e2;
 		background: #ffffff;
-		min-height: 30px;
 	}
 	ul.mypubs li:last-child {
 		border: none;
@@ -1943,8 +1945,11 @@
 		padding-bottom: 0.2em;
 	}
 	.pub-thumb {
-		float: left;
-		margin-right: 2em;
+		position: absolute;
+	}
+	.pub-details {
+		margin-left: 50px;
+		display: block;
 	}
 	.pub-thumb img {
 		width: 30px;
@@ -2003,6 +2008,9 @@
 	}
 	#start-projectnote p {
 		font-size: 85%;
+	}
+	.title {
+		margin: 0 !important;
 	}
 	
 /* 	Fixes for smaller screens

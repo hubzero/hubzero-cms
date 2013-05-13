@@ -189,6 +189,7 @@ class Publication extends JTable
 		$projects = isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
 		$mine = isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
 		$coauthor = isset($filters['coauthor']) && $filters['coauthor'] == 1 ? 1 : 0;
+		$sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';  
 		
 		$query  = "";
 		if (isset($filters['tag']) && $filters['tag'] != '') 
@@ -203,6 +204,7 @@ class Publication extends JTable
 		}
 	
 		$query .= "LEFT JOIN #__publication_categories AS t ON t.id=C.category ";
+				
 		$query .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id ";
 
 		if ($dev) 
@@ -298,7 +300,6 @@ class Publication extends JTable
 		{
 			$query  .= " ORDER BY ";
 			$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'ASC';
-			$sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';  
 			
 			switch ($sortby) 
 			{
@@ -306,6 +307,11 @@ class Publication extends JTable
 				case 'date_published':   		
 					$query .= 'V.published_up DESC'; 
 	    			
+					break;
+					
+				case 'date_oldest': 		
+					$query .= 'V.published_up ASC'; 
+
 					break;
 					
 				case 'date_accepted':   		
@@ -351,6 +357,10 @@ class Publication extends JTable
 					
 				case 'version_ranking': 		
 					$query .= "V.ranking DESC";                  	
+					break;
+					
+				case 'popularity': 		
+					$query .= "stat DESC, V.published_up ASC";                  	
 					break;
 					
 				case 'category': 					
@@ -412,6 +422,14 @@ class Publication extends JTable
 				PP.state as project_status, PP.provisioned as project_provisioned, MT.alias as base";
 		$sql .= ", (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ) AS dev_version_label ";
 		$sql .= ", (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
+		
+		$sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';  
+		
+		if ($sortby == 'popularity')
+		{
+			$sql .= ", (SELECT S.users FROM #__publication_stats AS S WHERE S.publication_id=C.id AND S.period=14 ORDER BY S.datetime DESC LIMIT 1) as stat ";
+		}
+			
 	//	$sql .= ", (SELECT MAX(version_number) FROM #__publication_versions WHERE publication_id=C.id AND state=1 ) AS latest ";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
 		$sql .= $this->buildQuery( $filters, $usergroups );

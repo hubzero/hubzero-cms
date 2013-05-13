@@ -31,6 +31,8 @@ if ($this->line->alias) {
 	$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->line->id);
 }
 
+$pubthumb = $this->helper->getThumb($this->line->id, $this->line->version_id, $this->config);	
+
 $html  = "\t".'<li';
 switch ($this->line->access)
 {
@@ -41,6 +43,8 @@ switch ($this->line->access)
 	default: $html .= ' class="public"'; break;
 }
 $html .= '>'."\n";
+$html .= "\t". "\t". '<div class="pub-thumb"><img src="' . $pubthumb . '" alt=""/></div>' . "\n";
+$html .= "\t" . "\t" . '<div class="pub-details">' . "\n";
 $html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml($this->line->title) . '</a>'."\n";
 /*
 if ($this->show_edit != 0) {
@@ -106,6 +110,7 @@ $info = array();
 if ($this->thedate) {
 	$info[] = $this->thedate;
 }
+/*
 if(isset($this->filters['projects'])) {
 	if(in_array($this->line->project_id, $this->filters['projects'])) {
 		// can edit
@@ -116,6 +121,7 @@ if(isset($this->filters['projects'])) {
 		$info[] = $edit;
 	}
 }
+*/
 if (($this->line->category && !intval($this->filters['category']))) {
 	$info[] = $this->line->cat_name;
 }
@@ -129,6 +135,7 @@ if ($this->line->abstract) {
 } else if ($this->line->description) {
 	$html .= "\t\t".Hubzero_View_Helper_Html::shortenText( stripslashes($this->line->description) )."\n";
 }
+$html .= "\t". "\t". '</div>'."\n";
 $html .= "\t".'</li>'."\n";
 echo $html;
 ?>
