@@ -13,7 +13,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		$query .= "UPDATE `#__plugins` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
+		$query = "UPDATE `#__plugins` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
 
 		if (!empty($query))
 		{
@@ -27,7 +27,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		$query .= "UPDATE `#__plugins` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
+		$query = "UPDATE `#__plugins` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
 
 		if (!empty($query))
 		{
