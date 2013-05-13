@@ -89,7 +89,24 @@ class YSearchViewYSearch extends JView
 	{
 		$this->url_terms = urlencode($this->terms->get_raw_without_section());
 		@list($this->plugin, $this->section) = $this->terms->get_section();
-		$this->pagination = new JPagination($this->results->get_total_count(), $this->results->get_offset(), $this->results->get_limit());
+
+		if ($this->plugin)
+		{
+			foreach ($this->results->get_result_counts() as $cat => $def)
+			{
+				if ($this->plugin == $cat)
+				{
+					$total = $def['count'];
+					break;
+				}
+			}
+		}
+		else
+		{
+			$total = $this->results->get_total_count();
+		}
+
+		$this->pagination = new JPagination($total, $this->results->get_offset(), $this->results->get_limit());
 		parent::display();
 	}
 
