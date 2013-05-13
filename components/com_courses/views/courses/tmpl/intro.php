@@ -135,8 +135,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 									$count = 0;
 									echo '<div class="clear"></div>';	
 								}
-
-								$count++;
+								else
+								{
+									$count++;
+								}
 							}
 						}
 						else
@@ -180,8 +182,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 									$count = 0;
 									echo '<div class="clear"></div>';	
 								}
-
-								$count++;
+								else
+								{
+									$count++;
+								}
 							}
 						}
 						else
@@ -225,8 +229,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 								$count = 0;
 								echo '<div class="clear"></div>';	
 							}
-
-							$count++;
+							else
+							{
+								$count++;
+							}
 						}
 					}
 					else
