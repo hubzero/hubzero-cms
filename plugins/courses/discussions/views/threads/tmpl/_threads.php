@@ -30,8 +30,12 @@ if ($this->threads && is_array($this->threads))
 {
 	$lastchange = $this->threads[0]->created;
 }
+if (!isset($this->category))
+{
+	$this->category = 'category' . substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',5)),0,10);
+}
 ?>
-<ul class="discussions" data-lastchange="<?php echo $lastchange; ?>">
+<ul class="discussions" id="<?php echo $this->category; ?>" data-lastchange="<?php echo $lastchange; ?>">
 <?php
 if ($this->threads && is_array($this->threads)) 
 { 

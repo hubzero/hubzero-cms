@@ -810,6 +810,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 					'layout'  => '_threads'
 				)
 			);
+			$cview->category    = 'categorysearch';
 			$cview->option      = $this->option;
 			$cview->threads     = (isset($filters['id']) && count($filters['id']) > 0) ? $post->find($filters) : null;
 			$cview->config      = $this->params;
@@ -891,6 +892,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 					$cview->course      = $this->course;
 					$cview->instructors = $this->_instructors();
 
+					$results[$key]->mine = ($row->created_by == $this->juser->get('id')) ? true : false;
 					$results[$key]->html = $cview->loadTemplate();
 				}
 				$threads->total = count($results);
@@ -2363,16 +2365,17 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		if ($no_html)
 		{
 			JRequest::setVar('thread', $model->thread);
+			if (!$model->parent)
+			{
+				JRequest::setVar('action', 'both');
+			}
+			else
+			{
+				JRequest::setVar('action', 'posts');
+			}
+
 			if (JRequest::getVar('group', ''))
 			{
-				if (!$model->parent)
-				{
-					JRequest::setVar('action', 'both');
-				}
-				else
-				{
-					JRequest::setVar('action', 'posts');
-				}
 				$unit = $this->course->offering()->unit($category->alias);
 				return $this->onCourseAfterLecture($this->course, $unit, $unit->assetgroup($model->object_id));
 			}

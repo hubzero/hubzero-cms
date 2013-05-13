@@ -100,6 +100,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					if ($this->threads)
 					{
 						$threads_lastchange = $this->threads[0]->created;
+						$category = $this->threads[0]->category_id;
 					}
 
 					$instructors = array();
@@ -120,6 +121,10 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 							'layout'  => '_threads'
 						)
 					);
+					if ($category)
+					{
+						$cview->category   = $category;
+					}
 					$cview->option     = $this->option;
 					$cview->threads    = $this->threads;
 					$cview->unit       = $this->unit->get('alias');

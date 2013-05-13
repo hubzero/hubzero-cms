@@ -110,6 +110,7 @@ if (count($inst) > 0)
 									'layout'  => '_threads'
 								)
 							);
+							$view->category    = 'categorymine';
 							$view->option      = $this->option;
 							$view->threads     = $this->post->getRecords($filters);
 							$view->unit        = ''; //$row->alias; //$this->unit;
@@ -165,6 +166,7 @@ if (count($inst) > 0)
 													'layout'  => '_threads'
 												)
 											);
+											$view->category    = 'category' . $row->id;
 											$view->option      = $this->option;
 											$view->threads     = $this->post->getRecords($tfilters);
 											$view->unit        = $row->alias;

@@ -570,6 +570,23 @@
 		overflow-y: auto;
 		background: url("loading.gif") center 50px no-repeat;
 	}
+	.comment-threads-shadow {
+		content: "";
+		display: none;
+		position: absolute;
+		top: 5.25em;
+		left: 0;
+		right: 0;
+		height: 20px;
+		background: -webkit-linear-gradient(top,rgba(0, 0, 0, .12),rgba(0, 0, 0, .12) 1px,rgba(0, 0, 0, .06) 1px,transparent 7px,transparent 100%);
+		background: -moz-linear-gradient(top,rgba(0, 0, 0, .12),rgba(0, 0, 0, .12) 1px,rgba(0, 0, 0, .06) 1px,transparent 7px,transparent 100%);
+		background: -ms-linear-gradient(top,rgba(0, 0, 0, .12),rgba(0, 0, 0, .12) 1px,rgba(0, 0, 0, .06) 1px,transparent 7px,transparent 100%);
+		background: -o-linear-gradient(top,rgba(0, 0, 0, .12),rgba(0, 0, 0, .12) 1px,rgba(0, 0, 0, .06) 1px,transparent 7px,transparent 100%);
+		background: linear-gradient(top,rgba(0, 0, 0, .12),rgba(0, 0, 0, .12) 1px,rgba(0, 0, 0, .06) 1px,transparent 7px,transparent 100%);
+	}
+	.comment-threads-shadow.scrolled {
+		display: block;
+	}
 	.comments-panel {
 		position: absolute;
 		top: 0;

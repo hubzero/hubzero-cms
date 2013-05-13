@@ -125,7 +125,7 @@ HUB.Plugins.CoursesForum = {
 							$('#threads_lastchange').val(data.threads.lastchange);
 
 							var list = feed.find('div.category-results ul.discussions');//last = $('#threads_lastchange');
-							list.empty();
+							//list.empty();
 
 							for (var i = 0; i< data.threads.posts.length; i++) 
 							{
@@ -319,6 +319,19 @@ HUB.Plugins.CoursesForum = {
 					// Apply plugins to loaded content
 					jQuery(document).trigger('ajaxLoad');
 				});
+			})
+			.scroll(function(){
+				var shadow = $('.comment-threads-shadow');
+				if (shadow.length <= 0) {
+					var shadow = $('<div class="comment-threads-shadow"></div>').insertAfter($(this));
+				}
+				if ($(this).scrollTop() > 0) {
+					if (!shadow.hasClass('scrolled')) {
+						shadow.addClass('scrolled');
+					}
+				} else {
+					shadow.removeClass('scrolled');
+				}
 			});
 
 		// Make column resizable

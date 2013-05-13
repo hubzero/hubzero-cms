@@ -91,6 +91,9 @@ HUB.Plugins.CoursesForum = {
 				.on('load', function(){
 					data = jQuery.parseJSON($(this).contents().text());
 					if (data) {
+						if (_DEBUG) {
+							console.log(data);
+						}
 						// Deactivate previous items
 						$('#' + feed.data('active')).removeClass('active');
 						feed.data('active', '');
@@ -113,7 +116,39 @@ HUB.Plugins.CoursesForum = {
 						header.text(data.thread.total + ' comments');
 
 						// Update discussions list
-						feed.html(data.threads.html);
+						//feed.html(data.threads.html);
+						if (data.threads.posts.length > 0) {
+							$('#threads_lastchange').val(data.threads.lastchange);
+
+							//var list = feed.find('div.category-results ul.discussions');//last = $('#threads_lastchange');
+							//list.empty();
+
+							for (var i = 0; i< data.threads.posts.length; i++) 
+							{
+								item = data.threads.posts[i];
+
+								if ($('#thread' + item.id).length) {
+									// Comment already exists!
+									continue;
+								}
+								var list = $('#category' + item.category_id);
+								if (list.find('li.comments-none').length) {
+									list.empty();
+								}
+								list.prepend($(item.html).hide().fadeIn());
+								//$(list.parent().parent()).find('span.count').text();
+
+								if (item.mine) {
+									var mine = $('#categorymine');
+									if (mine.find('li.comments-none').length) {
+										mine.empty();
+									}
+									mine.prepend($(item.html).hide().fadeIn());
+								}
+
+								//list.prepend($(item.html).hide().fadeIn());
+							}
+						}
 
 						// Append thread data and fade it in
 						thread.html(data.thread.html).hide().fadeIn();
@@ -169,20 +204,21 @@ HUB.Plugins.CoursesForum = {
 				// Iframe method for handling AJAX-like file uploads
 				$('<iframe src="about:blank?nocache=' + Math.random() + '" id="' + id + '" name="' + id + '" style="display:none;"></iframe>')
 					.on('load', function(){
-						if (_DEBUG) {
-							console.log($(this).contents().text());
-						}
 						data = jQuery.parseJSON($(this).contents().text());
 
 						if (data) {
+							if (_DEBUG) {
+							console.log(data);
+						}
 							feed.data('thread_last_change', data.thread.lastchange);
 							feed.data('thread', data.thread.lastid);
 							if (_DEBUG) {
 								console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
 							}
 
-							plgn.updateComments(data.thread.posts, 'append');
-							if (data.threads.posts.length > 0) {
+							if (data.thread.posts) {
+								plgn.updateComments(data.thread.posts, 'append');
+							/*if (data.threads.posts.length > 0) {
 								var last = $('#threads_lastchange');
 
 								for (var i = 0; i< data.threads.posts.length; i++) 
@@ -200,6 +236,7 @@ HUB.Plugins.CoursesForum = {
 
 									feed.find('ul.discussions').prepend($(item.html).hide().fadeIn());
 								}
+							}*/
 							}
 						}
 					})
@@ -213,7 +250,8 @@ HUB.Plugins.CoursesForum = {
 								.text(b.attr('data-txt-inactive'));
 
 						$(frm.parent()).addClass('hide');
-						frm.attr('action', frm.attr('action').nohtml() + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'));
+						var act = frm.attr('action').split("?")[0];
+						frm.attr('action', act.nohtml() + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'));
 						return true;
 					});
 			});
@@ -294,6 +332,19 @@ HUB.Plugins.CoursesForum = {
 					// Apply plugins to loaded content
 					jQuery(document).trigger('ajaxLoad');
 				});
+			})
+			.scroll(function(){
+				var shadow = $('.comment-threads-shadow');
+				if (shadow.length <= 0) {
+					var shadow = $('<div class="comment-threads-shadow"></div>').insertAfter($(this));
+				}
+				if ($(this).scrollTop() > 0) {
+					if (!shadow.hasClass('scrolled')) {
+						shadow.addClass('scrolled');
+					}
+				} else {
+					shadow.removeClass('scrolled');
+				}
 			});
 
 		// Make column resizable
