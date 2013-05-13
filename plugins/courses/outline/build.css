@@ -600,6 +600,8 @@ ul {
 }
 .asset-group-item:not(.add-new) {
 	min-height: 115px;
+	height: auto !important;
+	height: 115px;
 }
 .asset-group-item:not(.add-new):before {
 	margin-top: -10px;
