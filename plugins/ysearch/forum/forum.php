@@ -141,7 +141,7 @@ class plgYSearchForum extends YSearchPlugin
 			{
 				continue;
 			}
-			if ($row->group_id)
+			if ($row->scope_id)
 			{
 				$row->link .= ($row->sect ? $row->sect : 'defaultsection') . '/';
 				$row->link .= ($row->cat ? $row->cat : 'discussion') . '/';
