@@ -32,33 +32,13 @@
 .dialog {
 	display: none;
 }
+
+/* units */
 .unit {
 	margin-left: 45px;
 }
-.transfer-effect {
-	position: relative;
-	border: 2px dotted gray;
-	background: white;
-	opacity: .8;
-	height: 20px;
-	width: 20px;
-	max-height: 20px;
-	max-width: 20px;
-	min-height: 20px;
-	min-width: 20px;
 
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-}
-.transfer-effect:before {
-	font-family: "fontcons";
-	content: "\f016";
-	position: absolute;
-	left: 5px;
-	top: 2px;
-	font-size: 20px;
-}
+/* content box */
 .content-box-overlay {
 	display: none;
 	background: #000;
@@ -144,6 +124,32 @@
 .content-box iframe {
 	height: 85%;
 	width: 100%;
+}
+
+/* Asset deletion */
+.transfer-effect {
+	position: relative;
+	border: 2px dotted gray;
+	background: white;
+	opacity: .8;
+	height: 20px;
+	width: 20px;
+	max-height: 20px;
+	max-width: 20px;
+	min-height: 20px;
+	min-width: 20px;
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+.transfer-effect:before {
+	font-family: "fontcons";
+	content: "\f016";
+	position: absolute;
+	left: 5px;
+	top: 2px;
+	font-size: 20px;
 }
 .delete-tray {
 	position: absolute;
@@ -289,6 +295,8 @@
 	margin-top: -2px;
 	float: right;
 }
+
+/* asset groups */
 .aux-attachments {
 	position: relative;
 	margin: 10px auto 0 auto;
@@ -399,6 +407,8 @@
 .course:before {
 	content: "\f09c";
 }
+
+/* assets */
 .asset-item a {
 	border-bottom: none;
 	text-decoration: none;
@@ -579,13 +589,124 @@ ul {
 .asset-group-type-list {
 	padding-left: 20px;
 }
+.asset-group-type-item.unpublished {
+	padding: 10px;
+	border: 1px dotted #AAA;
+
+	background-image: url("/media/system/images/light-stripes.png");
+	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
+	background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: -moz-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: -ms-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: -o-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+
+	-webkit-background-size: 30px 30px;
+	-moz-background-size: 30px 30px;
+	-ms-background-size: 30px 30px;
+	-o-background-size: 30px 30px;
+	background-size: 30px 30px;
+}
 .asset-group-title {
 	font-size: 14px;
 	color: #003385;
 	font-weight: bold;
 	text-align: left;
 	text-transform: uppercase;
-	margin-top: 20px;
+}
+.asset-group-title-edit {
+	display: none;
+	font-size: 12px;
+	float: right;
+	color: #555;
+	font-weight: normal;
+	text-transform: lowercase;
+	font-style: italic;
+}
+.asset-group-title {
+	padding: 3px;
+	border: 1px solid transparent;
+}
+.asset-group-title:hover {
+	background: #F7F7F7;
+	border: 1px dotted #AAA;
+	cursor: pointer;
+}
+.asset-group-title-container form {
+	padding: 10px;
+}
+.asset-group-title-container {
+	border-bottom: 1px solid transparent;
+}
+.asset-group-title-container form .asset-group-title-save,
+.asset-group-title-container form .asset-group-title-cancel {
+	color: #F9F9F9;
+	display: block;
+	float: left;
+	padding: 5px;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 5px #FFF;
+	margin: 10px 0 0 0;
+	line-height: 1.6em;
+	border: none;
+}
+.asset-group-title-container form .asset-group-title-save:hover,
+.asset-group-title-container form .asset-group-title-cancel:hover {
+	cursor: pointer;
+	box-shadow: 0 0 6px #CCC;
+}
+.asset-group-title-container form .asset-group-title-save:active,
+.asset-group-title-container form .asset-group-title-cancel:active {
+	box-shadow: inset 1px 1px 1px #111;
+}
+.asset-group-title-container form .asset-group-title-save {
+	border: 1px solid #444;
+	box-shadow: inset 0 1px 5px #AAA;
+
+	background: #666;
+	background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#555));
+	background: -webkit-linear-gradient(#666, #555);
+	background: -moz-linear-gradient(center top, #666 0%, #555 100%);
+	background: -moz-gradient(center top, #666 0%, #555 100%);
+	background: -o-linear-gradient(#666, #555);
+	background-image: -ms-linear-gradient(top, #666 0%, #555 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666,endColorstr=#555);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666, endColorstr=#555)";
+}
+.asset-group-title-container form .asset-group-title-cancel {
+	color: #555;
+	border: 1px solid #ccc;
+	margin-left: 10px;
+	margin-bottom: 10px;
+
+	background: #EEE;
+	background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#DDD));
+	background: -webkit-linear-gradient(#EEE, #DDD);
+	background: -moz-linear-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -moz-gradient(center top, #EEE 0%, #DDD 100%);
+	background: -o-linear-gradient(#EEE, #DDD);
+	background-image: -ms-linear-gradient(top, #EEE 0%, #DDD 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE,endColorstr=#DDD);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE, endColorstr=#DDD)";
+}
+.asset-group-container.active {
+	margin: 0 10px;
+	opacity: 0.4;
+}
+.asset-group-type-item-container {
+	border: 1px solid transparent;
+}
+.asset-group-type-item-container.active {
+	border: 1px dotted #AAA;
+	background: #F7F7F7;
+}
+.asset-group-type-item-container.active .asset-group-title-container {
+	background: #EBEBEB;
+	overflow: hidden;
+	border-bottom: 1px dotted #AAA;
+}
+.asset-group-type-item-container.active .asset-group-title:hover {
+	border: 1px solid transparent;
 }
 .asset-group-item-title {
 	display: block;
@@ -662,6 +783,7 @@ ul {
 	position: relative;
 	border: 1px dotted #AAA;
 	cursor: pointer;
+	margin-bottom: 10px;
 }
 .add-new:hover {
 	opacity: 1;

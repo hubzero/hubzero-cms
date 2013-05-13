@@ -128,10 +128,34 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 			<? foreach($unit->assetgroups() as $agt) : ?>
 
-				<li class="asset-group-type-item">
-					<div class="asset-group-title title"><?php echo $agt->get('title'); ?></div>
-					<div class="clear"></div>
-					<ul class="asset-group sortable">
+				<li class="asset-group-type-item <?= ($agt->get('state') == '1') ? 'published' : 'unpublished' ?>">
+					<div class="asset-group-type-item-container">
+						<div class="asset-group-title-container">
+							<div class="asset-group-title title">
+								<div class="asset-group-title-edit">edit</div>
+								<div class="title"><?php echo $agt->get('title'); ?></div>
+							</div>
+							<form action="/api/courses/assetgroup/save">
+								<div class="label-input-pair">
+									<label for="title">Title:</label>
+									<input class="" name="title" type="text" value="<?= $agt->get('title') ?>" />
+								</div>
+								<div class="label-input-pair">
+									<label for="state">Published:</label>
+									<select name="state">
+										<option value="0"<?= ($agt->get('state') == '0') ? ' selected="selected"' : '' ?>>No</option>
+										<option value="1"<?= ($agt->get('state') == '1') ? ' selected="selected"' : '' ?>>Yes</option>
+									</select>
+								</div>
+								<input class="asset-group-title-save" type="submit" value="Save" />
+								<input class="asset-group-title-cancel" type="reset" value="Cancel" />
+								<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
+								<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+								<input type="hidden" name="id" value="<?= $agt->get('id') ?>" />
+							</form>
+						</div>
+						<div class="asset-group-container">
+							<ul class="asset-group sortable">
 
 <?php
 				// Loop through our asset groups
@@ -171,16 +195,18 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				}
 ?>
 
-						<li class="add-new asset-group-item">
-							Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?>
-							<form action="/api/courses/assetgroup/save">
-								<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-								<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-								<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
-								<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
-							</form>
-						</li>
-					</ul>
+								<li class="add-new asset-group-item">
+									Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?>
+									<form action="/api/courses/assetgroup/save">
+										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+										<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
+										<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
+									</form>
+								</li>
+							</ul>
+						</div>
+					</div>
 				</li>
 
 			<? endforeach; // foreach asset groups ?>

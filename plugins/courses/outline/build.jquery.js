@@ -548,6 +548,9 @@ HUB.CoursesOutline = {
 							// Refresh the sortable list
 							HUB.CoursesOutline.makeAssetGroupsSortable();
 
+							// Hide edit title forms
+							newUnit.find('.asset-group-title-container form').hide();
+
 							$('.asset-group-type-list').delay(500).slideUp(500, function(){
 								$('.unit-title-arrow').removeClass('unit-title-arrow-active');
 								newUnit.find('.asset-group-type-list').slideDown(500);
@@ -708,6 +711,12 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
+		// Hide edit title forms
+		$('.asset-group-title-container form').hide();
+
+		$('.unit').on('click', '.asset-group-title', editAssetGroupTitle);
+		$('.unit').on('click', '.asset-group-title-cancel', editAssetGroupTitle);
+		$('.unit').on('click', '.asset-group-title-save', saveAssetGroupTitle);
 		$('.unit').on('click', '.asset-group-edit', editAssetGroup);
 
 		function editAssetGroup( e ) {
@@ -753,6 +762,41 @@ HUB.CoursesOutline = {
 							}
 						});
 					});
+				}
+			});
+		}
+
+		function editAssetGroupTitle( e ) {
+			e.preventDefault();
+
+			var t = $(this).parents('.asset-group-title-container');
+			var container = $(this).parents('.asset-group-type-item').find('.asset-group-container');
+
+			t.find('form').slideToggle(500);
+			container.toggleClass('active', 500);
+			$(this).parents('.asset-group-type-item-container').toggleClass('active', 500);
+		}
+
+		function saveAssetGroupTitle( e ) {
+			e.preventDefault();
+
+			var form = $(this).parents('form');
+
+			// Create ajax call post save
+			$.ajax({
+				url: form.attr('action'),
+				data: form.serializeArray(),
+				statusCode: {
+					// 200 OK
+					200: function ( data, textStatus, jqXHR ){
+						// Close
+						form.siblings('.asset-group-title').trigger('click').find('.title').html(data.assetgroup_title);
+
+						// Get the current state from the response
+						var state = (data.assetgroup_state == 1) ? 'published' : 'unpublished';
+
+						form.parents('.asset-group-type-item').removeClass('published unpublished').addClass(state);
+					}
 				}
 			});
 		}
@@ -1512,22 +1556,48 @@ HUB.CoursesOutline = {
 				'<div class="clear"></div>',
 				'<ul class="asset-group-type-list" style="display:none">',
 					'<% _.each(assetgroups, function(assetgroup){ %>',
-						'<li class="asset-group-type-item">',
-							'<div class="asset-group-title title"><%= assetgroup.assetgroup_title %></div>',
-							'<div class="clear"></div>',
-							'<ul class="asset-group sortable">',
-								// @FIXME: do we want to create some placeholder asset groups? (see next line)
-								//'<% print(_.template(HUB.CoursesOutline.Templates.assetgroupitem, assetgroup)); %>',
-								'<li class="add-new asset-group-item">',
-									'Add a new <% print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, "")) %>',
+						'<li class="asset-group-type-item published">',
+							'<div class="asset-group-type-item-container">',
+								'<div class="asset-group-title-container">',
+									'<div class="asset-group-title title">',
+										'<div class="asset-group-title-edit">edit</div>',
+										'<div class="title"><%= assetgroup.assetgroup_title %></div>',
+									'</div>',
 									'<form action="/api/courses/assetgroup/save">',
+										'<div class="label-input-pair">',
+											'<label for="title">Title:</label>',
+											'<input class="" name="title" type="text" value="<%= assetgroup.assetgroup_title %>" />',
+										'</div>',
+										'<div class="label-input-pair">',
+											'<label for="state">Published:</label>',
+											'<select name="state">',
+												'<option value="0">No</option>',
+												'<option value="1" selected="selected">Yes</option>',
+											'</select>',
+										'</div>',
+										'<input class="asset-group-title-save" type="submit" value="Save" />',
+										'<input class="asset-group-title-cancel" type="reset" value="Cancel" />',
 										'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 										'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
-										'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
-										'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
+										'<input type="hidden" name="id" value="<%= assetgroup.assetgroup_id %>" />',
 									'</form>',
-								'</li>',
-							'</ul>',
+								'</div>',
+								'<div class="asset-group-container">',
+									'<ul class="asset-group sortable">',
+										// @FIXME: do we want to create some placeholder asset groups? (see next line)
+										//'<% print(_.template(HUB.CoursesOutline.Templates.assetgroupitem, assetgroup)); %>',
+										'<li class="add-new asset-group-item">',
+											'Add a new <% print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, "")) %>',
+											'<form action="/api/courses/assetgroup/save">',
+												'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+												'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
+												'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
+												'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
+											'</form>',
+										'</li>',
+									'</ul>',
+								'</div>',
+							'</div>',
 						'</li>',
 					'<% }) %>',
 				'</ul>',
