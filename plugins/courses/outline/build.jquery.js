@@ -348,8 +348,8 @@ HUB.CoursesOutline = {
 		$('.delete-tray').hoverIntent({
 			over: function(){
 				if(!locked) {
-					$('.unit').animate({'margin-left':330}, 500);
-					$('.delete-tray').animate({'margin-left':0}, 500, function() {
+					$('.unit').animate({'margin-left':300}, 500);
+					$('.delete-tray').animate({'margin-left':-30}, 500, function() {
 						$('.delete-tray').removeClass('closed').addClass('open');
 					});
 				}
