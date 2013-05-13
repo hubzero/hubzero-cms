@@ -180,7 +180,9 @@ class CoursesControllerOffering extends Hubzero_Controller
 			return;
 		}
 
-		if ($tmpl = $this->config->get('tmpl', ''))
+		$tmpl = $this->config->get('tmpl', '');
+
+		if ($tmpl && !JRequest::getWord('tmpl', false))
 		{
 			JRequest::setVar('tmpl', $tmpl);
 		}
