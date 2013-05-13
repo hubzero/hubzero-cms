@@ -253,33 +253,6 @@ HUB.CoursesOutline = {
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li',
-			connectWith: '.assets-deleted',
-			zIndex: 10000,
-			remove: function(event, ui){
-				// Get count of assets remaining
-				var assetCount = $(this).find('li').length;
-
-				if(assetCount === 0) {
-					// Add an empty asset back
-					$(this).append(_.template(HUB.CoursesOutline.Templates.emptyasset));
-				}
-
-				// Update a few styles
-				ui.item.find('.sortable-assets-handle').css("display", "none");
-				ui.item.css("margin-left", 0);
-
-				// Get the form data (we're just stealing the info from another form)
-				var form = ui.item.find('.title-form').serializeArray();
-
-				// Set state equal to 2 for deleted
-				form.push({'name':'state', 'value':2});
-
-				// Now actually mark the asset as deleted
-				$.ajax({
-					url: '/api/courses/asset/save',
-					data: form
-				});
-			},
 			update: function(){
 				// Save new order to the database
 				var sorted   = $(this).sortable('serialize');
@@ -364,11 +337,6 @@ HUB.CoursesOutline = {
 			},
 			timeout: 1000,
 			interval: 250
-		});
-
-		// Make this a sortable list (even though we won't actually sort the trash), so that we can connect with the assets list
-		$('.assets-deleted').sortable({
-			'handle': '.sortable-assets-handle'
 		});
 
 		// Toggle the delete tray lock
