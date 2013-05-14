@@ -226,7 +226,8 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 				'course_id'      => $this->course_id,
 				'assetgroups'    => $assetGroups,
 				'course_alias'   => $this->course->get('alias'),
-				'offering_alias' => $this->offering_alias
+				'offering_alias' => $this->offering_alias,
+				'section_id'     => (isset($section_id) ? $section_id : $this->course->offering()->section()->get('id'))
 			),
 			$status['code'],
 			$status['text']);

@@ -102,22 +102,28 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<? foreach ($this->course->offering()->units() as $unit) : ?>
 		<li class="unit-item">
 			<div class="unit-title-arrow"></div>
-			<div class="title unit-title toggle-editable"><?php echo $unit->get('title'); ?></div>
-			<div class="title-edit">
-				<form action="/api/courses/unit/save" class="title-form">
-					<input class="uniform title-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" />
-					<input class="uniform title-save" type="submit" value="Save" />
-					<input class="uniform title-reset" type="reset" value="Cancel" />
-					<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-					<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-					<input type="hidden" name="id" value="<?php echo $unit->get('id'); ?>" />
-				</form>
-			</div>
-			<div class="calendar">
-				<form action="<?= JRoute::_($base . '&active=outline&action=build') ?>" class="calendar-form">
-					<input type="hidden" name="scope" value="unit" />
-					<input type="hidden" name="scope_id" value="<?php echo $unit->get('id'); ?>" />
-				</form>
+			<div class="unit-edit-container">
+				<div class="title unit-title">
+					<div class="unit-title-value"><?php echo $unit->get('title'); ?></div>
+					<div class="edit">edit</div>
+				</div>
+				<div class="clear"></div>
+				<div class="unit-edit">
+					<form action="/api/courses/unit/save" class="unit-edit-form">
+						<label for="title">Title:</label>
+						<input class="unit-edit-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" placeholder="title" />
+						<label for="publish_up">Publish start date:</label>
+						<input class="unit-edit-publish-up datepicker" name="publish_up" type="text" value="<?= $unit->get('publish_up') ?>" placeholder="Publish start date" />
+						<label for="publish_down">Publish end date:</label>
+						<input class="unit-edit-publish-down datepicker" name="publish_down" type="text" value="<?= $unit->get('publish_down') ?>" placeholder="Publish end date" />
+						<input class="unit-edit-save" type="submit" value="Save" />
+						<input class="unit-edit-reset" type="reset" value="Cancel" />
+						<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+						<input type="hidden" name="section_id" value="<?= $this->course->offering()->section()->get('id') ?>" />
+						<input type="hidden" name="id" value="<?php echo $unit->get('id'); ?>" />
+					</form>
+				</div>
 			</div>
 			<div class="progress-container">
 				<div class="progress-indicator"></div>
@@ -242,6 +248,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
 				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+				<input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id'); ?>" />
 			</form>
 		</li>
 	</ul>

@@ -41,7 +41,6 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.setupFileUploader();
 		HUB.CoursesOutline.resizeDeleteTray();
 		HUB.CoursesOutline.setupErrorMessage();
-		HUB.CoursesOutline.calendar();
 		HUB.CoursesOutline.preview();
 	},
 
@@ -49,6 +48,7 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
+		HUB.CoursesOutline.initUnitEdit();
 		HUB.CoursesOutline.initAssetGroupEdit();
 		HUB.CoursesOutline.initAssetEdit();
 	},
@@ -250,9 +250,10 @@ HUB.CoursesOutline = {
 			handle: '.sortable-assets-handle',
 			forcePlaceholderSize: true,
 			revert: false,
-			tolerance: 'pointer',
+			tolerance: 'intersect',
 			opacity: '0.6',
 			items: 'li',
+			axis: 'y',
 			update: function(){
 				// Save new order to the database
 				var sorted   = $(this).sortable('serialize');
@@ -505,11 +506,6 @@ HUB.CoursesOutline = {
 							// Create a variable pointing to the new item just inserted
 							var newUnit = addNew.parent('.unit').find('.unit-item:not(.add-new):last');
 
-							// Make that item look/function like the rest of them
-							newUnit.find('.uniform').uniform();
-							newUnit.find('.toggle-editable').show();
-							newUnit.find('.title-edit').hide();
-
 							// Set up file upload and update progress bar based on the recently added item
 							HUB.CoursesOutline.showProgressIndicator();
 
@@ -517,7 +513,9 @@ HUB.CoursesOutline = {
 							HUB.CoursesOutline.makeAssetGroupsSortable();
 
 							// Hide edit title forms
+							newUnit.find('.unit-edit').hide();
 							newUnit.find('.asset-group-title-container form').hide();
+							newUnit.find('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
 
 							$('.asset-group-type-list').delay(500).slideUp(500, function(){
 								$('.unit-title-arrow').removeClass('unit-title-arrow-active');
@@ -831,6 +829,51 @@ HUB.CoursesOutline = {
 									}
 								});
 						}
+					}
+				}
+			});
+		}
+	},
+
+	/* Initialize the ability to edit units
+	 * Listener attached to the entire outline,
+	 * therefore should not need to be reinitialized
+	 */
+	initUnitEdit: function()
+	{
+		var $ = this.jQuery;
+
+		$('.unit-edit').hide();
+		$('.unit').on('click', '.unit-title', toggleEditForm);
+		$('.unit').on('click', '.unit-edit-reset', toggleEditForm);
+		$('.unit').on('click', '.unit-edit-save', editUnit);
+
+		$('.unit-edit-container .datepicker').datepicker({
+			dateFormat: 'yy-mm-dd'
+		});
+
+		function toggleEditForm( e ) {
+			var editContainer = $(this).parents('.unit-edit-container');
+			editContainer.find('.unit-edit').slideToggle(500, function () {
+				editContainer.toggleClass('active');
+			});
+		}
+
+		function editUnit( e ) {
+			e.preventDefault();
+
+			// Establish some variables
+			var form  = $(this).parent('form');
+
+			// Create ajax call to edit asset
+			$.ajax({
+				url: form.attr('action'),
+				data: form.serializeArray(),
+				statusCode: {
+					// 200 OK
+					200: function ( data, textStatus, jqXHR ) {
+						form.parents('.unit-edit-container').find('.unit-title-value').html(data.unit_title);
+						form.parent('.unit-edit').siblings('.unit-title').trigger('click');
 					}
 				}
 			});
@@ -1229,43 +1272,6 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	calendar: function()
-	{
-		var $ = this.jQuery;
-
-		$('.unit').on('click', '.calendar', function(){
-			var form = $(this).find('form');
-
-			$.fancybox({
-				type: 'ajax',
-				autoSize: false,
-				width: '305',
-				height: '190',
-				href: form.attr('action')+'&'+form.serialize()+'&no_html=1',
-				afterShow: function() {
-					$('.datepicker').datepicker({
-						dateFormat: 'yy-mm-dd'
-					});
-
-					var detailsForm = $('.unit-edit-form');
-					detailsForm.submit(function(e){
-						e.preventDefault();
-
-						$.ajax({
-							url: detailsForm.attr('action'),
-							data: detailsForm.serialize(),
-							statusCode: {
-								200: function(data){
-									$.fancybox.close();
-								}
-							}
-						});
-					});
-				}
-			});
-		});
-	},
-
 	preview: function()
 	{
 		var $ = this.jQuery;
@@ -1501,22 +1507,28 @@ HUB.CoursesOutline = {
 		unititem : [
 			'<li class="unit-item">',
 				'<div class="unit-title-arrow"></div>',
-				'<div class="title unit-title toggle-editable"><%= unit_title %></div>',
-				'<div class="title-edit">',
-					'<form action="/api/courses/unit/save" class="title-form">',
-						'<input class="uniform title-text" name="title" type="text" value="<%= unit_title %>" />',
-						'<input class="uniform title-save" type="submit" value="Save" />',
-						'<input class="uniform title-reset" type="reset" value="Cancel" />',
-						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
-						'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
-						'<input type="hidden" name="id" value="<%= unit_id %>" />',
-					'</form>',
-				'</div>',
-				'<div class="calendar">',
-					'<form action="/courses/<%= course_alias %>/manage/<%= offering_alias %>" class="calendar-form">',
-						'<input type="hidden" name="scope" value="unit" />',
-						'<input type="hidden" name="scope_id" value="<%= unit_id %>" />',
-					'</form>',
+				'<div class="unit-edit-container">',
+					'<div class="title unit-title">',
+						'<div class="unit-title-value"><%= unit_title %></div>',
+						'<div class="edit">edit</div>',
+					'</div>',
+					'<div class="clear"></div>',
+					'<div class="unit-edit">',
+						'<form action="/api/courses/unit/save" class="unit-edit-form">',
+							'<label for="title">Title:</label>',
+							'<input class="unit-edit-text" name="title" type="text" value="<%= unit_title %>" placeholder="title" />',
+							'<label for="publish_up">Publish start date:</label>',
+							'<input class="unit-edit-publish-up datepicker" name="publish_up" type="text" value="" placeholder="Publish start date" />',
+							'<label for="publish_down">Publish end date:</label>',
+							'<input class="unit-edit-publish-down datepicker" name="publish_down" type="text" value="" placeholder="Publish end date" />',
+							'<input class="unit-edit-save" type="submit" value="Save" />',
+							'<input class="unit-edit-reset" type="reset" value="Cancel" />',
+							'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+							'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
+							'<input type="hidden" name="section_id" value="<%= section_id %>" />',
+							'<input type="hidden" name="id" value="<%= unit_id %>" />',
+						'</form>',
+					'</div>',
 				'</div>',
 				'<div class="progress-container">',
 					'<div class="progress-indicator"></div>',
