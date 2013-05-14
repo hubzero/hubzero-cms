@@ -56,7 +56,7 @@ function goUpDir()
 		<legend>
 			<span>Files - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
 		</legend>
-		
+		<div id="ajax-uploader-before">&nbsp;</div>
 		<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=upload&amp;course=<?php echo $this->course_id; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
 		<table>
 			<tbody>
@@ -114,6 +114,17 @@ function goUpDir()
 		<!-- <script type="text/javascript" src="components/com_courses/assets/js/fileupload.jquery.js"></script> -->
 		<style>
 		/* Drag and drop file upload */
+			#ajax-uploader-before {
+				height: 0;
+				padding: 1.6em 0;
+				overflow: hidden;
+			}
+			#adminForm fieldset legend:after {
+				content: "";
+				display: table;
+				line-height: 0;
+				clear: left;
+			}
 			.qq-uploading {
 				position: absolute;
 				top: 0;
