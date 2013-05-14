@@ -103,6 +103,7 @@ for ($i=0; $i<count($folders); $i++)
 	{
 		$this->listdir = '';
 	}
+	$subdird = ($this->subdir && $this->subdir != DS) ? $this->subdir . DS : DS;
 ?>
 					<tr>
 						<td style="width:16px;">
@@ -112,7 +113,7 @@ for ($i=0; $i<count($folders); $i++)
 							<?php echo $folderName; ?>
 						</td>
 						<td style="width:16px;">
-							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo DS . $folders[$folderName]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component&amp;subdir=<?php echo $subdir; ?>&amp;course=<?php echo $this->course_id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo JText::_('DELETE'); ?>">
+							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo DS . $folders[$folderName]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;course=<?php echo $this->course_id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo JText::_('DELETE'); ?>">
 								<img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
 							</a>
 						</td>
