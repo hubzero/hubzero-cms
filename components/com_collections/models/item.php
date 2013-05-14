@@ -664,10 +664,60 @@ class CollectionsModelItem extends JObject
 			}
 			$a->reorder();
 		}
-		/*if ($this->getError())
+
+		if ($this->get('_files'))
 		{
-			echo $this->getError(); die();
-		}*/
+			$config = JComponentHelper::getParams('com_collections');
+
+			// Build the upload path if it doesn't exist
+			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
+
+			if (!is_dir($path)) 
+			{
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::create($path, 0777)) 
+				{
+					$this->setError(JText::_('Error uploading. Unable to create path.'));
+					return false;
+				}
+			}
+
+			$files = $this->get('_files');
+			$descriptions = $this->get('_descriptions', array());
+
+			foreach ($files['name'] as $i => $file)
+			{
+				// Make the filename safe
+				jimport('joomla.filesystem.file');
+				$files['name'][$i] = urldecode($files['name'][$i]);
+				$files['name'][$i] = JFile::makeSafe($files['name'][$i]);
+				$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
+
+				// Upload new files
+				if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
+				{
+					$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
+				}
+				// File was uploaded 
+				else 
+				{
+					$asset = new CollectionsModelAsset();
+					//$asset->set('_file', $file);
+					$asset->set('item_id', $this->get('id'));
+					$asset->set('filename', $files['name'][$i]);
+					$asset->set('description', (isset($descriptions[$i]) ? $descriptions[$i] : ''));
+					if (!$asset->store())
+					{
+						$this->setError($asset->getError());
+					}
+				}
+			}
+
+			if ($this->getError())
+			{
+				return false;
+			}
+		}
 
 		$trashed = $this->assets(array('state' => 2));
 		if ($trashed->total() > 0)

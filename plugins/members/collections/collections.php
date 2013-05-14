@@ -1165,8 +1165,8 @@ class plgMembersCollections extends JPlugin
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-		/*$files  = JRequest::getVar('fls', '', 'files', 'array');
-		$descriptions = JRequest::getVar('description', array(), 'post');*/
+		$files  = JRequest::getVar('fls', '', 'files', 'array');
+		/*$descriptions = JRequest::getVar('description', array(), 'post');*/
 
 		// Get model
 		$row = new CollectionsModelItem();
@@ -1179,7 +1179,10 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Add some data
-		//$row->set('_files', $files);
+		if ($files)
+		{
+			$row->set('_files', $files);
+		}
 		$row->set('_assets', JRequest::getVar('assets', array(), 'post'));
 		$row->set('_tags', trim(JRequest::getVar('tags', '')));
 		$row->set('state', 1);
