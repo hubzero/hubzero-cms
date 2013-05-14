@@ -543,6 +543,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 		$row = new CoursesTableAssetgroup($this->database);
 		$row->load($uid);
 		$row->move($inc, 'unit_id=' . $this->database->Quote($row->unit_id) . ' AND parent=' . $this->database->Quote($row->parent));
+		$row->reorder('unit_id=' . $this->database->Quote($row->unit_id) . ' AND parent=' . $this->database->Quote($row->parent));
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0)

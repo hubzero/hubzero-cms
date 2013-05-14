@@ -30,6 +30,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Preprocess the list of items to find ordering divisions.
+$this->ordering = array();
+foreach ($this->rows as $row)
+{
+	$this->ordering[$row->get('parent')][] = $row->get('id');
+}
+
 $canDo = CoursesHelper::getActions('unit');
 
 JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
@@ -111,6 +118,8 @@ $n = count($this->rows);
 $ordering = true;
 foreach ($this->rows as $row)
 {
+	$orderkey	= array_search($row->get('id'), $this->ordering[$row->get('parent')]);
+
 	$tip = '[coming soon]';
 	//$assetgroups = $row->assetgroups()->total();
 	$assets = $row->assets()->total();
@@ -178,8 +187,8 @@ foreach ($this->rows as $row)
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $row->treename; ?>
 					<?php echo $row->get('ordering'); ?>
-					<span><?php echo $this->pageNav->orderUpIcon( $i, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i-1]->get('parent'), 'orderup', 'Move Up', $ordering ); ?></span>
-					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i+1]->get('parent'), 'orderdown', 'Move Down', $ordering ); ?></span>
+					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($this->ordering[$row->get('parent')][$orderkey - 1]), 'orderup', 'Move Up', $ordering ); ?></span>
+					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($this->ordering[$row->get('parent')][$orderkey + 1]), 'orderdown', 'Move Down', $ordering ); ?></span>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
