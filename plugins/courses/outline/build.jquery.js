@@ -1237,7 +1237,7 @@ HUB.CoursesOutline = {
 			var form = $(this).find('form');
 
 			$.fancybox({
-				type: 'ajax',
+				type: 'iframe',
 				autoSize: false,
 				width: '305',
 				height: '190',
