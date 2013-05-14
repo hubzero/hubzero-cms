@@ -83,7 +83,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				<span><?php echo JText::_('New collection'); ?></span>
 			</a>
 		<?php } //else { ?>
-			
+			<?php if ($this->params->get('access-manage-collection')) { ?>
+			<a class="config btn tooltips" href="<?php echo JText::_($base . '&scope=settings'); ?>" title="<?php echo JText::_('Manage content creation settings'); ?>">
+				<span><?php echo JText::_('Settings'); ?></span>
+			</a>
+			<?php } ?>
 		<?php //} ?>
 		</p>
 	<?php } ?>

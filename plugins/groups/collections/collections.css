@@ -622,6 +622,9 @@
 	table.following tbody td:last-child {
 		text-align: right;
 	}
+	.entry-details .count {
+		margin-right: 1em;
+	}
 	.colormuted, 
 	.colormuted a {
 		color: #4d4d4d;

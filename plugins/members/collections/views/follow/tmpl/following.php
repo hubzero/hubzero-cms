@@ -109,19 +109,25 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 						<td>
 							<a class="entry-title" href="<?php echo JRoute::_($row->following()->link()); ?>">
 								<?php echo $this->escape(stripslashes($row->following()->title())); ?>
-							</a><br />
+							</a>
+							<?php if ($row->get('following_type') == 'collection') { ?>
+								<?php echo JText::sprintf('by %s', $this->escape(stripslashes($row->following()->creator('name')))); ?>
+							<?php } ?>
+							<br />
 							<span class="entry-details">
 								<span class="follower count"><?php echo JText::sprintf('<strong>%s</strong> followers', $row->count('followers')); ?></span>
+							<?php if ($row->get('following_type') != 'collection') { ?>
 								<span class="following count"><?php echo JText::sprintf('<strong>%s</strong> following', $row->count('following')); ?></span>
+							<?php } ?>
 							</span>
 						</td>
-					<?php if ($this->params->get('access-manage-collection')) { ?>
 						<td>
+							<?php if ($this->params->get('access-manage-collection')) { ?>
 							<a class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($row->following()->link('unfollow')); ?>">
 								<span><?php echo JText::_('Unfollow'); ?></span>
 							</a>
+							<?php } ?>
 						</td>
-					<?php } ?>
 					</tr>
 		<?php } ?>
 				</tbody>

@@ -122,6 +122,68 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 
 	/**
 	 * Get the creator of this entry
+	 * 
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire JUser object
+	 *
+	 * @return     mixed
+	 */
+	public function creator($property=null)
+	{
+		switch ($this->_obj->get('object_type'))
+		{
+			case 'group':
+				if (!isset($this->_creator) || !is_object($this->_creator))
+				{
+					ximport('Hubzero_Group');
+					$this->_creator = Hubzero_Group::getInstance($this->_obj->get('object_id'));
+				}
+				if ($property)
+				{
+					switch ($property)
+					{
+						case 'name':
+							return $this->_creator->get('description');
+						break;
+						case 'alias':
+							return $this->_creator->get('cn');
+						break;
+						case 'id':
+							return $this->_creator->get('gidNumber');
+						break;
+					}
+				}
+			break;
+
+			case 'member':
+			default:
+				if (!isset($this->_creator) || !is_object($this->_creator))
+				{
+					$this->_creator = JUser::getInstance($this->_obj->get('created_by'));
+				}
+				if ($property)
+				{
+					switch ($property)
+					{
+						case 'name':
+							return $this->_creator->get('name');
+						break;
+						case 'alias':
+							return $this->_creator->get('username');
+						break;
+						case 'id':
+							return $this->_creator->get('id');
+						break;
+					}
+				}
+			break;
+		}
+		return $this->_creator;
+	}
+
+	/**
+	 * Get the creator of this entry
 	 *
 	 * @return     object
 	 */

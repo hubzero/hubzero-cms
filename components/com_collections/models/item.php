@@ -628,24 +628,28 @@ class CollectionsModelItem extends JObject
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
+		if (!$this->get('id'))
+		{
+			if (!$this->_tbl->id)
+			{
+				$this->_tbl->id = $this->_tbl->_db->insertid();
+			}
+			$this->set('id', $this->_tbl->id);
+		}
 
 		if ($this->get('_assets'))
 		{
 			$k = 0;
+
 			foreach ($this->get('_assets') as $i => $asset)
 			{
 				$k++;
 
 				$a = new CollectionsModelAsset($asset['id']);
-				/*if (!$a->exists())
-				{
-					continue;
-				}*/
 				$a->set('type', $asset['type']);
 				$a->set('item_id', $this->get('id'));
 				$a->set('ordering', $k);
 				$a->set('filename', $asset['filename']);
-				//$a->set('description', $asset['description']);
 				if (strtolower($a->get('filename')) == 'http://')
 				{
 					if (!$a->remove())
@@ -660,86 +664,11 @@ class CollectionsModelItem extends JObject
 			}
 			$a->reorder();
 		}
-if ($this->getError())
-{
-	echo $this->getError(); die();
-}
-		/*if ($this->get('_files'))
+		/*if ($this->getError())
 		{
-			$config = JComponentHelper::getParams('com_collections');
-
-			// Build the upload path if it doesn't exist
-			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
-
-			if (!is_dir($path)) 
-			{
-				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path, 0777)) 
-				{
-					$this->setError(JText::_('Error uploading. Unable to create path.'));
-					return false;
-				}
-			}
-
-			$files = $this->get('_files');
-			$descriptions = $this->get('_descriptions', array());
-
-			foreach ($files['name'] as $i => $file)
-			{
-				// Make the filename safe
-				jimport('joomla.filesystem.file');
-				$files['name'][$i] = urldecode($files['name'][$i]);
-				$files['name'][$i] = JFile::makeSafe($files['name'][$i]);
-				$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
-
-				// Upload new files
-				if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
-				{
-					$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
-				}
-				// File was uploaded 
-				else 
-				{
-					$asset = new CollectionsModelAsset();
-					//$asset->set('_file', $file);
-					$asset->set('item_id', $this->get('id'));
-					$asset->set('filename', $files['name'][$i]);
-					$asset->set('description', (isset($descriptions[$i]) ? $descriptions[$i] : ''));
-					if (!$asset->store())
-					{
-						$this->setError($asset->getError());
-					}
-				}
-			}
-
-			if ($this->getError())
-			{
-				return false;
-			}
-		}
-
-		if ($this->get('_dir') && $this->get('_dir') != $this->get('id'))
-		{
-			$config = JComponentHelper::getParams('com_collections');
-
-			// Build the upload path if it doesn't exist
-			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS);
-
-			if (is_dir($path . DS . $this->get('_dir'))) 
-			{
-				jimport('joomla.filesystem.folder');
-				if (!JFolder::move($path . DS . $this->get('_dir'), $path . DS . $this->get('id'))) 
-				{
-					$this->setError(JFolder::move($path . DS . $this->get('_dir'), $path . DS . $this->get('id')));
-				}
-				$asset = new CollectionsModelAsset();
-				//$asset->set('item_id', $this->get('id'));
-				if (!$asset->update('item_id', intval($this->get('_dir')), $this->get('id')))
-				{
-					$this->setError($asset->getError());
-				}
-			}
+			echo $this->getError(); die();
 		}*/
+
 		$trashed = $this->assets(array('state' => 2));
 		if ($trashed->total() > 0)
 		{

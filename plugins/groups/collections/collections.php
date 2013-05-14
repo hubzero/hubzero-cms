@@ -249,6 +249,11 @@ class plgGroupsCollections extends Hubzero_Plugin
 								JRequest::setVar('unfollow', $bits[1]);
 							}
 						break;
+
+						case 'settings':
+						case 'savesettings':
+							$this->action = $bits[0];
+						break;
 						
 						default:
 							$this->action = 'collection';
@@ -299,6 +304,9 @@ class plgGroupsCollections extends Hubzero_Plugin
 				case 'deletecollection': $arr['html'] = $this->_deletecollection(); break;
 				case 'all':
 				case 'collections':      $arr['html'] = $this->_collections();      break;
+
+				case 'settings': $arr['html'] = $this->_settings(); break;
+				case 'savesettings': $arr['html'] = $this->_savesettings(); break;
 
 				case 'collection': $arr['html'] = $this->_collection(); break;
 
@@ -1702,6 +1710,124 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$app->redirect($route);
 	}
 
+/**
+	 * Display blog settings
+	 * 
+	 * @return     string
+	 */
+	private function _settings()
+	{
+		// Login check
+		if ($this->juser->get('guest')) 
+		{
+			return $this->_login();
+		}
+
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') 
+		{
+			$this->setError(JText::_('PLG_GROUPS_BLOG_NOT_AUTHORIZED'));
+			return $this->_browse();
+		}
+
+		// Output HTML
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'groups',
+				'element' => $this->_name,
+				'name'    => 'settings'
+			)
+		);
+		$view->option      = $this->option;
+		$view->group       = $this->group;
+		$view->action      = $this->action;
+		$view->params      = $this->params;
+
+		$view->settings    = new Hubzero_Plugin_Params($this->database);
+		$view->settings->loadPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
+
+		$view->authorized  = $this->authorized;
+		$view->message     = (isset($this->message)) ? $this->message : '';
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Save blog settings
+	 * 
+	 * @return     void
+	 */
+	private function _savesettings()
+	{
+		// Login check
+		if ($this->juser->get('guest')) 
+		{
+			return $this->_login();
+		}
+
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') 
+		{
+			$this->setError(JText::_('PLG_GROUPS_BLOG_NOT_AUTHORIZED'));
+			return $this->_collections();
+		}
+
+		$settings = JRequest::getVar('settings', array(), 'post');
+
+		$row = new Hubzero_Plugin_Params($this->database);
+		if (!$row->bind($settings)) 
+		{
+			$this->setError($row->getError());
+			return $this->_settings();
+		}
+
+		// Get parameters
+		$prms = JRequest::getVar('params', array(), 'post');
+		/*if (is_array($params)) 
+		{
+			$txt = array();
+			foreach ($params as $k=>$v)
+			{
+				$txt[] = "$k=$v";
+			}
+			$row->params = implode("\n", $txt);
+		}*/
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$params = new $paramsClass();
+		$params->bind($prms);
+		$row->params = $params->toString();
+
+		// Check content
+		if (!$row->check()) 
+		{
+			$this->setError($row->getError());
+			return $this->_settings();
+		}
+
+		// Store new content
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			return $this->_settings();
+		}
+
+		//$this->message = JText::_('Settings successfully saved!');
+		//return $this->_settings();
+		$app =& JFactory::getApplication();
+		$app->enqueueMessage('Settings successfully saved!', 'passed');
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name));
+	}
+
 	/**
 	 * Set permissions
 	 * 
@@ -1716,6 +1842,9 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$this->params->set('access-can-follow', false);
 		if (!$this->juser->get('guest')) 
 		{
+			$p = new Hubzero_Plugin_Params($this->database);
+			$this->params->merge($p->getCustomParams($this->group->get('gidNumber'), 'groups', $this->_name));
+
 			// Set asset to viewable
 			$this->params->set('access-view-' . $assetType, false);
 			if (in_array($this->juser->get('id'), $this->members))
@@ -1746,16 +1875,30 @@ class plgGroupsCollections extends Hubzero_Plugin
 						$this->params->set('access-edit-' . $assetType, true);
 						$this->params->set('access-view-' . $assetType, true);
 					}
+					if (!$this->params->get('create_collection', 1))
+					{
+						$this->params->set('access-create-' . $assetType, true);
+						$this->params->set('access-delete-' . $assetType, true);
+						$this->params->set('access-edit-' . $assetType, true);
+						$this->params->set('access-view-' . $assetType, true);
+					}
 				break;
 				case 'item':
 					// All members can post bulletins
-					$this->params->set('access-create-' . $assetType, true);
-					$this->params->set('access-delete-' . $assetType, true);
-					$this->params->set('access-edit-' . $assetType, true);
-					$this->params->set('access-view-' . $assetType, true);
 					if ($this->authorized == 'admin' || $this->authorized == 'manager')
 					{
 						$this->params->set('access-manage-' . $assetType, true);
+						$this->params->set('access-create-' . $assetType, true);
+						$this->params->set('access-delete-' . $assetType, true);
+						$this->params->set('access-edit-' . $assetType, true);
+						$this->params->set('access-view-' . $assetType, true);
+					}
+					if (!$this->params->get('create_post', 0))
+					{
+						$this->params->set('access-create-' . $assetType, true);
+						$this->params->set('access-delete-' . $assetType, true);
+						$this->params->set('access-edit-' . $assetType, true);
+						$this->params->set('access-view-' . $assetType, true);
 					}
 				break;
 				case 'plugin':

@@ -94,6 +94,20 @@ abstract class CollectionsModelFollowingAbstract extends JObject
 	}
 
 	/**
+	 * Get the creator of this entry
+	 * 
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire JUser object
+	 *
+	 * @return     mixed
+	 */
+	public function creator()
+	{
+		return null;
+	}
+
+	/**
 	 * Get this item's image
 	 *
 	 * @return     string

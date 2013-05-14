@@ -235,7 +235,7 @@ $now = date('Y-m-d H:i:s', time());
 						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
-						<input type="submit" class="comment-submit" value="<?php echo JText::_('Save'); ?>" />
+						<input type="submit" class="comment-submit" value="<?php echo JText::_('Post comment'); ?>" />
 					</fieldset>
 				</form>
 			</div>

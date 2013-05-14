@@ -913,6 +913,8 @@ class plgMembersCollections extends JPlugin
 		$view->filters['created_by']  = $this->member->get('uidNumber');
 		$view->filters['search']      = JRequest::getVar('search', '');
 		$view->filters['state']       = 1;
+		$view->filters['object_id']   = $this->member->get('uidNumber');
+		$view->filters['object_type'] = 'member';
 		//$view->filters['collection_id'] = JRequest::getVar('board', '');
 
 		// Filters for returning results
@@ -929,11 +931,14 @@ class plgMembersCollections extends JPlugin
 
 		$view->collections = $this->model->collections($count);
 
-		$view->posts       = $this->model->posts($count);
-
 		$view->followers   = $this->model->followers($count);
 
 		$view->following   = $this->model->following($count);
+
+		/*$count['object_id'] = '';
+		$count['object_type'] = '';
+		$count['created_by']  = $this->member->get('uidNumber');*/
+		$view->posts       = $this->model->posts($count);
 
 		$view->collection = CollectionsModelCollection::getInstance();
 
