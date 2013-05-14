@@ -39,7 +39,7 @@ $showwarning = ($this->version=='current' or !$this->status['published']) ? 0 : 
 		<p><?php echo JText::_('TAGS_EXPLANATION'); ?></p>
 	</div>
 	<fieldset>
-		<h3><?php echo JText::_('TAGS_ADD'); ?></h3>
+		<legend><?php echo JText::_('TAGS_ADD'); ?></legend>
 <?php if (!empty($this->fats)) { ?>
 		<fieldset>
 			<legend><?php echo JText::_('TAGS_SELECT_FOCUS_AREA'); ?>:</legend>

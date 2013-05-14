@@ -144,5 +144,6 @@ else {
 <?php } ?>
 			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
 		</div>
+		<div class="clear"></div>
 	</form>
 </div>

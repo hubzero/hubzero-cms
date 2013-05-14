@@ -116,3 +116,25 @@
 	 	padding: 1em; 
 		margin: 0;
 	}
+	#preview-header {
+		margin: 0;
+		padding: 0.2em 0.5em;
+		font-size: 1em;
+		background: #f3f3f3;
+		color: #999;
+	}
+	#preview-pane {
+		padding: 1em;
+		border: 5px solid #f3f3f3;
+	}
+	#preview-pane .subject {
+		background-color: #fff;
+		border-color: #fff;
+	}
+	#preview-pane iframe {
+		height: 600px;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		border: none;
+	}

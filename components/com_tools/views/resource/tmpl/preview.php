@@ -65,9 +65,10 @@ $helper = new ResourcesHelper($this->resource->id, $database);
 	</ul>
 </div><!-- / #content-header-extra -->
 
+<div class="section steps-section">
 <?php	
 	$view = new JView(array(
-		'name' => $this->controller,
+		'name'   => $this->controller,
 		'layout' => 'stage'
 	));
 	$view->stage = $this->step;
@@ -79,28 +80,31 @@ $helper = new ResourcesHelper($this->resource->id, $database);
 	$view->vnum = 0;
 	$view->display();
 ?>
+</div>
 
-<form action="index.php" method="post" id="hubForm">
-	<input type="hidden" name="app" value="<?php echo $this->resource->alias; ?>" />
-	<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
-	
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="pipeline" />
-	<input type="hidden" name="task" value="status" />
-	
-	<input type="hidden" name="msg" value="<?php echo JText::_('NOTICE_RES_UPDATED'); ?>" />
-	<input type="hidden" name="step" value="6" />
-	<input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />
-	<input type="hidden" name="toolname" value="<?php echo $this->resource->alias; ?>" />
+<div class="main section">
+	<form action="index.php" method="post" id="hubForm">
+		<input type="hidden" name="app" value="<?php echo $this->resource->alias; ?>" />
+		<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
+		
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="pipeline" />
+		<input type="hidden" name="task" value="status" />
+		
+		<input type="hidden" name="msg" value="<?php echo JText::_('NOTICE_RES_UPDATED'); ?>" />
+		<input type="hidden" name="step" value="6" />
+		<input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />
+		<input type="hidden" name="toolname" value="<?php echo $this->resource->alias; ?>" />
 
-	<div style="float:left; width:70%;padding:1em 0 1em 0;">
-		<span style="float:left;width:100px;"><input type="button" value="&lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?>" class="returntoedit" /></span>
-		<span style="float:right;width:100px;"><input type="submit" value="<?php echo ucfirst(JText::_('CONTRIBTOOL_STEP_FINALIZE')); ?> &gt;" /></span>
+		<div style="float:left; width:70%;padding:1em 0 1em 0;">
+			<span style="float:left;width:100px;"><input type="button" value="&lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?>" class="returntoedit" /></span>
+			<span style="float:right;width:100px;"><input type="submit" value="<?php echo ucfirst(JText::_('CONTRIBTOOL_STEP_FINALIZE')); ?> &gt;" /></span>
+		</div>
+		<div class="clear"></div>
+	</form>
+
+	<h1 id="preview-header"><?php echo JText::_('Preview'); ?></h1>
+	<div id="preview-pane">
+		<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->resource->id . '&tmpl=component&mode=preview&rev=' . $this->version); ?>"></iframe>
 	</div>
-	<div class="clear"></div>
-</form>
-
-<h1 id="preview-header"><?php echo JText::_('Preview'); ?></h1>
-<div id="preview-pane">
-	<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->resource->id . '&tmpl=component&mode=preview'); ?>"></iframe>
 </div>

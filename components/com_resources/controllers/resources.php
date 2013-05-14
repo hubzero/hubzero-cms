@@ -1237,7 +1237,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// Load the resource
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
-		$this->model = ResourcesModelResource::getInstance(($alias ? $alias : $id));
+		$this->model = ResourcesModelResource::getInstance(($alias ? $alias : $id), $revision);
 
 		// Make sure we got a result from the database
 		if (!$this->model->exists() || $this->model->deleted())
