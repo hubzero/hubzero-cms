@@ -388,7 +388,7 @@
 	margin-bottom: 5px;
 	overflow: hidden;
 }
-.instructor .headers div:not(.header-sub) {
+.instructor .headers div {
 	display: block;
 	float: left;
 	font-size: 16px;
@@ -400,6 +400,7 @@
 	margin-left: 200px;
 	display: block;
 	float: none;
+	border-bottom: none;
 }
 .instructor .headers .header-student-name {
 	width: 190px;
