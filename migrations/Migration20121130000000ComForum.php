@@ -17,7 +17,8 @@ class Migration20121130000000ComForum extends Hubzero_Migration
 		{
 			$query .= "ALTER TABLE `#__forum_sections` ADD `scope` VARCHAR(100)  NOT NULL  DEFAULT 'site'  AFTER `state`;\n";
 
-			$query .= "UPDATE `#__forum_sections` SET scope=CASE WHEN scope IN ('', 'group') THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
+			$query .= "UPDATE `#__forum_sections` SET scope='group' WHERE scope_id>0 AND scope!='course'\n;";
+			//$query .= "UPDATE `#__forum_sections` SET scope=CASE WHEN scope IN ('', 'group') THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
 			$query .= "UPDATE `#__forum_sections` SET scope='site' WHERE scope_id=0;\n";
 		}
 		if (!$db->tableHasField('#__forum_categories', 'scope_id') && $db->tableHasField('#__forum_categories', 'group_id'))
@@ -28,7 +29,8 @@ class Migration20121130000000ComForum extends Hubzero_Migration
 		{
 			$query .= "ALTER TABLE `#__forum_categories` ADD `scope` VARCHAR(100)  NOT NULL  DEFAULT 'site'  AFTER `state`;\n";
 
-			$query .= "UPDATE `#__forum_categories` SET scope=CASE WHEN scope IN ('', 'group') THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
+			$query .= "UPDATE `#__forum_categories` SET scope='group' WHERE scope_id>0 AND scope!='course';\n";
+			//$query .= "UPDATE `#__forum_categories` SET scope=CASE WHEN scope IN ('', 'group') THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
 			$query .= "UPDATE `#__forum_categories` SET scope='site' WHERE scope_id=0;\n";
 		}
 		if (!$db->tableHasField('#__forum_posts', 'scope_id') && $db->tableHasField('#__forum_posts', 'group_id'))
@@ -39,7 +41,8 @@ class Migration20121130000000ComForum extends Hubzero_Migration
 		{
 			$query .= "ALTER TABLE `#__forum_posts` ADD `scope` VARCHAR(100)  NOT NULL  DEFAULT 'site'  AFTER `hits`;\n";
 
-			$query .= "UPDATE `#__forum_posts` SET scope=CASE WHEN scope IN ('', 'group') THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
+			$query .= "UPDATE `#__forum_posts` SET scope='group' WHERE scope_id>0 AND scope!='course';\n";
+			//$query .= "UPDATE `#__forum_posts` SET scope=CASE WHEN scope IN ('', 'group') THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
 			$query .= "UPDATE `#__forum_posts` SET scope='site' WHERE scope_id=0;\n";
 		}
 
