@@ -53,7 +53,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		if (!$this->juser->authorize($this->_option, 'manage')) 
+		if ($this->juser->get('guest')) 
 		{
 			// Redirect to home page
 			$this->setRedirect(
