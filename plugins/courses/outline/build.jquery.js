@@ -1237,11 +1237,11 @@ HUB.CoursesOutline = {
 			var form = $(this).find('form');
 
 			$.fancybox({
-				type: 'iframe',
+				type: 'ajax',
 				autoSize: false,
 				width: '305',
 				height: '190',
-				href: form.attr('action')+'&'+form.serialize()+'&tmpl=component',
+				href: form.attr('action')+'&'+form.serialize()+'&no_html=1',
 				afterShow: function() {
 					$('.datepicker').datepicker({
 						dateFormat: 'yy-mm-dd'
