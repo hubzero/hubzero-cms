@@ -1148,7 +1148,7 @@ HUB.CoursesOutline = {
 							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
 							function fileSubmit(data, counter) {
 								var progressBarId = 'progress-bar-'+counter;
-								var filename      = data;
+								var filename      = data.files[0].name;
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {
