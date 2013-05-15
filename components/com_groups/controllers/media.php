@@ -315,7 +315,26 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		{
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
-
+		
+		//scan file for virus if we have enabled scans
+		if ($this->config->get('scan_uploads', 1))
+		{
+			//run clamscan on fule
+			$command = "clamscan -i --no-summary --block-encrypted $file";
+			exec($command, $output, $status);
+			
+			//scan failed
+			if ($status > 0)
+			{
+				//delete file
+				unlink($file);
+				
+				//inform user
+				echo json_encode(array('error' => 'File uploaded contained a virus or was encrypted and was deleted.'));
+				return;
+			}
+		}
+		
 		//return success
 		echo json_encode(array('success'=>true));
 		return;
