@@ -1113,7 +1113,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$view->sections[$key]->threads = 0;
 			$view->sections[$key]->categories = $model->getRecords($view->filters);
 
-			if (!$view->sections[$key]->categories || !count($view->sections[$key]->categories))
+			if ((!$view->sections[$key]->categories || !count($view->sections[$key]->categories)) 
+			 && $view->sections[$key]->object_id)
 			{
 				$view->sections[$key]->categories = array();
 				$unit = CoursesModelUnit::getInstance($view->sections[$key]->object_id);
@@ -1142,13 +1143,13 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 								$cat->scope       = 'course';
 								$cat->scope_id    = $this->offering->get('id');
 								$cat->object_id   = $ag->get('id');
-								$cat->threads = 0;
-								$cat->posts = 0;
 								if ($cat->check())
 								{
 									$cat->store();
 									$view->sections[$key]->categories[] = $cat;
 								}
+								$cat->threads = 0;
+								$cat->posts = 0;
 							}
 						}
 					}
