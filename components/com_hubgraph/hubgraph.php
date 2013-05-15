@@ -81,8 +81,7 @@ class Db
 	}
 }
 
-
-$base = '/hubgraph';
+$base = isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['REDIRECT_SCRIPT_URL']; 
 $basePath = preg_replace('#^'.preg_quote(JPATH_BASE).'#', '', dirname(__FILE__));
 
 $doc = JFactory::getDocument();
@@ -113,7 +112,7 @@ $req = new HubgraphRequest($_GET);
 $perPage = 40;
 
 try {
-	switch (isset($_GET['task']) ? $_GET['task'] : 'index') {
+	switch (!defined('HG_INLINE') && isset($_GET['task']) ? $_GET['task'] : 'index') {
 		case 'complete':
 			hgView('complete', array('limit' => 20, 'threshold' => 3, 'tagLimit' => 100));
 		case 'getRelated':
