@@ -180,6 +180,12 @@ class BillboardsController extends Hubzero_Controller
 		$params =& JComponentHelper::getParams('com_billboards');
 		$view->image_location = $params->get('image_location', '/site/media/images/billboards/');
 
+		if (!is_dir(JPATH_ROOT . DS . ltrim($view->image_location, DS)))
+		{
+			jimport('joomla.file.folder');
+			JFolder::create(JPATH_ROOT . DS . ltrim($view->image_location, DS));
+		}
+
 		// Get the relative image location for building the links to the media manager
 		$mparams =& JComponentHelper::getParams('com_media');
 		$view->media_path = $mparams->get('file_path', 'site/media');
