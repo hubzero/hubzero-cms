@@ -199,6 +199,7 @@ HUB.CoursesOutline = {
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li:not(.add-new, .asset)',
+			axis: 'y',
 			start: start,
 			update: update
 		});
