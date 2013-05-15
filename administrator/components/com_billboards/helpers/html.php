@@ -44,10 +44,11 @@ class BillboardsHtml
 	 */
 	public function buildCollectionsList($collection_id)
 	{
-		$clist = array();
-		$filters = array('limit'=>'100', 'start'=>'0');
+		$clist    = array();
+		$filters  = array('limit'=>'100', 'start'=>'0');
+		$selected = '';
 
-		$collection = new BillboardsCollection($this->database);
+		$collection  = new BillboardsCollection($this->database);
 		$collections = $collection->getRecords($filters);
 
 		// Go through all the collections and add a select option for each
