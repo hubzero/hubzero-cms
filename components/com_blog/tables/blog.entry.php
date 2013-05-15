@@ -331,8 +331,8 @@ class BlogEntry extends JTable
 	private function _buildAdminQuery($filters)
 	{
 		$nullDate = $this->_db->getNullDate();
-		$date =& JFactory::getDate();
-		$now = $date->toMySQL();
+		//$date =& JFactory::getDate();
+		$now = date('Y-m-d H:i:s', time()); //$date->toMySQL();
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
