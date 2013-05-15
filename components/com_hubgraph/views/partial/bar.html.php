@@ -40,12 +40,12 @@
 <ol id="suggestions"></ol>
 <? if ($results && $results['criteria']): ?>
 <ol id="criteria-details">
-	<? if ($results['criteria']['contributors']): ?>
+	<? if (isset($results['criteria']['contributors'])): ?>
 		<? 
 		foreach ($results['criteria']['contributors'] as $cont): 
 			if (!$cont['public']) continue;
 		?>
-			<li>
+			<li class="contributor">
 				<table>
 					<tbody>
 						<tr>
@@ -83,7 +83,7 @@
 		if ($results['criteria']['tags'] && $results['criteria']['tags']['base']):
 			$doc->addScript($basePath.'/resources/d3.v2.js');
 	?>
-			<li>
+			<li class="tag">
 				<script type="text/javascript">var relatedTags = <?= json_encode($results['criteria']['tags']) ?>;</script>
 				<table>
 					<tbody>
