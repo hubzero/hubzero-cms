@@ -6,6 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'BaseFacebook' => $vendorDir . '/facebook/php-sdk/src/base_facebook.php',
+    'Facebook' => $vendorDir . '/facebook/php-sdk/src/facebook.php',
+    'FacebookApiException' => $vendorDir . '/facebook/php-sdk/src/base_facebook.php',
     'JApplication' => $baseDir . '/libraries/joomla/application/application.php',
     'JApplicationHelper' => $baseDir . '/libraries/joomla/application/helper.php',
     'JArchive' => $baseDir . '/libraries/joomla/filesystem/archive.php',

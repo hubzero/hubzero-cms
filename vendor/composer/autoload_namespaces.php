@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Hubzero' => $baseDir . '/libraries',
-    'HTMLPurifier' => $vendorDir . '/ezyang/htmlpurifier/library',
+    'Hubzero' => array($baseDir . '/libraries'),
+    'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
 );

@@ -55,7 +55,8 @@
         "source": "http://hubzero.org/download"
     },
     "require": {
-        "ezyang/htmlpurifier": "4.5.0"
+        "ezyang/htmlpurifier": "4.5.0",
+        "facebook/php-sdk": "3.2.2"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },

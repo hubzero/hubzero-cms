@@ -61,9 +61,6 @@ class plgAuthenticationFacebook extends JPlugin
 	{
 		global $mainframe;
 
-		// Inlucded needed facebook sdk class
-		require_once(JPATH_SITE.DS.'libraries'.DS.'facebook-php-sdk'.DS.'facebook.php');
-
 		// Set up the config for the sdk instance
 		$config           = array();
 		$config['appId']  = $this->params->get('app_id');
@@ -105,9 +102,6 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function status()
 	{
-		// Inlucded needed facebook sdk class
-		require_once(JPATH_SITE.DS.'libraries'.DS.'facebook-php-sdk'.DS.'facebook.php');
-
 		// Set up the config for the sdk instance
 		$config           = array();
 		$config['appId']  = $this->params->get('app_id');
@@ -173,9 +167,6 @@ class plgAuthenticationFacebook extends JPlugin
 	{
 		global $mainframe;
 
-		// Included needed facebook sdk class
-		require_once(JPATH_SITE.DS.'libraries'.DS.'facebook-php-sdk'.DS.'facebook.php');
-
 		// Get the hub url
 		$juri    =& JURI::getInstance();
 		$service = trim($juri->base(), DS);
@@ -229,9 +220,6 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function onAuthenticate($credentials, $options, &$response)
 	{
-		// Inlucded needed facebook sdk class
-		require_once(JPATH_SITE.DS.'libraries'.DS.'facebook-php-sdk'.DS.'facebook.php');
-
 		// Set up the config for the sdk instance
 		$config           = array();
 		$config['appId']  = $this->params->get('app_id');
@@ -299,9 +287,6 @@ class plgAuthenticationFacebook extends JPlugin
 	{
 		global $mainframe;
 
-		// Inlucded needed facebook sdk class
-		require_once(JPATH_SITE.DS.'libraries'.DS.'facebook-php-sdk'.DS.'facebook.php');
-
 		$juser = JFactory::getUser();
 
 		// Set up the config for the sdk instance
@@ -360,9 +345,6 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function getInfo($params)
 	{
-		// Inlucded needed facebook sdk class
-		require_once(JPATH_SITE.DS.'libraries'.DS.'facebook-php-sdk'.DS.'facebook.php');
-
 		// Set up the config for the sdk instance
 		$params = explode("\n", trim($params));
 		foreach ($params as $k => $v)
