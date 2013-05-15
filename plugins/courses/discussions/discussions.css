@@ -16,6 +16,9 @@
 		padding: 0;
 		margin: 0;
 	}
+	#page_content.course_discussions .main {
+		margin: 20px;
+	}
 
 	.comments-notification {
 		min-width: 50px;
@@ -257,7 +260,7 @@
 		margin-top: 30px;
 	}
 	#page_content.course_discussions #comments-container {
-		margin-top: 0px;
+		margin-top: 0;
 	}
 
 	/*.sort-options {
@@ -1205,6 +1208,65 @@ border: none;
 		bottom: 0;
 		background: #fff;
 		opacity: 0.8;
+	}
+
+	.entries small.entry-id-before, 
+	.entries .entry-id:before {
+		content: "\f086";
+		font-family: "Fontcons";
+		font-weight: normal;
+	}
+	.categories small.entry-id-before, 
+	.categories .entry-id:before {
+		content: "\f07b";
+	}
+	.entries .edit:before,
+	.entries .delete:before {
+		font-family: "Fontcons";
+	}
+	.entries .edit:before {
+		content: "\270E";
+	}
+	.entries .delete:before {
+		content: "\f014";
+	}
+	.entry-options {
+		white-space: nowrap;
+	}
+	.entries .edit,
+	.entries .delete {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		white-space: nowrap;
+		font-size: 1.2em;
+		overflow: hidden;
+		color: #ccc;
+		border: none;
+		text-decoration: none;
+	}
+	.entries caption .edit,
+	.entries caption .delete {
+		display: block;
+		float: right;
+		margin-left: 0.2em;
+		height: 1.2em;
+	}
+	.entries .edit:hover {
+		color: #333;
+		border: none;
+		text-decoration: none;
+	}
+	.entries .delete:hover {
+		color: #c00;
+		border: none;
+		text-decoration: none;
+	}
+	.entries tfoot td {
+		text-align: right;
+	}
+	.entries .entry-details {
+		display: block;
 	}
 
 /* Smaller windows */

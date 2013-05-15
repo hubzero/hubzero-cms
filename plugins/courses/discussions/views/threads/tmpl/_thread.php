@@ -64,6 +64,15 @@ if (isset($this->prfx))
 {
 	$prfx = $this->prfx;
 }
+
+if ($this->unit)
+	{
+		$this->base .= '&unit=' . $this->unit;
+	}
+	if ($this->lecture)
+	{
+		$this->base .= '&b=' . $this->lecture;
+	}
 ?>
 					<li class="thread<?php if ($this->active == $this->thread->id) { echo ' active'; } ?>" id="<?php echo $prfx . $this->thread->id; ?>" data-thread="<?php echo $this->thread->id; ?>">
 						<?php 
@@ -109,7 +118,7 @@ if (isset($this->prfx))
 								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo JHTML::_('date', $this->thread->created, $dateFormat, $tz); ?></time></span>
 							</p>
 							<p class="comment-body">
-								<a href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
+								<a href="<?php echo JRoute::_($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
 							</p>
 							<p class="comment-author">
 								<strong><?php echo $name; ?></strong>

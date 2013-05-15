@@ -145,8 +145,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					<p><span class="comments" data-comments="%s comments" data-add="Start a discussion">Start a discussion</span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
 				</div>
 				<div class="comments-frame">
-<?php if (!$this->data) { ?>
-					<form action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform" enctype="multipart/form-data">
+
+					<form action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
 						<p class="comment-member-photo">
 							<a class="comment-anchor" name="commentform"></a>
 							<?php
@@ -214,11 +214,12 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<input type="hidden" name="action" value="savethread" />
 						<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
 						<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias'))); ?>" />
+
 						<p class="instructions">
-							Click on a comment on the left to view a discussion or start your own above.
+							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
 						</p>
 					</form>
-<?php } ?>
+
 					<div class="comment-thread"><?php if ($this->data) { echo $this->data->html; } ?></div>
 					<!-- 
 					<input type="hidden" name="lastchange" id="lastchange" value="" />

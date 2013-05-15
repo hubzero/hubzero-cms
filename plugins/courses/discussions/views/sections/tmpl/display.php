@@ -12,7 +12,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 $juser = JFactory::getUser();
-//$database = JFactory::getDBO();
 
 $wikiconfig = array(
 	'option'   => $this->option,
@@ -25,321 +24,236 @@ $wikiconfig = array(
 ximport('Hubzero_Wiki_Parser');
 $p =& Hubzero_Wiki_Parser::getInstance();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=discussions';
-
-$instructors = array();
-
-$inst = $this->course->instructors();
-if (count($inst) > 0) 
-{
-	foreach ($inst as $i)
-	{
-		$instructors[] = $i->get('user_id');
-	}
-}
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions&unit=manage';
 ?>
-<?php if ($this->course->access('manage', 'offering')) { ?>
-	<div id="manager-options">
-		<p><a class="btn" href="#">Manage categories</a></p>
-	</div>
-<?php } ?>
-<div id="comments-container">
+<div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 <?php } ?>
-	<div class="comments-wrap">
-		<div class="comments-views">
-
-			<div class="comments-feed">
-				<div class="comments-toolbar cf">
-					<p class="comment-sort-options">
-						<?php echo JText::sprintf('%s Discussions', $this->stats->threads); ?>
-					</p>
-					<p class="comments-controls">
-						<a class="add active" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Start a new discussion'); ?>"><?php echo JText::_('New'); ?></a>
-					</p>
-				</div><!-- / .comments-toolbar -->
-
-				<div class="comments-options-bar">
-					<form class="comments-search" action="<?php echo JRoute::_($base); ?>" method="get">
-						<fieldset>
-							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('search ...'); ?>" />
-							<input type="submit" class="submit" value="<?php echo JText::_('Go'); ?>" />
-							
-							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-							<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-							<input type="hidden" name="active" value="discussions" />
-							<input type="hidden" name="action" value="search" />
-						</fieldset>
-					</form>
-				</div><!-- / .comments-options-bar -->
-
-				<div class="comment-threads">
-					<div class="category search-results hide">
-						<div class="category-header">
-							<span class="category-title"><?php echo JText::_('Search'); ?></span>
-						</div>
-						<div class="category-content">
-						</div>
-					</div>
-
-					<div class="category category-results" id="ctmine">
-						<?php
-						$filters = array();
-						$filters['scope']      = $this->filters['scope'];
-						$filters['scope_id']   = $this->filters['scope_id'];
-						$filters['state']      = 1;
-						$filters['sort_Dir']   = 'DESC';
-						$filters['limit']      = 100;
-						$filters['start']      = 0;
-						$filters['created_by'] = $juser->get('id');
-						$filters['parent']     = 0;
-						?>
-						<div class="category-header">
-							<span class="category-title"><?php echo JText::_('Mine'); ?></span>
-							<span class="category-discussions count"><?php echo $this->post->getCount($filters); ?></span>
-						</div><!-- / .category-header -->
-						<div class="category-content">
-							<?php 
-							//print_r($this->post);
-							$view = new Hubzero_Plugin_View(
-								array(
-									'folder'  => 'courses',
-									'element' => 'discussions',
-									'name'    => 'threads',
-									'layout'  => '_threads'
-								)
-							);
-							$view->category    = 'categorymine';
-							$view->option      = $this->option;
-							$view->threads     = $this->post->getRecords($filters);
-							$view->unit        = ''; //$row->alias; //$this->unit;
-							$view->lecture     = 0; //$this->lecture;
-							$view->config      = $this->config;
-							$view->instructors = $instructors;
-							$view->cls         = 'odd';
-							$view->base        = $base;
-							$view->course      = $this->course;
-							$view->prfx        = 'mine';
-							$view->display();
-							?>
-						</div><!-- / .category-content -->
-					</div><!-- / .category -->
-		<?php if (count($this->sections) > 0) { ?>
-			<?php foreach ($this->sections as $section) { ?>
-					<div class="category category-results" id="sc<?php echo $section->id; ?>">
-						<div class="category-header">
-							<span class="category-title"><?php echo $this->escape(stripslashes($section->title)); ?></span>
-							<span class="category-discussions count"><?php echo $section->threads; ?></span>
-						</div><!-- / .category-header -->
-						<div class="category-content">
-						<?php 
-						if ($section->categories) 
+	<div class="aside">
+		<div class="container">
+			<h3><?php echo JText::_('Statistics'); ?><span class="starter-point"></span></h3>
+			<table summary="<?php echo JText::_('Statistics'); ?>">
+				<tbody>
+					<tr>
+						<th><?php echo JText::_('Categories'); ?></th>
+						<td><span class="item-count"><?php echo $this->stats->categories; ?></span></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('Discussions'); ?></th>
+						<td><span class="item-count"><?php echo $this->stats->threads; ?></span></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('Posts'); ?></th>
+						<td><span class="item-count"><?php echo $this->stats->posts; ?></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="container">
+			<h3><?php echo JText::_('Last Post'); ?><span class="starter-point"></span></h3>
+			<p>
+<?php
+			if (is_object($this->lastpost)) 
+			{
+				$lname = JText::_('Anonymous');
+				$lastposter = JUser::getInstance($this->lastpost->created_by);
+				if (is_object($lastposter)) 
+				{
+					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
+				}
+				foreach ($this->sections as $section)
+				{
+					if ($section->categories) 
+					{
+						foreach ($section->categories as $row) 
 						{
-							foreach ($section->categories as $row) 
-							{ 
-								?>
-								<div class="thread closed" id="ct<?php echo $row->id; ?>" data-category="<?php echo $row->id; ?>">
-									<?php
-										$tfilters = array();
-										$tfilters['scope']       = 'course';
-										$tfilters['scope_id']    = $this->course->offering()->get('id');
-										$tfilters['state']       = 1;
-										$tfilters['category_id'] = $row->id;
-										$tfilters['sort_Dir']    = 'DESC';
-										$tfilters['limit']       = 100;
-										$tfilters['start']       = 0;
-										$tfilters['parent']      = 0;
-									?>
-									<div class="thread-header">
-										<span class="thread-title"><?php echo $this->escape(stripslashes($row->title)); ?></span>
-										<span class="thread-discussions count"><?php echo $this->post->getCount($tfilters); ?></span>
-									</div><!-- / .thread-header -->
-									<div class="thread-content">
-										<?php
-										//$width = $thread->rgt - $thread->lft;
-											$view = new Hubzero_Plugin_View(
-												array(
-													'folder'  => 'courses',
-													'element' => 'discussions',
-													'name'    => 'threads',
-													'layout'  => '_threads'
-												)
-											);
-											$view->category    = 'category' . $row->id;
-											$view->option      = $this->option;
-											$view->threads     = $this->post->getRecords($tfilters);
-											$view->unit        = $row->alias;
-											$view->lecture     = $row->id;
-											$view->config      = $this->config;
-											$view->instructors = $instructors;
-											$view->cls         = 'odd';
-											$view->base        = $base;
-											$view->course      = $this->course;
-											$view->display();
-										?>
-									</div><!-- / .thread-content -->
-								</div><!-- / .thread -->
-						<?php } ?>
-							<?php
-					/*} else {
-								$view = new Hubzero_Plugin_View(
-									array(
-										'folder'  => 'courses',
-										'element' => 'discussions',
-										'name'    => 'threads',
-										'layout'  => '_threads'
-									)
-								);
-								$view->option      = $this->option;
-								$view->threads     = $this->post->getRecords($filters);
-								$view->unit        = $row->alias;
-								$view->lecture     = 0;
-								$view->config      = $this->config;
-								$view->instructors = $instructors;
-								$view->cls         = 'odd';
-								$view->base        = $base;
-								$view->course      = $this->course;
-								$view->display();
-							}*/
-							?>
-						<?php } else { ?>
-							<p class="instructions">
-								There are no categories for this section.
-							</p>
-						<?php } ?>
-						</div><!-- / .category-content -->
-					</div><!-- / .category -->
-				<?php
-						//}
-					//}
-				?>
-			<?php } ?>
-					<!-- <p class="instructions">
-						Click a category above to see available threads.
-					</p> -->
-		<?php } ?>
-				</div><!-- / .comment-threads -->
-
-			</div><!-- / .comments-feed -->
-
-			<div class="comments-panel">
-				<div class="comments-toolbar">
-					<p><span class="comments" data-comments="%s comments" data-add="<?php echo JText::_('Start a discussion'); ?>"><?php echo JText::_('Start a discussion'); ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
-				</div><!-- / .comments-toolbar -->
-				<div class="comments-frame">
-
-					<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" enctype="multipart/form-data">
-						<p class="comment-member-photo">
-							<a class="comment-anchor" name="commentform"></a>
-							<?php
-							$anone = 1;
-							if (!$juser->get('guest')) 
+							if ($row->id == $this->lastpost->category_id)
 							{
-								$anon = 0;
+								$cat = $row->alias;
+								$sec = $section->alias;
+								break;
 							}
-							$now = date('Y-m-d H:i:s', time());
-							?>
-							<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
-						</p>
+						}
+					}
+				}
+?>
+				<span class="entry-date" data-href="<?php echo JRoute::_($base . '&b=' . $sec . '&c=' . $cat . '/' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
+					<span class="entry-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
+				</span>
+				<span class="entry-author">
+					<?php echo JText::_('by'); ?>
+					<?php echo $lname; ?>
+				</span>
+<?php } else { ?>
+				<?php echo JText::_('none'); ?>
+<?php } ?>
+			</p>
+		</div>
+	</div><!-- / .aside -->
 
-						<fieldset>
-						<?php if ($juser->get('guest')) { ?>
-							<p class="warning"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
-						<?php } else { ?>
-							<p class="comment-title">
-								<strong>
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
-								</strong> 
-								<span class="permalink">
-									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
-									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
-								</span>
-							</p>
+	<div class="subject">
+		<!-- <form action="<?php echo JRoute::_($base); ?>" method="post">
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<fieldset class="entry-search">
+					<legend><?php echo JText::_('Search categories'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+					<input type="hidden" name="active" value="discussions" />
+					<input type="hidden" name="unit" value="manage" />
+					<input type="hidden" name="action" value="search" />
+				</fieldset>
+			</div>
+		</form> -->
+<?php if (count($this->sections) > 0) { ?>
 
-							<label for="field_comment">
-								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
-								<?php
-								ximport('Hubzero_Wiki_Editor');
-								$editor = Hubzero_Wiki_Editor::getInstance();
-								echo $editor->display('fields[comment]', 'field_comment', '', 'minimal no-footer', '35', '5');
-								?>
-							</label>
-
-							<div class="grid">
-								<div class="col span-half">
-							<label for="field-upload" id="comment-upload">
-								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
-								<input type="file" name="upload" id="field-upload" />
-							</label>
-								</div>
-								<div class="col span-half omega">
-									<label for="field-category_id">
-									<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
-									<select name="fields[category_id]" id="field-category_id">
-										<option value="0"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
-				<?php
-								foreach ($this->sections as $section)
-								{
-									if ($section->categories) 
-									{
-				?>
-										<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
-				<?php
-										foreach ($section->categories as $category)
-										{
-				?>
-										<option value="<?php echo $category->id; ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
-				<?php
-										}
-				?>
-										</optgroup>
-				<?php
-									}
-								}
-				?>
-									</select>
-								</label>
-								</div>
-							</div>
-
-							<label for="field-anonymous" id="comment-anonymous-label">
-								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
-								<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
-							</label>
-
-							<p class="submit">
-								<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
-							</p>
-						<?php } ?>
-						</fieldset>
-						<input type="hidden" name="fields[parent]" id="field-parent" value="0" />
-						<input type="hidden" name="fields[state]" id="field-state" value="1" />
-						<input type="hidden" name="fields[scope]" id="field-scope" value="course" />
-						<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_id'); ?>" />
-						<input type="hidden" name="fields[id]" id="field-id" value="" />
-						<input type="hidden" name="fields[object_id]" id="field-object_id" value="" />
-
+	<?php 
+	foreach ($this->sections as $section)
+	{
+		if ($section->id == 0 && !$section->categories[0]->posts) 
+		{
+			continue;
+		}
+	?>
+		<div class="container">
+			<table class="entries categories">
+				<caption>
+				<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
+					<a name="s<?php echo $section->id; ?>"></a>
+					<form action="<?php echo JRoute::_($base); ?>" method="post">
+						<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
+						<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+						<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
+						<input type="hidden" name="fields[scope]" value="group" />
+						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->course->get('id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+						<input type="hidden" name="action" value="savesection" />
+						<input type="hidden" name="unit" value="manage" />
 						<input type="hidden" name="active" value="discussions" />
-						<input type="hidden" name="action" value="savethread" />
-
-						<p class="instructions">
-							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
-						</p>
 					</form>
-					<div class="comment-thread"></div>
-					<input type="hidden" name="lastchange" id="lastchange" value="" />
-					<input type="hidden" name="lastid" id="lastid" value="" />
-					<input type="hidden" name="parent-thread" id="parent-thread" value="" />
+				<?php } else { ?>
+					<?php echo $this->escape(stripslashes($section->title)); ?>
+				<?php } ?>
+			<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->id) { ?>
+				<?php if ($this->config->get('access-delete-section')) { ?>
+					<a class="delete" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+						<span><?php echo JText::_('Delete'); ?></span>
+					</a>
+				<?php } ?>
+				<?php if ($this->config->get('access-edit-section') && $this->edit != $section->alias && $section->id) { ?>
+					<a class="edit" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=edit#s' . $section->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+						<span><?php echo JText::_('Edit'); ?></span>
+					</a>
+				<?php } ?>
+			<?php } ?>
+				</caption>
+			<?php if ($this->config->get('access-create-category')) { ?>
+				<tfoot>
+					<tr>
+						<td<?php if ($section->categories) { echo ' colspan="5"'; } ?>>
+							<a class="add btn" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=new'); ?>">
+								<span><?php echo JText::_('Add Category'); ?></span>
+							</a>
+						</td>
+					</tr>
+				</tfoot>
+			<?php } ?>
+				<tbody>
+		<?php if ($section->categories) { ?>
+			<?php foreach ($section->categories as $row) { ?>
+					<tr<?php if ($row->closed) { echo ' class="closed"'; } ?>>
+						<th scope="row">
+							<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
+						</th>
+						<td>
+							<span class="entry-title" data-href="<?php echo JRoute::_($base . '&b=' . $row->alias); ?>">
+								<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+							</span>
+							<span class="entry-details">
+								<span class="entry-description">
+									<?php echo str_replace(array('<p>', '</p>'), '', $p->parse(stripslashes($row->description), $wikiconfig, false)); ?>
+								</span>
+							</span>
+						</td>
+						<td>
+							<span><?php echo $row->threads; ?></span>
+							<span class="entry-details">
+								<?php echo JText::_('Discussions'); ?>
+							</span>
+						</td>
+						<td>
+							<span><?php echo $row->posts; ?></span>
+							<span class="entry-details">
+								<?php echo JText::_('Posts'); ?>
+							</span>
+						</td>
+					<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
+						<td class="entry-options">
+							<?php if (($row->created_by == $juser->get('id') || $this->config->get('access-edit-category')) && $section->id) { ?>
+								<a class="edit" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=' . $row->alias . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
+									<span><?php echo JText::_('Edit'); ?></span>
+								</a>
+							<?php } ?>
+							<?php if ($this->config->get('access-delete-category') && $section->id) { ?>
+								<a class="delete tooltips" title="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=' . $row->alias . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+									<span><?php echo JText::_('Delete'); ?></span>
+								</a>
+							<?php } ?>
+						</td>
+				<?php } ?>
+					</tr>
+			<?php } ?>
+		<?php } else { ?>
+					<tr>
+						<td><?php echo JText::_('There are no categories.'); ?></td>
+					</tr>
+		<?php } ?>
+				</tbody>
+			</table>
+		</div>
+	<?php } // foreach ?>
 
-				</div><!-- / .comments-frame -->
-			</div><!-- / .comments-panel -->
+<?php } else { ?>
 
-		</div><!-- / .comments-views -->
-	</div><!-- / .comments-wrap -->
+	<p><?php echo JText::_('This forum is currently empty.'); ?></p>
 
-</div><!-- / #comments-container -->
+<?php } ?>
+
+	<?php if ($this->config->get('access-create-section')) { ?>
+		<div class="container">
+			<form method="post" action="<?php echo JRoute::_($base); ?>">
+					<table class="entries categories">
+						<caption>
+							<label for="field-title">
+								<?php echo JText::_('New Section'); ?>
+								<input type="text" name="fields[title]" id="field-title" value="" />
+							</label>
+							<input type="submit" value="<?php echo JText::_('Create'); ?>" />
+						</caption>
+						<tbody>
+							<tr>
+								<td><?php echo JText::_('Use sections to group related categories.'); ?></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+					<input type="hidden" name="fields[scope]" value="course" />
+					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->course->offering()->get('id'); ?>" />
+					<input type="hidden" name="active" value="discussions" />
+					<input type="hidden" name="unit" value="manage" />
+					<input type="hidden" name="action" value="savesection" />
+				</fieldset>
+			</form>
+		</div><!-- /.container -->
+	<?php } ?>
+
+	</div><!-- /.subject -->
+</div><!-- /.main -->

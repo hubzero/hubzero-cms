@@ -10,14 +10,14 @@ ximport('Hubzero_User_Profile_Helper');
 <?php } ?>
 	<h3 class="post-comment-title">
 <?php if ($this->model->id) { ?>
-		<?php echo JText::_('PLG_COURSES_FORUM_EDIT_CATEGORY'); ?>
+		<?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT_CATEGORY'); ?>
 <?php } else { ?>
-		<?php echo JText::_('PLG_COURSES_FORUM_NEW_CATEGORY'); ?>
+		<?php echo JText::_('PLG_COURSES_DISCUSSIONS_NEW_CATEGORY'); ?>
 <?php } ?>
 	</h3>			
 	<div class="aside">
-		<table class="wiki-reference" summary="<?php echo JText::_('PLG_COURSES_FORUM_WIKI_SYNTAX_REFERENCE'); ?>">
-			<caption><?php echo JText::_('PLG_COURSES_FORUM_WIKI_SYNTAX_REFERENCE'); ?></caption>
+		<table class="wiki-reference" summary="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_WIKI_SYNTAX_REFERENCE'); ?>">
+			<caption><?php echo JText::_('PLG_COURSES_DISCUSSIONS_WIKI_SYNTAX_REFERENCE'); ?></caption>
 			<tbody>
 				<tr>
 					<td>'''bold'''</td>
@@ -51,60 +51,54 @@ ximport('Hubzero_User_Profile_Helper');
 		</table>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum'); ?>" method="post" id="commentform">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
-<?php
+				<?php
 				$jxuser = new Hubzero_User_Profile();
 				$jxuser->load($juser->get('id'));
 				$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
-?>
+				?>
 				<img src="<?php echo $thumb; ?>" alt="" />
 			</p>
-	
+
 			<fieldset>
-				<?php /*<label for="field-section_id">
-					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_SECTION'); ?>
+				<label for="field-section_id">
+					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_SECTION'); ?>
 					<select name="fields[section_id]" id="field-section_id">
-						<option value="0"><?php echo JText::_('PLG_COURSES_FORUM_FIELD_SECTION_SELECT'); ?></option>
-<?php
-				foreach ($this->sections as $section)
-				{
-?>
+						<option value="0"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_SECTION_SELECT'); ?></option>
+					<?php foreach ($this->sections as $section) { ?>
 						<option value="<?php echo $section->id; ?>"<?php if ($this->model->section_id == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
-<?php
-				}
-?>
+					<?php } ?>
 					</select>
-				</label>*/ ?>
+				</label>
 				
 				<label for="field-title">
-					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_TITLE'); ?>
+					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_TITLE'); ?>
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->model->title)); ?>" />
 				</label>
 				
 				<label for="field-description">
-					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_DESCRIPTION'); ?>
+					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_DESCRIPTION'); ?>
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
 					echo $editor->display('fields[description]', 'field-description', $this->escape(stripslashes($this->model->description)), 'minimal no-footer', '35', '5');
 					?>
-					<!-- <textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->description)); ?></textarea> -->
 				</label>
-		
+
 				<label for="field-closed" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->model->closed) { echo ' checked="checked"'; } ?> /> 
-					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_CLOSED'); ?>
+					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CLOSED'); ?>
 				</label>
-		
+
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('PLG_COURSES_FORUM_SUBMIT'); ?>" />
+					<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 				</p>
-		
+
 				<div class="sidenote">
 					<p>
-						<?php echo JText::_('PLG_COURSES_FORUM_CATEGORY_WIKI_HINT'); ?>
+						<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_WIKI_HINT'); ?>
 					</p>
 				</div>
 			</fieldset>
@@ -113,12 +107,12 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[scope]" value="course" />
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->offering->get('id'); ?>" />
-			<input type="hidden" name="fields[section_id]" value="<?php echo $this->section->id; ?>" />
-	
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
-			<input type="hidden" name="active" value="forum" />
+			<input type="hidden" name="active" value="discussions" />
+			<input type="hidden" name="unit" value="manage" />
 			<input type="hidden" name="action" value="savecategory" />
 		</form>
 	</div><!-- / .subject -->

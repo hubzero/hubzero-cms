@@ -63,6 +63,15 @@ defined('_JEXEC') or die('Restricted access');
 			$comment = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $comment);
 		}
 	}
+
+	if ($this->unit)
+	{
+		$this->base .= '&unit=' . $this->unit;
+	}
+	if ($this->lecture)
+	{
+		$this->base .= '&b=' . $this->lecture;
+	}
 ?>
 	<li class="comment <?php echo $cls; ?><?php if (!$this->comment->parent) { echo ' start'; } ?>" id="c<?php echo $this->comment->id; ?>">
 		<p class="comment-member-photo">
@@ -72,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="comment-content">
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong> 
-				<a class="permalink" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '#c' . $this->comment->id); ?>" title="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
+				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->id); ?>" title="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
 					<span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateFormat, $tz); ?></time></span>
 					<?php if ($this->comment->modified && $this->comment->modified != '0000-00-00 00:00:00') { ?>
@@ -101,23 +110,29 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $comment; ?>
 
 			<p class="comment-options">
-			<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $this->comment->created_by) { ?>
+			<?php if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="delete" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=delete&thread=' . $this->comment->id); ?>"><!-- 
+					<a class="delete" href="<?php echo JRoute::_($this->base . '&action=delete&thread=' . $this->comment->id); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!-- 
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
-					<a class="edit" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=edit&thread=' . $this->comment->id); ?>"><!-- 
+					<a class="edit" href="<?php echo JRoute::_($this->base . '&action=edit&thread=' . $this->comment->id); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!-- 
 					--></a>
 				<?php } ?>
 			<?php } ?>
 			<?php if (!$this->comment->reports) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-				<a class="reply" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&reply=' . $this->comment->id . '#commentform' . $this->comment->id); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
+					<?php if (JRequest::getInt('reply', 0) == $this->comment->id) { ?>
+					<a class="reply active" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->base); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
+					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?><!-- 
+				--></a>
+					<?php } else { ?>
+					<a class="reply" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->base . '&reply=' . $this->comment->id); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
 					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?><!-- 
 				--></a>
+					<?php } ?>
 				<?php } ?>
 				<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->comment->id . '&parent=' . $this->comment->parent); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
 					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPORT_ABUSE'); ?><!-- 
@@ -148,7 +163,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
-						<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=' . $this->comment->id)); ?>" />
+						<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_($this->base)); ?>" />
 
 						<label for="comment-<?php echo $this->comment->id; ?>-content">
 							<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
@@ -157,7 +172,6 @@ defined('_JEXEC') or die('Restricted access');
 							$editor = Hubzero_Wiki_Editor::getInstance();
 							echo $editor->display('fields[comment]', 'field_' . $this->comment->id . '_comment', '', 'minimal no-footer', '35', '4');
 							?>
-							<!-- <textarea name="fields[comment]" id="comment-<?php echo $this->comment->id; ?>-content" rows="4" cols="50" placeholder="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_ENTER_COMMENTS'); ?>"></textarea> -->
 						</label>
 
 						<label class="upload-label" for="comment-<?php echo $this->comment->id; ?>-file">
@@ -176,9 +190,6 @@ defined('_JEXEC') or die('Restricted access');
 
 						<p class="submit">
 							<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" /> 
-							<!-- <a class="cancelreply" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '#c' . $this->comment->id); ?>">
-								<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>
-							</a> -->
 						</p>
 					</fieldset>
 				</form>
