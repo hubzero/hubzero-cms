@@ -446,6 +446,7 @@ class Hubzero_Registration
 		$tag_string = $mt->get_tag_string( $xprofile->get('uidNumber') );
 		
 		//get member addresses
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
 		$membersAddress = new MembersAddress( JFactory::getDBO() );
 		$addresses = $membersAddress->getAddressesForMember( $xprofile->get("uidNumber") );
 
