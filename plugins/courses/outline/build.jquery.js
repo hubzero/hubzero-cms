@@ -1057,7 +1057,7 @@ HUB.CoursesOutline = {
 			$(this).fileupload({
 				dropZone: $(this),
 				dataType: 'json',
-				progressInterval: 200,
+				progressInterval: 500,
 				add: function(e, data) {
 					// Get asset handlers for this file type
 					$.ajax({
@@ -1148,10 +1148,14 @@ HUB.CoursesOutline = {
 							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
 							function fileSubmit(data, counter) {
 								var progressBarId = 'progress-bar-'+counter;
+								var filename      = data;
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {
-									HUB.CoursesOutline.assetProgress(data, progressBarId);
+									// @FIXME: there's got to be a better way to do this
+									if (data.files[0].name == filename) {
+										HUB.CoursesOutline.assetProgress(data, progressBarId);
+									}
 								});
 
 								// Add the progress bar
@@ -1216,7 +1220,7 @@ HUB.CoursesOutline = {
 	{
 		// Show progress bars for all pending uploads
 		var progress = parseInt(data.loaded / data.total * 100, 10);
-		$('.unit').find("#" + progressBarId + " .bar").animate({'width': progress + '%'}, 100);
+		$('.unit').find("#" + progressBarId + " .bar").stop(true, true).animate({'width': progress + '%'}, 500);
 
 		// If progress is 100% and extension is zip, let's add some explanation
 		if(progress == 100) {
@@ -1224,6 +1228,8 @@ HUB.CoursesOutline = {
 
 			if(extension[extension.length - 1] == 'zip') {
 				$('.unit').find("#" + progressBarId + " .filename").html('unzipping...');
+			} else {
+				$('.unit').find("#" + progressBarId + " .filename").html('finalizing upload...');
 			}
 		}
 	},
