@@ -120,6 +120,8 @@ class modFeaturedresource extends JObject
 		$filters['minranking'] = trim($this->params->get('minranking'));
 		$filters['tag']        = trim($this->params->get('tag'));
 		$filters['access']     = 'public';
+		// Only published tools
+		$filters['toolState'] = 7;
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 		$this->txt_length = trim($this->params->get('txt_length'));

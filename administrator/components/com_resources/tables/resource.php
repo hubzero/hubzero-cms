@@ -477,6 +477,12 @@ class ResourcesResource extends JTable
 		}
 		$query .= "LEFT JOIN #__resource_types AS t ON C.type=t.id ";
 		$query .= "LEFT JOIN #__resource_types AS lt ON C.logical_type=lt.id ";
+		
+		if (isset($filters['type']) && $filters['type'] == 'tools' && isset($filters['toolState'])) 
+		{
+			$query .= "LEFT JOIN #__tool AS T ON C.alias=T.toolname ";
+		}
+		
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
 		if (isset($filters['type']) && $filters['type'] != '') 
 		{
@@ -491,6 +497,11 @@ class ResourcesResource extends JTable
 					$filters['type'] = 7;
 				}
 				$query .= "AND C.type=" . $this->_db->Quote($filters['type']) . " ";
+				
+				if (isset($filters['toolState'])) 
+				{
+					$query .= "AND T.state=" . $this->_db->Quote($filters['toolState']) . " ";
+				}
 			}
 		} 
 		else 
