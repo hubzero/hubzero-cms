@@ -583,6 +583,14 @@ class WikiParser
 		$title = (isset($matches[5])) ? $matches[5] : $href;
 		$namespace = $matches[2];
 
+		if ($href[0] == '!') 
+		{
+			$matches[0] = trim($matches[0], '[]');
+			$matches[0] = ltrim($matches[0], '!');
+			array_push($this->links, '[' . trim($matches[0]) . ']');
+			return '<link></link>';
+		}
+
 		$title = preg_replace('/\(.*?\)/', '', $title);
 		$title = preg_replace('/^.*?\:/', '', $title);
 
@@ -740,6 +748,7 @@ class WikiParser
 
 		if (!$p->id && !in_array(substr($href, 0, 1), array('#', '?', '/'))) 
 		{
+			// Check namespace
 			if (in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
 			{
 				$cls .= '';
@@ -758,6 +767,7 @@ class WikiParser
 
 			$LinkPtn  = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' . $UpperPtn . $AlphaPtn . '*(?:(?:\\/' . $UpperPtn . $AlphaPtn . '*)+)?';
 
+			// Is it a camelcased link?
 			$ptn = "/(^|[^A-Za-z])(!?\\/?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e";
 			if (preg_match($ptn, $href) || in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
 			{
@@ -768,8 +778,8 @@ class WikiParser
 				return '<link></link>';
 			}
 
-			array_push($this->links, $matches[0]);
-			return '<link></link>';
+			//array_push($this->links, $matches[0]);
+			//return '<link></link>';
 		} 
 		else 
 		{
