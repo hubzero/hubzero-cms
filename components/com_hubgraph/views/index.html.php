@@ -213,7 +213,7 @@ window.searchBase = '<?= $base ?>';
 							<? if ($child['domain'] == 'resources'): ?>
 								<? if (!$child['title']) continue; ?>
 								<li class="<?= strtolower($child['type']) ?>">
-										<h5><?= (isset($child['logical_type']) ? '<span class="logical-type">'.$child['logical_type'].'</span>: ' : '').h($child['title']) ?></h5>
+										<h5><?= (isset($child['logical_type']) ? '<span class="logical-type">'.$child['logical_type'].'</span>: ' : '').$child['title'] ?></h5>
 							<? else: ?>
 								<li class="<?= strtolower($child['domain']) ?>">
 									<? if ($res['domain'] == 'questions' && isset($results['contributor_map'][$child['contributor_ids'][0]]['img_href'])): ?>
@@ -221,7 +221,7 @@ window.searchBase = '<?= $base ?>';
 									<? endif; ?>
 									<h5>
 										<? if ($child['title']): ?>
-											<?= h($child['title']) ?>
+											<?= $child['title'] ?>
 										<? else: ?>
 											<? if ($res['domain'] == 'questions'): ?>
 												<a href="<?= $res['link'].'#c'.$child['id'] ?>">
