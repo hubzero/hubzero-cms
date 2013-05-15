@@ -42,6 +42,13 @@ class modFeaturedresource extends JObject
 	 * 
 	 * @var array
 	 */
+	public $id = 0;
+
+	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
 	private $attributes = array();
 
 	/**
@@ -55,6 +62,7 @@ class modFeaturedresource extends JObject
 	{
 		$this->params = $params;
 		$this->module = $module;
+		$this->id     = $this->module->id;
 	}
 
 	/**
