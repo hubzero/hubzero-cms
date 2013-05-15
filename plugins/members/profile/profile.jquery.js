@@ -673,6 +673,8 @@ HUB.Members.Profile = {
 	
 	locateMe: function()
 	{
+		var $ = this.jQuery;
+		
 		//locate me
 		$('body').on('click', '#locate-me', function(event) {
 			event.preventDefault();
@@ -699,6 +701,8 @@ HUB.Members.Profile = {
 	
 	locateMeGotLocation: function( location )
 	{
+		var $ = this.jQuery;
+		
 		var latitude      = location.coords.latitude,
 			longitude     = location.coords.longitude,
 			reverseGeoUrl = 'https://maps.google.com/maps/api/geocode/json?sensor=true&latlng=' + latitude + ',' + longitude;
@@ -760,6 +764,8 @@ HUB.Members.Profile = {
 	
 	locateMeGotError: function( error )
 	{
+		var $ = this.jQuery;
+		
 		alert('Geo Location Error: ' + error.message);
 	}
 	
