@@ -154,89 +154,93 @@ jQuery(function($) {
 	});
 
 	$('.tags.related').each(function(_, tagEl) {
-		var tags = [];
 		tagEl = $(tagEl);
+		var cont = $('<div class="tag-graph"></div>');
+		try {
+		tagEl.replaceWith(cont);
+
+		var tags = [];
 		var sourceId = tagEl.attr('data-parent-id');
 		var json = {
 			nodes: relatedTags.related.map(function(tag) { return { 'name': tag[1], 'id': tag[0], 'base': tag[2] }; }), //[{'name': tagEl.attr('data-parent-name'), 'id': sourceId}],
 			links: relatedTags.edges.map(function(edge) { return { 'source': edge[0], 'target': edge[1], 'weight': edge[2] }; })
 		};
 		
-		var cont = $('<div class="tag-graph"></div>');
-		tagEl.replaceWith(cont);
+		var w = cont.width(),
+		    h = cont.height(),
+		    r = 6,
+		    z = d3.scale.category20c();
 
+		var force = d3.layout.force()
+			.gravity(0.06) // force drawing vertices to clump in the center
+			.charge(-30) // repulsion (or if positive, attraction) between vertices
+			.alpha(0.2)
+			.linkDistance(function(e) {
+				return h * Math.pow(1 - e.weight, 4);
+			})
+			.size([w, h]);
 
-var w = cont.width(),
-    h = cont.height(),
-    r = 6,
-    z = d3.scale.category20c();
+		var svg = d3.select(cont[0]).append("svg:svg")
+			.attr("width", w)
+			.attr("height", h)
+			.append("svg:g");
 
-var force = d3.layout.force()
-    .gravity(0.06) // force drawing vertices to clump in the center
-    .charge(-30) // repulsion (or if positive, attraction) between vertices
-	 .alpha(0.2)
-    .linkDistance(function(e) {
-		 return h * Math.pow(1 - e.weight, 4);
-	 })
-    .size([w, h]);
+		var link = svg.selectAll("line")
+			.data(json.links)
+			.enter().append("svg:line");
 
-var svg = d3.select(cont[0]).append("svg:svg")
-    .attr("width", w)
-    .attr("height", h)
-  .append("svg:g");
-
-  var link = svg.selectAll("line")
-      .data(json.links)
-    .enter().append("svg:line");
-
-  var node = svg.selectAll("circle")
-      .data(json.nodes)
-    .enter() 
-	 .append("g")
-	 	.attr('class', 'node')
-		.on('click', function(d) { 
-			var query = decodeURIComponent(location.search);
-			if (query.indexOf('tags[]=' + d.id) >= 0) {
-				location.search = query.replace(new RegExp('&?tags\\[\\]=' + d.id), '');
-			}
-			else {
-				location.search = query + '&tags[]=' + d.id;
-			}
-		})
-      .call(force.drag);
+		var node = svg.selectAll("circle")
+			.data(json.nodes)
+			.enter() 
+			.append("g")
+			.attr('class', 'node')
+			.on('click', function(d) { 
+				var query = decodeURIComponent(location.search);
+				if (query.indexOf('tags[]=' + d.id) >= 0) {
+					location.search = query.replace(new RegExp('&?tags\\[\\]=' + d.id), '');
+				}
+				else {
+					location.search = query + '&tags[]=' + d.id;
+				}
+			})
+			.call(force.drag);
 	 
-	 node.append("svg:circle")
-      .attr("r", r - .75)
-      .style("fill", function(d) { return d.base ? '#006699' : '#88ddff'; })
-      .style("stroke", function(d) { return d3.rgb(z(d.group)).darker(); });
+		node.append("svg:circle")
+			.attr("r", r - .75)
+			.style("fill", function(d) { return d.base ? '#006699' : '#88ddff'; })
+			.style("stroke", function(d) { return d3.rgb(z(d.group)).darker(); });
 
-node.append('svg:text')
+		node.append('svg:text')
 			.attr('font-size', '10px')
 			.attr('x', '7')
 			.attr('y', '4')
 			.text(function(d) { return d.name; });
 
-  force
-      .nodes(json.nodes)
-      .links(json.links)
-      .on("tick", tick)
-      .start();
+		var tick = function() {
+			var normX = function(x) {
+				return Math.max(r, Math.min(w - r, x));
+			};
+			var normY = function(y) {
+				return Math.max(r, Math.min(h - r, y));
+			};
+			node.attr("transform", function(d) { 
+				return "translate(" + normX(d.x) + "," + normY(d.y) + ")"; 
+			});
 
-  function tick() {
-	  var normX = function(x) {
-			return Math.max(r, Math.min(w - r, x));
-	  };
-	  var normY = function(y) {
-			return Math.max(r, Math.min(h - r, y));
-	  };
-node.attr("transform", function(d) { 
-	return "translate(" + normX(d.x) + "," + normY(d.y) + ")"; 
-});
-
-    link.attr("x1", function(d) { return normX(d.source.x); })
-        .attr("y1", function(d) { return normY(d.source.y); })
-        .attr("x2", function(d) { return normX(d.target.x); })
-        .attr("y2", function(d) { return normY(d.target.y); });
-  }
+			link.attr("x1", function(d) { return normX(d.source.x); })
+				.attr("y1", function(d) { return normY(d.source.y); })
+				.attr("x2", function(d) { return normX(d.target.x); })
+				.attr("y2", function(d) { return normY(d.target.y); });
+		};
+		
+		force
+			.nodes(json.nodes)
+			.links(json.links)
+			.on("tick", tick)
+			.start();
+		}
+		catch (ex) {	
+			cont.replaceWith(tagEl);
+		}
 	});
 });
