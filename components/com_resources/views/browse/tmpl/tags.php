@@ -34,27 +34,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Import share CSS to style share features on right side of trifold
 ximport('Hubzero_Document');
 Hubzero_Document::addPluginStylesheet('resources', 'share');
-
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="get" id="tagBrowserForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get" id="tagBrowserForm">
 
 	<div id="content-header-extra">
 		<fieldset>
-			<label>
+			<label for="browse-type">
 				<span><?php echo JText::_('COM_RESOURCES_TYPE'); ?>:</span> 
-				<select name="type">
-<?php 
-foreach ($this->types as $type)
-{
-?>
-					<option value="<?php echo $type->title; ?>"<?php if ($type->id == $this->filters['type']) { echo ' selected="selected"'; } ?>><?php echo $type->type; ?></option>
-<?php 
-}
-?>
+				<select name="type" id="browse-type">
+				<?php foreach ($this->types as $type) { ?>
+					<option value="<?php echo $this->escape($type->alias); ?>"<?php if ($type->id == $this->filters['type']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
+				<?php } ?>
 				</select>
 			</label>
 			<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>"/>
@@ -83,10 +77,10 @@ foreach ($this->types as $type)
 					<li><?php echo JText::_('COM_RESOURCES_TAGBROWSER_COL_EXPLANATION'); ?></li>
 				</ul>
 			</div><!-- / #level-3 -->
-			<input type="hidden" name="pretype" id="pretype" value="<?php echo $this->filters['type']; ?>" />
+			<input type="hidden" name="pretype" id="pretype" value="<?php echo $this->escape($this->filters['type']); ?>" />
 			<input type="hidden" name="id" id="id" value="" />
-			<input type="hidden" name="preinput" id="preinput" value="<?php echo $this->tag; ?>" />
-			<input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->tag2; ?>" />
+			<input type="hidden" name="preinput" id="preinput" value="<?php echo $this->escape($this->tag); ?>" />
+			<input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->escape($this->tag2); ?>" />
 			<div class="clear"></div>
 		</div><!-- / #tagbrowser -->
 	
