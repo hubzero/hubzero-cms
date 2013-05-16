@@ -56,18 +56,6 @@
 	    padding: 0 0 0 0;
 	    position: relative;
 	    }
-	.group_projects .aside .container .starter .starter-point {
-	    border-color: #999 transparent transparent transparent;
-	    border-style: solid dashed dashed dashed;
-	    border-width: 10px;
-	    height: 0;
-	    width: 0;
-	    display: block;
-	    overflow: hidden;
-	    position: absolute;
-	    top: -1em;
-	    left: 10px;
-	    }
 
 /* Entries Table */
 	.entries {
