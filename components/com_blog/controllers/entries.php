@@ -45,6 +45,8 @@ class BlogControllerEntries extends Hubzero_Controller
 	 */
 	public function execute()
 	{
+		$this->model = new BlogModel('site', 0);
+
 		$this->_authorize();
 		$this->_authorize('entry');
 
@@ -192,30 +194,7 @@ class BlogControllerEntries extends Hubzero_Controller
 			}
 		}
 
-		// Instantiate the BlogEntry object
-		$be = new BlogEntry($this->database);
-
-		// Get a record count
-		$this->view->total = $be->getCount($this->view->filters);
-
-		// Get the records
-		$this->view->rows = $be->getRecords($this->view->filters);
-
-		// Highlight search results
-		/*if ($this->view->filters['search']) 
-		{
-			$this->view->rows = $this->_highlight($this->view->filters['search'], $this->view->rows);
-		}*/
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
-			$this->view->filters['limit']
-		);
-
-		$this->view->firstentry = $be->getDateOfFirstEntry($this->view->filters);
+		$this->view->model = $this->model;
 
 		$this->view->year  = $this->view->filters['year'];
 		$this->view->month = $this->view->filters['month'];
@@ -225,16 +204,8 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->_getStyles();
 		$this->_getScripts();
 
-		$this->view->popular = $be->getPopularEntries($this->view->filters);
-		$this->view->recent  = $be->getRecentEntries($this->view->filters);
-
 		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 
-		$this->view->dateFormat  = $this->dateFormat;
-		$this->view->timeFormat  = $this->timeFormat;
-		$this->view->yearFormat  = $this->yearFormat;
-		$this->view->monthFormat = $this->monthFormat;
-		$this->view->dayFormat   = $this->dayFormat;
 		$this->view->tz          = $this->tz;
 
 		// Get any errors for display
@@ -316,6 +287,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->view->setLayout('entry');
 
 		$this->view->config = $this->config;
+		$this->view->model  = $this->model;
 
 		$alias = JRequest::getVar('alias', '');
 
@@ -327,101 +299,48 @@ class BlogControllerEntries extends Hubzero_Controller
 			return;
 		}
 
-		$this->view->row = new BlogEntry($this->database);
-		$this->view->row->loadAlias($alias, 'site');
+		//$this->view->row = new BlogEntry($this->database);
+		//$this->view->row->loadAlias($alias, 'site');
+		$this->view->row = $this->model->entry($alias);
 
-		if (!$this->view->row->id) 
+		if (!$this->view->row->exists()) 
 		{
 			JError::raiseError(404, JText::_('COM_BLOG_NOT_FOUND'));
 			return;
 		}
-		$this->row = $this->view->row;
 
 		// Check authorization
-		if (($this->view->row->state == 2 && $this->juser->get('guest')) 
-		 || ($this->view->row->state == 0 && !$this->view->config->get('access-manage-component'))) 
+		if (($this->view->row->get('state') == 2 && $this->juser->get('guest')) 
+		 || ($this->view->row->get('state') == 0 && !$this->view->config->get('access-manage-component'))) 
 		{
 			JError::raiseError(403, JText::_('COM_BLOG_NOT_AUTH'));
 			return;
 		}
 
-		if ($this->juser->get('id') != $this->view->row->created_by) 
-		{
-			$this->view->row->hit();
-		}
-
-		if ($this->view->row->content) 
-		{
-			$wikiconfig = array(
-				'option'   => $this->_option,
-				'scope'    => '',
-				'pagename' => JHTML::_('date', $this->view->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $this->view->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->view->row->alias,
-				'pageid'   => 0,
-				'filepath' => $this->config->get('uploadpath', '/site/blog'),
-				'domain'   => ''
-			);
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-			$this->view->row->content = $p->parse(stripslashes($this->view->row->content), $wikiconfig);
-		}
-
-		$bc = new BlogComment($this->database);
-		$this->view->comments = $bc->getAllComments($this->view->row->id);
-
-		$this->view->comment_total = 0;
-		if ($this->view->comments) 
-		{
-			foreach ($this->view->comments as $com)
-			{
-				$this->view->comment_total++;
-				if ($com->replies) 
-				{
-					foreach ($com->replies as $rep)
-					{
-						$this->view->comment_total++;
-						if ($rep->replies) 
-						{
-							$this->view->comment_total = $this->view->comment_total + count($rep->replies);
-						}
-					}
-				}
-			}
-		}
-
-		$r = JRequest::getInt('reply', 0);
-		$this->view->replyto = new BlogComment($this->database);
-		$this->view->replyto->load($r);
-
-		$bt = new BlogTags($this->database);
-		$this->view->tags = $bt->get_tag_cloud(0,0,$this->view->row->id);
-
 		// Filters for returning results
-		$filters = array();
-		$filters['limit']    = 10;
-		$filters['start']    = 0;
-		$filters['scope']    = 'site';
-		$filters['group_id'] = 0;
+		$this->view->filters = array();
+		$this->view->filters['limit']    = 10;
+		$this->view->filters['start']    = 0;
+		$this->view->filters['scope']    = 'site';
+		$this->view->filters['group_id'] = 0;
 
 		if ($this->juser->get('guest')) 
 		{
-			$filters['state'] = 'public';
+			$this->view->filters['state'] = 'public';
 		} 
 		else 
 		{
 			if (!$this->view->config->get('access-manage-component')) 
 			{
-				$filters['state'] = 'registered';
+				$this->view->filters['state'] = 'registered';
 			}
 		}
-		$this->view->popular    = $this->view->row->getPopularEntries($filters);
-		$this->view->recent     = $this->view->row->getRecentEntries($filters);
-		$this->view->firstentry = $this->view->row->getDateOfFirstEntry($filters);
 
 		// Push some scripts to the template
 		$this->_buildTitle();
 		$this->_buildPathway();
 		$this->_getStyles();
-		$this->_getScripts();
+		$this->_getScripts('assets/js/' . $this->_name);
 
 		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 

@@ -5,29 +5,39 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Blog = {
-	jQuery: jq,
-	
-	initialize: function() {
-		var $ = this.jQuery;
-	} // end initialize
+jQuery(document).ready(function (jq) {
+	var $ = jq;
 
-}
+	$('#content')
+			// Toggle text and classes when clicking reply
+			.on('click', 'a.reply', function (e) {
+				e.preventDefault();
 
-jQuery(document).ready(function($){
-	HUB.Blog.initialize();
+				var frm = $('#' + $(this).attr('rel'));
+
+				if (frm.hasClass('hide')) {
+					frm.removeClass('hide');
+
+					$(this)
+						.addClass('active')
+						.text($(this).attr('data-txt-active'));
+				} else {
+					frm.addClass('hide');
+					$(this)
+						.removeClass('active')
+						.text($(this).attr('data-txt-inactive'));
+				}
+			})
+			// Add confirm dialog to delete links
+			.on('click', 'a.delete', function (e) {
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					e.preventDefault();
+				}
+				return res;
+			});
 });
