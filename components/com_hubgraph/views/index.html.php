@@ -289,5 +289,7 @@ window.searchBase = '<?= $base ?>';
 	<li<? if ($start == $results['offset']) echo ' class="current"'; ?>><? if ($start == $results['offset']): ?><?= $page ?><? else: ?><button type="submit" name="offset" value="<?= $start ?>"><?= $page ?></button><? endif; ?></li>
 <? endfor; ?>
 </ol>
+<? elseif ($results && !$results['results']): ?>
+	<p class="info">No results were found for the criteria you specified, sorry.</p>
 <? endif; ?>
 </form>
