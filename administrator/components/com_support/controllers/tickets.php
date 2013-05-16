@@ -86,12 +86,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			0,
 			'int'
 		);
-		// Search
-		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
-			''
-		));
+		$this->view->filters['search'] = '';
 
 		// Get query list
 		$sq = new SupportQuery($this->database);
@@ -124,18 +119,26 @@ class SupportControllerTickets extends Hubzero_Controller
 				{
 					$query->query = $sq->getQuery($query->conditions);
 				}
+				$filters = $this->view->filters;
 				if ($query->id != $this->view->filters['show'])
 				{
 					$filters['search'] = '';
 				}
 				// Get a record count
-				$this->view->queries[$key][$k]->count = $obj->getCount($query->query);
+				$this->view->queries[$key][$k]->count = $obj->getCount($query->query, $filters);
 				// The query is the current active query
 				// get records
 				if ($query->id == $this->view->filters['show'])
 				{
+					// Search
+					$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+						$this->_option . '.' . $this->_controller . '.search', 
+						'search', 
+						''
+					));
 					// Set the total for the pagination
-					$this->view->total = $this->view->queries[$key][$k]->count;
+					$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $this->view->queries[$key][$k]->count;
+
 					// Incoming sort
 					$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 						$this->_option . '.' . $this->_controller . '.sort', 
