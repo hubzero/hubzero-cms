@@ -229,6 +229,24 @@ class JTableUser extends JTable
 		{
 			// new record
 			$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+			$count = 0;
+
+			while (($this->$k < '1000') || ($this->$k == '65534') || posix_getpwuid($this->$k) != false)
+			{
+				$query = 'DELETE FROM '. $this->_tbl . ' WHERE '. $this->_tbl_key .' = '. (int) $this->$k;
+                		$this->_db->setQuery( $query );
+				$this->_db->query();
+
+				if ($count++ > 1010)
+				{
+					$this->setError( strtolower(get_class( $this ))."::". JText::_( 'store failed' ) ."<br />" . $this->_db->getErrorMsg() );
+					return false;				
+				}
+
+				$this->$k = null;
+				$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+			}
+
 			// syncronise ACL
 			$acl->add_object( $section_value, $this->name, $this->$k, null, null, 'ARO' );
 			$acl->add_group_object( $this->gid, $section_value, $this->$k, 'ARO' );
