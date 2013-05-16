@@ -395,7 +395,7 @@ class CoursesModelPermissions extends JObject
 		}
 
 		// If they're not logged in
-		if (!$juser->get('guest'))
+		/*if (!$juser->get('guest'))
 		{
 			// List of actions
 			$actions = array(
@@ -438,7 +438,7 @@ class CoursesModelPermissions extends JObject
 					$this->config()->set('access-checked-section', true);
 				}
 			}
-		}
+		}*/
 
 		// Are they an admin?
 		if ($this->config()->get('access-admin-course') 
