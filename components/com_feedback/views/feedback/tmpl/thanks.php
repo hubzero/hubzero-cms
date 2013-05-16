@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->row->picture) 
 {
-	$file = DS . trim($picture, DS);
+	$file = DS . trim($this->row->picture, DS);
 }
 else 
 {
