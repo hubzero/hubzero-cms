@@ -425,15 +425,15 @@
 	color: #555;
 	border: 1px solid #ccc;
 
-	background: #EEE;
-	background: -webkit-gradient(linear, left top, left bottom, from(#EEE), to(#DDD));
-	background: -webkit-linear-gradient(#EEE, #DDD);
-	background: -moz-linear-gradient(center top, #EEE 0%, #DDD 100%);
-	background: -moz-gradient(center top, #EEE 0%, #DDD 100%);
-	background: -o-linear-gradient(#EEE, #DDD);
-	background-image: -ms-linear-gradient(top, #EEE 0%, #DDD 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE,endColorstr=#DDD);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE, endColorstr=#DDD)";
+	background: #EEEEEE;
+	background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#DDDDDD));
+	background: -webkit-linear-gradient(#EEEEEE, #DDDDDD);
+	background: -moz-linear-gradient(center top, #EEEEEE 0%, #DDDDDD 100%);
+	background: -moz-gradient(center top, #EEEEEE 0%, #DDDDDD 100%);
+	background: -o-linear-gradient(#EEEEEE, #DDDDDD);
+	background-image: -ms-linear-gradient(top, #EEEEEE 0%, #DDDDDD 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEEEEE,endColorstr=#DDDDDD);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEEEEE, endColorstr=#DDDDDD)";
 }
 .instructor .header-score span:before,
 .instructor .header-progress span:before {
