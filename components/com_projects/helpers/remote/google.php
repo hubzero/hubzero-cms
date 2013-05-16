@@ -368,7 +368,7 @@ class ProjectsGoogleHelper extends JObject
 			
 			if (!empty($data['items']))
 			{
-				ProjectsGoogleHelper::getFolderChange($data['items'], $folderID, &$remotes, &$deletes, $path, $connections, &$duplicates);	
+				ProjectsGoogleHelper::getFolderChange($data['items'], $folderID, $remotes, $deletes, $path, $connections, $duplicates);	
 			}
 			$newChangeID = $data['largestChangeId'];	
 		}
@@ -469,7 +469,7 @@ class ProjectsGoogleHelper extends JObject
 					$md5Checksum = isset($doc['md5Checksum']) ? $doc['md5Checksum'] : NULL;
 										
 					// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = ProjectsGoogleHelper::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'], $connections, &$remotes, &$duplicates);
+					$fpath = ProjectsGoogleHelper::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'], $connections, $remotes, $duplicates);
 					
 					// Detect a rename or move
 					$rename = '';
@@ -515,7 +515,7 @@ class ProjectsGoogleHelper extends JObject
 					if (preg_match("/.folder/", $doc['mimeType']))
 					{
 						// Recurse
-						ProjectsGoogleHelper::getFolderChange($items, $doc['id'], &$remotes,  &$deletes, $fpath, $connections, &$duplicates );
+						ProjectsGoogleHelper::getFolderChange($items, $doc['id'], $remotes,  $deletes, $fpath, $connections, $duplicates );
 					}	
 				}
 			}
@@ -601,7 +601,7 @@ class ProjectsGoogleHelper extends JObject
 			$fpath = ProjectsHtml::fixFileName($fpath, '-' . $num);
 			
 			// Check that new path isn't used either
-			return ProjectsGoogleHelper::buildDuplicatePath($id, $fpath, $format, $connections, &$remotes, &$duplicates);						
+			return ProjectsGoogleHelper::buildDuplicatePath($id, $fpath, $format, $connections, $remotes, $duplicates);						
 		}
 		else
 		{
@@ -662,7 +662,7 @@ class ProjectsGoogleHelper extends JObject
 					);
 					
 					// Recurse
-					ProjectsGoogleHelper::getFolders($apiService, $item['id'], &$remoteFolders, $fpath);
+					ProjectsGoogleHelper::getFolders($apiService, $item['id'], $remoteFolders, $fpath);
 				}
 			}	
 		}
@@ -779,7 +779,7 @@ class ProjectsGoogleHelper extends JObject
 					$md5Checksum = isset($item['md5Checksum']) ? $item['md5Checksum'] : NULL;
 					
 					/// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = ProjectsGoogleHelper::buildDuplicatePath($item['id'], $fpath, $item['mimeType'], $connections, &$remotes, &$duplicates);
+					$fpath = ProjectsGoogleHelper::buildDuplicatePath($item['id'], $fpath, $item['mimeType'], $connections, $remotes, $duplicates);
 					
 					// Detect a rename or move
 					$rename = '';
@@ -829,7 +829,7 @@ class ProjectsGoogleHelper extends JObject
 					{
 						// Recurse
 						$remotes = ProjectsGoogleHelper::getFolderContent($apiService, $item['id'], 
-							$remotes, $fpath, $since, $connections, &$duplicates);
+							$remotes, $fpath, $since, $connections, $duplicates);
 					}
 				}					
 			}

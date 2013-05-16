@@ -120,7 +120,7 @@ class ProjectsGitHelper extends JObject {
 	{
 		chdir($this->_prefix . $path);
         $date = exec($this->_gitpath 
-			. " rev-list  --header --max-count=1 HEAD | grep -a committer | cut -f5-6 -d' '", &$out);
+			. " rev-list  --header --max-count=1 HEAD | grep -a committer | cut -f5-6 -d' '");
 			
         return date("D n/j/y G:i", (int)$date);
 	}

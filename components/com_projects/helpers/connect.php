@@ -905,7 +905,7 @@ class ProjectsConnectHelper extends JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$newItemId = ProjectsGoogleHelper::insertFile ($apiService, $title, $data, $mimeType, $parentId, &$metadata, $convert);					
+			$newItemId = ProjectsGoogleHelper::insertFile ($apiService, $title, $data, $mimeType, $parentId, $metadata, $convert);					
 		}
 		
 		// Error!
@@ -1039,7 +1039,7 @@ class ProjectsConnectHelper extends JObject {
 			// There was a change in content, update			
 			if (!$success)
 			{
-				$success = ProjectsGoogleHelper::updateFile ($apiService, $remoteid, $title, $data, $mimeType, $parentId, &$metadata, $convert);					
+				$success = ProjectsGoogleHelper::updateFile ($apiService, $remoteid, $title, $data, $mimeType, $parentId, $metadata, $convert);					
 			}
 		}
 
@@ -1105,7 +1105,7 @@ class ProjectsConnectHelper extends JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = ProjectsGoogleHelper::patchFile ($apiService, $remoteid, $newTitle, '', &$metadata);					
+			$success = ProjectsGoogleHelper::patchFile ($apiService, $remoteid, $newTitle, '', $metadata);					
 		}
 		
 		if (!$success)
@@ -1166,7 +1166,7 @@ class ProjectsConnectHelper extends JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = ProjectsGoogleHelper::patchFile ($apiService, $remoteid, '', $parentId, &$metadata);					
+			$success = ProjectsGoogleHelper::patchFile ($apiService, $remoteid, '', $parentId, $metadata);					
 		}
 		
 		if (!$success)
@@ -1301,7 +1301,7 @@ class ProjectsConnectHelper extends JObject {
 			// Perform request
 			if ($service == 'google')
 			{
-				$newParentId = ProjectsGoogleHelper::createFolder ($apiService, $title, $parentId, &$metadata);					
+				$newParentId = ProjectsGoogleHelper::createFolder ($apiService, $title, $parentId, $metadata);					
 			}
 			
 			// Error!
@@ -1378,7 +1378,7 @@ class ProjectsConnectHelper extends JObject {
 			
 			$parentId = $this->createRemoteFolder( 
 				$projectid, $service, $uid, 
-				$title, $path,  $parentId, &$remoteFolders
+				$title, $path,  $parentId, $remoteFolders
 			);
 		}
 		
@@ -1693,7 +1693,7 @@ class ProjectsConnectHelper extends JObject {
 			// Get remote folder ID
 			$folderID = $this->getConfigParam($service, 'remote_dir_id');	
 			
-			$changeID = ProjectsGoogleHelper::collectChanges ($apiService, $folderID, &$remotes, &$deletes, $path, $startChangeId, $connections);			
+			$changeID = ProjectsGoogleHelper::collectChanges ($apiService, $folderID, $remotes, $deletes, $path, $startChangeId, $connections);			
 		}
 				
 		return $changeID;		
@@ -1754,7 +1754,7 @@ class ProjectsConnectHelper extends JObject {
 			
 			// Get files in main project remote directory
 			$remotes = ProjectsGoogleHelper::getFolderContent ($apiService, $folderID, 
-				$remotes, '', $since, $connections, &$duplicates);			
+				$remotes, '', $since, $connections, $duplicates);			
 		}
 		
 		return $remotes;
@@ -1810,7 +1810,7 @@ class ProjectsConnectHelper extends JObject {
 				return false;
 			}
 			
-			ProjectsGoogleHelper::getFolders ($apiService, $folderID, &$remoteFolders, $path);			
+			ProjectsGoogleHelper::getFolders ($apiService, $folderID, $remoteFolders, $path);			
 		}
 				
 		return true;		

@@ -1007,15 +1007,15 @@ class plgProjectsFiles extends JPlugin
 			if ($ext == 'tar' || $ext == 'gz')
 			{	
 				// Expand tar file
-				$z = $this->untar($tempFile, &$uploaded, &$updated, 
-					&$commitMsgZip, &$cSize, $path, $prefix, $subdir, 
+				$z = $this->untar($tempFile, $uploaded, $updated, 
+					$commitMsgZip, $cSize, $path, $prefix, $subdir, 
 					$unused, $fName );						
 			}
 			elseif ($ext == 'zip')
 			{					
 				// Expand zip using ZipArchiver
-				$z = $this->unzip($tempFile, &$uploaded, &$updated, 
-					&$commitMsgZip, &$cSize, $path, $prefix, $subdir, 
+				$z = $this->unzip($tempFile, $uploaded, $updated, 
+					$commitMsgZip, $cSize, $path, $prefix, $subdir, 
 					$unused, $fName );
 			}
 			// Commit expanded files
@@ -1060,7 +1060,7 @@ class plgProjectsFiles extends JPlugin
 					// Git add	
 					$new = in_array($fpath, $updated) ? false : true;
 					
-					$this->_git->gitAdd($path, $fpath, &$commitMsg, $new);
+					$this->_git->gitAdd($path, $fpath, $commitMsg, $new);
 					
 					if ($commitMsg)
 					{
@@ -1210,14 +1210,14 @@ class plgProjectsFiles extends JPlugin
 					if ($ext == 'tar' || $ext == 'gz')
 					{	
 						// Expand tar file
-						$z = $this->untar($tmp_name, &$uploaded, &$updated, 
-							&$commitMsgZip, &$cSize, $path, $prefix, $subdir, $unused, $file );						
+						$z = $this->untar($tmp_name, $uploaded, $updated, 
+							$commitMsgZip, $cSize, $path, $prefix, $subdir, $unused, $file );						
 					}
 					elseif ($ext == 'zip')
 					{					
 						// Expand zip using ZipArchiver
-						$z = $this->unzip($tmp_name, &$uploaded, &$updated, 
-							&$commitMsgZip, &$cSize, $path, $prefix, $subdir, $unused, $file );
+						$z = $this->unzip($tmp_name, $uploaded, $updated, 
+							$commitMsgZip, $cSize, $path, $prefix, $subdir, $unused, $file );
 					}
 					
 					// Commit expanded files
@@ -1520,7 +1520,7 @@ class plgProjectsFiles extends JPlugin
 						if ($this->_task != 'saveprov')
 						{
 							// Git add
-							$this->_git->gitAdd($path, $afile, &$commitMsgZip);	
+							$this->_git->gitAdd($path, $afile, $commitMsgZip);	
 						}
 						
 						$z++;																	
@@ -1671,7 +1671,7 @@ class plgProjectsFiles extends JPlugin
 						if ($this->_task != 'saveprov')
 						{
 							// Git add
-							$this->_git->gitAdd($path, $afile, &$commitMsgZip);	
+							$this->_git->gitAdd($path, $afile, $commitMsgZip);	
 						}
 						
 						$z++;																
@@ -1863,7 +1863,7 @@ class plgProjectsFiles extends JPlugin
 		else
 		{
 			$commitMsg = '';			
-			$deleted = $this->_git->gitDelete($path, $dir, 'folder', &$commitMsg);	
+			$deleted = $this->_git->gitDelete($path, $dir, 'folder', $commitMsg);	
 			$this->_git->gitCommit($path, $commitMsg);
 						
 			// If directory is still there (not in Git)			
@@ -2024,7 +2024,7 @@ class plgProjectsFiles extends JPlugin
 						$deleted[] = $item;	
 					}
 				}												
-				elseif ($this->_git->gitDelete($path, $item, $type, &$commitMsg))
+				elseif ($this->_git->gitDelete($path, $item, $type, $commitMsg))
 				{
 					$deleted[] = $item;
 				}				
@@ -2194,7 +2194,7 @@ class plgProjectsFiles extends JPlugin
 						$where = $newpath ? $newpath . DS . $item : $item;				
 					}
 																			
-					if ($this->_git->gitMove($path, $from, $where, $type, &$commitMsg))
+					if ($this->_git->gitMove($path, $from, $where, $type, $commitMsg))
 					{
 						$moved[] = $where;
 					}					
@@ -2830,23 +2830,23 @@ class plgProjectsFiles extends JPlugin
 			// Local file present?
 			if (file_exists( $this->prefix . $path . DS . $fpath))
 			{
-				$this->_git->sortLocalRevisions($fpath, $path, &$versions, &$timestamps);
+				$this->_git->sortLocalRevisions($fpath, $path, $versions, $timestamps);
 			}
 			if ($local_path && $local_path != $fpath)
 			{
-				$this->_git->sortLocalRevisions($local_path, $path, &$versions, &$timestamps, 1);
+				$this->_git->sortLocalRevisions($local_path, $path, $versions, $timestamps, 1);
 			}
 			
 			// Get remote revision history
 			if ($remote && $remote['converted'] == 1)
 			{
 				$this->_connect->sortRemoteRevisions($remote['id'], $remote['converted'], $remote['author'],
-					$this->_uid, $service, $file, &$versions, &$timestamps);		
+					$this->_uid, $service, $file, $versions, $timestamps);		
 			}
 			elseif ($remote && $remote['original_id'])
 			{
 				$this->_connect->sortRemoteRevisions($remote['original_id'], 0, '', $this->_uid, $service, 
-					$file, &$versions, &$timestamps, 1);
+					$file, $versions, $timestamps, 1);
 			}
 									
 			// Sort by time, most recent first	
@@ -3010,7 +3010,7 @@ class plgProjectsFiles extends JPlugin
 		{							
 			$commitMsg = '';
 			$type = $rename == 'dir' ? 'folder' : 'file';
-			$this->_git->gitMove($path, $oldpath, $newpath, $type, &$commitMsg);
+			$this->_git->gitMove($path, $oldpath, $newpath, $type, $commitMsg);
 			$this->_git->gitCommit($path, $commitMsg);
 						
 			// Output message
@@ -4234,7 +4234,7 @@ class plgProjectsFiles extends JPlugin
 		$connections = $objRFile->getRemoteConnections($this->_project->id, $service);
 				
 		// Get remote folder structure (to find out remote ids)
-		$this->_connect->getFolderStructure($service, $projectCreator, &$remoteFolders);
+		$this->_connect->getFolderStructure($service, $projectCreator, $remoteFolders);
 				
 		// Record sync status
 		$this->_writeToFile( JText::_('Collecting local changes') );
@@ -4243,7 +4243,7 @@ class plgProjectsFiles extends JPlugin
 		$localRenames 	= array();
 		
 		// Get all local changes since last sync
-		$locals = $this->_git->getChanges($path, $localPath, $synced, $localDir, &$localRenames, $connections );
+		$locals = $this->_git->getChanges($path, $localPath, $synced, $localDir, $localRenames, $connections );
 											
 		// Record sync status
 		$this->_writeToFile( JText::_('Collecting remote changes') );
@@ -4255,7 +4255,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			// Via Changes feed
 			$newSyncId = $this->_connect->getChangedItems($service, $projectCreator, 
-				$lastSyncId, &$remotes, &$deletes, $connections);
+				$lastSyncId, $remotes, $deletes, $connections);
 		}
 		else
 		{
@@ -4474,7 +4474,7 @@ class plgProjectsFiles extends JPlugin
 						else
 						{
 							// Item in directory? Make sure we have correct remote dir structure in place
-							$parentId = $this->_connect->prepRemoteParent($this->_project->id, $service, $projectCreator, $local, &$remoteFolders);
+							$parentId = $this->_connect->prepRemoteParent($this->_project->id, $service, $projectCreator, $local, $remoteFolders);
 
 							// Add/update operation
 							if ($local['remoteid'])
@@ -4495,7 +4495,7 @@ class plgProjectsFiles extends JPlugin
 									// Create remote folder
 									$created = $this->_connect->createRemoteFolder( 
 										$this->_project->id, $service, $projectCreator, 
-										basename($filename), $filename,  $parentId, &$remoteFolders
+										basename($filename), $filename,  $parentId, $remoteFolders
 									);
 
 									$output .= '++ created remote folder: '. $filename . "\n";
@@ -4533,7 +4533,7 @@ class plgProjectsFiles extends JPlugin
 		if (!empty($locals))
 		{
 			$newSyncId = $this->_connect->getChangedItems($service, $projectCreator, 
-				$newSyncId, &$newRemotes, &$deletes, $connections);			
+				$newSyncId, $newRemotes, $deletes, $connections);			
 		}
 		
 		// Get very last received remote change
@@ -4644,7 +4644,7 @@ class plgProjectsFiles extends JPlugin
 					if (file_exists($this->prefix . $path . DS . $filename))
 					{
 						// Delete in Git
-						$deleted = $this->_git->gitDelete($path, $filename, $remote['type'], &$commitMsg);				
+						$deleted = $this->_git->gitDelete($path, $filename, $remote['type'], $commitMsg);				
 						if ($deleted)
 						{
 							$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
@@ -4683,7 +4683,7 @@ class plgProjectsFiles extends JPlugin
 					{
 						$output .= '>> rename from: '. $remote['rename'] . ' to ' . $filename . "\n";
 						
-						if ($this->_git->gitMove($path, $remote['rename'], $filename, $remote['type'], &$commitMsg))
+						if ($this->_git->gitMove($path, $remote['rename'], $filename, $remote['type'], $commitMsg))
 						{
 							$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 							$output .= '>> renamed/moved item locally: '. $filename . "\n";
@@ -4732,7 +4732,7 @@ class plgProjectsFiles extends JPlugin
 								if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->prefix . $path ))
 								{
 									// Git add & commit
-									$this->_git->gitAdd($path, $filename, &$commitMsg);
+									$this->_git->gitAdd($path, $filename, $commitMsg);
 									$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 									
 									$output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
@@ -4781,7 +4781,7 @@ class plgProjectsFiles extends JPlugin
 							if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->prefix . $path ))
 							{
 								// Git add & commit
-								$this->_git->gitAdd($path, $filename, &$commitMsg);
+								$this->_git->gitAdd($path, $filename, $commitMsg);
 								$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 								
 								$output .= '++ added new file to local: '. $filename . "\n";
