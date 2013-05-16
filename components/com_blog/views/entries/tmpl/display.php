@@ -71,8 +71,8 @@ $first = $this->model->entries('first');
 				<h4><?php echo JText::_('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
 				<?php 
-			if ($this->firstentry) {
-				$start = intval(substr($this->firstentry, 0, 4));
+			if ($first->exists()) {
+				$start = intval(substr($first->get('publish_up'), 0, 4));
 				$now = date("Y");
 				for ($i=$now, $n=$start; $i >= $n; $i--)
 				{
