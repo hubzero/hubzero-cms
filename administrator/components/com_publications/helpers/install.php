@@ -77,6 +77,29 @@ class PubInstall extends JObject {
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
+	
+	/**
+	 * Install project logs
+	 * 
+	 * @return     void
+	 */	
+	public function installLogs( ) 
+	{
+		$query = "CREATE TABLE `jos_publication_logs` (
+		   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`publication_id` int(11) NOT NULL,
+			`publication_version_id` int(11) NOT NULL,
+		    `month` int(2) NOT NULL,
+		    `year` int(2) NOT NULL,
+		    `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+		    `page_views` int(11) DEFAULT '0',
+		    `primary_accesses` int(11) DEFAULT '0',
+		    `support_accesses` int(11) DEFAULT '0',
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
+		
+		$this->runQuery($query);
+	}
 		
 	/**
 	 * Install publishing

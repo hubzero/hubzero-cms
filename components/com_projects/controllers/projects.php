@@ -90,7 +90,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$this->_checkTables();
 		}
-										
+		
+		// Is component on?
+		if (!$this->_config->get( 'component_on', 1 ))
+		{
+			$this->_redirect = '/';
+			return;
+		}
+												
 		// Incoming
 		$this->_task 		= strtolower(JRequest::getVar( 'task', '' ));
 		$this->_gid   		= JRequest::getVar( 'gid', 0 );

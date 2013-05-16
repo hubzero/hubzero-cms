@@ -368,7 +368,7 @@ HUB.ProjectFiles = {
 			    } 
 				catch (e) 
 				{
-			        alert(response);
+			        //alert(response);
 					return;
 			    }
 			}

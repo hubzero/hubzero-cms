@@ -3331,6 +3331,9 @@ class plgProjectsPublications extends JPlugin
 		$selections = JRequest::getVar( 'selections', '');
 		$selections = $this->_parseSelections($selections);
 		
+		// Allowed choices
+		$options = array('download', 'tardownload', 'inlineview');
+		
 		// Check if selections are the same as in another publication
 		$used = $objPA->checkUsed($base, $selections, $this->_project->id, $pid);
 		$duplicateVersion = NULL;		
@@ -3382,22 +3385,20 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		if ($base == 'files')
-		{
-			// File types we can serve up differently
-			$images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
-			$files = array('pdf', 'doc', 'docx', 
-				'xls', 'xlsx', 'ppt', 
-				'pptx', 'pages', 'ai', 
-				'psd', 'tiff', 'dxf', 
-				'eps', 'ps', 'ttf', 
-				'xps', 'zip', 
-				'rar', 'svg'
+		{			
+			// Formats that can be previewed via Google viewer
+			$docs 	= array('pdf', 'doc', 'docx', 'xls', 'xlsx', 
+				'ppt', 'pptx', 'pages', 'ai', 
+				'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg'
 			);
+			
 			$html5video = array('mp4','m4v','webm','ogv'); // formats for HTML5 video
-			$options = array('download', 'tardownload', 'inlineview'); // allowed choices
 
 			// Required
 			ximport('Hubzero_Content_Mimetypes');
+			
+			// Allow viwing files via Google Doc viewer?
+			$googleView	= $this->_params->get('googleview');
 
 			// Determine how to serve content
 			$serveas = 'download';
@@ -3423,18 +3424,29 @@ class plgProjectsPublications extends JPlugin
 					if ($count == 1) 
 					{
 						$ext = strtolower(array_pop(explode('.', basename($selections['files'][0]))));
-						if (in_array('video', $mimetypes)) 
+						
+						// Some files can be viewed inline
+						if (in_array('video', $mimetypes) 
+							|| in_array('audio', $mimetypes) 
+							|| in_array('image', $mimetypes)) 
 						{
-							$serveas = 'inlineview';
+							$serveas = $original_serveas ? $original_serveas : 'inlineview';
+							
+							// Offer choice
+							$choices[] = 'inlineview';
+							$choices[] = 'download';
+						}
+						elseif ($googleView && in_array(strtolower($ext), $docs))
+						{
+							$serveas = $original_serveas ? $original_serveas : 'download';
+							
+							// Offer choice
+							$choices[] = 'download';
+							$choices[] = 'inlineview';
 						}
 						else 
 						{
 							$serveas = 'download';
-							if (in_array($ext, $files)) 
-							{
-								$choices[] = 'download';
-								$choices[] = 'inlineview';
-							}
 						}
 					}
 					else 

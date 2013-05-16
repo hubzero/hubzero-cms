@@ -124,5 +124,10 @@
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="documentation" type="text" menu="hide" default="/kb/publications" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
 		<param name="deposit_terms" type="text" menu="hide" default="/legal/termsofdeposit" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</param>
 	</params>
 </config>

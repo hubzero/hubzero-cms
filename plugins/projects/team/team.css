@@ -16,7 +16,7 @@
 */
 
 	.add-team {
-		margin: 2.5em 0;
+		margin: 2em 0;
 	}
 	#edit-project-content .list-editing {
 		margin: 1em 0;
@@ -31,20 +31,43 @@
 	#hubForm .add-team label {
 		float: left;
 		display: block;
-		width: 200px !important;
+		width: 180px !important;
 	}
 	#hubForm .add-team li {
 		white-space: normal;
 	}
+	.or_separator {
+		float: left;
+		font-style: italic;
+		font-size: 85%;
+		padding: 0;
+		margin: 1em 1em;
+	}
+	#setup .or_separator {
+		margin: 2em 1em;
+	}
+	#team-save {
+		position: absolute;
+	}
+	#setup #team-save {
+		margin-top: 2em !important;
+	}
 	#setup .combine_options label  {
 		padding-right: 0;
 		margin-right: -1em;
+	}
+	#t-delete.inactive {
+		background: #E2E2E2;
+	}
+	#t-delete {
+		background: #FFFFFF;
 	}
 	#team-spacer {
 		position: relative;
 		float: left;
 		width: 100%;
 		display: block;
+		margin-top: 1em;
 	}
 	.userinvited {
 		line-height: 1em;
@@ -89,6 +112,9 @@
 	}
 	.frole {
 		border-bottom: 1px dotted #CCC;
+	}
+	#abox-content p.anote {
+		margin-top: 1em;
 	}
 	
 /* Publication authors listing

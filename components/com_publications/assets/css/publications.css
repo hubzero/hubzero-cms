@@ -537,6 +537,41 @@
 	.tabbed .supportingdocs .caption {
 		float: right;
 		}
+/* Inline view */
+	#abox-content {
+		padding: 0;
+		margin: 0;
+		background: #FFFFFF;
+		text-align: center;
+		vertical-align: middle;
+		display: block;
+		min-height: 440px;
+		max-width: 800px;
+	}
+	#abox-content img {
+		max-width: 100%;
+		max-height: 440px;
+	}
+	div.sample {
+		list-style: none;
+		padding: 0.3em 1em;
+		margin: 0 0 1em 0;
+		background: #fdfff6;
+		border: 1px solid #f0f3e5;
+		text-align: left;
+	}
+	div.sample p {
+		vertical-align: middle;
+		padding: 0;
+		margin: 0;
+	}
+	.com_publications #abox-content {
+		text-align: center;
+	}
+	.tabbed #abox-content div.sample {
+		/* display: none; */
+		margin-top: 2em;
+	}
 
 /* Tabbed view containers */
 	.com_publications .upperpane {
@@ -1097,6 +1132,9 @@
 		}
 	.custom, .standard { 
 		background: url("../img/logos/license.gif") -0.5em 0.5em no-repeat;
+		}
+	.gpl { 
+		background: url("../img/logos/gnu.gif") -0.5em 0.5em no-repeat;
 		}
 	
 /* Misc */

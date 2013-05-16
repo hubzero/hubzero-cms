@@ -163,7 +163,7 @@ class ProjectsGitHelper extends JObject {
 	 *
 	 * @return     string
 	 */
-	public function showTextContent($fpath = '')
+	public function showTextContent($fpath = '', $max = 100)
 	{		
 		if (!$fpath)
 		{
@@ -178,7 +178,13 @@ class ProjectsGitHelper extends JObject {
 		// Reformat text content
 		if (count($out) > 0) 
 		{
-			$content = $this->filterASCII($out);			
+			// Cut number of lines
+			if (count($out) > $max)
+			{
+				$out = array_slice($out, 0, $max);
+			}
+			
+			$content = ProjectsGitHelper::filterASCII($out, false, false, $max);			
 		}
 		
 		return $content;
@@ -585,7 +591,7 @@ class ProjectsGitHelper extends JObject {
 		// Initial sync
 		if ($synced == 1)
 		{
-			$files = $this->callGit( $path, 'ls-files --exclude-standard --full-name ' . escapeshellarg($localDir));
+			$files = $this->callGit( $path, 'ls-files --full-name ' . escapeshellarg($localDir));
 			$files = $files && substr($files[0], 0, 5) == 'fatal' ? array() : $files;
 			
 			if (empty($files))
@@ -648,8 +654,7 @@ class ProjectsGitHelper extends JObject {
 				foreach ($changes as $hash) 
 				{															
 					// Get time and author of commit
-					$date = $this->gitLog($path, '', $hash, 'date');
-					$time = strtotime($date);				
+					$time   = $this->gitLog($path, '', $hash, 'timestamp');			
 					$author = $this->gitLog($path, '', $hash, 'author');
 
 					// Get filename and change
@@ -1013,19 +1018,20 @@ class ProjectsGitHelper extends JObject {
 	 *
 	 * @return     string
 	 */
-	public function filterASCII($out =  array(), $diff = false, $color = false, $max = 200) 
+	public function filterASCII($out = array(), $diff = false, $color = false, $max = 200) 
 	{		
 		$text = '';
 		$o = 1;
 		$found = 0;
 		
-		foreach ($out as $line) 
+		// Cut number of lines
+		if (count($out) > $max)
 		{
-			if ($o == $max)
-			{
-				break;
-			}
-			
+			$out = array_slice($out, 0, $max);
+		}
+		
+		foreach ($out as $line) 
+		{			
 			$encoding = mb_detect_encoding($line);
 			
 			if ($encoding != "ASCII") 
@@ -1075,6 +1081,7 @@ class ProjectsGitHelper extends JObject {
 				
 				$text.=  $line != '' ? $line . "\n" : "\n";
 			}
+			
 			$o++;
 		}
 

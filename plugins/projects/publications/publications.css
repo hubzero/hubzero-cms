@@ -204,6 +204,17 @@
 		color: black;
 		font-weight: bold;
 	}
+	.proceedto {
+		padding-left: 0.5em;
+	}
+	.proceedto:before {
+		width: 8px;
+		height: 10px;
+		font-size: 10px;
+		font-family: 'Fontcons';
+		color: #c4d2d6;
+		content: "\25B6";
+	}
 
 /* Status color 
 --------------------------------------------- */

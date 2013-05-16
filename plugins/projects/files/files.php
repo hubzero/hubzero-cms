@@ -4343,12 +4343,12 @@ class plgProjectsFiles extends JPlugin
 				// Record sync status
 				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
 				
-				$output .= 'Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . "\n";
+				$output .= ' * Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
 				
 				// Skip renamed files (local renames are handled later)
 				if (in_array($filename, $localRenames) && !file_exists($local['fullPath']))
 				{
-					$output .= 'skipped rename from '. $filename . "\n";
+					$output .= '## skipped rename from '. $filename . "\n";
 					continue;
 				}
 				
@@ -4357,6 +4357,15 @@ class plgProjectsFiles extends JPlugin
 					&& isset($remotes[$filename]) 
 					&& $local['type'] == $remotes[$filename]['type'] 
 					? $remotes[$filename] : NULL;
+					
+				// Check against individual item sync time (to avoid repeat sync)
+				if ($local['synced'] && ($local['synced']  > $local['modified']))
+				{
+					$output .= '## item in sync: '. $filename . ' local: ' 
+						. $local['modified'] . ' synced: ' . $local['synced'] . "\n";
+					$processedLocal[$filename] = $local;
+					continue;	
+				}
 												
 				// Item renamed
 				if ($local['status'] == 'R')
@@ -4369,7 +4378,7 @@ class plgProjectsFiles extends JPlugin
 							$local['remoteid'], $local,  $local['rParent']
 						);
 						
-						$output .= 'renamed ' . $local['rename'] . ' to ' . $filename . "\n";
+						$output .= '>> renamed ' . $local['rename'] . ' to ' . $filename . "\n";
 						$processedLocal[$filename] = $local;
 						
 						if ($local['type'] == 'folder')
@@ -4396,7 +4405,7 @@ class plgProjectsFiles extends JPlugin
 								$local['remoteid'], $local,  $parentId
 							);	
 							
-							$output .= 'moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id ' 
+							$output .= '>> moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id ' 
 								. $parentId . ')' . "\n";
 							$processedLocal[$filename] = $local;
 							
@@ -4414,7 +4423,7 @@ class plgProjectsFiles extends JPlugin
 				if ($match)
 				{					
 					// skip - remote change prevails
-					$output .= 'remote match: '. $filename . "\n";
+					$output .= '== local and remote change match (choosing remote over local): '. $filename . "\n";
 					$conflicts[$filename] = $local['remoteid'];
 				}
 				elseif (!$match)
@@ -4460,7 +4469,7 @@ class plgProjectsFiles extends JPlugin
 						// Not updating converted files via sync
 						if ($local['converted'] == 1)
 						{
-							$output .= '## skipped converted locally changed file: '. $filename . "\n";
+							$output .= '## skipped locally changed converted file: '. $filename . "\n";
 						}
 						else
 						{
@@ -4580,7 +4589,7 @@ class plgProjectsFiles extends JPlugin
 				// Record sync status
 				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
 				
-				$output .= 'Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'] . "\n";
+				$output .= ' * Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'] . "\n";
 				
 				// Do we have a matching local change?
 				$match = !empty($locals) 
@@ -4672,7 +4681,7 @@ class plgProjectsFiles extends JPlugin
 					// Rename/move in Git	
 					if (file_exists($this->prefix . $path . DS . $remote['rename']))
 					{
-						$output .= 'rename from: '. $remote['rename'] . ' to ' . $filename . "\n";
+						$output .= '>> rename from: '. $remote['rename'] . ' to ' . $filename . "\n";
 						
 						if ($this->_git->gitMove($path, $remote['rename'], $filename, $remote['type'], &$commitMsg))
 						{
@@ -4726,6 +4735,7 @@ class plgProjectsFiles extends JPlugin
 									$this->_git->gitAdd($path, $filename, &$commitMsg);
 									$this->_git->gitCommit($path, $commitMsg, $author, $cDate);
 									
+									$output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
 									$output .= '++ sent update from remote to local: '. $filename . "\n";
 									$updated = 1;
 								}
@@ -4837,7 +4847,7 @@ class plgProjectsFiles extends JPlugin
 			
 			// Save change id for next sync
 			$obj->saveParam($this->_project->id, $service . '_sync_id', ($nextSyncId));
-			$output .= 'Next sync ID: ' . ($newSyncId + 1) . "\n";
+			$output .= 'Next sync ID: ' . $newSyncId . "\n";
 			
 			$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);			
 		}

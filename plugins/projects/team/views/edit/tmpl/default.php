@@ -82,7 +82,7 @@ $dispatcher =& JDispatcher::getInstance();
 				<input type="text" name="newmember" id="newmember" value="" size="35" />
 			<?php } ?>
 	</label>
-	<span class="and_or leftfloat"><?php echo strtoupper(JText::_('COM_PROJECTS_AND')); ?> / <?php echo strtoupper(JText::_('COM_PROJECTS_OR')); ?></span>
+	<span class="or_separator"><?php echo strtoupper(JText::_('COM_PROJECTS_OR')); ?></span>
 	<label id="add-groups">
 		 <span class="instr i_group"><?php echo JText::_('COM_PROJECTS_ADD_GROUP_OF_USERS'); ?>:</span>
 		<?php 
@@ -93,7 +93,7 @@ $dispatcher =& JDispatcher::getInstance();
 				<input type="text" name="newgroup" id="newgroup" value="" size="35" maxlength="200" />
 			<?php } ?>
 	</label>
-	 <input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" />
+	 <input type="submit" id="team-save" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" />
 </div>
 <div id="team-spacer">
 	<?php if ($this->project->owned_by_group) { ?>

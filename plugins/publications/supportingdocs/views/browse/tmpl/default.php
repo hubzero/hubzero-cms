@@ -46,13 +46,29 @@ if($this->docs) {
 		$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
 		
 		$params = new JParameter( $child->params );
-		
+				
 		switch ( $child->type ) 
 		{
 			case 'file': 
-			default:				
-				$default_type = 'download'; 		
+			default:
+			
+				ximport('Hubzero_Content_Mimetypes');
+				$mt = new Hubzero_Content_Mimetypes();
+				
+				$mimetype 	= $mt->getMimeType($child->path);
+				$type 		= strtolower(array_shift(explode('/', $mimetype)));
+				
+				// Some files can be viewed inline
+				if ($type == 'image' || $type == 'video' || $type == 'audio') 
+				{
+					$default_type = 'inlineview';
+				}
+				else
+				{
+					$default_type = 'download'; 
+				}										
 				break;
+				
 			case 'link': 				
 				$default_type = 'external'; 		
 				break;
@@ -72,26 +88,30 @@ if($this->docs) {
 		? '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" /> ' 
 		: '<span class="'.$child->type.'"></span> ';
 		
+		$url = JRoute::_('index.php?option=com_publications&id=' 
+			 . $this->publication->id . '&task=serve') . '?a='
+			 . $child->id . a . 'v=' . $this->version;
+			
+		$extra = '';
+		
 		switch ( $serveas ) 
 		{
 			case 'download': 
 			default:				
-				$url = JRoute::_('index.php?option=com_publications&id=' 
-					 . $this->publication->id . '&task=download') . '?a='
-					 . $child->id . a . 'v=' . $this->version;		
 				break;
-			case 'external': 				
-				$url = $child->path;		
+			case 'external':
+				$extra = ' rel="external"'; 						
 				break;
 			case 'inlineview': 				
-				$url = $child->path;		
+				$extra = ' class="play"';
+				$url  .= a . 'render=inline';		
 				break;
 		}
 		
 		$title = $params->get('title', $child->title);
 		$title = $title ? $title : basename($child->path);
 				
-		$dls .= "\t".'<li><a href="'.$url.'">'.$icon.$title.'</a> ';
+		$dls .= "\t".'<li><a href="'.$url.'"' . $extra .'>'.$icon.$title.'</a> ';
 		$dls .= $ext ? ' <span class="ext">('.strtoupper($ext) : '';
 		$dls .= $size ? ' | '.$size : '';
 		$dls .= $ext ? ')</span>' : '';

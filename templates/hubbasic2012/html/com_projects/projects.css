@@ -139,6 +139,17 @@
 	#setup {
 		min-height: 300px;
 	}
+	#setup .or_separator {
+		margin: 2em -1em;
+	}
+	#setup #team-save {
+		margin-left: 0.5em !important;
+	}
 
 /* Introduction */
-
+	body #introduction div#introbody {
+		background: url("images/intro.png") top right no-repeat !important;
+	}
+	body #introduction {
+		padding: 0 0 0 140px;
+	}

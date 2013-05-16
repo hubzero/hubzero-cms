@@ -786,7 +786,7 @@ class PublicationsHtml
 		//$publication->base == 'databases' && 
 		if (file_exists($archive) && $publication->base == 'databases')
 		{
-			$url = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=download').'?v=' . $version . '&amp;get=archive';
+			$url = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve').'?v=' . $version . '&amp;render=archive';
 			$supli[] = ' <li class="archival-package"><a href="'.$url.'" title="'. JText::_('COM_PUBLICATIONS_DOWNLOAD_ARCHIVE_PACKAGE') .'">' . JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE') . '</a></li>'."\n";
 			$docs++;
 		}
@@ -821,22 +821,26 @@ class PublicationsHtml
 				// Things we want to highlight
 				$toShow = array('iTunes', 'iTunes U', 'Syllabus', 'Audio', 'Video', 'Slides');
 
+				$url   = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve').'?a='.$child->id;
+				$extra = '';
+				
 				switch ( $serveas ) 
 				{
 					case 'download': 
 					default:				
-						$url = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=download').'?a='.$child->id;		
 						break;
-					case 'external': 				
-						$url = $child->path;		
+					case 'external':
+						$extra = ' rel="external"'; 						
 						break;
 					case 'inlineview': 				
-						$url = $child->path;		
+						$class = 'play';
+						$url  .= a . 'render=inline';		
 						break;
-				}
+				}	
+				
 				if (in_array($doctitle, $toShow)) 
 				{
-					$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'">'.$doctitle.'</a></li>'."\n";				
+					$supli[] = ' <li><a class="'.$class.'" href="'.$url.'" title="'.$child->title.'"' . $extra . '>'.$doctitle.'</a></li>'."\n";				
 				}
 			}
 		}	
@@ -1132,13 +1136,17 @@ class PublicationsHtml
 	public function drawPrimaryButton( $option, $publication, $version, 
 	$content, $path, $serveas = 'download', $restricted = 0, $authorized = 0 )
 	{
-		$url  	= JRoute::_('index.php?option=com_publications&id='.$publication->id.'&v='.$publication->version_number.'&task=download');
-		$action = '';
-		$xtra 	= '';
-		$title  = '';
-		$pop    = '';
-		$class  = '';
-		$disabled = 0;
+		
+		$task 		= 'serve';		
+		$url  		= JRoute::_('index.php?option=com_publications&id=' 
+					. $publication->id . '&v=' . $publication->version_number . '&task=' . $task);
+		$action 	= '';
+		$xtra 		= '';
+		$title  	= 'Access publication';
+		$pop    	= '';
+		$class  	= '';
+		$disabled 	= 0;
+		$msg		= 'Access Publication';
 		
 		// Is content available?
 		if ($publication->state == 0) 
@@ -1158,48 +1166,40 @@ class PublicationsHtml
 		elseif ($content['primary'][0]->type == 'file' ) 
 		{
 			$fpath = $content['primary'][0]->path;
-			if (!$fpath || !file_exists(JPATH_ROOT.$path.DS.$fpath)) {
+			if (!$fpath || !file_exists(JPATH_ROOT . $path . DS . $fpath)) 
+			{
 				return '<p class="error statusmsg">'.JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
 			}
 		}
 		
-		// How do we present content?
+		$primary = $content['primary'][0];
 		switch ($serveas)
 		{
 			case 'download':
+			case 'tardownload':
 			default:
 				$msg   = JText::_('COM_PUBLICATIONS_DOWNLOAD_PUBLICATION');
-				$url  .= '&a='.$content['primary'][0]->id;
-				$title = $content['primary'][0]->title;
-				$xtra  = strtoupper(PublicationsHtml::getFileExtension($content['primary'][0]->path));
+				$xtra  = count($content['primary']) == 1 ? strtoupper(PublicationsHtml::getFileExtension($content['primary'][0]->path)) : NULL;
+				$extra = (count($content['primary']) > 1 || $serveas == 'tardownload') ? 'ZIP' : NULL;				
 				break;
-			case 'tardownload':
-				$msg   = JText::_('COM_PUBLICATIONS_DOWNLOAD_PUBLICATION');
-				$xtra  = 'ZIP';
-				break;
+
 			case 'video':
-			case 'inlineview':
-				$msg   = JText::_('COM_PUBLICATIONS_ACTION_VIEW').' '.JText::_('COM_PUBLICATIONS_PUBLICATION');
-				if (!$disabled) {
+			case 'inlineview':	
+			
+				$msg   = JText::_('COM_PUBLICATIONS_VIEW_PUBLICATION');
+				$url .= $serveas == 'video' ? a . 'render=video' : '';
+				
+				if (!$disabled) 
+				{
 					$class = 'play';
 				}
-				$url   = JRoute::_('index.php?option=com_publications&id='.$publication->id.'&v='.$publication->version_number.'&task=play');
 				break;
-			case 'multiformat':
-				// TBD
-				break;
-			case 'toolsession':
-				// TBD
-				break;
-			case 'article':
-				// TBD
-				break;
+				
 			case 'external':
-				$msg   = JText::_('COM_PUBLICATIONS_ACTION_VIEW').' '.JText::_('COM_PUBLICATIONS_PUBLICATION');
-				$url   = $content['primary'][0]->path;
 				$action = 'rel="external"';
 				break;
 		}
+		
 		
 		$title = $title ? $title : $msg;
 		$pop   = $pop ? Hubzero_View_Helper_Html::warning($pop) : '';

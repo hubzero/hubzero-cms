@@ -97,6 +97,8 @@
 	}
 	#hubForm .explaination {
 		padding-top: 0;
+		width: 180px;
+		margin-left: 0;
 	}
 	#hubForm .explaination  h4 {
 		margin-top: 1.5em;
@@ -154,9 +156,6 @@
 	#hubForm label.terms-label {
 		margin: 0;
 		padding-top: 0.8em;
-	}
-	textarea {
-		font-size: 1em;
 	}
 
 /* Standard Submit Buttons 
@@ -1077,6 +1076,7 @@
 	.info_blurb .pinfo .second  {
 		width: 35%;
 		padding-top: 0.5em;
+		padding-left: 1em;
 	}
 	p.info_title {
 		font-weight: bold;
@@ -3126,7 +3126,7 @@
 			display: none;
 			margin: 0;
 		}
-	}	
+	}
 	
 /* Plugin header
 --------------------------------------------- */

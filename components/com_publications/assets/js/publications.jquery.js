@@ -31,7 +31,7 @@ HUB.Publications = {
 		
 		$('a.play').fancybox({
 			type: 'ajax',
-			width: 750,
+			width: 800,
 			height: 500,
 			autoSize: false,
 			fitToView: false,

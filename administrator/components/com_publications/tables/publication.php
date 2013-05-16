@@ -720,7 +720,7 @@ class Publication extends JTable
 				$d++;
 			}
 
-			return number_format($c/$d,0);
+			return $d ? number_format($c/$d,0) : 0;
 		}		
 	}
 }

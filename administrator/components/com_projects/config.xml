@@ -20,6 +20,11 @@
 
 <config>
 	<params>
+		<param name="component_on" type="list" default="1" label="Component ON/OFF" description="Enable projects component">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="grantinfo" type="list" default="0" label="Collect grant info at setup?" description="Ask project creator for grant information, e.g. [NSF] grant id, title, PI">
 			<option value="0">NO</option>
 			<option value="1">YES</option>

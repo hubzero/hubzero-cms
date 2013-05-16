@@ -2010,25 +2010,29 @@ class ProjectsConnectHelper extends JObject {
 		$imagepath = trim($config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($alias) . DS . 'preview';
 		
-		if (!is_file(JPATH_ROOT. $to_path . DS . $thumb)) 
+		if (is_dir($to_path) && !is_file(JPATH_ROOT. $to_path . DS . $thumb)) 
 		{			
 			// Get thumnail
 			$fc = $this->sendHttpRequest($service, $uid, $remote['thumb']);
 			
 			if ($fc)
 			{
-				$handle = fopen(JPATH_ROOT . $to_path . DS . $thumb, 'w');
-				fwrite($handle, $fc);
-				fclose($handle);
-			}
-			
-			// Resize the image if necessary
-			$ih->set('image',$thumb);
-			$ih->set('overwrite',true);
-			$ih->set('path',JPATH_ROOT. $to_path . DS);
-			$ih->set('maxWidth', 180);
-			$ih->set('maxHeight', 180);
-			$ih->process();							
+				$handle = @fopen(JPATH_ROOT . $to_path . DS . $thumb, 'w');
+				
+				if ($handle)
+				{
+					fwrite($handle, $fc);
+					fclose($handle);
+
+					// Resize the image if necessary
+					$ih->set('image',$thumb);
+					$ih->set('overwrite',true);
+					$ih->set('path',JPATH_ROOT. $to_path . DS);
+					$ih->set('maxWidth', 180);
+					$ih->set('maxHeight', 180);
+					$ih->process();
+				}			
+			}					
 		}			
 	}
 	
