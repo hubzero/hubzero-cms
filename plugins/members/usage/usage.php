@@ -135,18 +135,14 @@ class plgMembersUsage extends JPlugin
 			$view->cluster_users = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
 			
-			$sql = "SELECT res.id, res.title, DATE_FORMAT(res.publish_up, '%d %b %Y') AS publish_up, restypes.type 
-					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
-					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type = 7 AND res.access != 4 AND aa.subtable = 'resources' AND aa.role = '' AND res.standalone = 1 ORDER BY res.publish_up DESC";
+			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type FROM #__resources AS r LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.$member->get("uidNumber").'") AND (r.access=0 OR r.access=3) ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
 			$view->tool_stats = $database->loadObjectList();
 			$view->tool_total_12 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 12);
 			$view->tool_total_14 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 14);
 
-			$sql = "SELECT res.id, res.title, DATE_FORMAT(res.publish_up, '%d %b %Y') AS publish_up, restypes.type 
-					FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
-					WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = '".$member->get('uidNumber')."' AND res.published = 1 AND res.access != 1 AND res.type <> 7 AND res.access != 4 AND aa.subtable = 'resources' AND aa.role = '' AND res.standalone = 1 ORDER BY res.publish_up DESC";
+			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type FROM #__resources AS r LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.$member->get("uidNumber").'") AND (r.access=0 OR r.access=3) ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
 			$view->andmore_stats = $database->loadObjectList();
@@ -199,10 +195,7 @@ class plgMembersUsage extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 
-		$sql = 'SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), "%d %b %Y") AS first_contrib, DATE_FORMAT(MAX(res.publish_up), "%d %b %Y") AS last_contrib 
-				FROM #__resources res, #__author_assoc aa, #__resource_types restypes 
-				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = "' . $authorid . '" AND res.published = 1 AND res.access != 1 AND res.access != 4 
-				AND aa.subtable = "resources" AND res.standalone = 1 AND aa.role = ""';
+		$sql = 'SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), "%d %b %Y") AS first_contrib, DATE_FORMAT(MAX(res.publish_up), "%d %b %Y") AS last_contrib FROM #__resources AS res, #__author_assoc AS aa, #__resource_types AS restypes WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = "' . $authorid . '" AND res.standalone = 1 AND res.published = 1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources"';
 
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
@@ -270,7 +263,7 @@ class plgMembersUsage extends JPlugin
 		}
 
 		$data = '-';
-		$sql = "SELECT MAX(datetime), users FROM " . $table . " WHERE resid = '" . $resid . "' AND period = '" . $period . "' GROUP BY datetime ORDER BY datetime DESC LIMIT 1";
+		$sql = 'SELECT MAX(datetime), users FROM ' . $table . ' WHERE resid = "' . $resid . '" AND period = "' . $period . '" GROUP BY datetime ORDER BY datetime DESC LIMIT 1';
 
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
@@ -341,14 +334,14 @@ class plgMembersUsage extends JPlugin
 		{
 			$sql = 'SELECT COUNT(DISTINCT (c.id)) 
 			FROM #__citations c, #__citations_assoc ca, #__author_assoc aa, #__resources r 
-					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.tbl = "resource" AND r.published = "1" 
-					AND r.standalone = "1" AND aa.authorid = "' . $authorid . '" AND aa.role = ""';
+					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.tbl = "resource" AND r.published=1 
+					AND r.standalone=1 AND aa.authorid = "' . $authorid . '"';
 		} 
 		else 
 		{
 			$sql = 'SELECT COUNT(DISTINCT (c.id)) AS citations 
 					FROM #__resources r, #__citations c, #__citations_assoc ca 
-					WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND standalone = "1" AND r.id = "' . $resid . '"';
+					WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND standalone=1 AND r.id = "' . $resid . '"';
 		}
 
 		$database->setQuery($sql);
@@ -374,8 +367,8 @@ class plgMembersUsage extends JPlugin
 		$i = 1;
 		$sql = 'SELECT a.uidNumber AS aid, COUNT(DISTINCT aa.subid) AS contribs 
 				FROM #__xprofiles a, #__resources res, #__author_assoc aa 
-				WHERE a.uidNumber = aa.authorid AND res.id = aa.subid AND res.published = 1 AND res.access != 1 AND res.access != 4 AND aa.subtable = "resources" 
-				AND aa.role = "" AND res.standalone = 1 GROUP BY aid ORDER BY contribs DESC';
+				WHERE a.uidNumber = aa.authorid AND res.id = aa.subid AND res.published=1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources" 
+				AND res.standalone=1 GROUP BY aid ORDER BY contribs DESC';
 
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
@@ -396,8 +389,8 @@ class plgMembersUsage extends JPlugin
 		{
 			$sql = 'SELECT COUNT(DISTINCT a.uidNumber) as authors 
 				FROM #__xprofiles a, #__author_assoc aa, #__resources res 
-				WHERE a.uidNumber=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND aa.role = "" AND res.published=1 AND res.access !=1 
-				AND res.access!=4 AND res.standalone=1';
+				WHERE a.uidNumber=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND res.published=1 AND (res.access=0 OR res.access=3) 
+				AND res.standalone=1';
 
 			$database->setQuery($sql);
 			$total_authors = $database->loadResult();
@@ -423,7 +416,7 @@ class plgMembersUsage extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 
-		$sql = "SELECT " . $user_type . " FROM #__author_stats WHERE authorid = '" . $authorid . "' AND period = '" . $period . "' ORDER BY datetime DESC LIMIT 1";
+		$sql = 'SELECT ' . $user_type . ' FROM #__author_stats WHERE authorid = "' . $authorid . '" AND period = "' . $period . '" ORDER BY datetime DESC LIMIT 1';
 
 		$database->setQuery($sql);
 		return $database->loadResult();
