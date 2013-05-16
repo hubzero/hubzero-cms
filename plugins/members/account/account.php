@@ -760,16 +760,25 @@ class plgMembersAccount extends Hubzero_Plugin
 		$ssh  = DS . '.ssh';
 		$auth = DS . 'authorized_keys';
 
+		// Real home directory
+		$homeDir = $this->member->get('homeDirectory');
+
 		// First, make sure webdav is there and that the necessary folders are there
 		if(!JFolder::exists($base))
 		{
 			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
 			return;
 		}
-		if(!JFolder::exists($base.$user))
+		if(!JFolder::exists($homeDir))
 		{
-			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
-			return;
+			// Try to create their home directory
+			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+			$mwUtils = new MwUtils();
+			if (!$mwUtils->createHomeDirectory($this->member->get('username')))
+			{
+				JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
+				return;
+			}
 		}
 		if(!JFolder::exists($base.$user.$ssh))
 		{
@@ -819,6 +828,9 @@ class plgMembersAccount extends Hubzero_Plugin
 		$ssh  = DS . '.ssh';
 		$auth = DS . 'authorized_keys';
 
+		// Real home directory
+		$homeDir = $this->member->get('homeDirectory');
+
 		$key = '';
 
 		// First, make sure webdav is there and that the necessary folders are there
@@ -827,7 +839,7 @@ class plgMembersAccount extends Hubzero_Plugin
 			// Not sure what to do here
 			return $key = false;
 		}
-		if(!JFolder::exists($base.$user))
+		if(!JFolder::exists($homeDir))
 		{
 			// Try to create their home directory
 			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
