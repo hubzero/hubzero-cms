@@ -1264,7 +1264,7 @@ class plgProjectsFiles extends JPlugin
 							{							
 								// Git add
 								$new = isset($updated[$file]) ? false : true;
-								$this->_git->gitAdd($path, $file, &$commitMsg, $new);
+								$this->_git->gitAdd($path, $file, $commitMsg, $new);
 
 							}
 						}						
@@ -2435,7 +2435,7 @@ class plgProjectsFiles extends JPlugin
 					{
 						// Git add & commit
 						$commitMsg = JText::_('COM_PROJECTS_FILES_SHARE_IMPORTED') . "\n";
-						$this->_git->gitAdd($path, $newpath, &$commitMsg);
+						$this->_git->gitAdd($path, $newpath, $commitMsg);
 						$this->_git->gitCommit($path, $commitMsg);
 						
 						$mTypeParts = explode(';', $mt->getMimeType($this->prefix . $path. DS . $newpath));						
@@ -2534,7 +2534,7 @@ class plgProjectsFiles extends JPlugin
 						
 						// Remove original local file
 						$commitMsg = JText::_('COM_PROJECTS_FILES_SHARE_EXPORTED') . "\n";
-						$deleted = $this->_git->gitDelete($localPath, $remote['fpath'], 'file', &$commitMsg);
+						$deleted = $this->_git->gitDelete($localPath, $remote['fpath'], 'file', $commitMsg);
 						$this->_git->gitCommit($path, $commitMsg);
 						
 						// Remove original remote file
@@ -3559,7 +3559,7 @@ class plgProjectsFiles extends JPlugin
 				$data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data);		
 
 				// Compile and get path to PDF
-				$content = $compiler->compileTex ($this->prefix. $path . DS . $fpath, $data, $texpath, JPATH_ROOT . $outputDir, 1, &$tempBase);
+				$content = $compiler->compileTex ($this->prefix. $path . DS . $fpath, $data, $texpath, JPATH_ROOT . $outputDir, 1, $tempBase);
 
 				// Read log (to show in case of error)
 				$logFile = $tempBase . '.log';
@@ -3655,7 +3655,7 @@ class plgProjectsFiles extends JPlugin
 				{
 					// Git add & commit
 					$commitMsg = JText::_('COM_PROJECTS_FILES_COMPILED_COMMITTED') . "\n";
-					$this->_git->gitAdd($path, $where, &$commitMsg);
+					$this->_git->gitAdd($path, $where, $commitMsg);
 					$this->_git->gitCommit($path, $commitMsg);
 					
 					if ($this->_case == 'files')
@@ -4395,7 +4395,7 @@ class plgProjectsFiles extends JPlugin
 					if ($local['remoteid'])
 					{
 						// Determine new remote parent
-						$parentId = $this->_connect->prepRemoteParent($this->_project->id, $service, $projectCreator, $local, &$remoteFolders);
+						$parentId = $this->_connect->prepRemoteParent($this->_project->id, $service, $projectCreator, $local, $remoteFolders);
 						
 						if ($parentId != $local['rParent'])
 						{
