@@ -194,19 +194,19 @@ $month = date("m", strtotime($this->event->publish_up));
 				<fieldset>
 					<legend><?php echo JText::_('Highest academic degree earned:'); ?> <span class="optional">Optional</span></legend>
 						<label>
-							<input type="radio" class="option" name="register[degree]" value="bachelors" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'bachelors') ? 'checked="checked"': ''; ?> />
+							<input type="radio" class="option" name="register[degree]" value="Bachelors" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Bachelors') ? 'checked="checked"': ''; ?> />
 							<?php echo JText::_('Bachelors degree'); ?>
 						</label>
 						<label>
-							<input type="radio" class="option" name="register[degree]" value="masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'masters') ? 'checked="checked"': ''; ?> /> 
+							<input type="radio" class="option" name="register[degree]" value="Masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Masters') ? 'checked="checked"': ''; ?> /> 
 							<?php echo JText::_('Masters degree'); ?>
 						</label>
 						<label>
-							<input type="radio" class="option" name="register[degree]" value="doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'doctoral') ? 'checked="checked"': ''; ?> /> 
+							<input type="radio" class="option" name="register[degree]" value="Doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Doctoral') ? 'checked="checked"': ''; ?> /> 
 							<?php echo JText::_('Doctoral degree'); ?>
 						</label>
 						<label>
-							<input type="radio" class="option" name="register[degree]" value="none of the above" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'none of the above') ? 'checked="checked"': ''; ?> />
+							<input type="radio" class="option" name="register[degree]" value="Other" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Other') ? 'checked="checked"': ''; ?> />
 							<?php echo JText::_('None of the above'); ?>
 						</label>
 				</fieldset>
@@ -216,15 +216,15 @@ $month = date("m", strtotime($this->event->publish_up));
 				<fieldset>
 					<legend><?php echo JText::_('Gender:'); ?> <span class="optional">Optional</span></legend>
 					<label>
-						<input type="radio" name="register[sex]" value="male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'male') ? 'checked="checked"': ''; ?> /> 
+						<input type="radio" name="register[sex]" value="Male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Male') ? 'checked="checked"': ''; ?> /> 
 						<?php echo JText::_('Male'); ?>
 					</label>
 					<label>
-						<input type="radio" name="register[sex]" value="female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'female') ? 'checked="checked"': ''; ?> /> 
+						<input type="radio" name="register[sex]" value="Female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Female') ? 'checked="checked"': ''; ?> /> 
 						<?php echo JText::_('Female'); ?>
 					</label>
 					<label>
-						<input type="radio" name="register[sex]" value="refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'refused') ? 'checked="checked"': ''; ?> /> 
+						<input type="radio" name="register[sex]" value="Refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Refused') ? 'checked="checked"': ''; ?> /> 
 						<?php echo JText::_('Do not wish to reveal'); ?>
 					</label>
 				</fieldset>
@@ -264,7 +264,7 @@ $month = date("m", strtotime($this->event->publish_up));
 						<?php echo JText::_('Hispanic or Latino'); ?>
 					</label>
 					<label>
-						<input type="checkbox" class="option" name="race[refused]" id="racerefused" />
+						<input type="checkbox" class="option" name="race[refused]" id="racerefused" value="Refused" />
 						<?php echo JText::_('Do not wish to reveal'); ?>
 					</label>
 				</fieldset>

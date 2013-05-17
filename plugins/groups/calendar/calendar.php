@@ -1294,13 +1294,20 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$eventsRespondent->dietary_needs        = (isset($dietary['needs']) && strtolower($dietary['needs']) == 'yes') ? $dietary['specific'] : null;
 		$eventsRespondent->attending_dinner     = (isset($dinner) && $dinner == 'yes') ? 1 : 0;
 		$eventsRespondent->bind( $register );
-
+		
 		//did we save properly
 		if (!$eventsRespondent->save($eventsRespondent))
 		{
 			$this->setError( $eventsRespondent->getError() );
 			return $this->register();
 		}
+		
+		$r = $race;
+		unset($r['nativetribe']);
+		$sql = "INSERT INTO #__events_respondent_race_rel(respondent_id,race,tribal_affiliation) 
+		        VALUES(".$this->database->quote( $eventsRespondent->id ).", ".$this->database->quote( implode(',', $r) ).", ".$this->database->quote( $race['nativetribe'] ).")";
+		$this->database->setQuery( $sql );
+		$this->database->query();
 
 		//load event we are registering for
 		$eventsEvent = new EventsEvent( $this->database );
@@ -1450,6 +1457,12 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		
 		foreach($registrants as $registrant)
 		{
+			$sql = "SELECT CONCAT(race, ',', tribal_affiliation) as race 
+			        FROM #__events_respondent_race_rel 
+			        WHERE respondent_id=" . $this->database->quote( $registrant->id);
+			$this->database->setQuery( $sql );
+			$race = $this->database->loadResult();
+			
 			foreach($fields as $field)
 			{
 				switch($field)
@@ -1461,7 +1474,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 						$output .= ($registrant->attending_dinner == 1) ? 'Yes,' : 'No,';
 						break;
 					case 'race':
-						$output .= 'Race Information not included,';
+						$output .= $this->escapeCsv( $race ) . ',';
 						break;
 					default:
 						$output .= $this->escapeCsv($registrant->$field) . ',';

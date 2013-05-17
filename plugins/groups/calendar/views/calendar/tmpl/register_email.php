@@ -88,9 +88,10 @@ if (isset($this->register['position']) || isset($this->register['position_other'
 if (isset($this->register['degree'])) {
 	$message .= 'Highest degree earned: '. $this->register['degree'] ."\n\n";
 }
-if (isset($this->register['sex'])) {
-	$message .= 'Gender: '. $this->register['sex'] ."\n\n";
-}
+$gender = (isset($this->register['sex'])) ? $this->register['sex'] : '';
+//if (isset($this->register['sex'])) {
+	$message .= 'Gender: '. $gender ."\n\n";
+//}
 if (isset($this->race)) {
 	if (isset($this->race['nativetribe']))
 	{
@@ -132,7 +133,7 @@ if ($this->dinner) {
 }
 
 if (isset($this->register['abstract'])) {
-	$message .= 'Additional: '. $this->register['abstract'] ."\n\n";
+	$message .= 'Abstract: '. $this->register['abstract'] ."\n\n";
 }
 
 if (isset($this->register['comment'])) {
