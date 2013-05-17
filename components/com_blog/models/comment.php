@@ -33,6 +33,28 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
 
+if (!defined('BLOG_DATE_FORMAT'))
+{
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		define('BLOG_DATE_YEAR', "Y");
+		define('BLOG_DATE_MONTH', "m");
+		define('BLOG_DATE_DAY', "d");
+		define('BLOG_DATE_TIMEZONE', true);
+		define('BLOG_DATE_FORMAT', 'd M Y');
+		define('BLOG_TIME_FORMAT', 'H:i p');
+	}
+	else
+	{
+		define('BLOG_DATE_YEAR', "%Y");
+		define('BLOG_DATE_MONTH', "%m");
+		define('BLOG_DATE_DAY', "%d");
+		define('BLOG_DATE_TIMEZONE', 0);
+		define('BLOG_DATE_FORMAT', '%d %b %Y');
+		define('BLOG_TIME_FORMAT', '%I:%M %p');
+	}
+}
+
 /**
  * Courses model class for a forum
  */
@@ -231,6 +253,30 @@ class BlogModelComment extends JObject
 	}
 
 	/**
+	 * Return a formatted timestamp
+	 * 
+	 * @param      string $as What data to return
+	 * @return     boolean
+	 */
+	public function created($as='')
+	{
+		switch (strtolower($as))
+		{
+			case 'date':
+				return JHTML::_('date', $this->get('created'), BLOG_DATE_FORMAT, BLOG_DATE_TIMEZONE);
+			break;
+
+			case 'time':
+				return JHTML::_('date', $this->get('created'), BLOG_TIME_FORMAT, BLOG_DATE_TIMEZONE);
+			break;
+
+			default:
+				return $this->get('created');
+			break;
+		}
+	}
+
+	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
@@ -243,13 +289,61 @@ class BlogModelComment extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->forum->created_by);
+			//$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && is_a($this->_creator, 'Hubzero_User_Profile')) //JUser
 		{
+			$property = ($property == 'id') ? 'uidNumber' : $property;
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
+	}
+
+	/**
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		// Ensure we have a database to work with
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		// Validate data?
+		if ($check)
+		{
+			// Is data valid?
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		// Attempt to store data
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -307,13 +401,13 @@ class BlogModelComment extends JObject
 			default:
 				if (!isset($this->_comments) || !is_a($this->_comments, 'BlogModelIterator'))
 				{
-					if ($this->get('replies'))
+					if ($this->get('replies', null) !== null)
 					{
 						$results = $this->get('replies');
 					}
 					else
 					{
-						$results = $this->_tbl->getAllComments($this->get('id'));
+						$results = $this->_tbl->getAllComments($this->get('entry_id'), $this->get('id'));
 					}
 
 					if ($results)

@@ -184,7 +184,7 @@ $first = $this->model->entries('first');
 					$archiveDate  = $this->filters['year'];
 					$archiveDate .= ($this->filters['month']) ? '-' . $this->filters['month'] : '-01';
 					$archiveDate .= '-01 00:00:00';
-					echo JHTML::_('date', $archiveDate, $format, $this->tz);
+					echo JHTML::_('date', $archiveDate, $format, BLOG_DATE_TIMEZONE); /* BLOG_DATE_TIMEZONE defined in BlogModelEntry */
 				} ?>
 				</h3>
 

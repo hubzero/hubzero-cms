@@ -31,11 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'iterator.php');
-
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
 	define('BLOG_DATE_YEAR', "Y");
@@ -54,6 +49,11 @@ else
 	define('BLOG_DATE_FORMAT', '%d %b %Y');
 	define('BLOG_TIME_FORMAT', '%I:%M %p');
 }
+
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.tags.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a forum
@@ -453,6 +453,10 @@ class BlogModelEntry extends JObject
 		{
 			$filters['entry_id'] = $this->get('id');
 		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = 1;
+		}
 
 		switch (strtolower($rtrn))
 		{
@@ -535,6 +539,30 @@ class BlogModelEntry extends JObject
 		}
 
 		return $tags; 
+	}
+
+	/**
+	 * Tag the entry
+	 * 
+	 * @return     boolean
+	 */
+	public function tag($tags=null, $user_id=0)
+	{
+		$bt = new BlogTags($this->_db);
+
+		if (!$user_id)
+		{
+			$juser = JFactory::getUser();
+			$user_id = $juser->get('id');
+		}
+
+		return $bt->tag_object(
+			$user_id, 
+			$this->get('id'), 
+			trim($tags), 
+			1, 
+			1
+		);
 	}
 
 	/**
@@ -739,6 +767,52 @@ class BlogModelEntry extends JObject
 				return $this->get('content');
 			break;
 		}
+	}
+
+	/**
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		// Ensure we have a database to work with
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		// Validate data?
+		if ($check)
+		{
+			// Is data valid?
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		// Attempt to store data
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

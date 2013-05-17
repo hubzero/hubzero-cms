@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	$name = JText::_('COM_BLOG_ANONYMOUS');
-	$huser = '';
+	$huser = new Hubzero_User_Profile;
 	if (!$this->comment->get('anonymous')) 
 	{
 		$huser = Hubzero_User_Profile::getInstance($this->comment->get('created_by'));
@@ -103,16 +103,16 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="task" value="savecomment" />
 
-						<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
+						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_BLOG_FIELD_COMMENTS'); ?></span>
 							<?php
 							ximport('Hubzero_Wiki_Editor');
 							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('fields[comment]', 'field_' . $this->comment->get('id') . '_comment', '', 'minimal no-footer', '35', '4');
+							echo $editor->display('comment[content]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
 							?>
 						</label>
 
-						<label id="comment-anonymous-label">
+						<label id="comment-anonymous-label" for="comment-anonymous">
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 							<?php echo JText::_('COM_BLOG_POST_ANONYMOUS'); ?>
 						</label>

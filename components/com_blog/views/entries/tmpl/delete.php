@@ -36,23 +36,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 
 <div id="content-header-extra">
-	<p><a class="archive btn" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
+	<p><a class="archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&entry='.$this->entry->id); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
 		<div class="explaination">
-<?php if ($this->authorized) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
-<?php } ?>
+		<?php if ($this->config->get('access-create-entry')) { ?>
+			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+		<?php } ?>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_BLOG_DELETE_HEADER'); ?></legend>
 
-	 		<p class="warning"><?php echo JText::sprintf('COM_BLOG_DELETE_WARNING', $this->entry->title); ?></p>
+	 		<p class="warning"><?php echo JText::sprintf('COM_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?></p>
 
 			<label for="confirmdel">
 				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
@@ -60,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 		</fieldset>
 		<div class="clear"></div>
-		<input type="hidden" name="id" value="<?php echo $this->entry->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->entry->get('id'); ?>" />
 		<input type="hidden" name="task" value="delete" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

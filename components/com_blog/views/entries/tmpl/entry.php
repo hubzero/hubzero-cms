@@ -261,7 +261,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				$jconfig =& JFactory::getConfig();
 				$live_site = rtrim(JURI::base(), '/');
 				
-				$feed = $live_site . ltrim($feed, DS);
+				$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 			}
 			$feed = str_replace('https:://', 'http://', $feed);
 		?>
@@ -355,20 +355,21 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 		<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
 			<p class="comment-member-photo">
 				<?php
-				$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
+				$jxuser = new Hubzero_User_Profile; //::getInstance($juser->get('id'));
 				if (!$juser->get('guest')) {
+					$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
 					$anonymous = 0;
 				} else {
 					$anonymous = 1;
 				}
 				?>
-				<img src="<?php echo $jxuser->getPicture($anonymous); ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anonymous); ?>" alt="" />
 			</p>
 			<fieldset>
 			<?php
-			if (!$juser->get('guest')) {
-				$replyto = $this->row->comment(JRequest::getInt('reply', 0));
-
+			$replyto = $this->row->comment(JRequest::getInt('reply', 0));
+			if (!$juser->get('guest')) 
+			{
 				if ($replyto->exists()) 
 				{
 					ximport('Hubzero_View_Helper_Html');
@@ -386,9 +387,9 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<p>
 						<strong><?php echo $name; ?></strong> 
 						<span class="comment-date-at">@</span> 
-						<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo JHTML::_('date', $replyto->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
+						<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
 						<span class="comment-date-on"><?php echo JText::_('COM_BLOG_ON'); ?></span> 
-						<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo JHTML::_('date', $replyto->get('created'), $this->dateFormat, $this->tz); ?></time></span>
+						<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 					</p>
 					<p>
 						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($replyto->get('content')), 300, 0); ?>

@@ -50,24 +50,12 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->_authorize();
 		$this->_authorize('entry');
 
-		$this->dateFormat = '%d %b %Y';
-		$this->timeFormat = '%I:%M %p';
-		$this->yearFormat  = "%Y";
-		$this->monthFormat = "%m";
-		$this->dayFormat   = "%d";
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = 'd M Y';
-			$this->timeFormat = 'H:i p';
-			$this->yearFormat  = "Y";
-			$this->monthFormat = "m";
-			$this->dayFormat   = "d";
-			$this->tz = true;
-		}
+		$this->registerTask('comments.rss', 'comments');
+		$this->registerTask('commentsrss', 'comments');
 
 		$this->registerTask('feed.rss', 'feed');
 		$this->registerTask('feedrss', 'feed');
+
 		$this->registerTask('archive', 'display');
 
 		parent::execute();
@@ -116,11 +104,11 @@ class BlogControllerEntries extends Hubzero_Controller
 					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month)
 				);
 			}
-			if ($this->row) 
+			if (isset($this->view->row)) 
 			{
 				$pathway->addItem(
-					stripslashes($this->row->title),
-					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month) . '&alias=' . $this->row->alias
+					stripslashes($this->view->row->get('title')),
+					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month) . '&alias=' . $this->view->row->get('alias')
 				);
 			}
 		}
@@ -150,9 +138,9 @@ class BlogControllerEntries extends Hubzero_Controller
 			{
 				$this->_title .= ': ' . sprintf("%02d", $month);
 			}
-			if ($this->row) 
+			if (isset($this->view->row)) 
 			{
-				$this->_title .= ': ' . stripslashes($this->row->title);
+				$this->_title .= ': ' . stripslashes($this->view->row->get('title'));
 			}
 		}
 		$document =& JFactory::getDocument();
@@ -205,8 +193,6 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->_getScripts();
 
 		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-
-		$this->view->tz          = $this->tz;
 
 		// Get any errors for display
 		if ($this->getError()) 
@@ -299,8 +285,6 @@ class BlogControllerEntries extends Hubzero_Controller
 			return;
 		}
 
-		//$this->view->row = new BlogEntry($this->database);
-		//$this->view->row->loadAlias($alias, 'site');
 		$this->view->row = $this->model->entry($alias);
 
 		if (!$this->view->row->exists()) 
@@ -318,11 +302,12 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 
 		// Filters for returning results
-		$this->view->filters = array();
-		$this->view->filters['limit']    = 10;
-		$this->view->filters['start']    = 0;
-		$this->view->filters['scope']    = 'site';
-		$this->view->filters['group_id'] = 0;
+		$this->view->filters = array(
+			'limit'    => 10,
+			'start'    => 0,
+			'scope'    => 'site',
+			'group_id' => 0
+		);
 
 		if ($this->juser->get('guest')) 
 		{
@@ -342,14 +327,9 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->_getStyles();
 		$this->_getScripts('assets/js/' . $this->_name);
 
-		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-
-		$this->view->dateFormat  = $this->dateFormat;
-		$this->view->timeFormat  = $this->timeFormat;
-		$this->view->yearFormat  = $this->yearFormat;
-		$this->view->monthFormat = $this->monthFormat;
-		$this->view->dayFormat   = $this->dayFormat;
-		$this->view->tz          = $this->tz;
+		$this->view->title = ($this->config->get('title')) 
+							? $this->config->get('title') 
+							: JText::_(strtoupper($this->_option));
 
 		if ($this->getError()) 
 		{
@@ -380,7 +360,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	{
 		if ($this->juser->get('guest')) 
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
 				JText::_('COM_BLOG_LOGIN_NOTICE'),
@@ -397,22 +377,16 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 		else 
 		{
-			$id = JRequest::getInt('entry', 0);
-
-			$this->view->entry = new BlogEntry($this->database);
-			$this->view->entry->load($id);
+			$this->view->entry = $this->model->entry(JRequest::getInt('entry', 0));
 		}
 
-		if (!$this->view->entry->id) 
+		if (!$this->view->entry->exists()) 
 		{
-			$this->view->entry->allow_comments = 1;
-			$this->view->entry->state = 1;
-			$this->view->entry->scope = 'site';
-			$this->view->entry->created_by = $this->juser->get('id');
+			$this->view->entry->set('allow_comments', 1);
+			$this->view->entry->set('state', 1);
+			$this->view->entry->set('scope', 'site');
+			$this->view->entry->set('created_by', $this->juser->get('id'));
 		}
-
-		$bt = new BlogTags($this->database);
-		$this->view->tags = $bt->get_tag_string($this->view->entry->id);
 
 		// Push some scripts to the template
 		$this->_buildTitle();
@@ -420,7 +394,9 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->_getStyles();
 		$this->_getScripts();
 
-		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
+		$this->view->title = ($this->config->get('title')) 
+							? $this->config->get('title') 
+							: JText::_(strtoupper($this->_option));
 
 		if ($this->getError()) 
 		{
@@ -453,39 +429,30 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
 
-		$row = new BlogEntry($this->database);
+		$row = $this->model->entry(0);
+
 		if (!$row->bind($entry)) 
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
 		}
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->editTask($row);
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
 		}
 
 		// Process tags
-		$bt = new BlogTags($this->database);
-		$bt->tag_object(
-			$this->juser->get('id'), 
-			$row->id, 
-			trim(JRequest::getVar('tags', '')), 
-			1, 
-			1
-		);
+		if (!$row->tag(JRequest::getVar('tags', ''))) 
+		{
+			$this->setError($row->getError());
+			return $this->editTask($row);
+		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias)
+			JRoute::_($row->link())
 		);
 	}
 
@@ -498,7 +465,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	{
 		if ($this->juser->get('guest')) 
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
+			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option, false, true), 'server');
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
 				JText::_('COM_BLOG_LOGIN_NOTICE'),
@@ -528,8 +495,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = new BlogEntry($this->database);
-		$entry->load($id);
+		$entry = $this->model->entry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) 
@@ -546,9 +512,9 @@ class BlogControllerEntries extends Hubzero_Controller
 			$this->_getScripts();
 
 			// Output HTML
-			$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-			$this->view->entry = $entry;
-			$this->view->authorized = $this->_authorize();
+			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
+			$this->view->entry  = $entry;
+			$this->view->config = $this->config;
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -561,7 +527,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 
 		// Delete the entry itself
-		$entry->state = -1;
+		$entry->set('state', -1);
 		if (!$entry->store()) 
 		{
 			$this->setError($entry->getError());
@@ -597,21 +563,21 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-
 		$doc->link = JRoute::_('index.php?option=' . $this->_option);
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
 		// Incoming
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['year'] = JRequest::getInt('year', 0);
-		$filters['month'] = JRequest::getInt('month', 0);
-		$filters['scope'] = 'site';
-		$filters['group_id'] = 0;
-		$filters['search'] = JRequest::getVar('search','');
+		$filters = array(
+			'limit'    => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'    => JRequest::getInt('limitstart', 0),
+			'year'     => JRequest::getInt('year', 0),
+			'month'    => JRequest::getInt('month', 0),
+			'scope'    => 'site',
+			'group_id' => 0,
+			'search'   => JRequest::getVar('search','')
+		);
 
 		if ($this->juser->get('guest')) 
 		{
@@ -625,66 +591,39 @@ class BlogControllerEntries extends Hubzero_Controller
 			}
 		}
 
-		// Instantiate the BlogEntry object
-		$be = new BlogEntry($this->database);
-
-		// Get the records
-		$rows = $be->getRecords($filters);
-
 		// Build some basic RSS document information
-		$jconfig =& JFactory::getConfig();
 		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
 		$doc->title .= ($filters['year'])  ? ': ' . $year : '';
 		$doc->title .= ($filters['month']) ? ': ' . sprintf("%02d", $filters['month']) : '';
 
-		$doc->description = JText::sprintf('COM_BLOG_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'));
+		$doc->description = JText::sprintf('COM_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
 		$doc->copyright   = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category    = JText::_('COM_BLOG_RSS_CATEGORY');
 
-		// Start outputing results if any found
-		if (count($rows) > 0) 
-		{
-			$wikiconfig = array(
-				'option'   => $this->_option,
-				'scope'    => 'blog',
-				'pagename' => '',
-				'pageid'   => 0,
-				'filepath' => $this->config->get('uploadpath'),
-				'domain'   => ''
-			);
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+		// Get the records
+		$rows = $this->model->entries('list', $filters);
 
+		// Start outputing results if any found
+		if ($rows->total() > 0) 
+		{
 			foreach ($rows as $row)
 			{
-				// Prepare the title
-				$title = strip_tags($row->title);
-				$title = html_entity_decode($title);
-
-				// URL link to article
-				$link = JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias);
-
-				$cuser =& JUser::getInstance($row->created_by);
-				$author = $cuser->get('name');
+				$item = new JFeedItem();
 
 				// Strip html from feed item description text
-				$description = $p->parse(stripslashes($row->content), $wikiconfig);
-				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
+				$item->description = $row->content('parsed');
+				$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($item->description));
 				if ($this->config->get('feed_entries') == 'partial') 
 				{
-					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
+					$item->description = Hubzero_View_Helper_Html::shortenText($item->description, 300, 0);
 				}
 
-				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
-
 				// Load individual item creator class
-				$item = new JFeedItem();
-				$item->title       = $title;
-				$item->link        = $link;
-				$item->description = $description;
-				$item->date        = $date;
+				$item->title       = html_entity_decode(strip_tags($row->get('title')));
+				$item->link        = JRoute::_($row->link());
+				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $author;
+				$item->author      = $row->creator('name');
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -718,29 +657,22 @@ class BlogControllerEntries extends Hubzero_Controller
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		$row = new BlogComment($this->database);
+		$row = new BlogModelComment($comment['id']);
 		if (!$row->bind($comment)) 
 		{
 			$this->setError($row->getError());
 			return $this->entryTask();
 		}
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->entryTask();
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			return $this->entryTask();
 		}
 
 		/*
-		if ($row->created_by != $this->member->get('uidNumber)) 
+		if ($row->get('created_by') != $this->member->get('uidNumber)) 
 		{
 			$this->entry = new BlogEntry($this->database);
 			$this->entry->load($row->entry_id);
@@ -834,7 +766,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	 * 
 	 * @return     string RSS
 	 */
-	public function commentfeedTask()
+	public function commentsTask()
 	{
 		if (!$this->config->get('feeds_enabled')) 
 		{
@@ -850,197 +782,110 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-		//$params =& $mainframe->getParams();
-		$app =& JFactory::getApplication();
-		$params =& $app->getParams();
 		$doc->link = JRoute::_('index.php?option=' . $this->_option);
 
 		// Incoming
 		$alias = JRequest::getVar('alias', '');
-
 		if (!$alias) 
 		{
 			JError::raiseError(404, JText::_('Feed not found.'));
 			return;
 		}
 
-		$entry = new BlogEntry($this->database);
-		$entry->loadAlias($alias, 'site');
+		$this->entry = $this->model->entry($alias);
 
-		if (!$entry->id) 
+		if (!$this->entry->isAvailable()) 
 		{
 			JError::raiseError(404, JText::_('Feed not found.'));
 			return;
 		}
 
-		$bc = new BlogComment($this->database);
-		$rows = $bc->getAllComments($entry->id);
-
-		$year = JRequest::getInt('year', date("Y"));
+		$year  = JRequest::getInt('year', date("Y"));
 		$month = JRequest::getInt('month', 0);
 
 		// Build some basic RSS document information
 		$jconfig =& JFactory::getConfig();
 		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
 		$doc->title .= ($year) ? ': ' . $year : '';
-		$doc->title .= ($month) ? ': ' . sprintf("%02d",$month) : '';
-		$doc->title .= ($entry->title) ? ': ' . stripslashes($entry->title) : '';
+		$doc->title .= ($month) ? ': ' . sprintf("%02d", $month) : '';
+		$doc->title .= stripslashes($this->entry->get('title', ''));
 		$doc->title .= ': '.JText::_('Comments');
 
-		$doc->description = JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($entry->title));
-		$doc->copyright = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		//$doc->category = JText::_('COM_BLOG_RSS_CATEGORY');
+		$doc->description = JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($this->entry->get('title')));
+		$doc->copyright   = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+
+		$rows = $this->entry->comments('list');
 
 		// Start outputing results if any found
-		if (count($rows) <= 0) 
+		if ($rows->total() <= 0) 
 		{
 			echo $doc->render();
 			return;
 		}
 
-		$wikiconfig = array(
+		$this->wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => 'blog',
-			'pagename' => $entry->alias,
+			'pagename' => $this->entry->get('alias'),
 			'pageid'   => 0,
 			'filepath' => $this->config->get('uploadpath'),
 			'domain'   => ''
 		);
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$this->p = Hubzero_Wiki_Parser::getInstance();
 
 		foreach ($rows as $row)
 		{
-			// URL link to article
-			$link = JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $entry->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $entry->publish_up, $this->monthFormat, $this->tz) . '/' . $entry->alias . '#c' . $row->id);
-
-			$author = JText::_('COM_BLOG_ANONYMOUS');
-			if (!$row->anonymous) 
-			{
-				$cuser =& JUser::getInstance($row->created_by);
-				$author = stripslashes($cuser->get('name'));
-			}
-
-			// Prepare the title
-			$title = JText::sprintf('Comment by %s', $author) . ' @ ' . JHTML::_('date', $row->created, $this->timeFormat, $this->tz) . ' on ' . JHTML::_('date', $row->created, $this->dateFormat, $this->tz);
-
-			// Strip html from feed item description text
-			if ($row->reports) 
-			{
-				$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
-			} 
-			else 
-			{
-				$description = $p->parse(stripslashes($row->content), $wikiconfig);
-			}
-			$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-
-			@$date = ($row->created ? date('r', strtotime($row->created)) : '');
-
-			// Load individual item creator class
-			$item = new JFeedItem();
-			$item->title       = $title;
-			$item->link        = $link;
-			$item->description = $description;
-			$item->date        = $date;
-			$item->category    = '';
-			$item->author      = $author;
-
-			// Loads item info into rss array
-			$doc->addItem($item);
-
-			// Check for any replies
-			if ($row->replies) 
-			{
-				foreach ($row->replies as $reply)
-				{
-					// URL link to article
-					$link = JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $entry->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$entry->publish_up, $this->monthFormat, $this->tz) . '/' . $entry->alias . '#c' . $reply->id);
-
-					$author = JText::_('COM_BLOG_ANONYMOUS');
-					if (!$reply->anonymous) 
-					{
-						$cuser =& JUser::getInstance($reply->created_by);
-						$author = $cuser->get('name');
-					}
-
-					// Prepare the title
-					$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, $this->timeFormat, $this->tz) . ' on ' . JHTML::_('date', $reply->created, $this->dateFormat, $this->tz);
-
-					// Strip html from feed item description text
-					if ($reply->reports) 
-					{
-						$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
-					} 
-					else 
-					{
-						$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
-					}
-					$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-
-					@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
-
-					// Load individual item creator class
-					$item = new JFeedItem();
-					$item->title       = $title;
-					$item->link        = $link;
-					$item->description = $description;
-					$item->date        = $date;
-					$item->category    = '';
-					$item->author      = $author;
-
-					// Loads item info into rss array
-					$doc->addItem($item);
-
-					if ($reply->replies) 
-					{
-						foreach ($reply->replies as $response)
-						{
-							// URL link to article
-							$link = JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $entry->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $entry->publish_up, $this->monthFormat, $this->tz) . '/' . $entry->alias . '#c' . $response->id);
-
-							$author = JText::_('COM_BLOG_ANONYMOUS');
-							if (!$response->anonymous) 
-							{
-								$cuser =& JUser::getInstance($response->created_by);
-								$author = $cuser->get('name');
-							}
-
-							// Prepare the title
-							$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, $this->timeFormat, $this->tz) . ' on ' . JHTML::_('date', $response->created, $this->dateFormat, $this->tz);
-
-							// Strip html from feed item description text
-							if ($response->reports) 
-							{
-								$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
-							} 
-							else 
-							{
-								$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
-							}
-							$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-
-							@$date = ($response->created ? date('r', strtotime($response->created)) : '');
-
-							// Load individual item creator class
-							$item = new JFeedItem();
-							$item->title       = $title;
-							$item->link        = $link;
-							$item->description = $description;
-							$item->date        = $date;
-							$item->category    = '';
-							$item->author      = $author;
-
-							// Loads item info into rss array
-							$doc->addItem($item);
-						}
-					}
-				}
-			}
+			$this->_comment($doc, $row);
 		}
 
 		// Output the feed
 		echo $doc->render();
+	}
+
+	/**
+	 * Recursive method to add comments to a flat RSS feed
+	 *
+	 * @param   object $doc JDocumentFeed
+	 * @param   object $row BlogModelComment
+	 * @return	void
+	 */
+	private function _comment(&$doc, $row)
+	{
+		// Load individual item creator class
+		$item = new JFeedItem();
+		$item->title = JText::sprintf('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
+		$item->link  = JRoute::_($this->entry->link()  . '#c' . $row->get('id'));
+
+		if ($row->isReported()) 
+		{
+			$item->description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
+		} 
+		else 
+		{
+			$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($this->p->parse($row->get('content'), $this->wikiconfig)));
+		}
+
+		if ($row->get('anonymous'))
+		{
+			$item->author = JText::_('COM_BLOG_ANONYMOUS');
+		}
+		else
+		{
+			$item->author = $row->creator('name');
+		}
+		$item->date     = $row->created();
+		$item->category = '';
+
+		$doc->addItem($item);
+
+		if ($row->replies()->total() > 0)
+		{
+			foreach ($row->replies() as $reply)
+			{
+				$this->_comment($doc, $reply);
+			}
+		}
 	}
 
 	/**

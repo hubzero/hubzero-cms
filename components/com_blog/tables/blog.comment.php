@@ -164,11 +164,19 @@ class BlogComment extends JTable
 		{
 			$entry_id = $this->entry_id;
 		}
-		if (!$parent) 
+		/*if (!$parent) 
 		{
 			$parent = 0;
+		}*/
+
+		$sql  = "SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id);
+		if (!is_null($parent)) 
+		{
+			$sql .= " AND parent=" . $this->_db->Quote($parent);
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id) . " AND parent=" . $this->_db->Quote($parent) . " ORDER BY created ASC");
+		$sql .= " ORDER BY created ASC";
+
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
@@ -185,8 +193,10 @@ class BlogComment extends JTable
 			$entry_id = $this->entry_id;
 		}
 
-		$comments = $this->getComments($entry_id, 0);
-		if ($comments) 
+		$comments = array();
+
+		$rows = $this->getComments($entry_id);
+		if ($rows) 
 		{
 			$ra = null;
 			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
@@ -194,34 +204,57 @@ class BlogComment extends JTable
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 				$ra = new ReportAbuse($this->_db);
 			}
-			foreach ($comments as $key => $row)
+
+			$children = array(
+				0 => array()
+			);
+
+			$levellimit = 500;
+
+			foreach ($rows as $v)
 			{
-				if ($ra) 
+				$v->replies = 0;
+				$v->reports = 0;
+				if (is_object($ra)) 
 				{
-					$comments[$key]->reports = $ra->getCount(array('id' => $comments[$key]->id, 'category' => 'blog'));
+					$v->reports = $ra->getCount(array('id' => $v->id, 'category' => 'blog'));
 				}
-				$comments[$key]->replies = $this->getComments($entry_id, $row->id);
-				if ($comments[$key]->replies) 
+				$pt      = $v->parent;
+				$list    = @$children[$pt] ? $children[$pt] : array();
+				array_push($list, $v);
+				$children[$pt] = $list;
+			}
+
+			$comments = $this->_treeRecurse($children[0], $children);
+		}
+		return $comments;
+	}
+
+	/**
+	 * Recursive function to build tree
+	 * 
+	 * @param      integer $id       Parent ID
+	 * @param      string  $indent   Indent text
+	 * @param      array   $list     List of records
+	 * @param      array   $children Container for parent/children mapping
+	 * @param      integer $maxlevel Maximum levels to descend
+	 * @param      integer $level    Indention level
+	 * @param      integer $type     Indention type
+	 * @return     void
+	 */
+	private function _treeRecurse($children, $list, $maxlevel=9999, $level=0)
+	{
+		if ($level <= $maxlevel)
+		{
+			foreach ($children as $v => $child)
+			{
+				if (isset($list[$child->id]))
 				{
-					foreach ($comments[$key]->replies as $ky => $rw)
-					{
-						if ($ra) 
-						{
-							$comments[$key]->replies[$ky]->reports = $ra->getCount(array('id' => $rw->id, 'category' => 'blog'));
-						}
-						$comments[$key]->replies[$ky]->replies = $this->getComments($entry_id, $rw->id);
-						if ($comments[$key]->replies[$ky]->replies && $ra) 
-						{
-							foreach ($comments[$key]->replies[$ky]->replies as $kyy => $rwy)
-							{
-								$comments[$key]->replies[$ky]->replies[$kyy]->reports = $ra->getCount(array('id' => $rwy->id, 'category' => 'blog'));
-							}
-						}
-					}
+					$children[$v]->replies = $this->_treeRecurse($list[$child->id], $list, $maxlevel, $level+1);
 				}
 			}
 		}
-		return $comments;
+		return $children;
 	}
 
 	/**
