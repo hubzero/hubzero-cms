@@ -100,7 +100,20 @@ class BlogModel extends JObject
 		$this->_tbl = new BlogEntry($this->_db);
 
 		$this->set('scope', $scope);
-		$this->set('group_id', $scope_id);
+		switch ($scope)
+		{
+			case 'group':
+				$this->set('group_id', $scope_id);
+			break;
+			case 'member':
+				$this->set('group_id', 0);
+				$this->set('created_by', $scope_id);
+			break;
+			case 'site':
+			default:
+				$this->set('group_id', 0);
+			break;
+		}
 
 		$this->_config = JComponentHelper::getParams('com_blog');
 	}
@@ -193,7 +206,7 @@ class BlogModel extends JObject
 			}
 			else
 			{*/
-				$this->_entry = BlogModelEntry::getInstance($id, $this->get('scope'), $this->get('group_id'));
+				$this->_entry = BlogModelEntry::getInstance($id, $this->get('scope'), ($this->get('scope') == 'member' ? $this->get('created_by') : $this->get('group_id')));
 			//}
 		}
 		return $this->_entry;
@@ -237,7 +250,8 @@ class BlogModel extends JObject
 				$filters['sort'] = 'publish_up';
 				$filters['sort_Dir'] = 'ASC';
 				$results = $this->_tbl->getRecords($filters);
-				return new BlogModelEntry($results[0]);
+				$res = isset($results[0]) ? $results[0] : null;
+				return new BlogModelEntry($res);
 			break;
 
 			case 'popular':

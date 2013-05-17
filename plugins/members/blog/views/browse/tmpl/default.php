@@ -32,31 +32,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 $juser =& JFactory::getUser();
 $live_site = rtrim(JURI::base(),'/');
 
+$first = $this->model->entries('first');
+
+$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog';
 ?>
 
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
 <ul id="page_options">
 	<li>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
 		</a>
 	</li>
 	<li>
-		<a class="config btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+		<a class="config btn" href="<?php echo JRoute::_($base . '&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
 			<?php echo JText::_('Settings'); ?>
 		</a>
 	</li>
 </ul>
 <?php endif; ?>
 
-<form method="get" action="<?php JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
+<form method="get" action="<?php JRoute::_($base); ?>">
 	<div class="aside">
-	<?php if ($this->firstentry) : ?>
+	<?php if ($first->exists()) { ?>
 		<div class="container">
-			<h4>Entries by Year</h4>
+			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 			<ul>
 				<?php 
-					$start = intval(substr($this->firstentry,0,4));
+					$start = intval(substr($first->get('publish_up'), 0, 4));
 					$now = date("Y");
 					$m = array(
 						'PLG_MEMBERS_BLOG_JANUARY',
@@ -75,7 +78,7 @@ $live_site = rtrim(JURI::base(),'/');
 				?>
 				<?php for ($i=$now, $n=$start; $i >= $n; $i--) : ?>
 					<li>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task='.$i); ?>">
+						<a href="<?php echo JRoute::_($base . '&task='.$i); ?>">
 							<?php echo $i; ?>
 						</a>
 						<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) : ?>
@@ -94,37 +97,41 @@ $live_site = rtrim(JURI::base(),'/');
 				<?php endfor; ?>
 			</ul>
 		</div>
-	<?php endif; ?>
+	<?php } ?>
 	
-	<?php if ($this->popular) : ?>
-		<div class="container">
-			<h4><?php echo JText::_('Popular Entries'); ?></h4>
-			<ul>
-				<?php foreach ($this->popular as $row) : ?>
-					<li>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
-						</a>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-	<?php endif; ?>
-	
-	<?php if ($this->recent) : ?>
-		<div class="container">
-			<h4><?php echo JText::_('Recent Entries'); ?></h4>
-			<ul>
-				<?php foreach ($this->recent as $row) : ?>
-					<li>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
-							<?php echo $this->escape(stripslashes($row->title)); ?>
-						</a>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-	<?php endif; ?>
+		<div class="container blog-popular-entries">
+			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
+		<?php if ($popular = $this->model->entries('recent', $this->filters)) { ?>
+			<ol>
+			<?php foreach ($popular as $row) { ?>
+				<li>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</li>
+			<?php } ?>
+			</ol>
+		<?php } else { ?>
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+		<?php } ?>
+		</div><!-- / .blog-popular-entries -->
+
+		<div class="container blog-recent-entries">
+			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_RECENT_ENTRIES'); ?></h4>
+		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
+			<ol>
+			<?php foreach ($recent as $row) { ?>
+				<li>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+					</a>
+				</li>
+			<?php } ?>
+			</ol>
+		<?php } else { ?>
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+		<?php } ?>
+		</div><!-- / .blog-recent-entries -->
 	</div><!-- / .aside -->
 
 	<div class="subject">
@@ -133,7 +140,7 @@ $live_site = rtrim(JURI::base(),'/');
 	<?php endif; ?>
 
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="Search" />
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 			<fieldset class="entry-search">
 				<input type="text" name="search" value="<?php echo $this->escape($this->search); ?>" />
 			</fieldset>
@@ -141,161 +148,146 @@ $live_site = rtrim(JURI::base(),'/');
 	
 		<div class="container">
 			<h3>
-<?php if (isset($this->search) && $this->search) { ?>
-				<?php echo JText::sprintf('Search for "%s"', $this->escape($this->search)); ?>
-<?php } else if (!isset($this->year) || !$this->year) { ?>
-				<?php echo JText::_('Latest Entries'); ?>
-<?php } else { 
-		$format = '%b %Y';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$format = 'M Y';
-		}
-				$archiveDate  = $this->year;
-				$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
-				$archiveDate .= '-01 00:00:00';
-				echo JHTML::_('date', $archiveDate, $format, $this->tz);
-} ?>
-				<?php
-					if ($this->config->get('feeds_enabled', 1)) :
-						$path  = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=feed.rss';
-						$path .= ($this->year)  ? '&year=' . $this->year   : '';
-						$path .= ($this->month) ? '&month=' . $this->month : '';
-						$feed = JRoute::_($path);
-						if (substr($feed, 0, 4) != 'http') 
+				<?php if (isset($this->search) && $this->search) { ?>
+					<?php echo JText::sprintf('Search for "%s"', $this->escape($this->search)); ?>
+				<?php } else if (!isset($this->year) || !$this->year) { ?>
+					<?php echo JText::_('Latest Entries'); ?>
+				<?php } else { 
+						$format = '%b %Y';
+						if (version_compare(JVERSION, '1.6', 'ge'))
 						{
-							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+							$format = 'M Y';
 						}
-						$feed = str_replace('https:://', 'http://', $feed);
+					$archiveDate  = $this->year;
+					$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
+					$archiveDate .= '-01 00:00:00';
+					echo JHTML::_('date', $archiveDate, $format, BLOG_DATE_TIMEZONE); /* BLOG_DATE_TIMEZONE defined in BlogModelEntry */
+				} ?>
+				<?php
+				if ($this->config->get('feeds_enabled', 1)) {
+					$path  = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=feed.rss';
+					$path .= ($this->year)  ? '&year=' . $this->year   : '';
+					$path .= ($this->month) ? '&month=' . $this->month : '';
+					$feed = JRoute::_($path);
+					if (substr($feed, 0, 4) != 'http') 
+					{
+						$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+					}
+					$feed = str_replace('https:://', 'http://', $feed);
 				?>
 				<a class="feed" href="<?php echo $feed; ?>">
 					<?php echo JText::_('RSS Feed'); ?>
 				</a>
-				<?php endif; ?>
+				<?php } ?>
 			</h3>
-	<?php if ($this->rows) { ?>
-			<ol class="blog-entries">
-<?php 
-		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
 
+	<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
+			<ol class="blog-entries">
+		<?php 
 		$cls = 'even';
-		foreach ($this->rows as $row)
+		foreach ($rows as $row)
 		{
 			$cls = ($cls == 'even') ? 'odd' : 'even';
 
-			$wikiconfig = array(
-				'option'   => $this->option,
-				'scope'    => 'blog',
-				'pagename' => $row->alias,
-				'pageid'   => 0,
-				'filepath' => $this->config->get('uploadpath'),
-				'domain'   => ''
-			);
-			$row->content = $p->parse(stripslashes($row->content), $wikiconfig);
-			if ($this->config->get('cleanintro', 1)) {
-				$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), $this->config->get('introlength', 300), 0, 1);
-			} else {
-				$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), $this->config->get('introlength', 300), 0, 0);
-			}
-			if (substr($row->content, -7) == '&#8230;') {
-				$row->content .= '</p>';
-			}
-
-			switch ($row->state)
-			{
-				case 1:
-					$state = JText::_('Public');
-					$cls = "public";
-					break;
-				case 2:
-					$state = JText::_('Registered members');
-					$cls = "registered";
-					break;
-				case 0:
-				default:
-					$state = JText::_('Private');
-					$cls = "private";
-					break;
-			}
-			$date =& JFactory::getDate();
-			if ($row->publish_down != '0000-00-00 00:00:00' && $row->publish_down <= $date->toMySQL())
+			if ($row->ended())
 			{
 				$cls .= ' expired';
 			}
-?>
-			<li class="<?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
+			?>
+			<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
 				<h4 class="entry-title">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+					<a href="<?php echo JRoute::_($row->link()); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				</h4>
 				<dl class="entry-meta">
 					<dt>
 						<span>
-							<?php echo JText::sprintf('Entry #%s', $row->id); ?>
+							<?php echo JText::sprintf('Entry #%s', $row->get('id')); ?>
 						</span>
 					</dt>
 					<dd class="date">
-						<time datetime="<?php echo $row->publish_up; ?>">
-							<?php echo JHTML::_('date', $row->publish_up, $this->dateFormat, $this->tz); ?>
+						<time datetime="<?php echo $row->published(); ?>">
+							<?php echo $row->published('date'); ?>
 						</time>
 					</dd>
 					<dd class="time">
-						<time datetime="<?php echo $row->publish_up; ?>">
-							<?php echo JHTML::_('date', $row->publish_up, $this->timeFormat, $this->tz); ?>
+						<time datetime="<?php echo $row->published(); ?>">
+							<?php echo $row->published('time'); ?>
 						</time>
 					</dd>
 					<dd class="author">
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->created_by); ?>">
-							<?php echo $this->escape(stripslashes($row->name)); ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
+							<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 						</a>
 					</dd>
-<?php if ($row->allow_comments == 1) { ?>
+				<?php if ($row->get('allow_comments') == 1) { ?>
 					<dd class="comments">
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias . '#comments'); ?>">
-							<?php echo JText::sprintf('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->comments); ?>
+						<a href="<?php echo JRoute::_($row->link('comments')); ?>">
+							<?php echo JText::sprintf('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
 						</a>
 					</dd>
-<?php } else { ?>
+				<?php } else { ?>
 					<dd class="comments">
 						<span>
 							<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
 						</span>
 					</dd>
-<?php } ?>
-<?php if ($juser->get('id') == $row->created_by) { ?>
-					<dd class="state <?php echo $cls; ?>">
-						<?php echo $state; ?>
+				<?php } ?>
+				<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+					<dd class="state <?php echo $row->state('text'); ?>">
+						<?php echo JText::_('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
 					</dd>
-<?php } ?>
+				<?php } ?>
 					<dd class="entry-options">
-<?php if ($juser->get('id') == $row->created_by) { ?>
-						<a class="edit" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
-							<?php echo JText::_('Edit'); ?>
+					<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+						<a class="edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>">
+							<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>
 						</a>
-						<a class="delete" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
-							<?php echo JText::_('Delete'); ?>
+						<a class="delete" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>">
+							<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>
 						</a>
-<?php } ?>
+					<?php } ?>
 					</dd>
 				</dl>
 				<div class="entry-content">
 			<?php if ($this->config->get('cleanintro', 1)) { ?>
 					<p>
-						<?php echo $row->content; ?> 
+						<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?> 
 					</p>
 			<?php } else { ?>
-					<?php echo $row->content; ?>
+					<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?> 
 			<?php } ?>
 				</div>
 			</li>
-<?php } ?>
+		<?php } ?>
 			</ol>
+			<?php 
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->model->entries('count', $this->filters), 
+					$this->filters['start'], 
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+				$pageNav->setAdditionalUrlParam('active', 'blog');
+				if ($this->filters['year'])
+				{
+					$pageNav->setAdditionalUrlParam('year', $this->filters['year']);
+				}
+				if ($this->filters['month'])
+				{
+					$pageNav->setAdditionalUrlParam('month', $this->filters['month']);
+				}
+				if ($this->filters['search'])
+				{
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				}
+				echo $pageNav->getListFooter();
+			?>
 <?php } else { ?>
-			<p>Currently there are no blog entries.</p>
+			<p class="warning"><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 <?php } ?>
-			<?php echo $this->pagenavhtml; ?>
 		</div>
 	</div><!-- / .subject -->
 </form>

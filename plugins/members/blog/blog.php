@@ -84,27 +84,26 @@ class plgMembersBlog extends JPlugin
 			}
 		}
 
-		$this->user = $user;
-		$this->member = $member;
-		$this->option = $option;
-		//$this->authorized = $authorized;
-		$this->database = JFactory::getDBO();
-
-		$p = new Hubzero_Plugin_Params($this->database);
-		$this->params = $p->getParams($this->member->get('uidNumber'), 'members', 'blog');
-
 		$arr = array(
-			'html' => '',
+			'html'     => '',
 			'metadata' => ''
 		);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
+
+		// Get our model
+		$this->model = new BlogModel('member', $member->get('uidNumber'));
 
 		if ($returnhtml) 
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.member.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.tags.php');
+			$this->user    = $user;
+			$this->member  = $member;
+			$this->option  = $option;
+			//$this->authorized = $authorized;
+			$this->database = JFactory::getDBO();
+
+			$p = new Hubzero_Plugin_Params($this->database);
+			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
 
 			$this->dateFormat  = '%d %b, %Y';
 			$this->timeFormat  = '%I:%M %p';
@@ -122,14 +121,17 @@ class plgMembersBlog extends JPlugin
 				$this->tz = true;
 			}
 
+			// Push styles to the template
 			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('members', 'blog');
+			Hubzero_Document::addPluginStylesheet('members', $this->_name);
+			Hubzero_Document::addPluginScript('members', $this->_name);
 
+			// Append to document the title
 			$document =& JFactory::getDocument();
-			//$document->addStyleSheet('plugins' . DS . 'members' . DS . 'blog' . DS . 'blog.css');
-			$document->setTitle($document->getTitle().': '.JText::_('PLG_MEMBERS_BLOG'));
+			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_MEMBERS_BLOG'));
 
-			$this->task = JRequest::getVar('action','');
+			// Get and determine task
+			$this->task = JRequest::getVar('action', '');
 
 			if (is_numeric($this->task)) 
 			{
@@ -167,10 +169,12 @@ class plgMembersBlog extends JPlugin
 			}
 		}
 
-		$filters = array();
-		$filters['scope']      = 'member';
-		$filters['group_id']   = 0;
-		$filters['created_by'] = $this->member->get('uidNumber');
+		// Build filters
+		$filters = array(
+			'scope'      => 'member',
+			'group_id'   => 0,
+			'created_by' => $member->get('uidNumber')
+		);
 
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
@@ -179,15 +183,14 @@ class plgMembersBlog extends JPlugin
 		} 
 		else 
 		{
-			if ($juser->get('id') != $this->member->get('uidNumber')) 
+			if ($juser->get('id') != $member->get('uidNumber')) 
 			{
 				$filters['state'] = 'registered';
 			}
 		}
 
-		$be = new BlogEntry(JFactory::getDBO());
-
-		$arr['metadata']['count'] = $be->getCount($filters);
+		// Get an entry count
+		$arr['metadata']['count'] = $this->model->entries('count', $filters);
 
 		return $arr;
 	}
@@ -203,103 +206,63 @@ class plgMembersBlog extends JPlugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'browse'
 			)
 		);
 		$view->option = $this->option;
 		$view->member = $this->member;
 		$view->config = $this->params;
-		//$view->authorized = $this->authorized;
-		
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
-		
-		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 25);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['created_by'] = $this->member->get('uidNumber');
-		$filters['year'] = JRequest::getInt('year', 0);
-		$filters['month'] = JRequest::getInt('month', 0);
-		$filters['scope'] = 'member';
-		$filters['group_id'] = 0;
-		$filters['search'] = JRequest::getVar('search','');
-		$filters['authorized'] = false;
+		$view->model  = $this->model;
 
+		$jconfig = JFactory::getConfig();
+
+		// Filters for returning results
+		$view->filters = array(
+			'limit'      => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'created_by' => $this->member->get('uidNumber'),
+			'year'       => JRequest::getInt('year', 0),
+			'month'      => JRequest::getInt('month', 0),
+			'scope'      => 'member',
+			'group_id'   => 0,
+			'search'     => JRequest::getVar('search',''),
+			'authorized' => false
+		);
+
+		// See what information we can get from the path
 		$juri =& JURI::getInstance();
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
 		{
-			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/blog', '', $path);
+			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
 			$path = ltrim($path, DS);
 			$bits = explode('/', $path);
-			$filters['year'] = (isset($bits[0])) ? $bits[0] : $filters['year'];
-			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
+			$view->filters['year']  = (isset($bits[0])) ? $bits[0] : $view->filters['year'];
+			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
 		}
 
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
-			$filters['state'] = 'public';
+			$view->filters['state'] = 'public';
 		} 
 		else 
 		{
 			if ($juser->get('id') != $this->member->get('uidNumber')) 
 			{
-				$filters['state'] = 'registered';
+				$view->filters['state'] = 'registered';
 			}
 		}
 		if ($juser->get('id') == $this->member->get('uidNumber'))
 		{
-			$filters['authorized'] = true;
+			$view->filters['authorized'] = true;
 		}
 
-		$be = new BlogEntry($this->database);
+		$view->year   = $view->filters['year'];
+		$view->month  = $view->filters['month'];
+		$view->search = $view->filters['search'];
 
-		$total = $be->getCount($filters);
-
-		$view->rows = $be->getRecords($filters);
-		if ($filters['search']) 
-		{
-			$view->rows = $this->_highlight($filters['search'], $view->rows);
-		}
-
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
-			$total, 
-			$filters['start'], 
-			$filters['limit']
-		);
-
-		$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
-		$pageNav->setAdditionalUrlParam('active', 'blog');
-		if ($filters['year'])
-		{
-			$pageNav->setAdditionalUrlParam('year', $filters['year']);
-		}
-		if ($filters['month'])
-		{
-			$pageNav->setAdditionalUrlParam('month', $filters['month']);
-		}
-		if ($filters['search'])
-		{
-			$pageNav->setAdditionalUrlParam('search', $filters['search']);
-		}
-
-		$view->firstentry = $be->getDateOfFirstEntry($filters);
-
-		$view->popular = $be->getPopularEntries($filters);
-		$view->recent = $be->getRecentEntries($filters);
-
-		$view->year = $filters['year'];
-		$view->month = $filters['month'];
-		$view->search = $filters['search'];
-		$view->pagenavhtml = $pageNav->getListFooter();
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -331,105 +294,65 @@ class plgMembersBlog extends JPlugin
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-		//$params =& $mainframe->getParams();
-		$app =& JFactory::getApplication();
-		$params =& $app->getParams();
-		$doc->link = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog');
-		
+		$doc->link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 25);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['created_by'] = $this->member->get('uidNumber');
-		$filters['year'] = JRequest::getInt('year', 0);
-		$filters['month'] = JRequest::getInt('month', 0);
-		$filters['scope'] = 'member';
-		$filters['group_id'] = 0;
-		$filters['search'] = JRequest::getVar('search','');
-		
-		$juri =& JURI::getInstance();
-		$path = $juri->getPath();
+		$filters = array(
+			'limit'      => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'year'       => JRequest::getInt('year', 0),
+			'month'      => JRequest::getInt('month', 0),
+			'scope'      => 'member',
+			'group_id'   => 0,
+			'search'     => JRequest::getVar('search',''),
+			'created_by' => $this->member->get('uidNumber')
+		);
+
+		$path = JURI::getInstance()->getPath();
 		if (strstr($path, '/')) 
 		{
 			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/blog', '', $path);
 			$path = ltrim($path, DS);
 			$bits = explode('/', $path);
-			$filters['year'] = (isset($bits[0])) ? $bits[0] : $filters['year'];
+			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
 			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
 		}
 
 		// Build some basic RSS document information
 		$jconfig =& JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename').' - '.stripslashes($this->member->get('name')).': '.JText::_('Blog');
-		//$doc->title .= ($filters['year']) ? ': '.$filters['year'] : '';
-		//$doc->title .= ($filters['month']) ? ': '.sprintf("%02d",$filters['month']) : '';
-		
+		$doc->title       = $jconfig->getValue('config.sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . JText::_('Blog');
 		$doc->description = JText::sprintf('PLG_MEMBERS_BLOG_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'),stripslashes($this->member->get('name')));
-		$doc->copyright = JText::sprintf('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category = JText::_('PLG_MEMBERS_BLOG_RSS_CATEGORY');
+		$doc->copyright   = JText::sprintf('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = JText::_('PLG_MEMBERS_BLOG_RSS_CATEGORY');
 
-		//$view->canpost = $this->_getPostingPermissions();
+		$filters['state'] = 'public';
 
-		//$juser =& JFactory::getUser();
-		//if ($juser->get('guest')) {
-			$filters['state'] = 'public';
-		//} else {
-			//if ($this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin') {
-				//$filters['state'] = 'registered';
-			//}
-		//}
-		
-		$be = new BlogEntry($this->database);
-
-		$rows = $be->getRecords($filters);
+		$rows = $this->model->entries('list', $filters);
 
 		// Start outputing results if any found
-		if (count($rows) > 0) 
+		if ($rows->total() > 0) 
 		{
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-			
-			$path = $this->params->get('uploadpath', '/site/members/{{uid}}/blog');
-			$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')), $path);
-			
 			foreach ($rows as $row)
 			{
-				// Prepare the title
-				$title = strip_tags($row->title);
-				$title = html_entity_decode($title);
+				$item = new JFeedItem();
 
-				// URL link to article
-				$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias);
-
-				//$cuser =& JUser::getInstance($row->created_by);
-				$author = $this->member->get('name'); //$cuser->get('name');
-				
 				// Strip html from feed item description text
-				$wikiconfig = array(
-					'option'   => $this->option,
-					'scope'    => 'blog',
-					'pagename' => $row->alias,
-					'pageid'   => 0,
-					'filepath' => $path,
-					'domain'   => '' 
-				);
-				$description = $p->parse(stripslashes($row->content), $wikiconfig, true, true);
-				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-				if ($this->params->get('feed_entries', 'partial') == 'partial') 
+				$item->description = $row->content('parsed');
+				$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($item->description));
+				if ($this->params->get('feed_entries') == 'partial') 
 				{
-					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
+					$item->description = Hubzero_View_Helper_Html::shortenText($item->description, 300, 0);
 				}
 
-				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
-				
 				// Load individual item creator class
-				$item = new JFeedItem();
-				$item->title       = $title;
-				$item->link        = $link;
-				$item->description = $description;
-				$item->date        = $date;
+				$item->title       = html_entity_decode(strip_tags($row->get('title')));
+				$item->link        = JRoute::_($row->link());
+				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $author;
+				$item->author      = $row->creator('name');
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -438,67 +361,6 @@ class plgMembersBlog extends JPlugin
 		
 		// Output the feed
 		echo $doc->render();
-	}
-
-	/**
-	 * Highlight some text in a string
-	 * 
-	 * @param      string $searchquery Text to highlight
-	 * @param      array  $results     Array of results to highlight text in
-	 * @return     array
-	 */
-	private function _highlight($searchquery, $results)
-	{
-		$toks = array($searchquery);
-
-		$resultback = 60;
-		$resultlen  = 300;
-
-		// Loop through all results
-		for ($i = 0, $n = count($results); $i < $n; $i++)
-		{
-			$row =& $results[$i];
-
-			// Clean the text up a bit first
-			$lowerrow = strtolower($row->content);
-
-			// Find first occurrence of a search word
-			$pos = 0;
-			foreach ($toks as $tok)
-			{
-				$pos = strpos($lowerrow, $tok);
-				if ($pos !== false) 
-				{
-					break;
-				}
-			}
-
-			if ($pos > $resultback) 
-			{
-				$row->content = substr($row->content, ($pos - $resultback), $resultlen);
-			} 
-			else 
-			{
-				$row->content = substr($row->content, 0, $resultlen);
-			}
-
-			// Highlight each word/phrase found
-			foreach ($toks as $tok)
-			{
-				if ($tok == 'class' 
-				 || $tok == 'span' 
-				 || $tok == 'highlight') 
-				{
-					continue;
-				}
-				$row->content = preg_replace('#' . $tok . '#i' , "<span class=\"highlight\">\\0</span>", $row->content);
-				$row->title   = preg_replace('#' . $tok . '#i', "<span class=\"highlight\">\\0</span>", $row->title);
-			}
-
-			$row->content = trim($row->content) . ' &#8230;';
-		}
-
-		return $results;
 	}
 
 	/**
@@ -512,21 +374,14 @@ class plgMembersBlog extends JPlugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'entry'
 			)
 		);
 		$view->option = $this->option;
 		$view->member = $this->member;
 		$view->config = $this->params;
-		//$view->authorized = $this->authorized;
-
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
+		$view->model  = $this->model;
 
 		if (isset($this->entry) && is_object($this->entry)) 
 		{
@@ -534,8 +389,8 @@ class plgMembersBlog extends JPlugin
 		} 
 		else 
 		{
-			$juri =& JURI::getInstance();
-			$path = $juri->getPath();
+			$path = JURI::getInstance()->getPath();
+			$alias = '';
 			if (strstr($path, '/')) 
 			{
 				$path = str_replace('/members/' . $this->member->get('uidNumber') . '/blog/', '', $path);
@@ -543,106 +398,43 @@ class plgMembersBlog extends JPlugin
 				$alias = end($bits);
 			}
 
-			$view->row = new BlogEntry($this->database);
-			$view->row->loadAlias($alias, 'member', $this->member->get('uidNumber'));
+			$view->row = $this->model->entry($alias);
 		}
 
-		if (!$view->row->id) 
+		if (!$view->row->exists()) 
 		{
 			return $this->_browse();
 		}
 
 		// Check authorization
 		$juser =& JFactory::getUser();
-		if (($view->row->state == 2 && $juser->get('guest')) || ($view->row->state == 0 && $juser->get('id') != $this->member->get('uidNumber'))) 
+		if (($view->row->get('state') == 2 && $juser->get('guest')) 
+		 || ($view->row->get('state') == 0 && $juser->get('id') != $this->member->get('uidNumber'))) 
 		{
 			JError::raiseError(403, JText::_('PLG_MEMBERS_BLOG_NOT_AUTH'));
 			return;
 		}
 
-		$juser =& JFactory::getUser();
-		if ($juser->get('id') != $this->member->get('uidNumber')) 
-		{ 
-			$view->row->hit();
-		}
-
-		if ($view->row->content) 
-		{
-			$path = $this->params->get('uploadpath', '/site/members/{{uid}}/blog');
-			$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')), $path);
-
-			$wikiconfig = array(
-				'option'   => $this->option,
-				'scope'    => Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')) . DS . 'blog',
-				'pagename' => $view->row->alias,
-				'pageid'   => 0,
-				'filepath' => $path,
-				'domain'   => '' 
-			);
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-			$view->row->content = $p->parse(stripslashes($view->row->content), $wikiconfig);
-		}
-
-		$bc = new BlogComment($this->database);
-		$view->comments = $bc->getAllComments($view->row->id);
-
-		//count($this->comments, COUNT_RECURSIVE)
-		$view->comment_total = 0;
-		if ($view->comments) 
-		{
-			foreach ($view->comments as $com) 
-			{
-				$view->comment_total++;
-				if ($com->replies) 
-				{
-					foreach ($com->replies as $rep) 
-					{
-						$view->comment_total++;
-						if ($rep->replies) 
-						{
-							$view->comment_total = $view->comment_total + count($rep->replies);
-						}
-					}
-				}
-			}
-		}
-
-		$r = JRequest::getInt('reply', 0);
-		$view->replyto = new BlogComment($this->database);
-		$view->replyto->load($r);
-
-		$bt = new BlogTags($this->database);
-		$view->tags = $bt->get_tag_cloud(0, 0, $view->row->id);
-
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = 10;
-		$filters['start'] = 0;
-		$filters['created_by'] = $this->member->get('uidNumber');
-		$filters['group_id'] = 0;
-		$filters['scope'] = 'member';
+		$view->filters = array(
+			'limit'    => 10,
+			'start'    => 0,
+			'scope'    => 'member',
+			'group_id' => 0,
+			'created_by' => $this->member->get('uidNumber')
+		);
 
 		if ($juser->get('guest')) 
 		{
-			$filters['state'] = 'public';
+			$view->filters['state'] = 'public';
 		} 
 		else 
 		{
 			if ($juser->get('id') != $this->member->get('uidNumber')) 
 			{
-				$filters['state'] = 'registered';
+				$view->filters['state'] = 'registered';
 			}
 		}
-		$view->popular = $view->row->getPopularEntries($filters);
-		$view->recent = $view->row->getRecentEntries($filters);
-
-		// Push some scripts to the template
-		/*$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'blog' . DS . 'blog.js')) 
-		{
-			$document->addScript('plugins' . DS . 'members' . DS . 'blog' . DS . 'blog.js');
-		}*/
 
 		if ($this->getError()) 
 		{
@@ -669,8 +461,9 @@ class plgMembersBlog extends JPlugin
 	 * 
 	 * @return     string
 	 */
-	private function _edit() 
+	private function _edit($row=null) 
 	{
+		// Login check
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
@@ -678,41 +471,41 @@ class plgMembersBlog extends JPlugin
 			return $this->_login();
 		}
 
+		// Instantiate view
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'edit'
 			)
 		);
 		$view->option = $this->option;
 		$view->member = $this->member;
-		$view->task = $this->task;
+		$view->task   = $this->task;
 		$view->config = $this->params;
 
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
-
-		$id = JRequest::getInt('entry', 0);
-
-		$view->entry = new BlogEntry($this->database);
-		$view->entry->load($id, 'member');
-		if (!$view->entry->id) 
+		// Load the entry
+		if (is_object($row))
 		{
-			$view->entry->allow_comments = 1;
-			$view->entry->state = 1;
-			$view->entry->scope = 'member';
-			$view->entry->created_by = $this->member->get('uidNumber');
+			$view->entry = $row;
+		}
+		else 
+		{
+			$view->entry = $this->model->entry(JRequest::getInt('entry', 0));
 		}
 
-		$bt = new BlogTags($this->database);
-		$view->tags = $bt->get_tag_string($view->entry->id);
+		// Does it exist?
+		if (!$view->entry->exists()) 
+		{
+			// Set some defaults
+			$view->entry->set('allow_comments', 1);
+			$view->entry->set('state', 1);
+			$view->entry->set('scope', 'member');
+			$view->entry->set('created_by', $this->member->get('uidNumber'));
+		}
 
+		// Pass any errors on to the view
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -720,40 +513,9 @@ class plgMembersBlog extends JPlugin
 				$view->setError($error);
 			}
 		}
+
+		// Render view
 		return $view->loadTemplate();
-	}
-
-	/**
-	 * Strip invalid characters from title to make an alias
-	 * 
-	 * @param      string $title Title to normalize
-	 * @return     string
-	 */
-	private function _normalizeTitle($title)
-	{
-		$title = str_replace(' ', '-', $this->_shortenTitle($title));
-		$title = preg_replace("/[^a-zA-Z0-9\-]/", '', $title);
-		return strtolower($title);
-	}
-
-	/**
-	 * Shorten a title
-	 * 
-	 * @param      string  $text  Text to shorten
-	 * @param      integer $chars Length to shorten to
-	 * @return     string
-	 */
-	public function _shortenTitle($text, $chars=100) 
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-		if (strlen($text) > $chars) 
-		{
-			$text = $text . ' ';
-			$text = substr($text, 0, $chars);
-			$text = substr($text, 0, strrpos($text,' '));
-		}
-		return $text;
 	}
 
 	/**
@@ -763,6 +525,7 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _save() 
 	{
+		// Login check
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
@@ -770,53 +533,35 @@ class plgMembersBlog extends JPlugin
 			return $this->_login();
 		}
 
-		$entry = JRequest::getVar('entry', array(), 'post');
+		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
 
-		$row = new BlogEntry($this->database);
+		// Instantiate model
+		$row = $this->model->entry($entry['id']);
+
+		// Bind data
 		if (!$row->bind($entry)) 
 		{
 			$this->setError($row->getError());
-			return $this->_edit();
-		}
-
-		//$row->id = JRequest::getInt('entry_id', 0);
-
-		if (!$row->id) 
-		{
-			$row->alias = $this->_normalizeTitle($row->title);
-			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$row->publish_up = date('Y-m-d H:i:s', time());
-		}
-
-		if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') 
-		{
-			$row->publish_up = $row->created;
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->_edit();
+			return $this->_edit($row);
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
-			return $this->_edit();
+			return $this->_edit($row);
 		}
 
 		// Process tags
-		$tags = trim(JRequest::getVar('tags', ''));
-		$bt = new BlogTags($this->database);
-		$bt->tag_object($this->member->get('uidNumber'), $row->id, $tags, 1, 1);
-
-		//$this->entry = $row;
+		if (!$row->tag(JRequest::getVar('tags', ''))) 
+		{
+			$this->setError($row->getError());
+			return $this->_edit($row);
+		}
 
 		//return $this->_entry();
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias));
+		$app->redirect(JRoute::_($row->link()));
 	}
 
 	/**
@@ -846,12 +591,11 @@ class plgMembersBlog extends JPlugin
 			return $this->_browse();
 		}
 
-		$process = JRequest::getVar('process', '');
+		$process    = JRequest::getVar('process', '');
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = new BlogEntry($this->database);
-		$entry->load($id);
+		$entry = $this->model->entry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) 
@@ -866,7 +610,7 @@ class plgMembersBlog extends JPlugin
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'members',
-					'element' => 'blog',
+					'element' => $this->_name,
 					'name'    => 'delete'
 				)
 			);
@@ -876,14 +620,7 @@ class plgMembersBlog extends JPlugin
 			$view->config = $this->params;
 			$view->entry  = $entry;
 			$view->authorized = true;
-			
-			$view->dateFormat  = $this->dateFormat;
-			$view->timeFormat  = $this->timeFormat;
-			$view->yearFormat  = $this->yearFormat;
-			$view->monthFormat = $this->monthFormat;
-			$view->dayFormat   = $this->dayFormat;
-			$view->tz          = $this->tz;
-			
+
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -894,29 +631,9 @@ class plgMembersBlog extends JPlugin
 			return $view->loadTemplate();
 		}
 
-		// Delete all comments on an entry
-		if (!$entry->deleteComments($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
-		// Delete all associated content
-		if (!$entry->deleteTags($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
-		// Delete all associated content
-		if (!$entry->deleteFiles($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
 		// Delete the entry itself
-		if (!$entry->delete($id)) 
+		$entry->set('state', -1);
+		if (!$entry->store()) 
 		{
 			$this->setError($entry->getError());
 		}
@@ -944,28 +661,15 @@ class plgMembersBlog extends JPlugin
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		$row = new BlogComment($this->database);
+		$row = new BlogModelComment($comment['id']);
 		if (!$row->bind($comment)) 
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
 		}
 
-		// Set the created time
-		if (!$row->id) 
-		{
-			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->_entry();
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
@@ -1034,17 +738,13 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Initiate a blog comment object
-		$comment = new BlogComment($this->database);
+		$comment = new BlogModelComment($id);
 
 		// Delete all comments on an entry
-		if (!$comment->deleteChildren($id)) 
-		{
-			$this->setError($comment->getError());
-			return $this->_entry();
-		}
+		$comment->set('state', 2);
 
 		// Delete the entry itself
-		if (!$comment->delete($id)) 
+		if (!$comment->store()) 
 		{
 			$this->setError($comment->getError());
 		}
@@ -1067,7 +767,7 @@ class plgMembersBlog extends JPlugin
 			return;
 		}
 
-		if ($this->user->get("id") != $this->member->get("uidNumber"))
+		if ($this->user->get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(JText::_('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -1078,7 +778,7 @@ class plgMembersBlog extends JPlugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'settings'
 			)
 		);
@@ -1086,16 +786,9 @@ class plgMembersBlog extends JPlugin
 		$view->member   = $this->member;
 		$view->task     = $this->task;
 		$view->config   = $this->params;
-		$view->settings = new Hubzero_Plugin_Params($this->database);
-		$view->settings->loadPlugin($this->member->get('uidNumber'), 'members', 'blog');
-		//$view->authorized = $this->authorized;
 
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
+		$view->settings = new Hubzero_Plugin_Params($this->database);
+		$view->settings->loadPlugin($this->member->get('uidNumber'), 'members', $this->_name);
 
 		$view->message  = (isset($this->message)) ? $this->message : '';
 		if ($this->getError()) 
@@ -1138,16 +831,16 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Get parameters
-		$params = JRequest::getVar('params', '', 'post');
-		if (is_array($params)) 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$txt = array();
-			foreach ($params as $k=>$v) 
-			{
-				$txt[] = "$k=$v";
-			}
-			$row->params = implode("\n", $txt);
+			$paramsClass = 'JRegistry';
 		}
+
+		$p = new $paramsClass('');
+		$p->bind(JRequest::getVar('params', '', 'post'));
+
+		$row->params = $p->toString();
 
 		// Check content
 		if (!$row->check()) 

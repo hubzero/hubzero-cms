@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog'); ?>">
+		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>
@@ -43,7 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
 		<fieldset class="settings">
 			<legend><?php echo JText::_('Posts'); ?></legend>
 			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
@@ -86,6 +86,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog'); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">Cancel</a>
 		</p>
 	</form>

@@ -127,7 +127,14 @@ class BlogModelEntry extends JObject
 		}
 		else if (is_string($oid))
 		{
-			$this->_tbl->loadAlias($oid, $scope, null, $group_id);
+			if ($scope == 'member')
+			{
+				$this->_tbl->loadAlias($oid, $scope, $group_id, null);
+			}
+			else
+			{
+				$this->_tbl->loadAlias($oid, $scope, null, $group_id);
+			}
 		}
 		else if (is_object($oid))
 		{
@@ -169,7 +176,7 @@ class BlogModelEntry extends JObject
 			break;
 
 			case 'member':
-				$this->_base = 'index.php?option=com_members&cn=' . $this->get('scope_id') . '&active=blog';
+				$this->_base = 'index.php?option=com_members&id=' . $this->get('created_by') . '&active=blog';
 			break;
 
 			case 'site':
@@ -708,14 +715,14 @@ class BlogModelEntry extends JObject
 						$option = 'com_group';
 						$option = 'com_member';
 						$plg = JPluginHelper::getPlugin('groups', 'blog');
-						$config = $paramsClass($plg->params);
+						$config = new $paramsClass($plg->params);
 						$path = str_replace('{{gid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog'));
 					break;
 
 					case 'member':
 						$option = 'com_member';
 						$plg = JPluginHelper::getPlugin('members', 'blog');
-						$config = $paramsClass($plg->params);
+						$config = new $paramsClass($plg->params);
 						$path = str_replace('{{uid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/members/{{uid}}/blog'));
 					break;
 

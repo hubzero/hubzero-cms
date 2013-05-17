@@ -300,7 +300,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				'domain'   => ''
 			);
 			$view->display();
-			?>
+		?>
 	<?php } else { ?>
 		<p class="no-comments">
 			<?php echo JText::_('COM_BLOG_NO_COMMENTS'); ?>
