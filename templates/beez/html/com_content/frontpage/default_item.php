@@ -23,13 +23,10 @@ defined('_JEXEC') or die('Restricted access');
 	echo $this->item->event->afterDisplayTitle;
 endif; ?>
 
-<?php if ($this->item->params->get('show_pdf_icon') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon')) : ?>
+<?php if ($this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon')) : ?>
 <p class="buttonheading">
 	<img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/trans.gif" alt="<?php echo JText::_('attention open in a new window'); ?>" />
-	<?php if ($this->item->params->get('show_pdf_icon')) :
-		echo JHTML::_('icon.pdf', $this->item, $this->item->params, $this->access);
-	endif;
-	if ($this->item->params->get('show_print_icon')) :
+	<?php if ($this->item->params->get('show_print_icon')) :
 		echo JHTML::_('icon.print_popup', $this->item, $this->item->params, $this->access);
 	endif;
 	if ($this->item->params->get('show_email_icon')) :

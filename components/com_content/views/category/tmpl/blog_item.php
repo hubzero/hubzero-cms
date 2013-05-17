@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <div class="system-unpublished">
 <?php endif; ?>
 
-<?php if ($this->item->params->get('show_title') || $this->item->params->get('show_pdf_icon') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon') || $canEdit) : ?>
+<?php if ($this->item->params->get('show_title') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon') || $canEdit) : ?>
 <table class="contentpaneopen<?php echo $this->escape($this->item->params->get( 'pageclass_sfx' )); ?>">
 <tr>
 	<?php if ($this->item->params->get('show_title')) : ?>
@@ -16,12 +16,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php else : ?>
 			<?php echo $this->escape($this->item->title); ?>
 		<?php endif; ?>
-	</td>
-	<?php endif; ?>
-
-	<?php if ($this->item->params->get('show_pdf_icon')) : ?>
-	<td align="right" width="100%" class="buttonheading">
-	<?php echo JHTML::_('icon.pdf', $this->item, $this->item->params, $this->access); ?>
 	</td>
 	<?php endif; ?>
 

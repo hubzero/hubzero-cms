@@ -15,7 +15,6 @@
 		<locale>nl_NL, nld_NLD, dutch, dutch-nl, nl, netherlands, nl_NL@euro, nl_NL.ISO8859-1, dut-NL, nl-NL.utf-8, nl_NL.utf8, nl-NL.UTF-8, dut_BE, dutch-be, belgium</locale>
 		<wincodepage>iso-8859-1</wincodepage>
 		<backwardlang>dutch</backwardlang>
-		<pdffontname>vera</pdffontname>
 	</metadata>
 	<params></params>
 </metafile>

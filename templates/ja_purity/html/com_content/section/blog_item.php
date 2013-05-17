@@ -29,7 +29,7 @@ if (
 ($this->item->params->get('show_create_date'))
 || (($this->item->params->get('show_author')) && ($this->item->author != ""))
 || (($this->item->params->get('show_section') && $this->item->sectionid) || ($this->item->params->get('show_category') && $this->item->catid))
-|| ($this->item->params->get('show_pdf_icon') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon'))
+|| ($this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon'))
 || ($this->item->params->get('show_url') && $this->item->urls)
 ) :
 ?>
@@ -77,7 +77,7 @@ if (
 <?php endif; ?>
 </div>
 
-<?php if ($this->item->params->get('show_pdf_icon') || $this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon')) : ?>
+<?php if ($this->item->params->get('show_print_icon') || $this->item->params->get('show_email_icon')) : ?>
 <div class="buttonheading">
 	<?php if ($this->item->params->get('show_email_icon')) : ?>
 	<span>
@@ -88,12 +88,6 @@ if (
 	<?php if ( $this->item->params->get( 'show_print_icon' )) : ?>
 	<span>
 	<?php echo JHTML::_('icon.print_popup', $this->item, $this->item->params, $this->access); ?>
-	</span>
-	<?php endif; ?>
-
-	<?php if ($this->item->params->get('show_pdf_icon')) : ?>
-	<span>
-	<?php echo JHTML::_('icon.pdf', $this->item, $this->item->params, $this->access); ?>
 	</span>
 	<?php endif; ?>
 </div>

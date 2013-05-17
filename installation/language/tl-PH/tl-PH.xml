@@ -17,7 +17,6 @@
 		<locale>tl, tagalog, tl_PH.UTF-8</locale>
 		<winCodePage>ISO-8559-1</winCodePage>
 		<backwardLang>tagalog</backwardLang>
-		<pdfFontName>freesans</pdfFontName>
 	</metadata>
 	<params></params>
 </metafile>

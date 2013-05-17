@@ -42,28 +42,6 @@ class JHTMLIcon
 		return JHTML::_('link', JRoute::_($url), $text, $attribs);
 	}
 
-	function pdf($article, $params, $access, $attribs = array())
-	{
-		$url  = 'index.php?view=article';
-		$url .=  @$article->catslug ? '&catid='.$article->catslug : '';
-		$url .= '&id='.$article->slug.'&format=pdf';
-
-		$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
-
-		// checks template image directory for image, if non found default are loaded
-		if ($params->get('show_icons')) {
-			$text = JHTML::_('image.site', 'pdf_button.png', '/images/M_images/', NULL, NULL, JText::_('PDF'));
-		} else {
-			$text = JText::_('PDF').'&nbsp;';
-		}
-
-		$attribs['title']	= JText::_( 'PDF' );
-		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
-		$attribs['rel']     = 'nofollow';
-
-		return JHTML::_('link', JRoute::_($url), $text, $attribs);
-	}
-
 	function email($article, $params, $access, $attribs = array())
         {
                 require_once(JPATH_SITE.DS.'components'.DS.'com_mailto'.DS.'helpers'.DS.'mailto.php');

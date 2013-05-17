@@ -15,7 +15,6 @@
 		<locale>az_AZ.utf8, az_AZ.UTF-8, az_AZ, aze_AZ, az, azerbaijani, azerbaijani-AZ, azerbaijan, AZ</locale>
 		<winCodePage>utf8</winCodePage>
 		<backwardLang>azeri</backwardLang>
-		<pdfFontName>freesans</pdfFontName>
 	</metadata>
 	<params></params>
 </metafile>

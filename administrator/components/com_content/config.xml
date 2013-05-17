@@ -62,11 +62,7 @@
 		</param>
 
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="show_icons" type="radio" default="1" label="Icons" description="TIPPRINTPDFEMAIL">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_pdf_icon" type="radio" default="1" label="PDF Icon" description="PARAMPDF">
+		<param name="show_icons" type="radio" default="1" label="Icons" description="TIPPRINTEMAIL">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
