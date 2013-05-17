@@ -384,7 +384,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&type=' . $type,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&type=' . $this->type,
 			JText::_('FEEDBACK_REMOVED')
 		);
 	}
