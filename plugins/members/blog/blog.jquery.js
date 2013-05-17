@@ -12,6 +12,14 @@ if (!jq) {
 jQuery(document).ready(function (jq) {
 	var $ = jq;
 
+	if ($("#field-publish_up").length && $("#field-publish_down").length) {
+		$('#field-publish_up, #field-publish_down').datetimepicker({
+			controlType: 'slider',
+			dateFormat: 'yy-mm-dd',
+			timeFormat: 'HH:mm:ss'
+		});
+	}
+
 	$('#content')
 			// Toggle text and classes when clicking reply
 			.on('click', 'a.reply', function (e) {

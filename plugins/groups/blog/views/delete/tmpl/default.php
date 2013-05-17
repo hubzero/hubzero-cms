@@ -30,37 +30,49 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=blog';
 ?>
+
+<ul id="page_options">
+	<li>
+		<a class="archive btn" href="<?php echo JRoute::_($base); ?>">
+			<?php echo JText::_('Archive'); ?>
+		</a>
+	</li>
+</ul>
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&action=delete&entry='.$this->entry->id); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_($base . '&action=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
 		<div class="explaination">
-<?php if ($this->authorized) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&action=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
-<?php } ?>
+		<?php if ($this->authorized) { ?>
+			<p><a class="add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+		<?php } ?>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
 
-	 		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_BLOG_DELETE_WARNING',$this->entry->title); ?></p>
+	 		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?></p>
 
-			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+			<label for="confirmdel">
+				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
 				<?php echo JText::_('PLG_GROUPS_BLOG_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
-		
-		<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
+
+		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
+		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="action" value="delete" />
-		<input type="hidden" name="entry" value="<?php echo $this->entry->id; ?>" />
-		
+		<input type="hidden" name="entry" value="<?php echo $this->entry->get('id'); ?>" />
+
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_($this->entry->link()); ?>"><?php echo JText::_('Cancel'); ?></a>
 		</p>
 	</form>

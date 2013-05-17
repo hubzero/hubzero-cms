@@ -60,7 +60,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	public function &onGroupAreas()
 	{
 		$area = array(
-			'name' => 'blog',
+			'name' => $this->_name,
 			'title' => JText::_('PLG_GROUPS_BLOG'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1)
@@ -84,7 +84,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		$return = 'html';
-		$active = 'blog';
+		$active = $this->_name;
 
 		// The output array we're returning
 		$arr = array(
@@ -104,7 +104,9 @@ class plgGroupsBlog extends Hubzero_Plugin
 			}
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
+
+		$this->model = new BlogModel('group', $group->get('gidNumber'));
 
 		//are we returning html
 		if ($return == 'html') 
@@ -129,9 +131,9 @@ class plgGroupsBlog extends Hubzero_Plugin
 			if ($juser->get('guest') 
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
-				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+				$this->redirect( "/login?return=" . base64_encode($url), $message, 'warning' );
 				return;
 			}
 
@@ -155,37 +157,21 @@ class plgGroupsBlog extends Hubzero_Plugin
 			// Set some variables so other functions have access
 			$this->action     = $action;
 			$this->option     = $option;
-			$this->name       = substr($option, 4, strlen($option));
+			//$this->name       = substr($option, 4, strlen($option));
 			$this->database   = JFactory::getDBO();
 
 			//get the plugins params
 			$p = new Hubzero_Plugin_Params($this->database);
-			$this->params = $p->getParams($group->gidNumber, 'groups', 'blog');
+			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
 			//push the css to the doc
 			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('groups', 'blog');
+			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
+			Hubzero_Document::addPluginScript('groups', $this->_name);
 
-			$this->dateFormat  = '%d %b, %Y';
-			$this->timeFormat  = '%I:%M %p';
-			$this->monthFormat = '%m';
-			$this->yearFormat  = '%Y';
-			$this->dayFormat   = '%d';
-			$this->tz = 0;
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$this->dateFormat  = 'd M, Y';
-				$this->timeFormat  = 'h:i a';
-				$this->monthFormat = 'm';
-				$this->yearFormat  = 'Y';
-				$this->dayFormat   = 'd';
-				$this->tz = true;
-			}
-
-			//include helpers
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.member.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.tags.php');
+			// Append to document the title
+			$document =& JFactory::getDocument();
+			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_GROUPS_BLOG'));
 
 			if (is_numeric($this->action)) 
 			{
@@ -223,9 +209,10 @@ class plgGroupsBlog extends Hubzero_Plugin
 			}
 		}
 
-		$filters = array();
-		$filters['scope']    = 'group';
-		$filters['group_id'] = $group->get('gidNumber');
+		$filters = array(
+			'scope'    => 'group',
+			'group_id' => $group->get('gidNumber')
+		);
 
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
@@ -242,10 +229,8 @@ class plgGroupsBlog extends Hubzero_Plugin
 			}
 		}
 
-		$be = new BlogEntry(JFactory::getDBO());
-
 		// Build the HTML meant for the "profile" tab's metadata overview
-		$arr['metadata']['count'] = $be->getCount($filters);
+		$arr['metadata']['count'] = $this->model->entries('count', $filters);
 
 		return $arr;
 	}
@@ -261,7 +246,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'browse'
 			)
 		);
@@ -270,26 +255,24 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$view->group      = $this->group;
 		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
+		$view->model      = $this->model;
 
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
+		$jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$filters = array();
-		$filters['limit']      = JRequest::getInt('limit', 25);
-		$filters['start']      = JRequest::getInt('limitstart', 0);
-		$filters['created_by'] = JRequest::getInt('author', 0);
-		$filters['year']       = JRequest::getInt('year', 0);
-		$filters['month']      = JRequest::getInt('month', 0);
-		$filters['scope']      = 'group';
-		$filters['group_id']   = $this->group->get('gidNumber');
-		$filters['search']     = JRequest::getVar('search','');
-		$filters['authorized'] = false;
+		$view->filters = array(
+			'limit'      => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'created_by' => JRequest::getInt('author', 0),
+			'year'       => JRequest::getInt('year', 0),
+			'month'      => JRequest::getInt('month', 0),
+			'scope'      => 'group',
+			'group_id'   => $this->group->get('gidNumber'),
+			'search'     => JRequest::getVar('search',''),
+			'authorized' => false
+		);
 
+		// See what information we can get from the path
 		$juri =& JURI::getInstance();
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
@@ -297,8 +280,8 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
 			$path = ltrim($path, DS);
 			$bits = explode('/', $path);
-			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
-			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
+			$view->filters['year']  = (isset($bits[0])) ? $bits[0] : $view->filters['year'];
+			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
 		}
 
 		$view->canpost = $this->_getPostingPermissions();
@@ -306,7 +289,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
-			$filters['state'] = 'public';
+			$view->filters['state'] = 'public';
 		} 
 		else 
 		{
@@ -314,66 +297,26 @@ class plgGroupsBlog extends Hubzero_Plugin
 			 && $this->authorized != 'manager' 
 			 && $this->authorized != 'admin') 
 			{
-				$filters['state'] = 'registered';
+				$view->filters['state'] = 'registered';
 			}
 			else
 			{
 				if ($this->authorized == 'manager' 
 				 || $this->authorized == 'admin')
 				{
-					$filters['authorized'] = true;
+					$view->filters['authorized'] = true;
 				}
 				else
 				{
-					$filters['authorized'] = $juser->get('id');
+					$view->filters['authorized'] = $juser->get('id');
 				}
 			}
 		}
 
-		$be = new BlogEntry($this->database);
+		$view->year   = $view->filters['year'];
+		$view->month  = $view->filters['month'];
+		$view->search = $view->filters['search'];
 
-		$total = $be->getCount($filters);
-
-		$view->rows = $be->getRecords($filters);
-		if ($filters['search']) 
-		{
-			$view->rows = $this->_highlight($filters['search'], $view->rows);
-		}
-
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
-			$total, 
-			$filters['start'], 
-			$filters['limit']
-		);
-
-		$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-		$pageNav->setAdditionalUrlParam('active', 'blog');
-		if ($filters['year'])
-		{
-			$pageNav->setAdditionalUrlParam('year', $filters['year']);
-		}
-		if ($filters['month'])
-		{
-			$pageNav->setAdditionalUrlParam('month', $filters['month']);
-		}
-		if ($filters['search'])
-		{
-			$pageNav->setAdditionalUrlParam('search', $filters['search']);
-		}
-
-		$path = $this->params->get('uploadpath', '/site/groups/{{gid}}/blog');
-		$view->path = str_replace('{{gid}}', $this->group->get('gidNumber'),$path);
-
-		$view->firstentry = $be->getDateOfFirstEntry($filters);
-
-		$view->popular = $be->getPopularEntries($filters);
-		$view->recent = $be->getRecentEntries($filters);
-
-		$view->year = $filters['year'];
-		$view->month = $filters['month'];
-		$view->search = $filters['search'];
-		$view->pagenavhtml = $pageNav->getListFooter();
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -405,25 +348,25 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-		//$params =& $mainframe->getParams();
-		$app =& JFactory::getApplication();
-		$params =& $app->getParams();
-		$doc->link = JRoute::_('index.php?option=' . $this->option . '&cn='.$this->group->cn . '&active=blog');
+		$doc->link = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+
+		// Get configuration
+		$jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 25);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['created_by'] = JRequest::getInt('author', 0);
-		$filters['year'] = JRequest::getInt('year', 0);
-		$filters['month'] = JRequest::getInt('month', 0);
-		$filters['scope'] = 'group';
-		$filters['group_id'] = $this->group->get('gidNumber');
-		$filters['search'] = JRequest::getVar('search','');
-		$filters['state'] = 'public';
-		
-		$juri =& JURI::getInstance();
-		$path = $juri->getPath();
+		$filters = array(
+			'limit'      => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'year'       => JRequest::getInt('year', 0),
+			'month'      => JRequest::getInt('month', 0),
+			'scope'      => 'group',
+			'group_id'   => $this->group->get('gidNumber'),
+			'search'     => JRequest::getVar('search',''),
+			'created_by' => JRequest::getInt('author', 0),
+			'state'      => 'public'
+		);
+
+		$path = JURI::getInstance()->getPath();
 		if (strstr($path, '/')) 
 		{
 			$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
@@ -432,59 +375,37 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
 			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
 		}
-		
-		//get blog results
-		$be = new BlogEntry($this->database);
-		$rows = $be->getRecords($filters);
 
 		// Build some basic RSS document information
 		$jconfig =& JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename').': '.JText::_('Groups').': '.stripslashes($this->group->description).': '.JText::_('Blog');
-		$doc->description = JText::sprintf('PLG_GROUPS_BLOG_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'));
-		$doc->copyright = JText::sprintf('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category = JText::_('PLG_GROUPS_BLOG_RSS_CATEGORY');
-		
+		$doc->title       = $jconfig->getValue('config.sitename') . ': ' . JText::_('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . JText::_('Blog');
+		$doc->description = JText::sprintf('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->copyright   = JText::sprintf('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = JText::_('PLG_GROUPS_BLOG_RSS_CATEGORY');
+
+		$rows = $this->model->entries('list', $filters);
 
 		// Start outputing results if any found
-		if (count($rows) > 0) 
+		if ($rows->total() > 0) 
 		{
-			ximport('wiki.parser');
-			//$p = new WikiParser(JText::_(strtoupper($this->_option)), $this->_option, 'blog', '', 0, $this->config->get('uploadpath'));
-			$path = $this->params->get('uploadpath', '/site/groups/{{gid}}/blog');
-			$path = str_replace('{{gid}}', $this->group->get('gidNumber'), $path);
-
 			foreach ($rows as $row)
 			{
-				$p = new WikiParser(stripslashes($row->title), $this->option, 'blog', $row->alias, 0, $path);
-
-				// Prepare the title
-				$title = strip_tags($row->title);
-				$title = html_entity_decode($title);
-
-				// URL link to article
-				$link = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=blog&scope=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias);
-
-				$cuser =& JUser::getInstance($row->created_by);
-				$author = $cuser->get('name');
+				$item = new JFeedItem();
 
 				// Strip html from feed item description text
-				$description = $p->parse("\n" . stripslashes($row->content), 0, 0);
-				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-				if ($this->params->get('feed_entries', 'partial') == 'partial') 
+				$item->description = $row->content('parsed');
+				$item->description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($item->description));
+				if ($this->params->get('feed_entries') == 'partial') 
 				{
-					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
+					$item->description = Hubzero_View_Helper_Html::shortenText($item->description, 300, 0);
 				}
 
-				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
-
 				// Load individual item creator class
-				$item = new JFeedItem();
-				$item->title       = $title;
-				$item->link        = $link;
-				$item->description = $description;
-				$item->date        = $date;
+				$item->title       = html_entity_decode(strip_tags($row->get('title')));
+				$item->link        = JRoute::_($row->link());
+				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $author;
+				$item->author      = $row->creator('name');
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -498,7 +419,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	/**
 	 * Determine permissions to post an entry
 	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if user cna post, false if not
 	 */
 	private function _getPostingPermissions()
 	{
@@ -528,67 +449,6 @@ class plgGroupsBlog extends Hubzero_Plugin
 	}
 
 	/**
-	 * Highlight some text in a string
-	 * 
-	 * @param      string $searchquery Text to highlight
-	 * @param      array  $results     Array of results to highlight text in
-	 * @return     array
-	 */
-	private function _highlight($searchquery, $results)
-	{
-		$toks = array($searchquery);
-
-		$resultback = 60;
-		$resultlen  = 300;
-
-		// Loop through all results
-		for ($i = 0, $n = count($results); $i < $n; $i++)
-		{
-			$row =& $results[$i];
-
-			// Clean the text up a bit first
-			$lowerrow = strtolower($row->content);
-
-			// Find first occurrence of a search word
-			$pos = 0;
-			foreach ($toks as $tok)
-			{
-				$pos = strpos($lowerrow, $tok);
-				if ($pos !== false) 
-				{
-					break;
-				}
-			}
-
-			if ($pos > $resultback) 
-			{
-				$row->content = substr($row->content, ($pos - $resultback), $resultlen);
-			} 
-			else 
-			{
-				$row->content = substr($row->content, 0, $resultlen);
-			}
-
-			// Highlight each word/phrase found
-			foreach ($toks as $tok)
-			{
-				if ($tok == 'class' 
-				 || $tok == 'span' 
-				 || $tok == 'highlight') 
-				{
-					continue;
-				}
-				$row->content = preg_replace('#' . $tok . '#i' , "<span class=\"highlight\">\\0</span>", $row->content);
-				$row->title   = preg_replace('#' . $tok . '#i', "<span class=\"highlight\">\\0</span>", $row->title);
-			}
-
-			$row->content = trim($row->content) . ' &#8230;';
-		}
-
-		return $results;
-	}
-
-	/**
 	 * Display a blog entry
 	 * 
 	 * @return     string
@@ -599,22 +459,16 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'entry'
 			)
 		);
-		$view->option = $this->option;
-		$view->group = $this->group;
-		$view->config = $this->params;
+		$view->option     = $this->option;
+		$view->group      = $this->group;
+		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
-		$view->juser = $this->juser;
-
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
+		$view->juser      = $this->juser;
+		$view->model      = $this->model;
 
 		if (isset($this->entry) && is_object($this->entry)) 
 		{
@@ -622,8 +476,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		} 
 		else 
 		{
-			$juri =& JURI::getInstance();
-			$path = $juri->getPath();
+			$path = JURI::getInstance()->getPath();
 			if (strstr($path, '/')) 
 			{
 				$path = str_replace('/groups/' . $this->group->get('cn') . '/blog/', '', $path);
@@ -631,129 +484,42 @@ class plgGroupsBlog extends Hubzero_Plugin
 				$alias = end($bits);
 			}
 
-			$view->row = new BlogEntry($this->database);
-			$view->row->loadAlias($alias, 'group', 0, $this->group->get('gidNumber'));
+			$view->row = $this->model->entry($alias);
 		}
 
-		if (!$view->row->id) 
+		if (!$view->row->exists()) 
 		{
 			return $this->_browse();
 		}
 
 		// Check authorization
 		$juser =& JFactory::getUser();
-		if (($view->row->state == 2 && $juser->get('guest'))
-		 || ($view->row->state == 0 && $juser->get('id') != $view->row->created_by && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin')) 
+		if (($view->row->get('state') == 2 && $juser->get('guest'))
+		 || ($view->row->get('state') == 0 && $juser->get('id') != $view->row->get('created_by') && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin')) 
 		{
 			JError::raiseError(403, JText::_('PLG_GROUPS_BLOG_NOT_AUTH'));
 			return;
 		}
 
-		//$juser =& JFactory::getUser();
-		if ($juser->get('id') != $view->row->created_by) 
-		{
-			$view->row->hit();
-		}
-
-		if ($view->row->content) 
-		{
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-
-			if ($view->row->scope == 'member') 
-			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-				
-				$plugin = JPluginHelper::getPlugin('members', 'blog');
-				$params = new $paramsClass($plugin->params);
-				$path = $params->get('uploadpath', '/site/members/{{uid}}/blog');
-				$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($view->row->created_by), $path);
-			} 
-			else 
-			{
-				$path = $this->params->get('uploadpath', '/site/groups/{{gid}}/blog');
-				$path = str_replace('{{gid}}', $this->group->get('gidNumber'), $path);
-			}
-			
-			$wikiconfig = array(
-				'option'   => $this->option,
-				'scope'    => $this->group->get('cn') . DS . 'blog',
-				'pagename' => $view->row->alias,
-				'pageid'   => 0,
-				'filepath' => $path,
-				'domain'   => $this->group->get('cn')
-			);
-			
-			//$p = new WikiParser(stripslashes($view->row->title), $this->option, 'blog', $view->row->alias, 0, $path);
-			$view->row->content = $p->parse("\n" . stripslashes($view->row->content), $wikiconfig, true, true);
-		}
-
-		$bc = new BlogComment($this->database);
-		$view->comments = $bc->getAllComments($view->row->id);
-
-		//count($this->comments, COUNT_RECURSIVE)
-		$view->comment_total = 0;
-		if ($view->comments) 
-		{
-			foreach ($view->comments as $com)
-			{
-				$view->comment_total++;
-				if ($com->replies) 
-				{
-					foreach ($com->replies as $rep)
-					{
-						$view->comment_total++;
-						if ($rep->replies) 
-						{
-							$view->comment_total = $view->comment_total + count($rep->replies);
-						}
-					}
-				}
-			}
-		}
-
-		$r = JRequest::getInt('reply', 0);
-		$view->replyto = new BlogComment($this->database);
-		$view->replyto->load($r);
-
-		$bt = new BlogTags($this->database);
-		$view->tags = $bt->get_tag_cloud(0,0,$view->row->id);
-
 		// Filters for returning results
-		$filters = array();
-		$filters['limit']      = 10;
-		$filters['start']      = 0;
-		$filters['created_by'] = 0;
-		$filters['group_id']   = $this->group->get('gidNumber');
-		$filters['scope']      = 'group';
+		$view->filters = array(
+			'limit'      => 10,
+			'start'      => 0,
+			'scope'      => 'group',
+			'group_id'   => $this->group->get('gidNumber'),
+			'created_by' => 0
+		);
 
 		if ($juser->get('guest')) 
 		{
-			$filters['state'] = 'public';
+			$view->filters['state'] = 'public';
 		} 
 		else 
 		{
-			//if ($juser->get('id') != $this->member->get('uidNumber')) 
-			//{
-				$filters['state'] = 'registered';
-			//}
+			$view->filters['state'] = 'registered';
 		}
-		$view->popular = $view->row->getPopularEntries($filters);
-		$view->recent = $view->row->getRecentEntries($filters);
 
-		// Push some scripts to the template
-		/*$document =& JFactory::getDocument();
-		if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'blog' . DS . 'blog.js')) {
-			$document->addScript('plugins' . DS . 'groups' . DS . 'blog' . DS . 'blog.js');
-		}*/
 		$view->canpost = $this->_getPostingPermissions();
-
-		$view->p = $p;
-		$view->wikiconfig = $wikiconfig;
 
 		if ($this->getError()) 
 		{
@@ -784,7 +550,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	{
 		$juser =& JFactory::getUser();
 		$app =& JFactory::getApplication();
-		$blog = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=blog');
+		$blog = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
 		if ($juser->get('guest')) 
 		{
@@ -804,29 +570,21 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$app->redirect($blog);
 		}
 
+		// Instantiate view
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'edit'
 			)
 		);
-
-		$view->option = $this->option;
-		$view->group = $this->group;
-		$view->task = $this->action;
-		$view->config = $this->params;
+		$view->option     = $this->option;
+		$view->group      = $this->group;
+		$view->task       = $this->action;
+		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
-
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
-
-		$id = JRequest::getInt('entry', 0);
+		$view->model      = $this->model;
 
 		if (is_object($row))
 		{
@@ -834,21 +592,19 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 		else
 		{
-			$view->entry = new BlogEntry($this->database);
-			$view->entry->load($id, 'member');
-			if (!$view->entry->id) 
-			{
-				$view->entry->allow_comments = 1;
-				$view->entry->state = 0;
-				$view->entry->scope = 'group';
-				$view->entry->created_by = $juser->get('id');
-				$view->entry->group_id = $this->group->get('gidNumber');
-			}
+			$view->entry = $this->model->entry(JRequest::getInt('entry', 0));
 		}
 
-		$bt = new BlogTags($this->database);
-		$view->tags = $bt->get_tag_string($view->entry->id);
-		
+		// Does it exist?
+		if (!$view->entry->exists()) 
+		{
+			// Set some defaults
+			$view->entry->set('allow_comments', 1);
+			$view->entry->set('state', 1);
+			$view->entry->set('scope', 'group');
+			$view->entry->set('group_id', $this->group->get('gidNumber'));
+		}
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -856,46 +612,12 @@ class plgGroupsBlog extends Hubzero_Plugin
 				$view->setError($error);
 			}
 		}
-		
-		Hubzero_Document::addPluginScript('groups', 'blog');
+
 		Hubzero_Document::addSystemScript('jquery.timepicker');
 		Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
 		Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 
 		return $view->loadTemplate();
-	}
-
-	/**
-	 * Strip invalid characters from title to make an alias
-	 * 
-	 * @param      string $title Title to normalize
-	 * @return     string
-	 */
-	private function _normalizeTitle($title)
-	{
-		$title = str_replace(' ', '-', $this->_shortenTitle($title));
-		$title = preg_replace("/[^a-zA-Z0-9\-]/", '', $title);
-		return strtolower($title);
-	}
-
-	/**
-	 * Shorten a title
-	 * 
-	 * @param      string  $text  Text to shorten
-	 * @param      integer $chars Length to shorten to
-	 * @return     string
-	 */
-	public function _shortenTitle($text, $chars=100)
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-		if (strlen($text) > $chars) 
-		{
-			$text = $text . ' ';
-			$text = substr($text, 0, $chars);
-			$text = substr($text, 0, strrpos($text, ' '));
-		}
-		return $text;
 	}
 
 	/**
@@ -924,61 +646,45 @@ class plgGroupsBlog extends Hubzero_Plugin
 			return $this->_browse();
 		}
 
-		$entry = JRequest::getVar('entry', array(), 'post');
+		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
 
-		$row = new BlogEntry($this->database);
+		// Instantiate model
+		$row = $this->model->entry($entry['id']);
+
+		// Bind data
 		if (!$row->bind($entry)) 
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
 		}
 
-		//$row->id = JRequest::getInt('entry_id', 0);
-
-		if (!$row->id) 
+		if (!$row->get('id')) 
 		{
-			$row->alias = $this->_normalizeTitle($row->title);
-			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$row->publish_up = date('Y-m-d H:i:s', time());
-
-			$item = new BlogEntry($this->database);
-			$item->loadAlias($row->alias, 'group', 0, $this->group->get('gidNumber'));
-			if ($item->id)
+			$item = $this->model->entry($row->alias);
+			if ($item->get('id'))
 			{
 				$this->setError(JText::_('An entry with the alias generated from this title already exists. Please modify the title.'));
 				return $this->_edit($row);
 			}
 		}
 
-		if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') 
-		{
-			$row->publish_up = $row->created;
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->_edit($row);
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
 		}
 
 		// Process tags
-		$tags = trim(JRequest::getVar('tags', ''));
-		$bt = new BlogTags($this->database);
-		$bt->tag_object($juser->get('id'), $row->id, $tags, 1, 1);
-
-		//$this->entry = $row;
+		if (!$row->tag(JRequest::getVar('tags', ''))) 
+		{
+			$this->setError($row->getError());
+			return $this->_edit($row);
+		}
 
 		//return $this->_entry();
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog&scope=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias));
+		$app->redirect(JRoute::_($row->link()));
 	}
 
 	/**
@@ -1014,12 +720,11 @@ class plgGroupsBlog extends Hubzero_Plugin
 			return $this->_browse();
 		}
 
-		$process = JRequest::getVar('process', '');
+		$process    = JRequest::getVar('process', '');
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = new BlogEntry($this->database);
-		$entry->load($id);
+		$entry = $this->model->entry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) 
@@ -1034,24 +739,18 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'groups',
-					'element' => 'blog',
+					'element' => $this->_name,
 					'name'    => 'delete'
 				)
 			);
-			$view->option = $this->option;
-			$view->group = $this->group;
-			$view->task = $this->action;
-			$view->config = $this->params;
-			$view->entry = $entry;
+			$view->option     = $this->option;
+			$view->group      = $this->group;
+			$view->task       = $this->action;
+			$view->config     = $this->params;
+			$view->entry      = $entry;
 			$view->authorized = $this->authorized;
-			
-			$view->dateFormat  = $this->dateFormat;
-			$view->timeFormat  = $this->timeFormat;
-			$view->yearFormat  = $this->yearFormat;
-			$view->monthFormat = $this->monthFormat;
-			$view->dayFormat   = $this->dayFormat;
-			$view->tz          = $this->tz;
-			
+			$view->model      = $this->model;
+
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -1062,29 +761,9 @@ class plgGroupsBlog extends Hubzero_Plugin
 			return $view->loadTemplate();
 		}
 
-		// Delete all comments on an entry
-		if (!$entry->deleteComments($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
-		// Delete all associated content
-		if (!$entry->deleteTags($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
-		// Delete all associated content
-		if (!$entry->deleteFiles($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
 		// Delete the entry itself
-		if (!$entry->delete($id)) 
+		$entry->set('state', -1);
+		if (!$entry->store()) 
 		{
 			$this->setError($entry->getError());
 		}
@@ -1112,28 +791,15 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
-		$row = new BlogComment($this->database);
+		$row = new BlogModelComment($comment['id']);
 		if (!$row->bind($comment)) 
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
 		}
 
-		// Set the created time
-		if (!$row->id) 
-		{
-			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->_entry();
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
@@ -1165,17 +831,13 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = new BlogComment($this->database);
+		$comment = new BlogModelComment($id);
 
 		// Delete all comments on an entry
-		if (!$comment->deleteChildren($id)) 
-		{
-			$this->setError($comment->getError());
-			return $this->_entry();
-		}
+		$comment->set('state', 2);
 
 		// Delete the entry itself
-		if (!$comment->delete($id)) 
+		if (!$comment->store()) 
 		{
 			$this->setError($comment->getError());
 		}
@@ -1209,7 +871,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'groups',
-				'element' => 'blog',
+				'element' => $this->_name,
 				'name'    => 'settings'
 			)
 		);
@@ -1217,18 +879,14 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$view->group      = $this->group;
 		$view->task       = $this->action;
 		$view->config     = $this->params;
+		$view->model      = $this->model;
+
 		$view->settings   = new Hubzero_Plugin_Params($this->database);
 		$view->settings->loadPlugin($this->group->gidNumber, 'groups', 'blog');
+
 		$view->authorized = $this->authorized;
 		$view->message    = (isset($this->message)) ? $this->message : '';
-		
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
-		
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -1269,16 +927,16 @@ class plgGroupsBlog extends Hubzero_Plugin
 		}
 
 		// Get parameters
-		$params = JRequest::getVar('params', '', 'post');
-		if (is_array($params)) 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$txt = array();
-			foreach ($params as $k=>$v)
-			{
-				$txt[] = "$k=$v";
-			}
-			$row->params = implode("\n", $txt);
+			$paramsClass = 'JRegistry';
 		}
+
+		$p = new $paramsClass('');
+		$p->bind(JRequest::getVar('params', '', 'post'));
+
+		$row->params = $p->toString();
 
 		// Check content
 		if (!$row->check()) 
@@ -1298,7 +956,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		//return $this->_settings();
 		$app =& JFactory::getApplication();
 		$app->enqueueMessage('Settings successfully saved!', 'passed');
-		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog&action=settings'));
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'));
 	}
 
 	/**

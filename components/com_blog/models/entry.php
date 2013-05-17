@@ -171,7 +171,7 @@ class BlogModelEntry extends JObject
 		switch (strtolower($this->get('scope')))
 		{
 			case 'group':
-				$group = Hubzero_Group::getInstance($this->get('scope_id'));
+				$group = Hubzero_Group::getInstance($this->get('group_id'));
 				$this->_base = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog';
 			break;
 
@@ -312,7 +312,7 @@ class BlogModelEntry extends JObject
 		{
 			return false;
 		}
-		if ($this->get('state') == 2) 
+		if ($this->get('state') == 2 || $this->get('state') == -1) 
 		{
 			return true;
 		}
@@ -327,7 +327,7 @@ class BlogModelEntry extends JObject
 	public function started()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists()) // || !$this->isPublished()) 
 		{
 			return false;
 		}
@@ -352,7 +352,7 @@ class BlogModelEntry extends JObject
 	public function ended()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists()) // || !$this->isPublished()) 
 		{
 			return true;
 		}
@@ -377,7 +377,7 @@ class BlogModelEntry extends JObject
 	public function isAvailable()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || !$this->isPublished())
+		if (!$this->exists() || $this->isDeleted())
 		{
 			return false;
 		}
@@ -641,7 +641,14 @@ class BlogModelEntry extends JObject
 			break;
 
 			case 'comments':
-				$link .= '&task=';
+				if (strtolower($this->get('scope')) == 'group')
+				{
+					$link .= '&scope=';
+				}
+				else
+				{
+					$link .= '&task=';
+				}
 				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_YEAR, BLOG_DATE_TIMEZONE) . '/';
 				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_MONTH, BLOG_DATE_TIMEZONE) . '/';
 				$link .= $this->get('alias');
@@ -650,7 +657,14 @@ class BlogModelEntry extends JObject
 
 			case 'permalink':
 			default:
-				$link .= '&task=';
+				if (strtolower($this->get('scope')) == 'group')
+				{
+					$link .= '&scope=';
+				}
+				else
+				{
+					$link .= '&task=';
+				}
 				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_YEAR, BLOG_DATE_TIMEZONE) . '/';
 				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_MONTH, BLOG_DATE_TIMEZONE) . '/';
 				$link .= $this->get('alias');

@@ -105,22 +105,6 @@ class plgMembersBlog extends JPlugin
 			$p = new Hubzero_Plugin_Params($this->database);
 			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
 
-			$this->dateFormat  = '%d %b, %Y';
-			$this->timeFormat  = '%I:%M %p';
-			$this->monthFormat = '%b';
-			$this->yearFormat  = '%Y';
-			$this->dayFormat   = '%d';
-			$this->tz = 0;
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$this->dateFormat  = 'd M, Y';
-				$this->timeFormat  = 'h:i a';
-				$this->monthFormat = 'b';
-				$this->yearFormat  = 'Y';
-				$this->dayFormat   = 'd';
-				$this->tz = true;
-			}
-
 			// Push styles to the template
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', $this->_name);
@@ -513,6 +497,10 @@ class plgMembersBlog extends JPlugin
 				$view->setError($error);
 			}
 		}
+
+		Hubzero_Document::addSystemScript('jquery.timepicker');
+		Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
+		Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 
 		// Render view
 		return $view->loadTemplate();

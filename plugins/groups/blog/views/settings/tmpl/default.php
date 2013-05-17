@@ -30,10 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 ?>
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog'); ?>" title="<?php echo JText::_('Archive'); ?>">
+		<a class="archive btn" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Archive'); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>
@@ -45,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&action=savesettings'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo JRoute::_($base . '&action=savesettings'); ?>" method="post" id="hubForm" class="full">
 		<fieldset class="settings">
 			<legend><?php echo JText::_('Posts'); ?></legend>
 			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
@@ -89,13 +91,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</p>
 			
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
-			<input type="hidden" name="settings[object_id]" value="<?php echo $this->group->gidNumber; ?>" />
+			<input type="hidden" name="settings[object_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 			<input type="hidden" name="settings[folder]" value="groups" />
 			<input type="hidden" name="settings[element]" value="blog" />
 		</fieldset>
 		<div class="clear"></div>
 		
-		<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
@@ -103,6 +105,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog'); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_($base); ?>">Cancel</a>
 		</p>
 	</form>
