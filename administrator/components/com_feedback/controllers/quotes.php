@@ -263,7 +263,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 			// Code cleaner for xhtml transitional compliance
 			$row->quote = str_replace('<br>', '<br />', $row->quote);
 
-			$row->picture = basename($bits);
+			$row->picture = basename($row->picture);
 
 			// Check new content
 			if (!$row->check())
