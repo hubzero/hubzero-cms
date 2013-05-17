@@ -20,7 +20,7 @@ $incomplete = $this->incomplete;
 	<script type="text/javascript">
 		window.timeLeft = <? echo  max(($this->dep->getTimeLimit() * 60) - (time() - strtotime($resp->getStartTime())), 0); ?>;
 	</script>
-	<?
+	<?php
 		endif;
 		$layout = $pdf->getPageLayout();
 		if ($incomplete):
@@ -58,5 +58,5 @@ $incomplete = $this->incomplete;
 		</p>
 	</fieldset>
 	</form>
-	<? endif; ?>
+	<?php endif; ?>
 </div>
