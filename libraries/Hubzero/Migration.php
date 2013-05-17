@@ -92,21 +92,28 @@ class Hubzero_Migration
 		// Try to determine the document root if none provided
 		if (is_null($docroot))
 		{
-			$conf = '/etc/hubzero.conf';
-			if (is_file($conf) && is_readable($conf))
+			if (is_file(dirname(dirname(dirname(__FILE__))) . '/configuration.php'))
 			{
-				$content = file_get_contents($conf);
-				preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-				if (isset($matches[1]))
-				{
-					$this->docroot = $matches[1];
-				}
+				$this->docroot = dirname(dirname(dirname(__FILE__)));
 			}
 			else
 			{
-				// Can't retrieve default docroot
-				$this->log('Could not detect default document root, and none provided.');
-				return false;
+				$conf = '/etc/hubzero.conf';
+				if (is_file($conf) && is_readable($conf))
+				{
+					$content = file_get_contents($conf);
+					preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
+					if (isset($matches[1]))
+					{
+						$this->docroot = $matches[1];
+					}
+				}
+				else
+				{
+					// Can't retrieve default docroot
+					$this->log('Could not detect default document root, and none provided.');
+					return false;
+				}
 			}
 		}
 		else
@@ -191,27 +198,34 @@ class Hubzero_Migration
 		}
 		else
 		{
-			// We couldn't find a config file in the provided doc root, so try to find one another way
-			$conf = '/etc/hubzero.conf';
-			if (is_file($conf) && is_readable($conf))
+			if (is_file(is_file(dirname(dirname(dirname(__FILE__))) . '/configuration.php')))
 			{
-				$content = file_get_contents($conf);
-				preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-
-				if (isset($matches[1]))
-				{
-					$docroot = rtrim($matches[1], '/');
-				}
-				else
-				{
-					$this->log('Could not find a reasonable Joomla document root.');
-					return false;
-				}
+				$docroot = dirname(dirname(dirname(__FILE__)));
 			}
 			else
 			{
-				$this->log('Could not find a HUBzero configuration file');
-				return false;
+				// We couldn't find a config file in the provided doc root, so try to find one another way
+				$conf = '/etc/hubzero.conf';
+				if (is_file($conf) && is_readable($conf))
+				{
+					$content = file_get_contents($conf);
+					preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
+
+					if (isset($matches[1]))
+					{
+						$docroot = rtrim($matches[1], '/');
+					}
+					else
+					{
+						$this->log('Could not find a reasonable Joomla document root.');
+						return false;
+					}
+				}
+				else
+				{
+					$this->log('Could not find a HUBzero configuration file');
+					return false;
+				}
 			}
 		}
 
@@ -266,27 +280,34 @@ class Hubzero_Migration
 		}
 		else
 		{
-			// We couldn't find a config file in the provided doc root, so try to find one another way
-			$conf = '/etc/hubzero.conf';
-			if (is_file($conf) && is_readable($conf))
+			if (is_file(is_file(dirname(dirname(dirname(__FILE__))) . '/configuration.php')))
 			{
-				$content = file_get_contents($conf);
-				preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-
-				if (isset($matches[1]))
-				{
-					require_once $matches[1] . '/configuration.php';
-				}
-				else
-				{
-					$this->log('Could not find a Joomla configuration file');
-					return false;
-				}
+				$docroot = dirname(dirname(dirname(__FILE__)));
 			}
 			else
 			{
-				$this->log('Could not find a HUBzero configuration file');
-				return false;
+				// We couldn't find a config file in the provided doc root, so try to find one another way
+				$conf = '/etc/hubzero.conf';
+				if (is_file($conf) && is_readable($conf))
+				{
+					$content = file_get_contents($conf);
+					preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
+
+					if (isset($matches[1]))
+					{
+						require_once $matches[1] . '/configuration.php';
+					}
+					else
+					{
+						$this->log('Could not find a Joomla configuration file');
+						return false;
+					}
+				}
+				else
+				{
+					$this->log('Could not find a HUBzero configuration file');
+					return false;
+				}
 			}
 		}
 

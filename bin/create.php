@@ -159,7 +159,7 @@ function getDocroot()
 	{
 		$content = file_get_contents($conf);
 		preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-		if (isset($matches[1]))
+		if (isset($matches[1]) && is_dir($matches[1]))
 		{
 			return rtrim($matches[1], '/');
 		}

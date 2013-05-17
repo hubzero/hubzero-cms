@@ -25,7 +25,7 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	 */
 	function testMigrateWithBadDirectionGivesError()
 	{
-		$output = shell_exec("migration run -d=badarg -n");
+		$output = shell_exec("migration run -d=badarg");
 
 		$this->assertRegExp('/^[\s]*Error.*/is', $output, "Migrate execution with -d flag set to non up|down should give an error, but doesn't");
 	}
@@ -35,7 +35,7 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	 */
 	function testMigrateWithBadDocumentRootGivesError()
 	{
-		$output = shell_exec("migration run -r=\"/baddir/baddir\" -n");
+		$output = shell_exec("migration run -r=\"/baddir/baddir\"");
 
 		$this->assertRegExp('/^[\s]*Error.*/is', $output, "Migrate execution with invalid document root should give an error, but doesn't");
 	}
@@ -45,7 +45,7 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	 */
 	function testMigrateWithForceFlagButNoExtensionGivesError()
 	{
-		$output = shell_exec("migration run -f -n");
+		$output = shell_exec("migration run --force");
 
 		$this->assertRegExp('/^[\s]*Error.*/is', $output, "Migrate execution with force flag but no extension specified should give an error, but doesn't");
 	}
@@ -56,9 +56,9 @@ class MigrateUtilityTest extends PHPUnit_Framework_TestCase
 	function testMigrateWithBadExtensionGivesError()
 	{
 		$output   = array();
-		$output[] = shell_exec("migration run -e=com_courses_blah -n");
-		$output[] = shell_exec("migration run -e=mod_courses_blah -n");
-		$output[] = shell_exec("migration run -e=plg_blah -n");
+		$output[] = shell_exec("migration run -e=com_courses_blah");
+		$output[] = shell_exec("migration run -e=mod_courses_blah");
+		$output[] = shell_exec("migration run -e=plg_blah");
 
 		foreach ($output as $o)
 		{

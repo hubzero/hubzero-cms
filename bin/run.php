@@ -211,26 +211,33 @@ if (!is_null($directory))
 
 if (is_null($directory) || !$found)
 {
-	$conf = '/etc/hubzero.conf';
-	if (is_file($conf) && is_readable($conf))
+	if (is_file(dirname(__FILE__) . "/../libraries/Hubzero/Migration.php"))
 	{
-		$content = file_get_contents($conf);
-		preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-		if (isset($matches[1]))
-		{
-			$docroot = $matches[1];
-			$migrationClass = rtrim($docroot, '/') . '/libraries/Hubzero/Migration.php';
-		}
-		else
-		{
-			echo "Error: could not find the document root in the configuration file.\n\n";
-			exit();
-		}
+		$migrationClass = dirname(__FILE__) . "/../libraries/Hubzero/Migration.php";
 	}
 	else
 	{
-		echo "Error: could not find the Hubzero configuration file. Try providing a document root using the '-r' option.\n\n";
-		exit();
+		$conf = '/etc/hubzero.conf';
+		if (is_file($conf) && is_readable($conf))
+		{
+			$content = file_get_contents($conf);
+			preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
+			if (isset($matches[1]))
+			{
+				$docroot = $matches[1];
+				$migrationClass = rtrim($docroot, '/') . '/libraries/Hubzero/Migration.php';
+			}
+			else
+			{
+				echo "Error: could not find the document root in the configuration file.\n\n";
+				exit();
+			}
+		}
+		else
+		{
+			echo "Error: could not find the Hubzero configuration file. Try providing a document root using the '-r' option.\n\n";
+			exit();
+		}
 	}
 }
 
