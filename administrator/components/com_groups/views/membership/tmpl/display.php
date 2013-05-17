@@ -192,7 +192,7 @@ foreach ($this->rows as $row)
 		case 'invitee':
 		case 'inviteemail':
 	?>
-					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invintation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invitation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('uninvite'); ?></span>
 					</a>
 				</td>
