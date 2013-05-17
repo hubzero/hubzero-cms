@@ -184,21 +184,35 @@ class Hubzero_Migration
 	 **/
 	private function joomlaInit()
 	{
-		$conf = '/etc/hubzero.conf';
-		if (is_file($conf) && is_readable($conf))
+		// See if this looks like a valid joomla document root
+		if (file_exists($this->docroot . '/configuration.php'))
 		{
-			$content = file_get_contents($conf);
-			preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-			if (isset($matches[1]))
-			{
-				$docroot = $matches[1];
-			}
+			$docroot = $this->docroot;
 		}
 		else
 		{
-			// Can't retrieve default docroot
-			$this->log('Could not detect HUBzero document root, and none provided.');
-			return false;
+			// We couldn't find a config file in the provided doc root, so try to find one another way
+			$conf = '/etc/hubzero.conf';
+			if (is_file($conf) && is_readable($conf))
+			{
+				$content = file_get_contents($conf);
+				preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
+
+				if (isset($matches[1]))
+				{
+					$docroot = rtrim($matches[1], '/');
+				}
+				else
+				{
+					$this->log('Could not find a reasonable Joomla document root.');
+					return false;
+				}
+			}
+			else
+			{
+				$this->log('Could not find a HUBzero configuration file');
+				return false;
+			}
 		}
 
 		define('DS', '/');

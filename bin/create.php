@@ -108,7 +108,7 @@ $classname = 'Migration' . date("YmdHis") . $ext;
 $filename  = $docroot . '/migrations/' . $classname . '.php';
 
 // Copy the template file to our new file
-$template = "{$docroot}/migrations/__migration_template.php";
+$template = "{$docroot}/migrations/__migration.tmpl";
 if (!copy($template, $filename))
 {
 	echo "Error: an problem occured copying {$template} to {$filename}.\n\n";
@@ -163,15 +163,14 @@ function getDocroot()
 		{
 			return rtrim($matches[1], '/');
 		}
-		else
-		{
-			echo "Error: could not find the document root in the configuration file.\n\n";
-			exit();
-		}
+	}
+	elseif (is_dir(dirname(__FILE__) . "/../migrations"))
+	{
+		return dirname(__FILE__) . "/..";
 	}
 	else
 	{
-		echo "Error: could not find the Hubzero configuration file.\n\n";
+		echo "Error: could not find the Hubzero configuration file, or make a reasonable guess at the document root.\n\n";
 		exit();
 	}
 }

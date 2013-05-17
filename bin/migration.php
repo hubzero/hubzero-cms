@@ -73,35 +73,8 @@ else
 $options = implode(" ", $opts);
 $command = escapeshellcmd($command);
 
-// Run the command
-echo shell_exec(getDocroot() . "/bin/{$command}.php {$options}");
+// Run the command (we'll assume the scripts are all in the same directory)
+echo shell_exec(dirname(__FILE__) . "/{$command}.php {$options}");
 
 // Done
 exit();
-
-// --------------------------------------------- //
-
-function getDocroot()
-{
-	// Find the doc root to pull the migration class from
-	$conf = '/etc/hubzero.conf';
-	if (is_file($conf) && is_readable($conf))
-	{
-		$content = file_get_contents($conf);
-		preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-		if (isset($matches[1]))
-		{
-			return rtrim($matches[1], '/');
-		}
-		else
-		{
-			echo "Error: could not find the document root in the configuration file.\n\n";
-			exit();
-		}
-	}
-	else
-	{
-		echo "Error: could not find the Hubzero configuration file.\n\n";
-		exit();
-	}
-}

@@ -47,16 +47,15 @@ $shortopts .= "d::"; // direction (up|down)
 $shortopts .= "r::"; // document root
 $shortopts .= "e::"; // specific extension to run on
 $shortopts .= "l::"; // error logging type
-$shortopts .= "n";   // no change mode (dry run)
 $shortopts .= "i";   // run migrate on a full scan of the file system, not just those files with dates after last run
-$shortopts .= "f";   // force update (irrelevent of whether or not the database thinks it's already been run)
+$shortopts .= "f";   // override dry run and actually run the full migration
 $shortopts .= "m";   // log migration only (don't actually run)
 $shortopts .= "p";   // print contents of migration (don't run)
 $shortopts .= "h";   // short code for help menu
 
 $longopts   = array();
+$longopts[] = "force";   // force update (irrelevent of whether or not the database thinks it's already been run)
 $longopts[] = "email::"; // provide an email address to email log info to
-$longopts[] = "dry-run"; // long option for dry run
 $longopts[] = "print";   // long option for print
 $longopts[] = "help";    // long option for help menu
 
@@ -103,7 +102,7 @@ if(isset($options['r']) && $options['r'] !== false)
 
 // Forcing update
 $force = false;
-if(isset($options['f']))
+if(isset($options['force']))
 {
 	if(!isset($options['e']))
 	{
@@ -161,10 +160,10 @@ if (isset($options['e']) && $options['e'] !== false)
 }
 
 // Dryrun
-$dryrun = false;
-if(isset($options['n']) || isset($options['dry-run']))
+$dryrun = true;
+if(isset($options['f']))
 {
-	$dryrun = true;
+	$dryrun = false;
 }
 
 // Email results
@@ -195,28 +194,44 @@ if(isset($options['l']) && $options['l'] !== false)
 	$log = array_unique($log);
 }
 
+$found = false;
+
 // Include our migrations class
 // Find the doc root to pull the migration class from
-$conf = '/etc/hubzero.conf';
-if (is_file($conf) && is_readable($conf))
+if (!is_null($directory))
 {
-	$content = file_get_contents($conf);
-	preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
-	if (isset($matches[1]))
+	// A document root was provided
+	$migrationClass = "{$directory}/libraries/Hubzero/Migration.php";
+
+	if (is_file($migrationClass))
 	{
-		$docroot = $matches[1];
-		$migrationClass = rtrim($docroot, '/') . '/libraries/Hubzero/Migration.php';
+		$found = true;
+	}
+}
+
+if (is_null($directory) || !$found)
+{
+	$conf = '/etc/hubzero.conf';
+	if (is_file($conf) && is_readable($conf))
+	{
+		$content = file_get_contents($conf);
+		preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
+		if (isset($matches[1]))
+		{
+			$docroot = $matches[1];
+			$migrationClass = rtrim($docroot, '/') . '/libraries/Hubzero/Migration.php';
+		}
+		else
+		{
+			echo "Error: could not find the document root in the configuration file.\n\n";
+			exit();
+		}
 	}
 	else
 	{
-		echo "Error: could not find the document root in the configuration file.\n\n";
+		echo "Error: could not find the Hubzero configuration file. Try providing a document root using the '-r' option.\n\n";
 		exit();
 	}
-}
-else
-{
-	echo "Error: could not find the Hubzero configuration file.\n\n";
-	exit();
 }
 
 if (is_file($migrationClass))
@@ -317,29 +332,26 @@ function showHelp()
 	$help .= "       Explicity give the extension on which the migration should be run.\n";
 	$help .= "       This could be one of 'com_componentname', 'mod_modulename',\n";
 	$help .= "       or 'plg_plugingroup_pluginname'. This option is required \n";
-	$help .= "       when using the force (-f) option and the log only option (-m).\n";
+	$help .= "       when using the force (--force) option and the log only option (-m).\n";
 	$help .= "       Example: -e=com_courses, -e=\"plg_members_dashboard\"\n";
-	$help .= "       \n";
-	$help .= "   -n: no change mode (i.e. dry run)\n";
-	$help .= "       Use this flag to simply print out what changes would occur.\n";
-	$help .= "       This command is also available with a long option (--dry-run)\n";
 	$help .= "       \n";
 	$help .= "   -i: ignore dates\n";
 	$help .= "       Using this option will scan for and run all migrations that haven't\n";
 	$help .= "       previously been run, irrespective of the date of the migration.\n";
 	$help .= "       This differs from the default behavior in that normally, only files\n";
 	$help .= "       dated after the last run date will be eligable to be included in the\n";
-	$help .= "       migration. This option also differs from force mode (-f) in that it\n";
+	$help .= "       migration. This option also differs from force mode (--force) in that it\n";
 	$help .= "       will find all migrations, but only run those that haven't been run\n";
-	$help .= "       before (whereas -f will run them irrespective of whether or not it\n";
+	$help .= "       before (whereas --force will run them irrespective of whether or not it\n";
 	$help .= "       thinks they've already been run). You do not have to use -e with this\n";
 	$help .= "       option. This option may be usefill in checking if any migrations have\n";
 	$help .= "       missed over the course of time.\n";
 	$help .= "       \n";
-	$help .= "   -f: force mode\n";
-	$help .= "       This option should be used carefully. It will run a migration,\n";
-	$help .= "       even if it thinks it has already been run. When using this option,\n";
-	$help .= "       you must also give a specific extension using the (-e) option.\n";
+	$help .= "   -f: full run\n";
+	$help .= "       By default, using the migration command without any options will run\n";
+	$help .= "       in dry-run mode (meaning no changes will actually be made), displaying\n";
+	$help .= "       the migrations that would be run, were the command to be fully executed\n";
+	$help .= "       Use the '-f' (full run) option to do the full migration run.\n";
 	$help .= "       \n";
 	$help .= "   -m: log only\n";
 	$help .= "       Using this option, a migration will run as normal, and log entries\n";
@@ -349,7 +361,7 @@ function showHelp()
 	$help .= "       as run in the event that it had already been run (manually), yet\n";
 	$help .= "       not logged in the database.\n";
 	$help .= "       \n";
-	$help .= "   -p: print\n";
+	$help .= "   -p, --print: print\n";
 	$help .= "       Simply print contents of effected migration files. This will not\n";
 	$help .= "       actually run the migrations returned by the command. This should\n";
 	$help .= "       most likely be used in combination with other options in order\n";
@@ -362,6 +374,11 @@ function showHelp()
 	$help .= "       when running this program from the command line, and internal log\n";
 	$help .= "       will also be included when you specify an email address.\n";
 	$help .= "       Example: -l=error_log\n";
+	$help .= "       \n";
+	$help .= "   --force: force mode\n";
+	$help .= "       This option should be used carefully. It will run a migration,\n";
+	$help .= "       even if it thinks it has already been run. When using this option,\n";
+	$help .= "       you must also give a specific extension using the (-e) option.\n";
 	$help .= "       \n";
 	$help .= "   --email\n";
 	$help .= "       Specify an email address to receive the output of this run.\n";
