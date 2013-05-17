@@ -745,14 +745,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		
 		// Action Complete. Redirect to appropriate page
-		if ($return == 'browse') 
-		{
-			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option) );
-		} 
-		else 
-		{
-			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')) );
-		}
+		$this->setRedirect( '/members/myaccount/groups' );
 	}
 	
 	
