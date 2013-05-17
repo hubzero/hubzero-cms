@@ -135,7 +135,7 @@ function checkState(checkboxname)
 					<tr>
 						<td class="key" valign="top"><label for="userid"><?php echo JText::_('FEEDBACK_USER_ID'); ?>:</label></td>
 						<td>
-							<input type="text" name="userid" id="userid" value="<?php echo $this->escape(stripslashes($this->row->userid)); ?>" size="50" <?php if ($this->row->id && $this->row->userid!=0) { echo 'disabled="disabled"'; } ?> />
+							<input type="text" name="userid" id="userid" value="<?php echo $this->escape(stripslashes($this->row->userid)); ?>" size="50" <?php if ($this->row->id && $this->row->userid!=0) { echo 'readonly="true"'; } ?> />
 							<?php
 								if (!$this->row->id) {
 									echo '<p>' . JText::_('FEEDBACK_USER_ID_EXPLANATION') . '</p>';
