@@ -10,7 +10,7 @@ if (count($pathway->getPathWay()) <= 0) {
 	$pathway->addItem($this->escape($this->article->title),$_SERVER['REQUEST_URI']);
 }
 ?>
-<?php if ($canEdit || $this->params->get('show_title') || $this->params->get('show_pdf_icon') || $this->params->get('show_print_icon') || $this->params->get('show_email_icon')) : ?>
+<?php if ($canEdit || $this->params->get('show_title') || $this->params->get('show_print_icon') || $this->params->get('show_email_icon')) : ?>
 <div class="contentpaneopen<?php echo $this->params->get( 'pageclass_sfx' ); ?> heading">
 	<?php if ($this->params->get('show_title')) : ?>
 	<div class="content-header">
@@ -25,12 +25,6 @@ if (count($pathway->getPathWay()) <= 0) {
 	<?php endif; ?>
 	<?php if (!$this->print) : ?>
 		<p class="buttonheadings">
-		<?php if ($this->params->get('show_pdf_icon')) : ?>
-		<span class="buttonheading">
-		<?php echo JHTML::_('icon.pdf',  $this->article, $this->params, $this->access); ?>
-		</span>
-		<?php endif; ?>
-
 		<?php if ( $this->params->get( 'show_print_icon' )) : ?>
 		<span class="buttonheading">
 		<?php echo JHTML::_('icon.print_popup',  $this->article, $this->params, $this->access); ?>
