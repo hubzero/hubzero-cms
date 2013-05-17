@@ -87,7 +87,7 @@ else
 
 // Create filename varient of extension
 $ext = '';
-if (!$extension != 'core')
+if (!preg_match('/core/i', $extension))
 {
 	$parts = explode('_', $extension);
 	foreach ($parts as $part)
@@ -102,6 +102,12 @@ else
 
 // Get document root
 $docroot = getDocroot();
+
+// Make sure a timezone is set
+if (!ini_get('date.timezone'))
+{
+	date_default_timezone_set('UTC');
+}
 
 // Craft file/classname
 $classname = 'Migration' . date("YmdHis") . $ext;
@@ -155,7 +161,12 @@ function getDocroot()
 {
 	// Find the doc root to pull the migration class from
 	$conf = '/etc/hubzero.conf';
-	if (is_file($conf) && is_readable($conf))
+
+	if (is_dir(dirname(dirname(__FILE__)) . "/migrations"))
+	{
+		return dirname(dirname(__FILE__));
+	}
+	elseif (is_file($conf) && is_readable($conf))
 	{
 		$content = file_get_contents($conf);
 		preg_match('/.*DocumentRoot\s*=\s*(.*)\n/i', $content, $matches);
@@ -163,10 +174,6 @@ function getDocroot()
 		{
 			return rtrim($matches[1], '/');
 		}
-	}
-	elseif (is_dir(dirname(__FILE__) . "/../migrations"))
-	{
-		return dirname(__FILE__) . "/..";
 	}
 	else
 	{
