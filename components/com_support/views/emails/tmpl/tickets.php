@@ -606,10 +606,12 @@ Content-type: text/html;charset=utf-8";
 										<!-- ====== End Header ====== -->
 
 										<!-- ====== Start Footer Spacer ====== -->
-										<table  width="650" cellpadding="0" cellspacing="0" border="0">
-											<tr style="border-collapse: collapse;">
-												<td height="30" style="border-collapse: collapse;"></td>
-											</tr>
+										<table width="650" cellpadding="0" cellspacing="0" border="0">
+											<tbody>
+												<tr style="border-collapse: collapse;">
+													<td height="30" style="border-collapse: collapse; color: #fff !important;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
+												</tr>
+											</tbody>
 										</table>
 										<!-- ====== End Footer Spacer ====== -->
 

@@ -1998,6 +1998,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Save the tags
 		$tags = trim(JRequest::getVar('tags', '', 'post'));
 		$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
+		$tags = $st->get_tag_string($row->id, 0, 0, NULL, 0, 1);
 
 		// We must have a ticket ID before we can do anything else
 		if ($id) 
@@ -2135,9 +2136,8 @@ class SupportControllerTickets extends Hubzero_Controller
 					$message['plaintext'] .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
 					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
 					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
-					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name . ($row->login ? ' ('.$row->login.')' : '') . "\r\n";
 					$message['plaintext'] .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
-					$message['plaintext'] .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
 					$message['plaintext'] .= '----------------------------'."\r\n\r\n";
 					$message['plaintext'] .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
 					$message['plaintext'] .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";

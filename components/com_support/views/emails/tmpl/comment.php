@@ -79,16 +79,15 @@ Content-type: text/plain;charset=utf-8
 <?php echo $this->delimiter . "\n"; ?>
 You can reply to this message, just include your reply text above this area
 Attachments (up to 2MB each) are permitted
-Message from <?php echo $juri->base(); ?> / Ticket #<?php echo $this->ticket->id; ?>
+Message from <?php echo rtrim($juri->base(), DS); ?>/support / Ticket #<?php echo $this->ticket->id; ?>
 
 <?php 
 $message  = '----------------------------'."\n";
 $message .= strtoupper(JText::_('TICKET')).': '.$this->ticket->id."\n";
 $message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.$this->ticket->summary."\n";
 $message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$this->ticket->created."\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->name."\n";
+$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->name . ($this->ticket->login ? ' ('.$this->ticket->login.')' : '') . "\n";
 $message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($this->ticket->status)."\n";
-$message .= ($this->ticket->login) ? ' ('.$this->ticket->login.')'."\n" : "\n";
 $message .= '----------------------------'."\n\n";
 $message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$this->ticket->id).': '.$this->comment->created_by."\n";
 $message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$this->comment->created."\n\n";
@@ -100,17 +99,17 @@ if ($this->comment->changelog)
 		{
 			foreach ($log as $items)
 			{
-				$message .= "\n\n";
+				//$message .= "\n\n";
 				if ($type == 'changes')
 				{
-					$message .= $items['field'] . ' changed from "' . $items['before'] . '" to "' . $items['before'] . '"' . "\n";
+					$message .= ' * ' . $items['field'] . ' changed from "' . $items['before'] . '" to "' . $items['before'] . '"' . "\n";
 				}
 				else 
 				{
-					$message  .= JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . "\n";
+					$message  .= ' * ' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . "\n";
 				}
-				$message .= "\n\n";
 			}
+			$message .= "\n";
 		}
 	}
 }
@@ -408,10 +407,10 @@ Content-type: text/html;charset=utf-8";
 										<!-- ====== End Header ====== -->
 
 										<!-- ====== Start Footer Spacer ====== -->
-										<table  width="650" cellpadding="0" cellspacing="0" border="0">
+										<table width="650" cellpadding="0" cellspacing="0" border="0">
 											<tbody>
 												<tr style="border-collapse: collapse;">
-													<td height="30" style="border-collapse: collapse; height: 30px;"></td>
+													<td height="30" style="border-collapse: collapse; color: #fff !important;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
 												</tr>
 											</tbody>
 										</table>
