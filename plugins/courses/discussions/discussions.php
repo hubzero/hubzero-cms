@@ -254,7 +254,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				case 'deletethread':   $arr['html'] .= $this->deletethread();   break;
 
 				case 'download':       $arr['html'] .= $this->download();       break;
-				case 'search':         $arr['html'] .= $this->search();         break;
+				case 'search':         $arr['html'] .= $this->panel();         break;
 
 				default: $arr['html'] .= $this->panel(); break;
 			}
