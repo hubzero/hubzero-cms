@@ -135,7 +135,7 @@ class SupportAttachment extends JTable
 		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
 		$a = $this->_db->loadRow();
 
-		if ($this->output != 'web') 
+		if ($this->output != 'web' && $this->output != 'email') 
 		{
 			return $this->webpath . '/' . $a[0];
 		}
@@ -146,7 +146,7 @@ class SupportAttachment extends JTable
 			$sef = JRoute::_('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
 			$url = $juri->base() . trim($sef, DS);
 
-			if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $a[0])) 
+			if ($this->output != 'email' && preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $a[0])) 
 			{
 				$size = getimagesize($this->uppath . DS . $a[0]);
 				if ($size[0] > 400) 

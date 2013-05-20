@@ -113,8 +113,8 @@ if ($this->comment->changelog)
 		}
 	}
 }
-$message .= $this->comment->comment;
-echo $message . "\n\n" . $link . "\n";
+$message .= $this->attach->parse($this->comment->comment);
+echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)</a>/i', '\\1', $message) . "\n\n" . $link . "\n";
 ?>
 
 --<?php echo $this->boundary . "\n"; ?>
@@ -225,7 +225,26 @@ Content-type: text/html;charset=utf-8";
 										<!-- ====== Start Header Spacer ====== -->
 										<table  width="650" cellpadding="0" cellspacing="0" border="0">
 											<tr style="border-collapse: collapse;">
-												<td height="30" style="border-collapse: collapse; color: #fff;"><?php echo $this->delimiter; ?></td>
+												<td height="30" style="border-collapse: collapse;"></td>
+											</tr>
+										</table>
+										<!-- ====== End Header Spacer ====== -->
+
+										<!-- ====== Start Header Spacer ====== -->
+										<table width="650" cellpadding="0" cellspacing="0" border="0" style="border: 1px dashed #b5c6b5;">
+											<tr style="border-collapse: collapse;">
+												<td height="30" style="border-collapse: collapse; color: #9bac9b;">
+													<div style="height: 0px; overflow: hidden; color: #fff; visibility: hidden;"><?php echo $this->delimiter; ?></div>
+													<div style="text-align: center; font-size: 90%; display: block; padding: 1em;">&uarr; You can reply to this message, just include your reply text above this area. Attachments (up to 2MB each) are permitted.</div>
+												</td>
+											</tr>
+										</table>
+										<!-- ====== End Header Spacer ====== -->
+
+										<!-- ====== Start Header Spacer ====== -->
+										<table  width="650" cellpadding="0" cellspacing="0" border="0">
+											<tr style="border-collapse: collapse;">
+												<td height="30" style="border-collapse: collapse;"></td>
 											</tr>
 										</table>
 										<!-- ====== End Header Spacer ====== -->
@@ -399,7 +418,7 @@ Content-type: text/html;charset=utf-8";
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>"><?php echo $link; ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>
