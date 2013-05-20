@@ -76,10 +76,12 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 --<?php echo $this->boundary . "\n"; ?>
 Content-type: text/plain;charset=utf-8
 
+<?php if ($this->delimiter) { ?>
 <?php echo $this->delimiter . "\n"; ?>
 You can reply to this message, just include your reply text above this area
 Attachments (up to 2MB each) are permitted
 Message from <?php echo rtrim($juri->base(), DS); ?>/support / Ticket #<?php echo $this->ticket->id; ?>
+<?php } ?>
 
 <?php 
 $message  = '----------------------------'."\n";
@@ -229,7 +231,7 @@ Content-type: text/html;charset=utf-8";
 											</tr>
 										</table>
 										<!-- ====== End Header Spacer ====== -->
-
+<?php if ($this->delimiter) { ?>
 										<!-- ====== Start Header Spacer ====== -->
 										<table width="650" cellpadding="0" cellspacing="0" border="0" style="border: 1px dashed #b5c6b5;">
 											<tr style="border-collapse: collapse;">
@@ -248,7 +250,7 @@ Content-type: text/html;charset=utf-8";
 											</tr>
 										</table>
 										<!-- ====== End Header Spacer ====== -->
-
+<?php } ?>
 										<!-- ====== Start Header ====== -->
 										<table cellpadding="2" cellspacing="3" border="0" width="100%" style="border-collapse: collapse; border-bottom: 2px solid #e1e1e1;">
 											<tbody>

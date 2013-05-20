@@ -2186,7 +2186,11 @@ class SupportControllerTickets extends Hubzero_Controller
 					$eview->controller = $this->_controller;
 					$eview->comment    = $rowc;
 					$eview->ticket     = $row;
-					$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+					$eview->delimiter  = '';
+					if ($allowEmailResponses)
+					{
+						$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+					}
 					$eview->boundary   = $from['multipart'];
 					$eview->attach     = $attach;
 
