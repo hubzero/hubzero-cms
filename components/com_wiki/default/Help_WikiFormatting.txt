@@ -100,10 +100,12 @@ Note that there must be one or more spaces preceding the list item markers, othe
 
 == Definition Lists ==
 
-The wiki also supports definition lists.
+The wiki also supports definition lists. Definition terms start with '''one''' space " " and end with double colons "::". Definitions must be on the line immediately following the term and start with '''two to three''' spaces.
 
 Example:
 {{{
+A line with no beginning spaces.
+
  llama::
    some kind of mammal, with hair
  ppython::
@@ -112,6 +114,9 @@ Example:
 }}}
 
 Display:
+
+A line with no spaces.
+
  llama::
    some kind of mammal, with hair
  ppython::

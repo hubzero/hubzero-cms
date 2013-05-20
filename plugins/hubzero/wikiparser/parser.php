@@ -2577,11 +2577,13 @@ class WikiParser
 				if ($indl) 
 				{
 					$output .= '</dd>'."\n";
-					$output .= preg_replace('/\s(.*?)::(\s*)/sU', "<dt>\\1</dt>\n", $oLine);
+					//$output .= preg_replace('/\s(.*?)::(\s*)/sU', "<dt>\\1</dt>\n", $oLine);
+					$output .= preg_replace('/\s*(.*?)::(\s*)/sU', "<dt>\\1</dt>\n", $oLine);
 				} 
 				else 
 				{
-					$output .= preg_replace('/\s(.*?)::(\s*)/sU', "<dl><dt>\\1</dt>\n", $oLine);
+					//$output .= preg_replace('/\s(.*?)::(\s*)/sU', "<dl><dt>\\1</dt>\n", $oLine);
+					$output .= preg_replace('/\s*(.*?)::[ \t]*$/', "<dl><dt>\\1</dt>\n", $oLine);
 				}
 				$indl = true;
 				$indd = false;
@@ -2590,12 +2592,21 @@ class WikiParser
 			{
 				if ($indl) 
 				{
+					if (trim($oLine) == '')
+					{
+						$output .= '<br />' . $oLine . "\n";
+						continue;
+					}
 					if (preg_match('/\s{2,}(.*?)/sU', $oLine)) 
 					{
 						if (!$indd) 
 						{
 							$indd = true;
 							$output .= '<dd>';
+						}
+						else
+						{
+							$output .= '<br />';
 						}
 						$output .= trim($oLine) . "\n";
 					} 
@@ -2605,7 +2616,7 @@ class WikiParser
 						if (!preg_match('/(.*?)::(\s*)/sU', $oLine)) 
 						{
 							$indl = false;
-							$output .= '</dd></dl>' . "\n";
+							$output .= '</dd></dl>' . "\n" . $oLine . "\n";
 						}
 					}
 				} 
@@ -2615,6 +2626,7 @@ class WikiParser
 				}
 			}
 		}
+		//echo $output;
 		return $output;
 	}
 
