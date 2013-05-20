@@ -378,9 +378,9 @@ Content-type: text/html;charset=utf-8";
 															$this->comment->comment = str_replace("\t", ' &nbsp; &nbsp;', $this->comment->comment);
 															$this->comment->comment = preg_replace('/  /', ' &nbsp;', $this->comment->comment);
 														}
-														$this->comment->comment = $this->attach->parse($this->comment->comment);
+														$comment = $this->attach->parse($this->comment->comment);
 													?>
-														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->comment->comment; ?></p>
+														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></p>
 													</td>
 												</tr>
 											</tbody>
