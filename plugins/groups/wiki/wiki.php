@@ -281,7 +281,6 @@ class plgGroupsWiki extends Hubzero_Plugin
 
 		// Instantiate a WikiPage object
 		$database =& JFactory::getDBO();
-		$wp = new WikiPage($database);
 
 		// Start the log text
 		$log = JText::_('PLG_GROUPS_WIKI_LOG') . ': ';
@@ -291,13 +290,18 @@ class plgGroupsWiki extends Hubzero_Plugin
 			// Loop through all the IDs for pages associated with this group
 			foreach ($ids as $id)
 			{
+				$wp = new WikiPage($database);
+				$wp->load($id->id);
 				// Delete all items linked to this page
 				//$wp->deleteBits($id->id);
 
 				// Delete the wiki page last in case somehting goes wrong
 				//$wp->delete($id->id);
-				$wp->state = 2;
-				$wp->store();
+				if ($wp->id)
+				{
+					$wp->state = 2;
+					$wp->store();
+				}
 
 				// Add the page ID to the log
 				$log .= $id->id . ' ' . "\n";
