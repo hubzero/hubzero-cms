@@ -307,6 +307,11 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	// method to call when clicking a button
 	startUploads: function(expand) 
 	{
+		if ($('#f-upload').length > 0)
+		{
+			$('#f-upload').val('Upload started. Please wait');
+			$('#f-upload').addClass('started');
+		}
 		for (var i=0; i< this._que.length; i++)
 		{
 			fileContainer = this._que[i];
@@ -320,7 +325,19 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		if (!this._delay)
 		{
 			// Upload file
-			this._uploadFile(fileContainer, expand);	
+			this._uploadFile(fileContainer, expand);
+			
+			// Mark as waiting turn
+			var fileName = fileContainer.fileName != null ? fileContainer.fileName : fileContainer.name;
+			var item = this._getItemByFileName(fileName);
+			var elExt  = this._find(item, 'ext');
+			elExt.innerHTML = '';
+			
+			var can = this._find(item, 'cancel');
+			can.innerHTML = '';
+			
+			var status = this._find(item, 'status'); 
+			status.innerHTML = 'uploading';	
 		}
 		else
 		{

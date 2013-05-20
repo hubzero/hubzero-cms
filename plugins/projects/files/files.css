@@ -82,6 +82,10 @@
 		height: 30px;
 		margin: 1em;
 	}
+	input[type="submit"].started {
+		color: green;
+		border: 3px solid green !important;
+	}
 	
 /* Files management icons
 --------------------------------------------- */
