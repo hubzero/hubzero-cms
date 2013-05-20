@@ -114,7 +114,7 @@ if ($this->comment->changelog)
 	}
 }
 $message .= $this->comment->comment;
-echo $message . "\n";
+echo $message . "\n\n" . $link . "\n";
 ?>
 
 --<?php echo $this->boundary . "\n"; ?>
