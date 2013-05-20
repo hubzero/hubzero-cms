@@ -229,12 +229,22 @@ if ($this->wishlist && $this->wish) {
 					</div><!-- / .wish-subject -->
 				<?php if ($this->wish->about) { ?>
 					<div class="entry-long">
-						<p><?php 
-						$this->wish->about = trim(stripslashes($this->wish->about));
-						$this->wish->about = preg_replace('/<br\\s*?\/??>/i', '', $this->wish->about);
-						$this->wish->about = $this->escape(WishlistHtml::txt_unpee($this->wish->about));
-						echo nl2br($this->wish->about); 
-						?></p>
+						<?php 
+						ximport('Hubzero_Wiki_Parser');
+
+						$wikiconfig = array(
+							'option'   => $this->option,
+							'scope'    => 'wishlist',
+							'pagename' => 'wishlist',
+							'pageid'   => $this->wish->id,
+							'filepath' => '',
+							'domain'   => $this->wish->id
+						);
+
+						$p =& Hubzero_Wiki_Parser::getInstance();
+
+						echo $p->parse($this->wish->about, $wikiconfig);
+						?>
 					</div><!-- / .wish-details -->
 				<?php } ?>
 

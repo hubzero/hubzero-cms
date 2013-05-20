@@ -113,13 +113,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<input type="hidden" id="status" name="status" value="<?php echo $wish->status; ?>" />
 					<input type="hidden" id="id" name="id" value="<?php echo $wish->id; ?>" />
 					
-					<label>
+					<label for="subject">
 						Summary of your wish: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 						<input name="subject" maxlength="120" id="subject" type="text" value="<?php echo $wish->subject; ?>" />
 					</label>
-					<label>
+					<label for="field_about">
 						<?php echo JText::_('WISH_EXPLAIN_IN_DETAIL'); ?>: 
-						<textarea name="about" rows="10" cols="50"><?php echo $wish->about; ?></textarea>
+						<?php
+							ximport('Hubzero_Wiki_Editor');
+							$editor = Hubzero_Wiki_Editor::getInstance();
+							echo $editor->display('about', 'field_about', $wish->about, 'minimal', '50', '10');
+						?>
 					</label>
 					<label>
 						<?php echo JText::_('WISH_ADD_TAGS'); ?>: <br />
