@@ -67,65 +67,57 @@ function submitbutton(pressbutton)
 			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('Select...'); ?></option>
 			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ None ]'); ?></option>
 			<?php
-			/*ximport('Hubzero_Group');
-			$filters = array();
-			$filters['authorized'] = 'admin';
-			$filters['fields'] = array('cn','description','published','gidNumber','type');
-			$filters['type'] = array(1,3);
-			$filters['sortby'] = 'description';
-			$groups = Hubzero_Group::find($filters);*/
-
 			$html = '';
 			if ($this->results) 
 			{
+				ximport('Hubzero_Group');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+
+				$list = array(
+					'group'  => array(),
+					'course' => array()
+				);
 				foreach ($this->results as $result)
 				{
-					if ($result->scope == 'site')
+					if ($result->scope == 'site' || isset($list[$result->scope][$result->scope_id]))
 					{
 						continue;
 					}
-					$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
-					if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id) 
+					switch ($result->scope)
 					{
-						$html .= ' selected="selected"';
+						case 'group':
+							$group = Hubzero_Group::getInstance($result->scope_id);
+							$result->caption = $group->get('description');
+						break;
+						case 'course':
+							$course = CoursesModelOffering::getInstance($result->scope_id);
+							$result->caption = $course->get('title');
+						break;
+						default:
+							$result->caption = $result->scope . ($result->scope_id ? ' (' . $this->escape(stripslashes($result->scope_id)) . ')' : '');
+						break;
 					}
-					$html .= '>' . $this->escape(stripslashes($result->scope));
-					$html .= ($result->scope_id) ? ' (' . $this->escape(stripslashes($result->scope_id)) . ')' : '';
-					$html .= '</option>'."\n";
+					$list[$result->scope][$result->scope_id] = $result;
+				}
+				foreach ($list as $label => $optgroup)
+				{
+					$html .= ' <optgroup label="' . $label . '">';
+					foreach ($optgroup as $result)
+					{
+						$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
+						if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id) 
+						{
+							$html .= ' selected="selected"';
+						}
+						$html .= '>' . $this->escape(stripslashes($result->caption));
+						$html .= '</option>'."\n";
+					}
+					$html .= '</optgroup>'."\n";
 				}
 			}
 			echo $html;
 			?>
 		</select>
-		<!-- <label for="group"><?php echo JText::_('Group:'); ?></label> 
-		<select name="group" id="group" style="max-width: 20em;" onchange="document.adminForm.submit( );">
-			<option value="-1"<?php if ($this->filters['group'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Select...'); ?></option>
-			<option value="0"<?php if ($this->filters['group'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('[ None ]'); ?></option>
-			<?php
-			ximport('Hubzero_Group');
-			$filters = array();
-			$filters['authorized'] = 'admin';
-			$filters['fields'] = array('cn','description','published','gidNumber','type');
-			$filters['type'] = array(1,3);
-			$filters['sortby'] = 'description';
-			$groups = Hubzero_Group::find($filters);
-
-			$html = '';
-			if ($groups) 
-			{
-				foreach ($groups as $group)
-				{
-					$html .= ' <option value="'.$group->gidNumber.'"';
-					if ($this->filters['group'] == $group->gidNumber) 
-					{
-						$html .= ' selected="selected"';
-					}
-					$html .= '>' . $this->escape(stripslashes($group->cn)) . '</option>'."\n";
-				}
-			}
-			echo $html;
-			?>
-		</select> -->
 	</fieldset>
 	<div class="clr"></div>
 
@@ -244,7 +236,7 @@ if ($this->results)
 				<td>
 <?php //if ($this->escape($row->scope)) { ?>
 					<span class="scope">
-						<span><?php echo $this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : ''; ?></span>
+						<span><?php echo isset($list[$row->scope]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : 'site'; /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
 					</span>
 <?php //} ?>
 				</td>
