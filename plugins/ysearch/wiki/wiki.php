@@ -96,6 +96,20 @@ class plgYSearchWiki extends YSearchPlugin
 				$authorization = 'wp.access = 0';
 			}
 		}
+		// fml
+		$groupAuth = array();
+		if ($authz->is_super_admin()) {
+			$groupAuth[] = '1';
+		}
+		else {
+			$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
+			if (!$authz->is_guest()) {
+				$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
+				if ($gids = $authz->get_group_ids()) {
+					$groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN ('.join(',', $gids).'))';
+				}
+			}
+		}
 
 		$rows = new YSearchResultSQL(
 			"SELECT 
@@ -118,7 +132,8 @@ class plgYSearchWiki extends YSearchPlugin
 				wp.state < 2 AND
 				wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version wv2 WHERE wv2.pageid = wv.pageid) " .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-			" ORDER BY $weight DESC"
+				" AND (xg.gidNumber IS NULL OR (".implode(' OR ', $groupAuth)."))  
+			 ORDER BY $weight DESC"
 		);
 		foreach ($rows->to_associative() as $row)
 		{
