@@ -110,13 +110,29 @@ class ForumControllerCategories extends Hubzero_Controller
 		$sections = $this->view->section->getRecords();
 		if ($sections)
 		{
+			ximport('Hubzero_Group');
+			ximport('Hubzero_View_Helper_Html');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+
 			foreach ($sections as $s)
 			{
-				$ky = $s->scope . ' (' . $s->scope_id . ')';
-				if ($s->scope == 'site')
+				switch ($s->scope)
 				{
-					$ky = '[ site ]';
+					case 'group':
+						$group = Hubzero_Group::getInstance($s->scope_id);
+						$ky = $s->scope . ' (' . Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0) . ')';
+					break;
+					case 'course':
+						$offering = CoursesModelOffering::getInstance($s->scope_id);
+						$course = CoursesModelCourse::getInstance($offering->get('course_id'));
+						$ky = $s->scope . ' (' . Hubzero_View_Helper_Html::shortenText($course->get('alias'), 50, 0) . ': ' . Hubzero_View_Helper_Html::shortenText($offering->get('alias'), 50, 0) . ')';
+					break;
+					case 'site':
+					default:
+						$ky = '[ site ]'; //$ky = $s->scope . ($s->scope_id ? ' (' . $s->scope_id . ')' : '');
+					break;
 				}
+
 				if (!isset($this->view->sections[$ky]))
 				{
 					$this->view->sections[$ky] = array();

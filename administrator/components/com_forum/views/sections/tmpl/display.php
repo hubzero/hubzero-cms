@@ -71,7 +71,8 @@ function submitbutton(pressbutton)
 			if ($this->results) 
 			{
 				ximport('Hubzero_Group');
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+				ximport('Hubzero_View_Helper_Html');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 				$list = array(
 					'group'  => array(),
@@ -79,19 +80,25 @@ function submitbutton(pressbutton)
 				);
 				foreach ($this->results as $result)
 				{
-					if ($result->scope == 'site' || isset($list[$result->scope][$result->scope_id]))
+					if ($result->scope == 'site')
 					{
+						continue;
+					}
+					if (isset($list[$result->scope][$result->scope_id]))
+					{
+						$result->caption = $list[$result->scope][$result->scope_id]->caption;
 						continue;
 					}
 					switch ($result->scope)
 					{
 						case 'group':
 							$group = Hubzero_Group::getInstance($result->scope_id);
-							$result->caption = $group->get('description');
+							$result->caption = Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0);
 						break;
 						case 'course':
-							$course = CoursesModelOffering::getInstance($result->scope_id);
-							$result->caption = $course->get('title');
+							$offering = CoursesModelOffering::getInstance($result->scope_id);
+							$course = CoursesModelCourse::getInstance($offering->get('course_id'));
+							$result->caption = Hubzero_View_Helper_Html::shortenText($course->get('alias'), 50, 0) . ': ' . Hubzero_View_Helper_Html::shortenText($offering->get('alias'), 50, 0);
 						break;
 						default:
 							$result->caption = $result->scope . ($result->scope_id ? ' (' . $this->escape(stripslashes($result->scope_id)) . ')' : '');
@@ -236,7 +243,7 @@ if ($this->results)
 				<td>
 <?php //if ($this->escape($row->scope)) { ?>
 					<span class="scope">
-						<span><?php echo isset($list[$row->scope]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : 'site'; /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
+						<span><?php echo isset($list[$row->scope]) ? $row->scope . ' (' . $this->escape($row->caption) . ')' : '[ site ]'; /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
 					</span>
 <?php //} ?>
 				</td>

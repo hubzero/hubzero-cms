@@ -84,6 +84,14 @@ function submitbutton(pressbutton) {
 ?>
 				</optgroup>
 <?php
+				if (!isset($list[$section->scope]))
+				{
+					$list[$section->scope] = array();
+				}
+				if (!isset($list[$section->scope][$section->scope_id]))
+				{
+					$list[$section->scope][$section->scope_id] = $scope;
+				}
 			}
 ?>
 			</optgroup>
@@ -235,7 +243,7 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="scope">
-						<span><?php echo $this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : ''; ?></span>
+						<span><?php echo $this->escape($list[$row->scope][$row->scope_id]); /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
 					</span>
 				</td>
 				<td>

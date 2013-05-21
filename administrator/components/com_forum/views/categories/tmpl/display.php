@@ -66,6 +66,7 @@ function submitbutton(pressbutton)
 		<select name="section_id" id="field-section_id" onchange="document.adminForm.submit( );">
 			<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_SECTION_SELECT'); ?></option>
 <?php
+	$list = array();
 	foreach ($this->sections as $scope => $sections)
 	{
 		//if ($sections) 
@@ -78,6 +79,14 @@ function submitbutton(pressbutton)
 ?>
 			<option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
 <?php
+				if (!isset($list[$section->scope]))
+				{
+					$list[$section->scope] = array();
+				}
+				if (!isset($list[$section->scope][$section->scope_id]))
+				{
+					$list[$section->scope][$section->scope_id] = $scope;
+				}
 			}
 ?>
 			</optgroup>
@@ -204,7 +213,7 @@ if ($this->results)
 				<td>
 <?php //if ($this->escape($row->group_alias)) { ?>
 					<span class="scope">
-						<span><?php echo $this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : ''; ?></span>
+						<span><?php echo $this->escape($list[$row->scope][$row->scope_id]); /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
 					</span>
 <?php //} ?>
 				</td>
