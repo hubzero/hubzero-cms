@@ -64,6 +64,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $this->model->resource->introtext = stripslashes($this->model->resource->introtext);
 //$this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
+if (strstr($this->model->resource->fulltxt, '\"'))
+{
+	$this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
+}
 $this->model->resource->fulltxt = ($this->model->resource->fulltxt) ? trim($this->model->resource->fulltxt) : trim($this->model->resource->introtext);
 
 // Parse for <nb: > tags
