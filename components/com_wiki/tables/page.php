@@ -765,7 +765,15 @@ class WikiPage extends JTable
 		}
 		if (isset($filters['state']))
 		{
-			$where[] = "t.`state`=" . $this->_db->Quote($filters['state']);
+			if (is_array($filters['state']))
+			{
+				$filters['state'] = array_map('intval', $filters['state']);
+				$where[] = "t.`state` IN (" . implode(',', $filters['state']) . ")";
+			}
+			else
+			{
+				$where[] = "t.`state`=" . $this->_db->Quote($filters['state']);
+			}
 		}
 
 		if (count($where) > 0)

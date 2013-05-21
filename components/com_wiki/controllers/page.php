@@ -633,7 +633,8 @@ class WikiControllerPage extends Hubzero_Controller
 		// Pull a tree of pages in this wiki
 		$items = $this->page->getPages(array(
 			'group'  => $this->_group,
-			'sortby' => 'pagename ASC, scope ASC'
+			'sortby' => 'pagename ASC, scope ASC',
+			'state'  => array(0, 1)
 		));
 		if ($items)
 		{
