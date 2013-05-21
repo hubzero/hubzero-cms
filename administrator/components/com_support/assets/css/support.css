@@ -1156,7 +1156,7 @@
 		font-weight: bold;
 	}
 /* New query button */
-	.fltlft p {
+	#ticketForm .fltlft p {
 		margin: 0;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.9);
 		*border-bottom: 1px solid 060606;
