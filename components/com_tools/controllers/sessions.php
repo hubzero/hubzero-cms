@@ -661,8 +661,9 @@ class ToolsControllerSessions extends Hubzero_Controller
 		// Incoming
 		$sess     = JRequest::getVar('sess', '');
 		$username = trim(JRequest::getVar('username', ''));
+		$group    = JRequest::getInt('group', 0);
 		$readonly = JRequest::getVar('readonly', '');
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html  = JRequest::getInt('no_html', 0);
 		
 		$users = array();
 		if (strstr($username, ',')) 
@@ -679,7 +680,28 @@ class ToolsControllerSessions extends Hubzero_Controller
 		{
 			$users[] = $username;
 		}
-
+		
+		//do we want to share with a group
+		if (isset($group) && $group != 0)
+		{
+			ximport('Hubzero_Group');
+			$hg = Hubzero_Group::getInstance( $group );
+			$members = $hg->get('members');
+			
+			//merge group members with any passed in username field
+			$users = array_values(array_unique(array_merge($users, $members)));
+			
+			//remove this user
+			$isUserInArray = array_search($this->juser->get('id'), $users);
+			if(isset($isUserInArray))
+			{
+				unset($users[$isUserInArray]);
+			}
+			
+			//fix array keys
+			$users = array_values($users);
+		}
+		
 		// Double-check that the user can access this session.
 		$ms = new MwSession($mwdb);
 		$row = $ms->checkSession($sess, $this->juser->get('username'));
@@ -991,6 +1013,10 @@ class ToolsControllerSessions extends Hubzero_Controller
 				'index.php?option=' . $this->_option . '&controller=' . $this->controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess
 			);
 		}
+		
+		//get users groups
+		ximport('Hubzero_User_Helper');
+		$this->view->mygroups = Hubzero_User_Helper::getGroups( $this->juser->get('id'), 'members', 1 );
 
 		// Push styles to the document
 		$this->_getStyles($this->_option, 'assets/css/tools.css');

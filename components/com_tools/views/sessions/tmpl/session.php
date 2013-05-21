@@ -246,7 +246,15 @@ if (!$this->app->sess) {
 					<input type="text" name="username" id="field-username" value="" />
 					<?php } ?>
 				</label>
-				
+				<label for="group">
+					<?php echo JText::_('Share with one of you Groups:'); ?>
+					<select name="group" id="group">
+						<option value=""><?php echo JText::_('- Select Group &mdash;'); ?></option>
+						<?php foreach ($this->mygroups as $group) : ?>
+							<option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</label>
 				<label for="field-readonly" id="readonly-label">
 					<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" /> 
 					<?php echo JText::_('Read-Only? (only you control the session)'); ?>

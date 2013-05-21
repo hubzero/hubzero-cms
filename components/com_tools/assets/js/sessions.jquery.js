@@ -345,6 +345,7 @@ HUB.Mw = {
 				url: url,
 				type: 'POST',
 				data: data,
+				//dataType: 'json',
 				error: function(jqXHR, textStatus, errorThrown)
 				{
 					alert('We have experienced a server error while trying to share this tool session.\n\nYou could be seeing this error if you are trying to share with someone who already has sharing privledges.');
@@ -370,6 +371,9 @@ HUB.Mw = {
 						
 						//remove items from token list and clear actual hidden input
 						$("#acmembers").tokenInput('clear');
+						
+						//reset group select box
+						$("#group").val(0);
 					});
 				}
 			});
