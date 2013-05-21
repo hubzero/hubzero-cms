@@ -41,12 +41,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 jimport('joomla.application.component.view');
 
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'post.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'section.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'pagination.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'forum.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'sections'));
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))

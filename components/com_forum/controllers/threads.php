@@ -39,6 +39,8 @@ class ForumControllerThreads extends Hubzero_Controller
 	 */
 	public function execute()
 	{
+		$this->model = new ForumModel('site', 0);
+
 		$this->registerTask('latest', 'feed');
 		$this->registerTask('latest', 'feed.rss');
 		$this->registerTask('latest', 'latest.rss');
@@ -53,8 +55,7 @@ class ForumControllerThreads extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
@@ -66,22 +67,22 @@ class ForumControllerThreads extends Hubzero_Controller
 		if (isset($this->view->section))
 		{
 			$pathway->addItem(
-				stripslashes($this->view->section->title), 
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->alias
+				stripslashes($this->view->section->get('title')), 
+				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias')
 			);
 		}
 		if (isset($this->view->category))
 		{
 			$pathway->addItem(
-				stripslashes($this->view->category->title), 
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->alias . '&category=' . $this->view->category->alias
+				stripslashes($this->view->category->get('title')), 
+				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias')
 			);
 		}
-		if (isset($this->view->post) && $this->view->post->id)
+		if (isset($this->view->thread) && $this->view->thread->exists())
 		{
 			$pathway->addItem(
-				'#' . $this->view->post->id . ' - ' . stripslashes($this->view->post->title), 
-				'index.php?option=' . $this->_option . '&section=' . $this->view->section->alias . '&category=' . $this->view->category->alias . '&thread=' . $this->view->post->id
+				'#' . $this->view->thread->get('id') . ' - ' . stripslashes($this->view->thread->get('title')), 
+				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias') . '&thread=' . $this->view->thread->get('id')
 			);
 		}
 	}
@@ -96,15 +97,15 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->_title = JText::_(strtoupper($this->_option));
 		if (isset($this->view->section))
 		{
-			$this->_title .= ': ' . stripslashes($this->view->section->title);
+			$this->_title .= ': ' . stripslashes($this->view->section->get('title'));
 		}
 		if (isset($this->view->category))
 		{
-			$this->_title .= ': ' . stripslashes($this->view->category->title);
+			$this->_title .= ': ' . stripslashes($this->view->category->get('title'));
 		}
-		if (isset($this->view->post) && $this->view->post->id)
+		if (isset($this->view->thread) && $this->view->thread->exists())
 		{
-			$this->_title .= ': #' . $this->view->post->id . ' - ' . stripslashes($this->view->post->title);
+			$this->_title .= ': #' . $this->view->thread->get('id') . ' - ' . stripslashes($this->view->thread->get('title'));
 		}
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->_title);
@@ -120,70 +121,53 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->view->title = JText::_('Discussion Forum');
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
-		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['section'] = JRequest::getVar('section', '');
-		$this->view->filters['category'] = JRequest::getVar('category', '');
-		$this->view->filters['parent'] = JRequest::getInt('thread', 0);
-		$this->view->filters['state']  = 1;
+		$this->view->filters = array(
+			'limit'    => JRequest::getInt('limit', 25),
+			'start'    => JRequest::getInt('limitstart', 0),
+			'section'  => JRequest::getVar('section', ''),
+			'category' => JRequest::getCmd('category', ''),
+			'parent'   => JRequest::getInt('thread', 0),
+			'state'    => 1
+		);
 
-		$this->view->section = new ForumSection($this->database);
-		$this->view->section->loadByAlias($this->view->filters['section'], 0);
+		$this->view->section  = $this->model->section($this->view->filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
+		if (!$this->view->section->exists())
+		{
+			JError::raiseError(404, JText::_('Section not found.'));
+			return;
+		}
 
-		$this->view->category = new ForumCategory($this->database);
-		$this->view->category->loadByAlias($this->view->filters['category'], $this->view->section->id, 0);
-		$this->view->filters['category_id'] = $this->view->category->id;
+		$this->view->category = $this->view->section->category($this->view->filters['category']);
+		if (!$this->view->category->exists())
+		{
+			JError::raiseError(404, JText::_('Category not found.'));
+			return;
+		}
 
-		// Initiate a forum object
-		$this->view->post = new ForumPost($this->database);
+		$this->view->filters['category_id'] = $this->view->category->get('id');
 
 		// Load the topic
-		$this->view->post->load($this->view->filters['parent']);
+		$this->view->thread = $this->view->category->thread($this->view->filters['parent']);
 
 		// Check logged in status
-		if ($this->view->post->access > 0 && $this->juser->get('guest')) 
+		if ($this->view->thread->get('access') > 0 && $this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent']));
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent']), false, true);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
 			return;
 		}
 
-		// Get reply count
-		$this->view->total = $this->view->post->getCount($this->view->filters);
-
-		// Get replies
-		$this->view->rows = $this->view->post->getRecords($this->view->filters);
-
-		// Record the hit
-		//$this->view->forum->hit();
-		$this->view->participants = $this->view->post->getParticipants($this->view->filters);
-
-		// Get attachments
-		$this->view->attach = new ForumAttachment($this->database);
-		$this->view->attachments = $this->view->attach->getAttachments($this->view->post->id);
-
-		// Get tags on this article
-		$this->view->tModel = new ForumTags($this->database);
-		$this->view->tags = $this->view->tModel->get_tag_cloud(0, 0, $this->view->post->id);
-
 		// Get authorization
-		$this->_authorize('category', $this->view->category->id);
-		$this->_authorize('thread', $this->view->post->id);
+		$this->_authorize('category', $this->view->category->get('id'));
+		$this->_authorize('thread', $this->view->thread->get('id'));
 		$this->_authorize('post');
 
 		$this->view->config = $this->config;
-		$this->view->notifications = $this->getComponentMessage();
+		$this->view->model  = $this->model;
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
-			$this->view->filters['limit']
-		);
+		$this->view->notifications = $this->getComponentMessage();
 
 		// Push CSS to the template
 		$this->_getStyles();
@@ -382,9 +366,9 @@ class ForumControllerThreads extends Hubzero_Controller
 	{
 		$this->view->setLayout('edit');
 
-		$id = JRequest::getInt('thread', 0);
-		$category = JRequest::getVar('category', '');
-		$section = JRequest::getVar('section', '');
+		$id       = JRequest::getInt('thread', 0);
+		$category = JRequest::getCmd('category', '');
+		$section  = JRequest::getVar('section', '');
 
 		if ($this->juser->get('guest')) 
 		{
@@ -401,11 +385,19 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
-		$this->view->section = new ForumSection($this->database);
-		$this->view->section->loadByAlias($section, 0);
+		$this->view->section  = $this->model->section($section, $this->model->get('scope'), $this->model->get('scope_id'));
+		if (!$this->view->section->exists())
+		{
+			JError::raiseError(404, JText::_('Section not found.'));
+			return;
+		}
 
-		$this->view->category = new ForumCategory($this->database);
-		$this->view->category->loadByAlias($category, $this->view->section->id, 0);
+		$this->view->category = $this->view->section->category($category);
+		if (!$this->view->category->exists())
+		{
+			JError::raiseError(404, JText::_('Category not found.'));
+			return;
+		}
 
 		// Incoming
 		if (is_object($post))
@@ -414,17 +406,16 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 		else 
 		{
-			$this->view->post = new ForumPost($this->database);
-			$this->view->post->load($id);
+			$this->view->post = new ForumModelThread($id);
 		}
 
 		$this->_authorize('thread', $id);
 
 		if (!$id) 
 		{
-			$this->view->post->created_by = $this->juser->get('id');
+			$this->view->post->set('created_by', $this->juser->get('id'));
 		}
-		elseif ($this->view->post->created_by != $this->juser->get('id') && !$this->config->get('access-edit-thread')) 
+		elseif ($this->view->post->get('created_by') != $this->juser->get('id') && !$this->config->get('access-edit-thread')) 
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -433,43 +424,6 @@ class ForumControllerThreads extends Hubzero_Controller
 			);
 			return;
 		}
-
-		$this->view->sections = $this->view->section->getRecords(array(
-			'state' => 1,
-			'scope' => 'site',
-			'scope_id' => 0
-		));
-		if (!$this->view->sections || count($this->view->sections) <= 0)
-		{
-			$this->view->sections = array();
-			
-			$default = new ForumSection($this->database);
-			$default->id = 0;
-			$default->title = JText::_('Categories');
-			$default->alias = str_replace(' ', '-', $default->title);
-			$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
-			$this->view->sections[] = $default;
-		}
-
-		$cModel = new ForumCategory($this->database);
-		foreach ($this->view->sections as $key => $sect)
-		{
-			$this->view->sections[$key]->categories = $cModel->getRecords(array(
-				'section_id' => $sect->id,
-				'scope'      => 'site',
-				'scope_id'   => 0,
-				'state'      => 1
-			));
-		}
-
-		// Get tags on this article
-		$this->view->tModel = new ForumTags($this->database);
-		$this->view->tags = $this->view->tModel->get_tag_string($this->view->post->id, 0, 0, $this->view->post->created_by);
-
-		$this->view->attach = new ForumAttachment($this->database);
-		$this->view->attach->loadByPost($id);
-
-		$this->view->authorized = $this->_authorize();
 
 		// Push CSS to the template
 		$this->_getStyles();
@@ -481,6 +435,8 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->_buildPathway();
 
 		$this->view->config = $this->config;
+		$this->view->model  = $this->model;
+
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
@@ -510,6 +466,9 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$section = JRequest::getVar('section', '');
 
@@ -533,25 +492,12 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		if ($fields['id'])
 		{
-			$old = new ForumPost($this->database);
-			$old->load(intval($fields['id']));
+			$old = new ForumModelPost(intval($fields['id']));
 		}
 
 		// Bind data
-		$model = new ForumPost($this->database);
+		$model = new ForumModelPost($fields['id']);
 		if (!$model->bind($fields)) 
-		{
-			$this->addComponentMessage($model->getError(), 'error');
-			$this->editTask($model);
-			return;
-		}
-		if (!$model->anonymous)
-		{
-			$model->anonymous = 0;
-		}
-
-		// Check content
-		if (!$model->check()) 
 		{
 			$this->addComponentMessage($model->getError(), 'error');
 			$this->editTask($model);
@@ -559,31 +505,20 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		// Store new content
-		if (!$model->store()) 
+		if (!$model->store(true)) 
 		{
 			$this->addComponentMessage($model->getError(), 'error');
 			$this->editTask($model);
 			return;
 		}
 
-		$parent = ($model->parent) ? $model->parent : $model->id;
+		$parent = $model->get('parent', $model->get('id'));
 
-		$this->uploadTask($parent, $model->id);
+		// Upload files
+		$this->uploadTask($parent, $model->get('id'));
 
-		if ($fields['id'])
-		{
-			if ($old->category_id != $fields['category_id'])
-			{
-				$model->updateReplies(array('category_id' => $fields['category_id']), $model->id);
-			}
-		}
-
-		$category = new ForumCategory($this->database);
-		$category->load(intval($model->category_id));
-
-		$tags = JRequest::getVar('tags', '', 'post');
-		$tagger = new ForumTags($this->database);
-		$tagger->tag_object($this->juser->get('id'), $model->id, $tags, 1);
+		// Save tags
+		$model->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'));
 
 		// Determine message
 		if (!$fields['id'])
@@ -602,9 +537,11 @@ class ForumControllerThreads extends Hubzero_Controller
 			$message = ($model->modified_by) ? JText::_('COM_FORUM_POST_EDITED') : JText::_('COM_FORUM_POST_ADDED');
 		}
 
+		$category = new ForumModelCategory($model->get('category_id'));
+
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->alias . '&thread=' . $parent . '#c' . $model->id),
+			JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $parent . '#c' . $model->get('id')),
 			$message,
 			'message'
 		);
@@ -923,16 +860,8 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			// File was uploaded
 			// Create database entry
-			//$row = new ForumAttachment($this->database);
 			$row->filename = $file['name'];
 			
-			/*$row->bind(array(
-				'id'          => $id,
-				'parent'      => $listdir,
-				'post_id'     => $post_id,
-				'filename'    => $file['name'],
-				'description' => $description
-			));*/
 			if (!$row->check()) 
 			{
 				$this->setError($row->getError());

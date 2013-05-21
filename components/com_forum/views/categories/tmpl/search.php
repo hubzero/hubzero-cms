@@ -28,23 +28,23 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 <div class="main section">
 	<div class="aside">
-<?php if ($this->config->get('access-create-thread')) { ?>
+	<?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
 			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
-<?php if (!$this->category->closed) { ?>
+		<?php if (!$this->category->get('closed')) { ?>
 			<p>
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p>
 				<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
-<?php } else { ?>
+		<?php } else { ?>
 			<p class="warning">
 				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
 			</p>
-<?php } ?>
+		<?php } ?>
 		</div>
-<?php } ?>
+	<?php } ?>
 	</div><!-- / .aside -->
 
 	<div class="subject">
@@ -54,7 +54,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<fieldset class="entry-search">
 					<legend><?php echo JText::_('Search posts'); ?></legend>
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="categories" />
 					<input type="hidden" name="task" value="search" />
@@ -64,38 +64,33 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container">
 				<table class="entries">
 					<caption>
-<?php
-					echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
-?>
+						<?php echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search'])); ?>
 					</caption>
 					<tbody>
-<?php
-			if ($this->rows) {
-				foreach ($this->rows as $row) 
+			<?php
+			if ($this->thread->posts('list', $this->filters)->total() > 0) {
+				foreach ($this->thread->posts() as $row) 
 				{
+					$title = $this->escape(stripslashes($row->get('title')));
+					$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
+
 					$name = JText::_('Anonymous');
-					if (!$row->anonymous)
+					if (!$row->get('anonymous'))
 					{
-						$creator =& JUser::getInstance($row->created_by);
-						if (is_object($creator)) 
-						{
-							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
-						}
+						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 					}
-					
-					$thread = ($row->parent) ? $row->parent : $row->id;
-?>
-						<tr<?php if ($row->sticky) { echo ' class="sticky"'; } ?>>
+					?>
+						<tr<?php if ($row->get('sticky')) { echo ' class="sticky"'; } ?>>
 							<th>
-								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
+								<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->sections[$this->categories[$row->category_id]->section_id]->alias . '&category=' . $this->categories[$row->category_id]->alias . '&thread=' . $thread); ?>">
-									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '&category=' . $this->categories[$row->get('category_id')]->get('alias') . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']); ?>">
+									<span><?php echo $title; ?></span>
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?>
+										<?php echo $row->created('date'); ?>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -106,34 +101,34 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							<td>
 								<span><?php echo JText::_('Section'); ?></span>
 								<span class="entry-details">
-									<?php echo $this->escape($this->sections[$this->categories[$row->category_id]->section_id]->title); ?>
+									<?php echo $this->escape($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title')); ?>
 								</span>
 							</td>
 							<td>
 								<span><?php echo JText::_('Category'); ?></span>
 								<span class="entry-details">
-									<?php echo $this->escape($this->categories[$row->category_id]->title); ?>
+									<?php echo $this->escape($this->categories[$row->get('category_id')]->get('title')); ?>
 								</span>
 							</td>
 						</tr>
-<?php 
-				}
-			} else { ?>
+					<?php } ?>
+				<?php } else { ?>
 						<tr>
 							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
 						</tr>
-<?php 		} ?>
+				<?php } ?>
 					</tbody>
 				</table>
-<?php 
-			if ($this->pageNav) 
-			{
-				//$this->pageNav->setAdditionalUrlParam('section', $this->filters['section']);
-				//$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
-				$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-				echo $this->pageNav->getListFooter();
-			}
-?>
+				<?php 
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->thread->posts('count', $this->filters), 
+						$this->filters['start'], 
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+					echo $pageNav->getListFooter();
+				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</form>

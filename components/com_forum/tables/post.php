@@ -352,6 +352,13 @@ class ForumPost extends JTable
 			$this->lft = 0;
 			$this->rgt = 1;
 		}
+		else
+		{
+			if (!$this->thread) 
+			{
+				$this->thread = $this->parent;
+			}
+		}
 
 		return true;
 	}
@@ -442,6 +449,10 @@ class ForumPost extends JTable
 			{
 				$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
 			}
+			if (isset($filters['thread']) && (int) $filters['thread'] >= 0) 
+			{
+				$where[] = "c.thread=" . $this->_db->Quote(intval($filters['thread']));
+			}
 			
 			if (count($where) > 0)
 			{
@@ -523,7 +534,7 @@ class ForumPost extends JTable
 		}
 		$query .= $this->buildQuery($filters);
 
-		if ($filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}

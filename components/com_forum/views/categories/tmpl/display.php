@@ -33,47 +33,47 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 		<div class="container">
 			<h3><?php echo JText::_('Last Post'); ?><span class="starter-point"></span></h3>
 			<p>
-<?php
-	if (is_object($this->lastpost)) 
-	{
-		$lname = JText::_('Anonymous');
-		$lastposter = JUser::getInstance($this->lastpost->created_by);
-		if (is_object($lastposter) && !$this->lastpost->anonymous) 
-		{
-			$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
-		}
-?>
-				<a href="<?php echo JRoute::_($base . '&thread=' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>" class="entry-date">
+			<?php
+			$last = $this->category->lastActivity();
+			if ($last->exists()) 
+			{
+				$lname = JText::_('Anonymous');
+				if (!$last->get('anonymous')) 
+				{
+					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $last->creator('id')) . '">' . $this->escape(stripslashes($last->creator('name'))) . '</a>';
+				}
+			?>
+				<a href="<?php echo JRoute::_($base . '&thread=' . $last->get('thread')); ?>" class="entry-date">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
+					<span class="time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+					<span class="date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
 				</a>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
 					<?php echo $lname; ?>
 				</span>
-<?php } else { ?>
+			<?php } else { ?>
 				<?php echo JText::_('none'); ?>
-<?php } ?>
+			<?php } ?>
 			</p>
 		</div><!-- / .container -->
-<?php if ($this->config->get('access-create-thread')) { ?>
+	<?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
 			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
-<?php if (!$this->category->closed) { ?>
+		<?php if (!$this->category->get('closed')) { ?>
 			<p>
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p>
 				<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
-<?php } else { ?>
+		<?php } else { ?>
 			<p class="warning">
 				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
 			</p>
-<?php } ?>
+		<?php } ?>
 		</div><!-- / .container -->
-<?php } ?>
+	<?php } ?>
 	</div><!-- / .aside -->
 
 	<div class="subject">
@@ -84,7 +84,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 					<legend><span><?php echo JText::_('Search posts'); ?></span></legend>
 					
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="categories" />
@@ -118,44 +118,40 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 
 				<table class="entries">
 					<caption>
-<?php
-			if ($this->filters['search']) {
-				if ($this->category->title) {
-					echo JText::sprintf('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->title)));
-				} else {
-					echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
-				}
-			} else {
-				echo JText::sprintf('Discussions in "%s"', $this->escape(stripslashes($this->category->title)));
-			}
-?>
+						<?php
+						if ($this->filters['search']) {
+							if ($this->category->get('title')) {
+								echo JText::sprintf('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
+							} else {
+								echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
+							}
+						} else {
+							echo JText::sprintf('Discussions in "%s"', $this->escape(stripslashes($this->category->get('title'))));
+						}
+						?>
 					</caption>
 					<tbody>
-<?php
-			if ($this->rows) {
-				foreach ($this->rows as $row) 
-				{
-					$name = JText::_('Anonymous');
-					if (!$row->anonymous)
+				<?php
+				if ($this->category->threads('list', $this->filters)->total() > 0) {
+					foreach ($this->category->threads() as $row) 
 					{
-						$creator =& JUser::getInstance($row->created_by);
-						if (is_object($creator)) 
+						$name = JText::_('Anonymous');
+						if (!$row->get('anonymous'))
 						{
-							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
+							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 						}
-					}
-?>
-						<tr<?php if ($row->sticky) { echo ' class="sticky"'; } ?>>
+						?>
+						<tr<?php if ($row->get('sticky')) { echo ' class="sticky"'; } ?>>
 							<th>
-								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
+								<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_($base . '&thread=' . $row->id); ?>">
-									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+								<a class="entry-title" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id')); ?>">
+									<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
+										<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -164,7 +160,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 								</span>
 							</td>
 							<td>
-								<span><?php echo ($row->replies + 1); ?></span>
+								<span><?php echo ($row->posts('count')); ?></span>
 								<span class="entry-details">
 									<?php echo JText::_('Comments'); ?>
 								</span>
@@ -172,23 +168,18 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 							<td>
 								<span><?php echo JText::_('Last Post:'); ?></span>
 								<span class="entry-details">
-<?php 
-									/*$lastpost = null;
-									if ($row->last_activity != '0000-00-00 00:00:00')
-									{*/
-										$lastpost = $this->forum->getLastPost($row->id);
-									//}
-									if (is_object($lastpost)) 
-									{
+							<?php 
+								$lastpost = $row->lastActivity();
+								if ($lastpost->exists()) 
+								{
 										$lname = JText::_('Anonymous');
-										$lastposter =& JUser::getInstance($lastpost->created_by);
-										if (is_object($lastposter)) 
+										if (!$lastpost->get('anonymous')) 
 										{
-											$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
+											$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastpost->creator('id')) . '">' . $this->escape(stripslashes($lastpost->creator('name'))) . '</a>';
 										}
-?>
+									?>
 									<span class="entry-date">
-										<time datetime="<?php echo $lastpost->created; ?>"><?php echo JHTML::_('date', $lastpost->created, $dateFormat, $tz); ?></time>
+										<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -201,37 +192,40 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 							</td>
 						<?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 							<td class="entry-options">
-								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->created_by == $juser->get('id'))) { ?>
-									<a class="edit" href="<?php echo JRoute::_($base . '&thread=' . $row->id . '&task=edit'); ?>">
+								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
+									<a class="edit" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=edit'); ?>">
 										<?php echo JText::_('COM_FORUM_EDIT'); ?>
 									</a>
 								<?php } ?>
-								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->created_by == $juser->get('id'))) { ?>
-									<a class="delete" href="<?php echo JRoute::_($base . '&thread=' . $row->id . '&task=delete'); ?>">
+								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
+									<a class="delete" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=delete'); ?>">
 										<?php echo JText::_('COM_FORUM_DELETE'); ?>
 									</a>
 								<?php } ?>
 							</td>
 						<?php } ?>
 						</tr>
-<?php 
-				}
-			} else { ?>
+					<?php } ?>
+				<?php } else { ?>
 						<tr>
 							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
 						</tr>
-<?php 		} ?>
+				<?php } ?>
 					</tbody>
 				</table>
-<?php 
-			if ($this->pageNav) 
-			{
-				$this->pageNav->setAdditionalUrlParam('section', $this->filters['section']);
-				$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
-				$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-				echo $this->pageNav->getListFooter();
-			}
-?>
+
+				<?php 
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->category->threads('count', $this->filters), 
+					$this->filters['start'], 
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
+				$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+				$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+				echo $pageNav->getListFooter();
+				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</form>

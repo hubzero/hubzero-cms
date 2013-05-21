@@ -12,6 +12,38 @@
 	-- -- -- -- -- -- --
 
 */
+	span.highlight {
+		display: inline-block;
+		*display: inline;
+		*zoom: 1;
+		margin: 0;
+		padding: 0 0.2em;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+		border: 1px solid #efd90a;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		background: #efd90a;
+		background: -webkit-gradient(linear, left top, left bottom, from(#f2ec00), to(#edcf00));
+		background: -webkit-linear-gradient(#f2ec00, #edcf00);
+		background: -moz-linear-gradient(center top, #f2ec00 0%, #edcf00 100%);
+		background: -moz-gradient(center top, #f2ec00 0%, #edcf00 100%);
+		background: -o-linear-gradient(#f2ec00, #edcf00);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f2ec00,endColorstr=#edcf00);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f2ec00, endColorstr=#edcf00)";
+		color: #000;
+	}
+	ol.comments .attachment:before {
+		content: "\f092";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	ol.comments .img:before {
+		content: "";
+		display: none;
+	}
 	.section h3:first-child {
 		margin-top: 0;
 	}
