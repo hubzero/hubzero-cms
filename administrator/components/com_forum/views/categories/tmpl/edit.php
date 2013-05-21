@@ -191,6 +191,16 @@ function submitbutton(pressbutton)
 							</select>
 						</td>
 					</tr>
+					<tr>
+						<td class="key"><label for="field-scope]"><?php echo JText::_('Scope'); ?>:</label></td>
+						<td><input type="text" name="fields[scope]" id="field-scope]" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->scope)); ?>" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label></td>
+						<td>
+							<input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->scope_id)); ?>" />
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>
