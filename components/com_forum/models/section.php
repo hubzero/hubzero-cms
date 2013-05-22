@@ -100,7 +100,6 @@ class ForumModelSection extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		//$this->forum = JTable::getInstance('forum', 'ForumTable');
 		$this->_tbl = new ForumSection($this->_db);
 
 		if (is_numeric($oid))
@@ -110,7 +109,6 @@ class ForumModelSection extends JObject
 		else if (is_string($oid))
 		{
 			$this->_tbl->loadByAlias($oid, $scope, $scope_id);
-			//$this->set('scope_id', $scope_id);
 		}
 		else if (is_object($oid))
 		{
@@ -120,18 +118,11 @@ class ForumModelSection extends JObject
 		{
 			$this->_tbl->bind($oid);
 		}
-		$this->set('scope', $scope);
-
-		/*$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if (!$this->get('scope'))
 		{
-			$paramsClass = 'JRegistry';
+			$this->set('scope', $scope);
 		}
 
-		//$this->params = JComponentHelper::getParams('com_forums');
-		//$this->params->merge(new $paramsClass($this->forum->params));
-
-		$this->params = new $paramsClass($this->_tbl->get('params'));*/
 		$this->_config =& JComponentHelper::getParams('com_forum');
 	}
 
@@ -309,17 +300,6 @@ class ForumModelSection extends JObject
 			break;
 
 			case 'first':
-				/*$filters['limit'] = 1;
-				$filters['start'] = 0;
-				$filters['sort'] = 'created';
-				$filters['sort_Dir'] = 'ASC';
-
-				$tbl = new ForumCategory($this->_db);
-				$results = $tbl->getRecords($filters);
-
-				$res = isset($results[0]) ? $results[0] : null;
-				return new ForumModelCategory($res);*/
-
 				return $this->categories('list', $filters)->fetch('first');
 			break;
 

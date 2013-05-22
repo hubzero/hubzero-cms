@@ -13,16 +13,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $juser = JFactory::getUser();
 
-$wikiconfig = array(
-	'option'   => $this->option,
-	'scope'    => 'forum',
-	'pagename' => 'forum',
-	'pageid'   => 0,
-	'filepath' => '',
-	'domain'   => 0
-);
-ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 ?>
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
@@ -35,15 +26,15 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 				<tbody>
 					<tr>
 						<th><?php echo JText::_('Categories'); ?></th>
-						<td><span class="item-count"><?php echo $this->stats->categories; ?></span></td>
+						<td><span class="item-count"><?php echo $this->model->count('categories'); ?></span></td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('Discussions'); ?></th>
-						<td><span class="item-count"><?php echo $this->stats->threads; ?></span></td>
+						<td><span class="item-count"><?php echo $this->model->count('threads'); ?></span></td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('Posts'); ?></th>
-						<td><span class="item-count"><?php echo $this->stats->posts; ?></span></td>
+						<td><span class="item-count"><?php echo $this->model->count('posts'); ?></span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -51,55 +42,56 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 		<div class="container">
 			<h3><?php echo JText::_('Last Post'); ?><span class="starter-point"></span></h3>
 			<p>
-<?php
-			if (is_object($this->lastpost)) 
+			<?php
+			if ($this->model->lastActivity()->exists()) 
 			{
+				$post = $this->model->lastActivity();
+
 				$lname = JText::_('Anonymous');
-				$lastposter = JUser::getInstance($this->lastpost->created_by);
-				if (is_object($lastposter)) 
+				if (!$post->get('anonymous')) 
 				{
-					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
+					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
 				}
 				foreach ($this->sections as $section)
 				{
-					if ($section->categories) 
+					if ($section->categories()->total() > 0) 
 					{
-						foreach ($section->categories as $row) 
+						foreach ($section->categories() as $row) 
 						{
-							if ($row->id == $this->lastpost->category_id)
+							if ($row->get('id') == $post->get('category_id'))
 							{
-								$cat = $row->alias;
-								$sec = $section->alias;
+								$cat = $row->get('alias');
+								$sec = $section->get('alias');
 								break;
 							}
 						}
 					}
 				}
-?>
-				<a class="entry-date" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $sec . '/' . $cat . '/' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
+				?>
+				<a class="entry-date" href="<?php echo JRoute::_($base . '&scope=' . $sec . '/' . $cat . '/' . $post->get('thread')); ?>">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
-					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
+					<span class="time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
+					<span class="date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), $dateFormat, $tz); ?></time></span>
 				</a>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
 					<?php echo $lname; ?>
 				</span>
-<?php } else { ?>
+			<?php } else { ?>
 				<?php echo JText::_('none'); ?>
-<?php } ?>
+			<?php } ?>
 			</p>
 		</div>
 	</div><!-- / .aside -->
 
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
+		<form action="<?php echo JRoute::_($base); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
 					<legend><?php echo JText::_('Search categories'); ?></legend>
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 					<input type="hidden" name="active" value="forum" />
@@ -108,10 +100,9 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 			</div><!-- / .container -->
 		</form>
 <?php
-if (count($this->sections) > 0) {
 	foreach ($this->sections as $section)
 	{
-		if ($section->id == 0 && !$section->categories[0]->posts) 
+		if (!$section->exists()) 
 		{
 			continue;
 		}
@@ -119,30 +110,31 @@ if (count($this->sections) > 0) {
 		<div class="container">
 			<table class="entries categories">
 				<caption>
-<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
-					<a name="s<?php echo $section->id; ?>"></a>
-					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
-					<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
-					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
-					<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
-					<input type="hidden" name="fields[scope]" value="group" />
-					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
-					<input type="hidden" name="action" value="savesection" />
-					<input type="hidden" name="active" value="forum" />
+				<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias')) { ?>
+					<a name="s<?php echo $section->get('id'); ?>"></a>
+					<form action="<?php echo JRoute::_($base); ?>" method="post">
+						<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
+						<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+						<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
+						<input type="hidden" name="fields[scope]" value="<?php echo $this->model->get('scope'); ?>" />
+						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->model->get('scope_id'); ?>" />
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+						<input type="hidden" name="action" value="savesection" />
+						<input type="hidden" name="active" value="forum" />
+						<?php echo JHTML::_('form.token'); ?>
 					</form>
-<?php } else { ?>
-					<?php echo $this->escape(stripslashes($section->title)); ?>
-<?php } ?>
-			<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->id) { ?>
+				<?php } else { ?>
+					<?php echo $this->escape(stripslashes($section->get('title'))); ?>
+				<?php } ?>
+			<?php if ($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) { ?>
 				<?php if ($this->config->get('access-delete-section')) { ?>
-					<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+					<a class="delete" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
 						<span><?php echo JText::_('Delete'); ?></span>
 					</a>
 				<?php } ?>
-				<?php if ($this->config->get('access-edit-section') && $this->edit != $section->alias && $section->id) { ?>
-					<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/edit#s' . $section->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+				<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias')) { ?>
+					<a class="edit" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
 						<span><?php echo JText::_('Edit'); ?></span>
 					</a>
 				<?php } ?>
@@ -151,8 +143,8 @@ if (count($this->sections) > 0) {
 			<?php if ($this->config->get('access-create-category')) { ?>
 				<tfoot>
 					<tr>
-						<td<?php if ($section->categories) { echo ' colspan="5"'; } ?>>
-							<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/new'); ?>">
+						<td<?php if ($section->categories()->total() > 0) { echo ' colspan="5"'; } ?>>
+							<a class="add btn" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/new'); ?>">
 								<span><?php echo JText::_('Add Category'); ?></span>
 							</a>
 						</td>
@@ -160,75 +152,70 @@ if (count($this->sections) > 0) {
 				</tfoot>
 			<?php } ?>
 				<tbody>
-<?php 
-if ($section->categories) { 
-		foreach ($section->categories as $row) 
-		{ 
-?>
-					<tr<?php if ($row->closed) { echo ' class="closed"'; } ?>>
+			<?php if ($section->categories()->total() > 0) { ?>
+				<?php foreach ($section->categories() as $row) { ?>
+					<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
 						<th scope="row">
-							<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
+							<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 						</th>
 						<td>
-							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/' . $row->alias); ?>">
-								<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+							<a class="entry-title" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/' . $row->get('alias')); ?>">
+								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 							</a>
 							<span class="entry-details">
 								<span class="entry-description">
-									<?php echo $p->parse(stripslashes($row->description), $wikiconfig, false); ?>
+									<?php echo $this->escape(stripslashes($row->get('description'))); ?>
 								</span>
 							</span>
 						</td>
 						<td>
-							<span><?php echo $row->threads; ?></span>
+							<span><?php echo $row->count('threads'); ?></span>
 							<span class="entry-details">
 								<?php echo JText::_('Discussions'); ?>
 							</span>
 						</td>
 						<td>
-							<span><?php echo $row->posts; ?></span>
+							<span><?php echo $row->count('posts'); ?></span>
 							<span class="entry-details">
 								<?php echo JText::_('Posts'); ?>
 							</span>
 						</td>
-<?php 			if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
+					<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
 						<td class="entry-options">
-							<?php if (($row->created_by == $juser->get('id') || $this->config->get('access-edit-category')) && $section->id) { ?>
-								<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/' . $row->alias . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
+							<?php if ($row->get('created_by') == $juser->get('id') || $this->config->get('access-edit-category')) { ?>
+								<a class="edit" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/' . $row->get('alias') . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
 									<span><?php echo JText::_('Edit'); ?></span>
 								</a>
 							<?php } ?>
-							<?php if ($this->config->get('access-delete-category') && $section->id) { ?>
-								<a class="delete tooltips" title="<?php echo JText::_('PLG_GROUPS_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/' . $row->alias . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+							<?php if ($this->config->get('access-delete-category')) { ?>
+								<a class="delete tooltips" title="<?php echo JText::_('PLG_GROUPS_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/' . $row->get('alias') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
 									<span><?php echo JText::_('Delete'); ?></span>
 								</a>
 							<?php } ?>
 						</td>
-<?php 			} ?>
+					<?php } ?>
 					</tr>
-<?php 
-		}
-	} else { 
-?>
+				<?php } ?>
+			<?php } else { ?>
 					<tr>
 						<td><?php echo JText::_('There are no categories.'); ?></td>
 					</tr>
-<?php } ?>
+			<?php } ?>
 				</tbody>
 			</table>
 		</div>
 <?php
 	}
-} else {
+/*} else {
 ?>
 	<p><?php echo JText::_('This forum is currently empty.'); ?></p>
 <?php
-}
+}*/
 ?>
 
-<?php if ($this->config->get('access-create-section')) { ?>
+	<?php if ($this->config->get('access-create-section')) { ?>
 		<div class="container">
-			<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>">
+			<form method="post" action="<?php echo JRoute::_($base); ?>">
 					<table class="entries categories">
 						<caption>
 							<label for="field-title">
@@ -246,35 +233,34 @@ if ($section->categories) {
 
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
-					<input type="hidden" name="fields[scope]" value="group" />
-					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+					<input type="hidden" name="fields[scope]" value="<?php echo $this->model->get('scope'); ?>" />
+					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->model->get('scope_id'); ?>" />
 					<input type="hidden" name="active" value="forum" />
-					<input type="hidden" name="action" value="savesection" />
+					<input type="hidden" name="task" value="savesection" />
+
+					<?php echo JHTML::_('form.token'); ?>
 				</fieldset>
 			</form>
 		</div><!-- /.container -->
-<?php } ?>
+	<?php } ?>
 
-<?php 
-$params =& JComponentHelper::getParams('com_groups');
-if ($params->get('email_comment_processing'))
-{ ?>
-			<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions'); ?>" id="forum-options">
-				<fieldset>
-					<legend><?php echo JText::_('Email Settings'); ?></legend>
-					
-					<input type="hidden" name="action" value="savememberoptions" />
-					<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
-					<input type="hidden" name="postsaveredirect" value="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum') ?>" />
+	<?php if (JComponentHelper::getParams('com_groups')->get('email_comment_processing')) { ?>
+		<form method="post" action="<?php echo JRoute::_($base); ?>" id="forum-options">
+			<fieldset>
+				<legend><?php echo JText::_('Email Settings'); ?></legend>
 
-					<label class="option" for="recvpostemail">
-						<input type="checkbox" class="option" id="recvpostemail" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Email forum posts'); ?>
-					</label>
-					<input class="option" type="submit" value="<?php echo JText::_('Save'); ?>" />
-				</fieldset>
-			</form>
-<?php } ?>
+				<input type="hidden" name="task" value="savememberoptions" />
+				<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
+				<input type="hidden" name="postsaveredirect" value="<?php echo JRoute::_($base); ?>" />
+
+				<label class="option" for="recvpostemail">
+					<input type="checkbox" class="option" id="recvpostemail" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) { echo ' checked="checked"'; } ?> />
+					<?php echo JText::_('Email forum posts'); ?>
+				</label>
+				<input class="option" type="submit" value="<?php echo JText::_('Save'); ?>" />
+			</fieldset>
+		</form>
+	<?php } ?>
 
 	</div><!-- /.subject -->
 </div><!-- /.main -->

@@ -182,7 +182,6 @@ if ($this->post->get('id')) {
 			</fieldset>
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->get('parent'); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[group_id]" value="0" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->post->get('id'); ?>" />
 			<input type="hidden" name="fields[scope]" value="site" />
 			<input type="hidden" name="fields[scope_id]" value="0" />

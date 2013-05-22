@@ -12,27 +12,30 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$timeFormat = 'h:m a';
 	$tz = true;
 }
+
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 ?>
 <ul id="page_options">
 	<li>
-		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('All categories'); ?></a>
+		<a class="categories btn" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('All categories'); ?></a>
 	</li>
 </ul>
 
 <div class="main section">
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-<?php } ?>
+	<?php foreach ($this->notifications as $notification) { ?>
+		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+	<?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+		<form action="<?php echo JRoute::_($base); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>				
+					<legend><?php echo JText::_('Search for articles'); ?></legend>
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="categories" />
+					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="active" value="forum" />
 					<input type="hidden" name="action" value="search" />
 				</fieldset>
 			</div><!-- / .container -->
@@ -40,49 +43,33 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container">
 				<table class="entries">
 					<caption>
-<?php
-					echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
-?>
+						<?php echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search'])); ?>
 					</caption>
-<?php if (!$this->category->closed) { ?>
-					<tfoot>
-						<tr>
-							<td colspan="4">
-								<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>">
-									<?php echo JText::_('Add Discussion'); ?>
-								</a>
-							</td>
-						</tr>
-					</tfoot>
-<?php } ?>
 					<tbody>
-<?php
-			if ($this->rows) {
-				foreach ($this->rows as $row) 
+			<?php
+			if ($this->thread->posts('list', $this->filters)->total() > 0) {
+				foreach ($this->thread->posts() as $row) 
 				{
+					$title = $this->escape(stripslashes($row->get('title')));
+					$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
+
 					$name = JText::_('Anonymous');
-					if (!$row->anonymous)
+					if (!$row->get('anonymous'))
 					{
-						$creator =& JUser::getInstance($row->created_by);
-						if (is_object($creator)) 
-						{
-							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
-						}
+						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 					}
-					
-					$thread = ($row->parent) ? $row->parent : $row->id;
-?>
-						<tr<?php if ($row->sticky) { echo ' class="sticky"'; } ?>>
+					?>
+						<tr<?php if ($row->get('sticky')) { echo ' class="sticky"'; } ?>>
 							<th>
-								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
+								<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->sections[$this->categories[$row->category_id]->section_id]->alias . '/' . $this->categories[$row->category_id]->alias . '/' . $thread); ?>">
-									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+								<a class="entry-title" href="<?php echo JRoute::_($base . '&scope=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '/' . $this->categories[$row->get('category_id')]->get('alias') . '/' . $row->get('thread')); ?>">
+									<span><?php echo $title; ?></span>
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
+										<?php echo $row->created('date'); ?>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -93,35 +80,36 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							<td>
 								<span><?php echo JText::_('Section'); ?></span>
 								<span class="entry-details">
-									<?php echo $this->escape($this->sections[$this->categories[$row->category_id]->section_id]->title); ?>
+									<?php echo $this->escape($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title')); ?>
 								</span>
 							</td>
 							<td>
 								<span><?php echo JText::_('Category'); ?></span>
 								<span class="entry-details">
-									<?php echo $this->escape($this->categories[$row->category_id]->title); ?>
+									<?php echo $this->escape($this->categories[$row->get('category_id')]->get('title')); ?>
 								</span>
 							</td>
 						</tr>
-<?php 
-				}
-			} else { ?>
+					<?php } ?>
+				<?php } else { ?>
 						<tr>
-							<td colspan="4">
-								<?php echo JText::_('There are currently no discussions.'); ?>
-							</td>
+							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
 						</tr>
-<?php 		} ?>
+				<?php } ?>
 					</tbody>
 				</table>
-<?php 
-			if ($this->pageNav) {
-				$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-				$this->pageNav->setAdditionalUrlParam('active', 'forum');
-				$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
-				$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-			}
-?>
+				<?php 
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->thread->posts('count', $this->filters), 
+						$this->filters['start'], 
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+					$pageNav->setAdditionalUrlParam('active', 'forum');
+					//$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				?>
 				<div class="clear"></div>
 			</div><!-- / .container -->
 		</form>
