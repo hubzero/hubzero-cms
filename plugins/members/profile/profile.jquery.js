@@ -701,7 +701,7 @@ HUB.Members.Profile = {
 	
 	locateMeGotLocation: function( location )
 	{
-		var $ = this.jQuery;
+		var $ = HUB.Members.Profile.jQuery;
 		
 		var latitude      = location.coords.latitude,
 			longitude     = location.coords.longitude,
@@ -764,7 +764,7 @@ HUB.Members.Profile = {
 	
 	locateMeGotError: function( error )
 	{
-		var $ = this.jQuery;
+		var $ = HUB.Members.Profile.jQuery;
 		
 		alert('Geo Location Error: ' + error.message);
 	}
