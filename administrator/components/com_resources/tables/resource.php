@@ -550,6 +550,26 @@ class ResourcesResource extends JTable
 		{
 			$query .= "(C.access=0 OR C.access=3) ";
 		}
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+				$words = array();
+				$ws = explode(' ', $filters['search']);
+				foreach ($ws as $w)
+				{
+					$w = trim($w);
+					if (strlen($w) > 2) 
+					{
+						$words[] = $w;
+					}
+				}
+				$text = implode(' +', $words);
+				$text = addslashes($text);
+				$text2 = str_replace('+', '', $text);
+
+				$query .= "AND ((MATCH(C.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
+						 //. " (MATCH(au.givenName,au.surname) AGAINST ('+$text -\"$text2\"') > 0) OR "
+						 . " (MATCH(C.introtext,C.fulltxt) AGAINST ('+$text -\"$text2\"') > 0)) ";
+		}
 		if (isset($filters['tag']) && $filters['tag'] != '') 
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');

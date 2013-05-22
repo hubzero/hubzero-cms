@@ -177,7 +177,16 @@ function ResourcesParseRoute($segments)
 			case 'feed.rss': $vars['task'] = 'feed';     break;
 			case 'feed':     $vars['task'] = 'feed';     break;
 
-			default: $vars['active'] = $segments[1]; break;
+			default:
+				if ($segments[0] == 'browse')
+				{
+					$vars['type'] = $segments[1];
+				} 
+				else 
+				{
+					$vars['active'] = $segments[1];
+				}
+			break;
 		}
 	}
 

@@ -261,10 +261,11 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Incoming
 		$view->filters = array();
 
-		$view->filters['type']   = JRequest::getInt('type', '');
-		$view->filters['sortby'] = JRequest::getVar('sortby', $default_sort);
+		$view->filters['type']   = JRequest::getVar('type', '');
+		$view->filters['sortby'] = JRequest::getCmd('sortby', $default_sort);
 		$view->filters['limit']  = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start']  = JRequest::getInt('limitstart', 0);
+		$view->filters['search'] = JRequest::getVar('search', '');
 
 		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
 		$view->filters['tag']    = $tagstring;
@@ -278,14 +279,14 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$t = new ResourcesType($this->database);
 		$view->types = $t->getMajorTypes();
 
-		if (!is_int($view->filters['type'])) 
+		if (!is_numeric($view->filters['type'])) 
 		{
 			// Normalize the title
 			// This is so we can determine the type of resource to display from the URL
 			// For example, /resources/learningmodules => Learning Modules
 			for ($i = 0; $i < count($view->types); $i++)
 			{
-				$normalized = $t->normalize($view->types[$i]->type);
+				$normalized = ($t->alias ? $t->alias : $t->normalize($view->types[$i]->type));
 
 				if (trim($view->filters['type']) == $normalized) 
 				{
@@ -337,6 +338,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// Output HTML
 		$view->title = $this->_title;
+		$view->config = $this->config;
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
