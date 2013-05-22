@@ -62,7 +62,7 @@ class plgContentXhubtags extends JPlugin
 	public function onPrepareContent(&$article, &$params, $page = 0)
 	{
 		$context = '';
-		return $this->onContentPrepare($context, &$article, &$params, $page);
+		return $this->onContentPrepare($context, $article, $params, $page);
 	}
 
 	/**
