@@ -118,7 +118,7 @@ class GroupsControllerAbstract extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
