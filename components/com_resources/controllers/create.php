@@ -715,9 +715,12 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		$schema = $elements->getSchema();
 
 		$fields = array();
-		foreach ($schema->fields as $field)
+		if (is_object($schema))
 		{
-			$fields[$field->name] = $field;
+			foreach ($schema->fields as $field)
+			{
+				$fields[$field->name] = $field;
+			}
 		}
 
 		$nbtag = (isset($_POST['nbtag'])) ? $_POST['nbtag'] : array();
