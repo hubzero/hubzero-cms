@@ -98,51 +98,51 @@
 		display: inline-block;
 		left: 0.61803399em;
 		margin-top: -0.25em;
-		.fontcons(@successIcon);
+		.fontcons(@iconSuccess);
 	}
 	.passed:before,
 	#system-message dd.message:before {
-		content: "\@{successIcon}";
+		content: "\@{iconSuccess}";
 	}
 	.help:before,
 	#system-message dd.help:before {
-		content: "\@{helpIcon}";
+		content: "\@{iconHelp}";
 		left: 0.71803399em;
 	}
 	.error:before,
 	#system-message dd.error:before {
-		content: "\@{errorIcon}";
+		content: "\@{iconError}";
 	}
 	.warning:before,
 	#system-message dd.warning:before {
-		content: "\@{warningIcon}";
+		content: "\@{iconWarning}";
 	}
 	.info:before,
 	#system-message dd.info:before {
-		content: "\@{infoIcon}";
+		content: "\@{iconInfo}";
 		left: 0.71803399em;
 	}
 
 // [!] HACKS - IE 7 and older
 	.help,
 	#system-message dd.help { 
-		.ie7-fontcons-before("systemmessage", @helpIcon);
+		.ie7-fontcons-before("systemmessage", @iconHelp);
 	}
 	.info,
 	#system-message dd.info { 
-		.ie7-fontcons-before("systemmessage", @infoIcon);
+		.ie7-fontcons-before("systemmessage", @iconInfo);
 	}
 	.warning,
 	#system-message dd.warning { 
-		.ie7-fontcons-before("systemmessage", @warningIcon);
+		.ie7-fontcons-before("systemmessage", @iconWarning);
 	}
 	.error,
 	#system-message dd.error { 
-		.ie7-fontcons-before("systemmessage", @errorIcon);
+		.ie7-fontcons-before("systemmessage", @iconError);
 	}
 	.passed,
 	#system-message dd.passed { 
-		.ie7-fontcons-before("systemmessage", @successIcon);
+		.ie7-fontcons-before("systemmessage", @iconSuccess);
 	}
 
 // [!] HACKS - Firefox 3.4 and older
