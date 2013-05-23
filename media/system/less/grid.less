@@ -1,0 +1,172 @@
+//
+// @package     hubzero-cms
+// @file        media/system/less/grid.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Grid system
+// --------------------------------------------------
+
+	.grid {
+		width: 100%;
+		.clearfix(left);
+	}
+	.columns,
+	.grid .col {
+		display: block;
+		width: 100%;
+		min-height: 1em;
+		.box-sizing(border-box);
+	}
+	.grid .col.omega,
+	.two.second,
+	.three.third,
+	.four.fourth,
+	.five.fifth,
+	.six.sixth {
+		margin-right: 0;
+	}
+
+/* COLUMN WIDTH ON DISPLAYS +768px */
+
+	.columns,
+	.grid [class*="span"] {
+		float: left;
+		margin-right: @fluidGridGutterWidth;
+		*margin-right: @fluidGridGutterWidth - (.5 / @gridRowWidth * 100 * 1%);
+	}
+
+// Old columns support
+	.five.columns {
+		width: 17.94871794871795%;
+	}
+	.five.columns.first.second,
+	.five.columns.second.third,
+	.five.columns.third.fourth,
+	.five.columns.fourth.fifth { 
+		width: 38.46153846153846%;
+	}
+	.five.columns.first.second.third,
+	.five.columns.second.third.fourth,
+	.five.columns.third.fourth.fifth {
+		width: 58.97435897435897%;
+	}
+	.five.columns.first.second.third.fourth,
+	.five.columns.second.third.fourth.fifth {
+		width: 79.48717948717948%;
+	}
+
+// Spans
+	.grid .span-whole,
+	.grid .span12 {
+		#grid > .span(12);
+	}
+	.grid .span11 {
+		#grid > .span(11);
+	}
+	.six.columns.first.second.third.fourth.fifth,
+	.six.columns.second.third.fourth.fifth.sixth,
+	.grid .span10 {
+		#grid > .span(10);
+	}
+	.four.columns.first.second.third,
+	.four.columns.second.third.fourth,
+	.grid .span-three-quarters,
+	.grid .span9 {
+		#grid > .span(9);
+	}
+	.six.columns.first.second.third.fourth,
+	.six.columns.second.third.fourth.fifth,
+	.six.columns.third.fourth.fifth.sixth,
+	.three.columns.first.second,
+	.three.columns.second.third,
+	.grid .span-two-thirds,
+	.grid .span8 {
+		#grid > .span(8);
+	}
+	.grid .span7 {
+		#grid > .span(7);
+	}
+	.six.columns.first.second.third,
+	.six.columns.second.third.fourth,
+	.six.columns.third.fourth.fifth,
+	.six.columns.fourth.fifth.sixth,
+	.four.columns.first.second,
+	.four.columns.second.third,
+	.four.columns.third.fourth,
+	.two.columns,
+	.grid .span-half,
+	.grid .span6 {
+		#grid > .span(6);
+	}
+	.grid .span5 {
+		#grid > .span(5);
+	}
+	.six.columns.first.second,
+	.six.columns.second.third,
+	.six.columns.third.fourth,
+	.six.columns.fourth.fifth,
+	.six.columns.fifth.sixth,
+	.three.columns,
+	.grid .span-third,
+	.grid .span4 {
+		#grid > .span(4);
+	}
+	.four.columns,
+	.grid .span-quarter,
+	.grid .span3 {
+		#grid > .span(3);
+	}
+	.six.columns,
+	.grid .span2 {
+		#grid > .span(2);
+	}
+	.grid .span1 {
+		#grid > .span(1);
+	}
+
+// Offsets
+	.grid .offset-whole,
+	.grid .offset12 {
+		#grid > .offset(12);
+	}
+	.grid .offset11 {
+		#grid > .offset(11);
+	}
+	.grid .offset10 {
+		#grid > .offset(10);
+	}
+	.grid .offset-three-quarters,
+	.grid .offset9 {
+		#grid > .offset(9);
+	}
+	.grid .offset-two-thirds,
+	.grid .offset8 {
+		#grid > .offset(8);
+	}
+	.grid .offset7 {
+		#grid > .offset(7);
+	}
+	.grid .offset-half,
+	.grid .offset6 {
+		#grid > .offset(6);
+	}
+	.grid .offset5 {
+		#grid > .offset(5);
+	}
+	.grid .offset-third,
+	.grid .offset4 {
+		#grid > .offset(4);
+	}
+	.grid .offset-quarter,
+	.grid .offset3 {
+		#grid > .offset(3);
+	}
+	.grid .offset2 {
+		#grid > .offset(2);
+	}
+	.grid .offset1 {
+		#grid > .offset(1);
+	}
