@@ -176,9 +176,13 @@ var typewatch = (function(){
 
 		createNote: function() {
 			var self = this,
+				pos_y = (this.container.width() / 2),
 				pos_x = 0,
-				pos_y = 0,
 				note_id = this.notes.length + 1;
+
+			if (jQuery('#notes-list-container').length) {
+				pos_x = (jQuery('#notes-list-container').offset().top - this.container.offset().top + 20);
+			}
 
 			var _note_content = jQuery(document.createElement('textarea'))
 					.on('keyup', function () {
