@@ -70,4 +70,3 @@ $controllerName = 'CoursesController' . ucfirst(strtolower($controllerName));
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-
