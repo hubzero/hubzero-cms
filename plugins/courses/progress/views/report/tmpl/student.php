@@ -432,8 +432,9 @@ $progress_timeline .= '</div>';
 		<h3>Work hard. Earn a badge.</h3>
 		<p>
 			Upon successful completion of this course, you will be awarded a special <?= $this->course->get('title') ?> badge.
-			This badge can be saved to your Mozzila Open Badges Backpack. To learn more about Mozilla Open
-			Badges, please visit the <a href="http://openbadges.org/" target="_blank">Open Badges website</a>.
+			This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
+			To learn more about Purdue's Passport initiative, please visit the 
+			<a href="https://www.openpassport.org/Login" target="_blank">Open Passport website</a>.
 		</p>
 	</div>
 <? endif; ?>
