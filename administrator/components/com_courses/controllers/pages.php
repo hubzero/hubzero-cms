@@ -194,6 +194,10 @@ class CoursesControllerPages extends Hubzero_Controller
 		{
 			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
 		}
+		if (!$this->view->row->id)
+		{
+			$this->view->row->active = 1;
+		}
 
 		$this->view->course   = CoursesModelCourse::getInstance($this->view->row->get('course_id'));
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
