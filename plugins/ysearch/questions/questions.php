@@ -181,9 +181,14 @@ class plgYSearchQuestions extends YSearchPlugin
 			}
 		}
 		usort($questions, array('plgYSearchQuestions', 'sort_by_weight'));
+		$maxWeight = 0;
+		foreach ($questions as $question) {
+			$maxWeight = max($maxWeight, $question->get_weight());
+		}
 		foreach ($questions as $question)
 		{
 			$question->sort_children(array('plgYSearchQuestions', 'sort_by_date'));
+			$question->scale_weight($maxWeight, 'normalizing within plugin');	
 			$results->add($question);
 		}
 	}
