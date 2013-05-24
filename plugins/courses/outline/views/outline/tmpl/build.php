@@ -50,7 +50,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<div class="content-box-close"></div>
 	</h3>
 	<div class="content-box-inner">
-		<iframe src=""></iframe>
+		<div class="loading-bar"></div>
 	</div>
 </div>
 
@@ -100,7 +100,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 	<ul class="unit">
 
 		<? foreach ($this->course->offering()->units() as $unit) : ?>
-		<li class="unit-item">
+		<li class="unit-item" id="unit_<?= $unit->get('id') ?>">
 			<div class="unit-title-arrow"></div>
 			<div class="unit-edit-container">
 				<div class="title unit-title">

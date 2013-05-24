@@ -223,35 +223,42 @@ $current_i = 0;
 // Build the progress timeline bar
 $progress_timeline  = "<div class=\"progress-timeline length_{$num_units}\">";
 $progress_timeline .= '<div class="start"><div class="person"></div><div class="start-inner"></div></div>';
-foreach ($units as $unit)
+if (count($units) > 0)
 {
-	$first    = ($index == 1) ? ' first' : '';
-	$last     = ($index == $num_units) ? ' last' : '';
-	$complete = isset($progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'])
-				? $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete']
-				: 0;
-	$past     = ((!is_null($unit->get('publish_up')) && $unit->started()) || $complete > 0) ? ' past' : '';
-	$margin   = 100 - $complete;
-	$done     = ($complete == 100) ? ' complete' : '';
-	$current  = '';
-
-	if((!is_null($unit->get('publish_up')) && $unit->isAvailable()) || $complete > 0)
+	foreach ($units as $unit)
 	{
-		$current   = ' current';
-		// Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
-		$current_i = $index;
+		$first    = ($index == 1) ? ' first' : '';
+		$last     = ($index == $num_units) ? ' last' : '';
+		$complete = isset($progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'])
+					? $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete']
+					: 0;
+		$past     = ((!is_null($unit->get('publish_up')) && $unit->started()) || $complete > 0) ? ' past' : '';
+		$margin   = 100 - $complete;
+		$done     = ($complete == 100) ? ' complete' : '';
+		$current  = '';
+
+		if((!is_null($unit->get('publish_up')) && $unit->isAvailable()) || $complete > 0)
+		{
+			$current   = ' current';
+			// Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
+			$current_i = $index;
+		}
+
+		$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\">";
+		$progress_timeline .= "<div class=\"person\"></div>";
+		$progress_timeline .= "<div class=\"unit-inner{$first}{$last}{$past}\">";
+		$progress_timeline .= "<div class=\"unit-fill\">";
+		$progress_timeline .= "<div class=\"unit-fill-inner{$done}\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
+		$progress_timeline .= "</div>";
+		$progress_timeline .= "Unit {$index}";
+		$progress_timeline .= "</div></div>";
+
+		++$index;
 	}
-
-	$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\">";
-	$progress_timeline .= "<div class=\"person\"></div>";
-	$progress_timeline .= "<div class=\"unit-inner{$first}{$last}{$past}\">";
-	$progress_timeline .= "<div class=\"unit-fill\">";
-	$progress_timeline .= "<div class=\"unit-fill-inner{$done}\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
-	$progress_timeline .= "</div>";
-	$progress_timeline .= "Unit {$index}";
-	$progress_timeline .= "</div></div>";
-
-	++$index;
+}
+else
+{
+	$progress_timeline .= "<div class=\"unit unit-empty\"><div class=\"unit-empty-inner\"></div></div>";
 }
 $progress_timeline .= '<div class="end"><div class="person"></div><div class="end-inner"></div></div>';
 $progress_timeline .= '</div>';

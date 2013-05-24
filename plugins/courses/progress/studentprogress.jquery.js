@@ -45,22 +45,26 @@ HUB.Plugins.CoursesProgress = {
 			});
 		});
 
-		var marker = progress.find('.current:last').attr('class').match(/unit_([0-9]+)/);
-		progress.find('.unit').removeClass('current');
+		var last = progress.find('.current:last').attr('class');
 
-		// Display the current unit indicator
-		progress.find('.unit-inner').each(function(idx) {
-			var element = $(this);
-			var unitId  = element.parent('.unit').attr('class').match(/unit_([0-9]+)/);
+		if (last) {
+			var marker = last.match(/unit_([0-9]+)/);
+			progress.find('.unit').removeClass('current');
 
-			if (unitId[1] <= marker[1]) {
-				setTimeout(function() {
-					progress.find('.unit').removeClass('current');
+			// Display the current unit indicator
+			progress.find('.unit-inner').each(function(idx) {
+				var element = $(this);
+				var unitId  = element.parent('.unit').attr('class').match(/unit_([0-9]+)/);
 
-					element.parent('.unit').addClass('current');
-				}, (idx + 1) * 250);
-			}
-		});
+				if (unitId[1] <= marker[1]) {
+					setTimeout(function() {
+						progress.find('.unit').removeClass('current');
+
+						element.parent('.unit').addClass('current');
+					}, (idx + 1) * 250);
+				}
+			});
+		}
 	} // end initialize
 };
 

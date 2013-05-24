@@ -44,10 +44,10 @@ if ($this->a->get('type') == 'video')
 	<div class="sortable-assets-handle"></div>
 	<div class="asset-item-title title toggle-editable"><?= $this->escape(stripslashes($this->a->get('title'))) ?></div>
 	<div class="title-edit">
-		<form action="/api/courses/asset/save" class="title-form">
-			<input class="uniform title-text" name="title" type="text" value="<?= $this->a->get('title') ?>" />
-			<input class="uniform title-save" type="submit" value="Save" />
-			<input class="uniform title-reset" type="reset" value="Cancel" />
+		<form action="/api/courses/asset/save" class="asset-title-form">
+			<input class="title-text" name="title" type="text" value="<?= $this->a->get('title') ?>" />
+			<input class="asset-title-save" type="submit" value="Save" />
+			<input class="asset-title-reset" type="reset" value="Cancel" />
 			<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 			<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 			<input type="hidden" name="id" value="<?= $this->a->get('id') ?>" />

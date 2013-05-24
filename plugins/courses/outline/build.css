@@ -12,7 +12,6 @@
 .outline-main {
 	overflow: hidden;
 	position: relative;
-	min-height: 352px;
 }
 .placeholder {
 	margin-top: 10px;
@@ -48,7 +47,7 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	z-index: 999;
+	z-index: 996;
 }
 .content-box {
 	display: none;
@@ -60,7 +59,7 @@
 	background: #FFF;
 	border: 1px solid #333;
 	border-bottom: none;
-	z-index: 1000;
+	z-index: 997;
 	box-shadow: 1px 1px 20px rgba(0, 0, 0, .7);
 
 	border-top-left-radius: 6px;
@@ -73,7 +72,10 @@
 	text-shadow: 1px 1px 1px #DDD;
 	padding: 10px 20px;
 	margin: 0;
-	position: relative;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
 	border-bottom: 1px solid #333;
 
 	border-top-left-radius: 5px;
@@ -119,11 +121,33 @@
 	font-size: 14px
 }
 .content-box .content-box-inner {
-	margin: 20px;
+	height: 100%;
+	position: static;
+}
+.content-box-inner .loading-bar {
+	border: 1px solid #999;
+	display: none;
+	position: absolute;
+	z-index: 999;
+	left: 50%;
+	top: 50%;
+	height: 20px;
+	width: 300px;
+	margin-left: -150px;
+	margin-top: -10px;
+	background-image: url('/media/system/images/upload-ui/progressbar.gif');
+	box-shadow: 1px 1px 3px #AAA;
+
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 .content-box iframe {
-	height: 85%;
+	height: 100%;
 	width: 100%;
+
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 }
 
 /* Asset deletion */
@@ -155,9 +179,9 @@
 	position: absolute;
 	left: 30px;
 	top: 0;
+	bottom: 10px;
 	width: 300px;
 	margin-left: -285px;
-	height: 350px;
 	border-left: 1px solid #CCCCCC;
 	border-top: 1px solid #CCCCCC;
 	border-bottom: 1px solid #CCCCCC;
@@ -575,7 +599,7 @@ ul {
 	background: #F7F7F7;
 }
 .unit-edit {
-	display: block;
+	display: none;
 }
 .unit-title-arrow {
 	cursor: pointer;
@@ -656,6 +680,9 @@ ul {
 .unit-edit form,
 .asset-group-title-container form {
 	padding: 10px;
+}
+.asset-group-title-container form {
+	display: none;
 }
 .asset-group-title-container {
 	border-bottom: 1px solid transparent;
@@ -779,8 +806,10 @@ ul {
 	background-size: 30px 30px;
 }
 .toggle-editable {
-	display: none;
 	cursor: pointer;
+}
+.title-edit {
+	display: none;
 }
 .asset-group-item-container {
 	margin: 10px 210px 10px 10px;
@@ -799,6 +828,9 @@ ul {
 .uploadfiles p {
 	margin: 0;
 	padding: 0;
+}
+.uploadfiles .fileupload {
+	display: none;
 }
 .bar {
 	height: 18px;
@@ -1097,6 +1129,16 @@ ul {
 }
 
 /* Styles for popup edit pages */
+.edit-asset,
+.edit-assetgroup,
+.wiki-edit {
+	margin: 50px 20px 0 20px;
+}
+.edit-asset h3,
+.edit-assetgroup h3,
+.wiki-edit h3 {
+	display: none;
+}
 .edit-form input[type="submit"],
 .edit-form input[type="button"] {
 	width: 100%;
@@ -1140,9 +1182,6 @@ ul {
 }
 .wiki-edit input[type="text"] {
 	width: 99%;
-}
-.wiki-edit h3 {
-	display: none;
 }
 .wiki-edit .wiki-asterisk {
 	font-size: 11px;

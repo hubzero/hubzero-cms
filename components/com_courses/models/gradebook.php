@@ -509,41 +509,44 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			// Get count of total forms
 			$totals = $this->_tbl->getFormCount();
 
-			if (!is_null($user_id) && !is_array($user_id))
+			if (isset($counts))
 			{
-				$user_id = (array)$user_id;
-			}
-			else
-			{
-				$user_id = array();
-				foreach ($this->course->offering()->section()->members() as $m)
+				if (!is_null($user_id) && !is_array($user_id))
 				{
-					$user_id[] = $m->get('id');
+					$user_id = (array)$user_id;
 				}
-			}
-
-			// Loop though the users
-			foreach ($user_id as $u)
-			{
-				$passing = $this->passing(true, $u);
-
-				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
-				if (
-					($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']->count     == $counts[$u]['exam']))     &&
-					($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']->count     == $counts[$u]['quiz']))     &&
-					($homework_weight == 0 || ($homework_weight > 0 && $totals['homework']->count == $counts[$u]['homework'])) &&
-					$passing[$u]
-					)
+				else
 				{
-					// Mark student as having earned badge
-					$member_id = $this->course->offering()->section()->member($u)->get('id');
-					$badge = CoursesModelMemberBadge::loadByMemberId($member_id);
-					if (!$badge->hasEarned())
+					$user_id = array();
+					foreach ($this->course->offering()->section()->members() as $m)
 					{
-						$badge->set('member_id', $u);
-						$badge->set('earned', 1);
-						$badge->set('earned_on', date("Y-m-d H:i:s"));
-						$badge->store();
+						$user_id[] = $m->get('id');
+					}
+				}
+
+				// Loop though the users
+				foreach ($user_id as $u)
+				{
+					$passing = $this->passing(true, $u);
+
+					// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
+					if (
+						($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']->count     == $counts[$u]['exam']))     &&
+						($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']->count     == $counts[$u]['quiz']))     &&
+						($homework_weight == 0 || ($homework_weight > 0 && $totals['homework']->count == $counts[$u]['homework'])) &&
+						$passing[$u]
+						)
+					{
+						// Mark student as having earned badge
+						$member_id = $this->course->offering()->section()->member($u)->get('id');
+						$badge = CoursesModelMemberBadge::loadByMemberId($member_id);
+						if (!$badge->hasEarned())
+						{
+							$badge->set('member_id', $u);
+							$badge->set('earned', 1);
+							$badge->set('earned_on', date("Y-m-d H:i:s"));
+							$badge->store();
+						}
 					}
 				}
 			}

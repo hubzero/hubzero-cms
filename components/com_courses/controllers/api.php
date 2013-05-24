@@ -732,6 +732,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			'asset_type'     => $asset->get('type'),
 			'asset_subtype'  => $asset->get('subtype'),
 			'asset_url'      => $asset->get('url'),
+			'asset_state'    => $asset->get('state'),
 			'scope_id'       => (isset($row)) ? $row->scope_id : '',
 			'course_id'      => $this->course_id,
 			'offering_alias' => JRequest::getCmd('offering', '')
@@ -956,7 +957,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		}
 
 		// Return message
-		$this->setMessage('Asset state successfully saved', 200, 'OK');
+		$this->setMessage(array('asset_state'=>$asset->get('state')), 200, 'OK');
 	}
 
 	/**

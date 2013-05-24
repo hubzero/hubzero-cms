@@ -140,7 +140,7 @@ class FormAssetHandler extends ContentAssetHandler
 							$.fancybox.close();
 
 							// Remove progress bar
-							HUB.CoursesOutline.resetProgresBar(progressBarId, 0);
+							HUB.CoursesOutline.asset.resetProgresBar(progressBarId, 0);
 
 							// Get the form data and set the published value to 2 for deleted
 							var formData = form.serializeArray();
@@ -158,27 +158,15 @@ class FormAssetHandler extends ContentAssetHandler
 						$('body').on('savesuccessful', function() {
 							$.fancybox.close();
 
-							if(assetslist.find('li:first').hasClass('nofiles'))
-							{
-								assetslist.find('li:first').remove();
-							}
-
-							var callback = function() {
-								// Insert in our HTML (uses 'underscore.js')
-								var li = _.template(HUB.CoursesOutline.Templates.asset, " . json_encode($return['assets']) . ");
-								assetslist.append(li);
-
-								var newAsset = assetslist.find('.asset-item:last');
-
-								newAsset.find('.uniform').uniform();
-								newAsset.find('.toggle-editable').show();
-								newAsset.find('.title-edit').hide();
-								HUB.CoursesOutline.showProgressIndicator();
-								HUB.CoursesOutline.makeAssetsSortable();
-							};
-
-							// Reset progress bar
-							HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);
+							HUB.CoursesOutline.asset.insert(" .
+								json_encode(
+									array(
+										'assets'=>array(
+											$return['assets']
+										)
+									)
+								) .
+								", assetslist, {'progressBarId':progressBarId});
 						});
 					}
 				});";

@@ -59,7 +59,7 @@
 .progress-timeline .end {
 	display: block;
 	float: left;
-	width: 10%;
+	width: 90%;
 	height: 135px;
 	text-align: center;
 	font-size: 14px;
@@ -67,6 +67,7 @@
 	position: relative;
 }
 .progress-timeline .unit-inner,
+.progress-timeline .unit-empty-inner,
 .progress-timeline .start-inner,
 .progress-timeline .end-inner {
 	display: block;

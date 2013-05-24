@@ -41,10 +41,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="aux-attachments">
 			<form action="/api/courses/asset/new" class="aux-attachments-form attach-link">
 				<label for"content" class="aux-attachments-content-label">Attach a link:</label>
-				<textarea class="uniform input-content" name="content" placeholder="" rows="6"></textarea>
+				<textarea class="input-content" name="content" placeholder="" rows="6"></textarea>
 				<input class="input-type" type="hidden" name="type" value="link" />
-				<input class="uniform aux-attachments-submit" type="submit" value="Add" />
-				<input class="uniform aux-attachments-cancel" type="reset" value="Cancel" />
+				<input class="aux-attachments-submit" type="submit" value="Add" />
+				<input class="aux-attachments-cancel" type="reset" value="Cancel" />
 				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
@@ -64,10 +64,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="asset-group-item-container">
 		<div class="asset-group-item-title title toggle-editable"><?= $this->ag->get('title') ?></div>
 		<div class="title-edit">
-			<form action="/api/courses/assetgroup/save" class="title-form">
-				<input class="uniform title-text" name="title" type="text" value="<?= $this->ag->get('title') ?>" />
-				<input class="uniform title-save" type="submit" value="Save" />
-				<input class="uniform title-reset" type="reset" value="Cancel" />
+			<form action="/api/courses/assetgroup/save" class="assetgroup-title-form">
+				<input class="title-text" name="title" type="text" value="<?= $this->ag->get('title') ?>" />
+				<input class="assetgroup-title-save" type="submit" value="Save" />
+				<input class="assetgroup-title-reset" type="reset" value="Cancel" />
 				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 				<input type="hidden" name="id" value="<?= $this->ag->get('id') ?>" />
