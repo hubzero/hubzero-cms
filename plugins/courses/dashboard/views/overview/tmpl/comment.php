@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 		$tz = true;
 	}
 
-	$name = JText::_('PLG_COURSES_FORUM_ANONYMOUS');
+	$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 	$huser = '';
 	if (!$this->comment->anonymous) 
 	{
@@ -49,12 +49,12 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="comment-content">
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong> 
-				<a class="permalink" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '#c' . $this->comment->id); ?>" title="<?php echo JText::_('PLG_COURSES_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
-					<span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+				<a class="permalink" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '#c' . $this->comment->id); ?>" title="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
+					<span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateFormat, $tz); ?></time></span>
 					<?php if ($this->comment->modified && $this->comment->modified != '0000-00-00 00:00:00') { ?>
-						&mdash; <?php echo JText::_('PLG_COURSES_FORUM_EDITED'); ?>
-						<span class="time"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+						&mdash; <?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDITED'); ?>
+						<span class="time"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
 						<span class="date"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $dateFormat, $tz); ?></time></span>
 					<?php } ?>
 				</a>
@@ -70,22 +70,22 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $this->comment->created_by) { ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
 					<a class="delete" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=delete&thread=' . $this->comment->id); ?>">
-						<?php echo JText::_('PLG_COURSES_FORUM_DELETE'); ?>
+						<?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?>
 					</a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
 					<a class="edit" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=edit&thread=' . $this->comment->id); ?>">
-						<?php echo JText::_('PLG_COURSES_FORUM_EDIT'); ?>
+						<?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?>
 					</a>
 				<?php } ?>
 			<?php } ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<a class="reply" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=reply&thread=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
-						<?php echo JText::_('PLG_COURSES_FORUM_REPLY'); ?>
+						<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>
 					</a>
 				<?php } ?>
 				<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->comment->id . '&parent=' . $this->comment->parent); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
-					<?php echo JText::_('PLG_COURSES_FORUM_REPORT_ABUSE'); ?>
+					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPORT_ABUSE'); ?>
 				</a>
 			</p>
 		
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="comment-add hide" id="comment-form<?php echo $this->comment->id; ?>">
 				<form action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo JText::sprintf('PLG_COURSES_FORUM_REPLYING_TO', (!$this->comment->anonymous ? $name : JText::_('PLG_COURSES_FORUM_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo JText::sprintf('PLG_COURSES_DISCUSSIONS_REPLYING_TO', (!$this->comment->anonymous ? $name : JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="fields[id]" value="0" />
 						<input type="hidden" name="fields[state]" value="1" />
@@ -113,28 +113,28 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=' . $this->comment->id)); ?>" />
 
 						<label for="comment-<?php echo $this->comment->id; ?>-content">
-							<span class="label-text"><?php echo JText::_('PLG_COURSES_FORUM_FIELD_COMMENTS'); ?></span>
-							<textarea name="fields[comment]" id="comment-<?php echo $this->comment->id; ?>-content" rows="4" cols="50" placeholder="<?php echo JText::_('PLG_COURSES_FORUM_ENTER_COMMENTS'); ?>"></textarea>
+							<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
+							<textarea name="fields[comment]" id="comment-<?php echo $this->comment->id; ?>-content" rows="4" cols="50" placeholder="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_ENTER_COMMENTS'); ?>"></textarea>
 						</label>
 
 						<label class="upload-label" for="comment-<?php echo $this->comment->id; ?>-file">
-							<span class="label-text"><?php echo JText::_('PLG_COURSES_FORUM_ATTACH_FILE'); ?>:</span>
+							<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ATTACH_FILE'); ?>:</span>
 							<input type="file" name="upload" id="comment-<?php echo $this->comment->id; ?>-file" />
 						</label>
 
 						<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->id; ?>-anonymous">
 					<?php if ($this->config->get('comments_anon', 1)) { ?>
 							<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->id; ?>-anonymous" value="1" /> 
-							<?php echo JText::_('PLG_COURSES_FORUM_FIELD_ANONYMOUS'); ?>
+							<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 					<?php } else { ?>
 							&nbsp; <input class="option" type="hidden" name="fields[anonymous]" value="0" /> 
 					<?php } ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('PLG_COURSES_FORUM_SUBMIT'); ?>" /> 
+							<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" /> 
 							<a class="cancelreply" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '#c' . $this->comment->id); ?>">
-								<?php echo JText::_('PLG_COURSES_FORUM_CANCEL'); ?>
+								<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>
 							</a>
 						</p>
 					</fieldset>
