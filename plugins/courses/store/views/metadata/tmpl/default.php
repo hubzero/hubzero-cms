@@ -61,7 +61,7 @@ if ($offering->exists())
 		$url = 'index.php?option=com_storefront/product/' . $product->pId;
 	}
 ?>
-			<table>
+			<table summary="<?php echo JText::_('Course offering availability information'); ?>">
 				<tbody>
 <?php if ($product) { ?>
 					<tr>
@@ -71,13 +71,13 @@ if ($offering->exists())
 					</tr>
 <?php } ?>
 					<tr>
-						<th scope="row">Starts</th>
+						<th scope="row"><?php echo JText::_('Starts'); ?></th>
 						<td>
 							<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Ends</th>
+						<th scope="row"><?php echo JText::_('Ends'); ?></th>
 						<td>
 							<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
 						</td>
@@ -86,14 +86,14 @@ if ($offering->exists())
 			</table>
 		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
 			<p>
-				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
-					View outline
+				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') != '__default' ? ':' . $offering->section()->get('alias') : '')); ?>">
+					<?php echo JText::_('Enter course'); ?>
 				</a>
 			</p>
 		<?php } else { ?>
 			<p>
 				<a class="enroll btn" href="<?php echo JRoute::_($url); ?>">
-					Enroll
+					<?php echo JText::_('Enroll'); ?>
 				</a>
 			</p>
 		<?php } ?>
