@@ -172,13 +172,13 @@ else
 	?>
 			<div class="course-instructor">
 				<p class="course-instructor-photo">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('id')); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('uidNumber')); ?>">
 						<img src="<?php echo $instructor->getPicture(); ?>" alt="<?php echo JText::sprintf('%s\'s photo', $this->escape(stripslashes($instructor->get('name')))); ?>" />
 					</a>
 				</p>
 				<div class="course-instructor-content">
 					<h4>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('id')); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('uidNumber')); ?>">
 							<?php echo $this->escape(stripslashes($instructor->get('name'))); ?>
 						</a>
 					</h4>

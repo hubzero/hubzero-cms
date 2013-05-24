@@ -146,7 +146,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	{
 		if (!$this->course->access('view'))
 		{
-			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
+			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
 			return;
 		}
 
@@ -229,14 +229,14 @@ class CoursesControllerCourse extends Hubzero_Controller
 			// Ensure we found the course info
 			if (!$this->course->exists()) 
 			{
-				JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
+				JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
 				return;
 			}
 
 			// Check authorization
 			if (!$this->course->access('edit')) 
 			{
-				JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
+				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
 				return;
 			}
 
@@ -345,11 +345,11 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Check for any missing info
 		if (!$g_alias) 
 		{
-			$this->addComponentMessage(JText::_('COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COURSES_ID'), 'error');
+			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_COURSES_ID'), 'error');
 		}
 		if (!$g_description) 
 		{
-			$this->addComponentMessage(JText::_('COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COURSES_TITLE'), 'error');
+			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_COURSES_TITLE'), 'error');
 		}
 
 		// Push back into edit mode if any errors
@@ -376,15 +376,15 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Ensure the data passed is valid
 		if ($g_cn == 'new' || $g_cn == 'browse') 
 		{
-			$this->addComponentMessage(JText::_('COURSES_ERROR_INVALID_ID'), 'error');
+			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_INVALID_ID'), 'error');
 		}
 		if (!$this->_validCn($g_cn)) 
 		{
-			$this->addComponentMessage(JText::_('COURSES_ERROR_INVALID_ID'), 'error');
+			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_INVALID_ID'), 'error');
 		}
 		if ($isNew && CoursesCourse::exists($g_cn,true)) 
 		{
-			$this->addComponentMessage(JText::_('COURSES_ERROR_COURSE_ALREADY_EXIST'), 'error');
+			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_COURSE_ALREADY_EXIST'), 'error');
 		}
 
 		// Push back into edit mode if any errors
@@ -414,11 +414,11 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Build the e-mail message
 		if ($isNew) 
 		{
-			$subject = JText::sprintf('COURSES_SUBJECT_COURSE_REQUESTED', $g_cn);
+			$subject = JText::sprintf('COM_COURSES_SUBJECT_COURSE_REQUESTED', $g_cn);
 		} 
 		else 
 		{
-			$subject = JText::sprintf('COURSES_SUBJECT_COURSE_UPDATED', $g_cn);
+			$subject = JText::sprintf('COM_COURSES_SUBJECT_COURSE_UPDATED', $g_cn);
 		}
 
 		if ($isNew) 
@@ -538,7 +538,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, $this->course->get('managers'), $this->_option))) 
 		{
-			$this->addComponentMessage(JText::_('COURSES_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
+			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
 		}
 
 		if ($this->getComponentMessage()) 
@@ -590,14 +590,14 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Ensure we have a course to work with
 		/*if (!$this->course->exists()) 
 		{
-			JError::raiseError(404, JText::_('COURSES_NO_COURSE_ID'));
+			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_ID'));
 			return;
 		}*/
 
 		// Ensure we found the course info
 		if (!$this->course->exists()) 
 		{
-			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
+			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
 			return;
 		}
 
@@ -605,7 +605,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		//if (!$this->config->get('access-delete-course', $this->course->get('gidNumber'))) 
 		if (!$this->course->access('delete'))
 		{
-			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
+			JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
 			return;
 		}
 
@@ -653,10 +653,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 		{
 			if ($process && !$confirmdel) 
 			{
-				$this->addComponentMessage(JText::_('COURSES_ERROR_CONFIRM_DELETION'), 'error');
+				$this->addComponentMessage(JText::_('COM_COURSES_ERROR_CONFIRM_DELETION'), 'error');
 			}
 
-			$log = JText::sprintf('COURSES_MEMBERS_LOG', count($managers));
+			$log = JText::sprintf('COM_COURSES_MEMBERS_LOG', count($managers));
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
@@ -703,7 +703,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 
 		// E-mail subject
-		$subject = JText::sprintf('COURSES_SUBJECT_COURSE_DELETED', $gcn);
+		$subject = JText::sprintf('COM_COURSES_SUBJECT_COURSE_DELETED', $gcn);
 
 		// Build the e-mail message
 		$eview = new JView(array(
@@ -725,7 +725,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$dispatcher =& JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('courses_deleted', $subject, $message, $from, $members, $this->_option))) 
 		{
-			$this->addComponentMessage(JText::_('COURSES_ERROR_EMAIL_MEMBERS_FAILED'), 'error');
+			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'), 'error');
 		}
 
 		// Log the deletion

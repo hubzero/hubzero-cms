@@ -60,14 +60,14 @@ class CoursesControllerOffering extends Hubzero_Controller
 		// Ensure we found the course info
 		if (!$this->course->exists()) 
 		{
-			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
+			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
 			return;
 		}
 
 		// Ensure the course has been published or has been approved
 		if (!$this->course->isAvailable())
 		{
-			JError::raiseError(404, JText::_('COURSES_NOT_PUBLISHED'));
+			JError::raiseError(404, JText::_('COM_COURSES_NOT_PUBLISHED'));
 			return;
 		}
 
