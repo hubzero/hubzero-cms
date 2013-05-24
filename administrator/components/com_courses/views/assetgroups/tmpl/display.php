@@ -50,7 +50,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete')) 
 {
-	JToolBarHelper::deleteList('delete', 'delete');
+	JToolBarHelper::deleteList('Are you sure you want to remove these items?', 'remove');
 }
 JToolBarHelper::spacer();
 JToolBarHelper::help('assetgroups.html', true);

@@ -366,7 +366,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -388,7 +388,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = CoursesModelAssetgroup::getInstance($id);
+				$model = new CoursesModelAssetgroup($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -401,19 +401,6 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 				{
 					JError::raiseError(500, JText::_('Unable to delete asset group'));
 					return;
-				}
-
-				// Log the course approval
-				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course_assetgroup';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'assetgroup_deleted';
-				$log->actor_id  = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
 				}
 
 				$num++;
