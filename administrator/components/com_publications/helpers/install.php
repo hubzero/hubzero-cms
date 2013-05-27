@@ -438,7 +438,7 @@ class PubInstall extends JObject {
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_components` WHERE name = 'Publication List')";
 
 			$queries[] = "INSERT INTO `jos_components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-			SELECT 'Publication Licenses', 'option=com_publications&controller=licenses', 0, 0, 'option=com_publications', 'Publications', 'com_publications', 2, 'js/ThemeOffice/component.png', 0, '', 1
+			SELECT 'Publication Licenses', 'option=com_publications&controller=licenses', 0, 0, 'option=com_publications&controller=licenses', 'Publications', 'com_publications', 2, 'js/ThemeOffice/component.png', 0, '', 1
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_components` WHERE name = 'Publication Licenses')";
 
 			// Enable plugins					

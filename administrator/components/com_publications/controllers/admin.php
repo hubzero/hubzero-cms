@@ -402,7 +402,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		$pContent->ordering				  = 1;
 		
 		$v = (!isset($tv->revision) or $tv->revision == 'dev') ? 'test' : $tv->revision;
-		$pContent->path					  = JRoute::_('index.php?option=com_tools&app=' . $toolname . '&task=invoke&version=' . $v);
+		$pContent->path					  = 'tools/' . $toolname . '/invoke/' . $v;
 		
 		// References to tool tables
 		$pContent->object_id 			  = $objT->id;

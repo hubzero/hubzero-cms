@@ -58,6 +58,8 @@ class PublicationUtilities
 		}
 		
 		// Get configs
+		$juri =& JURI::getInstance();
+		
 		$jconfig 	=& JFactory::getConfig();
 		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
 		
@@ -67,7 +69,9 @@ class PublicationUtilities
 			? date( 'Y', strtotime($row->published_up)) : date( 'Y' );
 		
 		// Get config
-		$livesite = $jconfig->getValue('config.live_site');
+		$livesite = $jconfig->getValue('config.live_site') 
+			? $jconfig->getValue('config.live_site') 
+			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 		if (!$livesite) 
 		{
 			$doierr .= 'Missing live site configuration';
@@ -184,16 +188,20 @@ class PublicationUtilities
 		{
 			$metadata['publisher'] = $jconfig->getValue('config.sitename');
 		}
+		
+		$juri =& JURI::getInstance();
 	
 		// Get config
-		$livesite = $jconfig->getValue('config.live_site');
+		$livesite = $jconfig->getValue('config.live_site') 
+			? $jconfig->getValue('config.live_site') 
+			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 		if (!$livesite) 
 		{
 			$doierr .= 'Missing live site configuration';
 			return false;
 		}
 		
-		$metadata['url'] = $livesite.DS.'publications'.DS.$row->publication_id.DS.'?v='.$row->version_number;
+		$metadata['url'] = $livesite . DS . 'publications'. DS . $row->publication_id . DS . '?v=' . $row->version_number;
 		
 		// Get first author / creator name
 		if (count($authors) > 0) 
