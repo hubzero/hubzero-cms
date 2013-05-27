@@ -31,7 +31,7 @@ if ($this->line->alias) {
 	$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->line->id);
 }
 
-$pubthumb = $this->helper->getThumb($this->line->id, $this->line->version_id, $this->config);	
+$pubthumb = $this->helper->getThumb($this->line->id, $this->line->version_id, $this->config, false, $this->line->cat_url);	
 
 $html  = "\t".'<li';
 switch ($this->line->access)
@@ -53,7 +53,7 @@ if ($this->show_edit != 0) {
 }*/
 $html .= '</p>'."\n";
 	
-if ($this->params->get('show_ranking')) {
+if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 	$database =& JFactory::getDBO();
 
 	// Get statistics info
@@ -84,7 +84,7 @@ if ($this->params->get('show_ranking')) {
 	$html .= "\t\t\t\t".'</dd>'."\n";
 	$html .= "\t\t\t".'</dl>'."\n";
 	$html .= "\t\t".'</div>'."\n";
-} elseif ($this->params->get('show_rating')) {
+} elseif ($this->params->get('show_rating') && $this->config->get('show_rating')) {
 	switch ($this->line->rating) 
 	{
 		case 0.5: $class = ' half-stars';      break;
@@ -98,7 +98,12 @@ if ($this->params->get('show_ranking')) {
 		case 4.5: $class = ' fourhalf-stars';  break;
 		case 5:   $class = ' five-stars';      break;
 		case 0:
-		default:  $class = ' no-stars';      break;
+		default:  $class = ' no-stars';        break;
+	}
+	
+	if ($this->line->rating > 5)
+	{
+		$class = ' five-stars';
 	}
 	
 	$html .= "\t\t".'<div class="metadata">'."\n";

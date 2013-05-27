@@ -4272,6 +4272,10 @@ class plgProjectsFiles extends JPlugin
 		{
 			$output .= '!!! Changes detected - new change ID: ' . $newSyncId . "\n";
 		}
+		else
+		{
+			$output .= '>>> Returned change ID: ' . $newSyncId . "\n";
+		}
 		
 		$output .= empty($remotes) 
 				? 'No changes brought in by Changes feed' . "\n"
@@ -4834,7 +4838,7 @@ class plgProjectsFiles extends JPlugin
 		
 		if (!$nextSyncId)
 		{
-			$nextSyncId  = $newSyncId > $lastSyncId ? ($newSyncId + 1) : $lastSyncId;
+			$nextSyncId  = ($newSyncId > $lastSyncId || count($remotes) > 0) ? ($newSyncId + 1) : $lastSyncId;
 		}
 														
 		// Save sync time and last sync ID

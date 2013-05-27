@@ -118,7 +118,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			}
 			$this->_getStyles('', 'jquery.fancybox.css', true); // add fancybox styling
 		}
-								
+										
 		switch ( $this->_task ) 
 		{
 			// Setup
@@ -442,7 +442,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->_login();
 			return;
 		}
-										
+												
 		// Instantiate a new view
 		$view = new JView( array('name'=>'intro') );
 		$view->filters = array();
@@ -1109,7 +1109,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Reconcile members of project groups
 		if (!$ajax) 
 		{
-			if ($objO->reconcileGroups($pid)) 
+			if ($objO->reconcileGroups($pid, $project->owned_by_group)) 
 			{
 				$sync = 1;
 			}
@@ -3111,11 +3111,21 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Array of reserved names (task names and default dirs)
 		$reserved = array();
 		$names = $this->_config->get('reserved_names', '');
-		$tasks = array(	'start', 'setup', 'browse', 'intro', 'features', 'deleteimg', 'reports', 'stats');
+		$tasks = array(	'start', 'setup', 'browse', 
+			'intro', 'features', 'deleteimg', 
+			'reports', 'stats', 'view', 'edit',
+			'suspend', 'reinstate', 'fixownership', 
+			'delete', 'intro', 'activate', 'process',
+			'upload', 'img', 'verify', 'autocomplete',
+			'showcount', 'wikipreview', 'auth');
 		
 		if ($names) 
 		{
 			$reserved = explode(',', $names);
+			
+			// More reserved names
+			$reserved[] = 'admin';
+			$reserved[] = 'usage';
 		}
 		
 		if ($name) 

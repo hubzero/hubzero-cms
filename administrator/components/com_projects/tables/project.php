@@ -218,6 +218,7 @@ class Project extends JTable
 		$search 	= isset($filters['search']) && $filters['search'] != ''  ? $filters['search'] : '';
 		$filterby 	= isset($filters['filterby']) && $filters['filterby'] != ''  ? $filters['filterby'] : '';
 		$getowner 	= isset($filters['getowner']) && $filters['getowner'] == 1 ? 1: 0;
+		$type 		= isset($filters['type']) ? intval($filters['type']) : NULL;
 		$group 		= isset($filters['group']) && intval($filters['group']) > 0 ? $filters['group'] : '';
 		$reviewer 	= isset($filters['reviewer']) && $filters['reviewer'] != '' ? $filters['reviewer'] : '';
 		$which 		= isset($filters['which']) 
@@ -287,6 +288,10 @@ class Project extends JTable
 							OR (o.role = 1 AND p.created_by_user='$uid'))) " 
 						: " WHERE p.state = 1 AND p.private = 0 ";	
 			}
+		}
+		if ($type) 
+		{
+			$query .= " AND p.type = '$type' ";
 		}
 		if ($group) 
 		{

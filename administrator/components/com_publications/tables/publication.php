@@ -261,7 +261,7 @@ class Publication extends JTable
 			}
 			else
 			{
-				$query .= " AND t.alias='".$filters['category']."' ";
+				$query .= " AND t.url_alias='".$filters['category']."' ";
 			}
 		} 
 		

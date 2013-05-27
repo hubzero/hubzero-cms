@@ -1,6 +1,6 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+$i = 1;
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -21,9 +21,16 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if ($this->contributable) { ?>
 		<div class="two columns first">
 		<?php } ?>
-			<h3><?php echo JText::_('COM_PUBLICATIONS_WHAT_ARE_THEY'); ?></h3>
-			<p><?php echo JText::_('COM_PUBLICATIONS_WHAT_ARE_THEY_EXPLAIN'); ?></p>
-			<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=browse'); ?>"><?php echo JText::_('COM_PUBLICATIONS_BROWSE_PUBLICATIONS'); ?> &raquo;</a>
+			<h3><?php echo JText::_('COM_PUBLICATIONS_BROWSE_PUBLICATIONS'); ?></h3>
+			<ul class="extracontent">
+			<?php foreach ($this->categories as $cat) { 
+				if ($cat->itemCount <= 0) { continue; }
+				if ($i > 3) { break; } ?>
+				<li class="<?php echo $cat->alias; ?>"><a href="<?php echo JRoute::_('index.php?option=com_publications'. a . 'category=' . $cat->url_alias); ?>"><?php echo JText::_('COM_PUBLICATIONS_BROWSE') . ' ' . $cat->name; ?> &raquo;</a></li>
+			<?php $i++; } ?>
+				<li class="browseall"><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=browse'); ?>"><?php echo JText::_('COM_PUBLICATIONS_BROWSE_ALL'); ?> &raquo;</a></li>
+			</ul>
+			
 		<?php if ($this->contributable) { ?>
 		</div>
 		<div class="two columns second">
@@ -80,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 					$info[] = $row->cat_name;	
 					$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
 					
-					$pubthumb = $this->helper->getThumb($row->id, $row->version_id, $this->config);			
+					$pubthumb = $this->helper->getThumb($row->id, $row->version_id, $this->config, false, $row->cat_url);			
 				?>
 				<li>
 					<span class="pub-thumb"><img src="<?php echo $pubthumb; ?>" alt=""/></span>

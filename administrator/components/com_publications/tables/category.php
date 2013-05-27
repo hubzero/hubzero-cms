@@ -155,12 +155,18 @@ class PublicationCategory extends JTable
 	 */	
 	public function getCategories( $filters = array() ) 
 	{
-		$query  = "SELECT * FROM $this->_tbl ";
-		$query .= isset($filters['state']) && $filters['state'] == 'all' ? '' : " WHERE state=1 ";
+		$query  = "SELECT * ";
+		
+		if (isset($filters['itemCount']) && $filters['itemCount'] == 1)
+		{
+			$query .= ", (SELECT COUNT(*) FROM #__publications as P WHERE P.category = C.id ) AS itemCount ";
+		}
+		$query .= " FROM $this->_tbl as C ";
+		$query .= isset($filters['state']) && $filters['state'] == 'all' ? '' : " WHERE C.state=1 ";
 		
 		$orderby = isset($filters['sort']) ? $filters['sort'] : "name";
 		$order_dir = isset($filters['sort_Dir']) ? $filters['sort_Dir'] : "ASC";
-		$query .= "ORDER BY ".$orderby." ".$order_dir." ";
+		$query .= "ORDER BY C.".$orderby." ".$order_dir." ";
 		
 		if (isset($filters['start']) && isset($filters['limit']))
 		{

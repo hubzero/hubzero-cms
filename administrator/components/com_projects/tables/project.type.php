@@ -110,4 +110,16 @@ class ProjectType extends JTable
 		$this->_db->setQuery( "SELECT type FROM $this->_tbl WHERE id=$id ");
 		return $this->_db->loadResult();
 	}
+	
+	/**
+	 * Get ID by type title
+	 * 
+	 * @param      string $type
+	 * @return     string or NULL
+	 */
+	public function getIdByTitle ( $type = '' )
+	{
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE type='$type' ");
+		return $this->_db->loadResult();
+	}
 }

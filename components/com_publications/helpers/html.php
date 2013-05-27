@@ -733,8 +733,8 @@ class PublicationsHtml
 		{
 			if (end($field) != NULL) 
 			{	
-				// Parse wiki
-				$wiki = $parser->parse( end($field), $wikiconfig );
+				// Parse wiki if not HTML already
+				$wiki = end($field) == strip_tags(end($field)) ? $parser->parse( end($field), $wikiconfig ) : end($field);
 				
 				if ($field[0] == 'citations') 
 				{
@@ -1184,8 +1184,7 @@ class PublicationsHtml
 				break;
 
 			case 'video':
-			case 'inlineview':	
-			
+			case 'inlineview':				
 				$msg   = JText::_('COM_PUBLICATIONS_VIEW_PUBLICATION');
 				$url .= $serveas == 'video' ? a . 'render=video' : '';
 				
@@ -1193,6 +1192,11 @@ class PublicationsHtml
 				{
 					$class = 'play';
 				}
+				break;
+				
+			case 'invoke':
+				$msg   = JText::_('Launch tool');
+				$class = 'launchtool';
 				break;
 				
 			case 'external':

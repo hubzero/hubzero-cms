@@ -332,14 +332,16 @@ class PublicationHelper extends JObject
 	// Publication thumbnail
 	//----------------------------------------------------------
 	
-	public function getThumb($pid = 0, $versionid = 0, $config, $force = false)
+	public function getThumb($pid = 0, $versionid = 0, $config, $force = false, $cat = '')
 	{
 		// Get publication firectory path
 		$webpath = $config->get('webpath', 'site/publications');
 		$path = $this->buildPath($pid, $versionid, $webpath);
 		
 		// Get default picture
-		$default = $config->get('defaultpic');
+		$default = $cat == 'tools' 
+				? $config->get('toolpic', '/components/com_publications/assets/img/tool_thumb.gif')
+				: $config->get('defaultpic', '/components/com_publications/assets/img/resource_thumb.gif');
 		
 		if (is_file(JPATH_ROOT.$path . DS . 'thumb.gif') && $force == false) 
 		{

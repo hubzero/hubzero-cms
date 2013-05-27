@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
@@ -58,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$xtra = '';
 	
 	// Show audience
-	if($params->get('show_audience')) {
+	if ($params->get('show_audience')) {
 		$ra 		= new PublicationAudience( $database );
 		$audience 	= $ra->getAudience($publication->id, $publication->version_id , $getlabels = 1, $numlevels = 4);
 		$ral 		= new PublicationAudienceLevel ( $database );

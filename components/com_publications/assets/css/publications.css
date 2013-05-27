@@ -93,67 +93,79 @@
 	#whatspop {
 		margin-bottom: 2em;
 		}
+/* Publication category icons */
+	.com_publications div.extracontent li a:before {
+		display: block;
+		left: -1.2em;
+		top: 0.3em;
+	}	
+	.extracontent li a:before {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 0;
+		width: 20px;
+		height: 20px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		border: none;
+		content: "\270D";
+	}
+	.extracontent .dataset a:before {
+		content: "\f071";
+	}	
+	.extracontent .wiki a:before {
+		content: "\f072";
+	}
+	.extracontent .presentation a:before {
+		content: "\f040";
+	}
+	.extracontent .animation a:before {
+		content: "\f008";
+	}
+	.extracontent .course a:before  {
+		content: "\f09c"; /* \f02d */
+	}
+	.extracontent .download a:before  {
+		content: "\f019";
+	}
+	.extracontent .note a:before {
+		content: "\f02a";
+	}
+	.extracontent .learningmodule a:before {
+		content: "\f078";
+	}
+	.extracontent .publication a:before {
+		content: "\f016";
+	}
+	.extracontent .series a:before {
+		content: "\f060";
+	}
+	.extracontent .tool a:before {
+		content: "\2692";
+	}
+	.extracontent .teachingmaterial a:before {
+		content: "\f000";
+	}
+	.extracontent .workshop a:before {
+		content: "\f096";
+	}
+	.extracontent .browseall a:before {
+		content: "\2192";
+	}
 	
-	.extracontent .animation { 
+/* Intro */
+	#introbody .extracontent {
+		margin: 0;
+	}
+	#introbody .extracontent li {
+		padding: 0.5em;
 		padding-left: 23px; 
-		background: url("../img/types/fc-animation.gif") 0 0em no-repeat; 
-		}
-	.extracontent .video { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-animation.gif") 0 0em no-repeat; 
-		}
-	.extracontent .download { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-download.gif") 0 0em no-repeat; 
-		}
-	.extracontent .course { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-course.gif") 0 0em no-repeat; 
-		}
-	.extracontent .learningmodule { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-learningmodule.gif") 0 0em no-repeat; 
-		}
-	.extracontent .note { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-note.gif") 0 0em no-repeat; 
-		}
-	.extracontent .presentation { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-presentation.gif") 0 0em no-repeat; 
-		}
-	.extracontent .publication { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-publication.gif") 0 0em no-repeat; 
-		}
-	.extracontent .teachingmaterial { 
-		padding-left: 23px; 
-		background: url("images/types/fc-teachingmaterial.gif") 0 0em no-repeat; 
-		}
-	.extracontent .tool { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-tool.gif") 0 0em no-repeat; 
-		}
-	.extracontent .series { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-series.gif") 0 2px no-repeat; 
-		}
-	.extracontent .workshop { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-workshop.gif") 0 0em no-repeat; 
-		}
-	.extracontent .wiki { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-wiki.gif") 0 2px no-repeat; 
-		}
-	.extracontent .citation { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-publication.gif") 0 0em no-repeat; 
-		}
-	.extracontent .dataset { 
-		padding-left: 23px; 
-		background: url("../img/types/fc-data.gif") 0 2px no-repeat; 
-		}
+	}
+	#introbody {
+		padding-top: 0 !important;
+	}
 	
 /* Screenshot slider */
 	.sscontainer {
@@ -1912,7 +1924,7 @@
 	ul.mypubs {
 		list-style: none;
 		margin: 1em 0 1em 0;
-		padding: 0 0.5em;
+		padding: 0.5em 0.8em;
 		border: 4px solid #f9f6ec;
 		-moz-border-radius: 10px;
 		border-radius: 10px;
@@ -1990,8 +2002,8 @@
 		display: block;
 	}
 	.pub-thumb img {
-		width: 30px;
-		height: 30px;
+		width: 40px;
+		height: 40px;
 	}
 	.contrib-options {
 		float: right;

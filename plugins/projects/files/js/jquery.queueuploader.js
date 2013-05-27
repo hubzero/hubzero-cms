@@ -53,6 +53,11 @@ qq.ButtonFileUploader = function(o) {
 	this._sFiles 	= []; // filenames in upload queue
 	this._delay		= 0;  // delay for uploads to make them truely sequential
 	
+	if (!jq) {
+		var jq = $;
+	}
+	
+	this.jQuery = jq;	
 };
 
 //inherit from FileUploader
@@ -153,6 +158,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	},
 	_checkButton: function()
 	{
+		var $ = this.jQuery;
 		if ($('#f-upload').length == 0)
 		{
 			return false;
@@ -190,6 +196,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	},
 	reportChange: function()
 	{
+		var $ = this.jQuery;
 		if ($('#queue').length)
 		{
 			$('#queue').val(this._sFiles);
@@ -207,6 +214,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	
 	checkMaxSize: function(size)
 	{
+		var $ = this.jQuery;
 		var over = 0;
 		
 		if ($('#maxsize').length)
@@ -222,6 +230,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	
 	_getAvailSpace: function(cSize)
 	{
+		var $ = this.jQuery;
 		var avail = 0;
 		if ($('#avail').length)
 		{
@@ -235,6 +244,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	
 	_showTotals: function(cSize)
 	{
+		var $ = this.jQuery;
 		if (cSize)
 		{
 			if ($('#upload-csize').length)
@@ -307,6 +317,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	// method to call when clicking a button
 	startUploads: function(expand) 
 	{
+		var $ = this.jQuery;
 		if ($('#f-upload').length > 0)
 		{
 			$('#f-upload').val('Upload started. Please wait');
@@ -407,7 +418,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 
         qq.setText(size, text);         
     },
-	_getItemByFileName: function(fileName){
+	_getItemByFileName: function(fileName)
+	{
         var item = this._listElement.firstChild;        
         
         // there can't be txt nodes in dynamically created list
@@ -422,7 +434,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
         }          
     },
 
-	_onComplete: function(id, fileName, result){
+	_onComplete: function(id, fileName, result)
+	{
         qq.FileUploaderBasic.prototype._onComplete.apply(this, arguments);
 
         // mark completed
@@ -451,7 +464,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
         this._delay = 0; // allow next upload
     },
 	
-	_uploadFileList: function(files) {
+	_uploadFileList: function(files) 
+	{
         for (var i=0; i<files.length; i++)
 		{
             if ( this._validateFile(files[i])){
@@ -477,8 +491,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		}
 	},
 	
-	_addUpSize: function() {
-		
+	_addUpSize: function() 
+	{	
 		var cSize = 0;
 		if (this._que.length > 0)
 		{
@@ -494,7 +508,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 			}
 		}
 		return cSize;
-	},	
+	},
+		
 	_addToList: function(id, fileName, size) 
 	{
         var item = qq.toElement(this._options.fileTemplate);                
@@ -537,7 +552,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 	/**
      * delegate click event for cancel link 
      **/
-    _bindCancelEvent: function(){
+    _bindCancelEvent: function()
+	{
         var self = this,
             list = this._listElement;            
         

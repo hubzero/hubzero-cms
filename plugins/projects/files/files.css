@@ -937,6 +937,7 @@
 	table.listing tbody tr.mline:hover .tex-menu,
 	table.listing tbody tr.i-selected .tex-menu {
 		display: inline;
+		cursor: pointer;
 	}
 	.rename:before {
 		width: 16px;

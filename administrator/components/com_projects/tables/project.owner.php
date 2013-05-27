@@ -674,7 +674,7 @@ class ProjectOwner extends JTable
 	 * @param      integer $projectid
 	 * @return     boolean, true if any updates were required, false if nothing to change
 	 */
-	public function	reconcileGroups ( $projectid = NULL ) 
+	public function	reconcileGroups ( $projectid = NULL, $owned_by_group = 0 ) 
 	{
 		if ($projectid === NULL) 
 		{
@@ -686,6 +686,11 @@ class ProjectOwner extends JTable
 		$array_groups_native = array();
 		$deleted = 0;
 		$added = 0;
+		
+		if ($owned_by_group)
+		{
+			$groups[] = (object) array('groupid' => $owned_by_group, 'native' => 1);
+		}
 				
 		if ($groups && count($groups) > 0) 
 		{
@@ -699,7 +704,7 @@ class ProjectOwner extends JTable
 			// Get current group members
 			$where_groups = ' m.gidNumber IN ( ';
 			$k=1;
-			foreach($groups as $ug) 
+			foreach ($groups as $ug) 
 			{
 				$where_groups .= $ug->groupid;
 				$where_groups .= $k == count($groups) ? '' : ',';

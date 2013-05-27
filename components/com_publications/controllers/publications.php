@@ -152,7 +152,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				break;
 		}
 	}
-
+	
 	/**
 	 * Build the "trail"
 	 * 
@@ -373,7 +373,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$this->_buildTitle();
 		
 		// Set the pathway
-		$this->_buildPathway();
+		$this->_buildPathway();		
 		
 		// Instantiate a new view
 		$view 					= new JView( array('name'=>'intro') );
@@ -404,7 +404,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		
 		// Get major types
 		$t = new PublicationCategory( $this->database );
-		$view->categories = $t->getCategories();
+		$view->categories = $t->getCategories(array('itemCount' => 1));
 		
 		// Output HTML
 		if ($this->getError()) 
@@ -440,7 +440,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$view->filters['sortby'] 		= JRequest::getVar( 'sortby', $default_sort );
 		$view->filters['limit']  		= JRequest::getInt( 'limit', 25 );
 		$view->filters['start']  		= JRequest::getInt( 'limitstart', 0 );
-		
+				
 		// Get projects user has access to
 		if (!$this->juser->get('guest')) 
 		{
@@ -450,7 +450,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 
 		// Get major types
 		$t = new PublicationCategory( $this->database );
-		$view->categories = $t->getContribCategories();
+		$view->categories = $t->getCategories();
 
 		if (!is_int($view->filters['category'])) 
 		{
@@ -535,11 +535,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-		
-		// Get last public release info
-		$objV = new PublicationVersion( $this->database );
-		$lastPubRelease = $objV->getLastPubRelease($id);
-				
+						
 		// Check that version number exists
 		$objV 	 = new PublicationVersion( $this->database );
 		$version = $objV->checkVersion($id, $version) ? $version : 'default';
@@ -574,6 +570,10 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			// No published version yet? - Draft
 			$version = $publication->state == 3 ? 'dev' : $version;
 		}
+		
+		// Get last public release info
+		$objV = new PublicationVersion( $this->database );
+		$lastPubRelease = $objV->getLastPubRelease($id);
 				
 		// Check authorization
 		$authorized = $this->_authorize($publication->project_id);
@@ -760,8 +760,8 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			$view->wikiconfig 	= $wikiconfig;
 			$body = $view->loadTemplate();
 			
-			// Log page view
-			if ($this->_logging && $this->_task == 'view')
+			// Log page view (public pubs only)
+			if ($this->_logging && $this->_task == 'view' && $publication->state == 1)
 			{
 				$pubLog = new PublicationLog($this->database);
 				$pubLog->logAccess($publication->id, $publication->version_id);
@@ -1072,7 +1072,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$serveas = $pParams->get('serveas');
 				
 		// Log access
-		if ($this->_logging)
+		if ($this->_logging && $publication->state == 1)
 		{
 			$pubLog = new PublicationLog($this->database);
 			$aType  = $primary->role == 1 && $render != 'archive' ? 'primary' : 'support';
@@ -1084,6 +1084,14 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		{
 			// Databases: redirect to data view in first attachment
 			$this->_redirect = DS . trim($pPath, DS);
+			return;
+		}
+		elseif ($pType == 'tool' || $pType == 'svntool')
+		{
+			$v = "/^(http|https|ftp|nanohub):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i";
+			
+			// Invoke tool
+			$this->_redirect = (preg_match($v, $pPath) || preg_match("/index.php/", $pPath)) ? $pPath : DS . trim($pPath, DS);
 			return;
 		}
 		elseif ($render == 'archive' || ($publication->base == 'files' && count($attachments) > 1 
