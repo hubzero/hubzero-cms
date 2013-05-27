@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
  * Utility methods
  */
 class PublicationUtilities
-{
+{	
 	/**
 	 * Short description for 'updateDoi'
 	 * 
@@ -49,7 +49,7 @@ class PublicationUtilities
 	 * @param      string &$doierr Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function updateDoi( $doi, $row, $authors, $config, $metadata = array(), &$doierr = '')
+	public function updateDoi( $doi, $row, $authors, $config, $metadata = array(), &$doierr = '', $sendXML = true)
 	{		
 		if (!$doi)
 		{
@@ -63,7 +63,8 @@ class PublicationUtilities
 		
 		// Collect metadata
 		$metadata['publisher']  = $config->get('doi_publisher', $jconfig->getValue('config.sitename') );
-		$metadata['pubYear'] 	= date( 'Y' );
+		$metadata['pubYear'] 	= $row->published_up && $row->published_up != '0000-00-00 00:00:00' 
+			? date( 'Y', strtotime($row->published_up)) : date( 'Y' );
 		
 		// Get config
 		$livesite = $jconfig->getValue('config.live_site');
@@ -90,55 +91,58 @@ class PublicationUtilities
 		// Format name
 		$nameParts    = explode(" ", $creatorName);
 		$metadata['creator']  = end($nameParts);
-		$metadata['creator'] .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';	
-		
+		$metadata['creator'] .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
+				
 		// Start XML
-		$xdoc 		= new DomDocument;
-		$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi, $do = 'doi');	
-		$xmlschema 	= 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd';
-
-		// Load the xml document in the DOMDocument object
-		$xdoc->loadXML($xmlfile);
-		
-		//Validate the XML file against the schema
-		if ($xdoc->schemaValidate($xmlschema)) 
+		if ($sendXML == true)
 		{
-		    /*EZID parses text received based on new lines. */
-			$input  = "_target: " . $metadata['url'] ."\n";
-			$input .= "datacite.creator: " . $metadata['creator'] . "\n";
-			$input .= "datacite.title: ". $metadata['title'] . "\n";
-			$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
-			$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
-			$input .= "datacite.resourcetype: " . $metadata['resourceType'] . "\n";
-			$input .= "_profile: datacite". "\n";
+			$xdoc 		= new DomDocument;
+			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi, $do = 'doi');	
+			$xmlschema 	= 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd';
 
-		    /*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
-		    $input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
+			// Load the xml document in the DOMDocument object
+			$xdoc->loadXML($xmlfile);
+		}
 		
-			// Make service path
-			$call  = $service . DS . 'id' . DS . 'doi:' . $doi;	
-
-		    $ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $call);
-
-		    /* Purdue Hubzero Username/Password */
-		    curl_setopt($ch, CURLOPT_USERPWD, '');
-		    curl_setopt($ch, CURLOPT_POST, true);
-
-		    curl_setopt($ch, CURLOPT_HTTPHEADER,
-		      array('Content-Type: text/plain; charset=UTF-8',
-		            'Content-Length: ' . strlen($input)));
-		    curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
-		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		    $output = curl_exec($ch);
-		    curl_close($ch);
-		} 
-		else 
+		/*EZID parses text received based on new lines. */
+		$input  = "_target: " . $metadata['url'] ."\n";
+		$input .= "datacite.creator: " . $metadata['creator'] . "\n";
+		$input .= "datacite.title: ". $metadata['title'] . "\n";
+		$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
+		$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
+		$input .= "datacite.resourcetype: " . $metadata['resourceType'] . "\n";
+		$input .= "_profile: datacite". "\n";
+	    		
+		//Validate the XML file against the schema
+		if ($sendXML == true && $xdoc->schemaValidate($xmlschema)) 
+		{
+			/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
+		    $input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
+		}
+		elseif ($sendXML == true)
 		{
 			$doierr .= "XML is invaild. Unable to upload XML as it is invalid. Please modify the created DOI with a valid XML .\n";
 			return false;
 		}
-		
+				
+		// Make service path
+		$call  = $service . DS . 'id' . DS . 'doi:' . $doi;	
+
+	    $ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $call);
+
+	    /* Purdue Hubzero Username/Password */
+	    curl_setopt($ch, CURLOPT_USERPWD, '');
+	    curl_setopt($ch, CURLOPT_POST, true);
+
+	    curl_setopt($ch, CURLOPT_HTTPHEADER,
+	      array('Content-Type: text/plain; charset=UTF-8',
+	            'Content-Length: ' . strlen($input)));
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	    $output = curl_exec($ch);
+	    curl_close($ch);
+				
 		return true;
 	}
 	

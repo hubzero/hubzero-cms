@@ -252,6 +252,7 @@ class Publication extends JTable
 		
 		$query .= $project ? " AND C.project_id=".$project : "";
 	
+		// Category
 		if (isset($filters['category']) && $filters['category'] != '') 
 		{
 			if (is_numeric($filters['category']))
@@ -263,6 +264,20 @@ class Publication extends JTable
 				$query .= " AND t.alias='".$filters['category']."' ";
 			}
 		} 
+		
+		// Master type
+		if (isset($filters['master_type']) && $filters['master_type'] != '') 
+		{
+			if (is_numeric($filters['master_type']))
+			{
+				$query .= " AND C.master_type=".$filters['master_type']." ";
+			}
+			else
+			{
+				$query .= " AND MT.alias='".$filters['master_type']."' ";
+			}
+		}
+		
 		if (isset($filters['minranking']) && $filters['minranking'] != '' && $filters['minranking'] > 0) 
 		{
 			$query .= " AND C.ranking > ".$filters['minranking']." ";
@@ -270,7 +285,7 @@ class Publication extends JTable
 		if (!$dev) 
 		{
 			$query .= " AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '".$now."') ";
-			$query .= " AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '".$now."') ";
+			$query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '".$now."') ";
 		}
 
 		if (!isset($filters['ignore_access']) || $filters['ignore_access'] == 0) 
@@ -509,7 +524,7 @@ class Publication extends JTable
 				AS default_version_status ";
 		$sql .= ",(SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
 		$sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS MT, $this->_tbl AS C ";
-		$sql .= " LEFT JOIN #__publication_categories AS t ON t.id=C.category ";
+		$sql .= " JOIN #__publication_categories AS t ON C.category=t.id ";
 		$sql .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id=C.project_id ";
 		if ($version == 'default' or $version == 'current' && $version == 'main') 
 		{

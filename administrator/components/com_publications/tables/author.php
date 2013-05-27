@@ -295,7 +295,7 @@ class PublicationAuthor extends JTable
 
 		$query .= " WHERE A.publication_version_id=".$vid;
 		$query .= $active ? " AND A.status=1" : "";
-		$query .= " ORDER BY ordering ASC ";
+		$query .= " ORDER BY A.ordering ASC ";
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
 		

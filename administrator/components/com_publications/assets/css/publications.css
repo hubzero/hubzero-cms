@@ -386,6 +386,11 @@
 	.editform span.breaker {
 		padding: 0 2em;
 	}
+	ul.projectlist {
+		padding: 0;
+		margin: 1em;
+		list-style: square;
+	}
 	
 	
 

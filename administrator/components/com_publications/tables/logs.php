@@ -193,4 +193,47 @@ class PublicationLog extends JTable
 			return false;
 		}		
 	}
+	
+	/**
+	 * Get stats for author
+	 * 
+	 * @param      integer 	$uid		User ID
+	 * @param      integer 	$vid		Publication version ID
+	 * @return     void
+	 */	
+	public function getAuthorStats ( $uid = NULL, $limit = 0 ) 
+	{
+		if (!$uid)
+		{
+			return false;
+		}
+		
+		$thisYearNum 	= intval(date('y', strtotime("-1 month")));
+		$pastMonthNum 	= intval(date('m', strtotime("-1 month")));
+			
+		$query  = "SELECT A.publication_version_id, V.publication_id, V.title, V.version_label, 
+					V.version_number, V.doi, V.published_up, t.url_alias as cat_url ";
+		$query .= ", (SELECT COALESCE( SUM(L.page_views) , 0 ) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id 
+			AND year='$thisYearNum' AND month='$pastMonthNum' ) AS monthly_views ";
+		$query .= ", (SELECT COALESCE( SUM(L.primary_accesses) , 0 ) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id 
+			AND year='$thisYearNum' AND month='$pastMonthNum' ) AS monthly_primary ";
+		$query .= ", (SELECT COALESCE( SUM(L.support_accesses) , 0 ) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id 
+			AND year='$thisYearNum' AND month='$pastMonthNum' ) AS monthly_support ";
+		$query .= ", (SELECT COALESCE( SUM(L.page_views) , 0 )  FROM $this->_tbl as L 
+			WHERE L.publication_id=V.publication_id ) AS total_views ";
+		$query .= ", (SELECT COALESCE( SUM(L.primary_accesses) , 0 ) FROM $this->_tbl as L 
+			WHERE L.publication_id=V.publication_id ) AS total_primary ";
+		$query .= " FROM #__publications as C, #__publication_categories AS t, #__publication_versions as V ";
+		$query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.user_id='$uid' ";
+		$query .= " LEFT JOIN #__publication_stats as S ON S.publication_id = V.publication_id AND period='14' ";
+		$query .= " WHERE C.id=V.publication_id AND V.state=1 AND C.category = t.id AND
+					V.main=1 AND V.published_up < '" . date('Y-m-d H:i:s') . "'";
+	//	$query .= " AND S.users > 0 ";
+		$query .= " GROUP BY V.publication_id ";
+		$query .= " ORDER BY S.users DESC, V.id ASC ";
+		$query .= $limit? "LIMIT " . $limit : '';
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();		
+	}
 }
