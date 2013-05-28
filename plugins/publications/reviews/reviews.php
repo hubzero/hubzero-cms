@@ -171,7 +171,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 			if (!$h->loggedin) 
 			{
 				$rtrn = JRequest::getVar('REQUEST_URI', 
-					JRoute::_('index.php?option=' . $option . '&id='.$publication->id.'&active=reviews'), 'server');
+					JRoute::_('index.php?option=' . $option . '&id='.$publication->id.'&active=reviews&v=' . $publication->version_number), 'server');
 				$this->redirect(
 					JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
 					JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE'),
@@ -230,13 +230,13 @@ class plgPublicationsReviews extends Hubzero_Plugin
 			
 			if ($publication->alias) 
 			{
-				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews');
-				$url2 = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews&action=addreview#reviewform');
+				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews&v=' . $publication->version_number);
+				$url2 = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews&v=' . $publication->version_number . '&action=addreview#reviewform');
 			} 
 			else 
 			{
-				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews');
-				$url2 = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews&action=addreview#reviewform');
+				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews&v=' . $publication->version_number);
+				$url2 = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews&v=' . $publication->version_number . '&action=addreview#reviewform');
 			}
 
 			$view->reviews = $reviews;

@@ -171,10 +171,10 @@ class plgPublicationsShare extends JPlugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING', 
+				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING', 
 						$jconfig->getValue('config.sitename'), 
-						stripslashes($publication->title)).' '.$url;
-						break;
+						stripslashes($publication->title)).' '.$url);
+				break;
 
 			case 'google':
 				$link = 'http://www.google.com/bookmarks/mark?op=edit&bkmk='.$url
@@ -206,7 +206,7 @@ class plgPublicationsShare extends JPlugin
 				.' '.$publication->id.' - '.stripslashes($publication->title);
 				break;
 		}
-
+		
 		if ($link) 
 		{
 			$app =& JFactory::getApplication();

@@ -185,7 +185,7 @@ class plgPublicationsQuestions extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
 			$arr['metadata']  = '<p class="answer"><a href="'
-				.JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=questions').'">';
+				.JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=questions&v=' . $publication->version_number).'">';
 			if ($count == 1) 
 			{
 				$arr['metadata'] .= JText::sprintf('PLG_PUBLICATION_QUESTIONS_NUM_QUESTION',$count);

@@ -157,11 +157,11 @@ class plgPublicationsCitations extends JPlugin
 		{
 			if ($publication->alias) 
 			{
-				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=citations');
+				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=citations&v=' . $publication->version_number);
 			} 
 			else 
 			{
-				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=citations');
+				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=citations&v=' . $publication->version_number);
 			}
 			
 			$arr['metadata']  = '<p class="citation"><a href="'.$url.'">'.JText::sprintf('PLG_PUBLICATION_CITATIONS_COUNT',count($citations)).'</a></p>';

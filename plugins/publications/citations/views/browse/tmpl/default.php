@@ -38,7 +38,7 @@ if ($this->citations) {
 	$nonaffiliated = '';
 	
 	$formatter = new CitationFormat;
-	$formatter->setFormat($this->format);
+	$formatter->setTemplate($this->format);
 	
 	// Loop through the citations and build the HTML
 	foreach ($this->citations as $cite) 
@@ -71,14 +71,15 @@ if ($this->citations) {
 	<a name="citations"></a>
 	<?php echo JText::_('PLG_PUBLICATION_CITATIONS'); ?> 
 	<span>
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=citations#nonaffiliated'); ?>"><?php echo JText::_('PLG_PUBLICATION_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> | 
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=citations#affiliated'); ?>"><?php echo JText::_('PLG_PUBLICATION_CITATIONS_AFF'); ?> (<?php echo $numaff; ?>)</a>
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=citations&v=' . $this->publication->version_number . '#nonaffiliated'); ?>"><?php echo JText::_('PLG_PUBLICATION_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> | 
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=citations&v=' . $this->publication->version_number . '#affiliated'); ?>"><?php echo JText::_('PLG_PUBLICATION_CITATIONS_AFF'); ?> (<?php echo $numaff; ?>)</a>
 	</span>
 </h3>
 <?php
 if ($this->citations) { 
 	if ($nonaffiliated) { 
 ?>
+	<a name="nonaffiliated"></a>
 	<h4><?php echo JText::_('PLG_PUBLICATION_CITATIONS_NOT_AFFILIATED'); ?></h4>
 	<ul class="citations results">
 		<?php echo $nonaffiliated; ?>
@@ -87,6 +88,7 @@ if ($this->citations) {
 	}
 	if ($affiliated) {
 ?>
+	<a name="affiliated"></a>
 	<h4><?php echo JText::_('PLG_PUBLICATION_CITATIONS_AFFILIATED'); ?></h4>
 	<ul class="citations results">
 		<?php echo $affiliated; ?>
