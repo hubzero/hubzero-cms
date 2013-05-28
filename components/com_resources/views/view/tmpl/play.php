@@ -136,8 +136,9 @@ if ($this->resource->type == 4) {
 
 	// Get some attributes
 	$attribs = new $paramsClass( $this->activechild->attribs );
-	$width  = $attribs->get( 'width', '' );
-	$height = $attribs->get( 'height', '' );
+	$width  = $attribs->get('width', '');
+	$height = $attribs->get('height', '');
+
 	$attributes = $attribs->get('attributes', '');
 	if ($attributes) {
 		$a = explode(',', $attributes);
@@ -160,13 +161,37 @@ if ($this->resource->type == 4) {
 	$type = (strlen($type) > 4) ? 'html' : $type;
 	$type = (strlen($type) > 3) ? substr($type, 0, 3) : $type;
 
-	$width = (intval($width) > 0) ? $width : 0;
+	$width  = (intval($width) > 0) ? $width : 0;
 	$height = (intval($height) > 0) ? $height : 0;
 
 	$images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
 	$files = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
 
-	if (is_file(JPATH_ROOT.$url)) {
+	$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
+		           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+
+	if (preg_match("/$UrlPtn/", $url))
+	{
+		if (!empty( $_SERVER['HTTPS'])) 
+		{
+			$url = str_replace('http:', 'https:', $url);
+		}
+		$parsed = parse_url($url);
+		if (stristr($parsed['host'], 'youtube'))
+		{
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" allowfullscreen></iframe>';
+		} 
+		else if (stristr($parsed['host'], 'vimeo'))
+		{
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+		}
+		else if (stristr($parsed['host'], 'blip'))
+		{
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+		}
+	}
+	else if (is_file(JPATH_ROOT . $url)) 
+	{
 		if (strtolower($type) == 'swf') {
 			$height = '400px';
 			if ($this->no_html) {
@@ -215,7 +240,9 @@ if ($this->resource->type == 4) {
 			}
 			$html .= '</applet>'."\n";
 		}
-	} else {
+	} 
+	else 
+	{
 		$html .= '<p class="error">'.JText::_('COM_RESOURCES_FILE_NOT_FOUND').'</p>'."\n";
 	}
 }

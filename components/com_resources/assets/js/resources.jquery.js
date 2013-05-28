@@ -36,29 +36,35 @@ HUB.Resources = {
 			autoSize: false,
 			fitToView: false,
 			beforeLoad: function() {
-				href = $(this).attr('href');
+				href = this.element.attr('href');
 				if (href.indexOf('?') == -1) {
 					href += '?no_html=1';
 				} else {
 					href += '&no_html=1';
 				}
-				$(this).attr('href', href);
 				
-				if ($(this).attr('class')) {
-					var sizeString = $(this).attr('class').split(' ').pop();
-					if (sizeString && sizeString.match('/\d+x\d+/')) {
+				this.element.attr('href', href);
+				this.href = href;
+
+				if (this.element.attr('class')) {
+					var sizeString = this.element.attr('class').split(' ').pop();
+					if (sizeString) { // && sizeString.match('/\d+x\d+/gi')) {
 						var sizeTokens = sizeString.split('x');
-						$.fancybox().width = parseInt(sizeTokens[0]);
-						$.fancybox().height = parseInt(sizeTokens[1]);
+						if (parseInt(sizeTokens[0])) {
+							this.width  = parseInt(sizeTokens[0]) - 20;
+						}
+						if (parseInt(sizeTokens[1])) {
+							this.height = parseInt(sizeTokens[1]) - 60;
+						}
 					}
 				}
 			},
 			afterShow: function() {
 				if ($('#hubForm-ajax')) {
-					$('#hubForm-ajax').submit(function(e) {
+					$('#hubForm-ajax').on('submit', function(e) {
 						e.preventDefault();
 						$.post($(this).attr('action'));
-						$.fancybox().close();
+						$.fancybox.close();
 						return false;
 					});
 				}
