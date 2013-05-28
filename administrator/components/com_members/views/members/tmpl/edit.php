@@ -113,17 +113,6 @@ function submitbutton(pressbutton)
 			   <td><input type="checkbox" name="profile[public]" id="public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> /></td>
 			  </tr>
 			  <tr>
-			   <td class="key"><?php echo JText::_('CURRENT_PASSWORD'); ?></td>
-			   <td><input type="text" name="profile[currentpassword]" disabled="disabled" value="<?php echo $this->profile->get('userPassword'); ?>" /></td>
-			  </tr>
-			  <tr>
-			   <td class="key"><label for="newpass"><?php echo JText::_('NEW_PASSWORD'); ?>:</label></td>
-			   <td>
-				<input type="password" name="newpass" id="newpass" value="" /><br />
-				<strong>NOTE:</strong> Entering anything here will reset the user's password.
-			   </td>
-			  </tr>
-			  <tr>
 			   <td class="key"><label for="vip"><?php echo JText::_('VIP'); ?>:</label></td>
 			   <td><input type="checkbox" name="profile[vip]" id="vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> /></td>
 			  </tr>
@@ -213,6 +202,55 @@ function submitbutton(pressbutton)
 				</td>
 			</tr>
 			</tbody>
+			</table>
+		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('PASSWORD'); ?></span></legend>
+
+			<table class="admintable" summary="<?php echo JText::_('ADMIN_PROFILE_TBL_SUMMARY'); ?>">
+				<tbody>
+					<tr class="odd">
+						<td class="key"><?php echo JText::_('CURRENT_PASSWORD'); ?>:</td>
+						<td><input type="text" name="profile[currentpassword]" disabled="disabled" <?php echo ($this->profile->get('userPassword')) ? "value=\"{$this->profile->get('userPassword')}\"" : 'placeholder="no local password set"'; ?> /></td>
+					</tr>
+					<tr class="even">
+						<td class="key"><label for="newpass"><?php echo JText::_('NEW_PASSWORD'); ?>:</label></th>
+						<td>
+							<input type="password" name="newpass" id="newpass" value="" /><br />
+							<strong>NOTE:</strong> Entering anything above will reset the user's password.
+						</td>
+					</tr>
+					<tr class="edd">
+						<td title="shadowLastChange" class="key"><?php echo JText::_('SHADOW_LAST_CHANGE'); ?>:</td>
+						<td>
+							<?php
+								if ($this->password->get('shadowLastChange'))
+								{
+									$shadowLastChange = $this->password->get('shadowLastChange')*86400;
+									echo date("Y-m-d", $shadowLastChange); 
+									echo " ({$this->password->get('shadowLastChange')})";
+									echo " - " . intval((time()/86400) - ($shadowLastChange/86400)) . " days ago";
+								}
+								else
+								{
+									echo "never";
+								}
+							?>
+						</td>
+					</tr>
+					<tr class="even">
+						<td title="shadowMax" class="key"><?php echo JText::_('SHADOW_MAX'); ?>:</td>
+						<td><input type="text" name="shadowMax" value="<?php echo $this->password->get('shadowMax'); ?>" /></td>
+					</tr>
+					<tr class="odd">
+						<td title="shadowWarning" class="key"><?php echo JText::_('SHADOW_WARNING'); ?>:</td>
+						<td><input type="text" name="shadowWarning" value="<?php echo $this->password->get('shadowWarning'); ?>" /></td>
+					</tr>
+					<tr class="even">
+						<td title="shadowExpire" class="key"><?php echo JText::_('SHADOW_EXPIRE'); ?>:</td>
+						<td><input type="text" name="shadowExpire" value="<?php echo $this->password->get('shadowExpire'); ?>" placeholder="Expiration date (past or future) - Format: 'yyyy-mm-dd' or days since epoch" /></td>
+					</tr>
+				</tbody>
 			</table>
 		</fieldset>
 		<fieldset class="adminform">
@@ -391,14 +429,6 @@ function submitbutton(pressbutton)
 							<input type="text" name="profile[email]" id="email" value="" size="20" /> <label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> <?php echo JText::_('EMAIL_CONFIRM'); ?></label>
 			<?php } ?>
 						</td>
-					</tr>
-					<tr class="even">
-						<td class="key"><?php echo JText::_('COL_EXPIRE'); ?></td>
-			<?php if ($this->profile->get('shadowExpire') > 0) { ?>
-						<td><label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1" checked="checked"/></label></td>
-			<?php } else { ?>
-						<td><label><input type="checkbox" name="shadowExpire" id="shadowExpire" value="1" /></label></td>
-			<?php } ?>
 					</tr>
 					<tr class="odd">
 						<td class="key"><?php echo JText::_('COL_JOBS_ALLOWED'); ?></td>
