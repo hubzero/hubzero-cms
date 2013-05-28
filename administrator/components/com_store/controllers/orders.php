@@ -192,12 +192,29 @@ class StoreControllerOrders extends Hubzero_Controller
 					$r->colors    		= preg_split('#,#',$r->colors);
 				}
 			}
+			else
+			{
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					'Order empty, cannot generate receipt',
+					'error'
+				);
+				return;
+			}
 
 			$customer =& JUser::getInstance($row->uid);
 		}
-
+		else
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				'Need order ID to issue a receipt', 'error'
+			);
+			return;
+		}
+		
 		// Include needed libraries
-		require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
+	//	require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
 
 		// Get the Joomla config
 		$jconfig =& JFactory::getConfig();
@@ -219,9 +236,11 @@ class StoreControllerOrders extends Hubzero_Controller
 		{
 			$webpath = str_replace(':/', '://', $webpath);
 		}
-
-		// Start building the PDF
-		$pdf = new PDF();
+		
+		//require_once(JPATH_ROOT . DS . 'libraries/tcpdf/tcpdf.php');
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		
+		$receipt_title  = $this->config->get('receipt_title')  ? $this->config->get('receipt_title')  : 'Your Order' ;
 		$hubaddress = array();
 		$hubaddress[] = $this->config->get('hubaddress_ln1') ? $this->config->get('hubaddress_ln1') : '' ;
 		$hubaddress[] = $this->config->get('hubaddress_ln2') ? $this->config->get('hubaddress_ln2') : '' ;
@@ -230,31 +249,109 @@ class StoreControllerOrders extends Hubzero_Controller
 		$hubaddress[] = $this->config->get('hubaddress_ln5') ? $this->config->get('hubaddress_ln5') : '' ;
 		$hubaddress[] = $this->config->get('hubemail') ? $this->config->get('hubemail') : '' ;
 		$hubaddress[] = $this->config->get('hubphone') ? $this->config->get('hubphone') : '' ;
-		$pdf->hubaddress = $hubaddress;
-		$pdf->url = $webpath;
-		$pdf->headertext_ln1 = $this->config->get('headertext_ln1') ? $this->config->get('headertext_ln1') : '' ;
-		$pdf->headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : $jconfig->getValue('config.sitename') ;
-		$pdf->footertext     = $this->config->get('footertext')     ? $this->config->get('footertext')     : 'Thank you for contributions to our HUB!' ;
-		$pdf->receipt_title  = $this->config->get('receipt_title')  ? $this->config->get('receipt_title')  : 'Your Order' ;
-		$pdf->receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;
-		$pdf->AliasNbPages();
-		$pdf->AddPage();
+		
+		$headertext_ln1 = $this->config->get('headertext_ln1') ? $this->config->get('headertext_ln1') : '' ;
+		$headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : $jconfig->getValue('config.sitename') ;
+		$footertext     = $this->config->get('footertext')     ? $this->config->get('footertext')     : 'Thank you for contributions to our HUB!' ;
+		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;				
+		
+		// Get front-end template name
+		$sql = "SELECT template FROM #__templates_menu WHERE client_id=0";
+		$this->database->setQuery( $sql );
+		$tmpl = $this->database->loadResult();
 
-		// Title
-		$pdf->mainTitle();
-
-		// Order details
-		if ($id)
+		// Use header image? tcpdf config needs to be adjusted
+		/*
+		if (is_file(JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png'))
 		{
-			$pdf->orderDetails($customer, $row, $orderitems);
+			$logo = JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png';
 		}
 		else
 		{
-			$pdf->Warning('No information available. Please supply order ID');
+			$logo =  JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_store' . DS . 'images' . DS . 'hub-store-logo.png';
 		}
+		*/
+		
+		// set default header data
+		$pdf->SetHeaderData(NULL, 0, strtoupper($receipt_title). ' - #' . $id, NULL, array(84, 94, 124), array(146, 152, 169));
+		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
+		
+		// set header and footer fonts
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+		
+		// set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(10);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
-		$pdf->Output();
-		exit();
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+		
+		// Set font
+		$pdf->SetFont('dejavusans', '', 11, '', true);
+		
+		$pdf->AddPage();
+		
+		// HTML content
+		$view = new JView( array('name'=>'orders', 'layout'=>'receipt' ) );
+		$view->hubaddress  		= $hubaddress;
+		$view->headertext_ln1 	= $headertext_ln1;
+		$view->headertext_ln2 	= $headertext_ln2;
+		$view->receipt_note 	= $receipt_note;
+		$view->receipt_title 	= $receipt_title;
+		$view->option 			= $this->_option;
+		$view->url				= $webpath;
+		$view->customer			= $customer;
+		$view->row				= $row;
+		$view->orderitems		= $orderitems;
+
+		$html = $view->loadTemplate();
+
+		// output the HTML content
+		$pdf->writeHTML($html, true, false, true, false, '');
+
+		// ---------------------------------------------------------
+		
+		$dir = JPATH_ROOT . DS . 'site' . DS . 'store' . DS . 'temp';
+		$tempFile = $dir . DS . 'receipt_' . $id . '.pdf'; 
+		
+		if (!is_dir( $dir ))
+		{
+			if (!JFolder::create( $dir, 0755 ))
+			{
+				jimport('joomla.filesystem.folder');
+				JError::raiseError(500, 'Failed to create folder to store receipts');
+				return;
+			}
+		}
+		
+		// Close and output PDF document
+		$pdf->Output($tempFile, 'F');
+		
+		if (is_file($tempFile))
+		{
+			// Get some needed libraries
+			ximport('Hubzero_Content_Server');
+			
+			$xserver = new Hubzero_Content_Server();
+			$xserver->filename($tempFile);		
+			$xserver->serve_inline($tempFile);
+			exit;
+		}
+		else
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				'There was an error creating a receipt', 'error'
+			);
+			return;
+		}
+		
+		return;
 	}
 
 	/**
