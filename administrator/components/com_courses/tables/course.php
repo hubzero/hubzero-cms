@@ -227,7 +227,7 @@ class CoursesTableCourse extends JTable
 		{
 			$this->alias = str_replace(' ', '_', strtolower($this->title));
 		}
-		$this->alias = preg_replace("/[^a-zA-Z0-9_]/", '', $this->alias);
+		$this->alias = preg_replace("/[^a-zA-Z0-9_\-\.]/", '', $this->alias);
 		if (is_numeric($this->alias) 
 		 && intval($this->alias) == $this->alias 
 		 && $this->alias >= 0)
