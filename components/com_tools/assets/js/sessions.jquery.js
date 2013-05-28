@@ -289,6 +289,12 @@ HUB.Mw = {
 				}
 			}
 
+			if (w < 513) {
+				$('.ui-resizable-handle').css('bottom', '-5em');
+			} else {
+				$('.ui-resizable-handle').css('bottom', '-3em');
+			}
+
 			$('#theapp').css('width', w.toString() + 'px')
 				.css('height', h.toString() + 'px')
 				.attr('width', w.toString())
@@ -500,9 +506,9 @@ HUB.Mw = {
 						$('#app-size').html(w.toString()+' x '+h.toString());
 
 						if (w < 513) {
-							$('.ui-resizable-handle').css('bottom', '-62px');
+							$('.ui-resizable-handle').css('bottom', '-5em');
 						} else {
-							$('.ui-resizable-handle').css('bottom', '-37px');
+							$('.ui-resizable-handle').css('bottom', '-3em');
 						}
 
 						$('#theapp')
