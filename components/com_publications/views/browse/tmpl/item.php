@@ -60,11 +60,13 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 	$this->helper->getCitationsCount();
 	$this->helper->getLastCitationDate();
 	
+	/*
 	if ($this->line->category == 7) {
 		$stats = new ToolStats($database, $this->line->id, $this->line->category, $this->line->rating, $this->helper->citationsCount, $this->helper->lastCitationDate);
 	} else {
 		$stats = new AndmoreStats($database, $this->line->id, $this->line->category, $this->line->rating, $this->helper->citationsCount, $this->helper->lastCitationDate);
 	}
+	*/
 
 	$this->line->ranking = round($this->line->ranking, 1);
 

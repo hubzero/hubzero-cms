@@ -34,6 +34,7 @@ if ($this->config->get('show_ranking')) {
 $sortbys['date'] = JText::_('Recent');
 $sortbys['date_oldest'] = JText::_('Oldest');
 $sortbys['title'] = JText::_('COM_PUBLICATIONS_TITLE');
+
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>

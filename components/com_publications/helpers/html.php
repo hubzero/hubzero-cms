@@ -1101,7 +1101,7 @@ class PublicationsHtml
 	public function showSubInfo( $publication, $option ) 
 	{	
 		$action = $publication->state == 1 ? JText::_('COM_PUBLICATIONS_LISTED_IN') : JText::_('COM_PUBLICATIONS_IN');
-		$html = '<p class="pubinfo">'.$action.' '.' <a href="'.JRoute::_('index.php?option='.$option.'&type='.$publication->cat_url).'">'.$publication->cat_name.'</a>';
+		$html = '<p class="pubinfo">'.$action.' '.' <a href="'.JRoute::_('index.php?option='.$option.'&category='.$publication->cat_url).'">'.$publication->cat_name.'</a>';
 		
 		// Show group if group project
 		if($publication->project_group) 
