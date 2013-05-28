@@ -13,7 +13,7 @@ class Migration20130524101101PlgCoursesDiscussions extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		$query .= "ALTER TABLE #__courses_member_notes CHANGE COLUMN `timestamp` `timestamp` time NOT NULL DEFAULT '00:00:00';";
+		$query = "ALTER TABLE #__courses_member_notes CHANGE COLUMN `timestamp` `timestamp` time NOT NULL DEFAULT '00:00:00';";
 
 		if (!empty($query))
 		{
