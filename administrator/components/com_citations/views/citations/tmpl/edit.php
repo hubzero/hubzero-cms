@@ -322,6 +322,9 @@ function submitbutton(pressbutton)
 							echo ' <option value="resource"';
 							echo ($assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
 							echo '>'.JText::_('RESOURCE').'</option>'."\n";
+							echo ' <option value="publication"';
+							echo ($assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
+							echo '>'.JText::_('Publication').'</option>'."\n";
 							//echo ' <option value="topic"';
 							//echo ($assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
 							//echo '>'.JText::_('TOPIC').'</option>'."\n";
