@@ -70,6 +70,8 @@ switch ($this->ticket->severity)
 	break;
 }
 
+$comment = $this->comment->comment;
+
 $this->commentor = JFactory::getUser($this->comment->created_by);
 ?>
 
@@ -115,7 +117,7 @@ if ($this->comment->changelog)
 		}
 	}
 }
-$message .= $this->attach->parse($this->comment->comment);
+$message .= $this->attach->parse($comment);
 echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)</a>/i', '\\1', $message) . "\n\n" . $link . "\n";
 ?>
 
@@ -391,15 +393,15 @@ Content-type: text/html;charset=utf-8";
 														</table>
 													<?php
 														}
-														if (!strstr($this->comment->comment, '</p>') && !strstr($this->comment->comment, '<pre class="wiki">')) 
+														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
 														{
-															$this->comment->comment = str_replace("<br />", '', $this->comment->comment);
-															$this->comment->comment = $this->escape($this->comment->comment);
-															$this->comment->comment = nl2br($this->comment->comment);
-															$this->comment->comment = str_replace("\t", ' &nbsp; &nbsp;', $this->comment->comment);
-															$this->comment->comment = preg_replace('/  /', ' &nbsp;', $this->comment->comment);
+															$comment = str_replace("<br />", '', $comment);
+															$comment = $this->escape($comment);
+															$comment = nl2br($comment);
+															$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
+															$comment = preg_replace('/  /', ' &nbsp;', $comment);
 														}
-														$comment = $this->attach->parse($this->comment->comment);
+														$comment = $this->attach->parse($comment);
 													?>
 														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></p>
 													</td>
