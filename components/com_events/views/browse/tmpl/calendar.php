@@ -124,7 +124,7 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 
 	$class = ($selected_date == $to_day) ? 'today' : '';
 	if ($d == $this->day) {
-		$class .= ' selected';
+		//$class .= ' selected';
 	}
 	$hasevents = false;
 	for ($r = 0; $r < count($rows); $r++)
