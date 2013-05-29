@@ -212,6 +212,8 @@ WYKIWYG.converter = function() {
 			}
 		];
 
+		string = string.replace(/((^|\s)\[([^\[])(.*?)\])/g, '$2[!$3$4]');
+
 		string = string.replace(/\&nbsp;/ig, ' ');
 		string = string.replace(/<div><br(\s*)\/?><\/div>/ig, '\n');
 
@@ -343,7 +345,7 @@ WYKIWYG.converter = function() {
 						});
 						dts[i] = dts[i].replace(/\s*<dd[^>]*>([\s\S]*)<\/dd>/i, function(str, innerHTML) {
 							innerHTML = innerHTML.replace(/^\s+/, '');
-							return '   ' + innerHTML + '';
+							return '   ' + innerHTML + '\n';
 						});
 					}
 				}
@@ -649,6 +651,10 @@ WYKIWYG.converter = function() {
 			var link_id	 = m3.toLowerCase();
 			var url		= m4;
 			var title	= m7;
+
+			if (url[0] == '!') {
+				return '[' + whole_match.substr(2);
+			}
 
 			if (url == "") {
 				if (whole_match.search(/\(\s*\)$/m)>-1) {
@@ -1039,14 +1045,14 @@ WYKIWYG.converter = function() {
 					return result;
 				});
 			} else {
-				whole_list = /(\n)?([ ]{1}(.+?)[:]{2}[^\r]+?(.+\n)*)/g;
+				whole_list = /(\n)?((.+?)::[\s\S]+?(?=\n{2}|$))/g; //(\n)?([ ]{1}(.+?)[:]{2}[^\r]+?(.+\n)*)/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
 					var runup = m1,
 						list = m2,
 						list_type = "dl";
 					// Turn double returns into triple returns, so that we can make a
 					// paragraph for the last item in a list, if necessary:
-					var list = list.replace(/\n{2,}/g,"\n\n\n");;
+					var list = list.replace(/\n{2,}/g,"\n\n\n");
 					var result = _ProcessDefListItems(list);
 					result = runup + "<" + list_type + ">\n" + result + "</" + list_type + ">\n";	
 					return result;
@@ -1070,7 +1076,8 @@ WYKIWYG.converter = function() {
 			// add sentinel to emulate \z
 			list_str += "~0";
 
-			list_str = list_str.replace(/(\n)?(\s{1})(.+?):{2}[^\r]+?(~0|(\s{3}(.+))+)/gm,
+			list_str = list_str.replace(/((\s)*(.+?)::[^\r]+?(.+))/g,
+			//list_str = list_str.replace(/(\n)?(\s{1})(.+?):{2}[^\r]+?(~0|(\s{3}(.+))+)/gm,
 				function(wholeMatch,m1,m2,m3,m4){
 					var leading_line = m1,
 						leading_space = m2,
