@@ -150,6 +150,18 @@ a:active.account-group {
 	background: #997229;
 }
 
+/* twitter */
+#twitter:before {
+	content: "\f011";
+}
+#twitter {
+	border: 1px solid #223357;
+	background: #9AE4E8;
+}
+#twitter:hover {
+	background: #89CBCF;
+}
+
 /* hub */
 #hubzero:before {
 	content: "\f002";
