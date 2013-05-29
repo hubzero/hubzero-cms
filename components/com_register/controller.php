@@ -1587,6 +1587,11 @@ class RegisterController extends Hubzero_Controller
 			{
 				$r = $hconfig->get('LoginReturn');
 				$myreturn = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
+				// consume cookie (yum) if available to return to whatever action prompted registration
+				if (isset($_COOKIE['return'])) {
+					$myreturn = $_COOKIE['return'];
+					setcookie('return', '', time() - 3600);
+				}
 			}
 
 			$app->redirect($myreturn,'','message',true);
