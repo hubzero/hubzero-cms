@@ -1762,6 +1762,9 @@
 	.btn.archive {
 		padding: 0.4em 0.91em 0.4em 2.91em;
 	}
+	#content-header-extra a.all {
+		padding: 0.4em 0.91em 0.4em 0.91em;
+	}
 	span.btn {
 		color: #999;
 		border-color: #CCC;
@@ -1942,6 +1945,7 @@
 		content: "\2190";
 		font-family: 'Fontcons';
 	}
+	#content-header-extra .btn.next,
 	span.btn.next,
 	.btn.next {
 		padding: 0.4em 2.91em 0.4em 0.91em;
