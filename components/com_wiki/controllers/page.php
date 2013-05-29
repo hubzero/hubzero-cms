@@ -89,11 +89,25 @@ class WikiControllerPage extends Hubzero_Controller
 			$this->config = JComponentHelper::getParams('com_wiki');
 		}
 
-		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
-		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
+		if (!defined('WIKI_SUBPAGE_SEPARATOR'))
+		{
+			define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
+		}
+		if (!defined('WIKI_MAX_PAGENAME_LENGTH'))
+		{
+			define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
+		}
+
+		$filters = array(
+			'state' => array('0', '1')
+		);
+		if ($this->_group)
+		{
+			$filters['group'] = $this->_group;
+		}
 
 		$wp = new WikiPage($this->database);
-		if (!$wp->count($this->_group)) 
+		if (!$wp->getPagesCount($filters)) 
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
 

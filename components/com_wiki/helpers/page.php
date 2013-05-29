@@ -73,7 +73,9 @@ class WikiHelperPage
 		}
 
 		// Load the page
-		$page = WikiPage::getInstance($pagename, $scope);
+		//$page = WikiPage::getInstance($pagename, $scope);
+		$page = new WikiPage(JFactory::getDBO());
+		$page->load($pagename, $scope);
 
 		/*if (in_array(strtolower($page->getNamespace()), array('special'))) 
 		{

@@ -109,12 +109,19 @@ class plgGroupsWiki extends Hubzero_Plugin
 
 		$page = new WikiPage(JFactory::getDBO());
 		$arr['metadata']['count'] = $page->getPagesCount(array(
-			'group' => $group->get('cn')
+			'group' => $group->get('cn'),
+			'state' => array('0', '1')
 		));
 		if ($arr['metadata']['count'] <= 0)
 		{
-			define('WIKI_SUBPAGE_SEPARATOR', '/');
-			define('WIKI_MAX_PAGENAME_LENGTH', 100);
+			if (!defined('WIKI_SUBPAGE_SEPARATOR'))
+			{
+				define('WIKI_SUBPAGE_SEPARATOR', '/');
+			}
+			if (!defined('WIKI_MAX_PAGENAME_LENGTH'))
+			{
+				define('WIKI_MAX_PAGENAME_LENGTH', 100);
+			}
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
 
@@ -124,7 +131,8 @@ class plgGroupsWiki extends Hubzero_Plugin
 				$this->setError($result);
 			}
 			$arr['metadata']['count'] = $page->getPagesCount(array(
-				'group' => $group->get('cn')
+				'group' => $group->get('cn'),
+				'state' => array('0', '1')
 			));
 		}
 
