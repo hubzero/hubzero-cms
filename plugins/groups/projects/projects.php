@@ -29,10 +29,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Plugin');
+
 /**
  * Groups Plugin class for projects
  */
-class plgGroupsProjects extends JPlugin
+class plgGroupsProjects extends Hubzero_Plugin
 {
 	/**
 	 * Constructor
@@ -144,10 +146,10 @@ class plgGroupsProjects extends JPlugin
 			if ($juser->get('guest') 
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
-				ximport('Hubzero_Module_Helper');
-				$arr['html']  = '<p class="warning">' . JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)) . '</p>';
-				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
-				return $arr;
+				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
+				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+				return;
 			}
 
 			//check to see if user is member and plugin access requires members

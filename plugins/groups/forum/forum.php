@@ -132,10 +132,10 @@ class plgGroupsForum extends Hubzero_Plugin
 			if ($juser->get('guest') 
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
-				ximport('Hubzero_Module_Helper');
-				$arr['html']  = '<p class="warning">' . JText::sprintf('COM_GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)) . '</p>';
-				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
-				return $arr;
+				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real));
+				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+				return;
 			}
 
 			//check to see if user is member and plugin access requires members

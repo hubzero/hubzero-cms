@@ -32,11 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
+ximport('Hubzero_Plugin');
 
 /**
  * Groups Plugin class for resources
  */
-class plgGroupsResources extends JPlugin
+class plgGroupsResources extends Hubzero_Plugin
 {
 	/**
 	 * Resource areas
@@ -126,7 +127,7 @@ class plgGroupsResources extends JPlugin
 				$return = 'metadata';
 			}
 		}
-
+		
 		//set group members plugin access level
 		$group_plugin_acl = $access[$active];
 
@@ -135,31 +136,34 @@ class plgGroupsResources extends JPlugin
 
 		//get the group members
 		$members = $group->get('members');
-
-		//if set to nobody make sure cant access
-		if ($group_plugin_acl == 'nobody') 
+		
+		if ($return == 'html')
 		{
-			$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
-			return $arr;
-		}
+			//if set to nobody make sure cant access
+			if ($group_plugin_acl == 'nobody') 
+			{
+				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+				return $arr;
+			}
 
-		//check if guest and force login if plugin access is registered or members
-		if ($juser->get('guest') 
-		 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
-		{
-			ximport('Hubzero_Module_Helper');
-			$arr['html']  = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)) . '</p>';
-			$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
-			return $arr;
-		}
+			//check if guest and force login if plugin access is registered or members
+			if ($juser->get('guest') 
+			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
+			{
+				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
+				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+				return;
+			}
 
-		//check to see if user is member and plugin access requires members
-		if (!in_array($juser->get('id'), $members) 
-		 && $group_plugin_acl == 'members' 
-		 && $authorized != 'admin') 
-		{
-			$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
-			return $arr;
+			//check to see if user is member and plugin access requires members
+			if (!in_array($juser->get('id'), $members) 
+			 && $group_plugin_acl == 'members' 
+			 && $authorized != 'admin') 
+			{
+				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				return $arr;
+			}
 		}
 
 		$database =& JFactory::getDBO();
