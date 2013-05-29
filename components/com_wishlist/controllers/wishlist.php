@@ -819,6 +819,13 @@ class WishlistController extends JObject
 				}
 			}
 
+			// Deleted wish
+			if ($wish->status == 2 && !$this->_admin) 
+			{
+				JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+				return;
+			}
+
 			if ($wish->private && !$this->_admin) 
 			{
 				// need to be admin to view private wish
@@ -987,11 +994,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'savesettings'
+	 * Save wishlist settings
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function savesettings() 
 	{
@@ -1100,11 +1105,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'settings'
+	 * Display wishlist settings
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function settings()
 	{
@@ -1196,11 +1199,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'saveplan'
+	 * Save a wish's implementation plan
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function saveplan() 
 	{
@@ -1386,12 +1387,10 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'addwish'
+	 * Display a form for creating a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $wishid Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $wishid Wish ID
+	 * @return     void
 	 */
 	public function addwish($wishid=0)
 	{
@@ -1546,11 +1545,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'savewish'
+	 * Save chanegs to a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function savewish()
 	{
@@ -2233,11 +2230,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'addbonus'
+	 * Assign a point bonus to a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function addbonus()
 	{
@@ -2318,11 +2313,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'deletewish'
+	 * Mark a wish as deleted
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function deletewish()
 	{
@@ -2381,9 +2374,9 @@ class WishlistController extends JObject
 				return;
 			}
 
-			$withdraw = $this->_task=='withdraw' ? 1 : 0;
+			$withdraw = 0; //$this->_task=='withdraw' ? 1 : 0; /* [!] zooley - Mark as deleted instead of withdrawn? Seems to cause confusion if wish still appears in lists. */
 
-			if ($objWish->delete_wish ($wishid, $withdraw)) 
+			if ($objWish->delete_wish($wishid, $withdraw)) 
 			{
 				// also delete all votes for this wish
 				$objR = new WishRank($database);
@@ -2415,11 +2408,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'savevote'
+	 * Save a vote for a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function savevote()
 	{
@@ -2696,11 +2687,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'savereply'
+	 * Save a wish comment
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function savereply()
 	{

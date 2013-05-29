@@ -192,9 +192,17 @@ if ($this->wishlist && $this->wish) {
 				
 		</div><!-- / .aside -->
 		<div class="subject">
-		<?php if ($this->wish->reports) {
-			echo Hubzero_View_Helper_Html::error(JText::_('NOTICE_POSTING_REPORTED'));
-		} else { ?>
+		<?php if ($this->wish->reports) { ?>
+			<p class="warning"><?php echo JText::_('NOTICE_POSTING_REPORTED'); ?></p>
+		</div><!-- / .subject -->
+		<div class="clear"></div>
+	</div><!-- / .main section -->
+		<?php } else if (!$this->admin && $this->wish->status == 4) { ?>
+			<p class="warning"><?php echo JText::_('This wish has been withdrawn.'); ?></p>
+		</div><!-- / .subject -->
+		<div class="clear"></div>
+	</div><!-- / .main section -->
+		<?php } else { ?>
 			<div class="entry wish" id="w<?php echo $this->wish->id; ?>">
 				<p class="entry-member-photo">
 					<span class="entry-anchor"><a name="w<?php echo $this->wish->id; ?>"></a></span>
@@ -203,17 +211,17 @@ if ($this->wishlist && $this->wish) {
 
 				<div class="entry-content">
 					<p class="entry-voting voting" id="wish_<?php echo $this->wish->id; ?>">
-					<?php
-					$view = new JView(array('name'=>'rateitem'));
-					$view->option = $this->option;
-					$view->item = $this->wish;
-					$view->listid = $this->wishlist->id;
-					$view->plugin = 0;
-					$view->admin = $this->admin;
-					$view->page = 'wish';
-					$view->filters = $this->filters;
-					echo $view->loadTemplate();
-					?>
+						<?php
+						$view = new JView(array('name'=>'rateitem'));
+						$view->option  = $this->option;
+						$view->item    = $this->wish;
+						$view->listid  = $this->wishlist->id;
+						$view->plugin  = 0;
+						$view->admin   = $this->admin;
+						$view->page    = 'wish';
+						$view->filters = $this->filters;
+						echo $view->loadTemplate();
+						?>
 					</p><!-- / .wish-voting -->
 
 					<p class="entry-title">
@@ -250,15 +258,15 @@ if ($this->wishlist && $this->wish) {
 
 					<div class="entry-tags">
 						<p>Tags:</p>
-						<?php if (count($this->wish->tags) > 0) { ?>
+					<?php if (count($this->wish->tags) > 0) { ?>
 						<ol class="tags">
 						<?php foreach ($this->wish->tags as $tag) { ?>
 							<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag='.$tag['tag']); ?>" rel="tag"><?php echo $this->escape($tag['raw_tag']); ?></a></li>
 						<?php } ?>
 						</ol>
-						<?php } else { ?>
+					<?php } else { ?>
 						<?php echo JText::_('(none)'); ?>
-						<?php } ?>
+					<?php } ?>
 					</div><!-- / .wish-tags -->
 				</div><!-- / .wish-content -->
 					
@@ -278,10 +286,10 @@ if ($this->wishlist && $this->wish) {
 						echo $html;
 						$html = '';
 					}
-?>
+				?>
 			<ul class="wish-options">
-				<?php if($this->admin && $this->admin!=3) { ?>
-					<?php if($this->wish->status!=1) { ?>
+				<?php if ($this->admin && $this->admin!=3) { ?>
+					<?php if ($this->wish->status!=1) { ?>
 						<li>
 							<a class="changestatus" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=changestatus#action'); ?>">
 								<?php echo JText::_('ACTION_CHANGE_STATUS'); ?>
@@ -327,7 +335,8 @@ if ($this->wishlist && $this->wish) {
 					</li>
 				<?php } ?>
 			</ul>
-				<?php if ($this->admin) { ?>
+
+		<?php if ($this->admin && !in_array($this->wish->status, array(4, 2))) { ?>
 							<div class="container">
 								<form method="post" action="index.php?option=<?php echo $this->option; ?>" class="rankingform" id="rankForm">
 									<table class="wish-priority" summary="<?php echo JText::_('Wish Priority'); ?>">
@@ -339,15 +348,9 @@ if ($this->wishlist && $this->wish) {
 										<thead>
 											<tr>
 												<th></th>
-										<?php
-												// My opinion is available for list owners/advisory committee only
-												if ($this->admin==2 || $this->admin==3) 
-												{
-										?>
+											<?php if ($this->admin==2 || $this->admin==3) { // My opinion is available for list owners/advisory committee only ?>
 												<th><?php echo JText::_('MY_OPINION'); ?></th>
-										<?php
-												}
-										?>
+											<?php } ?>
 												<th><?php echo JText::_('CONSENSUS'); ?></th>
 												<th><?php echo JText::_('COMMUNITY_VOTE'); ?></th>
 											</tr>
@@ -413,12 +416,12 @@ if ($this->wishlist && $this->wish) {
 												<td>
 													<?php
 													$view = new JView(array('name'=>'rateitem'));
-													$view->option = $this->option;
-													$view->item = $this->wish;
-													$view->listid = $this->wishlist->id;
-													$view->plugin = 0;
-													$view->admin = $this->admin;
-													$view->page = 'wish';
+													$view->option  = $this->option;
+													$view->item    = $this->wish;
+													$view->listid  = $this->wishlist->id;
+													$view->plugin  = 0;
+													$view->admin   = $this->admin;
+													$view->page    = 'wish';
 													$view->filters = $this->filters;
 													echo $view->loadTemplate();
 													?>
@@ -474,7 +477,7 @@ if ($this->wishlist && $this->wish) {
 											}
 ?>
 												<td>
-<?php 										if ($this->wishlist->banking) { ?>
+												<?php if ($this->wishlist->banking) { ?>
 													<div class="assign_bonus">
 														<?php if(isset($this->wish->bonus) && $this->wish->bonus > 0 && ($this->wish->status==0 or $this->wish->status==6)) { ?>
 														<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>">+ <?php echo $this->wish->bonus; ?></a>
@@ -484,7 +487,7 @@ if ($this->wishlist && $this->wish) {
 														<span class="bonus_inactive" title="<?php echo JText::_('WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
 														<?php } ?>
 													</div>
-<?php 										} ?>
+												<?php } ?>
 												</td>
 											</tr>
 										</tbody>
@@ -496,13 +499,11 @@ if ($this->wishlist && $this->wish) {
 									<input type="hidden" name="wishid" value="<?php echo $this->wish->id; ?>" />
 								</form>
 							</div><!-- / .container -->
-<?php
-					} //if ($this->admin) {
-?>
-			
+		<?php } //if ($this->admin) { ?>
+
 		<?php if ($this->wish->action == 'delete') { ?>
-			<a name="action"></a>
 			<div class="error">
+				<a name="action"></a>
 				<h4><?php echo JText::_('ARE_YOU_SURE_DELETE_WISH'); ?></h4>
 				<p>
 					<span class="say_yes">
@@ -516,11 +517,12 @@ if ($this->wishlist && $this->wish) {
 						</a>
 					</span>
 				</p>
-			</div>
+			</div><!-- / .error -->
 		<?php } ?>
+
 		<?php if ($this->wish->action == 'changestatus') { ?>
-			<a name="action"></a>
 			<div class="takeaction">
+				<a name="action"></a>
 				<form class="edit-form" id="changeStatus" method="post" action="index.php?option=<?php echo $this->option; ?>">
 					<h4><?php echo JText::_('ACTION_CHANGE_STATUS_TO'); ?></h4>
 					<fieldset>
@@ -582,11 +584,13 @@ if ($this->wishlist && $this->wish) {
 						</p>
 					</fieldset>
 				</form>
-			</div>
+			</div><!-- / .takeaction -->
 		<?php } ?>
+
+	<?php if (!in_array($this->wish->status, array(4, 2))) { ?>
 		<?php if ($this->wish->action == 'addbonus' && $this->wish->status!=1 && $this->wishlist->banking) { ?>
-			<a name="action"></a>
 			<div class="addbonus">
+				<a name="action"></a>
 				<form class="edit-form" id="addBonus" method="post" action="index.php?option=<?php echo $this->option; ?>">
 					<h4><?php echo JText::_('WISH_ADD_BONUS'); ?></h4>
 					<fieldset>
@@ -631,11 +635,12 @@ if ($this->wishlist && $this->wish) {
 				<p class="nofunds"><?php echo JText::_('SORRY_NO_FUNDS'); ?></p>
 			<?php } ?>
 				<div class="clear"></div>
-			</div>
+			</div><!-- / .addbonus -->
 		<?php } ?>
+
 		<?php if ($this->wish->action=='move') { ?>
-			<a name="action"></a>
 			<div class="moveitem">
+				<a name="action"></a>
 				<form class="edit-form" id="moveWish" method="post" action="index.php?option=<?php echo $this->option; ?>">
 				<?php if ($error) {
 					echo Hubzero_View_Helper_Html::error($error);
@@ -716,13 +721,15 @@ if ($this->wishlist && $this->wish) {
 						</p>
 					</fieldset>		
 				</form>
-			</div>
+			</div><!-- / .moveitem -->
 		<?php } ?>
+	<?php } // if not withdrawn ?>
 			</div><!-- / .wish -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</div><!-- / .main section -->
-	
+
+<?php if (!in_array($this->wish->status, array(4, 2))) { ?>
 	<div class="below section" id="section-comments">
 		<h3>
 			<a name="comments"></a>
@@ -846,8 +853,8 @@ if ($this->wishlist && $this->wish) {
 			<?php } ?>
 		</div><!-- / .subject -->
 	</div><!-- / .below section -->
-	
-<?php 
+
+		<?php 
 		// Add Comment
 		$view = new JView(array('name'=>'wish', 'layout'=>'addcomment'));
 		$view->option = $this->option;
@@ -858,8 +865,8 @@ if ($this->wishlist && $this->wish) {
 		$view->listid = $this->wishlist->id;
 		$view->addcomment = $this->addcomment;
 		echo $view->loadTemplate();
-?>
-				
+		?>
+
 <?php if ($this->admin) {  // let advisory committee view this too ?>
 	<div class="below section" id="section-plan">
 		<h3>
@@ -873,13 +880,13 @@ if ($this->wishlist && $this->wish) {
 		</h3>
 		<form action="index.php" method="post" id="planform" enctype="multipart/form-data">
 			<div class="aside">
-<?php if ($this->wish->action != 'editplan') { ?>
+			<?php if ($this->wish->action != 'editplan') { ?>
 				<p>
 					<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
 						<?php echo JText::_('ADD_TO_THE_PLAN'); ?>
 					</a>
 				</p>
-<?php } else { ?>
+			<?php } else { ?>
 				<p><?php echo JText::_('You can set a deadline and describe the implementation plan for this wish.'); ?></p>
 				<table class="wiki-reference" summary="Wiki Syntax Reference">
 					<caption>Wiki Syntax Reference</caption>
@@ -914,7 +921,7 @@ if ($this->wishlist && $this->wish) {
 						</tr>
 					</tbody>
 				</table>
-<?php } ?>
+			<?php } ?>
 			</div><!-- / .aside -->
 			<div class="subject" id="full_plan">
 				<p class="plan-member-photo">
@@ -922,12 +929,7 @@ if ($this->wishlist && $this->wish) {
 					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, 0); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p>
 				<fieldset>
-		<?php 
-		if ($this->wish->action=='editplan') {
-			//$document =& JFactory::getDocument();
-			//$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'calendar.rc4.js');
-			//$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'events.js');
-		?>
+			<?php if ($this->wish->action=='editplan') { ?>
 					<fieldset>
 						<legend><?php echo JText::_('DUE'); ?></legend>
 						
@@ -987,7 +989,7 @@ if ($this->wishlist && $this->wish) {
 							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
 						</p>
 					</div>
-	<?php 	} else if (!$this->wish->plan) { ?>
+			<?php } else if (!$this->wish->plan) { ?>
 					<p>
 						<?php echo JText::_('THERE_IS_NO_PLAN'); ?>
 						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
@@ -1005,7 +1007,7 @@ if ($this->wishlist && $this->wish) {
 							</a>
 						</p>
 					<?php } ?>		
-	<?php 	} else { ?>
+			<?php } else { ?>
 				<?php if ($this->wish->status==0 or $this->wish->status==6) { ?>
 					<p>
 						<?php echo JText::_('PLAN_IS_ASSIGNED'); ?> 
@@ -1035,13 +1037,15 @@ if ($this->wishlist && $this->wish) {
 							echo $p->parse($this->wish->plan->pagetext, $wikiconfig);
 						?>
 					</div>
-	<?php } ?>
+			<?php } ?>
 				</fieldset>
 			</div><!-- / .subject -->
 			<div class="clear"></div>
 		</form>
 	</div><!-- / .below section -->
 <?php } // if ($this->admin) ?>
+
+<?php } // if not withdrawn ?>
 
 <?php } // end if not abusive ?>
 <?php }	// end if not private	
