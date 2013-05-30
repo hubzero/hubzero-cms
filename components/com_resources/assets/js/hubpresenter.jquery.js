@@ -1481,6 +1481,12 @@ HUB.Presenter = {
 				text = parts[2];
 			}
 			
+			//make sure we have text
+			if(text == undefined)
+			{
+				text = '';
+			}
+			
 			//remove extra chars
 			text = text.replace(">>","");
 			
