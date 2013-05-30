@@ -144,7 +144,7 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td>
 				<td>
-					<?php echo JHTML::_('date', $row->get('publish_up'), $dateFormat, $tz); ?>
+					<?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_up'), $dateFormat, $tz) : JText::_('(no date set)'); ?>
 				</td>
 				<td>
 					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), $dateFormat, $tz) : JText::_('(never)'); ?>

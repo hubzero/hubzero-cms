@@ -110,6 +110,21 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
+						<td class="key" valign="top"><label for="field-state"><?php echo JText::_('State'); ?>:</label></td>
+						<td>
+							<select name="fields[state]" id="field-state">
+								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<span class="hint">The following values are optional. If no <strong>start date</strong> is set, the offering will be available immediately upon being published.</span>
+						</td>
+					</tr>
+					<tr>
 						<td class="paramlist_key"><label for="publish_up">Offering starts:</label></th>
 						<td>
 							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
