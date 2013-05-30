@@ -43,11 +43,24 @@ $wikiconfig = array(
 ximport('Hubzero_Wiki_Parser');
 $parser = Hubzero_Wiki_Parser::getInstance();
 
+$content = '';
+
 $pages = $this->course->pages();
 if ($pages)
 {
 	foreach ($pages as $page)
 	{
-		echo $parser->parse(stripslashes($page['content']), $wikiconfig);
+		$content .= $parser->parse(stripslashes($page['content']), $wikiconfig);
 	}
+}
+
+if ($content)
+{
+	echo $content;
+}
+else
+{
+	?>
+	<p><em><?php echo JText::_('No content available.'); ?></em></p>
+	<?php
 }
