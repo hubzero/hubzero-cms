@@ -67,6 +67,22 @@ function submitbutton(pressbutton)
 
 var Fields = {
 	initialise: function() {
+		$('field-event').addEvent('change', function(){
+			var ev = $(this).value.replace('::', '--');
+
+			$$('fieldset.eventparams').each(function(el) {
+				$(el).setStyles({
+					'display': 'none'
+				});
+			});
+
+			if ($('params-' + ev)) {
+				$('params-' + ev).setStyles({
+					'display': 'block'
+				});
+			}
+		});
+
 		$('field-recurrence').addEvent('change', function(){
 			var min = '*',
 				hour = '*',
@@ -205,12 +221,12 @@ window.addEvent('domready', Fields.initialise);
 <?php
 								if ($plugin->events)
 								{
-								foreach ($plugin->events as $event => $label)
-								{
+									foreach ($plugin->events as $event)
+									{
 ?>
-									<option value="<?php echo $plugin->folder; ?>::<?php echo $event; ?>"<?php if ($this->row->get('event') == $event) { echo ' selected="selected"'; } ?>><?php echo $this->escape($label); ?></option>
+									<option value="<?php echo $plugin->element; ?>::<?php echo $event['name']; ?>"<?php if ($this->row->get('event') == $event['name']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($event['label']); ?></option>
 <?php
-								}
+									}
 								}
 ?>
 								</optgroup>
@@ -240,6 +256,52 @@ window.addEvent('domready', Fields.initialise);
 				</tbody>
 			</table>
 		</fieldset>
+
+		<?php
+			if ($this->plugins)
+			{
+				$pth = false;
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$pth = true;
+					$paramsClass = 'JRegistry';
+				}
+				
+				foreach ($this->plugins as $plugin)
+				{
+					if ($plugin->events)
+					{
+						foreach ($plugin->events as $event)
+						{
+							$data = '';
+							$style = 'none';
+							if ($event['name'] == $this->row->get('event'))
+							{
+								$style = 'block';
+								$data = $this->row->get('params');
+							}
+							$param = new $paramsClass(
+								$data,
+								JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . ($pth ? DS . $plugin->element : '') . '.xml'
+							);
+							$out = $param->render('params', $event['params']);
+							if (!$out) 
+							{
+								$out = '<table><tbody><tr><td><i>There are no Parameters for this item</i></td></tr></tbody></table>';
+							}
+							?>
+							<fieldset class="adminform eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
+								<legend><?php echo JText::_('Parameters'); ?></legend>
+								<?php echo $out; ?>
+							</fieldset>
+							<?php
+						}
+					}
+				}
+			}
+		?>
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Recurrence'); ?></span></legend>
 			<table class="admintable">

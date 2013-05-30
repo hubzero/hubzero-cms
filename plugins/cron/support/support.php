@@ -47,9 +47,23 @@ class plgCronSupport extends JPlugin
 	{
 		$obj = new stdClass();
 		$obj->plugin = 'support';
-		$obj->events = array(
+		/*$obj->events = array(
 			'onClosePending' => JText::_('Close pending tickets'),
 			'sendTicketsReminder' => JText::_('Email reminder for open tickets'),
+		);
+		$obj->params = 'ticketreminder';*/
+
+		$obj->events = array(
+			array(
+				'name'   => 'onClosePending',
+				'label'  => JText::_('Close pending tickets'),
+				'params' => 'ticketpending'
+			),
+			array(
+				'name'   => 'sendTicketsReminder',
+				'label'  =>  JText::_('Email reminder for open tickets'),
+				'params' => 'ticketreminder'
+			)
 		);
 
 		return $obj;
@@ -60,7 +74,7 @@ class plgCronSupport extends JPlugin
 	 * 
 	 * @return     boolean
 	 */
-	public function onClosePending()
+	public function onClosePending($params=null)
 	{
 		return true;
 	}
@@ -70,11 +84,11 @@ class plgCronSupport extends JPlugin
 	 * 
 	 * @return     boolean
 	 */
-	public function sendTicketsReminder()
+	public function sendTicketsReminder($params=null)
 	{
 		$database = JFactory::getDBO();
 		$juri =& JURI::getInstance();
-		
+
 		$jconfig =& JFactory::getConfig();
 		//$jconfig->getValue('config.sitename')
 		$sconfig = JComponentHelper::getParams('com_support');
@@ -83,7 +97,29 @@ class plgCronSupport extends JPlugin
 		$lang =& JFactory::getLanguage();
 		$lang->load('com_support', JPATH_BASE);
 
-		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2 AND owner IS NOT NULL and owner !='' ORDER BY created";
+		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2";
+
+		if (is_object($params) && $params->get('support_ticketreminder_group'))
+		{
+			$group = Hubzero_Group::getInstance($params->get('support_ticketreminder_group'));
+
+			if ($group)
+			{
+				$users = $group->get('members');
+				$database->setQuery("SELECT username FROM #__users WHERE id IN (" . implode(',', $users) . ");");
+				if (!($usernames = $database->loadResultArray()))
+				{
+					$usernames = array();
+				}
+			}
+
+			$sql .= " AND owner IN ('" . implode("','", $usernames) . "') ORDER BY created";
+		}
+		else
+		{
+			$sql .= " AND owner IS NOT NULL and owner !='' ORDER BY created";
+		}
+
 		$database->setQuery($sql);
 		if (!($results = $database->loadObjectList()))
 		{
@@ -92,8 +128,15 @@ class plgCronSupport extends JPlugin
 
 		ximport('Hubzero_Plugin_View');
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-		$severities = SupportUtilities::getSeverities($sconfig->get('severities'));
+		if (is_object($params) && $params->get('support_ticketreminder_severity', 'all') != 'all')
+		{
+			$severities = explode(',', $params->get('support_ticketreminder_severity', 'all'));
+		}
+		else
+		{
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			$severities = SupportUtilities::getSeverities($sconfig->get('severities'));
+		}
 
 		$tickets = array();
 		foreach ($results as $result)
@@ -111,10 +154,10 @@ class plgCronSupport extends JPlugin
 			{
 				$tickets[$result->owner][$result->severity][] = $result;
 			}
-			else
+			/*else
 			{
 				$tickets[$result->owner]['unknown'][] = $result;
-			}
+			}*/
 		}
 
 		$from = array();

@@ -41,6 +41,17 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
+			<fieldset group="ticketpending">
+			</fieldset>
+			<fieldset group="ticketreminder">
+				<field name="support_ticketreminder_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
+					<option value="all">All</option>
+					<option value="critical,major">High</option>
+					<option value="normal">Normal</option>
+					<option value="minor,trivial">Low</option>
+				</field>
+				<field name="support_ticketreminder_group" type="text" menu="hide" label="For users in group" default="" description="Only users within the group specified will be messaged." />
+			</fieldset>
 		</fields>
 	</config>
 </extension>

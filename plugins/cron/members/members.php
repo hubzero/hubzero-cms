@@ -48,7 +48,11 @@ class plgCronMembers extends JPlugin
 		$obj = new stdClass();
 		$obj->plugin = 'members';
 		$obj->events = array(
-			'onPointRoyalties' => JText::_('Calculate point royalties')
+			array(
+				'name'   => 'onPointRoyalties',
+				'label'  => JText::_('Calculate point royalties'),
+				'params' => ''
+			)
 		);
 
 		return $obj;
@@ -59,7 +63,7 @@ class plgCronMembers extends JPlugin
 	 * 
 	 * @return     array
 	 */
-	public function onPointRoyalties()
+	public function onPointRoyalties($params=null)
 	{
 		/*
 		jimport('joomla.error.profiler');

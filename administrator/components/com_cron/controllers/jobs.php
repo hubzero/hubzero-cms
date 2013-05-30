@@ -272,14 +272,16 @@ class CronControllerJobs extends Hubzero_Controller
 			$row->set('next_run', $row->nextRun());
 		}
 
-		// Check content
-		/*if (!$row->check()) 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
-			$this->editTask($row);
-			return;
-		}*/
+			$paramsClass = 'JRegistry';
+		}
+
+		$p = new $paramsClass('');
+		$p->bind(JRequest::getVar('params', '', 'post'));
+
+		$row->set('params', $p->toString());
 
 		// Store content
 		if (!$row->store(true)) 

@@ -32,4 +32,15 @@
 	</languages>
 	<params>
 	</params>
+	<params group="ticketpending">
+	</params>
+	<params group="ticketreminder">
+		<param name="support_ticketreminder_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
+			<option value="all">All</option>
+			<option value="critical,major">High</option>
+			<option value="normal">Normal</option>
+			<option value="minor,trivial">Low</option>
+		</param>
+		<param name="support_ticketreminder_group" type="text" menu="hide" label="For users in group" default="" description="Only users within the group specified will be messaged." />
+	</params>
 </install>

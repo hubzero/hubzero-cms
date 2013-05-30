@@ -48,7 +48,11 @@ class plgCronGroups extends JPlugin
 		$obj = new stdClass();
 		$obj->plugin = $this->_name;
 		$obj->events = array(
-			'cleanGroupFolders' => JText::_('Remove group asset folders that were abandoned.')
+			array(
+				'name'   => 'cleanGroupFolders',
+				'label'  => JText::_('Remove group asset folders that were abandoned.'),
+				'params' => ''
+			)
 		);
 
 		return $obj;
@@ -59,35 +63,35 @@ class plgCronGroups extends JPlugin
 	 * 
 	 * @return     array
 	 */
-	public function cleanGroupFolders()
+	public function cleanGroupFolders($params=null)
 	{
 		//include needed libraries
 		ximport('Hubzero_Group');
 		jimport('joomla.filesystem.folder');
-		
+
 		//get group params
 		$groupParameters = JComponentHelper::getParams('com_groups');
-		
+
 		//get group upload path
-		$groupUploadPath = ltrim($groupParameters->get('uploadpath', '/site/groups'), DS );
-		
+		$groupUploadPath = ltrim($groupParameters->get('uploadpath', '/site/groups'), DS);
+
 		//get group folders
-		$groupFolders = JFolder::folders( JPATH_ROOT . DS . $groupUploadPath );
-		
+		$groupFolders = JFolder::folders(JPATH_ROOT . DS . $groupUploadPath);
+
 		//loop through each group folder
 		foreach ($groupFolders as $groupFolder)
 		{
 			//load group object for each folder
-			$hubzeroGroup = Hubzero_Group::getInstance( trim($groupFolder) );
+			$hubzeroGroup = Hubzero_Group::getInstance(trim($groupFolder));
 			
 			//if we dont have a group object delete folder
-			if (!is_object( $hubzeroGroup ))
+			if (!is_object($hubzeroGroup))
 			{
 				//delete folder
-				JFolder::delete( JPATH_ROOT . DS . $groupUploadPath . DS . $groupFolder );
+				JFolder::delete(JPATH_ROOT . DS . $groupUploadPath . DS . $groupFolder);
 			}
 		}
-		
+
 		//job is no longer active
 		return true;
 	}

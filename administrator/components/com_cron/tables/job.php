@@ -135,6 +135,13 @@ class CronTableJob extends JTable
 	var $ordering     = NULL;
 
 	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $params     = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase

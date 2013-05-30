@@ -48,7 +48,11 @@ class plgCronCache extends JPlugin
 		$obj = new stdClass();
 		$obj->plugin = $this->_name;
 		$obj->events = array(
-			'cleanSystemCss' => JText::_('Remove old system CSS files')
+			array(
+				'name'   => 'cleanSystemCss',
+				'label'  => JText::_('Remove old system CSS files'),
+				'params' => ''
+			)
 		);
 
 		return $obj;
@@ -59,7 +63,7 @@ class plgCronCache extends JPlugin
 	 * 
 	 * @return     array
 	 */
-	public function cleanSystemCss()
+	public function cleanSystemCss($params=null)
 	{
 		$path = JPATH_ROOT . DS . 'cache';
 

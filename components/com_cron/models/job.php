@@ -86,6 +86,14 @@ class CronModelJob extends JObject
 		{
 			$this->_tbl->bind($oid);
 		}
+
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$this->set('params', new $paramsClass($this->get('params')));
 	}
 
 	/**
@@ -213,11 +221,19 @@ class CronModelJob extends JObject
 			}
 		}
 
+		$params = $this->get('params');
+		if (is_object($params))
+		{
+			$this->set('params', $params->toString());
+		}
+
 		if (!$this->_tbl->store())
 		{
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
+
+		$this->set('params', $params);
 
 		return true;
 	}
