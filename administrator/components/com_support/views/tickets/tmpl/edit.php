@@ -105,6 +105,8 @@ else
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
+
+$cc = array();
 ?>
 <form action="index.php" method="post" name="adminForm" id="commentform" enctype="multipart/form-data">
 <?php 
@@ -359,6 +361,11 @@ if ($this->row->id) {
 						{
 							if (is_array($log) && count($log) > 0)
 							{
+								if ($type == 'cc')
+								{
+									$cc = $log;
+									continue;
+								}
 								$clog .= '<ul class="' . $type . '">';
 								foreach ($log as $items)
 								{
@@ -366,7 +373,7 @@ if ($this->row->id) {
 									{
 										$clog .= '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
 									}
-									else 
+									else if ($type == 'notifications')
 									{
 										$clog .= '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
 									}
@@ -580,7 +587,7 @@ if ($this->row->id) {
 							<input type="text" name="cc" id="acmembers" value="" size="35" />
 							<?php }
 							<span class="hint"><?php echo JText::_('Private comments will NOT be sent to the ticket submitter regardless of entries specified.'); ?></span>*/ ?>
-							<input type="text" name="cc" id="comment-field-message" value="" />
+							<input type="text" name="cc" id="comment-field-message" value="<?php echo implode(', ', $cc); ?>" />
 						</label>
 						<div class="col width-50 fltlft">
 							<label for="email_submitter">

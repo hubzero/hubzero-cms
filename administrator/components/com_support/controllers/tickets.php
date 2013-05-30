@@ -322,6 +322,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		//$row->report  = str_replace('&quote;','&quot;',$row->report);
 		//$row->report  = str_replace("<br />","",$row->report);
 		//$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
+		$row->report  = $this->view->escape($row->report);
 		$row->report  = nl2br($row->report);
 		$row->report  = str_replace("\t",' &nbsp; &nbsp;',$row->report);
 		//$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
@@ -871,6 +872,7 @@ class SupportControllerTickets extends Hubzero_Controller
 										'name'    => $juser->get('name'),
 										'address' => $juser->get('email')
 									);
+									$log['cc'][] = $juser->get('username');
 								}
 							}
 							// Make sure it's a valid e-mail address
@@ -892,6 +894,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									$emails[] = $acc;
 								}
+								$log['cc'][] = $acc;
 							}
 						}
 					}

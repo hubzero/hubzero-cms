@@ -113,6 +113,8 @@ if (!trim($this->row->report))
 	$this->row->report = JText::_('(no content found)');
 }
 
+$cc = array();
+
 ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header">
@@ -336,6 +338,11 @@ ximport('Hubzero_User_Profile_Helper');
 					{
 						if (is_array($log) && count($log) > 0)
 						{
+							if ($type == 'cc')
+							{
+								$cc = $log;
+								continue;
+							}
 							$clog .= '<ul class="' . $type . '">';
 							foreach ($log as $items)
 							{
@@ -343,7 +350,7 @@ ximport('Hubzero_User_Profile_Helper');
 								{
 									$clog .= '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
 								}
-								else 
+								else if ($type == 'notifications')
 								{
 									$clog .= '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
 								}
@@ -575,7 +582,7 @@ ximport('Hubzero_User_Profile_Helper');
 
 					<label>
 						<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php 
-						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers')));
+						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
 						if (count($mc) > 0) {
 							echo '<span class="hint">'.JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];
 						} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>

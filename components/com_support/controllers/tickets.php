@@ -2028,7 +2028,8 @@ class SupportControllerTickets extends Hubzero_Controller
 			// Compare fields to find out what has changed for this ticket and build a changelog
 			$log = array(
 				'changes'       => array(),
-				'notifications' => array()
+				'notifications' => array(),
+				'cc'            => array()
 			);
 
 			if ($tags != $oldtags) 
@@ -2373,6 +2374,7 @@ class SupportControllerTickets extends Hubzero_Controller
 										'name'    => $juser->get('name'),
 										'address' => $juser->get('email')
 									);
+									$log['cc'][] = $juser->get('username');
 								} 
 								else 
 								{
@@ -2399,6 +2401,7 @@ class SupportControllerTickets extends Hubzero_Controller
 									'name'    => JText::_('[none]'),
 									'address' => $acc
 								);
+								$log['cc'][] = $acc;
 							}
 						}
 					}
