@@ -1373,9 +1373,30 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 		else if ($revision)
 		{
-			$cats = array(
-				array('about' => JText::_('About'))
+			$cats = $dispatcher->trigger('onResourcesAreas', array(
+					$this->model
+				)
 			);
+			$cts = array();
+			foreach ($cats as $cat)
+			{
+				if (empty($cat))
+				{
+					$cts[] = $cat;
+					continue;
+				}
+				foreach ($cat as $name => $title)
+				{
+					if ($name == 'about')
+					{
+						$cts[] = $cat;
+					}
+				}
+			}
+			/*$cats = array(
+				array('about' => JText::_('About'))
+			);*/
+			$cats = $cts;
 		}
 		// Get the sections
 		$sections = $dispatcher->trigger('onResources', array(
