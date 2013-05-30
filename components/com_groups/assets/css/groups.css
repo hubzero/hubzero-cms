@@ -96,12 +96,12 @@
 	Group Browse
 ===========================================*/
 .com_groups .entries thead th {
-	text-align: center;
+	text-align: left;
 	font-size: 85%;
 	background-color: #fafafa;
 }
 .com_groups .entries thead th {
-	padding: 0;
+	padding: 3px 10px;
 }
 .com_groups .entries tbody tr.me {
 	background-color: #f6f6f1;
