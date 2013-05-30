@@ -101,7 +101,7 @@ class TitleIndexMacro extends WikiMacro
 			} 
 			else 
 			{
-				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%'";
+				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND (p.`group_cn`='' OR p.`group_cn` IS NULL)";
 			}
 		} 
 		else 
