@@ -15,10 +15,10 @@ if (!jq) {
 
 HUB.YSearch = {
 	jQuery: jq,
-	
+
 	initialize: function() {
 		var $ = this.jQuery;
-		
+
 		// Collapse nested search results on javascript-aware browsers
 		$('.child-result').each(function(i, el) {
 			$(el).hide();
@@ -46,10 +46,10 @@ HUB.YSearch = {
 
 		// Enable auto-submit of per-page setting form by ...
 		//  ... hiding the submit button
-		$('.search-per-page-submitter').each(function(i, el) { 
-			$(el).hide(); 
+		$('.search-per-page-submitter').each(function(i, el) {
+			$(el).hide();
 		});
-		
+
 		//  ... and making the select element submit its parent form on change
 		$('.search-per-page-selector').each(function(i, el) {
 			$(el).bind('change', function() {
@@ -59,8 +59,30 @@ HUB.YSearch = {
 				par.submit();
 			});
 		});
+
+		// Hide all but top five tags
+		var taglist  = $('.tags');
+		var tags     = taglist.find('li');
+		var tagcount = tags.length;
+
+		if (tagcount > 5) {
+			tags.each(function ( i, t ) {
+				if (i >= 5) {
+					$(t).addClass('toggleable hide');
+				}
+			});
+
+			taglist.append('<li class="showmore"><a href="#">show more...</a></li>');
+			taglist.find('.showmore').click(function ( e ) {
+				e.preventDefault();
+
+				var newtext = ($(this).find('a').html() === 'show more...') ? 'show fewer...' : 'show more...';
+				$(this).find('a').html(newtext);
+				taglist.find('.toggleable').toggleClass('hide');
+			});
+		}
 	}
-}
+};
 
 jQuery(document).ready(function($){
 	HUB.YSearch.initialize();

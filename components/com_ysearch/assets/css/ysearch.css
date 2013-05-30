@@ -47,6 +47,18 @@
 		margin: 0;
 		border: none;
 	}
+	.container ol.tags .hide {
+		display: none !important;
+	}
+	.container ol.tags .showmore {
+		display: block;
+	}
+	.container ol.tags .showmore a {
+		background: none;
+	}
+	.container ol.tags li {
+		margin: 0;
+	}
 /* Results 
 	.container h3 {
 		display: block;
