@@ -113,7 +113,7 @@ function assertSuperAdmin() {
 }
 
 function createNonce() {
-	set_include_path(get_include_path() . PATH_SEPARATOR . JPATH_BASE.'/libraries/openid');			
+	set_include_path(get_include_path() . PATH_SEPARATOR . JPATH_BASE.'/libraries/openid');
 	require_once 'Auth/OpenID/Nonce.php';
 	$now = time();
 	$_SESSION['hg_nonce'] = Auth_OpenID_mkNonce($now);
