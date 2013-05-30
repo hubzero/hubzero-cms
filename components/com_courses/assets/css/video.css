@@ -10,3 +10,6 @@
 .video-player-wrap {
 	background: black;
 }
+#video-player {
+	max-width: 100%;
+}
