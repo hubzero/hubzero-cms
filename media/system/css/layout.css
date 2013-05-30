@@ -145,6 +145,10 @@
 		-o-border-radius: 0.25em 0 0 0.25em;
 		border-radius: 0.25em 0 0 0.25em;
 	}
+	.entry-search input[type="hidden"] {
+		display: none;
+		visibility: hidden;
+	}
 	.data-entry input.entry-search-submit {
 		width: auto;
 		float: right;
