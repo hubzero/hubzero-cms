@@ -60,8 +60,8 @@ class Db
 	}
 	
 	public static function update($sql, $params = array()) {
-		self::getStatementHandle($sql, $params, $success);
-		return $success;
+		$sth = self::getStatementHandle($sql, $params, $success);
+		return $success ? $sth->rowCount() : FALSE;
 	}
 
 	public static function execute($sql, $params = array()) {
@@ -106,13 +106,43 @@ function a($str) {
 	return str_replace('"', '&quot;', $str);
 }
 
+function assertSuperAdmin() {
+	if (JFactory::getUser()->usertype != 'Super Administrator') {
+		JError::raiseError(405, 'Forbidden');
+	}
+}
+
+function createNonce() {
+	set_include_path(get_include_path() . PATH_SEPARATOR . JPATH_BASE.'/libraries/openid');			
+	require_once 'Auth/OpenID/Nonce.php';
+	$now = time();
+	$_SESSION['hg_nonce'] = Auth_OpenID_mkNonce($now);
+	Db::execute('INSERT INTO jos_oauthp_nonces(created, nonce, stamp) VALUES (CURRENT_TIMESTAMP, ?, 0)', array($_SESSION['hg_nonce']));
+	return $_SESSION['hg_nonce'];
+}
+
+function consumeNonce($form) {
+	$now = time();
+	if (!isset($form['nonce']) || $form['nonce'] != $_SESSION['hg_nonce']
+		|| !preg_match('/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/', $form['nonce'], $ma)
+		|| !($timestamp = strtotime($ma[0]))
+		|| $timestamp > $now
+		|| $timestamp < $now - 60 * 60
+		|| Db::scalarQuery('SELECT stamp FROM jos_oauthp_nonces WHERE nonce = ?', array($form['nonce']))) {
+		JError::raiseError(405, 'Bad token');
+	}
+	Db::execute('UPDATE jos_oauthp_nonces SET stamp = 1 WHERE nonce = ?', array($form['nonce']));
+	unset($_SESSION['hg_nonce']);
+}
+
 require 'client.php';
 require 'request.php';
 $req = new HubgraphRequest($_GET);
+$conf = HubgraphConfiguration::instance();
 $perPage = 40;
 
 try {
-	switch (!defined('HG_INLINE') && isset($_GET['task']) ? $_GET['task'] : 'index') {
+	switch (!defined('HG_INLINE') && isset($_REQUEST['task']) ? $_REQUEST['task'] : 'index') {
 		case 'complete':
 			hgView('complete', array('limit' => 20, 'threshold' => 3, 'tagLimit' => 100));
 		case 'getRelated':
@@ -122,6 +152,17 @@ try {
 				? json_decode(HubgraphClient::execView('search', $req->getTransportCriteria(array('limit' => $perPage))), TRUE) 
 				: NULL;
 			require 'views/index.html.php';
+		break;
+		case 'settings':
+			assertSuperAdmin();
+			require 'views/settings.html.php';
+		break;
+		case 'updateSettings':
+			assertSuperAdmin();
+			consumeNonce($_POST);
+			$conf->bind($_POST)->save();
+			header('Location: /hubgraph?task=settings');
+			exit();	
 		break;
 		default:
 			throw new NotFoundError('no such task');

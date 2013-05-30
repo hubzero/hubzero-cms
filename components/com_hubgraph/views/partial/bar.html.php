@@ -35,6 +35,13 @@
 		</li>
 	<? endforeach; ?>
 <? endif; ?>
+<? if (($timeframe = $req->getTimeframe())): ?>
+	<li class="group">
+		<input type="hidden" name="group" value="<?= a($group) ?>" />
+		<strong>Timeframe: </strong><?= h(preg_match('/\d\d\d\d/', $timeframe) ? $timeframe : 'within the last '.$timeframe) ?>
+		<a class="remove" href="<?= preg_replace('/[?&]+$/', '', $base.'?'.preg_replace('/^&/', '', preg_replace('/&?timeframe=[^&]*/', '', $_SERVER['QUERY_STRING']))) ?>">x</a>
+	</li>
+<? endif; ?>
 </ul>
 <ol class="tags" id="tag-suggestions"></ol>
 <ol id="suggestions"></ol>
@@ -43,7 +50,7 @@
 	<? if (isset($results['criteria']['contributors'])): ?>
 		<? 
 		foreach ($results['criteria']['contributors'] as $cont): 
-			if (!$cont['public']) continue;
+			if (!$cont['public'] || (!$cont['img_href'] && !$cont['organization'] && !$cont['url'] && !$cont['bio'] && !$cont['tags'])) continue;
 		?>
 			<li class="contributor">
 				<table>
@@ -107,7 +114,7 @@
 								</ol>
 							<? endif; ?>
 							<? if ($results['criteria']['tags']['related']): ?>
-								<ol class="tags related" data-parent-name="<?= $tag['name'] ?>" data-parent-id="<?= $id ?>">
+								<ol class="tags related <?= $conf['showTagCloud'] ? 'cloud' : 'no-cloud' ?>" data-parent-name="<?= $tag['name'] ?>" data-parent-id="<?= $id ?>">
 									<? foreach ($results['criteria']['tags']['related'] as $related): ?>
 										<li><button name="tags[]" value="<?= $related[0] ?>" data-weight="<?= $related[2] ?>"><?= h($related[1]) ?></button></li>
 									<? endforeach; ?>

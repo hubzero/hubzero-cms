@@ -1,15 +1,15 @@
 .search-bar {
-	padding-right: 91px;
+	padding-right: 211px;
 	position: relative;
 }
 .search-bar input {
+	height: 2.8em;
 	width: 100%;
-	height: 2em;
 }
 .search-bar a {
 	position: absolute;
 	top: 0.6em;
-	right: 90px;
+	right: 225px;
 	font-size: 1.2em;
 	font-family: sans-serif;
 	color: #aaa;
@@ -20,15 +20,16 @@
 }
 .search-bar input, .search-bar button {
 	line-height: 2em;
-	padding: 2px 4px;
+	padding: 2px 6px 2px 6px;
 	font-size: small;
 }
 .search-bar button {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 80px;
 	height: 2.8em;
+	width: 214px;
+	text-align: center;
 }
 .pages {
 	margin-right: 240px;
@@ -43,7 +44,7 @@
 .pages li:last-child button:after, .pages li:last-child:after {
 	content : '';
 }
-.tags button, .criteria button, .pages button {
+.tags button, .criteria button, .pages button, .groups button {
 	background: transparent;
 	border: transparent;
 	border-bottom: 1px solid transparent;
@@ -73,12 +74,12 @@ button span {
 	list-style: none;
 	background: #fafafa;
 	border-left: 1px solid #ddd;
-	border-right: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
 	margin: 0;
 	padding-left: 10px;
 	padding-right: 10px;
-	margin-right: 78px;
+	margin-right: 212px;
 }
 #inventory li {
 	border-radius: 8px;
@@ -89,6 +90,7 @@ button span {
 	border: 1px solid #eee;
 }
 #tag-suggestions {
+	margin: 0;
 	max-height: 60px;
 	overflow: auto;
 	margin-right: 78px !important;
@@ -136,6 +138,7 @@ button span {
 	background: #f3f3f3;
 }
 .subject {
+	width: 100%;
 	margin-bottom: 0;
 	padding-left: 0;
 }
@@ -143,7 +146,6 @@ button span {
 	list-style: none;
 	margin-right: 235px;
 	margin-left: 0;
-	margin-top: 0;
 	padding-left: 0;
 }
 #results h4 {
@@ -221,16 +223,13 @@ ol.related {
 .tags {
 	color: #666;
 }
-.tags li:after { 
-	content: ",";
-} 
-.tags li:last-child:after { 
-	content: ""; 
+#results .tags {
+	max-height: 4em;
 }
 .aside {
 	position: relative;
 	padding-top: 0;
-	top: 2em;
+	top: -1em;
 }
 .sort {
 	display: inline-block;
@@ -281,8 +280,14 @@ ol.related {
 .aside h3 {
 	line-height: 0.8em;
 }
+.aside li {
+	border-top: 0;
+}
 .aside .domains {
 	margin-left: 0;
+}
+.aside h3.domains {
+	margin-left: 11px;
 }
 .children {
 	list-style: none;
@@ -385,7 +390,10 @@ td.contributor-head h3 {
 	padding-left: 0;
 	font-size: x-small;
 }
-.contributors li {
+.groups {
+	padding-left: 10px;
+}
+.contributors li, .groups li {
 	display: inline-block;
 	margin: 0;
 }
@@ -494,8 +502,38 @@ text {
 	background: url('../images/icons/quicktime.png') no-repeat top left;
 }
 
-
-
 .search {
 	display: none;
+}
+#criteria-details .tag:before {
+	content: '';
+}
+#getstarted a {
+	background: -moz-linear-gradient(center top , #666666 0%, #000000 100%) repeat scroll 0 0 transparent;
+	border: 1px solid #333333;
+	border-radius: 0.5em 0.5em 0.5em 0.5em;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	color: #FFFFFF;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: bold;
+	margin: 0;
+	outline: medium none;
+	padding: 0.5em 2.2em 0.55em;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+	vertical-align: baseline;
+}
+#getstarted {
+	display: none;
+}
+.com_resources .criteria .domains {
+	display: none;
+}
+.inline #getstarted {
+	display: block;
+}
+.tag h3 {
+	margin-top: -15px;
 }

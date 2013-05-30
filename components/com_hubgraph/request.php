@@ -31,6 +31,13 @@ class HubgraphRequest
 		return $rv;
 	}
 
+	public function getTimeframe() {
+		if (isset($this->form['timeframe']) && preg_match('/^(?:\d\d\d\d|day|week|month|year)$/', $this->form['timeframe'])) {
+			return $this->form['timeframe'];
+		}
+		return null;
+	}
+
 	public function getContributors() {
 		static $rv = NULL;
 		if (is_null($rv)) {
@@ -102,6 +109,7 @@ class HubgraphRequest
 				'super'        => $super,
 				'uid'          => $uid,
 				'groups'       => $groups,
+				'timeframe'    => $this->getTimeframe(),
 				'inGroup'      => $this->getGroup()
 			);
 		}
@@ -109,7 +117,16 @@ class HubgraphRequest
 	}
 
 	public function getDomain() {
-		return isset($this->form['domain']) ? $this->form['domain'] : '';
+		if (isset($this->form['domain'])) {
+			return $this->form['domain'];
+		}
+		if (isset($this->form['option']) && $this->form['option'] == 'com_resources') {
+			if (isset($this->form['type']) && ($type = Db::scalarQuery('SELECT type FROM jos_resource_types WHERE alias = ?', array($this->form['type'])))) {
+				return 'Resources~'.$type;	
+			}
+			return 'Resources';
+		}
+		return '';
 	}
 
 	public function getDomainMap() {

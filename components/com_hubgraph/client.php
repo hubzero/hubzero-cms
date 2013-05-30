@@ -1,34 +1,97 @@
 <? defined('JPATH_BASE') or die(); 
 
-class HubgraphConnectionError extends Exception
+class HubgraphConnectionError extends \Exception
 {
 }
 
-class HubgraphClient {
-	const DEFAULT_HOST = 'unix:///tmp/hubgraph-server.sock';
-	const DEFAULT_PORT = NULL;
+class HubgraphConfiguration implements \ArrayAccess, \Iterator
+{
+	private static $inst;
+	private $settings = array(
+		'host' => 'unix:///tmp/hubgraph-server.sock',
+	        'port' => NULL,
+		'showTagCloud' => TRUE
+	), $idx;
 
-	const CHUNK_LEN = 1024;
-
-	private static function getConfiguration() {
-		static $conf;
-		if (!$conf) {
-			$conf = Db::scalarQuery('SELECT params FROM jos_components WHERE `option` = \'com_hubgraph\'');
-			if ($conf) {
-				$conf = unserialize($conf);
-			}
-			else {
-				Db::execute('INSERT INTO jos_components(name, `option`, params) VALUES (\'HubGraph\', \'com_hubgraph\', ?)', array(serialize(array('host' => self::DEFAULT_HOST, 'port' => self::DEFAULT_PORT))));
-				return self::getConfiguration();
-			}
-		}
-		return $conf;
+	private function __construct() {
 	}
 
+	public static function instance() {
+		if (!self::$inst) {
+			$conf = Db::scalarQuery('SELECT params FROM jos_components WHERE `option` = \'com_hubgraph\'');
+			if ($conf) {
+				self::$inst = unserialize($conf);
+			}
+			if (!self::$inst instanceof HubgraphConfiguration) {
+				self::$inst = new HubgraphConfiguration;
+				self::$inst->save();
+			}
+		}
+		return self::$inst;
+	}
+
+	public function save() {
+		$params = serialize($this);
+		if (!Db::update('UPDATE jos_components SET params = ? WHERE `option` = \'com_hubgraph\'', array($params))) {
+			Db::execute('INSERT INTO jos_components(name, `option`, params) VALUES (\'HubGraph\', \'com_hubgraph\', ?)', array($params));
+		}
+	}
+
+	public function bind($form) {
+		foreach (array_keys($this->settings) as $k) {
+			if (array_key_exists($k, $form)) {
+				$this->settings[$k] = $form[$k] == '' ? NULL : $form[$k];
+			}
+		}
+		return $this;
+	}
+
+	public static function niceKey($k) {
+		return ucfirst(preg_replace_callback('/([A-Z])+/', function($ma) { return ' '.strtolower($ma[1]); }, $k));
+	}
+	
+	public function offsetSet($offset, $value) {
+		if (is_null($offset) || !isset($this->settings[$offset])) {
+			throw new \Exception('not supported');
+		} 
+		$this->settings[$offset] = $value;
+	}
+	public function offsetExists($offset) {
+		return isset($this->settings[$offset]);
+	}
+	public function offsetUnset($_offset) {
+		throw new \Exception('not supported');
+	}
+	public function offsetGet($offset) {
+		if (!$this->offsetExists($offset)) {
+			return NULL;
+		}
+		return $this->settings[$offset];
+	}
+	public function rewind() {
+		return reset($this->settings);
+	}
+	public function current() {
+		return current($this->settings); 
+	}
+	public function key() {
+		return key($this->settings);
+	}
+	public function next() {
+		return next($this->settings);
+	}
+	public function valid() {
+		return array_key_exists($this->key(), $this->settings);
+	}
+}
+
+class HubgraphClient {
+	const CHUNK_LEN = 1024;
+
 	private static function http($method, $url, $entity = NULL) {
-		$conf = self::getConfiguration();
+		$conf = HubgraphConfiguration::instance(); 
 		if (!($sock = @fsockopen($conf['host'], $conf['port'], $_errno, $errstr, 1))) {
-			throw new HubGraphConnectionError('unable to establish HubGraph connection: '.$errstr);
+			throw new HubGraphConnectionError('unable to establish HubGraph connection using '.$conf['host'].': '.$errstr);
 		}
 
 		fwrite($sock, "$method $url HTTP/1.1\r\n");
@@ -48,7 +111,7 @@ class HubgraphClient {
 		$body = '';
 		while (($chunk = fgets($sock, self::CHUNK_LEN))) {
 			if ($first && !preg_match('/^HTTP\/1\.1\ (\d{3})/', $chunk, $code)) {
-				throw new Exception('Unable to determine response status');
+				throw new \Exception('Unable to determine response status');
 			}
 			elseif ($first) {
 				if (($status = intval($code[1])) === 204) {
@@ -71,7 +134,6 @@ class HubgraphClient {
 		static $count = 0;
 		++$count;
 		$path = '/views/'.$key;
-	//$query = $_SERVER['QUERY_STRING'];
 		$query = '';
 		if ($args) {
 			foreach ($args as $k=>$v) {

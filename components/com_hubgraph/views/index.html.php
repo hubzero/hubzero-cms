@@ -15,10 +15,10 @@ window.searchBase = '<?= $base ?>';
 <div class="subject">
 	<? require 'partial/bar.html.php'; ?>
 </div>
-<div class="aside criteria">
+<div class="aside criteria <?= defined('HG_INLINE') ? 'inline' : 'full' ?>">
 	<? if ($results && $results['domains']): ?>
 	<h2>Filters</h2>
-		<h3>Section</h3>
+		<h3 class="domains">Section</h3>
 		<ol class="domains clear">
 			<?
 			$renderDomains = function($domains, $lineage = '') use(&$renderDomains, $domainMap) {
@@ -51,14 +51,14 @@ window.searchBase = '<?= $base ?>';
 				endforeach; 
 				if (!$found):
 			?>
-				<li><button type="submit" name="tags[]" value="<?= $tag[0] ?>"><?= h($tag[1]) ?></button> <?= $tag[2] ?></li>
+				<li><button type="submit" name="tags[]" value="<?= $tag[0] ?>"><a><?= h($tag[1]) ?></a></button> <?= $tag[2] ?></li>
 			<?
 				endif;
 			endforeach; 
 			?>
 		</ol>
 		<? endif; ?>
-		<? if ($results['groups']): ?>
+		<? if ($results['groups'] && !$req->getGroup()): ?>
 		<h3>Groups <span class="sort alpha">A-Z</span><span class="sort number">#</span></h3>
 		<ol class="groups clear">
 			<? 
@@ -107,13 +107,13 @@ window.searchBase = '<?= $base ?>';
 				<li><button type="submit" name="timeframe" value="day">today</button> <?= $results['timeframe']['day'] ?></li>
 			<? endif; ?>
 			<? if ($results['timeframe']['week']): ?>
-				<li><button type="submit" name="timeframe" value="week">prior week</button> <?= $results['timeframe']['week'] ?></li>
+				<li><button type="submit" name="timeframe" value="week">within the last week</button> <?= $results['timeframe']['week'] ?></li>
 			<? endif; ?>
 			<? if ($results['timeframe']['month']): ?>
-				<li><button type="submit" name="timeframe" value="month">prior month</button> <?= $results['timeframe']['month'] ?></li>
+				<li><button type="submit" name="timeframe" value="month">within the last month</button> <?= $results['timeframe']['month'] ?></li>
 			<? endif; ?>
 			<? if ($results['timeframe']['year']): ?>
-				<li><button type="submit" name="timeframe" value="year">prior year</button> <?= $results['timeframe']['year'] ?></li>
+				<li><button type="submit" name="timeframe" value="year">within the last year</button> <?= $results['timeframe']['year'] ?></li>
 			<? endif; ?>
 			<? foreach ($years as $year): ?>
 				<li><button type="submit" name="timeframe" value="<?= $year ?>"><?= $year ?></button> <?= $results['timeframe']['by_year'][$year] ?></li>
@@ -258,13 +258,13 @@ window.searchBase = '<?= $base ?>';
 						foreach ($tags as $selectedTag):
 							if ($selectedTag['id'] == $tag[0]):
 								$found = TRUE;
-								echo '<li class="selected">'.h($tag[1]).'</li>';
+								echo '<li class="selected"><a>'.h($tag[1]).'</a></li>';
 								break;
 							endif;
 						endforeach; 
 						if (!$found):
 					?>
-					<li><button type="submit" name="tags[]" value="<?= $tag[0] ?>"><?= h($tag[1]) ?></button></li>
+					<li><button type="submit" name="tags[]" value="<?= $tag[0] ?>"><a><?= h($tag[1]) ?></a></button></li>
 					<?
 						endif;
 					endforeach; 
