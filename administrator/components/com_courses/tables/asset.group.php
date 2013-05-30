@@ -145,6 +145,7 @@ class CoursesTableAssetGroup extends JTable
 			$this->alias = strtolower($this->title);
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
+		$this->makeAliasUnique();
 
 		if (!$this->id)
 		{
@@ -270,6 +271,28 @@ class CoursesTableAssetGroup extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Return a unique alias based on given alias
+	 * 
+	 * @return     integer
+	 */
+	private function makeAliasUnique()
+	{
+		$sql = "SELECT alias from $this->_tbl WHERE `unit_id`=" . $this->_db->Quote(intval($this->unit_id));
+		$this->_db->setQuery($sql);
+		$result = $this->_db->loadResultArray();
+
+		$original_alias = $this->alias;
+
+		if ($result)
+		{
+			for ($i=1; in_array($this->alias, $result); $i++)
+			{
+				$this->alias = $original_alias . $i;
+			}
+		}
 	}
 
 	/**
