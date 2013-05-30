@@ -127,7 +127,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<div id="subscribe">
 				
 				<p class="info">
-					<?php echo JText::_('If you are prompted to enter a username & password when subscribing to a calendar, enter you HUB credentials.'); ?>
+					<?php echo JText::_('If you are prompted to enter a username & password when subscribing to a calendar, enter your HUB credentials.'); ?>
 				</p>
 				<br />
 				<p><strong><?php echo JText::_('Select the calendars you wish to subscribe to:'); ?></strong></p>
