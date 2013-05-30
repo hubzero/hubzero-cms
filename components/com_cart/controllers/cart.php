@@ -335,7 +335,7 @@ class CartControllerCart extends ComponentController
 		
 		//$url = ('https://dev26.hubzero.org/api/courses/premisRegister');
 		//$url = ('https://dev26.hubzero.org/api/register/premisRegister');
-		$url = 'https://dev.purduehub-u.purdue.edu/api/register/premisRegister';
+		$url = 'https://dev.courses.purduenext.purdue.edu/api/register/premisRegister/';
 		
 		// !! $value = urlencode(stripslashes($value));
 		
