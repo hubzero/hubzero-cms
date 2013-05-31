@@ -72,7 +72,7 @@ class modHubMenuHelper
 		/*
 		 * Site SubMenu
 		 */
-		$menu->addChild(new JMenuNode(JText::_('Site')), true);
+		$menu->addChild(new JMenuNode(JText::_('Site'), null, 'site'), true);
 		$menu->addChild(new JMenuNode(JText::_('Control Panel'), 'index.php', 'class:cpanel'));
 		$menu->addSeparator();
 		
@@ -107,7 +107,7 @@ class modHubMenuHelper
 		/*
 		 * Menus SubMenu
 		 */
-		$menu->addChild(new JMenuNode(JText::_('Users')), true);
+		$menu->addChild(new JMenuNode(JText::_('Users'), null, 'users'), true);
 		if ($canManageUsers) 
 		{
 			$menu->addChild(new JMenuNode(JText::_('User Manager'), 'index.php?option=com_users&task=view', 'class:user'));
@@ -126,7 +126,7 @@ class modHubMenuHelper
 		/*
 		 * Menus SubMenu
 		 */
-		$menu->addChild(new JMenuNode(JText::_('Menus')), true);
+		$menu->addChild(new JMenuNode(JText::_('Menus'), null, 'menus'), true);
 		if ($manageMenuMan) 
 		{
 			$menu->addChild(new JMenuNode(JText::_('Menu Manager'), 'index.php?option=com_menus', 'class:menu'));
@@ -156,7 +156,7 @@ class modHubMenuHelper
 		/*
 		 * Content SubMenu
 		 */
-		$menu->addChild(new JMenuNode(JText::_('Content')), true);
+		$menu->addChild(new JMenuNode(JText::_('Content'), null, 'pages'), true);
 		$menu->addChild(new JMenuNode(JText::_('Article Manager'), 'index.php?option=com_content', 'class:article'));
 		if ($manageTrash) 
 		{
@@ -175,7 +175,7 @@ class modHubMenuHelper
 		 */
 		if ($editAllComponents)
 		{
-			$menu->addChild(new JMenuNode(JText::_('Components')), true);
+			$menu->addChild(new JMenuNode(JText::_('Components'), null, 'components'), true);
 
 			$query = 'SELECT *' .
 				' FROM #__components' .
@@ -251,7 +251,7 @@ class modHubMenuHelper
 		 */
 		if ($installModules)
 		{
-			$menu->addChild(new JMenuNode(JText::_('Extensions')), true);
+			$menu->addChild(new JMenuNode(JText::_('Extensions'), null, 'extensions'), true);
 
 			$menu->addChild(new JMenuNode(JText::_('Install/Uninstall'), 'index.php?option=com_installer', 'class:install'));
 			$menu->addSeparator();
@@ -277,7 +277,7 @@ class modHubMenuHelper
 		/*
 		 * Help SubMenu
 		 */
-		$menu->addChild(new JMenuNode(JText::_('Help')), true);
+		$menu->addChild(new JMenuNode(JText::_('Help'), null, 'help'), true);
 		$menu->addChild(new JMenuNode(JText::_('Joomla! Help'), 'index.php?option=com_admin&task=help', 'class:help'));
 		//$menu->addChild(new JMenuNode(JText::_('System Info'), 'index.php?option=com_admin&task=sysinfo', 'class:info'));
 
