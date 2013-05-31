@@ -58,22 +58,58 @@ class UrlAssetHandler extends ContentAssetHandler
 	{
 		$url = JRequest::getVar('content');
 
-		// @FIXME: split by " " or "," or "\n" (upload multiple urls at a time) - then loop through code below
-
-		preg_match('/http[s]*\:\/\/([0-9A-Za-z\.]+)[\/]*/', $url, $matches);
-
-		if(!isset($matches[1]))
+		// Allow for multiple entries at once
+		if (strstr($url, ','))
 		{
-			return array('error'=>'Content did not match the pre-defined filter');
+			$urls = explode(',', $url);
+			$urls = array_map('trim', $urls);
+		}
+		elseif (strstr($url, ' '))
+		{
+			$urls = explode(' ', $url);
+			$urls = array_map('trim', $urls);
+		}
+		elseif (strstr($url, "\n"))
+		{
+			$urls = explode("\n", $url);
+			$urls = array_map('trim', $urls);
+		}
+		elseif (strstr($url, "\r\n"))
+		{
+			$urls = explode("\r\n", $url);
+			$urls = array_map('trim', $urls);
+		}
+		else
+		{
+			$urls = (array) $url;
 		}
 
-		$this->asset['title']   = $matches[1];
-		$this->asset['type']    = 'url';
-		$this->asset['subtype'] = 'link';
-		$this->asset['url']     = $url;
+		$return = array();
 
-		// Return info
-		return parent::create();
+		foreach ($urls as $url)
+		{
+			if (!preg_match('/^(http[s]*\:\/\/)?([0-9A-Za-z\.\/]+)$/', $url, $matches))
+			{
+				return array('error'=>'Content did not match the pre-defined filter');
+			}
+
+			// Try to help users out by being a little smarter about url provided
+			if (!preg_match('/^http[s]*\:\/\//', $url) && strstr($url, '.'))
+			{
+				$url = 'http://' . $url;
+			}
+
+			$this->asset['title']   = $matches[2];
+			$this->asset['type']    = 'url';
+			$this->asset['subtype'] = 'link';
+			$this->asset['url']     = $url;
+
+			// Return info
+			$r = parent::create();
+			$return[] = $r['assets'];
+		}
+
+		return $return;
 	}
 
 	/**
