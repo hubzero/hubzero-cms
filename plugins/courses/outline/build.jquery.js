@@ -1150,12 +1150,27 @@ HUB.CoursesOutline = {
 		 * (i.e. anything that would happen every time a new asset group is added)
 		 */
 		refresh: function ( e, selector ) {
-			var $ = HUB.CoursesOutline.jQuery;
+			var $   = HUB.CoursesOutline.jQuery,
+			refresh = false;
 
 			// Set default param if none given
 			if (!selector) {
 				selector = '.asset-group-item';
+				refresh  = false;
+			} else {
+				selector = "#"+selector;
+				refresh  = true;
 
+				if ($(selector).parents('.asset-group').find('.asset-group-item:not(.add-new)').length <= 1) {
+					// We just added our first asset group item, so we should not refresh
+					refresh = false;
+				}
+			}
+
+			if (refresh) {
+				// Refresh sortable
+				$(selector).parents('.asset-group').sortable('refresh');
+			} else {
 				// Make items sortable
 				$(".sortable").sortable({
 					placeholder: "placeholder",
@@ -1184,11 +1199,6 @@ HUB.CoursesOutline = {
 						});
 					}
 				});
-			} else {
-				selector = "#"+selector;
-
-				// Refresh sortable
-				$(selector).parents('.asset-group').sortable('refresh');
 			}
 
 			// Show sortable handles, edit and delete on hover
