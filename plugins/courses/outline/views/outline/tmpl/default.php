@@ -99,7 +99,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					<?php } else { ?>
 							<div class="detailsWrapper">
 								<?php foreach ($unit->assetgroups() as $agt) { ?>
-									<?php if ($agt->isAvailable() && $agt->isPublished()) { ?>
+									<?php if ($agt->isAvailable() && $agt->isPublished() && count($agt->children()) > 0) { ?>
 										<div class="weeksection">
 											<div class="weeksectioninner">
 												<h4>
