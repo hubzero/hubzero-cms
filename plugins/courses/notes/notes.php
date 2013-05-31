@@ -134,7 +134,9 @@ class plgCoursesNotes extends JPlugin
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->no_html    = JRequest::getInt('no_html', 0);
-			$this->view->filters = array();
+			$this->view->filters = array(
+				'section_id' => $offering->section()->get('id')
+			);
 			$this->view->filters['search'] = JRequest::getVar('search', '');
 
 			$this->view->model = new CoursesPluginModelNote(0);
@@ -329,6 +331,7 @@ class plgCoursesNotes extends JPlugin
 		{
 			$model->set('content', $content);
 		}
+		$model->set('section_id', $this->view->offering->section()->get('id'));
 
 		if (!$model->store(true))
 		{
@@ -338,7 +341,7 @@ class plgCoursesNotes extends JPlugin
 				return $this->_edit($model);
 			}
 		}
-		//print_r($model); die();
+
 		if (!$this->view->no_html)
 		{
 			return $this->_list();

@@ -122,6 +122,13 @@ class CoursesTableMemberNote extends JTable
 	var $state = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $section_id = NULL;
+
+	/**
 	 * Constructor method for JTable class
 	 * 
 	 * @param  database object
@@ -150,6 +157,13 @@ class CoursesTableMemberNote extends JTable
 		if (!$this->scope) 
 		{
 			$this->setError(JText::_('Missing scope'));
+			return false;
+		}
+
+		$this->section_id = intval($this->section_id);
+		if (!$this->section_id) 
+		{
+			$this->setError(JText::_('Missing section ID'));
 			return false;
 		}
 
@@ -196,6 +210,10 @@ class CoursesTableMemberNote extends JTable
 		if (isset($filters['scope']) && $filters['scope'])
 		{
 			$where[] = "a.`scope` = " . $this->_db->Quote($filters['scope']);
+		}
+		if (isset($filters['section_id']) && $filters['section_id'])
+		{
+			$where[] = "a.`section_id` = " . $this->_db->Quote($filters['section_id']);
 		}
 		if (isset($filters['state']) && $filters['state'])
 		{
