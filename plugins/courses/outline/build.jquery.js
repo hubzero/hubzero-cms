@@ -92,7 +92,8 @@ HUB.CoursesOutline = {
 				.on('click', '.asset-edit', this.edit)
 				.on('click', '.published-checkbox', this.state)
 				.on('click', '.asset-preview', this.preview)
-				.on('click', '.aux-attachments a:not(.browse-files, .attach-wiki)', this.auxAttachmentShow)
+				.on('click', '.aux-attachments a:not(.browse-files, .attach-wiki, .help-info)', this.auxAttachmentShow)
+				.on('click', '.aux-attachments .help-info', this.auxAttachmentHelp)
 				.on('click', '.aux-attachments .aux-attachments-cancel', this.auxAttachmentHide)
 				.on('click', '.aux-attachments a.attach-wiki', this.editWiki)
 				.on('click', '.aux-attachments .aux-attachments-submit', this.auxAttachmentSubmit)
@@ -927,13 +928,27 @@ HUB.CoursesOutline = {
 		 * Show the auxillary attachments form
 		 */
 		auxAttachmentShow: function ( e ) {
-			var $ = HUB.CoursesOutline.jQuery;
+			var $ = HUB.CoursesOutline.jQuery,
+			help  = '/help/courses/builder',
+			className = e.originalEvent.target.className.replace(/attach-/, "");
 
 			e.preventDefault();
 			$(this).siblings('.aux-attachments-form').find('.aux-attachments-content-label').html(e.originalEvent.target.title);
-			$(this).siblings('.aux-attachments-form').find('.input-type').val(e.originalEvent.target.className.replace(/attach-/, ""));
+			$(this).siblings('.aux-attachments-form').find('.input-type').val(className);
+			$(this).siblings('.aux-attachments-form').find('.help-info').attr('href', help+'#'+className);
 			$(this).siblings('.aux-attachments-form').removeClass('attach-link attach-object attach-wiki browse-files').addClass(e.originalEvent.target.className);
 			$(this).siblings('.aux-attachments-form').fadeIn();
+		},
+
+		/*
+		 * Open aux attachments help in a new popup window
+		 */
+		auxAttachmentHelp: function ( e ) {
+			var $ = HUB.CoursesOutline.jQuery,
+			specs = 'width=800,height=600,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=20,top=20';
+
+			e.preventDefault();
+			window.open($(this).attr('href'), '_blank', specs);
 		},
 
 		/*
@@ -1199,7 +1214,7 @@ HUB.CoursesOutline = {
 			});
 
 			// Add tooltips to attachment buttons
-			$(selector + ' .aux-attachments a').tooltip();
+			$(selector + ' .aux-attachments a:not(.help-info)').tooltip();
 
 			// Set up file uploader on our file upload boxes
 			$(selector).each(HUB.CoursesOutline.asset.attach);
@@ -1413,6 +1428,7 @@ HUB.CoursesOutline = {
 								'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 								'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 								'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
+								'<a href="/help/courses/builder" target="_blank" class="help-info">help</a>',
 							'</form>',
 							'<a href="#" title="Attach a link" class="attach-link"></a>',
 							'<a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>',

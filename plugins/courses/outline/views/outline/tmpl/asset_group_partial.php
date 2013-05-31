@@ -48,6 +48,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
+				<a href="/help/courses/builder" target="_blank" class="help-info">help</a>
 			</form>
 			<a href="#" title="Attach a link" class="attach-link"></a>
 			<a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>

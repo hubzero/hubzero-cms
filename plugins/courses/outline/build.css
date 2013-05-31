@@ -427,6 +427,14 @@
 .aux-attachments a.browse-files:before {
 	content: "\f07c";
 }
+.aux-attachments .help-info:before {
+	content: "\f059";
+	margin-right: 5px;
+}
+.aux-attachments .help-info {
+	float: right;
+	padding: 3px 5px;
+}
 .course:before {
 	content: "\f09c";
 }
@@ -692,6 +700,8 @@ ul {
 }
 .unit-edit form .unit-edit-save,
 .unit-edit form .unit-edit-reset,
+.aux-attachments-submit,
+.aux-attachments-cancel,
 .asset-group-title-container form .asset-group-title-save,
 .asset-group-title-container form .asset-group-title-cancel {
 	color: #F9F9F9;
@@ -706,6 +716,8 @@ ul {
 }
 .unit-edit form .unit-edit-save:hover,
 .unit-edit form .unit-edit-reset:hover,
+.aux-attachments-submit:hover,
+.aux-attachments-cancel:hover,
 .asset-group-title-container form .asset-group-title-save:hover,
 .asset-group-title-container form .asset-group-title-cancel:hover {
 	cursor: pointer;
@@ -713,11 +725,14 @@ ul {
 }
 .unit-edit form .unit-edit-save:active,
 .unit-edit form .unit-edit-reset:active,
+.aux-attachments-submit:active,
+.aux-attachments-cancel:active,
 .asset-group-title-container form .asset-group-title-save:active,
 .asset-group-title-container form .asset-group-title-cancel:active {
 	box-shadow: inset 1px 1px 1px #111;
 }
 .unit-edit form .unit-edit-save,
+.aux-attachments-submit,
 .asset-group-title-container form .asset-group-title-save {
 	border: 1px solid #444;
 	box-shadow: inset 0 1px 5px #AAA;
@@ -733,6 +748,7 @@ ul {
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666, endColorstr=#555)";
 }
 .unit-edit form .unit-edit-reset,
+.aux-attachments-cancel,
 .asset-group-title-container form .asset-group-title-cancel {
 	color: #555;
 	border: 1px solid #ccc;
@@ -748,6 +764,11 @@ ul {
 	background-image: -ms-linear-gradient(top, #EEE 0%, #DDD 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE,endColorstr=#DDD);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE, endColorstr=#DDD)";
+}
+.aux-attachments-submit,
+.aux-attachments-cancel {
+	margin-bottom: 0;
+	margin-top: 0;
 }
 .asset-group-container.active {
 	margin: 0 10px;
