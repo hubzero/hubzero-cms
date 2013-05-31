@@ -43,15 +43,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$timeformat = 'H:i p';
 	$tz = true;
 }
-
 ?>
 <div class="container">
 <table class="entries">
 	<thead>
 		<tr>
 			<th>Offering</th>
-			<th>Starts</th>
-			<th>Ends</th>
+			<th>Enrolled</th>
 			<th>Enrollment</th>
 		</tr>
 	</thead>
@@ -62,28 +60,102 @@ if ($offerings->total() > 0)
 {
 	foreach ($offerings as $offering)
 	{
-?>
+		$url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias');
+		?>
 		<tr>
-			<th>
-				<a class="inst-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
+			<th class="offering-title">
+				<span>
 					<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
-				</a>
+				</span>
 			</th>
 			<td>
-				<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
-			</td>
-			<td>
-				<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
+				<?php if ($this->course->isManager()) { ?>
+				&nbsp;
+				<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
+				<a class="enter btn" href="<?php echo JRoute::_($url); ?>">
+					Enter course
+				</a>
+				<?php } else { ?>
+					<?php if ($offering->isAvailable()) { ?>
+					<a class="enroll btn" href="<?php echo JRoute::_($url); ?>">
+						Enroll in course
+					</a>
+					<?php } else { ?>
+					--
+					<?php } ?>
+				<?php } ?>
 			</td>
 			<td>
 				<?php if ($offering->isAvailable()) { ?>
-				accepting
+				<span class="accepting enrollment">
+					Accepting
+				</a>
 				<?php } else { ?>
-				closed
+				<span class="closed enrollment">
+					Closed
+				</span>
 				<?php } ?>
 			</td>
 		</tr>
-<?php
+		<?php
+		if ($this->course->isManager()) // || ($this->course->isStudent() && $nonDefault))
+		{
+			foreach ($offering->sections() as $section) 
+			{
+				/*if ($this->course->isStudent())
+				{
+					if ($section->get('id') != $nonDefault && $section->get('alias') != '__default')
+					{
+						continue;
+					}
+				}*/
+				$surl = $url . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '');
+			?>
+		<tr>
+			<th class="section-title">
+				<span>
+					<?php echo $this->escape(stripslashes($section->get('title'))); ?>
+				</span>
+			</th>
+			<td>
+				<a class="enter btn" href="<?php echo JRoute::_($surl); ?>">
+					Enter section
+				</a>
+			</td>
+			<td>
+				<?php 
+				switch ($section->get('enrollment')) 
+				{ 
+					case 0: 
+						?>
+						<span class="accepting enrollment">
+							Open
+						</a>
+						<?php 
+					break;
+
+					case 1:
+						?>
+						<span class="restricted enrollment">
+							Restricted
+						</span>
+						<?php 
+					break;
+
+					case 2:
+						?>
+						<span class="closed enrollment">
+							Closed
+						</span>
+						<?php 
+					break;
+				} 
+				?>
+			</td>
+		</tr>
+			<?php
+			}
+		}
 	}
 }
 else

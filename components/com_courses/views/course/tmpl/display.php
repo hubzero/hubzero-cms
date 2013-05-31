@@ -45,7 +45,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $config   =& JFactory::getConfig();
 $database =& JFactory::getDBO();
 
-$offerings = $this->course->offerings(array('available' => true, 'sort' => 'publish_up'));
+$offerings = $this->course->offerings(array(
+	'available' => true, 
+	'sort'      => 'publish_up'
+));
 if ($offerings->total())
 {
 	$offering = $offerings->fetch('first');
@@ -70,15 +73,6 @@ else
 		</a>
 	</p>
 </div>
-<?php /* <div id="content-header-extra">
-	<ul>
-		<li>
-			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
-				<?php echo JText::_('Browse courses'); ?>
-			</a>
-		</li>
-	</ul>
-</div> */ ?>
 
 <div class="course section intro">
 	<div class="aside">
@@ -86,6 +80,7 @@ else
 	<?php if ($offering->exists()) { ?>
 		<?php
 		$controls = '';
+
 		if ($this->sections)
 		{
 			foreach ($this->sections as $section)
@@ -96,40 +91,48 @@ else
 				}
 			}
 		}
-		if (!$controls) {
-		?>
-			<?php if ($offering->get('publish_up') && $offering->get('publish_up') != '0000-00-00 00:00:00') { ?>
+
+		if (!$controls) 
+		{
+			$memberships = $offering->membership();
+			if (!count($memberships))
+			{
+				$memberships[] = new CoursesModelMember(JFactory::getUser()->get('id'), $this->course->get('id'), $offering->get('id'));
+			}
+				foreach ($memberships as $membership)
+				{
+			?>
 			<table>
 				<tbody>
 					<tr>
-						<th scope="row">Starts</th>
+						<th scope="row">Offering:</th>
 						<td>
-							<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
+							<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Ends</th>
+						<th scope="row">Section:</th>
 						<td>
-							<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
+							<?php echo ($membership->get('section_id') ? $this->escape(stripslashes($offering->section($membership->get('section_id'))->get('title'))) : $this->escape(stripslashes($offering->section()->get('title')))); ?>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<?php } ?>
 		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
 			<p>
-				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
+				<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 					Enter course
 				</a>
 			</p>
 		<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
 			<p>
-				<a class="enroll btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . '&task=enroll'); ?>">
+				<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
 					Enroll in course
 				</a>
 			</p>
 		<?php } ?>
 		<?php
+			}
 		} else {
 			echo $controls;
 		}

@@ -109,6 +109,20 @@ class CoursesModelCourse extends CoursesModelAbstract
 	private $_pages = NULL;
 
 	/**
+	 * List of plugins available for a given event
+	 * 
+	 * @var array
+	 */
+	private $_plugins = array();
+
+	/**
+	 * URL to this object
+	 * 
+	 * @var string
+	 */
+	private $_link = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course ID or alias
@@ -677,7 +691,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	public function page($url=null)
 	{
 		if (!isset($this->_page) 
-		 || ($url !== null && (int) $this->_page['url'] != $url))
+		 || ($url !== null && (string) $this->_page->get('url') != $url))
 		{
 			$this->_page = null;
 
@@ -685,18 +699,20 @@ class CoursesModelCourse extends CoursesModelAbstract
 			{
 				$this->_page = $this->_pages[$url];
 			}
+
+			if (!$this->_page)
+			{
+				$this->_page = new CoursesModelPage(0);
+			}
 		}
 
 		return $this->_page; 
 	}
 
 	/**
-	 * Get a list of units for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of pages for a course
 	 * 
-	 * @param      mixed $idx Index value
+	 * @param      array $filters Filters to apply
 	 * @return     array
 	 */
 	public function pages($filters=array())
@@ -727,7 +743,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			{
 				foreach ($data as $key => $result)
 				{
-					$results[] = new CoursesModelPage($result);
+					$results[$result->url] = new CoursesModelPage($result);
 				}
 			}
 
@@ -765,6 +781,60 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		return $tags; 
+	}
+
+	/**
+	 * Get a list of plugins available for a given event
+	 * 
+	 * @return     array
+	 */
+	/*public function plugins($event='onCourseViewAreas')
+	{
+		if (!isset($this->_plugins[$event]))
+		{
+			JPluginHelper::importPlugin('courses');
+			$dispatcher =& JDispatcher::getInstance();
+
+			$this->_plugins[$event] = $dispatcher->trigger($event, array(
+					$this
+				)
+			);
+		}
+		return $this->_plugins[$event];
+	}*/
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * 
+	 * @param      string $type The type of link to return
+	 * @return     boolean
+	 */
+	public function link($type='')
+	{
+		if (!isset($this->_link))
+		{
+			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('alias');
+		}
+
+		// If it doesn't exist or isn't published
+		switch (strtolower($type))
+		{
+			case 'edit':
+				$link = $this->_base . '&task=edit';
+			break;
+
+			case 'delete':
+				$link = $this->_base . '&task=delete';
+			break;
+
+			case 'permalink':
+			default:
+				$link = $this->_base;
+			break;
+		}
+
+		return $link;
 	}
 }
 

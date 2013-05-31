@@ -237,8 +237,29 @@ function CoursesParseRoute($segments)
 
 			// Defaults
 			default:
-				$vars['offering'] = $segments[1];
-				$vars['controller'] = 'offering';
+				$pagefound = false;
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+				$course = CoursesModelCourse::getInstance($vars['gid']);
+				if ($course->exists())
+				{
+					$pages = $course->pages();
+
+					foreach ($pages as $page)
+					{
+						if ($page->get('url') == $segments[1])
+						{
+							$pagefound = true;
+							$vars['active'] = $segments[1];
+							break;
+						}
+					}
+				}
+
+				if (!$pagefound)
+				{
+					$vars['offering'] = $segments[1];
+					$vars['controller'] = 'offering';
+				}
 			break;
 		}
 	}

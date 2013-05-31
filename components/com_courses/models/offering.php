@@ -178,6 +178,13 @@ class CoursesModelOffering extends CoursesModelAbstract
 	private $_permissions = NULL;
 
 	/**
+	 * URL to this object
+	 * 
+	 * @var string
+	 */
+	private $_link = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course offering ID or alias
@@ -556,7 +563,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (!$this->_student)
 		{
-			$this->_student = CoursesModelStudent::getInstance($user_id, $this->section()->get('id'));
+			$this->_student = CoursesModelStudent::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
 		}
 
 		return $this->_student; 
@@ -692,6 +699,64 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		return $this->_members;
+	}
+
+	/**
+	 * Get a list of memerships for a user
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @return     mixed
+	 */
+	public function membership($user_id=0)
+	{
+		if (!isset($filters['course_id']))
+		{
+			$filters['course_id'] = (int) $this->get('course_id');
+		}
+		/*if (!isset($filters['offering_id']))
+		{
+			$filters['offering_id'] = (int) $this->get('id');
+		}*/
+		if (!$user_id)
+		{
+			$user_id = JFactory::getUser()->get('id');
+		}
+		$filters['user_id'] = (int) $user_id;
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CoursesTableMember($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_membership[$user_id]) || !is_array($this->_membership[$user_id]))
+		{
+			$tbl = new CoursesTableMember($this->_db);
+
+			$results = array();
+
+			if (($results = $tbl->find($filters)))
+			{
+				foreach ($results as $key => $result)
+				{
+					$mdl = 'CoursesModelMember';
+					if ($result->student)
+					{
+						$mdl = 'CoursesModelStudent';
+					}
+					else 
+					{
+						$mdl = 'CoursesModelManager';
+					}
+					$results[$key] = new $mdl($result);
+				}
+			}
+
+			$this->_membership[$user_id] = $results; //new CoursesModelIterator($results);
+		}
+
+		return $this->_membership[$user_id];
 	}
 
 	/**
@@ -1185,6 +1250,50 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			return $course_plugin_access;
 		}
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * 
+	 * @param      string $type The type of link to return
+	 * @return     boolean
+	 */
+	public function link($type='')
+	{
+		if (!isset($this->_link))
+		{
+			if (!$this->get('course_alias'))
+			{
+				$course = CoursesModelCourse::getInstance($this->get('course_id'));
+				$this->set('course_alias', $course->get('alias'));
+			}
+			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('course_alias') . '&offering=' . $this->get('alias');
+			$this->_link .= ($this->section()->get('alias') != '__default') ? ':' . $this->section()->get('alias') : '';
+		}
+
+		// If it doesn't exist or isn't published
+		switch (strtolower($type))
+		{
+			case 'edit':
+				$link = $this->_link . '&task=edit';
+			break;
+
+			case 'delete':
+				$link = $this->_link . '&task=delete';
+			break;
+
+			case 'enroll':
+				$link = $this->_link . '&task=enroll';
+			break;
+
+			case 'permalink':
+			default:
+				$link = $this->_link;
+			break;
+		}
+
+		return $link;
 	}
 }
 

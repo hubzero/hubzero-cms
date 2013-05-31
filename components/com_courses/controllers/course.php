@@ -179,6 +179,34 @@ class CoursesControllerCourse extends Hubzero_Controller
 			)
 		);
 
+		if ($pages = $this->course->pages())
+		{
+			foreach ($pages as $page)
+			{
+				$this->view->cats[] = array($page->get('url') => $page->get('title'));
+				if ($page->get('url') == $this->view->active)
+				{
+					/*$wikiconfig = array(
+						'option'   => $this->_option,
+						'scope'    => '',
+						'pagename' => $this->course->get('alias'),
+						'pageid'   => $this->course->get('id'),
+						'filepath' => DS . ltrim($this->course->config()->get('uploadpath', '/site/courses'), DS),
+						'domain'   => $this->course->get('alias')
+					);
+
+					ximport('Hubzero_Wiki_Parser');
+					$parser = Hubzero_Wiki_Parser::getInstance();*/
+
+					$this->view->sections[] = array(
+						'name' => $page->get('url'),
+						'html' => $page->content('parsed'), //$parser->parse(stripslashes($page->get('content')), $wikiconfig),
+						'metadata' => ''
+					);
+				}
+			}
+		}
+
 		$this->view->course        = $this->course;
 		$this->view->user          = $this->juser;
 		$this->view->config        = $this->config;

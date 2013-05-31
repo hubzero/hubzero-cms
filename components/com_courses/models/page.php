@@ -52,5 +52,66 @@ class CoursesModelPage extends CoursesModelAbstract
 	 * @var string
 	 */
 	protected $_scope = 'page';
+
+	/**
+	 * Get the state of the entry as either text or numerical value
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     mixed String or Integer
+	 */
+	public function content($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+
+		switch ($as)
+		{
+			case 'parsed':
+				if ($this->get('content_parsed'))
+				{
+					return $this->get('content_parsed');
+				}
+
+				$p =& Hubzero_Wiki_Parser::getInstance();
+
+				$wikiconfig = array(
+					'option'   => JRequest::getCmd('option', 'com_courses'),
+					'scope'    => '',
+					'pagename' => $this->get('url'),
+					'pageid'   => $this->get('id'),
+					'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS),
+					'domain'   => $this->get('course_id')
+				);
+
+				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig));
+
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($this->get('content_parsed'), $shorten, 0, 0);
+					if (substr($content, -7) == '&#8230;') 
+					{
+						$content .= '</p>';
+					}
+					return $content;
+				}
+
+				return $this->get('content_parsed');
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('parsed'));
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+				}
+				return $content;
+			break;
+
+			case 'raw':
+			default:
+				return $this->get('content');
+			break;
+		}
+	}
 }
 

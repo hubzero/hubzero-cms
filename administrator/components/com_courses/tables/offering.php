@@ -314,7 +314,7 @@ class CoursesTableOffering extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT ci.*";
+		$query  = "SELECT ci.*, c.alias AS course_alias";
 		$query .= $this->_buildquery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
