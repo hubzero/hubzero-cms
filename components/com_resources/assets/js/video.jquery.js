@@ -725,11 +725,11 @@ HUB.Video = {
 
 			//craft post url
 			var component = 'resources';
-			var componentSearch = window.location.href.match(/\.org\/([a-z]+)\//);
+			var componentSearch = window.location.href.match(/\.(org|edu)\/([a-z]+)\//);
 
-			if(componentSearch && componentSearch[1].length)
+			if(componentSearch && componentSearch[2].length)
 			{
-				component = componentSearch[1];
+				component = componentSearch[2];
 			}
 
 			var url = '/index.php?option=com_'+component+'&controller=media&task=tracking&no_html=1';
