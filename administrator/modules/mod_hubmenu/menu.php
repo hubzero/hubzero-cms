@@ -77,7 +77,7 @@ class JAdminCSSMenu extends JTree
 		 */
 		$class = '';
 		if ($this->_current->hasChildren()) {
-			$class = ' class="node"';
+			$class = ' class="node' . ($this->_current->class ? ' ' . $this->_current->class : '' ) . '"';
 		}
 
 		if($this->_current->class == 'separator') {
