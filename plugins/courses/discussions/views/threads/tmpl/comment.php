@@ -112,12 +112,12 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="delete" href="<?php echo JRoute::_($this->base . '&action=delete&thread=' . $this->comment->id); ?>"><!-- 
+					<a class="delete" href="<?php echo JRoute::_($this->base . '&action=delete&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!-- 
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
-					<a class="edit" href="<?php echo JRoute::_($this->base . '&action=edit&thread=' . $this->comment->id); ?>"><!-- 
+					<a class="edit" href="<?php echo JRoute::_($this->base . '&action=edit&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!-- 
 					--></a>
 				<?php } ?>

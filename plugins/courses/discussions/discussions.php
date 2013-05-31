@@ -433,6 +433,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 					$data->thread = $this->_posts($view->post, $view->filters);
 				break;
 
+				case 'delete':
+					if ($pid = JRequest::getInt('post', 0))
+					{
+						$this->deletethread($pid, false);
+					}
+					$data->thread = $this->_thread($view->post, $view->filters);
+				break;
+
 				case 'thread':
 					$data->thread = $this->_thread($view->post, $view->filters);
 				break;
@@ -475,19 +483,27 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			exit();
 		}
 
-		// Get reply count
-		if ($action == 'search')
+		switch ($action)
 		{
-			$view->filters['search'] = JRequest::getVar('search', '');
+			case 'search':
+				$view->filters['search'] = JRequest::getVar('search', '');
+				$data = $this->_threadsSearch($view->post, $view->filters);
+				$view->threads = $data->posts;
+			break;
 
-			$data = $this->_threadsSearch($view->post, $view->filters);
-			$view->threads = $data->posts;
-		}
-		else
-		{
-			$view->filters['parent'] = 0;
+			default:
+				if ($action == 'delete')
+				{
+					if ($pid = JRequest::getInt('post', 0))
+					{
+						$this->deletethread($pid, false);
+					}
+				}
 
-			$view->threads = $view->post->find($view->filters);
+				$view->filters['parent'] = 0;
+
+				$view->threads = $view->post->find($view->filters);
+			break;
 		}
 
 		$view->data = null;
@@ -570,6 +586,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				'layout'  => 'list'
 			)
 		);
+		$view->comments = null;
 
 		if ($rows = $post->getTree($post->id)) //getTree
 		{
@@ -998,6 +1015,11 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 		$action = strtolower(JRequest::getWord('action', ''));
 
+		//get authorization
+		$this->_authorize('section');
+		$this->_authorize('category');
+		$this->_authorize('thread');
+
 		if ($view->no_html == 1)
 		{
 			$view->filters['sticky'] = false;
@@ -1041,6 +1063,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 					$view->filters['start_at'] = JRequest::getVar('start_at', '');
 
 					$data->thread = $this->_posts($view->post, $view->filters);
+				break;
+
+				case 'delete':
+					if ($pid = JRequest::getInt('post', 0))
+					{
+						$this->deletethread($pid, false);
+					}
+					$data->thread = $this->_thread($view->post, $view->filters);
 				break;
 
 				case 'thread':
@@ -1171,11 +1201,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->post = new ForumPost($this->database);
 		$view->post->scope    = $view->filters['scope'];
 		$view->post->scope_id = $view->filters['scope_id'];
-
-		//get authorization
-		$this->_authorize('section');
-		$this->_authorize('category');
-		$this->_authorize('thread');
 
 		$view->config = $this->params;
 		$view->course = $this->course;
@@ -2314,9 +2339,9 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	 * 
 	 * @return     void
 	 */
-	public function deletethread()
+	public function deletethread($id=0, $redirect=true)
 	{
-		$section = JRequest::getVar('section', '');
+		$section  = JRequest::getVar('section', '');
 		$category = JRequest::getVar('category', '');
 
 		// Is the user logged in?
@@ -2331,7 +2356,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Incoming
-		$id = JRequest::getInt('thread', 0);
+		$id = ($id) ? $id : JRequest::getInt('thread', 0);
 
 		// Initiate a forum object
 		$model = new ForumPost($this->database);
@@ -2382,11 +2407,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Redirect to main listing
-		$this->setRedirect(
-			JRoute::_($this->base), //forum&unit=' . $section . '&b=' . $category),
-			JText::_('PLG_COURSES_DISCUSSIONS_THREAD_DELETED'),
-			'passed'
-		);
+		if ($redirect)
+		{
+			$this->setRedirect(
+				JRoute::_($this->base), //forum&unit=' . $section . '&b=' . $category),
+				JText::_('PLG_COURSES_DISCUSSIONS_THREAD_DELETED'),
+				'passed'
+			);
+		}
 	}
 
 	/**

@@ -40,7 +40,7 @@ HUB.Plugins.CoursesForum = {
 
 			for ( var i = 0; i< data.length; i++ ) 
 			{
-				item = data[i];
+				var item = data[i];
 				if (item.parent && $('#t'+item.parent).length)
 				{
 					if (item.created > last.val()) {
@@ -188,11 +188,26 @@ HUB.Plugins.CoursesForum = {
 			})
 			// Add confirm dialog to delete links
 			.on('click', 'a.delete', function (e) {
+				e.preventDefault();
+				
 				var res = confirm('Are you sure you wish to delete this item?');
-				if (!res) {
-					e.preventDefault();
+				if (res) {
+					var srch = container.find('input.search').val();
+
+					if (_DEBUG) {
+						console.log($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''));
+					}
+					$.getJSON($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''), {}, function(data){
+
+						header.text(data.thread.total + ' comments');
+
+						// Append data and fade it in
+						thread.html(data.thread.html).hide().fadeIn();
+						// Apply plugins to loaded content
+						jQuery(document).trigger('ajaxLoad');
+					});
 				}
-				return res;
+				//return res;
 			});
 
 		thread
