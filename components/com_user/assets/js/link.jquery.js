@@ -39,7 +39,7 @@ HUB.UserLink = {
 			if(!next.length) {
 				next = $(this).parent().next('.inner-content');
 			}
-			next.slideToggle('fast');
+			next.slideToggle();
 			$(this).toggleClass('active');
 		});
 	}

@@ -85,26 +85,11 @@
 	padding: 0px 60px;
 	margin-bottom: 10px;
 }
-#link-existing .user-icon,
-#link-existing .email-icon {
-	padding-left: 18px;
-	position: relative;
-}
 #link-existing .user-icon:before,
 #link-existing .email-icon:before {
-	content: "";
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	width: 15px;
-	height: 15px;
-	font-size: 15px;
 	font-family: 'Fontcons';
-	color: #fff;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-	filter: alpha(opacity=90);
+	margin-right: 5px;
 	opacity: .9;
-	background: none;
 }
 #link-existing .user-icon:before {
 	content: "\f007";
