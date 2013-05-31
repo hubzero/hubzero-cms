@@ -162,8 +162,11 @@ class FileAssetHandler extends AssetHandler
 		}
 
 		// Get the url to return to the page
-		$asset = new CoursesModelAsset($this->assoc['asset_id']);
-		$url   = $asset->path($this->asset['course_id']);
+		$course_id      = JRequest::getInt('course_id', 0);
+		$offering_alias = JRequest::getCmd('offering', '');
+		$course         = new CoursesModelCourse($course_id);
+
+		$url = JRoute::_('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
 
 		$return_info = array(
 			'asset_id'       => $this->assoc['asset_id'],

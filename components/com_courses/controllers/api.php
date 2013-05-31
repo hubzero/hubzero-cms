@@ -727,12 +727,15 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			}
 		}
 
+		// Build the asset url
+		$url = JRoute::_('index.php?option=com_courses&controller=offering&gid='.$this->course->get('alias').'&offering='.$this->offering_alias.'&asset='.$asset->get('id'));
+
 		$files = array(
 			'asset_id'       => $asset->get('id'),
 			'asset_title'    => $asset->get('title'),
 			'asset_type'     => $asset->get('type'),
 			'asset_subtype'  => $asset->get('subtype'),
-			'asset_url'      => $asset->get('url'),
+			'asset_url'      => $url,
 			'asset_state'    => $asset->get('state'),
 			'scope_id'       => (isset($row)) ? $row->scope_id : '',
 			'course_id'      => $this->course_id,
