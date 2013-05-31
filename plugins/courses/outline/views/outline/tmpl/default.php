@@ -86,7 +86,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					<div class="unit-availability comingSoon">
 						<!-- <p class="status">Coming soon</p> -->
 						<p class="info">
-							Content for this unit will be available starting <?php $unit->get('publish_up'); ?>.
+							Content for this unit will be available starting <?php echo date("F j, Y, g:i a", strtotime($unit->get('publish_up'))); ?>.
 						</p>
 				<?php } else { ?>
 					<div class="unit-availability">
