@@ -1557,21 +1557,16 @@ HUB.CoursesOutline = {
 						// Create a variable pointing to the new item just inserted
 						var newUnit = addNew.parent('.unit').find('.unit-item:not(.add-new):last');
 
-						// Trigger asset group create on each asset group added
-						newUnit.find('.asset-group-item').each(function() {
-							$('.outline-main').trigger('assetGroupCreate', [$(this).id]);
-						});
-
 						// Trigger unit create
 						$('.outline-main').trigger('unitCreate', [newUnit[0].id]);
 
 						// Show the unit and slide to it
-						$('.asset-group-type-list').delay(500).slideUp(500, function(){
+						$('.asset-group-type-list').delay(500).slideUp(500, function () {
 							$('.unit-title-arrow').removeClass('unit-title-arrow-active');
-							newUnit.find('.asset-group-type-list').slideDown(500);
-
-							// Toggle class for arrow (active gives down arrow indicating expanded list)
 							newUnit.find('.unit-title-arrow').addClass('unit-title-arrow-active');
+							newUnit.find('.asset-group-type-list').slideDown(500, function () {
+								$('html, body').animate({scrollTop: newUnit.offset().top - 10}, 500);
+							});
 						});
 					}
 				}

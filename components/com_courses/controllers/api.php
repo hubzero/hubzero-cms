@@ -147,8 +147,6 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		// Set our values
 		$unit->set('title', JRequest::getString('title', $title));
-		// @FIXME: do we want any sort of character restrictions on unit titles?
-		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $unit->get('title'));
 		$unit->set('alias', strtolower(str_replace(' ', '', $unit->get('title'))));
 
 		// If we have dates coming in, save those
@@ -186,7 +184,12 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			// Included needed classes
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
-			foreach (array('Lectures', 'Homework', 'Exam') as $key)
+			// Get the courses config
+			$config = JComponentHelper::getParams('com_courses');
+			$asset_groups = explode(',', $config->getValue('default_asset_groups'));
+			array_map('trim', $asset_groups);
+
+			foreach ($asset_groups as $key)
 			{
 				// Get our asset group object
 				$assetGroup = new CoursesModelAssetgroup(null);
@@ -277,8 +280,6 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		// Set or variables
 		$assetGroup->set('title', JRequest::getString('title', $title));
-		// @FIXME: do we want any sort of character restrictions on asset group titles?
-		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $assetGroup->get('title'));
 		$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
 
 		$state = JRequest::getInt('state', null);
