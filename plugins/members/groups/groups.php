@@ -109,8 +109,6 @@ class plgMembersGroups extends JPlugin
 			'metadata'=>''
 		);
 
-		$filter = JRequest::getVar("filter","","get");
-
 		ximport('Hubzero_User_Helper');
 		$applicants = $member->getGroups('applicants'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'applicants', 1);
 		$invitees   = $member->getGroups('invitees'); //Hubzero_User_Helper::getGroups($member->get('uidNumber'), 'invitees', 1);
@@ -126,16 +124,17 @@ class plgMembersGroups extends JPlugin
 		$managerids = array();
 		foreach ($managers as $manager)
 		{
-			$groups[] = $manager;
+			$groups[$manager->description] = $manager;
 			$managerids[] = $manager->cn;
 		}
 		foreach ($members as $mem)
 		{
-			if (!in_array($mem->cn,$managerids)) 
+			if (!in_array($mem->cn, $managerids)) 
 			{
-				$groups[] = $mem;
+				$groups[$mem->description] = $mem;
 			}
 		}
+		ksort($groups);
 
 		// Build the final HTML
 		if ($returnhtml) 
@@ -151,13 +150,60 @@ class plgMembersGroups extends JPlugin
 					'name'    => 'summary'
 				)
 			);
+			$view->total  = count($groups);
+			$view->filter = strtolower(JRequest::getWord('filter', '', 'get'));
 
-			$view->groups = $groups;
-			if (in_array($filter, array('invitees', 'applicants', 'members', 'managers')))
+			if (in_array($view->filter, array('invitees', 'applicants', 'members', 'managers')))
 			{
-				$view->groups = $member->getGroups($filter);
+				$g = array();
+				//$view->groups = $member->getGroups($view->filter);
+				switch ($view->filter)
+				{
+					case 'invitees':
+						foreach ($groups as $key => $group)
+						{
+							if (!$group->registered && $group->regconfirmed)
+							{
+								$g[$key] = $group;
+							}
+						}
+					break;
+
+					case 'applicants':
+						foreach ($groups as $key => $group)
+						{
+							if ($group->registered && !$group->regconfirmed)
+							{
+								$g[$key] = $group;
+							}
+						}
+					break;
+
+					case 'members':
+						foreach ($groups as $key => $group)
+						{
+							if ($group->registered && $group->regconfirmed && !$group->manager)
+							{
+								$g[$key] = $group;
+							}
+						}
+					break;
+
+					case 'managers':
+						foreach ($groups as $key => $group)
+						{
+							if ($group->manager)
+							{
+								$g[$key] = $group;
+							}
+						}
+					break;
+				}
+				$groups = $g;
 			}
 
+			$view->groups = $groups;
+			$view->member = $member;
 			$view->option = 'com_groups';
 			if ($this->getError()) 
 			{

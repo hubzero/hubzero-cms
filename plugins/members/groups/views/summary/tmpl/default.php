@@ -44,8 +44,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</li>
 </ul>
 
-<?php if ($this->groups) { ?>
+<?php if ($this->total) { ?>
 	<div class="container">
+		<ul class="entries-menu filter-options">
+			<li>
+				<a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=groups'); ?>">
+					<?php echo JText::sprintf('All (%s)', $this->total); ?>
+				</a>
+			</li>
+			<li>
+				<a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=groups&filter=managers'); ?>">
+					<?php echo JText::_('Manager'); ?>
+				</a>
+			</li>
+			<li>
+				<a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=groups&filter=members'); ?>">
+					<?php echo JText::_('Member'); ?>
+				</a>
+			</li>
+			<li>
+				<a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=groups&filter=applicants'); ?>">
+					<?php echo JText::_('Applicant'); ?>
+				</a>
+			</li>
+			<li>
+				<a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=groups&filter=invitees'); ?>">
+					<?php echo JText::_('Invitees'); ?>
+				</a>
+			</li>
+		</ul>
+
 		<table class="groups entries" summary="<?php echo JText::_('PLG_MEMBERS_GROUPS_TBL_SUMMARY'); ?>">
 			<caption>
 				<?php echo JText::_('Your Groups'); ?>
@@ -53,43 +81,45 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</caption>
 			<tbody>
 <?php
+if ($this->groups)
+{
 	foreach ($this->groups as $group)
 	{
 		$status = '';
 		$options = '';
 		$approved = false;
-		
-		if($group->manager)
+
+		if ($group->manager)
 		{
 			$status = 'manager';
-			
+
 			$options  = '<a class="manage tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="Manager Options :: Manage group membership">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
 			$options .= ' <a class="customize tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="Manager Options :: Edit this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
 			$options .= ' <a class="delete tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="Manager Options :: Delete this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
 		}
-		else if($group->registered && $group->regconfirmed)
+		else if ($group->registered && $group->regconfirmed)
 		{
 			$status = 'member';
 			
 			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 		}
-		else if($group->registered && !$group->regconfirmed)
+		else if ($group->registered && !$group->regconfirmed)
 		{
 			$status = 'pending';
 			
 			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 		}
-		else if(!$group->registered && $group->regconfirmed)
+		else if (!$group->registered && $group->regconfirmed)
 		{
 			$status = 'invitee';
 			
 			$options  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="Membership Options :: Accept membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
 			$options .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 		}
-		
+
 		//do we have a new unpublished group
 		$approved = (!$group->approved) ? true : false;
-		
+
 		//are we published
 		$published = ($group->published) ? true : false;
 ?>
@@ -156,6 +186,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</tr>
 <?php
 	}
+}
+else
+{
+?>
+				<tr>
+					<td colspan="6">
+						<?php echo JText::_('No groups found.'); ?>
+					</td>
+				</tr>
+<?php 
+}
 ?>
 			</tbody>
 		</table>
