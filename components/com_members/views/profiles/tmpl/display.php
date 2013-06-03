@@ -129,9 +129,16 @@ that is the HUB!</p>
 	
 	if ($rows = $c->getRecords($filters, false))
 	{
+		ximport('Hubzero_User_Profile_Helper');
 		$i = 0;
 		foreach ($rows as $row)
 		{
+			$contributor = Hubzero_User_Profile::getInstance($row->uidNumber);
+			if (!$contributor || !$contributor->get('uidNumber'))
+			{
+				continue;
+			}
+
 			if ($i == 2)
 			{
 				$i = 0;
@@ -144,8 +151,6 @@ that is the HUB!</p>
 				case 0: 
 				default: $cls = 'first'; break;
 			}
-
-			$contributor = Hubzero_User_Profile::getInstance($row->uidNumber);
 ?>
 		<div class="two columns <?php echo $cls; ?>">
 			<div class="contributor">
