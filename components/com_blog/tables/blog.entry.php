@@ -362,6 +362,9 @@ class BlogEntry extends JTable
 				case 'private':
 					$query .= " AND m.state=0";
 				break;
+				case 'all':
+					$query .= " AND m.state>=0";
+				break;
 				case 'trashed':
 					$query .= " AND m.state<0";
 				break;

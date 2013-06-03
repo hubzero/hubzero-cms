@@ -226,17 +226,21 @@ class plgMembersBlog extends JPlugin
 			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
 		}
 
+		// Check logged-in status
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$view->filters['state'] = 'public';
 		} 
+		// Logged-in non-owner
+		else if ($juser->get('id') != $this->member->get('uidNumber')) 
+		{
+			$view->filters['state'] = 'registered';
+		}
+		// Owner of the blog
 		else 
 		{
-			if ($juser->get('id') != $this->member->get('uidNumber')) 
-			{
-				$view->filters['state'] = 'registered';
-			}
+			$view->filters['state'] = 'all';
 		}
 		if ($juser->get('id') == $this->member->get('uidNumber'))
 		{
@@ -627,7 +631,9 @@ class plgMembersBlog extends JPlugin
 		}
 
 		// Return the topics list
-		return $this->_browse();
+		//return $this->_browse();
+		$app =& JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
 	}
 
 	/**

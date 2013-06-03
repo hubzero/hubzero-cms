@@ -167,23 +167,6 @@ class BlogModelEntry extends JObject
 			$paramsClass = 'JRegistry';
 		}
 		$this->params = new $paramsClass($this->_tbl->get('params'));
-
-		switch (strtolower($this->get('scope')))
-		{
-			case 'group':
-				$group = Hubzero_Group::getInstance($this->get('group_id'));
-				$this->_base = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog';
-			break;
-
-			case 'member':
-				$this->_base = 'index.php?option=com_members&id=' . $this->get('created_by') . '&active=blog';
-			break;
-
-			case 'site':
-			default:
-				$this->_base = 'index.php?option=com_blog';
-			break;
-		}
 	}
 
 	/**
@@ -613,6 +596,25 @@ class BlogModelEntry extends JObject
 	 */
 	public function link($type='')
 	{
+		if (!isset($this->_base))
+		{
+			switch (strtolower($this->get('scope')))
+			{
+				case 'group':
+					$group = Hubzero_Group::getInstance($this->get('group_id'));
+					$this->_base = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog';
+				break;
+
+				case 'member':
+					$this->_base = 'index.php?option=com_members&id=' . $this->get('created_by') . '&active=blog';
+				break;
+
+				case 'site':
+				default:
+					$this->_base = 'index.php?option=com_blog';
+				break;
+			}
+		}
 		$link = $this->_base;
 
 		// If it doesn't exist or isn't published
