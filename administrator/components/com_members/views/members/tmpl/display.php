@@ -59,6 +59,14 @@ if ($canDo->get('core.delete'))
 	//JToolBarHelper::deleteList();
 }
 
+$dateFormat = '%Y-%m-%d';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'Y-m-d';
+	$tz = true;
+}
+
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
@@ -165,11 +173,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	if (!$row->lastvisitDate || $row->lastvisitDate == "0000-00-00 00:00:00") 
 	{
-		$lvisit = JText::_('Never');
+		$lvisit = '<span class="never" style="color:#bbb;">' . JText::_('never') . '</span>';
 	} 
 	else 
 	{
-		$lvisit = $row->lastvisitDate; //= JHTML::_('date',  $row->lastvisitDate, JText::_('DATE_FORMAT_LC4'));
+		$lvisit = JHTML::_('date', $row->lastvisitDate, $dateFormat, $tz);
 	}
 	
 	if ($row->picture)
@@ -200,9 +208,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $this->escape($row->username); ?>
 				</td>
-				<!-- <td>
-					<span class="organization"><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '&nbsp;';?></span>
-				</td> -->
 				<td>
 <?php if (trim($row->email)) { ?>
 					<a href="mailto:<?php echo $row->email; ?>"><?php echo $this->escape($row->email); ?></a>
@@ -218,10 +223,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td>
-					<time><?php echo $row->registerDate; ?></time>
+					<time datetime="<?php echo $row->registerDate; ?>"><?php echo JHTML::_('date', $row->registerDate, $dateFormat, $tz); ?></time>
 				</td>
 				<td>
-					<time><?php echo $lvisit; ?></time>
+					<time datetime="<?php echo $row->lastvisitDate; ?>"><?php echo $lvisit; ?></time>
 				</td>
 			</tr>
 <?php
