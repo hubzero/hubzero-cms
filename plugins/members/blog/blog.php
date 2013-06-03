@@ -165,12 +165,16 @@ class plgMembersBlog extends JPlugin
 		{
 			$filters['state'] = 'public';
 		} 
+		// Logged-in non-owner
+		else if ($juser->get('id') != $member->get('uidNumber')) 
+		{
+			$filters['state'] = 'registered';
+		}
+		// Owner of the blog
 		else 
 		{
-			if ($juser->get('id') != $member->get('uidNumber')) 
-			{
-				$filters['state'] = 'registered';
-			}
+			$filters['state'] = 'all';
+			$filters['authorized'] = $member->get('uidNumber');
 		}
 
 		// Get an entry count
@@ -244,7 +248,7 @@ class plgMembersBlog extends JPlugin
 		}
 		if ($juser->get('id') == $this->member->get('uidNumber'))
 		{
-			$view->filters['authorized'] = true;
+			$view->filters['authorized'] = $this->member->get('uidNumber');
 		}
 
 		$view->year   = $view->filters['year'];
