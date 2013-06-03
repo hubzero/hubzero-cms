@@ -37,7 +37,7 @@ $tools = $this->tools;
 if ($this->show_tools && $tools) {
 	$html .= '<h4>'.JText::_('MOD_MYCONTRIBUTIONS_TOOLS').' ';
 	if (count($tools) > $this->limit_tools)  {
-		$html .= '<small><a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline').'">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').' '.count($tools).'</a></small>';
+		$html .= '<small><a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline&task=pipeline').'">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').' '.count($tools).'</a></small>';
 	}
 	$html .= '</h4>'."\n";
 	//$html .= '<div class="category-wrap">'."\n";
