@@ -98,6 +98,22 @@ Display:
 
 Note that there must be one or more spaces preceding the list item markers, otherwise the list will be treated as a normal paragraph.
 
+For multi-line content within a listed item, the content must be indented the same number of spaces as the initial list line content. That is, if it takes 3 characters to start a list "(space)#(space)Content", the multi-line content must be indented 3 spaces.
+
+Example:
+
+{{{
+ * One
+ * Two[[br]]
+   Multi-line content
+ * Three
+}}}
+
+ * One
+ * Two[[br]]
+   Multi-line content
+ * Three
+
 == Definition Lists ==
 
 The wiki also supports definition lists. Definition terms start with '''one''' space " " and end with double colons "::". Definitions must be on the line immediately following the term and start with '''two to three''' spaces.
@@ -115,7 +131,7 @@ A line with no beginning spaces.
 
 Display:
 
-A line with no spaces.
+A line with no beginning spaces.
 
  llama::
    some kind of mammal, with hair
