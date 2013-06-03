@@ -188,7 +188,7 @@ class modRapidContact extends JObject
 
 			if ($this->enable_anti_spam) 
 			{
-				if ($this->posted['anti_spam_answer'] != $this->anti_spam_a) 
+				if (!isset($this->posted['anti_spam_answer']) || ($this->posted['anti_spam_answer'] != $this->anti_spam_a))
 				{
 					$this->error = JText::_('Wrong anti-spam answer');
 				}
