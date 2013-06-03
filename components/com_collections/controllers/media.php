@@ -460,7 +460,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
 			'id'        => $listdir,
-			'html'      => $view->loadTemplate()
+			'html'      => str_replace('>', '&gt;',  $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
 		));
 	}
 

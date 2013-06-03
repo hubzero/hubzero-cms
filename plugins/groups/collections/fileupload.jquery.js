@@ -79,6 +79,9 @@ jQuery(document).ready(function(jq){
 					uploader.setParams({dir: $('#field-dir').val()});
 				}
 
+				// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
+				response.html = response.html.replace(/&gt;/g, '>');
+				response.html = response.html.replace(/&lt;/g, '<');
 				$('#ajax-uploader-list').append(response.html);
 			}
 		});
