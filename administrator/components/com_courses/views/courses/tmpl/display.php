@@ -133,13 +133,25 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<?php if ($row->get('state')) { ?>
+					<?php if ($row->get('state') == 1) { ?>
 					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Unpublish Course'); ?>">
 						<span class="state publish">
 							<span class="text"><?php echo JText::_('Published'); ?></span>
 						</span>
 					</a>
-					<?php } else { ?>
+					<?php } else if ($row->get('state') == 2) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Restore Course'); ?>">
+						<span class="state trash">
+							<span class="text"><?php echo JText::_('Trashed'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($row->get('state') == 3) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Course'); ?>">
+						<span class="state pending">
+							<span class="text"><?php echo JText::_('Draft'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($row->get('state') == 0) { ?>
 					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Course'); ?>">
 						<span class="state unpublish">
 							<span class="text"><?php echo JText::_('Unpublished'); ?></span>

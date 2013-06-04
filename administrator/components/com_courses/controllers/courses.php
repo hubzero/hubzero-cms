@@ -147,6 +147,10 @@ class CoursesControllerCourses extends Hubzero_Controller
 		{
 			$this->view->row = CoursesModelCourse::getInstance($id);
 		}
+		if (!$this->view->row->exists())
+		{
+			$this->view->row->set('state', 3);
+		}
 
 		// Set any errors
 		if ($this->getError())

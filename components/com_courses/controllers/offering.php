@@ -65,7 +65,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		}
 
 		// Ensure the course has been published or has been approved
-		if (!$this->course->isAvailable())
+		if (!$this->course->access('manage') && !$this->course->isAvailable())
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NOT_PUBLISHED'));
 			return;

@@ -137,12 +137,12 @@ class CoursesControllerCourses extends Hubzero_Controller
 			//get courses user may be interested in
 			if ($mytags)
 			{
-				$this->view->interestingcourses = $model->courses(array('tags' => $mytags, 'limit' => 10));
+				$this->view->interestingcourses = $model->courses(array('tags' => $mytags, 'limit' => 10, 'state' => 1));
 			}
 		}
 
 		//get the popular courses
-		$this->view->popularcourses = $model->courses(array('limit' => 3, 'sort' => 'students'));
+		$this->view->popularcourses = $model->courses(array('limit' => 3, 'sort' => 'students', 'state' => 1));
 
 		// Output HTML
 		$this->view->config   = $this->config;
