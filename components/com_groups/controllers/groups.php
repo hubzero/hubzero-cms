@@ -404,8 +404,14 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			)
 		);
 		
+		//only include overview if we are on that tab
+		$overviewSection = '';
+		if ($this->view->tab == 'overview')
+		{
+			$overviewSection = $group_overview;
+		}
 		// Push the overview content to the array of sections we're going to output
-		array_unshift($this->view->sections, array('html' => $group_overview, 'metadata' => ''));
+		array_unshift($this->view->sections, array('html' => $overviewSection, 'metadata' => ''));
 		
 		//is this a super group?
 		if($this->view->group->get('type') == 3)
