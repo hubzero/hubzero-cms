@@ -468,7 +468,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->loginTask('You must be logged in to delete a group.');
+			$this->loginTask('You must be logged in to create a group.');
 			return;
 		}
 		
