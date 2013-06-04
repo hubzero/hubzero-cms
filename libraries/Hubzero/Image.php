@@ -85,22 +85,36 @@ class Hubzero_Image
 	 * @param      array  $config       Optional configurations
 	 * @return     void
 	 */
-	public function __construct($image_source = null, $config = array())
+	public function __construct($image_source = null, $config = array(), $isRemoteImage = false )
 	{
 		$this->source = $image_source;
 		$this->config = $config;
 
 		if (!$this->checkPackageRequirements('gd'))
 		{
-			return $this->errors;
+			return;
 		}
-
-		if (!is_null($this->source) && is_file($this->source))
+		
+		//check to see if we have an image to work with
+		if (is_null($this->source))//&& is_file($this->source))
 		{
-			if(!$this->openImage()) {
-				throw new Exception('Invalid/corrupted image file.');	
-			}
+			$this->setError( JText::_('[ERROR] Image Source not set.') );
+			return;
 		}
+		
+		//check to make sure its a file if not remote
+		if (!$isRemoteImage && !is_file($this->source))
+		{
+			$this->setError( JText::_('[ERROR] Image doesn\'t exist on the server.') );
+			return;
+		}
+		
+		//open image
+		if(!$this->openImage())
+		{
+			throw new Exception('Invalid/corrupted image file.');
+		}
+		
 	}
 
 	/**
@@ -108,9 +122,22 @@ class Hubzero_Image
 	 * 
 	 * @return     array
 	 */
-	public function getErrors()
+	public function getError()
 	{
 		return $this->errors;
+	}
+	
+	/**
+	 * Set error messages
+	 * 
+	 * @param    String    $errorMessage
+	 */
+	public function setError( $errorMessage = '' )
+	{
+		if ($errorMessage != '')
+		{
+			$this->errors[] = $errorMessage;
+		}
 	}
 
 	/**
@@ -149,7 +176,7 @@ class Hubzero_Image
 		$installed_exts = get_loaded_extensions();
 		if (!in_array($package, $installed_exts))
 		{
-			$this->errors[] = "[ERROR] You are missing the required PHP package {$package}.";
+			$this->setError("[ERROR] You are missing the required PHP package {$package}.");
 			return false;
 		}
 
@@ -167,7 +194,7 @@ class Hubzero_Image
 		if(empty($image_atts)) {
 			return false;	
 		}
-
+		
 		switch ($image_atts['mime'])
 		{
 			case 'image/jpeg':
@@ -556,11 +583,14 @@ class Hubzero_Image
 	 */
 	private function output($save_path)
 	{
-		switch ($this->image_type)
+		if ($this->resource != null)
 		{
-			case IMAGETYPE_PNG:  imagepng($this->resource, $save_path);  break;
-			case IMAGETYPE_GIF:  imagegif($this->resource, $save_path);  break;
-			case IMAGETYPE_JPEG: imagejpeg($this->resource, $save_path); break;
+			switch ($this->image_type)
+			{
+				case IMAGETYPE_PNG:  imagepng($this->resource, $save_path);  break;
+				case IMAGETYPE_GIF:  imagegif($this->resource, $save_path);  break;
+				case IMAGETYPE_JPEG: imagejpeg($this->resource, $save_path); break;
+			}
 		}
 	}
 }	

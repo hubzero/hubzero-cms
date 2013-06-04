@@ -479,7 +479,7 @@ Class GroupPages extends JTable
 		//paths to thumbs thumb1 is preferred
 		$thumb1 = $path . 'thumb.png';
 		$thumb2 = $path . $name . '.' . $ext;
-
+		
 		//return profile thumb based on existence
 		if (file_exists(JPATH_ROOT . DS . $thumb1))
 		{
@@ -492,10 +492,9 @@ Class GroupPages extends JTable
 		else
 		{
 			$full = JPATH_ROOT . DS . $path . $picture;
-			if (file_exists($full))
+			
+			if (file_exists($full) && in_array($ext,  array('png', 'jpe', 'jpeg', 'jpg', 'gif')))
 			{
-				echo $user->get('uidNumber') .'<br />';
-				echo $full .'<br />';
 				ximport('Hubzero_Image');
 				$hi = new Hubzero_Image($full);
 				$hi->resize(50, false, true, true);
