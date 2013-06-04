@@ -282,7 +282,7 @@ window.addEvent('domready', Fields.initialise);
 								$data = $this->row->get('params');
 							}
 							$param = new $paramsClass(
-								$data,
+								(is_object($data) ? $data->toString() : $data),
 								JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . ($pth ? DS . $plugin->element : '') . '.xml'
 							);
 							$out = $param->render('params', $event['params']);
