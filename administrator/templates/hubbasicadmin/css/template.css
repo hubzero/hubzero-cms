@@ -1360,6 +1360,9 @@
 	.checkedout:hover:before {
 		color: #333;
 	}
+	.pending:before {
+		content: "\22EF";
+	}
 	/* Default */
 	.default:before {
 		content: "\2605";
