@@ -60,11 +60,30 @@ class ObjectAssetHandler extends ContentAssetHandler
 
 		// Check if valid youtube or kaltura video
 		// @FIXME: we need a safer way!
-		if(preg_match('/<iframe width="[0-9]+" height="[0-9]+" src="http[s]*:\/\/www\.youtube(-nocookie)?\.com\/embed\/[a-zA-Z0-9-_]+(\?rel=0)?" frameborder="[0-9]+" allowfullscreen><\/iframe>/', $object))
+		if (preg_match('/<iframe(.*?)src="(.*?)"(.*?)><\/iframe>/i', $object, $matches))
+		{
+			if (stristr($matches[2], 'youtube'))
+			{
+				$this->asset['title'] = 'New YouTube video';
+			}
+			else if (stristr($matches[2], 'vimeo'))
+			{
+				$this->asset['title'] = 'New Vimeo video';
+			}
+			else if (stristr($matches[2], 'blip'))
+			{
+				$this->asset['title'] = 'New Blip.tv video';
+			}
+			else if (stristr($matches[2], 'kaltura'))
+			{
+				$this->asset['title'] = 'New Kaltura video';
+			}
+		}
+		/*if (preg_match('/<iframe width="[0-9]+" height="[0-9]+" src="http[s]*:\/\/www\.youtube(-nocookie)?\.com\/embed\/[a-zA-Z0-9-_]+(\?rel=0)?" frameborder="[0-9]+" allowfullscreen><\/iframe>/', $object))
 		{
 			$this->asset['title'] = 'New YouTube video';
-		}
-		elseif(preg_match('/\<script src="http[s]*\:\/\/cdnapisec\.kaltura\.com.*/is', $object))
+		}*/
+		elseif (preg_match('/\<script src="http[s]*\:\/\/cdnapisec\.kaltura\.com.*/is', $object))
 		{
 			$this->asset['title'] = 'New Kaltura video';
 		}
