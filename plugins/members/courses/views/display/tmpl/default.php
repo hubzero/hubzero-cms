@@ -197,6 +197,13 @@ if ($this->roles)
 							</span>
 						</td>
 						<td>
+							<?php if ($row->state == 3) { ?>
+							<span class="entry-state draft">
+								<?php echo JText::_('PLG_MEMBERS_COURSES_STATE_DRAFT'); ?>
+							</span>
+							<?php } ?>
+						</td>
+						<td>
 							<?php if ($row->starts) { ?>
 							<?php echo JText::_('PLG_MEMBERS_COURSES_STARTS'); ?><br />
 							<span class="entry-details">

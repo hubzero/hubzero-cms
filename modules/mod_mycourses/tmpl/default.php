@@ -56,6 +56,9 @@ $juser =& JFactory::getUser();
 ?>
 		<li class="course">
 			<a href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>"><?php echo stripslashes($course->title); ?></a>
+			<?php if ($course->state == 3) { ?>
+			<small><?php echo JText::_('Draft'); ?></small>
+			<?php } ?>
 			<span><span class="<?php echo $course->role; ?> status"><?php echo $course->role; ?></span></span>
 		</li>
 <?php

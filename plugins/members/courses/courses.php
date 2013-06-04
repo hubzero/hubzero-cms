@@ -180,7 +180,7 @@ class plgMembersCourses extends JPlugin
 				}
 			}
 
-			if(!is_null($view->active))
+			if (!is_null($view->active))
 			{
 				$view->results = $this->_getData('list', $view->active->alias, $view->filters);
 			}
@@ -246,7 +246,7 @@ class plgMembersCourses extends JPlugin
 				}
 				else
 				{
-					$this->database->setQuery("SELECT c.id, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, 
+					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, 
 						m.enrolled, s.publish_up AS starts, s.publish_down AS ends
 							FROM #__courses AS c 
 							JOIN #__courses_members AS m ON m.course_id=c.id
@@ -273,7 +273,7 @@ class plgMembersCourses extends JPlugin
 				else
 				{
 					$this->database->setQuery("
-						SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends
+						SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends
 							FROM #__courses AS c 
 							JOIN #__courses_members AS m ON m.course_id=c.id
 							LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
@@ -314,7 +314,7 @@ class plgMembersCourses extends JPlugin
 				}
 				else
 				{
-					$this->database->setQuery("SELECT c.id, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, r.alias AS role_alias, r.title AS role_title  
+					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, r.alias AS role_alias, r.title AS role_title  
 						FROM #__courses AS c 
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
@@ -339,7 +339,7 @@ class plgMembersCourses extends JPlugin
 				}
 				else
 				{
-					$this->database->setQuery("SELECT c.id, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, r.alias AS role_alias, r.title AS role_title  
+					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, r.alias AS role_alias, r.title AS role_title  
 						FROM #__courses AS c 
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id

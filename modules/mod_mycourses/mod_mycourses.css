@@ -19,6 +19,10 @@
 	}
 	div.draggable .compactlist li.course a {
 	}
+	div.draggable .compactlist li.course small {
+		display: block;
+		color: #aaa;
+	}
 	div.draggable .compactlist li.course span span.status {
 	}
 	div.draggable .compactlist li.course span span.student {
