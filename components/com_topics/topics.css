@@ -12,111 +12,32 @@
 	-- -- -- -- -- -- --
 
 */
+
 /* Introduction page */
 	#introduction:after {
 		content: "\f072";
 	}
 /* [!] HACKS - IE 7 and older */
 	#introduction {
-		*background-image: url("/components/com_wiki/assets/img/topics-large.gif");
-		*background-position: 30px 25px;
-		*background-repeat: no-repeat;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf072;</small>');
 	}
 /* Sections */
-	.com_topics .main {
-		border-top: 1px solid #fff;
-		border-bottom: none;
-	}
 	.com_topics .subject {
 		margin-top: 1em;
 	}
-	.com_topics .main .subject {
-		margin-top: 0;
-	}
-	.com_topics .main .subject h1,
-	.com_topics .main .subject h1,
-	.com_topics .main .subject h2,
-	.com_topics .main .subject h3,
-	.com_topics .main .subject h4,
-	.com_topics .main .subject h5,
-	.com_topics .main .subject h6 {
-		color: #333;
-		text-shadow: none;
-		font-weight: bold;
-		padding: 0;
-		margin: 1em 0;
+	.com_topics .main {
 		border: none;
+		/*margin-top: 0;
+		padding-top: 0;*/
 	}
-	.com_topics .main .subject h1 {
-		font-size: 1.8em;
+	.sub-menu {
+		margin-bottom: 0;
 	}
-	.com_topics .main .subject h2 span {
-		color: #333;
-	}
-	.com_topics .main .subject ul,
-	.com_topics .main .subject ol {
-		padding: 0;
-		margin: 1em 0;
-	}
-	.com_topics .main .subject ul {
-		list-style-type: disc;
-	}
-	.com_topics .main .subject ol {
-		list-style-type: decimal;
-	}
-	.com_topics .main .subject li {
-		padding: 0;
-		margin: 0.2em 0 0.2em 2em;
-	}
-	.com_topics .main .subject ul li {
-	}
-	.com_topics .main .subject dd {
-		color: #888;
-	}
-	.com_topics .main .subject table {
-		border: 2px solid #ccc;
-		width: auto;
-	}
-	.com_topics .main .subject table td, 
-	.com_topics .main .subject table th {
-		border: 1px solid #ccc;
-		margin: 0;
-		padding: 0.2em 0.4em;
-	}
-	.com_topics .main .subject blockquote {
-		margin: 2em 0 2.5em 0;
-		padding: 5px 0 5px 10px;
-	}
-	.com_topics #hubForm.full fieldset,
-	.com_topics .subject #hubForm.full fieldset {
-		width: auto;
-	}	
+
 	#revisionhistory {
 		width: 100%;
 	}
-	
-	.file {
-		display: block;
-		width: 16px;
-		height: 16px;
-		overflow: hidden;
-		text-indent: -555em;
-		background: url("/components/com_wiki/assets/img/icons/unknown.png") 0 0 no-repeat;
-	}
-	.png,
-	.gif {
-		background: url("/components/com_wiki/assets/img/icons/gif.png") 0 0 no-repeat;
-	}
-	.jpg,
-	.jpe,
-	.jpeg {
-		background: url("/components/com_wiki/assets/img/icons/jpg.png") 0 0 no-repeat;
-	}
-	.bmp,
-	.tiff {
-		background: url("/components/com_wiki/assets/img/icons/tiff.png") 0 0 no-repeat;
-	}
-	
+
 	.timestamp,
 	.page-options {
 		margin: 4em 0 1em 0;
@@ -133,8 +54,7 @@
 	.page-options {
 		margin: 0 15px 1em 15px;
 	}
-	/*#content-header-extra ul,
-	#content-header-extra li,*/
+
 	.page-options ul,
 	.page-options li {
 		margin: 0;
@@ -159,13 +79,54 @@
 		float: right;
 		margin: 0 0 0 1.5em;
 	}
-	#sub-menu li.page-delete,
-	#sub-sub-menu li.page-delete {
-		float: right;
+	.sub-menu li a span:before {
+		font-family: "Fontcons";
+		margin-right: 0.4em;
 	}
-	/*#content-header-extra li {
+	.sub-menu li.page-main,
+	.sub-menu li.page-index {
+		float: right;
+		background: transparent;
+	}
+	.sub-menu li.page-main a,
+	.sub-menu li.page-index a {
+		background: transparent;
+		border-radius: 0;
+		color: #666;
+		text-shadow: none;
+		border: none;
+		height: auto;
+		padding: 0;
+		margin: 0 0 0 30px;
 		display: inline;
-	}*/
+	}
+	.sub-menu li.page-main a:hover,
+	.sub-menu li.page-index a:hover {
+		color: #333;
+		background: transparent;
+	}
+	.sub-menu li.page-text a span:before {
+		content: "\f036";
+	}
+	.sub-menu li.page-edit a span:before {
+		content: "\270E";
+	}
+	.sub-menu li.page-comments a span:before {
+		content: "\f086";
+	}
+	.sub-menu li.page-history a span:before {
+		content: "\f017";
+	}
+	.sub-menu li.page-delete a span:before {
+		content: "\f057";
+	}
+	.sub-menu li.page-main a span:before {
+		content: "\f071";
+	}
+	.sub-menu li.page-index a span:before {
+		content: "\f03a";
+	}
+
 	#file-uploader .qq-upload-button {
 		background:#222;
 		background-image: -webkit-linear-gradient(top, #444, #222);
@@ -238,149 +199,22 @@
 	#attachments tbody td {
 		padding: 0.2em 0.4em;
 	}
+	#attachments tbody td span {
+		display: block;
+		overflow: scroll;
+		max-width: 180px;
+		word-wrap: break-word;
+	}
 	#attachments .delete {
 		padding-left: 0;
 		background: transparent;
-	}
-/* Comments */
-	.com_topics .below .subject {
-		background: transparent;
-		padding: 1em 0 0 0;
-		border-bottom: none;
-	}
-	#commentlist-title,
-	#commentform-title,
-	.below h3 {
-		margin-left: 70px;
-	}
-	.com_topics .main .subject ol.comments,
-	ol.comments {
-		list-style-type: none !important;
-		margin: 0;
-		padding: 0;
-		background: transparent;
-	}
-	.com_topics .main .subject ol.comments li,
-	ol.comments li {
-		clear: left;
-		margin: 0;
-		padding: 0;
-		border-top: 1px solid #fff;
-	}
-	.com_topics .main .subject ol.comments ol,
-	ol.comments ol {
-		margin: 0;
-		padding: 0;
-	}
-	.com_topics .main .subject ol.comments li li,
-	ol.comments li li {
-		margin: 0;
-		padding-left: 70px !important;
-	}
-	/* Options */
-	.abuse {
-		background: url("/components/com_wiki/assets/img/abuse.gif") 0 0 no-repeat;
-		padding-left: 15px;
-	}
-	.reply {
-		background: url("/components/com_wiki/assets/img/reply.gif") 0 0 no-repeat;
-		padding-left: 15px;
-	}
-	.abuse:hover,
-	.reply:hover {
-		background-position: 0 -20px;
-	}
-	.comment-options {
-		color: #fff;
-		font-size: 90%;
-		visibility: hidden;
-	}
-	ol.comments .comment-content:hover .comment-options {
-		visibility: visible;
-	}
-	.comment-options a {
-		margin-right: 1em;
-	}		
-	.comment-options a span {
-		display: none;
-	}
-	ol.comments dl.comment-details {
-		display: none;
-	}
-	/* Member photo */
-	ol.comments p.comment-member-photo {
-	    float: left;
-	    margin: 0;
-	    padding: 0 20px 0 0;
-		width: 50px;
-		height: 50px;
-		overflow: hidden;
-	    color: #777;
-	    font-size: 11px;
-	    text-align: right;
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
-	}
-	/* Content */
-	ol.comments .comment-content {
-		margin: 0 0 1em 70px;
-		background-color: #fafafa;
-		border: 10px solid #f2f2f2;
-		padding: 0 1em;
-	}
-	ol.comments .comment-voting {
-		margin: 0;
-		padding: 0;
-	}
-	ol.comments .comment-voting .thumbsvote {
-		margin-top: 0.5em;
-	}
-	/* Author comments */
-	ol.comments .author .comment-content,
-	ol.comments .author ol.comments .author .comment-content {
-		background-color: #fdfbf8;
-		border-color: #f9f2ec;
-	}
-	ol.comments .author p.comment-member-photo,
-	ol.comments .author ol.comments .author p.comment-member-photo {
-		background: url("/components/com_wiki/mages/comment-arrow.gif") right -129px no-repeat;
-	}
-	ol.comments .author ol.comments .comment-content,
-	ol.comments .author ol.comments .author ol.comments .comment-content {
-		background-color: #fafafa;
-		border-color: #f2f2f2;
-	}
-	ol.comments .author ol.comments p.comment-member-photo,
-	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
-	}
-	/* Chosen comments */
-	ol.comments .chosen .comment-content {
-		background-color: #f9f8fd;
-		border-color: #eeecf9;
-	}
-	ol.comments .chosen p.comment-member-photo {
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -57px no-repeat;
-	}
-	/* Details (date, time) */
-	ol.comments span.comment-details {
-		color: #bfbfbf;
-	}
-	/* Permalink */
-	ol.comments .permalink {
-		border: none;
-		color: #bfbfbf;
-	}
-	ol.comments .permalink:hover {
-		color: #000;
 		border: none;
 	}
-	ol.comments .odd,
-	ol.comments .even {
-		background: transparent;
+	#attachments .delete:before {
+		display: none;
+		content: "";
 	}
-	ol.comments .comment-none {
-		color: #ccc;
-	}
+
 	/* Stars */
 	ol.comments .no-stars        { background-position: 0 0; }
 	ol.comments .half-stars      { background-position: 0 -40px; }
@@ -393,156 +227,12 @@
 	ol.comments .four-stars      { background-position: 0 -320px; }
 	ol.comments .fourhalf-stars  { background-position: 0 -360px; }
 	ol.comments .five-stars      { background-position: 0 -400px; }
-/* Add comment */
-	.addcomment {
-		margin: 0 0 1em 0;
-		padding: 1em;
-		border: 10px solid #ccc;
-		background-color: #eee;
-	}
-	.addcomment label {
-		display: block;
-	}
-	.addcomment .cancelreply {
-		margin-left: 2em;
-	}
-	.addcomment .submit {
-		clear: both;
-		margin: -1.5em 0 0 0;
-		padding: 0;
-		text-align: right;
-	}
-	.addcomment input, 
-	.addcomment select, 
-	.addcomment textarea {
-		margin-top: 0.25em;
-		width: 100%;
-	}	
-	.addcomment .submit input,
-	.addcomment .option {
-		width: auto;
-	}
-	.addcomment .reply-anonymous-label {
-		width: 50%;
-	}
-/* Report abuse links */
 
-/* Comment form */
-	#commentform {
-		margin: 0 0 4em 0;
-		padding: 0;
-	}
-	#commentform fieldset {
-		background: #F5F7F2;
-		border: 10px solid #DEE4CD;
-		margin: 0;
-		padding: 0 1em 0em 1em;
-		text-align: left;
-		color: #777;
-	}
-	#commentform fieldset fieldset {
-		border-width: 1px;
-		padding: 0 1em 1em 1em;
-		margin: 1em 0;
-	}
-	#commentform p.comment-member-photo {
-		float: left;
-		margin: 0;
-		padding: 0 20px 0 0;
-		width: 50px;
-		height: 50px;
-		overflow: hidden;
-		color: #777;
-		font-size: 11px;
-		text-align: right;
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -201px no-repeat;
-	}
-	#commentform .sidenote {
-		border: 1px solid #edf0e8;
-		padding: 0 1em;
-		margin: 0 -1em 0 -1em;
-		color: #aaa;
-		background-color: #edf0e8;
-	}
-	#commentform .required,
-	#commentform .optional {
-		text-transform: uppercase;
-		font-size: xx-small;
-	}
-	#commentform .required {
-		color: red;
-	}
-	#commentform .optional {
-		color: #999;
-	}
-	#commentform label {
-		padding-top: 1em;
-		position: relative;
-		display: block;
-	}
-	#commentform .grouping {
-		position: relative;
-		margin-left: -3em;
-		padding: 0 0 1.5em 5em;
-		overflow: hidden;
-		top: 1em;
-		left: 1.5em;
-	}
-	#commentform .grouping label {
-		padding: 0;
-		float: left;
-		width: 50%;
-	}
-	#commentform .grouping label:first-child {
-		margin: 0 2em 0 -3.5em;
-	}
-	#commentform .grouping label span {
-		top: 0;
-	}
-	#commentform input, 
-	#commentform select, 
-	#commentform textarea {
-		margin-top: 0.25em;
-		width: 100%;
-	}
-	#commentform .submit {
-		clear: both;
-		margin: -1.5em 0 1em 0;
-		padding: 0;
-		text-align: right;
-	}
-	#commentform .submit input,
-	#commentform .option {
-		width: auto;
-	}
-	#commentform #comment-anonymous-label {
-		width: 50%;
-	}
-/* Wiki Reference */
-	table.wiki-reference {
-		border: none;
-		font-size: 11px;
-		margin: 0;
-	}
-	table.wiki-reference caption {
-		font-weight: bold;
-	}
-	table.wiki-reference tbody td {
-		border-top: 1px solid #efefef;
-		border-bottom: 1px solid #efefef;
-	}
-/* Table of contents */
-	.article-toc,
-	.article-search {
-		background-color: #eee;
-		margin: 0 0 1em 0;
-		padding: 0.5em;
-	}
-	
+/* Tags */
 	.article-tags {
-		background: #F4F4F4 url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;
+		background: #F4F4F4; /* url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;*/
 		margin: 0 0 1em 0;
-		padding: 0.5em 0.5em 0.4em 2em;
+		padding: 0.5em 0.5em 0.5em 2em;
 	}
 	.article-tags h3 {
 		display: none;
@@ -557,13 +247,20 @@
 		margin: 0;
 		padding: 0;
 	}
-	
-	.subject .article-toc {
-		width: 300px;
-		float: left;
+
+/* Table of contents */
+	.wikipage .article-toc,
+	.wikipage .article-search {
+		background-color: #eee;
+		margin: 1em 0;
+		padding: 0;
 	}
-	.article-toc h3,
-	.article-search h3 {
+	.wikipage .article-toc {
+		width: 300px;
+		/*float: left;*/
+	}
+	.wikipage .article-toc h3,
+	.wikipage .article-search h3 {
 		margin: 0;
 		padding: 0.4em;
 		color: #fff;
@@ -571,31 +268,31 @@
 		font-size: 1em;
 		text-shadow: none;
 		font-weight: bold;
+		text-align: center;
 	}
-	.article-toc ul {
+	.wikipage .article-toc ul {
 		margin: 0;
 		padding: 0.4em;
 		max-height: 300px;
 		overflow: auto;
 		border: 1px solid #aaa;
 		background: #fff;
+		list-style: none;
 	}
-	.article-toc ul li {
+	.wikipage .article-toc ul li {
 		background-image: none;
 	}
-	.article-toc ul ul {
+	.wikipage .article-toc ul ul {
 		max-height: none;
 		border: none;
 		margin: 0 0 0 1em;
 		padding: 0;
 	}
-	.article-toc li {
+	.wikipage .article-toc li {
 		margin: 0;
 		padding: 0.2em;
 	}
-	/*.tocnumber {
-		display: none;
-	}*/
+
 /* Diffs */
 	.diff-versions {
 		margin: 0;
@@ -608,8 +305,8 @@
 		margin: 1em 0;
 		border: 2px solid #ccc;
 	}
-	.com_topics .main .subject table.diffs td, 
-	.com_topics .main .subject table.diffs th,
+	.com_topics .main table.diffs td, 
+	.com_topics .main table.diffs th,
 	.diffs td, 
 	.diffs th {
 		border: 1px solid #fff;
@@ -668,19 +365,19 @@
 	.resource th {
 		padding-bottom: 10px;
 	}
-	.com_topics  ol.footnotes {
+	/*.com_topics  ol.footnotes {
 		border: 1px dotted #ccc;
 		background-color: #f9f9f9;
 		font-size: 90%;
 	}
 	.com_topics  ol.footnotes li {
 		padding: 0.2em 0;
-	}
+	}*/
 /* Forms */
 	.com_topics #hubForm label.hide {
 		display: none;
 	}
-	.com_topics #hubForm .paramlist input, 
+	/*.com_topics #hubForm .paramlist input, 
 	.com_topics #hubForm .paramlist select, 
 	.com_topics #hubForm .paramlist textarea,
 	.com_topics #hubForm .paramlist label {
@@ -693,31 +390,8 @@
 	}
 	.com_topics #hubForm h3 {
 		display: none;
-	}
-	.com_topics hr {
-		border-top: 1px solid #ccc;
-		background-image: none;
-		height: 1px;
-		width: auto;
-	}
-	/*.timestamp {
-		text-align: left;
-		color: #aaa;
-		font-size: 90%;
-		font-style: italic;
-		border-top: 1px solid #ddd;
-		padding-top: 0.5em;
-		margin: 2em 0 0 0;
 	}*/
-/* Links */
-	a.ext-link {
-		background: url("/components/com_wiki/assets/img/extlink.gif") 0 0.4em no-repeat;
-		padding-left: 15px;
-	}
-	a.missing {
-		background: url("/components/com_wiki/assets/img/missinglink.gif") 0 0.4em no-repeat;
-		padding-left: 7px;
-	}
+
 /* Preview */
 	#preview .section {
 		padding: 0;
@@ -767,108 +441,240 @@
 	div.admon-warning { 
 		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
 	}
-/* Introduction page */
-	#introduction {
-		margin: 0 -15px 3em -15px;
-		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_wiki/assets/img/topics-large.gif") 30px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
+	.page-length {
+		color: #ccc;
 	}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
+	.page-length.increase {
+		color: green;
 	}
-	#introduction h3 {
-		margin-top: 0;
-		color: #7c7266;
+	.page-length.decrease {
+		color: red;
 	}
-	#introduction .columns {
-		border: none;
-	}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0;
-		padding: 0;
-	}
-	#introduction li {
+
+/* Wiki pages */
+	.wikipage {
 		margin: 0;
-		padding: 0 0 0 15px;
-		background: transparent url("/components/com_wiki/assets/img/bullets/arrow.gif") 0 50% no-repeat;
+		padding: 0 1.2em;
 	}
-/* Four Columns */
-	.com_topics .four {
-		border-top: 1px solid #e0e0d7;
-		margin-bottom: 3em;
-	}
-	.com_topics .four h3 { 
-		color: #000; 
-		margin-top: 1em; 
-		padding-top: 0em;
-		line-height: 1.5em;
-	}
-	.com_topics .four h3 a { 
-		color: #000; 
-		border-bottom: none; 
-	}
-	.com_topics .four ul {
-		margin: 1em 0;
-	}
-	.com_topics .four li {
-		margin: 1em 0;
-	}
-	.com_topics .first h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1em;
-		border: none;
-		border-top: 2px solid #e0e0d7;
-	}
-	.com_topics .second {
-	}
-	.com_topics .third {
-	}
-	.com_topics .fourth { 
-		border-right: none;
-	}
-	.com_topics .big {
-		height: 3em;
-	}
-	.com_topics .four {
-		margin-bottom: 3em;
-	}
-	.com_topics .browse a {
+	.wikipage h1,
+	.wikipage h1,
+	.wikipage h2,
+	.wikipage h3,
+	.wikipage h4,
+	.wikipage h5,
+	.wikipage h6 {
+		color: #333;
+		text-shadow: none;
 		font-weight: bold;
-		font-size: 1.2em;
+		padding: 0;
+		margin: 0.618em 0;
+		border: none;
+		line-height: 1.2;
 	}
-	.com_topics .browse .wiki {
-		background: none;
-		padding-left: 0;
+	.wikipage h1 {
+		font-size: 1.8em;
 	}
+	.wikipage h2 span {
+		color: #333;
+	}
+	.wikipage h1, 
+	.wikipage h2, 
+	.wikipage h3 {
+		margin-left: -18px;
+	}
+	.wikipage ul,
+	.wikipage ol {
+		padding: 0;
+		margin: 0 0 1em 0;
+	}
+	.wikipage ul {
+		list-style-type: disc;
+	}
+	.wikipage ol {
+		list-style-type: decimal;
+	}
+	.wikipage li {
+		padding: 0;
+		margin: 0em 0 0em 2em;
+	}
+	.wikipage ul li {
+	}
+	.wikipage dd {
+		color: #888;
+	}
+	.wikipage table {
+		border: 2px solid #ccc;
+		width: auto;
+	}
+	.wikipage table td, 
+	.wikipage table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+	}
+	.wikipage blockquote {
+		margin: 2em 0 2.5em 0;
+		padding: 5px 0 5px 10px;
+		border-left: 2px solid #ccc;
+	}
+	.wikipage blockquote:before {
+		display: none;
+	}
+	.wikipage pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.75em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 0.85em;
+		line-height: 1.95em;
+		white-space: pre;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+	}
+	.wikipage .pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.35em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 1.15em;
+		line-height: 1.35em;
+	}
+	.wikipage tt,
+	.wikipage code {
+		display: inline-block;
+		color: #666; /*#600;*/
+		border: 1px solid #ddd; /*#edc;*/
+		-webkit-border-radius: .25em;
+		-moz-border-radius: .25em;
+		-ms-border-radius: .25em;
+		-o-border-radius: .25em;
+		border-radius: .25em;
+		padding: 0 0.3em;
+		background: #fafafa;
+	}
+
 	.com_topics .wiki .modified-date {
 		color: #aaa;
 		font-size: 90%;
 	}
-	.com_topics .three,
-	.com_topics .four {
-		border: none;
-		border-top: 1px solid #e0e0d7;
+	.wikipage hr {
+		border-top: 1px solid #ccc;
+		background-image: none;
+		height: 1px;
+		width: auto;
+		visibility: visible;
+		display: block;
+	}
+
+	/* Links */
+	.wikipage a.ext-link {
+		background: url("/components/com_wiki/assets/img/extlink.gif") 0 0.4em no-repeat;
+		padding-left: 15px;
+	}
+	.wikipage a.missing {
+		background: url("/components/com_wiki/assets/img/missinglink.gif") 0 0.4em no-repeat;
+		padding-left: 7px;
+	}
+
+	.wikipage .mbox-content {
+		border: 1px solid #aaa;
+		background: #fff;
+		border-left: 10px solid #f28500;
+		padding: 0;
+		width: 250px;
+		font-size: 0.85em;
 		position: relative;
 	}
-	.com_topics .three,
-	.com_topics .four {
-		margin-right: 0;
-		padding-right: 5%;
+	.wikipage .mbox-content p.mbox-text {
+		padding: 0.4em 0.4em 0.4em 4.4em;
+		margin: 0;
+		line-height: 1.4em;
 	}
-	.com_topics .four .third,
-	.com_topics .fourth {
-		padding-right: 0;
+	.wikipage .mbox-content .mbox-date {
+		font-style: italic;
+	}
+	.wikipage .mbox-unreferenced p:before {
+		font-family: "Fontcons";
+		content: "\275D"; /* \f072 */
+		color: #ddd;
+		font-size: 3em;
+		line-height: 1;
+		position: absolute;
+		top: 0.1em;
+		left: 0.3em;
+	}
+	.wikipage .rellink {
+		font-style: italic;
+		padding-left: 1.6em;
+		margin-bottom: 0.5em;
+	}
+	.wikipage td {
+		background-color: #fff;
+	}
+	.wikipage th {
+		background-color: #f7f7f7;
+	}
+
+	.wikipage fieldset {
+		border: 1px solid #ccc;
+		background: #fff;
+		margin: 1em -18px;
+		padding: 1em;
+	}
+	.wikipage fieldset legend {
+		margin: 0 1em;
+		padding: 0 1em;
+	}
+
+/* Figures */
+	.wikipage .figure {
+		display: inline-block;
+		background: #efefef;
+		border: 1px solid #e1e1e1;
+		padding: 4px;
+	}
+	.wikipage .figure img {
+		margin: 0; /*.5em;*/
+		padding: 0;
+		background: transparent;
+		text-align: center;
+		display: block;
+	}
+	.wikipage .figure a {
+		border: none;
+	}
+	.wikipage .figcaption {
+		display: block;
+		margin: 0;
+		padding: 0.5em 0;
+		background: #efefef;
+		font-size: 0.85em;
+	}
+
+	a.markup {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		border: none;
+		color: #999;
+		margin-left: 1em;
+	}
+	a.markup:before {
+		content: "\f036";
+		font-family: "Fontcons";
+		font-size: 1.2em;
+	}
+	a.markup:hover {
+		color: #333;
+		border: none;
 	}
