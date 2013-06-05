@@ -1,5 +1,7 @@
 <? defined('JPATH_BASE') or die(); 
 
+require_once 'db.php';
+
 class HubgraphConnectionError extends \Exception
 {
 }
@@ -7,13 +9,18 @@ class HubgraphConnectionError extends \Exception
 class HubgraphConfiguration implements \ArrayAccess, \Iterator
 {
 	private static $inst;
-	private $settings = array(
+	private static $defaultSettings = array(
 		'host' => 'unix:///tmp/hubgraph-server.sock',
 	        'port' => NULL,
-		'showTagCloud' => TRUE
-	), $idx;
+		'showTagCloud' => TRUE,
+		'enabledOptions' => ''
+	);
+	private $settings, $idx;
 
 	private function __construct() {
+		if (!$this->settings) {
+			$this->settings = self::$defaultSettings;
+		}
 	}
 
 	public static function instance() {
@@ -26,6 +33,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 				self::$inst = new HubgraphConfiguration;
 				self::$inst->save();
 			}
+			self::$inst->validate();
 		}
 		return self::$inst;
 	}
@@ -37,6 +45,14 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 		}
 	}
 
+	private function validate() {
+		foreach (self::$defaultSettings as $k=>$v) {
+			if (!array_key_exists($k, $this->settings)) {
+				$this->settings[$k] = $v;
+			}
+		}	
+	}
+
 	public function bind($form) {
 		foreach (array_keys($this->settings) as $k) {
 			if (array_key_exists($k, $form)) {
@@ -44,6 +60,10 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 			}
 		}
 		return $this;
+	}
+	
+	public function isOptionEnabled($opt) {
+		return in_array($opt, explode(',', $this->settings['enabledOptions']));
 	}
 
 	public static function niceKey($k) {

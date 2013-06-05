@@ -3,7 +3,7 @@
 	position: relative;
 }
 .search-bar input {
-	height: 2.8em;
+	height: 38px;
 	width: 100%;
 }
 .search-bar a {
@@ -27,7 +27,7 @@
 	position: absolute;
 	top: 0;
 	right: 0;
-	height: 2.8em;
+	height: 38px;
 	width: 214px;
 	text-align: center;
 }
@@ -93,7 +93,7 @@ button span {
 	margin: 0;
 	max-height: 60px;
 	overflow: auto;
-	margin-right: 78px !important;
+	margin-right: 212px !important;
 	padding: 8px;
 	text-align: center;
 	display: none;
@@ -115,7 +115,7 @@ button span {
 	margin: 0;
 }
 #suggestions {
-	margin-right: 78px;
+	margin-right: 212px;
 	background: #ededed;
 	list-style: none;
 	margin-left: 0;
