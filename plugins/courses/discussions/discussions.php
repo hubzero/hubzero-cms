@@ -2266,8 +2266,15 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		// Determine parent ID
 		$parent = ($model->parent) ? $model->parent : $model->id;
+
+		// Get the thread ID
+		if (!$model->thread && !$model->parent)
+		{
+			$model->thread = $model->id;
+		}
+
 		// Upload file
-		$this->upload($parent, $model->id);
+		$this->upload($model->thread, $model->id);
 
 		// Update category ID if it was changed
 		if ($fields['id'])
@@ -2282,12 +2289,6 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$tags = JRequest::getVar('tags', '', 'post');
 		$tagger = new ForumTags($this->database);
 		$tagger->tag_object($this->juser->get('id'), $model->id, $tags, 1);
-
-		// Get the thread ID
-		if (!$model->thread && !$model->parent)
-		{
-			$model->thread = $model->id;
-		}
 
 		// Being called through AJAX?
 		if ($no_html)
