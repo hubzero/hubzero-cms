@@ -166,6 +166,17 @@ class plgGroupsResources extends Hubzero_Plugin
 			}
 		}
 
+		require_once JPATH_BASE.'/components/com_hubgraph/client.php';
+		$hgConf = HubgraphConfiguration::instance();
+		if ($hgConf->isOptionEnabled('com_groups')) {
+			ob_start();
+			define('HG_INLINE', 1);
+			$_GET['group'] = $group->gidNumber;
+			require JPATH_BASE.'/components/com_hubgraph/hubgraph.php';
+			return array('html' => ob_get_clean());
+		}
+
+
 		$database =& JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
 
