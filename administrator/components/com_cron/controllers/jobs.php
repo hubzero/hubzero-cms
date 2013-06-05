@@ -304,6 +304,91 @@ class CronControllerJobs extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
+	public function runTask() 
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Ensure we have an ID to work with
+		if (empty($ids)) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('No entry selected'),
+				'error'
+			);
+			return;
+		}
+
+		JPluginHelper::importPlugin('cron');
+		$dispatcher =& JDispatcher::getInstance();
+
+		$output = new stdClass;
+		$output->jobs = array();
+
+		// Loop through each ID
+		foreach ($ids as $id) 
+		{
+			$job = new CronModelJob(intval($id));
+			if (!$job->exists())
+			{
+				continue;
+			}
+
+			if ($job->get('active'))
+			{
+				continue;
+			}
+
+			$job->set('last_run', date('Y-m-d H:i:s', time()));
+			$job->set('next_run', $job->nextRun());
+			$job->store();
+
+			// Show related content
+			$results = $dispatcher->trigger($job->get('event'));
+			if ($results)
+			{
+				if (is_array($results))
+				{
+					// Set it as active in case there were multiple plugins called on
+					// the event. This is to ensure ALL processes finished.
+					$job->set('active', 1);
+
+					foreach ($results as $result)
+					{
+						if ($result)
+						{
+							$job->set('active', 0);
+						}
+					}
+				}
+			}
+
+			$job->store();
+
+			$output->jobs[] = $job->toArray();
+		}
+
+		$this->view->output = $output;
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+		$this->view->display();
+	}
+
+	/**
+	 * Deletes one or more records and redirects to listing
+	 * 
+	 * @return     void
+	 */
 	public function removeTask() 
 	{
 		// Check for request forgeries
