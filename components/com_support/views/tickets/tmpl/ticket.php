@@ -436,9 +436,9 @@ ximport('Hubzero_User_Profile_Helper');
 				<input type="hidden" name="access" value="0" />
 <?php } ?>
 
-<?php if ($this->acl->check('update', 'tickets')) { ?>
+	<?php if ($this->acl->check('update', 'tickets')) { ?>
 				<fieldset>
-<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
+			<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 					<legend><span><?php echo JText::_('Ticket Details'); ?></span></legend>
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
@@ -476,7 +476,9 @@ ximport('Hubzero_User_Profile_Helper');
 							<?php echo JText::_('COMMENT_SEVERITY'); ?>:
 							<?php echo SupportHtml::selectArray('ticket[severity]', $this->lists['severities'], $this->row->severity); ?>
 						</label>
-<?php } // ACL can update ticket (admin) ?>
+			<?php } else { ?>
+						<input type="hidden" name="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" />
+			<?php } // ACL can update ticket (admin) ?>
 						<label>
 							<?php echo JText::_('COMMENT_STATUS'); ?>:
 							<select name="ticket[resolved]" id="status">
@@ -498,13 +500,15 @@ ximport('Hubzero_User_Profile_Helper');
 								</optgroup>
 							</select>
 						</label>
-<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
+			<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 					</div>
-<?php } ?>
+			<?php } ?>
 					<div class="clear"></div>
 				</fieldset>
+	<?php } else { ?>
+				<input type="hidden" name="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" />
+	<?php } // ACL can update tickets ?>
 
-<?php } // ACL can update tickets ?>
 <?php if ($this->acl->check('create', 'comments') || $this->acl->check('create', 'private_comments')) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_COMMENTS'); ?>:</legend>
