@@ -92,15 +92,6 @@ class plgCoursesDashboard extends JPlugin
 		//get this area details
 		$this_area = $this->onCourseAreas();
 
-		// Set some variables so other functions have access
-		$this->action = $action;
-		$this->option = JRequest::getVar('option', 'com_courses');
-		$this->course = $course;
-		$this->offering = $offering;
-
-		// Get a student count
-		//$arr['metadata']['count'] = $offering->announcements(array('count' => true));
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
@@ -113,6 +104,12 @@ class plgCoursesDashboard extends JPlugin
 		{
 			return $arr;
 		}
+
+		// Set some variables so other functions have access
+		$this->action = $action;
+		$this->option = JRequest::getVar('option', 'com_courses');
+		$this->course = $course;
+		$this->offering = $offering;
 
 		// Only perform the following if this is the active tab/plugin
 		$this->config = $config;
@@ -130,19 +127,7 @@ class plgCoursesDashboard extends JPlugin
 			'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->_name
 		);
 
-		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
-
-		$action = JRequest::getWord('action', '');
-
-		switch (strtolower($action))
-		{
-			case 'save':     $arr['html'] .= $this->_save();     break;
-			case 'new':      $arr['html'] .= $this->_edit();     break;
-			case 'edit':     $arr['html'] .= $this->_edit();     break;
-			case 'delete':   $arr['html'] .= $this->_delete();   break;
-
-			default: $arr['html'] .= $this->_overview(); break;
-		}
+		$arr['html'] .= $this->_overview();
 
 		// Return the output
 		return $arr;
@@ -155,6 +140,7 @@ class plgCoursesDashboard extends JPlugin
 	 */
 	private function _overview()
 	{
+		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 		// Get course members based on their status
 		// Note: this needs to happen *after* any potential actions ar performed above
 		ximport('Hubzero_Plugin_View');
@@ -170,41 +156,6 @@ class plgCoursesDashboard extends JPlugin
 		$view->course   = $this->course;
 		$view->offering = $this->offering;
 		$view->params   = $this->params;
-
-		$view->filters  = array();
-		$view->filters['search'] = JRequest::getVar('q', '');
-		$view->filters['limit']  = JRequest::getInt('limit', $this->params->get('display_limit', 50));
-		$view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$view->filters['start']  = ($view->filters['limit'] == 0) ? 0 : $view->filters['start'];
-
-		$view->no_html = JRequest::getInt('no_html', 0);
-
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		Hubzero_Document::addPluginScript('courses', $this->_name);
-
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
-		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'pagination.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
-
-		$database = JFactory::getDBO();
-		
-		$filters = array();
-		$filters['limit']    = JRequest::getInt('limit', 5);
-		$filters['start']    = 0;
-		$filters['state']    = 1;
-		$filters['scope']    = 'course';
-		$filters['scope_id'] = $this->offering->get('id');
-		$filters['sort_Dir'] = 'DESC';
-		$filters['sticky']   = false;
-
-		$view->post = new ForumPost($database);
-		$view->comments = $view->post->getLatestPosts($filters);
-		$view->attach = new ForumAttachment($database);
-		$view->attachments = $view->attach->getAttachments($view->post->id);
 
 		if ($this->getError()) 
 		{

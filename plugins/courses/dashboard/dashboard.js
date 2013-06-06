@@ -20,15 +20,7 @@ if (!HUB.Plugins) {
 //----------------------------------------------------------
 HUB.Plugins.CoursesDashboard = {
 	initialize: function() {
-		$$('a.delete').each(function(el) {
-			el.addEvent('click', function(e) {
-				var val = confirm('Are you sure you wish to delete this item?');
-				if (!val) {
-					new Event(e).stop();
-				}
-				return val;
-			});
-		});
+		
 	} //end initialize
 }
 
