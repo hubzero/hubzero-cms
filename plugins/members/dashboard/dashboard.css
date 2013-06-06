@@ -24,6 +24,11 @@
 	#page_options li#personalize {
 		position: relative;
 	}
+	
+	#page_options li#personalize a {
+		font-size: 1em;
+		line-height: 2em;
+	}
 
 	#page_options li#personalize a:before {
 		content: "\2699";
@@ -41,7 +46,7 @@
 	#page_options li#personalize #modules-dock {
 		position: absolute;
 		left: -9999px;
-		top: 22px;
+		top: 2em;
 		margin-left: -154px;
 		width: 320px;
 		padding: 6px 0 0 0;
