@@ -671,6 +671,10 @@ class ForumPost extends JTable
 	private function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS c";
+		if (isset($filters['replies'])) 
+		{
+			$query .= " LEFT JOIN $this->_tbl AS p ON p.id=c.parent";
+		}
 		$query .= " LEFT JOIN #__xprofiles AS u ON u.uidNumber=c.created_by";
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
@@ -683,6 +687,10 @@ class ForumPost extends JTable
 
 		$where = array();
 		
+		if (isset($filters['replies'])) 
+		{
+			$where[] = "c.parent != 0";
+		}
 		if (isset($filters['state'])) 
 		{
 			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
@@ -707,10 +715,22 @@ class ForumPost extends JTable
 		{
 			$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
 		}
-		if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+		if (isset($filters['replies'])) 
 		{
-			$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+			{
+				$where[] = "p.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+				$where[] = "c.created_by!=" . $this->_db->Quote(intval($filters['created_by']));
+			}
 		}
+		else
+		{
+			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+			{
+				$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
+			}
+		}
+		
 		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
 		{
 			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
@@ -783,7 +803,7 @@ class ForumPost extends JTable
 	 */
 	public function count($filters=array())
 	{
-		$filers['count'] = true;
+		$filters['count'] = true;
 
 		$query = "SELECT COUNT(c.id)";
 		if (version_compare(JVERSION, '1.6', 'lt'))
