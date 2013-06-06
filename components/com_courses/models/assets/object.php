@@ -60,7 +60,7 @@ class ObjectAssetHandler extends ContentAssetHandler
 
 		// Check if valid youtube or kaltura video
 		// @FIXME: we need a safer way!
-		if (preg_match('/<iframe(.*?)src="(.*?)"([^>]?)>(.*?)<\/iframe>/si', $object, $matches))
+		if (preg_match('/<iframe(.*?)src="([^"]+)"([^>]*)>(.*?)<\/iframe>/si', $object, $matches))
 		{
 			if (stristr($matches[2], 'youtube'))
 			{
