@@ -167,7 +167,12 @@ HUB.Plugins.CoursesForum = {
 
 			cfrm
 				.attr('target', 'upload_target')
-				.on('submit', function() {
+				.on('submit', function(e) {
+					if ($('#field-category_id').val() == 0 || $('#field-category_id').val() == '0' || !$('#field-category_id').val()) {
+						$(this).find('fieldset').append($('<p class="error">Please select a category.</p>'));
+						e.stopImmediatePropagation();
+						return false;
+					}
 					$(this).attr('action', $(this).attr('action').nohtml());
 					return true;
 				});
