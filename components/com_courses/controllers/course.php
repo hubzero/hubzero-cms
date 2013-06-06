@@ -398,7 +398,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')); // . '&task=edit&step=2')
+			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')) // . '&task=edit&step=2')
 		);
 	}
 
