@@ -73,8 +73,13 @@ if ($this->unit)
 	{
 		$this->base .= '&b=' . $this->lecture;
 	}
+
+if (!$this->thread->thread)
+{
+	$this->thread->thread = $this->thread->id;
+}
 ?>
-					<li class="thread<?php if ($this->active == $this->thread->id) { echo ' active'; } ?>" id="<?php echo $prfx . $this->thread->id; ?>" data-thread="<?php echo $this->thread->id; ?>">
+					<li class="thread<?php if ($this->active == $this->thread->thread) { echo ' active'; } ?>" id="<?php echo $prfx . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
 						<?php 
 							$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 							$huser = '';

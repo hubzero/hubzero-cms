@@ -553,6 +553,12 @@
 	#page_content.course_discussions .comments-wrap {
 		margin: 0;
 	}
+	#page_content.course_dashboard .comments-wrap {
+		margin: 0;
+	}
+	#page_content.course_dashboard #comments-container {
+		margin-top: 0;
+	}
 	.comments-views {
 		min-height: 1000px;
 		max-height: 1600px;

@@ -132,6 +132,12 @@ HUB.Plugins.CoursesForum = {
 									continue;
 								}
 								var list = $('#category' + item.category_id);
+								if (!list.length) {
+									list = $('#categorynew');
+								}
+								if (!list.length) {
+									continue;
+								}
 								if (list.find('li.comments-none').length) {
 									list.empty();
 								}

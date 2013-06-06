@@ -1224,6 +1224,101 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		return $view->loadTemplate();
 	}
 
+	public function onCourseDashboard($course, $offering)
+	{
+		//$this->config = $config;
+		$this->course   = $course;
+		$this->offering = $offering;
+		$this->database = JFactory::getDBO();
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'forum.php');
+
+		$this->option = 'com_courses';
+		$this->name = 'courses';
+		$this->limitstart = JRequest::getInt('limitstart', 0);
+		$this->limit = JRequest::getInt('limit', 500);
+
+		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+		Hubzero_Document::addPluginScript('courses', $this->_name);
+
+		// Instantiate a vew
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'courses',
+				'element' => $this->_name,
+				'name'    => 'threads',
+				'layout'  => 'dashboard'
+			)
+		);
+
+		// Incoming
+		$view->filters = array();
+		$view->filters['authorized'] = 1;
+		$view->filters['scope']      = 'course';
+		$view->filters['scope_id']   = $this->offering->get('id');
+		$view->filters['search']     = JRequest::getVar('search', '');
+		$view->filters['section_id'] = 0;
+		$view->filters['state']      = 1;
+		$view->filters['limit']    = JRequest::getInt('limit', 500); //$jconfig->getValue('config.list_limit'));
+		$view->filters['start']    = JRequest::getInt('limitstart', 0);
+
+		$view->course = $this->course;
+		$view->offering = $this->offering;
+		$view->option = $this->option;
+		$view->config = $this->course->config();
+		$view->no_html = JRequest::getInt('no_html', 0);
+		$view->thread = JRequest::getInt('thread', 0);
+		$view->notifications = $this->getPluginMessage();
+
+		$view->post = new ForumPost($this->database);
+		$view->post->scope    = $view->filters['scope'];
+		$view->post->scope_id = $view->filters['scope_id'];
+
+		$this->section = new ForumSection($this->database);
+		$view->sections = $this->section->getRecords(array(
+				'state'    => $view->filters['state'],
+				'scope'    => $view->filters['scope'], 
+				'scope_id' => $view->filters['scope_id']
+			));
+
+		$model = new ForumCategory($this->database);
+
+		$view->stats = new stdClass;
+		$view->stats->categories = 0;
+		$view->stats->threads = 0;
+		$view->stats->posts = 0;
+
+		foreach ($view->sections as $key => $section)
+		{
+			$view->filters['section_id'] = $section->id;
+
+			$view->sections[$key]->threads = 0;
+			$view->sections[$key]->categories = $model->getRecords($view->filters);
+
+			$view->stats->categories += count($view->sections[$key]->categories);
+			if ($view->sections[$key]->categories)
+			{
+				foreach ($view->sections[$key]->categories as $c)
+				{
+					$view->sections[$key]->threads += $c->threads;
+					$view->stats->threads += $c->threads;
+					$view->stats->posts += $c->posts;
+				}
+			}
+		}
+
+		$view->data = null;
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$view->setError($this->getError());
+		}
+
+		return $view->loadTemplate();
+	}
+
 	/**
 	 * Show sections in this forum
 	 * 
