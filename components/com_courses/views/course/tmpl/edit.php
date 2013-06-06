@@ -34,17 +34,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 //tag editor
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
+$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))) );
 
 //build back link
-$host = JRequest::getVar("HTTP_HOST", "", "SERVER");
-$referrer = JRequest::getVar("HTTP_REFERER", "", "SERVER");
+$host = JRequest::getVar("HTTP_HOST", '', "SERVER");
+$referrer = JRequest::getVar("HTTP_REFERER", '', "SERVER");
 
 //check to make sure referrer is a valid url
 //check to make sure the referrer is a link within the HUB
-if(filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == "" || strpos($referrer, $host) === false)
+if (filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == '' || strpos($referrer, $host) === false)
 {
-	$link = JRoute::_('index.php?option='.$this->option);
+	$link = JRoute::_('index.php?option=' . $this->option);
 }
 else
 {
@@ -52,14 +52,33 @@ else
 }
 
 //if we are in edit mode we want to redirect back to course
-if ($this->task == "edit") 
+if ($this->task == 'edit') 
 {
-	$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn'));
-	$title = "Back to Course";
+	$link = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias'));
+	$title = 'Back to Course';
 }
 else
 {
-	$title = "Back";
+	$title = 'Back';
+}
+
+if (!$this->course->exists())
+{
+	$default = "=== About ===
+
+Eneter text about your course.
+
+=== Audience ===
+
+Who is this course appropriate for?
+
+=== Prerequisites ===
+
+This course is intended to be broadly accessible to those with a background in ''fill in here'' and the following prerequisites are recommended:
+
+ * A working knowledge of ''fill in here''
+ * A basic understanding of ''fill in here''";
+	$this->course->set('description', $default);
 }
 ?>
 <div id="content-header" class="full">
@@ -97,11 +116,13 @@ else
 
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
-			<h3>Looking for a course?</h3>
-			<p>Find courses here and stuff.</p>
+			<!-- <h3>Looking for a course?</h3>
+			<p>Browse the course catalog. Courses can be found by category (tags), searching, popularity, or title.</p>
 
-			<h3>What if something?</h3>
-			<p>Then something else. Duh.</p>
+			<h3>What happens when I click "save"?</h3>
+			<p>Then something else. Duh.</p> -->
+			<h3>Step 1</h3>
+			<p>Here is where we'll create a catalog entry and start describing the course. We'll build an outline and add files in a later step.</p>
 		</div>
 		<fieldset id="top_box">
 			<legend><?php echo JText::_('Creating a catalog entry'); ?></legend>
@@ -110,14 +131,14 @@ else
 <?php } else { ?>
 			<label class="course_alias_label" for="course_alias_field">
 				<?php echo JText::_('Course identifier'); ?> <span class="required"><?php echo JText::_('COM_COURSES_REQUIRED'); ?></span>
-				<input name="alias" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" /> 
-				<span class="hint"><?php echo JText::_('This is a short, alpha-numeric (no spaces) identifier used for URLs, catalogs, etc. Example: biology101'); ?></span>
+				<input name="course[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" /> 
+				<span class="hint"><?php echo JText::_('This is a short identifier used for URLs, catalogs, etc. Allowed characters are letters, numbers, dashes, underscores, and periods. Example: biology101, chem.501'); ?></span>
 			</label>
 <?php } ?>
 
 			<label for="field-title">
 				<?php echo JText::_('COM_COURSES_TITLE'); ?> <span class="required"><?php echo JText::_('COM_COURSES_REQUIRED'); ?></span>
-				<input type="text" name="title" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+				<input type="text" name="course[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
 			</label>
 
 			<label for="field_blurb">
@@ -127,7 +148,7 @@ else
 					$editor =& Hubzero_Wiki_Editor::getInstance();
 					echo $editor->display('blurb', 'field_blurb', stripslashes($this->course->get('blurb')), 'minimal', '50', '3');*/
 				?>
-				<textarea name="blurb" id="field-blurb" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
+				<textarea name="course[blurb]" id="field-blurb" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
 				<span class="hint">
 					A brief, one or two sentences about your course. Think of this as the text you would see in a course catalog.
 				</span>
@@ -139,13 +160,13 @@ else
 				<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('description', 'field_description', stripslashes($this->course->get('description')), '', '50', '15');
+					echo $editor->display('course[description]', 'field_description', stripslashes($this->course->get('description')), '', '50', '30');
 				?>
-				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
-			
+				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+
 				<dl>
 					<dt>What this is:</dt>
-					<dd>One or two paragraphs about your course. Think of this as a slightly more detailed version of the blurb above.</dd>
+					<dd>This is a general "about" page. Typically, this would include descriptions of audience and prerequisites.</dd>
 
 					<dt>What this is <i>not</i>:</dt>
 					<dd>A syllabus or detailed outline. You will have an opportunity to fill that out later.</dd>
@@ -158,7 +179,7 @@ else
 				<?php if (count($tf) > 0) {
 					echo $tf[0];
 				} else { ?>
-					<input type="text" name="tags" id="actags" value="<?php echo $this->tags; ?>" />
+					<input type="text" name="tags" id="actags" value="<?php echo $this->couse->tags('string'); ?>" />
 				<?php } ?>
 
 				<span class="hint">These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content. <?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
@@ -167,11 +188,13 @@ else
 		<div class="clear"></div>
 
 		<div class="clear"></div>
-		<input type="hidden" name="published" value="<?php echo $this->course->get('published'); ?>" />
-		<input type="hidden" name="lid" value="<?php echo $this->lid; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
+		<input type="hidden" name="course[state]" value="<?php echo $this->course->get('state'); ?>" />
+		<input type="hidden" name="course[id]" value="<?php echo $this->course->get('id'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="save" />
+
+		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('Save'); ?>" />

@@ -229,7 +229,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function editTask()
+	public function editTask($model=null)
 	{
 		$this->view->setLayout('edit');
 
@@ -252,6 +252,11 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Push some needed scripts to the template
 		$this->_getScripts('assets/js/' . $this->_name);
 
+		if (is_object($model))
+		{
+			$this->course = $model;
+		}
+
 		if ($this->_task != 'new') 
 		{
 			// Ensure we found the course info
@@ -272,10 +277,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		} 
 		else 
 		{
-			//$this->course->set('join_policy', $this->config->get('join_policy'));
-			//$this->course->set('privacy', $this->config->get('privacy'));
-			//$this->course->set('access', $this->config->get('access'));
-			//$this->course->set('published', $this->config->get('auto_approve'));
+			$this->course->set('state', 3);
 
 			$this->view->title = 'Create New Course';
 		}
@@ -295,8 +297,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Get the course's interests (tags)
-		$gt = new CoursesTags($this->database);
-		$this->view->tags = $gt->get_tag_string($this->course->get('id'));
+		//$gt = new CoursesTags($this->database);
+		//$this->view->tags = $gt->get_tag_string($this->course->get('id'));
 
 		/*if ($this->course) 
 		{
@@ -321,200 +323,46 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->loginTask('You must be logged in to save course settings.');
+			$this->loginTask('You must be logged in to perform this action.');
 			return;
 		}
 
-		// Incoming
-		$g_cn           = strtolower(trim(JRequest::getVar('cn', '', 'post')));
-		$g_description  = preg_replace('/\s+/', ' ', trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
-		$g_privacy      = JRequest::getInt('privacy', 0, 'post');
-		$g_gidNumber    = JRequest::getInt('gidNumber', 0, 'post');
-		$g_published    = JRequest::getInt('published', 0, 'post');
-		$g_public_desc  = trim(JRequest::getVar('public_desc',  '', 'post', 'none', 2));
-		$g_private_desc = trim(JRequest::getVar('private_desc', '', 'post', 'none', 2));
-		$g_restrict_msg = trim(JRequest::getVar('restrict_msg', '', 'post', 'none', 2));
-		$g_join_policy  = JRequest::getInt('join_policy', 0, 'post');
-		$tags = trim(JRequest::getVar('tags', ''));
-		//$g_discussion_email_autosubscribe = JRequest::getInt('discussion_email_autosubscribe', 0, 'post');
-		$lid = JRequest::getInt('lid', 0, 'post');
-
 		//Check authorization
-		if ($this->_authorize() != 'manager' && $g_gidNumber != 0) 
+		if (!$this->config->get('access-create-course')) 
 		{
 			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
 			return;
 		}
 
-		// Instantiate an CoursesCourse object
-		$course = new CoursesCourse();
+		// Incoming
+		$data = JRequest::getVar('course', array(), 'post', 'none', 2);
+		$tags = trim(JRequest::getVar('tags', ''));
+
+		$course = CoursesModelCourse::getInstance($data['id']);
 
 		// Is this a new entry or updating?
 		$isNew = false;
-		if (!$g_gidNumber) 
+		if (!$course->exists()) 
 		{
 			$isNew = true;
-
-			// Set the task - if anything fails and we re-enter edit mode 
-			// we need to know if we were creating new or editing existing
-			$this->_task = 'new';
-		} 
-		else 
-		{
-			$this->_task = 'edit';
-
-			// Load the course
-			$this->course->read($g_gidNumber);
 		}
 
-		// Check for any missing info
-		if (!$g_alias) 
-		{
-			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_COURSES_ID'), 'error');
-		}
-		if (!$g_description) 
-		{
-			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_COURSES_TITLE'), 'error');
-		}
+		$course->bind($data);
 
 		// Push back into edit mode if any errors
-		if ($this->getComponentMessage()) 
+		if ($this->course->store(true)) 
 		{
-			$this->course->set('state', $g_published);
-			$this->course->set('description', $g_description);
-			//$this->course->set('access', $g_access);
-			//$this->course->set('privacy', $g_privacy);
-			//$this->course->set('public_desc', $g_public_desc);
-			//$this->course->set('private_desc', $g_private_desc);
-			//$this->course->set('restrict_msg', $g_restrict_msg);
-			//$this->course->set('join_policy', $g_join_policy);
-			$this->course->set('alias', $g_cn);
-			//$this->course->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
-
-			$this->lid = $lid;
-			$this->course = $course;
 			$this->tags = $tags;
-			$this->edit();
+			$this->addComponentMessage($this->course->getError(), 'error');
+			$this->editTask($this->course);
 			return;
 		}
-
-		// Ensure the data passed is valid
-		if ($g_cn == 'new' || $g_cn == 'browse') 
-		{
-			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_INVALID_ID'), 'error');
-		}
-		if (!$this->_validCn($g_cn)) 
-		{
-			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_INVALID_ID'), 'error');
-		}
-		if ($isNew && CoursesCourse::exists($g_cn,true)) 
-		{
-			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_COURSE_ALREADY_EXIST'), 'error');
-		}
-
-		// Push back into edit mode if any errors
-		if ($this->getComponentMessage()) 
-		{
-			$this->course->set('published', $g_published);
-			$this->course->set('description', $g_description);
-			//$this->course->set('access', $g_access);
-			$this->course->set('privacy', $g_privacy);
-			$this->course->set('public_desc', $g_public_desc);
-			$this->course->set('private_desc', $g_private_desc);
-			$this->course->set('restrict_msg', $g_restrict_msg);
-			$this->course->set('join_policy', $g_join_policy);
-			$this->course->set('cn', $g_cn);
-			$this->course->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
-
-			$this->lid = $lid;
-			$this->course = $course;
-			$this->tags = $tags;
-			$this->edit();
-			return;
-		}
-
-		// Get some needed objects
-		$jconfig =& JFactory::getConfig();
-
-		// Build the e-mail message
-		if ($isNew) 
-		{
-			$subject = JText::sprintf('COM_COURSES_SUBJECT_COURSE_REQUESTED', $g_cn);
-		} 
-		else 
-		{
-			$subject = JText::sprintf('COM_COURSES_SUBJECT_COURSE_UPDATED', $g_cn);
-		}
-
-		if ($isNew) 
-		{
-			$type = 'courses_created';
-		} 
-		else 
-		{
-			$type = 'courses_changed';
-		}
-
-		// Build the e-mail message
-		// Note: this is done *before* pushing the changes to the course so we can show, in the message, what was changed
-		$eview = new JView(array(
-			'name'   => 'emails', 
-			'layout' => 'saved'
-		));
-		$eview->option = $this->_option;
-		$eview->sitename = $jconfig->getValue('config.sitename');
-		$eview->juser = $this->juser;
-		$eview->course = $course;
-		$eview->isNew = $isNew;
-		$eview->g_description = $g_description;
-		//$eview->g_access = $g_access;
-		$eview->g_privacy = $g_privacy;
-		$eview->g_public_desc = $g_public_desc;
-		$eview->g_private_desc = $g_private_desc;
-		$eview->g_restrict_msg = $g_restrict_msg;
-		$eview->g_join_policy = $g_join_policy;
-		$eview->g_cn = $g_cn;
-
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
-
-		// Set the course changes and save
-		$this->course->set('alias', $g_cn);
-		if ($isNew) 
-		{
-			$this->course->create();
-			$this->course->set('type', 1);
-			$this->course->set('published', $g_published);
-			$this->course->set('created', date("Y-m-d H:i:s"));
-			$this->course->set('created_by', $this->juser->get('id'));
-
-			$this->course->add('managers', array($this->juser->get('id')));
-			$this->course->add('members', array($this->juser->get('id')));
-		}
-
-		$this->course->set('description', $g_description);
-		//$this->course->set('access', $g_access);
-		$this->course->set('privacy', $g_privacy);
-		$this->course->set('public_desc', $g_public_desc);
-		$this->course->set('private_desc', $g_private_desc);
-		$this->course->set('restrict_msg',$g_restrict_msg);
-		$this->course->set('join_policy',$g_join_policy);
-		$this->course->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
-		$this->course->store();
-
-		// Process tags
-		$gt = new CoursesTags($this->database);
-		$gt->tag_object($this->juser->get('id'), $this->course->get('gidNumber'), $tags, 1, 1);
-
-		// Log the course save
-		$log = new XCourseLog($this->database);
-		$log->gid = $this->course->get('gidNumber');
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->actorid = $this->juser->get('id');
 
 		// Rename the temporary upload directory if it exist
 		if ($isNew) 
@@ -529,67 +377,28 @@ class CoursesControllerCourse extends Hubzero_Controller
 				}
 			}
 
-			$log->action = 'course_created';
-
 			// Get plugins
 			JPluginHelper::importPlugin('courses');
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
-			$logs = $dispatcher->trigger('onCourseNew', array($course));
-			if (count($logs) > 0) 
-			{
-				$log->comments .= implode('', $logs);
-			}
-		} 
-		else 
-		{
-			$log->action = 'course_edited';
-		}
-
-		if (!$log->store()) 
-		{
-			$this->addComponentMessage($log->getError(), 'error');
-		}
-
-		// Get the administrator e-mail
-		$emailadmin = $jconfig->getValue('config.mailfrom');
-
-		// Get the "from" info
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
-
-		// Get plugins
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, $this->course->get('managers'), $this->_option))) 
-		{
-			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
-		}
-
-		if ($this->getComponentMessage()) 
-		{
-			$this->view->title = $title;
-			$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
-			$this->view->display();
-			return;
+			$dispatcher->trigger('onCourseNew', array($course));
 		}
 
 		// Show success message to user
 		if ($isNew) 
 		{
-			$this->addComponentMessage("You have successfully created the \"{$this->course->get('description')}\" course" , 'passed');
+			$this->addComponentMessage("You have successfully created the \"{$this->course->get('title')}\" course" , 'passed');
 		} 
 		else 
 		{
-			$this->addComponentMessage("You have successfully updated the \"{$this->course->get('description')}\" course" , 'passed');
+			$this->addComponentMessage("You have successfully updated the \"{$this->course->get('title')}\" course" , 'passed');
 		}
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $g_cn)
+			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')); // . '&task=edit&step=2')
 		);
 	}
 
