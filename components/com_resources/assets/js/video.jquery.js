@@ -52,7 +52,7 @@ HUB.Video = {
 		//get height & width of player
 		resize_width = $jQ("#video-player").outerWidth(true);
 		resize_height = $jQ("#video-player").outerHeight(true);
-			
+		
 		if(flash) 
 		{
 			toolbar = 52;
@@ -95,7 +95,13 @@ HUB.Video = {
 		if(flash)
 		{
 			$jQ('#full-screen').hide();
+			
+			//set height of player
+			var player = HUB.Video.getPlayer();
+			$jQ("#video-flowplayer").height( player.getClip().metaData.height );
 		}
+		
+		
 	},
 	
 	//-----
@@ -141,7 +147,8 @@ HUB.Video = {
 		} else {
 			
 			flowplayer("video-flowplayer", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
-			   	plugins: { controls: null }, 
+				plugins: { controls: null },
+				clip: { scaling: 'fit' },
 				onStart: function() {
 					HUB.Video.doneLoading();
 					HUB.Video.locationHash();
