@@ -345,7 +345,11 @@ else if ($this->authorized == 3)
 						<li><span class="databases"><?php echo $att->title; ?>
 							[<a href="<?php echo $att->path; ?>" rel="external"><?php echo JText::_('view'); ?></a>]</span>
 						</li>
-						<?php } ?>	
+						<?php } 
+						elseif ($att->type == 'note') { ?>
+						<li><span class="notes"><?php echo $att->title; ?></span>
+						</li>
+						<?php } ?>
 				<?php } ?>
 				</ul>	
 			</div>

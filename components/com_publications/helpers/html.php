@@ -1200,7 +1200,16 @@ class PublicationsHtml
 				break;
 				
 			case 'external':
-				$action = 'rel="external"';
+				
+				if ($content['primary'][0]->type == 'note')
+				{
+				//	$class = 'play'; // lightboxed
+				}
+				else
+				{
+					$action = 'rel="external"';
+				}
+				
 				break;
 		}
 		

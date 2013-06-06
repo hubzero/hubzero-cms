@@ -81,7 +81,7 @@ class ProjectsHelper extends JObject {
 	{		
 		$orderby 	= $orderby ? $orderby : 'p.scope, p.times_rated ASC, p.id';
 		
-		$query = "SELECT DISTINCT p.pagename, p.title, p.scope, p.times_rated 
+		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated 
 		          FROM #__wiki_page AS p 
 				  WHERE p.group_cn='" . $group . "' 
 				  AND p.scope LIKE '" . $masterscope . "%' 
@@ -144,6 +144,34 @@ class ProjectsHelper extends JObject {
 		{
 			return array();
 		}
+	}
+	
+	/**
+	 * Get project note
+	 * 
+	 * @param      string $group cn of project group
+	 * @param      string $masterscope
+	 * @param      string $prefix
+	 * @return     void
+	 */	
+	public function getSelectedNote( $id = '', $group = '', $masterscope = '' ) 
+	{
+		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated,
+	 		  	  (SELECT v.version FROM #__wiki_version as v WHERE v.pageid=p.id 
+				  ORDER by v.version DESC LIMIT 1) as version,
+				  (SELECT vv.id FROM #__wiki_version as vv WHERE vv.pageid=p.id 
+				  ORDER by vv.id DESC LIMIT 1) as instance
+			      FROM #__wiki_page AS p
+				  WHERE p.group_cn='" . $group . "' 
+				  AND p.scope LIKE '" . $masterscope . "%' 
+				  AND p.state!=2
+				  AND p.pagename NOT LIKE 'Template:%'";
+		$query.=  is_numeric($id) ? " AND p.id='$id' LIMIT 1" : " AND p.pagename='$id' LIMIT 1";				  
+				
+		$this->_db->setQuery($query);				
+		$result = $this->_db->loadObjectList();
+		
+		return $result ? $result[0] : NULL;
 	}
 	
 	/**

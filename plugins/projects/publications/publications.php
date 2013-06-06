@@ -272,10 +272,6 @@ class plgProjectsPublications extends JPlugin
 			case 'new': 		
 				$arr['html'] = $this->add(); 			
 				break;
-				
-			case 'uploader': 		
-				$arr['html'] = $this->uploader(); 			
-				break;
 									
 			case 'save': 		
 				$arr['html'] = $this->save(); 			
@@ -451,57 +447,6 @@ class plgProjectsPublications extends JPlugin
 	}
 	
 	/**
-	 * Uploader for content other than files (e.g. databases)
-	 * 
-	 * @return     string
-	 */
-	public function uploader() 
-	{
-		// Incoming
-		$content 	= JRequest::getVar( 'content', 'default');
-		$primary 	= JRequest::getInt('primary', 1);
-		$versionid  = JRequest::getInt('versionid', 0);
-		
-		// Output HTML
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'projects',
-				'element'=>'publications',
-				'name'=>'uploader',
-				'layout' => $content
-			)
-		);
-		
-		// Get current attachments
-		$pContent = new PublicationAttachment( $this->_database );
-		$role 	= $primary ? '1' : '0';
-		$other 	= $primary ? '0' : '1';
-		
-		$view->attachments = $pContent->getAttachments($versionid, $filters = array('role' => $role, 'type' => $content));
-		
-		// Output HTML
-		$view->params 		= new JParameter( $this->_project->params );
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
-		$view->uid 			= $this->_uid;
-		$view->config 		= $this->_config;	
-		$view->title		= $this->_area['title'];
-		$view->content		= $content;
-		$view->primary		= $primary;
-		$view->versionid	= $versionid;
-		
-		// Get messages	and errors	
-		$view->msg = $this->_msg;
-		if ($this->getError()) 
-		{
-			$view->setError( $this->getError() );
-		}
-		return $view->loadTemplate();
-	}
-	
-	/**
 	 * Start a publication
 	 * 
 	 * @return     string
@@ -640,6 +585,8 @@ class plgProjectsPublications extends JPlugin
 			$view->url
 		);
 		
+		$this->_base = $base;
+		
 		// Get attached files
 		$view->attachments = array();
 		
@@ -708,6 +655,22 @@ class plgProjectsPublications extends JPlugin
 		// Check that version exists
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
 		
+		// Instantiate project publication
+		$pub = $objP->getPublication($pid, $version, $this->_project->id);
+
+		// If publication not found, raise error
+		if (!$pub) 
+		{
+			$this->_referer = JRoute::_($route);
+			$this->_message = array(
+				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
+				'type' => 'error');
+			return;
+		}
+
+		// Master type
+		$this->_base = $pub->base;
+		
 		// Get active panels
 		$this->_getPanels();
 		
@@ -754,7 +717,20 @@ class plgProjectsPublications extends JPlugin
 			// Get choice of content type for supporting items
 			if ($layout == 'supportingdocs')
 			{
-				$choices = $mt->getTypes('alias', 0, 1);
+				$sChoices = $mt->getTypes('alias', 0, 1);
+				$choices = array();
+				
+				// Check if type is supported (need a plugin)
+				if (!empty($sChoices))
+				{
+					foreach ($sChoices as $choice)
+					{
+						if (JPluginHelper::isEnabled('projects', $choice))
+						{
+							$choices[] = $choice;
+						}
+					}
+				}
 			}
 		}
 		// Which description panel?
@@ -766,19 +742,6 @@ class plgProjectsPublications extends JPlugin
 		if ($section == 'content' || $section == 'gallery')
 		{
 			Hubzero_Document::addPluginScript('projects', 'files');
-		}
-			
-		// Instantiate project publication
-		$pub = $objP->getPublication($pid, $version, $this->_project->id);
-		
-		// If publication not found, raise error
-		if (!$pub) 
-		{
-			$this->_referer = JRoute::_($route);
-			$this->_message = array(
-				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
-				'type' => 'error');
-			return;
 		}
 		
 		// Base of primary content corresponds to master type!
@@ -1030,6 +993,10 @@ class plgProjectsPublications extends JPlugin
 		
 		// Check if all required area are filled in
 		$view->publication_allowed = $this->_checkPublicationPermit($view->checked);
+		
+		// Master type params (determines management options)
+		$mType = $mt->getType($this->_base);
+		$view->typeParams = new JParameter( $mType->params );
 						
 		// Output HTML
 		$view->option 		= $this->_option;
@@ -1562,6 +1529,9 @@ class plgProjectsPublications extends JPlugin
 			return $this->browse();
 		}
 		
+		// Master type
+		$this->_base = $pub->base;
+		
 		// Get active panels
 		$this->_getPanels();
 		
@@ -1771,6 +1741,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Instantiate project publication
 		$objP = new Publication( $this->_database );
+		$mt = new PublicationMasterType( $this->_database );
 						
 		// If publication not found, raise error
 		if (!$objP->load($pid) && $section != 'content') 
@@ -1787,7 +1758,6 @@ class plgProjectsPublications extends JPlugin
 			if (!$this->getError()) 
 			{				
 				// Determine publication master type
-				$mt = new PublicationMasterType( $this->_database );
 				$choices = $mt->getTypes('alias', 1);
 				$mastertype = in_array($base, $choices) ? $base : 'files';
 								
@@ -1833,6 +1803,7 @@ class plgProjectsPublications extends JPlugin
 						: $objT->getCatId($objT->suggestCat($arr));
 
 				// Determine title
+				$title = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE');
 				if ($base == 'files' && count($selections['files']) == 1) 
 				{
 					$title = $first_item;
@@ -1851,15 +1822,23 @@ class plgProjectsPublications extends JPlugin
 						$title = $objPD->title;
 					}
 				} 
-				else 
+				elseif ($base == 'notes')
 				{
-					$title = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE');
+					// Get helper
+					$projectsHelper = new ProjectsHelper( $this->_database );
+					
+					$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
+					$group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
+
+					$note = $projectsHelper->getSelectedNote($first_item, $group, $masterscope);
+					$title = $note ? $note->title : '';					
 				}
+				
 				$title = $title == '' ? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE') : $title;
 				
 				// Make a new publication entry
 				$objP->master_type = $mt->getTypeId($mastertype);
-				$objP->category = $cat;
+				$objP->category = $cat;				
 				$objP->project_id = $this->_project->id;
 				$objP->created_by = $this->_uid;
 				$objP->created = $now;
@@ -1874,7 +1853,7 @@ class plgProjectsPublications extends JPlugin
 				}
 				$pid = $objP->id;
 				$this->_pid = $pid;
-				
+								
 				// Initizalize Git repo and transfer files from member dir
 				if ($this->_project->provisioned == 1 && $newpub)
 				{
@@ -1947,7 +1926,7 @@ class plgProjectsPublications extends JPlugin
 					}
 					
 					$this->setError( JText::_('COM_PROJECTS_ERROR_ATTACHING_CONTENT'));
-					return false;
+					//return false;
 				}
 				else
 				{
@@ -2225,6 +2204,9 @@ class plgProjectsPublications extends JPlugin
 			$last_idx = $indexes['last_idx'];
 			$next_idx = $indexes['next_idx'];
 			
+			// Master type
+			$this->_base = $mt->getTypeAlias($objP->master_type);
+			
 			// Get active panels
 			$this->_getPanels();
 
@@ -2270,7 +2252,8 @@ class plgProjectsPublications extends JPlugin
 			}
 
 			// Save visit to panel (only when moving one step at a time)
-			if ($next_idx > $last_idx && ($next_idx == $last_idx + 1)) {
+			if ($next_idx > $last_idx && ($next_idx == $last_idx + 1)) 
+			{
 				$nextstep = isset($this->_panels[$next_idx]) && $lastpane != 'review' ? $this->_panels[$next_idx] : 'review';
 				$row->saveParam( $row->id, 'stage', $nextstep  );
 			}
@@ -3192,6 +3175,9 @@ class plgProjectsPublications extends JPlugin
 		$view->att = new PublicationAttachment( $this->_database );
 		$view->att->loadAttachment($vid, $item, $type );
 		
+		// Get helper
+		$projectsHelper = new ProjectsHelper( $this->_database );
+				
 		// File content
 		if ($type == 'file')
 		{
@@ -3226,6 +3212,15 @@ class plgProjectsPublications extends JPlugin
 		{
 			$view->data = new ProjectDatabase($this->_database);
 			$view->data->loadRecord($item);
+		}
+		
+		// Wiki content
+		if ($type == 'note')
+		{			
+			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
+			$group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
+			
+			$view->note = $projectsHelper->getSelectedNote($item, $group, $masterscope);
 		}
 		
 		// Build pub url
@@ -3336,7 +3331,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Check if selections are the same as in another publication
 		$used = $objPA->checkUsed($base, $selections, $this->_project->id, $pid);
-		$duplicateVersion = NULL;		
+		$duplicateVersion = NULL;	
 		
 		// Get original content
 		$original_serveas = '';
@@ -3381,7 +3376,7 @@ class plgProjectsPublications extends JPlugin
 			$count = isset($selections['count']) ? $selections['count'] : 0;
 
 			// Look for duplicate version
-			$duplicateVersion = $objPA->checkVersionDuplicate($count, $info, $pid, $vid, $base);			
+			$duplicateVersion = $objPA->checkVersionDuplicate($count, $info, $pid, $vid, $base);		
 		}
 		
 		if ($base == 'files')
@@ -3654,6 +3649,62 @@ class plgProjectsPublications extends JPlugin
 			}			
 		}
 		
+		// Save note attachments
+		if (isset($selections['notes']) && count($selections['notes']) > 0) 
+		{
+			// Get helper
+			$projectsHelper = new ProjectsHelper( $this->_database );
+		
+			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
+			$group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
+			
+			// Attach every selected file
+			foreach ($selections['notes'] as $pageId) 
+			{
+				// get project note						
+				$note = $projectsHelper->getSelectedNote($pageId, $group, $masterscope);
+			
+				if (!$note)
+				{
+					// Can't proceed
+					continue;
+				}
+			
+				if ($objPA->loadAttachment($vid, $pageId, 'note')) 
+				{
+					$objPA->modified_by = $this->_uid;
+					$objPA->modified = date( 'Y-m-d H:i:s' );
+				}
+				else 
+				{
+					$objPA = new PublicationAttachment( $this->_database );
+					$objPA->publication_id 			= $pid;
+					$objPA->publication_version_id 	= $vid;
+					$objPA->path 					= '';
+					$objPA->type 					= 'note';
+					$objPA->created_by 				= $this->_uid;
+					$objPA->created 				= date( 'Y-m-d H:i:s' );
+				}
+				
+				// Save object information
+				$objPA->object_id   	= $pageId;
+				$objPA->object_name 	= $note->pagename;
+				$objPA->object_revision = $note->version;
+				$objPA->object_instance = $note->instance;
+			
+				$objPA->ordering 		= $i;
+				$objPA->role 			= $primary;
+				$objPA->title 			= $note->title;
+				$objPA->params 			= $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
+			
+				if ($objPA->store()) 
+				{
+					$i++;
+					$added++;
+				}				
+			}
+		}
+				
 		// Save file attachments
 		if (isset($selections['files']) && count($selections['files']) > 0) 
 		{
@@ -3712,20 +3763,25 @@ class plgProjectsPublications extends JPlugin
 		// Delete attachments if not selected
 		if (count($original) > 0) 
 		{
-			$sarray = (isset($selections['files']) && count($selections['files']) > 0) ? $selections['files'] : array();
 			foreach ($original as $old) 
 			{
 				// Go through file attachments
-				if ($old->type == 'file')
+				if ($old->type == 'file' && is_array($selections['files']))
 				{
-					$filename = trim($old->path);
-					if (!in_array($filename, $sarray)) 
+					if (!in_array(trim($old->path), $selections['files'])) 
 					{
 						$objPA->deleteAttachment($vid, $old->path);	
 						if ($secret) 
 						{
 							$this->_unpublishAttachment($pid, $vid, $old->path, $secret);	
 						}
+					}
+				}
+				elseif ($old->type == 'note' && is_array($selections['notes']))
+				{
+					if (!in_array(trim($old->object_id)))
+					{
+						$objPA->deleteAttachment($vid, $old->object_id);	
 					}
 				}
 			}
@@ -5758,7 +5814,7 @@ class plgProjectsPublications extends JPlugin
 		$publication_allowed = true;
 		foreach($this->_required as $req) 
 		{
-			if (!isset($checked[$req]) or $checked[$req] == 0) 
+			if (isset($checked[$req]) && $checked[$req] == 0) 
 			{
 				$publication_allowed = false;
 			}
@@ -5782,67 +5838,85 @@ class plgProjectsPublications extends JPlugin
 		
 		if (!isset($this->_panels))
 		{
+			$this->_base = $type;
+			
 			// Get active panels
 			$this->_getPanels();
 		}
 		
-		foreach($this->_panels as $key => $value) {
+		// Check each enabled panel
+		foreach ($this->_panels as $key => $value) 
+		{
 			$checked[$value] = $version == 'dev' ? 0 : 1;
+			
+			if ($value == 'description')
+			{
+				// Check description
+				$checked['description'] = $row->description && $row->abstract ? 1 : 0;
+			}
+			elseif ($value == 'content')
+			{
+				// Check content
+				$checked['content'] = 0;
+				if ($type == 'apps') 
+				{
+					// Check tool
+					// TBD
+				} 
+				else 
+				{
+					$pContent = new PublicationAttachment( $this->_database );
+					$count_attachments = $pContent->getAttachments ( $row->id, $filters = array('count' => 1) );
+					if ($count_attachments > 0) 
+					{
+						// Check that no previous version has the same primary content
+						// TBD
+						$checked['content'] = 1;
+					}
+				}
+			}
+			elseif ($value == 'authors')
+			{
+				// Check authors
+				$pAuthor = new PublicationAuthor( $this->_database );
+				$checked['authors'] = $pAuthor->getCount($row->id) >= 1 ? 1 : 0;
+			}
+			elseif ($value == 'license')
+			{
+				// Check license
+				$checked['license'] = ($row->license_type) ? 1 : 0;	
+				
+			}
+			elseif ($value == 'audience')
+			{
+				// Check audience
+				$pAudience = new PublicationAudience( $this->_database );
+				$checked['audience'] = $pAudience->loadByVersion($row->id) ? 1 : 0;
+			}
+			elseif ($value == 'access')
+			{
+				// Check access - public by default
+				$checked['access'] = 1;
+			}
+			elseif ($value == 'gallery')
+			{
+				// Check sreenshots
+				$pScreenshot = new PublicationScreenshot( $this->_database );
+				$checked['gallery'] = count($pScreenshot->getScreenshots( $row->id )) > 0 ? 1 : 0;	
+			}
+			elseif ($value == 'tags')
+			{
+				// Check tags
+				$tagsHelper = new PublicationTags( $this->_database);
+				$checked['tags'] = $tagsHelper->countTags($row->publication_id) > 0 ? 1 : 0;
+			}
+			elseif ($value == 'notes')
+			{
+				// Check release notes
+				$checked['notes'] = $row->release_notes ? 1 : 0;		
+			}
 		}		
 
-		// Check description
-		$checked['description'] = $row->description && $row->abstract ? 1 : 0;
-
-		// Check content
-		$checked['content'] = 0;
-		if ($type == 'apps') 
-		{
-			// Check tool
-			// TBD
-		} 
-		else 
-		{
-			$pContent = new PublicationAttachment( $this->_database );
-			$count_attachments = $pContent->getAttachments ( $row->id, $filters = array('count' => 1) );
-			if ($count_attachments > 0) 
-			{
-				// Check that no previous version has the same primary content
-				// TBD
-				$checked['content'] = 1;
-			}
-		}			
-
-		// Check authors
-		$pAuthor = new PublicationAuthor( $this->_database );
-		$checked['authors'] = $pAuthor->getCount($row->id) >= 1 ? 1 : 0;
-
-		// Check license
-		$checked['license'] = ($row->license_type) ? 1 : 0;	
-
-		// Check audience
-		if ($this->_pubconfig->get('show_audience')) 
-		{
-			$pAudience = new PublicationAudience( $this->_database );
-			$checked['audience'] = $pAudience->loadByVersion($row->id) ? 1 : 0;
-		}
-
-		// Check access - public by default
-		if ($this->_pubconfig->get('access_options')) 
-		{
-			$checked['access'] = 1;
-		}	
-
-		// Check sreenshots
-		$pScreenshot = new PublicationScreenshot( $this->_database );
-		$checked['gallery'] = count($pScreenshot->getScreenshots( $row->id )) > 0 ? 1 : 0;	
-
-		// Check tags
-		$tagsHelper = new PublicationTags( $this->_database);
-		$checked['tags'] = $tagsHelper->countTags($row->publication_id) > 0 ? 1 : 0;
-
-		// Check release notes
-		$checked['notes'] = $row->release_notes ? 1 : 0;		
-		
 		return $checked;		
 	}
 	
@@ -5907,11 +5981,14 @@ class plgProjectsPublications extends JPlugin
 		if ($selections) 
 		{
 			$sels = explode("##", $selections);
-			$files = array();
-			$apps = array();
-			$links = array();
-			$notes = array();
-			$data  = array();
+			
+			$files 		= array();
+			$apps 		= array();
+			$links 		= array();
+			$notes 		= array();
+			$data  		= array();
+			$collection = array();
+			
 			$first = '';
 			
 			foreach($sels as $sel) 
@@ -5937,16 +6014,26 @@ class plgProjectsPublications extends JPlugin
 				{
 					$data[] = urldecode($arr[1]);	
 				}
+				elseif ($arr[0] == 'collection') 
+				{
+					$collection[] = urldecode($arr[1]);	
+				}
 			}
 			
-			$count = count($files) + count($links) + count($apps) + count($notes) + count($data);
+			$count = count($files) + count($links) + count($apps) + count($notes) + count($data) + count($collection);
 						
 			$selections = array(
-				'first' => $sels[0], 'files' => $files, 
-				'links' => $links, 'apps' => $apps, 
-				'notes' => $notes, 'data' => $data, 'count' => $count
+				'first' => $sels[0], 
+				'files' => $files, 
+				'links' => $links, 
+				'apps' => $apps, 
+				'notes' => $notes, 
+				'data' => $data, 
+				'collection' => $collection,
+				'count' => $count
 			);
 		}
+		
 		return $selections;
 	}
 			
@@ -6164,6 +6251,15 @@ class plgProjectsPublications extends JPlugin
 		$availPanels = explode (',', $availPanels);
 		$panels = ProjectsHelper::getParamArray($panels);
 		$this->_panels = array();
+		
+		// Get master type params
+		$typeParams = NULL;
+		if (isset($this->_base))
+		{
+			$mt = new PublicationMasterType( $this->_database );
+			$mType = $mt->getType($this->_base);
+			$typeParams = new JParameter( $mType->params );
+		}
 				
 		// Skip some panels if set in params
 		foreach ($panels as $panel) 
@@ -6171,6 +6267,15 @@ class plgProjectsPublications extends JPlugin
 			if (!in_array(trim($panel), $availPanels))
 			{
 				continue;
+			}
+			
+			if ($typeParams)
+			{
+				$on = $typeParams->get('panel_' . $panel);
+				if ($on && $on == 2)
+				{
+					continue;
+				}
 			}
 			
 			if (trim($panel) == 'access' && $this->_pubconfig->get('show_access', 0) == 0) 

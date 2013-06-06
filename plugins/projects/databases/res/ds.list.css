@@ -1,0 +1,71 @@
+/* Source file modifications */
+td.file-deleted, td.file-updated {
+	cursor: pointer;
+}
+
+td.file-deleted:after {
+	padding-left: 5px;
+	color: #CCC;
+	content: '\2691';
+}
+
+td.file-deleted:hover:after {
+	color: red;
+}
+
+td.file-updated:after {
+	padding-left: 5px;
+	color: #CCC;
+	content: '\2691';
+}
+
+td.file-updated:hover:after {
+	color: #0FA1CA;
+}
+
+
+/* Links */
+span.db-update {
+	display: none;
+	cursor: pointer;
+	font-family: 'Fontcons';
+	color: #C4D2D6;
+	margin-left: 0.3em;
+}
+
+span.db-update:hover {
+	display: none;
+	cursor: pointer;
+	font-family: 'Fontcons';
+	color: #C4D2D6;
+	margin-left: 0.3em;
+}
+
+span.db-update:before {
+	font-size: 1.3em;
+	padding: 0 5px;
+	content: "\270D";
+}
+
+span.db-update:hover:after {
+	font-size: .8em;
+	content: "EDIT";
+}
+
+table.listing a.delete-db:before {
+	color: #C6A68D;
+	font-family: 'Fontcons';
+	content: '\f014';
+	font-size: 16px;
+	padding-right: 5px;
+}
+
+table.listing a.delete-db:hover {
+	color: red;
+}
+
+
+/* making jQuery UI font-size to match the project */
+.ui-helper-clearfix {
+	font-size: .85em;
+}

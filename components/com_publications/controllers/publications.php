@@ -32,6 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
+ximport('Hubzero_Environment');
 
 /**
  * Primary component controller (extends Hubzero_Controller)
@@ -110,6 +111,10 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				$this->_serve();		
 				break;
 				
+			case 'wiki':
+				$this->_wikiPage();
+				break;
+				
 			case 'citation':   
 				$this->_citation();   
 				break;
@@ -171,7 +176,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			);
 		}
 		
-		if ($this->publication && ($this->_task == 'view' || $this->_task == 'serve')) 
+		if ($this->publication && ($this->_task == 'view' || $this->_task == 'serve' || $this->_task == 'wiki')) 
 		{
 			$url = 'index.php?option='.$this->_option.'&id='.$this->publication->id;
 			
@@ -190,6 +195,14 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				$this->publication->title,
 				$url
 			);	
+			
+			if ($this->_task == 'serve' || $this->_task == 'wiki')
+			{
+				$pathway->addItem(
+					JText::_('COM_PUBLICATIONS_SERVING_CONTENT'),
+					'index.php?option='.$this->_option.'&task='.$this->_task
+				);
+			}			
 		}
 		elseif (count($pathway->getPathWay()) <= 1 && $this->_task) 
 		{
@@ -204,7 +217,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 							'index.php?option='.$this->_option.'&task='.$this->_task
 						);
 					}
-				break;
+					break;
 				
 				case 'start':
 					if ($this->_task_title) 
@@ -214,19 +227,19 @@ class PublicationsControllerPublications extends Hubzero_Controller
 							'index.php?option='.$this->_option.'&task=submit'
 						);
 					}
-				break;
+					break;
 				
 				case 'block':
 				case 'intro':
 					// Nothing
-				break;
+					break;
 				
 				default:
 					$pathway->addItem(
 						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
 						'index.php?option='.$this->_option.'&task='.$this->_task
 					);
-				break;
+					break;
 			}
 		}
 	}
@@ -535,7 +548,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
 		}
-						
+								
 		// Check that version number exists
 		$objV 	 = new PublicationVersion( $this->database );
 		$version = $objV->checkVersion($id, $version) ? $version : 'default';
@@ -680,6 +693,9 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Build publication path (to access attachments)
 		$base_path = $this->config->get('webpath');
 		$path = $helper->buildPath($id, $publication->version_id, $base_path, $publication->secret);
+		
+		// Build log path (access logs)
+		$logPath = $helper->buildPath($id, $publication->version_id, $base_path, 'logs');
 				
 		// Start sections
 		$sections = array();
@@ -764,7 +780,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			if ($this->_logging && $this->_task == 'view' && $publication->state == 1)
 			{
 				$pubLog = new PublicationLog($this->database);
-				$pubLog->logAccess($publication->id, $publication->version_id);
+				$pubLog->logAccess($publication, 'view', $logPath);
 			}
 		}
 		
@@ -981,6 +997,16 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$disp	  = $disp == 'inline' ? $disp : 'attachment';
 		$no_html  = JRequest::getInt('no_html', 0);
 		
+		// In dataview
+		$vid   = JRequest::getInt( 'vid', '' ); 
+		$file  = JRequest::getVar( 'file', '' );
+		
+		if ($vid && $file)
+		{
+			$this->_serveData();
+			return;
+		}
+		
 		$downloadable = array();
 		
 		// Make sure render type is available
@@ -1062,6 +1088,9 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$base_path = $this->config->get('webpath');
 		$path = $helper->buildPath($this->_id, $publication->version_id, $base_path, $publication->secret);
 		
+		// Build log path (access logs)
+		$logPath = $helper->buildPath($this->_id, $publication->version_id, $base_path, 'logs');
+		
 		// First attachment
 		$primary = $attachments[0];
 		$pType	 = $primary->type;
@@ -1076,7 +1105,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		{
 			$pubLog = new PublicationLog($this->database);
 			$aType  = $primary->role == 1 && $render != 'archive' ? 'primary' : 'support';
-			$pubLog->logAccess($publication->id, $publication->version_id, $aType);
+			$pubLog->logAccess($publication, $aType, $logPath);
 		}
 				
 		// Serve attachments differently depending on type
@@ -1182,6 +1211,13 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				$this->_redirect = preg_match($v, $pPath) ? $pPath : DS . trim($pPath, DS);
 				return;
 			}
+			
+			if ($pType == 'note')
+			{
+				// Serve wiki page
+				$this->_wikiPage();
+				return;
+			}
 		}
 				
 		// Last resort - download attachment(s)		
@@ -1227,6 +1263,191 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	}
 	
 	/**
+	 * Serve a supplementary file
+	 * 
+	 * @return     void
+	 */	
+	protected function _serveData()
+	{
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+		// Incoming
+		$pid      	= JRequest::getInt( 'id', 0 );	
+		$vid  	  	= JRequest::getInt( 'vid', 0 );   
+		$file	  	= JRequest::getVar( 'file', '' ); 
+		$render   	= JRequest::getVar('render', '');
+		$return   	= JRequest::getVar('return', '');
+		$disp		= JRequest::getVar( 'disposition'); 
+		$disp		= in_array($disp, array('inline', 'attachment')) ? $disp : 'attachment';        
+
+		// Ensure we what we need
+		if (!$pid || !$vid || !$file ) 
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			return;
+		}
+
+		// Get publication version
+		$objPV 		 = new PublicationVersion( $this->database );
+		if (!$objPV->load($vid))
+		{
+			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			$this->_intro();
+			return;
+		}
+
+		// Get publication
+		$objP 		 = new Publication( $this->database );
+		$publication = $objP->getPublication($pid, $objPV->version_number);
+
+		// Make sure we got a result from the database
+		if (!$publication) 
+		{
+			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			$this->_intro();
+			return;
+		}
+
+		// Get publication helper
+		$helper = new PublicationHelper($this->database);
+
+		// Build publication data path 
+		$base_path = $this->config->get('webpath');
+		$path = $helper->buildPath($pid, $vid, $base_path, 'data', $root = 0);
+
+		// Ensure the file exist
+		if (!file_exists(JPATH_ROOT . $path . DS . $file)) 
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename(JPATH_ROOT . $path . DS . $file);
+		$xserver->disposition($disp);
+		$xserver->acceptranges(false); // @TODO fix byte range support
+		$xserver->saveas(basename($file));
+
+		if (!$xserver->serve()) 
+		{
+			// Should only get here on error
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+		} 
+		else 
+		{
+			exit;
+		}
+
+		return;
+	}
+	
+	/**
+	 * Display wiki page
+	 * 
+	 * @return     void
+	 */
+	protected function _wikiPage()
+	{			
+		// Get requested page id
+		$pageid = count($this->attachments) > 0 && $this->attachments[0]->object_id 
+				? $this->attachments[0]->object_id : JRequest::getInt( 'pageid', 0 );
+		
+		// Get publication information (secondary page)
+		if (!$this->publication)
+		{			
+			// Incoming	
+			$version  = JRequest::getVar( 'v', '' );
+			
+			// Ensure we have an ID or alias to work with
+			if (!$this->_id && !$this->_alias) 
+			{
+				$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+				return;
+			}
+			
+			// Which version is requested? 
+			$version = $version == 'dev' ? 'dev' : $version;
+			$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';	
+
+			// Get publication
+			$objP 		 		= new Publication( $this->database );
+			$this->publication 	= $objP->getPublication($this->_id, $version, NULL, $this->_alias);
+			
+			// Check if user has access to content
+			$this->_checkResctrictions($this->publication, $version);
+			
+			// Get primary attachment(s)
+			$objPA = new PublicationAttachment( $this->database );
+			$filters = array('role' => 1);
+			$this->attachments = $objPA->getAttachments($this->publication->version_id, $filters);			
+		}
+				
+		if (!$pageid)
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			return;
+		}
+		
+		// Make sure we got a result from the database
+		if (!$this->publication) 
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			return;
+		}
+		
+		// Get publication helper
+		$helper = new PublicationHelper($this->database);
+		
+		// Allowed page scope
+		$masterscope = 'projects' . DS . $this->publication->project_alias . DS . 'notes';
+		
+		// Get page information
+		$page = $helper->getWikiPage($pageid, $this->publication, $masterscope);	
+		if (!$page)
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			return;
+		}	
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		// Push some scripts to the template
+		$this->_getPublicationScripts();
+
+		// Set page title
+		$this->_buildTitle();
+		
+		// Set the pathway
+		$this->_buildPathway();			
+		
+		// Instantiate a new view
+		$view = new JView( array('name' => 'view', 'layout' => 'wiki') );
+		$view->option 			= $this->_option;
+		$view->project_alias	= $this->publication->project_alias;
+		$view->project_id		= $this->publication->project_id;
+		$view->config 			= $this->config;
+		$view->database 		= $this->database;
+		$view->helper			= $helper;
+		$view->masterscope		= $masterscope;
+		$view->publication 		= $this->publication;
+		$view->attachments		= $this->attachments;	
+		$view->page				= $page;
+				
+		// Output HTML
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		
+		$view->display();
+		return;
+		
+	}
+	
+	/**
 	 * Display presenter
 	 * 
 	 * @return     void
@@ -1239,7 +1460,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			return;
 		}
 		// We do need attachments!
-		if (!$this->attachments || empty($this->attachments))
+		if (!$this->attachments || count($this->attachments) <= 0)
 		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
@@ -1307,8 +1528,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			if ($this->getError()) 
 			{
 				$view->setError( $this->getError() );
-			}	
-			
+			}				
 		}
 			
 		// do we have javascript?
@@ -1462,7 +1682,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		// We do need attachments!
-		if (!$this->attachments || empty($this->attachments))
+		if (!$this->attachments || count($this->attachments) <= 0)
 		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;

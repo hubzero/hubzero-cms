@@ -240,6 +240,13 @@ class plgProjectsNotes extends JPlugin
 				
 			// What's the task?						
 			$this->_task = $action ? $action : JRequest::getVar('action', 'view');
+			
+			// Publishing?
+			if ($this->_task == 'browser')
+			{
+				return $this->browser();
+			}
+			
 			switch ($this->_task)
 			{
 				case 'upload':
@@ -817,5 +824,72 @@ class plgProjectsNotes extends JPlugin
 		}
 		
 		return $path;
-	}	
+	}
+	
+	/**
+	 * List project notes available for publishing
+	 * 
+	 * @return     array
+	 */
+	public function browser()
+	{
+		// Enable views
+		ximport('Hubzero_View_Helper_Html');
+		ximport('Hubzero_Plugin_View');
+				
+		// Incoming
+		$ajax 		= JRequest::getInt('ajax', 0);
+		$primary 	= JRequest::getInt('primary', 1);
+		$versionid  = JRequest::getInt('versionid', 0);
+				
+		if (!$ajax) 
+		{
+			return false;
+		}
+				
+		// Output HTML
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'notes',
+				'name'=>'browser'
+			)
+		);
+		
+		// Get current attachments
+		$pContent = new PublicationAttachment( $this->_database );
+		$role 	= $primary ? '1' : '0';
+		$other 	= $primary ? '0' : '1';
+		
+		$view->attachments = $pContent->getAttachments($versionid, $filters = array('role' => $role, 'type' => 'note'));
+		
+		// Output HTML
+		$view->params 		= new JParameter( $this->_project->params );
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		$view->config 		= $this->_config;	
+		$view->title		= $this->_area['title'];
+		$view->primary		= $primary;
+		$view->versionid	= $versionid;
+		
+		// Get messages	and errors	
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		$html =  $view->loadTemplate();
+		
+		$arr = array(
+			'html' => $html,
+			'metadata' => '',
+			'msg' => '',
+			'referer' => ''
+		);
+		
+		return $arr;
+	}
+		
 }

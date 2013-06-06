@@ -291,17 +291,19 @@ $view->display();
 				<?php } ?>
 			<?php } ?>
 					
-			<?php if($this->row->state == 1) { // published ?>			
+			<?php if ($this->row->state == 1) { // published ?>	
+				<?php if ($this->typeParams->get('option_unpublish', 0) == 1) { ?>		
 				<li id="next-cancel"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISHED_UNPUBLISH');  
 				echo ' <a href="' . $this->url . '/?action=cancel' . a . 'version='.$this->version . '">'
-				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISH_VERSION').' &raquo;</a> ';  ?></p></li>				
+				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISH_VERSION').' &raquo;</a> ';  ?></p></li>
+				<?php } ?>				
 				<li id="next-usage"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_STATS') 
 				.' <strong>'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_USAGE_STATS').'</strong> '
 				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_FOLLOW_FEEDBACK');  ?>
 					<span class="block italic"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_FEATURE_IN_DEVELOPMENT'); ?></span></p></li>
 			<?php } ?>
 			
-			<?php if($this->row->state == 5) { // pending approval ?>
+			<?php if ($this->row->state == 5) { // pending approval ?>
 				<li id="next-pending">
 					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING');  ?>	</p>
 					<?php if($this->row->doi) { 
@@ -313,7 +315,7 @@ $view->display();
 				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT').' &raquo;</a> ';  ?></p></li>					
 			<?php } ?>
 			
-			<?php if($this->row->state == 0) { // unpublished				
+			<?php if ($this->row->state == 0) { // unpublished				
 					// Check who unpublished this
 					$objAA = new ProjectActivity( $this->database );
 					$pubtitle = Hubzero_View_Helper_Html::shortenText($this->row->title, 100, 0);

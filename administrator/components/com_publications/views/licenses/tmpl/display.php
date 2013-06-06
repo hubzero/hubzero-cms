@@ -69,7 +69,7 @@ $k = 0;
 for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	$class = $row->active == 1 ? 'published' : 'unpublished';
+	$class = $row->active == 1 ? 'item_on' : 'item_off';
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -92,7 +92,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<span class="<?php echo $class; ?>">&nbsp;</span>
 				</td>
 				<td class="centeralign">
-					<span class="<?php echo $row->main == 1 ? 'published' : ''; ?>">&nbsp;</span>
+					<span class="<?php echo $row->main == 1 ? 'item_on' : ''; ?>">&nbsp;</span>
 				</td>
 				<td class="order">
 					<span>

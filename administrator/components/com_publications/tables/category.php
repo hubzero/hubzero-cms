@@ -129,6 +129,16 @@ class PublicationCategory extends JTable
 			$this->setError( JText::_('Your publication category name must contain text.') );
 			return false;
 		}
+		if (trim( $this->alias ) == '') 
+		{
+			$this->setError( JText::_('Your publication category alias must contain text.') );
+			return false;
+		}
+		if (trim( $this->url_alias ) == '') 
+		{
+			$this->setError( JText::_('Your publication url alias name must contain text.') );
+			return false;
+		}
 		return true;
 	}
 		
@@ -162,15 +172,23 @@ class PublicationCategory extends JTable
 			$query .= ", (SELECT COUNT(*) FROM #__publications as P WHERE P.category = C.id ) AS itemCount ";
 		}
 		$query .= " FROM $this->_tbl as C ";
-		$query .= isset($filters['state']) && $filters['state'] == 'all' ? '' : " WHERE C.state=1 ";
+		
+		if (isset($filters['state']) && $filters['state'] == 'all')
+		{
+			// don't limit by state
+		}
+		else
+		{
+			$query .= isset($filters['state']) && intval($filters['state']) > 0 ? 'WHERE C.state=' . $filters['state'] : " WHERE C.state=1 ";			
+		}
 		
 		$orderby = isset($filters['sort']) ? $filters['sort'] : "name";
 		$order_dir = isset($filters['sort_Dir']) ? $filters['sort_Dir'] : "ASC";
-		$query .= "ORDER BY C.".$orderby." ".$order_dir." ";
+		$query .= " ORDER BY C.".$orderby." ".$order_dir." ";
 		
 		if (isset($filters['start']) && isset($filters['limit']))
 		{
-			$query .= "LIMIT ".$filters['start'].",".$filters['limit'];
+			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
 		}
 		
 		$this->_db->setQuery( $query );

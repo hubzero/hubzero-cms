@@ -172,22 +172,7 @@ HUB.ProjectPublications = {
 			}
 			else
 			{
-				switch(active)
-				{
-					default:
-					case 'files':
-					  	url = url + '&action=browser';
-						url = url + '&active=files';
-						url = url + '&content=files';
-					  	break;
-					case 'databases':
-				 		url = url + '&active=publications&action=uploader&content=data';
-				  		break;
-					case 'links':
-				 		url = url + '&active=publications&action=uploader&content=link';
-				  		break;
-				}
-				
+				url = url + '&active=' + active + '&action=browser';				
 				url = url + '&primary=' + primary;
 			}
 						

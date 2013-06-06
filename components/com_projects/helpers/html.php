@@ -537,11 +537,14 @@ class ProjectsHtml
 				break;
 			case 'xls':
 			case 'xlsx':
+			case 'tsv':
 			case 'csv':
+			case 'ods':
 				$icon = 'page_white_excel';
 				break;
 			case 'ppt':
 			case 'pptx':
+			case 'pps':
 				$icon = 'page_white_powerpoint';
 				break;
 			case 'mov':

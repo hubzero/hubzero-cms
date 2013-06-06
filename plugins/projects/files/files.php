@@ -591,7 +591,7 @@ class plgProjectsFiles extends JPlugin
 				'folder'=>'projects',
 				'element'=>'files',
 				'name'=>'upload',
-				'layout' => $content
+				'layout' => 'files'
 			)
 		);
 				
@@ -4177,8 +4177,9 @@ class plgProjectsFiles extends JPlugin
 		$pparams = new JParameter( $obj->params );		
 		$synced = $pparams->get($service . '_sync', 1);
 		
-		// Last synced remote change
-		$lastSyncedChange = $pparams->get($service . '_last_synced_change', NULL);
+		// Last synced remote/local change
+		$lastRemoteChange = $pparams->get($service . '_last_remote_change', NULL);
+		$lastLocalChange  = $pparams->get($service . '_last_local_change', NULL);
 		
 		// Get last change ID for project creator
 		$lastSyncId = $pparams->get($service . '_sync_id', NULL);
@@ -4220,7 +4221,8 @@ class plgProjectsFiles extends JPlugin
 				. gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
 		$output .= 'Previous sync ID: ' . $prevSyncId . "\n";
 		$output .= 'Current sync ID: ' . $lastSyncId . "\n";
-		$output .= 'Last synced remote change: '.  $lastSyncedChange . "\n";
+		$output .= 'Last synced remote change: '.  $lastRemoteChange . "\n";
+		$output .= 'Last synced local change: '.  $lastLocalChange . "\n";
 		$output .= 'Time passed since last sync: ' . $passed . "\n";		
 		$output .= 'Local sync start time: '.  $startTime . "\n";
 		$output .= 'Initiated by (user ID): '.  $this->_uid . ' [';
@@ -4242,8 +4244,10 @@ class plgProjectsFiles extends JPlugin
 		// Collector for local renames
 		$localRenames 	= array();
 		
+		$fromLocal = ($synced == $lastLocalChange || !$lastLocalChange) ? $synced : $lastLocalChange;
+		
 		// Get all local changes since last sync
-		$locals = $this->_git->getChanges($path, $localPath, $synced, $localDir, $localRenames, $connections );
+		$locals = $this->_git->getChanges($path, $localPath, $fromLocal, $localDir, $localRenames, $connections );
 											
 		// Record sync status
 		$this->_writeToFile( JText::_('Collecting remote changes') );
@@ -4268,7 +4272,7 @@ class plgProjectsFiles extends JPlugin
 		$this->_writeToFile( JText::_('Verifying remote changes') );
 		
 		// Possible that we've missed a change?
-		if ( $newSyncId > $lastSyncId)
+		if ( $newSyncId > $lastSyncId )
 		{
 			$output .= '!!! Changes detected - new change ID: ' . $newSyncId . "\n";
 		}
@@ -4281,8 +4285,8 @@ class plgProjectsFiles extends JPlugin
 				? 'No changes brought in by Changes feed' . "\n"
 				: 'Changes feed has ' . count($remotes) . ' changes' . "\n";
 		
-		$from = ($synced == $lastSyncedChange || !$lastSyncedChange) 
-				? date("c", strtotime($synced) - (10)) : date("c", strtotime($lastSyncedChange));
+		$from = ($synced == $lastRemoteChange || !$lastRemoteChange) 
+				? date("c", strtotime($synced) - (1)) : date("c", strtotime($lastRemoteChange));
 		
 		// Get changes via List feed (to make sure we get ALL changes)
 		// We need this because Changes feed is not 100% reliable
@@ -4342,12 +4346,16 @@ class plgProjectsFiles extends JPlugin
 		// Go through local changes
 		if (count($locals) > 0)
 		{	
+			$lChange = NULL;
 			foreach ($locals as $filename => $local)
 			{							
 				// Record sync status
 				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
 				
 				$output .= ' * Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
+				
+				// Get latest change
+				$lChange = $local['time'] > $lChange ? $local['time'] : $lChange;
 				
 				// Skip renamed files (local renames are handled later)
 				if (in_array($filename, $localRenames) && !file_exists($local['fullPath']))
@@ -4521,6 +4529,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				
 				$processedLocal[$filename] = $local;
+				$lastLocalChange = $lChange ? date('Y-m-d H:i:s', $lChange + 1) : NULL;	
 			}
 		}
 		else
@@ -4549,7 +4558,7 @@ class plgProjectsFiles extends JPlugin
 				$tChange = $ri['time'] > $tChange ? $ri['time'] : $tChange;
 			}
 
-			$lastSyncedChange = $tChange ? date('Y-m-d H:i:s', $tChange) : date('Y-m-d H:i:s');	
+			$lastRemoteChange = $tChange ? date('Y-m-d H:i:s', $tChange) : NULL;	
 		}
 		
 		// Image handler for generating thumbnails
@@ -4558,7 +4567,7 @@ class plgProjectsFiles extends JPlugin
 		// Make sure we have thumbnails for updates from local repo
 		if (!empty($newRemotes) && $synced != 1)
 		{
-			$tChange = NULL;
+			$tChange = strtotime($lastRemoteChange);
 			foreach ($newRemotes as $filename => $nR)
 			{
 				// Generate local thumbnail
@@ -4572,9 +4581,10 @@ class plgProjectsFiles extends JPlugin
 				$tChange = $nR['time'] > $tChange ? $nR['time'] : $tChange;
 			}
 			
-			$lastSyncedChange = $tChange ? date('Y-m-d H:i:s', $tChange) : date('Y-m-d H:i:s');
+			// Pick up last remote change
+			$lastRemoteChange = $tChange ? date('Y-m-d H:i:s', $tChange) : NULL;
 		}
-										
+												
 		// Record sync status
 		$this->_writeToFile( JText::_('Importing remote changes') );
 
@@ -4818,6 +4828,8 @@ class plgProjectsFiles extends JPlugin
 						$remote['type'], $remote['remoteid'], $filename, 
 						$match, $remote
 					);
+					
+					$lastLocalChange = date('Y-m-d H:i:s', time() + 1);
 				}		
 				
 				$processedRemote[$filename] = $remote;
@@ -4828,6 +4840,10 @@ class plgProjectsFiles extends JPlugin
 			$output .= 'No remote changes since last sync' . "\n";
 		}
 		
+		// Hold on by one second
+		sleep(1);
+		
+		// Log time
 		$endTime = date('Y-m-d H:i:s');
 		$length = ProjectsHtml::timeDifference(strtotime($endTime) - strtotime($startTime));
 		
@@ -4836,6 +4852,7 @@ class plgProjectsFiles extends JPlugin
 		$output .= 'UTC time: '.  gmdate('Y-m-d H:i:s', strtotime($endTime)) . "\n";
 		$output .= 'Sync completed in: '.  $length . "\n";
 		
+		// Determine next sync ID
 		if (!$nextSyncId)
 		{
 			$nextSyncId  = ($newSyncId > $lastSyncId || count($remotes) > 0) ? ($newSyncId + 1) : $lastSyncId;
@@ -4851,19 +4868,26 @@ class plgProjectsFiles extends JPlugin
 			
 			// Save change id for next sync
 			$obj->saveParam($this->_project->id, $service . '_sync_id', ($nextSyncId));
-			$output .= 'Next sync ID: ' . $newSyncId . "\n";
+			$output .= 'Next sync ID: ' . $nextSyncId . "\n";
 			
-			$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);			
+			$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);
+			
+			$output .= 'Saving last synced remote change at: ' . $lastRemoteChange . "\n";
+			$obj->saveParam($this->_project->id, $service . '_last_remote_change', $lastRemoteChange);
+
+			$output .= 'Saving last synced local change at: ' . $lastLocalChange . "\n";
+			$obj->saveParam($this->_project->id, $service . '_last_local_change', $lastLocalChange);			
 		}
-		
-		$output .= 'Saving last synced change at: ' . $lastSyncedChange . "\n";
-		$obj->saveParam($this->_project->id, $service . '_last_synced_change', $lastSyncedChange);
-		
+		else
+		{
+			$output .= 'Some item(s) failed to sync, will repeat' . "\n";
+		}
+				
 		// Debug output
 		//$this->_rSync['debug'] = '<pre>' . $output . '</pre>'; // on-screen debugging
 		$temp = $this->getProjectPath ($this->_project->alias, 'logs');
 		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . date('Y-m') . '.log', true);
-		
+				
 		// Record sync status
 		$this->_writeToFile( JText::_('Sync complete! Updating view...') );
 				

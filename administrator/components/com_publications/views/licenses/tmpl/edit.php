@@ -118,6 +118,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-50 fltrt">
 	  <fieldset class="adminform">
+			<legend><span><?php echo JText::_('License Configuration'); ?></span></legend>
 		<table class="admintable">
 			<tbody>
 				<tr>

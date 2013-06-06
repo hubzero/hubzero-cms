@@ -276,7 +276,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$pContent = new PublicationAttachment( $this->database );
 		$primary = $pContent->getAttachments( $this->view->row->id, $filters = array('role' => '1') );
 		$secondary = $pContent->getAttachments( $this->view->row->id, $filters = array('role' => '0') );
-		if(count($primary) > 0) {
+		if (count($primary) > 0) 
+		{
 			$checked['content'] = 1;
 		}
 		$this->view->lists['content'] = PublicationsHtml::selectContent($primary, $secondary, $this->_option);	
@@ -284,7 +285,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 		// Get pub authors
 		$pa = new PublicationAuthor( $this->database );
 		$authors = $pa->getAuthors($vid);
-		if(count($authors) > 0) {
+		if (count($authors) > 0) 
+		{
 			$checked['authors'] = 1;
 		}
 		
@@ -296,10 +298,12 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$this->view->checked = $checked;
 		
 		// Is publishing allowed?
-		if($checked['content'] == 1 && $checked['authors'] == 1 && $checked['description'] == 1) {
+		if ($checked['content'] == 1 && $checked['authors'] == 1 && $checked['description'] == 1) 
+		{
 			$this->view->pub_allowed = 1;
 		}
-		else {
+		else 
+		{
 			$this->view->pub_allowed = 0;
 		}
 		

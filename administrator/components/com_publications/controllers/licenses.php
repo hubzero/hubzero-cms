@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -254,7 +254,7 @@ class PublicationsControllerLicenses extends Hubzero_Controller
 		$row->load( (int) $id[0]);
 		
 		// Update order
-		$row->move($dir);
+		$row->changeOrder($dir);
 		
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller

@@ -358,10 +358,10 @@ class PublicationAttachment extends JTable
 	 * Load entry by version and path
 	 * 
 	 * @param      integer 	$vid		pub version id
-	 * @param      string 	$path		content path
+	 * @param      string 	$identifier	content path or object id/name
 	 * @return     boolean
 	 */	
-	public function deleteAttachment( $vid = NULL, $path = NULL ) 
+	public function deleteAttachment( $vid = NULL, $identifier = NULL, $type = 'file' ) 
 	{
 		if (!$vid) 
 		{
@@ -376,7 +376,16 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 		
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid." AND path='".$path."'";		
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid;
+		if ($type == 'file')
+		{
+			$query .= " AND path='" . $identifier . "'";
+		}
+		
+		if ($type == 'data' || $type == 'app')
+		{
+			$query .= is_numeric($identifier) ? " AND object_id='" . $identifier . "'" : " AND object_name='" . $identifier . "'";
+		}		
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) 
 		{
@@ -458,13 +467,23 @@ class PublicationAttachment extends JTable
 			$query.= " AND A.object_name IN(" . $ids . ")  ";		
 		}
 		
+		elseif ($base == 'notes' && !empty($selections['notes']))
+		{
+			$ids = '';
+			foreach ($selections['notes'] as $note) 
+			{
+				$ids .= '"'.$note.'",';	
+			}
+			$ids = substr($ids, 0, strlen($ids) - 1);
+
+			$query.= " AND A.object_id IN(" . $ids . ")  ";		
+		}
+		
 		$query.= " AND A.role=1 AND P.project_id=" . $projectid;
 		$query.= " GROUP BY P.id";
 		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
-		
-		return false;
 	}
 	
 	/**
@@ -487,7 +506,7 @@ class PublicationAttachment extends JTable
 		$query = "SELECT A.*, V.version_label, V.version_number FROM $this->_tbl AS A ";
 		$query.= " JOIN #__publication_versions AS V ON A.publication_version_id = V.id ";
 		$query.= " WHERE A.publication_id = ".$pid." AND A.publication_version_id !=".$vid;
-		$query.= " AND V.state!='3' AND V.main=1 AND A.role=1";
+		$query.= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
 		$query.= " ORDER BY A.ordering";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
@@ -509,6 +528,11 @@ class PublicationAttachment extends JTable
 					}
 					elseif ($base == 'databases' && $o['object_name'] == $r->object_name 
 						&& $o['object_revision'] == $r->object_revision && $r->type == 'data')
+					{
+						$matched++;
+					}
+					elseif ($base == 'notes'  && $o['object_id'] == $r->object_id 
+						&& $o['object_revision'] == $r->object_revision && $r->type == 'note')
 					{
 						$matched++;
 					}

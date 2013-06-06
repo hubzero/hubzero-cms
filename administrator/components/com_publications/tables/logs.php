@@ -111,6 +111,60 @@ class PublicationLog extends JTable
 	}
 	
 	/**
+	 * Check if bot
+	 * 
+	 * @return     void
+	 */	
+	public function checkBotIp( $ip ) 
+	{		
+		// Metrics db name
+		$query = "SELECT DATABASE()";
+		$this->_db->setQuery( $query );
+		$dbname = $this->_db->loadResult();
+		$metrics_db = $dbname . '_metrics';
+		
+		// Do we have metrics db and necessary table?
+		$query = "SELECT COUNT(*) FROM information_schema.tables 
+				WHERE table_schema = '$metrics_db' 
+				AND table_name = 'exclude_list'";
+				$this->_db->setQuery( $query );
+				$exists = $this->_db->loadResult();
+		
+		// So it it bot or real user?		
+		if ($exists)
+		{
+			$query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter='$ip'";
+			$this->_db->setQuery( $query );
+			return $this->_db->loadResult();
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Log access in file
+	 * 
+	 * @param      integer 	$pid		Publication ID
+	 * @param      integer 	$vid		Publication version ID
+	 * @param      string 	$type		view, primary or support
+	 * @return     void
+	 */	
+	public function logAccessFile ( $pid = NULL, $vid = NULL, $type = 'view', $ip = '', $logPath = '' ) 
+	{
+		$filename = 'pub-' . $pid . '-v-' . $vid . '.' . date('Y-m') . '.log';
+		
+		$juser =& JFactory::getUser();
+		$uid 	= $juser->get('id');
+		$uid 	= $uid ? $uid : 'guest';
+		
+		$log = date( 'Y-m-d H:i:s' ) . "\t" . $ip . "\t" . $uid . "\t" . $type . "\n";
+		
+		$handle  = fopen(JPATH_ROOT . $logPath . DS . $filename, 'a');
+		fwrite($handle, $log);
+		fclose($handle);
+	}
+	
+	/**
 	 * Log access
 	 * 
 	 * @param      integer 	$pid		Publication ID
@@ -118,13 +172,45 @@ class PublicationLog extends JTable
 	 * @param      string 	$type		view, primary or support
 	 * @return     void
 	 */	
-	public function logAccess ( $pid = NULL, $vid = NULL, $type = 'view' ) 
+	public function logAccess ( $publication = NULL, $type = 'view', $logPath = '' ) 
 	{
-		if (!$pid || !$vid)
+		if (!$publication || !is_object($publication))
 		{
 			return false;
 		}
 		
+		$pid = $publication->id;
+		$vid = $publication->version_id;
+		
+		// Create log directory
+		if ($logPath && !is_dir(JPATH_ROOT . $logPath))
+		{
+			jimport('joomla.filesystem.folder');
+			JFolder::create( JPATH_ROOT . $logPath);
+		}
+		
+		// We are only logging access to public resources
+		if ($publication->state != 1)
+		{
+			return false;
+		}
+		
+		// Get IP
+		$ip = Hubzero_Environment::ipAddress();
+		
+		// Check if bot
+		if ($this->checkBotIp( $ip ))
+		{
+			// Do not log a bot
+			return false;
+		}
+		
+		// Log in a file
+		if (is_dir(JPATH_ROOT . $logPath))
+		{
+			$this->logAccessFile( $pid, $vid, $type, $ip, $logPath);
+		}
+				
 		$thisYearNum 	= date('y', time());
 		$thisMonthNum 	= date('m', time());
 		
@@ -133,10 +219,11 @@ class PublicationLog extends JTable
 		{
 			$this->publication_id 			= $pid;
 			$this->publication_version_id 	= $vid;
-			$this->modified					= date( 'Y-m-d H:i:s' );
 			$this->year						= $thisYearNum;
 			$this->month					= $thisMonthNum;			
 		}
+		
+		$this->modified	= date( 'Y-m-d H:i:s' );
 		
 		if ($type == 'primary')
 		{
@@ -172,7 +259,7 @@ class PublicationLog extends JTable
 		{
 			return false;
 		}
-		
+				
 		$thisYearNum 	= date('y', time());
 		$thisMonthNum 	= date('m', time());
 		

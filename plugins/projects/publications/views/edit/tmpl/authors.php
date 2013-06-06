@@ -98,7 +98,7 @@ $view->display();
 			<?php if($canedit) { ?>	
 			<p><?php echo $instruct; ?></p>	
 			<!-- Load content selection browser //-->				
-			<div id="c-show">
+			<div id="c-show" class="c-panel-authors">
 				<noscript>
 					<p class="nojs"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
 				</noscript>

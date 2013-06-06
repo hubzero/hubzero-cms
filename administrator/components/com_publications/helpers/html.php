@@ -640,7 +640,7 @@ class PublicationsHtml
 					$class 	 = 'published';
 					$status  = JText::_('COM_PUBLICATIONS_VERSION_PUBLISHED');
 				} 
-				elseif ($now > $row->published_down) 
+				elseif ($row->published_down && $row->published_down != "0000-00-00 00:00:00" && $now > $row->published_down) 
 				{
 					$status  = JText::_('COM_PUBLICATIONS_VERSION_EXPIRED');
 					$class   = 'expired';

@@ -93,6 +93,23 @@
 	#whatspop {
 		margin-bottom: 2em;
 		}
+/* Wiki content */
+	.wiki-wrap {
+		padding: 0.5em 2em 2em 2em;
+		border: 10px solid #FFFFFF;
+		background: #f4effa;
+	}	
+	.wiki-content {
+		padding: 1em 3em;
+		background: #FFFFFF;
+	}
+	.wiki-back {
+		margin: 0;
+		padding: 0 1em;
+		font-size: 90%;
+		background: #f4effa;
+	}	
+
 /* Publication category icons */
 	.com_publications div.extracontent li a:before {
 		display: block;

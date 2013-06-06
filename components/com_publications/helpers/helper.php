@@ -394,12 +394,58 @@ class PublicationHelper extends JObject
 	}
 	
 	//----------------------------------------------------------
+	// Wiki-type publication
+	//----------------------------------------------------------
+
+	/**
+	 * Get wiki page
+	 * 
+	 * @param      object $attachment
+	 * @param      object $publication
+	 * @return     void
+	 */	
+	public function getWikiPage( $pageid = NULL, $publication = NULL, $masterscope = NULL, $versionid = NULL ) 
+	{
+		if (!$pageid || !$publication)
+		{
+			return false;
+		}
+		
+		$query = "SELECT p.* ";
+		if ($publication->state == 3)
+		{
+			// Draft - load latest version
+			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id
+			  ORDER by p.state ASC, v.version DESC LIMIT 1) as pagetext ";
+		}
+		else
+		{
+			$date = $publication->accepted && $publication->accepted != '0000-00-00 00:00:00' ? $publication->accepted : $publication->submitted;
+			$date = (!$date || $date == '0000-00-00 00:00:00') ? $publication->published_up : $date;
+						
+			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE ";
+			$query .= $versionid ? " v.id=" . $versionid : " v.created <= '" . $date . "'";
+			$query .= " ORDER BY v.created DESC LIMIT 1) as pagetext ";
+		}
+		
+		$query .= " FROM #__wiki_page as p WHERE p.scope LIKE '" . $masterscope . "%' ";
+		$query .=  is_numeric($pageid) ? " AND p.id='$pageid' " : " AND p.pagename='$pageid' ";
+		$query .= " LIMIT 1";				  
+						
+		$this->_db->setQuery($query);				
+		$result = $this->_db->loadObjectList();
+		
+		return $result ? $result[0] : NULL;
+	}
+	
+	//----------------------------------------------------------
 	// Citations
 	//----------------------------------------------------------
 
 	public function getCitations()
 	{
-		if (!$this->_id) {
+		if (!$this->_id) 
+		{
 			return false;
 		}
 		

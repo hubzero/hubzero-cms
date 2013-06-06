@@ -3337,6 +3337,14 @@
 	.feature #feature-more .ima:before {
 		content: "\22EF";
 	}
+	#suggestions .s-series a:before,
+	#suggestions .s-collections a:before {
+		content: "\f060";
+	}
+	#suggestions .s-gallery a:before {
+		content: "\f08c";
+		color: #48704c;
+	}
 
 /* IE7 hacks 
 --------------------------------------------- */	

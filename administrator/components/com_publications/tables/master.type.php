@@ -114,6 +114,11 @@ class PublicationMasterType extends JTable
 			$this->setError( JText::_('Your publication master type must contain text.') );
 			return false;
 		}
+		if (trim( $this->alias ) == '') 
+		{
+			$this->setError( JText::_('Your publication master type alias must contain text.') );
+			return false;
+		}
 		return true;
 	}
 		
@@ -151,6 +156,22 @@ class PublicationMasterType extends JTable
 	}
 	
 	/**
+	 * Get record alias by id
+	 * 
+	 * @param      integer 		$id
+	 * @return     integer
+	 */	
+	public function getTypeAlias( $id='' ) 
+	{
+		if (!$id) 
+		{
+			return false;
+		}
+		$this->_db->setQuery( "SELECT alias FROM $this->_tbl WHERE id='".$id."' LIMIT 1" );
+		return $this->_db->loadResult();
+	}
+	
+	/**
 	 * Get records
 	 * 
 	 * @param      string  $select 				Select query
@@ -160,7 +181,7 @@ class PublicationMasterType extends JTable
 	 * @param      string  $config
 	 * @return     array
 	 */	
-	public function getTypes( $select = '*', $contributable = 0, $supporting = 0, $orderby = 'id', $config = '' ) 
+	public function getTypes( $select = '*', $contributable = 0, $supporting = 0, $orderby = 'id', $config = '') 
 	{
 		$query  = "SELECT $select FROM $this->_tbl ";
 		if ($contributable) 
@@ -197,6 +218,74 @@ class PublicationMasterType extends JTable
 	}
 	
 	/**
+	 * Get records
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @return     array
+	 */
+	public function getRecords($filters = array())
+	{
+		$query  = "SELECT c.*";
+		$query .= $this->_buildQuery($filters);
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'id';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+	
+	
+	/**
+	 * Get record counts
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @return     array
+	 */
+	public function getCount($filters = array())
+	{
+		$filters['limit'] = 0;
+
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+		
+	/**
+	 * Build a query from filters
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @return     string SQL
+	 */	
+	protected function _buildQuery($filters = array())
+	{
+		$query  = "FROM $this->_tbl AS c";
+
+		$where = array();
+		
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+	
+	/**
 	 * Check type usage
 	 * 
 	 * @param      integer 		$id		type id
@@ -219,5 +308,55 @@ class PublicationMasterType extends JTable
 		
 		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE master_type=".$id);
 		return $this->_db->loadResult();
+	}
+	
+	/**
+	 * Load by ordering
+	 * 
+	 * @param      mixed $ordering Integer or string (alias)
+	 * @return     mixed False if error, Object on success
+	 */
+	public function loadByOrder($ordering = NULL)
+	{
+		if ($ordering === NULL) 
+		{
+			return false;
+		}
+				
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering='$ordering' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+	
+	/**
+	 * Change order
+	 * 
+	 * @param      integer $dir 
+	 * @return     mixed False if error, Object on success
+	 */	
+	public function changeOrder ( $dir ) 
+	{
+		$newOrder = $this->ordering + $dir;
+		
+		// Load record in prev position
+		$old = new PublicationMasterType( $this->_db );
+		
+		if ($old->loadByOrder($newOrder))
+		{
+			$old->ordering  = $this->ordering;
+			$old->store();
+		} 		
+		
+		$this->ordering = $newOrder;
+		$this->store();
+
+		return true;
 	}
 }

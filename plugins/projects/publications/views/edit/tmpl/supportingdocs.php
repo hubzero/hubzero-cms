@@ -80,17 +80,7 @@ $canedit = (
 			<div class="c-inner" id="c-file-picker">
 				<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
 				<?php if ($canedit) { ?>
-				<?php if (count($this->choices) > 1) { ?>
-				<ul id="c-options">
-					<li class="c-tab" id="c-tab-files"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_FILES'); ?></li>
-					<!--<li class="c-tab" id="c-tab-apps"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_APPLICATION'); ?></li>-->
-					<li class="c-tab" id="c-tab-links"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_LINK'); ?></li>	
-					<!--<li class="c-tab" id="c-tab-article"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_TEXT'); ?></li>-->				
-				</ul>
-				<span id="c-underline">&nbsp;</span>
-				<?php } else { ?>
-					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_SUPPORTING_FILES'); ?></p>		
-				<?php }  ?>					
+				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_SUPPORTING_FILES'); ?></p>				
 				<!-- Load content selection browser //-->				
 				<div id="c-show">
 					<noscript>
@@ -168,6 +158,29 @@ $canedit = (
 							<li id="clone-data::<?php echo $dbName; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
 						<?php 
 						}
+						
+						// If note type
+						if ($att->type == 'note') 
+						{
+							$gone   = ''; // TBD
+							$layout = 'note';
+							$pageid = $att->object_id;
+							
+							$masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
+							$group_prefix = $this->config->get('group_prefix', 'pr-');
+							$group = $group_prefix . $this->project->alias;
+
+							$note = $this->projectsHelper->getSelectedNote($pageid, $group, $masterscope);
+							
+							if (!$note)
+							{
+								$gone = 1;
+							}
+							
+						 ?>
+							<li id="clone-note::<?php echo $pageid; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
+						<?php 
+						}
 						?>
 
 						<?php								
@@ -196,6 +209,10 @@ $canedit = (
 							elseif ($att->type == 'data')
 							{
 								$view->data = $data;
+							}
+							elseif ($att->type == 'note')
+							{
+								$view->note = $note;
 							}
 							$view->canedit = $canedit;
 							$view->move = $this->move;

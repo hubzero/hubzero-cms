@@ -59,7 +59,7 @@ $i = 1;
 					$info[] = $row->cat_name;	
 					$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
 					
-					$pubthumb = $this->helper->getThumb($row->id, $row->version_id, $this->config);			
+					$pubthumb = $this->helper->getThumb($row->id, $row->version_id, $this->config, false, $row->cat_url);			
 				?>
 				<li>
 					<span class="pub-thumb"><img src="<?php echo $pubthumb; ?>" alt=""/></span>

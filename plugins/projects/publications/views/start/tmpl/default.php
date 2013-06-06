@@ -39,9 +39,6 @@ switch ($num)
 	case 4:
 		$numcols = 'four';  
 		break;
-	case 5:
-		$numcols = 'five';  
-		break;
 }
 
 ?>	
@@ -65,20 +62,21 @@ switch ($num)
 <div class="welcome">
 	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
 	<div id="suggestions">
+		<ul>
 		<?php for( $i = 0; $i < count($this->choices); $i++) 
 		{ 			
-			$order = $i==0 ? 'first' 	: 'second';
-			$order = $i==1 ? 'second' 	: $order;
-			$order = $i==2 ? 'third' 	: $order;
-			$order = $i==3 ? 'fourth' 	: $order;
-			$order = $i==4 ? 'fifth' 	: $order;
-			
 			$current = $this->choices[$i];
+			
+			// Check if type is supported (need a plugin)
+			if (!JPluginHelper::isEnabled('projects', $current->alias))
+			{
+				continue;
+			}
 		?>
-		<div class="columns <?php echo $numcols; ?> <?php echo $order; ?>">
-			<p class="s-<?php echo $current->alias; ?>"><a href="<?php echo $this->url.'?action=new'.a.'base='.$current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p>
-		</div>
+		<li class="s-<?php echo $current->alias; ?>"><a href="<?php echo $this->url.'?action=new'.a.'base='.$current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></li>
+		
 		<?php } ?>
+		</ul>
 		<div class="clear"></div>
 	</div>
 </div>

@@ -58,8 +58,8 @@
 		<param name="ark_shoulder" type="text" menu="hide" default="" label="ARK shoulder" description="Shoulder for issuing ARKs (what goes after ark:/)" />	
 		<param name="ark_prefix" type="text" menu="hide" default="" label="ARK handle prefix" description="Prefix for ARK handles (e.g. test handles)" />	
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to display to indicate Org supported tools" />
-		<param name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to display to describe Org supported tools" />
+		<param name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate Org supported tools" />
+		<param name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe Org supported tools" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
 		<param name="@spacer" type="spacer" default="" label="" description="" />

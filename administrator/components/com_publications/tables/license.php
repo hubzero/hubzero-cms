@@ -329,6 +329,55 @@ class PublicationLicense extends JTable
 	}
 	
 	/**
+	 * Load by ordering
+	 * 
+	 * @param      mixed $ordering Integer or string (alias)
+	 * @return     mixed False if error, Object on success
+	 */
+	public function loadByOrder($ordering = NULL)
+	{
+		if ($ordering === NULL) 
+		{
+			return false;
+		}
+				
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering='$ordering' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+	
+	/**
+	 * Change order
+	 * 
+	 * @param      integer $dir 
+	 * @return     mixed False if error, Object on success
+	 */	
+	public function changeOrder ( $dir ) 
+	{
+		$newOrder = $this->ordering + $dir;
+		
+		// Load record in prev position
+		$old = new PublicationLicense( $this->_db );
+		if ($old->loadByOrder($newOrder))
+		{
+			$old->ordering  = $this->ordering;
+			$old->store();
+		}
+		
+		$this->ordering = $newOrder;
+		$this->store();
+
+		return true;
+	}
+	
+	/**
 	 * Get license by name
 	 * 
 	 * @param      string $name License name

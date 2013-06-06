@@ -252,7 +252,7 @@ class PubInstall extends JObject {
 			$queries[] = "INSERT INTO `jos_publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('10','Notes','Text','note','notes','Notes are typically a category for any resource that might not fit any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
 			$queries[] = "INSERT INTO `jos_publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('11','Series','Collection','series','series','Series are collections of other resources, typically online presentations, that cover a specific topic.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
 			$queries[] = "INSERT INTO `jos_publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('12','Teaching Materials','Text','teaching material','teachingmaterials','Supplementary materials (study notes, guides, etc.) that don\'t quite fit into any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-			$queries[] = "INSERT INTO `jos_publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('1','Datasets','Dataset','dataset','datasets','A collection of research data','1','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1')";
+			$queries[] = "INSERT INTO `jos_publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('1','Datasets','Dataset','dataset','datasets','A collection of research data','1','1','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1')";
 		}
 		
 		// Types
@@ -433,14 +433,26 @@ class PubInstall extends JObject {
 			SELECT 'Publications', 'option=com_publications', 0, 0, 'option=com_publications', 'Publications', 'com_publications', 0, 'js/ThemeOffice/component.png', 0, 'enabled=1\nautoapprove=0\nautoapproved_users=\nemail=0\ndefault_category=dataset\ndefaultpic=/components/com_publications/assets/img/resource_thumb.gif\nvideo_thumb=/components/com_publications/assets/img/video_thumb.gif\ngallery_thumb=/components/com_publications/assets/img/gallery_thumb.gif\nwebpath=/site/publications/\naboutdoi=\ndoi_shoulder=\ndoi_prefix=\ndoi_service=\ndoi_publisher=hub\ndoi_resolve=http://dx.doi.org/\ndoi_verify=http://n2t.net/ezid/id/\nissue_arch=0\nark_shoulder=\nark_prefix=\nsupportedtag=\nsupportedlink=\ngoogle_id=\nshow_authors=1\nshow_ranking=0\nshow_rating=0\nshow_date=3\nshow_citation=1\npanels=content, description, authors, audience, gallery, tags, access, license, notes\nsuggest_licence=1\nshow_tags=1\nshow_metadata=0\nshow_notes=1\nshow_license=1\nshow_access=0\nshow_gallery=1\nshow_audience=0\naudiencelink=audiencelevels\ndocumentation=\ndeposit_terms=\n\n', 1
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_components` WHERE name = 'Publications')";
 
+			// Pub list
 			$queries[] = "INSERT INTO `jos_components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-			SELECT 'Publication List', 'option=com_publications', 0, 0, 'option=com_publications', 'Publications', 'com_publications', 1, 'js/ThemeOffice/component.png', 0, '', 1
+			SELECT 'Publication List', '', 0, 0, 'option=com_publications', 'Publications', 'com_publications', 1, 'js/ThemeOffice/component.png', 0, '', 1
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_components` WHERE name = 'Publication List')";
 
+			// Pub licenses
 			$queries[] = "INSERT INTO `jos_components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-			SELECT 'Publication Licenses', 'option=com_publications&controller=licenses', 0, 0, 'option=com_publications&controller=licenses', 'Publications', 'com_publications', 2, 'js/ThemeOffice/component.png', 0, '', 1
+			SELECT 'Publication Licenses', '', 0, 0, 'option=com_publications&controller=licenses', 'Publications Licenses', 'com_publications', 2, 'js/ThemeOffice/component.png', 0, '', 1
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_components` WHERE name = 'Publication Licenses')";
-
+			
+			// Pub categories
+			$queries[] = "INSERT INTO `jos_components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
+			SELECT 'Publication Categories', '', 0, 0, 'option=com_publications&controller=categories', 'Publication Categories', 'com_publications', 3, 'js/ThemeOffice/component.png', 0, '', 1
+			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_components` WHERE name = 'Publication Categories')";
+			
+			// Pub master types
+			$queries[] = "INSERT INTO `jos_components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
+			SELECT 'Master Types', '', 0, 0, 'option=com_publications&controller=types', 'Publication Master Types', 'com_publications', 4, 'js/ThemeOffice/component.png', 0, '', 1
+			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_components` WHERE name = 'Master Types')";
+			
 			// Enable plugins					
 			$queries[] = "INSERT INTO `jos_plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Related', 'related', 'publications', 0, 0, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE name = 'Publications - Related')";
 
@@ -474,11 +486,19 @@ class PubInstall extends JObject {
 
 			if ($cid)
 			{
-				$query = "UPDATE `jos_components` SET parent = $cid WHERE name = 'Publication List'";
+				$query = "UPDATE `jos_components` SET parent = $cid, name = 'List' WHERE name = 'Publication List'";
 				$this->_db->setQuery( $query );
 				$this->_db->query();
 
-				$query = "UPDATE `jos_components` SET parent = $cid WHERE name = 'Publication Licenses'";	
+				$query = "UPDATE `jos_components` SET parent = $cid, name = 'Licenses' WHERE name = 'Publication Licenses'";	
+				$this->_db->setQuery( $query );
+				$this->_db->query();
+				
+				$query = "UPDATE `jos_components` SET parent = $cid WHERE name = 'Master Types'";	
+				$this->_db->setQuery( $query );
+				$this->_db->query();
+				
+				$query = "UPDATE `jos_components` SET parent = $cid, name = 'Categories' WHERE name = 'Publication Categories'";	
 				$this->_db->setQuery( $query );
 				$this->_db->query();
 			}

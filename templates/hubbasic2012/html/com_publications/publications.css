@@ -13,7 +13,6 @@
 	}
 	body #introduction {
 		background: #f1fbe7 !important;
-		margin: -1px 0 3em 0 !important;
 		border-top: 4px solid #dfebd3;
 		border-bottom: 4px solid #dfebd3;
 		background: -moz-linear-gradient(left, #f1fbe7 0%, #f8fbe7 50%, #FFF 100%) !important;

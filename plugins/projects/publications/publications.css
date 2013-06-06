@@ -106,6 +106,27 @@
 		color: #448985;
 		margin: 0 0 0.2em 0;
 		padding: 0 !important;	
+	}
+	
+/* Start */
+	#suggestions ul {
+		list-style: none;
+		margin-top: 2em;
+	}
+	#suggestions ul li {
+		display: block;
+		margin: 0;
+		margin-right: 2em;
+		margin-bottom: 1em;
+		padding: 0;
+		float: left;
+		width: 200px;
+		height: 100px;
+		font-size: 85%;
+		vertical-align: middle;
+	}
+	.welcome  {
+		height: auto;
 	}	
 	
 /* Status bar publication version
@@ -547,6 +568,7 @@
 	}
 	#pub-editor #c-output .c-inner {
 		padding-left: 2.5em;
+		padding-bottom: 2em;
 	}
 	#file-browser {
 		background: #FFFFFF;
@@ -614,6 +636,7 @@
 		background: #FFFFFF;
 		display: block;
 		padding: 1em 1em 1em 1em;
+		margin-bottom: 1em;
 	}
 	span#c-underline {
 		font-size: 0px; line-height: 0%; width: 0px;
@@ -655,9 +678,21 @@
 		margin-bottom: -2px;
 	}
 	ul#c-browser li.c-picked, ul#c-browser li.c-picked:hover {
-		background: #ddf4fd url("images/check.gif") right center no-repeat;
+		background: #ddf4fd;
 		border: 1px solid #dae6ec;
 		cursor: pointer;
+	}
+	ul#c-browser li.c-picked:after, ul#c-browser li.c-picked:hover:after {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		content: "\f058";
+		color: green;
+		float: right;
+	}
+	.c-panel-authors ul#c-browser li.c-picked:after, .c-panel-authors ul#c-browser li.c-picked:hover:after {
+		margin-top: -2em;
 	}
 	#c-file-picker ul#c-browser li {
 		padding: 0;
@@ -671,8 +706,9 @@
 		color: #CCC;
 		font-style: italic;
 		margin-top: 0.2em;
-		margin-right: 5em;
-		float: right;
+		/*margin-right: 5em;*/
+		/*float: right;*/
+		margin-left: 1em;
 		font-size: 85%;
 		*width: 60px;
 		*margin-right: 1em;
@@ -764,6 +800,36 @@
 	textarea.pubinput {
 		width: 100%;
 		display: block;
+	}
+	
+/* Attached notes */
+	ul#c-browser li.wikilevel_2:before,
+	ul#c-browser li.wikilevel_3:before,
+	ul#c-browser li.wikilevel_4:before {
+		content: "\203A";
+		color: #CCC;
+		font-weight: normal;
+		width: 10px;
+		height: 10px;
+		font-size: 10px;
+		margin-right: 10px;
+	}
+	ul#c-browser li.wikilevel_2 {
+		padding-left: 2em !important;
+	}
+	ul#c-browser li.wikilevel_3 {
+		padding-left: 4em !important;
+	}
+	ul#c-browser li.wikilevel_4 {
+		padding-left: 6em !important;
+	}
+	ul#c-browser ol {
+		list-style: none;
+		margin: 0;
+	}
+	ul#c-browser li.c-picked + ol .wikilevel_2,
+	ul#c-browser li.c-picked + ol .wikilevel_3 {
+		background: #f2fafd;
 	}
 	
 /* Content picker

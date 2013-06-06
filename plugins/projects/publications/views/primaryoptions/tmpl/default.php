@@ -24,8 +24,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-?>
-<?php 
+
+$masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
+
 if ($this->duplicateV)
 { ?>
 	<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_DUPLICATE_VERSION').' ('.$this->duplicateV.')'; ?></p>
@@ -47,7 +48,15 @@ elseif ($this->used)
 		?>
 	</p>
 <?php } ?>
-<?php if($this->selections) { ?>
+<?php if ($this->selections) { ?>
+
+	<?php if ($this->base == 'notes')
+	/*
+	{ ?>
+		<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NOTICE_CHILD_NOTES'); ?></p>
+	<?php } */
+
+	?>
 <div class="serveas_<?php echo $this->serveas; ?>">
 	<p>
 	<?php 

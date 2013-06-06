@@ -152,6 +152,7 @@ function PublicationsParseRoute($segments)
 				break;
 				
 			case 'download': $vars['task'] = 'download'; break;
+			case 'wiki': 	 $vars['task'] = 'wiki'; 	 break;
 			case 'play':     $vars['task'] = 'play';     break;
 			case 'watch':    $vars['task'] = 'watch';    break;
 			case 'serve':    $vars['task'] = 'serve';    break;

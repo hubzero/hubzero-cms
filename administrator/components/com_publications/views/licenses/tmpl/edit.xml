@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_resources/views/type/tmpl/default.xml
+@file           administrator/components/com_publications/views/licenses/tmpl/edit.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Resources Type Layout">
+	<layout title="Edit License Layout">
 		<message>
-			<![CDATA[STANDARD RESOURCES TYPE LAYOUT DESC]]>
+			<![CDATA[EDIT LICENSE LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Resources Type Layout</name>
-		<description>STANDARD RESOURCES TYPE LAYOUT DESC</description>
+		<name>Edit License Layout</name>
+		<description>EDIT LICENSE LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

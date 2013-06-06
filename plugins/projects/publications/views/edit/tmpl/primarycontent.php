@@ -155,7 +155,8 @@ $infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'.
 					if(count($this->attachments) > 0) {
 						$i = 1;
 						$layout = 'default';
-						foreach ($this->attachments as $att) { 
+						foreach ($this->attachments as $att) 
+						{ 
 							if ($att->type == 'file') 
 							{
 								$file = str_replace($this->fpath . DS, '', $att->path);
@@ -183,6 +184,29 @@ $infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'.
 								
 							 ?>
 								<li id="clone-data::<?php echo $dbName; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
+							<?php 
+							}
+							
+							// If note type
+							if ($att->type == 'note') 
+							{
+								$gone   = ''; // TBD
+								$layout = 'note';
+								$pageid = $att->object_id;
+								
+								$masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
+								$group_prefix = $this->config->get('group_prefix', 'pr-');
+								$group = $group_prefix . $this->project->alias;
+
+								$note = $this->projectsHelper->getSelectedNote($pageid, $group, $masterscope);
+								
+								if (!$note)
+								{
+									$gone = 1;
+								}
+								
+							 ?>
+								<li id="clone-note::<?php echo $pageid; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
 							<?php 
 							}
 							?>
@@ -213,6 +237,10 @@ $infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'.
 								elseif ($att->type == 'data')
 								{
 									$view->data = $data;
+								}
+								elseif ($att->type == 'note')
+								{
+									$view->note = $note;
 								}
 								$view->canedit = $canedit;
 								$view->move = $this->move;

@@ -127,7 +127,9 @@
 	.draft:before,
 	.pending:before,
 	.new:before,
-	.archival:before {
+	.archival:before,
+	.item_on:before,
+	.item_off:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -151,7 +153,21 @@
 	.draft:before {
 		content: "\f05d";
 	}
-			
+	
+	.item_on:before {
+		content: "\2714";
+		color: green;
+	}
+	.item_off:before {
+		content: "\2716";
+		color: #CCC;
+	}
+	.item_off {
+		color: red;
+	}
+	.item_on {
+		color: green;
+	}			
 	td.status {
 		width: 100px;
 	}
@@ -310,6 +326,9 @@
 	}
 	.archival-package {
 		text-align: center;
+	}
+	.narrow {
+		width: 5%;
 	}
 	
 /* Publication editing
