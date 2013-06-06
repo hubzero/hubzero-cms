@@ -571,6 +571,7 @@
 		font-size: 90%;
 		margin: 0;
 		padding: 0;
+		z-index: 900;
 	}
 	#primary-document_pop div {
 		padding: 0;
