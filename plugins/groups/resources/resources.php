@@ -169,11 +169,27 @@ class plgGroupsResources extends Hubzero_Plugin
 		require_once JPATH_BASE.'/components/com_hubgraph/client.php';
 		$hgConf = HubgraphConfiguration::instance();
 		if ($hgConf->isOptionEnabled('com_groups')) {
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'   => 'groups',
+					'element'  => 'resources',
+					'name'     => 'results'
+				)
+			);
+
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('groups', 'resources');
+
+			// Pass the view some info
+			$view->option = $option;
+			$view->group = $group;
+			
 			ob_start();
-			define('HG_INLINE', 1);
 			$_GET['group'] = $group->gidNumber;
+			define('HG_INLINE', 1);
 			require JPATH_BASE.'/components/com_hubgraph/hubgraph.php';
-			return array('html' => ob_get_clean());
+			$view->hubgraphResponse = ob_get_clean();
+			return array('html' => $view->loadTemplate('hubgraph'));
 		}
 
 

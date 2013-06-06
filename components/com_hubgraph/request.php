@@ -71,7 +71,7 @@ class HubgraphRequest
 			if (isset($this->form['gid'])) {
 				$group = $this->form['gid'];
 			}
-			if (isset($this->form['group'])) {
+			else if (isset($this->form['group'])) {
 				$group = $this->form['group'];
 			}
 			if ($group) {
