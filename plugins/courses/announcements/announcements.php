@@ -181,6 +181,43 @@ class plgCoursesAnnouncements extends JPlugin
 	}
 
 	/**
+	 * Administrative dashboard info
+	 * 
+	 * @param      object $course   CoursesModelCourse
+	 * @param      object $offering CoursesModelOffering
+	 * @return     string
+	 */
+	public function onCourseDashboard($course, $offering)
+	{
+		//Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+		Hubzero_Document::addPluginScript('courses', $this->_name, $this->_name . '.dashboard');
+
+		// Instantiate a vew
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'courses',
+				'element' => $this->_name,
+				'name'    => 'browse',
+				'layout'  => 'dashboard'
+			)
+		);
+
+		$view->course   = $course;
+		$view->offering = $offering;
+		$view->option   = 'com_courses';
+		$view->config   = $course->config();
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$view->setError($this->getError());
+		}
+
+		return $view->loadTemplate();
+	}
+
+	/**
 	 * Display a list of all announcements
 	 * 
 	 * @return     string HTML
