@@ -34,11 +34,10 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function(jQuery){
-	var $ = jQuery;
+	var $ = jQuery,
+		_DEBUG = false,
+		url = "<?php echo '/index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
 
-	//var url = "<?php echo '/index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias') . '&no_html=1&note='; ?>";
-	var url = "<?php echo '/index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
-//var response = jQuery.parseJSON(data);
 	var options = {
 		notes: <?php 
 			$n = array();
@@ -66,80 +65,84 @@ jQuery(document).ready(function(jQuery){
 		controlBar: true,
 		editCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
-			//console.log(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text);
+
+			if (_DEBUG) {
+				window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text);
+			}
+
 			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text, {}, function(data) {
-				//console.log(id + '_' + note.id);
-				if (id != note.id) {
+				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
-				//console.log(data);
+				if (_DEBUG) {
+					window.console && console.log(data);
+				}
 			});
 		},
 		createCallback: function(note) {
-			var id = $('#note-' + note.id).attr('data-id');
-			var tme = null;
-			//if (typeof HUB.Presenter !== 'undefined') {
+			var id = $('#note-' + note.id).attr('data-id'),
+				tme = null;
+
 			if (note.timestamp && note.timestamp != '00:00:00') {
-				//console.log(note.timestamp);
-				tme += '&time=' + note.timestamp; //HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
+				tme += '&time=' + note.timestamp;
 			}
-			//console.log(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+
+			if (_DEBUG) {
+				window.console && console.log('calling: ' + url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+			}
+
 			$.getJSON(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
-				//$('#note' + note.id).attr('data-id', data);
-				//console.log(data);
-				if (id != note.id) {
+				if (_DEBUG) {
+					window.console && console.log(data);
+				}
+				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
-				//console.log(data);
 			});
 		},
 		deleteCallback: function(note) {
-			//console.log('delete');
-			var id = note.id;//$('#note-' + note.id).attr('data-id');
-			//console.log(url + id + '&action=delete');
+			var id = note.id;
+
+			if (_DEBUG) {
+				window.console && console.log('calling: ' + url + id + '&action=delete');
+			}
+
 			$.getJSON(url + id + '&action=delete', {}, function(data) {
-				/*if (id != note.id) {
-					$('#note-' + note.id).attr('data-id', data.id);
-				}*/
-				//console.log(data);
+				if (_DEBUG) {
+					window.console && console.log(data);
+				}
 			});
 		},
 		moveCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
-			//console.log(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+
+			if (_DEBUG) {
+				window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+			}
+
 			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
-				if (id != note.id) {
+				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
-				//console.log(data);
+				if (_DEBUG) {
+					window.console && console.log(data);
+				}
 			});
 		},
 		resizeCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
+
 			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
-				if (id != note.id) {
+				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
-				//console.log(data);
+				if (_DEBUG) {
+					window.console && console.log(data);
+				}
 			});
 		}
 	};
+
 	jQuery("#content").stickyNotes(options);
 });
 </script>
-<?php /*?><div id="notes-list-container">
-	<div id="notes-list">
-<?php foreach ($n as $note) { ?>
-		<div class="jSticky-medium thumbnail" id="note-tn-<?php echo $note->id; ?>">
-			<p><?php echo $note->text; ?></p>
-		</div>
-<?php } ?>
-	</div>
-
-	<p class="notes-controls">
-		<a id="all-notes" class="btn" data-text-show="<?php echo JText::_('Show all'); ?>" data-text-hide="<?php echo JText::_('Hide all'); ?>" href="<?php echo JRoute::_('index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=notes'); ?>">
-			<?php echo JText::_('Show all'); ?>
-		</a>
-	</p>
-	<div class="clear"></div>
-</div>*/

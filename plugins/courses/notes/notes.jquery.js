@@ -19,7 +19,8 @@ var typewatch = (function(){
 			deleteCallback: false,
 			moveCallback: false,
 			resizeCallback: false
-		};
+		},
+		_DEBUG = false;
 
 	function Plugin(container, options) {
 		this.container = jQuery(container);
@@ -166,7 +167,8 @@ var typewatch = (function(){
 		},
 
 		removeNote: function(note_id) {
-			jQuery.each(this.notes, function(index, note) {
+			var notes = this.notes;
+			jQuery.each(notes, function(index, note) {
 				if (note.id == note_id) {
 					notes.splice(index, 1);
 					return false;
@@ -298,14 +300,20 @@ var typewatch = (function(){
 		},
 
 		deleteNote: function(delete_button) {
-			var note_id = jQuery(delete_button).parent().attr("id").replace(/note-/, "");
-			var note = this.getNote(note_id);
-			jQuery("#note-" + note_id).remove();
+			var note_id = jQuery(delete_button).parent().attr("id").replace(/note-/, ""),
+				real_id = jQuery(delete_button).parent().attr("data-id").replace(/note-/, ""),
+				note = this.getNote(note_id);
+
+			if (_DEBUG) {
+				window.console && console.log("deleting note: #" + note_id + ', real id: #' + real_id);
+			}
 
 			if (this.options.deleteCallback) {
+				note.id = real_id;
 				this.options.deleteCallback(note);
 			}
 
+			jQuery("#note-" + note_id).remove();
 			if (jQuery('#note-tn-' + note_id).length) {
 				jQuery('#note-tn-' + note_id).remove();
 			}
@@ -398,6 +406,10 @@ var typewatch = (function(){
 			note.pos_x = jQuery('#note-' + note_id).css('left').replace(/px/, '');
 			note.pos_y = jQuery('#note-' + note_id).css('top').replace(/px/, '');
 
+			if (_DEBUG) {
+				window.console && console.log('moving note: #' + note_id + ' to x:' + note.pos_x + ', y: ' + note.pos_y);
+			}
+
 			if (this.options.moveCallback) {
 				this.options.moveCallback(note);
 			}
@@ -408,6 +420,10 @@ var typewatch = (function(){
 
 			note.width  = jQuery("#note-" + note_id).width();
 			note.height = jQuery("#note-" + note_id).height();
+
+			if (_DEBUG) {
+				window.console && console.log('resizing note: #' + note_id + ' to w:' + note.width + ', h: ' + note.height);
+			}
 
 			if (this.options.resizeCallback) {
 				this.options.resizeCallback(note);
