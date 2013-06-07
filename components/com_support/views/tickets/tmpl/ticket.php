@@ -328,6 +328,7 @@ ximport('Hubzero_User_Profile_Helper');
 <?php 		} ?>
 				</div><!-- / .comment-content -->
 <?php 
+			$cc = array();
 			if (trim($comment->changelog)) 
 			{
 				$clog = '';
