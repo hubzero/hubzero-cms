@@ -100,6 +100,8 @@ class CronControllerJobs extends Hubzero_Controller
 				$dispatcher =& JDispatcher::getInstance();
 
 				// Show related content
+				$job->mark('start_run');
+
 				$results = $dispatcher->trigger($job->get('event'), array($job->get('params')));
 				if ($results)
 				{
@@ -119,6 +121,7 @@ class CronControllerJobs extends Hubzero_Controller
 					}
 				}
 
+				$job->mark('end_run');
 				$job->store();
 
 				$output->jobs[] = $job->toArray();

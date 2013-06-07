@@ -62,6 +62,13 @@ class CronModelJob extends JObject
 	private $_db = NULL;
 
 	/**
+	 * JProfiler
+	 * 
+	 * @var object
+	 */
+	private $_profiler = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -94,6 +101,9 @@ class CronModelJob extends JObject
 		}
 
 		$this->set('params', new $paramsClass($this->get('params')));
+
+		jimport('joomla.error.profiler');
+		$this->_profiler = new JProfiler('cron_job_' . $this->get('id'));
 	}
 
 	/**
@@ -273,6 +283,30 @@ class CronModelJob extends JObject
 	}
 
 	/**
+	 * Mark a time
+	 * 
+	 * @param      string $label
+	 * @return     void
+	 */
+	public function mark($label)
+	{
+		return $this->_profiler->mark($label);
+	}
+
+	/**
+	 * Get all profiler marks.
+	 *
+	 * Returns an array of all marks created since the Profiler object
+	 * was instantiated.  Marks are strings as per {@link JProfiler::mark()}.
+	 *
+	 * @return  array  Array of profiler marks
+	 */
+	public function profile()
+	{
+		return $this->_profiler->getBuffer();
+	}
+
+	/**
 	 * Set and get a specific offering
 	 * 
 	 * @return     void
@@ -286,7 +320,8 @@ class CronModelJob extends JObject
 			'event'    => $this->get('event'),
 			'last_run' => $this->get('last_run'),
 			'next_run' => $this->get('next_run'),
-			'active'   => $this->get('active')
+			'active'   => $this->get('active'),
+			'profile'  => $this->profile()
 		);
 	}
 }
