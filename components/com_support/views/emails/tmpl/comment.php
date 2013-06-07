@@ -118,7 +118,7 @@ if ($this->comment->changelog)
 	}
 }
 $message .= $this->attach->parse($comment);
-echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)</a>/i', '\\1', $message) . "\n\n" . $link . "\n";
+echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $message) . "\n\n" . $link . "\n";
 ?>
 
 --<?php echo $this->boundary . "\n"; ?>
