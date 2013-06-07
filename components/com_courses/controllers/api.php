@@ -186,7 +186,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 			// Get the courses config
 			$config = JComponentHelper::getParams('com_courses');
-			$asset_groups = explode(',', $config->getValue('default_asset_groups'));
+			$asset_groups = explode(',', $config->getValue('default_asset_groups', 'Lectures, Homework, Exam'));
 			array_map('trim', $asset_groups);
 
 			foreach ($asset_groups as $key)
