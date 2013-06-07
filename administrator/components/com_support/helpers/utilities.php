@@ -53,7 +53,14 @@ class SupportUtilities
 		{
 			$args = "-f '" . $from['email'] . "'";
 			$headers  = "MIME-Version: 1.0\n";
-			$headers .= "Content-type: text/plain; charset=utf-8\n";
+			if (array_key_exists('multipart', $from))
+			{
+				$headers .= "Content-Type: multipart/alternative;boundary=" . chr(34) . $from['multipart'] . chr(34) . "\r\n";
+			}
+			else
+			{
+				$headers .= "Content-type: text/plain; charset=utf-8\n";
+			}
 			$headers .= 'From: ' . $from['name'] .' <'. $from['email'] . ">\n";
 
 			if ($replyto)
@@ -75,6 +82,11 @@ class SupportUtilities
 				{
 					$headers .= $header['name'] . ': ' . $header['value'] . "\n";
 				}
+			}
+
+			if (is_array($message))
+			{
+				$message = isset($message['multipart']) ? $message['multipart'] : current($message);
 			}
 
 			if (mail($email, $subject, $message, $headers, $args)) 
