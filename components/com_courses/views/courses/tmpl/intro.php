@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('Create Course'); ?></a>
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('COM_COURSES_CREATE_COURSE'); ?></a>
 		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
@@ -90,7 +90,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<p>
 						<label for="gsearch"><?php echo JText::_('Keyword or phrase:'); ?></label>
 						<input type="text" name="search" id="gsearch" value="" />
-						<input type="submit" value="<?php echo JText::_('Search'); ?>" />
+						<input type="submit" value="<?php echo JText::_('COM_COURSES_SEARCH'); ?>" />
 					</p>
 					<p>
 						<?php echo JText::_('Search course names and public descriptions. Private courses do not show up in results.'); ?>

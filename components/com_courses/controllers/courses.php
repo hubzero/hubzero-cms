@@ -71,10 +71,10 @@ class CoursesControllerCourses extends Hubzero_Controller
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task == 'new') 
+		if ($this->_task && $this->_task != 'intro') 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				JText::_(strtoupper($this->_option . '_' . $this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -92,7 +92,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 
 		if ($this->_task && $this->_task != 'intro') 
 		{
-			$this->_title = JText::_(strtoupper($this->_option . '_' . $this->_task));
+			$this->_title .= ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 		}
 
 		//set title of browser window
@@ -120,29 +120,45 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$model = CoursesModelCourses::getInstance();
 
 		//vars
-		$this->view->mycourses = array();
+		$this->view->mycourses          = array();
 		$this->view->interestingcourses = array();
+		$this->view->popularcourses     = array();
 
-		//if (is_object($profile))
 		if (!$this->juser->get('guest'))
 		{
-			//get users tags
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
-			$mt = new MembersTags($this->database);
-			$mytags = $mt->get_tag_string($this->juser->get('id'));
-
 			//get users courses
-			$this->view->mycourses = $model->userCourses($this->juser->get('id'), 'all');
-
-			//get courses user may be interested in
-			if ($mytags)
+			if ($this->config->get('intro_mycourses', 1))
 			{
-				$this->view->interestingcourses = $model->courses(array('tags' => $mytags, 'limit' => 10, 'state' => 1));
+				$this->view->mycourses = $model->userCourses($this->juser->get('id'), 'all');
+			}
+
+			if ($this->config->get('intro_interestingcourses', 1))
+			{
+				//get users tags
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
+				$mt = new MembersTags($this->database);
+
+				//get courses user may be interested in
+				if ($mytags = $mt->get_tag_string($this->juser->get('id')))
+				{
+					$this->view->interestingcourses = $model->courses(array(
+						'tags'  => $mytags, 
+						'limit' => 10, 
+						'state' => 1
+					));
+				}
 			}
 		}
 
 		//get the popular courses
-		$this->view->popularcourses = $model->courses(array('limit' => 3, 'sort' => 'students', 'state' => 1));
+		if ($this->config->get('intro_popularcourses', 1))
+		{
+			$this->view->popularcourses = $model->courses(array(
+				'limit' => 3, 
+				'sort'  => 'students', 
+				'state' => 1
+			));
+		}
 
 		// Output HTML
 		$this->view->config   = $this->config;

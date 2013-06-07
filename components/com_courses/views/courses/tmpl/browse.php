@@ -58,29 +58,29 @@ $juser =& JFactory::getUser();
 	<div class="main section">
 		<div class="aside">
 			<div class="container">
-				<h3>Finding a course</h3>
-				<p>Use the sorting and filtering options to see courses listed alphabetically by title, alias, or popularity.</p>
-				<p>Use the 'Search' to find specific courses by title or description if you would like to check out their offerings.</p>
+				<h3><?php echo JText::_('Finding a course'); ?></h3>
+				<p><?php echo JText::_('Use the sorting and filtering options to see courses listed alphabetically by title, alias, or popularity.'); ?></p>
+				<p><?php echo JText::_('Use the "Search" to find specific courses by title or description if you would like to check out their offerings.'); ?></p>
 			</div><!-- / .container -->
 			<div class="container">
-				<h3>Popular Categories</h3>
+				<h3><?php echo JText::_('Popular Categories'); ?></h3>
 				<?php 
 				$tags = $this->model->tags('cloud', 20, $this->filters['tag']);
 				if ($tags) {
 					echo $tags;
 				} else {
-					echo '<p>No categories have been set.</p>';
+					echo '<p>' . JText::_('No categories have been set.') . '</p>';
 				} ?>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
 
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="Search" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend>Search for Courses</legend>
-					<label for="entry-search-field">Enter keyword or phrase</label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<legend><?php echo JText::_('Search for Courses'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
 				</fieldset>
@@ -123,47 +123,48 @@ $juser =& JFactory::getUser();
 					<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=popularity' . $qs); ?>" title="Sort by popularity">&darr; Popularity</a></li>
 				</ul>
 
-<?php
-$url  = 'index.php?option=' . $this->option . '&task=browse';
-$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-$url .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
+				<?php
+				$url  = 'index.php?option=' . $this->option . '&task=browse';
+				$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+				$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+				$url .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
 
-$html  = '<a href="' . JRoute::_($url) . '"';
-if ($this->filters['index'] == '') {
-	$html .= ' class="active-index"';
-}
-$html .= '>' . JText::_('ALL') . '</a> '."\n";
+				$html  = '<a href="' . JRoute::_($url) . '"';
+				if ($this->filters['index'] == '') 
+				{
+					$html .= ' class="active-index"';
+				}
+				$html .= '>' . JText::_('ALL') . '</a> '."\n";
 
-$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-foreach ($letters as $letter)
-{
-	$html .= '<a href="' . JRoute::_($url . '&index=' . strtolower($letter)) . '"';
-	if ($this->filters['index'] == strtolower($letter)) 
-	{
-		$html .= ' class="active-index"';
-	}
-	$html .= '>' . strtoupper($letter) . '</a> ' . "\n";
-}
-?>
+				$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+				foreach ($letters as $letter)
+				{
+					$html .= '<a href="' . JRoute::_($url . '&index=' . strtolower($letter)) . '"';
+					if ($this->filters['index'] == strtolower($letter)) 
+					{
+						$html .= ' class="active-index"';
+					}
+					$html .= '>' . strtoupper($letter) . '</a> ' . "\n";
+				}
+				?>
 				<div class="clearfix"></div>
 
 				<table class="courses entries" summary="<?php echo JText::_('COM_COURSES_BROWSE_TBL_SUMMARY'); ?>">
 					<caption>
-<?php
+					<?php
 						$s = $this->filters['start']+1;
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
 						if ($this->filters['search'] != '') {
 							echo 'Search for "'.$this->escape($this->filters['search']).'" in ';
 						}
-?>
+						?>
 						<?php echo JText::_('Courses'); ?> 
 						<?php
 						if ($this->filters['tag'] != '') {
 							echo 'with tag "'.$this->escape($this->filters['tag']).'"';
 						}
-						?>
+					?>
 						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
@@ -183,29 +184,29 @@ foreach ($letters as $letter)
 						</tr>
 					</thead>
 					<tbody>
-<?php
-if ($this->courses->total() > 0) 
-{
-	ximport('Hubzero_User_Profile_Helper');
-	ximport('Hubzero_View_Helper_Html');
-	foreach ($this->courses as $course)
-	{
-		//get status
-		$status = '';
+				<?php
+				if ($this->courses->total() > 0) 
+				{
+					ximport('Hubzero_User_Profile_Helper');
+					ximport('Hubzero_View_Helper_Html');
+					foreach ($this->courses as $course)
+					{
+						//get status
+						$status = '';
 
-		//determine course status
-		if ($course->get('state') == 1)
-		{
-			if ($course->access('manage'))
-			{
-				$status = 'manager';
-			}
-		}
-		else
-		{
-			$status = 'new';
-		}
-?>
+						//determine course status
+						if ($course->get('state') == 1)
+						{
+							if ($course->access('manage'))
+							{
+								$status = 'manager';
+							}
+						}
+						else
+						{
+							$status = 'new';
+						}
+				?>
 						<tr<?php echo ($status) ? ' class="' . $status . '"' : ''; ?>>
 							<th>
 								<span class="entry-id"><?php echo $course->get('id'); ?></span>
@@ -234,7 +235,7 @@ if ($this->courses->total() > 0)
 							?>
 								<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($course->get('blurb')), 200); ?>
 							</td>
-<?php /*if ($course->access('manage')) { ?>
+						<?php /*if ($course->access('manage')) { ?>
 							<td>
 								<span class="<?php echo $status; ?> status"><?php
 									switch ($status)
@@ -246,20 +247,20 @@ if ($this->courses->total() > 0)
 									}
 								?></span>
 							</td>
-<?php }*/ ?>
+					<?php }*/ ?>
 						</tr>
-<?php 
-	} // for loop 
-} else {
-?>
+				<?php 
+					} // for loop 
+				} else { ?>
 						<tr>
 							<td colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
 								<p class="warning"><?php echo JText::_('No results found'); ?></p>
 							</td>
 						</tr>
-<?php } ?>
+				<?php } ?>
 					</tbody>
 				</table>
+
 				<?php
 				$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
 				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);

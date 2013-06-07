@@ -57,6 +57,8 @@ else
 {
 	$offering = new CoursesModelOffering(0, $this->course->get('id'));
 }
+
+Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview');
 ?>
 <div id="content-header">
 	<h2>
@@ -161,51 +163,29 @@ else
 		$instructors = $this->course->instructors();
 		if (count($instructors) > 0) 
 		{
-	?>
-		<div class="course-instructors">
+		?>
+		<div class="course-instructors" data-bio-length="200">
 			<h3>
 				<?php echo (count($instructors) > 1) ? JText::_('About the Instructors') : JText::_('About the Instructor'); ?>
 			</h3>
-	<?php
+			<?php
 			ximport('Hubzero_View_Helper_Html');
 
 			foreach ($instructors as $i)
 			{
-				$instructor = Hubzero_User_Profile::getInstance($i->get('user_id'));
-	?>
-			<div class="course-instructor">
-				<p class="course-instructor-photo">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('uidNumber')); ?>">
-						<img src="<?php echo $instructor->getPicture(); ?>" alt="<?php echo JText::sprintf('%s\'s photo', $this->escape(stripslashes($instructor->get('name')))); ?>" />
-					</a>
-				</p>
-				<div class="course-instructor-content">
-					<h4>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('uidNumber')); ?>">
-							<?php echo $this->escape(stripslashes($instructor->get('name'))); ?>
-						</a>
-					</h4>
-					<p class="course-instructor-org">
-						<?php echo $this->escape(stripslashes($instructor->get('organization'))); ?>
-					</p>
-					<div class="clearfix"></div>
-				</div>
-				<p class="course-instructor-bio">
-				<?php if ($instructor->get('bio')) { ?>
-					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($instructor->get('bio')), 200, 0); ?>
-				<?php } else { ?>
-					<em><?php echo JText::_('This instructor has yet to write their bio.'); ?></em>
-				<?php } ?>
-				</p>
-			</div>
-	<?php
+				$view = new JView(array(
+					'name'   => 'course',
+					'layout' => '_instructor'
+				));
+				$view->biolength  = 200;
+				$view->instructor = Hubzero_User_Profile::getInstance($i->get('user_id'));
+				$view->display();
 			}
-		?>
+			?>
 		</div>
-	<?php
-		}
-		?>
 		<?php
+		}
+
 		if ($this->sections)
 		{
 			foreach ($this->sections as $section)
