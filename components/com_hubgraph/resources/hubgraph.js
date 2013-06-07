@@ -31,7 +31,7 @@ jQuery(function($) {
 			sugg.empty();
 		}
 		else {
-			xhr = $.get(searchBase, {
+			xhr = $.get('/hubgraph', {
 				'task': 'complete',
 				'terms': $(evt.target).val()
 			}, function(res) {

@@ -11,7 +11,7 @@ $loggedIn = (bool)JFactory::getUser()->id;
 <script type="text/javascript">
 window.searchBase = '<?= $base ?>';
 </script>
-<form action="<?= $base ?>" method="get">
+<form class="hubgraph" action="<?= $base ?>" method="get">
 <div class="subject">
 	<? require 'partial/bar.html.php'; ?>
 </div>
@@ -45,7 +45,7 @@ window.searchBase = '<?= $base ?>';
 				foreach ($tags as $selectedTag):
 					if ($selectedTag['id'] == $tag[0]):
 						$found = TRUE;
-						echo '<li class="selected">'.h($tag[1]).' <span>'.$tag[2].'</span></li>';
+						echo '<li class="selected"><a>'.h($tag[1]).'</a> <span>'.$tag[2].'</span></li>';
 						break;
 					endif;
 				endforeach; 
@@ -157,9 +157,9 @@ window.searchBase = '<?= $base ?>';
 			<h3> 
 				<? if ($res['link']): ?>
 					<? if (is_array($res['link'])): ?>
-						<?= $res['title'] ?>
-						<? for ($idx = 0; $idx < count($res['link']); ++$idx): ?>
-							<a href="<?= a($res['link'][1]) ?>" class="alt"><?= ($idx + 1) ?></a>
+						<a href="<?= a($res['link'][0]) ?>"><?= $res['title'] ?></a>
+						<? for ($idx = 1; $idx < count($res['link']); ++$idx): ?>
+							<a href="<?= a($res['link'][$idx]) ?>" class="alt"><?= ($idx + 1) ?></a>
 						<? endfor; ?>
 					<? else: ?>
 						<a href="<?= a($res['link']) ?>"><?= $res['title'] ?></a>

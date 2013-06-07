@@ -5,6 +5,7 @@
 .search-bar input {
 	height: 38px;
 	width: 100%;
+	border-top-left-radius: 6px;
 }
 .search-bar a {
 	position: absolute;
@@ -30,6 +31,8 @@
 	height: 38px;
 	width: 214px;
 	text-align: center;
+	border: 1px outset #ddd;
+	border-top-right-radius: 6px;
 }
 .pages {
 	margin-right: 240px;
@@ -137,7 +140,7 @@ button span {
 #suggestions li.even {
 	background: #f3f3f3;
 }
-.subject {
+.hubgraph .subject {
 	width: 100%;
 	margin-bottom: 0;
 	padding-left: 0;
@@ -536,4 +539,18 @@ text {
 }
 .tag h3 {
 	margin-top: -15px;
+}
+.tags .selected {
+	margin-top: 1px !important;
+	margin-bottom: 7px !important;
+}
+.tags .selected a {
+	margin-left: 5px;
+	margin-right: 5px;
+	background: #f3f3f3;
+	font-weight: bold;
+}
+.tags .selected span {
+	position: relative;
+	top: 7px;
 }
