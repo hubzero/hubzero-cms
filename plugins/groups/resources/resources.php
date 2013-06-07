@@ -164,34 +164,33 @@ class plgGroupsResources extends Hubzero_Plugin
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
-		}
 
-		require_once JPATH_BASE.'/components/com_hubgraph/client.php';
-		$hgConf = HubgraphConfiguration::instance();
-		if ($hgConf->isOptionEnabled('com_groups')) {
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'   => 'groups',
-					'element'  => 'resources',
-					'name'     => 'results'
-				)
-			);
+			require_once JPATH_BASE.'/components/com_hubgraph/client.php';
+			$hgConf = HubgraphConfiguration::instance();
+			if ($hgConf->isOptionEnabled('com_groups')) {
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'   => 'groups',
+						'element'  => 'resources',
+						'name'     => 'results'
+					)
+				);
 
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('groups', 'resources');
+				ximport('Hubzero_Document');
+				Hubzero_Document::addPluginStylesheet('groups', 'resources');
 
-			// Pass the view some info
-			$view->option = $option;
-			$view->group = $group;
+				// Pass the view some info
+				$view->option = $option;
+				$view->group = $group;
 			
-			ob_start();
-			$_GET['group'] = $group->gidNumber;
-			define('HG_INLINE', 1);
-			require JPATH_BASE.'/components/com_hubgraph/hubgraph.php';
-			$view->hubgraphResponse = ob_get_clean();
-			return array('html' => $view->loadTemplate('hubgraph'));
+				ob_start();
+				$_GET['group'] = $group->gidNumber;
+				define('HG_INLINE', 1);
+				require JPATH_BASE.'/components/com_hubgraph/hubgraph.php';
+				$view->hubgraphResponse = ob_get_clean();
+				return array('html' => $view->loadTemplate('hubgraph'));
+			}
 		}
-
 
 		$database =& JFactory::getDBO();
 		$dispatcher =& JDispatcher::getInstance();
