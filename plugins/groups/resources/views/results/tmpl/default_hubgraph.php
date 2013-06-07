@@ -1,5 +1,4 @@
 <? defined('_JEXEC') or die(); ?>
-<pre><? print_r($this); ?></pre>
 <h3 class="section-header">
 	<a name="resources"></a>
 	<?php echo JText::_('PLG_GROUPS_RESOURCES'); ?>
