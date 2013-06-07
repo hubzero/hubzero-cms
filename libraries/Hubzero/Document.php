@@ -482,7 +482,7 @@ class Hubzero_Document
 
 		try {
 			// Primary build file
-			$primary   = 'bootstrap';
+			$primary   = 'site';
 
 			// Cache vars
 			$output    = $cachedir . DS . $primary . '.css';
@@ -509,13 +509,13 @@ class Hubzero_Document
 				{
 					// Reset the path to the primary build file
 					$input = $template . DS . $primary . '.less';
-
-					// Add the template path to the import list
-					$less->setImportDir(array(
-						$template . DS, 
-						$lesspath . DS
-					));
 				}
+
+				// Add the template path to the import list
+				$less->setImportDir(array(
+					$template . DS, 
+					$lesspath . DS
+				));
 
 				$cacheFile = $cachedir . DS . $primary . '.less.cache';
 				$cache     = null;
@@ -524,8 +524,7 @@ class Hubzero_Document
 				{
 					$cache = unserialize(file_get_contents($cacheFile));
 				}
-				//echo $input; die();
-//print_r($cache['files']); die();
+
 				// If no cache file or the root build file is different
 				if (!$cache || ($cache['root'] != $input))
 				{
