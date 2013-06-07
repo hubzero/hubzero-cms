@@ -475,104 +475,184 @@ class Hubzero_Document
 	 */
 	public static function getSystemStylesheet($elements = null)
 	{
-		// Anything passed?
-		if (!$elements)
-		{
-			return '';
-		}
-		// Is it a string?
-		if (is_string($elements))
-		{
-			$elements = explode(',', $elements);
-		}
-		if (count($elements) <= 0)
-		{
-			return '';
-		}
-		// Trim items
-		$elements = array_map('trim', $elements);
-
 		// Path to system cache
 		$cachedir = JPATH_ROOT . DS . 'cache';
 		// Path to system CSS
 		$thispath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
 
-		// Determine last modification date of the files
-		$lastmodified = 0;
+		try {
+			// Primary build file
+			$primary   = 'bootstrap';
 
-		foreach ($elements as $k => $element) 
-		{
-			if (!$element) 
+			// Cache vars
+			$output    = $cachedir . DS . $primary . '.css';
+
+			// If debugging is turned off and a cache file exist
+			//if (!JDEBUG && file_exists($output))
+			if (JFactory::getConfig()->getValue('config.application_env', 'production') == 'production' && file_exists($output))
 			{
-				$elements[$k] = false;
-				continue;
+				$output =  DS . 'cache' . DS . $primary. '.css?v=' . filemtime($output);
 			}
-
-			// Strip file extension to normalize data
-			$element = basename($element, '.css');
-
-			$elements[$k] = $element;
-
-			// Check if the file exists
-			$path = $thispath . DS . $element . '.css';
-
-			if (!file_exists($path)) 
+			else
 			{
-				$elements[$k] = false;
-				continue;
+				$lesspath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'less';
+
+				// Try to compile LESS files
+				$less = new lessc;
+				$less->setFormatter('compressed');
+
+				// Are there any template overrides?
+				$template  = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'less'; // . 'bootstrap.less';
+				$input     = $lesspath . DS . $primary . '.less';
+
+				if (file_exists($template . DS . $primary . '.less')) 
+				{
+					// Reset the path to the primary build file
+					$input = $template . DS . $primary . '.less';
+
+					// Add the template path to the import list
+					$less->setImportDir(array(
+						$template . DS, 
+						$lesspath . DS
+					));
+				}
+
+				$cacheFile = $cachedir . DS . $primary . '.less.cache';
+				$cache     = null;
+
+				if (file_exists($cacheFile)) 
+				{
+					$cache = unserialize(file_get_contents($cacheFile));
+				}
+				//echo $input; die();
+//print_r($cache['files']); die();
+				// If no cache file or the root build file is different
+				if (!$cache || ($cache['root'] != $input))
+				{
+					$cache = $input;
+				}
+
+				// create a new cache object, and compile
+				/*
+				array(
+					'files'    => list of files imported,
+					'root'     => root file (bootstrap.less)
+					'updated'  => timestamp,
+					'compiled' => compiled LESS
+				)
+				*/
+
+				$newCache = $less->cachedCompile($cache);
+
+				// Did the cache change?
+				if (!is_array($cache) || $newCache['updated'] > $cache['updated']) 
+				{
+					file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
+					file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
+				}
+				$output =  DS . 'cache' . DS . $primary . '.css?v=' . $newCache['updated'];
 			}
-
-			// Get the last modified time
-			// We take the max time so $lastmodified should be different if any of the files have changed.
-			$lastmodified += filemtime($path);
-		}
-
-		// Remove any empty items
-		$elements = array_filter($elements);
-
-		// Build hash
-		$hash = $lastmodified; // . '-' . md5(implode(',', $elements));
-
-		// Only one stylesheet called for so return it as is
-		if (count($elements) == 1)
+		} 
+		catch (exception $e) 
 		{
-			return $thispath . DS . $elements[0] . '.css';
-		}
+			//echo "fatal error: " . $e->getMessage(); die();
 
-		// Try the cache first to see if the combined files were already generated
-		$cachefile = 'system-' . $hash . '.css';
+			// Anything passed?
+			if (!$elements)
+			{
+				return '';
+			}
+			// Is it a string?
+			if (is_string($elements))
+			{
+				$elements = explode(',', $elements);
+			}
+			if (count($elements) <= 0)
+			{
+				return '';
+			}
+			// Trim items
+			$elements = array_map('trim', $elements);
 
-		if (!file_exists($cachedir . DS . $cachefile)) 
-		{
-			$contents = '';
-			reset($elements);
+			// Determine last modification date of the files
+			$lastmodified = 0;
 
 			foreach ($elements as $k => $element) 
 			{
-				$contents .= "\n\n" . file_get_contents($thispath . DS . $element . '.css');
-			}
-			$patterns = array(
-				'!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
-				'/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
-				'/ +/'                           /* collapse multiple spaces to a single space */
-				/* '/ ?([,:;{}]) ?/'                 remove space before and after , : ; { }     [!] apparently, IE 7 doesn't like this and won't process the stylesheet */
-			);
-			$replacements = array(
-				'',
-				' ',
-				' '/*,
-				'$1'*/
-			);
-			$contents = preg_replace($patterns, $replacements, $contents);
-			$contents = str_replace("url('/media/system/", "url('" . rtrim(JURI::getInstance()->base(true), DS) . "/media/system/", $contents);
+				if (!$element) 
+				{
+					$elements[$k] = false;
+					continue;
+				}
 
-			if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) 
-			{
-				fwrite($fp, $contents);
-				fclose($fp);
+				// Strip file extension to normalize data
+				$element = basename($element, '.css');
+
+				$elements[$k] = $element;
+
+				// Check if the file exists
+				$path = $thispath . DS . $element . '.css';
+
+				if (!file_exists($path)) 
+				{
+					$elements[$k] = false;
+					continue;
+				}
+
+				// Get the last modified time
+				// We take the max time so $lastmodified should be different if any of the files have changed.
+				$lastmodified += filemtime($path);
 			}
+
+			// Remove any empty items
+			$elements = array_filter($elements);
+
+			// Build hash
+			$hash = $lastmodified; // . '-' . md5(implode(',', $elements));
+
+			// Only one stylesheet called for so return it as is
+			if (count($elements) == 1)
+			{
+				return $thispath . DS . $elements[0] . '.css';
+			}
+
+			// Try the cache first to see if the combined files were already generated
+			$cachefile = 'system-' . $hash . '.css';
+
+			if (!file_exists($cachedir . DS . $cachefile)) 
+			{
+				$contents = '';
+				reset($elements);
+
+				foreach ($elements as $k => $element) 
+				{
+					$contents .= "\n\n" . file_get_contents($thispath . DS . $element . '.css');
+				}
+				$patterns = array(
+					'!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
+					'/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
+					'/ +/'                           /* collapse multiple spaces to a single space */
+					/* '/ ?([,:;{}]) ?/'                 remove space before and after , : ; { }     [!] apparently, IE 7 doesn't like this and won't process the stylesheet */
+				);
+				$replacements = array(
+					'',
+					' ',
+					' '/*,
+					'$1'*/
+				);
+				$contents = preg_replace($patterns, $replacements, $contents);
+				$contents = str_replace("url('/media/system/", "url('" . rtrim(JURI::getInstance()->base(true), DS) . "/media/system/", $contents);
+
+				if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) 
+				{
+					fwrite($fp, $contents);
+					fclose($fp);
+				}
+			}
+
+			$output = rtrim(JURI::getInstance()->base(true), DS) . DS . 'cache' . DS . $cachefile;
 		}
 
-		return rtrim(JURI::getInstance()->base(true), DS) . DS . 'cache' . DS . $cachefile;
+		return $output;
 	}
 }
