@@ -24,7 +24,7 @@ if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
 
-_DEBUG = false;
+_DEBUG = true;
 
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
@@ -201,6 +201,30 @@ HUB.Plugins.CoursesForum = {
 					});
 				}
 				//return res;
+			})
+			.on('click', 'a.sticky-toggle', function (e) {
+				e.preventDefault();
+
+				var el = $(this),
+					par = el.parent().parent();
+
+				if (_DEBUG) {
+					console.log('called:' + el.attr('href').nohtml());
+				}
+				$.getJSON(el.attr('href').nohtml(), {}, function(data){
+					par.toggleClass('stuck');
+					$('#thread' + par.attr('data-thread')).toggleClass('stuck');
+
+					if (par.hasClass('stuck')) {
+						el
+							.attr('href', el.attr('data-unstick-href'))
+							.text(el.attr('data-unstick-txt'));
+					} else {
+						el
+							.attr('href', el.attr('data-stick-href'))
+							.text(el.attr('data-stick-txt'));
+					}
+				});
 			});
 
 		thread

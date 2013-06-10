@@ -24,7 +24,7 @@ if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
 
-_DEBUG = true;
+_DEBUG = false;
 
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
