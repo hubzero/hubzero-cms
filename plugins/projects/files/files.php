@@ -5385,6 +5385,11 @@ class plgProjectsFiles extends JPlugin
 		{
 			foreach ($files as $file)
 			{
+				if ($file['name'] == '.gitignore')
+				{
+					continue;
+				}
+				
 				$item 				= array();
 				$item['type'] 		= 'document';
 				$item['item'] 		= $file;
@@ -5416,6 +5421,10 @@ class plgProjectsFiles extends JPlugin
 				{
 					foreach ($remote as $fpath => $r)
 					{
+						if ($sortby == 'sizes') 
+						{
+							$sorting[] = NULL;
+						}
 						if ($sortby == 'modified') 
 						{
 							$sorting[] = strtotime(date( 'Y-m-d H:i:s', strtotime($r->remote_modified)));
@@ -5442,10 +5451,6 @@ class plgProjectsFiles extends JPlugin
 		// Go through directories
 		if (count($dirs) > 0 && !empty($dirs))
 		{
-			if ($sortby != 'filename')
-			{
-				array_multisort($sorting, $sortOrder, $combined );
-			}
 			foreach ($dirs as $dir)
 			{
 				$item 				= array();
@@ -5454,6 +5459,14 @@ class plgProjectsFiles extends JPlugin
 				$item['name'] 		= $dir;
 				$item['remote'] 	= NULL;
 				
+				if ($sortby == 'sizes') 
+				{
+					$sorting[] = NULL;
+				}
+				if ($sortby == 'modified') 
+				{
+					$sorting[] = NULL;
+				}
 				if ($sortby == 'filename')
 				{
 					$sorting[]  = strtolower($dir);					
@@ -5463,7 +5476,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Sort by name
-		if (!empty($combined) && $sortby == 'filename') 
+		if (!empty($combined)) 
 		{
 			array_multisort($sorting, $sortOrder, $combined );
 		}

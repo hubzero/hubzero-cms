@@ -48,7 +48,7 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 <?php if($this->filters['state'] != 1 ) { ?>
 	<div class="aside">
 		<div class="sidebox">
-			<h4><?php echo ucfirst(JText::_('COM_PROJECTS_TODO_LISTS')); ?></h4>
+			<h4><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_TODO_LISTS')); ?></a></h4>
 			<ul class="tdlists">
 				<?php if (count($this->lists) > 0) {  ?>					
 						<?php foreach($this->lists as $list) { 
