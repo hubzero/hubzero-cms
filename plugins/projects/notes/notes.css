@@ -93,9 +93,9 @@
 		margin-top: 0;
 	}
 	.wrongvalue {
-		border: 2px solid #dba59f;
+		border: 2px solid #dba59f !important;
 		padding: 0.2em;
-		background: #f5ebea;
+		background: #f5ebea !important;
 	}
 
 	#notes-wrap .sidebox {
@@ -180,11 +180,17 @@
 		height: 16px;
 		font-size: 16px;
 		font-family: 'Fontcons';
-		position: absolute;
 		content: "\f0c1";
 		color: #8f8faa;
-		margin-top: -1em;
+		margin: 0;
+		padding: 0;
+		margin-left: -1em;
+		border: none;
+		display: inline;
+		position: relative;
+		top: auto;
 	}
+
 	#notes-wrap .sidebox .wikitemplate:before,
 	#notes-wrap .sidebox .appindex .wikitemplate:before {
 		color: #97bf9b;
@@ -193,24 +199,42 @@
 	#notes-wrap .sidebox .appindex .wikitemplate:before {
 		content: "\f06f";
 	}
-	.wikilevel_2, .wikilevel_3, .wikilevel_4 {
-		margin-left: 2em;
-		background: url("images/childlink.gif") 0 0 no-repeat !important;
+	
+	#notes-wrap .sidebox .wikilevel_2:before,
+	#notes-wrap .sidebox .wikilevel_3:before,
+	#notes-wrap .sidebox .wikilevel_4:before {
+		content: "\203A";
+		color: #CCC;
+		font-weight: normal;
+		width: 10px;
+		height: 10px;
+		font-size: 10px;
+		margin: 0;
+		padding: 0;
+		margin-right: 1em;
+		padding-right: 0.1em;
 	}
-	.wikilevel_3 {
-		margin-left: 4em;
+	#notes-wrap .sidebox .wikilevel_2 {
+		padding-left: 1em !important;
 	}
-	.wikilevel_4 {
-		margin-left: 6em;
+	#notes-wrap .sidebox .wikilevel_3 {
+		padding-left: 2em !important;
 	}
-	#notes-wrap .sidebox .wikilevel_2:before, 
-	#notes-wrap .sidebox .wikilevel_3:before, 
-	#notes-wrap .sidebox .wikilevel_4:before,
-	#notes-wrap .sidebox .appindex .wikilevel_2:before, 
-	#notes-wrap .sidebox .appindex .wikilevel_3:before, 
-	#notes-wrap .sidebox .appindex .wikilevel_4:before {
-		content: "";
+	#notes-wrap .sidebox .wikilevel_4 {
+		padding-left: 3em !important;
+	}	
+	
+	/*---*/
+	
+	#notes-content #hubForm {
+		padding-right: 1.5em;
 	}
+	#notes-wrap.withside .aside {
+		margin-top: -2em;
+	}	
+	
+	/*---*/
+	
 	.withside #notes-content .warning {
 		width: 50%;
 	}

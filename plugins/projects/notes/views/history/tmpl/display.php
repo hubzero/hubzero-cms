@@ -92,7 +92,7 @@ $first = end($this->revisions);
 ?>
 <div class="section">
 	<div class="two columns first">
-		<p>Versions are listed in reverse-chronological order (newest to oldest). For any version listed below, click on its date to view it. For more help, see <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:PageHistory'); ?>" class="popup">Help:Page history</a>.</p> 
+		<p>Versions are listed in reverse-chronological order (newest to oldest). For any version listed below, click on its date to view it. For more help, see <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:PageHistory'); ?>">Help:Page history</a>.</p> 
 	</div><!-- / .aside -->
 	<div class="two columns second">
 		<p>(cur) = difference from current version<br />(last) = difference from preceding version</p>
@@ -101,7 +101,7 @@ $first = end($this->revisions);
 </div><!-- / .section -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=compare'); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare'); ?>" method="post">
 		<p class="info">
 			This article has <?php echo count($this->revisions); ?> versions, was created on <time datetime="<?php echo $first->created; ?>"><?php echo $first->created; ?></time> and last edited on <time datetime="<?php echo $this->revisions[0]->created; ?>"><?php echo $this->revisions[0]->created; ?></time>.
 		</p>
@@ -117,7 +117,7 @@ $first = end($this->revisions);
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_MADE_BY'); ?></th>
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_LENGTH'); ?></th>
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_STATUS'); ?></th>
-<?php if ($this->config->get('access-manage')) { ?>
+<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 							<th scope="col"></th>
 <?php } ?>
 						</tr>
@@ -174,13 +174,13 @@ foreach ($this->revisions as $revision)
 ?>
 								( cur )
 <?php } else { ?>
-								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=compare&oldid='.$revision->version.'&diff='.$cur); ?>">
+								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare&oldid='.$revision->version.'&diff='.$cur); ?>">
 									<?php echo JText::_('WIKI_HISTORY_CURRENT'); ?>
 								</a>)
 <?php } ?>
 								&nbsp;
 <?php if ($revision->version != 1) { ?>
-								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=compare&oldid='.($revision->version - 1).'&diff='.$revision->version); ?>">
+								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare&oldid='.($revision->version - 1).'&diff='.$revision->version); ?>">
 									<?php echo JText::_('WIKI_HISTORY_LAST'); ?>
 								</a>)
 <?php } else { ?>
@@ -203,7 +203,7 @@ foreach ($this->revisions as $revision)
 							</td>
 <?php } ?>
 							<td>
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version); ?>" class="tooltips" title="<?php echo JText::_('WIKI_REVISION_SUMMARY').' :: '.$summary; ?>">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version); ?>">
 									<time datetime="<?php echo $revision->created; ?>"><?php echo $this->escape($revision->created); ?></time>
 								</a>
 							</td>
@@ -217,18 +217,16 @@ foreach ($this->revisions as $revision)
 								<?php echo $this->escape($status); ?>
 					<?php if (!$revision->approved && $this->config->get('access-manage')) { ?>
 								<br />
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=approve&oldid='.$revision->id); ?>">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=approve&oldid='.$revision->id); ?>">
 									<?php echo JText::_('WIKI_ACTION_APPROVED'); ?>
 								</a>
 					<?php } ?>
 							</td>
-					<?php if ($this->config->get('access-manage')) { ?>
+					<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 							<td>
-								<?php if (count($this->revisions) > 1) { ?>
-								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=deleterevision&oldid='.$revision->id); ?>" title="<?php echo JText::_('WIKI_REVISION_DELETE'); ?>">
+								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=deleterevision&oldid='.$revision->id); ?>" title="<?php echo JText::_('WIKI_REVISION_DELETE'); ?>">
 									<?php echo JText::_('DELETE'); ?>
 								</a>
-								<?php } ?>
 							</td>
 					<?php } ?>
 						</tr>
@@ -240,12 +238,16 @@ foreach ($this->revisions as $revision)
 
 		<div class="clear"></div>
 
-		<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-		<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
-		<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="active" value="notes" />
+		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
+		<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->scope); ?>" />
+		<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->id); ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
+<?php if ($this->sub) { ?>
+		<input type="hidden" name="active" value="<?php echo $this->escape($this->sub); ?>" />
 		<input type="hidden" name="action" value="compare" />
+<?php } else { ?>
+		<input type="hidden" name="task" value="compare" />
+<?php } ?>
 	</form>
 </div><!-- / .main section -->

@@ -275,7 +275,7 @@ if ($this->config->get('access-edit')) {
 
 		<p class="submit">
 			<input type="submit" name="preview" value="<?php echo JText::_('PREVIEW'); ?>" /> &nbsp; 
-			<input type="submit" name="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
+			<input type="submit" name="submit" id="page-submit" value="<?php echo JText::_('SUBMIT'); ?>" />
 		</p>
 	</form>
 

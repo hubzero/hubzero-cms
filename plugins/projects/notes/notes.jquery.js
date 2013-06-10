@@ -51,9 +51,10 @@ HUB.ProjectNotes = {
 		}
 		
 		// Prevent form submission if no title
-		if ($('#hubForm') && notetitle) {
-			$('#hubForm').on('submit', function(e) {
+		if ($('#hubForm') && notetitle && $('#page-submit')) {
+			$('#page-submit').on('click', function(e) {							
 				if (notetitle.val() == '' || notetitle.val() == default_title || notetitle.val() == default_temp_title ) {
+					// can't submit
 					e.preventDefault();
 				}
 			});
@@ -75,7 +76,7 @@ HUB.ProjectNotes = {
 		var $ = this.jQuery;
 		value = title.val();
 		
-		if ((value == '' || value == default_title || value == default_temp_title) && !title.hasClass('wrongvalue') ) {
+		if ((value == '' || value == default_title || value == default_temp_title)) {
 			title.addClass('wrongvalue');
 			var stoptext = 'Please provide a new or different page title before saving this note.';
 			if (value == default_temp_title) {
@@ -88,7 +89,7 @@ HUB.ProjectNotes = {
 				$('#stopit').html(stoptext);
 			}
 
-		} else {
+		} else if (title.hasClass('wrongvalue')) {
 			title.removeClass('wrongvalue');
 			if ($('#stopit').length) {
 				$('#stopit').remove();

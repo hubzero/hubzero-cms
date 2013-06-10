@@ -97,7 +97,7 @@ if ($this->notes)
 		else if($level == 2) {
 			$notes[$parent][$level][] = $note;
 		}
-		else if($level == 3) {
+		else if($level >= 3) {
 			$r = array_shift($remaining);
 			$thirdlevel[$r][] = $note;
 		}
@@ -148,11 +148,11 @@ $parentScope = $this->scope . DS . $this->pagename;
 <div id="notes-wrap" <?php if ($side) { echo 'class="withside"'; } ?>>
 	<?php if ($side) { ?>
 	<div class="aside">
-		<?php if ($appOpt) { ?>	
+		<?php if ($appOpt && count($this->parent_notes) < 2) { ?>	
 			<div class="addanote"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a></div>
 		<?php } ?>
 		<?php if (!$appOpt) { ?>	
-		<div class="addanote"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a> &nbsp; <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new'; ?>" class=" addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?></a></div>
+		<div class="addanote"><?php if (count($this->parent_notes) < 2) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a> &nbsp; <?php } ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new'; ?>" class=" addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?></a></div>
 		<?php } ?>
 		<div class="sidebox">
 			<h4><?php echo $appOpt ? ucfirst(JText::_('COM_PROJECTS_NOTES_APP_WIKI_PAGES')) : ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
