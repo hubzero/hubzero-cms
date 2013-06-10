@@ -1477,8 +1477,9 @@
 		display: none;
 	}
 /* Toobar */
-	.fixed {
-		position: fixed;
+	#component-content {
+		position: relative;
+		padding-top: 5.5em;
 	}
 	.toolbar-box {
 		overflow: hidden;
@@ -1494,8 +1495,19 @@
 		-ms-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 		-o-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-		position: relative;
 		min-height: 4.5em;
+		position: relative;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+	.toolbar-box.fixed {
+		position: fixed;
+		top: 0;
+		z-index: 500;
+		width: 100%;
+		max-width: 100%;
 	}
 	.toolbar-box .breadcrumb-title {
 		display: none;
@@ -1548,6 +1560,7 @@
 		content: "\f02f";
 		display: block;
 		color: #666;
+		font-weight: normal;
 	}
 	.toolbar-box a {
 		color: #666;
@@ -1623,6 +1636,7 @@
 		color: #666;
 		text-decoration: none;
 		cursor: pointer;
+		font-weight: normal;
 	}
 	.toolbar-box li a small.fontcon-after,
 	.toolbar-box li a span:after,
@@ -1642,6 +1656,7 @@
 		      -1px 1px 0 #fff,
 		       1px 1px 0 #fff;
 		cursor: pointer;
+		font-weight: normal;
 	}
 	.toolbar-box table a:hover,
 	.toolbar-box td:hover a span:before,
@@ -1720,9 +1735,11 @@
 		float: right;
 		border-right: none;
 		border-left: 1px solid #e9e9e9;
+		white-space: nowrap;
 	}
 	.pagination .list-footer select {
 		width: auto;
+		display: inline;
 	}
 	.pagination .list-footer label {
 		width: auto;
