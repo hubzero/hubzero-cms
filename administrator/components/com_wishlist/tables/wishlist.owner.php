@@ -216,14 +216,17 @@ class WishlistOwner extends JTable
 			{
 				// Load the group
 				$group = Hubzero_Group::getInstance($g);
-				$members  = $group->get('members');
-				$managers = $group->get('managers');
-				$members  = array_merge($members, $managers);
-				if ($members) 
+				if ($group && $group->get('gidNumber'))
 				{
-					foreach ($members as $member)
+					$members  = $group->get('members');
+					$managers = $group->get('managers');
+					$members  = array_merge($members, $managers);
+					if ($members) 
 					{
-						$owners[] = $member;
+						foreach ($members as $member)
+						{
+							$owners[] = $member;
+						}
 					}
 				}
 			}
