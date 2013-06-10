@@ -273,7 +273,7 @@ class Hubzero_Group_Helper
 			//get the group logo
 			$logo = "/components/com_groups/assets/img/group_default_logo.png";
 			$group_logo = $config->get('uploadpath') . DS . $hg->gidNumber . DS . $hg->logo;
-			if(isset($hg->logo) && file_exists(JPATH_ROOT . DS . $group_logo))
+			if(isset($hg->logo) && $hg->logo != '' && file_exists(JPATH_ROOT . DS . $group_logo))
 			{
 				$logo = $group_logo;
 			}
