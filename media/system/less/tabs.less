@@ -10,11 +10,12 @@
 // --------------------------------------------------
 	ul.sub-menu {
 		list-style: none;
-		padding: 1em @contentPadding 0 @contentPadding;
+		padding: @tabContainerPadding;
 		margin: 0;
 		border-bottom: 1px solid @tabActiveBorder;
 		*zoom: 1;
 		.clearfix(left);
+		background: @tabContainerBackground;
 
 		li {
 			float: left;
@@ -38,12 +39,12 @@
 		}
 		li a:hover {
 			border-color: @tabBorderHover;
-			background-color: @tabBackgroundHover;
+			background: @tabBackgroundHover;
 			color: @tabColor;
 		}
 		li.active a,
 		li.active a:hover {
-			background-color: @tabActiveBackground;
+			background: @tabActiveBackground;
 			color: @tabColorActive;
 			border-color: @tabActiveBorder;
 			text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);

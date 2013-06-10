@@ -10,22 +10,25 @@
 // --------------------------------------------------
 
 	.tags {
-		margin-left: 14px;
-		font-size: 10px !important;
+		margin-left: 1.2em;
+		font-size: 0.85em !important;
+
 
 		li {
 			display: inline-block !important;
-			margin: 2px 12px 2px 0px !important;
+			.ie7-inline-block();
+			margin: 0.2em 1.2em 0.2em 0 !important;
 
 			a {
 				position: relative;
 				display: inline-block !important;
+				.ie7-inline-block();
 				border: 0;
-				line-height: 2em !important;
+				line-height: 1 !important;
 				margin: 0 !important;
 				background: @tagBackground !important;
 				color: @tagColor !important;
-				padding: 2px 6px 2px 6px !important;
+				padding: 0.6em 0.5em 0.7em 0.5em !important;
 				.border-radius(@tagBorderRadius);
 
 				small.tag-before,
@@ -33,28 +36,28 @@
 					content: "";
 					border-color: transparent @tagBackground transparent transparent !important;
 					border-style: dashed solid dashed dashed !important;
-					border-width: 12px 12px 12px 0 !important;
+					border-width: 1.15em 1.15em 1.15em 0 !important;
 					height: 0;
 					width: 0;
 					display: block;
 					overflow: hidden;
 					position: absolute;
 					top: 0 !important;
-					left: -12px !important;
+					left: -1.1125em !important;
 					margin: 0 !important;
 					padding: 0 !important;
 				}
 				small.tag-after,
 				&:after {
 					content: "";
-					height: 4px;
-					width: 4px;
+					height: 0.375em;
+					width: 0.375em;
 					display: block;
 					position: absolute;
-					top: 10px;
-					left: -3px;
+					top: 1em;
+					left: -0.3em;
 					background-color: #f6f6f6;
-					.border-radius(4px);
+					.border-radius(0.375em);
 				}
 
 				span {
@@ -62,8 +65,8 @@
 					background-color: rgba(255, 255, 255, 0.2);
 					display: inline-block;
 					.ie7-inline-block();
-					margin: -2px -6px -2px 4px;
-					padding: 2px 6px 2px 6px;
+					margin: -0.2em -0.5em -0.2em 0.4em;
+					padding: 0.2em 0.5em;
 					.border-radius(@tagBorderRadius);
 				}
 
@@ -83,11 +86,11 @@
 		}
 	}
 
-/* [!] HACK - IE 7 and older 
+/* [!] HACK - IE 7 and older */
 	.tags li a {
-		.ie7-fontcons-before('tag', @char);
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="tag-before"></small>' + this.innerHTML + '<small class="tag-after">&bull;</small>');
-	}*/
+		/*.ie7-fontcons-before('tag', @char);
+		zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="tag-before"></small>' + this.innerHTML + '<small class="tag-after">&bull;</small>');*/
+	}
 	.tags li a small.tag-after {
 		*background-color: transparent;
 		*color: #fff;
