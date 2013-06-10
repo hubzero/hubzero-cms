@@ -183,6 +183,12 @@
 	#introbody {
 		padding-top: 0 !important;
 	}
+	#introbody li:before {
+		display: none;
+	}
+	#introbody li {
+		background: none;
+	}
 	
 /* Screenshot slider */
 	.sscontainer {
