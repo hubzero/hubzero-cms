@@ -26,7 +26,6 @@
 	ds.tab = {};
 	ds.data = {};
 
-
 	$(document).ready(function() {
 		// back button
 		$('.prj-db-back').on('click', function() {
@@ -119,6 +118,21 @@
 			ds.data = table.data;
 			ds.repo = res.data.repo;
 
+
+			/* Populating the Repository Path list */
+			var wd = (ds.repo.wd != '') ? '/' + ds.repo.wd + '/' : '/';
+			var title = 'Files from the \'' + wd + '\' folder';
+			if (wd == '/') {
+				title = 'Files from the \'Repository Home\' folder';
+			}
+			var sub_dirs = '<option value="" title="' + title + '">Same folder as the CSV file</option>';
+
+			$.each(ds.repo.sub_dirs, function(i, val) {
+				var title = 'Files from : ' + wd + val;		
+				sub_dirs += '<option value="' + val + '" title="' + title + '">' + val + '</option>';
+			});
+			$('#prj-db-col-linkpath').html(sub_dirs);
+			
 			$('#prj-db-rec-limit').html('Total number of records: ' + table.rec_total + ' | Displaying ' + table.rec_display + ' records');
 			$('#prj-db-preview-table-wrapper').empty();
 			$('#prj-db-preview-table-wrapper').html('<table id="prj-db-preview-table" class="dv-spreadsheet"></table>');
@@ -219,10 +233,6 @@
 								$('#prj-db-col-type-link').hide();
 							}
 						}).trigger('change');
-
-						// Show 'working directory' tooltip
-						var tooltip = 'Enter a subfolder within the "/' + ds.repo.wd + '/" folder';
-						$('#prj-db-col-linkpath').attr('title', tooltip);
 
 						e.stopPropagation();
 						e.preventDefault();

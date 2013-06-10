@@ -253,7 +253,7 @@ class ProjectDatabase extends JTable
 		 	return false;
 		}
 		
-		$query = "SELECT DISTINCT CONCAT(source_dir, '/', source_file) as file 
+		$query = "SELECT DISTINCT IF(source_dir != '', CONCAT(source_dir, '/', source_file), source_file) as file 
 				  FROM $this->_tbl
 				  WHERE project = " . $projectid;		
 

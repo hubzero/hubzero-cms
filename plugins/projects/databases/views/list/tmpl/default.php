@@ -26,9 +26,6 @@
 defined('_JEXEC') or die('Restricted access');
 $document =& JFactory::getDocument();
 
-$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
-$document->addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css');
-
 ?>
 <div id="prj-db-list">
 	<div class="addnew" style="float: right;"><a href="/projects/<?=$this->project->alias?>/databases/create#content"><?php echo JText::_('PLG_PROJECTS_DATA_START'); ?></a></div>

@@ -165,8 +165,7 @@ class plgProjectsDatabases extends JPlugin
 		$this->_option 		= $option;
 		$this->_database 	=& JFactory::getDBO();
 		$this->_authorized  = $authorized;
-		$this->_uid 		= $uid;
-		
+		$this->_uid = $uid;
 		if (!$this->_uid) 
 		{
 			$juser =& JFactory::getUser();
@@ -209,6 +208,12 @@ class plgProjectsDatabases extends JPlugin
 		else 
 		{
 			$document =& JFactory::getDocument();
+
+			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+
+			$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
+			$document->addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css');
+
 			$document->addScript('/plugins/projects/databases/res/main.js');
 			$document->addStyleSheet('/plugins/projects/databases/res/main.css');
 
@@ -457,10 +462,23 @@ class plgProjectsDatabases extends JPlugin
 			$table = array();
 			$dd = array();
 			
+			$sub_dirs = array();
+			$list =array();
+			chdir($path);
+			exec('find . -type d -not \( -name ".?*" -prune \)', $list);
+			foreach ($list as $d) {
+				$d = ltrim($d, './');
+				if ($d != '.' && $d != '') {
+					$sub_dirs[] = $d;
+				}
+			}
+			
+			
 			$table['repo'] = array(
 				'prj_alias' => $this->_project->alias,
 				'wd' => trim($dir, '/'),
-				'base' => '/projects/' . $this->_project->alias . '/files/?action=download&subdir=' . trim($dir, '/')
+				'base' => '/projects/' . $this->_project->alias . '/files/?action=download&subdir=' . trim($dir, '/'),
+				'sub_dirs' => $sub_dirs
 			);
 
 			// Check if expert mode CSV

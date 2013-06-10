@@ -26,9 +26,6 @@
 defined('_JEXEC') or die('Restricted access');
 $document =& JFactory::getDocument();
 
-$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
-$document->addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css');
-
 $document->addScript('/plugins/projects/databases/res/dataTables/jquery.dataTables.js');
 $document->addStyleSheet('/plugins/projects/databases/res/dataTables/jquery.dataTables.css');
 
@@ -164,7 +161,8 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 				</label>
 				<br />
 				<label for="prj-db-col-linkpath">Repository Path:</label><br />
-				<input type="text" class="col-prop" value="" id="prj-db-col-linkpath" style="width: 200px;" />
+				<select class="col-prop" id="prj-db-col-linkpath"></select><br />
+				<span style="font-size: .8em;">[Only the files that are in the source CSV file folder or any of it's sub folders can be used for this]</span>
 			</div>
 		</div>
 		<div id="tabs-3">
