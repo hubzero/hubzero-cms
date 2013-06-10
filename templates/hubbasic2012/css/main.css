@@ -470,6 +470,7 @@
 		border: none;
 		padding: 0;
 	}
+	#submitquery,
 	#search-submit {
 		display: none;
 	}
