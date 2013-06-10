@@ -329,6 +329,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->filters['state']    = 1;
 		$view->filters['scope']    = 'course';
 		$view->filters['scope_id'] = $course->offering()->get('id');
+		$view->filters['scope_sub_id'] = $course->offering()->section()->get('id');
 		$view->filters['sticky'] = false;
 		//$view->filters['start_id'] = JRequest::getInt('start_id', 0);
 		$view->filters['search']   = JRequest::getVar('search', '');
@@ -378,6 +379,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 			$view->post->scope = $view->filters['scope'];
 			$view->post->scope_id = $view->filters['scope_id'];
+			$view->post->scope_sub_id = $view->filters['scope_sub_id'];
 			$view->post->category_id = $category->get('id');
 			$view->post->object_id = $lecture->get('id');
 			$view->post->parent = 0;
@@ -1004,6 +1006,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->filters['authorized'] = 1;
 		$view->filters['scope']      = 'course';
 		$view->filters['scope_id']   = $this->offering->get('id');
+		$view->filters['scope_sub_id']   = $this->offering->section()->get('id');
 		$view->filters['search']     = JRequest::getVar('search', '');
 		$view->filters['section_id'] = 0;
 		$view->filters['state']      = 1;
@@ -1211,6 +1214,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->post = new ForumPost($this->database);
 		$view->post->scope    = $view->filters['scope'];
 		$view->post->scope_id = $view->filters['scope_id'];
+		$view->post->scope_sub_id = $view->filters['scope_sub_id'];
 
 		$view->config = $this->params;
 		$view->course = $this->course;
@@ -1234,6 +1238,13 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Display content for dashboard
+	 * 
+	 * @param      object $course   CoursesModelCourse
+	 * @param      object $offering CoursesModelOffering
+	 * @return     string
+	 */
 	public function onCourseDashboard($course, $offering)
 	{
 		//$this->config = $config;
@@ -1267,6 +1278,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->filters['authorized'] = 1;
 		$view->filters['scope']      = 'course';
 		$view->filters['scope_id']   = $this->offering->get('id');
+		$view->filters['scope_sub_id']   = $this->offering->section()->get('id');
 		$view->filters['search']     = JRequest::getVar('search', '');
 		$view->filters['section_id'] = 0;
 		$view->filters['state']      = 1;
@@ -1284,6 +1296,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->post = new ForumPost($this->database);
 		$view->post->scope    = $view->filters['scope'];
 		$view->post->scope_id = $view->filters['scope_id'];
+		$view->post->scope_sub_id = $view->filters['scope_sub_id'];
 
 		$this->section = new ForumSection($this->database);
 		$view->sections = $this->section->getRecords(array(
@@ -1382,7 +1395,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$view->filters['section_id'] = $section->id;
 
 			$view->sections[$key]->categories = $model->getRecords($view->filters);
-	
+
 			$view->stats->categories += count($view->sections[$key]->categories);
 			if ($view->sections[$key]->categories)
 			{

@@ -117,6 +117,7 @@ if (count($inst) > 0)
 						$filters = array();
 						$filters['scope']      = $this->filters['scope'];
 						$filters['scope_id']   = $this->filters['scope_id'];
+						$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
 						$filters['state']      = 1;
 						$filters['sort_Dir']   = 'DESC';
 						$filters['limit']      = 100;
@@ -162,6 +163,7 @@ if (count($inst) > 0)
 						$filters = array();
 						$filters['scope']      = $this->filters['scope'];
 						$filters['scope_id']   = $this->filters['scope_id'];
+						$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
 						$filters['state']      = 1;
 						$filters['sort_Dir']   = 'DESC';
 						$filters['limit']      = 100;
@@ -303,6 +305,7 @@ if (count($inst) > 0)
 						<input type="hidden" name="fields[state]" id="field-state" value="1" />
 						<input type="hidden" name="fields[scope]" id="field-scope" value="course" />
 						<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_id'); ?>" />
+						<input type="hidden" name="fields[scope_sub_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
 						<input type="hidden" name="fields[id]" id="field-id" value="" />
 						<input type="hidden" name="fields[object_id]" id="field-object_id" value="" />
 

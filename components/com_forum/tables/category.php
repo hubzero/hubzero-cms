@@ -121,6 +121,13 @@ class ForumCategory extends JTable
 	var $scope_id = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	//var $scope_sub_id = NULL;
+
+	/**
 	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
 	 * 
 	 * @var integer
@@ -424,6 +431,10 @@ class ForumCategory extends JTable
 		{
 			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 		}
+		/*if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+		{
+			$where[] = "c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id']));
+		}*/
 		if (isset($filters['section_id']) && (int) $filters['section_id'] >= 0) 
 		{
 			$where[] = "c.section_id=" . $this->_db->Quote(intval($filters['section_id']));
@@ -471,6 +482,12 @@ class ForumCategory extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
+		$flt = "";
+		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+		{
+			$flt = " AND (r.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR r.sticky=1)";
+		}
+
 		if (isset($filters['admin']))
 		{
 			$query  = "SELECT c.*";
@@ -478,8 +495,8 @@ class ForumCategory extends JTable
 			{
 				$query .= ", g.cn AS group_alias";
 			}
-			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0) AS threads,
-						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id) AS posts";
+			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0 $flt) AS threads,
+						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id $flt) AS posts";
 		}
 		else 
 		{
@@ -488,8 +505,8 @@ class ForumCategory extends JTable
 			{
 				$query .= ", g.cn AS group_alias";
 			}
-			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0 AND r.state=1) AS threads,
-						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.state=1) AS posts";
+			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0 AND r.state=1 $flt) AS threads,
+						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.state=1 $flt) AS posts";
 		}
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{

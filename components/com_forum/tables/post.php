@@ -135,6 +135,13 @@ class ForumPost extends JTable
 	var $scope_id = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $scope_sub_id = NULL;
+
+	/**
 	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
 	 * 
 	 * @var integer
@@ -425,6 +432,10 @@ class ForumPost extends JTable
 			{
 				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 			}
+			if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+			{
+				$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
+			}
 			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
 			{
 				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
@@ -602,6 +613,10 @@ class ForumPost extends JTable
 			{
 				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 			}
+			if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+			{
+				$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
+			}
 			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
 			{
 				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
@@ -711,6 +726,11 @@ class ForumPost extends JTable
 		{
 			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 		}
+		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+		{
+			$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
+		}
+
 		if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
 		{
 			$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));

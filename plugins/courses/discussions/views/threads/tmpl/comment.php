@@ -152,6 +152,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="fields[scope]" value="<?php echo $this->post->get('scope'); ?>" />
 						<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->get('category_id'); ?>" />
 						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->post->get('scope_id'); ?>" />
+						<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
 						<input type="hidden" name="fields[object_id]" value="<?php echo $this->post->get('object_id'); ?>" />
 						<input type="hidden" name="fields[parent]" value="<?php echo $this->comment->id; ?>" />
 						<input type="hidden" name="fields[thread]" value="<?php echo $this->comment->thread; ?>" />

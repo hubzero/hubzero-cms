@@ -88,6 +88,7 @@ if (count($inst) > 0)
 						$filters = array();
 						$filters['scope']      = $this->filters['scope'];
 						$filters['scope_id']   = $this->filters['scope_id'];
+						$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
 						$filters['state']      = 1;
 						$filters['sort_Dir']   = 'DESC';
 						$filters['limit']      = 100;
@@ -144,8 +145,9 @@ if (count($inst) > 0)
 								<div class="thread closed" id="ct<?php echo $row->id; ?>" data-category="<?php echo $row->id; ?>">
 									<?php
 										$tfilters = array();
-										$tfilters['scope']       = 'course';
-										$tfilters['scope_id']    = $this->course->offering()->get('id');
+										$tfilters['scope']      = $this->filters['scope'];
+										$tfilters['scope_id']   = $this->filters['scope_id'];
+										$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
 										$tfilters['state']       = 1;
 										$tfilters['category_id'] = $row->id;
 										$tfilters['sort_Dir']    = 'DESC';
@@ -156,7 +158,7 @@ if (count($inst) > 0)
 									?>
 									<div class="thread-header">
 										<span class="thread-title"><?php echo $this->escape(stripslashes($row->title)); ?></span>
-										<span class="thread-discussions count"><?php echo $this->post->getCount($tfilters); ?></span>
+										<span class="thread-discussions count"><?php echo $row->threads; //$this->post->getCount($tfilters); ?></span>
 									</div><!-- / .thread-header -->
 									<div class="thread-content">
 										<?php
@@ -326,6 +328,7 @@ if (count($inst) > 0)
 						<input type="hidden" name="fields[state]" id="field-state" value="1" />
 						<input type="hidden" name="fields[scope]" id="field-scope" value="course" />
 						<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_id'); ?>" />
+						<input type="hidden" name="fields[scope_sub_id]" id="field-scope_sub_id" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
 						<input type="hidden" name="fields[id]" id="field-id" value="" />
 						<input type="hidden" name="fields[object_id]" id="field-object_id" value="" />
 

@@ -52,6 +52,7 @@ if ($this->threads && is_array($this->threads))
 		$this->search = '';
 	}
 
+	$subs = array();
 	foreach ($this->threads as $thread) 
 	{
 		$view = new Hubzero_Plugin_View(
@@ -74,6 +75,11 @@ if ($this->threads && is_array($this->threads))
 		$view->search     = $this->search;
 		$view->active     = (isset($this->active) ? $this->active : '');
 
+		if (!$thread->scope_sub_id)
+		{
+			$subs[] = $thread->id;
+		}
+
 		if (isset($this->instructors))
 		{
 			$view->instructors = $this->instructors;
@@ -84,6 +90,20 @@ if ($this->threads && is_array($this->threads))
 		}
 		
 		$view->display();
+	}
+
+	if (count($subs) > 0)
+	{
+		$offering = CoursesModelOffering::getInstance(JRequest::getVar('offering', ''));
+		if ($offering->exists())
+		{
+			$database = JFactory::getDBO();
+			$database->setQuery("UPDATE #__forum_posts SET scope_sub_id=" . $offering->section()->get('id') . " WHERE scope='course' AND scope_sub_id=0 AND id IN(" . implode(",", $subs) . ")");
+			if (!$database->query())
+			{
+				echo '<!-- Failed to update data -->';
+			}
+		}
 	}
 } else {
 ?>
