@@ -94,6 +94,7 @@ if (count($inst) > 0)
 						$filters['start']      = 0;
 						$filters['created_by'] = $juser->get('id');
 						$filters['parent']     = 0;
+						$filters['sticky']     = false;
 						?>
 						<div class="category-header">
 							<span class="category-title"><?php echo JText::_('Mine'); ?></span>
@@ -151,6 +152,7 @@ if (count($inst) > 0)
 										$tfilters['limit']       = 100;
 										$tfilters['start']       = 0;
 										$tfilters['parent']      = 0;
+										$tfilters['sticky']     = false;
 									?>
 									<div class="thread-header">
 										<span class="thread-title"><?php echo $this->escape(stripslashes($row->title)); ?></span>

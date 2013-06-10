@@ -24,10 +24,32 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+if ($this->depth == 0 && $this->config->get('access-edit-thread'))
+{
+?>
+<div class="sticky-thread-controls<?php echo ($this->post->sticky) ? ' stuck' : ''; ?>" data-thread="<?php echo $this->post->thread; ?>">
+	<p>
+		<a class="sticky-toggle" 
+			href="<?php echo JRoute::_($this->base . '&thread=' . $this->post->thread . '&action=sticky&sticky=' . ($this->post->sticky ? 0 : 1)); ?>" 
+			data-stick-href="<?php echo JRoute::_($this->base . '&thread=' . $this->post->thread . '&action=sticky&sticky=1'); ?>" 
+			data-unstick-href="<?php echo JRoute::_($this->base . '&thread=' . $this->post->thread . '&action=sticky&sticky=0'); ?>" 
+			data-stick-txt="<?php echo JText::_('Make sticky'); ?>" 
+			data-unstick-txt="<?php echo JText::_('Make not sticky'); ?>">
+			<?php echo ($this->post->sticky) ? JText::_('Make not sticky') : JText::_('Make sticky'); ?>
+		</a>
+		<span class="hint">
+			<?php echo JText::_('Sticky discussions are viewable by all sections'); ?>
+		</span>
+	</p>
+</div>
+<?php 
+}
 ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
 <?php
-if ($this->comments && is_array($this->comments)) { 
+if ($this->comments && is_array($this->comments)) 
+{ 
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -43,42 +65,30 @@ if ($this->comments && is_array($this->comments)) {
 
 	foreach ($this->comments as $comment) 
 	{
-		/*if ($comment->object_id && !$comment->parent)
-		{
-			continue;
-		}*/
-		//if ($comment->replies) 
-		//{
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'courses',
-					'element' => 'discussions',
-					'name'    => 'threads',
-					'layout'  => 'comment'
-				)
-			);
-			$view->option     = $this->option;
-			$view->comment    = $comment;
-			$view->post       = $this->post;
-			$view->unit       = $this->unit;
-			$view->lecture    = $this->lecture;
-			$view->config     = $this->config;
-			$view->depth      = $this->depth;
-			$view->cls        = $cls;
-			$view->base       = $this->base;
-			$view->parser     = $this->parser;
-			$view->wikiconfig = $this->wikiconfig;
-			$view->attach     = $this->attach;
-			$view->course     = $this->course;
-			$view->search     = $this->search;
-			$view->display();
-		//}
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'courses',
+				'element' => 'discussions',
+				'name'    => 'threads',
+				'layout'  => 'comment'
+			)
+		);
+		$view->option     = $this->option;
+		$view->comment    = $comment;
+		$view->post       = $this->post;
+		$view->unit       = $this->unit;
+		$view->lecture    = $this->lecture;
+		$view->config     = $this->config;
+		$view->depth      = $this->depth;
+		$view->cls        = $cls;
+		$view->base       = $this->base;
+		$view->parser     = $this->parser;
+		$view->wikiconfig = $this->wikiconfig;
+		$view->attach     = $this->attach;
+		$view->course     = $this->course;
+		$view->search     = $this->search;
+		$view->display();
 	}
+}
 ?>
-	<?php /*if ($this->depth == 1 && JRequest::getInt('no_html', 0) && JRequest::getVar('fields', null)) { ?>
-	<script type="text/javascript">
-	window.top.window.HUB.Plugins.CoursesForum.updateComments(document.getElementsByTagName('ol')[0]);
-	</script>
-	<?php }*/ ?>
-<?php } ?>
 </ol>

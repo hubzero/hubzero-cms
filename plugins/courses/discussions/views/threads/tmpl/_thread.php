@@ -79,7 +79,7 @@ if (!$this->thread->thread)
 	$this->thread->thread = $this->thread->id;
 }
 ?>
-					<li class="thread<?php if ($this->active == $this->thread->thread) { echo ' active'; } ?>" id="<?php echo $prfx . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
+					<li class="thread<?php if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
 						<?php 
 							$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 							$huser = '';
@@ -114,8 +114,13 @@ if (!$this->thread->thread)
 							}
 						?>
 						<div class="comment-content">
+							<?php //if ($this->thread->sticky) { ?>
+							<p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? JText::_('This thread is sticky') : JText::_('This thread is not sticky'); ?>">
+								<?php echo ($this->thread->sticky) ? JText::_('sticky') :  JText::_('not sticky'); ?>
+							</p>
+							<?php //} ?>
 							<?php if ($this->thread->instructor_replied) { ?>
-							<p class="instructor-commented" title="<?php echo JText::_('instructor commented in this discussion'); ?>">
+							<p class="instructor-commented" title="<?php echo JText::_('Instructor commented in this discussion'); ?>">
 								<?php echo JText::_('instructor'); ?>
 							</p>
 							<?php } ?>

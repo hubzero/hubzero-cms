@@ -1083,6 +1083,11 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 					$data->threads = $this->_threadsSearch($view->post, $view->filters);
 				break;
 
+				case 'sticky':
+					$view->post->sticky = JRequest::getInt('sticky', 0);
+					$view->post->store();
+				break;
+
 				case 'both':
 				default:
 					$view->filters['start_at'] = JRequest::getVar('start_at', '');
