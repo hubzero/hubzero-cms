@@ -72,6 +72,10 @@
 		margin: 0;
 		padding: 0;
 	}
+	.mod .pending:before {
+		content: "";
+		display: none;
+	}
 	
 	#main.com_cpanel {
 		padding: 2.61803399em;
