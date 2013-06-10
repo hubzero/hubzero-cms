@@ -118,7 +118,7 @@ class plgMembersCollections extends JPlugin
 
 			$this->_authorize('item');
 
-			$default = 'feed';
+			$default = $this->params->get('defaultView', 'feed');
 			if ($this->juser->get('id') != $member->get('uidNumber'))
 			{
 				$default = 'collections';
@@ -249,8 +249,17 @@ class plgMembersCollections extends JPlugin
 
 				case 'collection': $arr['html'] = $this->_collection(); break;
 
-				case 'feed':
-				default: $arr['html'] = $this->_feed(); break;
+				case 'feed': $arr['html'] = $this->_feed(); break;
+				default:
+					if ($this->params->get('defaultView', 'feed') == 'collections') 
+					{
+						$arr['html'] = $this->_collections();
+					}
+					else
+					{
+						$arr['html'] = $this->_feed();
+					}
+				break;
 			}
 		}
 
