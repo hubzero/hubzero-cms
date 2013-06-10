@@ -2010,13 +2010,14 @@ class ProjectsConnectHelper extends JObject {
 		$imagepath = trim($config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($alias) . DS . 'preview';
 		
-		if (is_dir($to_path) && !is_file(JPATH_ROOT. $to_path . DS . $thumb)) 
+		if (is_dir(JPATH_ROOT . $to_path) && !is_file(JPATH_ROOT. $to_path . DS . $thumb)) 
 		{			
 			// Get thumnail
 			$fc = $this->sendHttpRequest($service, $uid, $remote['thumb']);
 			
-			if ($fc)
+			if ($fc && $this->fetchFile($fc, $thumb, JPATH_ROOT . $to_path))
 			{
+				
 				$handle = @fopen(JPATH_ROOT . $to_path . DS . $thumb, 'w');
 				
 				if ($handle)

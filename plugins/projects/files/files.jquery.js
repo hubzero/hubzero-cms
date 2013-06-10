@@ -1058,6 +1058,7 @@ HUB.ProjectFiles = {
 		  'tsv' 	: 1,
 		  'tab' 	: 1,
 		  'ppt' 	: 1,
+		  'pps' 	: 1,
 		  'pptx' 	: 1,
 		  'wmf' 	: 1,
 		  'jpg' 	: 1,

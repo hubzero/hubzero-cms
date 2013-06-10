@@ -149,6 +149,13 @@ class ProjectsGoogleHelper extends JObject
 		if ($convert == true) 
 		{			
 			$fparams['convert'] = true;
+			
+			// OCR conversion
+			if ($mimeType == 'application/pdf' || $mimeType == 'image/png' 
+				|| $mimeType == 'image/jpeg' || $mimeType == 'image/gif' )
+			{
+				$fparams['ocr'] = true;
+			}
 		}
 		
 		try
@@ -738,7 +745,7 @@ class ProjectsGoogleHelper extends JObject
 					
 					// Check against modified date
 					$changed = (strtotime(date("c", strtotime($item['modifiedDate'])))  - strtotime($since));
-					if ($since && $changed <= 0)
+					if ($since && $changed <= 0 )
 					{
 						$skip = 1;
 					}					

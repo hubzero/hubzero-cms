@@ -2512,6 +2512,10 @@ class plgProjectsFiles extends JPlugin
 						// WMF files need this mime type specified for conversion to Google drawing
 						$mimeType = 'application/x-msmetafile';
 					}
+					if ($ext == 'ppt' || $ext == 'pps' || $ext == 'pptx')
+					{
+						$mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+					}
 										
 					// Get local file information
 					$local = array(
@@ -4020,39 +4024,6 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
-	 * Check if file has been modified remotely
-	 * 
-	 * @param    string		$service	Remote service name
-	 * @param    string		$path		Local project path
-	 * @return   void
-	 */
-	protected function checkRemoteChange ($service = 'google', $path = '', $file = '') 
-	{
-		$path = $path ? $path : $this->getProjectPath();
-		
-		$changed = 0;
-		
-		// Get time of last sync
-		$pparams = new JParameter( $this->_project->params );		
-		$synced = $pparams->get($service . '_sync');
-		$lastSyncId = $pparams->get($service . '_sync_id', NULL);
-				
-		// Check for connection
-		$remote = $this->_getRemoteConnection($file, '', $service);	
-				
-		if ($remote)
-		{
-			$resource = $this->_connect->loadRemoteResource($service, $this->_uid, $remote['id']);
-			if ($resource && ($resource['modifiedDate'] > $synced))
-			{
-				$changed = 1;
-			}
-		}
-		
-		return $changed;		
-	}
-	
-	/**
 	 * Check if sync operation is in progress
 	 * 
 	 * @param    string		$service	Remote service name
@@ -4573,7 +4544,7 @@ class plgProjectsFiles extends JPlugin
 				// Generate local thumbnail
 				if ($nR['thumb'])
 				{
-					// Download thumbnail
+					$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' . ProjectsHTML::shortenFileName($filename, 15) );
 					$this->_connect->generateThumbnail($service, $projectCreator, 
 						$nR, $this->_config, $this->_project->alias, $ih);																			
 				}
@@ -4809,14 +4780,7 @@ class plgProjectsFiles extends JPlugin
 								continue;
 							}
 						}
-					}
-										
-					// Generate local thumbnail
-					if ($remote['thumb'])
-					{						
-						// Download thumbnail
-						$this->_connect->generateThumbnail($service, $projectCreator, $remote, $this->_config, $this->_project->alias, $ih);																			
-					}										
+					}									
 				}
 				
 				// Update connection record	
@@ -4830,6 +4794,13 @@ class plgProjectsFiles extends JPlugin
 					);
 					
 					$lastLocalChange = date('Y-m-d H:i:s', time() + 1);
+					
+					// Generate local thumbnail
+					if ($remote['thumb'] && $remote['status'] != 'D')
+					{						
+						$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' . ProjectsHTML::shortenFileName($filename, 15) );
+						$this->_connect->generateThumbnail($service, $projectCreator, $remote, $this->_config, $this->_project->alias, $ih);																			
+					}
 				}		
 				
 				$processedRemote[$filename] = $remote;
