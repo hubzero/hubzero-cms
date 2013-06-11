@@ -109,14 +109,14 @@
 		height: @baseFontSize;
 		font-size: @baseFontSize;
 		line-height: @baseFontSize;
-		display: inline-block;
+		display: block;
 		left: 0.61803399em;
-		margin-top: -0.25em;
 		.fontcons(@iconSuccess);
 	}
 	.passed:before,
 	#system-message dd.message:before {
 		content: "\@{iconSuccess}";
+		top: 0.71803399em;
 	}
 	.help:before,
 	#system-message dd.help:before {
