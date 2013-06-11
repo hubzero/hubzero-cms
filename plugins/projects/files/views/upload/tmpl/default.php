@@ -61,7 +61,7 @@ if ($this->getError()) {
 if (!$this->getError()) { 
 ?>
 
-<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
+<form id="hubForm-ajax" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
 	<?php if (!$this->ajax) { ?>
 		<div id="plg-header">
 			<h3 class="files">

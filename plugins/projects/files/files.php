@@ -240,10 +240,7 @@ class plgProjectsFiles extends JPlugin
 			
 			// Compiler Helper
 			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'compiler.php' );
-						
-			// Get session
-			$jsession =& JFactory::getSession();	
-									
+															
 			// File actions			
 			switch ($this->_task) 
 			{				
@@ -335,10 +332,6 @@ class plgProjectsFiles extends JPlugin
 				case 'sync_status':
 					$arr['html'] 	= $this->syncStatus();
 					break;
-					
-				case 'afterupload': 
-					$arr['html'] 	= $this->_afterUpload(); 
-					break;
 				
 				case 'newdir':
 				 	$ajax 			= JRequest::getInt('ajax', 0);
@@ -347,12 +340,9 @@ class plgProjectsFiles extends JPlugin
 									
 				case 'browse':
 				default: 
-				
-					// Save page view in session
-				//	$jsession->set('projects.view.', date('Y-m-d H:i:s') );
-					
-					$arr['html'] 	= $this->view(); 
-					break;
+									
+				$arr['html'] 	= $this->view(); 
+				break;
 			}			
 		}
 		
@@ -442,10 +432,15 @@ class plgProjectsFiles extends JPlugin
 		$objO = new ProjectOwner( $this->_database );
 		$objO->loadOwner ($this->_project->id, $this->_uid);
 		$view->oparams = new JParameter( $objO->params );
-				
-		// Get project params
-		$view->params 		= new JParameter($this->_project->params);
 		
+		// Did we get changes via file upload?
+		$this->getUploadStatus();
+		
+		// Get fresh data
+		$obj = new Project( $this->_database );
+		$obj->load($this->_project->id);
+		$view->params = new JParameter( $obj->params );
+						
 		// Get local files and folders						
 		$localFiles 		= $this->getFiles($path, $subdir, 1, 0, 0, 0, $filters['sortby'], $filters['sortdir']);	
 		$localDirs 			= $this->getFolders($path, $subdir, $this->prefix);
@@ -669,77 +664,73 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
-	 * Return to file list after upload
+	 * Get upload status
 	 * 
 	 * @return     void, redirect
 	 */
-	public function _afterUpload() 
+	public function getUploadStatus() 
 	{
-		$failed  	= JRequest::getInt('failed', 0);
-		$uploaded 	= JRequest::getInt('uploaded', 0);
-		$updated 	= JRequest::getInt('updated', 0);
-		$subdir  	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
-		$sync    	= 0;
-		$pid 		= JRequest::getInt('pid', 0);
+		$sync     = 0;
+		$prov 	  = $this->_project->provisioned ? 1 : 0;
+		$activity = '';
+		$message  = '';
+		
+		// Get session
+		$jsession =& JFactory::getSession();
+
+		// Get values from session
+		$updated 	= $jsession->get('projects.updated');
+		$uploaded 	= $jsession->get('projects.uploaded');
+		$failed 	= $jsession->get('projects.failed');
 		
 		// Pass success or error message
-		if (!$uploaded) {
-			$this->_message = array('message' => 'Oups! Something went wrong. Upload failed.', 'type' => 'error');
+		if ($failed && !$uploaded && !$uploaded) 
+		{
+			// $this->_message = array('message' => 'Oups! Something went wrong. Upload failed.', 'type' => 'error');
+			$this->_message = array('message' => 'Failed to upload ' . $failed, 'type' => 'error');
 		}
-		elseif ($uploaded) {
+		elseif ($uploaded || $updated) 
+		{
 			$sync = 1;
-			$message = 'Successfully uploaded ' . $uploaded . ' file(s).';
-			$message.= $failed > 0 ? ' There was a problem uploading ' . $failed . ' item(s).' : '';
+			
+			$uploadParts = explode(',', $uploaded);
+			$updateParts = explode(',', $updated);
+			
+			if ($uploaded)
+			{
+				if (count($uploadParts) > 2)
+				{
+					$message = 'uploaded ' . $uploadParts[0] . ' and ' . (count($uploadParts) - 1) . ' more files ' ;
+				}
+				else
+				{
+					$message = 'uploaded ' . $uploaded . ' ';
+				}
+			}
+			if ($updated)
+			{
+				$message .= $uploaded ? '. Updated ' : 'updated ';
+				if (count($updateParts) > 2)
+				{
+					$message.= $updateParts[0] . ' and ' . (count($updateParts) - 1) . ' more files ' ;
+				}
+				else
+				{
+					$message .= $updated . '. ';
+				}
+			}
+						
+			$activity  = $message . ' ' . strtolower(JText::_('COM_PROJECTS_IN_PROJECT_FILES')) ;
+			
+			$message = 'Successfully ' . $message;
+			$message.= $failed ? ' There was a problem uploading ' . $failed : '';
 			$this->_message = array('message' => $message, 'type' => 'success');
 		}
 		
-		// Contribute process outside of projects
-		$prov = 0;
-		if (!is_object($this->_project) or !$this->_project->id) 
-		{
-			$this->_project = new Project( $this->_database );
-			$this->_project->provisioned = 1;
-			$prov = 1;
-		}
-		
-		$prov = $this->_project->provisioned ? 1 : 0;
-		
-		// Build pub url
-		$route = $prov
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias;
-			
-		if ($this->project->provisioned && $pid)
-		{
-			$route .= a . 'pid=' . $pid;
-		}
-		$url = ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
-			: JRoute::_($route . a . 'active=files');
-		
-		// Redirect to file list		
-		$url .= $subdir ? '?subdir=' .urlencode($subdir) : '?subdir=';
-		
-		// Add activity to feed
-		if (!$prov && $uploaded && $this->_case == 'files')
-		{
-			$objAA = new ProjectActivity( $this->_database );
-			
-			$activity_action = $updated == $uploaded
-				? strtolower(JText::_('COM_PROJECTS_UPDATED')) 
-				: strtolower(JText::_('COM_PROJECTS_UPLOADED'));
-				
-			$activity_action .= ' ' . $uploaded . ' ' . JText::_('item(s)');
-			
-			$activity_action .= $updated == $uploaded
-				? ' '.strtolower(JText::_('COM_PROJECTS_IN_PROJECT_FILES')) 
-				: ' '.strtolower(JText::_('COM_PROJECTS_INTO_PROJECT_FILES'));
-				
-			$aid = $objAA->recordActivity( $this->_project->id, 
-				$this->_uid, $activity_action, 
-				'', 'files', JRoute::_('index.php?option=' . $this->_option . a . 
-				'alias=' . $this->_project->alias . a . 'active=files'), 'files', 1 );
-		}							
+		// Clean up session values
+		$jsession->set('projects.updated', '');
+		$jsession->set('projects.uploaded', '');
+		$jsession->set('projects.failed', '');
 		
 		// Force sync
 		if ($sync && !$prov)
@@ -747,9 +738,17 @@ class plgProjectsFiles extends JPlugin
 			$obj = new Project( $this->_database );
 			$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 		}
-				
-		$this->_referer = $url;
-		return;
+		
+		// Add activity to feed
+		if (!$prov && $activity && $this->_case == 'files')
+		{
+			$objAA = new ProjectActivity( $this->_database );
+							
+			$aid = $objAA->recordActivity( $this->_project->id, 
+				$this->_uid, $activity, 
+				'', 'project files', JRoute::_('index.php?option=' . $this->_option . a . 
+				'alias=' . $this->_project->alias . a . 'active=files'), 'files', 1 );
+		}		
 	}
 	
 	/**
@@ -826,8 +825,7 @@ class plgProjectsFiles extends JPlugin
 			$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;		
 			$view->url 	= ($this->_case != 'files' && $this->_app->name) 
 				? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
-				: JRoute::_($route . a . 'active=files');
-			
+				: JRoute::_($route . a . 'active=files');			
 		}
 				
 		$view->do  			= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
@@ -870,6 +868,14 @@ class plgProjectsFiles extends JPlugin
 		$prov    	= 0;
 		$dirsize 	= 0;
 		$new 		= true;
+		
+		// Get session
+		$jsession =& JFactory::getSession();
+		
+		// Get values from session
+		$updateVal = $jsession->get('projects.updated');
+		$uploadVal = $jsession->get('projects.uploaded');
+		$failedVal = $jsession->get('projects.failed');
 				
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id or $this->_task == 'saveprov') 
@@ -905,17 +911,25 @@ class plgProjectsFiles extends JPlugin
 			$size = (int) $_FILES['qqfile']['size'];
 		}
 		else
-		{
+		{			
+			$jsession->set('projects.failed', $failedVal . ' (File not found) ' );
+			
 			return json_encode(array('error' => JText::_('File not found')));
 		}
 		
 		//check to make sure we have a file and its not too big
 		if ($size == 0) 
 		{
+			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
+			$jsession->set('projects.failed', $failedVal . ' (File is empty) ' );
+			
 			return json_encode(array('error' => JText::_('File is empty')));
 		}
 		if ($size > $sizeLimit) 
 		{
+			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
+			$jsession->set('projects.failed', $failedVal . ' (File too large) ' );
+			
 			return json_encode(array('error' => JText::sprintf('File too large')));
 		}
 		
@@ -937,12 +951,18 @@ class plgProjectsFiles extends JPlugin
 		$tempFile = $prefix . $temp_path . DS . $file;
 		if (!is_file($tempFile))
 		{
+			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+			$jsession->set('projects.failed', $failedVal . ' (Failed to upload temp file) ' );
+			
 			return json_encode(array('error' => JText::sprintf('Failed to upload temp file')));
 		}
 		
 		// Do virus check
 		if (ProjectsHelper::virusCheck($tempFile))
 		{
+			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+			$jsession->set('projects.failed', $failedVal . ' (Virus detected, refusing to upload) ' );
+			
 			return json_encode(array('error' => JText::sprintf('Virus detected, refusing to upload')));
 		}
 			
@@ -974,6 +994,10 @@ class plgProjectsFiles extends JPlugin
 		if ($size > $unused)
 		{
 			if (is_file($tempFile)) { unlink($tempFile); }
+			
+			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+			$jsession->set('projects.failed', $failedVal . ' (No disk space left) ' );
+			
 			return json_encode(array('error' => JText::_('No disk space left')));
 		}
 				
@@ -1029,6 +1053,18 @@ class plgProjectsFiles extends JPlugin
 				// Delete temp file
 				if (is_file($tempFile)) { unlink($tempFile); }
 				
+				// Store in session
+				if ($new)
+				{
+					$uploadVal = $uploadVal ? $uploadVal . ', ' . $fName : $fName;
+					$jsession->set('projects.uploaded', $uploadVal . ' ( ' . $z . ' item(s) extracted )' );
+				}
+				else
+				{
+					$updateVal = $updateVal ? $updateVal . ', ' . $fName : $fName;
+					$jsession->set('projects.updated', $updateVal . ' ( ' . $z . ' item(s) extracted )' );
+				}
+				
 				// Success
 				return json_encode(array(
 					'success'   => $z, 
@@ -1038,6 +1074,8 @@ class plgProjectsFiles extends JPlugin
 			}	
 			else
 			{
+				$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+				$jsession->set('projects.failed', $failedVal . ' - ' . JText::_('COM_PROJECT_FILES_ERROR_UNZIP_FAILED') );
 				return json_encode(array('error' => JText::_('COM_PROJECT_FILES_ERROR_UNZIP_FAILED')));
 			}
 		}
@@ -1073,8 +1111,22 @@ class plgProjectsFiles extends JPlugin
 			}
 			else
 			{
+				$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+				$jsession->set('projects.failed', $failedVal );
 				return json_encode(array('error' => JText::_('Failed to copy temp file')));
 			}
+		}
+		
+		// Store in session
+		if ($new)
+		{
+			$uploadVal = $uploadVal ? $uploadVal . ', ' . $fName : $fName;
+			$jsession->set('projects.uploaded', $uploadVal );
+		}
+		else
+		{
+			$updateVal = $updateVal ? $updateVal . ', ' . $fName : $fName;
+			$jsession->set('projects.updated', $updateVal );
 		}
 		
 		return json_encode(array(

@@ -85,6 +85,11 @@
 	input[type="submit"].started {
 		color: green;
 		border: 3px solid green !important;
+		cursor: pointer;
+	}
+	input[type="submit"].started:hover {
+		background: #FFFFFF;
+		cursor: default;
 	}
 	
 /* Files management icons

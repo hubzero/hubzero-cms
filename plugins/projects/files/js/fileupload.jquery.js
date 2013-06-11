@@ -118,7 +118,7 @@ HUB.ProjectFilesFileUpload = {
 					// Archive file present?
 					var arch = uploader._checkArchive();
 					
-					if (arch)
+					if (arch && !$('#f-upload').hasClass('started'))
 					{
 						var question  = 'Do you wish to expand selected archive file(s)?';
 						var yesanswer = 'yes, expand';
@@ -161,7 +161,7 @@ HUB.ProjectFilesFileUpload = {
 					}
 					else
 					{
-						// Start upload
+						// Start upload						
 						uploader.startUploads(0);
 					}					
 				}
@@ -208,22 +208,13 @@ HUB.ProjectFilesFileUpload = {
 	uploadComplete: function() 
 	{
 		var $ = this.jQuery;
-		
-		var uploaded  	= HUB.ProjectFilesFileUpload.uploaded;
-		var failed 		= HUB.ProjectFilesFileUpload.failed;
-		var updated		= HUB.ProjectFilesFileUpload.updated;
-				
-		var form = $('#hubForm-ajax').length ? $('#hubForm-ajax') : $('#plg-form');
+
+		var form = $('#hubForm-ajax');
 		if (form.length)
 		{			
 			// Redirect back to file list
-			var fAction = form.attr('action') + '&action=afterupload' + '&failed=' + failed + '&uploaded=' + uploaded + '&updated=' + updated;
-			form.attr('action', fAction);
-			$('#formaction').val('afterupload'); 
-			$('#failed').val(failed);
-			$('#uploaded').val(uploaded); 
-			$('#updated').val(updated); 
-			form.submit();
+			//form.submit();
+			window.location.replace(form.attr('action'));
 		}
 	}
 };

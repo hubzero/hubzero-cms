@@ -507,6 +507,9 @@ class ProjectsHtml
 			case 'sql':
 				$icon = 'page_white_sql';
 				break;
+			case 'dmg':
+				$icon = 'page_white_gear';
+				break;
 			case 'eps':
 			case 'ai':
 			case 'wmf':

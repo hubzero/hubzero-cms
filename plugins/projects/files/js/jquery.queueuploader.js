@@ -320,8 +320,18 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		var $ = this.jQuery;
 		if ($('#f-upload').length > 0)
 		{
+			if ($('#f-upload').hasClass('started'))
+			{
+				return false;
+			}
+			
 			$('#f-upload').val('Upload started. Please wait');
 			$('#f-upload').addClass('started');
+			
+			if ($('#cancel-action'))
+			{
+				$('#cancel-action').remove();
+			}
 		}
 		for (var i=0; i< this._que.length; i++)
 		{
@@ -407,13 +417,16 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		size.style.display = 'inline';
 		
 		var status = this._find(item, 'status'); 
-		status.innerHTML = 'processing';
+		status.innerHTML = 'uploading';
+		qq.addClass(status, 'qq-upload-processing');
 		 
         var text; 
-        if (loaded != total){
-            text = Math.round(loaded / total * 100) + '% from ' + this._formatSize(total);
-        } else {                                   
-            text = this._formatSize(total);
+		var perc = Math.round(loaded / total * 100);
+		text = perc + '% from ' + this._formatSize(total);
+		
+        if (perc >= 98) {   
+	        text = this._formatSize(total);
+			status.innerHTML = 'processing'; 
         }          
 
         qq.setText(size, text);         
