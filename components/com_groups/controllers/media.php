@@ -320,7 +320,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		if ($this->config->get('scan_uploads', 1))
 		{
 			//run clamscan on fule
-			$command = "clamscan -i --no-summary --block-encrypted $file";
+			$command = "clamscan -i --no-summary --block-encrypted " . str_replace(' ', '\ ', $file);
 			exec($command, $output, $status);
 			
 			//scan failed
