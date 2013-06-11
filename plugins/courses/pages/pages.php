@@ -175,7 +175,7 @@ class plgCoursesPages extends Hubzero_Plugin
 	{
 		$this->view->setLayout('default');
 
-		$active = JRequest::getWord('unit', '');
+		$active = JRequest::getVar('unit', '');
 
 		$pages = $this->view->offering->pages();
 
