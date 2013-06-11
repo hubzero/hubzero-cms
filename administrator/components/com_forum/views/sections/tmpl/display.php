@@ -80,6 +80,7 @@ function submitbutton(pressbutton)
 				);
 				foreach ($this->results as $result)
 				{
+					$result->caption = '';
 					if ($result->scope == 'site')
 					{
 						continue;
@@ -93,7 +94,14 @@ function submitbutton(pressbutton)
 					{
 						case 'group':
 							$group = Hubzero_Group::getInstance($result->scope_id);
-							$result->caption = Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0);
+							if ($group)
+							{
+								$result->caption = Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0);
+							}
+							else
+							{
+								$result->caption = $result->scope_id;
+							}
 						break;
 						case 'course':
 							$offering = CoursesModelOffering::getInstance($result->scope_id);
