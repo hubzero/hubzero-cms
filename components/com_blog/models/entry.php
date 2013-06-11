@@ -728,18 +728,20 @@ class BlogModelEntry extends JObject
 				switch ($this->get('scope'))
 				{
 					case 'group':
-						$option = 'com_group';
-						$option = 'com_member';
+						$option = 'com_groups';
 						$plg = JPluginHelper::getPlugin('groups', 'blog');
 						$config = new $paramsClass($plg->params);
 						$path = str_replace('{{gid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog'));
+						$scope = $this->get('scope_id') . '/blog';
 					break;
 
 					case 'member':
-						$option = 'com_member';
+						ximport('Hubzer_View_Helper_Html');
+						$option = 'com_members';
 						$plg = JPluginHelper::getPlugin('members', 'blog');
 						$config = new $paramsClass($plg->params);
-						$path = str_replace('{{uid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/members/{{uid}}/blog'));
+						$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->get('created_by')), $config->get('uploadpath', '/site/members/{{uid}}/blog'));
+						$scope = $this->get('created_by') . '/blog';
 					break;
 
 					case 'site':
@@ -747,6 +749,7 @@ class BlogModelEntry extends JObject
 						$option = 'com_blog';
 						$config = JComponentHelper::getParams($option);
 						$path = $config->get('uploadpath', '/site/blog');
+						$scope = $this->get('scope');
 					break;
 				}
 
@@ -754,9 +757,9 @@ class BlogModelEntry extends JObject
 
 				$wikiconfig = array(
 					'option'   => $option,
-					'scope'    => $this->get('scope'),
+					'scope'    => $scope, //$this->get('scope')
 					'pagename' => $this->get('alias'),
-					'pageid'   => $this->get('id'),
+					'pageid'   => 0, //$this->get('id'),
 					'filepath' => $path,
 					'domain'   => ''
 				);
