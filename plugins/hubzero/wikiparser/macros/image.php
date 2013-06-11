@@ -230,7 +230,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		else 
 		{
 			// Return error message
-			return '(Image(' . $content . ') failed - File not found)' . $this->_path($file);
+			return '(Image(' . $content . ') failed - File not found)'; // . $this->_path($file);
 		}
 	}
 
@@ -252,7 +252,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		// Set width if just a pixel size is given 
 		// e.g., [[File(myfile.jpg, width=120px)]]
-		if (preg_match($size, $val, $matches)) 
+		if (preg_match($size, $val, $matches) && $key != 'border') 
 		{
 			if ($matches[0])
 			{

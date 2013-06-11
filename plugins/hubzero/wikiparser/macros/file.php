@@ -209,7 +209,7 @@ class FileMacro extends WikiMacro
 
 		// Set width if just a pixel size is given 
 		// e.g., [[File(myfile.jpg, width=120px)]]
-		if (preg_match($size, $val, $matches)) 
+		if (preg_match($size, $val, $matches) && $key != 'border') 
 		{
 			if ($matches[0] && in_array($key, array('width', 'height')))
 			{

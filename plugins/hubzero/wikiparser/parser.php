@@ -788,7 +788,26 @@ class WikiParser
 			$p->scope = $this->scope;
 		}
 
-		$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
+		if (!in_array(substr($href, 0, 1), array('#', '?', '/')))
+		{
+			$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
+		}
+		else
+		{
+			$p->pagename = '';
+			switch (substr($href, 0, 1))
+			{
+				case '#':
+				case '?':
+					$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
+				break;
+
+				case '/':
+				default:
+
+				break;
+			}
+		}
 
 		$l = '<a class="' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
 		array_push($this->links, $l);
@@ -799,6 +818,7 @@ class WikiParser
 			'scope'    => 'internal',
 			'scope_id' => $p->id
 		);
+
 		return '<link></link>';
 	}
 
