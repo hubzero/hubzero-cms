@@ -169,7 +169,9 @@ class PublicationCategory extends JTable
 		
 		if (isset($filters['itemCount']) && $filters['itemCount'] == 1)
 		{
-			$query .= ", (SELECT COUNT(*) FROM #__publications as P WHERE P.category = C.id ) AS itemCount ";
+			$query .= ", (SELECT COUNT(*) FROM #__publications as P 
+						JOIN #__publication_versions as V ON V.publication_id = P.id
+						AND V.main=1 WHERE P.category = C.id AND V.state=1) AS itemCount ";
 		}
 		$query .= " FROM $this->_tbl as C ";
 		
