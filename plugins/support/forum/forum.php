@@ -66,7 +66,7 @@ class plgSupportForum extends JPlugin
 		}
 
 		$query  = "SELECT rc.id, rc.comment as `text`, rc.parent, rc.created_by as author, rc.title as subject, rc.anonymous as anon, 'forum' AS parent_category, 
-					s.alias AS section, c.alias AS category, rc.scope, rc.scope_id, rc.object_id
+					s.alias AS section, c.alias AS category, rc.scope, rc.scope_id, rc.object_id, rc.thread
 					FROM #__forum_posts AS rc
 					LEFT JOIN #__forum_categories AS c ON c.id = rc.category_id
 					LEFT JOIN #__forum_sections AS s ON s.id = c.section_id
@@ -81,11 +81,11 @@ class plgSupportForum extends JPlugin
 
 			foreach ($rows as $key => $row)
 			{
-				$thread = $row->id;
+				/*$thread = $row->id;
 				if ($row->parent)
 				{
 					$thread = $this->_getThread($row->parent);
-				}
+				}*/
 
 				switch ($row->scope)
 				{
@@ -95,7 +95,7 @@ class plgSupportForum extends JPlugin
 						$offering = CoursesModelOffering::getInstance($row->scope_id);
 						$course = CoursesModelCourse::getInstance($offering->get('course_id'));
 
-						$url = 'index.php?option=com_courses&gid=' . $course->get('alias') . '&controller=offering&offering=' . $offering->get('alias') . '&active=forum&unit=' . $row->category . '&b=' . $thread;
+						$url = 'index.php?option=com_courses&gid=' . $course->get('alias') . '&controller=offering&offering=' . $offering->get('alias') . '&active=discussions&thread=' . $row->thread;
 					break;
 
 					case 'group':
