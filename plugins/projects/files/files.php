@@ -1352,22 +1352,20 @@ class plgProjectsFiles extends JPlugin
 				
 				if (count($uploaded) == 1) 
 				{
-					$activity_action .= ' ' . JText::_('COM_PROJECTS_FILE') . ' "' . basename($uploaded[0]) . '" ';
+					$activity_action .= ' ' . basename($uploaded[0]) . ' ';
 				}
 				else 
 				{
 					$activity_action .= ' ' . count($uploaded) . ' ' . JText::_('COM_PROJECTS_FILES_S');
 				}
 				
-				$activity_action .= count($updated) == count($uploaded)
-					? ' '.strtolower(JText::_('COM_PROJECTS_IN_PROJECT_FILES')) 
-					: ' '.strtolower(JText::_('COM_PROJECTS_INTO_PROJECT_FILES'));	
+				$activity_action .= ' '.strtolower(JText::_('COM_PROJECTS_IN_PROJECT_FILES'));
 				
 				if (!$this->_project->provisioned)
 				{
 					$aid = $objAA->recordActivity( $this->_project->id, 
 						$this->_uid, $activity_action, 
-						$ref, 'files', JRoute::_('index.php?option=' . $this->_option . a . 
+						$ref, 'project files', JRoute::_('index.php?option=' . $this->_option . a . 
 						'alias=' . $this->_project->alias . a . 'active=files'), 'files', 1 );
 				}				
 			}

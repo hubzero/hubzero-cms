@@ -132,7 +132,7 @@ $skipped = 0;
 	}		
 	 ?>
 	</ul>
-	<?php if ($this->project->provisioned) { ?>
+	<?php // if ($this->project->provisioned) { ?>
 		<label class="addnew">
 			<input name="upload[]" type="file" size="20" class="option" id="uploader" /> 
 		</label>
@@ -150,18 +150,18 @@ $skipped = 0;
 			<input type="hidden" name="expand_zip" id="expand_zip" value="0" />
 			<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 			<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-			<?php if($this->project->provisioned == 1 ) { ?>
+			<?php if ($this->project->provisioned == 1 ) { ?>
 			<input type="hidden" name="task" value="submit" />
 			<?php } ?>
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" class="btn yesbtn" id="b-upload" />
 			<p id="statusmsg"></p>
-	<?php } ?>	
+	<?php //} ?>	
 </form>	
 
 <?php if ((count($shown) + count($missing)) == 0) { ?>
 	<p class="noresults"><?php echo $this->images ? JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_IMAGES') : JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_FILES'); ?></p>
 <?php } ?>
 
-<?php if (!$this->project->provisioned) { ?>
+<?php /* if (!$this->project->provisioned) { ?>
 	<p class="addnew">Go to <a href="<?php echo JRoute::_($route).'?active=files'; ?>">Files</a> browser to upload <?php if (count($shown) > 0) { echo 'more'; } ?> files</p>
-<?php } ?>
+<?php } */ ?>
