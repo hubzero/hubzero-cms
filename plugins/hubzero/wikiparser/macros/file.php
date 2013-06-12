@@ -466,12 +466,12 @@ class FileMacro extends WikiMacro
 
 		switch ($ext)
 		{
-			case 'cdf':
+			case 'unity3d':
 				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 500;
 				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 700;
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
-				if (!array_key_exists('alt', $attr) 
+				/*if (!array_key_exists('alt', $attr) 
 				 && array_key_exists('altimage', $attr) 
 				 && $attr['altimage'] != ''
 				 && file_exists($this->_path($attr['altimage']))) 
@@ -487,21 +487,70 @@ class FileMacro extends WikiMacro
 					$althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
 					$attr['alt']  = (isset($attr['alt'])) ? $attr['alt'] : '';
 					$attr['alt'] .= '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">' . $attr['desc'] . '</a>';
-				}
+				}*/
 
 				$juri = JURI::getInstance();
+				$rand = rand(0, 100000);
 
-				$html  = '<script type="text/javascript" src="' . $juri->getScheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>' . "\n";
+				$html  = '<script type="text/javascript" src="' . $juri->getScheme() . '://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>' . "\n";
 				$html .= '<script type="text/javascript">' . "\n";
-				$html .= "\t" . 'var cdf = new cdfplugin();' . "\n";
-				$html .= "\t" . 'var defaultContent = "' . addslashes($attr['alt']) . '"' . "\n";
-				$html .= "\t" . 'if (defaultContent != "") {' . "\n";
-				$html .= "\t\t" . 'cdf.setDefaultContent(defaultContent);' . "\n";
-				$html .= "\t" . '}' . "\n";
-				$html .= "\t" . 'cdf.embed(\'' . $attr['href'] . '\', ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');' . "\n";
+				$html .= '<!--
+							function GetUnity() {
+								if (typeof unityObject != "undefined") {
+									return unityObject.getObjectById("unityPlayer' . $rand . '");
+								}
+								return null;
+							}
+							if (typeof unityObject != "undefined") {
+								unityObject.embedUnity("unityPlayer' . $rand . '", "' . $attr['href'] . '", ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');
+							}
+							-->' . "\n";
 				$html .= '</script>' . "\n";
+				$html .= '<div id="unityPlayer' . $rand . '">
+							<div class="missing">
+								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+									<img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+								</a>
+							</div>
+						</div>' . "\n";
+			break;
+
+			case 'cdf':
+				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 500;
+				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 700;
+				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
+
+				if (!array_key_exists('alt', $attr) 
+				 && array_key_exists('altimage', $attr) 
+				 && $attr['altimage'] != ''
+				 && file_exists($this->_path($attr['altimage']))) 
+				{
+					//$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
+					$althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
+					$attr['alt']  = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
+					$attr['alt'] .= '<img src="' . $this->_link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
+					$attr['alt'] .= '</a>';
+				} 
+				else 
+				{
+					$attr['alt'] = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . $juri->getScheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a>';
+				}
+				$juri = JURI::getInstance();
+
+				$rand = rand(0, 100000);
+
+				$html  = '<script type="text/javascript" src="' . $juri->getScheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>';
+				$html .= '<script type="text/javascript">';
+				$html .= '<!--' . "\n";
+				$html .= '	var cdf = new cdfplugin();';
+				$html .= "var defaultContent = '" . $attr['alt'] . "';";
+				$html .= '	if (defaultContent != "") {';
+				$html .= '		cdf.setDefaultContent(defaultContent);';
+				$html .= '	}';
+				$html .= '	cdf.embed(\'' . $attr['href'] . '\', ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');' . "\n";
+				$html .= '-->';
+				$html .= '</script>';
 				$html .= '<noscript>' . "\n";
-				//$html .= "\t" . '<a class="attachment" href="' . $attr['href'] . '">' . $attr['alt'] . '</a>' . "\n";
 				$html .= $attr['alt'];
 				$html .= '</noscript>' . "\n";
 			break;
