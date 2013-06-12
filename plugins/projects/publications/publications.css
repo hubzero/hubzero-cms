@@ -15,21 +15,6 @@
 
 /* Publications
 --------------------------------------------- */
-
-	.restype {
-		color: #999;
-		font-size: 85%;
-	}
-	.restype span {
-		padding: 0.3em 0;
-		padding-left: 23px;
-		white-space: nowrap;
-	}
-	.restype .animation { background: url("/components/com_publications/assets/img/types/fc-animation.gif") 0 0em no-repeat; }
-	.restype .video { background: url("/components/com_publications/assets/img/types/fc-animation.gif") 0 0em no-repeat; }
-	.restype .dataset { background: url("/components/com_publications/assets/img/types/fc-data.gif") 0 0 no-repeat; }
-	.restype .download { background: url("/components/com_publications/assets/img/types/fc-download.gif") 0 0 no-repeat; }
-
 	.major_status {
 		font-size: 75%;
 		text-transform: uppercase;
@@ -54,6 +39,67 @@
 		background-position: 0 2px;
 	}
 	
+/* Publication categories
+--------------------------------------------- */
+	
+	.restype {
+		color: #999;
+		font-size: 85%;
+	}
+	.restype span {
+		padding: 0.3em 0;
+		white-space: nowrap;
+	}
+	.restype span:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		border: none;
+		content: "\270D";
+	}
+	.restype .dataset:before {
+		content: "\f071";
+	}	
+	.restype .wiki:before {
+		content: "\f072";
+	}
+	.restype .presentation:before {
+		content: "\f040";
+	}
+	.restype .animation:before {
+		content: "\f008";
+	}
+	.restype .course:before  {
+		content: "\f09c"; /* \f02d */
+	}
+	.restype .download:before  {
+		content: "\f019";
+	}
+	.restype .note:before {
+		content: "\f02a";
+	}
+	.restype .learningmodule:before {
+		content: "\f078";
+	}
+	.restype .publication:before {
+		content: "\f016";
+	}
+	.restype .series:before {
+		content: "\f060";
+	}
+	.restype .tool:before {
+		content: "\2692";
+	}
+	.restype .teachingmaterial:before {
+		content: "\f000";
+	}
+	.restype .workshop:before {
+		content: "\f096";
+	}
+
 /* Publications intro 
 --------------------------------------------- */
 	#pubintro {
@@ -1546,6 +1592,9 @@
 	}
 	ul.next-options .btn {
 		font-size: 100%;
+	}
+	ul.next-options .btncancel {
+		padding: 0.5em 1em !important;
 	}
 
 /* Link

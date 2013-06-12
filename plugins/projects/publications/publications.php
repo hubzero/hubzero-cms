@@ -2349,7 +2349,7 @@ class plgProjectsPublications extends JPlugin
 		$version 	= JRequest::getVar('version', 'dev');
 		$republish  = $this->_task == 'republish' ? 1 : 0; 
 		$agree   	= JRequest::getInt('agree', 0);
-		$pubdate 	= JRequest::getVar('publish_date');
+		$pubdate 	= JRequest::getVar('publish_date', '', 'post');
 		
 		$notify 	= 1;
 				
@@ -2473,6 +2473,50 @@ class plgProjectsPublications extends JPlugin
 			// Can only publish a draft or posted version
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_DEV') );
 		}
+		
+		// Embargo?
+		if ($pubdate)
+		{
+			$date = explode('-', $pubdate);
+			print_r($date);
+			if (count($date) == 3) 
+			{
+				$year 	= $date[0];
+				$month 	= $date[1];
+				$day 	= $date[2];
+				if (intval($month) && intval($day) && intval($year)) 
+				{
+					if (strlen($day) == 1) 
+					{ 
+						$day='0' . $day; 
+					}
+
+					if (strlen($month) == 1) 
+					{ 
+						$month = '0' . $month; 
+					} 
+					if (checkdate($month, $day, $year)) 
+					{
+						
+						$pubdate = date("Y-m-d H:i:s", mktime(0, 0, 0, $month, $day, $year));
+					}
+				}
+			}
+			
+			$tenYearsFromNow = date("Y-m-d H:i:s", strtotime("+10 years"));
+			
+			// Stop if more than 10 years from now
+			if ($pubdate > $tenYearsFromNow)
+			{
+				$this->setError(JText::_('Embargo period on a publication cannot extend for more than 10 years. Please choose an earlier date.') );
+				$url .= '/?action= ' . $this->_task . '&version=' . $version;
+				$this->_message = array('message' => $this->getError(), 'type' => 'error');
+
+				// Redirect 
+				$this->_referer = $url;
+				return;
+			}
+		}
 						
 		if (!$this->getError()) 
 		{		
@@ -2497,33 +2541,10 @@ class plgProjectsPublications extends JPlugin
 				$row->published_up = date( 'Y-m-d H:i:s' );	// Publication open immediately (no embargo)	
 			}
 			
-			// Embargo?
+			// Set embargo
 			if ($pubdate)
 			{
-				$date = explode('-', $pubdate);
-				print_r($date);
-				if (count($date) == 3) 
-				{
-					$year 	= $date[0];
-					$month 	= $date[1];
-					$day 	= $date[2];
-					if (intval($month) && intval($day) && intval($year)) 
-					{
-						if (strlen($day) == 1) 
-						{ 
-							$day='0' . $day; 
-						}
-
-						if (strlen($month) == 1) 
-						{ 
-							$month = '0' . $month; 
-						} 
-						if (checkdate($month, $day, $year)) 
-						{
-							$row->published_up = date("Y-m-d H:i:s", mktime(0, 0, 0, $month, $day, $year));
-						}
-					}
-				}
+				$row->published_up = $pubdate;
 			}
 			
 			$row->published_down = '';
