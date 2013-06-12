@@ -520,6 +520,10 @@ class FileMacro extends WikiMacro
 				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 700;
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
+				$juri = JURI::getInstance();
+
+				$rand = rand(0, 100000);
+
 				if (!array_key_exists('alt', $attr) 
 				 && array_key_exists('altimage', $attr) 
 				 && $attr['altimage'] != ''
@@ -535,9 +539,6 @@ class FileMacro extends WikiMacro
 				{
 					$attr['alt'] = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . $juri->getScheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a>';
 				}
-				$juri = JURI::getInstance();
-
-				$rand = rand(0, 100000);
 
 				$html  = '<script type="text/javascript" src="' . $juri->getScheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>';
 				$html .= '<script type="text/javascript">';
