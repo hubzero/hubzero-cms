@@ -55,13 +55,15 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Venue', 'venue', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Type', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Master', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'SSH Key Path', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -82,12 +84,18 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
+					<?php echo $this->escape(stripslashes($row->type)); ?>
+				</td>
+				<td>
 					<a class="state <?php echo ($row->state == 'up') ? 'publish' : 'unpublish'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->id; ?>&amp;state=<?php echo ($row->state == 'up') ? 'down' : 'up'; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo $this->escape(stripslashes($row->state)); ?></span>
 					</a>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->master)); ?>
+				</td>
+				<td>
+					<?php echo $this->escape(stripslashes($row->ssh_key_path)); ?>
 				</td>
 			</tr>
 <?php
