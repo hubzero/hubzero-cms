@@ -172,6 +172,9 @@ class SupportControllerAbuse extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$email = 0; // turn off
 
 		// Incoming
@@ -262,6 +265,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 		$this->_buildTitle();
 		
 		$this->view->title = $this->_title;
+		$this->view->report = $row;
 
 		// Set the pathway
 		$this->_buildPathway();

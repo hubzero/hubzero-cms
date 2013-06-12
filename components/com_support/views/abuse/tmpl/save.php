@@ -36,10 +36,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header -->
 
 <div class="main section">
-	<p>
-		<?php echo JText::_('REPORT_ABUSE_THANKS'); ?>
-<?php if ($this->returnlink) { ?>
- 		<a href="<?php echo $this->returnlink; ?>"><?php echo JText::_('REPORT_ABUSE_CONTINUE'); ?></a>
+	<div class="grid">
+		<div class="col span-half">
+			<div id="ticket-number">
+				<h2>
+					<span><?php echo JText::_('Report #'); ?></span><strong><?php echo $this->report->id; ?></strong>
+				</h2>
+			</div>
+		</div><!-- / .col span-half -->
+		<div class="col span-half omega">
+			<div id="messagebox">
+				<div class="wrap">
+					<h3><?php echo JText::_('REPORT_ABUSE_THANKS'); ?></h3>
+<?php if ($this->report) { ?>
+					<p><?php echo JText::sprintf('For future reference, your problem has been registered as Abuse Report #%s.', $this->report->id); ?></p>
 <?php } ?>
-	</p>
+<?php if ($this->returnlink) { ?>
+ 					<p><a class="btn" href="<?php echo $this->returnlink; ?>"><?php echo JText::_('REPORT_ABUSE_CONTINUE'); ?></a></p>
+<?php } ?>
+				</div>
+			</div>
+		</div><!-- / .col span-half omega -->
+	</div><!-- / .grid -->
 </div><!-- / .main section -->
