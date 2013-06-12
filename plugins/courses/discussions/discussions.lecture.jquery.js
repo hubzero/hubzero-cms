@@ -24,7 +24,7 @@ if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
 
-_DEBUG = true;
+_DEBUG = false;
 
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
@@ -35,7 +35,7 @@ HUB.Plugins.CoursesForum = {
 			addto = 'prepend'
 		}
 		if (_DEBUG) {
-			console.log(data);
+			window.console && console.log(data);
 		}
 		if (data.length > 0) {
 			var last = $('#lastchange'),
@@ -53,7 +53,7 @@ HUB.Plugins.CoursesForum = {
 
 					if ($('#c' + item.id).length) {
 						if (_DEBUG) {
-							console.log('Comment #' + item.id + ' already exists!');
+							window.console && console.log('Comment #' + item.id + ' already exists!');
 						}
 						// Comment already exists!
 						continue;
@@ -95,7 +95,7 @@ HUB.Plugins.CoursesForum = {
 					data = jQuery.parseJSON($(this).contents().text());
 					if (data) {
 						if (_DEBUG) {
-							console.log(data);
+							window.console && console.log(data);
 						}
 
 						// Deactivate previous items
@@ -114,7 +114,7 @@ HUB.Plugins.CoursesForum = {
 						feed.data('thread_last_change', data.thread.lastchange);
 						feed.data('thread', data.thread.lastid);
 						if (_DEBUG) {
-							console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+							window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
 						}
 
 						header.text(data.thread.total + ' comments');
@@ -132,7 +132,7 @@ HUB.Plugins.CoursesForum = {
 
 							for (var i = 0; i< data.threads.posts.length; i++) 
 							{
-								item = data.threads.posts[i];
+								var item = data.threads.posts[i];
 
 								if ($('#thread' + item.id).length) {
 									// Comment already exists!
@@ -188,7 +188,7 @@ HUB.Plugins.CoursesForum = {
 					var srch = container.find('input.search').val();
 
 					if (_DEBUG) {
-						console.log($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''));
+						window.console && console.log($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''));
 					}
 					$.getJSON($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''), {}, function(data){
 
@@ -209,7 +209,7 @@ HUB.Plugins.CoursesForum = {
 					par = el.parent().parent();
 
 				if (_DEBUG) {
-					console.log('called:' + el.attr('href').nohtml());
+					window.console && console.log('called:' + el.attr('href').nohtml());
 				}
 				$.getJSON(el.attr('href').nohtml(), {}, function(data){
 					par.toggleClass('stuck');
@@ -237,7 +237,7 @@ HUB.Plugins.CoursesForum = {
 				$('<iframe src="about:blank?nocache=' + Math.random() + '" id="' + id + '" name="' + id + '" style="display:none;"></iframe>')
 					.on('load', function(){
 						if (_DEBUG) {
-							console.log($(this).contents().text());
+							window.console && console.log($(this).contents().text());
 						}
 						data = jQuery.parseJSON($(this).contents().text());
 
@@ -245,7 +245,7 @@ HUB.Plugins.CoursesForum = {
 							feed.data('thread_last_change', data.thread.lastchange);
 							feed.data('thread', data.thread.lastid);
 							if (_DEBUG) {
-								console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+								window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
 							}
 
 							if (data.thread.posts) {
@@ -325,7 +325,7 @@ HUB.Plugins.CoursesForum = {
 				$('#' + feed.data('active')).removeClass('active');
 				feed.data('active', $(this).attr('id'));
 				if (_DEBUG) {
-					console.log('thread_active: ' + feed.data('active'));
+					window.console && console.log('thread_active: ' + feed.data('active'));
 				}
 
 				$('#comments-new').hide();
@@ -344,14 +344,14 @@ HUB.Plugins.CoursesForum = {
 					srch = container.find('input.search').val();
 
 				if (_DEBUG) {
-					console.log(cfrm.attr('action').nohtml() + '&action=thread&thread=' + thrd + (srch ? '&search=' + srch : ''));
+					window.console && console.log(cfrm.attr('action').nohtml() + '&action=thread&thread=' + thrd + (srch ? '&search=' + srch : ''));
 				}
 				$.getJSON(cfrm.attr('action').nohtml() + '&action=thread&thread=' + thrd + (srch ? '&search=' + srch : ''), {}, function(data){
 					// Set some data so we know when/where to start pulling new results from
 					feed.data('thread_last_change', data.thread.lastchange);
 					feed.data('thread', thrd);
 					if (_DEBUG) {
-						console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+						window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
 					}
 
 					header.text(data.thread.total + ' comments');
@@ -410,7 +410,7 @@ HUB.Plugins.CoursesForum = {
 					}*/
 
 					if (_DEBUG) {
-						console.log('searched: ' + self.attr('action').nohtml() + '&action=search&search=' + input.val());
+						window.console && console.log('searched: ' + self.attr('action').nohtml() + '&action=search&search=' + input.val());
 					}
 
 					// Perform the search
@@ -468,7 +468,7 @@ HUB.Plugins.CoursesForum = {
 				var cnew = $(this);
 
 				if (_DEBUG) {
-					console.log('loaded: ' + cfrm.attr('action').nohtml() + '&action=posts&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'));
+					window.console && console.log('loaded: ' + cfrm.attr('action').nohtml() + '&action=posts&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'));
 				}
 
 				$.getJSON(cfrm.attr('action').nohtml() + '&action=posts&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'), {}, function(data){
@@ -482,7 +482,7 @@ HUB.Plugins.CoursesForum = {
 					feed.data('thread_last_change', data.thread.lastchange);
 					feed.data('thread', data.thread.lastid);
 					if (_DEBUG) {
-						console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+						window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
 					}
 				});
 			})
@@ -498,7 +498,7 @@ HUB.Plugins.CoursesForum = {
 				var tnew = $(this);
 
 				if (_DEBUG) {
-					console.log('loaded: ' + cfrm.attr('action').nohtml() + '&action=threads&threads_start=' + $('#threads_lastchange').val());
+					window.console && console.log('loaded: ' + cfrm.attr('action').nohtml() + '&action=threads&threads_start=' + $('#threads_lastchange').val());
 				}
 
 				$.getJSON(cfrm.attr('action').nohtml() + '&action=threads&threads_start=' + $('#threads_lastchange').val(), {}, function(data){
@@ -536,7 +536,7 @@ HUB.Plugins.CoursesForum = {
 		// Heartbeat for checking for new posts
 		setInterval(function () {
 			if (_DEBUG) {
-				console.log('checking: ' + api + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change') + '&threads_start=' + $('#threads_lastchange').val());
+				window.console && console.log('checking: ' + api + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change') + '&threads_start=' + $('#threads_lastchange').val());
 			}
 
 			$.getJSON(api + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change') + '&threads_start=' + $('#threads_lastchange').val(), {}, function(data){
