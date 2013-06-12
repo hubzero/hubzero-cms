@@ -121,6 +121,7 @@
 		overflow: auto;
 		border-left: 4px solid #f0f7f8;
 		border-right: 4px solid #f0f7f8;
+		border-top: 1px solid #E2E2E2;
 	}
 	.qq-upload-list li {
 	    margin: 0;

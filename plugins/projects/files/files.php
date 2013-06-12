@@ -704,7 +704,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				else
 				{
-					$message = 'uploaded ' . $uploaded . ' ';
+					$message = 'uploaded ' . $uploaded;
 				}
 			}
 			if ($updated)
@@ -716,7 +716,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				else
 				{
-					$message .= $updated . '. ';
+					$message .= $updated;
 				}
 			}
 						

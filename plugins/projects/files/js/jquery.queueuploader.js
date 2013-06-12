@@ -332,6 +332,9 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 			{
 				$('#cancel-action').remove();
 			}
+			
+			$('#ajax-uploader div div').css('display', 'none');	
+			$('#upload-instruct').html('Uploading selected file(s). Please do not close this window.');   
 		}
 		for (var i=0; i< this._que.length; i++)
 		{
