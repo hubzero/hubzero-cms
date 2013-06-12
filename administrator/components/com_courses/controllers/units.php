@@ -225,6 +225,27 @@ class CoursesControllerUnits extends Hubzero_Controller
 			return;
 		}
 
+		if ($model->get('id'))
+		{
+			$asset_groups = explode(',', $this->config->getValue('default_asset_groups', 'Lectures, Homework, Exam'));
+			array_map('trim', $asset_groups);
+
+			foreach ($asset_groups as $key)
+			{
+				// Get our asset group object
+				$assetGroup = new CoursesModelAssetgroup(null);
+				$assetGroup->set('title', $key);
+				$assetGroup->set('unit_id', $model->get('id'));
+				$assetGroup->set('parent', 0);
+
+				// Save the asset group
+				if (!$assetGroup->store(true))
+				{
+					$this->addComponentMessage($model->getError(), 'error');
+				}
+			}
+		}
+
 		if ($redirect)
 		{
 			// Output messsage and redirect
