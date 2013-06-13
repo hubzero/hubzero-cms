@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $app =& JFactory::getApplication();
 ?>
 		<script type="text/javascript">
-			function updateDir()
+			/*function updateDir()
 			{
 				var allPaths = window.top.document.forms[0].dirPath.options;
 				for (i=0; i<allPaths.length; i++)
@@ -44,7 +44,7 @@ $app =& JFactory::getApplication();
 						allPaths.item(i).selected = true;
 					}
 				}
-			}
+			}*/
 			function deleteFile(file)
 			{
 				if (confirm("Delete file \""+file+"\"?")) {
@@ -53,7 +53,7 @@ $app =& JFactory::getApplication();
 
 				return false;
 			}
-			function deleteFolder(folder, numFiles)
+			/*function deleteFolder(folder, numFiles)
 			{
 				if (numFiles > 0) {
 					alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
@@ -65,13 +65,13 @@ $app =& JFactory::getApplication();
 				}
 
 				return false;
-			}
+			}*/
 		</script>
 	<div id="attachments">
 		<form action="index.php" method="post" id="filelist" name="filelist">
 			<table summary="Files for this asset">
 				<tbody>
-<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
+<?php if (count($this->docs) == 0) { //count($this->folders) == 0 &&  ?>
 					<tr>
 						<td>
 							<?php echo JText::_('No files found.'); ?>
@@ -79,7 +79,7 @@ $app =& JFactory::getApplication();
 					</tr>
 <?php } else { ?>
 <?php
-$folders = $this->folders;
+/*$folders = $this->folders;
 for ($i=0; $i<count($folders); $i++)
 {
 	$folderName = key($folders);
@@ -120,18 +120,18 @@ for ($i=0; $i<count($folders); $i++)
 					</tr>
 <?php
 	next($folders);
-}
-$docs = $this->docs;
-for ($i=0; $i<count($docs); $i++)
-{
-	$docName = key($docs);
+}*/
+				$docs = $this->docs;
+				for ($i=0; $i<count($docs); $i++)
+				{
+					$docName = key($docs);
 
-	$subdird = ($this->subdir && $this->subdir != DS) ? $this->subdir . DS : DS;
-?>
+					$subdird = ($this->subdir && $this->subdir != DS) ? $this->subdir . DS : DS;
+				?>
 					<tr>
-						<td style="width:16px;">
+						<?php /*<td style="width:16px;">
 							<img src="components/<?php echo $this->option; ?>/assets/img/file.png" alt="<?php echo $docName; ?>" width="16" height="16" />
-						</td>
+						</td>*/ ?>
 						<td>
 							<?php echo $docs[$docName]; ?>
 						</td>
@@ -141,10 +141,10 @@ for ($i=0; $i<count($docs); $i++)
 							</a>
 						</td>
 					</tr>
-<?php
-	next($docs);
-}
-?>
+				<?php
+					next($docs);
+				}
+				?>
 <?php } ?>
 				</tbody>
 			</table>

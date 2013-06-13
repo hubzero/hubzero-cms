@@ -54,8 +54,8 @@ function goUpDir()
 <form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<legend>
-			<?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . 'pagefiles' . DS . $this->listdir; ?><br />
-			<span>Files - <?php echo $this->dirPath; ?></span>
+			<span><?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . 'pagefiles' . ($this->listdir ? DS . $this->listdir : ''); ?>
+			<?php // Files- echo $this->dirPath; ?></span>
 		</legend>
 		<div id="ajax-uploader-before">&nbsp;</div>
 		<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=upload&amp;course=<?php echo $this->course_id; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">

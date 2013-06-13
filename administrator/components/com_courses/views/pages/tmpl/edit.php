@@ -113,7 +113,11 @@ JToolBarHelper::cancel();
 		</fieldset>
 
 		<fieldset class="adminform">
+			<?php if (!$this->row->get('id')) { ?>
+			<p><?php echo JText::_('A new page must be saved first before uploading files.'); ?></p>
+			<?php } else { ?>
 			<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;task=files&amp;tmpl=component&amp;listdir=<?php echo $this->row->get('offering_id'); ?>&amp;course=<?php echo $this->course->get('id'); ?>"></iframe>
+			<?php } ?>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

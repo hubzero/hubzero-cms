@@ -718,11 +718,11 @@ class CoursesControllerPages extends Hubzero_Controller
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->course_id = JRequest::getInt('course', 0);
 		$this->view->listdir   = JRequest::getVar('listdir', 0);
-		if (!$this->view->listdir)
+		/*if (!$this->view->listdir)
 		{
 			echo '<p class="error">' . JText::_('No list directory provided.') . '</p>';
 			return;
-		}
+		}*/
 
 		// Incoming sub-directory
 		$this->view->subdir = JRequest::getVar('subdir', '');
@@ -781,11 +781,11 @@ class CoursesControllerPages extends Hubzero_Controller
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$this->view->course_id = JRequest::getInt('course', 0);
 		$this->view->listdir   = JRequest::getVar('listdir', 0);
-		if (!$this->view->listdir)
+		/*if (!$this->view->listdir)
 		{
 			echo '<p class="error">' . JText::_('No list directory provided.') . '</p>';
 			return;
-		}
+		}*/
 
 		// Incoming sub-directory
 		$this->view->subdir = JRequest::getVar('subdir', '');
