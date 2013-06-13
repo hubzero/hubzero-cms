@@ -56,7 +56,7 @@ JToolBarHelper::cancel();
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
-			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->offering->get('id'); ?>" />
+			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->row->get('offering_id'); ?>" />
 
 			<table class="admintable">
 				<tbody>
@@ -110,6 +110,10 @@ JToolBarHelper::cancel();
 					</tr>
 				</tbody>
 			</table>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;task=files&amp;tmpl=component&amp;listdir=<?php echo $this->row->get('offering_id'); ?>&amp;course=<?php echo $this->course->get('id'); ?>"></iframe>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
