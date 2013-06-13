@@ -65,6 +65,40 @@ p.callToAction {
 	text-align: center;
 	padding: 0.5em 1em 0.5em 60px;
 }
+#authentication #providers .sign-out {
+	display: block;
+	color: #666;
+	font-size: 12px;
+	font-weight: normal;
+	text-align: center;
+	border: 1px solid black;
+	margin: -42px 5px 10px 5px;
+	width: 247px;
+	padding: 5px 10px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+
+	background: #EFEFEF;
+	background: -webkit-gradient(linear, left top, left bottom, from(#EFEFEF), to(#CECECE));
+	background: -webkit-linear-gradient(#EFEFEF, #CECECE);
+	background: -moz-linear-gradient(center top, #EFEFEF 0%, #CECECE 100%);
+	background: -moz-gradient(center top, #EFEFEF 0%, #CECECE 100%);
+	background: -o-linear-gradient(#EFEFEF, #CECECE);
+	background-image: -ms-linear-gradient(top, #EFEFEF 0%, #CECECE 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EFEFEF,endColorstr=#CECECE);
+	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EFEFEF, endColorstr=#CECECE)";
+}
+#authentication #providers .sign-out:hover {
+	background: #E1E1E1;
+	background: -webkit-gradient(linear, left top, left bottom, from(#E1E1E1), to(#BCBCBC));
+	background: -webkit-linear-gradient(#E1E1E1, #BCBCBC);
+	background: -moz-linear-gradient(center top, #E1E1E1 0%, #BCBCBC 100%);
+	background: -moz-gradient(center top, #E1E1E1 0%, #BCBCBC 100%);
+	background: -o-linear-gradient(#E1E1E1, #BCBCBC);
+	background-image: -ms-linear-gradient(top, #E1E1E1 0%, #BCBCBC 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#E1E1E1,endColorstr=#BCBCBC);
+	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#E1E1E1, endColorstr=#BCBCBC)";
+}
 #authentication #providers a:before {
 	padding: 9px 0.3em;
 }

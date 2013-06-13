@@ -51,6 +51,7 @@ class UserViewLogin extends JView
 
 		Hubzero_Document::addSystemStylesheet('uniform.css');
 		Hubzero_Document::addSystemScript('jquery.uniform');
+		Hubzero_Document::addSystemScript('jquery.hoverIntent');
 
 		$menu   =& JSite::getMenu();
 		$item   = $menu->getActive();

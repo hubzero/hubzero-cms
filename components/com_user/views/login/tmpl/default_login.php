@@ -51,16 +51,16 @@ if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
 		<?php if($this->multiAuth) { // only display if we have third part auth plugins enabled ?>
 			<div id="providers" class="two columns first">
 				<h3>Sign in with your:</h2>
-				<?php 
-					foreach($this->authenticators as $a)
-					{
-				?>
+				<?php foreach($this->authenticators as $a) : ?>
+					<div class="account-group-wrap">
 						<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a['name'] . $this->returnUrl); ?>">
 							<p><?php echo $a['display']; ?> account</p>
 						</a>
-				<?php
-					}
-				?>
+						<a class="sign-out" href="<?php echo JRoute::_('index.php?option=com_user&view=logout&authenticator=' . $a['name']); ?>">
+							Not <span class="current-user"><?php echo $this->status[$a['name']]['username']; ?></span>? Sign out.
+						</a>
+					</div>
+				<?php endforeach; ?>
 			</div>
 		<?php } // close if - check if any authentication plugins are enabled ?>
 		<div id="credentials-hub" class="<?php echo ($this->multiAuth) ? 'two columns second' : 'singleAuth'; ?>">

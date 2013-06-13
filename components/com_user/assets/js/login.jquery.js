@@ -41,6 +41,21 @@ HUB.User = {
 			$(this).fadeTo('fast', '1');
 		});
 
+		$('.account-group-wrap').hoverIntent({
+			over: function(){
+				var signOut = $(this).find('.sign-out');
+
+				if (signOut.find('.current-user').html() !== '') {
+					signOut.animate({'margin-top': -12});
+				}
+			},
+			timeout: 100,
+			interval: 50,
+			out: function(){
+				$(this).find('.sign-out').animate({'margin-top': -42});
+			}
+		});
+
 		login_button.on('click', function(event) {
 			event.preventDefault();
 
