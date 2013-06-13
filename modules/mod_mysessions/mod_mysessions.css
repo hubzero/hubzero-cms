@@ -233,6 +233,37 @@ div.draggable .session-list ul {
 .session-buttons a {
 	margin: 5px 5px 0 0;
 }
+
+.session-buttons a.btn {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: linear-gradient(#FAFAFA, #E0E0E0) repeat scroll 0 0 transparent;
+    border-color: #CCCCCC #CCCCCC #AAAAAA #AAAAAA;
+    border-image: none;
+    border-radius: 0.25em 0.25em 0.25em 0.25em;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 0 1px #FFFFFF inset;
+    color: #555555 !important;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: normal;
+    outline: 0 none;
+	padding: 0.4em 0.91em 0.4em 2.91em;
+    position: relative;
+    text-align: center;
+    text-shadow: 0 1px 0 #FFFFFF;
+    vertical-align: middle;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+.session-buttons a.btn:hover {
+    border: 1px solid #CCCCCC !important;
+}
+
 .session-buttons .resume,
 .session-buttons .terminate,
 .session-buttons .terminate-confirm,
