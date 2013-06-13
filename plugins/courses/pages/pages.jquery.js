@@ -8,9 +8,8 @@
 //-----------------------------------------------------------
 //  Ensure we have our namespace
 //-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
+var HUB = HUB || {};
+
 if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
@@ -34,4 +33,43 @@ jQuery(document).ready(function(jq){
 			return res;
 		});
 	});
+
+	var uploader = $('#file-uploader'),
+		filelist = $('#file-uploader-list');
+
+	if (uploader.length) {
+
+		filelist.on('click', 'a.delete', function(e){
+			e.preventDefault();
+			$.get($(this).attr('href'), {}, function(data) {
+				filelist.html(data);
+			});
+		})
+
+		$.get(uploader.attr('data-list'), {}, function(data) {
+			filelist.html(data);
+		});
+
+		if (typeof(qq) != 'undefined') {
+			var uploader = new qq.FileUploader({
+				element: uploader[0],
+				action: uploader.attr('data-action'),
+				multiple: true,
+				debug: true,
+				template: '<div class="qq-uploader">' +
+						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+						'<ul class="qq-upload-list"></ul>' + 
+					'</div>',
+				onSubmit: function(id, file) {
+				},
+				onComplete: function(id, file, response) {
+					$('.qq-upload-list').empty();
+					$.get($('#file-uploader').attr('data-list'), {}, function(data) {
+						filelist.html(data);
+					});
+				}
+			});
+		}
+	}
 });

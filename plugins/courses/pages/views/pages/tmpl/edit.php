@@ -16,6 +16,8 @@ $view->course     = $this->course;
 $view->offering   = $this->offering;
 $view->page       = $this->model;
 $view->display();
+
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
 ?>
 
 <div class="pages-wrap">
@@ -25,7 +27,7 @@ $view->display();
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=pages'); ?>" method="post" id="pageform" class="full" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_($base); ?>" method="post" id="pageform" class="full" enctype="multipart/form-data">
 			<fieldset>
 				<legend><?php echo ($this->model->exists()) ? JText::_('Edit page') : JText::_('New page'); ?></legend>
 
@@ -53,6 +55,19 @@ $view->display();
 					?>
 					<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>"><?php echo JText::_('Wiki formatting'); ?></a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> are allowed.</span>
 				</label>
+
+				<div class="field-wrap">
+				<div class="grid">
+					<div class="col span-half">
+						<div id="file-uploader" data-action="<?php echo JRoute::_($base . '&action=upload&no_html=1'); ?>" data-list="<?php echo JRoute::_($base . '&action=list&no_html=1'); ?>">
+							<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="<?php echo JRoute::_($base . '&action=list&tmpl=component'); ?>"></iframe>
+						</div>
+					</div>
+					<div class="col span-half omega">
+						<div id="file-uploader-list"></div>
+					</div>
+				</div>
+			</div>
 
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
