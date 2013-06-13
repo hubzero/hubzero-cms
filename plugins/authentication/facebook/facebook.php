@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Auth_Domain');
-ximport('Hubzero_Auth_Link');
-
 class plgAuthenticationFacebook extends JPlugin
 {
 	/**
@@ -59,39 +56,9 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function logout()
 	{
-		global $mainframe;
-
-		// Set up the config for the sdk instance
-		$config           = array();
-		$config['appId']  = $this->params->get('app_id');
-		$config['secret'] = $this->params->get('app_secret');
-
-		// Create instance and get the facebook user_id
-		$facebook = new Facebook($config);
-
-		// Get the hub url
-		$juri    =& JURI::getInstance();
-		$service = trim($juri->base(), DS);
-
-		if (empty($service))
-		{
-			$service = $_SERVER['HTTP_HOST'];
-		}
-
-		$return = ($view->return) ? "&return=" . $view->return : "&return=" . base64_encode("/login");
-
-		// Set the post fb logout url to be the hub logout url
-		// @FIXME: should hub logout log out of facebook too?
-		// If not, then it seems like things will work a bit differently than pucas
-		// It must be that facebook app info is stored in the user session, and hub logout kills that?
-		// Either way, as soon as hub logout is done, we don't have access anymore to check if the user is logged on
-		$params = array('next' => $service . '/index.php?option=com_user&task=logout' . $return);
-
-		// Get the logout URL
-		$logoutUrl = $facebook->getLogoutUrl($params);
-
-		// Redirect to the logout URL
-		$mainframe->redirect($logoutUrl);
+		// This is handled by the JS API, and cannot be done server side
+		// (at least, it cannot be done server side, given our authentication workflow
+		// and the current limitations of the PHP SDK).
 	}
 
 	/**
@@ -102,23 +69,44 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function status()
 	{
-		// Set up the config for the sdk instance
-		$config           = array();
-		$config['appId']  = $this->params->get('app_id');
-		$config['secret'] = $this->params->get('app_secret');
+		// Get the hub url
+		$juri       =& JURI::getInstance();
+		$service    = trim($juri->base(), DS);
+		$channelUrl = $service . DS . 'channel.phtml';
 
-		// Create instance and get the facebook user_id
-		$facebook = new Facebook($config);
+		// This can only currently be done using the Facebook JS API
+		// (at least relying solely on the native methods provided by the language's specific API)
+		$js = "$(document).ready(function () {
+			$('body').append('<div id=\"fb-root\"></div>');
+			$.ajaxSetup({ cache: true });
+			$.getScript('//connect.facebook.net/en_US/all.js', function () {
+				window.fbAsyncInit = function () {
+					FB.init({
+						appId: '{$this->params->get('app_id')}',
+						channelUrl: '{$channelUrl}'
+					});
 
-		$status = array();
+					FB.getLoginStatus(function ( response ) {
+						if (response.status === 'connected') {
+							FB.api('/me', function ( response ) {
+								var facebook = $('#facebook').siblings('.sign-out');
+								facebook.find('.current-user').html(response.name);
 
-		if($facebook->getUser())
-		{
-			$user = $facebook->api('/me?fields=name','GET');
-			$status['username'] = $user['name'];
-		}
+								facebook.on('click', function( e ) {
+									e.preventDefault();
+									FB.logout(function() {
+										facebook.find('.current-user').html('');
+										facebook.animate({'margin-top': -42});
+									});
+								});
+							});
+						}
+					});
+				};
+			});
+		});";
 
-		return $status;
+		JFactory::getDocument()->addScriptDeclaration($js);
 	}
 
 	/**
