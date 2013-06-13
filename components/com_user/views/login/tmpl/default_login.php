@@ -56,7 +56,7 @@ if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
 						<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a['name'] . $this->returnUrl); ?>">
 							<p><?php echo $a['display']; ?> account</p>
 						</a>
-						<a class="sign-out" href="<?php echo JRoute::_('index.php?option=com_user&view=logout&authenticator=' . $a['name']); ?>">
+						<a class="sign-out" href="<?php echo JRoute::_('index.php?option=com_user&task=logout&authenticator=' . $a['name'] . ((!empty($this->returnUrl)) ? $this->returnUrl : '&return=' . base64_encode('/login'))); ?>">
 							Not <span class="current-user"><?php echo $this->status[$a['name']]['username']; ?></span>? Sign out.
 						</a>
 					</div>
