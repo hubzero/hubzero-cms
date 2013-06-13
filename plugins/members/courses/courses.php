@@ -161,8 +161,16 @@ class plgMembersCourses extends JPlugin
 			$view->active  = null;
 			$view->results = null;
 
-			//if ($view->hasRoles <= 1)
-			//{
+			if ($view->hasRoles <= 1)
+			{
+				foreach ($roles as $i => $role)
+				{
+					if ($role->total > 0)
+					{
+						$view->filters['task'] = $role->alias;
+					}
+				}
+			}
 				foreach ($view->roles as $i => $role)
 				{
 					/*if ($view->filters['task'] != $role->alias
