@@ -81,9 +81,9 @@ class plgAuthenticationPUCAS extends JPlugin
 
 		$return = '';
 
-		if ($view->return)
+		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
 		{
-			$return = base64_decode($view->return);
+			$return = base64_decode($return);
 
 			if (!JURI::isInternal($return)) 
 			{
