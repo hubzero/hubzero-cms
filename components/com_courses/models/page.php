@@ -76,10 +76,10 @@ class CoursesModelPage extends CoursesModelAbstract
 
 				$wikiconfig = array(
 					'option'   => JRequest::getCmd('option', 'com_courses'),
-					'scope'    => '',
+					'scope'    => JRequest::getVar('gid', ''),
 					'pagename' => $this->get('url'),
-					'pageid'   => $this->get('id'),
-					'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS),
+					'pageid'   => '',
+					'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : ''),
 					'domain'   => $this->get('course_id')
 				);
 

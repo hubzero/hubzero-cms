@@ -24,7 +24,7 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 	
-	$('a.delete').each(function(i, el) {
+	$('ul.manager-options a.delete').each(function(i, el) {
 		$(el).on('click', function(e) {
 			var res = confirm('Are you sure you wish to delete this document?');
 			if (!res) {
@@ -55,7 +55,7 @@ jQuery(document).ready(function(jq){
 				element: uploader[0],
 				action: uploader.attr('data-action'),
 				multiple: true,
-				debug: true,
+				debug: false,
 				template: '<div class="qq-uploader">' +
 						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
 						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +

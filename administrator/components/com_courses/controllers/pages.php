@@ -381,11 +381,11 @@ class CoursesControllerPages extends Hubzero_Controller
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getVar('listdir', 0);
-		if (!$listdir) 
+		/*if (!$listdir) 
 		{
 			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
 			return;
-		}
+		}*/
 
 		// Incoming sub-directory
 		$subdir = JRequest::getVar('subdir', '');

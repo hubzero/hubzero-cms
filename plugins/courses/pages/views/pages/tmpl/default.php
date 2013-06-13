@@ -36,8 +36,8 @@ else
 
 	$wikiconfig = array(
 		'option'   => $this->option,
-		'scope'    => '',
-		'pagename' => DS . $this->page->get('url'),
+		'scope'    => $this->course->get('alias') . DS . $this->offering->get('alias') . DS . 'pages',
+		'pagename' => $this->page->get('url'),
 		'pageid'   => '',
 		'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course->get('id') . DS . 'pagefiles' . DS . $this->offering->get('id'),
 		'domain'   => $this->course->get('alias')

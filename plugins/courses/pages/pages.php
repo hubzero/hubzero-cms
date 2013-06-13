@@ -124,7 +124,13 @@ class plgCoursesPages extends Hubzero_Plugin
 			Hubzero_Document::addPluginScript('courses', $this->_name);
 
 			$action = strtolower(JRequest::getWord('group', ''));
+			if ($action && $action != 'edit' && $action != 'delete')
+			{
+				$action = 'download';
+			}//JRequest::getWord('group', '')
+
 			$active = strtolower(JRequest::getWord('unit', ''));
+
 			if ($active == 'add')
 			{
 				$action = 'add';
@@ -707,5 +713,97 @@ class plgCoursesPages extends Hubzero_Plugin
 		}
 
 		$this->view->setLayout('list');
+	}
+
+	/**
+	 * Download a wiki file
+	 * 
+	 * @return     void
+	 */
+	public function _fileDownload()
+	{
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+		if (!$this->view->course->access('view'))
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
+			return;
+		}
+
+		// Get the scope of the parent page the file is attached to
+		$filename = JRequest::getVar('group', '');
+
+		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') 
+		{
+			$filename = substr($filename, strlen('image:'));
+		} 
+		else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:') 
+		{
+			$filename = substr($filename, strlen('file:'));
+		}
+		$filename = urldecode($filename);
+
+		// Ensure we have a path
+		if (empty($filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').'[r]'.$filename);
+			return;
+		}
+		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[f]'.$filename);
+			return;
+		}
+		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[e]'.$filename);
+			return;
+		}
+		// Disallow windows drive letter
+		if (preg_match("/^\s*[.]:/", $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[s]'.$filename);
+			return;
+		}
+		// Disallow \
+		if (strpos('\\', $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[g]'.$filename);
+			return;
+		}
+		// Disallow ..
+		if (strpos('..', $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[h]'.$filename);
+			return;
+		}
+
+		// Add JPATH_ROOT
+		$filename = $this->_path() . DS . ltrim($filename, DS);
+
+		// Ensure the file exist
+		if (!file_exists($filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').'[j]'.$filename);
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($filename);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+
+		if (!$xserver->serve()) 
+		{
+			// Should only get here on error
+			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR').'[x]'.$filename);
+		} 
+		else 
+		{
+			exit;
+		}
+		return;
 	}
 }
