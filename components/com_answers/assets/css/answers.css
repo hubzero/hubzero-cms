@@ -92,6 +92,10 @@
 	.entry-popularity {
 		display: none;
 	}
+
+	ol.comments .comment-options a.active:before {
+		content: "\2716";
+	}
 /* Submenu styling 
 	.container .filter-options li {
 		float: left;
@@ -142,12 +146,16 @@
 		font-size: 85%;
 	}
 	.entry-reward a {
-		background: url("/components/com_answers/assets/img/coin.gif") 0 0 no-repeat;
-		width: 16px;
-		height: 16px;
+		width: 1em;
+		height: 1em;
 		display: inline-block;
 		overflow: hidden;
-		text-indent: 55em;
+		white-space: nowrap;
+	}
+	.entry-reward a:before {
+		content: "\f006";
+		font-family: "Fontcons";
+		margin-right: 1em;
 	}
 /* Answer form */
 	#answerform fieldset {
@@ -185,15 +193,20 @@
 /* Introduction columns */
 	.pointvalue a, 
 	.questions .rewardset a {
-		background: url("/components/com_answers/assets/img/coin.gif") 0 0  no-repeat;
-		margin: 0;
+		margin: 0 0.2em 0 0;
 		padding: 0;
 		border: none;
 		display: inline-block;	
-		width: 16px;
-		height: 16px;
+		width: 1em;
+		height: 1em;
 		overflow: hidden;
-		text-indent: -55em;
+		white-space: nowrap;
+		font-size: 1.2em;
+	}
+	.pointvalue a:before {
+		content: "\f006";
+		font-family: "Fontcons";
+		margin-right: 1em;
 	}
 	.pointvalue a:hover {
 		border: none;	
@@ -384,6 +397,27 @@
 	.subject-wrap {
 		margin: 0 0 0 70px;
 		padding: 0;
+	}
+
+	ol.comments .comment-options:hover a, 
+	ol.comments .comment-options a.accept {
+		visibility: visible;
+	}
+	ol.comments .comment-options a.accept {
+		display: inline-block;
+		*display: inline;
+		/*border: 1px solid #ccc;
+		padding: 0.1em 0.5em;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		border-radius: 0.25em;*/
+		float: right;
+	}
+	ol.comments .comment-options a.accept:before {
+		content: "\2714";
+		font-family: "Fontcons";
+		margin-right: 0.3em;
 	}
 /* Point breakdown */
 	#pointbreakdown {

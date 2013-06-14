@@ -54,6 +54,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	public function execute()
 	{
 		$this->config->set('banking', JComponentHelper::getParams('com_members')->get('bankAccounts'));
+		$this->banking = $this->config->get('banking');
 
 		if ($this->config->get('banking')) 
 		{
@@ -90,11 +91,11 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
-		if (is_object($question) && $question->subject != '') 
+		if (is_object($question) && $question->get('subject')) 
 		{
 			$pathway->addItem(
-				Hubzero_View_Helper_Html::shortenText(stripslashes($question->subject), 50, 0),
-				'index.php?option=' . $this->_option . '&task=question&id=' . $question->id
+				Hubzero_View_Helper_Html::shortenText(stripslashes($question->get('subject')), 50, 0),
+				$question->link()
 			);
 		}
 	}
@@ -112,9 +113,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		{
 			$this->view->title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		if (is_object($question) && $question->subject != '') 
+		if (is_object($question) && $question->get('subject')) 
 		{
-			$this->view->title .= ': ' . Hubzero_View_Helper_Html::shortenText(stripslashes($question->subject), 50, 0);
+			$this->view->title .= ': ' . Hubzero_View_Helper_Html::shortenText(stripslashes($question->get('subject')), 50, 0);
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
@@ -292,28 +293,19 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Incoming
-		$id       = JRequest::getInt('referenceid', 0);
-		$rid      = JRequest::getInt('rid', 0);
-		$ajax     = JRequest::getInt('ajax', 0);
-		$category = JRequest::getVar('category', '');
-		$when     = date('Y-m-d H:i:s');
+		$rid     = JRequest::getInt('rid', 0);
+		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
-		// Trim and addslashes all posted items
-		// NOTE: Removed because applying "trim" can screw up wiki syntax in cases where the first character
-		// needs to be a space. e.g., if the comment starts with a bulleted list:
-		//  * item
-		//$_POST = array_map('trim',$_POST);
-
-		if (!$id && !$ajax) 
+		if (!$comment['referenceid'] && !$ajax) 
 		{
 			JError::raiseError(500, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
 			return;
 		}
 
-		if ($id && $category) 
+		if ($comment['referenceid'] && $comment['category']) 
 		{
 			$row = new Hubzero_Comment($this->database);
-			if (!$row->bind($_POST)) 
+			if (!$row->bind($comment)) 
 			{
 				JError::raiseError(500, $row->getError());
 				return;
@@ -323,7 +315,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
 			$row->comment   = nl2br($row->comment);
 			$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-			$row->added     = $when;
+			$row->added     = date('Y-m-d H:i:s');
 			$row->state     = 0;
 			$row->added_by  = $this->juser->get('id');
 
@@ -571,7 +563,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$response = $row->getResponse($id, $ip);
 
 			$this->view->option = $this->_option;
-			$this->view->item   = $response[0];
+			$this->view->item   = new AnswersModelResponse($response[0]);
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -749,72 +741,18 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->setLayout('question');
 
 		$this->view->infolink = $this->infolink;
-		$this->view->banking = $this->banking;
 
 		// Incoming
-		$id   = JRequest::getInt('id', 0);
+		$this->view->id   = JRequest::getInt('id', 0);
 		$this->view->note = $this->_note(JRequest::getInt('note', 0));
-		//$vote = JRequest::getVar('vote', 0);
 
-		if (isset($this->qid)) 
-		{
-			$id = $this->qid;
-		}
+		$this->view->question = AnswersModelQuestion::getInstance($this->view->id);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$this->view->id) 
 		{
 			JError::raiseError(404, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
 			return;
-		}
-
-		if ($this->_task == 'reply') 
-		{
-			$addcomment = new Hubzero_Comment($this->database);
-			$addcomment->referenceid = $this->referenceid;
-			$addcomment->category    = $this->category;
-		} 
-		else 
-		{
-			$addcomment = NULL;
-		}
-
-		// Did they vote for the question?
-		/*if ($vote) 
-		{
-			// Login required
-			if ($this->juser->get('guest')) 
-			{
-				$this->setError(JText::_('COM_ANSWERS_LOGIN_TO_RECOMMEND_QUESTION'));
-				$this->loginTask();
-				return;
-			} 
-			else 
-			{
-				$this->voteTask($this->database, $id);
-			}
-		}*/
-
-		// Load the question
-		$question = new AnswersQuestion($this->database);
-		$question->load($id);
-
-		// Check if question with this ID exists
-		if (!$question->check()) 
-		{
-			$id = 0;
-		}
-
-		// Get tags on this question
-		$tagging = new AnswersTags($this->database);
-		$this->view->tags = $tagging->get_tags_on_object($id, 0, 0, 0);
-
-		// Check reward value of the question 
-		$this->view->reward = 0;
-		if ($this->banking) 
-		{
-			$BT = new Hubzero_Bank_Transaction($this->database);
-			$this->view->reward = $BT->getAmount('answers', 'hold', $id);
 		}
 
 		// Check if person voted
@@ -822,35 +760,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$ip = '';
 		if (!$this->juser->get('guest')) 
 		{
-			$this->view->voted = $this->_getVote($id);
+			$this->view->voted = $this->_getVote($this->view->id);
 			$ip = Hubzero_Environment::ipAddress();
-		}
-
-		// Check for abuse reports
-		$question->reports = $this->_getReports($id, 'question');
-
-		// Get responses
-		$ar = new AnswersResponse($this->database);
-		$responses = $ar->getRecords(array(
-			'ip'  => $ip,
-			'qid' => $id
-		));
-
-		// Calculate max award
-		if ($this->banking) 
-		{
-			$AE = new AnswersEconomy($this->database);
-			$question->marketvalue = round($AE->calculate_marketvalue($id, 'maxaward'));
-			$question->maxaward    = round(2* $question->marketvalue/3 + $this->view->reward);
-		}
-
-		if ($responses) 
-		{
-			foreach ($responses as $response)
-			{
-				$response->replies = $this->_getComments($response, 'answer', 0);
-				$response->reports = $this->_getReports($response->id, 'answer');
-			}
 		}
 
 		// Add the CSS to the template
@@ -862,28 +773,19 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->_getScripts('assets/js/vote');
 
 		// Set the page title
-		$this->_buildTitle($question);
+		$this->_buildTitle($this->view->question);
 
 		// Set the pathway
-		$this->_buildPathway($question);
+		$this->_buildPathway($this->view->question);
 
 		// Output HTML
 		$this->view->juser = $this->juser;
 
-		$this->view->question = $question;
-		$this->view->responses = $responses;
-		$this->view->id = $id;
-		//$this->view->tags = $tags;
 		if (!isset($this->view->responding))
 		{
 			$this->view->responding = 0;
 		}
-		//$this->view->reward = $reward;
-		//$this->view->voted = $voted;
-		//$this->view->note = $note;
-		$this->view->addcomment = $addcomment;
-		$this->view->showcomments = true; //$this->showcomments;
-		$this->view->abuse = true;
+
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 
 		if ($this->getError()) 
@@ -1525,7 +1427,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Redirect to the question
-		$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_POSTED_THANKS'), 'message');
+		$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_POSTED_THANKS'), 'success');
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $response['qid'] . '&note=4')
 		);
@@ -1549,64 +1451,12 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$id  = JRequest::getInt('id', 0);
 		$rid = JRequest::getInt('rid', 0);
 
-		// Load and mark the answer as THE accepted answer
-		$answer = new AnswersResponse($this->database);
-		$answer->load($rid);
-		$answer->state = 1;
+		$question = new AnswersModelQuestion($id);
 
 		// Check changes
-		if (!$answer->check()) 
-		{
-			$this->setError($answer->getError());
-		}
-
-		// Save changes
-		if (!$answer->store()) 
-		{
-			$this->setError($answer->getError());
-		}
-
-		// Load and mark the question as closed
-		$question = new AnswersQuestion($this->database);
-		$question->load($id);
-		$question->state  = 1;
-		$question->reward = 0; // Uncheck reward label
-
-		$user =& JUser::getInstance($question->created_by);
-
-		// Check changes
-		if (!$question->check()) 
+		if (!$question->accept($rid)) 
 		{
 			$this->setError($question->getError());
-		}
-
-		// Save changes
-		if (!$question->store()) 
-		{
-			$this->setError($question->getError());
-		}
-
-		if ($this->banking) 
-		{
-			// Accepted answer is same person as question submitter?
-			if ($question->created_by == $answer->created_by)
-			{
-				$BT = new Hubzero_Bank_Transaction($this->database);
-				$reward = $BT->getAmount('answers', 'hold', $id);
-
-				// Remove hold
-				$BT->deleteRecords('answers', 'hold', $id);
-
-				// Make credit adjustment
-				$BTL_Q = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
-				$BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
-			}
-			else 
-			{
-				// Calculate and distribute earned points
-				$AE = new AnswersEconomy($this->database);
-				$AE->distribute_points($id, $question->created_by, $answer->created_by, 'closure');
-			}
 		}
 
 		// Load the plugins
@@ -1614,15 +1464,15 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Call the plugin
-		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($user->get('id')), $this->_option, $question->id))) 
+		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($user->get('id')), $this->_option, $rid))) 
 		{
 			$this->setError(JText::_('COM_ANSWERS_ACTION_FAILED'));
 		}
 
 		// Redirect to the question
-		$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_QUESTION_CLOSED'), 'message');
+		$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_QUESTION_CLOSED'), 'success');
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=10')
+			JRoute::_($question->link() . '&note=10')
 		);
 	}
 

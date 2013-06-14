@@ -293,7 +293,7 @@ class AnswersResponse extends JTable
 	 */
 	public function getResults($filters=array())
 	{
-		$query  = "SELECT m.id, m.answer, m.created, m.created_by, m.helpful, m.nothelpful, m.state, m.anonymous, u.name ";
+		$query  = "SELECT m.*, u.name ";
 		$query .= $this->buildQuery($filters);
 
 		$this->_db->setQuery($query);

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$votes = ($this->question->helpful) ? $this->question->helpful : 0;
+$votes = $this->question->get('helpful', 0);
 
 $juser = JFactory::getUser();
 ?>
@@ -41,7 +41,7 @@ $juser = JFactory::getUser();
 			<?php echo $votes; ?><span> Like</span>
 		</span>
 	<?php } else { ?>
-		<?php if ($this->question->created_by == $juser->get('username')) { ?>
+		<?php if ($this->question->get('created_by') == $juser->get('username')) { ?>
 			<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote :: You cannot vote for your own entry.">
 				<?php echo $votes; ?><span> Like</span>
 			</span>
@@ -50,7 +50,7 @@ $juser = JFactory::getUser();
 				<?php echo $votes; ?><span> Like</span>
 			</span>
 		<?php } else { ?>
-			<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=vote&id=' . $this->question->id . '&vote=1'); ?>" title="Vote this up :: <?php echo $votes; ?> people liked this">
+			<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=vote&id=' . $this->question->get('id') . '&vote=1'); ?>" title="Vote this up :: <?php echo $votes; ?> people liked this">
 				<?php echo $votes; ?><span> Like</span>
 			</a>
 		<?php } ?>

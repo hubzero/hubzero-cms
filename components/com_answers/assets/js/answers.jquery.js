@@ -15,22 +15,21 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$('.reply').each(function(i, item) {
-		$(item).on('click', function (e) {
-			e.preventDefault();
-			var cfrm = $('#' + $(this).attr('rel'));
-			if (cfrm.hasClass('hide')) {
-				cfrm.removeClass('hide');
-			} else {
-				cfrm.addClass('hide');
-			}
-		});
-	});
+	$('a.reply').on('click', function (e) {
+		e.preventDefault();
 
-	$('.cancelreply').each(function(i, item) {
-		$(item).on('click', function (e) {
-			e.preventDefault();
-			$(this).closest('.addcomment').addClass('hide');
-		});
+		var frm = $('#' + $(this).attr('rel'));
+
+		if (frm.hasClass('hide')) {
+			frm.removeClass('hide');
+			$(this)
+				.addClass('active')
+				.text($(this).attr('data-txt-active'));
+		} else {
+			frm.addClass('hide');
+			$(this)
+				.removeClass('active')
+				.text($(this).attr('data-txt-inactive'));
+		}
 	});
 });
