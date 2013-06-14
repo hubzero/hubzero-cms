@@ -170,9 +170,9 @@ class OaipmhControllerXml extends Hubzero_Controller
 					<repositoryName>$repository_name</repositoryName> 
 					<baseURL>$this->hubname</baseURL>
 					<protocolVersion>2.0</protocolVersion> 
-					<adminEmail>{$config->get('email')}</adminEmail> 
-					<earliestDatestamp>{$config->get('edate')}</earliestDatestamp> 
-					<deletedRecord>{$config->get('del')}</deletedRecord>";
+					<adminEmail>{$this->config->get('email')}</adminEmail> 
+					<earliestDatestamp>{$this->config->get('edate')}</earliestDatestamp> 
+					<deletedRecord>{$this->config->get('del')}</deletedRecord>";
 					if ($this->gran == 'c') 
 					{
 						$igran = "YYYY-MM-DDThh:mm:ssZ";
