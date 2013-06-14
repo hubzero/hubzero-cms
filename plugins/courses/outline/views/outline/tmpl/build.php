@@ -36,6 +36,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 ?>
 
 <div class="header">
+	<a href="#" class="trash btn">Trash</a>
 	<a href="<?php echo JRoute::_($base . '&active=outline'); ?>" class="done btn">Done</a>
 	<h3><?php echo $this->title; ?></h2>
 </div>
@@ -60,9 +61,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 </div>
 
 <div class="outline-main">
-	<div class="delete-tray closed">
-		<div class="lock unlocked"></div>
-		<h4>&nbsp; D e l e t e d &nbsp; A s s e t s</h4>
+	<div class="delete-tray">
+		<h4>Deleted Assets</h4>
 		<ul class="assets-deleted">
 
 <?php

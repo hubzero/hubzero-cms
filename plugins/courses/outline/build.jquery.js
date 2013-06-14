@@ -21,11 +21,6 @@ if (!jq) {
 }
 
 jQuery(document).ready(function($) {
-	HUB.CoursesOutline.asset.init();
-	HUB.CoursesOutline.assetgroup.init();
-	HUB.CoursesOutline.unit.init();
-	HUB.CoursesOutline.message.init();
-
 	// Set defaults for ajax calls
 	$.ajaxSetup({
 		dataType   : "json",
@@ -56,6 +51,12 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// Initialize Objects
+	HUB.CoursesOutline.asset.init();
+	HUB.CoursesOutline.assetgroup.init();
+	HUB.CoursesOutline.unit.init();
+	HUB.CoursesOutline.message.init();
+
 	// Hack for ie iframe height issue
 	if ($.browser.msie && parseInt($.browser.version, 10) < 9) {
 		$('.content-box iframe').css({
@@ -72,9 +73,9 @@ HUB.CoursesOutline = {
 	/* ------------ */
 	asset: {
 		// Track unique counter for uploads to ensure progress bars stay separate
-		counter : 1,
-		// Track whether or not the delete tray has been locked open
-		locked  : false,
+		counter   : 1,
+		// Track whether or not the trash bin is open or closed
+		trashOpen : false,
 
 		/*
 		 * Initialize assets.
@@ -83,8 +84,7 @@ HUB.CoursesOutline = {
 		 * the refresh method should be triggered
 		 */
 		init: function() {
-			var $  = HUB.CoursesOutline.jQuery,
-			locked = false;
+			var $  = HUB.CoursesOutline.jQuery;
 
 			// Attach click events
 			$('.unit')
@@ -103,7 +103,7 @@ HUB.CoursesOutline = {
 				.on('submit', '.asset-title-form', this.submitTitleQuickEdit);
 
 			$('.delete-tray').on('click', '.restore', this.restore);
-			$('.delete-tray .lock').on('click', this.toggleLock);
+			$('.header .trash').on('click', this.toggleTrash);
 
 			// Lastely, attach a custom listener to outline main, so we know when to refresh/update asset groups
 			$('.outline-main')
@@ -113,28 +113,6 @@ HUB.CoursesOutline = {
 			// Disable default browser drag and drop event
 			function pd ( e ) { e.preventDefault(); }
 			$(document).bind('drop dragover', pd);
-
-			// Add hover to delete tray
-			$('.delete-tray').hoverIntent({
-				over : function() {
-					if(!HUB.CoursesOutline.asset.locked) {
-						$('.unit').animate({'margin-left':300}, 500);
-						$('.delete-tray').animate({'margin-left':-30}, 500, function() {
-							$('.delete-tray').removeClass('closed').addClass('open');
-						});
-					}
-				},
-				out : function() {
-					if(!HUB.CoursesOutline.asset.locked) {
-						$('.unit').animate({'margin-left':45}, 500);
-						$('.delete-tray').animate({'margin-left':-285}, 500, function() {
-							$('.delete-tray').addClass('closed').removeClass('open');
-						});
-					}
-				},
-				timeout  : 1000,
-				interval : 250
-			});
 
 			// Trigger refresh (which just initializes all items that may need to be initialized more than once)
 			$('.outline-main').trigger('assetCreate');
@@ -590,7 +568,7 @@ HUB.CoursesOutline = {
 				statusCode: {
 					200: function( data ) {
 						// Report a message?
-						asset.hide('transfer', {to:'.delete-tray h4', className: "transfer-effect", easing: "easeOutCubic", duration: 750}, function() {
+						asset.hide('transfer', {to:'.header .trash', className: "transfer-effect", easing: "easeOutCubic", duration: 750}, function() {
 							// Clone the asset for insertion to the deleted list
 							var html  = asset.clone();
 
@@ -617,13 +595,29 @@ HUB.CoursesOutline = {
 		},
 
 		/*
-		 * Toggle deleted asset bin locked state
+		 * Toggle deleted asset bin open/closed
 		 */
-		toggleLock: function () {
-			var $ = HUB.CoursesOutline.jQuery;
+		toggleTrash: function ( e ) {
+			var $  = HUB.CoursesOutline.jQuery,
+			unit   = $('.unit'),
+			tray   = $('.delete-tray'),
+			button = $('.header .trash');
 
-			$(this).toggleClass('locked').toggleClass('unlocked');
-			HUB.CoursesOutline.asset.locked = (!HUB.CoursesOutline.asset.locked) ? true : false;
+			e.preventDefault();
+
+			if(!HUB.CoursesOutline.asset.trashOpen) {
+				unit.animate({'margin-right':301}, 500);
+				button.addClass('active');
+				tray.animate({'right':0}, 500, function() {
+					HUB.CoursesOutline.asset.trashOpen = true;
+				});
+			} else {
+				unit.animate({'margin-right':0}, 500);
+				button.removeClass('active');
+				tray.animate({'right':-300}, 500, function() {
+					HUB.CoursesOutline.asset.trashOpen = false;
+				});
+			}
 		},
 
 		/* ------------------------------- */

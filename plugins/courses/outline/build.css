@@ -24,17 +24,27 @@
 	padding-left: 25px;
 	overflow: hidden;
 }
-.header .done {
+.header .done,
+.header .trash {
 	float: right;
 	margin: 1em;
 }
+.header a:before {
+	font-family: "fontcons";
+	position: relative;
+	margin-right: 5px;
+}
+.header .done:before {
+	content: "\2714";
+}
+.header .trash:before {
+	content: "\f014";
+}
+.header .trash.active {
+	box-shadow: inset 1px 1px 3px #777;
+}
 .dialog {
 	display: none;
-}
-
-/* units */
-.unit {
-	margin-left: 45px;
 }
 
 /* content box */
@@ -177,40 +187,17 @@
 }
 .delete-tray {
 	position: absolute;
-	left: 30px;
+	right: -300px;
 	top: 0;
 	bottom: 10px;
 	width: 300px;
-	margin-left: -285px;
 	border-left: 1px solid #CCCCCC;
 	border-top: 1px solid #CCCCCC;
 	border-bottom: 1px solid #CCCCCC;
 	background: #FFF;
 	overflow: scroll;
 }
-.closed {
-	overflow: hidden;
-}
-.closed h4 {
-	display: block;
-	float: right;
-	width: 1em;
-	margin: 10px 15px;
-	font-size: 16px;
-	text-align: center;
-	text-transform: uppercase;
-}
-.closed:hover {
-	-webkit-transition: box-shadow 0.25s;
-	-moz-transition: box-shadow 0.25s;
-	-ms-transition: box-shadow 0.25s;
-	-o-transition: box-shadow 0.25s;
-	transition: box-shadow 0.25s;
-
-	cursor: default;
-	box-shadow: inset 0 0 0.5em rgba(0, 0, 255, 0.5);
-}
-.open h4 {
+.delete-tray h4 {
 	margin: 0;
 	padding: 1em 0;
 	font-size: 16px;
@@ -219,71 +206,20 @@
 	background: #FAFAFA;
 	background: rgba(0, 0, 0, 0.05);
 	border-bottom: 1px dotted #AAA;
-	letter-spacing: -2px;
 }
 .delete-tray h4:before {
 	font-family: "fontcons";
 	content: "\f014";
 	position: relative;
-	top: 0;
-	left: 1px;
-}
-.open h4:before {
-	left: 0;
+	margin-right: 5px;
 }
 .placeholder-assets {
 	background: #FFF;
 	outline: 1px dotted #AAA;
 }
-.delete-tray .lock {
-	display: none;
-	position: absolute;
-	top: 12px;
-	right: 12px;
-	height: 26px;
-	width: 26px;
-	z-index: 1;
-	border: 1px solid #DCDCDC;
-	box-shadow: 0 0 1px #AAA;
-	opacity: .7;
-	cursor: pointer;
-
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-}
-.open .lock {
-	display: block;
-}
-.delete-tray .lock:hover {
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-	-ms-transition: all 0.5s;
-	-o-transition: all 0.5s;
-	transition: all 0.5s;
-
-	box-shadow: 0 0 3px #AAA;
-	opacity: 1;
-}
-.delete-tray .unlocked {
-	background: #FFF url('/components/com_courses/assets/img/unlocked.png') 3px 3px no-repeat;
-}
-.delete-tray .locked {
-	background: #FFF url('/components/com_courses/assets/img/locked.png') 3px 3px no-repeat;
-	box-shadow: 0 0 3px blue;
-}
-.delete-tray .locked:hover {
-	box-shadow: 0 0 5px blue;
-}
-.delete-tray .lock:active {
-	box-shadow: inset 1px 1px 0 #666;
-}
 .delete-tray .assets-deleted {
-	display: none;
 	margin: 10px;
 	list-style: none;
-}
-.open .assets-deleted {
 	display: inherit;
 }
 .delete-tray .asset {
