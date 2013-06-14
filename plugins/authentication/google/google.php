@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Auth_Domain');
-ximport('Hubzero_Auth_Link');
-
 class plgAuthenticationGoogle extends JPlugin
 {
 	/**
@@ -52,14 +49,16 @@ class plgAuthenticationGoogle extends JPlugin
 	}
 
 	/**
-	 * Perform logout (not currently used)
+	 * Perform logout (handled via JS)
 	 *
 	 * @access	public
 	 * @return	void
 	 */
 	public function logout()
 	{
-		// Not currently used
+		// This is handled by the JS API, and cannot be done server side
+		// (at least, it cannot be done server side, given our authentication workflow
+		// and the current limitations of the PHP SDK).
 	}
 
 	/**
@@ -70,7 +69,48 @@ class plgAuthenticationGoogle extends JPlugin
 	 */
 	public function status()
 	{
-		// Not currently used
+		// Essentually, in the background, we're just going to try and make a request to check if the user is logged in
+		// If they are, we'll add their email address to the google login button, thus offering the sign out option as well
+		// @FIXME: logout below is a total hack!
+		$js = "(function() {
+					var po   = document.createElement('script');
+					po.type  = 'text/javascript';
+					po.async = true;
+					po.src   = 'https://apis.google.com/js/client:plusone.js?onload=OnLoadCallback';
+					var s    = document.getElementsByTagName('script')[0];
+					s.parentNode.insertBefore(po, s);
+
+					OnLoadCallback = function () {
+						gapi.auth.authorize({
+							client_id     : '{$this->params->get('app_id')}',
+							immediate     : true,
+							response_type : 'token',
+							scope         : 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+						}, function ( response ) {
+							if (response && !response.error) {
+								gapi.client.load('oauth2', 'v2', function () {
+									var request = gapi.client.oauth2.userinfo.get({
+										'userId' : 'me'
+									});
+									request.execute(function ( resp ) {
+										var google = $('#google').siblings('.sign-out');
+										google.find('.current-user').html(resp.email);
+
+										google.on('click', function ( e ) {
+											e.preventDefault();
+											$('body').append('<iframe src=\"https://accounts.google.com/logout\" style=\"display:none;\">');
+											google.animate({'margin-top': -42}, function() {
+												google.find('.current-user').html('');
+											});
+										});
+									});
+								});
+							}
+						});
+					}
+				})();";
+
+		JFactory::getDocument()->addScriptDeclaration($js);
 	}
 
 	/**
