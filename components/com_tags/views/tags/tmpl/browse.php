@@ -50,22 +50,24 @@ $this->filters['sort'] = '';
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
 	<div class="main section">
 		<div class="aside">
+			<div class="container">
 <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-			<p class="help">
-				<strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong>
-				<br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?>
-			</p>
+				<p class="help">
+					<strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong>
+					<br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?>
+				</p>
 <?php } else { ?>
-			<p>
-				Here you will find a list of all tags currently in use. Click a tag to see the items tagged with it.
-			</p>
+				<p>
+					Here you will find a list of all tags currently in use. Click a tag to see the items tagged with it.
+				</p>
 <?php } ?>
-			<p>
-				<strong>Note:</strong> <?php echo JText::_('# tagged includes all usage (pending, unpublished, and private items).'); ?>
-			</p>
+				<p>
+					<strong>Note:</strong> <?php echo JText::_('# tagged includes all usage (pending, unpublished, and private items).'); ?>
+				</p>
+			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
-			
+
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
