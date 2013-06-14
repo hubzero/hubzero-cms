@@ -38,14 +38,21 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 }
 ?>
 <div class="captcha-block">
-	<table summary="<?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA'); ?>">
-		<tbody>
-			<tr>
-				<td>
-					<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
-				</td>
-				<td>
-					<script type="text/javascript">
+
+	<div class="grid">
+		<div class="col span-two-thirds">
+			<label for="imgCatchaTxt<?php echo $this->total; ?>">
+				<?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_ENTER_CAPTCHA_VALUE'); ?>
+				<input type="text" name="captcha[answer]" id="imgCatchaTxt<?php echo $this->total; ?>" />
+			</label>
+
+			<input type="hidden" name="captcha[instance]" id="imgCatchaTxtInst" value="<?php echo $this->total; ?>" />
+		</div>
+		<div class="col span-third omega">
+			<div class="captcha-wrap">
+				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
+				<a class="tooltips" href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" title="<?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?>"><?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?></a>
+				<script type="text/javascript">
 					//<![CDATA[
 					function reloadCapthcha<?php echo $this->total; ?>(instanceNo)
 					{
@@ -53,18 +60,9 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 						document.getElementById('captchaCode'+instanceNo).src = captchaSrc;
 					}
 					//]]>
-					</script>
+				</script>
+			</div><!-- /.captcha-wrap -->
+		</div><!-- / .col span-third omega -->
+	</div><!-- / .grid -->
 
-					<a href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" ><?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?></a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<label for="imgCatchaTxt<?php echo $this->total; ?>">
-		<?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_ENTER_CAPTCHA_VALUE'); ?>
-		<input type="text" name="captcha[answer]" id="imgCatchaTxt<?php echo $this->total; ?>" />
-	</label>
-
-	<input type="hidden" name="captcha[instance]" id="imgCatchaTxtInst" value="<?php echo $this->total; ?>" />
-</div>
+</div><!-- / .captcha-block -->

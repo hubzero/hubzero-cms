@@ -1,28 +1,22 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/hubzero/wikieditortoolbar/wikieditortoolbar.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/support/captcha/captcha.jquery.js
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Ensure we have our namespace
-if (!HUB) {
-	var HUB = {};
-}
+var HUB = HUB || {};
+
 if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
 
-// Plugin scripts
-HUB.Plugins.HubzeroCaptcha = {
-	initialize: function() {
-	},
-	
-	reloadCaptcha: function() {
-	}
-}
+var jq = jq || $;
 
 // Initialize script
-jQuery(document).ready(function($){
-	HUB.Plugins.HubzeroCaptcha.initialize();
+jQuery(document).ready(function(jq){
+	var $ = jq;
+	// Nothing here. 
+	// All scripts are inline at the moment.
 });

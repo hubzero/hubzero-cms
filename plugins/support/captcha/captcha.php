@@ -439,11 +439,16 @@ class plgSupportCaptcha extends JPlugin
 		$currentSession =& JFactory::getSession();
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
-		if ($hash && $word == $hash) {
+		if ($hash && $word == $hash) 
+		{
 			return true;
-		} else if ($word == $securiy_code) {
+		} 
+		else if ($word == $securiy_code) 
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			return false;
 		}
 	}
@@ -589,8 +594,8 @@ class plgSupportCaptcha extends JPlugin
 						{
 							for ($sx=$m['start']-1; $sx<$m['end']; $sx+=1)
 							{
-				        		$rgb = imagecolorat($font, $sx, $sy);
-				        		$opacity = $rgb>>24;
+								$rgb = imagecolorat($font, $sx, $sy);
+								$opacity = $rgb>>24;
 								if ($opacity < 127)
 								{
 									$left = $sx-$m['start']+$x;
@@ -601,7 +606,7 @@ class plgSupportCaptcha extends JPlugin
 									}
 									for ($px=min($left,$width-1); $px>$left-12 && $px>=0; $px-=1)
 									{
-						        		$color = imagecolorat($img, $px, $py) & 0xff;
+										$color = imagecolorat($img, $px, $py) & 0xff;
 										if ($color+$opacity < 190){
 											if ($shift > $left-$px)
 											{
