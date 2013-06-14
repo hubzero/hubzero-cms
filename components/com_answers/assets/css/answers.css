@@ -206,40 +206,77 @@
 		padding: 0;
 	}
 /* Accept the answer */
-	.accept a {
-		background: url("/components/com_answers/assets/img/checker.gif") 0 0 no-repeat;
-		padding: 0.2em 0 0.4em 1.3em;
-		margin:0;
-		height:15px;
-		font-size: inherit;	
-		border: none;	
-	}
-	.accept a:hover {
-		background-position: 0 -20px;
-		padding: 0.2em 0 0.4em 1.3em;
-		margin:0;
-	}
-	.open {
+	.aside .entry-status {
+		padding: 1em;
+		color: #ffffc0;
+		margin: 0 0 1.61803399em 0;
+		position: relative;
+		overflow: hidden;
+		zoom: 1;
+		font-family: #cea638;
+		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+											color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
+											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
+											color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
+					 						to(transparent));
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		-moz-background-size: 30px 30px;
+		background-size: 30px 30px; /* Controls the size of the stripes */
+		border: .27em solid #eee;
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		border-radius: 0.27em;
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+		-webkit-transition: all ease-in-out 0.2s;
+		-moz-transition: all ease-in-out 0.2s;
+		-o-transition: all ease-in-out 0.2s;
+		transition: all ease-in-out 0.2s;
+		-webkit-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
+		-moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
+		box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
 		text-transform: uppercase;
-		letter-spacing: 1px;
-		color:#006600;
-		font-size:x-small;
-		font-weight:bold;
+		text-align: center;
+		font-weight: bold;
 	}
-	.closed {
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		color: #000;
-		font-size:x-small;
-		font-weight:bold;
+	.aside .entry-status:hover {
+		-webkit-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
+		-moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
+		box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
 	}
-	.underreview {
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		color:#990000;
-		font-size:x-small;
-		font-weight:bold;
+	.aside .entry-status.closed {
+		background-color: #949494;
+		color: #f1f1f1;
+		border-color: #777;
 	}
+	.aside .entry-status.open {
+		background-color: #619926;
+		color: #e9ffae;
+		border-color: #3f7704;
+	}
+	.aside .entry-status.underreview {
+		background-color: #ba4a3b;
+		color: #ffd2c3;
+		border-color: #982819;
+	}
+	.aside .entry-status strong {
+		display: none;
+	}
+
 	.sidenote {
 		margin-top: 4em;
 		padding: 0 0 0 2em;
@@ -366,51 +403,7 @@
 		border-top: 2px solid #efefef;
 		color: #aaa;
 	}
-/* Answer button */
-	.aside .answer-question {
-		margin-top: 0;
-		padding-top: 0;
-	}
-	.answer-question a {
-		display: block;
-		width: 100%;
-		vertical-align: baseline;
-		margin: 0;
-		outline: none;
-		cursor: pointer;
-		text-align: center;
-		text-decoration: none;
-		padding: 0 1em;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		-webkit-border-radius: 0.25em; 
-		-moz-border-radius: 0.25em;
-		border-radius: 0.25em;
-		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		box-shadow: 0 1px 2px rgba(0,0,0,.2);
-		color: #fff;
-	}
-	.answer-question a {
-		font-size: 1.1em;
-		padding: 0.4em 0 0.42em 0;
-		border: solid 1px #538312;
-		background: #64991e;
-		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
-		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
-		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
-	}
-	.answer-question a:hover {
-		background: #538018;
-		background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
-		background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
-		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
-	}
-	.answer-question a:active {
-		color: #a9c08c;
-		background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
-		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
-		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
-	}
+
 /* Delete button */
 	#deleteForm .submit input,
 	#deleteForm .submit a {
@@ -425,9 +418,9 @@
 		text-decoration: none;
 		padding: 0 1em;
 		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		-webkit-border-radius: 0.5em; 
-		-moz-border-radius: 0.5em;
-		border-radius: 0.5em;
+		-webkit-border-radius: 0.25em; 
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
 		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 		box-shadow: 0 1px 2px rgba(0,0,0,.2);

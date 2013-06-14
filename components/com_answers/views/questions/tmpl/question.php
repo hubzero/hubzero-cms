@@ -114,16 +114,25 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <?php } else { ?>
 	
 	<div class="aside">
-	<?php if ($this->question->state == 0 && $this->responding != 1 && $reports == 0) { ?>
+		<div class="container">
+	<?php /*if ($this->question->state == 0 && $this->responding != 1 && $reports == 0) { ?>
 	<?php //if ($this->question->state == 0 && $this->responding != 1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
 		<p class="answer-question"><a href="<?php 
 		$route = JRoute::_('index.php?option=' . $this->option . '&task=answer&id=' . $this->question->id);
 		echo ($this->juser->get('guest') ? JRoute::_('index.php?option=com_login&return=' . base64_encode($route)) : $route);
 		?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
-	<?php } ?>
+	<?php }*/
+		if ($this->question->state == 0 && $reports == 0) {
+			$status = 'open';
+		} else if ($reports > 0) {
+			$status = 'underreview';
+		} else {
+			$status = 'closed';
+		}
+	 ?>
 		<div class="status_display">
-			<p class="intro">
-				<?php echo JText::_('COM_ANSWERS_STATUS'); ?>:
+			<p class="entry-status <?php echo $status; ?>">
+				<strong><?php echo JText::_('COM_ANSWERS_STATUS'); ?>:</strong>
 			<?php if ($this->question->state == 0 && $reports == 0) { ?>
 				<span class="open"><?php echo JText::_('COM_ANSWERS_STATUS_ACCEPTING_ANSWERS'); ?></span>
 			<?php } else if ($reports > 0) { ?>
@@ -143,6 +152,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			</p>
 		<?php } ?>
 		</div><!-- / .status_display -->
+		</div><!-- / .container -->
 	</div><!-- / .aside -->
 
 	<div class="subject">
@@ -250,20 +260,20 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<div class="below section">
 		<div class="subject">
 			<div class="subject-wrap">
-			<p class="error"><?php echo JText::_('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
+				<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
 
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete'); ?>" method="post" id="deleteForm">
-				<input type="hidden" name="qid" value="<?php echo $this->question->id; ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				<input type="hidden" name="task" value="deleteq" />
+				<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete'); ?>" method="post" id="deleteForm">
+					<input type="hidden" name="qid" value="<?php echo $this->question->id; ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+					<input type="hidden" name="task" value="deleteq" />
 
-				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
-				</p>
-			</form>
-			</div>
+					<p class="submit">
+						<input class="btn-success btn-primary" type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
+						<a class="btn-danger btn-auxiliary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
+					</p>
+				</form>
+			</div><!-- / .subject-wrap -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</div><!-- / .below section -->
@@ -274,11 +284,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<?php if ($this->responding == 6 && $this->question->state == 0 && $reports == 0 && $this->banking) { // show how points are awarded ?>
 	<div class="below section">
 		<h3><?php echo JText::_('COM_ANSWERS_POINTS_BREAKDOWN'); ?></h3>
-		
+
 		<div class="aside">
-			<p class="info"><?php echo JText::_('COM_ANSWERS_POINT_BREAKDOWN_TBL_SUMMARY'); ?></p>
+			<div class="container">
+				<p class="info"><?php echo JText::_('COM_ANSWERS_POINT_BREAKDOWN_TBL_SUMMARY'); ?></p>
+			</div><!-- / .container -->
 		</div><!-- / .aside -->
-		
+
 		<div class="subject">
 			<div class="subject-wrap">
 			<table id="pointbreakdown" summary="<?php echo JText::_('COM_ANSWERS_POINTS'); ?>">
@@ -342,39 +354,41 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<?php echo JText::_('COM_ANSWERS_YOUR_ANSWER'); ?>
 		</h3>
 		<div class="aside">
-			<table class="wiki-reference" summary="Wiki Syntax Reference">
-				<caption>Wiki Syntax Reference</caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="container">
+				<table class="wiki-reference" summary="Wiki Syntax Reference">
+					<caption>Wiki Syntax Reference</caption>
+					<tbody>
+						<tr>
+							<td>'''bold'''</td>
+							<td><b>bold</b></td>
+						</tr>
+						<tr>
+							<td>''italic''</td>
+							<td><i>italic</i></td>
+						</tr>
+						<tr>
+							<td>__underline__</td>
+							<td><span style="text-decoration:underline;">underline</span></td>
+						</tr>
+						<tr>
+							<td>{{{monospace}}}</td>
+							<td><code>monospace</code></td>
+						</tr>
+						<tr>
+							<td>~~strike-through~~</td>
+							<td><del>strike-through</del></td>
+						</tr>
+						<tr>
+							<td>^superscript^</td>
+							<td><sup>superscript</sup></td>
+						</tr>
+						<tr>
+							<td>,,subscript,,</td>
+							<td><sub>subscript</sub></td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
 			<?php if (!$this->juser->get('guest')) { ?>
@@ -389,7 +403,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						$anon = 1;
 					}
 				?>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo JText::_(''); ?>" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo JText::_('Member picture'); ?>" />
 				</p>
 				<fieldset>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -401,7 +415,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<?php
 						ximport('Hubzero_Wiki_Editor');
 						$editor =& Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('response[answer]', 'responseanswer', '', '', '50', '10');
+						echo $editor->display('response[answer]', 'responseanswer', '', 'minimal', '50', '10');
 						?>
 					</label>
 
@@ -652,19 +666,23 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<div class="below section">
 		<h3>
 			<a name="answers"></a>
-			<?php echo JText::_('COM_ANSWERS_RESPONSES'); ?> (<?php echo ($chosen) ? (count($this->responses) - 1) : count($this->responses); ?>)
+			<span class="comment-count"><?php echo ($chosen) ? (count($this->responses) - 1) : count($this->responses); ?></span> <?php echo JText::_('COM_ANSWERS_RESPONSES'); ?>
 		</h3>
 
 		<div class="aside">
 		<?php if ($this->question->state == 0 && $this->responding!=1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
-			<p class="answer-question"><a href="<?php 
+			<div class="container">
+			<p><a class="icon-add add btn" href="<?php 
 			$route = JRoute::_('index.php?option=' . $this->option . '&task=answer&id=' . $this->question->id);
 			echo ($this->juser->get('guest') ? JRoute::_('index.php?option=com_login&return=' . base64_encode($route)) : $route);
 			?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
+			</div><!-- / .container -->
 		<?php } ?>
 		
 		<?php if ($this->juser->get('username') == $this->question->created_by && $this->question->state == 0) { ?>
+			<div class="container">
 			<p class="info"><?php echo JText::_('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE'); ?></p>
+			</div><!-- / .container -->
 		<?php } ?>
 		</div><!-- / .aside -->
 	
@@ -724,10 +742,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<?php if (!$abuse) { ?>
 						<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig, false); ?>
 						<p class="comment-options">
-							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id='.$row->id.'&parent='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
 						<?php if (!$chosen) { ?>
 							<a class="reply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=reply&category=answer&id=' . $this->question->id . '&refid='.$row->id.'#c'.$row->id); ?>" rel="commentform_<?php echo $row->id; ?>"><?php echo JText::_('COM_ANSWERS_REPLY'); ?></a> 
 						<?php } ?>
+							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id='.$row->id.'&parent='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
 						<?php if ($this->juser->get('username') == $this->question->created_by && $this->question->state == 0) { ?>
 							<span class="accept"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=accept&id=' . $this->question->id . '&rid='.$row->id); ?>"><?php echo JText::_('COM_ANSWERS_ACCEPT_ANSWER'); ?></a></span>
 						<?php } ?>

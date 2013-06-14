@@ -91,14 +91,14 @@ if ($this->reply->anonymous != 1)
 	<?php } ?>
 
 	<p class="comment-options">
-<?php if ($this->abuse) { ?>
-		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->reply->id . '&parent=' . $this->id); ?>">
-			<?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?>
-		</a>
-<?php } ?>
 <?php if ($this->level < 3) { ?>
 		<a class="reply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=reply&category=answercomment&id=' . $this->id . '&refid=' . $this->reply->id . '#c' . $this->reply->id); ?>" rel="commentform_<?php echo $this->reply->id; ?>">
 			<?php echo JText::_('COM_ANSWERS_REPLY'); ?>
+		</a>
+<?php } ?>
+<?php if ($this->abuse) { ?>
+		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->reply->id . '&parent=' . $this->id); ?>">
+			<?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?>
 		</a>
 <?php } ?>
 	</p>
