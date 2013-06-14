@@ -436,7 +436,16 @@ class SupportQuery extends JTable
 			else
 			{
 				$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
-				$having = " GROUP BY f.id HAVING uniques='" . (count($tags) - count($nottags)). "'";
+
+				if (strtoupper($condition->operator) == 'OR')
+				{
+					$h = 1;
+				}
+				else
+				{
+					$h = (count($tags) - count($nottags));
+				}
+				$having = " GROUP BY f.id HAVING uniques='" . $h . "'";
 			}
 		}
 
