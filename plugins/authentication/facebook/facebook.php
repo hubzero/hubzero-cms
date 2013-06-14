@@ -95,8 +95,9 @@ class plgAuthenticationFacebook extends JPlugin
 								facebook.on('click', function( e ) {
 									e.preventDefault();
 									FB.logout(function() {
-										facebook.find('.current-user').html('');
-										facebook.animate({'margin-top': -42});
+										facebook.animate({'margin-top': -42}, function() {
+											facebook.find('.current-user').html('');
+										});
 									});
 								});
 							});
