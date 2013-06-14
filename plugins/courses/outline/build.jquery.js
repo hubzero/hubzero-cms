@@ -568,7 +568,7 @@ HUB.CoursesOutline = {
 				statusCode: {
 					200: function( data ) {
 						// Report a message?
-						asset.hide('transfer', {to:'.header .trash', className: "transfer-effect", easing: "easeOutCubic", duration: 750}, function() {
+						asset.hide('transfer', {to:'.header .trash', className: "transfer-effect", easing: "easeOutCubic", duration: 1000}, function() {
 							// Clone the asset for insertion to the deleted list
 							var html  = asset.clone();
 

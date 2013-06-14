@@ -309,6 +309,7 @@
 }
 .aux-attachments form .input-content {
 	width: 100%;
+	margin-bottom: 10px;
 }
 .aux-attachments a {
 	border: 1px solid #DCDCDC;
