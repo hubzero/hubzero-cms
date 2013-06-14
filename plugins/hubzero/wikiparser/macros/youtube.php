@@ -44,7 +44,7 @@ class YoutubeMacro extends WikiMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Embeds a Youtube Video into the Page";
+		$txt['wiki'] = 'Embeds a Youtube Video into the Page';
 		$txt['html'] = '<p>Embeds a Youtube Video into the Page. Accepts either full Youtube video URL or just Youtube Video ID (highlighted below).</p>
 						<p><strong>Youtube URL:</strong> http://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
 						<p>Examples:</p>
@@ -128,4 +128,3 @@ class YoutubeMacro extends WikiMacro
 		return '<iframe src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '"></iframe>';
 	}
 }
-?>
