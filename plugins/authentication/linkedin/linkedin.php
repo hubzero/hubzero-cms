@@ -1,10 +1,35 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Sam Wilson <samwilson@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
-
-ximport('Hubzero_Auth_Domain');
-ximport('Hubzero_Auth_Link');
 
 // Include LinkedIn php library
 require_once( join( DS, array( JPATH_ROOT, 'libraries', 'simplelinkedin-php', 'linkedin_3.2.0.class.php' ) ) );
@@ -34,7 +59,9 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function logout()
 	{
-		// Not currently used
+		// This is handled by the JS API, and cannot be done server side
+		// (at least, it cannot be done server side, given our authentication workflow
+		// and the current limitations of the PHP SDK).
 	}
 
 	/**
@@ -45,9 +72,37 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function status()
 	{
-		// Not currently used
-		$status = array();
-		return $status;
+		$js = "$(document).ready(function() {
+					$.getScript('https://platform.linkedin.com/in.js?async=true', function success() {
+						onLinkedInLoad = function () {
+							if(IN.User.isAuthorized()) {
+								IN.API.Profile('me').result(function(profile) {
+									var linkedin = $('#linkedin').siblings('.sign-out');
+									linkedin
+										.find('.current-user')
+										.html(profile.values[0].firstName+' '+profile.values[0].lastName);
+
+									linkedin.on('click', function( e ) {
+										e.preventDefault();
+										IN.User.logout(function() {
+											linkedin.animate({'margin-top': -42}, function() {
+												linkedin.find('.current-user').html('');
+											});
+										});
+									});
+								});
+							}
+						}
+
+						IN.init({
+							api_key   : '{$this->params->get('api_key')}',
+							onLoad    : 'onLinkedInLoad',
+							authorize : true
+						});
+					});
+				});";
+
+		JFactory::getDocument()->addScriptDeclaration($js);
 	}
 
 	/**
