@@ -44,15 +44,15 @@ class VideoMacro extends WikiMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = 'Embeds a Youtube Video into the Page';
-		$txt['html'] = '<p>Embeds a Youtube Video into the Page. Accepts either full Youtube video URL or just Youtube Video ID (highlighted below).</p>
+		$txt['wiki'] = 'Embeds a video into the Page';
+		$txt['html'] = '<p>Embeds a video into the Page. Accepts either full video URL (YouTube, Vimeo, Kaltura, Blip TV) or a file name or path.</p>
 						<p><strong>Youtube URL:</strong> http://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
 						<p>Examples:</p>
 						<ul>
-							<li><code>[[Youtube(FgfGOEpZEOw)]]</code></li>
-							<li><code>[[Youtube(http://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
-							<li><code>[[Youtube(FgfGOEpZEOw, 640, 380)]] - width 640px, height 380px</code></li>
-							<li><code>[[Youtube(FgfGOEpZEOw, 100%)]] - width of 100%</code></li>
+							<li><code>[[Video(MyVideo.m4v)]]</code></li>
+							<li><code>[[Video(http://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
+							<li><code>[[Video(http://blip.tv/play/hNNNg4uIDAI.x?p=1, 640, 380)]] - width 640px, height 380px</code></li>
+							<li><code>[[Video(http://player.vimeo.com/video/67115692, 100%)]] - width of 100%</code></li>
 						</ul>
 						<p>Displays:</p>
 						<iframe src="http://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0"></iframe>';
