@@ -48,4 +48,20 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Enabled</option>
 		</param>
 	</params>
+	<params group="onOfferingEdit">
+		<param name="store_product" type="radio" default="0" label="Add to store" description="Add a product entry to the store for this course?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="store_price" type="text" size="5" default="30.00" label="Price ($)" description="The price of the course" />
+		<param name="store_membership_duration" type="list" default="1 YEAR" label="Membership duration" description="How long does membership last?">
+			<option value="1 WEEK">1 week</option>
+			<option value="2 WEEKS">2 weeks</option>
+			<option value="3 WEEKS">3 weeks</option>
+			<option value="1 MONTH">1 month</option>
+			<option value="3 MONTHS">3 months</option>
+			<option value="6 MONTHS">6 months</option>
+			<option value="1 YEAR">1 year</option>
+		</param>
+	</params>
 </install>

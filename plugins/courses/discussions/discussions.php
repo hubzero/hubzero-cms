@@ -69,6 +69,140 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	}
 
 	/**
+	 * Return the alias and name for this category of content
+	 * 
+	 * @return     object
+	 */
+	public function onSectionEdit()
+	{
+		/*$obj = new stdClass;
+		$obj->name  = $this->_name;
+		$obj->title = JText::_('PLG_COURSES_' . strtoupper($this->_name));*/
+
+		return $this->onCourseAreas();
+	}
+
+	/**
+	 * Return the alias and name for this category of content
+	 * 
+	 * @return     object
+	 */
+	/*public function onAssetGroupEdit()
+	{
+		$obj = new stdClass;
+		$obj->name  = $this->_name;
+		$obj->title = JText::_('PLG_COURSES_' . strtoupper($this->_name));
+
+		return $obj;
+	}*/
+
+	/**
+	 * Update any category associated with the assetgroup
+	 * 
+	 * @param      object  $model CoursesModelAssetgroup
+	 * @return     mixed
+	 */
+	public function onAssetgroupSave($assetgroup)
+	{
+		if (!$assetgroup->exists())
+		{
+			return;
+		}
+		/*$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$this->params->merge(new $paramsClass($assetgroup->get('params')));
+
+		if ($assetgroup->get('discussions_linkAssetGroup', 0))
+		{*/
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+
+			$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
+
+			$category = new ForumCategory(JFactory::getDBO());
+			$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
+			if ($category->get('id'))
+			{
+				/*$category->section_id  = $this->onUnitSave($unit);
+				$category->scope       = 'course';
+				$category->scope_id    = $unit->get('offering_id');
+				$category->object_id   = $assetgroup->get('id');
+				}*/
+				$category->state       = $assetgroup->get('state');
+				$category->title       = $assetgroup->get('title');
+				$category->alias       = $assetgroup->get('alias');
+				if ($category->check())
+				{
+					$category->store();
+				}
+			}
+			return $category->id;
+		//}
+	}
+
+	/**
+	 * Actions to perform after deleting an assetgroup
+	 * 
+	 * @param      object  $model CoursesModelAssetgroup
+	 * @return     void
+	 */
+	public function onAssetgroupDelete($assetgroup)
+	{
+		if (!$assetgroup->exists())
+		{
+			return;
+		}
+	}
+
+	/**
+	 * Update any section associated with the unit
+	 * 
+	 * @param      object  $model CoursesModelUnit
+	 * @return     mixed
+	 */
+	public function onUnitSave($unit)
+	{
+		if (!$unit->exists())
+		{
+			return;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
+
+		$section = new ForumSection(JFactory::getDBO());
+		if ($section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course'))
+		{
+			// Create a default section
+			//$section->scope    = 'course';
+			//$section->scope_id = $unit->get('offering_id');
+			$section->state    = $unit->get('state');
+			$section->title    = $unit->get('title');
+			$section->alias    = $unit->get('alias');
+			if ($section->check())
+			{
+				$section->store();
+			}
+		}
+		return $section->id;
+	}
+
+	/**
+	 * Actions to perform after deleting a unit
+	 * 
+	 * @param      object  $model CoursesModelUnit
+	 * @return     void
+	 */
+	public function onUnitDelete($unit)
+	{
+		if (!$unit->exists())
+		{
+			return;
+		}
+	}
+
+	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 * 
 	 * @param      object  $course      Current course
@@ -117,6 +251,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		if ($return == 'html') 
 		{
 			$this->_active = $this->_name;
+
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+
+			$this->params->merge(new $paramsClass($offering->section()->get('params')));
 
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
@@ -282,6 +424,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$this->params->merge(new $paramsClass($course->offering()->section()->get('params')));
+
 		$this->_active = 'outline';
 
 		ximport('Hubzero_Document');
@@ -329,7 +479,10 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->filters['state']    = 1;
 		$view->filters['scope']    = 'course';
 		$view->filters['scope_id'] = $course->offering()->get('id');
-		$view->filters['scope_sub_id'] = $course->offering()->section()->get('id');
+		if ($this->params->get('discussions_threads', 'all') != 'all')
+		{
+			$view->filters['scope_sub_id'] = $course->offering()->section()->get('id');
+		}
 		$view->filters['sticky'] = false;
 		//$view->filters['start_id'] = JRequest::getInt('start_id', 0);
 		$view->filters['search']   = JRequest::getVar('search', '');
@@ -379,7 +532,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 			$view->post->scope = $view->filters['scope'];
 			$view->post->scope_id = $view->filters['scope_id'];
-			$view->post->scope_sub_id = $view->filters['scope_sub_id'];
+			$view->post->scope_sub_id = $course->offering()->section()->get('id');
 			$view->post->category_id = $category->get('id');
 			$view->post->object_id = $lecture->get('id');
 			$view->post->parent = 0;
@@ -1006,7 +1159,10 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->filters['authorized'] = 1;
 		$view->filters['scope']      = 'course';
 		$view->filters['scope_id']   = $this->offering->get('id');
-		$view->filters['scope_sub_id']   = $this->offering->section()->get('id');
+		if ($this->params->get('discussions_threads', 'all') != 'all')
+		{
+			$view->filters['scope_sub_id']   = $this->offering->section()->get('id');
+		}
 		$view->filters['search']     = JRequest::getVar('search', '');
 		$view->filters['section_id'] = 0;
 		$view->filters['state']      = 1;
@@ -1214,7 +1370,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->post = new ForumPost($this->database);
 		$view->post->scope    = $view->filters['scope'];
 		$view->post->scope_id = $view->filters['scope_id'];
-		$view->post->scope_sub_id = $view->filters['scope_sub_id'];
+		$view->post->scope_sub_id = $this->offering->section()->get('id');
 
 		$view->config = $this->params;
 		$view->course = $this->course;

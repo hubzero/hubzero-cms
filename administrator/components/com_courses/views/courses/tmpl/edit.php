@@ -185,6 +185,44 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 		
+		<?php
+
+			JPluginHelper::importPlugin('courses');
+			$dispatcher =& JDispatcher::getInstance();
+
+			if ($plugins = $dispatcher->trigger('onCourseEdit'))
+			{
+				$pth = false;
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$pth = true;
+					$paramsClass = 'JRegistry';
+				}
+
+				$data = $this->row->get('params');
+
+				foreach ($plugins as $plugin)
+				{
+					$param = new $paramsClass(
+						(is_object($data) ? $data->toString() : $data),
+						JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . ($pth ? DS . $plugin['name'] : '') . '.xml'
+					);
+					$out = $param->render('params', 'onCourseEdit');
+					if (!$out) 
+					{
+						continue;
+					}
+					?>
+					<fieldset class="adminform eventparams" id="params-<?php echo $plugin['name']; ?>">
+						<legend><?php echo JText::sprintf('%s Parameters', $plugin['title']); ?></legend>
+						<?php echo $out; ?>
+					</fieldset>
+					<?php
+				}
+			}
+		?>
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
 			

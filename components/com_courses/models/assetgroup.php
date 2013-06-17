@@ -370,6 +370,12 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			}
 		}
 
+		if ($value)
+		{
+			JPluginHelper::importPlugin('courses');
+			JDispatcher::getInstance()->trigger('onAssetgroupSave', array($this));
+		}
+
 		return $value;
 	}
 
@@ -409,6 +415,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 				}
 			}
 		}
+
+		JPluginHelper::importPlugin('courses');
+		JDispatcher::getInstance()->trigger('onAssetgroupDelete', array($this));
 
 		// Remove this record from the database and log the event
 		return parent::delete();

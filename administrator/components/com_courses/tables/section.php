@@ -131,6 +131,13 @@ class CoursesTableSection extends JTable
 	var $grade_policy_id = NULL;
 
 	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $params = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object

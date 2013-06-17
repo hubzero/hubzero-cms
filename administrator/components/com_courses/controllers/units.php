@@ -225,7 +225,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 			return;
 		}
 
-		if ($model->get('id'))
+		if ($model->get('id') && $model->assetgroups()->total() <= 0)
 		{
 			$asset_groups = explode(',', $this->config->getValue('default_asset_groups', 'Lectures, Homework, Exam'));
 			array_map('trim', $asset_groups);

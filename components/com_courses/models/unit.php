@@ -470,6 +470,12 @@ class CoursesModelUnit extends CoursesModelAbstract
 			}
 		}
 
+		if ($value)
+		{
+			JPluginHelper::importPlugin('courses');
+			JDispatcher::getInstance()->trigger('onUnitSave', array($this));
+		}
+
 		return $value;
 	}
 
@@ -508,6 +514,9 @@ class CoursesModelUnit extends CoursesModelAbstract
 				$this->setError($dt->getError());
 			}
 		}
+
+		JPluginHelper::importPlugin('courses');
+		JDispatcher::getInstance()->trigger('onUnitDelete', array($this));
 
 		// Remove this record from the database and log the event
 		return parent::delete();

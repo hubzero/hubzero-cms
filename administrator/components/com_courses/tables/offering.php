@@ -130,6 +130,13 @@ class CoursesTableOffering extends JTable
 	var $created_by = NULL;
 
 	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $params = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object

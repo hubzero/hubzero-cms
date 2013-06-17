@@ -297,7 +297,7 @@ class CoursesTableUnit extends JTable
 	 */
 	private function makeAliasUnique()
 	{
-		$sql = "SELECT alias from $this->_tbl WHERE `offering_id`=" . $this->_db->Quote(intval($this->offering_id));
+		$sql = "SELECT alias from $this->_tbl WHERE `offering_id`=" . $this->_db->Quote(intval($this->offering_id)) . " AND `id`!=" . $this->_db->Quote(intval($this->id));
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadResultArray();
 

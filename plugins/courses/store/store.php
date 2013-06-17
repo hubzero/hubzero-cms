@@ -53,6 +53,20 @@ class plgCoursesStore extends JPlugin
 	}
 
 	/**
+	 * Return the alias and name for this category of content
+	 * 
+	 * @return     array
+	 */
+	public function onOfferingEdit()
+	{
+		$area = array(
+			'name'  => $this->_name,
+			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name))
+		);
+		return $area;
+	}
+
+	/**
 	 * Return data on a resource view (this will be some form of HTML)
 	 * 
 	 * @param      object  $resource Current resource
@@ -94,34 +108,55 @@ class plgCoursesStore extends JPlugin
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
-	public function onAfterSaveCourse($model, $isNew=false)
+	public function onOfferingSave($model)
 	{
 		if (!$model->exists())
 		{
 			return;
 		}
-		if (JRequest::getInt('store_product', 0))
+
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			if ($isNew)
+			$paramsClass = 'JRegistry';
+		}
+		$params = new $paramsClass($model->get('params'));
+
+		if ($params->get('store_product', 0))
+		{
+			$course = CoursesModelCourse::getInstance($model->get('course_id'));
+
+			$title       = $course->get('title') . ' (' . $model->get('title') . ')';
+			$description = $course->get('blurb');
+			$price       = $params->get('store_price', '30.00');
+			$duration    = $params->get('store_membership_duration', '1 YEAR');
+
+			if (!$params->get('store_product_id', 0))
 			{
 				ximport('Hubzero_Storefront_Product');
-				$course = new Hubzero_Storefront_Course();
-				$course->setName($model->get('title'));
-				$course->setDescription($model->get('blurb'));
-				$course->setPrice(12.00);
+				$product = new Hubzero_Storefront_Course();
+				$product->setName($title);
+				$product->setDescription($description);
+				$product->setPrice($price);
+				// We don't want products showing up for non-published courses
+				$product->setActiveStatus(0);
 				// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
-				$course->setTimeToLive('1 YEAR');
+				$product->setTimeToLive($duration);
 				// Course alias id
-				$course->setCourseId($model->get('alias'));
+				$product->setCourseId($model->get('id'));
 				try 
 				{
 					// Returns object with values, pId is the new product ID to link to
-					$info = $course->add();
+					$info = $product->add();
 					//print_r($info);
+					$params->set('store_product_id', $info->pId);
+
+					$model->set('params', $params->toString());
+					$model->store();
 				}
-				catch(Exception $e) 
+				catch (Exception $e) 
 				{
-					echo 'ERROR: ' . $e->getMessage();
+					$this->setError('ERROR: ' . $e->getMessage());
 				}
 			}
 			else
@@ -131,16 +166,24 @@ class plgCoursesStore extends JPlugin
 				try 
 				{
 					// Get course by pID returned with $course->add() above
-					$course = $warehouse->getCourse(1023);
-					$course->setName($course->get('title'));
-					$course->setDescription($course->get('blurb'));
-					$course->setPrice(55);
-					$course->setTimeToLive('10 YEAR');
-					$course->update();
+					$product = $warehouse->getCourse($params->get('store_product_id', 0));
+					$product->setName($title);
+					$product->setDescription($description);
+					$product->setPrice($price);
+					$product->setTimeToLive($duration);
+					if ($model->get('state') != 1)
+					{
+						$product->setActiveStatus(0);
+					}
+					else
+					{
+						$product->setActiveStatus(1);
+					}
+					$product->update();
 				}
-				catch(Exception $e) 
+				catch (Exception $e) 
 				{
-					echo 'ERROR: ' . $e->getMessage();
+					$this->setError('ERROR: ' . $e->getMessage());
 				}
 			}
 		}
@@ -152,16 +195,27 @@ class plgCoursesStore extends JPlugin
 	 * @param      object  $model CoursesModelCourse
 	 * @return     void
 	 */
-	public function onAfterDeleteCourse($model)
+	public function onOfferingDelete($model)
 	{
 		if (!$model->exists())
 		{
 			return;
 		}
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
-		// Delete by existing course ID (pID returned with $course->add() when the course was created)
-		$warehouse->deleteProduct(1023);
+
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$params = new $paramsClass($model->get('params'));
+
+		if ($product = $params->get('store_product_id', 0))
+		{
+			ximport('Hubzero_Storefront_Warehouse');
+			$warehouse = new Hubzero_Storefront_Warehouse();
+			// Delete by existing course ID (pID returned with $course->add() when the course was created)
+			$warehouse->deleteProduct($product);
+		}
 	}
 
 	/**
@@ -171,7 +225,7 @@ class plgCoursesStore extends JPlugin
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
-	public function onAfterSaveOffering($model, $isNew=false)
+	public function onCourseSave($model)
 	{
 		if (!$model->exists())
 		{
@@ -185,7 +239,7 @@ class plgCoursesStore extends JPlugin
 	 * @param      object  $model CoursesModelOffering
 	 * @return     void
 	 */
-	public function onAfterDeleteOffering($model)
+	public function onCourseDelete($model)
 	{
 		if (!$model->exists())
 		{
@@ -200,7 +254,7 @@ class plgCoursesStore extends JPlugin
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
-	public function onAfterSaveSection($model, $isNew=false)
+	public function onSectionSave($model, $isNew=false)
 	{
 		if (!$model->exists())
 		{
@@ -214,7 +268,7 @@ class plgCoursesStore extends JPlugin
 	 * @param      object  $model CoursesModelSection
 	 * @return     void
 	 */
-	public function onAfterDeleteSection($model)
+	public function onSectionDelete($model)
 	{
 		if (!$model->exists())
 		{

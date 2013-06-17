@@ -1127,7 +1127,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onAfterSaveOffering', array($this, $isNew));
+		JDispatcher::getInstance()->trigger('onOfferingSave', array($this));
 
 		if ($isNew)
 		{
@@ -1147,7 +1147,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		$value = parent::delete();
 
 		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onAfterDeleteOffering', array($this));
+		JDispatcher::getInstance()->trigger('onOfferingDelete', array($this));
 
 		return $value;
 	}

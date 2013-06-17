@@ -38,5 +38,12 @@
 			<option value="nobody">Disabled/Off</option>
 		</param>
 		<param name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
+		<param name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
+	</params>
+	<params group="onSectionEdit">
+		<param name="discussions_threads" type="list" default="all" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
+			<option value="all">All sections</option>
+			<option value="section">This section only</option>
+		</param>
 	</params>
 </install>

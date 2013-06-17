@@ -215,6 +215,17 @@ class CoursesControllerOfferings extends Hubzero_Controller
 			return;
 		}
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$p = new $paramsClass('');
+		$p->bind(JRequest::getVar('params', '', 'post'));
+
+		$model->set('params', $p->toString());
+
 		if (!$model->store(true))
 		{
 			$this->addComponentMessage($model->getError());

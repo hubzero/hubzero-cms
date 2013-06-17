@@ -650,7 +650,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		JPluginHelper::importPlugin('courses');
 
 		$dispatcher =& JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterSaveCourse', array($this, $isNew));
+		$dispatcher->trigger('onCourseSave', array($this));
 
 		if ($affected > 0)
 		{
@@ -678,7 +678,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		$value = parent::delete();
 
 		JPluginHelper::importPlugin('courses');
-		JDispatcher::getInstance()->trigger('onAfterDeleteCourse', array($this));
+		JDispatcher::getInstance()->trigger('onCourseDelete', array($this));
 
 		return $value;
 	}

@@ -88,7 +88,10 @@ if (count($inst) > 0)
 						$filters = array();
 						$filters['scope']      = $this->filters['scope'];
 						$filters['scope_id']   = $this->filters['scope_id'];
-						$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
+						if ($this->config->get('discussions_threads', 'all') != 'all')
+						{
+							$filters['scope_sub_id']   = $this->filters['scope_sub_id'];
+						}
 						$filters['state']      = 1;
 						$filters['sort_Dir']   = 'DESC';
 						$filters['limit']      = 100;
@@ -147,7 +150,10 @@ if (count($inst) > 0)
 										$tfilters = array();
 										$tfilters['scope']      = $this->filters['scope'];
 										$tfilters['scope_id']   = $this->filters['scope_id'];
-										$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
+										if ($this->config->get('discussions_threads', 'all') != 'all')
+										{
+											$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
+										}
 										$tfilters['state']       = 1;
 										$tfilters['category_id'] = $row->id;
 										$tfilters['sort_Dir']    = 'DESC';
