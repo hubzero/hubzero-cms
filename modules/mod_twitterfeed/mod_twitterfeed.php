@@ -31,6 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+
+// Include the logic only once
+require_once (dirname(__FILE__) . DS . 'helper.php');
+
+$modTwitterFeed = new modTwitterFeed($params, $module);
+$modTwitterFeed->display();
+
+/*
 // Include the helper file  
 require_once(dirname(__FILE__).DS.'helper.php');
 
@@ -42,8 +50,8 @@ $displayLink = $params->get('displayLink');
 $displayIcon = $params->get('displayIcon');
 
 // Get the items to display from the helper
-$tweets = modTwitterFeedHelper::getTweets($twitterID, $tweetCount);
+//modTwitterFeedHelper::getTweets($twitterID, $tweetCount);
 
 // Include the template for display  
 require(JModuleHelper::getLayoutPath('mod_twitterfeed'));
-
+*/

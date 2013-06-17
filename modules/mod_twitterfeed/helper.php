@@ -35,70 +35,63 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying a Twitter feed
  */
-class modTwitterFeedHelper
+class modTwitterFeed
 {
+	
 	/**
-	 * Get tweets
+	 * Container for properties
 	 * 
-	 * @param      string $twitterID Twitter feed to pull from
-	 * @param      mixed  $tweetCount Number of recors to return
-	 * @return     array
+	 * @var array
 	 */
-	public static function getTweets($twitterID, $tweetCount)
+	private $attributes = array();
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      object $params JParameter
+	 * @param      object $module Database row
+	 * @return     void
+	 */
+	public function __construct($params, $module)
 	{
-		//declare variables
-		$i = 0;
-		$tweets = array(
-			'error' => ''
-		);
+		$this->params = $params;
+		$this->module = $module;
+	}
 
-		$subtract = strlen($twitterID) + 2;
+	/**
+	 * Set a property
+	 * 
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
+	 * @return     void
+	 */
+	public function __set($property, $value)
+	{
+		$this->attributes[$property] = $value;
+	}
 
-		//Check to make sure a twitter ID has been entered
-		if ($twitterID == null || $twitterID == '') 
+	/**
+	 * Get a property
+	 * 
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
+	 */
+	public function __get($property)
+	{
+		if (isset($this->attributes[$property])) 
 		{
-			$tweets['error'] = JText::_('MOD_TWITTERFEED_MISSING_ID');
+			return $this->attributes[$property];
 		}
-
-		//Check to make sure admin didnt set # of Tweets to display too high or too low
-		if ($tweetCount > 10 || $tweetCount < 0 || $tweetCount == '') 
-		{
-			$tweetCount = 3;
-		}
-
-		//set options for parsing feed
-		$options = array(
-			'rssUrl' => 'https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=' . $twitterID //Declare Twitter user rss feed with TwitterID from Module Manager
-		);
-
-		//Parse the rss feed
-		$twitter =& JFactory::getXMLParser('rss', $options);
-
-		// Check to make sure the RSS feed was parsed corectly
-		if (!isset($twitter) && $tweets['error'] == '') 
-		{
-			$tweets['error'] = JText::_('MOD_TWITTERFEED_INVALID_ID');
-		}
-
-		//Check to make sure there are no errors before obtaining tweets
-		if ($tweets['error'] == '')  
-		{
-			// For each slice of pie we've got to get the goods
-		 	foreach ($twitter->get_items(0, $tweetCount) as $tweet)
-			{
-				$tweetTitle = $tweet->get_title();
-				$tweetTitle = substr($tweetTitle, $subtract);
-				$tweetTitle = preg_replace("#[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]#", "<a rel=\"external\" href=\"\\0\">\\0</a>", $tweetTitle);
-				$tweets[$i]['tweet']   = $tweetTitle;
-				$tweets[$i]['pubDate'] = $tweet->get_date();
-				$tweets[$i]['link']    = $tweet->get_link();
-				$i++;
-			}
-		}
-
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet('mod_twitterfeed');
-
-		return $tweets;
+	}
+	
+	/**
+	 * Display module
+	 * 
+	 * @return     void
+	 */
+	public function display()
+	{
+		//require view
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

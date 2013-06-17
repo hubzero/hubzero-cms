@@ -46,14 +46,14 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.mod_twitterfeed.ini</language>
 	</languages>
 	<params>
-		<param name="moduleTitle" type="text" default="GET VIRTUAL HIGHLIGHTS ON SITE ARTICLES" label="Module Title Text" description="The title of the module block." />
+		<param name="moduleTitle" type="text" default="" label="Module Title Text" description="The title of the module block." />
 		<param name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." />
 		<param name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." />
-		<param name="displayLink" type="list" default="yes" label="Display Link To Twitter" description="To display link to Twitter account page.">
+		<param name="displayHeader" type="list" default="yes" label="Display Header" description="Display Twitter Widget Header.">
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>
-		<param name="displayIcon" type="list" default="yes" label="Display Twitter Icon" description="To display a Twitter icon next to link to Twitter page.">
+		<param name="displayFooter" type="list" default="yes" label="Display Footer" description="Display Twitter Widget Footer.">
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>

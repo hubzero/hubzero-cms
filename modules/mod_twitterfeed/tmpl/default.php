@@ -30,28 +30,30 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+//get tweet count
+$count = $this->params->get('tweetcount', 5);
+if (!is_numeric($count) || $count > 20 || $count < 1)
+{
+	$count = 5;
+}
+
+//get screen name
+$screenName = ltrim($this->params->get('twitterID'), '@');
+
+//get settings
+$widgetSettings  = '';
+$widgetSettings .= ($this->params->get('displayHeader') == 'no') ? ' noheader' : '';
+$widgetSettings .= ($this->params->get('displayFooter') == 'no') ? ' nofooter' : '';
 ?>
-<h3><?php echo $moduleTitle; ?></h3>  
-<?php if (isset($tweets['error']) && $tweets['error'] != '') {  ?>
-	<p class="error">
-		<?php echo $tweets['error']; ?>
-	</p>
-<?php } else { ?>
-	<?php if ($displayLink=='yes') { ?>
-		<a rel="external" href="http://twitter.com/<?php echo $twitterID; ?>"><?php echo JText::_('MOD_TWITTERFEED_FOLLOW_US'); ?></a>
-	<?php } ?>
-	<?php if ($displayIcon=='yes') { ?>
-		<img class="twitterbird" src="/modules/mod_twitterfeed/twitter.png" alt="<?php echo JText::_('MOD_TWITTERFEED_ICON'); ?>" />
-		<br clear="both" />
-	<?php } ?>
-	<ul class="twitterfeed">
-		<?php array_shift($tweets); ?>
-		<?php foreach ($tweets as $twit) { ?>
-			<li>
-				<span class="title"><?php echo $twit['tweet']; ?></span>
-				<span class="date"><?php echo date("h:i a M d, Y", strtotime($twit['pubDate'])); ?></span>
-				<a rel="external" href="<?php echo $twit['link']; ?>" class="viewstatus"><?php echo JText::_('MOD_TWITTERFEED_VIEW_STATUS'); ?></a>
-			</li>
-		<?php } ?>
-	</ul>
-<?php } ?>
+
+<h3><?php echo $this->params->get('moduleTitle'); ?></h3>  
+
+<a class="twitter-timeline" 
+	href="https://twitter.com/"
+	data-widget-id="346714310770302976"
+	data-screen-name="<?php echo $screenName; ?>"
+	data-tweet-limit="<?php echo $count; ?>"
+	data-chrome="<?php echo trim($widgetSettings); ?>"
+	>Loading Tweets...</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
