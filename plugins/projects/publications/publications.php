@@ -318,7 +318,7 @@ class plgProjectsPublications extends JPlugin
 				$arr['html'] = $this->_loadContentItem(); 	
 				break;
 				
-			// Desrciption
+			// Description
 			case 'wikipreview':
 				$arr['html'] = $this->_previewWiki(); 		
 				break;				
@@ -371,6 +371,11 @@ class plgProjectsPublications extends JPlugin
 			// Contribute process outside of projects
 			case 'contribute': 		
 				$arr['html'] = $this->contribute(); 		
+				break;
+				
+			// Show stats
+			case 'stats': 		
+				$arr['html'] = $this->_stats(); 		
 				break;										
 		}			
 	
@@ -1995,7 +2000,7 @@ class plgProjectsPublications extends JPlugin
 						else
 						{							
 							$added = $this->_processContent( $row->publication_id, $row->id, 
-								$selections, $primary, $row->secret, $row->state, 0 );	
+								$selections, $primary, $row->secret, $row->state, 0 );
 						}				
 
 						$this->_msg = $primary 
@@ -3733,8 +3738,7 @@ class plgProjectsPublications extends JPlugin
 			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
 			$this->_git = new ProjectsGitHelper(
 				$this->_config->get('gitpath', '/opt/local/bin/git'), 
-				$this->_uid,
-				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
+				$this->_uid
 			);
 			
 			// Attach every selected file
@@ -3787,22 +3791,22 @@ class plgProjectsPublications extends JPlugin
 			foreach ($original as $old) 
 			{
 				// Go through file attachments
-				if ($old->type == 'file' && is_array($selections['files']))
+				if ($old->type == 'file')
 				{
 					if (!in_array(trim($old->path), $selections['files'])) 
 					{
-						$objPA->deleteAttachment($vid, $old->path);	
+						$objPA->deleteAttachment($vid, $old->path, $old->type);	
 						if ($secret) 
 						{
 							$this->_unpublishAttachment($pid, $vid, $old->path, $secret);	
 						}
 					}
 				}
-				elseif ($old->type == 'note' && is_array($selections['notes']))
+				elseif ($old->type == 'note')
 				{
-					if (!in_array(trim($old->object_id)))
+					if (!in_array(trim($old->object_id), $selections['notes']))
 					{
-						$objPA->deleteAttachment($vid, $old->object_id);	
+						$objPA->deleteAttachment($vid, $old->object_id, $old->type);	
 					}
 				}
 			}

@@ -371,7 +371,7 @@ class PublicationAttachment extends JTable
 		{
 			return false;
 		}
-		if (!$path) 
+		if (!$identifier) 
 		{
 			return false;
 		}

@@ -492,7 +492,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 	
 		// Get type if not given
-		$this->_title = JText::_(strtoupper($this->_option)).': ';
+		$this->_title = JText::_(strtoupper($this->_option)) . ': ';
 		if ($view->filters['category'] != '') 
 		{
 			$t->load( $view->filters['category'] );
@@ -1006,6 +1006,9 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			$this->_serveData();
 			return;
 		}
+		
+		// Wiki reference?
+		
 		
 		$downloadable = array();
 		

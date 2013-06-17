@@ -900,6 +900,9 @@ class ProjectsGitHelper extends JObject {
 	{
 		// Get local file history
 		$hashes = $this->getLocalFileHistory($path, $local_path, '--');
+		
+		// Binary
+		$binary = $this->isBinary($this->_prefix . $path . DS . $local_path);
 																		
 		// Get info for each commit
 		if (!empty($hashes)) 
@@ -932,7 +935,7 @@ class ProjectsGitHelper extends JObject {
 					$currentName = $name;
 				}
 				
-				$content		= $this->gitLog($path, $name, $hash, 'content');
+				$content		= $binary ? NULL : $this->gitLog($path, $name, $hash, 'content');
 				$message		= $this->gitLog($path, '', $hash, 'message');
 																
 				$revision = array(
@@ -967,10 +970,8 @@ class ProjectsGitHelper extends JObject {
 				// Exctract file content for certain statuses
 				if (in_array($revision['commitStatus'], array('A', 'M', 'R')) && $content)
 				{
-				//	$filterColor = $revision['commitStatus'] == 'M' ? true : false;
-				//	$content = $this->filterASCII($content, true, $filterColor);
 					$revision['content'] = $this->filterASCII($content);
-				}
+				}				
 										
 				$versions[] = $revision;
 				$h++;

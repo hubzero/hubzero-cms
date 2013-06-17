@@ -109,7 +109,9 @@ HUB.ProjectPublications = {
 		
 		if ($('#publish_date').length > 0) {
 			$( "#publish_date" ).datepicker({
-				dateFormat: 'yy-mm-dd'
+				dateFormat: 'yy-mm-dd',
+				minDate: 0,
+				maxDate: '+10Y'
 			});
 		}
 	},
