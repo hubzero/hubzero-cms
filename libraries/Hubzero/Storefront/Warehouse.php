@@ -634,7 +634,7 @@ class Hubzero_Storefront_Warehouse
 		}
 		elseif ($productType == 'course')
 		{
-			$sku = new Hubzero_Storefront_Course_Offering();
+			$sku = new Hubzero_Storefront_CourseOffering();
 		}
 		
 		$skuInfo = $this->getSkuInfo($sId);
