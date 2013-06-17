@@ -79,8 +79,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					{
 						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 					}
+					$cls = array();
+					if ($row->get('closed')) 
+					{
+						$cls[] = 'closed';
+					}
+					if ($row->get('sticky')) 
+					{
+						$cls[] = 'sticky';
+					}
 					?>
-						<tr<?php if ($row->get('sticky')) { echo ' class="sticky"'; } ?>>
+						<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
 							<th>
 								<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 							</th>

@@ -25,7 +25,7 @@ ximport('Hubzero_User_Profile_Helper');
 </ul>
 
 <div class="main section">
-	<h3 class="thread-title">
+	<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
 		<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
 	</h3>
 
@@ -185,7 +185,7 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
-<?php if ($this->config->get('access-create-thread')) { ?>
+<?php if ($this->config->get('access-create-thread') && !$this->thread->get('closed')) { ?>
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?>

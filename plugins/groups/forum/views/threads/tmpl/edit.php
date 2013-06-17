@@ -80,12 +80,25 @@ if ($this->post->exists()) {
 	
 			<fieldset>
 			<?php if ($this->config->get('access-edit-thread') && !$this->post->get('parent')) { ?>
-				<label for="field-sticky">
-					<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> /> 
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
-				</label>
+				<div class="grid">
+					<div class="col span-half">
+						<label for="field-sticky">
+							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
+						</label>
+					</div>
+					<div class="col span-half omega">
+						<label for="field-closed">
+							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
+						</label>
+					</div>
+				</div>
+
+				
 			<?php } else { ?>
 				<input type="hidden" name="fields[sticky]" id="field-sticky" value="<?php echo $this->post->get('sticky'); ?>" />
+				<input type="hidden" name="fields[closed]" id="field-closed" value="<?php echo $this->post->get('closed'); ?>" />
 			<?php } ?>
 
 			<?php if (!$this->post->get('parent')) { ?>

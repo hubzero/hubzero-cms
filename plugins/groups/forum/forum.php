@@ -1133,6 +1133,9 @@ class plgGroupsForum extends Hubzero_Plugin
 			return;
 		}
 
+		$fields['sticky'] = (isset($fields['sticky'])) ? $fields['sticky'] : 0;
+		$fields['closed'] = (isset($fields['closed'])) ? $fields['closed'] : 0;
+
 		if ($fields['id'])
 		{
 			$old = new ForumPost($this->database);

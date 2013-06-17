@@ -490,6 +490,9 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
+		$fields['sticky'] = (isset($fields['sticky'])) ? $fields['sticky'] : 0;
+		$fields['closed'] = (isset($fields['closed'])) ? $fields['closed'] : 0;
+
 		if ($fields['id'])
 		{
 			$old = new ForumModelPost(intval($fields['id']));
@@ -497,6 +500,16 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		// Bind data
 		$model = new ForumModelPost($fields['id']);
+		if ($model->get('parent'))
+		{
+			$thread = new ForumModelThread($fields['thread']);
+			if (!$thread->exists() || $thread->get('closed'))
+			{
+				$this->addComponentMessage(JText::_('This thread is closed and not accepting new posts.'), 'error');
+				$this->editTask($model);
+				return;
+			}
+		}
 		if (!$model->bind($fields)) 
 		{
 			$this->addComponentMessage($model->getError(), 'error');

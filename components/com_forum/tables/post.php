@@ -200,6 +200,13 @@ class ForumPost extends JTable
 	var $thread = NULL;
 
 	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $closed = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -338,6 +345,7 @@ class ForumPost extends JTable
 			}
 		}
 		$this->sticky = ($this->sticky) ? $this->sticky : 0;
+		$this->closed = ($this->closed) ? $this->closed : 0;
 
 		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
 		$this->scope_id = intval($this->scope_id);
@@ -419,6 +427,10 @@ class ForumPost extends JTable
 			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
 			{
 				$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
+			}
+			if (isset($filters['closed']) && (int) $filters['closed'] >= 0) 
+			{
+				$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
 			}
 			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 			{
@@ -605,6 +617,10 @@ class ForumPost extends JTable
 			{
 				$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
 			}*/
+			if (isset($filters['closed']) && (int) $filters['closed'] >= 0) 
+			{
+				$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
+			}
 			if (isset($filters['scope']) && (string) $filters['scope']) 
 			{
 				$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
@@ -713,6 +729,10 @@ class ForumPost extends JTable
 		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
 		{
 			$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
+		}
+		if (isset($filters['closed']) && (int) $filters['closed'] >= 0) 
+		{
+			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
 		}
 		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 		{

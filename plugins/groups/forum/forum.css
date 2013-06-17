@@ -52,6 +52,12 @@
 	.group_forum .entries .entry-id:before {
 		content: "\f086";
 	}
+	.group_forum h3.closed:before {
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+		color: #999;
+	}
+	.group_forum h3.closed:before,
 	.group_forum .entries .closed .entry-id:before {
 		content: "\f023";
 	}

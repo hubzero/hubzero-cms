@@ -103,7 +103,7 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .aside -->
 	
 	<div class="subject">
-		<h3 class="thread-title">
+		<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
 			<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
 		</h3>
 		<form action="<?php echo JRoute::_($base); ?>" method="get">
@@ -204,7 +204,7 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
-<?php //if ($this->config->get('access-create-post')) { ?>
+<?php if (!$this->thread->get('closed')) { ?>
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
@@ -361,5 +361,5 @@ ximport('Hubzero_User_Profile_Helper');
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-<?php //} ?>
+<?php } ?>
 </div><!-- / .below section -->
