@@ -1010,15 +1010,32 @@ defined('_JEXEC') or die('Restricted access');
 		$required = ($this->registrationOptIn == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
 		$message = (!empty($this->xregistration->_invalid['mailPreferenceOption'])) ? RegistrationHelperHtml::error($this->xregistration->_invalid['mailPreferenceOption']) : '';
 		$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
-
-		$html .= "\t".'<fieldset>'."\n";
-		$html .= "\t\t".'<legend>'.JText::_('Updates').'</legend>'."\n";
-		$html .= "\t\t".'<input type="hidden" name="mailPreferenceOption" value="unset" />'."\n";
-		$html .= "\t\t".'<label '.$fieldclass.'><input type="checkbox" class="option" id="mailPreferenceOption" name="mailPreferenceOption" ';
-		if (!empty($this->registration['mailPreferenceOption'])) {
-			$html .= 'checked="checked" ';
+		
+		//define mail preference options
+		$options = array(
+			'-1' => '- Select email option &mdash;',
+			'1'  => 'Yes, send me emails',
+			'0'  => 'No, don\'t send me emails'
+		);
+		
+		//if we dont have a mail pref option set to unanswered
+		if(!isset($this->registration['mailPreferenceOption']) || $this->registration['mailPreferenceOption'] == '')
+		{
+			$this->registration['mailPreferenceOption'] = '-1';
 		}
-		$html .= '/> '.$required.' '.JText::_('Yes, I would like to receive newsletters and other updates by e-mail.').'</label>'."\n";
+		
+		$html .= "\t".'<fieldset>'."\n";
+		$html .= "\t\t".'<legend>'.JText::_('Receive Promotional Emails').'</legend>'."\n";
+		$html .= '<label for="mailPreferenceOption">';
+		$html .= 'Would you like to receive promotional emails (newsletters, surveys, etc.)? ' . $required;
+		$html .= '<select name="mailPreferenceOption">';
+		foreach ($options as $key => $value)
+		{
+			$sel = ($key == $this->registration['mailPreferenceOption']) ? 'selected="selected"' : '';
+			$html .= '<option '.$sel.' value="'. $key .'">' . $value . '</option>';
+		}
+		$html .= '</select>';
+		$html .= '</label>';
 		$html .= $message;
 		$html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 	}

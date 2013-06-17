@@ -1452,12 +1452,19 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					//dont show meant for stats only
 					$cls .= (!$isUser) ? ' hide' : '' ;
 					
-					$val = intval($this->profile->get('mailPreferenceOption'));
+					//get value of mail preference option
+					switch($this->profile->get('mailPreferenceOption'))
+					{
+						case '1':    $mailPreferenceValue = 'Yes, send me emails';          break;
+						case '0':    $mailPreferenceValue = 'No, don\'t send me emails';    break;
+						case '-1':
+						default:     $mailPreferenceValue = 'Unanswered';                   break;
+					}
 				?>
 				<li class="profile-optin section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('E-mail Updates'); ?></div>
-						<div class="value"><?php echo ($val >= 0) ? ($val > 0 ? 'Yes' : 'No') : 'Unanswered'; ?></div>
+						<div class="key"><?php echo JText::_('Receive Promotional Emails'); ?></div>
+						<div class="value"><?php echo $mailPreferenceValue; ?></div>
 						<br class="clear" />
 						<?php
 							ximport('Hubzero_Plugin_View');
@@ -1468,23 +1475,29 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									'name'    => 'edit'
 								)
 							);
-						
-							$yes = ''; $no = '';
-							if($this->profile->get('mailPreferenceOption')) 
+							
+							//define mail preference options
+							$options = array(
+								'-1' => '- Select email option &mdash;',
+								'1'  => 'Yes, send me emails',
+								'0'  => 'No, don\'t send me emails'
+							);
+							
+							//build option list
+							$optin_html  = "<strong>Would you like to receive promotional emails (newsletters, surveys, etc.)?</strong>";
+							$optin_html .= '<label for="mailPreferenceOption">';
+							$optin_html .= '<select name="mailPreferenceOption">';
+							foreach ($options as $key => $value)
 							{
-								$yes = 'checked="checked"';
+								$sel = ($key == $this->profile->get('mailPreferenceOption')) ? 'selected="selected"' : '';
+								$optin_html .= '<option '.$sel.' value="'. $key .'">' . $value . '</option>';
 							}
-							else
-							{
-								$no = 'checked="checked"';
-							}
-							$optin_html = "<p>Would like to receive newsletters and other updates by e-mail?</p>";
-							$optin_html .= '<label for="mailPreferenceOptionYes"><input type="radio" id="mailPreferenceOptionYes" name="mailPreferenceOption" value="1" '.$yes.' /> Yes</label>';
-							$optin_html .= ' <label for="mailPreferenceOptionNo"><input type="radio" id="mailPreferenceOptionNo" name="mailPreferenceOption" value="unset" '.$no.' /> No</label>';
-
+							$optin_html .= '</select>';
+							$optin_html .= '</label>';
+							
 							$editview->registration_field = "mailPreferenceOption";
 							$editview->profile_field = "mailPreferenceOption";
-							$editview->title = JText::_('Email Updates');
+							$editview->title =  JText::_('Receive Promotional Emails');
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = $optin_html;

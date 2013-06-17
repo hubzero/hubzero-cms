@@ -406,20 +406,20 @@ class Hubzero_Registration
 		$this->_registration['mailPreferenceOption'] = JRequest::getVar('mailPreferenceOption', null, 'post');
 		$this->_registration['sex'] = JRequest::getVar('sex', null, 'post');
 		$this->_registration['interests'] = JRequest::getVar('interests',null,'post');
-        
+		
 		if ($this->_registration['sex'] !== null)
+		{
 			if ($this->_registration['sex'] == 'unspecified')
+			{
 				$this->_registration['sex'] = '';
-
+			}
+		}
+		
 		if ($this->_registration['usageAgreement'] !== null)
+		{
 			$this->_registration['usageAgreement'] = ($this->_registration['usageAgreement'] === 'unset') ? false : true;
-
-		if ($this->_registration['mailPreferenceOption'] !== null)
-			if ($this->_registration['mailPreferenceOption'] == 'unset')
-				$this->_registration['mailPreferenceOption'] = '0';
-			else
-				$this->_registration['mailPreferenceOption'] = '2';
-
+		}
+		
 		$this->_checked = false;
 	}
 

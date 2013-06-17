@@ -180,7 +180,7 @@ class Hubzero_User_Profile extends JObject
 	 *
 	 * @var unknown
 	 */
-	private $mailPreferenceOption = null;
+	private $mailPreferenceOption = -1;
 	
 	/**
 	 * Description for 'usageAgreement'
@@ -582,7 +582,7 @@ class Hubzero_User_Profile extends JObject
 			}
 		}
 		
-		$this->set('mailPreferenceOption', $this->get('mailPreferenceOption') ? '2' : '0');
+		$this->set('mailPreferenceOption', $this->get('mailPreferenceOption') ? $this->get('mailPreferenceOption') : '-1');
 		$this->set('usageAgreement', $this->get('usageAgreement') ? '1' : '0');
 		
 		return true;
@@ -649,7 +649,7 @@ class Hubzero_User_Profile extends JObject
 		
 		if ($registration->get('mailPreferenceOption') !== null)
 		{
-			$this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? '2' : '0');
+			$this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? $registration->get('mailPreferenceOption') : '-1');
 		}
 		
 		if ($registration->get('usageAgreement') !== null)
@@ -915,7 +915,7 @@ class Hubzero_User_Profile extends JObject
 				continue;
 			}
 			
-			if ($this->get($property) == null)
+			if ($this->get($property) === null)
 			{
 				$query .= "$property=NULL";
 			}

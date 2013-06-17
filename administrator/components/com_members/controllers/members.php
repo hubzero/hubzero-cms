@@ -296,7 +296,7 @@ class MembersControllerMembers extends Hubzero_Controller
 		} 
 		else 
 		{
-			$profile->set('mailPreferenceOption', 0);
+			$profile->set('mailPreferenceOption', -1);
 		}
 
 		if (!empty($p['gender'])) 
