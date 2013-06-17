@@ -249,7 +249,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			<fieldset>
 				<legend><?php echo JText::_('Email Settings'); ?></legend>
 
-				<input type="hidden" name="task" value="savememberoptions" />
+				<input type="hidden" name="action" value="savememberoptions" />
 				<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
 				<input type="hidden" name="postsaveredirect" value="<?php echo JRoute::_($base); ?>" />
 
