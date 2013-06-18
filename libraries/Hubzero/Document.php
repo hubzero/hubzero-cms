@@ -418,7 +418,7 @@ class Hubzero_Document
 		{
 			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
 		} 
-		else 
+		else if (file_exists(JPATH_SITE . $plugincss))
 		{
 			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
 		}
@@ -459,7 +459,7 @@ class Hubzero_Document
 		{
 			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
 		} 
-		else 
+		else if (file_exists(JPATH_SITE . $url)) 
 		{
 			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
