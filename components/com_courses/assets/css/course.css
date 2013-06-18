@@ -33,6 +33,12 @@
 		background: #fff;
 		border-bottom: 1px dotted #e1e1e1;
 	}
+	.course.intro .subject:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
 	.course.intro .aside:before,
 	.course.intro .aside:after {
 		display: none;
@@ -180,6 +186,7 @@
 	}
 	.offering-info .btn {
 		display: block;
+		width: 100%;
 		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
 		color: #996633;
 		text-shadow: 0px 1px 0px #fedd9b;
@@ -193,6 +200,11 @@
 		background: linear-gradient(#feda71, #febe4d);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71,endColorstr=#febe4d);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71, endColorstr=#febe4d)";
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
 	}
 	.offering-info .btn:hover {
 		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
@@ -206,6 +218,14 @@
 		background: linear-gradient(#febe4d, #feda71);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d,endColorstr=#feda71);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d, endColorstr=#feda71)";
+	}
+	.offering-info strong {
+		font-size: 2em;
+		display: block;
+		text-align: center;
+		color: #fff;
+		font-weight: normal;
+		padding: 0.5em 0;
 	}
 /* Reviews 
 	.reviews-summary {
