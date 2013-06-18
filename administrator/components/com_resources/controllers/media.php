@@ -139,41 +139,43 @@ class ResourcesControllerMedia extends Hubzero_Controller
 				$batch = JRequest::getInt('batch', 0, 'post');
 				if ($batch)
 				{
-					//$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $file['name']);
-
-					/*jimport('joomla.filesystem.archive');
-
-					// Extract the files
-					$ret = JArchive::extract($file['name'], $path);
-					if (!$ret) {
-						$this->setError(JText::_('Could not extract package.'));
-					}*/
-					require_once(JPATH_ROOT.DS.'administrator'.DS.'includes'.DS.'pcl'.DS.'pclzip.lib.php');
-
-					if (!extension_loaded('zlib'))
+					//include libs
+					jimport('joomla.filesystem.folder');
+					jimport('joomla.filesystem.file');
+					
+					//build path
+					$path = rtrim($path, DS) . DS;
+					$escaped_file = escapeshellarg($path . $file['name']);
+					
+					//determine command to uncompress
+					switch ($ext)
 					{
-						$this->setError(JText::_('ZLIB_PACKAGE_REQUIRED'));
+						case 'gz':     $cmd = "tar zxvf {$escaped_file} -C {$path}";    break;
+						case 'tar':    $cmd = "tar xvf {$escaped_file} -C {$path}";     break;
+						case 'zip':
+						default:       $cmd = "unzip {$escaped_file} -d {$path}";
 					}
-					else
+					
+					//unzip file
+					if ($result = shell_exec($cmd))
 					{
-						if (substr($path, -1, 1) == DS)
+						// Remove original archive
+						JFile::delete( $path . $file['name'] );
+						
+						// Remove MACOSX dirs if there
+						if (JFolder::exists($path . '__MACOSX'))
 						{
-							$path = substr($path, 0, -1);
+							JFolder::delete($path . '__MACOSX');
 						}
-						$zip = new PclZip($path . DS . $file['name']);
-
-						// unzip the file
-						$do = $zip->extract($path);
-						if (!$do)
+						
+						//remove ._ files
+						$dotFiles = JFolder::files($path, '._[^\s]*', true, true);
+						foreach ($dotFiles as $dotFile)
 						{
-							$this->setError(JText::_('UNABLE_TO_EXTRACT_PACKAGE'));
-						}
-						else
-						{
-							@unlink($path . DS . $file['name']);
+							JFile::delete( $dotFile );
 						}
 					}
-				} // if ($batch) {
+				}
 			}
 		}
 
