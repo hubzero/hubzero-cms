@@ -111,6 +111,7 @@ class plgCoursesProgress extends JPlugin
 		// Create user object
 		$this->juser  = JFactory::getUser();
 		$this->course = $course;
+		$this->base   = 'index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 
 		if ($action = JRequest::getWord('action', false))
 		{
@@ -200,7 +201,7 @@ class plgCoursesProgress extends JPlugin
 			{
 				// Redirect with message
 				JFactory::getApplication()->redirect(
-					JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+					JRoute::_($this->base . '&active=progress', false),
 					'The sum of all weights should be 100.',
 					'error'
 				);
@@ -232,7 +233,7 @@ class plgCoursesProgress extends JPlugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+				JRoute::_($this->base . '&active=progress', false),
 				'Something went wrong!',
 				'error'
 			);
@@ -255,7 +256,7 @@ class plgCoursesProgress extends JPlugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+				JRoute::_($this->base . '&active=progress', false),
 				'Scoring policy successfully saved!',
 				'passed'
 			);
@@ -277,7 +278,7 @@ class plgCoursesProgress extends JPlugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'), false),
+				JRoute::_($this->base, false),
 				'You don\'t have permission to do this!',
 				'warning'
 			);
@@ -297,7 +298,7 @@ class plgCoursesProgress extends JPlugin
 			{
 				// Redirect with message
 				JFactory::getApplication()->redirect(
-					JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+					JRoute::_($this->base . '&active=progress', false),
 					'Something went wrong!',
 					'error'
 				);
@@ -311,7 +312,7 @@ class plgCoursesProgress extends JPlugin
 
 		// Redirect with message
 		JFactory::getApplication()->redirect(
-			JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+			JRoute::_($this->base . '&active=progress', false),
 			'Scoring policy successfully restored to the default configuration!',
 			'passed'
 		);
@@ -332,7 +333,7 @@ class plgCoursesProgress extends JPlugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'), false),
+				JRoute::_($this->base, false),
 				'You don\'t have permission to do this!',
 				'warning'
 			);
@@ -345,7 +346,7 @@ class plgCoursesProgress extends JPlugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+				JRoute::_($this->base . '&active=progress', false),
 				'Something went wrong!',
 				'error'
 			);
@@ -354,7 +355,7 @@ class plgCoursesProgress extends JPlugin
 
 		// Redirect with message
 		JFactory::getApplication()->redirect(
-			JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+			JRoute::_($this->base . '&active=progress', false),
 			'Student progress successfully updated!',
 			'passed'
 		);
