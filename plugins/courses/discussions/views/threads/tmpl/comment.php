@@ -116,11 +116,11 @@ defined('_JEXEC') or die('Restricted access');
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!-- 
 					--></a>
 				<?php } ?>
-				<?php if ($this->config->get('access-edit-thread')) { ?>
+				<?php /*if ($this->config->get('access-edit-thread')) { ?>
 					<a class="edit" href="<?php echo JRoute::_($this->base . '&action=edit&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!-- 
 					--></a>
-				<?php } ?>
+				<?php }*/ ?>
 			<?php } ?>
 			<?php if (!$this->comment->reports) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>

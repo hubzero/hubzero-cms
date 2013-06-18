@@ -191,13 +191,34 @@ HUB.Plugins.CoursesForum = {
 						window.console && console.log($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''));
 					}
 					$.getJSON($(this).attr('href').nohtml() + (srch ? '&search=' + srch : ''), {}, function(data){
+						if (data.thread.total) {
+							header.text(data.thread.total + ' comments');
 
-						header.text(data.thread.total + ' comments');
+							// Append data and fade it in
+							thread.html(data.thread.html).hide().fadeIn();
+							// Apply plugins to loaded content
+							jQuery(document).trigger('ajaxLoad');
+						} else {
+							$('#thread' + data.thread.lastid).remove();
 
-						// Append data and fade it in
-						thread.html(data.thread.html).hide().fadeIn();
-						// Apply plugins to loaded content
-						jQuery(document).trigger('ajaxLoad');
+							// Add active class
+							abtn.addClass('active');
+
+							header.text('Start a discussion');
+
+							// Deactivate anything in the discussions list
+							$('#' + feed.data('active')).removeClass('active');
+							feed.data('active', '');
+
+							$('#comments-new').hide();
+
+							// Hide any displayed threads
+							container.find('ol.comments').hide();
+							container.find('div.sticky-thread-controls').remove();
+
+							// Fade in the comment form
+							cfrm.fadeIn();
+						}
 					});
 				}
 				//return res;
