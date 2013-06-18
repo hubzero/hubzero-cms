@@ -66,7 +66,7 @@ class CartControllerCart extends ComponentController
 	 */
 	public function homeTask() 
 	{
-		ximport('Hubzero_Cart_Cart');
+		//ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart();
 		
 		// update cart if needed for non-ajax transactions
@@ -328,6 +328,15 @@ class CartControllerCart extends ComponentController
 	}
 	
 	public function postTask() 
+	{	
+	
+		$doc =& JFactory::getDocument();
+		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		
+		$this->view->display();
+	}
+	
+	public function apipostTask() 
 	{	
 	
 		$curl_result = '';

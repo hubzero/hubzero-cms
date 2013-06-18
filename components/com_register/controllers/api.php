@@ -97,6 +97,7 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 	private function premisRegister()
 	{
 		// Get the authentication info		
+		/*
 		if (!$this->premisAuthenticate())
 		{
 			if (1)
@@ -107,6 +108,7 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 			$this->errorMessage(404, 'Can not authenticate. ' . $debug); 
 			return;
 		}
+		*/
 		
 		$user['fName'] = JRequest::getVar('fName', '', 'post');
 		$user['lName'] = JRequest::getVar('lName', '', 'post');
@@ -159,10 +161,7 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 		*/
 		
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'helpers' . DS . 'Premis.php');
-		$return = Hubzero_Register_Premis::doProfileUpdate($user);
-		
-		
-				
+		$return = Hubzero_Register_Premis::doProfileUpdate($user);			
 	}
 	
 	//--------------------------

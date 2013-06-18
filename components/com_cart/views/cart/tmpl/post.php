@@ -46,7 +46,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 			name: 	pId[productID]
 			value: 	quantity to set in the cart
 	-->
-	<input type="hidden" name="pId[1029]" value="1"></input>
+	<input type="hidden" name="pId[1]" value="1"></input>
 	<input type="hidden" name="updateCart" value="updateCart"></input>
 	
 	<!-- 	TO ADD COUPON TO CART (only one can be added for now):
