@@ -101,8 +101,18 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 			{
 				$memberships[] = new CoursesModelMember(JFactory::getUser()->get('id'), $this->course->get('id'), $offering->get('id'));
 			}
-				foreach ($memberships as $membership)
+
+			$last = '';
+			foreach ($memberships as $membership)
+			{
+				$cur  = ($membership->get('offering_id') ? $membership->get('offering_id') : $offering->get('id')) . '-';
+				$cur .= ($membership->get('section_id') ? $offering->section($membership->get('section_id'))->get('alias') : $offering->section()->get('alias'));
+
+				if ($cur == $last)
 				{
+					continue;
+				}
+				$last = $cur;
 			?>
 			<table>
 				<tbody>
