@@ -1036,6 +1036,7 @@ span.group-pending {
 	padding: 1px;
 	margin: 0 10px 0 0;
 	background: #FFF;
+	width: 50px;
 }
 #member_browser a .name {
 	font-size: 1.2em;
