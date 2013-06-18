@@ -117,4 +117,87 @@ class ContentAssetHandler extends AssetHandler
 		// Return info
 		return array('assets' => $return_info);
 	}
+
+	/**
+	 * Save method for this handler
+	 * // @FIXME: reduce code duplication here
+	 *
+	 * @return array of assets created
+	 **/
+	public function save()
+	{
+		// Include needed files
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php');
+
+		// Create our asset table object
+		$assetObj = new CoursesTableAsset($this->db);
+		$assetObj->load(JRequest::getInt('id'));
+
+		// Grab the incoming content
+		$content = JRequest::getVar('content', '');
+
+		// Get everything ready to store
+		// Check if vars are already set (i.e. by a sub class), before setting them here
+		$this->asset['title']      = (!empty($this->asset['title']))   ? $this->asset['title']   : substr($content, 0, 25);
+		$this->asset['type']       = (!empty($this->asset['type']))    ? $this->asset['type']    : 'text';
+		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content';
+		$this->asset['content']    = (!empty($this->asset['content'])) ? $this->asset['content'] : $content;
+		$this->asset['created']    = $assetObj->created;
+		$this->asset['created_by'] = $assetObj->created_by;
+		$this->asset['course_id']  = $assetObj->course_id;
+
+		// Save the asset
+		if (!$assetObj->save($this->asset))
+		{
+			return array('error' => 'Asset save failed');
+		}
+
+		$scope_id          = JRequest::getInt('scope_id', null);
+		$original_scope_id = JRequest::getInt('original_scope_id', null);
+		$scope             = JRequest::getCmd('scope', 'asset_group');
+
+		// Only worry about this if scope id is changing
+		if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
+		{
+			// Create asset assoc object
+			$assocObj = new CoursesTableAssetAssociation($this->db);
+
+			if (!$assocObj->loadByAssetScope($assetObj->id, $original_scope_id, $scope))
+			{
+				return array('error' => 'Failed to load asset association');
+			}
+
+			// Set new scope id
+			$row->scope_id  = $scope_id;
+
+			// Save the asset association
+			if (!$assocObj->save($row))
+			{
+				return array('error' => 'Asset association save failed');
+			}
+		}
+
+		// Get the url to return to the page
+		$course_id      = JRequest::getInt('course_id', 0);
+		$offering_alias = JRequest::getCmd('offering', '');
+		$course         = new CoursesModelCourse($course_id);
+
+		$url = JRoute::_('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
+
+		$return_info = array(
+			'asset_id'       => (int) $this->assoc['asset_id'],
+			'asset_title'    => $this->asset['title'],
+			'asset_type'     => $this->asset['type'],
+			'asset_subtype'  => $this->asset['subtype'],
+			'asset_url'      => $url,
+			'course_id'      => $this->asset['course_id'],
+			'offering_alias' => $offering_alias,
+			'scope_id'       => $this->assoc['scope_id']
+		);
+
+		// Return info
+		return array('assets' => $return_info);
+	}
 }

@@ -1138,27 +1138,7 @@ ul {
 .edit-form input[type="button"] {
 	width: auto;
 }
-.wiki-edit input[type="text"] {
-	width: 99%;
-}
-.wiki-edit .wiki-asterisk {
-	font-size: 11px;
-}
-.wiki-edit .required {
-	color: red;
-	font-size: 11px;
-}
 .edit-form label {
 	font-size: 14px;
 	font-weight: bolder;
-}
-.wiki-edit .wiki-include-assets {
-	margin: 10px 0;
-	width: 99%;
-	height: 250px;
-	border: 1px solid #999;
-	overflow: scroll;
-}
-.wiki-edit .wiki-assets-inner {
-	padding: 15px;
 }

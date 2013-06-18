@@ -276,6 +276,11 @@ function CoursesParseRoute($segments)
 			$vars['controller'] = 'offering';
 			$vars['task']       = 'asset';
 			$vars['asset_id']   = $segments[3];
+
+			if (isset($segments[4]))
+			{
+				$vars['file'] = $segments[4];
+			}
 		}
 		else if ($vars['controller'] == 'course' && isset($vars['active']))
 		{

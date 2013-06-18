@@ -218,6 +218,12 @@ class plgCoursesOutline extends Hubzero_Plugin
 			$this->view->setLayout("edit{$scope}");
 
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name, 'build.css');
+			Hubzero_Document::addPluginStylesheet('courses', $this->_name, $scope.'.css');
+			Hubzero_Document::addPluginScript('courses', $this->_name, $scope);
+
+			// Add file uploader JS
+			Hubzero_Document::addSystemScript('jquery.iframe.transport');
+			Hubzero_Document::addSystemScript('jquery.fileupload');
 
 			$this->view->title         = "Edit {$scope}";
 			$this->view->scope         = $scope;

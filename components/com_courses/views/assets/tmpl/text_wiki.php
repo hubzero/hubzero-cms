@@ -33,11 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $wikiconfig = array(
 	'option'   => 'com_courses',
-	'scope'    => 'courses',
-	'pagename' => $this->course->offering()->get('alias'),
-	'pageid'   => 0,
-	'filepath' => JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . $this->course->get('id'),
-	'domain'   => '' 
+	'scope'    => $this->course->get('alias') . DS . $this->course->offering()->get('alias') . DS . 'asset',
+	'pagename' => $this->asset->id,
+	'pageid'   => '',
+	'filepath' => DS . 'site' . DS . 'courses' . DS . $this->course->get('id') . DS . $this->asset->id,
+	'domain'   => $this->course->get('alias') 
 );
 
 ximport('Hubzero_Wiki_Parser');

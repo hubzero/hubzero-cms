@@ -30,6 +30,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+// Load asset if applicable
+$id = JRequest::getInt('id', null);
+$asset = new CoursesModelAsset($id);
+
 ?>
 
 <div class="wiki-edit">
@@ -38,16 +43,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="/api/courses/asset/new" method="POST" class="edit-form">
 
 		<p>
-			<label for="title">Title:</label>
-			<input type="text" name="title" placeholder="Wiki page title - will default to first 25 characters of wiki body" />
+			<label for="title">Title: </label><span class="required">*required</span>
+			<input type="text" name="title" placeholder="Wiki page title" value="<?= $asset->get('title') ?>" />
 		</p>
 
-		<label for="content">Content: </label><span class="required">*required</span>
+		<label for="content">Content: </label>
 <?
 		ximport('Hubzero_Wiki_Editor');
 		$editor =& Hubzero_Wiki_Editor::getInstance();
 
-		echo $editor->display('content', 'content', '', 'no-footer', '35', '20');
+		echo $editor->display('content', 'content', $asset->get('content'), 'no-footer', '35', '10');
 ?>
 
 <? // @TODO: implement asset insertion to wiki body! ?>
@@ -56,6 +61,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<div class="wiki-assets-inner">
 				<p class="help">Drag an asset from below, to the text box above to include it in your wiki.</p>
 				<ul>
+-->
 <?
 					$assetgroups = array();
 					foreach ($this->course->offering()->units() as $unit) :
@@ -71,9 +77,42 @@ defined('_JEXEC') or die( 'Restricted access' );
 						endforeach;
 					endforeach;
 ?>
+<!--
 				</ul>
 			</div>
-		</div> -->
+		</div>
+-->
+
+		<div class="wiki-files">
+			<div class="wiki-files-upload-wrapper">
+				<div class="wiki-files-upload">
+					<p>Click or drop file</p>
+				</div>
+			</div>
+			<div class="wiki-files-available-wrapper">
+				<div class="wiki-files-available">
+					<?php
+					$path = $asset->path($this->course->get('id'));
+						if ($path && is_dir(JPATH_ROOT . $path))
+						{
+							$files = array_diff(scandir(JPATH_ROOT . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store'));
+							echo '<ul class="wiki-files-list">';
+							foreach ($files as $file)
+							{
+								echo '<li class="wiki-file">';
+								echo $file;
+								echo "</li>";
+							}
+							echo "</ul>";
+						}
+						else
+						{
+							echo '<p>No files found</p>';
+						}
+					?>
+				</div>
+			</div>
+		</div>
 
 		<p>
 			<label for="scope_id">Attach to:</label>
@@ -85,8 +124,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</select>
 		</p>
 
-		<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+		<input type="file" name="files[]" class="fileupload" multiple />
+		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
+		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+		<input type="hidden" name="id" id="asset_id" value="<?= $id ?>" />
 		<input type="hidden" name="type" value="wiki" />
 
 		<input type="submit" value="Submit" class="wiki-submit" />

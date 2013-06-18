@@ -115,6 +115,11 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 */
 	public function path($course=0, $withUrl=true)
 	{
+		if (!$this->get('id'))
+		{
+			return false;
+		}
+
 		// /site/courses/{course ID}/{asset ID}/{asset file}
 		$path = DS . trim($this->_params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->get('id');
 		if ($withUrl)
@@ -251,6 +256,115 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view->option  = $option;
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Download a wiki file
+	 * 
+	 * @return     void
+	 */
+	public function download($course)
+	{
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+		if (!$course->access('view'))
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
+			return;
+		}
+
+		// Get the scope of the parent page the file is attached to
+		$filename = JRequest::getVar('file', '');
+		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') 
+		{
+			$filename = substr($filename, strlen('image:'));
+		} 
+		else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:') 
+		{
+			$filename = substr($filename, strlen('file:'));
+		}
+		$filename = urldecode($filename);
+
+		// Ensure we have a path
+		if (empty($filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
+			return;
+		}
+		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
+			return;
+		}
+		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow windows drive letter
+		if (preg_match("/^\s*[.]:/", $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow \
+		if (strpos('\\', $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow ..
+		if (strpos('..', $filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
+			return;
+		}
+
+		// Get the configured upload path
+		$config = JComponentHelper::getParams('com_courses');
+		$base_path = DS . trim($config->get('filepath', '/site/courses'), DS) . DS . $course->get('id') . DS . $this->get('id');
+
+		// Does the path start with a slash?
+		$filename = DS . ltrim($filename, DS);
+
+		// Does the beginning of the $attachment->path match the config path?
+		if (substr($filename, 0, strlen($base_path)) == $base_path) 
+		{
+			// Yes - this means the full path got saved at some point
+		} 
+		else 
+		{
+			// No - append it
+			$filename = $base_path . $filename;
+		}
+
+		// Add JPATH_ROOT
+		$filename = JPATH_ROOT . $filename;
+
+		// Ensure the file exist
+		if (!file_exists($filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($filename);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+
+		if (!$xserver->serve()) 
+		{
+			// Should only get here on error
+			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
+		} 
+		else 
+		{
+			exit;
+		}
+		return;
 	}
 
 	/**

@@ -416,8 +416,8 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 
-		// Grab the incoming file
-		if(isset($_FILES['files']))
+		// Grab the incoming file (incoming type overrides files)
+		if(isset($_FILES['files']) && !JRequest::getWord('type', false))
 		{
 			$file_name = $_FILES['files']['name'][0];
 			$file_size = (int) $_FILES['files']['size'];

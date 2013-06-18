@@ -60,13 +60,94 @@ class WikiAssetHandler extends ContentAssetHandler
 		$this->asset['type']    = 'text';
 		$this->asset['subtype'] = 'wiki';
 
-		// Make sure content is provided
-		if (!JRequest::getVar('content', false))
+		if (!JRequest::getString('title', false))
 		{
-			return array('error' => 'Content body is required!');
+			return array('error' => 'Please provide a title!');
+		}
+
+		if (!JRequest::getInt('id', false))
+		{
+			// Create asset
+			$return = parent::create();
+		}
+		else
+		{
+			$this->asset['course_id'] = JRequest::getInt('course_id');
+			$this->assoc['asset_id']  = JRequest::getInt('id');
+			$this->assoc['scope_id']  = JRequest::getInt('scope_id');
+
+			// Save asset
+			$return = parent::save();
+		}
+
+		// If files are included, save them as well
+		// @FIXME: share this with file upload if possible
+		if (isset($_FILES['files']))
+		{
+			jimport('joomla.filesystem.folder');
+			jimport('joomla.filesystem.file');
+
+			// @FIXME: should these come from the global settings, or should they be courses specific
+			// Get config
+			$config =& JComponentHelper::getParams('com_media');
+
+			// Max upload size
+			$sizeLimit = $config->get('upload_maxsize');
+
+			// Get courses config
+			$cconfig =& JComponentHelper::getParams('com_courses');
+
+			// Loop through files and save them (they will potentially be coming in together, in a single request)
+			for ($i=0; $i < count($_FILES['files']['name']); $i++)
+			{ 
+				$file = $_FILES['files']['name'][$i];
+				$size = (int) $_FILES['files']['size'][$i];
+
+				// Get the file extension
+				$pathinfo = pathinfo($file);
+				$filename = $pathinfo['filename'];
+				$ext      = $pathinfo['extension'];
+
+				// Check to make sure we have a file and its not too big
+				if ($size == 0) 
+				{
+					return array('error' => 'File is empty');
+				}
+				if ($size > $sizeLimit) 
+				{
+					$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+					return array('error' => "File is too large. Max file upload size is $max");
+				}
+
+				// Build the upload path if it doesn't exist
+				$uploadDirectory = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
+
+				// Make sure upload directory exists and is writable
+				if (!is_dir($uploadDirectory))
+				{
+					if (!JFolder::create($uploadDirectory))
+					{
+						return array('error' => 'Server error. Unable to create upload directory');
+					}
+				}
+				if (!is_writable($uploadDirectory))
+				{
+					return array('error' => 'Server error. Upload directory isn\'t writable');
+				}
+
+				// Get the final file path
+				$target_path = $uploadDirectory . $filename . '.' . $ext;
+
+				// Move the file to the site folder
+				set_time_limit(60);
+				if(!$move = move_uploaded_file($_FILES['files']['tmp_name'][$i], $target_path))
+				{
+					return array('error' => 'Move file failed');
+				}
+			}
 		}
 
 		// Return info
-		return parent::create();
+		return $return;
 	}
 }

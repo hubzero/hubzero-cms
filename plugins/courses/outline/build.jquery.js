@@ -1,4 +1,3 @@
-
 /**
  * @package     hubzero-cms
  * @file        plugins/courses/outline/build.jquery.js
@@ -1859,10 +1858,10 @@ HUB.CoursesOutline = {
 				});
 			},
 			close : function () {
+				settings.element.find('iframe').remove();
 				settings.element.hide('slide', {'direction':'down'}, 500, function () {
 					$('.content-box-overlay').fadeOut(100);
 				});
-				settings.element.find('iframe').remove();
 			}
 	};
 

@@ -1,0 +1,92 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/courses/outline/wiki.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.wiki-edit input[type="text"] {
+	width: 99%;
+}
+.wiki-edit .wiki-asterisk {
+	font-size: 11px;
+}
+.wiki-edit .required {
+	color: red;
+	font-size: 11px;
+}
+.wiki-edit .wiki-include-assets {
+	margin: 10px 0;
+	width: 99%;
+	height: 250px;
+	border: 1px solid #999;
+	overflow: scroll;
+}
+.wiki-edit .wiki-assets-inner {
+	padding: 15px;
+}
+.wiki-files {
+	width: 99%;
+	border: 1px solid #D9D9D9;
+	background-color: #F0F0F0;
+	background-color: rgba(0, 0, 0, .039);
+	overflow: hidden;
+	color: #777;
+
+	-webkit-border-bottom-right-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.fileupload {
+	display: none;
+}
+.wiki-files-upload-wrapper,
+.wiki-files-available-wrapper {
+	float: left;
+	width: 50%;
+}
+.wiki-files-upload,
+.wiki-files-available {
+	background-color: #FFF;
+	height: 100px;
+
+	-webkit-border-radius-: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+}
+.wiki-files-upload {
+	border: 3px dotted #CCC;
+	margin: 20px 10px 20px 20px;
+	opacity: 0.7;
+}
+.wiki-files-upload:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+.wiki-files-upload p,
+.wiki-files-available p {
+	text-align: center;
+	font-size: 24px;
+	line-height: 100px;
+	margin: 0;
+}
+.wiki-files-upload p:before {
+	font-family: "fontcons";
+	content: "\f046";
+	margin-right: 10px;
+}
+.wiki-files-available {
+	border: 3px solid #CCC;
+	margin: 20px 20px 10px 20px;
+	overflow: scroll;
+}
+.wiki-file {
+	display: block;
+	border-bottom: 1px solid #CCC;
+	margin: 5px 10px;
+}

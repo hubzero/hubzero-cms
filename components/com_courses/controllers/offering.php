@@ -453,6 +453,12 @@ class CoursesControllerOffering extends Hubzero_Controller
 			return;
 		}
 
+		// If requesting a file from a wiki type asset, then serve that up directly
+		if ($asset->get('subtype') == 'wiki' && JRequest::getVar('file', false))
+		{
+			echo $asset->download($this->course);
+		}
+
 		echo $asset->render($this->course);
 	}
 
