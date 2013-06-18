@@ -189,7 +189,7 @@ class plgCoursesAnnouncements extends JPlugin
 	 */
 	public function onCourseDashboard($course, $offering)
 	{
-		//Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 		Hubzero_Document::addPluginScript('courses', $this->_name, $this->_name . '.dashboard');
 
 		// Instantiate a vew
@@ -207,6 +207,7 @@ class plgCoursesAnnouncements extends JPlugin
 		$view->offering = $offering;
 		$view->option   = 'com_courses';
 		$view->config   = $course->config();
+		$view->params   = $this->params;
 
 		// Set any errors
 		if ($this->getError()) 

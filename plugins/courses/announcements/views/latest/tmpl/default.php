@@ -31,28 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
-	$tz = true;
-}
-
-$rows = $this->offering->announcements(array('limit' => $this->params->get('display_limit', 1), 'published' => true));
-
-$wikiconfig = array(
-	'option'   => 'com_courses',
-	'scope'    => 'courses',
-	'pagename' => $this->offering->get('alias'),
-	'pageid'   => 0,
-	'filepath' => JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . $this->course->get('id'),
-	'domain'   => '' 
-);
-ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
+$rows = $this->offering->announcements(array(
+	'limit'     => $this->params->get('display_limit', 1), 
+	'published' => true
+));
 
 if ($rows->total() > 0) 
 {
@@ -78,17 +60,17 @@ if ($rows->total() > 0)
 		{
 			?>
 			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-				<?php echo $p->parse(stripslashes($row->get('content')), $wikiconfig); ?>
+				<?php echo $row->content('parsed'); ?>
 				<dl class="entry-meta">
 					<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
 					<dd class="time">
-						<time datetime="<?php echo $row->get('created'); ?>">
-							<?php echo JHTML::_('date', $row->get('created'), $timeFormat, $tz); ?>
+						<time datetime="<?php echo $row->published(); ?>">
+							<?php echo $row->published('time'); ?>
 						</time>
 					</dd>
 					<dd class="date">
-						<time datetime="<?php echo $row->get('created'); ?>">
-							<?php echo JHTML::_('date', $row->get('created'), $dateFormat, $tz); ?>
+						<time datetime="<?php echo $row->published(); ?>">
+							<?php echo $row->published('date'); ?>
 						</time>
 					</dd>
 				</dl>

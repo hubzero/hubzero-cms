@@ -118,7 +118,7 @@
 		        border-radius: 0;
 	}
 	
-	ol.comments .manager .comment-content {
+	/*ol.comments .manager .comment-content {
 		border-color: #504545;
 	}
 	ol.comments .manager .comment-content:before {
@@ -165,7 +165,7 @@
 		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
 		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
 		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
-	}
+	}*/
 	
 	.breakdown,
 	.breakdown tr,
@@ -181,7 +181,22 @@
 		line-height: 1;
 		font-weight: normal;
 	}
-	
+	.breakdown td span {
+		display: block;
+		background: #f1f1f1;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		padding: 1em;
+	}
+	.gradebook-passing strong {
+		color: #7F913C;
+	}
+	.gradebook-failing strong {
+		color: #c55500;
+	}
 	#page_content.course_dashboard {
 		margin: 0;
 	}
@@ -194,14 +209,14 @@
 		padding: 0 20px;
 	}
 	.sub-section-content {
-		border-top: 20px solid #f1f1f1;
-		border-bottom: 1px solid #e9e9e9;
-		border-left: 1px solid #e9e9e9;
-		background: #f9f9f9;
 		margin: 0 0 0 16.1em;
 		padding: 20px;
-		/*box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-		box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);*/
+		/*border-bottom: 1px solid #e9e9e9;
+		border-top: 20px solid #f1f1f1;
+		
+		border-left: 1px solid #e9e9e9;
+		background: #f9f9f9;
+		
 		position: relative;
 	}
 	.sub-section-content small.aside-before,
@@ -220,33 +235,9 @@
 		bottom: 0px;
 		left: -21px;
 		border: 0;
-		_display: none;
+		_display: none;*/
 	}
-	.announcements form legend {
-		display: none;
-	}
-	.announcements form label span {
-		display: none;
-	}
-	.announcements form label textarea {
-		width: 100%;
-	}
-	.announcements form .submit {
-		clear: both;
-		margin: -1.5em 0 1em 0;
-		padding: 0;
-		text-align: right;
-	}
-	.announcements form .wykiwyg {
-		margin-bottom: 1em;
-	}
-	.announcements form .submit input,
-	.announcements form .option {
-		width: auto;
-	}
-	.announcements form #priority-label {
-		width: 50%;
-	}
+
 	.hubzero_notification {
 		width: 200px;
 		min-height: 50px;
@@ -281,22 +272,7 @@
 		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	}
-	.sub-section-content ol.comments li {
+	/*.sub-section-content ol.comments li {
 		clear: none;
 	}
-	.breakdown td span {
-		display: block;
-		background: #fff;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		padding: 1em;
-	}
-	.gradebook-passing strong {
-		color: #7F913C;
-	}
-	.gradebook-failing strong {
-		color: #c55500;
-	}
+	*/

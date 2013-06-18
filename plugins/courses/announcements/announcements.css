@@ -186,31 +186,7 @@
 		min-height: 1px;
 	}
 	.list-footer {
-		margin-bottom:20px;
-	}
-
-	.entries-search {
-		float:left;
-		background-color:#fff;
-		width:20%;
-	}
-	.entries-search fieldset {
-		border:1px solid #ccc;
-		overflow:hidden;
-	}
-	.entries-search input[type=text] {
-		padding:2px;
-		border:none;
-		width:83%;
-		float:left;
-	}
-	.entries-search input[type=submit] {
-		float:right;
-		width:11%;
-		height:20px;
-		border:none;
-		text-indent:-9999px;
-		background:#fff url('/components/com_groups/assets/img/search.png') no-repeat 50% 50%;
+		margin-bottom: 20px;
 	}
 
 	.btn-container {
@@ -231,59 +207,36 @@
 		width: 50%;
 	}
 
-.entry-search {
-	margin: 0;
-}
-.entry-search input {
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	-o-box-sizing: border-box;
-	box-sizing: border-box;
-	-webkit-background-clip: padding-box;
-	-moz-background-clip: padding-box;
-	-ms-background-clip: padding-box;
-	-o-background-clip: padding-box;
-	background-clip: padding-box;
-	outline: none;
-}
-	.entry-search-submit {
-		background: #f1f1f1;
-		-webkit-border-radius: 0 0.25em 0.25em 0;
-		-moz-border-radius: 0 0.25em 0.25em 0;
-		-ms-border-radius: 0 0.25em 0.25em 0;
-		-o-border-radius: 0 0.25em 0.25em 0;
-		border-radius: 0 0.25em 0.25em 0;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		-ms-box-sizing: border-box;
-		-o-box-sizing: border-box;
-		box-sizing: border-box;
-		-webkit-background-clip: padding-box;
-		-moz-background-clip: padding-box;
-		-ms-background-clip: padding-box;
-		-o-background-clip: padding-box;
-		background-clip: padding-box;
-		font-size: 1em;
-		padding: 5px 10px;
-		margin: 2px 0 0 0;
-		line-height: 1.61803399em;
-		outline: none;
-		background: #e0e0e0;
-		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
-		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
-		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
-		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
-		background: linear-gradient(#FAFAFA, #e0e0e0);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
-		border: 1px solid #bbb;
-		color: #666;
-		border: 1px solid #666;
-		border-left: none;
+/* Dashboard */
+	.sub-section.announcements {
+		padding: 0 20px 20px 20px;
+		border-top: 1px solid #e1e1e1;
+		background: #fff;
+	}
+	.sub-section.announcements form legend {
+		display: none;
+	}
+	.sub-section.announcements form label span {
+		display: none;
+	}
+	.sub-section.announcements form label textarea {
+		width: 100%;
+	}
+	.sub-section.announcements form .submit {
+		clear: both;
+		margin: -1.5em 0 1em 0;
+		padding: 0;
+		text-align: right;
+	}
+	.sub-section.announcements form .wykiwyg {
+		margin-bottom: 1em;
+	}
+	.sub-section.announcements form .submit input,
+	.sub-section.announcements form .option {
+		width: auto;
+	}
+	.sub-section.announcements form #priority-label {
+		width: 50%;
 	}
 
 /* Hide the sidebar if the page is too narrow */

@@ -31,18 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
-	$tz = true;
-}
-
 $juser = JFactory::getUser();
-//$offering = $this->course->offering();
+
 $filters = $this->filters;
 $filters['count'] = true;
 
@@ -53,17 +43,6 @@ $filters['count'] = false;
 $rows = $this->offering->announcements($filters);
 $manager = $this->offering->access('manage', 'section');
 
-$wikiconfig = array(
-	'option'   => 'com_courses',
-	'scope'    => 'courses',
-	'pagename' => $this->offering->get('alias'),
-	'pageid'   => 0,
-	'filepath' => JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . $this->course->get('id'),
-	'domain'   => '' 
-);
-ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
-
 $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=announcements';
 ?>
 <div class="course_members">
@@ -73,12 +52,6 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 	</h3>
 
 	<form action="<?php echo JRoute::_($base); ?>" method="post">
-	<!-- 	<div class="section">
-			<div class="aside"> -->
-				
-			<!-- 	<h3>What is this?</h3>
-			</div>
-			<div class="subject"> -->
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
@@ -99,7 +72,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 <?php if ($rows->total() > 0) { ?>
 	<?php foreach ($rows as $row) { ?>
 						<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-							<?php echo $p->parse(stripslashes($row->get('content')), $wikiconfig); ?>
+							<?php echo $row->content('parsed'); ?>
 							<dl class="entry-meta">
 								<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
 								<?php if ($manager) { ?>
@@ -108,13 +81,13 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 									</dd>
 								<?php } ?>
 								<dd class="time">
-									<time datetime="<?php echo $row->get('created'); ?>">
-										<?php echo JHTML::_('date', $row->get('created'), $timeFormat, $tz); ?>
+									<time datetime="<?php echo $row->published(); ?>">
+										<?php echo $row->published('time'); ?>
 									</time>
 								</dd>
 								<dd class="date">
-									<time datetime="<?php echo $row->get('created'); ?>">
-										<?php echo JHTML::_('date', $row->get('created'), $dateFormat, $tz); ?>
+									<time datetime="<?php echo $row->published(); ?>">
+										<?php echo $row->published('date'); ?>
 									</time>
 								</dd>
 						<?php if ($manager) { ?>
@@ -150,7 +123,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 			?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
-<!-- </div> -->
+
 		<div class="clear"></div>
 
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -158,6 +131,5 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
 
-<!-- </div> -->
 	</form>
 </div><!--/ #course_members -->
