@@ -48,25 +48,18 @@ class TwitterMacro extends WikiMacro
 		$txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero) or search by trend(#hubzero), followed by a comma(,) and then the number of tweets to display.</p>
 						<p>Examples:</p>
 						<ul>
-							<li><code>[[Twitter(@hubzero,2)]]</code></li>
-							<li><code>[[Twitter(#hubzero,5)]]</code></li>
+							<li><code>[[Twitter(@hubzeroplatform,2)]]</code></li>
 						</ul>
 						<p>Displays:</p>
-						<link type="text/css" rel="stylesheet" href="/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.css" />
-						<script src="/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.js"></script>
-						<script>
-							window.addEvent("domready",function() {
-											var twitterFeed = new HUB.Twitter("twitterMacroList", {
-												type: "user",
-												username: "@hubzero",
-												trend: "",
-												tweets: 2,
-												linkify:true
-											});
-										});
-						</script>
-						<div id="twitterMacroList" class="twitter_feed_container">Loading Twitter Feed...</div><br><br>';
-
+						<a class="twitter-timeline" 
+							href="https://twitter.com/"
+							data-widget-id="346714310770302976"
+							data-screen-name="hubzeroplatform"
+							data-tweet-limit="2"
+							data-chrome=""
+							>Loading Tweets...</a>
+						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+		
 		return $txt['html'];
 	}
 
@@ -79,73 +72,25 @@ class TwitterMacro extends WikiMacro
 	{
 		//get the args passed in
 		$args = explode(',', $this->args);
-
-		//get the type of twitter feed based on the first arg
-		$start = substr($args[0], 0, 1);
-
-		if ($start != '@' && $start != '#') 
+		
+		//get screen name & num tweets
+		$screenName = (isset($args[0])) ? ltrim($args[0], '@') : '';
+		$numItems   = (isset($args[1]) && is_numeric($args[1])) ? $args[1] : 3;
+		
+		//make sure we have a user name
+		if ($screenName == '')
 		{
-			return "(Please enter a valid Twitter Username or trend)";
+			return "(Please enter a valid Twitter Username or ID)";
 		}
-
-		if ($start == '@') 
-		{
-			$type = 'user';
-			$username = $args[0];
-			$trend = '';
-		} 
-		else if ($start == "#") 
-		{
-			$type = 'trend';
-			$username = '';
-			$trend = $args[0];
-		}
-
-		//set default for num tweets
-		$num_tweets = 3;
-
-		if (is_numeric(trim($args[1]))) 
-		{
-			$num_tweets = $args[1];
-		}
-
-		$uniqid = uniqid();
-
-		$doc =& JFactory::getDocument();
-		$doc->addStyleSheet('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.css');
-
-		if (JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$doc->addScript('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.jquery.js');
-			$doc->addScriptDeclaration("
-				jQuery(document).ready(function($){
-					var twitterFeed = $(\"#twitter{$uniqid}\").twitter({
-						type: \"{$type}\",
-						username: \"{$username}\",
-						trend: \"{$trend}\",
-						tweets: {$num_tweets},
-						linkify:true
-					});
-				});
-			");
-		}
-		else
-		{
-			$doc->addScript('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.js');
-			$doc->addScriptDeclaration("
-				window.addEvent(\"domready\",function() {
-					var twitterFeed = new HUB.Twitter(\"twitter{$uniqid}\", {
-						type: \"{$type}\",
-						username: \"{$username}\",
-						trend: \"{$trend}\",
-						tweets: {$num_tweets},
-						linkify:true
-					});
-				});
-			
-			");
-		}
-
-		return '<div id="twitter' . $uniqid . '" class="twitter_feed_container">Loading Twitter Feed....</div>';
+		
+		//output embeded timeline
+		return '<a class="twitter-timeline"
+					href="https://twitter.com/'. $screenName .'"
+					data-widget-id="346714310770302976"
+					data-screen-name="' . $screenName . '"
+					data-tweet-limit="' . trim($numItems) . '"
+					data-chrome=""
+					>Loading Tweets...</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 	}
 }
