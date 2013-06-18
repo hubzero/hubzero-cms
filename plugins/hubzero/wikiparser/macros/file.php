@@ -492,7 +492,7 @@ class FileMacro extends WikiMacro
 				$juri = JURI::getInstance();
 				$rand = rand(0, 100000);
 
-				$html  = '<script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>' . "\n";
+				$html  = '<script type="text/javascript" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>' . "\n";
 				$html .= '<script type="text/javascript">' . "\n";
 				$html .= '<!--
 							function GetUnity() {
