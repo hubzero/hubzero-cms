@@ -147,6 +147,30 @@ class VideoMacro extends WikiMacro
 		if (stristr($video_url, 'youtube'))
 		{
 			$type = 'youtube';
+
+			if (strstr($video_url, '?'))
+			{
+				//split the string into two parts 
+				//uri and query string
+				$full_url_parts = explode('?', $video_url);
+
+				//split apart any key=>value pairs in query string
+				$query_string_parts = explode("%26%2338%3B", urlencode($full_url_parts[1]));
+
+				//foreach query string parts
+				//explode at equals sign
+				//check to see if v is the first part and if it is set the second part to the video id
+				foreach ($query_string_parts as $qsp) 
+				{
+					$pairs_parts = explode("%3D", $qsp);
+					if ($pairs_parts[0] == 'v') 
+					{
+						$video_id = $pairs_parts[1];
+						break;
+					}
+				}
+				$video_url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
+			}
 		}
 		else if (stristr($video_url, 'vimeo'))
 		{
@@ -194,8 +218,8 @@ class VideoMacro extends WikiMacro
 		else
 		{
 			//add wmode to url so that lightboxes appear over embedded videos
-			$video_url .= strstr($url, '?') ? '?' : '&';
-			$video_url .= 'wmode=transparent';
+			//$video_url .= strstr($video_url, '?') ? '?' : '&';
+			//$video_url .= 'wmode=transparent';
 
 			$html = '<iframe id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
