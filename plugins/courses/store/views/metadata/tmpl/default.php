@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
-	$tz = true;
-}
-
 $offerings = $this->course->offerings(array('available' => true, 'sort' => 'publish_up'));
 if ($offerings)
 {
@@ -53,33 +43,54 @@ else
 
 if ($offering->exists()) 
 {
+	$paramsClass = 'JParameter';
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$paramsClass = 'JRegistry';
+	}
+	$params = new $paramsClass($offering->get('params'));
+
 	$product = null;
 
-	$url = 'index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . '&task=enroll';
-	if ($product && $product->pId)
+	if ($params->get('store_product_id', 0))
 	{
-		$url = 'index.php?option=com_storefront/product/' . $product->pId;
+		$warehouse = new Hubzero_Storefront_Warehouse();
+		// Get course by pID returned with $course->add() above
+		try 
+		{
+			$product = $warehouse->getCourse($params->get('store_product_id', 0));
+		}
+		catch (Exception $e) 
+		{
+			echo 'ERROR: ' . $e->getMessage();
+		}
+	}
+
+	$url = 'index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . '&task=enroll';
+	if ($product && $product->data->id)
+	{
+		$url = '/cart'; //index.php?option=com_storefront/product/' . $product->pId;
 	}
 ?>
 			<table summary="<?php echo JText::_('Course offering availability information'); ?>">
 				<tbody>
-<?php if ($product) { ?>
+<?php if (!$this->course->isManager() && !$this->course->isStudent() && $product) { ?>
 					<tr>
 						<td colspan="2">
-							<strong><?php echo $product->price; ?></strong>
+							<strong class="price">$<?php echo $product->skus[0]->data->price; ?></strong>
 						</td>
 					</tr>
 <?php } ?>
 					<tr>
-						<th scope="row"><?php echo JText::_('Starts'); ?></th>
+						<th scope="row"><?php echo JText::_('Offering'); ?></th>
 						<td>
-							<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
+							<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php echo JText::_('Ends'); ?></th>
+						<th scope="row"><?php echo JText::_('Section'); ?></th>
 						<td>
-							<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
+							<?php echo $this->escape(stripslashes($offering->section()->get('title'))); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -91,10 +102,20 @@ if ($offering->exists())
 				</a>
 			</p>
 		<?php } else { ?>
+			<?php if ($product) { ?>
+			<form action="<?php echo $url; ?>" id="frm" method="post">
+				<input type="hidden" name="pId[1]" value="<?php echo $product->data->id; ?>" />
+				<input type="hidden" name="updateCart" value="updateCart" />
+				<p>
+					<input type="submit" class="enroll btn" value="<?php echo JText::_('Enroll in course'); ?>" />
+				</p>
+			</form>
+			<?php } else { ?>
 			<p>
 				<a class="enroll btn" href="<?php echo JRoute::_($url); ?>">
 					<?php echo JText::_('Enroll'); ?>
 				</a>
 			</p>
+			<?php } ?>
 		<?php } ?>
 <?php }
