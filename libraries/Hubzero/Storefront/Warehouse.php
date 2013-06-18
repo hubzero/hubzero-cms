@@ -591,9 +591,9 @@ class Hubzero_Storefront_Warehouse
 		{
 			$sku = $this->getSku($sId, $productType);	
 			$product->addSku($sku);
-		}		
+		}
 		
-		$product->verify();				
+		$product->verify();
 		
 		return $product;
 	}

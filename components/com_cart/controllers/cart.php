@@ -211,120 +211,137 @@ class CartControllerCart extends ComponentController
 	public function testgroundTask() 
 	{	
 		
-		// --------------------------------------
-		
-		// CREATE COUPON
-		ximport('Hubzero_Storefront_Coupon');		
-		try 
+		if (0)
 		{
-			// Constructor take the coupon code
-			$coupon = new Hubzero_Storefront_Coupon('hui');
-			// Couponn description (shows up in the cart)
-			$coupon->setDescription('Test coupon, 10% off product with ID 3');
-			// Expiration date 
-			$coupon->setExpiration('Feb 22, 2022');
-			// Number of times coupon can be used (unlimited by default)			
-			$coupon->setUseLimit(1);
-			
-			// Product the coupon will be applied to: 
-			// first parameter: product ID
-			// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
-			$coupon->addObject(3, 1);
-			// Action, only 'discount' for now
-			// second parameter either percentage ('10%') or absolute dollar value ('20')
-			$coupon->setAction('discount', '10%');
-			// Add coupon
-			$coupon->add();
-		}
-		catch(Exception $e) 
-		{
-			echo 'ERROR: ' . $e->getMessage();
-		}		
-		return;
-		
-		// DELETE COUPON
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
-		try 
-		{
-			$warehouse->deleteCoupon('couponcode3');
-		}
-		catch(Exception $e) 
-		{
-			echo 'ERROR: ' . $e->getMessage();
-		}
-		return;
-		
-		// CREATE NEW COURSE
-		ximport('Hubzero_Storefront_Product');
-		
-		$course = new Hubzero_Storefront_Course();
-		$course->setName('Name of the course');
-		$course->setDescription('Short description');
-		$course->setPrice(12.00);
-		$course->addToCollection('courses');
-		// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
-		$course->setTimeToLive('1 YEAR');
-		// Course alias id
-		$course->setCourseId('nanoscaletransistors');
-		try 
-		{
-			// Returns object with values, pId is the new product ID to link to
-			$info = $course->add();			
-			//print_r($info);
-		}
-		catch(Exception $e) 
-		{
-			echo 'ERROR: ' . $e->getMessage();
-		}
-		return;
-		
-		// GET EXISTING COURSE, modify it and save
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
-		try 
-		{		
-			// Get course by pID returned with $course->add() above
-			$course = $warehouse->getCourse(1023);
-			$course->setName('New course name');
-			$course->setDescription('New description');
-			$course->setPrice(55);
-			$course->setTimeToLive('10 YEAR');
-			$course->update();
-		}
-		catch(Exception $e) 
-		{
-			echo 'ERROR: ' . $e->getMessage();
-		}
-		return;
+			// CREATE COUPON
+			ximport('Hubzero_Storefront_Coupon');		
+			try 
+			{
+				// Constructor take the coupon code
+				$coupon = new Hubzero_Storefront_Coupon('hui');
+				// Couponn description (shows up in the cart)
+				$coupon->setDescription('Test coupon, 10% off product with ID 3');
+				// Expiration date 
+				$coupon->setExpiration('Feb 22, 2022');
+				// Number of times coupon can be used (unlimited by default)			
+				$coupon->setUseLimit(1);
 				
-		// UPDATE COURSE by recreatiing it				
-		ximport('Hubzero_Storefront_Product');
-		$course = new Hubzero_Storefront_Course();
-		$course->setName('Operations Management 104');
-		$course->setDescription('Operations Management 104 is some kind of test course for now...');
-		$course->setPrice(13.05);
-		$course->setCourseId(5);
-		
-		// Existing course ID (pID returned with $course->add() when the course was created). Must be set to be able to update.
-		$course->setId(1023);		
-		try 
-		{
-			$info = $course->update();			
-			//print_r($info);
+				// Product the coupon will be applied to: 
+				// first parameter: product ID
+				// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
+				$coupon->addObject(3, 1);
+				// Action, only 'discount' for now
+				// second parameter either percentage ('10%') or absolute dollar value ('20')
+				$coupon->setAction('discount', '10%');
+				// Add coupon
+				$coupon->add();
+			}
+			catch(Exception $e) 
+			{
+				echo 'ERROR: ' . $e->getMessage();
+			}		
+			return;
 		}
-		catch(Exception $e) 
-		{
-			echo 'ERROR: ' . $e->getMessage();
-		}
-		return;	
 		
-		// DELETE COURSE
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
-		// Delete by existing course ID (pID returned with $course->add() when the course was created)
-		$warehouse->deleteProduct(1023);
-		return;
+		if (0)
+		{
+			// DELETE COUPON
+			ximport('Hubzero_Storefront_Warehouse');
+			$warehouse = new Hubzero_Storefront_Warehouse();
+			try 
+			{
+				$warehouse->deleteCoupon('couponcode3');
+			}
+			catch(Exception $e) 
+			{
+				echo 'ERROR: ' . $e->getMessage();
+			}
+			return;
+		}
+		
+		if (0)
+		{
+			// CREATE NEW COURSE
+			ximport('Hubzero_Storefront_Product');
+			
+			$course = new Hubzero_Storefront_Course();
+			$course->setName('Name of the course');
+			$course->setDescription('Short description');
+			$course->setPrice(12.00);
+			$course->addToCollection('courses');
+			// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
+			$course->setTimeToLive('1 YEAR');
+			// Course alias id
+			$course->setCourseId('nanoscaletransistors');
+			try 
+			{
+				// Returns object with values, pId is the new product ID to link to
+				$info = $course->add();			
+				//print_r($info);
+			}
+			catch(Exception $e) 
+			{
+				echo 'ERROR: ' . $e->getMessage();
+			}
+			return;
+		}
+		
+		if (1)
+		{
+			
+			// GET EXISTING COURSE, modify it and save
+			ximport('Hubzero_Storefront_Warehouse');
+			$warehouse = new Hubzero_Storefront_Warehouse();
+			try 
+			{		
+				// Get course by pID returned with $course->add() above
+				$course = $warehouse->getCourse(1);
+				
+				$course->setName('Renamed');
+				$course->setDescription('New description');
+				$course->setPrice(55.22);
+				$course->setTimeToLive('10 YEAR');
+				$course->update();
+			}
+			catch(Exception $e) 
+			{
+				echo 'ERROR: ' . $e->getMessage();
+			}
+			return;
+		}
+
+		if (0) {				
+			// UPDATE COURSE by recreatiing it				
+			ximport('Hubzero_Storefront_Product');
+			$course = new Hubzero_Storefront_Course();
+			$course->setName('Operations Management 104');
+			$course->setDescription('Operations Management 104 is some kind of test course for now...');
+			$course->setPrice(13.05);
+			$course->setCourseId(5);
+			
+			// Existing course ID (pID returned with $course->add() when the course was created). Must be set to be able to update.
+			$course->setId(1023);		
+			try 
+			{
+				$info = $course->update();			
+				//print_r($info);
+			}
+			catch(Exception $e) 
+			{
+				echo 'ERROR: ' . $e->getMessage();
+			}
+			return;	
+		}
+		
+		if (0) 
+		{
+			// DELETE COURSE
+			ximport('Hubzero_Storefront_Warehouse');
+			$warehouse = new Hubzero_Storefront_Warehouse();
+			// Delete by existing course ID (pID returned with $course->add() when the course was created)
+			$warehouse->deleteProduct(1023);
+			return;
+		}
 	}
 	
 	public function postTask() 

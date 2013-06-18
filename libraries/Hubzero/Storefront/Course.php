@@ -89,13 +89,16 @@ class Hubzero_Storefront_Course extends Hubzero_Storefront_SingleSkuProduct
 	public function verify($action = NULL)
 	{
 		// If action is 'add', make sure that course id/alias is unique
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
-		$courseIdExists = $warehouse->getCourseByAlias($this->getCourseId());
-		
-		if ($courseIdExists)
+		if ($action == 'add')
 		{
-			throw new Exception(JText::_('Course with this alias already exists.'));	
+			ximport('Hubzero_Storefront_Warehouse');
+			$warehouse = new Hubzero_Storefront_Warehouse();
+			$courseIdExists = $warehouse->getCourseByAlias($this->getCourseId());
+			
+			if ($courseIdExists)
+			{
+				throw new Exception(JText::_('Course with this alias already exists.'));	
+			}
 		}
 		
 		parent::verify($action);			
