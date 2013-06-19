@@ -789,9 +789,9 @@
 	.comments-feed .instructions {
 		font-size: 1.2em;
 		text-align: center;
-		margin: 1.5em 0;
+		margin: 0;
 		line-height: 1.2em;
-		padding: 0.4em 2em;
+		padding: 1.9em 2em;
 		color: #bbb;
 		text-shadow: 0 1px 1px #fff;
 		background: #fff;
