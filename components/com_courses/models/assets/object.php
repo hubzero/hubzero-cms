@@ -79,13 +79,13 @@ class ObjectAssetHandler extends ContentAssetHandler
 				$this->asset['title'] = 'New Kaltura video';
 			}
 		}
-		/*if (preg_match('/<iframe width="[0-9]+" height="[0-9]+" src="http[s]*:\/\/www\.youtube(-nocookie)?\.com\/embed\/[a-zA-Z0-9-_]+(\?rel=0)?" frameborder="[0-9]+" allowfullscreen><\/iframe>/', $object))
-		{
-			$this->asset['title'] = 'New YouTube video';
-		}*/
 		elseif (preg_match('/\<script src="http[s]*\:\/\/cdnapisec\.kaltura\.com.*/is', $object))
 		{
 			$this->asset['title'] = 'New Kaltura video';
+		}
+		elseif (preg_match('/\<script src="http[s]*\:\/\/static\.3playmedia\.com.*/is', $object))
+		{
+			$this->asset['title'] = 'New 3PlayMedia video';
 		}
 		else
 		{
