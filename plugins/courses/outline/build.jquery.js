@@ -1852,6 +1852,13 @@ HUB.CoursesOutline = {
 					settings.element.find('iframe').load(function () {
 						var content = $(this).contents();
 
+						// Add close on escape within iframe as well
+						content.bind('keydown', function ( e ) {
+							if(e.which == 27) {
+								methods.close();
+							}
+						});
+
 						settings.element.find('.loading-bar').hide();
 						settings.onAfterLoad( content );
 					});
