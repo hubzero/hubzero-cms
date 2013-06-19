@@ -1388,14 +1388,14 @@ HUB.Presenter = {
 		}
 		
 		//clear the subtitle tracks between 
-		jQ("#video-subtitles div").html("");
+		jQ("#video-subtitles div").hide().html("");
 		
 		for(i in subs) {
 			start = subs[i].start;
 			end = subs[i].end;
 			text = subs[i].text;
 			if(current >= start && current <= end) {
-				jQ("#video-subtitles #" + track).html( text.replace( "\n","<br />") );
+				jQ("#video-subtitles #" + track).show().html( text.replace( "\n","<br />") );
 			}
 		}
 	},
@@ -1407,7 +1407,7 @@ HUB.Presenter = {
 		var count = 0,
 			parsed = "",
 			subs = new Array(),
-			sub_files = jQ("#player div[data-type=subtitle]");
+			sub_files = jQ("div[data-type=subtitle]");
 		
 		//loop through each subs file and get the contents then add to subs object
 		sub_files.each(function(i){

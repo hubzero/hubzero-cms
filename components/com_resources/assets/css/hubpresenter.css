@@ -512,18 +512,25 @@ video {
 	
 #video-subtitles {
 	position:absolute;
-	bottom:0;
-	left:0;
-	width:100%;
+	bottom: 30px;
+	left: 20px;
+	right: 20px;
+	z-index: 888;
 	}
 #video-subtitles div {
-	text-align:center;
-	padding:0 20px 30px 20px;
+	text-align: center;
+	padding: 20px;
 	font-size:24px;
-	font-weight:500;
+	font-weight:400;
 	line-height:1.2em;
-	color:#FF0;
-	text-shadow:0 0 2px #000;
+	color:#FFF;
+	text-shadow:0 0 4px #000;
+	margin: 0 auto;
+	width: 450px;
+	min-width: 300px;
+	max-width: 700px;
+	background: rgba(0,0,0,0.5);
+	border-radius: 4px;
 	}
 
 
