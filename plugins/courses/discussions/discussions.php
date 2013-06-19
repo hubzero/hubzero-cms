@@ -118,6 +118,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		if ($assetgroup->get('discussions_linkAssetGroup', 0))
 		{*/
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
 			$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
 
