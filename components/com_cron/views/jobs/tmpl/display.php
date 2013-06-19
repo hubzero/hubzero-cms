@@ -47,8 +47,9 @@ if (!$this->no_html) {
 </div><!-- / .main section -->
 <?php
 } else {
+	session_write_close();
 	ob_clean();
-	header('Content-type: text/plain');
+	header('Content-type: application/json');
 	echo json_encode($this->output);
-	exit();
+	jexit();
 }

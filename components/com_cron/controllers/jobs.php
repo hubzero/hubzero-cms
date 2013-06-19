@@ -58,15 +58,17 @@ class CronControllerJobs extends Hubzero_Controller
 	public function displayTask()
 	{
 		ximport('Hubzero_Environment');
+
 		$ip = Hubzero_Environment::ipAddress();
 
 		$ips = explode(',', $this->config->get('whitelist', '127.0.0.1'));
+
 		$ips = array_map('trim', $ips);
 
 		if (!in_array($ip, $ips))
 		{
-			JError::raiseError(404, JText::_('Page not found.'));
-			return;
+			header("HTTP/1.1 404 Not Found");
+			exit();
 		}
 
 		JRequest::setVar('no_html', 1);
@@ -126,12 +128,6 @@ class CronControllerJobs extends Hubzero_Controller
 
 				$output->jobs[] = $job->toArray();
 			}
-		}
-
-		if (!JDEBUG)
-		{
-			JError::raiseError(403, JText::_('Permission denied'));
-			return;
 		}
 
 		$this->view->output = $output;
