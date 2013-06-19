@@ -37,6 +37,20 @@ defined('_JEXEC') or die('Restricted access');
 class VideoMacro extends WikiMacro
 {
 	/**
+	 * Container for parsed attributes
+	 * 
+	 * @var array
+	 */
+	protected $attr = array();
+
+	/**
+	 * JParameter
+	 * 
+	 * @var object
+	 */
+	protected $config = null;
+
+	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * 
 	 * @return     array
@@ -51,11 +65,17 @@ class VideoMacro extends WikiMacro
 						<ul>
 							<li><code>[[Video(MyVideo.m4v)]]</code></li>
 							<li><code>[[Video(http://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
-							<li><code>[[Video(http://blip.tv/play/hNNNg4uIDAI.x?p=1, 640, 380)]] - width 640px, height 380px</code></li>
-							<li><code>[[Video(http://player.vimeo.com/video/67115692, 100%)]] - width of 100%</code></li>
+							<li><code>[[Video(http://blip.tv/play/hNNNg4uIDAI.x?p=1)]]</code></li>
+							<li><code>[[Video(http://player.vimeo.com/video/67115692)]]</code></li>
 						</ul>
-						<p>Displays:</p>
-						<iframe src="http://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0"></iframe>';
+						<p>Size attributes may be given as single numeric values or with units (%, em, px). When an attribute name is given (e.g., width=600, height=338), order does not matter. Attribute values may be quoted but are not required to be. When a name attribute is not give (e.g., 600, 338), the first value will be set as width and the second value as height.</p>
+						<p>Examples:</p>
+						<ul>
+							<li><code>[[Video(MyVideo.m4v, width="600", height="338")]]</code></li>
+							<li><code>[[Video(http://www.youtube.com/watch?v=FgfGOEpZEOw, width=600px, height=338px)]]</code></li>
+							<li><code>[[Video(http://blip.tv/play/hNNNg4uIDAI.x?p=1, 640, 380)]]</code> - width 640px, height 380px</li>
+							<li><code>[[Video(http://player.vimeo.com/video/67115692, 100%)]]</code> - width of 100%</li>
+						</ul>';
 
 		return $txt['html'];
 	}
@@ -70,6 +90,12 @@ class VideoMacro extends WikiMacro
 		//get the args passed in
 		$content = $this->args;
 
+		// args will be null if the macro is called without parenthesis.
+		if (!$content) 
+		{
+			return '';
+		}
+
 		//declare the partial youtube embed url
 		//$youtube_url = 'https://www.youtube.com/embed/';
 		$video_url = '';
@@ -78,44 +104,35 @@ class VideoMacro extends WikiMacro
 		$default_width  = 640;
 		$default_height = 380;
 
-		// args will be null if the macro is called without parenthesis.
-		if (!$content) 
+		$this->config = JComponentHelper::getParams('com_wiki');
+		if ($this->filepath != '') 
 		{
-			return '';
+			$this->config->set('filepath', $this->filepath);
 		}
 
 		//split up the args
 		$args = array_map('trim', explode(',', $content));
 		$url  = $args[0];
 
-		$width  = (isset($args[1]) && $args[1] != '') ? $args[1] : $default_width;
-		$height = (isset($args[2]) && $args[2] != '') ? $args[2] : $default_height;
+		// We need to reset thinsg in case of multiple usage of macro
+		$this->attr = array();
+
+		// Get single attributes
+		// EX: [[Image(myimage.png, nolink, right)]]
+		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+		// Get quoted attribute/value pairs
+		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		// Get non-quoted attribute/value pairs
+		// EX: [[Image(myimage.png, width=100)]]
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+
+		$width  = (isset($this->attr['width']) && $this->attr['width'] != '')   ? $this->attr['width']  : $default_width;
+		$height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
 
 		//check is user entered full youtube url or just Video Id
 		if (!strstr($url, 'http')) 
 		{
-			/*if (strstr($url, '?'))
-			{
-				//split the string into two parts 
-				//uri and query string
-				$full_url_parts = explode('?', $url);
-
-				//split apart any key=>value pairs in query string
-				$query_string_parts = explode("%26%2338%3B", urlencode($full_url_parts[1]));
-
-				//foreach query string parts
-				//explode at equals sign
-				//check to see if v is the first part and if it is set the second part to the video id
-				foreach ($query_string_parts as $qsp) 
-				{
-					$pairs_parts = explode("%3D", $qsp);
-					if ($pairs_parts[0] == 'v') 
-					{
-						$video_id = $pairs_parts[1];
-						break;
-					}
-				}
-			}*/
 			// File path, so assume local
 			if (strstr($url, '/'))
 			{
@@ -124,15 +141,15 @@ class VideoMacro extends WikiMacro
 			else
 			{
 				// Just a file name.
-				$video_url = $this->_path($video_url);
+				$video_url = $this->_path($url);
 
 				if (!file_exists($video_url))
 				{
-					$video_url = $this->_path($video_url, true);
+					$video_url = $this->_path($url, true);
 
 					if (!file_exists($video_url))
 					{
-						return '(video:' . $url . ' not found)'. $this->_path($video_url);
+						return '(video:' . $url . ' not found)' . $this->_path($url);
 					}
 				}
 			}
@@ -142,8 +159,10 @@ class VideoMacro extends WikiMacro
 			$video_url = $url;
 		}
 
+		// Default to local
 		$type = 'local';
 
+		// YouTube
 		if (stristr($video_url, 'youtube'))
 		{
 			$type = 'youtube';
@@ -172,59 +191,63 @@ class VideoMacro extends WikiMacro
 				$video_url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
 			}
 		}
+		// Vimeo
 		else if (stristr($video_url, 'vimeo'))
 		{
 			$type = 'vimeo';
 		}
+		// BlipTV
 		else if (stristr($video_url, 'blip'))
 		{
 			$type = 'blip';
 		}
+		// Kaltura
 		else if (stristr($video_url, 'kaltura'))
 		{
 			$type = 'kaltura';
 		}
 
+		// Create the embed
+
+		// Local
 		if ($type == 'local')
 		{
 			jimport('joomla.filesystem.file');
 			$ext = strtolower(JFile::getExt($video_url));
 
-			$html = '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
+			$doc =& JFactory::getDocument();
+			$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
+			$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+
+			$html  = '<div class="flowplayer" style="width: ' . $width . 'px; height: ' . $height . 'px;">';
+			$html .= '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
 			switch ($ext)
 			{
 				case 'mov':
 				case 'mp4':
 				case 'm4v':
-					$html .= '<source src="' . $video_url . '" type=\'video/mp4; codecs="avc1.42E01E, mp4a.40.2"\' />';
+					$html .= '<source src="' . $video_url . '" type="video/mp4" />';
 				break;
 
+				case 'ogg':
 				case 'ogv':
-					$html .= '<source src="' . $video_url . '" type=\'video/ogg; codecs="theora, vorbis"\' />';
+					$html .= '<source src="' . $video_url . '" type="video/ogg" />';
 				break;
 
 				case 'webm':
-					$html .= '<source src="' . $video_url . '" type=\'video/webm; codecs="vp8, vorbis"\' />';
+					$html .= '<source src="' . $video_url . '" type="video/webm" />';
 				break;
 			}
-			$html .= '<object type="application/x-shockwave-flash" data="http://releases.flowplayer.org/swf/flowplayer-3.2.1.swf" width="' . $width . '" height="' . $height . '">
-					<param name="movie" value="http://releases.flowplayer.org/swf/flowplayer-3.2.1.swf" />
-					<param name="allowFullScreen" value="true" />
-					<param name="wmode" value="transparent" />
-					<param name="flashvars" value=\'config={"clip":{"url":"' . $video_url . '","autoPlay":false,"autoBuffering":true}}\' />
-				</object>
-			</video>';
+			$html .= '</video>';
+			$html .= '</div>';
 		}
+		// External
 		else
 		{
-			//add wmode to url so that lightboxes appear over embedded videos
-			//$video_url .= strstr($video_url, '?') ? '?' : '&';
-			//$video_url .= 'wmode=transparent';
-
 			$html = '<iframe id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 
-		//return the emdeded youtube video
+		// Return the emdeded youtube video
 		return $html;
 	}
 
@@ -268,5 +291,163 @@ class VideoMacro extends WikiMacro
 		}
 
 		return $path;
+	}
+
+	/**
+	 * Parse attribute=value pairs
+	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
+	 * 
+	 * @param      array $matches Values matching attr=val pairs
+	 * @return     void
+	 */
+	public function parseAttributeValuePair($matches)
+	{
+		$key = strtolower(trim($matches[1]));
+		$val = trim($matches[2]);
+
+		$size   = '/^[0-9]+(%|px|em)$/';
+		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
+		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
+
+		// Set width if just a pixel size is given 
+		// e.g., [[File(myfile.jpg, width=120px)]]
+		if (preg_match($size, $val, $matches) && $key != 'border') 
+		{
+			if ($matches[0])
+			{
+				$at = (isset($this->attr['width'])) ? 'height' : 'width';
+				$this->attr['style'][$at] = $val;
+				$this->attr[$at] = $val;
+				return;
+			}
+		}
+
+		// Set width if just a numeric size is given 
+		// e.g., [[File(myfile.jpg, width=120)]]
+		if (is_numeric($val))
+		{
+			$at = (isset($this->attr['width'])) ? 'height' : 'width';
+			$this->attr['style'][$at] = $val . 'px';
+			$this->attr[$at] = $val;
+			return;
+		}
+
+		// Check for alignment, no key given
+		// e.g., [[File(myfile.jpg, align=left)]]
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
+		{
+			if ($key == 'center')
+			{
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['margin-right'] = 'auto';
+				$this->attr['style']['margin-left'] = 'auto';
+			}
+			else 
+			{
+				$this->attr['style']['float'] = $key;
+				if ($key == 'left')
+				{
+					$this->attr['style']['margin-right'] = '1em';
+				}
+				else if ($key == 'right')
+				{
+					$this->attr['style']['margin-left'] = '1em';
+				}
+			}
+			return;
+		}
+
+		// Look for any other attributes
+		if ($key == 'align') 
+		{
+			if ($val == 'center')
+			{
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['margin-right'] = 'auto';
+				$this->attr['style']['margin-left'] = 'auto';
+			}
+			else 
+			{
+				$this->attr['style']['float'] = $val;
+				if ($val == 'left')
+				{
+					$this->attr['style']['margin-right'] = '1em';
+				}
+				else if ($val == 'right')
+				{
+					$this->attr['style']['margin-left'] = '1em';
+				}
+			}
+		} 
+		else if ($key == 'border') 
+		{
+			$this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
+		} 
+		else 
+		{
+			$this->attr[$key] = $val;
+		}
+		return;
+	}
+
+	/**
+	 * Handle single attribute values
+	 * EX: [[Image(myimage.png, nolink, right)]]
+	 * 
+	 * @param      array $matches Values matching the single attribute pattern
+	 * @return     void
+	 */
+	public function parseSingleAttribute($matches)
+	{
+		$key = strtolower(trim($matches[1]));
+
+		// Set width if just a pixel size is given 
+		// e.g., [[File(myfile.jpg, 120px)]]
+		if (preg_match('/[0-9+](%|px|em)$/', $key, $matches)) 
+		{
+			if ($matches[0])
+			{
+				$at = (isset($this->attr['width'])) ? 'height' : 'width';
+				$this->attr['style'][$at] = $key;
+				$this->attr[$at] = $key;
+				return;
+			}
+		}
+
+		// Set width if just a numeric size is given 
+		// e.g., [[File(myfile.jpg, 120)]]
+		if (is_numeric($key))
+		{
+			$at = (isset($this->attr['width'])) ? 'height' : 'width';
+			$this->attr['style'][$at] = $key . 'px';
+			$this->attr[$at] = $key;
+			return;
+		}
+
+		// Check for alignment, no key given
+		// e.g., [[File(myfile.jpg, left)]]
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
+		{
+			if ($key == 'center')
+			{
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['margin-right'] = 'auto';
+				$this->attr['style']['margin-left'] = 'auto';
+			}
+			else 
+			{
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['float'] = $key;
+				if ($key == 'left')
+				{
+					$this->attr['style']['margin-right'] = '1em';
+				}
+				else if ($key == 'right')
+				{
+					$this->attr['style']['margin-left'] = '1em';
+				}
+			}
+		}
+		return;
 	}
 }
