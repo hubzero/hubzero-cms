@@ -23,7 +23,6 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,32 +30,47 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-setlocale(LC_MONETARY, 'en_US.UTF-8');
+/**
+ * Short description for 'PaymentGateway'
+ * 
+ * Long description (if any) ...
+ */
+class Hubzero_Badges
+{	
+	private $badgesHandler;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param	string 		badgesProivder
+	 * @return  void
+	 */
+	public function __construct($badgesProivder)
+	{		
+		switch ($badgesProivder)
+		{
+			case "PASSPORT":
+				$this->badgesHandler = new Hubzero_Badges_Passport_BadgesProvider();
+			break;
+			
+			/*
+			case "MOZILLA":
+				$this->badgesHandler = new Hubzero_Badges_Mozilla_BadgesProvider();
+			break;
+			*/
+			
+			default:
+				die('Bad badges provider.');
+		}		
+	}
+	
+	/**
+	 * Get badges provider instance
+	 *
+	 */
+	public function getProvider() 
+	{
+		return $this->badgesHandler;
+	}
 
-?>
-
-<div id="content-header">
-	<h2>Post test</h2>
-</div>
-
-<div class="section">
-	<form action="/cart/" id="frm" method="post">
-	
-	<!-- 	TO ADD PRODUCT (accepts multiple):
-			name: 	pId[productID]
-			value: 	quantity to set in the cart
-	-->
-	<input type="hidden" name="pId[1]" value="1"></input>
-	<input type="hidden" name="updateCart" value="updateCart"></input>
-	
-	<!-- 	TO ADD COUPON TO CART (only one can be added for now):
-			value: 	coupon code
-	-->
-	<!--input type="hidden" name="couponCode" value="couponCodeHere"></input>
-	<input type="hidden" name="addCouponCode" value="addCouponCode"></input-->
-	
-	
-	<input type="submit" value="Submit">
-	<a id="ajax" href="#">Ajax call</a>
-	</form>
-</div>
+}
