@@ -55,6 +55,10 @@ endforeach;
 			<input type="text" name="title" value="<?= $asset->get('title') ?>" placeholder="Asset Title" />
 		</p>
 		<p>
+			<label for="title">URL:</label>
+			<input type="text" name="url" value="<?= $asset->get('url') ?>" placeholder="Asset URL" />
+		</p>
+		<p>
 			<label for="type">Type:</label>
 			<select name="type">
 				<option value="video"<?php if ($asset->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
