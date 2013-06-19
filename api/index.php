@@ -30,8 +30,8 @@
 
 $_HUBZERO_API_START = microtime(true);
 
-ini_set('display_errors','1');
-error_reporting(E_ALL);
+ini_set('display_errors','0');
+error_reporting(0);
 header("HTTP/1.1 404 Not Found");
 
 if (function_exists('xdebug_disable'))

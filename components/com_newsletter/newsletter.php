@@ -29,12 +29,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $config = JFactory::getConfig();
 
-if ($config->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	ini_set('display_errors','1');
-}
-
 jimport('joomla.application.component.view');
 ximport('Hubzero_View_Helper_Html');
 ximport("Hubzero_Controller");

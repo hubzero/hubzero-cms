@@ -1,6 +1,5 @@
 <?
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	ini_set('display_errors', 1);
 	$log = array();
 	array_map(function($k) use(&$log) { 
 		if (!array_key_exists($k, $_POST)) {

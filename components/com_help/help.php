@@ -31,13 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors', '1');
-}
-
 // build controller path and name
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'help.php');
 $controllerName = 'HelpControllerHelp';

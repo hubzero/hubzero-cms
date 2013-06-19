@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-error_reporting(E_ALL);
-@ini_set('display_errors', '1');
-
 //
 $jacl =& JFactory::getacl();
 $jacl->addACL($option, 'manage', 'users', 'super administrator');

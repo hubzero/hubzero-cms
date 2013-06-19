@@ -30,9 +30,6 @@
  * 
  */
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 JLoader::import('Hubzero.Api.Controller');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');

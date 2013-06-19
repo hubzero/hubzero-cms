@@ -45,8 +45,6 @@ if (!function_exists('stem'))
 	function stem($str) { return $str; }
 }
 
-ini_set('display_errors', 1);
-
 require 'include.php';
 
 jimport('joomla.application.component.controller');
