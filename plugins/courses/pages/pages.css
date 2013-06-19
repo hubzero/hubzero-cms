@@ -136,6 +136,21 @@
 		color: #333;
 	}
 
+	.course_pages .embedded-plugin {
+		background: url("/components/com_wiki/assets/img/checkered.png");
+		text-align: center;
+		vertical-align: middle;
+	}
+	.course_pages .embedded-plugin,
+	.course_pages .embedded-plugin a {
+		border: none;
+	}
+	.course_pages .embedded-plugin a {
+		top: 50%;
+		display: block;
+		position: relative;
+	}
+
 /* Drag and drop file upload */
 	.qq-uploading {
 		position: absolute;

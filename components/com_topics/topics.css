@@ -678,3 +678,18 @@
 		color: #333;
 		border: none;
 	}
+
+	.wikipage .embedded-plugin {
+		background: url("/components/com_wiki/assets/img/checkered.png");
+		text-align: center;
+		vertical-align: middle;
+	}
+	.wikipage .embedded-plugin,
+	.wikipage .embedded-plugin a {
+		border: none;
+	}
+	.wikipage .embedded-plugin a {
+		top: 50%;
+		display: block;
+		position: relative;
+	}
