@@ -285,15 +285,38 @@ class PdfForm
 
 			mkdir($this->base . $fid);
 
-			for ($this->pages = 1; ; ++$this->pages)
+			// Get the number of images for our for-loop
+			$im = new imagick($this->fname);
+			$num = $im->getNumberImages();
+
+			// First we need to loop through the images and see what trim is going to do (i.e. figure out the margins)
+			for ($this->pages = 0; $this->pages < $num; ++$this->pages)
 			{
-				$im = new imagick($this->fname.'['.($this->pages - 1).']');
+				$im = new imagick($this->fname.'['.($this->pages).']');
 				$im->setImageFormat('png');
 				$im->trimImage(0);
+
+				// Get the image dimensions and x,y trim points
+				$imagePage = $im->getImagePage();
+
+				// Reset page proportions to get new width and height
+				$im->setImagePage(0, 0, 0, 0);
+				$widths[]                     = $im->width;
+				$crop[$this->pages]['height'] = $im->height;
+				$crop[$this->pages]['x']      = $imagePage['x'];
+				$crop[$this->pages]['y']      = $imagePage['y'];
+			}
+
+			// Now actually do the image creation and cropping based on min margin
+			for ($this->pages = 0; $this->pages < $num; ++$this->pages)
+			{
+				$im = new imagick($this->fname.'['.($this->pages).']');
+				$im->setImageFormat('png');
+				$im->cropImage(max($widths), $crop[$this->pages]['height'], $crop[$this->pages]['x'], $crop[$this->pages]['y']);
 				$im->scaleImage(582,0);
 				$im->sharpenImage(2,1);
 				$im->borderImage('white', 15, 15);
-				$im->writeImage($this->base . $fid . DS . $this->pages  . '.png');
+				$im->writeImage($this->base . $fid . DS . ($this->pages + 1) . '.png');
 			}
 		}
 		catch (ImagickException $ex)
@@ -353,7 +376,10 @@ class PdfForm
 		$dbh = self::getDbh();
 		$dbh->execute('UPDATE #__courses_forms SET title = '.$dbh->quote(stripslashes($title)).' WHERE id = '.$this->getId());
 
-		$dbh->execute('UPDATE #__courses_assets SET title = '.$dbh->Quote(stripslashes($title)).' WHERE id = '.$this->getAssetId());
+		if ($id = $this->getAssetId())
+		{
+			$dbh->execute('UPDATE #__courses_assets SET title = '.$dbh->Quote(stripslashes($title)).' WHERE id = '.$id);
+		}
 
 		return $this;
 	}
@@ -472,9 +498,13 @@ class PdfForm
 		{
 			return $this->type;
 		}
+		if (!$asset_id = $this->getAssetId())
+		{
+			return false;
+		}
 
 		$dbh = self::getDbh();
-		$dbh->setQuery('SELECT subtype FROM `#__courses_assets` WHERE id = ' . $this->getAssetId());
+		$dbh->setQuery('SELECT subtype FROM `#__courses_assets` WHERE id = ' . $asset_id);
 
 		$this->type = $dbh->loadResult();
 

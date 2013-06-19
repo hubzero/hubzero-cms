@@ -19,8 +19,8 @@
 		<p id="title-error" class="error"></p>
 	</label>
 	<label>
-		Type:
-		<? if (!$this->readonly) : ?>
+		<?= ($this->pdf->getAssetType() !== false) ? 'Type:' : '' ?>
+		<? if (!$this->readonly && $this->pdf->getAssetType() !== false) : ?>
 			<select name="type" id="asset-type">
 				<option value="exam"<?= ($this->pdf->getAssetType() == 'exam') ? 'selected=selected': '' ?>>Exam</option>
 				<option value="quiz"<?= ($this->pdf->getAssetType() == 'quiz') ? 'selected=selected': '' ?>>Quiz</option>
