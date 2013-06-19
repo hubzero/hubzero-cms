@@ -140,7 +140,7 @@ class AssetHandler
 				{
 					$extensions = $class::getExtensions();
 
-					if(in_array($fileType, $extensions))
+					if(in_array(strtolower($fileType), $extensions))
 					{
 						$this->addHandler($class);
 					}
