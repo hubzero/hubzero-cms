@@ -364,7 +364,16 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
 		$dispatcher =& JDispatcher::getInstance();
-
+		
+		//get before group content
+		$this->view->beforeGroupContent = $dispatcher->trigger('onBeforeGroup', 
+			array(
+				$this->view->group,
+				$this->_option,
+				$authorized,
+			)
+		);
+		
 		// Trigger the functions that return the areas we'll be using
 		// then add overview to array
 		$this->view->hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());

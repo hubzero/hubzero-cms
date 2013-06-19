@@ -340,6 +340,7 @@
 #page_menu li .usage:before { content: "\f080"; }
 #page_menu li .projects:before { content: "\f03f"; }
 #page_menu li .collections:before { content: "\f005"; }
+#page_menu li .announcements:before { content: "\f095"; }
 
 #page_menu li.protected {
 	background: none;
@@ -1600,4 +1601,8 @@ p.warning {
 */
 .qq-upload-list {
 	display: none;
+}
+
+.com_groups .innerwrap {
+	position: relative;
 }

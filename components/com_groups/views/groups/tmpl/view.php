@@ -43,6 +43,14 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 ?>
 
 <?php if (!$no_html) : ?>
+	
+	<?php 
+		foreach ($this->beforeGroupContent as $content)
+		{
+			echo $content;
+		}
+	?>
+	
 	<div class="innerwrap">
 		<div id="page_container">
 			<div id="page_sidebar">
