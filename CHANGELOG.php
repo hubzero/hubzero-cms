@@ -13,7 +13,6 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-/*
 ?>
 1. Copyright and disclaimer
 ---------------------------

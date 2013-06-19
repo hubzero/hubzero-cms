@@ -585,7 +585,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$thistool = $thistool ? $thistool[0] : '';
 
 		// Replace resource info with requested version
-		$objV->compileResource($thistool, '', &$resource, 'dev', $this->rconfig);
+		$objV->compileResource($thistool, '', $resource, 'dev', $this->rconfig);
 
 		// get language library
 		$lang =& JFactory::getLanguage();
