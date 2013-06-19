@@ -114,7 +114,7 @@ class CoursesModelMember extends CoursesModelAbstract
 
 		//$permissions = clone(JComponentHelper::getParams('com_courses'));
 		//$permissions->merge(new $paramsClass($this->get('role_permissions')));
-		if (!$this->get('role_permissions'))
+		if (!$this->get('role_alias'))
 		{
 			$result = new CoursesTableRole($this->_db);
 			if ($result->load($this->get('role_id')))

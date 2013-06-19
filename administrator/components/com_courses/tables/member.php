@@ -147,7 +147,7 @@ class CoursesTableMember extends JTable
 			//$where[] = "`section_id` IN (0, " . $this->_db->Quote((int) $sid) . ")";
 			$where[] = "`section_id` IN (0," . (int) $sid . ")"; //$this->_db->Quote((int) $sid);
 		}
-		$query .= implode(" AND ", $where) . " LIMIT 1";
+		$query .= implode(" AND ", $where) . " ORDER BY student ASC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
@@ -312,11 +312,27 @@ class CoursesTableMember extends JTable
 		}
 		if (isset($filters['offering_id']))
 		{
-			$where[] = "m.`offering_id`=" . $this->_db->Quote(intval($filters['offering_id']));
+			if (is_array($filters['section_id']))
+			{
+				$filters['offering_id'] = array_map('intval', $filters['offering_id']);
+				$where[] = "m.`offering_id` IN (" . implode(",", $filters['offering_id']) . ")";
+			}
+			else
+			{
+				$where[] = "m.`offering_id`=" . $this->_db->Quote(intval($filters['offering_id']));
+			}
 		}
 		if (isset($filters['section_id']))
 		{
-			$where[] = "m.`section_id`=" . $this->_db->Quote(intval($filters['section_id']));
+			if (is_array($filters['section_id']))
+			{
+				$filters['section_id'] = array_map('intval', $filters['section_id']);
+				$where[] = "m.`section_id` IN (" . implode(",", $filters['section_id']) . ")";
+			}
+			else
+			{
+				$where[] = "m.`section_id`=" . $this->_db->Quote(intval($filters['section_id']));
+			}
 		}
 		if (isset($filters['user_id']))
 		{
@@ -384,6 +400,20 @@ class CoursesTableMember extends JTable
 		}
 		$query .= " AS course_manager ";*/
 		$query .= $this->_buildquery($filters);
+
+		if (isset($filters['sort']))
+		{
+			$query .= " ORDER BY " . $filters['sort'];
+		}
+		if (isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+			if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+			{
+				$filters['sort_Dir'] = 'ASC';
+			}
+			$query .= " " . $filters['sort_Dir'];
+		}
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{

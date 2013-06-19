@@ -1076,11 +1076,12 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$this->params->set('access-view', true);
 		if (!$this->juser->get('guest')) 
 		{
-			$this->params->set('access-view-' . $assetType, false);
+			$this->offering->members();
+			/*$this->params->set('access-view-' . $assetType, false);
 			if (in_array($this->juser->get('id'), $this->offering->members()))
-			{
+			{*/
 				$this->params->set('access-view-' . $assetType, true);
-			}
+			//}
 			if (isset($this->model) && is_object($this->model))
 			{
 				if (!$this->model->state)
@@ -1306,12 +1307,29 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->stats->threads = 0;
 		$view->stats->posts = 0;
 
+		// Collect all categories
+		$view->filters['section_id'] = -1;
+		$categories = array();
+		$results = $model->getRecords($view->filters);
+		if ($results)
+		{
+			foreach ($results as $category)
+			{
+				if (!isset($categories[$category->section_id]))
+				{
+					$categories[$category->section_id] = array();
+				}
+				$categories[$category->section_id][] = $category;
+			}
+		}
+
+		// Loop through all sections and distribute categories
 		foreach ($view->sections as $key => $section)
 		{
 			$view->filters['section_id'] = $section->id;
 
 			$view->sections[$key]->threads = 0;
-			$view->sections[$key]->categories = $model->getRecords($view->filters);
+			$view->sections[$key]->categories = isset($categories[$section->id]) ? $categories[$section->id] :  array(); //$model->getRecords($view->filters);
 
 			if ((!$view->sections[$key]->categories || !count($view->sections[$key]->categories)) 
 			 && $view->sections[$key]->object_id)

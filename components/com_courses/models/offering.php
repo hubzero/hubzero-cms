@@ -657,11 +657,19 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 		if (!isset($filters['offering_id']))
 		{
-			$filters['offering_id'] = (int) $this->get('id');
+			$filters['offering_id'] = array(0, (int) $this->get('id'));
 		}
 		if (!isset($filters['section_id']))
 		{
-			$filters['section_id'] = (int) $this->section()->get('id');
+			$filters['section_id'] = array(0, (int) $this->section()->get('id'));
+		}
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'student ASC, section_id ASC, offering_id';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = 'ASC';
 		}
 
 		if (isset($filters['count']) && $filters['count'])
@@ -691,7 +699,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 				foreach ($data as $key => $result)
 				{
-					$results[$result->user_id] = new $mdl($result);
+					if (!isset($results[$result->user_id]))
+					{
+						$results[$result->user_id] = new $mdl($result);
+					}
 				}
 			}
 

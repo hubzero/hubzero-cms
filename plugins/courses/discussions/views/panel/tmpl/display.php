@@ -132,6 +132,36 @@ if (count($inst) > 0)
 						</div><!-- / .category-content -->
 					</div><!-- / .category -->
 		<?php if (count($this->sections) > 0) { ?>
+			<?php
+			$tfilters = array();
+							$tfilters['scope']      = $this->filters['scope'];
+							$tfilters['scope_id']   = $this->filters['scope_id'];
+							if ($this->config->get('discussions_threads', 'all') != 'all')
+							{
+								$tfilters['scope_sub_id']   = $this->filters['scope_sub_id'];
+							}
+							$tfilters['state']       = 1;
+							//$tfilters['category_id'] = $row->id;
+							$tfilters['sort_Dir']    = 'DESC';
+							$tfilters['limit']       = (100 * count($this->sections));
+							$tfilters['start']       = 0;
+							$tfilters['parent']      = 0;
+							$tfilters['sticky']     = false;
+
+							$threads = array();
+							$results = $this->post->getRecords($tfilters);
+							if ($results)
+							{
+								foreach ($results as $thread)
+								{
+									if (!isset($threads[$thread->category_id]))
+									{
+										$threads[$thread->category_id] = array();
+									}
+									$threads[$thread->category_id][] = $thread;
+								}
+							}
+			?>
 			<?php foreach ($this->sections as $section) { ?>
 					<div class="category category-results" id="sc<?php echo $section->id; ?>">
 						<div class="category-header">
@@ -147,7 +177,7 @@ if (count($inst) > 0)
 								?>
 								<div class="thread closed" id="ct<?php echo $row->id; ?>" data-category="<?php echo $row->id; ?>">
 									<?php
-										$tfilters = array();
+										/*$tfilters = array();
 										$tfilters['scope']      = $this->filters['scope'];
 										$tfilters['scope_id']   = $this->filters['scope_id'];
 										if ($this->config->get('discussions_threads', 'all') != 'all')
@@ -160,7 +190,7 @@ if (count($inst) > 0)
 										$tfilters['limit']       = 100;
 										$tfilters['start']       = 0;
 										$tfilters['parent']      = 0;
-										$tfilters['sticky']     = false;
+										$tfilters['sticky']     = false;*/
 									?>
 									<div class="thread-header">
 										<span class="thread-title"><?php echo $this->escape(stripslashes($row->title)); ?></span>
@@ -179,7 +209,7 @@ if (count($inst) > 0)
 											);
 											$view->category    = 'category' . $row->id;
 											$view->option      = $this->option;
-											$view->threads     = $this->post->getRecords($tfilters);
+											$view->threads     = isset($threads[$row->id]) ? $threads[$row->id] : null;//$this->post->getRecords($tfilters);
 											$view->unit        = $row->alias;
 											$view->lecture     = $row->id;
 											$view->config      = $this->config;
@@ -187,7 +217,7 @@ if (count($inst) > 0)
 											$view->cls         = 'odd';
 											$view->base        = $base;
 											$view->course      = $this->course;
-											$view->active     = $this->thread;
+											$view->active      = $this->thread;
 											$view->display();
 										?>
 									</div><!-- / .thread-content -->
