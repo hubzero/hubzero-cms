@@ -467,8 +467,8 @@ class FileMacro extends WikiMacro
 		switch ($ext)
 		{
 			case 'unity3d':
-				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 500;
-				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 700;
+				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
+				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
 				/*if (!array_key_exists('alt', $attr) 
@@ -506,18 +506,18 @@ class FileMacro extends WikiMacro
 							}
 							-->' . "\n";
 				$html .= '</script>' . "\n";
-				$html .= '<div id="unityPlayer' . $rand . '">
-							<div class="missing">
+				$html .= '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><div id="unityPlayer' . $rand . '">
+							<div class="missing-plugin">
 								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
-									<img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+									<img alt="Unity Web Player. Install now!" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
-						</div>' . "\n";
+						</div></div>' . "\n";
 			break;
 
 			case 'cdf':
-				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 500;
-				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 700;
+				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
+				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
 				$juri = JURI::getInstance();
@@ -537,22 +537,24 @@ class FileMacro extends WikiMacro
 				} 
 				else 
 				{
-					$attr['alt'] = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . $juri->getScheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a>';
+					$attr['alt'] = '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . $juri->getScheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a></div>';
 				}
 
 				$html  = '<script type="text/javascript" src="' . $juri->getScheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>';
 				$html .= '<script type="text/javascript">';
-				$html .= '<!--' . "\n";
+				//$html .= '<!--';
 				$html .= '	var cdf = new cdfplugin();';
 				$html .= "var defaultContent = '" . $attr['alt'] . "';";
 				$html .= '	if (defaultContent != "") {';
 				$html .= '		cdf.setDefaultContent(defaultContent);';
 				$html .= '	}';
-				$html .= '	cdf.embed(\'' . $attr['href'] . '\', ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');' . "\n";
-				$html .= '-->';
-				$html .= '</script>';
-				$html .= '<noscript>' . "\n";
+				$html .= '	cdf.embed(\'' . $attr['href'] . '\', ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');';
+				//$html .= ' -->';
+				$html .= '</script>' . "\n";
+				$html .= '<noscript>';
+				$html .= '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . ';">';
 				$html .= $attr['alt'];
+				$html .= '</div>';
 				$html .= '</noscript>' . "\n";
 			break;
 
