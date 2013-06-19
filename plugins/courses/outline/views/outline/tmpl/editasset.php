@@ -79,6 +79,7 @@ endforeach;
 				<option value="homework"<?php if ($asset->get('subtype') == 'homework') { echo ' selected="selected"'; } ?>><?php echo JText::_('Homework'); ?></option>
 				<option value="note"<?php if ($asset->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
 				<option value="wiki"<?php if ($asset->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('Wiki'); ?></option>
+				<option value="link"<?php if ($asset->get('subtype') == 'link') { echo ' selected="selected"'; } ?>><?php echo JText::_('Link'); ?></option>
 			</select>
 		</p>
 		<p>
