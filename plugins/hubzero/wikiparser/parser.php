@@ -753,7 +753,7 @@ class WikiParser
 			$this->linknumber++;
 			$title = "[{$this->linknumber}]";
 		}*/
-		$newwindow = false;
+		$newwindow = true;
 
 		$cls = 'int-link';
 
@@ -764,6 +764,7 @@ class WikiParser
 		{
 			$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&pagename=' . $href);
 			$cls  = '';
+			$newwindow = false;
 		}
 		$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)";
 		if (preg_match("/$UrlPtn/", $href)) 
