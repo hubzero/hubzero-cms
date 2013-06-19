@@ -73,8 +73,6 @@ class PresenterHelper extends JObject
 	 */
 	public function createJsonManifest( $resource_path, $xml_path )
 	{
-		ini_set('display_errors', 1);
-		error_reporting(E_ALL);
 		//verify once again the file exists
 		if (file_exists( $xml_path )) {
 		    $manifest = simplexml_load_file( $xml_path );

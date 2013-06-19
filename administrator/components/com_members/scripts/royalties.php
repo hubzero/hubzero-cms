@@ -30,9 +30,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//error_reporting(E_ALL);
-//@ini_set('display_errors','1');
-
 $thispath = dirname(__FILE__);
 $bits = explode('/', $thispath);
 $basepath = '/'.$bits[1].'/'.$bits[2];

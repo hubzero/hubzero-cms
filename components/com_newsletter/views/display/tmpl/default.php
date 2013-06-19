@@ -45,8 +45,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="subject newsletter">
 		<?php endif; ?>
 		<?php
-		//ini_set('display_errors', 1);
-		//error_reporting(E_ALL);
 			$file =  JPATH_ROOT . DS . 'templates' . DS . 'newsletter';
 			//print_r($file);
 			$handle = fopen($file, "w");

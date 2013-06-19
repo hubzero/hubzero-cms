@@ -31,9 +31,6 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-error_reporting(E_ALL);
-@ini_set('display_errors','1');
-
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();

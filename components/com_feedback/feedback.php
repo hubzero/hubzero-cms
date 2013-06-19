@@ -31,12 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors', '1');
-}
-
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'quotes.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'selectedquotes.php');
 ximport('Hubzero_View_Helper_Html');

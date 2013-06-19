@@ -4,9 +4,6 @@ class ResourcesApiController extends Hubzero_Api_Controller
 {
 	function execute()
 	{
-		ini_set('display_errors', 1); 
-		error_reporting(E_ALL);
-		
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 		

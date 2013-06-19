@@ -15,12 +15,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
 // Set the table directory
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables');
 
