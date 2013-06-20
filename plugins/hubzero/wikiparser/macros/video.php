@@ -226,16 +226,16 @@ class VideoMacro extends WikiMacro
 				case 'mov':
 				case 'mp4':
 				case 'm4v':
-					$html .= '<source src="' . $video_url . '" type="video/mp4" />';
+					$html .= '<source src="' . $this->_link($url) . '" type="video/mp4" />';
 				break;
 
 				case 'ogg':
 				case 'ogv':
-					$html .= '<source src="' . $video_url . '" type="video/ogg" />';
+					$html .= '<source src="' . $this->_link($url) . '" type="video/ogg" />';
 				break;
 
 				case 'webm':
-					$html .= '<source src="' . $video_url . '" type="video/webm" />';
+					$html .= '<source src="' . $this->_link($url) . '" type="video/webm" />';
 				break;
 			}
 			$html .= '</video>';
@@ -449,5 +449,43 @@ class VideoMacro extends WikiMacro
 			}
 		}
 		return;
+	}
+
+	/**
+	 * Generate a link to a file
+	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
+	 * 
+	 * @param      $file  Filename
+	 * @return     string
+	 */
+	private function _link($file)
+	{
+		$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+		if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS)
+		{
+			return $file;
+		}
+
+		$file = trim($file, DS);
+
+		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
+		if ($this->scope) 
+		{
+			$scope = trim($this->scope, DS);
+			
+			$link .= $scope . DS;
+		}
+		$type = 'File';
+		if (in_array(strtolower(JFile::getExt($file)), $this->imgs)) 
+		{
+			if (JRequest::getVar('format') == 'pdf')
+			{
+				return $this->_path($file);
+			}
+			$type = 'Image';
+		}
+		$link .= $this->pagename . DS . $type . ':' . $file;
+
+		return JRoute::_($link);
 	}
 }
