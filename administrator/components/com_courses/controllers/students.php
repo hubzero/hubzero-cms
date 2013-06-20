@@ -67,6 +67,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 		);
 
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->filters['offering_id'] = $this->view->filters['offering'];
 		/*if (!$this->view->offering->exists())
 		{
 			$this->setRedirect(
@@ -317,6 +318,9 @@ class CoursesControllerStudents extends Hubzero_Controller
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		$offering_id = JRequest::getInt('offering', 0);
+		$section_id = JRequest::getInt('section', 0);
+
+		$offering = CoursesModelOffering::getInstance($offering_id);
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -332,7 +336,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = CoursesModelMember::getInstance($id);
+				$model = CoursesModelStudent::getInstance($id, $offering->get('course_id'), $offering_id, $section_id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -347,20 +351,6 @@ class CoursesControllerStudents extends Hubzero_Controller
 				{
 					JError::raiseError(500, JText::_('Unable to delete member'));
 					return;
-				}
-
-				// Log the course approval
-				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $id;
-				$log->scope     = 'section_member';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'offering_deleted';
-				$log->actor_id  = $this->juser->get('id');
-				$log->comment   = $data;
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
 				}
 
 				$num++;
