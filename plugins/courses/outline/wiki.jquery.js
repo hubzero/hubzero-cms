@@ -46,9 +46,10 @@ jQuery(document).ready(function($) {
 				$('#asset_id').val(data.result.assets.assets.asset_id);
 			}
 		}
-	});
-
-	$('.wiki-files-upload').click(function ( e ) {
-		$('.fileupload').trigger('click');
+	})
+	.hover(function() {
+		$(this).siblings('.wiki-files-upload').css('opacity', 1);
+	}, function() {
+		$(this).siblings('.wiki-files-upload').css('opacity', 0.6);
 	});
 });

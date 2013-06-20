@@ -222,7 +222,7 @@ class plgCoursesOutline extends Hubzero_Plugin
 			Hubzero_Document::addPluginScript('courses', $this->_name, $scope);
 
 			// Add file uploader JS
-			Hubzero_Document::addSystemScript('jquery.iframe.transport');
+			Hubzero_Document::addSystemScript('jquery.iframe-transport');
 			Hubzero_Document::addSystemScript('jquery.fileupload');
 
 			$this->view->title         = "Edit {$scope}";
@@ -245,7 +245,7 @@ class plgCoursesOutline extends Hubzero_Plugin
 		Hubzero_Document::addSystemScript('jquery.uniform');
 
 		// Add file uploader JS
-		Hubzero_Document::addSystemScript('jquery.iframe.transport');
+		Hubzero_Document::addSystemScript('jquery.iframe-transport');
 		Hubzero_Document::addSystemScript('jquery.fileupload');
 
 		// Setup view

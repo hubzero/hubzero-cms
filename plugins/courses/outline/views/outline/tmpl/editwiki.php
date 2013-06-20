@@ -88,6 +88,7 @@ $asset = new CoursesModelAsset($id);
 				<div class="wiki-files-upload">
 					<p>Click or drop file</p>
 				</div>
+				<input type="file" name="files[]" class="fileupload" multiple />
 			</div>
 			<div class="wiki-files-available-wrapper">
 				<div class="wiki-files-available">
@@ -124,7 +125,6 @@ $asset = new CoursesModelAsset($id);
 			</select>
 		</p>
 
-		<input type="file" name="files[]" class="fileupload" multiple />
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
