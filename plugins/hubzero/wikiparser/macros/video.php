@@ -205,6 +205,37 @@ class VideoMacro extends WikiMacro
 		else if (stristr($video_url, 'kaltura'))
 		{
 			$type = 'kaltura';
+
+			if (!stristr($video_url, 'iframeembed') && stristr($video_url, 'kmc'))
+			{
+				$partner_id = 0;
+				$uiconf_id  = 0;
+				$entry_id   = 0;
+
+				$bits = explode('/', $video_url);
+				foreach ($bits as $i => $bit)
+				{
+					if (strtolower($bit) == 'partner_id')
+					{
+						$partner_id = $bits[$i+1];
+					}
+					switch (strtolower($bit))
+					{
+						case 'partner_id':
+							$partner_id = $bits[$i+1];
+						break;
+
+						case 'uiconf_id':
+							$uiconf_id = $bits[$i+1];
+						break;
+
+						case 'entry_id':
+							$entry_id = $bits[$i+1];
+						break;
+					}
+				}
+				$video_url = 'http://www.kaltura.com/p/' . $partner_id . '/sp/' . $partner_id . '00/embedIframeJs/uiconf_id/' . $uiconf_id . '/partner_id/' . $partner_id . '?iframeembed=true&playerId=movie' . rand(0, 1000) . '&entry_id=' . $entry_id;
+			}
 		}
 
 		// Create the embed
