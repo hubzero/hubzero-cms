@@ -183,7 +183,7 @@ if ($shots) {
 
 	if ($this->model->contributors('submitter')) {
 ?>
-			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></th>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></h4>
 			<div class="resource-content">
 				<span id="submitterlist">
 					<?php 
