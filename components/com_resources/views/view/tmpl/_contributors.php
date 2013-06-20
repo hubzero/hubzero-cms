@@ -45,10 +45,10 @@ if ($this->contributors)
 
 	foreach ($this->contributors as $contributor)
 	{
-		/*if (strtolower($contributor->role) == 'submitter') 
+		if (strtolower($contributor->role) == 'submitter') 
 		{
 			continue;
-		}*/
+		}
 
 		// Build the user's name and link to their profile
 		if ($contributor->name) 

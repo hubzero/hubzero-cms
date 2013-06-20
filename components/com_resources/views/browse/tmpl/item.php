@@ -50,7 +50,7 @@ switch ($this->line->access)
 }
 $html .= '>'."\n";
 $html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml(stripslashes($this->line->title)) . '</a>'."\n";
-if ($this->show_edit != 0) {
+/*if ($this->show_edit != 0) {
 	if ($this->line->published >= 0) {
 		if ($this->line->type == 7) {
 			$link = JRoute::_('index.php?option=com_tools&task=resource&step=1&app='. $this->line->alias);
@@ -59,7 +59,7 @@ if ($this->show_edit != 0) {
 		}
 		$html .= ' <a class="edit button" href="'. $link .'" title="'. JText::_('COM_RESOURCES_EDIT') .'">'. JText::_('COM_RESOURCES_EDIT') .'</a>';
 	}
-}
+}*/
 $html .= '</p>'."\n";
 
 if ($this->params->get('show_ranking')) {

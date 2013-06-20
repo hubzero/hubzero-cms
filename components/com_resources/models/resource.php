@@ -323,39 +323,75 @@ class ResourcesModelResource extends JObject
 			return;
 		}
 
-		// Check if they're a site admin (from Joomla)
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($this->isTool())
 		{
-			if ($juser->authorize('com_resources', 'manage')) 
+			$tconfig = JComponentHelper::getParams('com_tools');
+
+			if (($admingroup = trim($tconfig->get('admingroup', '')))) 
 			{
-				$this->params->set('access-view-resource', true);
-				$this->params->set('access-view-all-resource', true);
+				ximport('Hubzero_User_Helper');
+				// Check if they're a member of admin group
+				$ugs = Hubzero_User_Helper::getGroups($juser->get('id'));
+				if ($ugs && count($ugs) > 0) 
+				{
+					$admingroup = strtolower($admingroup);
+					foreach ($ugs as $ug)
+					{
+						if (strtolower($ug->cn) == $admingroup) 
+						{
+							$this->params->set('access-view-resource', true);
+							$this->params->set('access-view-all-resource', true);
 
-				$this->params->set('access-admin-resource', true);
-				$this->params->set('access-manage-resource', true);
+							$this->params->set('access-admin-resource', true);
+							$this->params->set('access-manage-resource', true);
 
-				$this->params->set('access-create-resource', true);
-				$this->params->set('access-delete-resource', true);
-				$this->params->set('access-edit-resource', true);
-				$this->params->set('access-edit-state-resource', true);
-				$this->params->set('access-edit-own-resource', true);
+							$this->params->set('access-create-resource', true);
+							$this->params->set('access-delete-resource', true);
+							$this->params->set('access-edit-resource', true);
+							$this->params->set('access-edit-state-resource', true);
+							$this->params->set('access-edit-own-resource', true);
+							break;
+						}
+					}
+				}
 			}
 		}
-		else 
+		else
 		{
-			$this->params->set('access-admin-resource', $juser->authorise('core.admin', null));
-			$this->params->set('access-manage-resource', $juser->authorise('core.manage', null));
-			if ($this->params->get('access-admin-resource') 
-			 || $this->params->get('access-manage-resource'))
+			// Check if they're a site admin (from Joomla)
+			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
-				$this->params->set('access-view-resource', true);
-				$this->params->set('access-view-all-resource', true);
+				if ($juser->authorize('com_resources', 'manage')) 
+				{
+					$this->params->set('access-view-resource', true);
+					$this->params->set('access-view-all-resource', true);
 
-				$this->params->set('access-create-resource', true);
-				$this->params->set('access-delete-resource', true);
-				$this->params->set('access-edit-resource', true);
-				$this->params->set('access-edit-state-resource', true);
-				$this->params->set('access-edit-own-resource', true);
+					$this->params->set('access-admin-resource', true);
+					$this->params->set('access-manage-resource', true);
+
+					$this->params->set('access-create-resource', true);
+					$this->params->set('access-delete-resource', true);
+					$this->params->set('access-edit-resource', true);
+					$this->params->set('access-edit-state-resource', true);
+					$this->params->set('access-edit-own-resource', true);
+				}
+			}
+			else 
+			{
+				$this->params->set('access-admin-resource', $juser->authorise('core.admin', null));
+				$this->params->set('access-manage-resource', $juser->authorise('core.manage', null));
+				if ($this->params->get('access-admin-resource') 
+				 || $this->params->get('access-manage-resource'))
+				{
+					$this->params->set('access-view-resource', true);
+					$this->params->set('access-view-all-resource', true);
+
+					$this->params->set('access-create-resource', true);
+					$this->params->set('access-delete-resource', true);
+					$this->params->set('access-edit-resource', true);
+					$this->params->set('access-edit-state-resource', true);
+					$this->params->set('access-edit-own-resource', true);
+				}
 			}
 		}
 
@@ -679,9 +715,10 @@ class ResourcesModelResource extends JObject
 						{
 							$this->toolauthors = array();
 
-							$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName, n.givenName AS firstname, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
-								 . " FROM #__tool_authors AS t, #__xprofiles AS n, #__tool_version AS v "
-								 . " WHERE n.uidNumber=t.uid AND t.toolname='" . $this->resource->alias . "' AND v.id=t.version_id and v.state<>3"
+							$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName, n.givenName AS firstname, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization AS org, t.*, a.role"
+								 . " FROM #__tool_authors AS t JOIN #__xprofiles AS n ON n.uidNumber=t.uid JOIN #__tool_version AS v ON v.id=t.version_id"
+								 . " LEFT JOIN #__author_assoc AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid=" . $this->resource->id
+								 . " WHERE t.toolname='" . $this->resource->alias . "' AND v.state<>3"
 								 . " AND t.revision='" . $this->resource->revision . "'"
 								 . " ORDER BY t.ordering";
 							$this->_db->setQuery($sql);
