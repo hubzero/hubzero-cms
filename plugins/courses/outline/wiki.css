@@ -15,6 +15,9 @@
 	color: red;
 	font-size: 11px;
 }
+.wiki-edit .title-error {
+	display: none;
+}
 .wiki-edit .wiki-include-assets {
 	margin: 10px 0;
 	width: 99%;
@@ -48,7 +51,9 @@
 	bottom: 20px;
 	right: 10px;
 	zoom: 1;
-	filter: alpha(opacity = 0) !important;
+	line-height: 100px;
+	font-size: 100px;
+	filter: alpha(opacity = 0);
 	-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
 }
 .fileupload:hover {

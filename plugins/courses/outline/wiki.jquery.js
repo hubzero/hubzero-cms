@@ -25,6 +25,15 @@ jQuery(document).ready(function($) {
 		dropZone: $('.wiki-files-upload'),
 		dataType: 'json',
 		singleFileUploads: false,
+		add: function ( e, data ) {
+			if ($('.wiki-title').val() === '') {
+				$('.title-error').show();
+				$('html, body').scrollTop(0);
+			} else {
+				$('.title-error').hide();
+				data.submit();
+			}
+		},
 		done: function ( e, data ) {
 			var html = '';
 			if ($('.wiki-files-available ul').length) {

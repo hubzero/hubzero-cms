@@ -42,9 +42,10 @@ $asset = new CoursesModelAsset($id);
 
 	<form action="/api/courses/asset/new" method="POST" class="edit-form">
 
+		<div class="title-error error">Please provide a title first</div>
 		<p>
 			<label for="title">Title: </label><span class="required">*required</span>
-			<input type="text" name="title" placeholder="Wiki page title" value="<?= $asset->get('title') ?>" />
+			<input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?= $asset->get('title') ?>" />
 		</p>
 
 		<label for="content">Content: </label>
