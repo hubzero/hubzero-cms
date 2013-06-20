@@ -155,8 +155,8 @@ class plgCoursesStore extends JPlugin
 				{
 					// Returns object with values, pId is the new product ID to link to
 					$info = $product->add();
-					//print_r($info);
-					$params->set('store_product_id', $info->data->id);
+
+					$params->set('store_product_id', $info->pId);
 
 					$model->set('params', $params->toString());
 					$model->store();
