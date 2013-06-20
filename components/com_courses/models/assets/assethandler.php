@@ -240,16 +240,21 @@ class AssetHandler
 	 *
 	 * @return array
 	 **/
-	public function edit($id)
+	public function doEdit($id)
 	{
 		// Look up asset type from id
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 		$asset = new CoursesModelAsset($id);
 
 		// Classname
-		$class = ucfirst($asset->get('type')) . 'AssetHandler';
+		$class    = ucfirst($asset->get('type')) . 'AssetHandler';
+		$classAlt = ucfirst($asset->get('subtype')) . 'AssetHandler';
 
-		if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'edit'))
+		if ($classAlt != 'AssetHandler' && class_exists($classAlt) && method_exists($classAlt, 'edit'))
+		{
+			return $classAlt::edit($asset);
+		}
+		else if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'edit'))
 		{
 			return $class::edit($asset);
 		}

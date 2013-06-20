@@ -147,6 +147,7 @@ class ContentAssetHandler extends AssetHandler
 		$this->asset['created']    = $assetObj->created;
 		$this->asset['created_by'] = $assetObj->created_by;
 		$this->asset['course_id']  = $assetObj->course_id;
+		$this->asset['state']      = $assetObj->state;
 
 		// Save the asset
 		if (!$assetObj->save($this->asset))

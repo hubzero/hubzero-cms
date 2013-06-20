@@ -150,4 +150,16 @@ class WikiAssetHandler extends ContentAssetHandler
 		// Return info
 		return $return;
 	}
+
+	/**
+	 * Edit method for this handler
+	 *
+	 * @param  object $asset - asset
+	 * @return array((string) type, (string) text)
+	 **/
+	public function edit($asset)
+	{
+		$options = array('scope'=>'wiki');
+		return array('type'=>'default', 'options'=>$options);
+	}
 }

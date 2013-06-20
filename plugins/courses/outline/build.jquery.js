@@ -279,7 +279,7 @@ HUB.CoursesOutline = {
 			var $ = HUB.CoursesOutline.jQuery,
 			form  = $(this).siblings('.next-step-publish'),
 			src   = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
-			src  += '&scope=asset&scope_id='+form.find('input[name="scope_id"]').val()+'&asset_id='+form.find('.asset_id').val()+'&tmpl=component';
+			src  += '&scope=<%scope%>&scope_id='+form.find('input[name="scope_id"]').val()+'&asset_id='+form.find('.asset_id').val()+'&tmpl=component';
 
 			e.preventDefault();
 
@@ -296,6 +296,12 @@ HUB.CoursesOutline = {
 							break;
 
 							default :
+								if (data.options && data.options.scope) {
+									src = src.replace(/<%scope%>/, data.options.scope);
+								} else {
+									src = src.replace(/<%scope%>/, 'asset');
+								}
+
 								$.contentBox({
 									src         : src,
 									title       : 'Edit Asset',
@@ -318,6 +324,14 @@ HUB.CoursesOutline = {
 														// Close the content box
 														$.contentBox('close');
 														$('.outline-main').trigger('assetUpdate', [form.parent('li'), data]);
+													},
+													// @FIXME: this is wrong...this should be 200
+													// This is because in the wiki edit, we're always posting to asset/new,
+													// which always returns a 201
+													201: function ( data, textStatus, jqXHR ) {
+														// Close the content box
+														$.contentBox('close');
+														$('.outline-main').trigger('assetUpdate', [form.parent('li'), data.assets.assets]);
 													}
 												}
 											});

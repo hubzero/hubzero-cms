@@ -497,7 +497,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		$assetHandler = new AssetHandler($this->db);
 
 		// Edit the asset
-		$return = $assetHandler->edit($asset_id);
+		$return = $assetHandler->doEdit($asset_id);
 
 		// Check for errors in response
 		if (is_array($return) && array_key_exists('error', $return))

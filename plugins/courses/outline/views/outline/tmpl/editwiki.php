@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Load asset if applicable
-$id = JRequest::getInt('id', null);
+$id = JRequest::getInt('asset_id', null);
 $asset = new CoursesModelAsset($id);
 
 ?>
@@ -133,7 +133,7 @@ $asset = new CoursesModelAsset($id);
 		<input type="hidden" name="type" value="wiki" />
 
 		<input type="submit" value="Submit" class="wiki-submit" />
-		<input type="button" value="Cancel" class="wiki-cancel" />
+		<input type="button" value="Cancel" class="cancel" />
 
 	</form>
 </div>
