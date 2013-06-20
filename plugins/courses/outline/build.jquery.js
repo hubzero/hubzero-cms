@@ -1018,7 +1018,7 @@ HUB.CoursesOutline = {
 				title       : 'Create a wiki page',
 				onAfterLoad : function( content ) {
 					var t = $(this);
-					content.find('.wiki-cancel').click(function() {
+					content.find('.cancel').click(function() {
 						$.contentBox('close');
 					});
 
