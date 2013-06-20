@@ -109,6 +109,8 @@
 	}
 	.course-identity img {
 		width: 100%;
+		*width: auto;
+		width: auto\9;
 	}
 	/*.course.intro .subject table {
 		border: 1px solid #eee;

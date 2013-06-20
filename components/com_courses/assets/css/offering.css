@@ -72,6 +72,8 @@
 	}
 	.course-identity img {
 		width: 100%;
+		*width: auto;
+		width: auto\9;
 	}
 
 /* Layout */
