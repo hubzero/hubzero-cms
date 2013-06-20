@@ -120,7 +120,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			$asset->set('filename', $base_path . $asset->get('filename'));
 		}*/
 
-		jimport('joomla.filesystem.file');
+		/*jimport('joomla.filesystem.file');
 		$ext = strtolower(JFile::getExt($asset->get('filename')));
 
 		$exts = explode(',', strtolower($this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')));
@@ -130,7 +130,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		{
 			JError::raiseError(404, JText::_('Unknown file type.'));
 			return;
-		}
+		}*/
 
 		// Add JPATH_ROOT
 		//$filename = JPATH_ROOT . $asset->get('filename');
