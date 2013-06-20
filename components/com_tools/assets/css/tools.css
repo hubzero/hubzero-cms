@@ -108,6 +108,8 @@
 	}
 	#app-content {
 		position: relative;
+		/* [!] HACKS - IE 7 */
+		*z-index: 2;
 	}
 	.readonly-warning {
 		margin:30px 30px 30px 30px;
@@ -342,6 +344,12 @@
 		border: 1px solid transparent;
 		z-index: 666;
 		font-size: 12px;
+		/* [!] HACKS - IE 7 */
+		*z-index: 50;
+		/* IE 7 Needs a background of some sort to allow areas directly above text to be used as drag handles. 
+		So we then make it near invisible to keep it looking OK. */
+		*background: #fff;  
+		*filter: alpha(opacity = 1);
 	}
 /* Disk usage */
 	#diskusage { 
