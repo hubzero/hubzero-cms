@@ -139,7 +139,14 @@ class plgCoursesStore extends JPlugin
 				$product->setDescription($description);
 				$product->setPrice($price);
 				// We don't want products showing up for non-published courses
-				$product->setActiveStatus(0);
+				if ($model->get('state') != 1)
+				{
+					$product->setActiveStatus(0);
+				}
+				else
+				{
+					$product->setActiveStatus(1);
+				}
 				// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
 				$product->setTimeToLive($duration);
 				// Course alias id
