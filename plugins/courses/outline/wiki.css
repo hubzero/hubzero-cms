@@ -5,8 +5,11 @@
  * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+.wykiwyg {
+	width: auto !important;
+}
 .wiki-edit input[type="text"] {
-	width: 99%;
+	width: 100%;
 }
 .wiki-edit .wiki-asterisk {
 	font-size: 11px;
@@ -20,7 +23,7 @@
 }
 .wiki-edit .wiki-include-assets {
 	margin: 10px 0;
-	width: 99%;
+	width: 100%;
 	height: 250px;
 	border: 1px solid #999;
 	overflow: scroll;
@@ -29,12 +32,12 @@
 	padding: 15px;
 }
 .wiki-files {
-	width: 99%;
 	border: 1px solid #D9D9D9;
 	background-color: #F0F0F0;
 	background-color: rgba(0, 0, 0, .039);
 	overflow: hidden;
 	color: #777;
+	padding: 20px;
 
 	-webkit-border-bottom-right-radius: 3px;
 	-webkit-border-bottom-left-radius: 3px;
@@ -46,13 +49,11 @@
 .fileupload {
 	opacity: 0;
 	position: absolute;
-	top: 20px;
-	left: 20px;
-	bottom: 20px;
-	right: 10px;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
 	zoom: 1;
-	line-height: 100px;
-	font-size: 100px;
 	filter: alpha(opacity = 0);
 	-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
 }
@@ -62,8 +63,11 @@
 .wiki-files-upload-wrapper,
 .wiki-files-available-wrapper {
 	float: left;
-	width: 50%;
+	width: 49%;
 	position: relative;
+}
+.wiki-files-available-wrapper {
+	margin-left: 2%;
 }
 .wiki-files-upload,
 .wiki-files-available {
@@ -78,7 +82,6 @@
 }
 .wiki-files-upload {
 	border: 3px dotted #CCC;
-	margin: 20px 10px 20px 20px;
 	opacity: 0.7;
 }
 .wiki-files-upload p,
@@ -95,7 +98,6 @@
 }
 .wiki-files-available {
 	border: 3px solid #E1E1E1;
-	margin: 20px 20px 10px 20px;
 	overflow: scroll;
 }
 .wiki-file {

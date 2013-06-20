@@ -59,6 +59,6 @@ jQuery(document).ready(function($) {
 	.hover(function() {
 		$(this).siblings('.wiki-files-upload').css('opacity', 1);
 	}, function() {
-		$(this).siblings('.wiki-files-upload').css('opacity', 0.6);
+		$(this).siblings('.wiki-files-upload').css('opacity', 0.7);
 	});
 });
