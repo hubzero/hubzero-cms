@@ -276,12 +276,27 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				'scope'    => 'course',
 				'scope_id' => $this->offering->get('id')
 			));
-			if (!$this->sections || count($this->sections) < 1)
+
+			// Make a list of linked sections
+			$linked = array();
+			if ($this->sections)
 			{
-				if ($this->offering->units()->total() > 0)
+				foreach ($this->sections as $section)
 				{
-					$this->sections = array();
-					foreach ($this->offering->units() as $unit)
+					$linked[$section->object_id] = $section;
+				}
+			}
+			else
+			{
+				$this->sections = array();
+			}
+
+			// Go through and create any sections that don't already exist
+			if ($this->offering->units()->total() > 0)
+			{
+				foreach ($this->offering->units() as $unit)
+				{
+					if (!isset($linked[$unit->get('id')]))
 					{
 						$section = new ForumSection($this->database);
 						$section->title     = $unit->get('title');
@@ -498,45 +513,47 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->total = 0;
 		$view->rows  = null;
 
-			$section = new ForumSection($this->database);
-			if (!$section->loadByAlias($unit->get('alias'), $view->filters['scope_id'], $view->filters['scope']))
+		// Load the section
+		$section = new ForumSection($this->database);
+		if (!$section->loadByAlias($unit->get('alias'), $view->filters['scope_id'], $view->filters['scope']))
+		{
+			// Create a default section
+			$section->title     = $unit->get('title');
+			$section->alias     = $unit->get('alias');
+			$section->scope     = $view->filters['scope'];
+			$section->scope_id  = $view->filters['scope_id'];
+			$section->object_id = $unit->get('id');
+			$section->state     = 1;
+			if ($section->check())
 			{
-				// Create a default section
-				$section->title    = $unit->get('title');
-				$section->alias    = $unit->get('alias');
-				$section->scope    = $view->filters['scope'];
-				$section->scope_id = $view->filters['scope_id'];
-				$section->state    = 1;
-				if ($section->check())
-				{
-					$section->store();
-				}
+				$section->store();
 			}
+		}
 
-			$category = new ForumCategory($this->database);
-			$category->loadByObject($lecture->get('id'), $section->get('id'), $view->filters['scope_id'], $view->filters['scope']);
-			if (!$category->get('id'))
+		$category = new ForumCategory($this->database);
+		$category->loadByObject($lecture->get('id'), $section->get('id'), $view->filters['scope_id'], $view->filters['scope']);
+		if (!$category->get('id'))
+		{
+			$category->section_id  = $section->get('id');
+			$category->title       = $lecture->get('title');
+			$category->alias       = $lecture->get('alias');
+			$category->description = JText::sprintf('Discussions for %s', $unit->get('alias'));
+			$category->state       = 1;
+			$category->scope       = $view->filters['scope'];
+			$category->scope_id    = $view->filters['scope_id'];
+			$category->object_id   = $lecture->get('id');
+			if ($category->check())
 			{
-				$category->section_id  = $section->get('id');
-				$category->title       = $lecture->get('title');
-				$category->alias       = $lecture->get('alias');
-				$category->description = JText::sprintf('Discussions for %s', $unit->get('alias'));
-				$category->state       = 1;
-				$category->scope       = $view->filters['scope'];
-				$category->scope_id    = $view->filters['scope_id'];
-				$category->object_id   = $lecture->get('id');
-				if ($category->check())
-				{
-					$category->store();
-				}
+				$category->store();
 			}
+		}
 
-			$view->post->scope = $view->filters['scope'];
-			$view->post->scope_id = $view->filters['scope_id'];
-			$view->post->scope_sub_id = $course->offering()->section()->get('id');
-			$view->post->category_id = $category->get('id');
-			$view->post->object_id = $lecture->get('id');
-			$view->post->parent = 0;
+		$view->post->scope = $view->filters['scope'];
+		$view->post->scope_id = $view->filters['scope_id'];
+		$view->post->scope_sub_id = $course->offering()->section()->get('id');
+		$view->post->category_id = $category->get('id');
+		$view->post->object_id = $lecture->get('id');
+		$view->post->parent = 0;
 
 		// Get attachments
 		$view->attach = new ForumAttachment($this->database);
