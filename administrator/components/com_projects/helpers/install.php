@@ -202,9 +202,9 @@ class ProjectsInstall extends JObject {
 		$queries[] = "INSERT INTO `jos_plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Team','team','projects','0','2','1','0','0','0','0000-00-00 00:00:00','')";
 		
 		// Make entries for Groups/Members plugins, My Projects module
-		$queries[] = "INSERT INTO `jos_plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Members - Projects','projects','members','0','17','1','0','0','0','0000-00-00 00:00:00','')";
-		$queries[] = "INSERT INTO `jos_plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Groups - Projects','projects','groups','0','9','1','0','0','0','0000-00-00 00:00:00','')";
-		$queries[] = "INSERT INTO `jos_modules` (`id`,`title`,`content`,`ordering`,`position`,`checked_out`,`checked_out_time`,`published`,`module`,`numnews`,`access`,`showtitle`,`params`,`iscore`,`client_id`,`control`) VALUES ('','My Projects','','0','myhub','0','0000-00-00 00:00:00','1','mod_myprojects','0','0','1','moduleclass=md-projects\nlimit=5\n\n','0','0','')";
+		$queries[] = "INSERT INTO `jos_plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Members - Projects','projects','members','0','17','0','0','0','0','0000-00-00 00:00:00','')";
+		$queries[] = "INSERT INTO `jos_plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Groups - Projects','projects','groups','0','9','0','0','0','0','0000-00-00 00:00:00','')";
+		$queries[] = "INSERT INTO `jos_modules` (`id`,`title`,`content`,`ordering`,`position`,`checked_out`,`checked_out_time`,`published`,`module`,`numnews`,`access`,`showtitle`,`params`,`iscore`,`client_id`,`control`) VALUES ('','My Projects','','0','myhub','0','0000-00-00 00:00:00','1','mod_myprojects','0','0','0','moduleclass=md-projects\nlimit=5\n\n','0','0','')";
 
 		// Make entries to enable HUB messaging
 		$queries[] = "INSERT INTO `jos_xmessage_component` (`id`,`component`,`action`,`title`) VALUES ('','com_projects','projects_member_added','You were added or invited to a project')";

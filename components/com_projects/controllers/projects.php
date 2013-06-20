@@ -92,7 +92,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Is component on?
-		if (!$this->_config->get( 'component_on', 1 ))
+		if (!$this->_config->get( 'component_on', 0 ))
 		{
 			$this->_redirect = '/';
 			return;
