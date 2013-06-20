@@ -65,6 +65,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="6 MONTHS">6 months</option>
 					<option value="1 YEAR">1 year</option>
 				</field>
+				<field name="store_product_id" type="hidden" size="5" default="0" label="Product ID" description="This is the product ID for the store entry" />
 			</fieldset>
 		</fields>
 	</config>
