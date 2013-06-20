@@ -114,7 +114,7 @@ class FileMacro extends WikiMacro
 		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"\']*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
 		// Get non-quoted attribute/value pairs
 		// EX: [[Image(myimage.png, width=100)]]
 		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
@@ -317,6 +317,12 @@ class FileMacro extends WikiMacro
 	{
 		$key = strtolower(trim($matches[1]));
 
+		$ky = 'width';
+		if (isset($this->attr['width']))
+		{
+			$ky = 'height';
+		}
+
 		// Set width if just a pixel size is given 
 		// e.g., [[File(myfile.jpg, 120px)]]
 		$size   = '/[0-9+](%|px|em)?$/';
@@ -324,16 +330,16 @@ class FileMacro extends WikiMacro
 		{
 			if ($matches[0])
 			{
-				$this->attr['style']['width'] = $key;
-				$this->attr['width'] = $key;
+				$this->attr['style'][$ky] = $key;
+				$this->attr[$ky] = $key;
 				return;
 			}
 		}
 
 		if (is_numeric($key))
 		{
-			$this->attr['style']['width'] = $key . 'px';
-			$this->attr['width'] = $key;
+			$this->attr['style'][$ky] = $key . 'px';
+			$this->attr[$ky] = $key;
 		}
 
 		// Specific call to NOT link an image
