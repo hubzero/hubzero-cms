@@ -104,7 +104,7 @@ if ($offering->exists())
 		<?php } else { ?>
 			<?php if ($product) { ?>
 			<form action="<?php echo $url; ?>" id="frm" method="post">
-				<input type="hidden" name="pId[1]" value="<?php echo $product->data->id; ?>" />
+				<input type="hidden" name="pId[<?php echo $product->data->id; ?>]" value="1" />
 				<input type="hidden" name="updateCart" value="updateCart" />
 				<p>
 					<input type="submit" class="enroll btn" value="<?php echo JText::_('Enroll in course'); ?>" />
