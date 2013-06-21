@@ -41,10 +41,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<h3>Quick Links</h3>
 		<ul>
-			<li><a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=support&page=faqs'); ?>">Support FAQ's</a></li>
-			<li><a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>">Knowledge Base</a></li>
-			<li><a href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">Report Problems</a></li>
-			<li><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">Track Tickets</a></li>
+			<li><a class="ticket-help popup" href="<?php echo JRoute::_('index.php?option=com_help&component=support&page=faqs'); ?>">Support FAQ's</a></li>
+			<li><a class="com-kb" href="<?php echo JRoute::_('index.php?option=com_kb'); ?>">Knowledge Base</a></li>
+			<li><a class="ticket-report" href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">Report Problems</a></li>
+			<li><a class="ticket-track" href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">Track Tickets</a></li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
@@ -67,20 +67,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .four columns first -->
 	<div class="four columns second">
 		<div class="presentation">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>">Resources</a></h3>
-			<p>Find the latest cutting-edge research in our <a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>">resources</a>.</p>
+			<h3><a class="com-resources" href="<?php echo JRoute::_('index.php?option=com_resources'); ?>">Resources</a></h3>
+			<p>Find the latest cutting-edge research in our <a class="com-resources" href="<?php echo JRoute::_('index.php?option=com_resources'); ?>">resources</a>.</p>
 		</div><!-- / .presentations -->
 	</div><!-- / .four columns second -->
 	<div class="four columns third">
 		<div class="tag">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_tags'); ?>">Tags</a></h3>
-			<p>Explore all our content through <a href="<?php echo JRoute::_('index.php?option=com_tags'); ?>">tags</a> or even tag content yourself.</p>
+			<h3><a class="com-tags" href="<?php echo JRoute::_('index.php?option=com_tags'); ?>">Tags</a></h3>
+			<p>Explore all our content through <a class="com-tags" href="<?php echo JRoute::_('index.php?option=com_tags'); ?>">tags</a> or even tag content yourself.</p>
 		</div><!-- / .tag -->
 	</div><!-- / .four columns third -->
 	<div class="four columns fourth">
 		<div class="search">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_search'); ?>">Search</a></h3>
-			<p>Try <a href="<?php echo JRoute::_('index.php?option=com_search'); ?>">searching</a> for a title, author, tag, phrase, or keywords.</p>
+			<h3><a class="com-search" href="<?php echo JRoute::_('index.php?option=com_search'); ?>">Search</a></h3>
+			<p>Try <a class="com-search" href="<?php echo JRoute::_('index.php?option=com_search'); ?>">searching</a> for a title, author, tag, phrase, or keywords.</p>
 		</div><!-- / .search -->
 	</div><!-- / .four columns fourth -->
 	<div class="clear"></div>
@@ -90,8 +90,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .four columns first -->
 	<div class="four columns second">
 		<div class="feedback">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">Questions &amp; Answers</a></h3>
-			<p>Get your <a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">questions answered</a> and help others find the clue.</p>
+			<h3><a class="com-answers" href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">Questions &amp; Answers</a></h3>
+			<p>Get your <a class="com-answers" href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">questions answered</a> and help others find the clue.</p>
 		</div><!-- / .feedback -->
 	</div><!-- / .four columns second -->
 	<div class="four columns third">
@@ -102,8 +102,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .four columns third -->
 	<div class="four columns fourth">
 		<div class="wiki">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_topics'); ?>">Topics</a></h3>
-			<p>Take a look at our user-generated <a href="<?php echo JRoute::_('index.php?option=com_topics'); ?>">topic pages</a> or write your own.</p>
+			<h3><a class="com-wiki" href="<?php echo JRoute::_('index.php?option=com_wiki'); ?>">Wiki</a></h3>
+			<p>Take a look at our user-generated <a class="com-wiki" href="<?php echo JRoute::_('index.php?option=com_wiki'); ?>">wiki pages</a> or write your own.</p>
 		</div><!-- / .wiki -->
 	</div><!-- / .four columns fourth -->
 	<div class="clear"></div>
@@ -113,20 +113,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .four columns first -->
 	<div class="four columns second">
 		<div class="series">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>">Knowledge Base</a></h3>
-			<p><a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>">Find</a> answers to frequently asked questions, helpful tips, and any other information we thought might be useful.</p>
+			<h3><a class="com-kb" href="<?php echo JRoute::_('index.php?option=com_kb'); ?>">Knowledge Base</a></h3>
+			<p><a class="com-kb" href="<?php echo JRoute::_('index.php?option=com_kb'); ?>">Find</a> answers to frequently asked questions, helpful tips, and any other information we thought might be useful.</p>
 		</div><!-- / .series -->
 	</div><!-- / .four columns second -->
 	<div class="four columns third">
 		<div class="note">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">Report Problems</a></h3>
-			<p><a href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">Report problems</a> with our form and have your problem entered into our <a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">ticket tracking system</a>. We guarantee a response!</p>
+			<h3><a class="ticket-report" href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">Report Problems</a></h3>
+			<p><a class="ticket-report" href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">Report problems</a> with our form and have your problem entered into our <a class="ticket-track" href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">ticket tracking system</a>. We guarantee a response!</p>
 		</div><!-- / .note -->
 	</div><!-- / .four columns third -->
 	<div class="four columns fourth">
 		<div class="ticket">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">Track Tickets</a></h3>
-			<p>Have a problem entered into our <a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">ticket tracking system</a>? Track its progress, add comments and notes, or close resolved issues.</p>
+			<h3><a class="ticket-track" href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">Track Tickets</a></h3>
+			<p>Have a problem entered into our <a class="ticket-track" href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">ticket tracking system</a>? Track its progress, add comments and notes, or close resolved issues.</p>
 		</div><!-- / .ticket -->
 	</div><!-- / .four columns fourth -->
 	<div class="clear"></div>
