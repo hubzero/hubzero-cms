@@ -36,4 +36,11 @@ jQuery(document).ready(function(jq) {
 			$(this).addClass('unit-content-available');
 		}
 	});
+
+	$('.details').masonry({
+		itemSelector: '.weeksection',
+		columnWidth: function(container) {
+			return container / 2;
+		}
+	});
 });

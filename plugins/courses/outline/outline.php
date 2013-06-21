@@ -159,9 +159,14 @@ class plgCoursesOutline extends Hubzero_Plugin
 
 			switch ($action)
 			{
-				case 'build':  $this->_build();  break;
+				case 'build':
+					$this->_build();
+				break;
 
-				default: $this->_display(); break;
+				default:
+					Hubzero_Document::addSystemScript('jquery.masonry');
+					$this->_display();
+				break;
 			}
 
 			$arr['html'] = $this->view->loadTemplate();
