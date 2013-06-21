@@ -129,6 +129,13 @@ class CoursesTableMemberNote extends JTable
 	var $section_id = NULL;
 
 	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $access = NULL;
+
+	/**
 	 * Constructor method for JTable class
 	 * 
 	 * @param  database object
@@ -215,11 +222,23 @@ class CoursesTableMemberNote extends JTable
 		{
 			$where[] = "a.`section_id` = " . $this->_db->Quote($filters['section_id']);
 		}
-		if (isset($filters['state']) && $filters['state'])
+		if (isset($filters['state']))
 		{
 			$where[] = "a.`state` = " . $this->_db->Quote(intval($filters['state']));
 		}
-		if (isset($filters['created_by']) && $filters['created_by'])
+		if (isset($filters['access']))
+		{
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$where[] = "a.`access` IN (" . implode(',', $filters['access']) . ")";
+			}
+			else
+			{
+				$where[] = "a.`access` = " . $this->_db->Quote(intval($filters['access']));
+			}
+		}
+		if (isset($filters['created_by']) && $filters['created_by'] > 0)
 		{
 			$where[] = "a.`created_by` = " . $this->_db->Quote(intval($filters['created_by']));
 		}

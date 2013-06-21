@@ -41,36 +41,72 @@ jQuery(document).ready(function(jQuery){
 	var options = {
 		notes: <?php 
 			$n = array();
-			if ($notes = $this->model->notes(array('scope' => 'lecture', 'scope_id' => $this->lecture->get('id'))))
+			$access = 0;
+			if ($this->course->access('manage'))
+			{
+				$access = array(0, 1);
+			}
+			if ($notes = $this->model->notes(array('scope' => 'lecture', 'scope_id' => $this->lecture->get('id'), 'access' => $access)))
 			{
 				foreach ($notes as $note)
 				{
 					$obj = new stdClass;
-					$obj->id     = $note->get('id');
-					$obj->dataId = $note->get('id');
-					$obj->text   = str_replace('  ', ' &nbsp;', nl2br(stripslashes($note->get('content'))));
-					$obj->pos_x  = $note->get('pos_x') . 'px';
-					$obj->pos_y  = $note->get('pos_y') . 'px';
-					$obj->width  = $note->get('width');
-					$obj->height = $note->get('height');
-					$obj->timestamp   = $note->get('timestamp');
+					$obj->id        = $note->get('id');
+					$obj->dataId    = $note->get('id');
+					$obj->text      = str_replace('  ', ' &nbsp;', nl2br(stripslashes($note->get('content'))));
+					$obj->pos_x     = $note->get('pos_x') . 'px';
+					$obj->pos_y     = $note->get('pos_y') . 'px';
+					$obj->width     = $note->get('width');
+					$obj->height    = $note->get('height');
+					$obj->timestamp = $note->get('timestamp');
+					$obj->access    = $note->get('access');
+					$obj->editable  = true;
 
 					$n[] = $obj;
 				}
 			}
+			if (!$this->course->access('manage'))
+			{
+				if ($notes = $this->model->notes(array('scope' => 'lecture', 'scope_id' => $this->lecture->get('id'), 'access' => 1, 'created_by' => -1)))
+				{
+					foreach ($notes as $note)
+					{
+						$obj = new stdClass;
+						$obj->id        = $note->get('id');
+						$obj->dataId    = $note->get('id');
+						$obj->text      = str_replace('  ', ' &nbsp;', nl2br(stripslashes($note->get('content'))));
+						$obj->pos_x     = $note->get('pos_x') . 'px';
+						$obj->pos_y     = $note->get('pos_y') . 'px';
+						$obj->width     = $note->get('width');
+						$obj->height    = $note->get('height');
+						$obj->timestamp = $note->get('timestamp');
+						$obj->access    = $note->get('access');
+						$obj->editable  = false;
+
+						$n[] = $obj;
+					}
+				}
+			}
 			echo json_encode($n);
 		?>,
+		<?php if ($this->course->access('manage')) { ?>
+		shareable: true,
+		<?php } ?>
 		resizable: true,
 		controls: true,
 		controlBar: true,
 		editCallback: function(note) {
+			if (!note.editable) {
+				return;
+			}
+
 			var id = $('#note-' + note.id).attr('data-id');
 
 			if (_DEBUG) {
-				window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text);
+				window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text);
 			}
 
-			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text, {}, function(data) {
+			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text, {}, function(data) {
 				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
@@ -101,6 +137,10 @@ jQuery(document).ready(function(jQuery){
 			});
 		},
 		deleteCallback: function(note) {
+			if (!note.editable) {
+				return;
+			}
+
 			var id = note.id;
 
 			if (_DEBUG) {
@@ -114,6 +154,10 @@ jQuery(document).ready(function(jQuery){
 			});
 		},
 		moveCallback: function(note) {
+			if (!note.editable) {
+				return;
+			}
+
 			var id = $('#note-' + note.id).attr('data-id');
 
 			if (_DEBUG) {
@@ -130,6 +174,10 @@ jQuery(document).ready(function(jQuery){
 			});
 		},
 		resizeCallback: function(note) {
+			if (!note.editable) {
+				return;
+			}
+
 			var id = $('#note-' + note.id).attr('data-id');
 
 			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {

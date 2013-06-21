@@ -12,6 +12,7 @@ var typewatch = (function(){
 		defaults = {
 			notes: [],
 			resizable: true,
+			shareable: false,
 			controls: true,
 			controlBar: true,
 			editCallback: false, 
@@ -231,6 +232,31 @@ var typewatch = (function(){
 								.append(_div_note)
 								.append(_div_delete);
 
+			if (this.options.shareable) {
+				var _div_share = jQuery(document.createElement('div'))
+									.text('Share')
+									.attr('title', 'Share note with all users')
+									.addClass('jSticky-share')
+									.on('click', function(){
+										if (jQuery(this).parent().hasClass('annotation')) {
+											jQuery(this).parent().removeClass('annotation')
+											jQuery(this)
+												.text('Share')
+												.attr('title', 'Share note with all users');
+											jQuery('#note-tn-' + jQuery(this).parent().attr('data-id')).removeClass('annotation');
+										} else {
+											jQuery(this).parent().addClass('annotation');
+											jQuery(this)
+												.text('Stop sharing')
+												.attr('title', 'Stop sharing note with all users');
+											jQuery('#note-tn-' + jQuery(this).parent().attr('data-id')).addClass('annotation');
+										}
+
+										self.stopEditing(jQuery(this).parent().attr("id").replace(/note-/, ""));
+									});
+				_div_wrap.append(_div_share);
+			}
+
 			if (this.options.resizable) {
 				_div_wrap.resizable({
 					stop: function(event, ui) { 
@@ -264,7 +290,9 @@ var typewatch = (function(){
 				"pos_y": pos_y,	
 				"width": jQuery(_div_wrap).width(),
 				"height": jQuery(_div_wrap).height(),
-				"timestamp": tm
+				"timestamp": tm,
+				"access": 0,
+				"editable": true
 			};
 			this.notes.push(note);
 
@@ -288,6 +316,12 @@ var typewatch = (function(){
 		stopEditing: function(note_id) {
 			var note = this.getNote(note_id);
 			note.text = jQuery("#note-" + note_id).find('textarea').val();
+
+			if (jQuery("#note-" + note_id).hasClass('annotation')) {
+				note.access = 1;
+			} else {
+				note.access = 0;
+			}
 
 			var thumb = jQuery('#note-tn-' + note.id);
 			if (thumb) {
@@ -335,20 +369,30 @@ var typewatch = (function(){
 				_div_header.append(jQuery('<span></span>').addClass('time').text(note.timestamp));
 			}
 
-			var _note_content = jQuery(document.createElement('textarea')).val(note.text).on('keyup', function (e) {
-					typewatch(function () {
-						self.stopEditing(note.id);
-					}, 500);
-				})
-				.on('focus', function (e){
-					jQuery(this).parent().parent().css('opacity', 1);
-				})
-				.on('blur', function (e){
-					jQuery(this).parent().parent().css('opacity', 0.85);
-				});
+			if (!this.options.shareable && note.access == 1) {
+				var _note_content = jQuery(document.createElement('p')).text(note.text)
+					.on('focus', function (e){
+						jQuery(this).parent().parent().css('opacity', 1);
+					})
+					.on('blur', function (e){
+						jQuery(this).parent().parent().css('opacity', 0.85);
+					});
+			} else {
+				var _note_content = jQuery(document.createElement('textarea')).val(note.text).on('keyup', function (e) {
+						typewatch(function () {
+							self.stopEditing(note.id);
+						}, 500);
+					})
+					.on('focus', function (e){
+						jQuery(this).parent().parent().css('opacity', 1);
+					})
+					.on('blur', function (e){
+						jQuery(this).parent().parent().css('opacity', 0.85);
+					});
+			}
 			_div_note.append(_note_content);
 
-			var _div_delete = 	jQuery(document.createElement('div'))
+			var _div_delete = jQuery(document.createElement('div'))
 								.text('x')
 								.addClass('jSticky-delete')
 								.attr('title', 'Delete note')
@@ -356,14 +400,45 @@ var typewatch = (function(){
 									self.deleteNote(this);
 								});
 
-			var _div_wrap 	= 	jQuery(document.createElement('div'))
+			var _div_wrap 	= jQuery(document.createElement('div'))
 								.css({'position':'absolute','top':note.pos_y,'left':note.pos_x, "width":note.width,"height":note.height}) //'float': 'left',
 								.attr("id", "note-" + note.id)
 								.attr("data-id", note.id)
 								.addClass('jSticky-medium')
 								.append(_div_header)
-								.append(_div_note)
-								.append(_div_delete);
+								.append(_div_note);
+			if (note.editable) {
+				_div_wrap.append(_div_delete);
+			}
+
+			if (this.options.shareable) {
+				var _div_share = jQuery(document.createElement('div'))
+									.text('Share')
+									.attr('title', 'Share note with all users')
+									.addClass('jSticky-share')
+									.on('click', function(){
+										if (jQuery(this).parent().hasClass('annotation')) {
+											jQuery(this).parent().removeClass('annotation')
+											jQuery(this)
+												.text('Share')
+												.attr('title', 'Share note with all users');
+											jQuery('#note-tn-' + jQuery(this).parent().attr('data-id')).removeClass('annotation');
+										} else {
+											jQuery(this).parent().addClass('annotation');
+											jQuery(this)
+												.text('Stop sharing')
+												.attr('title', 'Stop sharing note with all users');
+											jQuery('#note-tn-' + jQuery(this).parent().attr('data-id')).addClass('annotation');
+										}
+
+										self.stopEditing(jQuery(this).parent().attr('data-id'));
+									});
+				if (note.access == 1) {
+					_div_share.text('Stop sharing')
+								.attr('title', 'Stop sharing note with all users');
+				}
+				_div_wrap.append(_div_share);
+			}
 
 			if (note.timestamp && note.timestamp != '00:00:00') {
 				//_div_wrap.hide();
@@ -391,6 +466,10 @@ var typewatch = (function(){
 								.on('click', function() {
 									jQuery('#note-' + note.id).find('textarea').focus();
 								});
+			if (note.access == 1) {
+				_div_wrap.addClass('annotation');
+				_div_thumbnail.addClass('annotation');
+			}
 			jQuery("#notes-list").append(_div_thumbnail);
 			this.container.append(_div_wrap);
 			jQuery("#note-" + note.id).on('click', function() {

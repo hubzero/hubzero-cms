@@ -61,6 +61,13 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 	protected $_notes = null;
 
 	/**
+	 * Object scope
+	 * 
+	 * @var string
+	 */
+	protected $_filters = null;
+
+	/**
 	 * Returns a reference to a course model
 	 *
 	 * This method must be invoked as:
@@ -110,9 +117,10 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 			return $this->_tbl->count($filters);
 		}
 
-		if (!isset($this->_notes) || !is_a($this->_notes, 'CoursesModelIterator'))
+		if (!isset($this->_notes) || !is_a($this->_notes, 'CoursesModelIterator') || (!empty($filters) && serialize($filters) != $this->_filters))
 		{
 			//$tbl = new CoursesTableMemberNote($this->_db);
+			$this->_filters = serialize($filters);
 
 			if ($results = $this->_tbl->find($filters))
 			{

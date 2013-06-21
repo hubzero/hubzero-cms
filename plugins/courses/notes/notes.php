@@ -331,6 +331,7 @@ class plgCoursesNotes extends JPlugin
 		{
 			$model->set('content', $content);
 		}
+		$model->set('access', JRequest::getInt('access', 0));
 		$model->set('section_id', $this->view->offering->section()->get('id'));
 
 		if (!$model->store(true))

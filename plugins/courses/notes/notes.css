@@ -142,78 +142,7 @@
 		left: 0;
 		right: 0;
 	}
-/* Add note button 
-	button#add_note {
-		position: absolute;
-		top: 15px;
-		right: 15px;
-		display: block;
-		border: 1px solid #fee9aa;
-		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
-		color: #996633;
-		text-shadow: 0px 1px 0px #fedd9b;
-		padding: 0.4em 0.91em 0.4em 2.91em;
-		-webkit-background-clip: padding-box;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		outline: 0;
-		font-size: 1em;
-		white-space: nowrap;
-		word-wrap: normal;
-		text-align: center;
-		font-weight: normal;
-		vertical-align: middle;
-		cursor: pointer;
-		background: #feda71;
-		background: -webkit-gradient(linear, left top, left bottom, from(#feda71), to(#febe4d));
-		background: -webkit-linear-gradient(#feda71, #febe4d);
-		background: -moz-linear-gradient(center top, #feda71 0%, #febe4d 100%);
-		background: -moz-gradient(center top, #feda71 0%, #febe4d 100%);
-		background: -ms-linear-gradient(#feda71, #febe4d);
-		background: -o-linear-gradient(#feda71, #febe4d);
-		background: linear-gradient(#feda71, #febe4d);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71,endColorstr=#febe4d);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71, endColorstr=#febe4d)";
-	}
-	button#add_note:before {
-		background: #e3e3e3;
-		background: rgba(0, 0, 0, 0.08);
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		width: 1em;
-		text-align: center;
-		font-size: 1.2em;
-		font-weight: normal;
-		font-family: 'Fontcons';
-		line-height: 1.8;
-		padding: 0 0.5em;
-		margin-right: 0.2em;
-		-webkit-border-radius: 0.25em 0 0 0.25em;
-		-moz-border-radius: 0.25em 0 0 0.25em;
-		-ms-border-radius: 0.25em 0 0 0.25em;
-		-o-border-radius: 0.25em 0 0 0.25em;
-		border-radius: 0.25em 0 0 0.25em;
-		content: "\270D";
-	}
-	button#add_note:hover {
-		cursor: pointer;
-		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
-		background: #febe4d;
-		background: -webkit-gradient(linear, left top, left bottom, from(#febe4d), to(#feda71));
-		background: -webkit-linear-gradient(#febe4d, #feda71);
-		background: -moz-linear-gradient(center top, #febe4d 0%, #feda71 100%);
-		background: -moz-gradient(center top, #febe4d 0%, #feda71 100%);
-		background: -ms-linear-gradient(#febe4d, #feda71);
-		background: -o-linear-gradient(#febe4d, #feda71);
-		background: linear-gradient(#febe4d, #feda71);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d,endColorstr=#feda71);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d, endColorstr=#feda71)";
-	}
+
 /* Note */
 	.jSticky-medium {
 		width: 160px;
@@ -238,7 +167,7 @@
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
 		color: #80744a;
-		font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		/*font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 		font-size: 14px;
 		line-height: 1.2em;
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)"; /* IE 8 */
@@ -246,6 +175,20 @@
 		-webkit-opacity: 0.85;
 		-moz-opacity: 0.85;
 		opacity: 0.85;
+	}
+	.jSticky-medium.annotation {
+		color: #4a807d;
+		border-color: #1eb6bc;
+		background: #bdfaf9;
+		background: -webkit-gradient(linear, left top, left bottom, from(#d3fffe), to(#bcfaf8));
+		background: -webkit-linear-gradient(#d3fffe, #bcfaf8);
+		background: -moz-linear-gradient(center top, #d3fffe 0%, #bcfaf8 100%);
+		background: -moz-gradient(center top, #d3fffe 0%, #bcfaf8 100%);
+		background: -ms-linear-gradient(#d3fffe, #bcfaf8);
+		background: -o-linear-gradient(#d3fffe, #bcfaf8);
+		background: linear-gradient(#d3fffe, #bcfaf8);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d3fffe,endColorstr=#bcfaf8);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d3fffe, endColorstr=#bcfaf8)";
 	}
 	.jSticky-medium.static {
 		position: relative;
@@ -317,6 +260,10 @@
 		background: transparent;
 		box-shadow: none;
 	}
+	.annotation a.jSticky-delete,
+	.annotation .jSticky-delete {
+		color: #1eb6bc;
+	}
 	.jSticky-delete:before {
 		font-family: "Fontcons";
 		content: "\f014"; /*"\2716";*/
@@ -344,6 +291,9 @@
 		background-color: transparent;
 		border-bottom: 3px double #f2d0b5;
 	}
+	.annotation .jSticky-header {
+		border-color: #b5f2da;
+	}
 	.jSticky-header a,
 	.jSticky-header span {
 		margin-right: 0.5em;
@@ -355,13 +305,36 @@
 		margin: 0;
 		padding: 0;
 	}
+
+	.annotation:after {
+		font-family: "Fontcons";
+		content: "\f09c";
+		position: absolute;
+		bottom: 0.5em;
+		left: 0.5em;
+		font-size: 1.2em;
+	}
+	a.jSticky-share,
+	.jSticky-share {
+		font-size: 11px;
+		line-height: 1;
+		display: block;
+		position: absolute;
+		cursor: pointer;
+		z-index: 4;
+		overflow: hidden;
+		box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+		white-space: nowrap;
+		border: none;
+		font-weight: bold;
+		bottom: 0.8em;
+		left: 2.5em;
+		background: transparent;
+		box-shadow: none;
+		padding: 0.2em 0;
+	}
 /* Note list */
 	#notes-list-container {
-		/*background: #f9f9f9;
-		border-top: 1px solid #e9e9e9;
-		border-bottom: 1px solid #e9e9e9;
-		padding: 10px 15px;
-		margin: 20px -20px;*/
 		background: #222;
 		padding: 0 10px;
 		border-top: 1px solid #444;
@@ -385,13 +358,6 @@
 		float: left;
 		margin: 5px;
 		font-size: 5px;
-		/*text-indent: 5em;
-		white-space: nowrap;
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-		filter: alpha(opacity=50);
-		-webkit-opacity: 0.50;
-		-moz-opacity: 0.50;
-		opacity: 0.50;*/
 	}
 	#notes-list-container .jSticky-medium.thumbnail p {
 		margin: 0;
@@ -407,22 +373,6 @@
 		opacity: 1;
 		cursor: pointer;
 	}
-	/*#notes-list-container .jSticky-medium.thumbnail:after {
-		content: "\f036  \f036";
-		font-family: "Fontcons";
-		position: absolute;
-		top: 5px;
-		left: 5px;
-		width: 20px;
-		height: 20px;
-		font-size: 16px;
-		line-height: 14px;
-		color: #bca71e;
-		text-indent: 0;
-		white-space: normal;
-		overflow: hidden;
-		display: block;
-	}*/
 	#notes-list-container #notes-controls {
 		float: right;
 		margin: 0;
@@ -471,19 +421,7 @@
 		color: #777;
 		line-height: 1.1em;
 	}
-	/*#notes-list:before {
-		content: "\270D";
-		font-family: "Fontcons";
-		display: block;
-		width: 30px;
-		height: 30px;
-		font-size: 30px;
-		line-height: 1;
-		margin: 0 20px 0 5px;
-		float: left;
-		color: #ccc;
-		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
-	}*/
+
 /* Instructions */
 	#notes-introduction {
 		width: 32em;
