@@ -78,15 +78,15 @@ class plgHubzeroWikiparser extends JPlugin
 				return null;
 			}
 
-			$option   = (isset($config['option']))   ? $config['option']   : 'com_wiki';
-			$scope    = (isset($config['scope']))    ? $config['scope']    : '';
-			$pagename = (isset($config['pagename'])) ? $config['pagename'] : '';
-			$pageid   = (isset($config['pageid']))   ? $config['pageid']   : 0;
-			$filepath = (isset($config['filepath'])) ? $config['filepath'] : '';
-			$domain   = (isset($config['domain']))   ? $config['domain']   : null;
-			$loglinks = (isset($config['loglinks'])) ? $config['loglinks'] : null;
+			$config['option']   = (isset($config['option']))   ? $config['option']   : 'com_wiki';
+			$config['scope']    = (isset($config['scope']))    ? $config['scope']    : '';
+			$config['pagename'] = (isset($config['pagename'])) ? $config['pagename'] : '';
+			$config['pageid']   = (isset($config['pageid']))   ? $config['pageid']   : 0;
+			$config['filepath'] = (isset($config['filepath'])) ? $config['filepath'] : '';
+			$config['domain']   = (isset($config['domain']))   ? $config['domain']   : null;
+			$config['loglinks'] = (isset($config['loglinks'])) ? $config['loglinks'] : null;
 
-			$this->parser = new WikiParser($option, $scope, $pagename, $pageid, $filepath, $domain, $loglinks);
+			$this->parser = new WikiParser($config);
 		}
 		return $this->parser;
 	}

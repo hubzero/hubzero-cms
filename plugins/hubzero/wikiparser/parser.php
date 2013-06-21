@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php');
+
 /**
  * Wiki parser class
  * converts wiki syntax to HTML
@@ -40,158 +43,175 @@ defined('_JEXEC') or die('Restricted access');
 class WikiParser
 {
 	/**
-	 * Perform a full parse
-	 * False = limited macro usage, etc.
-	 * 
-	 * @var string
-	 */
-	var $fullparse = true;
-
-	/**
-	 * Description for 'mUniqPrefix'
-	 * 
-	 * @var string
-	 */
-	var $mUniqPrefix = NULL;
-
-	/**
-	 * Description for 'mDTopen'
-	 * 
-	 * @var boolean
-	 */
-	var $mDTopen;
-
-	/**
-	 * Description for 'mLastSection'
-	 * 
-	 * @var string
-	 */
-	var $mLastSection;
-
-	/**
-	 * Description for 'mInPre'
-	 * 
-	 * @var boolean
-	 */
-	var $mInPre;
-
-	/**
-	 * Description for 'mLinkHolders'
-	 * 
-	 * @var unknown
-	 */
-	var $mLinkHolders;
-
-	/**
-	 * Description for 'shelf'
-	 * 
-	 * @var array
-	 */
-	var $shelf = array();
-
-	/**
-	 * Description for 'hlgn'
-	 * 
-	 * @var string
-	 */
-	var $hlgn, $vlgn, $lnge, $clas, $styl, $cspn, $rspn, $a, $s, $c;
-
-	/**
-	 * Current page ID
+	 * Preformatted NOT in code state
+	 * i.e., not inside a <pre> block
 	 * 
 	 * @var integer
 	 */
-	var $pageid;
+	const CS_NONE = 0;
 
 	/**
-	 * Current component name
+	 * Preformatted code state
+	 * i.e., inside a <pre> block
+	 * 
+	 * @var integer
+	 */
+	const CS_CODE = 1;
+
+	/**
+	 * Preformatted code within code state
+	 * i.e., <pre> inside a <pre> block
+	 * 
+	 * @var integer
+	 */
+	const CS_CODE_SUB = 2;
+
+	/**
+	 * A unique token
 	 * 
 	 * @var string
 	 */
-	var $option;
+	private $_token = null;
 
 	/**
-	 * Page scope
-	 * 
-	 * @var string
-	 */
-	var $scope;
-
-	/**
-	 * Page name
-	 * 
-	 * @var string
-	 */
-	var $pagename;
-
-	/**
-	 * Temp container for PREs
+	 * Configuration options
 	 * 
 	 * @var array
 	 */
-	var $pres;
+	private $_config = array(
+		'option'   => null,
+		'scope'    => null,
+		'pagename' => null,
+		'pageid'   => null,
+		'path'     => null,
+		'domain'   => null,
+
+		'fullparse' => true,
+		'camelcase' => true,
+		'loglinks'  => false
+	);
 
 	/**
-	 * Log all links in a page
+	 * Data store
 	 * 
 	 * @var array
 	 */
-	var $_linkLog;
+	private $_data = array(
+		'input'  => null,
+		'output' => null,
+		'links'  => array()
+	);
 
 	/**
-	 * Log links?
+	 * Parsed content temp storage
 	 * 
-	 * @var boolean
+	 * @var array
 	 */
-	var $loglinks;
+	private $_tokens = array(
+		'pre'    => array(),
+		'code'   => array(),
+		'anchor' => array(),
+		'macro'  => array(),
+		'math'   => array()
+	);
+
+	/**
+	 * Useful patterns
+	 * 
+	 * @var array
+	 */
+	private static $_patterns = array(
+		'url'  => "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]",
+
+		'hlgn' => "(?:\<(?!>)|(?<!<)\>|\<\>|\=|[()]+(?!))",
+		'vlgn' => "[\-^~]",
+		'clas' => "(?:\([^)]+\))",
+		'lnge' => "(?:\[[^]]+\])",
+		'styl' => "(?:\{[^}]+\})",
+		'cspn' => "(?:\\\\\d+)",
+		'rspn' => "(?:\/\d+)",
+
+		'algn' => "(?:(?:\<(?!>)|(?<!<)\>|\<\>|\=|[()]+(?!))|[\-^~])*",
+		'spns' => "(?:(?:\\\\\d+)|(?:\/\d+))*",
+		'clss' => "(?:(?:\([^)]+\))|(?:\{[^}]+\}))*"
+	);
 
 	/**
 	 * Constructor
 	 * 
-	 * @param      string  $option   Parameter description (if any) ...
-	 * @param      string  $scope    Parameter description (if any) ...
-	 * @param      string  $pagename Parameter description (if any) ...
-	 * @param      integer $pageid   Parameter description (if any) ...
-	 * @param      string  $filepath Parameter description (if any) ...
-	 * @param      string  $domain   Parameter description (if any) ...
+	 * @param      array $config Configuration options
 	 * @return     void
 	 */
-	public function __construct($option='', $scope='', $pagename='', $pageid=0, $filepath='', $domain=null, $loglinks=null)
+	public function __construct($config=array())
 	{
 		// We need this info for links that may get generated
-		$this->option   = $option;
-		$this->scope    = $scope;
-		$this->pagename = $pagename;
-		$this->pageid   = $pageid;
-		$this->filepath = $filepath;
-		$this->domain   = $domain;
-		$this->loglinks = $loglinks;
+		foreach ($config as $k => $s)
+		{
+			$this->set($k, $s);
+		}
 
-		$this->mUniqPrefix = "\x07UNIQ" . $this->getRandomString();
-
-		// Patterns for glyphs and attribute parsing
-		$this->hlgn = "(?:\<(?!>)|(?<!<)\>|\<\>|\=|[()]+(?!))";
-		$this->vlgn = "[\-^~]";
-		$this->clas = "(?:\([^)]+\))";
-		$this->lnge = "(?:\[[^]]+\])";
-		$this->styl = "(?:\{[^}]+\})";
-		$this->cspn = "(?:\\\\\d+)";
-		$this->rspn = "(?:\/\d+)";
-		$this->a    = "(?:{$this->hlgn}|{$this->vlgn})*";
-		$this->s    = "(?:{$this->cspn}|{$this->rspn})*";
-		//$this->c   = "(?:{$this->clas}|{$this->styl}|{$this->lnge}|{$this->hlgn})*";
-		//$this->c   = "(?:{$this->clas}|{$this->styl}|{$this->lnge})*";
-		$this->c    = "(?:{$this->clas}|{$this->styl})*";
+		// Set the unique token
+		$this->_token = "\x07UNIQ" . $this->_randomString();
 	}
 
 	/**
-	 * Get the unique prefix
+	 * Modifies a property of the object, creating it if it does not already exist.
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $value     The value of the property to set.
+	 * @return  mixed   Previous value of the property.
+	 */
+	public function set($property, $value = null)
+	{
+		$previous = isset($this->_config[$property]) ? $this->_config[$property] : null;
+		$this->_config[$property] = $value;
+		return $previous;
+	}
+
+	/**
+	 * Returns a property of the object or the default value if the property is not set.
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $default   The default value.
+	 * @return  mixed   The value of the property.
+	 */
+	public function get($property, $default = null)
+	{
+		if (isset($this->_config[$property]))
+		{
+			return $this->_config[$property];
+		}
+		return $default;
+	}
+
+	/**
+	 * Get the unique string
 	 * 
 	 * @return     string
 	 */
-	public function uniqPrefix()
+	public function token()
 	{
-		return $this->mUniqPrefix;
+		return $this->_token;
+	}
+
+	/**
+	 * Get the raw input
+	 * 
+	 * @return     string
+	 */
+	public function input()
+	{
+		return $this->_data['input'];
+	}
+
+	/**
+	 * Get the parsed output
+	 * 
+	 * @return     string
+	 */
+	public function output()
+	{
+		return $this->_data['output'];
 	}
 
 	/**
@@ -199,7 +219,7 @@ class WikiParser
 	 * 
 	 * @return     integer 
 	 */
-	public function getRandomString()
+	private function _randomString()
 	{
 		return dechex(mt_rand(0, 0x7fffffff)) . dechex(mt_rand(0, 0x7fffffff));
 	}
@@ -216,16 +236,22 @@ class WikiParser
 	 */
 	public function parse($text, $fullparse=true, $linestart=0, $camelcase=1)
 	{
-		$this->_linkLog = array();
+		// Store the raw input
+		$this->_data['input'] = $text;
 
-		$this->fullparse = $fullparse;
-
-		if (!$this->fullparse) 
+		// Set some configs
+		$this->set('fullparse', $fullparse);
+		$this->set('camelcase', $camelcase);
+		if (!$this->get('fullparse')) 
 		{
-			$camelcase = 0;
+			$this->set('camelcase', 0);
 		}
 
+		// Remove any trailing whitespace
 		$text = rtrim($text);
+
+		// Prepend a line break
+		// Makes block parsing a little easier
 		$text = "\n" . $text;
 
 		// Clean out any carriage returns.
@@ -238,10 +264,7 @@ class WikiParser
 
 		// Process includes
 		// Includes are essentially smaller other pages
-		//if ($this->fullparse) 
-		//{
-			$text = $this->includes($text);
-		//}
+		$text = $this->includes($text);
 
 		// We need to temporarily put back any blocks we stripped and then restrip everything
 		// This is because of any blocks the macros may have outputted - otherwise they wouldn't get processed
@@ -257,15 +280,9 @@ class WikiParser
 		$text = $this->math($text);
 
 		// Strip HTML tags out
-		//$text = preg_replace("/(\<|\>\.)|(\<\>)/i", '', $text);
-		/*$text = preg_replace(
-			array('/<\./', '/<>/', '/>\./', '/<([^>]+?)</', '/>([^<]+?)>/', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</', '/([0-9]+)>/'), 
-			array('&lt;.', '&lt;&gt;', '&gt;.', '&lt;$1&lt;',  '&rt;$1&rt;',  '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;',     '$1 &gt;'), 
-			$text
-		);*/
 		$text = preg_replace(
-			array('/<\./', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</', '/([0-9]+)>/'), 
-			array('&lt;.', '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;',     '$1 &gt;'), 
+			array('/<\./', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</'), //'/([0-9]+)>/'), 
+			array('&lt;.', '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;'), //    '$1 &gt;'), 
 			$text
 		);
 		$text = str_replace('<>.', '&lt;&gt;.', $text);
@@ -280,7 +297,7 @@ class WikiParser
 		// places.
 		$text = $this->tables($text);
 
-		if ($this->fullparse) 
+		if ($this->get('fullparse')) 
 		{
 			// Do horizontal rules <hr />
 			$text = preg_replace('/(^|\n)-----*/', '\\1<hr />', $text);
@@ -290,19 +307,34 @@ class WikiParser
 		}
 
 		// Process macros
+		// Individual macros determine if they're allowed in fullparse mode or not
 		$text = $this->macros($text);
 
 		// Do quotes. '''stuff''' => <strong>stuff</strong>
 		$text = $this->quotes($text);
 
-		// Do spans
+		// Do spans. ~~fast~~ => <del>fast</del>, ??me?? => <cite>me</cite>, etc.
 		$text = $this->spans($text);
 
-		// Do glyphs
+		// Do links. [MyLink]
+		$text = $this->links($text);
+
+		// Do glyphs. " => &#8220;
 		$text = $this->glyphs($text);
 
-		// Do links
-		$text = $this->links($text, $camelcase);
+		// Admonitions are only allowed in fullparse mode
+		if ($this->get('fullparse')) 
+		{
+			$text = $this->admonitions($text);
+		}
+
+		// Do definition lists
+		$text = $this->definitions($text);
+
+		// Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
+		//$text = preg_replace_callback('/MACRO' . $this->_token . '/i', array(&$this, 'restore_macros'), $text);
+		$text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
+		$this->_tokens['macro'] = array();
 
 		// Clean up special characters, only run once, next-to-last before block levels
 		$fixtags = array(
@@ -314,24 +346,10 @@ class WikiParser
 		);
 		$text = preg_replace(array_keys($fixtags), array_values($fixtags), $text);
 
-		if ($this->fullparse) 
-		{
-			$text = $this->admonitions($text);
-		}
-
-		// Do definition lists
-		$text = $this->doDFLists($text);
-
-		// Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
-		$text = preg_replace_callback('/MACRO' . $this->mUniqPrefix . '/i', array(&$this, 'restore_macros'), $text);
-
 		// Only once and last
-		$text = $this->doBlockLevels($text, $linestart);
+		$text = $this->blocks($text);
 
-		// Put back removed <math>
-		$text = $this->aftermath($text);
-
-		// Put back removed <pre> and <code>
+		// Put back removed blocks <pre>, <code>, <a>, <math>
 		$text = $this->unstrip($text);
 
 		// Strip out blank space
@@ -342,128 +360,129 @@ class WikiParser
 		$text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $text);
 
 		// Format headings and build a table of contents
-		if ($this->fullparse && strstr($text, '<p>MACRO' . $this->uniqPrefix() . '[[TableOfContents]]' . "\n" . '</p>')) 
+		if ($this->get('fullparse') && strstr($text, '<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>')) 
 		{
-			//$output = $this->toc($text);
-			//$text = $output['text'];
 			$text = $this->toc($text);
 		}
 
-		if ($fullparse && $this->pageid && $this->loglinks)
+		// If full parse and we have a page ID (i.e., this is a *wiki* page) and link logging is turned on...
+		if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks'))
 		{
-			if (!class_exists('WikiLink') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php')) 
-			{
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php');
-			}
-
 			$links = new WikiLink(JFactory::getDBO());
-			//$links->deleteByPage($this->pageid);
-			$links->updateLinks($this->pageid, $this->_linkLog);
+			$links->updateLinks($this->get('pageid'), $this->_data['links']);
 		}
 
-		return $text;
+		$this->_data['output'] = $text;
+
+		return $this->_data['output'];
 	}
 
 	/**
 	 * Convert wiki links to HTML links
 	 * 
-	 * @return     boolean
-	 */
-	/*public function logLinks()
-	{
-		if ($this->pageid) 
-		{
-			if (!class_exists('WikiLink') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php')) 
-			{
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php');
-			}
-
-			$links = new WikiLink(JFactory::getDBO());
-			$links->deleteByPage($this->pageid);
-			$links->addLinks($this->_linkLog)
-			if (!$links->addLinks($this->_linkLog))
-			{
-				return false;
-			}
-		}
-		return true;
-	}*/
-
-	/**
-	 * Convert wiki links to HTML links
-	 * 
-	 * @param      string  $text      Wiki markup
-	 * @param      integer $camelcase Convert camcel-cased text? 1=yes, 0=no
+	 * @param      string $text Wiki markup
 	 * @return     string
 	 */
-	public function links($text, $camelcase=1)
+	public function links($text)
 	{
-		$this->reference_wiki = '';
-
-		if (!class_exists('WikiPage') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php')) 
-		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-		}
-
 		// Parse for link syntax 
 		// e.g. [mylink My Link] => <a href="mylink">My Link</a>
 		$char_regexes = array(
+			// [http://external.links]
+			'external' => '('.
+				'\['. // opening brackets
+					'(https?:|mailto:|ftp:|gopher:|news:|file:|\/\/)' . // protocol
+					'([^\]\[]*?)'. // link
+					'(\s+[^\]]*?)?'. // optional title
+				'\]'. // closing brackets
+			')',
+
+			// [InternalLinks]
 			'internal' => '('.
 				'\['. // opening brackets
-					'(([^\]]*?)\:)?'. // namespace (if any)
+					'(?:([^\]]*?)\:)?'. // namespace (if any)
 					'([^\]\[]*?)'.
 					'(\s+[^\]]*?)?'.
 				'\]'. // closing brackets
 			')',
-			'external' => '('.
-				'\['.
-					'([^\]\[]*?)'.
-					'(\s+[^\]]*?)?'.
-				'\]'.
-			')'
+
+			// URL pattern
+			'autourl'    => "[^=\"\'\[]" .  // Make sure it's not preceeded by quotes and brackets
+				"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
+				"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])",  // link
+
+			// Email pattern
+			'autoemail'    => "([\s]*)" .  // whitespace
+				"([\._a-zA-Z0-9-\+]+@" .  // characters leading up to @
+				"(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})",  // everything after @
+
+			// Camelcase links (e.g. MyLink) 
+			'wikiname' => "(" . 
+					"!?\\/?" .  // Optionally starts with ! \ /
+					"[A-Z][A-Za-z]*[a-z]+[A-Z][A-Za-z]*" .  // CamelCase pattern
+					"(?:(?:\\/[A-Z][A-Za-z]*)+)?" . 
+				")" . 
+				"(" . 
+					"(\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?" . 
+				")" . 
+				"(\"\")?"
 		);
-		$this->links = array();
-		$this->linkscount = 0;
+
 		foreach ($char_regexes as $func => $regex)
 		{
-			$this->stop = false;
-			$text = preg_replace_callback("/$regex/i", array(&$this, 'link' . ucfirst($func)), $text);
-			if ($this->stop) 
+			if ($func == 'wikiname') 
 			{
-				break;
+				if (!$this->get('camelcase'))
+				{
+					continue;
+				}
+				$text = preg_replace_callback("/$regex/", array(&$this, 'link' . ucfirst($func)), $text);
+			}
+			else
+			{
+				$text = preg_replace_callback("/$regex/i", array(&$this, 'link' . ucfirst($func)), $text);
 			}
 		}
 
-		// Auto link http:, etc.
-		$this->alinks = array();
-		$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-		$text = preg_replace_callback("/$UrlPtrn/", array(&$this, 'linkAuto'), $text);
-		$text = preg_replace_callback("/([\s]*)[\._a-zA-Z0-9-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}/i", array(&$this, 'linkAuto'), $text);
-
-		// Camelcase links (e.g. MyLink) 
-		//$camelcase = false;
-		if ($camelcase) 
-		{
-			$UpperPtn = "[A-Z]"; //"[A-Z\xc0-\xde]";
-			$LowerPtn = "[a-z]"; //"[a-z\xdf-\xfe]";
-			$AlphaPtn = "[A-Za-z]"; //"[A-Za-z\xc0-\xfe]";
-
-			$LinkPtn  = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' . $UpperPtn . $AlphaPtn . '*(?:(?:\\/' . $UpperPtn . $AlphaPtn . '*)+)?';
-
-			$ptn = "/(^|[^A-Za-z])(!?\\/?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e";
-			$text = preg_replace($ptn, "WikiParser::q1('\\1').WikiParser::linkWikiName(WikiParser::q1('\\2'),'\\3')", $text, -1);
-		}
-
-		// Replace our spot holders with the links
-		// This is done to avoid accidental links within links generation
-		// e.g. http://w3.org/MarkUp => <a href="http://w3.org/<a href="MarkUp">MarkUp</a>">http://w3.org/<a href="MarkUp">MarkUp</a></a>
-		$text = preg_replace_callback('/<link><\/link>/i', array(&$this, 'linkRestore'), $text);
-		$text = preg_replace_callback('/<alink><\/alink>/i', array(&$this, 'linkAutoRestore'), $text);
 		return $text;
 	}
 
 	/**
+	 * Inject link back into text
+	 * 
+	 * @param      string $txt Link HTML
+	 * @return     string
+	 */
+	private function _restoreAnchor($txt)
+	{
+		return $txt;
+	}
+
+	/**
 	 * Automatically links any strings matching a URL pattern
+	 * 
+	 * @param      array $matches Text matching link pattern
+	 * @return     string
+	 */
+	public function linkAutourl($matches)
+	{
+		return $this->linkAuto($matches);
+	}
+
+	/**
+	 * Automatically links any strings matching an email pattern
+	 * 
+	 * @param      array $matches Text matching link pattern
+	 * @return     string
+	 */
+	public function linkAutoemail($matches)
+	{
+		array_splice($matches, 1, 0, 'mailto:');
+		return $this->linkAuto($matches);
+	}
+
+	/**
+	 * Automatically links any strings matching a URL or email pattern
 	 * 
 	 * Link is pushed to internal array and placeholder returned
 	 * This is to ensure links aren't parsed twice. We put the links back in place
@@ -474,65 +493,45 @@ class WikiParser
 	 */
 	public function linkAuto($matches)
 	{
-		$href = $matches[0];
-		$sp = preg_replace('/^([\s]*)(.*)/i', "$1", $href);
-		$pc = '';
-
-		$href = trim($href);
-		if (substr($href, -1) == '.') 
+		if (empty($matches))
 		{
-			$href = rtrim($href, '.');
-			$pc = substr($href, -1);
+			return '';
 		}
+
+		$whole = $matches[0];
+		$prtcl = rtrim($matches[1], ':');
+		$url   = $matches[3];
+
+		$prfx  = preg_replace('/^([\s]*)(.*)/i', "$1", $whole);
+		$href  = trim($whole);
 
 		if (substr($href, 0, 1) == '!') 
 		{
-			return $sp . ltrim($href, '!') . $pc;
-		}
-
-		$href = str_replace('"', '', $href);
-		$href = str_replace("'", '', $href);
-		$href = str_replace('&#8221', '', $href);
-
-		if (substr($href, 0, strlen('mailto:')) == 'mailto:') 
-		{
-			$href = 'mailto:' . $this->obfuscate(substr($href, strlen('mailto:')));
-		}
-		else if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $href))
-		{
-			
-			$href = 'mailto:' . $this->obfuscate($href);
-		}
-
-		$h = array('h', 'm', 'f', 'g', 'n');
-		$pfx = '';
-		if (!in_array(substr($href, 0, 1), $h)) 
-		{
-			$pfx  = substr($href, 0, 1);
-			$href = substr($href, 1);
+			return $prfx . ltrim($href, '!');
 		}
 
 		$txt = $href;
-		if (substr($href, 0, strlen('mailto:')) == 'mailto:') 
+
+		if ($prtcl == 'mailto')
 		{
-			$txt = substr($href, strlen('mailto:'));
+			$txt  = $url;
+			$href = 'mailto:' . $this->obfuscate($url);
 		}
 
-		$l = $sp . sprintf(
-			'<a class="ext-link" href="%s"%s>%s</a>',
-			$href,
-			' rel="external"',
-			$txt
-		) . $pc;
-		array_push($this->alinks, $pfx . $l);
-		$this->_linkLog[] = array(
-			'link'     => $matches[0], 
+		$this->_data['links'][] = array(
+			'link'     => $whole, 
 			'url'      => $href, 
-			'page_id'  => $this->pageid,
+			'page_id'  => $this->get('pageid'),
 			'scope'    => 'external',
 			'scope_id' => 0
 		);
-		return '<alink></alink>';
+
+		return $prfx . $this->_dataPush(array(
+			$matches[0],
+			'anchor',
+			$this->_randomString(),
+			'<a class="ext-link" href="' . $href . '" rel="external">' . $this->glyphs($txt) . '</a>'
+		));
 	}
 
 	/**
@@ -554,18 +553,6 @@ class WikiParser
 	}
 
 	/**
-	 * Turn link placeholders into actual links
-	 * (see linkAuto() method)
-	 * 
-	 * @param      array $matches Text matching autolink tag
-	 * @return     string Placeholder tag
-	 */
-	public function linkAutoRestore($matches)
-	{
-		return array_shift($this->alinks);
-	}
-
-	/**
 	 * Generate a link to an external (off-site) page
 	 * Link is pushed to internal array and placeholder returned
 	 * This is to ensure links aren't parsed twice. We put the links back in place
@@ -576,262 +563,194 @@ class WikiParser
 	 */
 	public function linkInternal($matches)
 	{
-		$nolink = false;
-		$p = null;
+		$whole     = $matches[1];
+		$namespace = trim(strtolower($matches[2]));
+		$href      = $matches[3];
+		$scope     = $this->get('scope');
 
-		$href  = $matches[4];
-		$title = (isset($matches[5])) ? $matches[5] : $href;
-		$namespace = $matches[2];
-
+		// Flag to NOT link contents
 		if ($href[0] == '!') 
 		{
-			$matches[0] = trim($matches[0], '[]');
-			$matches[0] = ltrim($matches[0], '!');
-			array_push($this->links, '[' . trim($matches[0]) . ']');
-			return '<link></link>';
+			$whole = trim($whole, '[]');
+			$whole = ltrim($whole, '!');
+
+			return $this->_dataPush(array(
+				$whole,
+				'anchor',
+				$this->_randomString(),
+				'[' . trim($whole) . ']'
+			));
 		}
 
+		$title = (isset($matches[4])) ? trim($matches[4]) : $href;
 		$title = preg_replace('/\(.*?\)/', '', $title);
 		$title = preg_replace('/^.*?\:/', '', $title);
-
-		// Should this really be an external link?
-		$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
-		           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
-
-		if ((preg_match("/$UrlPtn/", $matches[2] . $href) && strpos($matches[2] . $href, '/') !== false)
-		 || substr($matches[0], 1, 1) == '/') 
-		{
-			$regex = '(' . '\[' . '([^\]\[]*?)' . '(\s+[^\]]*?)?' . '\]' . ')';
-			return preg_replace_callback("/$regex/i", array(&$this, 'linkExternal'), $matches[0]);
-		}
+		$cls   = 'wiki int-link';
 
 		// Are we placing an anchor?
 		if (substr($href, 0, 2) == '=#')
 		{
-			$l = '<a name="' . ltrim($href, '=#') . '"></a>';
-			array_push($this->links, $l);
-			return '<link></link>';
+			return $this->_dataPush(array(
+				$whole,
+				'anchor',
+				$this->_randomString(),
+				'<a name="' . ltrim($href, '=#') . '"></a>'
+			));
 		}
 		// Are we jumping to an anchor?
 		else if (substr($href, 0, 1) == '#')
 		{
-			$l = '<a class="wiki int-link" href="' . $href . '">' . $title . '</a>';
-			array_push($this->links, $l);
-			return '<link></link>';
+			return $this->_dataPush(array(
+				$whole,
+				'anchor',
+				$this->_randomString(),
+				'<a class="' . $cls . '" href="' . $href . '">' . $this->glyphs($title) . '</a>'
+			));
 		}
 
-		$cls = 'wiki int-link';
-
+		// Break URL into parts
 		$bits = explode('/', $href);
 
-		switch (trim(strtolower($namespace)))
+		// If there's more than one piece
+		if (count($bits) > 1) 
 		{
-			case 'page:':
-			case 'wiki:':
+			// pagename will be the last piece
+			$pagename = array_pop($bits);
+			// scope is everything leading up to the last piece
+			$scope = implode('/', $bits);
+		} 
+		// Only one part. pagename = URL
+		else 
+		{
+			$pagename = end($bits);
+		}
+
+		// How parsing commences can depend upon the namespace
+		switch ($namespace)
+		{
+			case 'page':
+			case 'wiki':
 				if (substr($href, 0, strlen('&#8220;')) == '&#8220;')
 				{
-					$title = substr($matches[1], strlen('[wiki:&#8220;'));
+					$title = substr($whole, strlen('[' . $namespace . ':&#8220;'));
 					$title = substr($title, 0, -strlen('&#8221;]'));
+					$href  = '@';
+					$pagename = $title;
+				}
+				if (substr($href, 0, 1) == '"')
+				{
+					$title = substr($whole, strlen('[' . $namespace . ':"'));
+					$title = substr($title, 0, -strlen('"]'));
+					$href  = '@';
+					$pagename = $title;
+				}
+			break;
+
+			case 'help':
+			case 'special':
+			case 'template':
+			case 'image':
+			case 'file':
+			default:
+				$pagename = ($namespace) ? ucfirst($namespace) . ':' . $pagename : $pagename;
+			break;
+		}
+
+		if (substr($scope, 0, strlen($this->get('scope'))) != $this->get('scope'))
+		{
+			$scope = $this->get('scope') . DS . ltrim($scope, DS);
+		}
+
+		if ($namespace == 'help')
+		{
+			$p = WikiPage::getInstance($pagename, '');
+			$p->scope = $scope;
+		}
+		else
+		{
+			$p = WikiPage::getInstance($pagename, $scope);
+		}
+
+		switch (substr($href, 0, 1))
+		{
+			case '#':  // Anchors
+			case '?':  // Links that start with just a query string
+				$p->pagename = '';
+				$p->scope = $scope;
+
+				$href = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
+			break;
+
+			case '@':  // Wiki page linked by title [wiki:"My Title"]
+				// Page not found
+				if (!$p->id)
+				{
+					$p->scope = $scope;
 					$href = '#';
-					$p = WikiPage::getInstance($title, $this->scope);
-					if ($p->id) 
+
+					if (in_array($namespace, array('wiki', 'page')))
 					{
-						$href = $p->pagename;
+						$cls .= ' missing';
+					}
+					if (!$p->pagename && $title)
+					{
+						$p->pagename = urlencode($title);
 					}
 				}
 				else
 				{
-					$pagename = $href;
-					$scope = $this->scope;
-					if (strstr($href, '/'))
-					{
-						if (count($bits) > 1) 
-						{
-							$pagename = array_pop($bits);
-							$scope = implode('/', $bits);
-						} 
-						else 
-						{
-							$pagename = end($bits);
-							$scope = $this->scope;
-						}
-						if (substr($pagename, 0, strlen($namespace)) == $namespace)
-						{
-							$pagename = substr($pagename, strlen($namespace));
-						}
-						if (substr($scope, 0, strlen($this->scope)) != $this->scope)
-						{
-							$scope = $this->scope . DS . ltrim($scope, DS);
-						}
-					}
-					$p = WikiPage::getInstance($pagename, $scope);
+					$href = '';
 				}
-				//$namespace = '';
+
+				$href = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
 			break;
-			
-			case 'help:':
-			case 'special:':
-			case 'template:':
-			default:
-				
+
+			case '/':  // Absolute paths
+				//$p->pagename = '';
 			break;
-		}
-		if (!is_object($p) || !$p->id)
-		{
-			if (count($bits) > 1) 
-			{
-				$pagename = array_pop($bits);
-				$scope = implode('/', $bits);
-			} 
-			else 
-			{
-				$pagename = end($bits);
-				$scope = $this->scope;
-			}
-			switch (strtolower($namespace))
-			{
-				case 'page:':
-				case 'wiki:':
-					if (substr($pagename, 0, strlen($namespace)) == $namespace)
+
+			default:   // Everything else
+				// Page not found
+				if (!$p->id)
+				{
+					// Check reserved and dynamic namespaces
+					if (in_array($namespace, array('special', 'help', 'image', 'file', 'template')))
 					{
-						$pagename = substr($pagename, strlen($namespace));
+						$href = ucfirst($namespace) . ':' . $href;
 					}
-				break;
-				default:
-					$pagename = ucfirst(strtolower($namespace)) . $pagename;
-				break;
-			}
-			if (substr($scope, 0, strlen($this->scope)) != $this->scope)
-			{
-				$scope = $this->scope . DS . ltrim($scope, DS);
-			}
 
-			if (trim(strtolower($namespace)) == 'help:')
-			{
-				$p = WikiPage::getInstance($pagename, '');
-				$p->scope = $scope;
-			}
-			else
-			{
-				$p = WikiPage::getInstance($pagename, $scope);
-			}
-		}
-		/*if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
-		{
-			$title = substr($matches[1], strlen('[wiki:&#8220;'));
-			$title = substr($title, 0, -strlen('&#8221;]'));
-			$href = '#';
+					if (!in_array($namespace, array('special', 'image', 'file')))
+					{
+						$cls .= ' missing';
+					}
 
-			$p = WikiPage::getInstance($title, $this->scope);
-			if ($p->id) 
-			{
-				$href = $p->pagename;
-			}
-			$namespace = '';
-		}
-		else 
-		{
-			if (count($bits) > 1) 
-			{
-				$pagename = array_pop($bits);
-				$scope = implode('/', $bits);
-			} 
-			else 
-			{
-				$pagename = end($bits);
-				$scope = $this->scope;
-			}
+					$p->scope    = ($p->scope) ? $p->scope : $scope;
+					$p->pagename = $href;
+				} 
+				else 
+				{
+					//$title = ($title == $href) ? $p->title;
+					$p->scope = $scope;
+				}
 
-			$pagename = ucfirst(strtolower($namespace)) . $pagename;
-			$p = WikiPage::getInstance($pagename, $scope);
-		}*/
-
-		if (!$p->id && !in_array(substr($href, 0, 1), array('#', '?', '/'))) 
-		{
-			// Check namespace
-			if (in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
-			{
-				$cls .= '';
-				$href = $namespace . $href;
-			}
-			else
-			{
-				$cls .= (substr($href, 0, 1) != '?') ? ' missing' : '';
-			}
-			$p->scope = ($p->scope) ? $p->scope : $this->scope;
-			$p->pagename = $href;
-
-			$UpperPtn = "[A-Z]"; //"[A-Z\xc0-\xde]";
-			$LowerPtn = "[a-z]"; //"[a-z\xdf-\xfe]";
-			$AlphaPtn = "[A-Za-z]"; //"[A-Za-z\xc0-\xfe]";
-
-			$LinkPtn  = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' . $UpperPtn . $AlphaPtn . '*(?:(?:\\/' . $UpperPtn . $AlphaPtn . '*)+)?';
-
-			// Is it a camelcased link?
-			$ptn = "/(^|[^A-Za-z])(!?\\/?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e";
-			if (preg_match($ptn, $href) || in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
-			{
-				$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
-
-				$l = '<a class="wiki' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
-				array_push($this->links, $l);
-				return '<link></link>';
-			}
-
-			//array_push($this->links, $matches[0]);
-			//return '<link></link>';
-		} 
-		else 
-		{
-			//$title = ($title == $href) ? $p->title;
-			$cls .= '';
-			$p->scope = $this->scope;
+				$href = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
+			break;
 		}
 
-		if (!in_array(substr($href, 0, 1), array('#', '?', '/')))
-		{
-			$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
-		}
-		else
-		{
-			$p->pagename = '';
-			switch (substr($href, 0, 1))
-			{
-				case '#':
-				case '?':
-					$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
-				break;
-
-				case '/':
-				default:
-
-				break;
-			}
-		}
-
-		$l = '<a class="' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
-		array_push($this->links, $l);
-		$this->_linkLog[] = array(
-			'link'     => $matches[0], 
+		$this->_data['links'][] = array(
+			'link'     => $whole, 
 			'url'      => $href, 
-			'page_id'  => $this->pageid,
+			'page_id'  => $this->get('pageid'),
 			'scope'    => 'internal',
 			'scope_id' => $p->id
 		);
 
-		return '<link></link>';
-	}
-
-	/**
-	 * Turn link placeholders into actual links
-	 * (see linkExternal() and linkInternal() methods)
-	 * 
-	 * @param      array $matches Text matching internal link placeholder pattern
-	 * @return     string HTML
-	 */
-	public function linkRestore($matches)
-	{
-		return array_shift($this->links);
+		return $this->_dataPush(array(
+			$whole,
+			'anchor',
+			$this->_randomString(),
+			'<a class="' . $cls . '" href="' . str_replace(array('\\', '"', "'"), '', $href) . '">' . $this->glyphs(trim($title)) . '</a>'
+		));
 	}
 
 	/**
@@ -845,64 +764,32 @@ class WikiParser
 	 */
 	public function linkExternal($matches)
 	{
-		$href = $matches[2];
-		$title = (isset($matches[3])) ? $matches[3] : '';
-		/*if (!$title) 
-		{
-			$this->linknumber++;
-			$title = "[{$this->linknumber}]";
-		}*/
-		$newwindow = true;
+		// Name some parts to make work easier
+		$whole    = $matches[1];
+		$protocol = $matches[2];
+		$href     = $matches[3];
+		$title    = (isset($matches[4])) ? $matches[4] : '';
 
-		$cls = 'int-link';
-
-		$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
-		           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
-
-		if (!preg_match("/$UrlPtn/", $href) && strpos($href, '/') === false) 
-		{
-			$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&pagename=' . $href);
-			$cls  = '';
-			$newwindow = false;
-		}
-		$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)";
-		if (preg_match("/$UrlPtn/", $href)) 
-		{
-			$cls = 'ext-link';
-		}
 		if (!$title) 
 		{
 			$title = $href;
 		}
+		$href = $protocol . $href;
 
-		$l = sprintf(
-			'<a class="' . $cls . '" href="%s"%s>%s</a>',
-			$href,
-			($newwindow ? ' rel="external"' : ''),
-			trim($title)
-		);
-		array_push($this->links, $l);
-		$this->_linkLog[] = array(
-			'link'     => $matches[0], 
+		$this->_data['links'][] = array(
+			'link'     => $whole, 
 			'url'      => $href, 
-			'page_id'  => $this->pageid,
+			'page_id'  => $this->get('pageid'),
 			'scope'    => 'external',
 			'scope_id' => 0
 		);
-		return '<link></link>';
-	}
 
-	/**
-	 * Short description for 'q1'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function q1($text)
-	{
-		return str_replace('\\"', '"', $text);
+		return $this->_dataPush(array(
+			$matches[0],
+			'anchor',
+			$this->_randomString(),
+			'<a class="ext-link" href="' . $href . '" rel="external">' . $this->glyphs(trim($title)) . '</a>'
+		));
 	}
 
 	/**
@@ -912,19 +799,17 @@ class WikiParser
 	 * @param      string $anchor Anchor
 	 * @return     string
 	 */
-	public function linkWikiName($name, $anchor)
+	public function linkWikiName($matches)
 	{
+		$whole = $matches[0];
+		$name  = $matches[1];
+		$cls   = 'wiki';
+
 		// Trim leading '!'.
 		if ($name[0] == '!') 
 		{
 			return ltrim($name, '!');
 		}
-		//$database =& JFactory::getDBO();
-		$cls = 'wiki';
-		$append = '';
-
-		
-		//$p->pagename = $name;
 
 		$bits = explode('/', $name);
 		if (count($bits) > 1) 
@@ -935,25 +820,32 @@ class WikiParser
 		else 
 		{
 			$pagename = end($bits);
-			$scope = $this->scope;
+			$scope = $this->get('scope');
 		}
+
 		$p = WikiPage::getInstance($pagename, $scope);
 
-		//$p->getID();
 		if ((!is_object($p) || !$p->id) && substr($name, 0, 1) != '?') 
 		{
 			$cls .= ' missing';
 		}
 
 		$link = JRoute::_('index.php?option=' . $this->option . '&scope=' . $scope . '&pagename=' . $pagename);
-		$this->_linkLog[] = array(
+
+		$this->_data['links'][] = array(
 			'link'     => $name, 
 			'url'      => $link, 
-			'page_id'  => $this->pageid,
+			'page_id'  => $this->get('pageid'),
 			'scope'    => 'internal',
 			'scope_id' => $p->id
 		);
-		return '<a href="' . $link . '" class="' . $cls . '">' . $name . $append . '</a>';
+
+		return $this->_dataPush(array(
+			$name,
+			'anchor',
+			$this->_randomString(),
+			'<a href="' . $link . '" class="' . $cls . '">' . $this->glyphs($name) . '</a>'
+		));
 	}
 
 	/**
@@ -964,37 +856,134 @@ class WikiParser
 	 */
 	private function strip($text)
 	{
-		$this->pres = array();
-		$this->codes = array();
-		$this->counter = 0;
+		$output = array();
 
-		$output = '';
+		// preformatted code state
+		$codestate = self::CS_NONE;
+		$level     = 0;     // Level of nesting
+		$random    = '';    // Random string
+		$admon     = false;
+		$prfx      = '';    // Space indention
 
-		$bits = explode("\n", $text);
-		foreach ($bits as $line)
+		$lines = explode("\n", $text);
+
+		foreach ($lines as $i => $txt)
 		{
-			$this->prefixLength = 0;
-			$this->prefixLength = strspn($line, ' ');
+			// Get the amount of indention
+			// Indention occurs when formatting code blocks inside of list items
+			//  * Item
+			//    {{{
+			//    blorg
+			//    }}}
+			// Since <pre> displays the extra spacing, we need to cut it out
+			$indent = strspn($txt, ' ');
+			$prfx = substr($txt, 0, $indent);
 
-			$line = $this->doSpecial($line, '`{{{', '}}}`', 'fPCode');
-			$line = $this->doSpecial($line, '{{{`', '`}}}', 'fCCode');
+			$line = trim($txt);
+			$processor = '';
 
-			$line = preg_replace_callback('/\{\{\{([\s]*)/i', array(&$this, 'handle_pre_up'), $line);
-			$line = preg_replace_callback('/([\s]*)\}\}\}/i', array(&$this, 'handle_pre_down'), $line);
-			$output .= $line . "\n";
-			$output = preg_replace('/\{\{\{1(.+)1\}\}\}/i', "{{{\\1}}}", $output);
-			if ($this->counter == 0) 
+			if ('' == $line) 
 			{
-				$output = preg_replace_callback('/\{\{\{1([\s\S]*)1\}\}\}/i', array(&$this, 'handle_save_pre'), $output);
-				//$output = $this->doSpecial($output, '`{{{', '}}}`', 'fPCode');
-				//$output = $this->doSpecial($output, '{{{`', '`}}}', 'fCCode');
-				$output = preg_replace_callback('/\{\{\{(.+?)\}\}\}/i', array(&$this, 'handle_save_code'), $output);
-				$output = $this->doSpecial($output, '`', '`', 'fCode');
+				$output[] = $txt;
+			} 
+			// pre blocks must start a line
+			else if ('{{{' == substr($line, 0, strlen('{{{'))) 
+			{
+				if ($codestate == self::CS_NONE)
+				{
+					// Is there a processor declaration on the same line?
+					if (strlen($line) > strlen('{{{')) 
+					{
+						$subline = substr($line, strlen('{{{'));
+						if (substr($subline, 0, strlen('#!')) == '#!') 
+						{
+							if (substr($subline, 0, strlen('#!wiki')) == '#!wiki')
+							{
+								$admon = true;
+							}
+							$processor = "\n" . $subline;
+						}
+					}
+					// Does the next line contain a processor declaration?
+					else if (isset($lines[$i+1]))
+					{
+						$next = trim($lines[$i+1]);
+						if (substr($next, 0, strlen('#!wiki')) == '#!wiki')
+						{
+							$admon = true;
+						}
+					}
+
+					$random = $this->_randomString();
+					$output[] = ($admon) 
+							? $prfx . '{admonition ' . $random . '}' . $processor 
+							: $prfx . '<pre ' . $random . '>' . $processor;
+					$codestate = self::CS_CODE;
+				}
+				// We're already in a code block, so we have nested {{{ }}}
+				else
+				{
+					$output[] = substr($txt, $indent); //$txt;
+					$codestate = self::CS_CODE_SUB; // Nested code tags
+					$level++;
+				}
+			} 
+			// pre blocks must end a line
+			else if ('}}}' == substr($line, 0, strlen('}}}'))) 
+			{
+				if ($codestate == self::CS_CODE_SUB)
+				{
+					$output[] = substr($txt, $indent);//$txt;
+					$level--;
+					if (!$level)
+					{
+						$codestate = self::CS_CODE;
+					}
+				}
+				else if ($codestate == self::CS_CODE)
+				{
+					$output[] = ($admon) 
+							? '{/admonition ' . $random . '}'
+							: '</pre ' . $random . '>';
+					$admon = false;
+					$codestate = self::CS_NONE;
+				}
+				else
+				{
+					$output[] = $txt;
+				}
+			} 
+			else
+			{
+				// Not in a code block
+				if ($codestate == self::CS_NONE)
+				{
+					// Convert inline `code`
+					$txt = $this->_code($txt);
+				}
+				// IN a code block
+				else
+				{
+					// Strip indention
+					$txt = substr($txt, $indent);
+				}
+
+				$output[] = $txt;
 			}
 		}
 
-		$output = str_replace('<code><code>', '<code>', $output);
-		$output = str_replace('</code></code>', '</code>', $output);
+		// Added insurance that all tags are closed
+		if ($codestate == self::CS_CODE)
+		{
+			do {
+				$output[] = '</pre ' . $this->token() . '>';
+				$codestate = self::CS_NONE;
+				$level--;
+			} while ($level >= 0);
+		}
+
+		$output = implode("\n", $output);
+		$output = preg_replace_callback('/<(pre) (.+?)>(.*)<\/(\1) \2>/si', array(&$this, '_dataPush'), $output);
 
 		return $output;
 	}
@@ -1006,11 +995,33 @@ class WikiParser
 	 * @param      string $val Content to store
 	 * @return     integer Unique ID
 	 */
-	private function shelve($val)
+	private function _dataPush($matches)
 	{
-		$i = uniqid(rand());
-		$this->shelf[$i] = $val;
-		return $i;
+		$tag = $matches[1];
+		$key = $matches[2];
+		$val = $matches[3];
+
+		$this->_tokens[$tag][$key] = $val;
+		return '<' . $tag . ' ' . $key . '></' . $tag . ' ' . $key . '>';
+	}
+
+	/**
+	 * Store an item in the shelf
+	 * Returns a unique ID as a placeholder for content retrieval later on
+	 * 
+	 * @param      string $val Content to store
+	 * @return     integer Unique ID
+	 */
+	private function _dataPull($matches)
+	{
+		$tag = $matches[1];
+		$key = $matches[2];
+
+		if (isset($this->_tokens[$tag]) && isset($this->_tokens[$tag][$key]))
+		{
+			return $this->{'_restore' . ucfirst($tag)}($this->_tokens[$tag][$key]);
+		}
+		return $matches[0];
 	}
 
 	/**
@@ -1022,127 +1033,15 @@ class WikiParser
 	 */
 	private function unstrip($text, $html=true)
 	{
-		$this->_wikitohtml = $html;
+		$this->set('wikitohtml', $html);
 
-		if (is_array($this->shelf))
+		foreach ($this->_tokens as $tag => $vals)
 		{
-			do {
-				$old = $text;
-				$text = strtr($text, $this->shelf);
-			} while ($text != $old);
+			$text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
+			$this->_tokens[$tag] = array();
 		}
-
-		$text = preg_replace_callback('/<pre><\/pre>/i', array(&$this, 'handle_restore_pre'), $text);
-		$text = preg_replace_callback('/<code><\/code>/i', array(&$this, 'handle_restore_code'), $text);
-		//$text = preg_replace_callback('/MACRO'.$this->mUniqPrefix.'/i',array(&$this,"restore_macros"),$text);
-
-		$text = str_replace('<code><code>', '<code>', $text);
-		$text = str_replace('</code></code>', '</code>', $text);
 
 		return $text;
-	}
-
-	/**
-	 * Adds a count to first level PRE blocks 
-	 * Enables handling of nested blocks by appending a first level indicator
-	 * {{{1
-	 *    {{{
-	 *       ...
-	 *    }}}
-	 * 1}}}
-	 * 
-	 * @param      array $matches Strings that matched the strating pre block syntax
-	 * @return     string
-	 */
-	private function handle_pre_up($matches)
-	{
-		$this->counter++;
-		if ($this->counter == 1) 
-		{
-			return '{{{' . $this->counter . $matches[1];
-		} 
-		else 
-		{
-			return '{{{' . $matches[1];
-		}
-	}
-
-	/**
-	 * Counter for closing pre blocks
-	 * This helps us find nested pre blocks by prepending a first level indicator
-	 * {{{1
-	 *    {{{
-	 *       ...
-	 *    }}}
-	 * 1}}}
-	 * 
-	 * @param      array $matches Strings that matched the closing pre block syntax
-	 * @return     string
-	 */
-	private function handle_pre_down($matches)
-	{
-		if ($this->counter == 1) 
-		{
-			$html = $matches[1] . $this->counter . '}}}';
-			$this->counter--;
-		} 
-		else 
-		{
-			$html = $matches[1] . '}}}';
-			$this->counter--;
-		}
-		return $html;
-	}
-
-	/**
-	 * Pushes pre blocks to an internal array and replaces the content
-	 * with empty <pre> tags. This is to ensure the content isn't parsed
-	 * any further.
-	 * 
-	 * @param      array $matches String matching pre syntax
-	 * @return     string
-	 */
-	private function handle_save_pre($matches)
-	{
-		$t = trim($matches[1]);
-		$t = str_replace("\n", '', $t);
-		if (substr($t, 0, 6) == '#!wiki') 
-		{
-			return '{admonition}' . $matches[1] . '{/admonition}';
-		} 
-		else if (substr($t, 0, strlen('#!comment')) == '#!comment') 
-		{
-			return ''; //'<!-- ' . $matches[1] . ' -->';
-		} 
-		else 
-		{
-			$val = explode("\n", $matches[1]);
-			foreach ($val as $k => $v)
-			{
-				$prfx = substr($v, 0, $this->prefixLength);
-				if (substr_count($prfx, ' ') == $this->prefixLength)
-				{
-					$val[$k] = substr($v, $this->prefixLength);
-				}
-			}
-			$val = implode("\n", $val);
-			array_push($this->pres, $val);
-			return '<pre></pre>';
-		}
-	}
-
-	/**
-	 * Pushes code blocks to an internal array and replaces the content
-	 * with empty <code> tags. This is to ensure the content isn't parsed
-	 * any further.
-	 * 
-	 * @param      array $matches String matching code syntax
-	 * @return     string 
-	 */
-	private function handle_save_code($matches)
-	{
-		array_push($this->codes, $matches[1]);
-		return '<code></code>';
 	}
 
 	/**
@@ -1151,11 +1050,11 @@ class WikiParser
 	 * @param      array $matches Parameter description (if any) ...
 	 * @return     string
 	 */
-	private function handle_restore_pre($matches)
+	private function _restorePre($txt)
 	{
-		$txt = array_shift($this->pres);
+		//$txt = array_shift($this->pres);
 
-		if (!$this->_wikitohtml) 
+		if (!$this->get('wikitohtml', true)) 
 		{
 			return '{{{' . $txt . '}}}';
 		}
@@ -1169,10 +1068,24 @@ class WikiParser
 		if (substr($t, 0, 2) == '#!') 
 		{
 			$t = strtolower(substr($t, 2));
+			if (strstr($t, ' '))
+			{
+				$t = strstr($t, ' ', true);
+			}
+
 			switch ($t)
 			{
+				case 'wiki':
+					$cls = (isset($lines[0])) ? trim($lines[0]) : '';
+					$cls = trim(strstr($cls, ' '));
+
+					$txt = str_replace('#!wiki ' . $cls, '', $txt);
+
+					return '<div class="admon-' . $cls . '">' . $this->cleanXss($txt) . '</div>';
+				break;
+
 				case 'html':
-					if ($this->fullparse)
+					if ($this->get('fullparse'))
 					{
 						$txt = $this->cleanXss($txt);
 						return preg_replace('/#!html/', '', $txt, 1);
@@ -1185,7 +1098,7 @@ class WikiParser
 
 				case 'htmlcomment':
 					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
-					return '<!-- ' . $this->encode_html($txt) . ' -->';
+					return '<!-- ' . $this->encodeHtml($txt) . ' -->';
 				break;
 
 				case 'c':
@@ -1216,25 +1129,68 @@ class WikiParser
 				default:
 					//$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
 					//$txt = trim($txt, "\n\r\t");
-					return '<pre>' . $this->encode_html($txt) . '</pre>';
+					return '<pre>' . $this->encodeHtml($txt) . '</pre>';
 				break;
 			}
 		}
 
-		return '<pre>' . $this->encode_html($txt) . '</pre>';
+		return '<pre>' . $this->encodeHtml($txt) . '</pre>';
+	}
+
+	/**
+	 * Parse code declarations
+	 *    `{{{...}}}`  ->  <code>{{{...}}}</code>
+	 *    {{{`...`}}}  ->  <code>`...`</code>
+	 *    {{{...}}}    ->  <code>...</code>
+	 *    `...`        ->  <code>...</code>
+	 * 
+	 * @param      string $text Text to replace code blocks in
+	 * @return     string
+	 */
+	private function _code($text)
+	{
+		static $rules = array(
+			'`({{{)' => '(}}})`',
+			'{{{(`)' => '(`)}}}',
+			'{{{'    => '}}}',
+			'`'      => '`',
+		);
+
+		foreach ($rules as $start => $end)
+		{
+			$text = preg_replace_callback('/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms', array(&$this, '_getCode'), $text);
+		}
+
+		return $text;
+	}
+
+	/**
+	 * `{{{...}}}`
+	 * 
+	 * @param      unknown $m Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	private function _getCode($m)
+	{
+		@list($whole, $before, $text, $after) = $m;
+
+		return $before . $this->_dataPush(array(
+			$whole,
+			'code',
+			$this->_randomString(),
+			$text
+		)) . $after;
 	}
 
 	/**
 	 * Restores <code></code> blocks to their actual content
 	 * 
-	 * @param      unknown $matches Parameter description (if any) ...
+	 * @param      string $txt
 	 * @return     string 
 	 */
-	private function handle_restore_code($matches)
+	private function _restoreCode($txt)
 	{
-		$txt = array_shift($this->codes);
-
-		if (!$this->_wikitohtml) 
+		if (!$this->get('wikitohtml', true)) 
 		{
 			$txt = str_replace('<code>', '', $txt);
 			$txt = str_replace('</code>', '', $txt);
@@ -1247,101 +1203,18 @@ class WikiParser
 
 		$t = trim($txt);
 		$t = str_replace("\n", '', $t);
-		return '<code>' . $this->encode_html($txt) . '</code>';
+
+		return '<code>' . $this->encodeHtml($txt) . '</code>';
 	}
 
 	/**
-	 * Short description for 'doSpecial'
+	 * Very basic HTML entity encoder
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @param      unknown $start Parameter description (if any) ...
-	 * @param      unknown $end Parameter description (if any) ...
-	 * @param      string $method Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $str    Text to encode.
+	 * @param      integer $quotes Encode quotes?
+	 * @return     string
 	 */
-	private function doSpecial($text, $start, $end, $method='fSpecial')
-	{
-	  return preg_replace_callback('/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms', array(&$this, $method), $text);
-	}
-
-	/**
-	 * Short description for 'fSpecial'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	private function fSpecial($m)
-	{
-		// A special block like notextile or code
-		@list(, $before, $text, $after) = $m;
-		return $before . $this->shelve($this->encode_html($text)) . $after;
-	}
-
-	/**
-	 * `{{{...}}}`
-	 * 
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	private function fPCode($m)
-	{
-		@list(, $before, $text, $after) = $m;
-		array_push($this->codes,'{{{' . $text . '}}}');
-		return $before . '<code></code>' . $after;
-	}
-
-	/**
-	 * {{{`...`}}}
-	 * 
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	private function fCCode($m)
-	{
-		@list(, $before, $text, $after) = $m;
-		array_push($this->codes, '`' . $text . '`');
-		return $before . '<code></code>' . $after;
-	}
-
-	/**
-	 * `...`
-	 * 
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	private function fCode($m)
-	{
-		@list(, $before, $text, $after) = $m;
-		array_push($this->codes, $text);
-		return $before . '<code></code>' . $after;
-	}
-
-	/**
-	 * {{{...}}}
-	 * 
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	private function fPre($m)
-	{
-		@list(, $before, $text, $after) = $m;
-		return $before . '<pre>' . $this->shelve($this->encode_html($text)) . '</pre>' . $after;
-	}
-
-	/**
-	 * Short description for 'encode_html'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @param      integer $quotes Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	private function encode_html($str, $quotes=1)
+	private function encodeHtml($str, $quotes=1)
 	{
 		$a = array(
 			'&' => '&#38;',
@@ -1357,12 +1230,10 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'cleanXss'
+	 * Clean potential Cross-Site Scripting hazards from a strong
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $string Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $string Content to be cleaned
+	 * @return     string
 	 */
 	private function cleanXss($string)
 	{
@@ -1377,24 +1248,28 @@ class WikiParser
 			array('&amp;amp;', '&amp;lt;', '&amp;gt;'), 
 			$string
 		);
-		// Fix &entitiy\n;
 
+		// Fix &entitiy\n;
 		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;",$string);
 		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$string);
 		$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
 
 		// Remove any attribute starting with "on" or xmlns
 		//$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu', "$1>", $string);
+
 		// Remove javascript: and vbscript: protocol
 		$string = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2nojavascript...', $string);
 		$string = preg_replace('#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2novbscript...', $string);
+
 		// <span style="width: expression(alert('Ping!'));"></span> 
 		// Only works in ie...
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu', "$1>", $string);
+
 		// Remove namespaced elements (we do not need them...)
 		$string = preg_replace('#</*\w+:\w[^>]*>#i',"",$string);
+
 		// Remove really unwanted tags
 		do {
 			$oldstring = $string;
@@ -1407,44 +1282,31 @@ class WikiParser
 	/**
 	 * Admonitions
 	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $text Wiki markup
+	 * @return     string Parsed wiki content
 	 */
 	private function admonitions($text)
 	{
-		return preg_replace_callback('/\{admonition\}(.*?)\{\/admonition\}/s', array(&$this, 'admonitionCallback'), $text);
+		$this->set('wikitohtml', true);
+		return preg_replace_callback('/\{admonition ([^\}]+)\}(.*?)\{\/admonition \1\}/s', array(&$this, '_getAdmonition'), $text); //admonitionCallback
 	}
 
 	/**
-	 * Short description for 'admonitionCallback'
+	 * Convert the admonition content to HTML
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $matches Content matching {admonition} ... {/admonition}
+	 * @return     string Parsed wiki content
 	 */
-	private function admonitionCallback($matches)
+	private function _getAdmonition($matches)
 	{
-		$txt = $matches[1];
-		$bits = explode("\n", $txt);
-		$cls = array_shift($bits);
-		if (strstr($cls, '#!wiki')) 
-		{
-			$cls = str_replace('#!wiki', '', $cls);
-			$cls = trim($cls);
-		}
-		$txt = implode("\n",$bits);
-
-		return '<div class="admon-' . $cls . '">' . "\n" . $txt . '</div>';
+		return $this->_restorePre($matches[2]);
 	}
 
 	/**
-	 * Short description for 'math'
+	 * Convert math forumlas
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $text Wiki markup
+	 * @return     string Parsed wiki content
 	 */
 	private function math($text)
 	{
@@ -1459,75 +1321,39 @@ class WikiParser
 			return $text;
 		}
 
-		$this->maths = array();
-
-		return preg_replace_callback('/<math>(.*?)<\/math>/s', array(&$this, 'mathCallback'), $text);
+		return preg_replace_callback('/<math>(.*?)<\/math>/s', array(&$this, '_getMath'), $text);
 	}
 
 	/**
-	 * Short description for 'aftermath'
+	 * Render a math forumla
+	 * Output depends on complexity of formula. HTML is tried first with image used for complex formulas
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      array $mtch_arr Wiki markup matching a <math>formula</math>
+	 * @return     string
 	 */
-	private function aftermath($text)
+	private function _getMath($matches)
 	{
-		return preg_replace_callback('/<math><\/math>/i', array(&$this, 'restore_math'), $text);
+		$m = MathRenderer::renderMath(trim($matches[1]), array(
+			'option' => $this->get('option')
+		));
+
+		return $this->_dataPush(array(
+			$matches[0],
+			'math',
+			$this->_randomString(),
+			$m
+		));
 	}
 
 	/**
-	 * Short description for 'restore_math'
+	 * Format math output before injecting back into primary text
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $matches Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $txt Math output
+	 * @return     string
 	 */
-	private function restore_math($matches)
+	private function _restoreMath($txt)
 	{
-		return '<span class="asciimath">' . array_shift($this->maths) . '</span>';
-	}
-
-	/**
-	 * Short description for 'mathCallback'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $mtch_arr Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function mathCallback($mtch_arr)
-	{
-		$txt = trim($mtch_arr[1]);
-
-		/*$database =& JFactory::getDBO();
-		$tables = $database->getTableList();
-
-		$table = $database->_table_prefix . 'wiki_math';
-		if (!in_array($table, $tables)) 
-		{
-			$database->setQuery("CREATE TABLE `#__wiki_math` (
-			  `inputhash` varbinary(16) NOT NULL,
-			  `outputhash` varbinary(16) NOT NULL,
-			  `conservativeness` tinyint(4) NOT NULL,
-			  `html` text,
-			  `mathml` text,
-			  `id` int(11) NOT NULL auto_increment,
-			  PRIMARY KEY  (`id`),
-			  UNIQUE KEY `inputhash` (`inputhash`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
-			if (!$database->query()) 
-			{
-				return '<!-- '  . $database->getErrorMsg() . ' -->';
-			}
-		}*/
-
-		$m = MathRenderer::renderMath($txt, array('option' => $this->option));
-
-		array_push($this->maths, $m);
-		return '<math></math>';
+		return '<span class="asciimath">' . $txt . '</span>';
 	}
 
 	/**
@@ -1539,11 +1365,7 @@ class WikiParser
 	 */
 	private function includes($text)
 	{
-		//$pattern = '/\[\[(?P<includename>[\w]+)(\]\]|\((?P<includeargs>.*)\)\]\])/U';
-		$pattern = '/\[\[(include)(\]\]|\((.*)\)\]\])/Ui';
-		$text = preg_replace_callback($pattern, array(&$this, 'getInclude'), $text);
-
-		return $text;
+		return preg_replace_callback('/\[\[(include)(\]\]|\((.*)\)\]\])/Ui', array(&$this, '_getInclude'), $text);
 	}
 
 	/**
@@ -1553,7 +1375,7 @@ class WikiParser
 	 * @param      array $matches Pattern matches from includes() method
 	 * @return     string
 	 */
-	private function getInclude($matches)
+	private function _getInclude($matches)
 	{
 		if (isset($matches[1]) && $matches[1] != '') 
 		{
@@ -1561,12 +1383,12 @@ class WikiParser
 			{
 				return $matches[0];
 			}
-			if (!$this->fullparse)
+			if (!$this->get('fullparse'))
 			{
 				return "'''Includes not allowed.'''";
 			}
 
-			$scope = ($this->domain) ? $this->domain . DS . 'wiki' : $this->scope;
+			$scope = ($this->get('domain')) ? $this->get('domain') . DS . 'wiki' : $this->get('scope');
 			if (strstr($matches[3], '/')) 
 			{
 				$bits = explode('/', $matches[3]);
@@ -1578,19 +1400,22 @@ class WikiParser
 			{
 				$pagename = $matches[3];
 			}
+
 			// Don't include this page (infinite loop!)
-			if ($pagename == $this->pagename && $scope == $this->scope)
+			if ($pagename == $this->get('pagename') 
+				&& $scope == $this->get('scope'))
 			{
 				return '';
 			}
 
+			// Load the page
 			$p = WikiPage::getInstance($pagename, $scope);
-
 			if ($p->id) 
 			{
-				$revision = $p->getCurrentRevision();
-
-				return $this->includes($revision->pagetext);
+				// Parse any nested includes
+				return $this->includes(
+					$p->getCurrentRevision()->pagetext
+				);
 			}
 		}
 		return '';
@@ -1621,19 +1446,16 @@ class WikiParser
 		$this->macros = array();
 
 		// Get macros [[name(args)]]
-		$pattern = '/\[\[(?P<macroname>[\w]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U';
-		$text = preg_replace_callback($pattern, array(&$this, 'getMacro'), $text);
-
-		return $text;
+		return preg_replace_callback('/\[\[(?P<macroname>[\w]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
 	}
 
 	/**
 	 * Attempt to load a specific macro class and return its contents
 	 * 
-	 * @param      array $matches Parameter description (if any) ...
+	 * @param      array $matches Result form [[Macro()]] pattern matching
 	 * @return     string
 	 */
-	private function getMacro($matches)
+	private function _getMacro($matches)
 	{
 		static $_macros;
 
@@ -1648,7 +1470,7 @@ class WikiParser
 			$matches[1] = strtolower($matches[1]);
 			$macroname = ucfirst($matches[1]) . 'Macro';
 
-			if (!$this->domain && strtolower(substr($macroname, 0, 5)) == 'group') 
+			if (!$this->get('domain') && strtolower(substr($macroname, 0, 5)) == 'group') 
 			{
 				return '<strong>Macro "' . $macroname . '" can only be used in a group wiki.</strong>';
 			}
@@ -1669,7 +1491,7 @@ class WikiParser
 				{
 					$macro = new $macroname();
 
-					if (!$this->fullparse && !$macro->allowPartial)
+					if (!$this->get('fullparse') && !$macro->allowPartial)
 					{
 						return '<strong>Macro "' . $matches[1] . '" not allowed.</strong>';
 					}
@@ -1696,55 +1518,56 @@ class WikiParser
 			{
 				$macro->args = $matches[3];
 			}
-			$macro->option     = $this->option;
-			$macro->scope      = $this->scope;
-			$macro->pagename   = $this->pagename;
-			$macro->domain     = $this->domain;
-			$macro->uniqPrefix = $this->uniqPrefix();
-			if ($this->pageid > 0) 
+			$macro->option     = $this->get('option');
+			$macro->scope      = $this->get('scope');
+			$macro->pagename   = $this->get('pagename');
+			$macro->domain     = $this->get('domain');
+			$macro->uniqPrefix = $this->token();
+			if ($this->get('pageid') > 0) 
 			{
-				$macro->pageid = $this->pageid;
+				$macro->pageid = $this->get('pageid');
 			} 
 			else 
 			{
 				$macro->pageid = JRequest::getInt('lid', 0, 'post');
 			}
-			$macro->filepath   = $this->filepath;
+			$macro->filepath   = $this->get('path');
 
 			// Push contents to a container -- we'll retrieve this later
 			// This is done to prevent any further wiki parsing of contents macro may return
-			array_push($this->macros, $macro->render());
 			if (count($macro->linkLog) > 0)
 			{
 				foreach ($macro->linkLog as $linkLog)
 				{
-					array_push($this->_linkLog, $linkLog);
+					array_push($this->_data['links'], $linkLog);
 				}
 			}
-			return 'MACRO' . $this->mUniqPrefix;
+
+			return $this->_dataPush(array(
+				$matches[1],
+				'macro',
+				$this->_randomString(),
+				$macro->render()
+			));
 		}
 	}
 
 	/**
-	 * Short description for 'restore_macros'
+	 * Put macro output back into the text
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $matches Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $txt
+	 * @return     string
 	 */
-	private function restore_macros($matches)
+	private function _restoreMacro($txt)
 	{
-		return array_shift($this->macros);
+		return $txt;
 	}
 
 	/**
-	 * Short description for 'glyphs'
+	 * Convert common special characters to their HTML entity counterpart
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $text Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $text Wiki markup
+	 * @return     string
 	 */
 	public function glyphs($text)
 	{
@@ -1771,20 +1594,20 @@ class WikiParser
 		);
 
 		$glyph = array(
-		   'quote_single_open'	=> '&#8216;',
-		   'quote_single_close' => '&#8217;',
-		   'quote_double_open'	=> '&#8220;',
-		   'quote_double_close' => '&#8221;',
-		   'apostrophe' 		=> '&#8217;',
-		   'prime'				=> '&#8242;',
-		   'prime_double'		=> '&#8243;',
-		   'ellipsis'			=> '&#8230;',
-		   'emdash' 			=> '&#8212;',
-		   'endash' 			=> '&#8211;',
-		   'dimension'			=> '&#215;',
-		   'trademark'			=> '&#8482;',
-		   'registered' 		=> '&#174;',
-		   'copyright'			=> '&#169;',
+			'quote_single_open'	=> '&#8216;',
+			'quote_single_close' => '&#8217;',
+			'quote_double_open'	=> '&#8220;',
+			'quote_double_close' => '&#8221;',
+			'apostrophe' 		=> '&#8217;',
+			'prime'				=> '&#8242;',
+			'prime_double'		=> '&#8243;',
+			'ellipsis'			=> '&#8230;',
+			'emdash' 			=> '&#8212;',
+			'endash' 			=> '&#8211;',
+			'dimension'			=> '&#215;',
+			'trademark'			=> '&#8482;',
+			'registered' 		=> '&#174;',
+			'copyright'			=> '&#169;',
 		);
 		extract($glyph, EXTR_PREFIX_ALL, 'txt');
 
@@ -1813,7 +1636,7 @@ class WikiParser
 			// text tag text tag text ...
 			if (++$i % 2) 
 			{
-				$line = $this->encode_html($line, 0);
+				$line = $this->encodeHtml($line, 0);
 				$line = preg_replace($glyph_search, $glyph_replace, $line);
 			}
 			$glyph_out[] = $line;
@@ -1824,8 +1647,8 @@ class WikiParser
 	/**
 	 * Parse Block Attributes
 	 * 
-	 * @param      unknown $in Parameter description (if any) ...
-	 * @param      string $element Parameter description (if any) ...
+	 * @param      string  $in         Wiki markup for attributes
+	 * @param      string  $element    HTML element type
 	 * @param      integer $include_id Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -1856,7 +1679,7 @@ class WikiParser
 
 			if ($element == 'td' or $element == 'tr') 
 			{
-				if (preg_match("/($this->vlgn)/", $matched, $vert))
+				if (preg_match("/(" . self::$_patterns['vlgn'] . ")/", $matched, $vert))
 				{
 					$style[] = 'vertical-align:' . $this->vAlign($vert[1]) . ';';
 				}
@@ -1892,7 +1715,7 @@ class WikiParser
 				$matched = str_replace($pr[0], '', $matched);
 			}
 
-			if (preg_match("/($this->hlgn)/", $matched, $horiz))
+			if (preg_match("/(" . self::$_patterns['hlgn'] . ")/", $matched, $horiz))
 			{
 				$style[] = 'text-align:' . $this->hAlign($horiz[1]) . ';';
 			}
@@ -1954,7 +1777,7 @@ class WikiParser
 	 * Parse markup syntax for several inline elements and their allowed attributes
 	 * [cite, u, del, span, ins, sub, sup]
 	 * 
-	 * @param      string $text Parameter description (if any) ...
+	 * @param      string $text Wiki markup
 	 * @return     string
 	 */
 	private function spans($text)
@@ -1970,18 +1793,20 @@ class WikiParser
 		);
 		$pnct = ".,\"'?!;:";
 
+		$c = self::$_patterns['clss'];
+
 		foreach ($qtags as $f) 
 		{
 			$text = preg_replace_callback("/
 				(^|(?<=[\s>$pnct\(])|[{[])
 				($f)(?!$f)
-				({$this->c})
+				({$c})
 				(?::(\S+))?
 				([^\s$f]+|\S.*?[^\s$f\n])
 				([$pnct]*)
 				$f
 				($|[\]}]|(?=[[:punct:]]{1,2}|\s|\)))
-			/x", array(&$this, 'doSpan'), $text);
+			/x", array(&$this, '_getSpan'), $text);
 		}
 		$text = preg_replace('/\^(.*?)\^/', "<sup>\\1</sup>", $text);
 		$text = preg_replace('/,,(.*?),,/', "<sub>\\1</sub>", $text);
@@ -1989,14 +1814,12 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'fSpan'
+	 * Convert wiki markup to HTML for common inline elements
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $m Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $m Pattern matches
+	 * @return     string
 	 */
-	private function doSpan($m)
+	private function _getSpan($m)
 	{
 		$qtags = array(
 			'??' => 'cite',
@@ -2042,8 +1865,14 @@ class WikiParser
 		{
 			$h = str_repeat('=', $i);
 
-			$patterns = array("/^(.*){$h}(.+){$h}\s\#(.*)\\s*$/m","/^(.*){$h}(.+){$h}\\s*$/m");
-			$replace  = array("\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4", "\\1<h{$i}>\\2</h{$i}>\\3");
+			$patterns = array(
+				"/^(.*){$h}(.+){$h}\s\#(.*)\\s*$/m",    // === Header #myheader ===
+				"/^(.*){$h}(.+){$h}\\s*$/m"             // === Header ===
+			);
+			$replace  = array(
+				"\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4",  // <h3 id="myheader">Header</h3>
+				"\\1<h{$i}>\\2</h{$i}>\\3"              // <h3>Header</h3>
+			);
 			$text = preg_replace($patterns, $replace, $text);
 		}
 		return $text;
@@ -2051,8 +1880,9 @@ class WikiParser
 
 	/**
 	 * Quotes
-	 * '' => <i>
-	 * ''' => <b>
+	 * ''    => <i>
+	 * '''   => <b>
+	 * ''''' => <b><i>
 	 * 
 	 * @param      string $text Raw wiki markup
 	 * @return     string 
@@ -2063,21 +1893,19 @@ class WikiParser
 		$lines = explode("\n", $text);
 		foreach ($lines as $line)
 		{
-			$outtext .= $this->doQuotes($line) . "\n";
+			$outtext .= $this->_getQuotes($line) . "\n";
 		}
 		$outtext = substr($outtext, 0, -1);
 		return $outtext;
 	}
 
 	/**
-	 * Short description for 'doQuotes'
+	 * Convert quotes to HMTL
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $text Wiki markup
+	 * @return     string
 	 */
-	private function doQuotes($text)
+	private function _getQuotes($text)
 	{
 		$arr = preg_split("/(''+)/", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($arr) == 1) 
@@ -2262,27 +2090,27 @@ class WikiParser
 									$output .= '</b><i>';
 									$state = 'i';
 								break;
-								
+
 								case 'i':
 									$output .= '</i><b>';
 									$state = 'b';
 								break;
-								
+
 								case 'bi':
 									$output .= '</i></b>';
 									$state = '';
 								break;
-								
+
 								case 'ib':
 									$output .= '</b></i>';
 									$state = '';
 								break;
-								
+
 								case 'both':
 									$output .= '<i><b>' . $buffer . '</b></i>';
 									$state = '';
 								break;
-								
+
 								default:  // $state can be 'b' or ''
 									$buffer = '';
 									$state = 'both';
@@ -2320,28 +2148,34 @@ class WikiParser
 	 *   ||Cell 1||Cell 2||Cell 3||
 	 *   ||Cell 4||Cell 5||Cell 6||
 	 * 
-	 * @param      string $text Parameter description (if any) ...
+	 * @param      string $text Wiki markup
 	 * @return     string
 	 */
 	private function tables($text)
 	{
+		$ac  = self::$_patterns['algn'] . self::$_patterns['clss'];
+		$sac = self::$_patterns['spns'] . self::$_patterns['algn'] . self::$_patterns['clss'];
+
 		$text .= "\n\n";
-		return preg_replace_callback("/^(?:table(_?{$this->s}{$this->a}{$this->c})\. ?\n)?^({$this->a}{$this->c}\.? ?\|\|.*\|\|)\n\n/smU", array(&$this, 'doTable'), $text);
+		return preg_replace_callback("/^(?:table(_?{$sac})\. ?\n)?^({$ac}\.? ?\|\|.*\|\|)\n\n/smU", array(&$this, '_getTable'), $text);
 	}
 
 	/**
 	 * Convert a string for wiki table syntax into a table
 	 * 
-	 * @param      array $matches Parameter description (if any) ...
+	 * @param      array $matches Pattern matches for table syntax
 	 * @return     string
 	 */
-	private function doTable($matches)
+	private function _getTable($matches)
 	{
 		$tatts = $this->pba($matches[1], 'table');
 
+		$ac  = self::$_patterns['algn'] . self::$_patterns['clss'];
+		$sac = self::$_patterns['spns'] . self::$_patterns['algn'] . self::$_patterns['clss'];
+
 		foreach (preg_split("/\|\|( *)$/m", $matches[2], -1, PREG_SPLIT_NO_EMPTY) as $row)
 		{
-			if (preg_match("/^($this->a$this->c\.)(.*)/m", ltrim($row), $rmtch)) 
+			if (preg_match("/^({$ac}\.)(.*)/m", ltrim($row), $rmtch)) 
 			{
 				$ratts = $this->pba($rmtch[1], 'tr');
 				$row = $rmtch[2];
@@ -2379,7 +2213,7 @@ class WikiParser
 				}
 
 				// Cell attributes
-				if (preg_match("/^(_?$this->s$this->a$this->c\.)(.*)/", $cell, $cmtch) || preg_match("/^(=?$this->s$this->a$this->c\.)(.*)=?/", $cell, $cmtch)) 
+				if (preg_match("/^(_?{$sac}\.)(.*)/", $cell, $cmtch) || preg_match("/^(=?{$sac}\.)(.*)=?/", $cell, $cmtch)) 
 				{
 					// Parse Block Attributes
 					$catts = $this->pba($cmtch[1], 'td');
@@ -2429,7 +2263,7 @@ class WikiParser
 	 * 
 	 * @return     string 
 	 */
-	private function closeParagraph()
+	private function _closeParagraph()
 	{
 		$result = '';
 		if ('' != $this->mLastSection) 
@@ -2445,11 +2279,11 @@ class WikiParser
 	 * Returns the length of the longest common substring
 	 * of both arguments, starting at the beginning of both.
 	 * 
-	 * @param      string $st1 Parameter description (if any) ...
-	 * @param      string $st2 Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $st1
+	 * @param      string $st2
+	 * @return     integer
 	 */
-	private function getCommon($st1, $st2)
+	private function _getCommon($st1, $st2)
 	{
 		$fl = $st1; //strlen($st1);
 		$shorter = $st2; //strlen($st2);
@@ -2474,9 +2308,9 @@ class WikiParser
 	 * @param      string $char List type indicator
 	 * @return     string 
 	 */
-	private function openList($char)
+	private function _openList($char)
 	{
-		$result = $this->closeParagraph();
+		$result = $this->_closeParagraph();
 
 		if ('*' == $char) 
 		{ 
@@ -2514,7 +2348,7 @@ class WikiParser
 	 * @param      string $char List type indicator
 	 * @return     string 
 	 */
-	private function nextItem($char)
+	private function _nextItem($char)
 	{
 		if ('*' == $char || '#' == $char || is_numeric($char)) 
 		{ 
@@ -2547,7 +2381,7 @@ class WikiParser
 	 * @param      string $char List type indicator
 	 * @return     string 
 	 */
-	private function closeList($char)
+	private function _closeList($char)
 	{
 		if ('*' == $char) 
 		{ 
@@ -2581,10 +2415,10 @@ class WikiParser
 	 *  term::
 	 *    definition
 	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $text Wiki markup
+	 * @return     string
 	 */
-	private function doDFLists($text)
+	private function definitions($text)
 	{
 		$textLines = explode("\n", $text);
 
@@ -2654,11 +2488,11 @@ class WikiParser
 	/**
 	 * Make lists from lines starting with 'some text::', '*', '#', etc.
 	 * 
-	 * @param      string  $text Parameter description (if any) ...
+	 * @param      string  $text      Wiki markup
 	 * @param      integer $linestart Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
-	private function doBlockLevels($text, $linestart)
+	private function blocks($text, $linestart=0)
 	{
 		// Parsing through the text line by line.  The main thing
 		// happening here is handling of block-level elements p, pre,
@@ -2668,6 +2502,9 @@ class WikiParser
 		$lastPrefix = $output = '';
 		$lastPrefixLength = 0;
 		$this->mDTopen = $inBlockElem = false;
+		$this->mInPre = false;
+		$this->mLastSection = '';
+
 		$prefixLength = 0;
 		$paragraphStack = false;
 		$openlist = array();
@@ -2734,7 +2571,7 @@ class WikiParser
 			if ($prefixLength && 0 == strcmp($lastPrefix, $pref2) && $prefixLength == $lastPrefixLength) 
 			{
 				// Same as the last item, so no need to deal with nesting or opening stuff
-				$output .= $this->nextItem($pref);
+				$output .= $this->_nextItem($pref);
 				$paragraphStack = false;
 				/*if (substr($pref, -1) == ';') 
 				{
@@ -2746,24 +2583,24 @@ class WikiParser
 					if ($this->findColonNoLinks($t, $term, $t2) !== false) 
 					{
 						$t = $t2;
-						$output .= $term . $this->nextItem(':');
+						$output .= $term . $this->_nextItem(':');
 					}
 				}*/
 			} 
 			elseif ($prefixLength || $lastPrefixLength) 
 			{
-				$commonPrefixLength = $this->getCommon($prefixLength, $lastPrefixLength);
+				$commonPrefixLength = $this->_getCommon($prefixLength, $lastPrefixLength);
 				$paragraphStack = false;
 
 				while ($commonPrefixLength < $lastPrefixLength)
 				{
 					$lastPrefix = $openlist[$i--];
-					$output .= $this->closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
+					$output .= $this->_closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
 					--$lastPrefixLength;
 				}
 				if ($prefixLength <= $commonPrefixLength && $commonPrefixLength > 0) 
 				{
-					$output .= $this->nextItem($pref);
+					$output .= $this->_nextItem($pref);
 				}
 
 				$listOpened = false;
@@ -2772,7 +2609,7 @@ class WikiParser
 					$char = trim($pref);
 					if (!$listOpened)
 					{
-						$output .= $this->openList($char);
+						$output .= $this->_openList($char);
 						$listOpened = true;
 					}
 					//if (in_array($char, array('*', '#', ':', ';')) || is_numeric($char))
@@ -2780,15 +2617,15 @@ class WikiParser
 						$i++;
 						$openlist[$i] = $char;
 					//}
-					if (';' == $char) 
+					/*if (';' == $char) 
 					{
 						// FIXME: This is dupe of code above
 						if ($this->findColonNoLinks($t, $term, $t2) !== false) 
 						{
 							$t = $t2;
-							$output .= $term . $this->nextItem(':');
+							$output .= $term . $this->_nextItem(':');
 						}
-					}
+					}*/
 					++$commonPrefixLength;
 				}
 				$lastPrefix = $pref2;
@@ -2802,12 +2639,12 @@ class WikiParser
 				$openmatch  = preg_match('/(?:<table|<blockquote|<h1|<h2|<h3|<h4|<h5|<h6|<pre|<tr|<p|<dl|<ul|<ol|<li|<\\/tr|<\\/td|<\\/th)/iS', $t);
 				$closematch = preg_match(
 					'/(?:<\\/table|<\\/blockquote|<\\/h1|<\\/h2|<\\/h3|<\\/h4|<\\/h5|<\\/h6|'.
-					'<td|<th|<\\/?div|<hr|<\\/pre|<\\/p|' . $this->mUniqPrefix . '-pre|<\\/li|<\\/dl|<\\/ul|<\\/ol|<\\/?center)/iS', $t);
+					'<td|<th|<\\/?div|<hr|<\\/pre|<\\/p|' . $this->token() . '-pre|<\\/li|<\\/dl|<\\/ul|<\\/ol|<\\/?center)/iS', $t);
 				if ($openmatch or $closematch) 
 				{
 					$paragraphStack = false;
 					// TODO bug 5718: paragraph closed
-					$output .= $this->closeParagraph();
+					$output .= $this->_closeParagraph();
 					if ($preOpenMatch and !$preCloseMatch) {
 						$this->mInPre = true;
 					}
@@ -2827,7 +2664,7 @@ class WikiParser
 						if ($this->mLastSection != 'pre') 
 						{
 							$paragraphStack = false;
-							$output .= $this->closeParagraph() . '<pre>';
+							$output .= $this->_closeParagraph() . '<pre>';
 							$this->mLastSection = 'pre';
 						}
 						$t = substr($t, 1);
@@ -2847,7 +2684,7 @@ class WikiParser
 							{
 								if ($this->mLastSection != 'p') 
 								{
-									$output .= $this->closeParagraph();
+									$output .= $this->_closeParagraph();
 									$this->mLastSection = '';
 									$paragraphStack = '<p>';
 								} 
@@ -2867,7 +2704,7 @@ class WikiParser
 							} 
 							else if ($this->mLastSection != 'p') 
 							{
-								$output .= $this->closeParagraph() . '<p>';
+								$output .= $this->_closeParagraph() . '<p>';
 								$this->mLastSection = 'p';
 							}
 						}
@@ -2887,7 +2724,7 @@ class WikiParser
 		}
 		while ($prefixLength) 
 		{
-			$output .= $this->closeList($pref2);
+			$output .= $this->_closeList($pref2);
 			--$prefixLength;
 		}
 		if ('' != $this->mLastSection) 
@@ -2902,18 +2739,17 @@ class WikiParser
 	 * Builds a Table of Contents and links to headings
 	 * 
 	 * @param      string  $text   Text to build TOC from
-	 * @param      boolean $isMain Parameter description (if any) ...
-	 * @return     array 
+	 * @return     string
 	 */
 	public function toc($text)
 	{
-		$isMain = true;
-		$wgMaxTocLevel = 15;
-		$showEditLink = true;
-		$doNumberHeadings = false;
+		$isMain              = true;
+		$maxTocLevel         = 15;
+		$showEditLink        = true;
+		$doNumberHeadings    = false;
 		$doTocNumberHeadings = true;
-		$mForceTocPosition = true;
-		$mShowToc = true;
+		$forceTocPosition    = true;
+		//$mShowToc            = true;
 
 		// Get all headlines for numbering them and adding funky stuff like [edit]
 		// links - this is for later, but we need the number of headlines right now
@@ -2922,25 +2758,27 @@ class WikiParser
 
 		// If there are fewer than 4 headlines in the article, do not show TOC
 		// unless it's been explicitly enabled.
-		$enoughToc = $mShowToc && (($numMatches >= 4) || $mForceTocPosition);
+		$enoughToc = (($numMatches >= 4) || $forceTocPosition); //$mShowToc && 
 
 		// Headline counter
 		$headlineCount = 0;
-		$sectionCount = 0; // headlineCount excluding template sections
-		$numVisible = 0;
+		$sectionCount  = 0; // headlineCount excluding template sections
+		$numVisible    = 0;
 
 		// Ugh .. the TOC should have neat indentation levels which can be
 		// passed to the skin functions. These are determined here
-		$toc = '';
-		$full = '';
-		$head = array();
+		$toc           = '';
+		$full          = '';
+		$head          = array();
 		$sublevelCount = array();
-		$levelCount = array();
-		$toclevel = 0;
-		$level = 0;
-		$prevlevel = 0;
-		$toclevel = 0;
-		$prevtoclevel = 0;
+		$levelCount    = array();
+		$toclevel      = 0;
+		$level         = 0;
+		$prevlevel     = 0;
+		$toclevel      = 0;
+		$prevtoclevel  = 0;
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'sanitizer.php');
 
 		foreach ($matches[3] as $headline)
 		{
@@ -2964,10 +2802,10 @@ class WikiParser
 					// Increase TOC level
 					$toclevel++;
 					$sublevelCount[$toclevel] = 0;
-					if ($toclevel < $wgMaxTocLevel) 
+					if ($toclevel < $maxTocLevel) 
 					{
 						$prevtoclevel = $toclevel;
-						$toc .= $this->tocIndent();
+						$toc .= $this->_tocIndent();
 						$numVisible++;
 					}
 				} 
@@ -2998,25 +2836,25 @@ class WikiParser
 							}
 						}
 					}
-					if ($toclevel < $wgMaxTocLevel) 
+					if ($toclevel < $maxTocLevel) 
 					{
-						if ($prevtoclevel < $wgMaxTocLevel) 
+						if ($prevtoclevel < $maxTocLevel) 
 						{
 							// Unindent only if the previous toc level was shown
-							$toc .= $this->tocUnindent($prevtoclevel - $toclevel);
+							$toc .= $this->_tocUnindent($prevtoclevel - $toclevel);
 						} 
 						else 
 						{
-							$toc .= $this->tocLineEnd();
+							$toc .= $this->_tocLineEnd();
 						}
 					}
 				} 
 				else 
 				{
 					// No change in level, end TOC line
-					if ($toclevel < $wgMaxTocLevel) 
+					if ($toclevel < $maxTocLevel) 
 					{
-						$toc .= $this->tocLineEnd();
+						$toc .= $this->_tocLineEnd();
 					}
 				}
 
@@ -3044,12 +2882,12 @@ class WikiParser
 			$canonized_headline = $this->strip($headline);
 
 			// Strip out HTML (other than plain <sup> and <sub>: bug 8393)
-			$tocline = preg_replace(
+			$_tocLine = preg_replace(
 				array('#<(?!/?(sup|sub)).*?'.'>#', '#<(/?(sup|sub)).*?'.'>#'),
 				array('',                          '<$1>'),
 				$canonized_headline
 			);
-			$tocline = trim($tocline);
+			$_tocLine = trim($_tocLine);
 
 			// For the anchor, strip out HTML-y stuff period
 			$canonized_headline = preg_replace('/<.*?'.'>/', '', $canonized_headline);
@@ -3057,7 +2895,7 @@ class WikiParser
 
 			// Save headline for section edit hint before it's escaped
 			$headline_hint = $canonized_headline;
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'sanitizer.php');
+
 			$canonized_headline = Sanitizer::escapeId($canonized_headline);
 			$refers[$headlineCount] = $canonized_headline;
 
@@ -3078,24 +2916,24 @@ class WikiParser
 			{
 				$anchor .= '_' . $refcount[$headlineCount];
 			}
-			if ($enoughToc && (!isset($wgMaxTocLevel) || $toclevel<$wgMaxTocLevel)) 
+			if ($enoughToc && (!isset($maxTocLevel) || $toclevel<$maxTocLevel)) 
 			{
 				if (!$doTocNumberHeadings) 
 				{
 					$numbering = '';
 				}
-				$toc .= $this->tocLine($anchor, $tocline, $numbering, $toclevel);
+				$toc .= $this->_tocLine($anchor, $_tocLine, $numbering, $toclevel);
 			}
 			// Give headline the correct <h#> tag
-			if ($showEditLink && (!$istemplate || $templatetitle !== '')) 
+			/*if ($showEditLink && (!$istemplate || $templatetitle !== '')) 
 			{
-				$editlink = '';//$this->editSectionLink($this->mTitle, $sectionCount+1, $headline_hint);
+				$editlink = $this->editSectionLink($this->mTitle, $sectionCount+1, $headline_hint);
 			} 
 			else 
-			{
+			{*/
 				$editlink = '';
-			}
-			$head[$headlineCount] = $this->makeHeadline($level, $matches['attrib'][$headlineCount], $anchor, $headline, $editlink);
+			//}
+			$head[$headlineCount] = $this->_makeHeadline($level, $matches['attrib'][$headlineCount], $anchor, $headline, $editlink);
 
 			$headlineCount++;
 			if (!$istemplate)
@@ -3104,7 +2942,7 @@ class WikiParser
 			}
 		}
 
-		$toc .= ($toc) ? $this->tocUnindent($toclevel - 1) . '</ul>' : '';
+		$toc .= ($toc) ? $this->_tocUnindent($toclevel - 1) . '</ul>' : '';
 
 		// Never ever show TOC if no headers
 		if ($numVisible < 1) 
@@ -3119,7 +2957,7 @@ class WikiParser
 		foreach ($blocks as $block)
 		{
 			$full .= $block;
-			if ($enoughToc && !$i && $isMain && !$mForceTocPosition) 
+			if ($enoughToc && !$i && $isMain && !$forceTocPosition) 
 			{
 				// Top anchor now in skin
 				$full = $full . $toc;
@@ -3132,32 +2970,25 @@ class WikiParser
 			$i++;
 		}
 
-		$tocc  = '<div class="article-toc">' . "\n";
-		$tocc .= '<h3 class="article-toc-heading">Contents</h3>' . "\n";
-		$tocc .= $toc . "\n";
-		$tocc .= '</div>' . "\n";
+		$output  = '<div class="article-toc">' . "\n";
+		$output .= '<h3 class="article-toc-heading">Contents</h3>' . "\n";
+		$output .= $toc . "\n";
+		$output .= '</div>' . "\n";
 
-		/*$full = str_replace('<p>MACRO' . $this->uniqPrefix() . '[[TableOfContents]]' . "\n" . '</p>', $tocc, $full);
-
-		$bits = array();
-		$bits['text'] = $full;
-		$bits['toc']  = $toc;
-
-		return $bits;*/
-		return str_replace('<p>MACRO' . $this->uniqPrefix() . '[[TableOfContents]]' . "\n" . '</p>', $tocc, $full);
+		return str_replace('<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>', $output, $full);
 	}
 
 	/**
 	 * Generate an HTML header with an anchor for the table of contents to jump to
 	 * 
-	 * @param      string $level Parameter description (if any) ...
-	 * @param      string $attribs Parameter description (if any) ...
-	 * @param      string $anchor Parameter description (if any) ...
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      string $link Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $level   TOC level
+	 * @param      string $attribs Header attributes
+	 * @param      string $anchor  Link anchor name #anchor
+	 * @param      string $text    Header text
+	 * @param      string $link    Link
+	 * @return     string 
 	 */
-	private function makeHeadline($level, $attribs, $anchor, $text, $link)
+	private function _makeHeadline($level, $attribs, $anchor, $text, $link)
 	{
 		return '<h' . $level . $attribs . '<a name="' . $anchor . '"></a><span class="tp-headline">' . $text . '</span> ' . $link . '</h' . $level . '>';
 	}
@@ -3167,7 +2998,7 @@ class WikiParser
 	 * 
 	 * @return     string
 	 */
-	private function tocIndent()
+	private function _tocIndent()
 	{
 		return "\n<ul>";
 	}
@@ -3178,7 +3009,7 @@ class WikiParser
 	 * @param      integer $level Nested list depth
 	 * @return     string
 	 */
-	private function tocUnindent($level)
+	private function _tocUnindent($level)
 	{
 		return "</li>\n" . str_repeat("</ul>\n</li>\n", $level > 0 ? $level : 0);
 	}
@@ -3186,18 +3017,18 @@ class WikiParser
 	/**
 	 * Open a list item and generate link
 	 * 
-	 * @param      string $anchor    Parameter description (if any) ...
-	 * @param      string $tocline   Parameter description (if any) ...
-	 * @param      string $tocnumber Parameter description (if any) ...
-	 * @param      string $level     Parameter description (if any) ...
+	 * @param      string $anchor    Link anchor #anchor
+	 * @param      string $tocLine   TOC item Text
+	 * @param      string $tocnumber TOC item number
+	 * @param      string $level     TOC level
 	 * @return     string 
 	 */
-	private function tocLine($anchor, $tocline, $tocnumber, $level)
+	private function _tocLine($anchor, $tocLine, $tocnumber, $level)
 	{
 		return "\n" . '<li class="toclevel-' . $level . '">' .
 						'<a href="' . JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&pagename=' . $this->pagename) . '#' . $anchor . '">' .
 							'<span class="tocnumber">' . $tocnumber . ' </span>' .
-							'<span class="toctext">' . $tocline . '</span>' .
+							'<span class="toctext">' . $tocLine . '</span>' .
 						'</a>';
 	}
 
@@ -3206,7 +3037,7 @@ class WikiParser
 	 * 
 	 * @return     string 
 	 */
-	private function tocLineEnd()
+	private function _tocLineEnd()
 	{
 		return "</li>\n";
  	}
