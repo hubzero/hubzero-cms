@@ -136,7 +136,6 @@ class plgCoursesOutline extends Hubzero_Plugin
 		{
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-			Hubzero_Document::addPluginScript('courses', $this->_name);
 
 			// Course and action
 			$this->course = $course;
@@ -164,6 +163,7 @@ class plgCoursesOutline extends Hubzero_Plugin
 				break;
 
 				default:
+					Hubzero_Document::addPluginScript('courses', $this->_name);
 					Hubzero_Document::addSystemScript('jquery.masonry');
 					$this->_display();
 				break;
