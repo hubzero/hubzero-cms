@@ -71,14 +71,14 @@ class plgSupportResources extends JPlugin
 
 		if ($category == 'review') 
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.user_id as author, 
+			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.user_id as author, 
 						NULL as subject, 'review' as parent_category, rr.anonymous as anon 
 						FROM #__resource_ratings AS rr 
 						WHERE rr.id=" . $refid;
 		} 
 		else if ($category == 'reviewcomment') 
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.added_by as author, 
+			$query  = "SELECT rr.id, rr.comment as text, rr.added AS created, rr.added_by as author, 
 						NULL as subject, rr.category as parent_category, rr.anonymous as anon 
 						FROM #__comments AS rr 
 						WHERE rr.id=" . $refid;

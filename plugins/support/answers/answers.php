@@ -70,14 +70,14 @@ class plgSupportAnswers extends JPlugin
 		switch ($category)
 		{
 			case 'answer':
-				$query  = "SELECT r.id, r.answer as text, NULL as subject";
+				$query  = "SELECT r.id, r.answer as text, NULL as subject, r.created";
 				$query .= ", r.anonymous as anon, r.created_by as author, 'answer' as parent_category, NULL as href";
 				$query .= " FROM #__answers_responses AS r";
 				$query .= " WHERE r.state!=2 AND r.id=" . $refid;
 			break;
 
 			case 'question':
-				$query  = "SELECT q.id, q.subject as text, q.created_by as author, q.question as subject";
+				$query  = "SELECT q.id, q.subject as text, q.created_by as author, q.question as subject, q.created";
 				$query .= ", 'question' as parent_category, q.anonymous as anon, NULL as href";
 				$query .= " FROM #__answers_questions AS q";
 				$query .= " WHERE q.id=" . $refid;

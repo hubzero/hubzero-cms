@@ -230,6 +230,8 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 		$report->state = 1;
+		$report->reviewed = date("Y-m-d H:i:s");
+		$report->reviewed_by = $this->juser->get('id');
 		if (!$report->store())
 		{
 			JError::raiseError(500, $report->getError());
@@ -270,11 +272,13 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$gratitude = 1; // Turn off/on
 		$message   = '';
 
-		$note = JRequest::getVar('note', '');
-
 		// Load the report
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
+
+		$report->reviewed = date("Y-m-d H:i:s");
+		$report->reviewed_by = $this->juser->get('id');
+		$report->note = JRequest::getVar('note', '');
 
 		// Load plugins
 		JPluginHelper::importPlugin('support');
@@ -342,8 +346,24 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			// Email subject
 			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT',$jconfig->getValue('config.sitename'));
 
+			$from['multipart'] = md5(date('U'));
+
+			$eview = new JView(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+				'name'      => 'emails', 
+				'layout'    => 'abuse'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->reported   = $reported;
+			$eview->report     = $report;
+			$eview->boundary   = $from['multipart'];
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
 			// Build the email message
-			if ($note)
+			/*if ($note)
 			{
 				$message .= "\r\n" . '---------------------------' . "\r\n";
 				$message .= $note;
@@ -353,7 +373,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$message .= JText::_('YOUR_POSTING') . ': ' . "\r\n";
 			$message .= $reported->text . "\r\n";
 			$message .= '---------------------------' . "\r\n";
-			$message .= JText::_('PLEASE_CONTACT_SUPPORT');
+			$message .= JText::_('PLEASE_CONTACT_SUPPORT');*/
 
 			// Send the email
 			if (SupportUtilities::checkValidEmail($juser->get('email')))

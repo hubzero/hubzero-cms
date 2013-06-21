@@ -65,7 +65,7 @@ class plgSupportKb extends JPlugin
 			return null;
 		}
 
-		$query  = "SELECT rc.id, rc.content as text, rc.created_by as author, NULL as subject, rc.anonymous as anon, 'kb' AS parent_category, 
+		$query  = "SELECT rc.id, rc.content as text, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'kb' AS parent_category, 
 					s.alias AS section, c.alias AS category, f.alias AS article 
 					FROM #__faq_comments AS rc
 					LEFT JOIN #__faq AS f 

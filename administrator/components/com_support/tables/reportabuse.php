@@ -93,6 +93,27 @@ class ReportAbuse extends JTable
 	var $subject		= NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $reviewed		= NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $reviewed_by    = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $note    = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -143,6 +164,10 @@ class ReportAbuse extends JTable
 		if (isset($filters['category']) && $filters['category'] != '') 
 		{
 			$query .= " AND a.category=" . $this->_db->Quote($filters['category']);
+		}
+		if (isset($filters['reviewed_by']) && $filters['reviewed_by'] != '') 
+		{
+			$query .= " AND a.reviewed_by=" . $this->_db->Quote($filters['reviewed_by']);
 		}
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 
 		{

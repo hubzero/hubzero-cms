@@ -65,7 +65,7 @@ class plgSupportForum extends JPlugin
 			return null;
 		}
 
-		$query  = "SELECT rc.id, rc.comment as `text`, rc.parent, rc.created_by as author, rc.title as subject, rc.anonymous as anon, 'forum' AS parent_category, 
+		$query  = "SELECT rc.id, rc.comment as `text`, rc.parent, rc.created_by as author, rc.created, rc.title as subject, rc.anonymous as anon, 'forum' AS parent_category, 
 					s.alias AS section, c.alias AS category, rc.scope, rc.scope_id, rc.object_id, rc.thread
 					FROM #__forum_posts AS rc
 					LEFT JOIN #__forum_categories AS c ON c.id = rc.category_id

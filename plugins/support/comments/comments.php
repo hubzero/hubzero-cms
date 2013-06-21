@@ -53,7 +53,7 @@ class plgSupportComments extends JPlugin
 			return null;
 		}
 
-		$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, NULL as subject, rc.anonymous as anon";
+		$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, rc.added AS created, NULL as subject, rc.anonymous as anon";
 		$query .= ", CASE rc.category WHEN 'reviewcomment' THEN 'reviewcomment' WHEN 'review' THEN 'reviewcomment' WHEN 'answer' THEN 'answercomment' WHEN 'answercomment' THEN 'answercomment' WHEN 'wishcomment' THEN 'wishcomment' WHEN 'wish' THEN 'wishcomment' END AS parent_category";
 		$query .= " FROM #__comments AS rc";
 		$query .= " WHERE rc.id=" . $refid;

@@ -55,7 +55,7 @@ class plgSupportBlog extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
 
-		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category 
+		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category 
 					FROM #__blog_comments AS rc 
 					WHERE rc.id=" . $refid;
 

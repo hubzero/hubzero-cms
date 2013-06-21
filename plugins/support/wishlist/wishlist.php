@@ -69,14 +69,14 @@ class plgSupportWishlist extends JPlugin
 
 		if ($category == 'wish') 
 		{
-			$query  = "SELECT ws.id, ws.about as text, ws.proposed_by as author, ws.subject as subject";
+			$query  = "SELECT ws.id, ws.about as text, ws.proposed AS created, ws.proposed_by as author, ws.subject as subject";
 			$query .= ", 'wish' as parent_category, ws.anonymous as anon";
 			$query .= " FROM #__wishlist_item AS ws";
 			$query .= " WHERE ws.id=" . $refid;
 		} 
 		else if ($category == 'wishcomment') 
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.added_by as author, NULL as subject";
+			$query  = "SELECT rr.id, rr.comment as text, rr.added AS created, rr.added_by as author, NULL as subject";
 			$query .= ", rr.category as parent_category, rr.anonymous as anon";
 			$query .= " FROM #__comments AS rr";
 			$query .= " WHERE rr.id=" . $refid;
