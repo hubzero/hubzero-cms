@@ -157,12 +157,12 @@ window.searchBase = '<?= $base ?>';
 			<h3> 
 				<? if ($res['link']): ?>
 					<? if (is_array($res['link'])): ?>
-						<a href="<?= a($res['link'][0]) ?>"><?= $res['title'] ?></a>
+						<a href="<?= a($res['link'][0]) ?>"><?= html_entity_decode($res['title']) ?></a>
 						<? for ($idx = 1; $idx < count($res['link']); ++$idx): ?>
-							<a href="<?= a($res['link'][$idx]) ?>" class="alt"><?= ($idx + 1) ?></a>
+							<a href="<?= a($res['link'][$idx]) ?>" class="alt"><?= $idx ?></a>
 						<? endfor; ?>
 					<? else: ?>
-						<a href="<?= a($res['link']) ?>"><?= $res['title'] ?></a>
+						<a href="<?= a($res['link']) ?>"><?= html_entity_decode($res['title']) ?></a>
 					<? endif; ?>
 				<? else: ?>
 					<?= $res['title'] ?>
@@ -177,7 +177,7 @@ window.searchBase = '<?= $base ?>';
 				<? if ($res['domain'] == 'members'): ?>
 					<h4><?= ucfirst($res['type'] ? $res['type'] : 'Members') ?></h4>
 				<? else: ?>
-					<h4><?= ucfirst($res['domain']).(isset($res['type']) ? ' &ndash; '.h($res['type']) : '').(isset($res['publication_title']) ? ' &ndash; '.h($res['publication_title']) : '').(isset($res['organization']) ? ' &ndash; '.h($res['organization']) : '') ?></h4>
+					<h4><?= ucfirst($res['domain']).(isset($res['type']) ? ' &ndash; '.$res['type'] : '').(isset($res['publication_title']) ? ' &ndash; '.html_entity_decode($res['publication_title']) : '').(isset($res['organization']) ? ' &ndash; '.h($res['organization']) : '') ?></h4>
 				<? endif; ?>
 				<h4 class="date"><?= isset($res['date']) ? date($res['domain'] == 'citations' ? 'Y' : 'j M Y', strtotime($res['date'])) : '&nbsp;' ?></h4>
 				<h4>
@@ -185,8 +185,11 @@ window.searchBase = '<?= $base ?>';
 						<?= $res['wiki_count'] + $res['resource_count'] ?> contribution<?= $res['wiki_count'] + $res['resource_count'] == 1 ? '' : 's' ?>
 					<? elseif (isset($res['contributor_ids'])): ?>
 						<ul class="contributors">
-						<? foreach ($res['contributor_ids'] as $cid): ?>
-							<li><?= h($results['contributor_map'][$cid]['name']) ?></li>
+						<? 
+							foreach ($res['contributor_ids'] as $cid): 
+								if (!isset($results['contributor_map'][$cid])) continue;
+						?>
+							<li><?= $results['contributor_map'][$cid]['name'] ?></li>
 						<? endforeach; ?>
 						</ul>
 					<? elseif ($res['domain'] === 'questions'): ?>
