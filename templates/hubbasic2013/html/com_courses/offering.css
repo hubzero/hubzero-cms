@@ -1,0 +1,8 @@
+@import url("/components/com_courses/assets/css/offering.css");
+
+.com_courses #content-header {
+	padding-top: 10px;
+}
+.course-identity:after {
+	top: 0;
+}

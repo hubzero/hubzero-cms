@@ -1,0 +1,170 @@
+/*
+
+	-- -- -- -- -- -- --
+	error CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#content .main {
+		padding: 0 30px;
+	}
+
+/* Error Message */
+	#errorbox {
+		padding: 0;
+		margin: 0;
+		position: relative;
+		z-index: 1;
+	}
+	/* Top angled corners */
+	#errorbox:before, /* Left corner */
+	#errorbox:after {
+		position: absolute;
+		top: -20px;
+		left: 0;
+		content: "";
+		display: block;
+		border: 10px solid #fff;
+		border-color: transparent #fff #fff transparent;
+		z-index: 2;
+	}
+	/* Right corner */
+	#errorbox:after {
+		left: auto;
+		right: 0;
+		top: -20px;
+		border-color: transparent transparent #fff #fff;
+	}
+	/* Center fill */
+	#errorbox h3:after {
+		position: absolute;
+		top: -20px;
+		left: 20px;
+		right: 20px;
+		content: "";
+		display: block;
+		background: #fff;
+		height: 20px;
+	}
+
+	#errorbox .wrap {
+		background: #fff;
+		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		position: relative;
+		display: block;
+		padding: 20px 30px 30px 30px;
+	}
+	#errorbox h3 {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	#errormessage {
+		margin-top: 2em;
+		margin-bottom: 0em;
+	}
+	.signature {
+		font-style: italic;
+		text-align: right;
+	}
+
+/* Error code */
+	.error-code {
+		position: relative;
+		font-size: 18em;
+		text-align: center;
+		color: #ddd;
+		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9), 0 -1px 1px rgba(0, 0, 0, 0.2);
+		margin: 0;
+		padding: 0;
+		line-height: 1.2em;
+		font-weight: normal;
+		height: 300px;
+	}
+	.code500 .error-code:after {
+		display: block;
+		width: 409px;
+		height: 400px;
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0;
+		background: url("../images/layout/footprint.png") 0 0 no-repeat;
+	}
+	.error {
+		margin-top: 30px;
+	}
+
+/* Stack trace */
+	#techinfo {
+		margin: 30px 0 0 0;
+		padding: 30px;
+		text-align: left;
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		position: relative;
+	}
+	/* Side shadows */
+	#techinfo:before,
+	#techinfo:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		z-index: 100;
+		top: 0;
+		bottom: 0;
+		width: 30px;
+		left: -30px;
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		   -moz-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		    -ms-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		     -o-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		        box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+	}
+	#techinfo:after {
+		left: auto;
+		right: -30px;
+		-webkit-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		   -moz-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		    -ms-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		     -o-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+		        box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+	}
+	#techinfo p {
+		color: #CC6633;
+	}
+	#techinfo table {
+		width: 100%;
+		text-align: left;
+		font-size: 0.85em;
+		border: none;
+		
+	}
+	#techinfo table th,
+	#techinfo table td {
+		vertical-align: top;
+		line-height: 1.6em;
+		padding: 0.2em 0.5em;
+		border-bottom: 1px solid #d2d2d2;
+	}
+	#techinfo table td:first-child {
+		color: #62a0b2;
+	}
+	#techinfo table td:last-child {
+		color: #4b677c;
+	}
+	#techinfo table td strong {
+		font-weight: bold;
+		color: #250b23;
+	}
+	#techinfo table thead th {
+		font-weight: bold;
+		border-bottom: 1px solid #d2d2d2;
+		text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+		white-space: nowrap;
+	}

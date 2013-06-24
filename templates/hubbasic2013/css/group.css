@@ -1,0 +1,54 @@
+/*
+
+	-- -- -- -- -- -- --
+	Special Group CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	body {
+		background: #FFF;
+	}
+
+	#special-bar {
+		height: 35px;
+		overflow: hidden;
+		background: #000;
+	}
+	#special-bar a#powered {
+		float: left;
+		display: block;
+		height: 35px;
+		width: 183px;
+		margin: 0 0 0 20px;
+		padding: 7px 0 0 0;
+		font-size: 12px;
+		font-weight: 100;
+		letter-spacing: 1px;
+		color: #FFF;
+	}
+	#special-bar a#powered span {
+		font-weight: bold;
+	}
+	#special-bar a#powered:hover {
+		color: orange;
+	}
+	#special-bar p {
+		height: 35px;
+		float: right;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		font-size: 10px;
+		padding: 7px 0px 0 0;
+		margin: 0 20px 0 0;
+	}
+	#special-bar a {
+		color: #FFF;
+	}
+	#special-bar p a:hover {
+		font-weight: normal;
+		font-size: 10px;
+		color: #dce4e9;
+		border: none;
+	}
