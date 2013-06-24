@@ -91,6 +91,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 		$filters['state']     = JRequest::getInt('state', 1);
 		$filters['scope']     = JRequest::getWord('scope', '');
 		$filters['scope_id']  = JRequest::getInt('scope_id', 0);
+		$filters['scope_sub_id']  = JRequest::getInt('scope_sub_id', 0);
 		$filters['object_id'] = JRequest::getInt('object_id', 0);
 		$filters['sticky']    = false;
 

@@ -527,7 +527,7 @@ HUB.Plugins.CoursesForum = {
 					tnew.hide();
 
 					// Append data
-					if (data.threads.posts.length > 0) {
+					if (data.threads.posts && data.threads.posts.length > 0) {
 						var last = $('#threads_lastchange');
 
 						for (var i = 0; i< data.threads.posts.length; i++) 
@@ -552,7 +552,7 @@ HUB.Plugins.CoursesForum = {
 			.hide()
 			.prependTo('div.comments-feed');
 
-		var api = '/api/forum/thread/?find=count&object_id=' + $('#field-object_id').val() + '&scope=' + $('#field-scope').val() + '&scope_id=' + $('#field-scope_id').val();
+		var api = '/api/forum/thread/?find=count&object_id=' + $('#field-object_id').val() + '&scope=' + $('#field-scope').val() + '&scope_id=' + $('#field-scope_id').val() + '&scope_sub_id=' + $('#field-scope_sub_id').val();
 
 		// Heartbeat for checking for new posts
 		setInterval(function () {
