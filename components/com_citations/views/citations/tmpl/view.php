@@ -104,7 +104,7 @@ if ($citationUrlFormatString != '')
 }
 
 //do we want to use our custom url string with placeholders
-$citationURL = ($citationUrlFormat == 'custom' || $customUrl == '') ? $customUrl : $url;
+$citationURL = ($citationUrlFormat == 'custom' && $customUrl != '') ? $customUrl : $url;
 
 //if we have an eprint use that
 $citationURL = ($eprintUrl && $eprintUrl != '') ? $eprintUrl : $citationURL;
