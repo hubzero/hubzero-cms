@@ -313,7 +313,7 @@ var typewatch = (function(){
 			}
 
 			if (this.options.createCallback) {
-				//this.options.createCallback(note);
+				this.options.createCallback(note);
 			}
 		},
 

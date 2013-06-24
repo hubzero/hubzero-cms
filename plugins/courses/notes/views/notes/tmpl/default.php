@@ -97,7 +97,7 @@ $base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course-
 			foreach ($notes as $note)
 			{
 	?>
-	<div class="jSticky-medium static" id="note-<?php echo $note->get('id'); ?>" data-id="<?php echo $note->get('id'); ?>">
+	<div class="jSticky-medium static<?php if ($note->get('access')) { echo ' annotation'; } ?>" id="note-<?php echo $note->get('id'); ?>" data-id="<?php echo $note->get('id'); ?>">
 		<div class="jSticky-header">
 			<?php if ($note->get('timestamp') && $note->get('timestamp') != '00:00:00') { ?>
 				<a href="<?php echo str_replace('%3A', ':', JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))); ?>" class="time"><?php echo $this->escape($note->get('timestamp')); ?></a>

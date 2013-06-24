@@ -364,6 +364,9 @@
 	#notes-list-container:after {
 		clear: left;
 	}
+	#notes-list-container #notes-list {
+		margin-right: 15em;
+	}
 	#notes-list-container .jSticky-medium.thumbnail {
 		width: 26px;
 		height: 26px;
