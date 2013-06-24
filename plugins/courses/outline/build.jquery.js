@@ -937,13 +937,13 @@ HUB.CoursesOutline = {
 		auxAttachmentShow: function ( e ) {
 			var $ = HUB.CoursesOutline.jQuery,
 			help  = '/help/courses/builder',
-			className = e.originalEvent.target.className.replace(/attach-/, "");
+			className = e.currentTarget.className.replace(/attach-/, "");
 
 			e.preventDefault();
-			$(this).siblings('.aux-attachments-form').find('.aux-attachments-content-label').html(e.originalEvent.target.title);
+			$(this).siblings('.aux-attachments-form').find('.aux-attachments-content-label').html(e.currentTarget.title);
 			$(this).siblings('.aux-attachments-form').find('.input-type').val(className);
 			$(this).siblings('.aux-attachments-form').find('.help-info').attr('href', help+'#'+className);
-			$(this).siblings('.aux-attachments-form').removeClass('attach-link attach-object attach-wiki browse-files').addClass(e.originalEvent.target.className);
+			$(this).siblings('.aux-attachments-form').removeClass('attach-link attach-object attach-wiki browse-files').addClass(e.currentTarget.className);
 			$(this).siblings('.aux-attachments-form').fadeIn();
 		},
 
