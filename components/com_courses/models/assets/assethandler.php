@@ -120,7 +120,7 @@ class AssetHandler
 			$path = dirname(__FILE__) . DS . $filename;
 
 			// Ensure the path is a file and ends in .php
-			if (is_file($path) && strpos($path, '.php') !== false)
+			if (is_file($path) && substr($path, -4) == '.php')
 			{
 				// Include the file
 				require_once $path;
