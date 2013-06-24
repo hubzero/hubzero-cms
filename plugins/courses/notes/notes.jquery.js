@@ -206,12 +206,16 @@ var typewatch = (function(){
 
 			//if (note.timestamp && note.timestamp != '00:00:00') {
 				var tm = '00:00:00';
+				//console.log(HUB);
 				if (typeof HUB.Presenter !== 'undefined') {
-					var tm = HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
-					//console.log(tm);
-					//if (tm > '00:00:06') {
-						_div_header.append(jQuery('<span></span>').addClass('time').text(tm));
-					//}
+					var tm = HUB.Presenter.getCurrent();
+
+					if (_DEBUG) {
+						window.console && console.log(tm);
+					}
+					if (tm) {
+						_div_header.append(jQuery('<span></span>').addClass('time').text(HUB.Presenter.formatTime(tm)));
+					}
 				}
 			//}
 
@@ -309,7 +313,7 @@ var typewatch = (function(){
 			}
 
 			if (this.options.createCallback) {
-				this.options.createCallback(note);
+				//this.options.createCallback(note);
 			}
 		},
 
