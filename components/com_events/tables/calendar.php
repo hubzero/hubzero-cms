@@ -65,6 +65,13 @@ class EventsCalendar extends JTable
 	var $title          = NULL;
 	
 	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $url            = NULL;
+	
+	/**
 	 * varchar(100)
 	 * 
 	 * @var string
@@ -78,6 +85,33 @@ class EventsCalendar extends JTable
 	 */
 	var $published      = NULL;
 	
+	/**
+	 * tinyint
+	 * 
+	 * @var string
+	 */
+	var $readonly       = NULL;
+	
+	/**
+	 * datetime
+	 * 
+	 * @var string
+	 */
+	var $last_fetched   = NULL;
+	
+	/**
+	 * datetime
+	 * 
+	 * @var string
+	 */
+	var $last_fetched_attempt = NULL;
+	
+	/**
+	 * datetime
+	 * 
+	 * @var string
+	 */
+	var $failed_attempts     = NULL;
 	
 	/**
 	 * Constructor
@@ -98,7 +132,7 @@ class EventsCalendar extends JTable
 	 * @param      int       $id        Calendar ID
 	 * @return     array
 	 */
-	public function getCalendars( $group, $id = null )
+	public function getCalendars( $group, $id = null, $readonly = null )
 	{
 		$sql = "SELECT * FROM {$this->_tbl} 
 				WHERE scope=" . $this->_db->quote('group') . "
@@ -107,6 +141,11 @@ class EventsCalendar extends JTable
 		if (isset($id) && $id != '' && $id != null)
 		{
 			$sql .= " AND id=" . $this->_db->quote( $id );
+		}
+		
+		if ($readonly !== null)
+		{
+			$sql .= " AND readonly=" . $this->_db->quote( $readonly );
 		}
 		
 		$this->_db->setQuery( $sql );
@@ -124,6 +163,182 @@ class EventsCalendar extends JTable
 			$this->setError(JText::_('Calendar must have a title.'));
 			return false;
 		}
+		return true;
+	}
+	
+	/**
+	 * Refresh all Group Calendars
+	 *
+	 */
+	public function refreshAll( $group )
+	{
+		//get refresh interval
+		ximport('Hubzero_Plugin');
+		$params = Hubzero_Plugin::getParams('calendar','groups');
+		$refreshInterval = $params->get('import_subscription_interval', 60);
+		
+		//get all group calendars
+		$calendars = $this->getCalendars( $group );
+		
+		//loop through each calendar to see if we need to refresh it
+		foreach ($calendars as $calendar)
+		{
+			//if we dont have a url or its not valid move on
+			if ($calendar->url == '' || !filter_var($calendar->url, FILTER_VALIDATE_URL))
+			{
+				continue;
+			}
+			
+			//build our refresh after date
+			$now           = time();
+			$lastRefreshed = strtotime($calendar->last_fetched_attempt);
+			$needToRefresh = strtotime('+'.$refreshInterval.' MINUTES', $lastRefreshed);
+			
+			//is it time to refresh?
+			if ($now >= $needToRefresh)
+			{
+				$this->refresh( $group, $calendar->id );
+			}
+		}
+	}
+	
+	/**
+	 * Refresh a Specific Group Calendar
+	 */
+	public function refresh( $group, $calendarId )
+	{
+		//get user object
+		$juser = JFactory::getUser();
+		
+		//load calendar
+		$this->load( $calendarId );
+		
+		//get current events
+		$sql = "SELECT *
+		        FROM `#__events` 
+		        WHERE `calendar_id`=".$this->_db->quote( $this->id )."
+		        AND `scope`=".$this->_db->quote( 'group' )." 
+		        AND `scope_id`=".$this->_db->quote( $group->get('gidNumber') );
+		$this->_db->setQuery( $sql );
+		$currentEvents = $this->_db->loadObjectList( 'ical_uid' );
+		
+		//include icalendar file reader
+		require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'ical.reader.php';
+		
+		//build calendar url
+		$calendarUrl = str_replace('webcal', 'http', $this->url);
+		
+		//test to see if this calendar is valid
+		$calendarHeaders = get_headers($calendarUrl, 1);
+		$statusCode      = (isset($calendarHeaders[0])) ? $calendarHeaders[0] : '';
+		
+		//check to make sure we have a 200 or 404 otherwise continue
+		if (!stristr($statusCode, '404 Not Found') && !stristr($statusCode, '200 Ok'))
+		{
+			return false;
+		}
+		
+		//make sure the calendar url is valid
+		if (!strstr($calendarHeaders[0], '200 OK'))
+		{
+			$this->failed_attempts      = $this->failed_attempts + 1;
+			$this->last_fetched_attempt = date("Y-m-d H:i:s");
+			$this->save( $this );
+			$this->setError( $this->title );
+			return false;
+		}
+		
+		//read calendar file
+		$iCalReader = new iCalReader( $calendarUrl );
+		$incomingEvents = $iCalReader->events();
+		
+		//make uid keys for array
+		//makes it easier to diff later on
+		foreach($incomingEvents as $k => $incomingEvent)
+		{
+			//get old and new key
+			$oldKey = $k;
+			$newKey = (isset($incomingEvent['UID'])) ? $incomingEvent['UID'] : '';
+			
+			//set keys to be the uid
+			if ($newKey != '')
+			{
+				$incomingEvents[$newKey] = $incomingEvent;
+				unset($incomingEvents[$oldKey]);
+			}
+		}
+		
+		//get events we need to delete
+		$eventsToDelete = array_diff(array_keys($currentEvents), array_keys($incomingEvents));
+		
+		//delete each event we dont have in the incoming events
+		foreach ($eventsToDelete as $eventDelete)
+		{
+			$e = $currentEvents[$eventDelete];
+			$eventsEvent = new EventsEvent( $this->_db );
+			$eventsEvent->delete( $e->id );
+		}
+		
+		//create new events for each event we pull
+		foreach($incomingEvents as $uid => $incomingEvent)
+		{
+			//get the current event if we have one
+			$currentEvent   = (isset($currentEvents[$uid])) ? $currentEvents[$uid] : new stdClass;
+			$currentEventId = (isset($currentEvent->id)) ? $currentEvent->id : null;
+			
+			//get the start and end dates and parse to unix timestamp
+			$start = $iCalReader->iCalDateToUnixTimestamp($incomingEvent['DTSTART']);
+			$end   = $iCalReader->iCalDateToUnixTimestamp($incomingEvent['DTEND']);
+			
+			//handle all day events and timezones
+			list($start, $end) = $iCalReader->handleAllDayEvents( $start, $end );
+			list($start, $end) = $iCalReader->handleTimezoneOffset( $start, $end );
+			
+			//create event object
+			$eventsEvent = new EventsEvent( $this->_db );
+			
+			//if we have event ide load event
+			if ($currentEventId != null)
+			{
+				$eventsEvent->load( $currentEventId );
+			}
+			
+			//set event vars
+			$eventsEvent->title        = (isset($incomingEvent['SUMMARY'])) ? $incomingEvent['SUMMARY'] : '';
+			$eventsEvent->content      = (isset($incomingEvent['DESCRIPTION'])) ? $incomingEvent['DESCRIPTION'] : '';
+			$eventsEvent->content      = stripslashes(str_replace('\n', "\n", $e->content));
+			$eventsEvent->adresse_info = (isset($incomingEvent['LOCATION'])) ? $incomingEvent['LOCATION'] : '';
+			$eventsEvent->extra_info   = (isset($incomingEvent['URL;VALUE=URI'])) ? $incomingEvent['URL;VALUE=URI'] : '';
+			$eventsEvent->modified     = date("Y-m-d H:i:s");
+			$eventsEvent->modified_by  = $juser->get('id');
+			$eventsEvent->publish_up   = $start;
+			$eventsEvent->publish_down = $end;
+			
+			//this a new event
+			if ($currentEventId == null)
+			{
+				$eventsEvent->catid        = -1;
+				$eventsEvent->calendar_id  = $this->id;
+				$eventsEvent->ical_uid     = (isset($incomingEvent['UID'])) ? $incomingEvent['UID'] : '';
+				$eventsEvent->scope        = 'group';
+				$eventsEvent->scope_id     = $group->get('gidNumber');
+				$eventsEvent->state        = 1;
+				$eventsEvent->created      = date("Y-m-d H:i:s");
+				$eventsEvent->created_by   = $juser->get('id');
+				$eventsEvent->time_zone    = -5;
+				$eventsEvent->registerby   = '0000-00-00 00:00:00';
+				$eventsEvent->params       = '';
+			}
+			
+			//save event
+			$eventsEvent->save($eventsEvent);
+		}
+		
+		//mark as fetched
+		$this->last_fetched         = date("Y-m-d H:i:s");
+		$this->last_fetched_attempt = date("Y-m-d H:i:s");
+		$this->failed_attempts      = 0;
+		$this->save( $this );
 		return true;
 	}
 }

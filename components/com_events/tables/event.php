@@ -65,6 +65,13 @@ class EventsEvent extends JTable
 	var $calendar_id      = NULL;
 	
 	/**
+	 * varchar(255)
+	 * 
+	 * @var integer
+	 */
+	var $ical_uid         = NULL;
+	
+	/**
 	 * varchar(100)
 	 * 
 	 * @var integer

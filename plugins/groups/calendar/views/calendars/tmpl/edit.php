@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <ul id="page_options">
 	<li>
-		<a class="btn date" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
+		<a class="btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
 			<?php echo JText::_('Back to Manage Calendars'); ?>
 		</a>
 	</li>
@@ -51,6 +51,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		<label><?php echo JText::_('Title:'); ?> <span class="required">Required</span>
 			<input type="text" name="calendar[title]" value="<?php echo $this->calendar->title; ?>" />
+		</label>
+		
+		<label><?php echo JText::_('URL:'); ?> <span class="optional">Optional</span>
+			<input type="text" name="calendar[url]" value="<?php echo $this->calendar->url; ?>" />
+			<span class="hint"><?php echo JText::_('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span>
 		</label>
 		
 		<label><?php echo JText::_('Color:'); ?> <span class="optional">Optional</span>

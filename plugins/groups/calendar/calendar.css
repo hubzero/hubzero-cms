@@ -413,7 +413,9 @@ table.group-event-details {
 .details:before,
 .location:before,
 .download:before,
-.subscribe-webcal:before {
+.subscribe-webcal:before,
+.import:before,
+.back:before {
 	font-family: 'Fontcons';
 	margin-right: 0.2em;
 }
@@ -432,6 +434,12 @@ table.group-event-details {
 .subscribe-webcal:before {
 	content: '\f029';
 }
+.import:before {
+	content: '\f01b';
+}
+.back:before {
+	content: '\f08a';
+}
 .group-registrants tbody tr:nth-child(2n),
 .group-calendars tbody tr:nth-child(2n) {
 	background:#efefef;
@@ -441,4 +449,92 @@ table.group-event-details {
 }
 .no {
 	color:#bc0101;
+}
+.calendar-url {
+	font-size: 11px;
+	color: #999;
+}
+.calendar-url span {
+	font-weight: bold;
+	color: #000;
+}
+a.refresh:before {
+	content: '\f021';
+	font-family: 'Fontcons';
+}
+
+/* Event Import */
+.upload {
+	position: relative;
+	clear: right;
+	margin: 0 20px;
+	border: 3px dashed #ccc;
+	padding: 0;
+	height: 200px;
+}
+.upload:before {
+	content: '\f046';
+	position: absolute;
+	top: 40px;
+	left: 0;
+	right: 0;
+	font-family: 'Fontcons';
+	font-size: 80px;
+	text-align: center;
+	color: #ccc;
+}
+.upload .title {
+	position: absolute;
+	display: block;
+	top: 90px;
+	left: 0;
+	right: 0;
+	text-align: center; 
+	font-weight: bold;
+	font-size: 16px;
+	width: auto;
+	color: #555;
+	}
+.upload .description {
+	position: absolute;
+	top: 110px;
+	left: 0;
+	right: 0;
+	text-align: center; 
+	font-weight: normal;
+	font-size: 12px;
+	color: #aaa;
+}
+.upload .button-container {
+	position: absolute;
+	top: 140px;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+.upload .button-container .btn {
+	position: relative;
+	padding: 5px 20px;
+}
+.upload .button-container .btn:hover {
+	cursor: pointer;
+	border: 1px solid #AAA;
+	-webkit-box-shadow: inset 0 0 1px #FFF, 0 0 2px rgba(0, 0, 0, 0.35);
+}
+.upload .button-container .btn input[type=file] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.upload .button-container .btn input[type=file]:hover {
+	cursor: pointer;
+}
+.upload.over {
+	border: 3px dashed #aaa;
+	background: #fffff4;
 }

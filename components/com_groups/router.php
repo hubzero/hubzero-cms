@@ -253,7 +253,7 @@ function GroupsParseRoute($segments)
 			}
 			else
 			{
-				if (in_array($vars['action'], array('editcalendar','deletecalendar', 'subscribe')))
+				if (in_array($vars['action'], array('editcalendar','deletecalendar','refreshcalendar', 'subscribe')))
 				{
 					$vars['calendar_id'] = $segments[3];
 				}

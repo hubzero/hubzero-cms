@@ -38,12 +38,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <ul id="page_options">
 	<li>
+		<a class="btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
+			<?php echo JText::_('Back to Events Calendar'); ?>
+		</a>
 		<a class="btn add" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">
 			<?php echo JText::_('Add Calendar'); ?>
 		</a>
-		<a class="btn date" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
-			<?php echo JText::_('Back to Events Calendar'); ?>
-		</a>
+		
 	</li>
 </ul>
 <!--
@@ -93,6 +94,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=deletecalendar&calendar_id=' . $calendar->id); ?>">
 							Delete
 						</a>
+						<?php if ($calendar->url) : ?>
+							 &nbsp;|
+							<a class="refresh" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=refreshcalendar&calendar_id=' . $calendar->id); ?>">
+								Refresh
+							</a>
+						<?php endif; ?>	
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<?php if ($calendar->url) : ?>
+							<span class="calendar-url">
+								<span>Calendar URL:</span>
+								<?php echo $calendar->url; ?>
+							</span>
+							<br />
+							<span class="calendar-url">
+								<span>Last Fetched:</span>
+								<?php 
+									if ($calendar->last_fetched == '' || $calendar->last_fetched == '0000-00-00 00:00:00')
+									{
+										echo 'Never';
+									}
+									else
+									{
+										echo date('m/d/Y @ g:ia', strtotime($calendar->last_fetched));	
+									}
+								?>
+							</span>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

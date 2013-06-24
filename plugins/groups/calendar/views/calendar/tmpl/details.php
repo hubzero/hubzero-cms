@@ -41,8 +41,8 @@ $month = date("m", strtotime($this->event->publish_up));
 
 <ul id="page_options">
 	<li>
-		<a class="btn date" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
-			<?php echo JText::_('Back to Calendar'); ?>
+		<a class="btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
+			<?php echo JText::_('Back to Events Calendar'); ?>
 		</a>
 	</li>
 </ul>
@@ -55,12 +55,14 @@ $month = date("m", strtotime($this->event->publish_up));
 		<?php endif; ?>
 	</span>
 	<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
-		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
-			Delete
-		</a> 
-		<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->id); ?>">
-			Edit
-		</a>
+		<?php if (!$this->calendar[0]->readonly) : ?>
+			<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
+				Delete
+			</a> 
+			<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->id); ?>">
+				Edit
+			</a>
+		<?php endif; ?>
 	<?php endif; ?>
 </div>
 

@@ -233,6 +233,54 @@ HUB.Plugins.GroupCalendar = {
 		
 		//remove tooltips from registration fields labels
 		$('.group_calendar #hubForm table.paramlist td label').removeClass('hasTip');
+		
+		//file uploader
+		if ($('#import').length)
+		{
+			$('#import').fileupload({
+				autoUpload: true,
+				dataType: 'json',
+				dropzone: $('.upload'),
+				forceIframeTransport: false,
+				add: function(e, data) {
+					var file = data.files[0];
+					
+					//make sure we only allow ics files
+					if (file.type != 'text/calendar')
+					{
+						hub.alert('Pleas upload a valid iCalendar File (.ics)');
+					}
+					else
+					{
+						data.submit();
+					}
+				},
+				done: function(e, data) {
+					var eventDetails = data.result.event;
+
+					//set inputs
+					$('#event_title').val( eventDetails.title );
+					$('#event_content').val( eventDetails.content );
+					$('#event_location').val( eventDetails.location );
+					$('#event_website').val( eventDetails.website );
+					$('#event_start_date').val( eventDetails.start );
+					$('#event_end_date').val( eventDetails.end );
+				},
+				fail: function(e, data) {
+					console.log('fail');
+					console.log(data);
+				}
+			});
+			
+			//drag & drop
+			$(document)
+				.on('dragenter', '.upload', function(event) {
+					$('.upload').addClass('over');
+				})
+				.on('dragleave drop', '.upload', function(event) {
+					$('.upload').removeClass('over');
+				});
+		}
 	}
 };
 
