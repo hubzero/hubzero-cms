@@ -322,6 +322,32 @@ class TimeHtml
 	}
 
 	/**
+	 * Build a select list of subordinates
+	 * 
+	 * @param  $id    - currently selected user (default: 0)
+	 * @param  $subs  - array of subordinates
+	 * @return $ulist
+	 */
+	public function buildSubordinatesList($id=0, $subs=array())
+	{
+		// First, add current user
+		$options[] = JHTML::_('select.option', JFactory::getUser()->get('id'), JFactory::getUser()->get('name'), 'value', 'text');
+
+		// Iterate through subs and add them to the list
+		if (!empty($subs))
+		{
+			foreach($subs as $sub)
+			{
+				$options[] = JHTML::_('select.option', $sub, JFactory::getUser($sub)->get('name'), 'value', 'text');
+			}
+		}
+
+		$ulist = JHTML::_('select.genericlist', $options, 'record[user_id]', '', 'value', 'text', $id, 'user_id', false, false);
+
+		return $ulist;
+	}
+
+	/**
 	 * Check if user is a manager
 	 * 
 	 * @param  $id of active user

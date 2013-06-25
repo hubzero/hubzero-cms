@@ -53,7 +53,12 @@ defined('_JEXEC') or die('Restricted access');
 
 			<div class="grouping" id="uname-group">
 				<label for="uname"><?php echo JText::_('PLG_TIME_RECORDS_USER'); ?>:</label>
-				<?php echo htmlentities(stripslashes($this->row->uname), ENT_QUOTES); ?>
+				<?php if (isset($this->subordinates)) : ?>
+					<?php echo $this->subordinates; ?>
+				<?php else : ?>
+					<?php echo htmlentities(stripslashes($this->row->uname), ENT_QUOTES); ?>
+					<input type="hidden" name="record[user_id]" value="<?php echo $this->row->user_id; ?>" />
+				<?php endif; ?>
 			</div>
 
 			<div class="grouping" id="time-group">
@@ -83,7 +88,6 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 
 			<input type="hidden" name="record[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="record[user_id]" value="<?php echo $this->row->user_id; ?>" />
 	</div><!-- //container -->
 			<p class="submit">
 				<input type="submit" value="<?php echo JText::_('PLG_TIME_RECORDS_SUBMIT'); ?>" />

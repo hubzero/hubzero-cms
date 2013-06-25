@@ -261,6 +261,12 @@ class plgTimeRecords extends Hubzero_Plugin
 		$view->hubslist  = TimeHTML::buildHubsList($this->active, $view->row->hid);
 		$view->tasklist  = TimeHTML::buildTasksList($view->row->task_id, $this->active, $view->row->hid, $view->row->pactive);
 
+		// Build subordinates list if applicable
+		if (isset($subordinates) && !empty($subordinates))
+		{
+			$view->subordinates = TimeHTML::buildSubordinatesList($view->row->user_id, $subordinates);
+		}
+
 		// Is this a new record?
 		if(empty($view->row->user_id))
 		{
@@ -337,6 +343,20 @@ class plgTimeRecords extends Hubzero_Plugin
 		// Incoming posted data
 		$record = JRequest::getVar('record', array(), 'post');
 		$record = array_map('trim', $record);
+
+		// Get suborinates of current user
+		$subordinates = TimeHTML::getSubordinates($this->juser->get('id'));
+
+		// Only create records for yourself or your subordinates
+		if($record['user_id'] != $this->juser->get('id') && !in_array($record['user_id'], $subordinates))
+		{
+			// Set the redirect
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&active=records'),
+				JText::_('PLG_TIME_RECORDS_WARNING_CANT_EDIT_OTHER'),
+				'warning'
+			);
+		}
 
 		// Combine the time entry
 		$record['time'] = $record['htime'] . '.' . $record['mtime'];
