@@ -313,7 +313,7 @@ class PdfForm
 				$im = new imagick($this->fname.'['.($this->pages).']');
 				$im->setImageFormat('png');
 				$im->cropImage(max($widths), $crop[$this->pages]['height'], $crop[$this->pages]['x'], $crop[$this->pages]['y']);
-				$im->scaleImage(582,0);
+				$im->resizeImage(582,0, Imagick::FILTER_CATROM, 1);
 				$im->sharpenImage(2,1);
 				$im->borderImage('white', 15, 15);
 				$im->writeImage($this->base . $fid . DS . ($this->pages + 1) . '.png');
