@@ -83,10 +83,6 @@ class ObjectAssetHandler extends ContentAssetHandler
 		{
 			$this->asset['title'] = 'New Kaltura video';
 		}
-		elseif (preg_match('/\<script src="http[s]*\:\/\/static\.3playmedia\.com.*/is', $object))
-		{
-			$this->asset['title'] = 'New 3PlayMedia video';
-		}
 		else
 		{
 			return array('error'=>'Content did not match the pre-defined filter for an object');
