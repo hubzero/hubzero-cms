@@ -828,8 +828,6 @@ class Hubzero_Cart
 		$sql = "DELETE FROM `#__cart_cart_items` WHERE `crtiQty` <= 0 AND `crtId` = {$tInfo->info->crtId}";				
 		$this->_db->setQuery($sql);
 		$this->_db->query();
-		
-		return true;
 	}
 	
 	/**

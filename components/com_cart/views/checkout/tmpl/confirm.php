@@ -52,7 +52,7 @@ if (empty($errors))
 ?>
 
 <p>
-	Please click the button below to make a payment through PayPal.
+	Please click the button below to proceed with payment.
 </p>
 
 <?php

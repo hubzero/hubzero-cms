@@ -144,11 +144,22 @@ class Course_Type_Handler extends Type_Handler
 		// Get user id
 		$userId = $cart->getCartUser($this->crtId);
 				
-		//print_r($userId); die;
+		// Load courses model and register
+		// registerForCourse($userId, $courseId, $expiration);
 		
-		// Load courses lib and update
-		// ximport('Courses_Library');
-		// registerForCourse($userId, $courseId, $expiration);		
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+		
+		$course = CoursesModelCourse::getInstance($this->item['meta']['courseId']);
+		
+		if (!$course->offerings()->count()) {
+			// error enrolling
+		}
+		// Get to the first and probably the only offering
+		//$offering = $course->offerings()->current();
+		$offering = $course->offering($this->item['meta']['offeringId']);
+		
+		//mail('ishunko@purdue.edu', 'ok', print_r($offering, 1)); 
+		$offering->add($userId);							
 	}
 }
 

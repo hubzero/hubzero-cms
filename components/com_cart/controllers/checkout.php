@@ -235,7 +235,6 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function summaryTask() 
 	{
-		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart();
 						
 		$transaction = $cart->liftTransaction();
@@ -274,7 +273,6 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function confirmTask() 
 	{
-		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart();
 				
 		$transaction = $cart->liftTransaction();		
@@ -298,17 +296,6 @@ class CartControllerCheckout extends ComponentController
 		$cart->updateTransactionStatus('awaiting payment');
 		
 		// Generate payment code
-		
-		// TODO get from config
-		$jconfig =& JFactory::getConfig();
-		$hubName  = $jconfig->getValue('config.sitename');
-		$paymentOptions->transactionName = "$hubName online purchase";
-		
-		$paymentOptions->businessName = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";		
-		$paymentGatewayCredentials->user = '';
-		$paymentGatewayCredentials->password = '';
-		$paymentGatewayCredentials->signature = '';
-		
 		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 		
@@ -316,11 +303,7 @@ class CartControllerCheckout extends ComponentController
 		$paymentDispatcher = new PaymentDispatcher($paymentGatewayProivder);
 		$pay = $paymentDispatcher->getPaymentProvider();
 		
-		//print_r($pay); die;
-		
-		$pay->setPaymentOptions($paymentOptions);
 		$pay->setTransactionDetails($transaction);
-		$pay->setCredentials($paymentGatewayCredentials);
 		
 		$error = false;
 		try 

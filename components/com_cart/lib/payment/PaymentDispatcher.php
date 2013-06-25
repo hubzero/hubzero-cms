@@ -66,6 +66,10 @@ class PaymentDispatcher
 				$path = JPATH_COMPONENT . '/lib/payment/upay';
 				set_include_path($path);
 			break;
+			case "DUMMY AUTO PAYMENT":
+				$path = JPATH_COMPONENT . '/lib/payment/dummy';
+				set_include_path($path);
+			break;
 			default:
 				die('Wrong payment gateway provider.');
 		}
@@ -99,7 +103,10 @@ class PaymentDispatcher
 			case "UPAY":
 				return('tid');
 			break;
+			case "DUMMY AUTO PAYMENT":
 			default:
+				return('custom');
+			break;
 				die('Wrong payment gateway provider.');
 		}
 	}

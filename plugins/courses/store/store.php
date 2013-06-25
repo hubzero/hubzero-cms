@@ -150,7 +150,8 @@ class plgCoursesStore extends JPlugin
 				// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
 				$product->setTimeToLive($duration);
 				// Course alias id
-				$product->setCourseId($course->get('alias') . '/' . $model->get('alias'));
+				$product->setCourseId($course->get('alias'));
+				$product->setOfferingId($model->get('alias'));
 				try 
 				{
 					// Returns object with values, pId is the new product ID to link to

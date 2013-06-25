@@ -49,7 +49,20 @@ class PaymentProvider
 	 * @return  void
 	 */
 	public function __construct()
-	{					
+	{	
+		$jconfig =& JFactory::getConfig();
+		$hubName  = $jconfig->getValue('config.sitename');
+		
+		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
+		
+		$paymentOptions->transactionName = "$hubName online purchase";
+		$paymentOptions->businessName = $params->get('PPS_businessName');
+		$this->setPaymentOptions($paymentOptions);	
+			
+		$paymentGatewayCredentials->user = $params->get('PPS_user');
+		$paymentGatewayCredentials->password = $params->get('PPS_password');
+		$paymentGatewayCredentials->signature = $params->get('PPS_signature');
+		$this->setCredentials($paymentGatewayCredentials);
 	}
 	
 	/**
@@ -66,7 +79,7 @@ class PaymentProvider
 	 * Set payment options
 	 *
 	 */
-	public function setPaymentOptions($paymentOptions) 
+	private function setPaymentOptions($paymentOptions) 
 	{
 		$this->buttonVars[] = 'item_name=' . $paymentOptions->transactionName;
 		$this->buttonVars[] = 'business=' . $paymentOptions->businessName;
@@ -76,7 +89,7 @@ class PaymentProvider
 	 * Set credentials
 	 *
 	 */
-	public function setCredentials($paymentGatewayCredentials) 
+	private function setCredentials($paymentGatewayCredentials) 
 	{
 		$this->credentials = $paymentGatewayCredentials;
 	}

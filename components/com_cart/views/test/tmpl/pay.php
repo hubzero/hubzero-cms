@@ -23,52 +23,37 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Hubzero
+ * @author    Ilya Shunko <ishunko@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-ximport('Hubzero_Storefront_Sku');
+defined('_JEXEC') or die( 'Restricted access' );
 
-class Hubzero_Storefront_CourseOffering extends Hubzero_Storefront_Sku
-{
+setlocale(LC_MONETARY, 'en_US.UTF-8');
+
+?>
+
+<div id="content-header">
+	<h2>Pretend payment page</h2>
+</div>
+
+<div class="section">
+
+	<p>Imagine you have a lot of money and free to spend it. He is it, the pretend pay page. Just hit the 'Pay' button.</p>
+
+	<form action="" id="frm" method="post">
 	
-	public function __construct()
-	{
-		parent::__construct();
-		
-		//$this->setAllowMultiple(0);
-		$this->setTrackInventory(0);
-	}
-	
-	public function setCourseId($courseId)
-	{
-		$this->data->courseId = $courseId;		
-		$this->data->meta['courseId'] = $courseId;
-	}
-	
-	public function setOfferingId($offeringId)
-	{
-		$this->data->offeringId = $offeringId;		
-		$this->data->meta['offeringId'] = $offeringId;
-	}
-	
-	public function getCourseId()
-	{
-		return $this->data->meta['courseId'];
-	}
-		
-	public function verify()
-	{
-		parent::verify();
-		
-		// Each course has to have a course ID
-		if (empty($this->data->courseId))
+	<?php
+		foreach($_POST as $k => $v)
 		{
-			throw new Exception(JText::_('No course id'));	
-		}	
-	}
+			echo '<input type="hidden" name="' . $k . '" value="' . $v . '"></input>';
+		}
+	?>
 	
-}
+	<input type="hidden" name="dummypay" value="1"></input>
+	
+	<input type="submit" value="Pay">
+	</form>
+</div>

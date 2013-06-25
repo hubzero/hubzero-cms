@@ -100,7 +100,6 @@ class CartControllerOrder extends ComponentController
 		//print_r($tId); die;
 		
 		// Lookup the order
-		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart(NULL, true);
 		
 		// Verify token
@@ -139,7 +138,6 @@ class CartControllerOrder extends ComponentController
 	public function placeTask() 
 	{
 		// Get the current active trancsaction
-		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart();
 				
 		$transaction = $cart->liftTransaction();
@@ -194,13 +192,12 @@ class CartControllerOrder extends ComponentController
 	}
 	
 	/**
-	 * Payment gateway postback check if everything checks out and complete transaction
+	 * Payment gateway postback make sure everything checks out and complete transaction
 	 * 
 	 * @return     void
 	 */
 	public function postbackTask() 
-	{
-		
+	{		
 		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
 		
 		// TESTING ***********************
@@ -230,7 +227,6 @@ class CartControllerOrder extends ComponentController
 		//$postBackTransactionId = 1;
 				
 		// Initialize static cart
-		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart(NULL, true);
 		
 		// Initialize logger
@@ -304,7 +300,6 @@ class CartControllerOrder extends ComponentController
 	private function completeOrder($tInfo) 
 	{
 		// Initialize static cart
-		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart(NULL, true);
 		
 		// Initialize logger

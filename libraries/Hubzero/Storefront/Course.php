@@ -70,6 +70,18 @@ class Hubzero_Storefront_Course extends Hubzero_Storefront_SingleSkuProduct
 	}
 	
 	/**
+	 * Set the course ID associated with product 
+	 * 
+	 * @param  string		offeringId (alias)
+	 * @return bool			true on sucess
+	 */
+	public function setOfferingId($offeringId)
+	{
+		$this->getSku()->setOfferingId($offeringId);
+		return true;
+	}
+	
+	/**
 	 * Get the course ID associated with product 
 	 * 
 	 * @param	void

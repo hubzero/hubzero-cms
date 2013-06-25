@@ -35,7 +35,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 ?>
 
-<h2>Cart contents</h2>
+<h2>Items summary</h2>
 
 <?php
 

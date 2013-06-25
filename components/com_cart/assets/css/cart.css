@@ -81,10 +81,16 @@
 	margin-top: 0.5em;
 }
 
-#orderSummary {
-	border: 2px solid #CCC;
-	padding: 1em;
-	margin: 0 0 2em 0;
+.orderSummary p {
+	border-top: 1px solid #DADADA;
+	margin: 0;
+	padding: 1em 0;
+}
+
+.orderSummary .orderTotal {
+	font-size: 1.6em;		
+	font-weight: bold;
+	color: #bb8d0b;
 }
 
 .cartItemDiscount .cartDiscountName {

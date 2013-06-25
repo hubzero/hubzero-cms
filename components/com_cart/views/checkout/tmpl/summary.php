@@ -67,24 +67,48 @@ $view->display();
 
 ?>
 
-<div id="cartInfo">
+<div class="grid section">
 
 <?php
+
+$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_items'));
+
+$view->perks = $perks;
+$view->membershipInfo = $membershipInfo;
+$view->transactionItems = $this->transactionItems;
+$view->tiShippingDiscount = $this->transactionInfo->tiShippingDiscount;
+
+echo '<div class="col span6">';
+
+$view->display();
+
+echo '</div>';
+
+echo '<div class="col span6 omega orderSummary">';
 
 if (!empty($this->transactionInfo))
 {
 	$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
+	$discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
 	
-	echo '<div id="orderSummary">';
-		echo '<h2>Order summary:</h2>';
-		
-		echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
+	echo '<h2>Order summary:</h2>';
+	
+	echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
+	
+	if ($this->transactionInfo->tiShipping > 0)
+	{
 		echo '<p>Shipping: ' . money_format('%n', $this->transactionInfo->tiShipping) . '</p>';
-		echo '<p>Discounts: ' . money_format('%n', $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount) . '</p>';
+	}
+	if ($discount > 0)
+	{
+		echo '<p>Discounts: ' . money_format('%n', $discount) . '</p>';
+	}
+	
+	echo '<p class="orderTotal">Order total: ' . money_format('%n', $orderTotal) . '</p>';		
 		
-		echo '<p>Order total: ' . money_format('%n', $orderTotal) . '</p>';		
-	echo '</div>';	
 }
+
+echo '</div>';
 
 ?>
 
@@ -99,28 +123,8 @@ if (in_array('shipping', $this->transactionInfo->steps))
 	$view->display();
 }
 
-$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_items'));
-
-$view->perks = $perks;
-$view->membershipInfo = $membershipInfo;
-$view->transactionItems = $this->transactionItems;
-$view->tiShippingDiscount = $this->transactionInfo->tiShippingDiscount;
-$view->display();
-
 $orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
 
-if (!empty($this->transactionInfo))
-{
-	echo '<div id="orderSummary">';
-		echo '<h2>Order summary:</h2>';
-		
-		echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
-		echo '<p>Shipping: ' . money_format('%n', $this->transactionInfo->tiShipping) . '</p>';
-		echo '<p>Discounts: ' . money_format('%n', $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount) . '</p>';
-		
-		echo '<p>Order total: ' . money_format('%n', $orderTotal) . '</p>';		
-	echo '</div>';	
-}
 
 if ($orderTotal > 0)
 {

@@ -169,7 +169,7 @@ class CartMessenger
 			if ($itemInfo->ptId == 20)
 			{
 				$action = ' Go to the course page at: ' .
-				$action .= JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId'], true, -1);
+				$action .= JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId'] . '/' . $item['meta']['offeringId'], true, -1);
 			}
 			
 			$summary .= "$cartInfo->qty x ";		
