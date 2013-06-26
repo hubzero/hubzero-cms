@@ -545,7 +545,7 @@ class OaipmhControllerXml extends Hubzero_Controller
 				{
 					foreach ($result->$dcs[$i] as $sub) 
 					{
-						$return .= "<dc:$dcs[$i]>" . stripslashes($sub) . "</dc:$dcs[$i]>";
+						$return .= "<dc:$dcs[$i]>" . htmlentities($sub) . "</dc:$dcs[$i]>";
 					}
 				} 
 				elseif (!empty($result->$dcs[$i])) 
@@ -557,7 +557,7 @@ class OaipmhControllerXml extends Hubzero_Controller
 					} 
 					else 
 					{
-						$return .= "<dc:$dcs[$i]>" . stripslashes($result->$dcs[$i]) . "</dc:$dcs[$i]>";
+						$return .= "<dc:$dcs[$i]>" . htmlentities($result->$dcs[$i]) . "</dc:$dcs[$i]>";
 					}
 				}
 			 }
