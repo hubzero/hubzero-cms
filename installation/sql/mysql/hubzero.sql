@@ -90,6 +90,7 @@ CREATE TABLE `host` (
   `status` varchar(20) NOT NULL DEFAULT '',
   `uses` smallint(5) unsigned NOT NULL DEFAULT '0',
   `portbase` int(11) NOT NULL DEFAULT '0',
+  `venue_id` INT(11)  AFTER `portbase`,
   PRIMARY KEY (`hostname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -2810,13 +2811,13 @@ CREATE TABLE `#__xgroups` (
   `cn` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `published` tinyint(3) DEFAULT '0',
+  `approved` tinyint(3) DEFAULT '1',
   `type` tinyint(3) DEFAULT '0',
-  `access` tinyint(3) DEFAULT '0',
   `public_desc` text,
   `private_desc` text,
   `restrict_msg` text,
   `join_policy` tinyint(3) DEFAULT '0',
-  `privacy` tinyint(3) DEFAULT '0',
+  `discoverability` tinyint(3) DEFAULT '0',
   `discussion_email_autosubscribe` tinyint(3) DEFAULT NULL,
   `logo` varchar(255) DEFAULT NULL,
   `overview_type` int(11) DEFAULT NULL,
