@@ -162,7 +162,12 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 				<br />
 				<label for="prj-db-col-linkpath">Repository Path:</label><br />
 				<select class="col-prop" id="prj-db-col-linkpath"></select><br />
-				<span style="font-size: .8em;">[Only the files that are in the source CSV file folder or any of it's sub folders can be used for this]</span>
+				<span style="font-size: .8em;">
+					<ul>
+						<li>Only files in the source CSV file folder or  its sub folders can be used here.</li>
+						<li>Your CSV file should list <strong>only the file name</strong> for repository files.</li>
+					</ul>
+				</span>
 			</div>
 		</div>
 		<div id="tabs-3">
