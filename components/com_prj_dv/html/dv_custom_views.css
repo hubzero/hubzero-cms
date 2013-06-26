@@ -1,0 +1,17 @@
+#dv_customizer_content ul { 
+	list-style-type: none;
+	margin: 0;
+	padding: 10px 0 10px 0;
+	border: 1px #AAA solid;
+	margin-right: 10px;
+	background-color: #FFF;
+}
+
+#dv_customizer_content li {
+	margin: 0 5px 5px 5px; 
+	padding: 5px; 
+	font-size: 0.95em; 
+	border: 1px #000 solid;
+	cursor: pointer; 
+	background-color: #EFEFEF;
+}
