@@ -307,6 +307,8 @@ class plgProjectsFiles extends JPlugin
 					break;
 				
 				case 'diskspace':
+				case 'optimize':
+				case 'advoptimize':
 					$arr['html'] 	= $this->diskspace( 
 						$option, $project, $this->_case, 
 						$this->_uid, $this->_task, $this->_config, $this->_app); 
@@ -319,6 +321,10 @@ class plgProjectsFiles extends JPlugin
 				case 'compile': 
 					$arr['html'] 	= $this->compile(); 
 					break;
+					
+				case 'serve': 
+					$arr['html'] 	= $this->serve(); 
+					break;				
 					
 				// Connections
 				case 'connect':
@@ -380,6 +386,8 @@ class plgProjectsFiles extends JPlugin
 		
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
+		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');		
 					
 		// Something is wrong
 		if (!$path)
@@ -499,7 +507,8 @@ class plgProjectsFiles extends JPlugin
 		$view->quota 		= $view->params->get('quota') 
 							? $view->params->get('quota') 
 							: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-		$view->fileparams 	= $this->_params;		
+		$view->fileparams 	= $this->_params;	
+		$view->sizelimit 	= ProjectsHTML::formatSize($this->_config->get('maxUpload', '104857600'));	
 		
 		return $view->loadTemplate();		
 	}
@@ -3104,6 +3113,73 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
+	 * Serve file (usually via public link)
+	 * 
+	 * @param   int  	$projectid
+	 * @return  void
+	 */
+	public function serve( $projectid = 0, $query = '')  
+	{
+		$data = json_decode($query);
+		
+		if (!isset($data->file) || !$projectid)
+		{
+			return false;
+		}
+		
+		$file = $data->file;
+		$disp = isset($data->disp) ? $data->disp : 'inline';
+		
+		$database =& JFactory::getDBO();
+		
+		// Instantiate a project
+		$obj = new Project( $database );
+		
+		// Get Project
+		$project = $obj->getProject($projectid);
+		
+		// Load component configs
+		$config =& JComponentHelper::getParams('com_projects');
+		
+		// Get project path
+		$path  = ProjectsHelper::getProjectPath($project->alias, 
+				$config->get('webpath'), 1);
+		$prefix = $config->get('offroot', 0) ? '' : JPATH_ROOT;
+		
+		$serve = $prefix . $path . DS . $file;
+		
+		// Ensure the file exist
+		if (!file_exists($serve)) 
+		{				
+			// Throw error
+			JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
+			return;
+		}
+		
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+				
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($serve);
+		$xserver->disposition($disp);
+		$xserver->acceptranges(false); // @TODO fix byte range support
+		$xserver->saveas(basename($file));
+
+		if (!$xserver->serve()) 
+		{
+			// Should only get here on error
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+		} 
+		else 
+		{
+			exit;
+		}
+
+		return;
+	}
+	
+	/**
 	 * Download file(s)
 	 * 
 	 * @return     void, redirect
@@ -3248,12 +3324,10 @@ class plgProjectsFiles extends JPlugin
 			
 			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
 			{				
-				// Non ASCII formats
-				$non_ASCII_formats = array( 'doc', 'docx', 'pdf', 'eps', 'ai');
-				$ASCII = in_array(strtolower($ext), $non_ASCII_formats) ? 0 : 1;
+				$binary = $this->_git->isBinary($this->prefix . $path . DS . $fpath);
 				
-				if ($ASCII)
-				{
+				if (!$binary)
+				{				
 					$content = $this->_git->showTextContent($fpath);
 					$content = $content ? ProjectsHtml::shortenText($content, 200) : '';
 				}
@@ -3292,7 +3366,7 @@ class plgProjectsFiles extends JPlugin
 			{
 				$fullpath 	= $this->prefix . $archive['path'];
 				$file  		= $archive['name'];
-				$serveas	= 'Project Files ' . date('Y-m-d H:i:s');
+				$serveas	= 'Project Files ' . date('Y-m-d H:i:s') . '.zip';
 				$deleteTemp = 1;
 			}
 			else
@@ -3741,7 +3815,7 @@ class plgProjectsFiles extends JPlugin
 					$pdfPath 	= JPATH_ROOT . $outputDir . DS . $content;
 					$exportPath = JPATH_ROOT . $outputDir . DS . $tempBase . '%d.jpg';
 					
-					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -sOutputFile=$exportPath $pdfPath 2>&1", $out );
+					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=$exportPath $pdfPath 2>&1", $out );
 					
 					if (is_file(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg'))
 					{
@@ -3987,7 +4061,10 @@ class plgProjectsFiles extends JPlugin
 				$success = $this->_sync( $servicename, $path, $queue, $auto);
 				
 				// Unlock sync
-				$this->lockSync($servicename, true);
+				if ($success)
+				{
+					$this->lockSync($servicename, true);
+				}
 				
 				// Success message
 				$this->_rSync['message'] = JText::_('Successfully synced');
@@ -4143,7 +4220,7 @@ class plgProjectsFiles extends JPlugin
 			// Add request to queue
 			if ($queue && $syncQueue == 0)
 			{
-				//$obj->saveParam($this->_project->id, $service . '_sync_queue', 1);
+				$obj->saveParam($this->_project->id, $service . '_sync_queue', 1);
 				return false;	
 			}
 				
@@ -4173,10 +4250,7 @@ class plgProjectsFiles extends JPlugin
 	protected function _sync ($service = 'google', $path = '', $queue = false, $auto = false) 
 	{
 		$path = $path ? $path : $this->getProjectPath();
-				
-		// Clean up status
-		$this->_writeToFile('');
-				
+								
 		// Lock sync
 		if (!$this->lockSync($service, false, $queue))
 		{	
@@ -4188,15 +4262,25 @@ class plgProjectsFiles extends JPlugin
 			
 			return false;
 		}
+		
+		// Clean up status
+		$this->_writeToFile('');
 				
 		// Record sync status
-		$this->_writeToFile(ucfirst($service) . ' '. JText::_('sync started') );
+		$this->_writeToFile(ucfirst($service) . ' '. JText::_('sync started') );		
 								
 		// Get time of last sync
 		$obj = new Project( $this->_database );
 		$obj->load($this->_project->id);
 		$pparams = new JParameter( $obj->params );		
 		$synced = $pparams->get($service . '_sync', 1);
+		
+		// Get disk usage
+		$diskUsage = $this->getDiskUsage($path, $this->prefix, true);
+		$quota 	   = $pparams->get('quota')
+					? $pparams->get('quota')
+					: ProjectsHtml::convertSize( floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+		$avail 	   = $quota - $disUsage;
 		
 		// Last synced remote/local change
 		$lastRemoteChange = $pparams->get($service . '_last_remote_change', NULL);
@@ -4247,7 +4331,8 @@ class plgProjectsFiles extends JPlugin
 		$output .= 'Time passed since last sync: ' . $passed . "\n";		
 		$output .= 'Local sync start time: '.  $startTime . "\n";
 		$output .= 'Initiated by (user ID): '.  $this->_uid . ' [';
-		$output .= ($auto == true) ? 'Auto sync]'. "\n" : 'Manual sync request]'. "\n";
+		$output .= ($auto == true) ? 'Auto sync' : 'Manual sync request';
+		$output .= ']' . "\n";
 		
 		// Record sync status
 		$this->_writeToFile(JText::_('Getting remote directory structure') );
@@ -4263,7 +4348,7 @@ class plgProjectsFiles extends JPlugin
 		$this->_writeToFile( JText::_('Collecting local changes') );
 						
 		// Collector for local renames
-		$localRenames 	= array();
+		$localRenames = array();
 		
 		$fromLocal = ($synced == $lastLocalChange || !$lastLocalChange) ? $synced : $lastLocalChange;
 		
@@ -4322,7 +4407,7 @@ class plgProjectsFiles extends JPlugin
 			$output .= 'Timed remote changes since ' . $from . ' (' . count($timedRemotes) . '):' . "\n";
 			foreach ($timedRemotes as $tr => $trinfo)
 			{
-				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . ' status ' . $trinfo['status'] . "\n";
+				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . ' status ' . $trinfo['status'] . ' ' . $remote['fileSize'] . "\n";
 			}
 			
 			// Pick up missed changes			
@@ -4350,7 +4435,7 @@ class plgProjectsFiles extends JPlugin
 		
 		if ($this->_connect->getError())
 		{
-			$this->_rSync['error'] = 'Oups! Sync error: ' . $this->_connect->getError() ;
+			$this->_rSync['error'] = 'Oups! Sync error: ' . $this->_connect->getError();
 			return false;
 		}
 								
@@ -4573,7 +4658,7 @@ class plgProjectsFiles extends JPlugin
 		// Get very last received remote change
 		if (!empty($remotes))
 		{
-			$tChange = NULL;
+			$tChange = strtotime($lastRemoteChange);
 			foreach ($remotes as $r => $ri)
 			{
 				$tChange = $ri['time'] > $tChange ? $ri['time'] : $tChange;
@@ -4624,7 +4709,9 @@ class plgProjectsFiles extends JPlugin
 				// Record sync status
 				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
 				
-				$output .= ' * Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'] . "\n";
+				$output .= ' * Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'];
+				$output .= $remote['fileSize'] ? ' - ' . $remote['fileSize'] . ' bytes' : '';
+				$output .= "\n";
 				
 				// Do we have a matching local change?
 				$match = !empty($locals) 
@@ -4751,7 +4838,7 @@ class plgProjectsFiles extends JPlugin
 					{
 						// Update
 						if ($remote['type'] == 'file')
-						{	
+						{								
 							// Check md5 hash - do we have identical files?
 							$md5Checksum = hash_file('md5', $this->prefix . $path . DS . $filename);
 							if ($remote['md5'] == $md5Checksum)
@@ -4763,8 +4850,11 @@ class plgProjectsFiles extends JPlugin
 							}
 							else
 							{
-								// Download remote file
-								if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->prefix . $path ))
+								// Check file size against quota ??
+								
+								// Download remote file								
+								if ($this->_connect->downloadFileCurl($service, $remote['url'], $this->prefix . $path . DS . $remote['local_path']))
+								//if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->prefix . $path ))
 								{
 									// Git add & commit
 									$this->_git->gitAdd($path, $filename, $commitMsg);
@@ -4812,8 +4902,29 @@ class plgProjectsFiles extends JPlugin
 						}
 						else
 						{
+							// Check against quota
+							$checkAvail = $avail - $remote['fileSize'];
+							if ($checkAvail <= 0)
+							{
+								// Error
+								$output .= '[error] not enough space for '. $filename . ' (' . $remote['fileSize'] 
+										. ' bytes) avail space:' . $checkAvail . "\n";
+								$failed[] = $filename;
+								
+								// Record sync status
+								$this->_writeToFile(JText::_('Skipping (size over limit)') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
+								
+								continue;
+							}
+							else
+							{
+								$avail   = $checkAvail; 
+								$output .= 'file size ok: ' . $remote['fileSize'] . ' bytes ' . "\n";
+							}
+							
 							// Download remote file
-							if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->prefix . $path ))
+							if ($this->_connect->downloadFileCurl($service, $remote['url'], $this->prefix . $path . DS . $remote['local_path']))
+							//if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->prefix . $path ))
 							{
 								// Git add & commit
 								$this->_git->gitAdd($path, $filename, $commitMsg);
@@ -4861,7 +4972,7 @@ class plgProjectsFiles extends JPlugin
 			$output .= 'No remote changes since last sync' . "\n";
 		}
 		
-		// Hold on by one second
+		// Hold on by one second (required as a forced breather before next sync request)
 		sleep(1);
 		
 		// Log time
@@ -4880,8 +4991,8 @@ class plgProjectsFiles extends JPlugin
 		}
 														
 		// Save sync time and last sync ID
-		if (empty($failed))
-		{
+	//	if (empty($failed))
+	//	{
 			$obj = new Project( $this->_database );
 			
 			// Save sync time
@@ -4898,11 +5009,11 @@ class plgProjectsFiles extends JPlugin
 
 			$output .= 'Saving last synced local change at: ' . $lastLocalChange . "\n";
 			$obj->saveParam($this->_project->id, $service . '_last_local_change', $lastLocalChange);			
-		}
+	/*	}
 		else
 		{
 			$output .= 'Some item(s) failed to sync, will repeat' . "\n";
-		}
+		} */
 				
 		// Debug output
 		//$this->_rSync['debug'] = '<pre>' . $output . '</pre>'; // on-screen debugging
@@ -4987,6 +5098,12 @@ class plgProjectsFiles extends JPlugin
 		{
 			// Check remotely generated thumbnail
 			$image = $to_path . DS . $rthumb;
+			
+			// Copy this over as local thum
+			if (JFile::copy(JPATH_ROOT. $to_path . DS . $rthumb, JPATH_ROOT . $to_path . DS . $hashed))
+			{
+				JFile::delete(JPATH_ROOT. $to_path . DS . $rthumb);
+			}
 		}
 		elseif ($hashed) 
 		{
@@ -5174,6 +5291,10 @@ class plgProjectsFiles extends JPlugin
 			)
 		);
 		
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
+		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
+		
 		// Make sure Git helper is included
 		$this->getGitHelper();
 		
@@ -5181,10 +5302,30 @@ class plgProjectsFiles extends JPlugin
 		$path = $this->getProjectPath($project->alias, $case);
 		$this->_git->iniGit($path);
 		
-		// Get used space 
+		$route  = 'index.php?option=' . $option . a . 'alias=' . $project->alias;
+
+		$url 	= ($case != 'files' && $app && $app->name) 
+			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $app->name) 
+			: JRoute::_($route . a . 'active=files' . a . 'action=diskspace');
+		
+		// Get used space (Git dir)
 		if (is_dir($this->prefix . $path)) 
 		{
 			chdir($this->prefix. $path);
+			
+			// Run git-gc
+			if ($action == 'optimize' || $action == 'advoptimize')
+			{
+				$command = $action == 'advoptimize' ? 'gc --aggressive' : 'gc';
+				$this->_git->callGit($path, $command);
+				
+				// Save last run
+				
+				$this->_message = array('message' => 'Disk space optimized', 'type' => 'success');
+				$this->_referer = $url;
+				return;
+			}
+			
 			exec('du -sk .git', $out);
 
 			if (!empty($out)) 
@@ -5201,16 +5342,25 @@ class plgProjectsFiles extends JPlugin
 		{
 			$view->dirsize = 0;
 		}
-		
-		// Get all publications in project	
-		// TBD
-		
-		// Get used published space
-		//TBD
-		
-		$view->total = $this->getFiles($path, '', 0, 1);		
+						
+		// Get total space in files dir
+		$dpath = str_replace('/files', '', $path);		
+		chdir($this->prefix. $dpath);
+		exec('du -sk files', $out);
+
+		if (!empty($out) && isset($out[1])) 
+		{
+			$tSize = str_replace('files', '', trim($out[1]));
+			$view->totalspace = $tSize*1024;
+		}
+		else
+		{
+			$view->totalspace = 0;
+		}
+				
+		$view->total  = $this->getFiles($path, '', 0, 1);		
 		$view->params = new JParameter( $project->params );
-		$quota = $view->params->get('quota');
+		$quota 		  = $view->params->get('quota');
 		$view->quota = $quota 
 			? $quota 
 			: ProjectsHtml::convertSize( floatval($config->get('defaultQuota', '1')), 'GB', 'b');
@@ -5222,10 +5372,8 @@ class plgProjectsFiles extends JPlugin
 		$view->option 	= $option;
 		$view->config 	= $config;
 		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
-		if ($this->getError()) 
-		{
-			$view->setError( $this->getError() );
-		}
+		$view->pparams 	= $this->_params;
+		
 		return $view->loadTemplate();		
 	}
 
@@ -5949,8 +6097,10 @@ class plgProjectsFiles extends JPlugin
 	 * Get used disk space in path
 	 * 
 	 * @param      string 	$path
+	 * @param      string 	$prefix
+	 * @param      boolean 	$git
 	 *
-	 * @return     mixed
+	 * @return     integer
 	 */
 	public function getDiskUsage($path = '', $prefix = '', $git = true) 
 	{

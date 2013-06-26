@@ -125,6 +125,30 @@ class ProjectsInstall extends JObject {
 	}
 	
 	/**
+	 * Install public stamps
+	 * 
+	 * @return     void
+	 */	
+	public function installPubStamps( ) 
+	{
+		$query = "CREATE TABLE `jos_project_public_stamps` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `stamp` varchar(30) NOT NULL DEFAULT '0',
+		  `projectid` int(11) NOT NULL DEFAULT '0',
+		  `listed` tinyint(1) NOT NULL DEFAULT '0',
+		  `type` varchar(50) NOT NULL DEFAULT 'files',
+		  `reference` text NOT NULL,
+		  `expires` datetime DEFAULT NULL,
+		  `created` datetime DEFAULT NULL,
+		  `created_by` int(11) DEFAULT NULL,
+		  PRIMARY KEY (`id`),
+		  UNIQUE KEY `stamp` (`stamp`)
+		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
+		
+		$this->runQuery($query);
+	}
+	
+	/**
 	 * Install remote connections
 	 * 
 	 * @return     void

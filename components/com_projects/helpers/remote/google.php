@@ -472,8 +472,9 @@ class ProjectsGoogleHelper extends JObject
 
 					$fpath = $lpath ? $lpath . DS . $title : $title;
 						
-					$synced	= isset($conIds[$doc['id']]) ? $conIds[$doc['id']]['synced'] : NULL;
-					$md5Checksum = isset($doc['md5Checksum']) ? $doc['md5Checksum'] : NULL;
+					$synced			= isset($conIds[$doc['id']]) ? $conIds[$doc['id']]['synced'] : NULL;
+					$md5Checksum 	= isset($doc['md5Checksum']) ? $doc['md5Checksum'] : NULL;
+					$fileSize 		= isset($doc['fileSize']) ? $doc['fileSize'] : NULL;
 										
 					// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
 					$fpath = ProjectsGoogleHelper::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'], $connections, $remotes, $duplicates);
@@ -516,7 +517,8 @@ class ProjectsGoogleHelper extends JObject
 						'md5' 		=> $md5Checksum,
 						'mimeType'	=> $doc['mimeType'],
 						'thumb'		=> $thumb,
-						'rename'	=> $rename
+						'rename'	=> $rename,
+						'fileSize'	=> $fileSize
 					);
 					
 					if (preg_match("/.folder/", $doc['mimeType']))
@@ -726,7 +728,7 @@ class ProjectsGoogleHelper extends JObject
 		
 		$parameters = array(
 			'q' => $q,
-			'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels/trashed,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
+			'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels/trashed,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
 		);
 		
 		// Get a list of files in remote folder
@@ -748,8 +750,8 @@ class ProjectsGoogleHelper extends JObject
 					if ($since && $changed <= 0 )
 					{
 						$skip = 1;
-					}					
-					
+					}
+										
 					$converted 	= preg_match("/google-apps/", $item['mimeType']) && !preg_match("/.folder/", $item['mimeType']) ? 1 : 0;
 					$url		= isset($item['downloadUrl']) ? $item['downloadUrl'] : '';
 					$original	= isset($item['originalFilename']) ? $item['originalFilename'] : '';
@@ -782,8 +784,9 @@ class ProjectsGoogleHelper extends JObject
 
 					$fpath = $lpath ? $lpath . DS . $title : $title;
 						
-					$synced	= isset($conIds[$item['id']]) ? $conIds[$item['id']]['synced'] : NULL;
+					$synced		 = isset($conIds[$item['id']]) ? $conIds[$item['id']]['synced'] : NULL;
 					$md5Checksum = isset($item['md5Checksum']) ? $item['md5Checksum'] : NULL;
+					$fileSize	 = isset($item['fileSize']) ? $item['fileSize'] : NULL;
 					
 					/// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
 					$fpath = ProjectsGoogleHelper::buildDuplicatePath($item['id'], $fpath, $item['mimeType'], $connections, $remotes, $duplicates);
@@ -809,6 +812,21 @@ class ProjectsGoogleHelper extends JObject
 						}
 					}
 					
+					// Check that file was last synced after modified date	
+					// (important to pick up failed updates)
+					if (isset($conIds[$item['id']]))
+					{
+						if ($conIds[$item['id']]['modified'] < gmdate('Y-m-d H:i:s', $time))
+						{
+							$skip = 0;
+						}
+					}	
+					elseif ($status == 'A')
+					{
+						// Never skip new files
+						$skip = 0;
+					}		
+					
 					if (!$skip)
 					{
 						$remotes[$fpath] = array(
@@ -828,7 +846,8 @@ class ProjectsGoogleHelper extends JObject
 							'md5' 		=> $md5Checksum,
 							'mimeType'	=> $item['mimeType'],
 							'thumb'		=> $thumb,
-							'rename'	=> $rename
+							'rename'	=> $rename,
+							'fileSize'	=> $fileSize
 						);
 					}	
 										

@@ -774,7 +774,7 @@ HUB.ProjectPublications = {
 						}
 						if (proceed == 1) 
 						{
-							HUB.ProjectFiles.submitViaAjax($('#upload-form'), 'Uploading file(s)... Please wait');	
+							HUB.ProjectFiles.submitViaAjax('Uploading file(s)... Please wait');	
 							$('#upload-form').submit();						
 						}					
 					}				

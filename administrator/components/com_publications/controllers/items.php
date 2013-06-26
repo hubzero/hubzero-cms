@@ -858,9 +858,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 			}
 
 			// Save version ID
-			$vid = $row->id;
-			
-			
+			$vid = $row->id;						
 		}
 		else {
 			// Delete all versions

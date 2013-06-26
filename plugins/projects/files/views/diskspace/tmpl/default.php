@@ -27,6 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $class = $this->case == 'apps' ? 'apps' : 'files';
 
+$minGitSize = 61440;
+
 // Check used space against quota (percentage)
 $inuse = round((($this->dirsize * 100 )/ $this->quota), 1);
 if($this->total > 0 && $inuse < 1) {
@@ -35,6 +37,11 @@ if($this->total > 0 && $inuse < 1) {
 		$inuse = 0.01;
 	}
 }
+$working = $this->totalspace - $this->dirsize;
+$actual  = $working > 0 ? round((($working * 100 )/ $this->quota), 1) : NULL; 
+$versions = $this->dirsize - $working;
+$versions = $versions > $minGitSize ? ProjectsHtml::formatSize($versions) : 0;
+
 $inuse = ($inuse > 100) ? 100 : $inuse;
 $quota = ProjectsHtml::formatSize($this->quota);
 $used  = ProjectsHtml::formatSize($this->dirsize);
@@ -88,14 +95,34 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 	<div id="disk-usage" <?php if($warning) { echo 'class="quota-warning"'; } ?>>
 		<div class="disk-usage-wrapper">
 			<h3><?php echo ($this->action != 'admin') ? JText::_('COM_PROJECTS_FILES_QUOTA').': '.$quota : JText::_('COM_PROJECTS_FILES_DISK_USAGE') ; ?></h3>
+				<span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED').' ('.$used.' '.JText::_('COM_PROJECTS_OUT_OF').' '.$quota.')'; ?></span></span>
 			<div id="indicator-wrapper">
-				<span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED').' ('.$used.' '.JText::_('COM_PROJECTS_OUT_OF').' '.$quota.')'; ?></span></span>
+				<span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span>	<?php if ($actual > 0) { ?>
+					<span id="actual-area" class="actual:<?php echo $actual; ?>">&nbsp;</span>
+					<?php } ?>
 			</div>
 			
 			<div id="usage-labels">
-					<span class="l-regular">&nbsp;</span><?php echo JText::_('COM_PROJECTS_FILES_REGULAR_FILES').' ('.$used.')'; ?>
+					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').' ('.ProjectsHtml::formatSize($working).')'; ?>
+					<?php if ($versions > 0) { ?>
+					<span class="l-regular">&nbsp;</span><?php echo $this->action == 'admin' ? JText::_('Versions') : JText::_('Version History*') ; echo ' (' . $versions . ')'; ?>
+					<?php } ?>
 					<?php if($warning) { ?><span class="approaching-quota"><?php echo ($inuse == 100) ? JText::_('COM_PROJECTS_FILES_OVER_QUOTA')  : JText::_('COM_PROJECTS_FILES_APPROACHING_QUOTA') ; ?></span><?php } ?>
 					<span class="l-unused">&nbsp;</span><?php echo JText::_('COM_PROJECTS_FILES_UNUSED_SPACE').' ('.$unused.')'; ?>
 			</div>
 		</div>
 	</div>
+	<?php if ($versions && $this->action != 'admin') { ?>
+	<p class="mini faded"><?php echo JText::_('COM_PROJECTS_FILES_ABOUT_HISTORY_SPACE'); ?></p>
+	<?php } ?>
+
+	<?php if ($this->action != 'admin' && $this->project->role == 1 
+		&& $this->case == 'files' && $this->pparams->get('diskspace_options') && $versions > 0) { ?>
+	<div id="disk-manage">
+		<h4><?php echo JText::_('COM_PROJECTS_FILES_MANAGE_SPACE'); ?></h4>
+		<p class="mini faded"><?php echo JText::_('COM_PROJECTS_FILES_ABOUT_DISK_MANAGE_OPTIONS'); ?></p>
+		<p class="disk-manage-option"><a class="btn manage disk-usage-optimize" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=files' . a . 'action=optimize'); ?>"><?php echo JText::_('COM_PROJECTS_FILES_OPTIMIZE'); ?></a><span class="diskmanage-about"><?php echo JText::_('COM_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE'); ?></span></p>
+		
+		<p class="disk-manage-option"><a class="btn manage disk-usage-optimize" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=files' . a . 'action=advoptimize'); ?>"><?php echo JText::_('COM_PROJECTS_FILES_OPTIMIZE_ADV'); ?></a><span class="diskmanage-about"><?php echo JText::_('COM_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE_ADV'); ?></span></p>
+	</div>
+	<?php } ?>

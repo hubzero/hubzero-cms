@@ -45,6 +45,16 @@ $mode = $this->page->params->get('mode', 'wiki');
 $obj = new WikiTags(JFactory::getDBO());
 $tags = $obj->get_tag_cloud(0, $this->config->get('admin', 0), $this->page->id);
 
+$project = JRequest::getVar( 'project', '', 'request', 'object' );
+
+$html = $this->revision->pagehtml;
+
+// Parse text for project file references
+$html = projectsHelper::parseProjectFileRefs($this->page, $this->revision->pagetext, $project->id, $project->alias, NULL, $html );
+
+// Fix up images
+$html = projectsHelper::wikiFixImages($this->page, $this->revision->pagetext, $project->id, $project->alias, NULL, $html, true);
+
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
@@ -93,7 +103,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 ?>
 <div class="main section">
 		<div class="wikipage">
-			<?php echo $this->revision->pagehtml; ?>
+			<?php echo $html; ?>
 		</div>
 		<p class="timestamp">
 			<?php echo JText::_('WIKI_PAGE_CREATED').' <time datetime="' . $first->created . '">'.JHTML::_('date', $first->created, $dateFormat, $tz).'</time>, '.JText::_('WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created . '">'.JHTML::_('date', $this->revision->created, $dateFormat, $tz) . '</time>'; ?>

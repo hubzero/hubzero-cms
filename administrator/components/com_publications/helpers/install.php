@@ -280,7 +280,7 @@ class PubInstall extends JObject {
 			$queries[] = "INSERT INTO `jos_publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
 						  VALUES ('4','Application','apps','simulation tool','0','0','4','')";
 			$queries[] = "INSERT INTO `jos_publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
-						  VALUES ('5','Series','series','publication collection','0','0','5','')";
+						  VALUES ('5','Series','series','publication collection','0','0','6','')";
 			$queries[] = "INSERT INTO `jos_publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
 						  VALUES ('6','Gallery','gallery','image/photo gallery','0','0','7','')";
 			$queries[] = "INSERT INTO `jos_publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 

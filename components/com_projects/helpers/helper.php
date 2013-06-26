@@ -284,7 +284,7 @@ class ProjectsHelper extends JObject {
 	 * @param      int $uid
 	 * @return     void
 	 */	
-	public function saveWikiAttachment( $page, $file, $uid )
+	public function saveWikiAttachment( $page, $file, $uid = 0 )
 	{
 		// Create database entry
 		$attachment 				= new WikiPageAttachment($this->_db);
@@ -292,6 +292,12 @@ class ProjectsHelper extends JObject {
 		$attachment->filename    	= $file;
 		$attachment->description 	= '';
 		$attachment->created     	= date('Y-m-d H:i:s', time());
+		
+		if (!$uid)
+		{
+			$juser =& JFactory::getUser();
+			$uid   = $juser->get('id');
+		}
 		$attachment->created_by  	= $uid;
 
 		if (!$attachment->check()) 
@@ -302,6 +308,7 @@ class ProjectsHelper extends JObject {
 		{
 			$this->setError($attachment->getError());
 		}
+		return $attachment->id;
 	}
 	
 	/**
@@ -836,5 +843,440 @@ class ProjectsHelper extends JObject {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Get path to wiki page images and files
+	 * 
+	 * @param      int 	$page
+	 *
+	 * @return     string
+	 */
+	public function getWikiPath( $id = 0)
+	{				
+		// Ensure we have an ID to work with
+		$listdir = JRequest::getInt('lid', 0);
+		$id = $id ? $id : $listdir;
+		
+		if (!$id)
+		{
+			return false;
+		}
+		
+		// Load wiki configs
+		$wiki_config =& JComponentHelper::getParams( 'com_wiki' ); 			
+		
+		$path =  DS . trim($wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
+
+		if (!is_dir(JPATH_ROOT . $path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create(JPATH_ROOT . $path, 0777)) 
+			{
+				return false;
+			}
+		}
+		
+		return $path;
+	}
+	
+	/**
+	 * Fix up internal image references
+	 * 
+	 *
+	 * @return     mixed
+	 */
+	public function wikiFixImages( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = true ) 
+	{
+		if (!$page || !$pagetext)
+		{
+			return $html;
+		}
+		
+		// Load component configs
+		$config =& JComponentHelper::getParams( 'com_projects' );
+		$option = 'com_projects';
+		
+		// Get project path
+		$projectPath = ProjectsHelper::getProjectPath(
+			$alias, 
+			$config->get('webpath', 0),
+			$config->get('offroot', 0)
+		);
+		
+		// Load wiki configs
+		$wiki_config =& JComponentHelper::getParams( 'com_wiki' ); 	
+		
+		// Get wiki upload path
+		$previewPath = ProjectsHelper::getWikiPath($page->id);		
+		
+		// Get joomla libraries
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+		
+		$database =& JFactory::getDBO();
+		
+		// Inlcude public stamps class
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+		}
+		else
+		{
+			return $html;
+		}
+		
+		// Get publication path
+		if ($publication)
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
+			
+			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+			$base_path = $pubconfig->get('webpath');
+			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, $base_path, 'wikicontent', $root = 0);
+			
+			if (!is_dir(JPATH_ROOT . $pubPath))
+			{
+				if (!JFolder::create( JPATH_ROOT . $pubPath, 0777 )) 
+				{
+					return $html;
+				}
+			}
+			
+			$previewPath = $pubPath;			
+		}
+		
+		// Get image extensions
+		$imgs = explode(',', $wiki_config->get('img_ext'));
+		array_map('trim', $imgs);
+		array_map('strtolower', $imgs);
+		
+		// Parse images
+		preg_match_all("'Image\\(.*?\\)'si", $pagetext, $images);
+		if (!empty($images))
+		{
+			$images = $images[0];
+													
+			foreach ($images as $image)
+			{
+				$ibody = str_replace('Image(' , '', $image);
+				$ibody = str_replace(')' , '', $ibody);
+				$args  = explode(',', $ibody);
+				$file  = array_shift($args);
+								
+				$fpath = $projectPath . DS . $file;
+				
+				$pubstamp = NULL;
+				
+				// Copy file to wiki dir if not there
+				if (is_file( $fpath ) && !is_file(JPATH_ROOT . $previewPath . DS . $file) && $copy == true)
+				{											
+					if (!is_dir(JPATH_ROOT . $previewPath . DS . dirname($file)))
+					{
+						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file), 0777 )) 
+						{
+							return $html;
+						}
+					}
+					
+					JFile::copy($fpath, JPATH_ROOT . $previewPath . DS . $file);
+				}
+				
+				// Get public stamp for file
+				$objSt = new ProjectPubStamp( $database );
+				if (is_file( $fpath ) && !$publication)
+				{
+					// Build reference
+					$reference = array(
+						'file'   => $file,
+						'disp' 	 => 'inline'
+					);
+					
+					if ($objSt->registerStamp($projectid, json_encode($reference), 'files'))
+					{
+						$pubstamp = $objSt->stamp;
+					}
+				}
+				elseif ($publication)
+				{
+					// Build reference
+					$reference = array(
+						'pid'	 => $publication->id,
+						'vid'	 => $publication->version_id,
+						'path'   => $file,
+						'folder' => 'wikicontent',
+						'disp'	 => 'inline'
+					);
+					
+					if ($objSt->registerStamp($projectid, json_encode($reference), 'publications'))
+					{
+						$pubstamp = $objSt->stamp;
+					}
+				}
+				
+				// Get link
+				if ($pubstamp)
+				{
+					$link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=' . $pubstamp;
+				}
+				else
+				{
+					$link = $previewPath . DS . $file;
+				}
+				
+				// Replace not found error
+				$href = '<a href="' . $link . '" rel="lightbox"><img src="' . $link . '" /></a>';				
+				$replace = '(Image(' . $ibody . ') failed - File not found)' . JPATH_ROOT . $previewPath . DS . $file;
+
+				$fname = preg_quote($replace, '/');
+				$html = str_replace($replace, $href, $html);										
+				
+				// Replace reference
+				$replace = $page->scope. DS . $page->pagename . DS . 'Image:' . $file;
+				$replace = preg_quote($replace, '/');
+				$html = preg_replace("/\/projects\/$replace/", $link, $html);				
+			}
+		}
+		
+		return $html;			
+	}
+	
+	/**
+	 * Fix up references to other project notes
+	 * 
+	 *
+	 * @return     mixed
+	 */
+	public function parseNoteRefs( $page, $projectid, $masterscope = '', $publication = NULL, $html = '') 
+	{
+		if (!$page)
+		{
+			return $html;
+		}
+		
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+		}
+		else
+		{
+			return $html;
+		}
+		
+		$database =& JFactory::getDBO();
+		$pagename = $page->pagename;
+		
+		// Change all relative links to point to correct locations
+		$weed = DS . $masterscope . DS;
+		
+		$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
+		if (preg_match_all("/$regexp/siU", $html, $matches)) 
+		{    
+			foreach ($matches[2] as $match)
+			{
+				$pagename = str_replace($weed, '', $match);
+				$pagename = trim(str_replace('view', '', $pagename), DS);
+
+				$part  = dirname($pagename);
+				$scope = $masterscope;
+				$scope.= $part ? DS . $part : '';
+				
+				$objSt = new ProjectPubStamp( $database );
+
+				// Get page id
+				$page = new WikiPage( $database );		
+				if ($page->load( basename($pagename), $scope)) 
+				{								
+					$pubstamp = NULL;
+					
+					// Build reference
+					$reference = array(
+						'pageid'   => $page->id,
+						'pagename' => $page->pagename,
+						'revision' => NULL
+					);
+
+					if ($objSt->registerStamp($projectid, json_encode($reference), 'notes'))
+					{
+						$pubstamp = $objSt->stamp;	
+					}
+					
+					if ($publication)
+					{
+						$html = str_replace($weed. $pagename . DS . 'view', DS . 'publications' . DS . $publication->id 
+								. DS . 'wiki?s=' . $pubstamp, $html );
+					}
+					else
+					{
+						$html = str_replace($weed. $pagename . DS . 'view', DS . 'projects' . DS . 'get?s=' . $pubstamp, $html );
+					}
+				}
+			}
+		}
+		
+		return $html;
+	}
+	
+	/**
+	 * Fix up internal file references
+	 * 
+	 *
+	 * @return     mixed
+	 */
+	public function parseProjectFileRefs( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = false) 
+	{
+		if (!$page || !$pagetext || !$projectid || !$alias)
+		{
+			return $html;
+		}
+		
+		// Load component configs
+		$config =& JComponentHelper::getParams( 'com_projects' );
+		
+		// Get project path
+		$projectPath = ProjectsHelper::getProjectPath(
+			$alias, 
+			$config->get('webpath', 0),
+			$config->get('offroot', 0)
+		);
+		
+		$database =& JFactory::getDBO();
+		
+		// Get wiki upload path
+		$previewPath = ProjectsHelper::getWikiPath($page->id);
+		
+		if ($copy == true)
+		{
+			// Get joomla libraries
+			jimport('joomla.filesystem.folder');
+			jimport('joomla.filesystem.file');
+		}
+		
+		// Inlcude public stamps class
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+		}
+		else
+		{
+			return $html;
+		}
+		
+		// Get publication path
+		if ($publication)
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
+			
+			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+			$base_path = $pubconfig->get('webpath');
+			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, $base_path, 'wikicontent', $root = 0);
+			
+			if (!is_dir(JPATH_ROOT . $pubPath))
+			{
+				if (!JFolder::create( JPATH_ROOT . $pubPath, 0777 )) 
+				{
+					return $html;
+				}
+			}
+			
+			$previewPath = $pubPath;			
+		}
+		
+		// Parse files
+		preg_match_all("'File\\(.*?\\)'si", $pagetext, $files);
+		if (!empty($files))
+		{
+			$files = $files[0];
+								
+			foreach ($files as $file)
+			{
+				$ibody = str_replace('File(' , '', $file);
+				$ibody = str_replace(')' , '', $ibody);
+				$args  = explode(',', $ibody);
+				$file  = array_shift($args);
+
+				$fpath = $projectPath . DS . $file;
+				
+				$pubstamp = NULL;
+				
+				if (is_file( $fpath ) && $copy == true && !is_file(JPATH_ROOT . $previewPath . DS . $file))
+				{
+					// Copy if not there
+					if (!is_dir(JPATH_ROOT . $previewPath . DS . dirname($file)))
+					{
+						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file), 0777 )) 
+						{
+							return $html;
+						}
+					}
+
+					JFile::copy($fpath, JPATH_ROOT . $previewPath . DS . $file);
+				}
+				
+				// Get public stamp for file
+				$objSt = new ProjectPubStamp( $database );
+				if (is_file( $fpath ) && !$publication)
+				{
+					// Build reference
+					$reference = array(
+						'file'   => $file,
+						'disp' 	 => 'attachment'
+					);
+					
+					if ($objSt->registerStamp($projectid, json_encode($reference), 'files'))
+					{
+						$pubstamp = $objSt->stamp;
+					}
+				}
+				elseif ($publication)
+				{
+					// Build reference
+					$reference = array(
+						'pid'	 => $publication->id,
+						'vid'	 => $publication->version_id,
+						'path'   => $file,
+						'folder' => 'wikicontent',
+						'disp'	 => 'attachment'
+					);
+					
+					if ($objSt->registerStamp($projectid, json_encode($reference), 'publications'))
+					{
+						$pubstamp = $objSt->stamp;
+					}
+				}				
+				
+				if ($pubstamp)
+				{
+					$link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=' . $pubstamp;
+				}
+				else
+				{
+					$link = $previewPath . DS . $file;
+				}
+				
+				// Replace not found error				
+				$href = '<a href="' . $link . '">' . basename($file) . '</a>';				
+				$fname = preg_quote($file, '/');
+				$html = preg_replace("/\\(file:". $fname . " not found\\)/", $href, $html);			
+				
+				// Replace reference
+				$replace = $page->scope. DS . $page->pagename . DS . 'File:' . $file;
+				$replace = preg_quote($replace, '/');
+				$html = preg_replace("/\/projects\/$replace/", $link, $html);
+				
+				// Replace image reference
+				$replace = $page->scope. DS . $page->pagename . DS . 'Image:' . $file;
+				$replace = preg_quote($replace, '/');
+				$html = preg_replace("/\/projects\/$replace/", $link, $html);
+			}
+		}
+		
+		return $html;			
 	}
 }

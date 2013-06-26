@@ -367,6 +367,7 @@ class ProjectsHtml
 	public function formatSize($file_size, $round = 0) 
 	{
 		if ($file_size >= 1073741824) 
+	//	if ($file_size >= 107374182) 
 		{
 			$file_size = round(($file_size / 1073741824 * 100), $round) / 100 . 'GB';
 		} 
@@ -378,7 +379,7 @@ class ProjectsHtml
 		{
 			$file_size = round(($file_size / 1024 * 100) / 100, $round) . 'KB';
 		} 
-		else 
+		elseif ($file_size < 1024) 
 		{
 			$file_size = $file_size . 'b';
 		}
@@ -502,12 +503,14 @@ class ProjectsHtml
 			case 'rtf':
 			case 'sty':
 			case 'cls':
+			case 'log':
 				$icon = 'page_white_text';
 				break;
 			case 'sql':
 				$icon = 'page_white_sql';
 				break;
 			case 'dmg':
+			case 'exe':
 				$icon = 'page_white_gear';
 				break;
 			case 'eps':
@@ -813,11 +816,12 @@ class ProjectsHtml
 	 * @param      boolean $useletters
 	 * @return     string HTML
 	 */	
-	public function generateCode( $minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1 )
+	public function generateCode( $minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1, $mixedcaps = false )
 	{	
 		$key = '';
 		$charset = '';
-		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";		
+		if ($useletters && $mixedcaps) $charset .= "abcdefghijklmnopqrstuvwxyz";
 		if ($usenumbers) $charset .= "0123456789";
 		if ($usespecial) $charset .= "~@#$%^*()_+-={}|][";
 		if ($minlength > $maxlength) $length = mt_rand ($maxlength, $minlength);

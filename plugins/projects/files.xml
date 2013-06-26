@@ -70,7 +70,14 @@
 		<param name="texpath" type="text" menu="hide" default="" label="Path to LaTeX" description="Path to LaTeX" />
 		<param name="gspath" type="text" menu="hide" default="" label="Path to Ghostscript" description="Path to Ghostscript" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="helplink" type="text" menu="hide" default="" label="Interface help link" description="URL to page describing interface features" />
+		<param name="diskspace_options" type="radio" default="0" label="Show disk space management options" description="Enable managers to optimize disk space via Git commands">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="enable_publinks" type="radio" default="0" label="Enable public links" description="Enable project team members to generate public links to files and list/unlist selected items on project public page">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </install>

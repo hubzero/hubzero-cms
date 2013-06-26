@@ -169,8 +169,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet(DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'projects.css');
-		$document->addStyleSheet(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'files.css');		
-		
+		$document->addStyleSheet(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
+		$document->addScript(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');		
+						
 		// Do we need to incule extra scripts?
 		$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
 		$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;

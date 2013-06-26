@@ -34,6 +34,8 @@ $this->project->about = rtrim(stripslashes(ProjectsHtml::cleanText($this->projec
 ximport('Hubzero_Wiki_Parser');
 $p =& Hubzero_Wiki_Parser::getInstance();
 
+ximport('Hubzero_Plugin_View');	
+
 //import the wiki parser
 $wikiconfig = array(
 	'option'   => $this->option,
@@ -137,10 +139,55 @@ else
 			</tbody>
 		</table>
 	</div>
-	<?php if($this->params->get('team_public', 0)) { ?>
-	<?php 
-		// Show team
-		ximport('Hubzero_Plugin_View');		
+	
+	<?php if ($this->params->get('publications_public', 0)) 
+	{ 
+		// Show team		
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'publications',
+				'name'=>'publist'
+			)
+		);
+		$view->option 	= $this->option;
+		$view->project 	= $this->project;
+		echo $view->loadTemplate();
+	 } ?>
+	
+	<?php if ($this->params->get('files_public', 0)) 
+	{ 
+		// Show team	
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'files',
+				'name'=>'publist'
+			)
+		);
+		$view->option 	= $this->option;
+		$view->project 	= $this->project;
+		echo $view->loadTemplate();
+	 } ?>
+	
+	<?php if ($this->params->get('notes_public', 0)) 
+	{ 
+		// Show team	
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'notes',
+				'name'=>'publist'
+			)
+		);
+		$view->option 	= $this->option;
+		$view->project 	= $this->project;
+		echo $view->loadTemplate();
+	 } ?>
+	
+	<?php if ($this->params->get('team_public', 0)) 
+	{ 
+		// Show team	
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'=>'projects',
@@ -149,13 +196,12 @@ else
 				'layout'=>'horizontal'
 			)
 		);
-		$view->option = $this->option;
-		$view->project = $this->project;
-		$view->goto = 'alias='.$this->project->alias;
-		$view->team = $this->team;
+		$view->option 	= $this->option;
+		$view->project 	= $this->project;
+		$view->goto 	= 'alias='.$this->project->alias;
+		$view->team 	= $this->team;
 		echo $view->loadTemplate();
-	?>
-	<?php } ?>
+	 } ?>
   </div><!-- / .subject -->
  </div><!-- / .main section -->
 </div>

@@ -38,10 +38,10 @@ if (substr($path, -1, 1) == DS) {
 // Get image handler
 $ih = new ProjectsImgHandler();
 ?>
-<div id="plg-header">
-	<h3 class="team"><?php echo JText::_('COM_PROJECTS_TEAM'); ?></h3>
+<div class="public-list-header">
+	<h3><?php echo JText::_('COM_PROJECTS_TEAM'); ?></h3>
 </div>
-<div id="team-horiz">
+<div id="team-horiz" class="public-list-wrap">
 	<?php
 	if(count($this->team) > 0) { 	?>		
 		<ul>

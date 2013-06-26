@@ -42,7 +42,7 @@ if ($this->getError()) {
 			<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 			<input type="hidden" name="<?php echo $this->do ?>" value="savedir" />
 			<label>
-				<span class="mini block prominent ipadded"><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?>:</span>
+				<span class="block">&nbsp;</span>
 				<img src="/plugins/projects/files/images/folder.gif" alt="" />
 				<input type="text" name="newdir" maxlength="100" value="untitled" />
 			</label>

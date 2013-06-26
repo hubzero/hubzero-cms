@@ -95,7 +95,7 @@ $lastsync = '';
 	<?php }		
 	 } ?>
 	
-	<?php if($this->case == 'files') 
+	<?php if ($this->case == 'files') 
 	{ ?>
 	<div id="plg-header">
 		<h3 class="<?php echo $class; ?>">
@@ -158,10 +158,10 @@ $lastsync = '';
 			$view->connect 		= $this->connect;
 			$view->oparams 		= $this->oparams;
 			$view->params		= $this->fileparams;
+			$view->sizelimit	= $this->sizelimit;
 			echo $view->loadTemplate();
 		 ?>
 	<?php } ?>
-
 	<div class="list-editing">
 		<p>			
 			<span id="manage_assets">

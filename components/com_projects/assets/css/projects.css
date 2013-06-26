@@ -1230,16 +1230,30 @@
 	#team-horiz {
 		display: block;
 	}
-	#team-horiz ul {
+	.public-list-wrap ul {
 		list-style: none;
 		margin: 0;
-		padding: 1em 1em 0 1em;
-		border-top: 5px solid #e2e2e2;
-		border-bottom: 5px solid #e2e2e2;
-		background: #f6f6f6;
+		padding: 0.5em 1em;
+		border-top: 4px solid #e2e2e2;
+		border-bottom: 4px solid #e2e2e2;
+		background: #f9f9f9;
+	}
+	.public-list-wrap ul li {
+		margin: 0.5em 0;
+		background: #FFFFFF;
+		border-bottom: 1px solid #f9f9f9;
+		padding-left: 1em;
+	}
+	.public-list-wrap img {
+		vertical-align: middle;
+	}
+	#team-horiz ul {
+		padding-top: 1em;
 	}
 	#team-horiz ul li {
 		display: block;
+		margin: 0;
+		padding: 0;
 		margin-right: 2em;
 		margin-bottom: 1em;
 		padding: 0;
@@ -1249,6 +1263,8 @@
 		font-size: 85%;
 		vertical-align: middle;
 		text-align: center;
+		background: none;
+		border: none;
 	}
 	#team-horiz ul li.clear {
 		float: none;
@@ -1257,6 +1273,18 @@
 		height: 0;
 		margin: 0;
 		padding: 0;
+	}
+	.public-list-info {
+		color: #ccc;
+		margin-left: 1em;
+		font-size: 85%;
+	}
+	.public-list-info a {
+		color: #999;
+	}
+	.public-list-header h3 {
+		margin-top: 2em;
+		margin-bottom: 0.3em;
 	}
 	
 /* Prev/next paging
@@ -1762,6 +1790,13 @@
 	}
 	#abox-content p {
 		margin: 0.5em 0;
+	}
+	#abox-content p.about {
+		margin: 1em 0;
+		color: #666;
+		padding: 0.5em 1em;
+		background: #f6f7f9;
+		font-size: 85%;
 	}
 	#abox-content p.anote, .anote {
 		font-size: 85%;
@@ -2861,6 +2896,9 @@
 	.leftalign {
 		text-align: left;
 	}
+	.rightalign {
+		text-align: right;
+	}
 	.indented {
 		margin-left: 1.5em;
 	}
@@ -2999,6 +3037,7 @@
 		color: #6699ce;
 		cursor: pointer;
 	}
+
 	
 /* Back-end 
 --------------------------------------------- */
@@ -3110,16 +3149,16 @@
 	
 	@media all and (max-width: 800px) {
 		#plg-content .aside {
-			/*display: none;*/
 			display: block;
 			margin: 0;
-			width: 100%;
 			float: none;
 			min-height: 0;
+			display: none;
 		}
 		#plg-content .subject {
 			margin-right: 0;
 			min-width: 400px;
+			width: 90%;
 			margin-right: 0;
 		}
 		.dragbox {

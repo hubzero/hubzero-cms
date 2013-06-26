@@ -267,6 +267,11 @@ class PublicationsControllerPublications extends Hubzero_Controller
 							$this->_title .= ': '.$this->_task_title;
 						}
 						break;
+						
+					case 'serve':
+					case 'wiki':
+						$this->_title .= ': '. JText::_('COM_PUBLICATIONS_SERVING_CONTENT');
+						break;
 					
 					default:
 						$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
@@ -1007,9 +1012,6 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			return;
 		}
 		
-		// Wiki reference?
-		
-		
 		$downloadable = array();
 		
 		// Make sure render type is available
@@ -1355,7 +1357,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	{			
 		// Get requested page id
 		$pageid = count($this->attachments) > 0 && $this->attachments[0]->object_id 
-				? $this->attachments[0]->object_id : JRequest::getInt( 'pageid', 0 );
+				? $this->attachments[0]->object_id : JRequest::getVar( 'p', 0 );
 		
 		// Get publication information (secondary page)
 		if (!$this->publication)
@@ -1386,7 +1388,33 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			$filters = array('role' => 1);
 			$this->attachments = $objPA->getAttachments($this->publication->version_id, $filters);			
 		}
+		
+		$revision = NULL;
+		
+		// Retrieve wiki page by stamp
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 				
+			// Incoming
+			$stamp = JRequest::getVar( 's', '' );
+
+			// Clean up stamp value (only numbers and letters)
+			$regex  = array('/[^a-zA-Z0-9]/');
+			$stamp  = preg_replace($regex, '', $stamp);
+			
+			// Load item reference
+			$objSt = new ProjectPubStamp( $this->database );
+			if ($stamp  && $objSt->loadItem($stamp) && $objSt->projectid == $this->publication->project_id)
+			{
+				$data     = json_decode($objSt->reference);
+				$pageid   = isset($data->pageid) ? $data->pageid : NULL;
+				$revision = isset($data->revision) ? $data->revsiion : NULL;
+			}				
+		}
+						
 		if (!$pageid)
 		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
@@ -1407,7 +1435,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$masterscope = 'projects' . DS . $this->publication->project_alias . DS . 'notes';
 		
 		// Get page information
-		$page = $helper->getWikiPage($pageid, $this->publication, $masterscope);	
+		$page = $helper->getWikiPage($pageid, $this->publication, $masterscope, $revision);	
 		if (!$page)
 		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
@@ -1417,11 +1445,15 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Push some styles to the template
 		$this->_getStyles();
 		
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . 'com_publications' . DS . 'assets' . DS . 'css' . DS . 'wiki.css');
+		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
+		
 		// Push some scripts to the template
 		$this->_getPublicationScripts();
 
 		// Set page title
-		$this->_buildTitle();
+		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($this->publication->title) );	
 		
 		// Set the pathway
 		$this->_buildPathway();			

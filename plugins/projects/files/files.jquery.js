@@ -58,9 +58,6 @@ HUB.ProjectFiles = {
 		// Enable confirmations on actions
 		HUB.ProjectFiles.addConfirms();
 		
-		// Enable disk usage indicator
-		HUB.ProjectFiles.diskUsage();
-		
 		// Enable file preview
 		HUB.ProjectFiles.previewFiles();
 		
@@ -134,6 +131,12 @@ HUB.ProjectFiles = {
 				$('#more-options').addClass('hidden');
 			}
 		});
+		
+		// Disk space indicator
+		if (HUB.ProjectFilesDiskSpace)
+		{
+			HUB.ProjectFilesDiskSpace.initialize();
+		}
 	},
 	
 	showDiffs: function() 
@@ -469,14 +472,14 @@ HUB.ProjectFiles = {
 		$('#c-expand').on('click', function(e){
 			e.preventDefault();
 			expand.val(1);
-			HUB.ProjectFiles.submitViaAjax(frm, 'Uploading file(s)... Please wait');
+			HUB.ProjectFiles.submitViaAjax('Uploading file(s)... Please wait');
 			frm.submit();
 			$('#confirm-box').remove();
 		});
 		
 		$('#c-archive').on('click', function(e){
 			e.preventDefault();
-			HUB.ProjectFiles.submitViaAjax(frm, 'Uploading file(s)... Please wait');
+			HUB.ProjectFiles.submitViaAjax('Uploading file(s)... Please wait');
 			frm.submit();
 			$('#confirm-box').remove();
 		});
@@ -486,13 +489,9 @@ HUB.ProjectFiles = {
 		$('#confirm-box').css('left', coord.left).css('top', coord.top + 200);	
 	},
 	
-	submitViaAjax: function (frm, txt)
+	submitViaAjax: function (txt)
 	{
 		var $ = this.jQuery;	
-		if (!frm)
-		{
-			return;
-		}
 		
 		$('#status-msg').css({'opacity':100});	
 		var log = $('#status-msg').empty().addClass('ajax-loading');
@@ -670,7 +669,7 @@ HUB.ProjectFiles = {
 										{
 											txt = 'Deleting file(s)...';
 										}
-										HUB.ProjectFiles.submitViaAjax($('#hubForm-ajax'), txt);
+										HUB.ProjectFiles.submitViaAjax(txt);
 										$.fancybox.close();
 									});
 								}
@@ -797,9 +796,8 @@ HUB.ProjectFiles = {
 			link.removeClass('hidden');
 		});	
 		
-		$('#submit-rename').on('click', function(e){
-			
-			HUB.ProjectFiles.submitViaAjax($('#hubForm-ajax'), 'Renaming selected item');
+		$('#submit-rename').on('click', function(e){			
+			HUB.ProjectFiles.submitViaAjax('Renaming selected item');
 		});	
 	},
 	
@@ -924,28 +922,7 @@ HUB.ProjectFiles = {
 			});
 		}
 	},
-	
-	diskUsage: function ()
-	{
-		var $ = this.jQuery;
-		
-		// Disk usage indicator
-		if ($('#indicator-area').length) {
-			var percentage = $('#indicator-area').attr('class');
-			percentage = percentage.replace('used:', '');
-			if (isNaN(percentage)) {
-				percentage = 0;
-			}
-			percentage = Math.round(percentage);
-			var measurein = 'px';
-			if ($('#disk-usage')) {
-				var measurein = '%';
-			}
-			$('#indicator-area').css('width', percentage + measurein);				
-		}
-		
-	},
-	
+
 	previewFiles: function ()
 	{
 		var $ = this.jQuery;
@@ -1061,9 +1038,9 @@ HUB.ProjectFiles = {
 		  'pps' 	: 1,
 		  'pptx' 	: 1,
 		  'wmf' 	: 1,
-		  'jpg' 	: 1,
-		  'gif' 	: 1,
-		  'png' 	: 1,
+//		  'jpg' 	: 1,
+//		  'gif' 	: 1,
+//		  'png' 	: 1,
 		  'pdf' 	: 1,
 		  'tex'		: 1
 		};
@@ -1079,7 +1056,6 @@ HUB.ProjectFiles = {
 	getPreviewable: function(ext)
 	{
 		var array = {
-		  'html' 	: 1,
 		  'txt'		: 1,
 		  'sty'		: 1,
 		  'cls'	    : 1,

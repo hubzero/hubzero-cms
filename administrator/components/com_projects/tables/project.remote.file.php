@@ -233,7 +233,7 @@ class ProjectRemoteFile extends JTable
 		
 		$query  = "SELECT local_path, local_dirpath, remote_id, synced, type, 
 					remote_editing as converted, remote_parent, remote_format,
-					paired, original_path FROM $this->_tbl"; 
+					remote_modified, paired, original_path FROM $this->_tbl"; 
 		$query .= " WHERE projectid=$projectid  ";
 		$query .= " AND service='" . $service . "' ";
 		$query .= $local_dirpath ? " AND local_dirpath='" . $local_dirpath . "' " : '';
@@ -259,7 +259,8 @@ class ProjectRemoteFile extends JTable
 					'converted' => $result->converted,
 					'rParent' 	=> $result->remote_parent,
 					'synced' 	=> $result->synced,
-					'original'	=> $result->original_path
+					'original'	=> $result->original_path,
+					'modified'	=> $result->remote_modified
 				);
 				
 				$locals['paths'][$result->local_path] = $item;

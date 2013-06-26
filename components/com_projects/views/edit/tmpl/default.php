@@ -172,6 +172,34 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 						<input type="hidden"  name="params[team_public]" value="0" />
 						<input type="checkbox" class="option" name="params[team_public]" value="1" <?php if ($this->params->get( 'team_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TEAM_PUBLIC'); ?>
 					</label>
+					
+					<?php if ($this->publishing) { ?>
+					<label>
+						<input type="hidden"  name="params[publications_public]" value="0" />
+						<input type="checkbox" class="option" name="params[publications_public]" value="1" <?php if ($this->params->get( 'publications_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?>
+					</label>
+					<?php } ?>
+					
+					<?php 
+					$plugin = JPluginHelper::getPlugin( 'projects', 'notes' );
+					$pparams = new JParameter( $plugin->params );
+					if ($pparams->get('enable_publinks')) { ?>
+					<label>
+						<input type="hidden"  name="params[notes_public]" value="0" />
+						<input type="checkbox" class="option" name="params[notes_public]" value="1" <?php if ($this->params->get( 'notes_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_NOTES_PUBLIC'); ?>
+					</label>
+					<?php } ?>
+					
+					<?php 
+					$plugin = JPluginHelper::getPlugin( 'projects', 'files' );
+					$pparams = new JParameter( $plugin->params );
+					if ($pparams->get('enable_publinks')) { ?>
+					<label>
+						<input type="hidden"  name="params[files_public]" value="0" />
+						<input type="checkbox" class="option" name="params[files_public]" value="1" <?php if ($this->params->get( 'files_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_FILES_PUBLIC'); ?>
+					</label>
+					<?php } ?>
+					
 					<?php } ?>
 					<?php if($this->config->get('grantinfo', 0)) { ?>
 					<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_INFO'); ?></h5>

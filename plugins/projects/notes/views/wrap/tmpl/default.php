@@ -44,7 +44,7 @@ if ($this->parent_notes && count($this->parent_notes) > 0) {
 		$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=notes'.a.'scope='.$parent->scope.a.'pagename='.$parent->pagename).'">'. $parent->title.'</a></span>';		
 	}
 }
-if($this->task == 'new') {
+if ($this->task == 'new') {
 	$bcrumb .= ' &raquo; <span class="subheader">'.JText::_('COM_PROJECTS_NOTES_TASK_NEW').'</span>';
 }
 else if($this->page && (($this->task != 'view' && !$this->app) || ($this->firstnote && $this->pagename != $this->firstnote))) {
@@ -55,6 +55,32 @@ else if($this->page && (($this->task != 'view' && !$this->app) || ($this->firstn
 		$bcrumb .= ' &raquo; <span class="subheader">'.JText::_('COM_PROJECTS_NOTES_TASK_'.strtoupper($this->task)).'</span> ';
 	}
 } 
+
+// Get public stamp for page
+$pubstamp = NULL;
+$listed   = NULL;
+if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php')
+	&& $this->task == 'view' && $this->page && $this->pparams->get('enable_publinks'))
+{
+	require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+	
+	$objSt = new ProjectPubStamp( $this->database );
+	
+	// Build reference for latest revision of page
+	$reference = array(
+		'pageid'   => $this->page->id,
+		'pagename' => $this->page->pagename,
+		'revision' => NULL
+	);
+	
+	if ($objSt->checkStamp($this->project->id, json_encode($reference), 'notes'))
+	{
+		$pubstamp = $objSt->stamp;
+		$listed   = $objSt->listed;
+	}
+}
 
 // Sort notes to display hierarchy by scope
 $notes = array();
@@ -205,9 +231,24 @@ $parentScope = $this->scope . DS . $this->pagename;
 	<?php if ($side) { ?>
 	<div class="subject">
 	<?php } ?>
-		<div id="notes-content">
+		<div id="notes-content" class="<?php echo $listed ? 'listed-note' : 'unlisted-note'; ?>">
+		<?php if ($listed) { ?>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes') . '?action=share&p=' . $this->page->id; ?>" class="showinbox" title="<?php echo JText::_('COM_PROJECTS_NOTES_PUBLIC_CONFIGURE'); ?>"><span class="n-pub">&nbsp;</span></a>
+		<?php } ?>
 		<?php echo ($this->notes or $this->task == 'new' or $this->preview) ? $content : '<p class="s-notes"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new">'.JText::_('COM_PROJECTS_NOTES_START_A_NOTE').'</a></p>'; ?>
 		</div>
+		<?php if ($pubstamp) { 
+			$juri =& JURI::getInstance();
+		?>
+			<p class="publink"><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK') . ' <a href="' . trim($juri->base(), DS) . JRoute::_('index.php?option=' . $this->option . a . 'action=get') . '?s=' . $pubstamp .'">' . trim($juri->base(), DS) . JRoute::_('index.php?option=' . $this->option . a . 'action=get') . '?s=' . $pubstamp . '</a>'; ?>
+			<?php if ($this->project->private == 0) { 
+				$act = $listed ? 'unlist' : 'publist'; ?>
+			<span><?php echo JText::_('COM_PROJECTS_NOTES_THIS_PAGE_IS'); ?>  <strong class="<?php echo $listed ? 'green' : 'urgency'; ?>"><?php echo $listed ? JText::_('COM_PROJECTS_NOTES_LISTED') : JText::_('COM_PROJECTS_NOTES_UNLISTED'); ?></strong>. <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes') . '?action=share&p=' . $this->page->id; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_NOTES_SHARE_SETTINGS'); ?> &rsaquo;</a></span>	
+			<?php } ?>
+			</p>
+		<?php } elseif ($this->pparams->get('enable_publinks')) { ?>
+			<p class="publink"><?php echo JText::_('COM_PROJECTS_NOTES_SHARE_GET_LINK'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes') . '?action=share&p=' . $this->page->id; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_NOTES_SHARE_GENERATE_LINK'); ?></a></p>
+		<?php } ?>
 	<?php 
 	// Allow subpages up until third level
 	if(($this->task == 'view' or $this->task == 'page') && count($this->parent_notes) < 2) { ?>

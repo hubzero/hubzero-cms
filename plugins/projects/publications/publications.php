@@ -376,6 +376,10 @@ class plgProjectsPublications extends JPlugin
 			// Show stats
 			case 'stats': 		
 				$arr['html'] = $this->_stats(); 		
+				break;
+				
+			case 'diskspace':
+				$arr['html'] = $this->pubDiskSpace($option, $project, $this->_task, $this->_config); 
 				break;										
 		}			
 	
@@ -428,10 +432,21 @@ class plgProjectsPublications extends JPlugin
 		
 		// Get master publication types
 		$mt = new PublicationMasterType( $this->_database );
-		$choices = $mt->getTypes('alias', 1);	
+		$choices = $mt->getTypes('alias', 1);
+		
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
+		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');		
+				
+		// Get used space
+		$helper 	   = new PublicationHelper($this->_database);
+		$view->dirsize = $helper->getDiskUsage($this->_project->id, $view->rows);
+		$view->params  = new JParameter( $this->_project->params );
+		$view->quota   = $view->params->get('pubQuota') 
+						? $view->params->get('pubQuota') 
+						: ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');	
 		
 		// Output HTML
-		$view->params 		= new JParameter( $this->_project->params );
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
@@ -1031,6 +1046,24 @@ class plgProjectsPublications extends JPlugin
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
+	}
+	
+	/**
+	 *  Publication stats
+	 * 
+	 * @return     string
+	 */
+	protected function _stats() 
+	{
+		// Incoming
+		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
+		$version 	= JRequest::getVar( 'version', '' );	
+		
+		// Load publication & version classes
+		$objP = new Publication( $this->_database );
+		$row  = new PublicationVersion( $this->_database );
+		
+		return 'test';		
 	}
 	
 	/**
@@ -3695,7 +3728,7 @@ class plgProjectsPublications extends JPlugin
 					// Can't proceed
 					continue;
 				}
-			
+							
 				if ($objPA->loadAttachment($vid, $pageId, 'note')) 
 				{
 					$objPA->modified_by = $this->_uid;
@@ -3727,7 +3760,7 @@ class plgProjectsPublications extends JPlugin
 				{
 					$i++;
 					$added++;
-				}				
+				}	
 			}
 		}
 				
@@ -6379,6 +6412,75 @@ class plgProjectsPublications extends JPlugin
 	}
 	
 	/**
+	 * Get disk space
+	 * 
+	 * @param      string	$option
+	 * @param      object  	$project
+	 * @param      string  	$case
+	 * @param      integer  $by
+	 * @param      string  	$action
+	 * @param      object 	$config
+	 * @param      string  	$app
+	 *
+	 * @return     string
+	 */
+	protected function pubDiskSpace( $option, $project, $action, $config)
+	{
+		// Output HTML
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'publications',
+				'name'=>'diskspace'
+			)
+		);
+		
+		// Include styling and js
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
+		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
+		
+		$database =& JFactory::getDBO();
+		
+		// Build query
+		$filters = array();
+		$filters['limit'] 	 		= JRequest::getInt('limit', 25);
+		$filters['start'] 	 		= JRequest::getInt('limitstart', 0);
+		$filters['sortby']   		= JRequest::getVar( 't_sortby', 'title');
+		$filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
+		$filters['project']  		= $project->id;
+		$filters['ignore_access']   = 1;
+		$filters['dev']   	 		= 1; // get dev versions
+		
+		// Instantiate project publication
+		$objP = new Publication( $database );
+		
+		// Get all publications
+		$view->rows = $objP->getRecords($filters);
+		
+		// Get used space
+		$helper 	   = new PublicationHelper($database);
+		$view->dirsize = $helper->getDiskUsage($project->id, $view->rows);
+		$view->params  = new JParameter( $project->params );
+		$view->quota   = $view->params->get('pubQuota') 
+						? $view->params->get('pubQuota') 
+						: ProjectsHtml::convertSize(floatval($config->get('pubQuota', '1')), 'GB', 'b');
+				
+		// Get total count
+		$results = $objP->getCount($filters);
+		$view->total = ($results && is_array($results)) ? count($results) : 0;
+				
+		$view->params = new JParameter( $project->params );
+		$view->action 	= $action;
+		$view->project 	= $project;
+		$view->option 	= $option;
+		$view->config 	= $config;
+		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
+		
+		return $view->loadTemplate();		
+	}
+	
+	/**
 	 * Archive data in a publication and package
 	 * 
 	 * @param      integer  	$db_name
@@ -6641,5 +6743,73 @@ class plgProjectsPublications extends JPlugin
 		}
 				
 		return $tarpath;
+	}
+	
+	/**
+	 * Serve publication-related file (via public link)
+	 * 
+	 * @param   int  	$projectid
+	 * @return  void
+	 */
+	public function serve( $projectid = 0, $query = '')  
+	{
+		$data = json_decode($query);
+		
+		if (!isset($data->pid) || !$projectid)
+		{
+			return false;
+		}
+		
+		$disp 	= isset($data->disp) ? $data->disp : 'inline';
+		$type 	= isset($data->type) ? $data->type : 'file';
+		$folder = isset($data->folder) ? $data->folder : 'wikicontent';
+		$fpath	= isset($data->path) ? $data->path : 'inline';
+		
+		if ($type != 'file')
+		{
+			return false;
+		}
+		
+		$database =& JFactory::getDBO();
+		
+		// Instantiate a project
+		$obj = new Project( $database );
+				
+		// Get referenced path
+		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+		$base_path = $pubconfig->get('webpath');
+		$pubPath = PublicationHelper::buildPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
+		
+		$serve = JPATH_ROOT . $pubPath . DS . $fpath;
+		
+		// Ensure the file exist
+		if (!file_exists($serve)) 
+		{				
+			// Throw error
+			JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
+			return;
+		}
+		
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+				
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($serve);
+		$xserver->disposition($disp);
+		$xserver->acceptranges(false); // @TODO fix byte range support
+		$xserver->saveas(basename($fpath));
+
+		if (!$xserver->serve()) 
+		{
+			// Should only get here on error
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+		} 
+		else 
+		{
+			exit;
+		}
+
+		return;
 	}
 }

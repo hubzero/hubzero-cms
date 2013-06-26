@@ -298,5 +298,5 @@ if ($this->config->get('access-edit')) {
 </div><!-- / .main section -->
 	
 	<?php if ($this->page->id && strtolower($this->page->getNamespace()) != 'special' && $canDelete) { ?>
-		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&task=delete'); ?>"><?php echo JText::_('Delete this page'); ?></a></p>
+		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&task=delete'); ?>" class="btn"><?php echo JText::_('Delete this page'); ?></a></p>
 	<?php } ?>

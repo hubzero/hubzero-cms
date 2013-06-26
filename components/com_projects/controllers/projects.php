@@ -92,7 +92,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Is component on?
-		if (!$this->_config->get( 'component_on', 1 ))
+		if (!$this->_config->get( 'component_on', 0 ))
 		{
 			$this->_redirect = '/';
 			return;
@@ -210,12 +210,81 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			case 'reports':			
 				$this->_reports(); 	
 				break;
-									
+				
+			// Public view
+			case 'get':		
+				$this->_pubView(); 	
+				break;
+												
 			default: 
 				$this->_task = 'intro';
 				$this->_intro(); 									
 				break;
 		}
+	}
+	
+	/**
+	 * Pub view for project files, notes etc.
+	 * 
+	 * @return     void
+	 */
+	protected function _pubView()
+	{
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+		}
+		else
+		{
+			return false;
+		}
+		
+		// Incoming
+		$stamp = JRequest::getVar( 's', '' );
+		
+		// Clean up stamp value (only numbers and letters)
+		$regex  = array('/[^a-zA-Z0-9]/');
+		$stamp  = preg_replace($regex, '', $stamp);
+		
+		// Load item reference
+		$objSt = new ProjectPubStamp( $this->database );
+		if (!$stamp || !$objSt->loadItem($stamp))
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option)
+			);
+			return;
+		}
+		
+		// Can only serve files or notes at the moment
+		if (!in_array($objSt->type, array('files', 'notes', 'publications')))
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option)
+			);
+			return;
+		}
+				
+		// Get plugin
+		JPluginHelper::importPlugin( 'projects', $objSt->type );
+		$dispatcher =& JDispatcher::getInstance();
+		
+		// Serve requested item
+	 	$content = $dispatcher->trigger( 'serve', array($objSt->projectid, $objSt->reference));
+
+		// Return content
+		if ($content[0]) 
+		{
+			return $content[0];
+		}
+				
+		// Redirect if nothing fetched
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option)
+		);
+		return;		
 	}
 			
 	/**
@@ -325,6 +394,12 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			// Make entry for projects publications plugin
 			$installHelper->installPlugin('publications', 0);
+		}
+		
+		// Enable public links (NEW)
+		if (!in_array($prefix . 'project_public_stamps', $tables)) 
+		{
+			$installHelper->installPubStamps();
 		}		
 	}
 	
@@ -3117,7 +3192,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			'suspend', 'reinstate', 'fixownership', 
 			'delete', 'intro', 'activate', 'process',
 			'upload', 'img', 'verify', 'autocomplete',
-			'showcount', 'wikipreview', 'auth');
+			'showcount', 'wikipreview', 'auth', 'public');
 		
 		if ($names) 
 		{

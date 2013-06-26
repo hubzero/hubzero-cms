@@ -223,6 +223,41 @@
 	#notes-wrap .sidebox .wikilevel_4 {
 		padding-left: 3em !important;
 	}	
+	.publink {
+		font-size: 80%;
+		color: #999;
+		background: #eef5fd;
+		padding: 0 0.5em;
+		margin-top: 2em;
+	}
+	.publink a {
+	}	
+	.publink span {
+		display: block;
+	}
+	#notes-content.listed-note {
+		border: 1px dashed #bce5b6;
+		background: #fbfffa;
+	}
+	.n-pub {
+		float: right;
+		margin-right: -1em;
+		margin-top: -1.2em;
+		font-size: 85%;
+		color: #8aab85;
+	}
+	.n-pub:before {
+		content: "\f02e";
+		color: #bfe5ba;
+		font-weight: normal;
+		width: 22px;
+		height: 22px;
+		font-size: 22px;
+		margin: 0;
+		padding: 0;
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+	}
 	
 	/*---*/
 	
@@ -427,7 +462,7 @@
 /* Figures */
 	.wikipage .figure img,
 	#preview .figure img  {
-		margin: 0.5em;
+		margin: 0;
 		padding: 0;
 		background: transparent;
 		text-align: center;

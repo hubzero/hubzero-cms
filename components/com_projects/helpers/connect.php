@@ -1866,6 +1866,66 @@ class ProjectsConnectHelper extends JObject {
 	}
 	
 	/**
+	 * Download remote content via cURL
+	 * 
+	 * @param      string	$service		Service name (google or dropbox)
+	 * @param      string	$remote			Remote resource array
+	 * @param      string	$path			Project repo path
+	 * @return     string or boolean
+	 */
+	public function downloadFileCurl ($service = 'google', $url = '', $path = '') 
+	{
+		if (!$url || !$path)
+		{
+			return false;
+		}
+		
+		// Get api
+		$apiService = $this->getAPI($service);
+		
+		if (!$apiService)
+		{
+			$this->setError('API service unavailable');
+			return false;
+		}
+		
+		$fp = fopen($path, 'w');
+		
+		// Make Http request
+		$request = new Google_HttpRequest($url, 'GET', null, null);
+		$request = Google_Client::$auth->sign($request);
+		
+		//Initialize the Curl Session.
+		$ch = curl_init();
+		
+		// Set the Curl url.
+		curl_setopt ($ch, CURLOPT_URL, 	$request->getUrl());
+		
+		// Set headers
+		$requestHeaders = $request->getRequestHeaders();
+	    if ($requestHeaders && is_array($requestHeaders)) 
+		{
+	      	$parsed = array();
+	      	foreach ($requestHeaders as $k => $v) 
+			{
+	        	$parsed[] = "$k: $v";
+	      	}
+	      
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $parsed);
+	    }
+		
+		// Download to file stream
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+
+		$data = curl_exec($ch);
+
+		curl_close($ch);
+		fclose($fp);
+
+		return true;
+	}
+	
+	/**
 	 * Download remote content
 	 * 
 	 * @param      string	$service		Service name (google or dropbox)
@@ -2017,7 +2077,6 @@ class ProjectsConnectHelper extends JObject {
 			
 			if ($fc && $this->fetchFile($fc, $thumb, JPATH_ROOT . $to_path))
 			{
-				
 				$handle = @fopen(JPATH_ROOT . $to_path . DS . $thumb, 'w');
 				
 				if ($handle)

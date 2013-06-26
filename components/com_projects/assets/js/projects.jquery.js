@@ -180,7 +180,7 @@ HUB.Projects = {
 					$.fancybox(this,{
 						type: 'ajax',
 						width: bWidth,
-						height: bHeight,
+						height: 'auto',
 						autoSize: false,
 						fitToView: false,
 						wrapCSS: 'sbp-window',

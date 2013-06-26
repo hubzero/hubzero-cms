@@ -128,7 +128,7 @@ function ProjectsParseRoute($segments)
 	$tasks = array(	'start', 'setup', 'edit', 
 		'browse', 'intro', 'features', 'auth',
 		'deleteimg', 'wikipreview', 'fixownership', 
-		'stats', 'reports'
+		'stats', 'reports', 'get'
 	);
 	
 	// Views (plugins or view panels)

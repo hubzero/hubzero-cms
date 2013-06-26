@@ -36,35 +36,34 @@ ximport('Hubzero_Wiki_Parser');
 $p =& Hubzero_Wiki_Parser::getInstance();
 
 $wikiconfig = array(
-	'option'   => 'com_wiki',
+	'option'   => 'com_projects',
 	'scope'    => $this->page->scope,
 	'pagename' => $this->page->pagename, 
 	'pageid'   => $this->page->id
 );
 
 // Parse text
-$text = $p->parse( $this->page->pagetext, $wikiconfig );
+$html = $p->parse( $this->page->pagetext, $wikiconfig );
 
-$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
-if (preg_match_all("/$regexp/siU", $text, $matches)) 
-{    
-	foreach ($matches[2] as $match)
-	{
-		$pagename = str_replace($weed, '', $match); 
-		
-		// Check if there is a note with this name within this project
-		$found = $this->helper->getWikiPage(basename($pagename), $this->publication, $this->masterscope);
-		if ($found)
-		{
-			$text = str_replace($weed. $pagename, DS . 'publications' . DS . $this->publication->id . DS . 'wiki?pageid=' . $found->id, $text );
-		}
-	}
-}
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php');
+
+// Replace internal links so that these pages are accessible
+$html = projectsHelper::parseNoteRefs($this->page, $this->project_id, $this->masterscope, 
+	$this->publication, $html );
+
+// Parse text for project file references
+$html = projectsHelper::parseProjectFileRefs($this->page, $this->page->pagetext, $this->project_id, 
+	$this->project_alias, $this->publication, $html, true);
+
+// Fix up images
+$html = projectsHelper::wikiFixImages($this->page, $this->page->pagetext, $this->project_id, 
+	$this->project_alias, $this->publication, $html, true);
 
 ?>
 <div class="wiki-wrap">
 	<p class="wiki-back"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id); ?>"><?php echo JText::_('COM_PUBLICATIONS_BACK_TO_PUBLICATION'); ?>  &ldquo;<?php echo $this->publication->title; ?>&rdquo;</a></p>
 	<div class="wiki-content">
-		<?php echo $text; ?>
+		<h1 class="page-title"><?php echo $this->page->title; ?></h1>
+		<div class="wikipage"><?php echo $html; ?></div>
 	</div>
 </div>

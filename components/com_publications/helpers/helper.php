@@ -67,43 +67,50 @@ class PublicationHelper extends JObject
 	/**
 	 * Constructor
 	 * 
-	 * @param      object  &$db      JDatabase
-	 * @param      integer $pubid    Resource ID
-	 * @param      integer $type     Resource type
-	 * @param      integer $rating   Resource rating
-	 * @param      integer $cites    Number of citations
-	 * @param      string  $lastcite Last citation date
+	 * @param      object  &$db      	 JDatabase
+	 * @param      integer $versionid    Publication Version ID
+	 * @param      integer $pubid    	 Publication ID
 	 * @return     void
 	 */	
 	public function __construct( &$db, $versionid = 0, $pubid = 0 )
 	{
-		$this->_db =& $db;
-		$this->_version_id = $versionid;
-		$this->_pub_id = $pubid;
+		$this->_db 			=& $db;
+		$this->_version_id 	= $versionid;
+		$this->_pub_id 		= $pubid;
 		
 		$this->contributors = null;
 		$this->primary_content = null;
 		$this->supporting_content = null;
 	}
-
-	//-----------
-
+	
+	/**
+	 * Set
+	 * 
+	 * @param      string 	$property
+	 * @param      string 	$value
+	 * @return     mixed	
+	 */	
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
 	
-	//-----------
-	
+	/**
+	 * Get
+	 * 
+	 * @param      string 	$property
+	 * @return     mixed	
+	 */	
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) {
+		if (isset($this->_data[$property])) 
+		{
 			return $this->_data[$property];
 		}
 	}
 	
 	/**
-	 * Get project path
+	 * Get publication path
 	 * 
 	 * @param      string 	$pid
 	 * @param      string 	$vid
@@ -124,21 +131,14 @@ class PublicationHelper extends JObject
 			$base = $pubconfig->get('webpath');					
 		}
 		
-		if (substr($base, 0, 1) != DS) 
-		{
-			$base = DS.$base;
-		}
-		if (substr($base, -1, 1) == DS) 
-		{
-			$base = substr($base, 0, (strlen($base) - 1));
-		}
-		
-		$pub_dir =  Hubzero_View_Helper_Html::niceidformat( $pid );
-		$version_dir =  Hubzero_View_Helper_Html::niceidformat( $vid );
-		$path = $base . DS . $pub_dir . DS . $version_dir;
-		$path = $filedir ? $path . DS . $filedir : $path;
-		$path = $root ? JPATH_ROOT.$path : $path;
-		
+		$base = DS . trim($base, DS);
+
+		$pub_dir 		=  Hubzero_View_Helper_Html::niceidformat( $pid );
+		$version_dir 	=  Hubzero_View_Helper_Html::niceidformat( $vid );
+		$path 			= $base . DS . $pub_dir . DS . $version_dir;
+		$path 			= $filedir ? $path . DS . $filedir : $path;
+		$path 			= $root ? JPATH_ROOT . $path : $path;
+
 		return $path;		
 	}
 	
@@ -183,145 +183,258 @@ class PublicationHelper extends JObject
 		return $error ? $error : false;	
 	}
 	
-	//-----------
-	
+	/**
+	 * Get project path
+	 * 
+	 * @param      string 	$project_alias
+	 * @param      string 	$base
+	 * @param      string 	$root
+	 * @param      string 	$case
+	 * @return     string	
+	 */
 	public function buildDevPath( $project_alias = '', $base = '', $root = '', $case = 'files'  ) 
 	{		
-		if(!$project_alias) {
+		if (!$project_alias) 
+		{
 			return false;
 		}
 		
 		$pconfig =& JComponentHelper::getParams( 'com_projects' );
-		if(!$base) {
+		if (!$base) 
+		{
 			$base = $pconfig->get('webpath');					
 		}
-		if(!$root) {
+		if (!$root) 
+		{
 			$root = $pconfig->get('offroot', 0) ? 0 : 1;
 		}
 		
 		// Build upload path for project files
 		$dir = strtolower($project_alias);
-		if (substr($base, 0, 1) != DS) {
-			$base = DS.$base;
-		}
-		if (substr($base, -1, 1) == DS) {
-			$base = substr($base, 0, (strlen($base) - 1));
-		}
+		$base = DS . trim($base, DS);
 		$path  = $base . DS . $dir . DS . $case;
 		
-		$path = $root ? JPATH_ROOT.$path : $path;
+		$path = $root ? JPATH_ROOT . $path : $path;
 		
 		return $path;		
 	}
 	
 	//----------------------------------------------------------
+	// Disk Usage
+	//----------------------------------------------------------
+	
+	/**
+	 * Get disk space
+	 * 
+	 * @param      object  	$project	Project object
+	 * @param      array  	$rows		Publications objet array
+	 *
+	 * @return     integer
+	 */
+	public function getDiskUsage( $project = NULL, $rows = array() )
+	{
+		if ($project === NULL)
+		{
+			return false;
+		}
+		
+		$used = 0;
+		
+		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+		$base = trim($pubconfig->get('webpath'), DS);
+		
+		if (!empty($rows))
+		{
+			foreach ($rows as $row)
+			{
+				$path = DS . $base . DS . Hubzero_View_Helper_Html::niceidformat( $row->id );
+				$used = $used + $this->computeDiskUsage($path, JPATH_ROOT, false);
+			}
+		}
+		
+		return $used;	
+	}
+	
+	/**
+	 * Get used disk space in path
+	 * 
+	 * @param      string 	$path
+	 * @param      string 	$prefix
+	 * @param      boolean 	$git
+	 *
+	 * @return     integer
+	 */
+	public function computeDiskUsage($path = '', $prefix = '', $git = true) 
+	{
+		$used = 0;
+		if ($path && is_dir($prefix . $path))
+		{
+			chdir($prefix . $path);
+			
+			$where = $git == true ? ' .[!.]*' : '';
+			exec('du -sk ' . $where, $out);
+			
+			if ($out && isset($out[0]))
+			{
+				$dir = $git == true ? '.git' : '.';
+				$kb = str_replace($dir, '', trim($out[0]));
+				$used = $kb * 1024;
+			}
+		}
+		
+		return $used;		
+	}
+	
+	//----------------------------------------------------------
 	// Contributors
 	//----------------------------------------------------------
-
+	
+	/**
+	 * Get used disk space in path
+	 * 
+	 * @param      array 	$contributors
+	 * @param      boolean 	$showorgs
+	 * @param      boolean 	$showaslist
+	 *
+	 * @return     string
+	 */
 	public function showContributors( $contributors = '', $showorgs = false, $showaslist = false )
 	{
-		if (!$contributors) {
+		if (!$contributors) 
+		{
 			$contributors = $this->_contributors;
 		}
 				
-		if ($contributors != '') {
-			$html = '';
-			$names = array();
-			$orgs = array();
-			$i = 1;
-			$k = 0;
-			$orgsln = '';
-			$names_s = array();
-			$orgsln_s = '';
+		if ($contributors != '') 
+		{
+			$html 		= '';
+			$names 		= array();
+			$orgs 		= array();
+			$i 			= 1;
+			$k 			= 0;
+			$orgsln 	= '';
+			$names_s 	= array();
+			$orgsln_s 	= '';
 			
 			foreach ($contributors as $contributor) 
 			{
 				// Build the user's name and link to their profile
-				if ($contributor->name) {
+				if ($contributor->name) 
+				{
 					$name = $contributor->name;
-				} else {
+				} 
+				else 
+				{
 					$name = $contributor->p_name;
 				}
-				if (!$contributor->organization) {
+				if (!$contributor->organization) 
+				{
 					$contributor->org = $contributor->p_organization;
 				}
 				
 				$name = str_replace( '"', '&quot;', $name );
-				if($contributor->user_id && $contributor->open) {
-					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->user_id).'" title="View the profile of '.$name.'">'.$name.'</a>';
+				if ($contributor->user_id && $contributor->open) 
+				{
+					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id=' . $contributor->user_id) 
+							. '" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
-				else {
+				else 
+				{
 					$link = $name;
 				}
 				$link .= ($contributor->role) ? ' ('.$contributor->role.')' : '';
 								
-				if (trim($contributor->organization) != '' && !in_array(trim($contributor->organization), $orgs)) {
+				if (trim($contributor->organization) != '' && !in_array(trim($contributor->organization), $orgs)) 
+				{
 					$orgs[$i-1] = trim($contributor->organization);
 					$orgsln 	.= $i. '. ' .trim($contributor->organization).' ';
 					$orgsln_s 	.= trim($contributor->organization).' ';
 					$k = $i; 
 					$i++;
-				} else if(trim($contributor->organization) != '') {
+				} 
+				else if(trim($contributor->organization) != '') 
+				{
 					$k = array_search(trim($contributor->organization), $orgs) + 1;
 				}
-				else {
+				else 
+				{
 					$k = 0;
 				}
 				
 				$link_s = $link;
-				if($showorgs && $k) {
+				if ($showorgs && $k) 
+				{
 					$link .= '<sup>'. $k .'</sup>';	
 				}
 				$names_s[] = $link_s;							
 				$names[] = $link;
 			}
 			
-			if (count($names) > 0) {
-				$html = '<p>'.ucfirst(JText::_('By')).' ';
+			if (count($names) > 0) 
+			{
+				$html = '<p>' . ucfirst(JText::_('By')) . ' ';
 				$html .= count($names) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
 				$html .= '</p>';
 			}
-			if ($showorgs && count($orgs) > 0) {
+			if ($showorgs && count($orgs) > 0) 
+			{
 				$html .= '<p class="orgs">';
 				$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
 				$html .= '</p>';
 			}
-			if($showaslist)	{
+			if ($showaslist)	
+			{
 				$html = count($names) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s ) ;
 			}		
 			
-		} else {
+		} 
+		else 
+		{
 			$html = '';
 		}
+		
 		return $html;
 	}	
 	
-	//-----------
-	
+	/**
+	 * Get used disk space in path
+	 * 
+	 * @param      array 	$contributors
+	 * @param      boolean 	$incSubmitter
+	 *
+	 * @return     string
+	 */
 	public function getUnlinkedContributors($contributors = '', $incSubmitter = false ) 
 	{
-		if (!$contributors) {
+		if (!$contributors) 
+		{
 			$contributors = $this->_contributors;
 		}
 	
 		$html = '';
-		if ($contributors != '') {
+		if ($contributors != '') 
+		{
 			$names = array();
 			foreach ($contributors as $contributor) 
 			{
-				if ($incSubmitter == false && $contributor->role == 'submitter') {
+				if ($incSubmitter == false && $contributor->role == 'submitter') 
+				{
 					continue;
 				}
-				if ($contributor->lastName || $contributor->firstName) {
+				if ($contributor->lastName || $contributor->firstName) 
+				{
 					$name = stripslashes($contributor->firstName) .' ';
 					$name .= stripslashes($contributor->lastName);
-				} else {
+				} 
+				else 
+				{
 					$name = $contributor->name;
 				}
 				$name = str_replace( '"', '&quot;', $name );
 				$names[] = $name;
 			}
-			if (count($names) > 0) {
+			if (count($names) > 0) 
+			{
 				$html = implode( '; ', $names );
 			}
 		}
@@ -332,7 +445,17 @@ class PublicationHelper extends JObject
 	// Publication thumbnail
 	//----------------------------------------------------------
 	
-	public function getThumb($pid = 0, $versionid = 0, $config, $force = false, $cat = '')
+	/**
+	 * Get publication thumbnail
+	 * 
+	 * @param      int 		$pid
+	 * @param      int 		$versionid
+	 * @param      array 	$config
+	 * @param      boolean 	$force
+	 * @param      string	$cat
+	 * @return     string HTML
+	 */
+	public function getThumb ($pid = 0, $versionid = 0, $config, $force = false, $cat = '')
 	{
 		// Get publication firectory path
 		$webpath = $config->get('webpath', 'site/publications');
@@ -372,7 +495,7 @@ class PublicationHelper extends JObject
 					$ext = explode('.', $shots[0]->srcfile);
 					$ext = end($ext);
 					
-					if(in_array($ext, $image_ext)) 
+					if (in_array($ext, $image_ext)) 
 					{
 						$ih = new ProjectsImgHandler();
 						JFile::copy(JPATH_ROOT.$image, JPATH_ROOT.$path . DS . 'thumb.gif');
@@ -382,7 +505,8 @@ class PublicationHelper extends JObject
 						$ih->set('maxWidth', 100);
 						$ih->set('maxHeight', 100);
 						$ih->set('cropratio', '1:1');
-						if ($ih->process()) {
+						if ($ih->process()) 
+						{
 							return $path . DS . 'thumb.gif';
 						}
 					} 	
@@ -402,7 +526,9 @@ class PublicationHelper extends JObject
 	 * 
 	 * @param      object $attachment
 	 * @param      object $publication
-	 * @return     void
+	 * @param      string $masterscope
+	 * @param      string $versionid
+	 * @return     object
 	 */	
 	public function getWikiPage( $pageid = NULL, $publication = NULL, $masterscope = NULL, $versionid = NULL ) 
 	{
@@ -423,7 +549,7 @@ class PublicationHelper extends JObject
 			$date = $publication->accepted && $publication->accepted != '0000-00-00 00:00:00' ? $publication->accepted : $publication->submitted;
 			$date = (!$date || $date == '0000-00-00 00:00:00') ? $publication->published_up : $date;
 						
-			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE ";
+			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id AND ";
 			$query .= $versionid ? " v.id=" . $versionid : " v.created <= '" . $date . "'";
 			$query .= " ORDER BY v.created DESC LIMIT 1) as pagetext ";
 		}
@@ -442,9 +568,14 @@ class PublicationHelper extends JObject
 	// Citations
 	//----------------------------------------------------------
 
+	/**
+	 * Get citations
+	 * 
+	 * @return     void
+	 */
 	public function getCitations()
 	{
-		if (!$this->_id) 
+		if (!$this->_pub_id) 
 		{
 			return false;
 		}
@@ -457,26 +588,36 @@ class PublicationHelper extends JObject
 		
 		$cc = new CitationsCitation( $database );
 	
-		$this->citations = $cc->getCitations( 'resource', $this->_id );
+		$this->citations = $cc->getCitations( 'publication', $this->_pub_id );
 	}
 
-	//-----------
-
+	/**
+	 * Get citations count
+	 * 
+	 * @return     void
+	 */
 	public function getCitationsCount()
 	{
 		$citations = $this->citations;
-		if (!$citations) {
+		if (!$citations) 
+		{
 			$citations = $this->getCitations();
 		}
 	
 		$this->citationsCount = $citations;
 	}
 
-	//-----------
-
+	/**
+	 * Get last citation date
+	 * 
+	 * @return     void
+	 */	
 	public function getLastCitationDate()
 	{
-		if ($this->_id) {
+		$this->lastCitationDate = NULL;
+		
+		if ($this->_pub_id) 
+		{
 			return false;
 		}
 		
@@ -488,7 +629,7 @@ class PublicationHelper extends JObject
 		
 		$cc = new CitationsCitation( $database );
 
-		$this->lastCitationDate = $cc->getLastCitationDate( 'resource', $this->_id );
+		$this->lastCitationDate = $cc->getLastCitationDate( 'publication', $this->_pub_id );
 	}
 	
 	//----------------------------------------------------------
@@ -506,7 +647,8 @@ class PublicationHelper extends JObject
 	 */
 	public function getTags($tagger_id=0, $strength=0, $admin=0)
 	{
-		if ($this->_pub_id == 0) {
+		if ($this->_pub_id == 0) 
+		{
 			return false;
 		}
 
@@ -526,7 +668,8 @@ class PublicationHelper extends JObject
 	 */
 	public function getTagsForEditing( $tagger_id=0, $strength=0 )
 	{
-		if ($this->_pub_id == 0) {
+		if ($this->_pub_id == 0) 
+		{
 			return false;
 		}
 		
@@ -554,8 +697,7 @@ class PublicationHelper extends JObject
 		
 		$rt = new PublicationTags( $database );
 		$this->tagCloud = $rt->get_tag_cloud(0, $admin, $this->_pub_id);
-	}
-	
+	}	
 	
 	//----------------------------------------------------------
 	// Contribute publications
@@ -585,6 +727,7 @@ class PublicationHelper extends JObject
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED'))
 					.' ' . JHTML::_('date', $row->published_down, '%d %b %Y');
 				break;
+				
 			case 1: 
 				$class  = 'published';
 				$status.= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PUBLISHED');
@@ -592,6 +735,7 @@ class PublicationHelper extends JObject
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
 					.' ' . JHTML::_('date', $row->published_up, '%d %b %Y');
 				break;
+				
 			case 3:
 			default: 
 				$class = 'draft';
@@ -599,19 +743,22 @@ class PublicationHelper extends JObject
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_STARTED'))
 					.' ' . JHTML::_('date', $row->created, '%d %b %Y');
 				break;
+				
 			case 4: 
 				$class   = 'ready';
 				$status .= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_READY');
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
 					.' ' . JHTML::_('date', $row->published_up, '%d %b %Y');
 				break;
+				
 			case 5: 
 				$class  = 'pending';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PENDING');
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
 					.' ' . JHTML::_('date', $row->published_up, '%d %b %Y');
-				break;	
+				break;
+					
 			case 6: 
 				$class  = 'archived';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DARKARCHIVE');
@@ -625,10 +772,12 @@ class PublicationHelper extends JObject
 		{
 			case 'class':
 				return $class;
-				break;			
+				break;	
+						
 			case 'status':
 				return $status;
 				break;
+				
 			case 'date':
 				return $date;
 				break;
@@ -717,6 +866,5 @@ class PublicationHelper extends JObject
 			<?php if ($append) { echo $append; } ?>
 		</h3>
 	<?php	
-	}
-	
+	}	
 }

@@ -246,7 +246,7 @@ class plgProjectsNotes extends JPlugin
 			{
 				return $this->browser();
 			}
-			
+						
 			switch ($this->_task)
 			{
 				case 'upload':
@@ -305,9 +305,24 @@ class plgProjectsNotes extends JPlugin
 			// Save controller name
 			$this->_controllerName = $controllerName;
 			
-			// Display page
-			$arr['html'] = $this->page(); 		
+			// Listing/unlisting?
+			if ($this->_task == 'publist' || $this->_task == 'unlist')
+			{
+				$arr['html'] = $this->_list();
+			}
+			elseif ($this->_task == 'share')
+			{
+				$arr['html'] = $this->_share();
+			}
+			else
+			{				
+				// Display page
+				$arr['html'] = $this->page();
+			}	
 		}
+		
+		$arr['referer'] = $this->_referer;
+		$arr['msg'] = $this->_message;		
 		
 		// Return data
 		return $arr;
@@ -338,7 +353,7 @@ class plgProjectsNotes extends JPlugin
 		{
 			$scope = $masterscope;
 		}
-		
+				
 		// Get helper
 		$projectsHelper = new ProjectsHelper( $this->_database );
 		
@@ -400,122 +415,6 @@ class plgProjectsNotes extends JPlugin
 				$revision->approved 	= 1;
 				$revision->store();
 			}
-			
-			// Make sure images/files get correct references
-			if ($this->_task == 'view')
-			{
-				// Get wiki upload path
-				$previewPath = $this->getWikiPath($page);
-					
-				// Get project path
-				$projectPath = ProjectsHelper::getProjectPath(
-					$this->_project->alias, 
-					$this->_config->get('webpath', 0),
-					$this->_config->get('offroot', 0)
-				);
-				
-				// Include needed library
-				include_once(JPATH_ROOT . DS . 'components' . DS 
-					. 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
-				$ih = new ProjectsImgHandler();
-				
-				// Get joomla libraries
-				jimport('joomla.filesystem.folder');
-				jimport('joomla.filesystem.file');
-				
-				// Get image extensions
-				$imgs = explode(',', $this->_wiki_config->get('img_ext'));
-				array_map('trim', $imgs);
-				array_map('strtolower', $imgs);
-					
-				// Parse files
-				preg_match_all("'File\\(.*?\\)'si", $revision->pagetext, $files);
-				if (!empty($files) && $previewPath)
-				{
-					$files = $files[0];
-										
-					foreach ($files as $file)
-					{
-						$ibody = str_replace('File(' , '', $file);
-						$ibody = str_replace(')' , '', $ibody);
-						$args  = explode(',', $ibody);
-						$file  = array_shift($args);
-
-						$fpath = $projectPath . DS . $file;
-						
-						// Replace reference by link
-						if (is_file( $fpath ))
-						{
-							$ext = strtolower(JFile::getExt($file));
-							
-							// Is this an image?
-							if (in_array(strtolower($ext), $imgs)) 
-							{
-								$attachment = new WikiPageAttachment($this->_database);
-								$atid = $attachment->getID($file, $page->id);
-								
-								// Copy file to wiki dir if not there
-								if (is_file( $fpath ) && !$atid)
-								{
-									$filename = basename($file);
-									JFile::copy($fpath, $previewPath . DS . $filename);
-									$revision->pagetext = preg_replace("'\\[\\File\\(". $file ."'si", 
-										'[Image('.$filename, $revision->pagetext);
-									$revision->store();
-
-									$projectsHelper->saveWikiAttachment($page, $file, $this->_uid);
-								}				
-							}
-							else
-							{
-								$link = JRoute::_('index.php?option=' . $this->_option . a . 'active=files' 
-								. a . 'alias=' . $this->_project->alias) 
-								. '/?action=download&file='.urlencode($file);
-								$link = $link . ' ' . basename($file);
-								$revision->pagetext = preg_replace("'\\[\\File\\(". $file .".*?\\)\\]'si", 
-									$link, $revision->pagetext);
-								$revision->store();
-							}							
-						}
-					}
-				}
-				
-				// Parse images
-				preg_match_all("'Image\\(.*?\\)'si", $revision->pagetext, $images);
-				if (!empty($images))
-				{
-					$images = $images[0];
-															
-					foreach ($images as $image)
-					{
-						$ibody = str_replace('Image(' , '', $image);
-						$ibody = str_replace(')' , '', $ibody);
-						$args  = explode(',', $ibody);
-						$file  = array_shift($args);
-
-						$fpath = $projectPath . DS . $file;
-							
-						$attachment = new WikiPageAttachment($this->_database);
-						$atid = $attachment->getID($file, $page->id);
-						
-						// Copy file to wiki dir if not there
-						if (is_file( $fpath ))
-						{
-							$filename = basename($file);
-								
-							JFile::copy($fpath, $previewPath . DS . $filename);
-							$revision->pagetext = preg_replace("'\\[\\Image\\(". $file ."'si", 
-								'[Image('.$filename, $revision->pagetext);
-							$revision->store();
-							
-							if ( !$atid)
-							{
-								$projectsHelper->saveWikiAttachment($page, $file, $this->_uid);
-							}
-						}						
-					}
-				}
-			}
 		}
 		
 		// No default app wiki - create one
@@ -557,7 +456,7 @@ class plgProjectsNotes extends JPlugin
 		$controller->execute();
 		
 		// Record activity
-		if ($save && !$preview && !$this->getError() && !$controller->getError()) 
+		if ($save && !$preview && !$this->getError() && !$controller->getError() && !$exists) 
 		{
 			$objAA = new ProjectActivity( $this->_database );
 			$what  = $exists ? JText::_('COM_PROJECTS_NOTE_EDITED') : JText::_('COM_PROJECTS_NOTE_ADDED');
@@ -581,7 +480,7 @@ class plgProjectsNotes extends JPlugin
 			$newpagename = trim(JRequest::getVar( 'newpagename', '', 'post' ));
 			$projectsHelper->fixScopePaths($this->_group, $scope, $oldpagename, $newpagename);
 		}
-		
+				
 		$controller->redirect();
 		$content = ob_get_contents();
 		ob_end_clean();
@@ -623,6 +522,7 @@ class plgProjectsNotes extends JPlugin
 		$view->title		= $this->_area['title'];
 		$view->app			= $this->_app;
 		$view->config		= $this->_config;
+		$view->pparams		= $this->_params;
 		
 		// Get messages	and errors	
 		$view->msg = $this->_msg;
@@ -632,6 +532,144 @@ class plgProjectsNotes extends JPlugin
 		}
 				
 		return $view->loadTemplate();	
+	}
+	
+	/**
+	 * List/unlist on public project page
+	 * 
+	 *
+	 * @return     string
+	 */
+	protected function _list()
+	{
+		// Incoming
+		$id = trim(JRequest::getInt( 'p', '' ));
+		
+		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
+		$url 	= JRoute::_($route . a . 'active=notes');
+		
+		// Load requested page
+		$page = new WikiPage( $this->_database );		
+		if (!$page->loadById( $id )) 
+		{			
+			$this->_referer = $url;
+			return;
+		}
+				
+		// Get/update public stamp for page
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+
+			$objSt = new ProjectPubStamp( $this->_database );
+
+			// Build reference for latest revision of page
+			$reference = array(
+				'pageid'   => $id,
+				'pagename' => $page->pagename,
+				'revision' => NULL
+			);
+						
+			$listed = $this->_task == 'publist' ? 1 : 0;
+
+			if ($objSt->registerStamp($this->_project->id, json_encode($reference), 'notes', $listed))
+			{
+				$this->_msg = $this->_task == 'publist' ? JText::_('COM_PROJECTS_NOTE_MSG_LISTED') : JText::_('COM_PROJECTS_NOTE_MSG_UNLISTED');
+				$this->_message = array('message' => $this->_msg, 'type' => 'success');				
+				$this->_referer = JRoute::_('index.php?option='.$this->_option.'&scope='.$page->scope.'&pagename='.$page->pagename);
+				return;
+			}
+		}
+		else
+		{
+			$this->_referer = $url;
+			return;
+		}
+	}
+	
+	/**
+	 * Get public link and list/unlist
+	 * 
+	 *
+	 * @return     string
+	 */
+	protected function _share()
+	{
+		// Incoming
+		$id = trim(JRequest::getInt( 'p', '' ));
+		
+		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
+		$url 	= JRoute::_($route . a . 'active=notes');
+		
+		// Load requested page
+		$page = new WikiPage( $this->_database );		
+		if (!$page->loadById( $id )) 
+		{			
+			$this->_referer = $url;
+			return;
+		}
+				
+		// Get/update public stamp for page
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+
+			$objSt = new ProjectPubStamp( $this->_database );
+
+			// Build reference for latest revision of page
+			$reference = array(
+				'pageid'   => $id,
+				'pagename' => $page->pagename,
+				'revision' => NULL
+			);
+			
+			// Output HTML
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'projects',
+					'element'=>'notes',
+					'name'=>'pubsettings'
+				)
+			);
+			
+			// Generate stamp
+			$view->pubStamp = NULL;
+			$view->listed	= NULL;
+			if ($objSt->registerStamp($this->_project->id, json_encode($reference), 'notes'))
+			{
+				$view->pubStamp = $objSt->stamp;
+				$view->listed	= $objSt->listed;
+			}
+			
+			$view->option 			= $this->_option;
+			$view->project			= $this->_project;
+			$view->url				= $url;
+			$view->config 			=& JComponentHelper::getParams( 'com_projects' );	
+			$view->page				= $page;
+			$view->revision 		= $page->getCurrentRevision();
+			$view->masterscope 		= 'projects' . DS . $this->_project->alias . DS . 'notes';
+			$view->params 			= new JParameter($this->_project->params);
+			$view->pparams			= $this->_params;
+			$view->ajax				= JRequest::getInt('ajax', 0);
+			
+			// Output HTML
+			if ($this->getError()) 
+			{
+				$view->setError( $this->getError() );
+			}
+
+			return $view->loadTemplate();
+		}
+		else
+		{
+			$this->_referer = $url;
+			return;
+		}
 	}
 	
 	/**
@@ -800,33 +838,6 @@ class plgProjectsNotes extends JPlugin
 	}
 	
 	/**
-	 * Get path to wiki page images and files
-	 * 
-	 * @param      object  	$page
-	 *
-	 * @return     string
-	 */
-	public function getWikiPath( $page)
-	{				
-		// Ensure we have an ID to work with
-		$listdir = JRequest::getInt('lid', 0);
-		$id = $page->id ? $page->id : $listdir;
-		
-		$path = JPATH_ROOT . DS . trim($this->_wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
-
-		if (!is_dir($path)) 
-		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
-			{
-				return false;
-			}
-		}
-		
-		return $path;
-	}
-	
-	/**
 	 * List project notes available for publishing
 	 * 
 	 * @return     array
@@ -891,5 +902,89 @@ class plgProjectsNotes extends JPlugin
 		
 		return $arr;
 	}
+	
+	/**
+	 * Serve file (usually via public link)
+	 * 
+	 * @param   int  	$projectid
+	 * @return  void
+	 */
+	public function serve( $projectid = 0, $query = '')  
+	{
+		$data = json_decode($query);
 		
+		if (!isset($data->pageid) || !$projectid)
+		{
+			return false;
+		}
+		
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
+		JPlugin::loadLanguage( 'plg_projects_notes' );
+		
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+		
+		$database =& JFactory::getDBO();
+		
+		// Instantiate a project
+		$obj = new Project( $database );
+		
+		// Get Project
+		$this->_project = $obj->getProject($projectid);
+		$this->_option 	= 'com_projects';
+		
+		if (!$this->_project)
+		{
+			return false;
+		}
+		
+		// Fix pathway (com_wiki screws it up)
+		$this->fixupPathway();
+		
+		// URL to project
+		$url 	= JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->_project->alias);
+		
+		// Load requested page
+		$page = new WikiPage( $database );		
+		if (!$page->loadById( $data->pageid )) 
+		{			
+			return false;
+		}
+		
+		// Add styling
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . 'com_publications' . DS . 'assets' . DS . 'css' . DS . 'wiki.css');
+		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
+		
+		// Write title & build pathway
+		$document->setTitle( JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->_project->title) . ' - ' . stripslashes($page->title) );	
+				
+		// Instantiate a new view
+		ximport('Hubzero_Plugin_View');	
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'notes',
+				'name'		=>'pubview'
+			)
+		);
+		$view->option 			= $this->_option;
+		$view->project			= $this->_project;
+		$view->url				= $url;
+		$view->config 			=& JComponentHelper::getParams( 'com_projects' );
+		$view->database 		= $database;	
+		$view->page				= $page;
+		$view->revision 		= $page->getCurrentRevision();
+		$view->masterscope 		= 'projects' . DS . $this->_project->alias . DS . 'notes';
+				
+		// Output HTML
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		
+		$view->display();
+		return true;
+	}		
 }

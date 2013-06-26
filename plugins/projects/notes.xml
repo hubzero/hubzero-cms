@@ -32,5 +32,9 @@
 	</languages>
 	<params>
 		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+		<param name="enable_publinks" type="radio" default="0" label="Enable public links" description="Enable project team members to generate public links to notes and list/unlist notes on project public page">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </install>
