@@ -90,7 +90,7 @@ CREATE TABLE `host` (
   `status` varchar(20) NOT NULL DEFAULT '',
   `uses` smallint(5) unsigned NOT NULL DEFAULT '0',
   `portbase` int(11) NOT NULL DEFAULT '0',
-  `venue_id` INT(11)  AFTER `portbase`,
+  `venue_id` int(11),
   PRIMARY KEY (`hostname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
