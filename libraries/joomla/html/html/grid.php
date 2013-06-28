@@ -29,7 +29,7 @@ class JHTMLGrid
 	 * @param	string	The selected ordering
 	 * @param	string	An optional task override
 	 */
-	function sort( $title, $order, $direction = 'asc', $selected = 0, $task=NULL )
+	static function sort( $title, $order, $direction = 'asc', $selected = 0, $task=NULL )
 	{
 		$direction	= strtolower( $direction );
 		$images		= array( 'sort_asc.png', 'sort_desc.png' );

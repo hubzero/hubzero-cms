@@ -30,7 +30,7 @@ echo JAdminSubMenu::get();
  */
 class JAdminSubMenu
 {
-	function get()
+	static function get()
 	{
 		global $mainframe;
 

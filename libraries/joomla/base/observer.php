@@ -52,7 +52,7 @@ class JObserver extends JObject
 	 * @access public
 	 * @return mixed
 	 */
-	function update() {
+	function update(&$args) {
 		return JError::raiseError('9', 'JObserver::update: Method not implemented', 'This method should be implemented in a child class');
 	}
 }

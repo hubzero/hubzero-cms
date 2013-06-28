@@ -22,7 +22,7 @@ class MenusHelper
 	 * Get a list of the menu_types records
 	 * @return array An array of records as objects
 	 */
-	function getMenuTypeList()
+	static function getMenuTypeList()
 	{
 		$db = &JFactory::getDBO();
 		$query = 'SELECT a.*, SUM(b.home) AS home' .

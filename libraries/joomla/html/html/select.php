@@ -29,7 +29,7 @@ class JHTMLSelect
 	 * @param	string	The returned object property name for the text
 	 * @return	object
 	 */
-	function option( $value, $text='', $value_name='value', $text_name='text', $disable=false )
+	static function option( $value, $text='', $value_name='value', $text_name='text', $disable=false )
 	{
 		$obj = new stdClass;
 		$obj->$value_name	= $value;
@@ -61,7 +61,7 @@ class JHTMLSelect
 	 * @param	mixed	The key that is selected (accepts an array or a string)
 	 * @returns	string	HTML for the select list
 	 */
-	function options( $arr, $key = 'value', $text = 'text', $selected = null, $translate = false )
+	static function options( $arr, $key = 'value', $text = 'text', $selected = null, $translate = false )
 	{
 		$html = '';
 
@@ -148,7 +148,7 @@ class JHTMLSelect
 	 * @param	mixed	The key that is selected (accepts an array or a string)
 	 * @returns	string	HTML for the select list
 	 */
-	function genericlist( $arr, $name, $attribs = null, $key = 'value', $text = 'text', $selected = NULL, $idtag = false, $translate = false )
+	static function genericlist( $arr, $name, $attribs = null, $key = 'value', $text = 'text', $selected = NULL, $idtag = false, $translate = false )
 	{
 		if ( is_array( $arr ) ) {
 			reset( $arr );

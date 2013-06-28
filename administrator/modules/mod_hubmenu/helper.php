@@ -22,7 +22,7 @@ class modHubMenuHelper
 	 * Show the menu
 	 * @param string The current user type
 	 */
-	public function buildMenu()
+	static public function buildMenu()
 	{
 		global $mainframe;
 

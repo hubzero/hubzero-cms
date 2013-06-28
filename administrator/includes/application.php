@@ -98,7 +98,7 @@ class JAdministrator extends JApplication
 	 * @return	JRouter.
 	 * @since	1.5
 	 */
-	function &getRouter()
+	function &getRouter($name = null,$options = array())
 	{
 		$router =& parent::getRouter('administrator');
 		return $router;
@@ -220,7 +220,7 @@ class JAdministrator extends JApplication
 			$db->setQuery( $query );
 			$template = $db->loadResult();
 
-			$template = JFilterInput::clean($template, 'cmd');
+			$template = JFilterInput::getInstance()->clean($template, 'cmd');
 
 			if (!file_exists(JPATH_THEMES.DS.$template.DS.'index.php')) {
 				$template = 'khepri';
