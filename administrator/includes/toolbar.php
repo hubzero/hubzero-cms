@@ -33,7 +33,7 @@ class JToolBarHelper
 	* @param string The name of the image
 	* @since 1.5
 	*/
-	function title($title, $icon = 'generic.png')
+	static function title($title, $icon = 'generic.png')
 	{
 		global $mainframe;
 
@@ -52,7 +52,7 @@ class JToolBarHelper
 	* @param string The width for the cell
 	* @since 1.0
 	*/
-	function spacer($width = '')
+	static function spacer($width = '')
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add a spacer
@@ -168,7 +168,7 @@ class JToolBarHelper
 	* @param string An override for the alt text
 	* @since 1.0
 	*/
-	function addNew($task = 'add', $alt = 'New')
+	static function addNew($task = 'add', $alt = 'New')
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add a new button
@@ -209,7 +209,7 @@ class JToolBarHelper
 	* @param string An override for the alt text
 	* @since 1.0
 	*/
-	function publishList($task = 'publish', $alt = 'Publish')
+	static function publishList($task = 'publish', $alt = 'Publish')
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add a publish button (list)
@@ -261,7 +261,7 @@ class JToolBarHelper
 	* @param string An override for the alt text
 	* @since 1.0
 	*/
-	function unpublishList($task = 'unpublish', $alt = 'Unpublish')
+	static function unpublishList($task = 'unpublish', $alt = 'Unpublish')
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add an unpublish button (list)
@@ -301,7 +301,7 @@ class JToolBarHelper
 	* @param string An override for the alt text
 	* @since 1.0
 	*/
-	function editList($task = 'edit', $alt = 'Edit')
+	static function editList($task = 'edit', $alt = 'Edit')
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add an edit button
@@ -383,7 +383,7 @@ class JToolBarHelper
 	* @param string An override for the alt text
 	* @since 1.0
 	*/
-	function deleteList($msg = '', $task = 'remove', $alt = 'Delete')
+	static function deleteList($msg = '', $task = 'remove', $alt = 'Delete')
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add a delete button
@@ -474,7 +474,7 @@ class JToolBarHelper
 	* @param	string	An alternative path for the configuation xml relative to JPATH_SITE
 	* @since 1.0
 	*/
-	function preferences($component, $height='150', $width='570', $alt = 'Preferences', $path = '')
+	static function preferences($component, $height='150', $width='570', $alt = 'Preferences', $path = '')
 	{
 		$user =& JFactory::getUser();
 		if ($user->get('gid') != 25) {
@@ -496,7 +496,7 @@ class JToolBarHelper
 */
 class JSubMenuHelper
 {
-	function addEntry($name, $link = '', $active = false)
+	static function addEntry($name, $link = '', $active = false)
 	{
 		$menu = &JToolBar::getInstance('submenu');
 		$menu->appendButton($name, $link, $active);

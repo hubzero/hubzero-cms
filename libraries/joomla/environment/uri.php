@@ -489,7 +489,7 @@ class JURI extends JObject
 	 * @since	1.5
 	 * @see	parse_str()
 	 */
-	function buildQuery ($params, $akey = null)
+	static function buildQuery ($params, $akey = null)
 	{
 		if ( !is_array($params) || count($params) == 0 ) {
 			return false;

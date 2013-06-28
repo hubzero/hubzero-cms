@@ -253,9 +253,10 @@ class JRouterSite extends JRouter
 
 	function _parseRawRoute(&$uri)
 	{
+		$app =& JFactory::getApplication();
 		$vars   = array();
 
-		$menu =& JSite::getMenu(true);
+		$menu = $app->getMenu(true);
 
 		//Handle an empty URL (special case)
 		if(!$uri->getVar('Itemid') && !$uri->getVar('option'))
@@ -345,7 +346,7 @@ class JRouterSite extends JRouter
 		}
 		/* END: HUBzero Extension for SEF Groups */
 
-		$menu  =& JSite::getMenu(true);
+		$menu  = $app->getMenu(true);
 		$route = $uri->getPath();
 
 		//Get the variables from the uri
@@ -570,6 +571,8 @@ class JRouterSite extends JRouter
 
 	function _buildSefRoute(&$uri)
 	{
+		$app =& JFactory::getApplication();
+
 		// Get the route
 		$route = $uri->getPath();
 
@@ -602,7 +605,7 @@ class JRouterSite extends JRouter
 			return;
 		}
 
-		$menu =& JSite::getMenu();
+		$menu = $app->getMenu();
 
 		/*
 		 * Build the component route
@@ -704,10 +707,12 @@ class JRouterSite extends JRouter
 
 	function _processBuildRules(&$uri)
 	{
+		$app =& JFactory::getApplication();
+
 		// Make sure any menu vars are used if no others are specified
 		if(($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2)
 		{
-			$menu =& JSite::getMenu();
+			$menu = $app->getMenu();
 
 			// Get the active menu item
 			$itemid = $uri->getVar('Itemid');
@@ -739,11 +744,13 @@ class JRouterSite extends JRouter
 
 	function &_createURI($url)
 	{
+		$app =& JFactory::getApplication();
+
 		//Create the URI
 		$uri =& parent::_createURI($url);
 
 		// Set URI defaults
-		$menu =& JSite::getMenu();
+		$menu = $app->getMenu();
 
 		// Get the itemid form the URI
 		$itemid = $uri->getVar('Itemid');

@@ -194,7 +194,7 @@ class JSite extends JApplication
 	*/
 	function authorize($itemid)
 	{
-		$menus	=& JSite::getMenu();
+		$menus	=& $this->getMenu();
 		$user	=& JFactory::getUser();
 		$aid	= $user->get('aid');
 
@@ -240,7 +240,7 @@ class JSite extends JApplication
 			$params[$hash] =& JComponentHelper::getParams($option);
 
 			// Get menu parameters
-			$menus	=& JSite::getMenu();
+			$menus	=& $this->getMenu();
 			$menu	= $menus->getActive();
 
 			$title       = htmlspecialchars_decode($this->getCfg('sitename' ));
@@ -288,7 +288,7 @@ class JSite extends JApplication
 		}
 
 		// Get the id of the active menu item
-		$menu =& JSite::getMenu();
+		$menu =& $this->getMenu();
 		$item = $menu->getActive();
 
 		$id = 0;
@@ -339,7 +339,7 @@ class JSite extends JApplication
 	 * @return object JPathway.
 	 * @since 1.5
 	 */
-	function &getMenu()
+	function &getMenu($name = null, $options = array())
 	{
 		$options = array();
 		$menu =& parent::getMenu('site', $options);
