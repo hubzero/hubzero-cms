@@ -60,16 +60,28 @@ jQuery(function($) {
 
 	var remover = function(evt) {
 		evt.preventDefault();
-		// decrement question count
-		var questionsTotal = parseInt($('.questions-total').html(), 10);
-		$('.questions-total').html(--questionsTotal);
-		var questionsUnSaved = parseInt($('.questions-unsaved').html(), 10);
-		$('.questions-unsaved').html(++questionsUnSaved);
-		if(questionsUnSaved > 0) {
-			$('#save').addClass('unsaved');
-		} else {
-			$('#save').removeClass('unsaved');
+
+		var markerClass = $(evt.target.parentNode)[0].className;
+
+		if (markerClass.search('group-marker') !== -1) {
+			// decrement question count
+			var questionsTotal = parseInt($('.questions-total').html(), 10);
+			$('.questions-total').html(--questionsTotal);
+			var questionsUnSaved = parseInt($('.questions-unsaved').html(), 10);
+
+			if (markerClass.search('new-group-marker') === -1) {
+				$('.questions-unsaved').html(++questionsUnSaved);
+			} else {
+				$('.questions-unsaved').html(--questionsUnSaved);
+			}
+
+			if(questionsUnSaved > 0) {
+				$('#save').addClass('unsaved');
+			} else {
+				$('#save').removeClass('unsaved');
+			}
 		}
+
 		$(evt.target.parentNode).remove();
 	};
 
@@ -127,7 +139,7 @@ jQuery(function($) {
 			return;
 		}
 		// position marker over the select box
-		var marker = $('<div class="group-marker"></div>');
+		var marker = $('<div class="group-marker new-group-marker"></div>');
 		currentPage.append(marker);
 		marker
 			.css(groupBox.position())
