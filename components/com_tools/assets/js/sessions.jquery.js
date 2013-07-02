@@ -363,6 +363,12 @@ HUB.Mw = {
 						
 						//remove items from token list and clear actual hidden input
 						$("#acmembers").tokenInput('clear');
+						
+						//reset group select box
+						$("#group").val(0);
+						
+						//uncheck readonly 
+						$("#readonly").removeAttr('checked');
 					});
 				},
 				success: function(data, status, jqXHR)
@@ -380,6 +386,9 @@ HUB.Mw = {
 						
 						//reset group select box
 						$("#group").val(0);
+						
+						//uncheck readonly 
+						$("#readonly").removeAttr('checked');
 					});
 				}
 			});

@@ -123,6 +123,28 @@ class MwViewperm extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+	
+	/**
+	 * Update View perm
+	 * 
+	 * @return     void
+	 */
+	public function updateViewPerm()
+	{
+		if (!isset($this->sessnum) || $this->sessnum === null || $this->sessnum == '')
+		{
+			return false;
+		}
+		
+		if (!isset($this->viewuser) || $this->viewuser === null || $this->viewuser == '')
+		{
+			return false;
+		}
+		
+		$sql = "UPDATE `viewperm` SET `viewtoken`=" . $this->_db->quote( $this->viewtoken ) . ", `geometry`=" . $this->_db->quote( $this->geometry ) . ", `fwhost`=" . $this->_db->quote( $this->fwhost ) . ", `fwport`=" . $this->_db->quote( $this->fwport ) . ", `vncpass`=" . $this->_db->quote( $this->vncpass ) . ", `readonly`=" . $this->_db->quote( $this->readonly ) . " WHERE `sessnum`=" . $this->_db->quote( $this->sessnum ) . " AND `viewuser`=" . $this->_db->quote( $this->viewuser );
+		$this->_db->setQuery( $sql );
+		$this->_db->query();
+	}
 
 	/**
 	 * Delete a record

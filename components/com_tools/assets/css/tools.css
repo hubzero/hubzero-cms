@@ -705,6 +705,14 @@
 	#app-share-overlay.close:before {
 		content:"\f098";
 	}
+	span.readonly {
+		padding: 2px 4px;
+		background: #ccc;
+		color: #fff;
+		font-size: 11px;
+		text-transform: uppercase;
+		border-radius: 2px;
+	}
 /* Misc. */
 	#powered-by {
 		color: #999;
@@ -730,6 +738,7 @@
 	.hidden { 
 		display: none;
 	}
+	
 /* disk usage */
 /* Error Message */
 	#error-wrap {

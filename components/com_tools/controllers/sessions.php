@@ -699,7 +699,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 			}
 			
 			//fix array keys
-			$users = array_values($users);
+			$users = array_values(array_filter($users));
 		}
 		
 		// Double-check that the user can access this session.
@@ -712,10 +712,10 @@ class ToolsControllerSessions extends Hubzero_Controller
 			JError::raiseError(500, JText::_('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 			return;
 		}
-
+		
 		//$row = $rows[0];
 		$owner = $row->viewuser;
-
+		
 		if ($readonly != 'Yes') 
 		{
 			$readonly = 'No';
@@ -728,7 +728,6 @@ class ToolsControllerSessions extends Hubzero_Controller
 			JError::raiseError(500, JText::sprintf('Unable to get entry for %s, %s', $sess, $owner));
 			break;
 		}
-
 		foreach ($users as $user)
 		{
 			// Check for invalid characters
@@ -745,44 +744,45 @@ class ToolsControllerSessions extends Hubzero_Controller
 				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
 			}
-
-			$mv = new MwViewperm($mwdb);
-			$checkrows = $mv->loadViewperm($sess, $zuser->get('username'));
-
+			
+			//load current view perm
+			$mwViewperm = new MwViewperm($mwdb);
+			$currentViewPerm = $mwViewperm->loadViewperm($sess, $zuser->get('username'));
+			
 			// If there are no matching entries in viewperm, add a new entry,
 			// Otherwise, update the existing entry (e.g. readonly).
-			if (count($checkrows) == 0) 
+			if (count($currentViewPerm) == 0) 
 			{
-				$mv->sessnum   = $sess;
-				$mv->viewuser  = $zuser->get('username');
-				$mv->viewtoken = md5(rand());
-				$mv->geometry  = $rows[0]->geometry;
-				$mv->fwhost    = $rows[0]->fwhost;
-				$mv->fwport    = $rows[0]->fwport;
-				$mv->vncpass   = $rows[0]->vncpass;
-				$mv->readonly  = $readonly;
-				$mv->insert();
-			} 
-			else 
-			{
-				$mv->sessnum   = $checkrows[0]->sessnum;
-				$mv->viewuser  = $checkrows[0]->viewuser;
-				$mv->viewtoken = $checkrows[0]->viewtoken;
-				$mv->geometry  = $checkrows[0]->geometry;
-				$mv->fwhost    = $checkrows[0]->fwhost;
-				$mv->fwport    = $checkrows[0]->fwport;
-				$mv->vncpass   = $checkrows[0]->vncpass;
-				$mv->readonly  = $readonly;
-				$mv->update();
+				$mwViewperm->sessnum   = $sess;
+				$mwViewperm->viewuser  = $zuser->get('username');
+				$mwViewperm->viewtoken = md5(rand());
+				$mwViewperm->geometry  = $rows[0]->geometry;
+				$mwViewperm->fwhost    = $rows[0]->fwhost;
+				$mwViewperm->fwport    = $rows[0]->fwport;
+				$mwViewperm->vncpass   = $rows[0]->vncpass;
+				$mwViewperm->readonly  = $readonly;
+				$mwViewperm->insert();
 			}
-
-			if ($mv->getError())
+			else
 			{
-				JError::raiseError(500, $mv->getError());
+				$mwViewperm->sessnum   = $currentViewPerm[0]->sessnum;
+				$mwViewperm->viewuser  = $currentViewPerm[0]->viewuser;
+				$mwViewperm->viewtoken = $currentViewPerm[0]->viewtoken;
+				$mwViewperm->geometry  = $currentViewPerm[0]->geometry;
+				$mwViewperm->fwhost    = $currentViewPerm[0]->fwhost;
+				$mwViewperm->fwport    = $currentViewPerm[0]->fwport;
+				$mwViewperm->vncpass   = $currentViewPerm[0]->vncpass;
+				$mwViewperm->readonly  = $readonly;
+				$mwViewperm->updateViewPerm();
+			}
+			
+			if ($mwViewperm->getError())
+			{
+				JError::raiseError(500, $mwViewperm->getError());
 				return;
 			}
 		}
-
+		
 		// Drop through and re-view the session...
 		$this->viewTask();
 	}

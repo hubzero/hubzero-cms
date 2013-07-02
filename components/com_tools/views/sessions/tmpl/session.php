@@ -334,6 +334,9 @@ if (!$this->app->sess) {
 						</td>
 						<td class="entry-actions">
 							<?php if (is_object($this->app->owns)) : ?>
+								<?php if (strtolower($row->readonly) == 'yes') : ?>
+									<span class="readonly">Readonly</span>
+								<?php endif; ?>
 								<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing">
 									<span><?php echo JText::_('Remove this user from sharing'); ?></span>
 								</a>
