@@ -2952,6 +2952,14 @@
 		filter: none !important;
 		-ms-filter: none !important;
 	} 
+	table,
+	table.adminlist,
+	table.adminlist td,
+	table.adminlist th,
+	table td,
+	table th {
+		background: #fff !important;
+	}
 	@page {
 		margin: 0.5cm;
 	}

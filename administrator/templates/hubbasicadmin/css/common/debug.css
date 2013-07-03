@@ -18,3 +18,9 @@
 	#system-debug li {
 		list-style: none;
 	}
+
+	@media print {
+		#system-debug {
+			display: none;
+		}
+	}
