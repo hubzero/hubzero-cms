@@ -245,6 +245,10 @@ class CoursesControllerStudents extends Hubzero_Controller
 		}
 
 		$offering = JRequest::getInt('offering', 0);
+		if (!$offering && isset($fields['offering_id']))
+		{
+			$offering = $fields['offering_id'];
+		}
 		$offeringObj = CoursesModelOffering::getInstance($offering);
 
 		foreach ($user_ids as $user_id)
@@ -265,9 +269,9 @@ class CoursesControllerStudents extends Hubzero_Controller
 				$fields['user_id'] = $user_id;
 			}
 			// Instantiate the model
-			$course_id = $offeringObj->get('course_id');
+			$fields['course_id'] = $offeringObj->get('course_id');
 			$section_id = $offeringObj->section()->get('id');
-			$model = CoursesModelMember::getInstance($fields['user_id'], $course_id, $offering, $section_id);
+			$model = CoursesModelMember::getInstance($fields['user_id'], $fields['course_id'], $offering, $section_id);
 
 			// Bind posted data
 			if (!$model->bind($fields))
@@ -276,6 +280,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 				$this->editTask($model);
 				return;
 			}
+
 			// Store data
 			if (!$model->store())
 			{

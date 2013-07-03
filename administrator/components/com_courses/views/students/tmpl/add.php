@@ -66,10 +66,12 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if ($('acmembers').value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
-	} else if ($('offering_id').value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
+	if (document.getElementById('acmembers').value == '') {
+		alert('<?php echo JText::_('Please input one or more usernames or IDs.'); ?>');
+		return false;
+	} else if (document.getElementById('offering_id').value == '-1') {
+		alert('<?php echo JText::_('Please select an offering.'); ?>');
+		return false;
 	} else {
 		submitform(pressbutton);
 	}
