@@ -26,7 +26,7 @@ class Migration20130702181838ComWiki extends Hubzero_Migration
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php';
 
 		$version = new WikiPageRevision($db);
-		$version->loadByVersion($result->id, $result->version);
+		$version->loadByVersion($result->pageid, $result->version);
 
 		$hostname = php_uname('n');
 
