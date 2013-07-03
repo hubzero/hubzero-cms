@@ -179,6 +179,30 @@ if ($this->resource->type == 4) {
 		$parsed = parse_url($url);
 		if (stristr($parsed['host'], 'youtube'))
 		{
+			// YouTube
+			if (strstr($url, '?'))
+			{
+				//split the string into two parts 
+				//uri and query string
+				$full_url_parts = explode('?', $url);
+
+				//split apart any key=>value pairs in query string
+				$query_string_parts = explode("%26%2338%3B", urlencode($full_url_parts[1]));
+
+				//foreach query string parts
+				//explode at equals sign
+				//check to see if v is the first part and if it is set the second part to the video id
+				foreach ($query_string_parts as $qsp) 
+				{
+					$pairs_parts = explode("%3D", $qsp);
+					if ($pairs_parts[0] == 'v') 
+					{
+						$video_id = $pairs_parts[1];
+						break;
+					}
+				}
+				$url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
+			}
 			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" allowfullscreen></iframe>';
 		} 
 		else if (stristr($parsed['host'], 'vimeo'))
