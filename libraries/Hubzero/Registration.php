@@ -227,7 +227,7 @@ class Hubzero_Registration
 		$racewhite_p = JRequest::getVar('racewhite', null, 'post');
 		$racerefused_p = JRequest::getVar('racerefused', null, 'post');
 		$interests_p = JRequest::getVar('interests',null,'post');
-
+		
 		//if ($coriginus_p === null) { // field not on form
 		if ($coriginus_p || $corigin_p) { // field not on form
 			$corigin = ($coriginus_p == 'yes') ? 'US' : $corigin_p;
@@ -309,27 +309,34 @@ class Hubzero_Registration
 		{
 			$race = array();
 			$racenativetribe = null;
-
-			//if (strcasecmp($corigin, 'US') == 0)
-			//{
-				if ($racenativeamerican_p)
-				{
-					$race[] = 'nativeamerican';
-					$racenativetribe = $racenativetribe_p;
-				}
-				if ($raceasian_p)
-					$race[] = 'asian';
-				if ($raceblack_p)
-					$race[] = 'black';
-				if ($racehawaiian_p)
-					$race = 'hawaiian';
-				if ($racewhite_p)
-					$race = 'white';
-				if ($racerefused_p)
-					$race = 'refused';
-			//}
+			
+			if ($racenativeamerican_p)
+			{
+				$race[] = 'nativeamerican';
+				$racenativetribe = $racenativetribe_p;
+			}
+			if ($raceasian_p)
+			{
+				$race[] = 'asian';
+			}
+			if ($raceblack_p)
+			{
+				$race[] = 'black';
+			}
+			if ($racehawaiian_p)
+			{
+				$race[] = 'hawaiian';
+			}
+			if ($racewhite_p)
+			{
+				$race[] = 'white';
+			}
+			if ($racerefused_p)
+			{
+				$race = 'refused';
+			}
 		}
-
+		
 		if ($interests_p === null) // field not on form
 		{
 			$role = null;

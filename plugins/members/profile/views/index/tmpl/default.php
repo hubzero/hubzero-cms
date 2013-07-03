@@ -1376,34 +1376,34 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$race_html .= "\t\t".'<fieldset class="sub">'."\n";
 							$race_html .= "\t\t\t".'<p class="hint">'.JText::_('Select one or more that apply.').'</p>'."\n";
 
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="nativeamerican" ';
+							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="1" ';
 							if (in_array('nativeamerican', $race)) {
 								$race_html .= 'checked="checked" ';
 							}
 							$race_html .= '/> '.JText::_('American Indian or Alaska Native').'</label>'."\n";
 							$race_html .= "\t\t\t".'<label class="indent">'.JText::_('Tribal Affiliation(s)').':'."\n";
 							$race_html .= "\t\t\t".'<input name="racenativetribe" class="input-text" id="racenativetribe" type="text" value="'. htmlentities($this->profile->get('nativeTribe'),ENT_COMPAT,'UTF-8') .'" /></label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceasian" id="raceasian" ';
+							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceasian" id="raceasian" value="1" ';
 							if (in_array('asian', $race)) {
 								$race_html .= 'checked="checked" ';
 							}
 							$race_html .= '/> '.JText::_('Asian').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceblack" id="raceblack" ';
+							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceblack" id="raceblack" value="1" ';
 							if (in_array('black', $race)) {
 								$race_html .= 'checked="checked" ';
 							}
 							$race_html .= '/> '.JText::_('Black or African American').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racehawaiian" id="racehawaiian" ';
+							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racehawaiian" id="racehawaiian" value="1" ';
 							if (in_array('hawaiian', $race)) {
 								$race_html .= 'checked="checked" ';
 							}
 							$race_html .= '/> '.JText::_('Native Hawaiian or Other Pacific Islander').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racewhite" id="racewhite" ';
+							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racewhite" id="racewhite" value="1" ';
 							if (in_array('white', $race)) {
 								$race_html .= 'checked="checked" ';
 							}
 							$race_html .= '/> '.JText::_('White').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racerefused" id="racerefused" ';
+							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racerefused" id="racerefused" value="1" ';
 							if (in_array('refused', $race)) {
 								$race_html .= 'checked="checked" ';
 							}
