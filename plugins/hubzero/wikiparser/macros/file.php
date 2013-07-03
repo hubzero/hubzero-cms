@@ -502,12 +502,12 @@ class FileMacro extends WikiMacro
 				$html .= '<script type="text/javascript">' . "\n";
 				$html .= '<!--
 							function GetUnity() {
-								if (typeof unityObject != "undefined") {
+								if (typeof unityObject!= "undefined") {
 									return unityObject.getObjectById("unityPlayer' . $rand . '");
 								}
 								return null;
 							}
-							if (typeof unityObject != "undefined") {
+							if (typeof unityObject!= "undefined") {
 								unityObject.embedUnity("unityPlayer' . $rand . '", "' . $attr['href'] . '", ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');
 							}
 							-->' . "\n";
@@ -551,7 +551,7 @@ class FileMacro extends WikiMacro
 				//$html .= '<!--';
 				$html .= '	var cdf = new cdfplugin();';
 				$html .= "var defaultContent = '" . $attr['alt'] . "';";
-				$html .= '	if (defaultContent != "") {';
+				$html .= '	if (defaultContent!= "") {';
 				$html .= '		cdf.setDefaultContent(defaultContent);';
 				$html .= '	}';
 				$html .= '	cdf.embed(\'' . $attr['href'] . '\', ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');';

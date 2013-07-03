@@ -83,7 +83,7 @@ class WikiParser
 		'scope'    => null,
 		'pagename' => null,
 		'pageid'   => null,
-		'path'     => null,
+		'filepath' => null,
 		'domain'   => null,
 
 		'fullparse' => true,
@@ -1531,7 +1531,7 @@ class WikiParser
 			{
 				$macro->pageid = JRequest::getInt('lid', 0, 'post');
 			}
-			$macro->filepath   = $this->get('path');
+			$macro->filepath   = $this->get('filepath');
 
 			// Push contents to a container -- we'll retrieve this later
 			// This is done to prevent any further wiki parsing of contents macro may return
