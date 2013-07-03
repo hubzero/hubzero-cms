@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th colspan="4">
+				<th colspan="5">
 					(<a href="index.php?option=<?php echo $this->option; ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
@@ -86,17 +86,20 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('State'); ?></th>
+				<th scope="col"><?php echo JText::_('Ordering'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
-<?php if (count($this->rows) > 0) : ?>
-	<?php $i = 1; ?>
-	<?php foreach ($this->rows as $page) : ?>
+<?php if (count($this->rows) > 0) { ?>
+	<?php 
+	$i = 0;
+	$n = count($this->rows);
+	foreach ($this->rows as $page) { ?>
 			<tr>
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="isChecked(this.checked);" />
@@ -105,15 +108,15 @@ function submitbutton(pressbutton)
 					<?php echo $this->escape($page->get('id')); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $this->escape($page->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($page->get('title'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($page->get('title'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 				<?php if ($page->get('active')) { ?>
@@ -126,13 +129,21 @@ function submitbutton(pressbutton)
 					</span>
 				<?php } ?>
 				</td>
+				<td class="order" style="whitespace:nowrap">
+					<?php echo $page->get('ordering'); ?>
+					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($this->rows[$i - 1]), 'orderup', 'Move Up', true); ?></span>
+					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($this->rows[$i + 1]), 'orderdown', 'Move Down', true); ?></span>
+				</td>
 			</tr>
-	<?php endforeach; ?>
-<?php else : ?>
+	<?php 
+		$i++;
+	} 
+	?>
+<?php } else { ?>
 			<tr>
-				<td colspan="2"><?php echo JText::_('Currently there are no pages for this offering.'); ?></td>
+				<td colspan="5"><?php echo JText::_('No pages found.'); ?></td>
 			</tr>
-<?php endif; ?>
+<?php } ?>
 		</tbody>
 	</table>
 

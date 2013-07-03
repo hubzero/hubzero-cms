@@ -725,6 +725,10 @@ class CoursesModelCourse extends CoursesModelAbstract
 		{
 			$filters['offering_id'] = 0;
 		}
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'ordering';
+		}
 
 		if (isset($filters['count']) && $filters['count'])
 		{

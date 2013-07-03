@@ -872,4 +872,49 @@ class CoursesControllerPages extends Hubzero_Controller
 		}
 		return $dirlist;
 	}
+
+	/**
+	 * Reorder a record up
+	 * 
+	 * @return     void
+	 */
+	public function orderupTask()
+	{
+		$this->orderTask();
+	}
+
+	/**
+	 * Reorder a record up
+	 * 
+	 * @return     void
+	 */
+	public function orderdownTask()
+	{
+		$this->orderTask();
+	}
+
+	/**
+	 * Reorder a plugin
+	 * 
+	 * @param      integer $access Access level to set
+	 * @return     void
+	 */
+	public function orderTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		$id = JRequest::getVar('id', array(0), 'post', 'array');
+		JArrayHelper::toInteger($id, array(0));
+
+		$uid = $id[0];
+		$inc = ($this->_task == 'orderup' ? -1 : 1);
+
+		$row = new CoursesTablePage($this->database);
+		$row->load($uid);
+		$row->move($inc, 'course_id=' . $this->database->Quote($row->course_id) . ' AND offering_id=' . $this->database->Quote($row->offering_id));
+		$row->reorder('course_id=' . $this->database->Quote($row->course_id) . ' AND offering_id=' . $this->database->Quote($row->offering_id));
+
+		$this->cancelTask();
+	}
 }

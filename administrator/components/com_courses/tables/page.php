@@ -82,7 +82,7 @@ Class CoursesTablePage extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $porder = NULL;
+	var $ordering = NULL;
 
 	/**
 	 * int(11)
@@ -137,8 +137,8 @@ Class CoursesTablePage extends JTable
 
 		if (!$this->id)
 		{
-			$high = $this->getHighestPageOrder($this->offering_id);
-			$this->porder = ($high + 1);
+			$high = $this->getHighestPageOrder($this->course_id, $this->offering_id);
+			$this->ordering = ($high + 1);
 			$this->active = 1;
 		}
 
@@ -235,6 +235,25 @@ Class CoursesTablePage extends JTable
 	{
 		$sql = "SELECT r.*" . $this->_buildquery($filters);
 
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'ordering';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
+			$sql .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+		}
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
@@ -245,9 +264,9 @@ Class CoursesTablePage extends JTable
 	 * @param      string  $offering_id    Course alias (cn)
 	 * @return     integer
 	 */
-	public function getHighestPageOrder($offering_id)
+	public function getHighestPageOrder($course_id, $offering_id)
 	{
-		$sql = "SELECT porder from $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id)) . " ORDER BY porder DESC LIMIT 1";
+		$sql = "SELECT ordering from $this->_tbl WHERE course_id=" . $this->_db->Quote(intval($course_id)) . " AND offering_id=" . $this->_db->Quote(intval($offering_id)) . " ORDER BY ordering DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
