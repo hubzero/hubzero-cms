@@ -110,6 +110,18 @@ function toolsParseRoute($segments)
 				$vars['controller'] = 'sessions';
 			break;
 			
+			case 'assets':
+				if (count($segments) < 3)
+				{
+					break;
+				}
+				$vars['task'] = 'assets';
+				$vars['controller'] = 'tools';
+     				$vars['type'] = $segments[1];
+				$vars['file'] = $segments[2];
+				return $vars;
+			break;
+
 			case 'images':
 				$vars['task'] = $segments[0];
 				$vars['controller'] = 'tools';
