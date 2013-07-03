@@ -2306,6 +2306,10 @@ class ResourcesHtml
 			{
 				$type = 'HTML5';
 			}
+			if (!$type)
+			{
+				$type = 'HTM';
+			}
 
 			// Get the file size if the file exist
 			$fs = (file_exists($path)) ? filesize($path) : '';
