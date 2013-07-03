@@ -291,7 +291,17 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			$these = implode(', ', $allowedExtensions);
 			echo json_encode(array('error' => 'File has an invalid extension, it should be one of ' . $these . '.'));
 			return;
-		} 
+		}
+
+		jimport('joomla.filesystem.file');
+		$filename = urldecode($filename);
+		$filename = JFile::makeSafe($filename);
+		$filename = str_replace(' ', '_', $filename);
+
+		while (file_exists($uploadDirectory . DS . $filename . '.' . $ext)) 
+		{
+			$filename .= rand(10, 99);
+		}
 
 		//final file
 		$file = $uploadDirectory . $filename . '.' . $ext;
@@ -304,7 +314,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			$temp = tmpfile();
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
-		
+
 			//move from temp location to target location which is user folder
 			$target = fopen($file , "w");
 			fseek($temp, 0, SEEK_SET);
