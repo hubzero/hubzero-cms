@@ -225,6 +225,7 @@ class WikiPage extends JTable
 			{
 				$this->title = ($this->title) ? $this->title : $this->_splitPagename($this->pagename);
 			}
+			$this->_tbl_key = 'id';
 			return $res;
 		} 
 		else 
