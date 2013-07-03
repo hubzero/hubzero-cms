@@ -141,8 +141,25 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 *
 	 * @param	int	Article ID number
 	 */
-	public function children($idx=null)
+	public function children($idx=null, $populate=false)
 	{
+		if ($populate)
+		{
+			$filters = array(
+				'parent'     => $this->get('id'),
+				'unit_id'    => $this->get('unit_id'),
+				'section_id' => $this->get('section_id')
+			);
+
+			if (($results = $this->_tbl->find(array('w' => $filters))))
+			{
+				foreach ($results as $c)
+				{
+					$this->children->add(new CoursesModelAssetgroup($c));
+				}
+			}
+		}
+
 		if ($idx !== null)
 		{
 			if (is_numeric($idx))

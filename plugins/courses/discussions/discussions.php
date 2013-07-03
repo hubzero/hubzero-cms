@@ -108,39 +108,25 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		{
 			return;
 		}
-		/*$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+
+		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
+
+		$category = new ForumCategory(JFactory::getDBO());
+		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
+		if ($category->id)
 		{
-			$paramsClass = 'JRegistry';
-		}
-		$this->params->merge(new $paramsClass($assetgroup->get('params')));
-
-		if ($assetgroup->get('discussions_linkAssetGroup', 0))
-		{*/
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
-
-			$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
-
-			$category = new ForumCategory(JFactory::getDBO());
-			$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
-			if ($category->get('id'))
+			$category->state = $assetgroup->get('state');
+			$category->title = $assetgroup->get('title');
+			$category->alias = $assetgroup->get('alias');
+			if ($category->check())
 			{
-				/*$category->section_id  = $this->onUnitSave($unit);
-				$category->scope       = 'course';
-				$category->scope_id    = $unit->get('offering_id');
-				$category->object_id   = $assetgroup->get('id');
-				}*/
-				$category->state       = $assetgroup->get('state');
-				$category->title       = $assetgroup->get('title');
-				$category->alias       = $assetgroup->get('alias');
-				if ($category->check())
-				{
-					$category->store();
-				}
+				$category->store();
 			}
-			return $category->id;
-		//}
+		}
+		return $category->id;
 	}
 
 	/**
@@ -154,6 +140,36 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		if (!$assetgroup->exists())
 		{
 			return;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+
+		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
+
+		$category = new ForumCategory(JFactory::getDBO());
+		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
+		if ($category->id)
+		{
+			$category->state = 2;
+			if ($category->check())
+			{
+				$category->store();
+			}
+
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+
+			$thread = new ForumPost(JFactory::getDBO());
+			$thread->setStateByCategory($category->get('id'), 2);
+		}
+
+		// Bit of recursion here for nested asset groups
+		if ($assetgroup->children(null, true)->total() > 0)
+		{
+			foreach ($assetgroup->children() as $child)
+			{
+				$this->onAssetgroupDelete($child);
+			}
 		}
 	}
 
@@ -173,14 +189,12 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 
 		$section = new ForumSection(JFactory::getDBO());
-		if ($section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course'))
+		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
+		if ($section->id)
 		{
-			// Create a default section
-			//$section->scope    = 'course';
-			//$section->scope_id = $unit->get('offering_id');
-			$section->state    = $unit->get('state');
-			$section->title    = $unit->get('title');
-			$section->alias    = $unit->get('alias');
+			$section->state = $unit->get('state');
+			$section->title = $unit->get('title');
+			$section->alias = $unit->get('alias');
 			if ($section->check())
 			{
 				$section->store();
@@ -200,6 +214,37 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		if (!$unit->exists())
 		{
 			return;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
+
+		$section = new ForumSection(JFactory::getDBO());
+		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
+		if ($section->id)
+		{
+			$section->state = 2;
+			if ($section->check())
+			{
+				$section->store();
+			}
+
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+
+			$categories = $section->getRecords(array('section_id' => $section->id));
+			if ($categories)
+			{
+				$ids = array();
+				foreach ($categories as $category)
+				{
+					$ids[] = $category->id;
+				}
+				$section->setStateBySection($section->id, 2);
+
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+
+				$thread = new ForumPost(JFactory::getDBO());
+				$thread->setStateByCategory($ids, 2);
+			}
 		}
 	}
 
