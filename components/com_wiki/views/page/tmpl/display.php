@@ -98,8 +98,23 @@ if (!$mode || ($mode && $mode != 'static')) {
 	$view->config = $this->config;
 	$view->sub    = $this->sub;
 	$view->display();
-	
-	$first = $this->page->getRevision(1);
+
+	$first = $this->page; //->getRevision(1);
+
+	$rev = new WikiPageRevision(JFactory::getDBO());
+	$revisions = $rev->getRecords(
+		array(
+			'pageid'   => $this->page->id, 
+			'approved' => array(0, 1),
+			'limit'    => 1,
+			'start'    => 0,
+			'sortby'   => 'version ASC'
+		)
+	);
+	if ($revisions)
+	{
+		$first = $revisions[0];
+	}
 
 	$obj = new WikiTags(JFactory::getDBO());
 	$tags = $obj->get_tag_cloud(0, $this->config->get('admin', 0), $this->page->id);
