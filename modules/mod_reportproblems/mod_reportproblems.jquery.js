@@ -56,37 +56,30 @@ HUB.Modules.ReportProblems = {
 			$(settings.pane).css('height', 'auto');
 		}
 
-		$('<a href="#" id="help-btn-close" alt="Close">Close</a>').bind('mousedown', function (e) {
+		$('<a href="#" id="help-btn-close" alt="Close">Close</a>').on('click', function (e) {
 			e.preventDefault();
-			if ($(settings.toggle).hasClass('active')) {
-				$(settings.toggle).removeClass('active');
-			} else {
-				$(settings.toggle).addClass('active');
-			}
+
+			$(settings.toggle).toggleClass('active');
 			$(settings.pane).slideToggle();
 			return false;
 		}).appendTo($(settings.pane));
 
-		if ($(settings.toggle)) {
-			$(settings.toggle).click(function (e) {
+		if ($(settings.toggle).length) {
+			$(settings.toggle).on('click', function (e) {
 				e.preventDefault();
-				if ($(this).hasClass('active')) {
-					$(this).removeClass('active');
-				} else {
-					$(this).addClass('active');
-				}
+				$(this).toggleClass('active');
 				$(settings.pane).slideToggle();
 				return false;
 			});
-			
-			if ($(settings.form)) {
+
+			if ($(settings.form).length) {
 				$('<p>Sending report ...</p>').appendTo($(settings.loader));
-				
+
 				$('<iframe src="about:blank" id="upload_target" name="upload_target" style="width:0px;height:0px;border:0px solid #fff;"></iframe>').appendTo($(settings.pane));
 
 				$(settings.form).attr('target', 'upload_target');
-				
-				$(settings.form).submit(function () {
+
+				$(settings.form).on('submit', function () {
 					return ticket.validateFields();
 				});
 			}
@@ -95,18 +88,19 @@ HUB.Modules.ReportProblems = {
 
 	hideTimer: function() {
 		var ticket = this,
-            $ = this.jQuery,
-            settings = this.settings;
+			$ = this.jQuery,
+			settings = this.settings;
 
 		$(settings.loader).hide();
-		$(settings.success).html(document.getElementById('upload_target').contentWindow.document.getElementById('report-response').innerHTML);
-		$(settings.success).show();
+		$(settings.success)
+			.html(document.getElementById('upload_target').contentWindow.document.getElementById('report-response').innerHTML)
+			.show();
 	},
 
 	resetForm: function() {
 		var ticket = this,
-            $ = this.jQuery,
-            settings = this.settings;
+			$ = this.jQuery,
+			settings = this.settings;
 
 		$(settings.fields.problem).val('');
 		$(settings.fields.upload).parent().html($(settings.fields.upload).parent().html());
@@ -116,8 +110,8 @@ HUB.Modules.ReportProblems = {
 
 	reshowForm: function() {
 		var ticket = this,
-            $ = this.jQuery,
-            settings = this.settings;
+			$ = this.jQuery,
+			settings = this.settings;
 
 		$(settings.success).hide();
 		$(settings.form).show();
@@ -175,12 +169,12 @@ HUB.Modules.ReportProblems = {
 				return false;
 			}
 		}
-		
-		//return ticket.sendReport();
+
 		var h = $(settings.form).height();
 		$(settings.form).hide();
-		$(settings.loader).show();
-		$(settings.loader).height(h);
+		$(settings.loader)
+			.height(h)
+			.show();
 		return true;
 	},
 
@@ -192,7 +186,6 @@ HUB.Modules.ReportProblems = {
 		}
 		return true;
 	}
-		
 };
 
 jQuery(document).ready(function($){
