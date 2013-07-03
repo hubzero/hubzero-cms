@@ -247,7 +247,7 @@ class plgMembersCourses extends JPlugin
 					$this->database->setQuery("SELECT COUNT(*)  
 						FROM #__courses AS c 
 						JOIN #__courses_members AS m ON m.course_id=c.id
-						LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1 AND s.id=m.section_id");
@@ -259,10 +259,10 @@ class plgMembersCourses extends JPlugin
 						m.enrolled, s.publish_up AS starts, s.publish_down AS ends
 							FROM #__courses AS c 
 							JOIN #__courses_members AS m ON m.course_id=c.id
-							LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1");
+						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1 AND o.state!=2");
 					$results = $this->database->loadObjectList();
 				}
 			break;
@@ -273,7 +273,7 @@ class plgMembersCourses extends JPlugin
 					$this->database->setQuery("SELECT COUNT(*)
 							FROM #__courses AS c 
 							JOIN #__courses_members AS m ON m.course_id=c.id
-							LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 							WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager'");
@@ -285,7 +285,7 @@ class plgMembersCourses extends JPlugin
 						SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends
 							FROM #__courses AS c 
 							JOIN #__courses_members AS m ON m.course_id=c.id
-							LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager' 
@@ -315,7 +315,7 @@ class plgMembersCourses extends JPlugin
 					$this->database->setQuery("SELECT COUNT(*)  
 						FROM #__courses AS c 
 						JOIN #__courses_members AS m ON m.course_id=c.id
-						LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor'));
@@ -326,7 +326,7 @@ class plgMembersCourses extends JPlugin
 					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, r.alias AS role_alias, r.title AS role_title  
 						FROM #__courses AS c 
 						JOIN #__courses_members AS m ON m.course_id=c.id
-						LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor'));
@@ -340,7 +340,7 @@ class plgMembersCourses extends JPlugin
 					$this->database->setQuery("SELECT COUNT(*)  
 						FROM #__courses AS c 
 						JOIN #__courses_members AS m ON m.course_id=c.id
-						LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta'));
@@ -351,7 +351,7 @@ class plgMembersCourses extends JPlugin
 					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, r.alias AS role_alias, r.title AS role_title  
 						FROM #__courses AS c 
 						JOIN #__courses_members AS m ON m.course_id=c.id
-						LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta'));
