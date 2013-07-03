@@ -286,8 +286,8 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->start, $regs)) 
 			{
-				$startmonth = date("m", mktime(0, 0, 0, ($regs[2]+1), 1, $regs[1]));
-				$startyear = $first = date("Y", mktime(0, 0, 0, ($regs[2]+1), 1, $regs[1]));
+				$startmonth = date("m", mktime(0, 0, 0, $regs[2], 1, $regs[1]));
+				$startyear = $first = date("Y", mktime(0, 0, 0, $regs[2], 1, $regs[1]));
 				//$end = $year . '-' . $month;
 			}
 		}
@@ -448,7 +448,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$this->view->closedmonths[$k] = array();
 			$this->view->openedmonths[$k] = array();
 
-			for ($i = $startmonth; $i <= 12; $i++)
+			for ($i = intval($startmonth); $i <= 12; $i++)
 			{
 				if ($k == $year && $i > $endmonth)
 				{
