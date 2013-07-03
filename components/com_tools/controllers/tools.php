@@ -53,6 +53,7 @@ class ToolsControllerTools extends Hubzero_Controller
 		// Check if middleware is enabled
 		if ($task != 'image'
 		 && $task != 'css'
+		 && $task != 'assets'
 		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && !$this->config->get('access-admin-component')))) 
 		{
 			// Redirect to home page
@@ -151,6 +152,49 @@ class ToolsControllerTools extends Hubzero_Controller
 			}
 		}
 		$this->view->display();
+	}
+
+	/**
+	 * Tool asset delivery function.
+ 	 * Original purpose was to deliver a template overrideable css file for the filexfer package
+	 * 
+	 * @return    exit
+	 */
+	public function assetsTask()
+	{
+		$type = JRequest::getVar('type', 'css');
+		$file = JRequest::getVar('file', '');
+
+		if (($type != 'css') || empty($file))
+		{
+			ob_clean();
+			header("HTTP/1.1 404 Not Found");
+			ob_end_flush();
+			exit;
+		}
+
+		ximport('Hubzero_Document');
+
+		if ($type == 'css')
+		{
+			$file = JPATH_SITE . Hubzero_Document::getComponentStylesheet($this->_option, $file);
+
+			if (is_readable($file)) 
+			{
+				ob_clean();
+				header("Content-Type: text/css");
+				readfile($file);
+				ob_end_flush();
+				exit;
+			}
+			else
+			{
+				ob_clean();
+				header("HTTP/1.1 404 Not Found");
+				ob_end_flush();
+				exit;
+			}
+		}
 	}
 
 	/**
