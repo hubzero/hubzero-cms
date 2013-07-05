@@ -157,6 +157,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->view->filters['user_id'] = $this->juser->get('id');
 		$this->view->filters['sort']   = 'p.created';
 		$this->view->filters['state']   = 1;
+		$this->view->filters['is_default'] = 0;
 		//$this->view->filters['trending'] = true;
 		//$this->view->filters['board_id'] = 0;
 		if ($this->view->filters['id'])
@@ -175,7 +176,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 
 		$model = CollectionsModel::getInstance();
 
-		$this->view->collections = $model->collections(array('count' => true, 'access' => 0));
+		$this->view->collections = $model->collections(array('count' => true, 'access' => 0, 'state' => 1, 'is_default' => 0));
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -278,6 +279,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['sort']    = 'p.created';
 		$this->view->filters['state']   = 1;
+		$this->view->filters['is_default'] = 0;
 		if ($this->view->filters['id'])
 		{
 			$this->view->filters['object_type'] = 'site';
@@ -291,7 +293,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 
 		$model = CollectionsModel::getInstance();
 
-		$this->view->collections = $model->collections(array('count' => true));
+		$this->view->collections = $model->collections(array('count' => true, 'access' => 0, 'state' => 1, 'is_default' => 0));
 
 		if ($this->getError()) 
 		{

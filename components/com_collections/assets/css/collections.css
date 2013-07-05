@@ -20,6 +20,7 @@
 	
 	#content-header-extra .about:before {
 		content: "\f05a";
+		font-family: "Fontcons";
 	}
 	#content-header-extra ul,
 	#content-header-extra li {
