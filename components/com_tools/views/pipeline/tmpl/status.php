@@ -479,7 +479,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<ul>
 					<li class="todo">
 						<span id="primary-document">
-							<?php echo JText::_('WHATSNEXT_INSTALLED_TEST'); ?>: <a class="launchtool" style="padding:0.4em 0.2em 0.1em 1.5em;margin-top:1em;" href="<?php echo $testpath; ?>"><?php echo JText::_('LAUNCH_TOOL'); ?></a>
+							<?php echo JText::_('WHATSNEXT_INSTALLED_TEST'); ?>: <a class="launchtool" href="<?php echo $testpath; ?>"><?php echo JText::_('LAUNCH_TOOL'); ?></a>
 						</span>
 					</li>
 					<li class="todo">
@@ -487,14 +487,12 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_REVIEW_RES_PAGE'); ?></a>
 				<?php } else { ?>
 						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?></a>
+						<p class="warning">
+							<?php echo JText::_('PLEASE'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo strtolower(JText::_('CREATE')); ?></a> <?php echo JText::_('WHATSNEXT_PAGE_DESC'); ?>.
+						</p>
 				<?php } ?>
 					</li>
 				</ul>
-				<?php if (!$this->status['resource_modified']) { ?>
-				<p class="warning">
-					<?php echo JText::_('PLEASE'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo strtolower(JText::_('CREATE')); ?></a> <?php echo JText::_('WHATSNEXT_PAGE_DESC'); ?>.
-				</p>
-				<?php } ?>
 				<h2><?php echo JText::_('WHATSNEXT_WE_ARE_WAITING'); ?></h2>
 				<p><?php echo JText::_('WHATSNEXT_INSTALLED_CLICK_AFTER_TESTING'); ?>:</p>
 				<ul>
