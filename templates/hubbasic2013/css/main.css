@@ -1152,7 +1152,7 @@
 		        box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 	}
 
-/* Sub-menu */
+/* Sub-menu 
 	#page_container .sub-menu li.active a,
 	#page_container .sub-menu li.active a:hover {
 		background: #fff;
@@ -1551,8 +1551,8 @@
 	}
 
 /* Buttons & Icons */
-	/*#content-header-extra a,
-	#page_options a,*/
+	/*#content-header-extra a,*/
+	#page_options a,
 	.btn,
 	a.btn {
 		color: #555;
@@ -1592,12 +1592,13 @@
 		cursor: pointer;
 		position: relative;
 	}
+	#page_options a,
 	#content-header-extra .btn {
 		background: transparent;
 		border: 1px solid #ccc;
 	}/*
-	#content-header-extra a,
-	#page_options a,*/
+	#content-header-extra a,*/
+	#page_options a,
 	.btn.add,
 	.btn.edit-member,
 	.btn.email,
@@ -1635,8 +1636,9 @@
 		color: #999;
 		border-color: #CCC;
 	}
-	/*#page_options a:hover,
+	/*
 	#content-header-extra a:hover,*/
+	#page_options a:hover,
 	a.btn:hover {
 		background: #e8e8e8;
 		background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#e8e8e8));
@@ -1652,6 +1654,9 @@
 		-ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 		-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+	}
+	#page_options a:hover {
+		background: transparent;
 	}
 	.add:before,
 	.edit-member:before,
@@ -1679,8 +1684,9 @@
 		font-family: 'Fontcons';
 		margin-right: 0.2em;
 	}
-	/*#page_options a:before,
+	/*
 	#content-header-extra a:before,*/
+	#page_options a:before,
 	.btn.add:before,
 	.btn.edit-member:before,
 	.btn.email:before,
@@ -1729,6 +1735,7 @@
 		-o-border-radius: 0.25em 0 0 0.25em;
 		border-radius: 0.25em 0 0 0.25em;
 	}
+	#page_options a:before,
 	#content-header-extra a:before {
 		background: transparent;
 		border-right: 1px solid #e9e9e9;
