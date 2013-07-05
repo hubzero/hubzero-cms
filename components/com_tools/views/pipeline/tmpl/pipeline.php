@@ -226,7 +226,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</tbody>
 			</table>
 		
-			<?php echo $this->pageNav->getListFooter(); ?>
+			<?php 
+			$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+			$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+			$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+			
+			echo $this->pageNav->getListFooter();
+			?>
 			<div class="clearfix"></div>
 		</div><!-- / .container -->
 	</form>
