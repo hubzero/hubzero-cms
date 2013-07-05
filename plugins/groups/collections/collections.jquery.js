@@ -1,19 +1,9 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/groups/blog/blog.js
+ * @file        plugins/groups/collections/collections.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
-}
 
 if (!jq) {
 	var jq = $;
@@ -25,19 +15,11 @@ String.prototype.nohtml = function () {
 	} else {
 		return this + '&no_html=1';
 	}
-	//return this;
 };
 
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
-HUB.Plugins.MembersCollections = {
-	jQuery: jq,
-	
-	initialize: function() {
-		var $ = this.jQuery;
-
-		var container = $('#posts');
+jQuery(document).ready(function(jq){
+	var $ = jq,
+		container = $('#posts');
 
 		if (container.length > 0) {
 			container.masonry({
@@ -72,28 +54,32 @@ HUB.Plugins.MembersCollections = {
 				}
 			);
 			
-			$('#posts a.vote').each(function(i, el){
-				$(el).on('click', function(e){
+			container
+				.find('a.vote')
+				.on('click', function(e){
 					e.preventDefault();
 
-					$.get($(this).attr('href').nohtml(), {}, function(data){
-						var like = $(el).attr('data-text-like');
-						var unlike = $(el).attr('data-text-unlike');
-						if ($(el).children('span').text() == like) {
-							$(el).removeClass('like')
+					var el = $(this);
+
+					$.get(el.attr('href').nohtml(), {}, function(data){
+						var like = el.attr('data-text-like'),
+							unlike = el.attr('data-text-unlike')
+
+						if (el.children('span').text() == like) {
+							el.removeClass('like')
 								.addClass('unlike')
 								.children('span')
 								.text(unlike);
 						} else {
-							$(el).removeClass('unlike')
+							el.removeClass('unlike')
 								.addClass('like')
 								.children('span')
 								.text(unlike);
 						}
-						$('#b' + $(el).attr('data-id') + ' .likes').text(data);
+
+						$('#b' + el.attr('data-id') + ' .likes').text(data);
 					});
 				});
-			});
 			
 			$('#page_content a.repost').fancybox({
 				type: 'ajax',
@@ -106,14 +92,12 @@ HUB.Plugins.MembersCollections = {
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-					href = $(this).attr('href');
-
-					$(this).attr('href', href.nohtml());	
+					$(this).attr('href', $(this).attr('href').nohtml());	
 				},
 				afterShow: function() {
 					var el = this.element;
 					if ($('#hubForm')) {
-						$('#hubForm').submit(function(e) {
+						$('#hubForm').on('submit', function(e) {
 							e.preventDefault();
 							$.post($(this).attr('action'), $(this).serialize(), function(data) {
 								$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
@@ -124,7 +108,7 @@ HUB.Plugins.MembersCollections = {
 				}
 			});
 
-			$('#posts a.delete').fancybox({
+			container.find('a.delete').fancybox({
 				type: 'ajax',
 				width: 300,
 				height: 'auto',
@@ -135,9 +119,7 @@ HUB.Plugins.MembersCollections = {
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-					href = $(this).attr('href');
-
-					$(this).attr('href', href.nohtml());	
+					$(this).attr('href', $(this).attr('href').nohtml());	
 				},
 				afterShow: function() {
 					var el = this.element;
@@ -153,7 +135,7 @@ HUB.Plugins.MembersCollections = {
 				}
 			});
 
-			$('#posts a.comment').fancybox({
+			container.find('a.comment').fancybox({
 				type: 'ajax',
 				width: 500,
 				height: 'auto',
@@ -164,9 +146,7 @@ HUB.Plugins.MembersCollections = {
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-					href = $(this).attr('href');
-
-					$(this).attr('href', href.nohtml());
+					$(this).attr('href', $(this).attr('href').nohtml());
 				},
 				afterShow: function() {
 					var el = this.element;
@@ -191,20 +171,20 @@ HUB.Plugins.MembersCollections = {
 
 			var el = $(this);
 
-			$.getJSON($(this).attr('href').nohtml(), {}, function(data) {
+			$.getJSON(el.attr('href').nohtml(), {}, function(data) {
 				if (data.success) {
 					//var unfollow = $(el).attr('data-href-unfollow');
-					var follow = $(el).attr('data-text-follow'),
-						unfollow = $(el).attr('data-text-unfollow');
+					var follow = el.attr('data-text-follow'),
+						unfollow = el.attr('data-text-unfollow');
 
-					if ($(el).children('span').text() == follow) {
-						$(el).removeClass('follow')
+					if (el.children('span').text() == follow) {
+						el.removeClass('follow')
 							.addClass('unfollow')
 							.attr('href', data.href)
 							.children('span')
 							.text(unfollow);
 					} else {
-						$(el).removeClass('unfollow')
+						el.removeClass('unfollow')
 							.addClass('follow')
 							.attr('href', data.href)
 							.children('span')
@@ -213,81 +193,8 @@ HUB.Plugins.MembersCollections = {
 				}
 			});
 		});
-		
-		HUB.Plugins.MembersCollections.formOptions(false);
-		
-		/*$('#hubForm .post-type a').each(function(i, el){
-			$(el).on('click', function(e){
-				e.preventDefault();
-				//$('#hubForm .fieldset').addClass('hide');
-				//$('#' + $(this).attr('rel')).removeClass('hide');
 
-				$('.post-type a').removeClass('active');
-				$(this).addClass('active');
-				
-				href = $(this).attr('href');
-				if (href.indexOf('?') == -1) {
-					href += '?no_html=1';
-				} else {
-					href += '&no_html=1';
-				}
-				$(this).attr('href', href);
-				
-				$.get($(this).attr('href'), {}, function(data){
-					$('#post-type-form').html(data);
-					HUB.Plugins.MembersCollections.formOptions(true);
-				});
-			});
-		});*/
-		
 		$("#ajax-uploader-list").sortable({
 			handle: '.asset-handle'
 		});
-	}, // end initialize
-
-	formOptions: function(initEditor) {
-		var $ = this.jQuery;
-
-		/*if (initEditor) {
-			if (typeof(HUB.Plugins.WikiEditorToolbar) != 'undefined') {
-				HUB.Plugins.WikiEditorToolbar.initialize();
-			}
-		}*/
-
-		$('.toggle').each(function(i, el){
-			$(el).on('click', function(e){
-				e.preventDefault();
-
-				var item = $('#' + $(this).attr('rel'));
-				if (item.hasClass('hide')) {
-					item.removeClass('hide');
-					$(this).addClass('delete').removeClass('add');
-					if ($(this).attr('data-text-hide')) {
-						$(this).text($(this).attr('data-text-hide'));
-					}
-				} else {
-					$(this).removeClass('delete').addClass('add');
-					item.addClass('hide');
-					if ($(this).attr('data-text-show')) {
-						$(this).text($(this).attr('data-text-show'));
-					}
-				}
-			});
-		});
-
-		/*$('.file-add a').each(function(i, el){
-			$(el).on('click', function(e){
-				e.preventDefault();
-
-				var prev = $($(this).parent()).prev();
-				var clone = prev.clone();
-				clone.find('input').val('');
-				prev.after(clone);
-			});
-		});*/
-	}
-}
-
-jQuery(document).ready(function($){
-	HUB.Plugins.MembersCollections.initialize();
 });
