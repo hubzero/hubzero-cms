@@ -1,16 +1,9 @@
 /**
  * @package     hubzero-cms
- * @file        components/com-collections/assets/js/collections.jquery.js
+ * @file        components/com_collections/assets/js/collections.jquery.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
 
 if (!jq) {
 	var jq = $;
@@ -24,16 +17,9 @@ String.prototype.nohtml = function () {
 	}
 };
 
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
-HUB.Collections = {
-	jQuery: jq,
-	
-	initialize: function() {
-		var $ = this.jQuery;
-
-		var container = $('#posts');
+jQuery(document).ready(function(jq){
+	var $ = jq,
+		container = $('#posts');
 
 		// Are there any posts?
 		if (container.length > 0) {
@@ -71,31 +57,35 @@ HUB.Collections = {
 			);
 
 			// Add voting trigger
-			$('#posts a.vote').each(function(i, el){
-				$(el).on('click', function(e){
+			container
+				.find('a.vote')
+				.on('click', function(e){
 					e.preventDefault();
 
-					$.get($(this).attr('href').nohtml(), {}, function(data){
-						var like = $(el).attr('data-text-like');
-						var unlike = $(el).attr('data-text-unlike');
-						if ($(el).children('span').text() == like) {
-							$(el).removeClass('like')
+					var el = $(this);
+
+					$.get(el.attr('href').nohtml(), {}, function(data){
+						var like = el.attr('data-text-like'),
+							unlike = el.attr('data-text-unlike');
+
+						if (el.children('span').text() == like) {
+							el.removeClass('like')
 								.addClass('unlike')
 								.children('span')
 								.text(unlike);
 						} else {
-							$(el).removeClass('unlike')
+							el.removeClass('unlike')
 								.addClass('like')
 								.children('span')
 								.text(unlike);
 						}
-						$('#b' + $(el).attr('data-id') + ' .likes').text(data);
+
+						$('#b' + el.attr('data-id') + ' .likes').text(data);
 					});
 				});
-			});
 
 			// Add collect trigger
-			$('#posts a.repost').fancybox({
+			container.find('a.repost').fancybox({
 				type: 'ajax',
 				width: 500,
 				height: 'auto',
@@ -106,9 +96,7 @@ HUB.Collections = {
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-					href = $(this).attr('href');
-
-					$(this).attr('href', href.nohtml());
+					$(this).attr('href', $(this).attr('href').nohtml());
 				},
 				afterShow: function() {
 					var el = this.element;
@@ -125,7 +113,7 @@ HUB.Collections = {
 			});
 			
 			// Add collect trigger
-			$('#posts a.comment').fancybox({
+			container.find('a.comment').fancybox({
 				type: 'ajax',
 				width: 500,
 				height: 'auto',
@@ -136,9 +124,7 @@ HUB.Collections = {
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-					href = $(this).attr('href');
-
-					$(this).attr('href', href.nohtml());
+					$(this).attr('href', $(this).attr('href').nohtml());
 				},
 				afterShow: function() {
 					var el = this.element;
@@ -164,19 +150,19 @@ HUB.Collections = {
 
 			var el = $(this);
 
-			$.getJSON($(this).attr('href').nohtml(), {}, function(data) {
+			$.getJSON(el.attr('href').nohtml(), {}, function(data) {
 				if (data.success) {
-					var follow = $(el).attr('data-text-follow'),
-						unfollow = $(el).attr('data-text-unfollow');
+					var follow = el.attr('data-text-follow'),
+						unfollow = el.attr('data-text-unfollow');
 
-					if ($(el).children('span').text() == follow) {
-						$(el).removeClass('follow')
+					if (el.children('span').text() == follow) {
+						el.removeClass('follow')
 							.addClass('unfollow')
 							.attr('href', data.href)
 							.children('span')
 							.text(unfollow);
 					} else {
-						$(el).removeClass('unfollow')
+						el.removeClass('unfollow')
 							.addClass('follow')
 							.attr('href', data.href)
 							.children('span')
@@ -185,9 +171,4 @@ HUB.Collections = {
 				}
 			});
 		});
-	} // end initialize
-}
-
-jQuery(document).ready(function($){
-	HUB.Collections.initialize();
 });

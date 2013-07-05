@@ -1250,3 +1250,7 @@
 	#sbox-content .commnts .comment-submit {
 		width: auto;
 	}
+	.entry-date-at,
+	.entry-date-on {
+		display: none;
+	}
