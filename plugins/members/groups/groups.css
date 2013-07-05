@@ -32,6 +32,8 @@
 		border: none;
 		margin-left: 0.5em;
 		color: #bbb;
+		background: transparent;
+		padding: 0;
 	}
 	.groups .user-options a:hover {
 		color: #333;
@@ -51,6 +53,10 @@
 	.groups .user-options .accept:before {
 		font-family: "Fontcons";
 		content: "\2714";
+	}
+	.groups .user-options .delete:before {
+		font-family: "Fontcons";
+		content: "\f014";
 	}
 	.groups .user-options a:before {
 		margin-right: 2em;
