@@ -1596,8 +1596,8 @@
 	#content-header-extra .btn {
 		background: transparent;
 		border: 1px solid #ccc;
-	}/*
-	#content-header-extra a,*/
+	}
+	#content-header-extra a,
 	#page_options a,
 	.btn.add,
 	.btn.edit-member,
@@ -1684,8 +1684,7 @@
 		font-family: 'Fontcons';
 		margin-right: 0.2em;
 	}
-	/*
-	#content-header-extra a:before,*/
+	#content-header-extra a:before,
 	#page_options a:before,
 	.btn.add:before,
 	.btn.edit-member:before,
@@ -2539,6 +2538,9 @@ System styles
 		color: #fff;
 	}
 
+	body #page_options li#personalize a {
+		line-height: 1.6em;
+	}
 	body .com_resources .upperpane {
 		background-color: #fff;
 	}
