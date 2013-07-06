@@ -106,7 +106,7 @@ class Hubzero_User_Profile_Helper
 	 * @param      integer $anonymous Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getMemberPhoto($member, $anonymous=0, $thumbit=true)
+	public static function getMemberPhoto($member, $anonymous=0, $thumbit=true)
 	{
 		$config =& JComponentHelper::getParams('com_members');
 
@@ -169,7 +169,7 @@ class Hubzero_User_Profile_Helper
 	 * @param      string $thumb Filename to get thumbnail of
 	 * @return     string
 	 */
-	public function thumbit($thumb)
+	public static function thumbit($thumb)
 	{
 		jimport('joomla.filesystem.file');
 		$ext = JFile::getExt($thumb);

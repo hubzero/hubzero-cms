@@ -42,7 +42,7 @@ class Hubzero_Environment
 	 * @param      string $index Parameter to check for
 	 * @return     boolean True if found
 	 */
-	public function server($index = '')
+	public static function server($index = '')
 	{
 		if (!isset($_SERVER[$index])) 
 		{
@@ -58,7 +58,7 @@ class Hubzero_Environment
 	 * @param      string  $ip IP address to validate
 	 * @return     boolean True if IP is valid
 	 */
-	public function validIp($ip)
+	public static function validIp($ip)
 	{
 		return (!preg_match( "/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
 	}
@@ -68,7 +68,7 @@ class Hubzero_Environment
 	 * 
 	 * @return     string
 	 */
-	public function ipAddress()
+	public static function ipAddress()
 	{
 		if (self::server('REMOTE_ADDR') && self::server('HTTP_CLIENT_IP')) 
 		{

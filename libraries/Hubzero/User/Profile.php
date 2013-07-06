@@ -717,7 +717,7 @@ class Hubzero_User_Profile extends JObject
 	 * @param mixed $user The user to load - Can be an integer or string
 	 * @return mixed Returns object if valid record found, false if not
 	 */
-	public function getInstance($id = null)
+	public static function getInstance($id = null)
 	{
 		static $instances;
 		static $usernames;
