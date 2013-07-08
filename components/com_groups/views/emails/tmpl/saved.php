@@ -47,7 +47,7 @@ if ($this->isNew) {
 	$message .= JText::_('COM_GROUPS_DETAILS_FIELD_CN').': '. $this->g_cn ."\n";
 } else {
 	//$message .= JText::sprintf('GROUPS_USER_HAS_CHANGED_GROUP', $this->sitename) .':'."\n\n";
-	$message .= "\n Changed the following user group on" .  $this->sitename .':'."\n\n";
+	$message .= "\n Changed the following user group on " .  $this->sitename .':'."\n\n";
 	$message .= "\t" . JText::_('COM_GROUPS_DETAILS_FIELD_DESCRIPTION').': '. $this->group->get('description') ."\n";
 	switch ($this->group->get('join_policy'))
 	{
