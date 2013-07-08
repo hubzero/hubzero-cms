@@ -54,15 +54,16 @@ HUB.Publications = {
 					}
 				}
 			},
-			afterShow: function() {
-				
-				if ($('#video-player').length > 0)
-				{
-					videojs("video-player", {}, function(){
-					  // Player (this) is initialized and ready.
-					});
-				}			
-				
+			afterShow: function() {						
+				/*
+				if ($('#embedded-content')) {
+					//	var newHeight = $('#embedded-content').contents().height();
+					$('#embedded-content').contents().find("body").css({'max-height':'460px'});
+					$('#embedded-content').contents().find("video").css({'max-height':'450px'});
+					$('#embedded-content').contents().find("body").css({'max-width':'800px'});
+					$('#embedded-content').contents().find("video").css({'width':'100%'});
+				}
+				*/
 				if ($('#hubForm-ajax')) {
 					$('#hubForm-ajax').submit(function(e) {
 						e.preventDefault();

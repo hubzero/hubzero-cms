@@ -39,7 +39,7 @@ if (!is_file(JPATH_ROOT . $this->url))
 }
 
 $oWidth = '780';
-$oHeight= '500';
+$oHeight= '480';
 
 // Get some attributes
 $attribs 	= new JParameter( $this->primary->attribs );
@@ -122,17 +122,7 @@ else
 { ?>
 	<p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
 	</p>
-	<?php 
-	 if (in_array($this->ext, $html5video)) { 
-	?>
-	<link href="http://vjs.zencdn.net/4.0/video-js.css" rel="stylesheet" type="text/css" />
-	<script src="http://vjs.zencdn.net/4.0/video.js"></script>
-	<video controls="controls" id="video-player" class="video-js vjs-default-skin" width="<?php echo $width; ?>" height="<?php echo $height; ?>" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" }'>
-		<source src="<?php echo $this->url; ?>" type="<?php echo $cType; ?>" />
-	</video>
-	<?php } else { ?>
-	<iframe class="filer" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="<?php echo $this->url; ?>"></iframe>	
-	<?php }  ?>
+	<iframe class="filer" style="-webkit-transform:scale(0.9);-moz-transform-scale(0.9);" id="embedded-content" width="100%" height="<?php echo $height; ?>" src="<?php echo $this->url; ?>"></iframe>
 <?php }
 ?>
 </div>
