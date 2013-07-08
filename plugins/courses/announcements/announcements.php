@@ -271,7 +271,7 @@ class plgCoursesAnnouncements extends JPlugin
 	 */
 	private function _edit($model=null)
 	{
-		if (!$this->offering->access('manage'))
+		if (!$this->offering->access('manage', 'section'))
 		{
 			return $this->_list();
 		}
@@ -320,7 +320,7 @@ class plgCoursesAnnouncements extends JPlugin
 	 */
 	private function _save()
 	{
-		if (!$this->offering->access('manage'))
+		if (!$this->offering->access('manage', 'section'))
 		{
 			return $this->_list();
 		}
@@ -408,7 +408,7 @@ class plgCoursesAnnouncements extends JPlugin
 	 */
 	private function _delete()
 	{
-		if (!$this->offering->access('manage'))
+		if (!$this->offering->access('manage', 'section'))
 		{
 			return $this->_list();
 		}
