@@ -472,6 +472,9 @@ class PublicationHelper extends JObject
 		}
 		else 
 		{
+			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
+				. 'com_publications' . DS . 'tables' . DS . 'screenshot.php');
+		
 			// Get screenshots
 			$pScreenshot = new PublicationScreenshot($this->_db);
 			$shots = $pScreenshot->getScreenshots( $versionid );

@@ -39,7 +39,7 @@ if (!is_file(JPATH_ROOT . $this->url))
 }
 
 $oWidth = '780';
-$oHeight= '440';
+$oHeight= '500';
 
 // Get some attributes
 $attribs 	= new JParameter( $this->primary->attribs );
@@ -78,6 +78,8 @@ $docs 	= array('pdf', 'doc', 'docx', 'xls', 'xlsx',
 	'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg'
 );
 
+$html5video = array("mp4","m4v","webm","ogv");
+
 $token = '';
 $juser =& JFactory::getUser();
 if (!$juser->get('guest'))
@@ -94,10 +96,12 @@ if (!$juser->get('guest'))
 $juri =& JURI::getInstance();
 $downloadUrl = JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' 
 	  . $this->aid . '&render=download&token=' . $token);
+
+$viewUrl = JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' 
+	  . $this->aid . '&render=download&disposition=inline&token=' . $token);
+	
 ?>
 <div class="sample"><p><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?> <?php if ($this->primary->role != 1) { echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>'; } ?></p></div>
-<noscript><p>Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
-</p></noscript>
 
 <?php
 // Image?
@@ -113,12 +117,22 @@ else if (in_array(strtolower($this->ext), $docs) && $this->googleView)
 			."\n";
 }
 else
+
 // View in html5-browser 
 { ?>
-	<object width="<?php echo $width; ?>" height="<?php echo $height; ?>" type="<?php echo $cType; ?>" data="<?php echo $this->url; ?>" id="embedded-object">
-		<p>Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
-		</p>
-	  </object>
+	<p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
+	</p>
+	<?php 
+	 if (in_array($this->ext, $html5video)) { 
+	?>
+	<link href="http://vjs.zencdn.net/4.0/video-js.css" rel="stylesheet" type="text/css" />
+	<script src="http://vjs.zencdn.net/4.0/video.js"></script>
+	<video controls="controls" id="video-player" class="video-js vjs-default-skin" width="<?php echo $width; ?>" height="<?php echo $height; ?>" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" }'>
+		<source src="<?php echo $this->url; ?>" type="<?php echo $cType; ?>" />
+	</video>
+	<?php } else { ?>
+	<iframe class="filer" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="<?php echo $this->url; ?>"></iframe>	
+	<?php }  ?>
 <?php }
 ?>
 </div>

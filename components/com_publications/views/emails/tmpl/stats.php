@@ -35,8 +35,10 @@ $juri =& JURI::getInstance();
 $jconfig =& JFactory::getConfig();
 $ih = new MembersImgHandler();
 
-$baseManage = 'index.php?option=' . $this->option . '&task=submit';
-$baseView = 'index.php?option=' . $this->option;
+$baseManage = 'publications/submit';
+$baseView = 'publications';
+
+$base = trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 $mconfig =& JComponentHelper::getParams( 'com_members' );
 $pPath   = trim($mconfig->get('webpath'), DS);
@@ -45,9 +47,23 @@ $profileThumb = NULL;
 if ($this->profilePic) {
 	$profileThumb = $ih->createThumbName($this->profilePic);
 	$profileThumb = $pPath . DS . Hubzero_View_Helper_Html::niceidformat($this->juser->get('id')) . DS . $profileThumb;
+	
+	if (!is_file(JPATH_ROOT . DS . $profileThumb))
+	{
+		$profileThumb = $pPath . DS . Hubzero_View_Helper_Html::niceidformat($this->juser->get('id')) . DS . 'thumb.png';
+	}
+	
+	if (!is_file(JPATH_ROOT . DS . $profileThumb))
+	{
+		$profileThumb = NULL;
+	}
+	else
+	{
+		$profileThumb = $base . DS . $profileThumb;
+	}
 }
 
-$profileLink = rtrim($juri->base(), DS) . DS . trim(JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')), DS);
+$profileLink = $base . DS . 'members' . DS . $this->juser->get('id');
 
 ?>
 --<?php echo $this->boundary . "\n"; ?>
@@ -67,12 +83,12 @@ for ($a = 0; $a < count($this->pubstats); $a++)
 	
 	$stat = $this->pubstats[$a];
 	
-	$sefManage 	= JRoute::_($baseManage . '&id=' . $stat->publication_id);
-	$sefView 	= JRoute::_($baseView . '&id=' . $stat->publication_id);
+	$sefManage 	= $baseManage . DS . $stat->publication_id;
+	$sefView 	= $baseView . DS . $stat->publication_id;
 	
 	$message .= 'Publication #' . $stat->publication_id . ' "' . stripslashes($stat->title) . '"' . "\n";
-	$message .= 'View publication:          ' . rtrim($juri->base(), DS) . DS . trim($sefView, DS) . "\n";
-	$message .= 'Manage publication:        ' . rtrim($juri->base(), DS) . DS . trim($sefManage, DS) . "\n\n";
+	$message .= 'View publication:          ' . $base . DS . trim($sefView, DS) . "\n";
+	$message .= 'Manage publication:        ' . $base . DS . trim($sefManage, DS) . "\n\n";
 	
 	$message .= 'Usage in the past month... ' . "\n";
 	$message .= 'Page views:                ' . $stat->monthly_views. "\n";
@@ -106,7 +122,7 @@ Content-type: text/html;charset=utf-8";
 		<style type="text/css">
 		
 		/* Client-specific Styles */		
-		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #dedede !important; margin: 0 !important; padding: 0 !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #FFFFFF !important; margin: 0 !important; padding: 0 !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
 		
 		/* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
 		.ExternalClass { width:100%; } /* Force Hotmail to display emails at full width */
@@ -129,10 +145,12 @@ Content-type: text/html;charset=utf-8";
 		p { margin: 1em 0; }
 
 		/* Outlook 07, 10 Padding issue */
-		table td { border-collapse: collapse; }
+		table td, table tr { border-collapse: collapse; }
+		
+		tbody { border: none; }
 
 		/* Remove spacing around Outlook 07, 10 tables */
-		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0; margin: 0; }
 
 		@media only screen and (max-device-width: 480px) {
 			/*body { -webkit-text-size-adjust: 140% !important; }*/
@@ -186,33 +204,44 @@ Content-type: text/html;charset=utf-8";
 		</style>
 		<![endif]-->
 	</head>
-	<body style="width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif; font-size: 10px; -webkit-text-size-adjust: none; color: #616161; line-height: 1.4em; background: #dedede; text-rendering: optimizeLegibility;" bgcolor="#dedede">
+	<body style="width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif; font-size: 12px; -webkit-text-size-adjust: none; color: #616161; line-height: 1.4em; background: #FFFFFF; text-rendering: optimizeLegibility; border-color: #FFFFFF; border: none" bgcolor="#FFFFFF">
 
 		<!-- ====== Start Body Wrapper Table ====== -->
-		<table width="100%" cellpadding="0" cellspacing="0" border="0" id="background-table" style="background-color: #dedede; min-width: 100%; " bgcolor="#dedede">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; min-width: 100%;" bgcolor="#FFFFFF">
 			<tbody>
-				<tr style="border-collapse: collapse;">
-					<td bgcolor="#dedede" align="center" style="border-collapse: collapse;">
+				<tr>
+					<td align="center">
 
 						<!-- ====== Start Content Wrapper Table ====== -->
-						<table width="670" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; ">
+						<table width="670" cellpadding="0" cellspacing="0" border="0" style="width: 670px !important;">
 							<tbody>
-								<tr style="border-collapse: collapse;">
+								<tr>
 									<td>
-									<!-- ====== Header Table ====== -->
-									<table width="670" cellpadding="0" cellspacing="0" border="0" style="border-radius:6px 6px 0px 0px; -moz-border-radius: 6px 6px 0px 0px; -webkit-border-radius:6px 6px 0px 0px; -webkit-font-smoothing: antialiased; background-color: #f6eddd; background-color: #f8f8f8; color: #5c3a14;" bgcolor="#f8f8f8">
+										
+									<!-- ====== Start Spacer ====== -->
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF;" bgcolor="#ffffff;border-color: #FFFFFF">
 										<tbody>
-											<tr style="border-collapse: collapse;">
-												<td width="25" height="30"></td>
+											<tr>
+												<td height="50" style="color: #FFFFFF !important;background-color: #FFFFFF;"><div style="height: 50px !important; visibility: hidden; color: #FFFFFF">&nbsp;</div></td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- ====== End Spacer ====== -->
+											
+									<!-- ====== Header Table ====== -->
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #f8f8f8; color: #5c3a14; border-right: 1px solid #dedede; border-left: 1px solid #dedede; border-top: 1px solid #dedede;" bgcolor="#f8f8f8">
+										<tbody>
+											<tr>
+												<td width="20" height="30"></td>
 												<td width="55">
-													<a href="<?php echo rtrim($juri->base(), DS); ?>">
+													<a href="<?php echo $base; ?>">
 														<img width="55" border="0" src="<?php echo $this->image; ?>" alt="" />
 													</a>
 												</td>
 												<td width="10"></td>
 												<td width="425">
 													<p style="color: #000000; margin: 10px 0 3px 0; font-weight: bold;"><strong>Dear <?php echo $this->juser->get('name'); ?>,</strong></p>
-												<p style="margin: 0; font-size: 11px;">Here is a <?php echo date('F Y'); ?> update on your published datasets on <?php echo $jconfig->getValue('config.sitename'); ?></p>
+												<p style="margin: 0; font-size: 12px;">Here is a monthly update on your published datasets on <?php echo $jconfig->getValue('config.sitename'); ?></p>
 												</td>
 												<td width="40">
 													<?php if ($profileThumb) { ?>
@@ -227,20 +256,30 @@ Content-type: text/html;charset=utf-8";
 									</table>
 									
 									<!-- ====== Start Spacer ====== -->
-									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF;" bgcolor="#ffffff">
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border-right: 1px solid #dedede; border-left: 1px solid #dedede;" bgcolor="#ffffff">
 										<tbody>
-											<tr><td height="2" style="border-collapse: collapse; color: #fff !important;background-color: #ececec;"><div style="height: 2px !important; visibility: hidden;">----</div></td></tr>
-											<tr style="border-collapse: collapse;">
-												<td height="30" style="border-collapse: collapse; color: #fff !important;background-color: #FFFFFF;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
+											<tr>
+												<td height="30" style="color: #fff !important;background-color: #FFFFFF;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
 											</tr>
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
 									
 									<!-- ====== Start Content Table ====== -->
-									
-									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF;" bgcolor="#ffffff">
+									<?php if ($more > 1)
+									{ ?>
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border-right: 1px solid #dedede; border-left: 1px solid #dedede;" bgcolor="#ffffff">
 										<tbody>
+											<tr>
+												<td width="25"></td>
+												<td width="645"><p>Latest usage statistics on your 3 top publications:</p></td>
+											</tr>
+										</tbody>
+									</table>
+									<?php } 
+									?>
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border-right: 1px solid #dedede; border-left: 1px solid #dedede;" bgcolor="#ffffff">
+										<tbody>											
 											<?php foreach ($this->pubstats as $stat) { 
 												// Get pub image
 												$pubthumb = $this->helper->getThumb(
@@ -251,36 +290,37 @@ Content-type: text/html;charset=utf-8";
 													$stat->cat_url
 												);
 												
-												$sefManage 	= JRoute::_($baseManage . '&id=' . $stat->publication_id);
-												$sefView 	= JRoute::_($baseView . '&id=' . $stat->publication_id);
+												$sefManage 	= $baseManage . DS . $stat->publication_id;
+												$sefView 	= $baseView . DS . $stat->publication_id;
 												
-												$thumb = rtrim($juri->base(), DS) . DS . trim($pubthumb, DS);
-												$link  = rtrim($juri->base(), DS) . DS . trim($sefView, DS);	
+												$thumb = $base . DS . trim($pubthumb, DS);
+												$link  = $base . DS . trim($sefView, DS);	
 												
 												?>
-											<tr style="border-collapse: collapse;">
+											<tr>
 												<td width="25"></td>
 												<td width="60">
-													<a href="<?php echo $link; ?>"><img width="55" border="0" src="<?php echo $thumb ?>" label="Image" editable="true"></a>
+													<a href="<?php echo $link; ?>"><img width="55" border="0" src="<?php echo $thumb; ?>" label="Image" editable="true"></a>
 												</td>
 												<td width="560">
 													<p style="color: #333; font-weight:bold;"><a href="<?php echo $link; ?>" style="color: #333; text-decoration: none;"><?php echo $stat->title; ?></a></p>
-													<table cellpadding="0" cellspacing="0" border="0" align="left" style="font-size: 11px;">
+													<table cellpadding="0" cellspacing="0" border="0" align="left" style="font-size: 12px; padding: 0; margin: 0;">
 				                                        <tbody>
-															<tr>
+															<tr style="padding: 0; margin: 0;">
 																<td width="200" style="color: #777; font-style: italic;">Usage in the past 30 days</td>
 																<td width="30"></td>
 																<td width="280">Page views:</td>
 																<td width="50" style="color: #333; font-weight:bold;"><?php echo $stat->monthly_views; ?></td>																																											
 															</tr>
-															<tr>
-																<td width="200"></td>
+															<tr style="padding: 0; margin: 0;">
+																<td width="200" style="padding: 0; margin: 0;">
+																</td>
 																<td width="30"></td>
 																<td width="280">Primary content accesses:</td>
 																<td width="50" style="color: #333; font-weight:bold;"><?php echo $stat->monthly_primary; ?></td>				
 															</tr>
-																<tr>
-																	<td width="200">
+																<tr style="padding: 0; margin: 0;">
+																	<td width="200" style="padding: 0; margin: 0;">
 																		<a href="<?php echo $link; ?>" style="color: #33a9cf;">View publication</a>
 																	</td>
 																	<td width="30"></td>
@@ -293,7 +333,7 @@ Content-type: text/html;charset=utf-8";
 												<td width="25"></td>
 											</tr>
 											<tr>
-												<td width="25" height="25"><div style="height: 25px !important; visibility: hidden;">----</div></td>
+												<td width="25" height="25"><div style="height: 25px !important; visibility: hidden; color: #FFFFFF">----</div></td>
 												<td width="120"></td>
 												<td width="500"></td>
 												<td width="25"></td>
@@ -304,54 +344,62 @@ Content-type: text/html;charset=utf-8";
 									<!-- ====== End Content Table ====== -->	
 									
 									<!-- ====== Start Spacer ====== -->
-									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF;" bgcolor="#ffffff">
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border-right: 1px solid #dedede; border-left: 1px solid #dedede;" bgcolor="#ffffff">
 										<tbody>
-											<tr style="border-collapse: collapse;">
-												<td height="30" style="border-collapse: collapse; color: #fff !important;background-color: #FFFFFF;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
+											<tr>
+												<td height="30" style="color: #fff !important;background-color: #FFFFFF;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
 											</tr>
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
 								
 									<!-- ====== Summary table ====== -->
-									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF;" bgcolor="#ffffff">
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border-right: 1px solid #dedede; border-left: 1px solid #dedede;" bgcolor="#ffffff">
 										<tbody>
-											<tr style="border-collapse: collapse;">
+											<tr>
 												<td width="25"></td>
 												<td width="620">
-													<div style="font-size: 11px; line-height: 24px; color: #666666; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; background-color: #f6eddd; padding: 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; -webkit-border-radius:6px 6px 6px 6px; -webkit-font-smoothing: antialiased; text-align: center;">
+													<div style="font-size: 12px; line-height: 24px; color: #666666; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; background-color: #f6eddd; padding: 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; -webkit-border-radius:6px 6px 6px 6px; -webkit-font-smoothing: antialiased; text-align: center;">
 			                                        <p style="margin: 0;">Publishing your data on <?php echo $jconfig->getValue('config.sitename'); ?> increases access to and impact of your research!</p>
-													<div style=""><a href="<?php echo rtrim($juri->base(), DS) . DS . trim(JRoute::_('index.php?option=com_publications'), DS); ?>" style="color: #ffffff; background-color: #000000; padding: 5px 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; text-decoration: none;">View all publications and publish more data</a></div>
+													<div style=""><a href="<?php echo $base . DS . 'publications'; ?>" style="color: #ffffff; background-color: #000000; padding: 5px 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; text-decoration: none;">View all publications and publish more data</a></div>
 			                                    </div>
 												</td>
 												<td width="25"></td>
 											</tr>
 										</tbody>
 									</table>
-									
-									
+																		
 									<!-- ====== Start Spacer ====== -->
-									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF;" bgcolor="#ffffff">
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border-right: 1px solid #dedede; border-left: 1px solid #dedede;" bgcolor="#ffffff;border-color: #FFFFFF">
 										<tbody>
-											<tr style="border-collapse: collapse;">
-												<td height="30" style="border-collapse: collapse; color: #fff !important;background-color: #FFFFFF;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
+											<tr>
+												<td height="30" style="color: #fff !important;background-color: #FFFFFF;"><div style="height: 30px !important; visibility: hidden; color: #FFFFFF;">----</div></td>
 											</tr>
-											<tr><td height="2" style="border-collapse: collapse; color: #fff !important;background-color: #ececec;"><div style="height: 2px !important; visibility: hidden;">----</div></td></tr>
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
 									
 									<!-- ====== Footer Table ====== -->
-									<table width="670" cellpadding="0" cellspacing="0" border="0" style="border-radius:0px 0px 6px 6px; -moz-border-radius: 0px 0px 6px 6px; -webkit-border-radius:0px 0px 6px 6px; -webkit-font-smoothing: antialiased; background-color: #f8f8f8; color: #ededed;" bgcolor="#f8f8f8">
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="-webkit-font-smoothing: antialiased; background-color: #f8f8f8; color: #ededed; border-right: 1px solid #dedede; border-left: 1px solid #dedede; border-bottom: 1px solid #dedede;" bgcolor="#f8f8f8">
 										<tbody>
 										
-											<tr style="border-collapse: collapse;">
+											<tr>
 												<td width="25"></td>
-												<td width="620"><p style="text-align: right; font-size: 11px; color: #CCC; margin: 15px 0; ">To unsubscribe, edit your message settings at <a href="<?php echo $profileLink . DS . 'messages' . DS . 'settings'; ?>" style="color: #33a9cf;"><?php echo rtrim($juri->base(), DS); ?></a></p></td>
+												<td width="620"><p style="text-align: right; font-size: 12px; color: #999; margin: 15px 0; ">To unsubscribe, edit your message settings at <a href="<?php echo $profileLink . DS . 'messages' . DS . 'settings'; ?>" style="color: #33a9cf;"><?php echo $base; ?></a></p></td>
 												<td width="25"></td>
 											</tr>
 										</tbody>
 									</table>
+									
+									<!-- ====== Start Spacer ====== -->
+									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF;" bgcolor="#ffffff;border-color: #FFFFFF">
+										<tbody>
+											<tr>
+												<td height="50" style="color: #fff !important;background-color: #FFFFFF;"><div style="height: 50px !important; visibility: hidden;">----</div></td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- ====== End Spacer ====== -->
 									</td>
 								</tr>
 							</tbody>
@@ -363,7 +411,7 @@ Content-type: text/html;charset=utf-8";
 		</table>
 		<!-- ====== End Body Wrapper Table ====== -->
 		<style type="text/css">
-		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #dedede !important; margin: 0 !important; padding: 0 !important; }
+		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #FFFFFF !important; margin: 0 !important; padding: 0 !important; }
 		img { outline: none !important; text-decoration: none !important; display: block !important; }
 		@media only screen and (min-device-width: 481px) { body { -webkit-text-size-adjust: 140% !important; } }
 		</style>

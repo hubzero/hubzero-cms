@@ -2055,6 +2055,23 @@
 		text-align: center;
 	}
 	
+/* Inline video
+--------------------------------------------- */
+	
+	.vjs-big-play-button {
+		text-align: center;
+		margin-left: 40% !important;
+		top: 40% !important;	
+	}
+	#video-player {
+		width: 100% !important;
+	}
+	.direct-download {
+		font-size: 85%;
+		background: #efefef;
+		margin-top: -1.3em;
+	}
+	
 /* ********* */
 	.subject .welcome h3 {
 		font-size: 130%;

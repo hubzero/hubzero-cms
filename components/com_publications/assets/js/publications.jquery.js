@@ -32,9 +32,10 @@ HUB.Publications = {
 		$('a.play').fancybox({
 			type: 'ajax',
 			width: 800,
-			height: 500,
+			height: 'auto',
 			autoSize: false,
 			fitToView: false,
+			wrapCSS: 'sbp-window',
 			beforeLoad: function() {
 				href = $(this).attr('href');
 				if (href.indexOf('?') == -1) {
@@ -54,6 +55,14 @@ HUB.Publications = {
 				}
 			},
 			afterShow: function() {
+				
+				if ($('#video-player').length > 0)
+				{
+					videojs("video-player", {}, function(){
+					  // Player (this) is initialized and ready.
+					});
+				}			
+				
 				if ($('#hubForm-ajax')) {
 					$('#hubForm-ajax').submit(function(e) {
 						e.preventDefault();
