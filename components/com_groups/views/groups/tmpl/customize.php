@@ -167,7 +167,7 @@ $levels = array(
 			<legend>Group Custom Content</legend>
 			<p>Group Custom Content includes all the group pages and any group modules at also appear on those pages. Clicking the link below will take you to a different interface where you can add, edit, reorder, turn on/off any group page or module.</p>
 			<p>
-				<a class="leave_area" rel="You are about to leave the group customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=managepages'); ?>">
+				<a class="leave_area" rel="You are about to leave the group customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=pages'); ?>">
 					Manage Group Pages
 				</a>
 			</p>
