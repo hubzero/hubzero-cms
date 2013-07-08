@@ -97,7 +97,12 @@ foreach ($roles as $key => $role)
 <?php
 		ximport('Hubzero_User_Helper');
 
-		$managers = $this->model->members(array('student' => 0), true);
+		$managers = $this->model->members(array(
+			'student' => 0,
+			'course_id' => $this->model->get('course_id'),
+			'offering_id' => $this->model->get('id'),
+			'section_id' => $this->model->section()->get('id')
+		), true);
 
 		$i = 0;
 			foreach ($managers as $manager)
