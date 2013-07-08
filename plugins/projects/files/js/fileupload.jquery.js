@@ -49,6 +49,7 @@ HUB.ProjectFilesFileUpload = {
 				params: {test: 1},
 				multiple: true,
 				debug: true,
+				maxChunkSize: 10000000,
 				template: '<div class="qq-uploader">' +
 							'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
 							'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +

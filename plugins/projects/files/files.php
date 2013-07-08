@@ -692,6 +692,19 @@ class plgProjectsFiles extends JPlugin
 		$uploaded 	= $jsession->get('projects.uploaded');
 		$failed 	= $jsession->get('projects.failed');
 		
+		// Provisioned project?
+		if ($this->_project->provisioned == 1 && !$this->_project->id)
+		{
+			$path = $this->getMembersPath();
+			$prov = 1;
+		}
+		else 
+		{		
+			// Get path and initialize Git
+			$path = $this->getProjectPath($this->_project->alias, $this->_case);
+			$this->_git->iniGit($path);			
+		}
+		
 		// Pass success or error message
 		if ($failed && !$uploaded && !$uploaded) 
 		{
@@ -877,7 +890,8 @@ class plgProjectsFiles extends JPlugin
 		$prov    	= 0;
 		$dirsize 	= 0;
 		$new 		= true;
-		
+		$exists	  	= 0;
+				
 		// Get session
 		$jsession =& JFactory::getSession();
 		
@@ -905,19 +919,19 @@ class plgProjectsFiles extends JPlugin
 		$updated  = array();
 		$uploaded = array();
 		$skipped  = array();
-		
+						
 		// get the file
-		if (isset($_GET['qqfile']))
-		{
-			$stream = true;
-			$file = $_GET['qqfile'];
-			$size = (int) $_SERVER["CONTENT_LENGTH"];	
-		}
-		elseif (isset($_FILES['qqfile']))
+		if (isset($_FILES['qqfile']))
 		{
 			$stream = false;
 			$file = $_FILES['qqfile']['name'];
 			$size = (int) $_FILES['qqfile']['size'];
+		}
+		elseif (isset($_GET['qqfile']))
+		{
+			$stream = true;
+			$file = $_GET['qqfile'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
 		}
 		else
 		{			
@@ -926,55 +940,6 @@ class plgProjectsFiles extends JPlugin
 			return json_encode(array('error' => JText::_('File not found')));
 		}
 		
-		//check to make sure we have a file and its not too big
-		if ($size == 0) 
-		{
-			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
-			$jsession->set('projects.failed', $failedVal . ' (File is empty) ' );
-			
-			return json_encode(array('error' => JText::_('File is empty')));
-		}
-		if ($size > $sizeLimit) 
-		{
-			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
-			$jsession->set('projects.failed', $failedVal . ' (File too large) ' );
-			
-			return json_encode(array('error' => JText::sprintf('File too large')));
-		}
-		
-		// Upload temp file
-		if ($stream == true)
-		{
-			$input    = fopen("php://input", "r");
-			$target   = fopen($prefix . $temp_path . DS . $file , "w");
-			$realSize = stream_copy_to_stream($input, $target);
-			
-			fclose($input);
-			fclose($target);			
-		}
-		else
-		{
-			 move_uploaded_file($_FILES['qqfile']['tmp_name'], $prefix . $temp_path . DS . $file);
-		}
-		
-		$tempFile = $prefix . $temp_path . DS . $file;
-		if (!is_file($tempFile))
-		{
-			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-			$jsession->set('projects.failed', $failedVal . ' (Failed to upload temp file) ' );
-			
-			return json_encode(array('error' => JText::sprintf('Failed to upload temp file')));
-		}
-		
-		// Do virus check
-		if (ProjectsHelper::virusCheck($tempFile))
-		{
-			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-			$jsession->set('projects.failed', $failedVal . ' (Virus detected, refusing to upload) ' );
-			
-			return json_encode(array('error' => JText::sprintf('Virus detected, refusing to upload')));
-		}
-			
 		// Provisioned project scenario
 		if ($prov)
 		{
@@ -996,23 +961,30 @@ class plgProjectsFiles extends JPlugin
 						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 			$dirsize 	= $this->getDiskUsage($path, $prefix, true);							
 		}
-					
-		// Compute used space
-		$unused = $quota - $dirsize;
 		
-		if ($size > $unused)
+		//check to make sure we have a file and its not too big
+		if ($size == 0) 
 		{
-			if (is_file($tempFile)) { unlink($tempFile); }
+			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
+			$jsession->set('projects.failed', $failedVal . ' (File is empty) ' );
 			
-			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
-			$jsession->set('projects.failed', $failedVal . ' (No disk space left) ' );
-			
-			return json_encode(array('error' => JText::_('No disk space left')));
+			return json_encode(array('error' => JText::_('File is empty')));
 		}
-				
+		if ($size > $sizeLimit) 
+		{
+			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
+			$jsession->set('projects.failed', $failedVal . ' (File too large) ' );
+			
+			return json_encode(array('error' => JText::sprintf('File too large')));
+		}
+		
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
 		$ext 	  = $pathinfo['extension'];
+		
+		// Archive?
+		$archive_formats = array('zip', 'tar', 'gz');
+		$expand = in_array(strtolower($ext), $archive_formats) && $expand ? 1 : 0;		
 				
 		// Make the filename safe
 		$filename = urldecode($filename);
@@ -1021,12 +993,67 @@ class plgProjectsFiles extends JPlugin
 		$fName 	  = $ext ? $filename . '.' . $ext : $filename;
 		
 		$fpath = $subdir ? $subdir . DS . $fName : $fName;
-		$file  = $prefix . $path . DS . $fpath;		
+		$file  = $prefix . $path . DS . $fpath;	
+			
+		$tempFile = $prefix . $temp_path . DS . $fName;
+		$repoFile = $prefix . $path . DS . $fpath;
 		
-		// Archive?
-		$archive_formats = array('zip', 'tar', 'gz');
-		$expand = in_array(strtolower($ext), $archive_formats) && $expand ? 1 : 0;		
+		// Are we updating?
+		if (is_file($repoFile))
+		{
+			$exists = 1;
+		}
+		
+		// Compute used space
+		$unused = $quota - $dirsize;
+
+		if ($size > $unused)
+		{
+			if (is_file($tempFile)) { unlink($tempFile); }
+
+			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+			$jsession->set('projects.failed', $failedVal . ' (No disk space left) ' );
+
+			return json_encode(array('error' => JText::_('No disk space left')));
+		}	
 				
+		// Upload temp file
+		$where 	  = $expand ? $tempFile : $repoFile;
+		if ($stream == true)
+		{
+			/*$input    = fopen("php://input", "r");
+			$target   = fopen($where , "w");
+			$realSize = stream_copy_to_stream($input, $target);
+			
+			fclose($input);
+			fclose($target);
+			*/
+			copy("php://input", $where);			
+		}
+		else
+		{
+			move_uploaded_file($_FILES['qqfile']['tmp_name'], $where);
+		}
+				
+		// Do virus check
+		if (is_file($where) && ProjectsHelper::virusCheck($where))
+		{
+			if ($exists && !$expand) 
+			{ 
+				// Discard uploaded change
+				$this->_git->callGit($path, 'checkout ' . $fpath);
+			}
+			else
+			{
+				unlink($where); 
+			}
+			
+			$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+			$jsession->set('projects.failed', $failedVal . ' (Virus detected, refusing to upload) ' );
+			
+			return json_encode(array('error' => JText::sprintf('Virus detected, refusing to upload')));
+		}
+									
 		// Set commit message
 		$commitMsgZip 	= 'Added as part of archive ' . $fName . "\n";	
 		$commitMsg 		= '';
@@ -1034,6 +1061,14 @@ class plgProjectsFiles extends JPlugin
 		// Perform upload
 		if ($expand)
 		{
+			if (!is_file($tempFile))
+			{
+				$failedVal = $failedVal ? $failedVal . ', ' . $fName : $fName;
+				$jsession->set('projects.failed', $failedVal . ' (Failed to upload temp file) ' );
+
+				return json_encode(array('error' => JText::sprintf('Failed to upload temp file')));
+			}
+			
 			$z 	   = 0;
 			$cSize = 0;
 			$ext   = strtolower($ext);
@@ -1090,16 +1125,20 @@ class plgProjectsFiles extends JPlugin
 		}
 		else
 		{						
+			//JFile::copy($tempFile, $prefix . $path . DS . $fpath);
+			//exec('cp ' . $tempFile . ' ' . $prefix . $path . DS . $fpath );
+									
 			if (file_exists($prefix . $path . DS . $fpath)) 
 			{
-				$updated[] = $fpath;
-			}
-			
-			JFile::copy($tempFile, $prefix . $path . DS . $fpath);
-						
-			if (file_exists($prefix . $path . DS . $fpath)) 
-			{
-				$uploaded[] = $fpath;
+				if ($exists) 
+				{
+					$updated[] = $fpath;
+				}
+				else
+				{
+					$uploaded[] = $fpath;
+				}
+				
 				$this->_queue[] = $fpath;
 										
 				if (!$prov)
@@ -1116,7 +1155,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				
 				// Delete temp file
-				if (is_file($tempFile)) { unlink($tempFile); }	
+				//if (is_file($tempFile)) { unlink($tempFile); }	
 			}
 			else
 			{
@@ -1300,9 +1339,11 @@ class plgProjectsFiles extends JPlugin
 				{				
 					// cd
 					chdir($prefix . $path);
-										
+					
+					$exists = 0;					
 					if (file_exists($prefix . $path . DS . $file)) 
 					{
+						$exists    = 1;
 						$updated[] = $file;
 					}
 
@@ -1315,6 +1356,16 @@ class plgProjectsFiles extends JPlugin
 						// Do virus check
 						if (ProjectsHelper::virusCheck($prefix . $path . DS . $file))
 						{
+							if ($exists) 
+							{ 
+								// Discard uploaded change
+								$this->_git->callGit($path, 'checkout ' . $file);
+							}
+							else
+							{
+								unlink($prefix . $path . DS . $file); 
+							}
+							
 							$this->setError(JText::_('Virus detected, refusing to upload'));
 						}
 						else

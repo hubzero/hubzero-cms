@@ -53,6 +53,8 @@ qq.ButtonFileUploader = function(o) {
 	this._sFiles 	= []; // filenames in upload queue
 	this._delay		= 0;  // delay for uploads to make them truely sequential
 	
+	this._preprocessed = 0;
+	
 	if (!jq) {
 		var jq = $;
 	}
@@ -361,7 +363,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 			can.innerHTML = '';
 			
 			var status = this._find(item, 'status'); 
-			status.innerHTML = 'uploading';	
+			status.innerHTML = 'starting';	
 		}
 		else
 		{
@@ -420,16 +422,17 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		size.style.display = 'inline';
 		
 		var status = this._find(item, 'status'); 
-		status.innerHTML = 'uploading';
+		status.innerHTML = this._preprocessed ? 'uploading' : 'getting data';
 		qq.addClass(status, 'qq-upload-processing');
 		 
         var text; 
 		var perc = Math.round(loaded / total * 100);
 		text = perc + '% from ' + this._formatSize(total);
 		
-        if (perc >= 98) {   
+        if (perc >= 99) {   
 	        text = this._formatSize(total);
 			status.innerHTML = 'processing'; 
+			this._preprocessed = 1;
         }          
 
         qq.setText(size, text);         
@@ -463,6 +466,8 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		var status = this._find(item, 'status');  
 		var elExt  = this._find(item, 'ext'); 
 		var elError = this._find(item, 'error');
+		
+		this._preprocessed = 0;
 				
         if (result.success){
 			status.innerHTML = 'uploaded';

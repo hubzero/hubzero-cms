@@ -30,6 +30,9 @@ $rUrl = $this->url . '?a=1' . $subdirlink;
 
 $slimit = ProjectsHtml::formatSize($this->sizelimit);
 
+// Incoming
+$basic   = JRequest::getInt('basic', 0);
+
 // Directory path breadcrumbs
 $desect_path = explode(DS, $this->subdir);
 $path_bc = '';
@@ -84,7 +87,7 @@ if (!$this->getError()) {
 		
 		<div class="field-wrap">
 			<div class="asset-uploader">
-		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
+		<?php if (JPluginHelper::isEnabled('system', 'jquery') && !$basic) { ?>
 					<div id="ajax-uploader" data-action="<?php echo $this->url . '?' . $this->do . '=save&amp;no_html=1&amp;ajax=1'  . $subdirlink; ?>" >
 						<label class="addnew">
 							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" /> 
@@ -95,7 +98,7 @@ if (!$this->getError()) {
 							</ul>
 						</div>
 					</div>
-					<script src="/media/system/js/jquery.fileuploader.js"></script>
+					<script src="/plugins/projects/files/js/jquery.fileuploader.js"></script>
 					<script src="/plugins/projects/files/js/jquery.queueuploader.js"></script>
 					<script src="/plugins/projects/files/js/fileupload.jquery.js"></script>
 		<?php } else { ?>
@@ -144,7 +147,10 @@ if (!$this->getError()) {
 				</span>
 			<?php } ?>
 		</p>	
-		</div>	
+		</div>
+		<?php if (JPluginHelper::isEnabled('system', 'jquery') && !$basic) { ?>
+			<p class="hint rightfloat mini faded">Having trouble with the file upload? Try using <a href="<?php echo $this->url . '?action=upload&basic=1' .$subdirlink; ?>">basic upload</a>.</p>
+		<?php } ?>	
 	</fieldset>
 </form>
 <?php } ?>
