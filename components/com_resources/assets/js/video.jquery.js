@@ -53,6 +53,8 @@ HUB.Video = {
 		resize_width = $jQ("#video-player").outerWidth(true);
 		resize_height = $jQ("#video-player").outerHeight(true);
 		
+		var isPopup = (window.opener) ? true : false;
+		
 		if(flash) 
 		{
 			toolbar = 52;
@@ -60,7 +62,10 @@ HUB.Video = {
 			flash_width = $jQ("#video-flowplayer").outerWidth(true);
 			flash_height = $jQ("#video-flowplayer").outerHeight(true);
 			
-			window.resizeTo(flash_width, flash_height + toolbar);
+			if (isPopup)
+			{
+				window.resizeTo(flash_width, flash_height + toolbar);
+			}
 		}
 		else
 		{
@@ -70,7 +75,7 @@ HUB.Video = {
 			padding = window.outerWidth - window.innerWidth;
 		
 			//if we are not using firefox lets attempt to resize popup
-			if( !browser.match(/Firefox/g) ) {
+			if( !browser.match(/Firefox/g) && isPopup) {
 				window.resizeTo(resize_width + padding, resize_height + toolbar);
 			}
 		}
