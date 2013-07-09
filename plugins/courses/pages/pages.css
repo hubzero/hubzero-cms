@@ -45,7 +45,7 @@
 	}
 	.course_pages .pages-menu ul {
 		list-style: none;
-		margin: 0;
+		margin: 0 11em 0 0;
 		padding: 0;
 	}
 	.course_pages .pages-menu li {
