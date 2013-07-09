@@ -1146,10 +1146,9 @@ class MembersControllerProfiles extends Hubzero_Controller
 			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
 			return;
 		}
-
 		// Check authorization
 		$this->view->authorized = $this->_authorize($id);
-		if (!$this->view->authorized) 
+		if ($id != $this->juser->get('id'))
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_task)), 
