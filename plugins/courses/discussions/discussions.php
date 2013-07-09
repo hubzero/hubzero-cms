@@ -1064,7 +1064,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				}
 
 				$cview->config     = $this->params;
-				$cview->depth      = 0;
+				$cview->depth      = 1;
 				$cview->cls        = 'odd';
 				$cview->base       = $this->base;
 				$cview->parser     = $p;

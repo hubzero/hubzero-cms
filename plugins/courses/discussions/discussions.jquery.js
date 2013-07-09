@@ -24,7 +24,7 @@ if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
 
-_DEBUG = false;
+var _DEBUG = false;
 
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
@@ -87,9 +87,12 @@ HUB.Plugins.CoursesForum = {
 
 		// Do some voodoo to get AJAX file upload working
 		if (cfrm.length > 0) {
-			$('<iframe src="about:blank?nocache=' + Math.random() + '" id="upload_target" name="upload_target" style="display:none;"></iframe>')
+			$('<iframe id="upload_target" name="upload_target" style="display:none;"></iframe>') //src="about:blank?nocache=' + Math.random() + '"
 				.on('load', function(){
-					data = jQuery.parseJSON($(this).contents().text());
+					var data = null;
+					if ($(this).contents()) {
+						data = jQuery.parseJSON($(this).contents().text());
+					}
 					if (data) {
 						if (_DEBUG) {
 							window.console && console.log(data);
