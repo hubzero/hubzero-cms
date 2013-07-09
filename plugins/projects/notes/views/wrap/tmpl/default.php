@@ -59,7 +59,7 @@ else if($this->page && (($this->task != 'view' && !$this->app) || ($this->firstn
 // Get public stamp for page
 $pubstamp = NULL;
 $listed   = NULL;
-if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+if ($this->page && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php')
 	&& $this->task == 'view' && $this->page && $this->pparams->get('enable_publinks'))
 {
@@ -246,7 +246,7 @@ $parentScope = $this->scope . DS . $this->pagename;
 			<span><?php echo JText::_('COM_PROJECTS_NOTES_THIS_PAGE_IS'); ?>  <strong class="<?php echo $listed ? 'green' : 'urgency'; ?>"><?php echo $listed ? JText::_('COM_PROJECTS_NOTES_LISTED') : JText::_('COM_PROJECTS_NOTES_UNLISTED'); ?></strong>. <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes') . '?action=share&p=' . $this->page->id; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_NOTES_SHARE_SETTINGS'); ?> &rsaquo;</a></span>	
 			<?php } ?>
 			</p>
-		<?php } elseif ($this->pparams->get('enable_publinks')) { ?>
+		<?php } elseif ($this->pparams->get('enable_publinks') && $this->page) { ?>
 			<p class="publink"><?php echo JText::_('COM_PROJECTS_NOTES_SHARE_GET_LINK'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes') . '?action=share&p=' . $this->page->id; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_NOTES_SHARE_GENERATE_LINK'); ?></a></p>
 		<?php } ?>
 	<?php 
