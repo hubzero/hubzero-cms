@@ -618,8 +618,8 @@ class CitationFormat
 			$link .= "?" . implode("&", $query);
 			
 			//do we have an icon or just using text as the link
-			$link_text = ($icon != '') ? '<img src="' . $icon . '" />' : $text;
-			//$link_text = '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image='.$icon.'" />';
+			//$link_text = ($icon != '') ? '<img src="' . $icon . '" />' : $text;
+			$link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image='.$icon.'" />' : $text;
 			
 			//final link
 			//$html .= '<span> | </span><a rel="external" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
