@@ -153,7 +153,7 @@ if($this->move) {
 					<table class="tbl-panel">
 						<tbody>
 							<tr class="tbl-instruct">
-								<td><span class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE_USE'); ?> <a href="/topics/Help:WikiFormatting" rel="external" class="popup"><?php echo JText::_('WIKI_FORMATTING'); ?></a>. <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NOTICE_NO_HTML_ALLOWED'); ?></span></td>
+								<td><span class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" rel="external" class="popup"><?php echo JText::_('WIKI_FORMATTING'); ?></a>. <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NOTICE_NO_HTML_ALLOWED'); ?></span></td>
 								<td><span class="prominent"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PREVIEW'); ?></span></td>
 							</tr>
 					<?php
