@@ -147,7 +147,7 @@ class CoursesTableMember extends JTable
 			//$where[] = "`section_id` IN (0, " . $this->_db->Quote((int) $sid) . ")";
 			$where[] = "`section_id` IN (0," . (int) $sid . ")"; //$this->_db->Quote((int) $sid);
 		}
-		$query .= implode(" AND ", $where) . " ORDER BY student ASC LIMIT 1";
+		$query .= implode(" AND ", $where) . " ORDER BY student ASC, section_id ASC, offering_id ASC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
