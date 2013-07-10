@@ -54,6 +54,10 @@
 		-o-box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 		box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
 	}
+	html.ie8,
+	html.ie9 {
+		background-image: url("/media/system/images/light-stripes.png");
+	}
 
 	.modnotices.low {
 		background-color: #84A7DB;
