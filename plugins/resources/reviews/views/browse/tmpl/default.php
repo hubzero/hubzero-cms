@@ -220,15 +220,6 @@ if ($this->reviews) {
 			//if ((($abuse || $reply) && $review->comment) || $admin) {
 			if (($abuse || $reply) || $admin) {
 				$html .= "\t\t\t".'<p class="comment-options">'."\n";
-				//if ($abuse && $review->comment) {
-				if ($abuse) {
-					if ($juser->get('guest')) {
-						$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id)));
-					} else {
-						$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id);
-					}
-					$html .= "\t\t\t\t".'<a class="abuse" href="'.$href.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE').'</a> | '."\n";
-				}
 				//if ($reply && $review->comment) {
 				if ($reply) {
 					$html .= "\t\t\t\t".'<a class="';
@@ -242,6 +233,16 @@ if ($this->reviews) {
 					}
 					$html .= '" href="'.$href.'" id="rep_'.$review->id.'" title="'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'"">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>'."\n";
 				}
+				//if ($abuse && $review->comment) {
+				if ($abuse) {
+					if ($juser->get('guest')) {
+						$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id)));
+					} else {
+						$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id);
+					}
+					$html .= "\t\t\t\t".'<a class="abuse" href="'.$href.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE').'</a> | '."\n";
+				}
+				
 				if ($admin) {
 					$html .= "\t\t\t\t".' | <a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=deletereview&reviewid='.$review->id).'">'.JText::_('PLG_RESOURCES_REVIEWS_DELETE').'</a>'."\n";
 				}
