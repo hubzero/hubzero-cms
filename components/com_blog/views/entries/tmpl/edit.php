@@ -93,10 +93,10 @@ if ($this->entry->publish_down && $this->entry->publish_down == '0000-00-00 00:0
 						<td><sub>subscript</sub></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
+						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
+						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
 					</tr>
 				</tbody>
 			</table>
