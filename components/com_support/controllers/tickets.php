@@ -1178,10 +1178,14 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Get some email settings
 		$jconfig =& JFactory::getConfig();
-		$admin   = $jconfig->getValue('config.mailfrom');
+		//$admin   = $jconfig->getValue('config.mailfrom');
 		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_SUPPORT') . ', ' . JText::sprintf('COM_SUPPORT_TICKET_NUMBER', $row->id);
-		$from    = $jconfig->getValue('config.sitename') . ' web-robot';
-		$hub     = array('email' => $reporter['email'], 'name' => $from);
+		
+		//$from    = $jconfig->getValue('config.sitename') . ' web-robot';
+		//$hub     = array('email' => $reporter['email'], 'name' => $from);
+		$from = array();
+		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+		$from['email'] = $jconfig->getValue('config.mailfrom');
 
 		// Parse comments for attachments
 		$attach = new SupportAttachment($this->database);
@@ -1190,21 +1194,22 @@ class SupportControllerTickets extends Hubzero_Controller
 		$attach->output  = 'email';
 
 		// Generate e-mail message
-		$message  = (!$this->juser->get('guest')) ? JText::_('COM_SUPPORT_VERIFIED_USER')."\r\n\r\n" : '';
-		$message .= ($reporter['login']) ? JText::_('COM_SUPPORT_USERNAME').': '. $reporter['login'] ."\r\n" : '';
-		$message .= JText::_('COM_SUPPORT_NAME').': '. $reporter['name'] ."\r\n";
-		$message .= JText::_('COM_SUPPORT_AFFILIATION').': '. $reporter['org'] ."\r\n";
-		$message .= JText::_('COM_SUPPORT_EMAIL').': '. $reporter['email'] ."\r\n";
-		$message .= JText::_('COM_SUPPORT_IP_HOSTNAME').': '. $ip .' ('.$hostname.')' ."\r\n";
-		$message .= JText::_('COM_SUPPORT_REGION').': '.$source_city.', '.$source_region.', '.$source_country ."\r\n\r\n";
-		$message .= JText::_('COM_SUPPORT_OS').': '. $problem['os'] .' '. $problem['osver'] ."\r\n";
-		$message .= JText::_('COM_SUPPORT_BROWSER').': '. $problem['browser'] .' '. $problem['browserver'] ."\r\n";
-		$message .= JText::_('COM_SUPPORT_UAS').': '. JRequest::getVar('HTTP_USER_AGENT','','server') ."\r\n";
-		$message .= JText::_('COM_SUPPORT_COOKIES').': ';
-		$message .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_SUPPORT_COOKIES_ENABLED')."\r\n" : JText::_('COM_SUPPORT_COOKIES_DISABLED')."\r\n";
-		$message .= JText::_('COM_SUPPORT_REFERRER').': '. $problem['referer'] ."\r\n";
-		$message .= ($problem['tool']) ? JText::_('COM_SUPPORT_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
-		$message .= JText::_('COM_SUPPORT_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n\r\n";
+		$message = array();
+		$message['plaintext']  = (!$this->juser->get('guest')) ? JText::_('COM_SUPPORT_VERIFIED_USER')."\r\n\r\n" : '';
+		$message['plaintext'] .= ($reporter['login']) ? JText::_('COM_SUPPORT_USERNAME').': '. $reporter['login'] ."\r\n" : '';
+		$message['plaintext'] .= JText::_('COM_SUPPORT_NAME').': '. $reporter['name'] ."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_AFFILIATION').': '. $reporter['org'] ."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_EMAIL').': '. $reporter['email'] ."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_IP_HOSTNAME').': '. $ip .' ('.$hostname.')' ."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_REGION').': '.$source_city.', '.$source_region.', '.$source_country ."\r\n\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_OS').': '. $problem['os'] .' '. $problem['osver'] ."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_BROWSER').': '. $problem['browser'] .' '. $problem['browserver'] ."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_UAS').': '. JRequest::getVar('HTTP_USER_AGENT','','server') ."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_COOKIES').': ';
+		$message['plaintext'] .= (JRequest::getVar('sessioncookie','','cookie')) ? JText::_('COM_SUPPORT_COOKIES_ENABLED')."\r\n" : JText::_('COM_SUPPORT_COOKIES_DISABLED')."\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_REFERRER').': '. $problem['referer'] ."\r\n";
+		$message['plaintext'] .= ($problem['tool']) ? JText::_('COM_SUPPORT_TOOL').': '. $problem['tool'] ."\r\n\r\n" : "\r\n";
+		$message['plaintext'] .= JText::_('COM_SUPPORT_PROBLEM_DETAILS').': '. $attach->parse(stripslashes($problem['long'])) ."\r\n\r\n";
 
 		$juri =& JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
@@ -1212,14 +1217,37 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$sef = substr($sef, 1, strlen($sef));
 		}
-		$message .= $juri->base() . $sef . "\r\n";
+		$message['plaintext'] .= $juri->base() . $sef . "\r\n";
+
+
+		// Html email
+		$from['multipart'] = md5(date('U'));
+
+		$eview = new JView(array(
+			'name'   => 'emails', 
+			'layout' => 'ticket'
+		));
+		$eview->option     = $this->_option;
+		$eview->controller = $this->_controller;
+		$eview->ticket     = $row;
+		$eview->delimiter  = '';
+		/*if ($allowEmailResponses)
+		{
+			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+		}*/
+		$eview->boundary   = $from['multipart'];
+		$eview->attach     = $attach;
+
+		$message['multipart'] = $eview->loadTemplate();
+		$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 		// Load the support config
-		$params = JComponentHelper::getParams('com_support');
+		//$params = JComponentHelper::getParams('com_support');
 
 		// Get any set emails that should be notified of ticket submission
-		$defs = str_replace("\r", '', $params->def('emails', '{config.mailfrom}'));
+		$defs = str_replace("\r", '', $this->config->get('emails', '{config.mailfrom}'));
 		$defs = explode("\n", $defs);
+
 		if ($defs)
 		{
 			// Import our mailer
@@ -1229,6 +1257,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			foreach ($defs As $def)
 			{
 				$def = trim($def);
+
 				// Check if the address should come from Joomla config
 				if ($def == '{config.mailfrom}')
 				{
@@ -1238,7 +1267,8 @@ class SupportControllerTickets extends Hubzero_Controller
 				if ($this->_isValidEmail($def))
 				{
 					// Send e-mail
-					Hubzero_Toolbox::send_email($def, $subject, $message);
+					SupportUtilities::sendEmail($def, $subject, $message, $from);
+					//Hubzero_Toolbox::send_email($def, $subject, $message);
 				}
 			}
 		}
@@ -1258,6 +1288,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 			// Build e-mail components
 			$admin_email = $jconfig->getValue('config.mailfrom');
+			$allowEmailResponses = false;
 
 			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('TICKET').' #'.$row->id.' comment ';
 
@@ -1271,22 +1302,76 @@ class SupportControllerTickets extends Hubzero_Controller
 			$rowc->created_by = $this->juser->get('id');
 			$rowc->access     = 1;
 
-			$message  = '----------------------------'."\r\n";
-			$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
-			$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
-			$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
-			$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
-			$message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
-			$message .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
-			$message .= '----------------------------'."\r\n\r\n";
-			$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
-			$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
-			$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
+			$log = array(
+				'changes'       => array(),
+				'notifications' => array(),
+				'cc'            => array()
+			);
+			if ($tags) 
+			{
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_TAGS'),
+					'before' => JText::_('BLANK'),
+					'after'  => $tags
+				);
+			}
+			if ($row->group) 
+			{
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_GROUP'),
+					'before' => '',
+					'after'  => $row->group
+				);
+			}
+			if ($row->severity != 'normal') 
+			{
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_SEVERITY'),
+					'before' => 'normal',
+					'after'  => $row->severity
+				);
+			}
+			if ($row->owner) 
+			{
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_OWNER'),
+					'before' => '',
+					'after'  => $row->owner
+				);
+			}
+			if ($row->resolved)
+			{
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_RESOLUTION'),
+					'before' => '[unresolved]',
+					'after'  => $row->resolved
+				);
+			}
+			$log['changes'][] = array(
+				'field'  => JText::_('TICKET_FIELD_STATUS'),
+				'before' => SupportHtml::getStatus(1, 0),
+				'after'  => SupportHtml::getStatus($row->open, $row->status)
+			);
+
+			$message = array();
+			$message['plaintext']  = '----------------------------'."\r\n";
+			$message['plaintext'] .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
+			$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
+			$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
+			$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
+			$message['plaintext'] .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
+			$message['plaintext'] .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
+			$message['plaintext'] .= '----------------------------'."\r\n\r\n";
+			$message['plaintext'] .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
+			$message['plaintext'] .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
+			$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
 			//$message .= $attach->parse($comment)."\r\n\r\n";
 
 			// Prepare message to allow email responses to be parsed and added to the ticket
 			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
 			{
+				$allowEmailResponses = true;
+
 				$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
 
 				$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
@@ -1294,13 +1379,38 @@ class SupportControllerTickets extends Hubzero_Controller
 				$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
 				$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
 
-				$message = $prependtext . "\r\n\r\n" . $message;
+				$message['plaintext'] = $prependtext . "\r\n\r\n" . $message['plaintext'];
 			}
 
 			$juri =& JURI::getInstance();
 			$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
 
-			$message .= $juri->base() . ltrim($sef, DS) . "\r\n";
+			$message['plaintext'] .= $juri->base() . ltrim($sef, DS) . "\r\n";
+
+			//-------
+			$from['multipart'] = md5(date('U'));
+
+			$rowc->changelog = $log;
+
+			$eview = new JView(array(
+				'name'   => 'emails', 
+				'layout' => 'comment'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->comment    = $rowc;
+			$eview->ticket     = $row;
+			$eview->delimiter  = '';
+			if ($allowEmailResponses)
+			{
+				$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+			}
+			$eview->boundary   = $from['multipart'];
+			$eview->attach     = $attach;
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+			//-------
 
 			// Send e-mail to admin?
 			JPluginHelper::importPlugin('xmessage');
@@ -1317,11 +1427,6 @@ class SupportControllerTickets extends Hubzero_Controller
 				$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
 				$from['replytoemail'] = 'htc-' . $token;
 			}
-
-			$log = array(
-				'changes'       => array(),
-				'notifications' => array()
-			);
 
 			if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
 			{
