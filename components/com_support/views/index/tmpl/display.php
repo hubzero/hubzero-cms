@@ -101,8 +101,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .four columns third -->
 	<div class="four columns fourth">
 		<div class="wiki">
-			<h3><a href="<?php echo JRoute::_('index.php?option=com_topics'); ?>">Topics</a></h3>
-			<p>Take a look at our user-generated <a href="<?php echo JRoute::_('index.php?option=com_topics'); ?>">topic pages</a> or write your own.</p>
+			<h3><a href="<?php echo JRoute::_('index.php?option=com_wiki'); ?>">Wiki</a></h3>
+			<p>Take a look at our user-generated <a href="<?php echo JRoute::_('index.php?option=com_wiki'); ?>">wiki pages</a> or write your own.</p>
 		</div><!-- / .wiki -->
 	</div><!-- / .four columns fourth -->
 	<div class="clear"></div>

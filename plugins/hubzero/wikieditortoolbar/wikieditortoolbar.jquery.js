@@ -130,7 +130,7 @@ HUB.Plugins.WikiEditorToolbar = {
 		if (item.imageId) a.id = item.imageId;
 		a.title = item.speedTip;
 		a.innerHTML = item.speedTip;
-		a.href = "/topics/Help:WikiFormatting";
+		a.href = "/wiki/Help:WikiFormatting";
 		a.onclick = function() {
 			window.open(this.href, 'popup', 'resizable=1,scrollbars=1,height=520,width=760');
 			return false;
