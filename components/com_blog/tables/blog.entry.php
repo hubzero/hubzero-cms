@@ -627,7 +627,7 @@ class BlogEntry extends JTable
 
 		$bc = new BlogComment($this->_db);
 
-		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, 
+		$query = "SELECT m.*, 
 				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
@@ -646,7 +646,7 @@ class BlogEntry extends JTable
 
 		$bc = new BlogComment($this->_db);
 
-		$query = "SELECT m.id, m.alias, m.title, created_by, publish_up, 
+		$query = "SELECT m.*, 
 				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);

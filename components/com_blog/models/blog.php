@@ -233,7 +233,6 @@ class BlogModel extends JObject
 		}
 
 		//$this->_filters = serialize($filters);
-
 		switch (strtolower($rtrn))
 		{
 			case 'count':

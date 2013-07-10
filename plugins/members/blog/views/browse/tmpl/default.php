@@ -98,10 +98,14 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			</ul>
 		</div>
 	<?php } ?>
-	
+
+	<?php 
+	$limit = $this->filters['limit']; 
+	$this->filters['limit'] = 5;
+	?>
 		<div class="container blog-popular-entries">
 			<h4><?php echo JText::_('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
-		<?php if ($popular = $this->model->entries('recent', $this->filters)) { ?>
+		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($popular as $row) { ?>
 				<li>
@@ -132,6 +136,9 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 		<?php } ?>
 		</div><!-- / .blog-recent-entries -->
+	<?php
+	$this->filters['limit'] = $limit; 
+	?>
 	</div><!-- / .aside -->
 
 	<div class="subject">
