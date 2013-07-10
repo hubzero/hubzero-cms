@@ -98,10 +98,10 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 						<td><sub>subscript</sub></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
+						<td colspan="2"><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
 					</tr>
 					<tr>
-						<td colspan="2"><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
+						<td colspan="2"><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
 					</tr>
 				</tbody>
 			</table>

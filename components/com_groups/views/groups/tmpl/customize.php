@@ -128,7 +128,7 @@ $levels = array(
 						$editor =& Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('group[overview_content]', 'group[overview_content]', stripslashes($this->group->get('overview_content')), '', '50', '15');
 					?>
-					<span class="hint"><a class="popup" href="/topics/Help:WikiFormatting">Wiki formatting</a> is allowed.</span>
+					<span class="hint"><a class="popup" href="/wiki/Help:WikiFormatting">Wiki formatting</a> is allowed.</span>
 				</label>
 			</fieldset>
 		</fieldset>

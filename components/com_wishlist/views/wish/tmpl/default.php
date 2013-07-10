@@ -965,7 +965,7 @@ if ($this->wishlist && $this->wish) {
 					<?php } ?>
 					<label>
 						<?php echo JText::_('ACTION_INSERT_TEXT'); ?> 
-						(<?php echo JText::_('ACTION_PLEASE_USE'); ?> <a href="/topics/Help:WikiFormatting" rel="external"><?php echo JText::_('WIKI_FORMATTING'); ?></a>)	
+						(<?php echo JText::_('ACTION_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" rel="external"><?php echo JText::_('WIKI_FORMATTING'); ?></a>)	
 						<textarea name="pagetext" id="pagetext" rows="40" cols="35"><?php echo isset($this->wish->plan->pagetext) ? $this->escape($this->wish->plan->pagetext) : ''; ?></textarea>
 					</label>
 					
@@ -986,7 +986,7 @@ if ($this->wishlist && $this->wish) {
 					
 					<div class="sidenote">
 						<p>
-							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
 						</p>
 					</div>
 			<?php } else if (!$this->wish->plan) { ?>

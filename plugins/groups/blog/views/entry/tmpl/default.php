@@ -345,7 +345,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 						<p>
 							<strong><?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
 						</p>
-						<p>Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.</p>
+						<p>Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.</p>
 					</div>
 				</fieldset>
 			</form>
