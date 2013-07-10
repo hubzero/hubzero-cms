@@ -106,7 +106,7 @@ $lid = $this->course->get('gidNumber');
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('page[content]', 'page[content]', stripslashes($content), '', '50', '15');
 			?>
-			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
+			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
 		</label>
 		<label>Page Privacy: <span class="required">Required</span>
 			<?php

@@ -125,7 +125,7 @@ $levels = array(
 						$editor =& Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('course[overview_content]', 'course[overview_content]', stripslashes($this->course->get('overview_content')), '', '50', '15');
 					?>
-					<span class="hint"><a class="popup" href="/topics/Help:WikiFormatting">Wiki formatting</a> is allowed.</span>
+					<span class="hint"><a class="popup" href="/wiki/Help:WikiFormatting">Wiki formatting</a> is allowed.</span>
 				</label>
 			</fieldset>
 		</fieldset>

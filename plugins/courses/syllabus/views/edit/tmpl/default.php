@@ -73,10 +73,10 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 					<td><sub>subscript</sub></td>
 				</tr>
 				<tr>
-					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>" class="popup">[[Image(filename.jpg)]]</a> includes an image</td>
+					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>" class="popup">[[Image(filename.jpg)]]</a> includes an image</td>
 				</tr>
 				<tr>
-					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>" class="popup">[[File(filename.pdf)]]</a> includes a file</td>
+					<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>" class="popup">[[File(filename.pdf)]]</a> includes a file</td>
 				</tr>
 			</tbody>
 		</table>
