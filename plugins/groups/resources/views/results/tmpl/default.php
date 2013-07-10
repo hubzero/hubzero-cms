@@ -287,7 +287,7 @@ if (!$foundresults) {
 jimport('joomla.html.pagination');
 $pageNav = new JPagination( $this->total, $this->limitstart, $this->limit );
 
-$pageNav->setAdditionalUrlParam('id', $this->group->get('cn'));
+$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 $pageNav->setAdditionalUrlParam('active', 'resources');
 $pageNav->setAdditionalUrlParam('area', urlencode(stripslashes($this->active)));
 $pageNav->setAdditionalUrlParam('sort', $this->sort);
