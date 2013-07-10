@@ -161,7 +161,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		);
 		$pathway->addItem(
 			JText::_(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&task=' . $this->_task
+			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view->message = $this->_message;
@@ -252,7 +252,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		);
 		$pathway->addItem(
 			JText::_(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=' . $this->_task
+			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view->sub     = $this->_sub;
@@ -293,7 +293,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		if (!$id || !$this->config->get('access-delete')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=history')
+				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history')
 			);
 			return;
 		}
@@ -306,7 +306,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		{
 			// Can't delete - it's the only approved version!
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&task=history')
+				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history')
 			);
 			return;
 		}
@@ -318,7 +318,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		if (!$revision->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&task=history'),
+				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history'),
 				JText::_('Error occurred while removing revision.'), 
 				'error'
 			);
@@ -345,7 +345,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=history')
+			JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&' . ($this->_sub ? 'action' : 'task') . '=history')
 		);
 	}
 
