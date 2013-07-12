@@ -144,10 +144,13 @@ class WikiParser
 	 */
 	public function __construct($config=array())
 	{
-		// We need this info for links that may get generated
-		foreach ($config as $k => $s)
+		if (is_array($config))
 		{
-			$this->set($k, $s);
+			// We need this info for links that may get generated
+			foreach ($config as $k => $s)
+			{
+				$this->set($k, $s);
+			}
 		}
 
 		// Set the unique token
