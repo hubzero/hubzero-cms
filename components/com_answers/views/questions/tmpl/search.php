@@ -86,7 +86,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
-					<input type="text" name="q" value="<?php echo $this->escape($this->filters['q']); ?>" />
+					<input type="text" name="q" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					
 					<input type="hidden" name="area" value="<?php echo $this->escape($this->filters['area']); ?>" />
