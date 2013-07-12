@@ -100,9 +100,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias); ?>" method="post">
 		
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="Search" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<input type="text" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<legend><?php echo JText::_('Search for articles'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="order" value="<?php echo $this->escape($this->filters['order']); ?>" />
 					<input type="hidden" name="section" value="<?php echo $this->escape($this->category->alias); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -112,12 +114,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container">
 				<ul class="entries-menu">
 					<li>
-						<a<?php echo ($this->filters['order'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias.'&order=popularity'); ?>" title="Sort by most liked to least liked">
+						<a<?php echo ($this->filters['order'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias.'&order=popularity'); ?>" title="<?php echo JText::_('Sort by most liked to least liked'); ?>">
 							&darr; Popular
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['order'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias.'&order=recent'); ?>" title="Sort by newest to oldest">
+						<a<?php echo ($this->filters['order'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias.'&order=recent'); ?>" title="<?php echo JText::_('Sort by newest to oldest'); ?>">
 							&darr; Recent
 						</a>
 					</li>
@@ -190,11 +192,10 @@ if (count($this->articles) > 0)
 					</tbody>
 				</table>
 				<?php 
-				$pagenavhtml = $this->pageNav->getListFooter();
-				$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
-				$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
-				$pagenavhtml = str_replace('/kb/?', '/kb/' . $this->category->alias . '/?', $pagenavhtml);
-				echo $pagenavhtml;
+				$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				$this->pageNav->setAdditionalUrlParam('order', $this->filters['order']);
+				//$this->pageNav->setAdditionalUrlParam('section', $this->category->alias);
+				echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

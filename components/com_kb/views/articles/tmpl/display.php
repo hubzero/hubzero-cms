@@ -61,11 +61,11 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="Search" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend>Search for articles</legend>
-					<label for="entry-search-field">Enter keyword or phrase</label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<legend><?php echo JText::_('Search for articles'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="order" value="<?php echo $this->escape($this->filters['order']); ?>" />
 					<input type="hidden" name="section" value="all" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

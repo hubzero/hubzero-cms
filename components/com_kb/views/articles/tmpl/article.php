@@ -109,47 +109,41 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<div class="entry-content">
 					<?php echo stripslashes($this->article->fulltxt); ?>
 				</div>
-<?php 
-		if (count($this->tags) > 0) {
-?>
+			<?php if (count($this->tags) > 0) { ?>
 				<div class="entry-tags">
 					<p>Tags:</p>
 					<ol class="tags">
-<?php
+				<?php
 					foreach ($this->tags as $tag)
 					{
-						$tag['raw_tag'] = str_replace('&amp;', '&', $tag['raw_tag']);
-						$tag['raw_tag'] = str_replace('&', '&amp;', $tag['raw_tag']);
-
-						echo "\t\t\t\t\t\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$this->escape(stripslashes($tag['raw_tag'])).'</a></li>'."\n";
+						echo '<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$this->escape(stripslashes($tag['raw_tag'])).'</a></li>'."\n";
 					}
-?>
+				?>
 					</ol>
 				</div><!-- / .entry-tags -->
-<?php 
-		}
-?>			
+			<?php } ?>
+
 				<p class="voting">
-<?php 
-	$view = new JView(array(
-		'name' => $this->controller,
-		'layout' => 'vote'
-	));
-	$view->option = $this->option;
-	$view->item = $this->article;
-	$view->type = 'entry';
-	$view->vote = $this->vote;
-	$view->id = $this->article->id;
-	$view->display();
-?>
+					<?php 
+						$view = new JView(array(
+							'name' => $this->controller,
+							'layout' => 'vote'
+						));
+						$view->option = $this->option;
+						$view->item = $this->article;
+						$view->type = 'entry';
+						$view->vote = $this->vote;
+						$view->id = $this->article->id;
+						$view->display();
+					?>
 				</p>
-			
+
 				<p class="entry-details">
 					Last updated @ 
 					<span class="entry-time"><?php echo JHTML::_('date', $this->article->modified, $timeformat, $tz); ?></span> on 
 					<span class="entry-date"><?php echo JHTML::_('date', $this->article->modified, $dateformat, $tz); ?></span>
 				</p>
-				
+
 				<div class="clearfix"></div>
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
@@ -193,31 +187,31 @@ if ($this->config->get('allow_comments')) {
 	<h3 class="comments-title">
 		<a name="comments"></a>
 		Comments on this entry
-<?php
-if ($this->config->get('feeds_enabled')) {
-	if ($this->comment_total > 0) {
-		$feed = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'/comments.rss');
-		if (substr($feed, 0, 4) != 'http') 
-		{
-			$jconfig =& JFactory::getConfig();
-			$live_site = rtrim(JURI::base(),'/');
-				
-			$feed = $live_site . DS . ltrim($feed, DS);
+		<?php
+		if ($this->config->get('feeds_enabled')) {
+			if ($this->comment_total > 0) {
+				$feed = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'/comments.rss');
+				if (substr($feed, 0, 4) != 'http') 
+				{
+					$jconfig =& JFactory::getConfig();
+					$live_site = rtrim(JURI::base(),'/');
+						
+					$feed = $live_site . DS . ltrim($feed, DS);
+				}
+				$feed = str_replace('https://', 'http://', $feed);
+		?>
+				<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('Comments Feed'); ?>"><?php echo JText::_('Comments Feed'); ?></a>
+		<?php 
+			}
 		}
-		$feed = str_replace('https://', 'http://', $feed);
-?>
-		<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('Comments Feed'); ?>"><?php echo JText::_('Comments Feed'); ?></a>
-<?php 
-	}
-}
-?>
+		?>
 	</h3>
 	<div class="aside">
-<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
+	<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
 		<p>
 			<a class="add btn" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
 		</p>
-<?php } ?>
+	<?php } ?>
 	</div>
 	<div class="subject">
 <?php 
@@ -272,8 +266,8 @@ if ($this->comments) {
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $comment->anonymous); ?>" alt="" />
 			</p>
 			<div class="comment-content">
-				<p class="voting">
-<?php
+				<p class="comment-voting voting">
+					<?php
 						$view = new JView(array(
 							'name' => $this->controller,
 							'layout' => 'vote'
@@ -284,7 +278,7 @@ if ($this->comments) {
 						$view->vote = (isset($comment->vote)) ? $comment->vote : '';
 						$view->id = $comment->id;
 						$view->display();
-?>
+					?>
 				</p><!-- / .voting -->
 				<p class="comment-title">
 					<strong><?php echo $name; ?></strong> 
@@ -294,28 +288,28 @@ if ($this->comments) {
 					</a>
 				</p>
 				<?php echo $content; ?>
-<?php 		if (!$comment->reports) { ?>
+			<?php if (!$comment->reports) { ?>
 				<p class="comment-options">
-					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$comment->id.'&parent='.$this->article->id); ?>">Report abuse</a> | 
-<?php
-if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) {
-	$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'?reply='.$comment->id.'#post-comment');
-	if ($this->juser->get('guest')) {
-		$lnk = '/login?return='. base64_encode($rtrn);
-	} else {
-		$lnk = $rtrn;
-	}
-?>
+				<?php
+				if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) {
+					$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'?reply='.$comment->id.'#post-comment');
+					if ($this->juser->get('guest')) {
+						$lnk = '/login?return='. base64_encode($rtrn);
+					} else {
+						$lnk = $rtrn;
+					}
+				?>
 					<a class="reply" href="<?php echo $lnk; ?>"><?php echo JText::_('Reply'); ?></a>
-<?php } ?>
+				<?php } ?>
+					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$comment->id.'&parent='.$this->article->id); ?>">Report abuse</a>
 				</p>
-<?php 		} ?>
+			<?php } ?>
 			</div>
 <?php
 		if ($comment->replies) {
 ?>
 			<ol class="comments">
-<?php
+			<?php
 			foreach ($comment->replies as $reply)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
@@ -342,15 +336,15 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 
 				$reply->like = 0;
 				$reply->dislike = 0;
-?>
+				?>
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
 					<p class="comment-member-photo">
 						<span class="comment-anchor"><a name="#c<?php echo $reply->id; ?>"></a></span>
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $reply->anonymous); ?>" alt="" />
 					</p>
 					<div class="comment-content">
-						<p class="voting">
-<?php
+						<p class="comment-voting voting">
+							<?php
 							$view = new JView(array(
 								'name' => $this->controller,
 								'layout' => 'vote'
@@ -361,7 +355,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 							$view->vote = (isset($reply->vote)) ? $reply->vote : '';
 							$view->id = $reply->id;
 							$view->display();
-?>
+							?>
 						</p><!-- / .voting -->
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
@@ -371,14 +365,14 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 							</a>
 						</p>
 						<?php echo $content; ?>
-<?php 				if (!$reply->reports) { ?>
+					<?php if (!$reply->reports) { ?>
 						<p class="comment-options">
-							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$reply->id.'&parent='.$this->article->id); ?>">Report abuse</a> | 
-<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
+						<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
 							<a class="reply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
-<?php } ?>
+						<?php } ?>
+							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$reply->id.'&parent='.$this->article->id); ?>">Report abuse</a>
 						</p>
-<?php 				} ?>
+					<?php } ?>
 					</div>
 <?php
 					if ($reply->replies) {
@@ -416,8 +410,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 								<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $response->anonymous); ?>" alt="" />
 							</p>
 							<div class="comment-content">
-								<p class="voting">
-<?php
+								<p class="comment-voting voting">
+								<?php
 									$view = new JView(array(
 										'name' => $this->controller,
 										'layout' => 'vote'
@@ -428,7 +422,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 									$view->vote = (isset($response->vote)) ? $response->vote : '';
 									$view->id = $response->id;
 									$view->display();
-?>
+								?>
 								</p><!-- / .voting -->
 								<p class="comment-title">
 									<strong><?php echo $name; ?></strong> 
@@ -438,11 +432,11 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 									</a>
 								</p>
 								<?php echo $content; ?>
-<?php 					if (!$response->reports) { ?>
+							<?php if (!$response->reports) { ?>
 								<p class="comment-options">
 									<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$response->id.'&parent='.$this->article->id); ?>">Report abuse</a>
 								</p>
-<?php 					} ?>
+							<?php } ?>
 							</div>
 						</li>
 <?php
@@ -519,24 +513,17 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 		<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias); ?>" id="commentform">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"><a name="post-comment"></a></span>
-<?php
+			<?php
 				if (!$this->juser->get('guest')) {
-					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load($this->juser->get('id'));
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
+					$anon = 0;
 				} else {
-					$config =& JComponentHelper::getParams('com_members');
-					$thumb = $config->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) {
-						$thumb = DS.$dfthumb;
-					}
-					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+					$anon = 1;
 				}
-?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				?>
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, $anon); ?>" alt="" />
 			</p>
 			<fieldset>
-<?php
+			<?php
 			if (!$this->juser->get('guest')) {
 				if ($this->replyto->id) {
 					ximport('Hubzero_View_Helper_Html');
@@ -548,7 +535,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 							$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 						}
 					}
-?>
+				?>
 				<blockquote cite="c<?php echo $this->replyto->id ?>">
 					<p>
 						<strong><?php echo $name; ?></strong> 
@@ -557,32 +544,32 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 					</p>
 					<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
 				</blockquote>
-<?php
+				<?php
 				}
 			}
 
 			if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) {
-?>
-				<label>
+			?>
+				<label for="commentcontent">
 					Your <?php echo ($this->replyto->id) ? 'reply' : 'comments'; ?>: <span class="required">required</span>
-<?php
+				<?php
 				if (!$this->juser->get('guest')) {
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
 					echo $editor->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
 				} else {
 					$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
-?>
+					?>
 					<p class="warning">
 						You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
 					</p>
-<?php
+					<?php
 				}
-?>
+				?>
 				</label>
 
-<?php 			if (!$this->juser->get('guest')) { ?>
-				<label id="comment-anonymous-label">
+				<?php if (!$this->juser->get('guest')) { ?>
+				<label id="comment-anonymous-label" for="comment-anonymous">
 					<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 					Post anonymously
 				</label>
@@ -590,12 +577,12 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				<p class="submit">
 					<input type="submit" name="submit" value="Submit" />
 				</p>
-<?php 			} ?>
-<?php 		} else { ?>
-	<p class="warning">
-		<?php echo JText::_('Comments are closed on this entry.'); ?>
-	</p>
-<?php 		} ?>
+				<?php } ?>
+			<?php } else { ?>
+				<p class="warning">
+					<?php echo JText::_('Comments are closed on this entry.'); ?>
+				</p>
+			<?php } ?>
 				<input type="hidden" name="comment[id]" value="0" />
 				<input type="hidden" name="comment[entry_id]" value="<?php echo $this->article->id; ?>" />
 				<input type="hidden" name="comment[parent]" value="<?php echo $this->replyto->id; ?>" />
