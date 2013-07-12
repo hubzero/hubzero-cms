@@ -354,6 +354,7 @@ HUB.Plugins.CoursesForum = {
 
 				// Hide any displayed threads
 				container.find('ol.comments').hide();
+				container.find('div.sticky-thread-controls').hide();
 
 				// Fade in the comment form
 				cfrm.fadeIn();

@@ -11,9 +11,9 @@ if (!jq) {
 
 String.prototype.nohtml = function () {
 	if (this.indexOf('?') == -1) {
-		return this + '?no_html=1';
+		return this + '?no_html=1&time=00:00:00';
 	} else {
-		return this + '&no_html=1';
+		return this + '&no_html=1&time=00:00:00';
 	}
 };
 
@@ -24,7 +24,7 @@ if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
 
-var _DEBUG = false;
+var _DEBUG = true;
 
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
@@ -334,6 +334,7 @@ HUB.Plugins.CoursesForum = {
 
 				// Hide any displayed threads
 				container.find('ol.comments').hide();
+				container.find('div.sticky-thread-controls').hide();
 
 				// Fade in the comment form
 				cfrm.fadeIn();
@@ -382,6 +383,7 @@ HUB.Plugins.CoursesForum = {
 
 					// Append data and fade it in
 					thread.html(data.thread.html).hide().fadeIn();
+
 					// Apply plugins to loaded content
 					jQuery(document).trigger('ajaxLoad');
 				});
