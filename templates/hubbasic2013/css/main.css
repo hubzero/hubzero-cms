@@ -1202,6 +1202,12 @@
 	.section .section .subject:before {
 		display: none;
 	}
+	.subject:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
 /* Asides (right side) */
 	.aside {
 		float: right;
