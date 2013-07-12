@@ -262,7 +262,7 @@ class Hubzero_Document
 
 		$template  = $mainframe->getTemplate();
 
-		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'css' . DS . $stylesheet;
+		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
 
 		$assetcss = DS . 'components' . DS . $component . DS . 'assets' . DS . 'css' . DS . $stylesheet;
 
