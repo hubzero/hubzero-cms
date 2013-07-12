@@ -93,7 +93,54 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	private $_siblings = NULL;
 
-	//private $_section_keys = array('publish_up', 'publish_down');
+	/**
+	 * Constructor
+	 * 
+	 * @param      integer $id  Resource ID or alias
+	 * @param      object  &$db JDatabase
+	 * @return     void
+	 */
+	public function __construct($oid, $offering_id=null)
+	{
+		$this->_db = JFactory::getDBO();
+
+		if ($this->_tbl_name)
+		{
+			$cls = $this->_tbl_name;
+			$this->_tbl = new $cls($this->_db);
+
+			if (is_numeric($oid) || is_string($oid))
+			{
+				$this->_tbl->load($oid, $offering_id);
+			}
+			else if (is_object($oid))
+			{
+				$this->_tbl->bind($oid);
+
+				$properties = $this->_tbl->getProperties();
+				foreach (get_object_vars($oid) as $key => $property)
+				{
+					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
+					{
+						$this->_tbl->set('__' . $key, $property);
+					}
+				}
+			}
+			else if (is_array($oid))
+			{
+				$this->_tbl->bind($oid);
+
+				$properties = $this->_tbl->getProperties();
+				foreach (array_keys($oid) as $key)
+				{
+					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
+					{
+						$this->_tbl->set('__' . $key, $oid[$key]);
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * Returns a reference to a wiki page object
@@ -105,7 +152,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($oid=null, $offering_id=null)
 	{
 		static $instances;
 
@@ -114,12 +161,12 @@ class CoursesModelUnit extends CoursesModelAbstract
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid . '_' . $offering_id])) 
 		{
-			$instances[$oid] = new CoursesModelUnit($oid);
+			$instances[$oid . '_' . $offering_id] = new CoursesModelUnit($oid, $offering_id);
 		}
 
-		return $instances[$oid];
+		return $instances[$oid . '_' . $offering_id];
 	}
 
 	/**

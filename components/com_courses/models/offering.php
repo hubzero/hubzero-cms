@@ -366,9 +366,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 					}
 				}
 			}
-			else
+
+			if (is_null($this->_unit))
 			{
-				$this->_unit = CoursesModelUnit::getInstance($id);
+				$this->_unit = CoursesModelUnit::getInstance($id, $this->get('id'));
 			}
 		}
 		return $this->_unit;
