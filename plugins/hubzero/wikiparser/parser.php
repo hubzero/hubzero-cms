@@ -833,7 +833,7 @@ class WikiParser
 			$cls .= ' missing';
 		}
 
-		$link = JRoute::_('index.php?option=' . $this->option . '&scope=' . $scope . '&pagename=' . $pagename);
+		$link = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $scope . '&pagename=' . $pagename);
 
 		$this->_data['links'][] = array(
 			'link'     => $name, 
