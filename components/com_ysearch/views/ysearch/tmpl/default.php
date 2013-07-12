@@ -90,12 +90,11 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	</div><!-- / .aside -->
 	<div class="subject">
 		<form action="/ysearch/" method="get" class="container data-entry">
-			<fieldset>
-				<p>
-					<input type="submit" value="Search" class="search-submit" />
-					<label id="search-terms" for="terms">Search terms</label>
-					<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?>/>
-				</p>
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+			<fieldset class="entry-search">
+				<legend><?php echo JText::_('Search site'); ?></legend>
+				<label for="entry-search-field"><?php echo JText::_('ESearch terms'); ?></label>
+				<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?> placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 			</fieldset>
 		</form>
 <?php if ($this->results->valid()) : ?>
