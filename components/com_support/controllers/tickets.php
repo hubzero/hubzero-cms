@@ -447,7 +447,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$this->view->closedmonths[$k] = array();
 			$this->view->openedmonths[$k] = array();
-			if ($k == $startyear)
+			if ($k == $startyear && intval($startmonth) > 1)
 			{
 				$i = intval($startmonth) - 1;
 			}
