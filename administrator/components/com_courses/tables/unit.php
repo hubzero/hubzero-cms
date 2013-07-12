@@ -150,7 +150,7 @@ class CoursesTableUnit extends JTable
 		{
 			$sql .= " AND `offering_id`=" . $this->_db->Quote($offering_id);
 		}
-		$sql .= " LIMIT 1";
+		$sql .= " AND `state`!=2 LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{
