@@ -85,7 +85,7 @@ $juser =& JFactory::getUser();
 				<fieldset class="entry-search">
 					<legend>Search for Members</legend>
 					<label for="entry-search-field">Enter keyword or phrase</label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search Members by name'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
