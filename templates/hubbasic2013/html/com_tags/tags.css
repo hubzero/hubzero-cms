@@ -1,0 +1,15 @@
+@import url("/components/com_tags/assets/css/tags.css");
+
+.entries tbody td a.entry-title {
+	background: #fadea3 !important;
+	color: #5a2d00 !important;
+}
+.entries tbody td a.entry-title:before {
+	border-color: transparent #fadea3 transparent transparent !important;
+}
+.entries tbody td a.entry-title:hover {
+	background: #f3ae22 !important;
+}
+.entries tbody td a.entry-title:hover:before {
+	border-color: transparent #f3ae22 transparent transparent !important;
+}

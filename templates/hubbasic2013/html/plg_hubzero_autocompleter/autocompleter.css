@@ -133,8 +133,8 @@
 	}
 	li.token-input-token-act p {
 		margin: 0 0 0 14px !important;
-		background: #333 !important;
-		color: #ccc !important;
+		background: #fadea3 !important;
+		color: #5a2d00 !important;
 	}
 	#commentform label li.token-input-token-act span,
 	#commentform label li.token-input-token-acg span,
@@ -156,7 +156,7 @@
 	}
 	#commentform label li.token-input-token-act span,
 	li.token-input-token-act span {
-		background-color: #5b5b5b;
+		background-color: #fcebc7;
 		color: #aaa;
 	}
 	#commentform label li.token-input-token-act span:hover,
@@ -171,7 +171,7 @@
 	}
 	li.token-input-token-act p:before {
 		content: "";
-		border-color: transparent #333 transparent transparent !important;
+		border-color: transparent #fadea3 transparent transparent !important;
 		border-style: dashed solid dashed dashed !important;
 		border-width: 12px 12px 12px 0 !important;
 		height: 0;
@@ -201,16 +201,16 @@
 	}
 
 /* Hover */
-	li.token-input-token-act p:hover {
-		color: #fff;
-		background: #000 !important;
+	li.token-input-token-act:hover p {
+		background: #f3ae22 !important;
 	}
-	#commentform label li.token-input-token-act p:hover + span,
-	li.token-input-token-act p:hover + span {
-		background-color: #3b3b3b;
+	li.token-input-token-act:hover p:before {
+		border-color: transparent #f3ae22 transparent transparent !important;
 	}
-	li.token-input-token-act p:hover:before {
-		border-color: transparent #000 transparent transparent !important;
+	#commentform label li.token-input-token-act:hover span,
+	li.token-input-token-act:hover span {
+		color: #222;
+		background-color: #f7ce7a;
 	}
 
 /* Highlight selected tag */
