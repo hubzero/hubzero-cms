@@ -716,7 +716,7 @@ class CitationFormat
 		$html = "";
 		$badges = array();
 
-		$sql = "SELECT t.*
+		$sql = "SELECT DISTINCT t.*
 				FROM #__tags_object to1 
 				INNER JOIN #__tags t ON t.id = to1.tagid 
 				WHERE to1.tbl='citations' 
@@ -759,8 +759,9 @@ class CitationFormat
 	{
 		$html = '';
 		$tags = array();
+		$juser = JFactory::getUser();
 
-		$sql = "SELECT t.*
+		$sql = "SELECT DISTINCT t.*
 				FROM #__tags_object to1 
 				INNER JOIN #__tags t ON t.id = to1.tagid 
 				WHERE to1.tbl='citations' 
@@ -777,7 +778,14 @@ class CitationFormat
 				$html .= '<li>Tags: </li>';
 				foreach ($tags as $tag) 
 				{
-					$html .= '<li><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+					$cls = ($tag['admin']) ? 'admin' : '';
+					$isAdmin = (in_array($juser->get('usertype'), array('Super Administrator', 'Administrator'))) ? true : false;
+					
+					//display tag if not admin tag or if admin tag and user is adminstrator
+					if (!$tag['admin'] || ($tag['admin'] && $isAdmin))
+					{
+						$html .= '<li class="'.$cls.'"><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+					}
 				}
 				$html .= '</ul>';
 				return $html;

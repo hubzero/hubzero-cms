@@ -84,6 +84,20 @@
 				}
 			}
 		}
+		.admin a {
+			color: @tagAdminColor !important;
+			background: @tagAdminBackground !important;
+			&:hover {
+				color: @tagAdminColorHover !important;
+				background: @tagAdminBackgroundHover !important;
+			}
+			&:before {
+				border-color: transparent @tagAdminBackground transparent transparent !important;
+			}
+			&:hover:before {
+				border-color: transparent @tagAdminBackgroundHover transparent transparent !important;
+			}
+		}
 	}
 
 /* [!] HACK - IE 7 and older */

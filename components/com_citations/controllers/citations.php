@@ -810,10 +810,21 @@ class CitationsControllerCitations extends Hubzero_Controller
 		}
 		
 		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&task=browse',
-			JText::_('You have successfully saved the citation.')
-		);
+		if ($this->config->get('citation_single_view', 1))
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&task=view&id=' . $row->id),
+				JText::_('You have successfully saved the citation.')
+			);
+		}
+		else
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&task=browse'),
+				JText::_('You have successfully saved the citation.')
+			);
+		}
+		
 		return;
 	}
 

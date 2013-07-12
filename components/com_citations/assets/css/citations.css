@@ -205,6 +205,10 @@
 	.tags {
 		margin-top: 15px;
 	}
+	.tags li {
+		padding: 0;
+		border: none;
+	}
 
 /* Citations Import */
 	#steps {

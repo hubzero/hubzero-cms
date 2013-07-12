@@ -532,7 +532,14 @@ $area = JRequest::getVar('area', 'about');
 								<?php
 									foreach($tags as $tag)
 									{
-										echo '<li><a href="'.JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']).'">'.stripslashes($tag['raw_tag']).'</a></li> ';
+										$cls = ($tag['admin']) ? 'admin' : '';
+										$isAdmin = (in_array($juser->get('usertype'), array('Super Administrator', 'Administrator'))) ? true : false;
+										
+										//display tag if not admin tag or if admin tag and user is adminstrator
+										if (!$tag['admin'] || ($tag['admin'] && $isAdmin))
+										{
+											echo '<li class="'.$cls.'"><a href="'.JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']).'">'.stripslashes($tag['raw_tag']).'</a></li> ';
+										}
 									}
 								?>
 							</ol>
@@ -691,11 +698,10 @@ $area = JRequest::getVar('area', 'about');
 			break;
 		case 'journal':
 		case 'article':
-		case 'journal article';
+		case 'journal article':
+		default:
 			$coinsType = "journal";
 			break;
-		default:
-		break;
 	}
 	
 	//fix title
