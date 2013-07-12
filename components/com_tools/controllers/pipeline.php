@@ -1163,7 +1163,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$auto_addrepo = $this->config->get('auto_addrepo', 1);
 		if (!$id && $auto_addrepo)
 		{
-			$hzt->update(); // Make sure tool exists in database or gensvn won't configure apachce access to it
+			$hzt->update();  // Make sure tool exists in database or gensvn won't configure apachce access to it
+			$hztv->update(); // Make sure tool exists in database or gensvn won't configure apachce access to it
 
 			// Run add repo
 			$this->_addRepo($output, array(
