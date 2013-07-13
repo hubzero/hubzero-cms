@@ -242,7 +242,13 @@ HUB.Mw = {
 	// Helper function for filexfer and user-initiated alerts.
 	clientAction: function(action) {
 		if (action.slice(0,4) == "url ") {
-			document.open(action.slice(4), '_blank', 'width=600,height=600,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
+			if (action.match(/.*?\/filexfer\/.*?\/download\/.*?\?token=.*/)) {
+				actionurl = window.location.protocol + "//" + window.location.host + action.slice( action.indexOf("/filexfer/") )
+			}
+			else {
+				actionurl = action.slice(4);
+			}
+			document.open(actionurl, '_blank', 'width=600,height=600,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
 		} else if (action.slice(0,6) == "alert ") {
 			alert(action.slice(6));
 		} else {
