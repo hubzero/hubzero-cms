@@ -272,7 +272,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 			// Yes! Already enrolled
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') !== '__default' ? ':' . $offering->section()->get('alias') : '')),
 				JText::_('You are already enrolled in this course')
 			);
 			return;
@@ -385,7 +385,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		if ($enrolled)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias'))
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') !== '__default' ? ':' . $offering->section()->get('alias') : ''))
 			);
 			return;
 		}
