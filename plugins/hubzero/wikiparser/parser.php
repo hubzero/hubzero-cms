@@ -895,6 +895,10 @@ class WikiParser
 			{
 				$output[] = $txt;
 			} 
+			else if ('{{{}}}' == $line) 
+			{
+				$output[] = '';
+			}
 			// pre blocks must start a line
 			else if ('{{{' == substr($line, 0, strlen('{{{'))) 
 			{
