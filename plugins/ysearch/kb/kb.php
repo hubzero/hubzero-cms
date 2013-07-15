@@ -103,7 +103,7 @@ class plgYSearchKB extends YSearchPlugin
 			LEFT JOIN #__faq_categories c
 				ON c.id = f.category
 			WHERE 
-				f.state = 1 AND 
+				f.state = 1 AND s.state = 1 AND 
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
