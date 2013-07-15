@@ -146,8 +146,10 @@
 	}
 	hr {
 		clear: both;
-		visibility: hidden;
-		height: 15px;
+		height: 1px;
+		background: #ddd;
+		margin: 2em 0;
+		border: none;
 	}
 	abbr {
 		border-bottom: 1px dotted #333;
@@ -472,6 +474,7 @@
 		padding: 0 30px;
 		position: relative;
 		background: #ececec url("../images/layout/noise-lite.png");
+		min-height: 5.5em;
 	}
 	#masthead .inner {
 		padding: 0;
@@ -481,6 +484,11 @@
 		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		position: fixed;
+		left: 30px;
+		right: 30px;
+		min-height: 5.5em;
+		z-index: 999;
 	}
 	#masthead .inner:before,
 	#masthead .inner:after {
