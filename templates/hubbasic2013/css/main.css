@@ -2556,3 +2556,7 @@ System styles
 	body .com_resources .upperpane {
 		background-color: #fff;
 	}
+	#commentform input.option, 
+	#commentform select.option {
+		margin-top: 0;
+	}
