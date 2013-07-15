@@ -377,6 +377,12 @@ class WikiParser
 
 		$this->_data['output'] = $text;
 
+		if (trim($this->_data['input']) && !trim($this->_data['output']))
+		{
+			$this->_data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
+			$this->_data['output'] .= '<pre>' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
+		}
+
 		return $this->_data['output'];
 	}
 
