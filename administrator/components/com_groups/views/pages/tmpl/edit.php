@@ -71,7 +71,7 @@ JToolBarHelper::cancel();
 					<tr>
 						<td class="key"><label for="field-content"><?php echo JText::_('Content'); ?>:</label></td>
 						<td>
-							<textarea name="page[content]" id="field-content" rows="10" columns="10"><?php echo $this->escape(stripslashes($this->page->content)); ?></textarea>
+							<textarea name="page[content]" id="field-content" rows="40" columns="10"><?php echo $this->escape(stripslashes($this->page->content)); ?></textarea>
 						</td>
 					</tr>
 					<tr>
