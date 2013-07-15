@@ -517,15 +517,15 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('publish_up'), ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('created'), ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE);
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('publish_up'), ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('created'), ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE);
 			break;
 
 			default:
-				return $this->get('publish_up');
+				return $this->get('created');
 			break;
 		}
 	}
