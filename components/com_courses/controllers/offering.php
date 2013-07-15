@@ -382,6 +382,14 @@ class CoursesControllerOffering extends Hubzero_Controller
 			}
 		}
 
+		if ($enrolled)
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias'))
+			);
+			return;
+		}
+
 		// If enrollment is srestricted and the user isn't enrolled yet
 		if ($offering->section()->get('enrollment') == 1 && !$enrolled)
 		{
