@@ -118,6 +118,13 @@ $v = $browser->getBrowserMajorVersion();
 
 			<div id="sub-masthead">
 				<div class="inner">
+				<?php if (Hubzero_Module_Helper::countModules('helppane')) : ?>
+					<p id="tab">
+						<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
+							<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
+						</a>
+					</p>
+				<?php endif; ?>
 					<?php Hubzero_Module_Helper::displayModules('search'); ?>
 					<div id="trail">
 						<span class="pathway"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>

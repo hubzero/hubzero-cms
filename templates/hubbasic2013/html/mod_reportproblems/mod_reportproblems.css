@@ -38,90 +38,6 @@
 	color: #eee;
 	color: rgba(255, 255, 255, 0.8);
 }
-#tab {
-	display: block;
-	position: absolute;
-	top: 76px;
-	right: 30px;
-	width: 5em;
-	height: 3em;
-	text-align: right;
-	margin: 0;
-	line-height: 1.2em;
-	font-size: 90%;
-}
-#tab.active {
-	background: #000;
-}
-#tab a { 
-	padding: 0;
-	color: #fff;
-	height: 3em;
-	display: block;
-	border: none;
-}
-#tab a span { 
-	color: #fff;
-	height: 2em;
-	display: block;
-	border: none;
-}
-#tab a:hover {
-	color: #d7c2ef;
-	background: #616161;
-}
-#tab a:hover span {
-	color: #d7c2ef;
-}
-#tab {
-	padding: 0;
-	margin: 0;
-	top: 0;
-	right: 40px;
-	font-size: 1em;
-	-webkit-box-shadow: 1px 0px 0px rgba(0, 0, 0, 0.8);
-	-moz-box-shadow: 1px 0px 0px rgba(0, 0, 0, 0.8);
-	box-shadow: 1px 0px 0px rgba(0, 0, 0, 0.8);
-	width: auto;
-	height: auto;
-	z-index: 700;
-	background: #0fa1ca;
-	border-radius: 0 0 0.25em 0.25em;
-}
-#tab.active {
-	background: #0fa1ca;
-}
-
-#tab a {
-	margin: 0;
-	padding: 0.5em 1em 0.7em 1em;
-	height: auto;
-}
-#tab a span {
-	margin: 0;
-	padding: 0;
-	height: auto;
-	display: inline;
-}
-#tab a,
-#tab a span {
-	background: transparent;
-	text-shadow: 0 -1px 2px rgba(0, 0, 0, 0.4);
-	font-weight: bold;
-	color: #fff;
-}
-#nav li.right:hover,
-#nav li.right a:hover,
-#tab:hover,
-#tab a:hover {
-	background: #d86560;
-	color: #fff;
-	border-radius: 0 0 0.25em 0.25em;
-	border: none;
-}
-#tab a:hover span {
-	color: #fff;
-}
 #help-container input[type=text],
 #help-container input[type=password],
 #help-container input[type=email],
@@ -208,4 +124,61 @@
 	-ms-background-size: 30px 30px;
 	-o-background-size: 30px 30px;
 	background-size: 30px 30px; /* Controls the size of the stripes */
+}
+
+#tab {
+	display: block;
+	text-align: right;
+	margin: 0 0 0 2em;
+	padding: 0;
+	width: auto;
+	height: auto;
+	float: right;
+	position: static;
+	top: auto;
+	right: auto;
+	font-size: 1em;
+	line-height: 1;
+}
+#tab a {
+	margin: 0;
+	padding: 1.4em 1em 1.4em 1em;
+	height: auto;
+	width: 2em;
+	overflow: hidden;
+	text-indent: 5em;
+	color: transparent;
+	background: #333;
+	background: rgba(0, 0, 0, 0.15);
+	position: relative;
+	font-weight: normal;
+}
+#tab a:before {
+	content: "\f059"; /*\f055";*/
+	font-family: "Fontcons";
+	position: absolute;
+	font-size: 1.8em;
+	top: 0.6em;
+	left: 0.7em;
+	text-indent: 0;
+	color: #999;
+}
+#tab a span {
+	margin: 0;
+	padding: 0;
+	height: auto;
+	display: inline;
+	background: transparent;
+}
+#tab.active a,
+#tab:hover,
+#tab a:hover {
+	background: #000;
+	color: #fff;
+	border: none;
+}
+#tab.active a:before,
+#tab:hover a:before,
+#tab a:hover:before {
+	color: #fff;
 }

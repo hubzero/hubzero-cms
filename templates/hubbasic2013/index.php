@@ -143,6 +143,13 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 			<div id="sub-masthead">
 				<div class="inner">
+				<?php if ($this->countModules('helppane')) : ?>
+					<p id="tab">
+						<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
+							<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
+						</a>
+					</p>
+				<?php endif; ?>
 					<jdoc:include type="modules" name="search" />
 					<div id="trail">
 						<?php if (!$this->countModules('welcome')) : ?>
