@@ -78,6 +78,12 @@ class ModIncrementalRegistrationGroups
 			if (!isset($profile[$col['field']])) {
 				continue;
 			}
+			if ($col['field'] == 'mailPreferenceOption') {
+				if ($profile[$col['field']] == -1) {
+					$neededCols['mailPreferenceOption'] = $col['label'];
+				}
+				continue;
+			}
 			if (!trim($profile[$col['field']])) {
 				$neededCols[$col['field']] = $col['label'];
 			}

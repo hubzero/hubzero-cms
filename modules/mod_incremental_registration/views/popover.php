@@ -509,6 +509,21 @@ $defaultCountries = array(
 						</fieldset>
 					<li>
 				<?php endif; ?>
+				<?php if (isset($row['mailPreferenceOption'])): ?>
+					<li>
+						<?php if (isset($errors['mailPreferenceOption'])): ?>
+							<p class="warning">Please make a selection.</p>
+						<?php endif; ?>
+						<label for="mailPreferenceOption">Would you like to receive promotional emails (newsletters, surveys, etc.)?</label>
+						<div class="indented">
+							<select size="3" name="mailPreferenceOption">
+								<option value="-1" selected="selected">- Select email option &mdash;</option>
+								<option value="1">Yes, send me emails</option>
+								<option value="0">No, don't send me emails</option>
+							</select>
+						</div>
+					</li>
+				<?php endif; ?>
 			</ol>
 		<p>
 			<input type="hidden" name="incremental-registration" value="update" />

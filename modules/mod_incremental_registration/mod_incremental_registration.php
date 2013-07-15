@@ -145,7 +145,12 @@ class ModIncrementalRegistrationController
 					$orgtype      = null;
 					$organization = null;
 					$reason       = null;
+					$mail         = -1;
 
+					if (isset($_POST['mailPreferenceOption'])) 
+					{
+						$mail = (int)$_POST['mailPreferenceOption'];
+					}
 					if (isset($_POST['orgtype']) && trim($_POST['orgtype'])) 
 					{
 						$orgtype = trim($_POST['orgtype']);
@@ -273,6 +278,9 @@ class ModIncrementalRegistrationController
 					if (isset($row['reason']) && !$reason) 
 					{
 						$errors['reason'] = true;
+					}
+					if (isset($row['mailPreferenceOption']) && $mail == -1) {
+						$errors['mailPreferenceOption'] = true;
 					}
 
 					if ($errors) 
