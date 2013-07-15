@@ -212,7 +212,7 @@ WYKIWYG.converter = function() {
 			}
 		];
 
-		string = string.replace(/((^|\s)\[([^\[])(.*?)\])/g, '$2[!$3$4]');
+		//string = string.replace(/((^|\s)\[([^\[])(.*?)\])/g, '$2[!$3$4]');
 
 		string = string.replace(/\&nbsp;/ig, ' ');
 		string = string.replace(/<div><br(\s*)\/?><\/div>/ig, '\n');
