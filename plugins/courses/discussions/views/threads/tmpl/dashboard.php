@@ -70,10 +70,12 @@ if (count($inst) > 0)
 ?>
 <div id="comments-container" data-action="<?php echo JRoute::_($base . '&active=discussions'); ?>">
 
-<?php foreach ($this->notifications as $notification) { ?>
+<?php if (count($this->notifications) > 0) { ?>
+	<?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>">
 		<?php echo $this->escape($notification['message']); ?>
 	</p>
+	<?php } ?>
 <?php } ?>
 
 	<div class="comments-wrap">
