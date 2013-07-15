@@ -1056,7 +1056,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Incoming
 		if (is_object($post))
 		{
-			$this->view->post = $post;
+			$this->view->post = new ForumModelThread($post);
 		}
 		else 
 		{
