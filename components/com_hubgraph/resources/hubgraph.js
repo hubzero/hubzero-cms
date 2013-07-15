@@ -25,6 +25,11 @@ jQuery(function($) {
 		if (xhr) {
 			xhr.abort();
 		}
+		if (history && history.pushState) {
+			window.addEventListener("popstate", function(e) {
+				$('#hg-dynamic-wrap').html(history.state.html);
+			});
+		}
 		if ($(evt.target).val().replace(/\s+/g, '') == '') {
 			tagSugg.hide();
 			tagSugg.empty();
@@ -35,30 +40,154 @@ jQuery(function($) {
 				'task': 'complete',
 				'terms': $(evt.target).val()
 			}, function(res) {
+				if (!res.expression) {
+					return;
+				}
+				var expr = new RegExp(res.expression, 'gi');
+				var hl = function(title) {
+					if (title.title) {
+						title = title.title;
+					}
+					return title.replace(expr, '<strong>$1</strong>');
+				};
 				sugg.empty();
 				tagSugg.empty();
 				$(res.completions).each(function(idx, completion) {
-					sugg.append($('<li class="half ' + ((idx/2)&1 ? 'even' : 'odd') + '"><span>' + completion + '</span></li>').click(function() {
-						var terms = encodeURIComponent(completion.replace(/<.*?>/g, ''));
-						if (location.search.indexOf('terms=') == -1) {
-							location = location.toString() + (location.search ? '&' : '?') + 'terms=' + terms;
-						}
-						else {
-							location = location.toString().replace(/terms=[^&]*/, 'terms=' + terms);
-						}
+					sugg.append($('<li class="half ' + ((idx/2)&1 ? 'even' : 'odd') + '"><span>' + hl(completion) + '</span></li>').click(function() {
+						$(evt.target).val(encodeURIComponent(completion));
+						location = location.href.replace(/[?].*/, '') + '?' + $('#search-form').serialize();
 					}));
 				});
 				var baseTags = [], any = false;
-				$(res.tags).each(function(idx, tag) {
-					if (!request.tagMap[tag.id]) {
-						any = true;
-						var btn = $('<button type="submit" name="tags[]" value="' + tag.id + '">' + tag.title + '</button>').click(function() {
-							$('.search-bar input').val('');
-						});
-						tagSugg.append($('<li></li>').append(btn));
+				var inv = $('#inventory'), inp = $('.search-bar input');
+				var xhr2 = null;
+				var ajaxLoad = function() {
+					if (xhr2) {
+						xhr2.abort();
 					}
-				});
+					inv.addClass('loading');
+					xhr2 = $.get(searchBase + '?' + $('#search-form').serialize() + '&task=update', function(res) {
+						if (history && history.replaceState) {
+							history.replaceState({'html': $('#hg-dynamic-wrap').html()}, null, location.href);
+						}
+						$('#hg-dynamic-wrap').html(res);
+						inv.find('.unapplied').removeClass('unapplied');
+						inv.removeClass('loading');
+						if (history && history.pushState) {
+							history.pushState({'html': res}, null, location.href.replace(/[?].*/, '') + '?' + $('#search-form').serialize());
+						}
+					});
+				};
+				var pushInv = function(type, id, title) {
+					var dupe = false;
+					inv.find('.' + type + ' input').each(function(_idx, ex) {
+						if ($(ex).val() == id) {
+							dupe = true;
+							return false;
+						}
+					});
+					if (dupe) {
+						return false;
+					}
+					var li = $('<li class="' + type + ' unapplied"><input type="hidden" value="' + id + '" name="' + (type == 'section' ? 'domain' : type + 's[]') + '"><strong>' + type.charAt(0).toUpperCase() + type.substr(1) + ': </strong> ' + title + ' </li>')
+						.prepend($('<a class="remove"></a>').click(function() {
+							li.remove();
+							ajaxLoad();
+						}));
+					var terms = inp.val().split(/\s+/);
+					var newTerms = [];
+					for (var idx = 0; idx < terms.length; ++idx) {
+						if (title.toLowerCase().indexOf(terms[idx].toLowerCase()) == -1) {
+							newTerms.push(terms[idx]);
+						}
+					}
+					inp.val(newTerms.join(' '));
+					inp.focus();
+					inv.append(li);
+					return true;
+				};
+				var any = false;
+				for (var type in res.pins) {
+					if (type == 'tags') {
+						$(res.pins[type]).each(function(_idx, pin) {
+							if (request.tagMap[pin.id]) {
+								return;
+							}
+							any = true;
+							tagSugg
+								.append(
+									$('<li></li>')
+										.append(
+											$('<button type="submit" name="' + type + '[]" value="' + pin.id + '"></button>')
+												.append($('<a></a>').append(hl(pin)))
+												.click(function() {
+													inp.val(inp.val().replace(/\S+$/, ''));
+													if (pushInv(type.replace(/s$/, ''), pin.id, pin.title)) {
+														ajaxLoad();
+													}
+													return false;
+												})
+										)
+								)
+							;
+						});
+					}
+					else {
+						(function(type) {
+							var sel = $('<select></select>')
+								.click(function(evt) {
+									evt.stopPropagation();
+								})
+							;
+							var li = $('<li></li>')
+								.click(function(evt) {
+									if (evt.originalEvent && $(evt.originalEvent.target).hasClass('ui-selectmenu-icon')) {
+										return;
+									}
+									var id = sel.val();
+									if (pushInv(type.replace(/s$/, ''), id, $('#sugg-' + type + '-' + id.replace(/[~\s]/g, '-')).text())) {
+										ajaxLoad();
+									}
+									return false;
+								})
+								;
+							var btn = $('<div class="quasi-button"></div>')
+								.append($('<strong>' + type.charAt(0).toUpperCase() + type.substr(1).replace(/s$/, '') + ': </strong>'))
+								.append(sel)
+								;	
+							var anyThisType = false;
+							$(res.pins[type]).each(function(idx, pin) {
+								any = anyThisType = true;
+								var opt = $('<option value="' + pin.id + '" id="sugg-' + type + '-' + pin.id.replace(/[~\s]/g, '-') + '">' + pin.title + '</option>');
+								if (idx == 0) {
+									opt.attr('selected', true);
+								}
+								sel.append(opt);
+							});
+							if (!anyThisType) {
+								return;
+							}
+							tagSugg.append(li.append(btn));
+							tagSugg.show();
+							var w = (sel.width() + 20) + 'px';
+							sel.css('width', w);
+							sel.selectmenu({
+								'style': 'popup',
+								'format': function(text, item) {
+									item.css('width', w);
+									return hl(text);
+								},
+								'menuWidth': w + 20 + 'px',
+								'change': function() {
+									console.log('change');
+									btn.click();
+								}
+							});
+						})(type);
+					}
+				}
 				if (any) {
+					tagSugg.prepend($('<li class="label">Suggestions:</li>'));
 					tagSugg.show();
 				}
 				else {
@@ -79,7 +208,6 @@ jQuery(function($) {
 		}
 		var newSort = btn.hasClass('alpha') ? 'alpha' : 'number';
 		currentSort[key] = [newSort, newSort == currentSort[key][0] ? (currentSort[key][1] == 'asc' ? 'desc' : 'asc') : newSort == 'alpha' ? 'asc' : 'desc'];
-		console.log(currentSort[key]);
 		var list = prnt.next();
 		var items = list.children('li');
 		list.append(items.sort(function(a, b) {
@@ -148,7 +276,6 @@ jQuery(function($) {
 			$(res).each(function(_, res) {
 				related.append($('<li>' + res.domain[0].toUpperCase() + res.domain.substr(1)  + (res.type ? ' &ndash; ' + res.type : '') + ': <a href="' + res.link +'">' + res.title + '</a></li>'));
 			});
-			console.log(res);
 		});
 		return false;
 	});
@@ -165,8 +292,6 @@ jQuery(function($) {
 				nodes: relatedTags.related.map(function(tag) { return { 'name': tag[1], 'id': tag[0], 'base': tag[2] }; }), //[{'name': tagEl.attr('data-parent-name'), 'id': sourceId}],
 				links: relatedTags.edges.map(function(edge) { return { 'source': edge[0], 'target': edge[1], 'weight': edge[2] }; })
 			};
-			console.log(cont);
-			console.log(json);
 		
 			var w = cont.width(),
 			    h = cont.height(),

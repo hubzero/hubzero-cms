@@ -89,12 +89,20 @@ try {
 		case 'complete':
 			hgView('complete', array('limit' => 20, 'threshold' => 3, 'tagLimit' => 100));
 		case 'getRelated':
-			hgView('related', array('limit' => 5, 'domain' => $_GET['domain'], 'id' => $_GET['id']));
+			hgView('related', $req->getTransportCriteria(array('limit' => 5, 'domain' => $_GET['domain'], 'id' => $_GET['id'])));
 		case 'index':
 			$results = $req->anyCriteria() 
 				? json_decode(HubgraphClient::execView('search', $req->getTransportCriteria(array('limit' => $perPage))), TRUE) 
 				: NULL;
 			require 'views/index.html.php';
+		break;
+		case 'update':
+			$results = $req->anyCriteria() 
+				? json_decode(HubgraphClient::execView('search', $req->getTransportCriteria(array('limit' => $perPage))), TRUE) 
+				: NULL;
+			define('HG_AJAX', 1);
+			require 'views/index.html.php';
+			exit();
 		break;
 		case 'settings':
 			assertSuperAdmin();

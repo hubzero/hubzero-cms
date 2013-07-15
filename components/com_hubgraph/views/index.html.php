@@ -7,14 +7,25 @@ $contributors = $req->getContributors();
 $group = $req->getGroup();
 $domainMap = $req->getDomainMap();
 $loggedIn = (bool)JFactory::getUser()->id;
+if (!defined('HG_AJAX')):
 ?>
+<link type="text/css" href="/components/com_hubgraph/resources/selectmenu/themes/base/jquery.ui.core.css" rel="stylesheet" />
+<link type="text/css" href="/components/com_hubgraph/resources/selectmenu/themes/base/jquery.ui.theme.css" rel="stylesheet" />
+<link type="text/css" href="/components/com_hubgraph/resources/selectmenu/themes/base/jquery.ui.selectmenu.css" rel="stylesheet" />
+<script type="text/javascript" src="/components/com_hubgraph/resources/selectmenu/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="/components/com_hubgraph/resources/selectmenu/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/components/com_hubgraph/resources/selectmenu/ui/jquery.ui.position.js"></script>
+<script type="text/javascript" src="/components/com_hubgraph/resources/selectmenu/ui/jquery.ui.selectmenu.js"></script>
 <script type="text/javascript">
 window.searchBase = '<?= $base ?>';
 </script>
-<form class="hubgraph" action="<?= $base ?>" method="get">
+<form id="search-form" class="hubgraph" action="<?= $base ?>" method="get">
 <div class="subject">
 	<? require 'partial/bar.html.php'; ?>
 </div>
+<div id="hg-dynamic-wrap">
+<? endif; ?>
+
 <div class="aside criteria <?= defined('HG_INLINE') ? 'inline' : 'full' ?>">
 	<? if ($results && $results['domains']): ?>
 	<h2>Filters</h2>
@@ -121,7 +132,7 @@ window.searchBase = '<?= $base ?>';
 		</ol>
 		<? endif; ?>
 	<? endif; ?>
-	<p class="clear">&nbsp;</p>
+	<p class="clear"> &nbsp; </p>
 </div>
 <? if ($results && $results['total']): ?>
 	<? if ($results['terms']['autocorrected']):
@@ -147,6 +158,89 @@ window.searchBase = '<?= $base ?>';
 	<? endif; ?>
 <p id="count">Results <?= $results['offset'] + 1 ?>-<?= $results['offset'] + count($results['results']) ?> of <?= $results['total'] == count($results['results']) ? '' : 'about' ?> <?= $results['total'] ?></p>
 <ol id="results">
+<? if ($results && $results['criteria']): ?>
+<li><ol id="criteria-details">
+	<? if (isset($results['criteria']['contributors'])): ?>
+		<? 
+		foreach ($results['criteria']['contributors'] as $cont): 
+			if (!$cont['public'] || (!$cont['img_href'] && !$cont['organization'] && !$cont['url'] && !$cont['bio'] && !$cont['tags'])) continue;
+		?>
+			<li class="contributor">
+				<table>
+					<tbody>
+						<tr>
+							<td class="contributor-head left">
+								<h3><?= h($cont['title']) ?></h3>
+								<? if ($cont['img_href'] && file_exists(JPATH_BASE.$cont['img_href'])): ?>
+									<img class="profile-picture" src="<?= a($cont['img_href']) ?>" />
+								<? endif; ?>
+								<? if ($cont['organization']): ?>
+									<p class="organization"><?= h($cont['organization']) ?></p>
+								<? endif; ?>
+								<? if ($cont['url']): ?>
+									<p class="profile-url">
+										<a href="<?= a($cont['url']) ?>"><?= h($cont['url']) ?></a>
+									</p>
+								<? endif; ?>
+							</td>
+							<td>
+								<?= Wiki::parse(h($cont['bio'])) ?>
+								<? if ($cont['tags']): ?>
+									<ul class="tags">
+										<? foreach ($cont['tags'] as $tag): ?>
+											<li><button name="tags[]" value="<?= $tag[0] ?>"><?= h($tag[1]) ?></button></li>
+										<? endforeach; ?>
+									</ul>
+								<? endif; ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</li>
+		<? endforeach; ?>
+	<? endif; ?>
+	<? 
+		if ($results['criteria']['tags'] && $results['criteria']['tags']['base']):
+			$doc->addScript($basePath.'/resources/d3.v2.js');
+	?>
+			<li class="tag">
+				<script type="text/javascript">var relatedTags = <?= json_encode($results['criteria']['tags']) ?>;</script>
+				<table>
+					<tbody>
+						<tr>
+							<td class="left"><h3>Tags related to <?= implode(', ', array_map(function($tag) { return $tag[1]; }, $results['criteria']['tags']['base'])) ?></h3></td>
+							<td>
+							<? if ($results['criteria']['tags']['parents']): ?>
+								<h4>Parent tags: </h4>
+								<ol class="tags parents">
+									<? foreach ($results['criteria']['tags']['parents'] as $parent): ?>
+										<li><button name="tags[]" value="<?= $parent[0] ?>"><?= h($parent[1]) ?></button></li>
+									<? endforeach; ?>
+								</ol>
+							<? endif; ?>	
+							<? if ($results['criteria']['tags']['children']): ?>
+								<h4>Child tags: </h4>
+								<ol class="tags children">
+									<? foreach ($results['criteria']['tags']['children'] as $child): ?>
+										<li><button name="tags[]" value="<?= $child[0] ?>"><?= h($child[1]) ?></button></li>
+									<? endforeach; ?>
+								</ol>
+							<? endif; ?>
+							<? if ($results['criteria']['tags']['related']): ?>
+								<ol class="tags related <?= $conf['showTagCloud'] ? 'cloud' : 'no-cloud' ?>" data-parent-name="<?= $tag['name'] ?>" data-parent-id="<?= $id ?>">
+									<? foreach ($results['criteria']['tags']['related'] as $related): ?>
+										<li><button name="tags[]" value="<?= $related[0] ?>" data-weight="<?= $related[2] ?>"><?= h($related[1]) ?></button></li>
+									<? endforeach; ?>
+								</ol>
+							<? endif; ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</li>
+	<? endif; ?>
+</ol></li>
+<? endif; ?>
 	<? 
 	foreach($results['results'] as $res):
 		if ($res['domain'] == 'questions'):
@@ -274,7 +368,7 @@ window.searchBase = '<?= $base ?>';
 					?>
 				</ul>
 				<? endif; ?>
-				<p class="clear"></p>
+				<p class="clear"> &nbsp; </p>
 			</div>
 			<? if ($res['domain'] != 'members'): ?>
 				<? if ($res['domain'] == 'contributors'): ?>
@@ -283,7 +377,6 @@ window.searchBase = '<?= $base ?>';
 					<button class="more related" value="<?= $res['domain'].':'.$res['id'] ?>">Related results</button>
 				<? endif; ?>
 			<? endif; ?>
-			<pre><? print_r($res); ?></pre>
 		</li>
 	<? endforeach; ?>
 </ol>
@@ -296,3 +389,6 @@ window.searchBase = '<?= $base ?>';
 	<p class="info">No results were found for the criteria you specified, sorry.</p>
 <? endif; ?>
 </form>
+<? if (!defined('HG_AJAX')): ?>
+</div>
+<? endif; ?>
