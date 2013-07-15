@@ -130,7 +130,7 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 					</tr>
 				</tbody>
 			</table>
-		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
+		<?php if ($offering->access('manage', 'section') || $this->course->isStudent()) { //$this->course->isManager() ?>
 			<p>
 				<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 					Enter course
