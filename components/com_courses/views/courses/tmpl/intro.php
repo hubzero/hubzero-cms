@@ -47,10 +47,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 
 <?php
+if (count($this->notifications) > 0)
+{
 	foreach ($this->notifications as $notification) 
 	{
 		echo '<p class="' . $this->escape($notification['type']) . '">' . $notification['message'] . '</p>';
 	}
+}
 ?>
 
 <div id="introduction" class="section">
@@ -118,8 +121,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php 
 						if (count($this->mycourses) > 0)
 						{
+							$mycourses = array();
+							foreach ($this->mycourses as $k => $course)
+							{
+								if (!isset($mycourses[$course->get('alias')]))
+								{
+									$mycourses[$course->get('alias')] = $course;
+								}
+								continue;
+							}
+
 							$count = 0;
-							foreach ($this->mycourses as $course)
+							foreach ($mycourses as $course)
 							{
 								$view = new JView(array(
 									'name'   => 'courses',
