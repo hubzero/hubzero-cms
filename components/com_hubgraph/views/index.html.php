@@ -294,8 +294,16 @@ window.searchBase = '<?= $base ?>';
 				</h4>
 				<? if ($res['body']): ?>
 					<blockquote class="description clear">
-						<? if ($res['domain'] == 'members' || ($res['domain'] == 'questions') && $res['img_href'] && file_exists(JPATH_BASE.$res['img_href'])): ?>
-							<img src="<?= $res['img_href'] && file_exists(JPATH_BASE.$res['img_href']) ? preg_replace('/[.](.*?)$/', '_thumb.$1', $res['img_href']) : '/components/com_members/assets/img/profile_thumb.gif' ?>" />
+						<? if (($res['domain'] == 'members' || $res['domain'] == 'questions') && $res['img_href']): 
+							$thumb = preg_replace('/[.](.*?)$/', '_thumb.$1', $res['img_href']);
+							if (!file_exists(JPATH_BASE.$thumb)) {
+								$thumb = preg_replace('#^(.*)/(?:.*?)[.](.*?)$#', '$1/thumb.$2', $res['img_href']);
+							}
+							if (!file_exists(JPATH_BASE.$thumb)) {
+								$thumb = '/components/com_members/assets/img/profile_thumb.gif';
+							}
+						?>
+							<img src="<?= $thumb ?>" />
 						<? endif; ?>
 						<?= $res['body'] ?>
 					</blockquote>
