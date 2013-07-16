@@ -1,0 +1,44 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+?>
+
+<h1>How Email Tracking Works</h1>
+<p>When the HUB sends out an email newsletter, we embed a tiny invisible image at the bottom of the email message. This image sometimes called a "Tracker" or "Web Beacon" is unique to each newsletter mailing.</p>
+<p>When the newsletter is opened by a recipient, this "Tracker" is downloaded from our server and we count that as a 'open'.</p>
+<p>We also track your newsletter clicks by directing the links in your newsletters to a central location, where we are able to capture that click, and then redirect the user to their final and desired destination.</p>
+<p>By default is email tracking is set to 'on', but you can choose to turn off newsletter tracking at any time.</p>
+<img src="/components/com_newsletter/help/en-GB/email-tracking.png" />
+<br /><br />
+
+<h2>Can I use my own Tracking Code</h2>
+<p>Yes you can! Just make sure to turn email tracking off on the HUB for that newsletter. Just make sure to insert the other tracking code into the outgoing newsletter. We dont strip any 3rd party tracking code before sending.</p>

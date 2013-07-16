@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5.0">
+	<name>Newsletter</name>
+	<author>HUBzero</author>
+	<creationDate>August 2012</creationDate>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<version>1.0.0</version>
+	<description>Newsletter Mailing List Sign up</description>
+	<files>
+		<filename>helper.php</filename>
+		<filename>mod_newsletter.css</filename>
+		<filename>mod_newsletter.jquery.js</filename>
+		<filename>mod_newsletter.js</filename>
+		<filename module="mod_newsletter">mod_newsletter.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/default.xml</filename>
+		<filename>tmpl/index.html</filename>
+	</files>
+	<params>
+		<param name="mailinglist" label="Mailing List" description="Mailing list you would like users to sign up for!" type="sql" query="SELECT * FROM jos_newsletter_mailinglists WHERE deleted=0 AND private=0" key_field="id" value_field="name" />
+	</params>
+	<languages>
+	</languages>
+</install>

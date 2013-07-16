@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Christopher Smoak <csmoak@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,11 +38,20 @@ function NewsletterBuildRoute(&$query)
 	if (!empty($query['id'])) 
 	{   
 		$database = JFactory::getDBO();
-		$sql = "SELECT `name` FROM #__newsletter_campaign WHERE `id`=".$query['id'];
+		$sql = "SELECT `alias` FROM #__newsletters WHERE id=" . $database->quote( $query['id'] );
 		$database->setQuery($sql);
 		$campaign = $database->loadResult();
 		$segments[] = strtolower(str_replace(" ", "", $campaign));
 		unset($query['id']);
+	}
+	
+	if (!empty($query['task']))
+	{
+		if (in_array($query['task'], array('subscribe','unsubscribe','resendconfirmation')))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
 	}
 	
 	return $segments;
@@ -54,15 +69,35 @@ function NewsletterParseRoute($segments)
 	if (isset($segments[0])) 
 	{
 		$database = JFactory::getDBO();
-		$sql = "SELECT `id`,`name` FROM #__newsletter_campaign";
+		$sql = "SELECT `id` FROM #__newsletters WHERE alias=" . $database->quote( $segments[0] );
 		$database->setQuery($sql);
-		$campaigns = $database->loadObjectList();
-
-		foreach($campaigns as $c)
+		$campaignId = $database->loadResult();
+		
+		if ($campaignId)
 		{
-			if(strtolower(str_replace(" ", "", $c->name)) == $segments[0])
+			$vars['id'] = $campaignId;
+		}
+		else
+		{
+			switch( $segments[0] )
 			{
-				$vars['id'] = $c->id;
+				case 'track':
+					$vars['task'] = 'track';
+					$vars['type'] = $segments[1];
+					$vars['controller'] = 'mailing';
+					break;
+				case 'confirm':
+				case 'remove':
+				case 'subscribe':
+				case 'dosubscribe':
+				case 'unsubscribe':
+				case 'dounsubscribe':
+				case 'resendconfirmation':
+					$vars['task'] = $segments[0];
+					$vars['controller'] = 'mailinglist';
+					break;
+				default:
+					$vars['task'] = $segments[0];
 			}
 		}
 	}

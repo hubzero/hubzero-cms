@@ -31,31 +31,53 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+//debug on
+error_reporting(E_ALL);
+@ini_set('display_errors', '1');
+
 //
 $jacl =& JFactory::getacl();
 $jacl->addACL($option, 'manage', 'users', 'super administrator');
 $jacl->addACL($option, 'manage', 'users', 'administrator');
 $jacl->addACL($option, 'manage', 'users', 'manager');
 
-//
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'template.php' );
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'campaign.php' );
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'primary.php' );
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'secondary.php' );
+//include models
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'newsletter.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'template.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'primary.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'secondary.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailinglist.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailinglist.email.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.recipient.php' );
+require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'mailing.recipient.action.php' );
 
-//
-$controllerName = JRequest::getCmd('controller', 'campaign');
+//include Hubzero Libraries
+ximport('Hubzero_Controller');
+ximport('Hubzero_Newsletter_Helper');
+
+//instantiate controller
+$controllerName = JRequest::getCmd('controller', 'newsletter');
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'NewsletterController' . ucfirst($controllerName);
 
-//
-foreach(array('campaign','template') as $c)
+//menu items
+$menuItems = array(
+	'newsletter'  => 'Newsletters',
+	'template'    => 'Templates',
+	'mailinglist' => 'Lists',
+	'mailing'     => 'Mailings',
+	'tools'       => 'Tools'
+);
+
+//add menu items
+foreach($menuItems as $k => $v)
 {   
-	$active = (JRequest::getCmd('controller', 'campaign') == $c) ? true : false ;
-	JSubMenuHelper::addEntry(ucfirst($c).'s', 'index.php?option=com_newsletter&controller='.$c, $active);
+	$active = (JRequest::getCmd('controller', 'newsletter') == $k) ? true : false ;
+	JSubMenuHelper::addEntry($v, 'index.php?option=com_newsletter&controller='.$k, $active);
 }
 
-// initiate controller
+//execute controller
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();

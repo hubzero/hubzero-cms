@@ -10,7 +10,7 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		JLoader::import('joomla.application.component.helper');
 		
 		//newsletter classes
-		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'campaign.php' );
+		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'newsletter.php' );
 		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'template.php' );
 		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'primary.php' );
 		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'secondary.php' );
@@ -45,14 +45,16 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		//get the request vars
 		$limit = JRequest::getVar("limit", 5);
 		
+		//get newsletter object
 		$database =& JFactory::getDBO();
-		$nc = new NewsletterCampaign( $database );
+		$newsletterNewsletter = new NewsletterNewsletter( $database );
 		
-		//get campaigns
-		$campaigns = $nc->getCampaign();
+		//get newsletters
+		$newsletters = $newsletterNewsletter->getNewsletters();
 		
+		//output
 		$obj = new stdClass();
-		$obj->newsletters = $campaigns;
+		$obj->newsletters = $newsletters;
 		$this->setMessageType("application/json");
 		$this->setMessage($obj);
 	}
@@ -69,26 +71,24 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		
 		//instantiate newsletter campaign object
 		$database =& JFactory::getDBO();
-		$nc = new NewsletterCampaign( $database );
+		$newsletterNewsletter = new NewsletterNewsletter( $database );
 		
-		//get the current campaign
-		$campaign = (array) $nc->getCurrentCampaign();
+		//get the current newsletter
+		$newsletter = $newsletterNewsletter->getCurrentNewsletter();
 		
 		//build the newsletter based on campaign
-		$newsletter = $nc->buildNewsletter($campaign);
-		
-		//
-		$result['id'] = $campaign['issue'];
-		$result['title'] = $campaign['name'];
-		$result['content'] = $newsletter;
+		$newsletterHTML = $newsletterNewsletter->buildNewsletter( $newsletter );
+		$result['id'] = $newsletter->issue;
+		$result['title'] = $newsletter->name;
+		$result['content'] = $newsletterHTML;
 		
 		//encode sessions for return
 		$obj = new stdClass();
 		$obj->newsletter = $result;
 		
 		//set format and content
-		$this->response->setResponseProvides( $format );
-		$this->response->setMessage( $obj );
+		$this->setMessageType( $format );
+		$this->setMessage( $obj );
 	}
 	
 	//-----
@@ -103,16 +103,17 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		
 		//instantiate newsletter campaign object
 		$database =& JFactory::getDBO();
-		$nc = new NewsletterCampaign( $database );
+		$newsletterNewsletter = new NewsletterNewsletter( $database );
 		
-		$campaigns = $nc->getCampaign();
+		//get newsletters
+		$newsletters = $newsletterNewsletter->getNewsletters();
 		
-		
-		foreach($campaigns as $k => $campaign)
+		//add newsletter details to return array
+		foreach($newsletters as $k => $newsletter)
 		{
-			$result[$k]['id'] = $campaign->issue;
-			$result[$k]['title'] = $campaign->name;
-			$result[$k]['content'] = $nc->buildNewsletter( (array) $campaign );
+			$result[$k]['id'] = $newsletter->issue;
+			$result[$k]['title'] = $newsletter->name;
+			$result[$k]['content'] = $newsletterNewsletter->buildNewsletter( $newsletter );
 		}
 		
 		//encode sessions for return
@@ -120,8 +121,8 @@ class NewsletterControllerApi extends Hubzero_Api_Controller
 		$obj->newsletters = $result;
 		
 		//set format and content
-		$this->response->setResponseProvides( $format );
-		$this->response->setMessage( $obj );
+		$this->setMessageType( $format );
+		$this->setMessage( $obj );
 	}
 }
 ?>

@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,49 +31,59 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-ximport('Hubzero_Controller');
-
 class NewsletterControllerStory extends Hubzero_Controller
 {
+	/**
+	 * Add Newsletter Story Task
+	 *
+	 * @return 	void
+	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 	
-	//-----
 	
+	/**
+	 * Edit Newsletter Story Task
+	 *
+	 * @return 	void
+	 */
 	public function editTask()
-	{   
-		//
-		$database = JFactory::getDBO();
+	{
+		//set layout
+		$this->view->setLayout('edit');
 		
-		//
-		$this->view->type = ucfirst(JRequest::getVar("type", "primary"));
-		$this->view->campaign = JRequest::getInt("id", 0);
-		$this->view->sid = JRequest::getInt("sid", 0);
+		//get request vars
+		$this->view->type 	= strtolower(JRequest::getVar("type", "primary"));
+		$this->view->id 	= JRequest::getInt("id", 0);
+		$this->view->sid 	= JRequest::getInt("sid", 0);
 		
-		$this->view->story = array(
-			'id' => null,
-			'title' => null,
-			'story' => null
-		);
+		//load campaign
+		$this->view->newsletter = new NewsletterNewsletter( $this->database );
+		$this->view->newsletter->load( $this->view->id );
 		
-		if($this->view->sid)
+		//default object
+		$this->view->story->id 				= null;
+		$this->view->story->order			= null;
+		$this->view->story->title 			= null;
+		$this->view->story->story 			= null;
+		$this->view->story->readmore_title 	= null;
+		$this->view->story->readmore_link 	= null;
+		
+		//are we editing
+		if ($this->view->sid)
 		{
-			if($this->view->type == "Primary")
+			if ($this->view->type == "primary")
 			{
-				$s = new NewsletterPrimaryStory( $database );
+				$this->view->story = new NewsletterPrimaryStory( $this->database );
 			}
 			else
 			{
-				$s = new NewsletterSecondaryStory( $database );
+				$this->view->story = new NewsletterSecondaryStory( $this->database );
 			}
 			
-			$s->load($this->view->sid);;
-			$this->view->story['id'] = $s->id;
-			$this->view->story['title'] = $s->title;
-			$this->view->story['story'] = $s->story;
+			$this->view->story->load( $this->view->sid );
 		}
 		
 		// Set any errors
@@ -86,39 +96,183 @@ class NewsletterControllerStory extends Hubzero_Controller
 		$this->view->display();
 	}
 	
-	//-----
 	
+	/**
+	 * Save Newsletter Story Task
+	 *
+	 * @return 	void
+	 */
 	public function saveTask()
-	{   
-		//instantiate database
-		$database = JFactory::getDBO();
-		
+	{
 		//get story
 		$story = JRequest::getVar("story", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
 		$type = JRequest::getVar("type", "primary");
 		
-		if($type == "primary")
+		//are we working with a primary or secondary story
+		if ($type == "primary")
 		{
-			$s = new NewsletterPrimaryStory( $database );
+			$newsletterStory = new NewsletterPrimaryStory( $this->database );
 		}
 		else
 		{
-			$s = new NewsletterSecondaryStory( $database );
+			$newsletterStory = new NewsletterSecondaryStory( $this->database );
+		}
+		
+		//check to make sure we have an order
+		if (!isset($story['order']) || $story['order'] == '' || $story['order'] == 0)
+		{
+			$currentHighestOrder = $newsletterStory->_getCurrentHighestOrder( $story['nid'] );
+			$newOrder = $currentHighestOrder + 1;
+			
+			$story['order'] = $newOrder;
 		}
 		
 		//save the story 
-		if($s->save($story))
+		if (!$newsletterStory->save($story))
 		{
-			$this->_redirect = 'index.php?option=com_newsletter&controller=campaign&task=edit&id='.$s->campaign;
-			$this->_message = JText::_('Story Successfully Saved');
+			$this->setError( $newsletterStory->getError() );
+			$this->editTask();
+			return;
 		}
+		
+		//inform and redirect
+		$this->_message = JText::_('Newsletter Story Successfully Saved');
+		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]='.$newsletterStory->nid;
 	}
 	
-	//-----
 	
+	/**
+	 * Reorder Newsletter Story Task
+	 *
+	 * @return 	void
+	 */
+	public function reorderTask()
+	{
+		//get request vars
+		$id 		= JRequest::getInt('id', 0);
+		$sid 		= JRequest::getInt('sid', 0);
+		$type 		= JRequest::getWord('type', 'primary');
+		$direction 	= JRequest::getWord('direction', 'down');
+		
+		//what kind of story do we want
+		if (strtolower($type) == 'primary')
+		{
+			$story = new NewsletterPrimaryStory( $this->database );
+		}
+		else
+		{
+			$story = new NewsletterSecondaryStory( $this->database );
+		}
+		
+		//load the story
+		$story->load( $sid );
+		
+		//set vars
+		$lowestOrder = 1;
+		$highestOrder = $story->_getCurrentHighestOrder( $id );
+		$currentOrder = $story->order;
+		
+		//move page up or down
+		if ($direction == 'down')
+		{
+			$newOrder = $currentOrder + 1;
+			if ($newOrder > $highestOrder)
+			{
+				$newOrder = $highestOrder;
+			}
+		}
+		else
+		{
+			$newOrder = $currentOrder - 1;
+			if($newOrder < $lowestOrder)
+			{
+				$newOrder = $lowestOrder;
+			}
+		}
+		
+		//is there a nother story having the order we want?
+		$sql = "SELECT * FROM {$story->_tbl} WHERE `order`=" . $story->_db->quote( $newOrder ) . " AND nid=" . $story->_db->quote( $id );
+		$story->_db->setQuery( $sql );
+		$moveTo = $story->_db->loadResult();
+		
+		//if there isnt just update story
+		if (!$moveTo)
+		{
+			$sql = "UPDATE {$story->_tbl} SET `order`=" . $story->_db->quote( $newOrder ) . " WHERE id=" . $story->_db->quote( $sid );
+			$story->_db->setQuery( $sql );
+			$story->_db->query();
+		}
+		else
+		{
+			//swith orders
+			$sql = "UPDATE {$story->_tbl} SET `order`=" . $story->_db->quote( $newOrder ) . " WHERE id=" . $story->_db->quote( $sid );
+			$story->_db->setQuery( $sql );
+			$story->_db->query();
+			
+			$sql = "UPDATE {$story->_tbl} SET `order`=" . $story->_db->quote( $currentOrder ) . " WHERE id=" . $story->_db->quote( $moveTo );
+			$story->_db->setQuery( $sql );
+			$story->_db->query();
+		}
+		
+		//set success message
+		$this->_message = JText::_('Newsletter Story Successfully Reordered');
+		
+		//redirect back to campaigns list
+		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]=' . $id . '#' . $type . '-stories';
+	}
+	
+	
+	/**
+	 * Delete Newsletter Task
+	 *
+	 * @return 	void
+	 */
+	public function deleteTask()
+	{
+		//get the request vars
+		$id 	= JRequest::getInt('id', 0);
+		$sid 	= JRequest::getInt('sid', 0);
+		$type 	= JRequest::getWord('type', 'primary');
+		
+		if (strtolower($type) == 'primary')
+		{
+			$story = new NewsletterPrimaryStory( $this->database );
+		}
+		else
+		{
+			$story = new NewsletterSecondaryStory( $this->database );
+		}
+		
+		//load the story
+		$story->load( $sid );
+		
+		//mark as deleted
+		$story->deleted = 1;
+		
+		//save so story is marked deleted
+		if (!$story->save( $story ))
+		{
+			$this->setError('Unable to delete newsletter story.');
+			$this->editTask();
+			return;
+		}
+		
+		//set success message
+		$this->_message = JText::_('Newsletter Story Successfully Deleted');
+		
+		//redirect back to campaigns list
+		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]=' . $id;
+	}
+	
+	
+	/**
+	 * Display all campaigns task
+	 *
+	 * @return 	void
+	 */
 	public function cancelTask()
 	{
 		$story = JRequest::getVar("story", array());
-		$this->_redirect = 'index.php?option=com_newsletter&controller=campaign&task=edit&id='.$story['campaign'];
+		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]='.$story['nid'];
 	}
 }
