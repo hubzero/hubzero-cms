@@ -270,7 +270,7 @@ class plgUserXusers extends JPlugin
 					$db = JFactory::getDBO();
 					$component = new JTableComponent($db);
 					$component->loadByOption('com_members');
-					$params->set('hubHomeDir',$hubHomeDir);
+					$params->set('homedir',$hubHomeDir);
 					$component->params = $params->toString();
 					$component->store();
 				}
