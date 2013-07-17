@@ -15,7 +15,7 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 	{
 		// create component entry
 		$query  = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-					SELECT 'Newsletters', 'option=com_newsletter', 0, 0, 'option=com_newsletter', 'Newsletters', 'com_newsletter', 0, 'js/ThemeOffice/component.png', 0, '', 0
+					SELECT 'Newsletters', 'option=com_newsletter', 0, 0, 'option=com_newsletter', 'Newsletters', 'com_newsletter', 0, 'js/ThemeOffice/component.png', 0, '', 1
 					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Newsletters');";
 		
 		//add newsletter table
@@ -162,11 +162,11 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 			//add newsletter cron jobs
 			$query .= "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
 						SELECT 'Process Newsletter Mailings', 0, 'newsletter', 'processMailings', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, 'newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n'
-						FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Mailings');";
+						FROM DUAL WHERE NOT EXISTS (SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Mailings');";
 						
 			$query .= "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
 						SELECT 'Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, ''
-						FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Opens & Click IP Addresses');";
+						FROM DUAL WHERE NOT EXISTS (SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Opens & Click IP Addresses');";
 				
 		
 		if (!empty($query))

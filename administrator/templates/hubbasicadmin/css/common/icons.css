@@ -116,6 +116,11 @@
 	.toolbar-box .icon-32-stats:before        { content: "\25F7"; }
 	.toolbar-box .icon-32-config:before       { content: "\2699"; }
 	.toolbar-box .toolbar-inactive:before     { }
+	
+	.toolbar-box .icon-32-sendtest:before         { content: "\f0e0"; }
+	.toolbar-box .icon-32-sendtest:after          { content: "\f05c"; right: 0px; bottom: -2px; }
+	.toolbar-box .icon-32-user:before             { content: "\f007"; }
+	.toolbar-box .icon-32-scan:before             { content: "\2622"; }
 
 /* Header */
 	.toolbar-box .icon-48-generic                        { }
@@ -230,3 +235,8 @@
 	.toolbar-box .icon-48-projects:before                { content: '\f03f'; }
 	.toolbar-box .icon-48-courses:before                 { content: '\f09c'; }
 	.toolbar-box .icon-48-resources:before               { content: '\270D'; }
+	.toolbar-box .icon-48-newsletter:before              { content: '\f053'; }
+	.toolbar-box .icon-48-template:before                { content: '\f081'; }
+	.toolbar-box .icon-48-list:before                    { content: '\f0ca'; }
+	.toolbar-box .icon-48-mailing:before                 { content: '\f03f'; }
+	.toolbar-box .icon-48-stats:before                   { content: '\25F7'; }

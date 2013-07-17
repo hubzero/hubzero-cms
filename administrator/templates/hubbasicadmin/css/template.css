@@ -342,6 +342,11 @@
 		right: 0;
 		position: absolute;
 	}
+	table td .hint,
+	table th .hint {
+		color:#aaa;
+		font-weight:normal;
+	}
 	label textarea + .hint,
 	label select + .hint,
 	label input + .hint {
