@@ -96,7 +96,7 @@ if (count($this->notifications) > 0)
 						<input type="submit" value="<?php echo JText::_('COM_COURSES_SEARCH'); ?>" />
 					</p>
 					<p>
-						<?php echo JText::_('Search course names and public descriptions. Private courses do not show up in results.'); ?>
+						<?php echo JText::_('Search course names and descriptions.'); ?>
 					</p>
 				</fieldset>
 			</form>
@@ -104,7 +104,7 @@ if (count($this->notifications) > 0)
 		<div class="two columns second">
 			<div class="browse">
 				<p><a href="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>"><?php echo JText::_('Browse the list of available courses'); ?></a></p>
-				<p><?php echo JText::_('A list of all public and restricted courses. Private courses are not listed.'); ?></p>
+				<p><?php echo JText::_('A list of all available courses.'); ?></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
