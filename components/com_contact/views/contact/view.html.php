@@ -1,185 +1,273 @@
 <?php
 /**
- * @version		$Id: view.html.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Contact
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package		Joomla.Site
+ * @subpackage	com_contact
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
+require_once JPATH_COMPONENT.'/models/category.php';
 
 /**
- * @package		Joomla
- * @subpackage	Contacts
+ * HTML Contact View class for the Contact component
+ *
+ * @package		Joomla.Site
+ * @subpackage	com_contact
+ * @since 		1.5
  */
-class ContactViewContact extends JView
+class ContactViewContact extends JViewLegacy
 {
+	protected $state;
+	protected $form;
+	protected $item;
+	protected $return_page;
+
 	function display($tpl = null)
 	{
-		global $mainframe;
+		// Initialise variables.
+		$app		= JFactory::getApplication();
+		$user		= JFactory::getUser();
+		$dispatcher = JDispatcher::getInstance();
+		$state		= $this->get('State');
+		$item		= $this->get('Item');
+		$this->form	= $this->get('Form');
 
-		$user		= &JFactory::getUser();
-		$pathway	= &$mainframe->getPathway();
-		$document	= & JFactory::getDocument();
-		$model		= &$this->getModel();
+		// Get the parameters
+		$params = JComponentHelper::getParams('com_contact');
 
-		// Get the parameters of the active menu item
-		$menus	= &JSite::getMenu();
-		$menu    = $menus->getActive();
+		if ($item) {
+			// If we found an item, merge the item parameters
+			$params->merge($item->params);
 
-		$pparams = &$mainframe->getParams('com_contact');
+			// Get Category Model data
+			$categoryModel = JModelLegacy::getInstance('Category', 'ContactModel', array('ignore_request' => true));
+			$categoryModel->setState('category.id', $item->catid);
+			$categoryModel->setState('list.ordering', 'a.name');
+			$categoryModel->setState('list.direction', 'asc');
+			$categoryModel->setState('filter.published', 1);
 
-		// Push a model into the view
-		$model		= &$this->getModel();
-		$modelCat	= &$this->getModel( 'Category' );
-
-		// Selected Request vars
-		// ID may come from the contact switcher
-		if (!($contactId	= JRequest::getInt( 'contact_id',	0 ))) {
-			$contactId	= JRequest::getInt( 'id',			$contactId );
+			$contacts = $categoryModel->getItems();
 		}
 
-		// query options
-		$options['id']	= $contactId;
-		$options['aid']	= $user->get('aid', 0);
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			JError::raiseWarning(500, implode("\n", $errors));
 
-		$contact	= $model->getContact( $options );
+			return false;
+		}
 
-		// check if we have a contact
-		if (!is_object( $contact )) {
-			JError::raiseError( 404, 'Contact not found' );
+		// check if access is not public
+		$groups	= $user->getAuthorisedViewLevels();
+
+		$return = '';
+
+		if ((!in_array($item->access, $groups)) || (!in_array($item->category_access, $groups))) {
+			$uri		= JFactory::getURI();
+			$return		= (string)$uri;
+
+			JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
-		
-		// check if access is registered/special
-		if (($contact->access > $user->get('aid', 0)) || ($contact->category_access > $user->get('aid', 0))) {
-			$uri		= JFactory::getURI();
-			$return		= $uri->toString();
-			
-			$url  = 'index.php?option=com_user&view=login';
-			$url .= '&return='.base64_encode($return);
-			
-			$mainframe->redirect($url, JText::_('You must login first') );
-			
-		}
 
-		$options['category_id']	= $contact->catid;
-		$options['order by']	= 'cd.default_con DESC, cd.ordering ASC';
+		$options['category_id']	= $item->catid;
+		$options['order by']	= 'a.default_con DESC, a.ordering ASC';
 
-		$contacts = $modelCat->getContacts( $options );
-
-		// Set the document page title
-		// because the application sets a default page title, we need to get it
-		// right from the menu item itself
-		if (is_object( $menu ) && isset($menu->query['view']) && $menu->query['view'] == 'contact' && isset($menu->query['id']) && $menu->query['id'] == $contact->id) {
-			$menu_params = new JParameter( $menu->params );
-			if (!$menu_params->get( 'page_title')) {
-				$pparams->set('page_title',	$contact->name);
-			}
-		} else {
-			$pparams->set('page_title',	$contact->name);
-		}
-		$document->setTitle( $pparams->get( 'page_title' ) );
-
-		//set breadcrumbs
-		if (isset( $menu ) && isset($menu->query['view']) && $menu->query['view'] != 'contact'){
-			$pathway->addItem($contact->name, '');
-		}
-
-		// Adds parameter handling
-		$contact->params = new JParameter($contact->params);
-
-		$pparams->merge($contact->params);
-
-		// Handle component/menu overides for some contact parameters if set
-		/*
-		$contact->params->def('contact_icons',	$pparams->get('contact_icons'));
-		$contact->params->def('icon_address',	$pparams->get('icon_address'));
-		$contact->params->def('icon_email',		$pparams->get('icon_email'));
-		$contact->params->def('icon_telephone',	$pparams->get('icon_telephone'));
-		$contact->params->def('icon_fax',		$pparams->get('icon_fax'));
-		$contact->params->def('icon_misc',		$pparams->get('icon_misc'));
-		$contact->params->def('show_position',	$pparams->get('show_position'));
-		$contact->params->def('show_email',		$pparams->get('show_email'));
-		$contact->params->def('show_telephone',	$pparams->get('show_telephone'));
-		$contact->params->def('show_mobile',	$pparams->get('show_mobile'));
-		$contact->params->def('show_fax',		$pparams->get('show_fax'));
-		$contact->params->def('allow_vcard',	$pparams->get('allow_vcard'));
-		*/
 
 		// Handle email cloaking
-		if ($contact->email_to && $contact->params->get('show_email')) {
-			$contact->email_to = JHTML::_('email.cloak', $contact->email_to);
+		if ($item->email_to && $params->get('show_email')) {
+			$item->email_to = JHtml::_('email.cloak', $item->email_to);
 		}
-
-		if ($contact->params->get('show_street_address') || $contact->params->get('show_suburb') || $contact->params->get('show_state') || $contact->params->get('show_postcode') || $contact->params->get('show_country'))
-		{
-			if (!empty ($contact->address) || !empty ($contact->suburb) || !empty ($contact->state) || !empty ($contact->country) || !empty ($contact->postcode)) {
-				$contact->params->set('address_check', 1);
+			if ($params->get('show_street_address') || $params->get('show_suburb') || $params->get('show_state') || $params->get('show_postcode') || $params->get('show_country')) {
+			if (!empty ($item->address) || !empty ($item->suburb) || !empty ($item->state) || !empty ($item->country) || !empty ($item->postcode)) {
+				$params->set('address_check', 1);
 			}
-		} else {
-			$contact->params->set('address_check', 0);
+		}
+		else {
+			$params->set('address_check', 0);
 		}
 
-		 // Manage the display mode for contact detail groups
-		switch ($contact->params->get('contact_icons'))
+
+		// Manage the display mode for contact detail groups
+		switch ($params->get('contact_icons'))
 		{
 			case 1 :
 				// text
-				$contact->params->set('marker_address', 	JText::_('Address').": ");
-				$contact->params->set('marker_email', 		JText::_('Email').": ");
-				$contact->params->set('marker_telephone', 	JText::_('Telephone').": ");
-				$contact->params->set('marker_fax', 		JText::_('Fax').": ");
-				$contact->params->set('marker_mobile',		JText::_('Mobile').": ");
-				$contact->params->set('marker_misc', 		JText::_('Information').": ");
-				$contact->params->set('column_width', 		'100');
+				$params->set('marker_address',	JText::_('COM_CONTACT_ADDRESS').": ");
+				$params->set('marker_email',		JText::_('JGLOBAL_EMAIL').": ");
+				$params->set('marker_telephone',	JText::_('COM_CONTACT_TELEPHONE').": ");
+				$params->set('marker_fax',		JText::_('COM_CONTACT_FAX').": ");
+				$params->set('marker_mobile',		JText::_('COM_CONTACT_MOBILE').": ");
+				$params->set('marker_misc',		JText::_('COM_CONTACT_OTHER_INFORMATION').": ");
+				$params->set('marker_class',		'jicons-text');
 				break;
 
 			case 2 :
 				// none
-				$contact->params->set('marker_address', 	'');
-				$contact->params->set('marker_email', 		'');
-				$contact->params->set('marker_telephone', 	'');
-				$contact->params->set('marker_mobile', 	'');
-				$contact->params->set('marker_fax', 		'');
-				$contact->params->set('marker_misc', 		'');
-				$contact->params->set('column_width', 		'0');
+				$params->set('marker_address',	'');
+				$params->set('marker_email',		'');
+				$params->set('marker_telephone',	'');
+				$params->set('marker_mobile',	'');
+				$params->set('marker_fax',		'');
+				$params->set('marker_misc',		'');
+				$params->set('marker_class',		'jicons-none');
 				break;
 
 			default :
 				// icons
-				$image1 = JHTML::_('image.site', 'con_address.png', 	'/images/M_images/', $contact->params->get('icon_address'), 	'/images/M_images/', JText::_('Address').": ");
-				$image2 = JHTML::_('image.site', 'emailButton.png', 	'/images/M_images/', $contact->params->get('icon_email'), 		'/images/M_images/', JText::_('Email').": ");
-				$image3 = JHTML::_('image.site', 'con_tel.png', 		'/images/M_images/', $contact->params->get('icon_telephone'), 	'/images/M_images/', JText::_('Telephone').": ");
-				$image4 = JHTML::_('image.site', 'con_fax.png', 		'/images/M_images/', $contact->params->get('icon_fax'), 		'/images/M_images/', JText::_('Fax').": ");
-				$image5 = JHTML::_('image.site', 'con_info.png', 		'/images/M_images/', $contact->params->get('icon_misc'), 		'/images/M_images/', JText::_('Information').": ");
-				$image6 = JHTML::_('image.site', 'con_mobile.png', 		'/images/M_images/', $contact->params->get('icon_mobile'), 	'/images/M_images/', JText::_('Mobile').": ");
+				$image1 = JHtml::_('image', 'contacts/'.$params->get('icon_address', 'con_address.png'), JText::_('COM_CONTACT_ADDRESS').": ", NULL, true);
+				$image2 = JHtml::_('image', 'contacts/'.$params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL').": ", NULL, true);
+				$image3 = JHtml::_('image', 'contacts/'.$params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CONTACT_TELEPHONE').": ", NULL, true);
+				$image4 = JHtml::_('image', 'contacts/'.$params->get('icon_fax', 'con_fax.png'), JText::_('COM_CONTACT_FAX').": ", NULL, true);
+				$image5 = JHtml::_('image', 'contacts/'.$params->get('icon_misc', 'con_info.png'), JText::_('COM_CONTACT_OTHER_INFORMATION').": ", NULL, true);
+				$image6 = JHtml::_('image', 'contacts/'.$params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CONTACT_MOBILE').": ", NULL, true);
 
-				$contact->params->set('marker_address', 	$image1);
-				$contact->params->set('marker_email', 		$image2);
-				$contact->params->set('marker_telephone', 	$image3);
-				$contact->params->set('marker_fax', 		$image4);
-				$contact->params->set('marker_misc',		$image5);
-				$contact->params->set('marker_mobile', 	$image6);
-				$contact->params->set('column_width', 		'40');
+				$params->set('marker_address',	$image1);
+				$params->set('marker_email',		$image2);
+				$params->set('marker_telephone',	$image3);
+				$params->set('marker_fax',		$image4);
+				$params->set('marker_misc',		$image5);
+				$params->set('marker_mobile',		$image6);
+				$params->set('marker_class',		'jicons-icons');
 				break;
 		}
 
-		JHTML::_('behavior.formvalidation');
+		// Add links to contacts
+		if ($params->get('show_contact_list') && count($contacts) > 1) {
+			foreach($contacts as &$contact)
+			{
+				$contact->link = JRoute::_(ContactHelperRoute::getContactRoute($contact->slug, $contact->catid));
+			}
+			$item->link = JRoute::_(ContactHelperRoute::getContactRoute($item->slug, $item->catid));
+		}
 
-		$this->assignRef('contact',		$contact);
-		$this->assignRef('contacts',	$contacts);
-		$this->assignRef('params',		$pparams);
+		JHtml::_('behavior.formvalidation');
+
+		//Escape strings for HTML output
+		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+
+		$this->assignRef('contact',		$item);
+		$this->assignRef('params',		$params);
+		$this->assignRef('return',		$return);
+		$this->assignRef('state', 		$state);
+		$this->assignRef('item', 		$item);
+		$this->assignRef('user', 		$user);
+		$this->assignRef('contacts', 	$contacts);
+
+		// Override the layout only if this is not the active menu item
+		// If it is the active menu item, then the view and item id will match
+		$active	= $app->getMenu()->getActive();
+		if ((!$active) || ((strpos($active->link, 'view=contact') === false) || (strpos($active->link, '&id=' . (string) $this->item->id) === false))) {
+			if ($layout = $params->get('contact_layout')) {
+				$this->setLayout($layout);
+			}
+		}
+		elseif (isset($active->query['layout'])) {
+			// We need to set the layout in case this is an alternative menu item (with an alternative layout)
+			$this->setLayout($active->query['layout']);
+		}
+
+		$this->_prepareDocument();
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Prepares the document
+	 */
+	protected function _prepareDocument()
+	{
+		$app		= JFactory::getApplication();
+		$menus		= $app->getMenu();
+		$pathway	= $app->getPathway();
+		$title 		= null;
+
+		// Because the application sets a default page title,
+		// we need to get it from the menu item itself
+		$menu = $menus->getActive();
+
+		if ($menu) {
+			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+		}
+		else {
+			$this->params->def('page_heading', JText::_('COM_CONTACT_DEFAULT_PAGE_TITLE'));
+		}
+
+		$title = $this->params->get('page_title', '');
+
+		$id = (int) @$menu->query['id'];
+
+		// if the menu item does not concern this contact
+		if ($menu && ($menu->query['option'] != 'com_contact' || $menu->query['view'] != 'contact' || $id != $this->item->id))
+		{
+
+			// If this is not a single contact menu item, set the page title to the contact title
+			if ($this->item->name) {
+				$title = $this->item->name;
+			}
+			$path = array(array('title' => $this->contact->name, 'link' => ''));
+			$category = JCategories::getInstance('Contact')->get($this->contact->catid);
+
+			while ($category && ($menu->query['option'] != 'com_contact' || $menu->query['view'] == 'contact' || $id != $category->id) && $category->id > 1)
+			{
+				$path[] = array('title' => $category->title, 'link' => ContactHelperRoute::getCategoryRoute($this->contact->catid));
+				$category = $category->getParent();
+			}
+
+			$path = array_reverse($path);
+
+			foreach($path as $item)
+			{
+				$pathway->addItem($item['title'], $item['link']);
+			}
+		}
+
+		if (empty($title)) {
+			$title = $app->getCfg('sitename');
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+		}
+
+		if (empty($title)) {
+			$title = $this->item->name;
+		}
+		$this->document->setTitle($title);
+
+		if ($this->item->metadesc)
+		{
+			$this->document->setDescription($this->item->metadesc);
+		}
+		elseif (!$this->item->metadesc && $this->params->get('menu-meta_description'))
+		{
+			$this->document->setDescription($this->params->get('menu-meta_description'));
+		}
+
+		if ($this->item->metakey)
+		{
+			$this->document->setMetadata('keywords', $this->item->metakey);
+		}
+		elseif (!$this->item->metakey && $this->params->get('menu-meta_keywords'))
+		{
+			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+		}
+
+		if ($this->params->get('robots'))
+		{
+			$this->document->setMetadata('robots', $this->params->get('robots'));
+		}
+
+		$mdata = $this->item->metadata->toArray();
+
+		foreach ($mdata as $k => $v)
+		{
+			if ($v) {
+				$this->document->setMetadata($k, $v);
+			}
+		}
 	}
 }

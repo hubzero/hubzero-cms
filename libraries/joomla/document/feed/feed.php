@@ -1,28 +1,21 @@
 <?php
 /**
-* @version		$Id: feed.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Document
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * DocumentFeed class, provides an easy interface to parse and display any feed document
  *
- * @package		Joomla.Framework
- * @subpackage	Document
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ * @since       11.1
  */
-
 class JDocumentFeed extends JDocument
 {
 	/**
@@ -30,154 +23,155 @@ class JDocumentFeed extends JDocument
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $syndicationURL = "";
+	public $syndicationURL = "";
 
-	 /**
+	/**
 	 * Image feed element
 	 *
 	 * optional
 	 *
-	 * @var		object
-	 * @access	public
+	 * @var    object
+	 * @since  11.1
 	 */
-	 var $image = null;
+	public $image = null;
 
 	/**
-	 * Copyright feed elememnt
+	 * Copyright feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $copyright = "";
+	public $copyright = "";
 
-	 /**
+	/**
 	 * Published date feed element
 	 *
-	 *  optional
+	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $pubDate = "";
+	public $pubDate = "";
 
-	 /**
+	/**
 	 * Lastbuild date feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $lastBuildDate = "";
+	public $lastBuildDate = "";
 
-	 /**
+	/**
 	 * Editor feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $editor = "";
+	public $editor = "";
 
 	/**
 	 * Docs feed element
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $docs = "";
+	public $docs = "";
 
-	 /**
+	/**
 	 * Editor email feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $editorEmail = "";
+	public $editorEmail = "";
 
 	/**
 	 * Webmaster email feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $webmaster = "";
+	public $webmaster = "";
 
 	/**
 	 * Category feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $category = "";
+	public $category = "";
 
 	/**
 	 * TTL feed attribute
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $ttl = "";
+	public $ttl = "";
 
 	/**
 	 * Rating feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $rating = "";
+	public $rating = "";
 
 	/**
 	 * Skiphours feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $skipHours = "";
+	public $skipHours = "";
 
 	/**
 	 * Skipdays feed element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $skipDays = "";
+	public $skipDays = "";
 
 	/**
 	 * The feed items collection
 	 *
-	 * @var array
-	 * @access public
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $items = array();
+	public $items = array();
 
 	/**
 	 * Class constructor
 	 *
-	 * @access protected
-	 * @param	array	$options Associative array of options
+	 * @param   array  $options  Associative array of options
+	 *
+	 * @since  11.1
 	 */
-	function __construct($options = array())
+	public function __construct($options = array())
 	{
 		parent::__construct($options);
 
@@ -188,45 +182,38 @@ class JDocumentFeed extends JDocument
 	/**
 	 * Render the document
 	 *
-	 * @access public
-	 * @param boolean 	$cache		If true, cache the output
-	 * @param array		$params		Associative array of attributes
-	 * @return 	The rendered data
+	 * @param   boolean  $cache   If true, cache the output
+	 * @param   array    $params  Associative array of attributes
+	 *
+	 * @return  The rendered data
+	 *
+	 * @since  11.1
+	 * @todo   Make this cacheable
 	 */
-	function render( $cache = false, $params = array())
+	public function render($cache = false, $params = array())
 	{
 		global $option;
 
 		// Get the feed type
 		$type = JRequest::getCmd('type', 'rss');
 
-		/*
-		 * Cache TODO In later release
-		 */
-		$cache		= 0;
-		$cache_time = 3600;
-		$cache_path = JPATH_BASE.DS.'cache';
-
-		// set filename for rss feeds
-		$file = strtolower( str_replace( '.', '', $type ) );
-		$file = $cache_path.DS.$file.'_'.$option.'.xml';
-
-
 		// Instantiate feed renderer and set the mime encoding
-		$renderer =& $this->loadRenderer(($type) ? $type : 'rss');
-		if (!is_a($renderer, 'JDocumentRenderer')) {
-			JError::raiseError(404, JText::_('Resource Not Found'));
+		$renderer = $this->loadRenderer(($type) ? $type : 'rss');
+		if (!is_a($renderer, 'JDocumentRenderer'))
+		{
+			JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
 		}
 		$this->setMimeEncoding($renderer->getContentType());
 
-		//output
+		// Output
 		// Generate prolog
-		$data	= "<?xml version=\"1.0\" encoding=\"".$this->_charset."\"?>\n";
-		$data	.= "<!-- generator=\"".$this->getGenerator()."\" -->\n";
+		$data = "<?xml version=\"1.0\" encoding=\"" . $this->_charset . "\"?>\n";
+		$data .= "<!-- generator=\"" . $this->getGenerator() . "\" -->\n";
 
-		 // Generate stylesheet links
-		foreach ($this->_styleSheets as $src => $attr ) {
-			$data .= "<?xml-stylesheet href=\"$src\" type=\"".$attr['mime']."\"?>\n";
+		// Generate stylesheet links
+		foreach ($this->_styleSheets as $src => $attr)
+		{
+			$data .= "<?xml-stylesheet href=\"$src\" type=\"" . $attr['mime'] . "\"?>\n";
 		}
 
 		// Render the feed
@@ -239,264 +226,276 @@ class JDocumentFeed extends JDocument
 	/**
 	 * Adds an JFeedItem to the feed.
 	 *
-	 * @param object JFeedItem $item The feeditem to add to the feed.
-	 * @access public
+	 * @param   JFeedItem  &$item  The feeditem to add to the feed.
+	 *
+	 * @return  JDocumentFeed  instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function addItem( &$item )
+	public function addItem(&$item)
 	{
 		$item->source = $this->link;
 		$this->items[] = $item;
+
+		return $this;
 	}
 }
 
 /**
  * JFeedItem is an internal class that stores feed item information
  *
- * @package 	Joomla.Framework
- * @subpackage		Document
- * @since	1.5
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ * @since       11.1
  */
 class JFeedItem extends JObject
 {
+
 	/**
 	 * Title item element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $title;
+	public $title;
 
 	/**
 	 * Link item element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $link;
+	public $link;
 
 	/**
 	 * Description item element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $description;
+	public $description;
 
 	/**
 	 * Author item element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $author;
+	public $author;
 
-	 /**
+	/**
 	 * Author email element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $authorEmail;
-
+	public $authorEmail;
 
 	/**
 	 * Category element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    array or string
+	 * @since  11.1
 	 */
-	 var $category;
+	public $category;
 
-	 /**
+	/**
 	 * Comments element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $comments;
+	public $comments;
 
-	 /**
+	/**
 	 * Enclosure element
 	 *
-	 * @var		object
-	 * @access	public
+	 * @var    object
+	 * @since  11.1
 	 */
-	 var $enclosure =  null;
+	public $enclosure = null;
 
-	 /**
+	/**
 	 * Guid element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $guid;
+	public $guid;
 
 	/**
 	 * Published date
 	 *
 	 * optional
 	 *
-	 *  May be in one of the following formats:
+	 * May be in one of the following formats:
 	 *
-	 *	RFC 822:
-	 *	"Mon, 20 Jan 03 18:05:41 +0400"
-	 *	"20 Jan 03 18:05:41 +0000"
+	 * RFC 822:
+	 * "Mon, 20 Jan 03 18:05:41 +0400"
+	 * "20 Jan 03 18:05:41 +0000"
 	 *
-	 *	ISO 8601:
-	 *	"2003-01-20T18:05:41+04:00"
+	 * ISO 8601:
+	 * "2003-01-20T18:05:41+04:00"
 	 *
-	 *	Unix:
-	 *	1043082341
+	 * Unix:
+	 * 1043082341
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $pubDate;
+	public $date;
 
-	 /**
+	/**
 	 * Source element
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $source;
+	public $source;
 
-
-	 /**
+	/**
 	 * Set the JFeedEnclosure for this item
 	 *
-	 * @access public
-	 * @param object $enclosure The JFeedItem to add to the feed.
+	 * @param   object  $enclosure  The JFeedItem to add to the feed.
+	 *
+	 * @return  JFeedItem instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	 function setEnclosure($enclosure)	{
-		 $this->enclosure = $enclosure;
-	 }
+	public function setEnclosure($enclosure)
+	{
+		$this->enclosure = $enclosure;
+
+		return $this;
+	}
 }
 
 /**
  * JFeedEnclosure is an internal class that stores feed enclosure information
  *
- * @package 	Joomla.Framework
- * @subpackage		Document
- * @since	1.5
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ * @since       11.1
  */
 class JFeedEnclosure extends JObject
 {
+
 	/**
 	 * URL enclosure element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $url = "";
+	public $url = "";
 
 	/**
-	 * Lenght enclosure element
+	 * Length enclosure element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $length = "";
+	public $length = "";
 
-	 /**
+	/**
 	 * Type enclosure element
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $type = "";
+	public $type = "";
 }
 
 /**
  * JFeedImage is an internal class that stores feed image information
  *
- * @package 	Joomla.Framework
- * @subpackage		Document
- * @since	1.5
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ * @since       11.1
  */
 class JFeedImage extends JObject
 {
+
 	/**
 	 * Title image attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $title = "";
+	public $title = "";
 
-	 /**
+	/**
 	 * URL image attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $url = "";
+	public $url = "";
 
 	/**
 	 * Link image attribute
 	 *
 	 * required
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $link = "";
+	public $link = "";
 
-	 /**
-	 * witdh image attribute
+	/**
+	 * Width image attribute
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $width;
+	public $width;
 
-	 /**
+	/**
 	 * Title feed attribute
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $height;
+	public $height;
 
-	 /**
+	/**
 	 * Title feed attribute
 	 *
 	 * optional
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $description;
+	public $description;
 }

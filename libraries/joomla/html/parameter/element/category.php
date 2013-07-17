@@ -1,75 +1,86 @@
 <?php
 /**
-* @version		$Id: category.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a category element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  Use JFormFieldCategory instead.
  */
-
 class JElementCategory extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'Category';
+	 * Element name
+	 *
+	 * @var    string
+	 */
+	protected $_name = 'Category';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Fetch the element
+	 *
+	 * @param   string       $name          Element name
+	 * @param   string       $value         Element value
+	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
+	 * @param   string       $control_name  Control name
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 * @deprecated    12.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = &JFactory::getDBO();
+		// Deprecation warning.
+		JLog::add('JElementCategory::fetchElement() is deprecated.', JLog::WARNING, 'deprecated');
 
-		$section	= $node->attributes('section');
-		$class		= $node->attributes('class');
-		if (!$class) {
-			$class = "inputbox";
-		}
+		$db = JFactory::getDbo();
 
-		if (!isset ($section)) {
-			// alias for section
-			$section = $node->attributes('scope');
-			if (!isset ($section)) {
-				$section = 'content';
+		$extension = $node->attributes('extension');
+		$class = $node->attributes('class');
+		$filter = explode(',', $node->attributes('filter'));
+
+		if (!isset($extension))
+		{
+			// Alias for extension
+			$extension = $node->attributes('scope');
+			if (!isset($extension))
+			{
+				$extension = 'com_content';
 			}
 		}
 
-		if ($section == 'content') {
-			// This might get a conflict with the dynamic translation - TODO: search for better solution
-			$query = 'SELECT c.id, CONCAT_WS( "/",s.title, c.title ) AS title' .
-				' FROM #__categories AS c' .
-				' LEFT JOIN #__sections AS s ON s.id=c.section' .
-				' WHERE c.published = 1' .
-				' AND s.scope = '.$db->Quote($section).
-				' ORDER BY s.title, c.title';
-		} else {
-			$query = 'SELECT c.id, c.title' .
-				' FROM #__categories AS c' .
-				' WHERE c.published = 1' .
-				' AND c.section = '.$db->Quote($section).
-				' ORDER BY c.title';
+		if (!$class)
+		{
+			$class = "inputbox";
 		}
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
-		array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('Select Category').' -', 'id', 'title'));
 
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="'.$class.'"', 'id', 'title', $value, $control_name.$name );
+		if (count($filter) < 1)
+		{
+			$filter = null;
+		}
+
+		return JHtml::_(
+			'list.category',
+			$control_name . '[' . $name . ']',
+			$extension,
+			$extension . '.view',
+			$filter,
+			(int) $value,
+			$class,
+			null,
+			1,
+			$control_name . $name
+		);
 	}
 }

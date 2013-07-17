@@ -1,111 +1,102 @@
 <?php
 /**
- * @version		$Id:tree.php 6961 2007-03-15 16:06:53Z tcp $
- * @package		Joomla.Framework
- * @subpackage	Base
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package     Joomla.Platform
+ * @subpackage  Base
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
+
+jimport('joomla.base.node');
 
 /**
  * Tree Class.
  *
- * @package 	Joomla.Framework
- * @subpackage	Base
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Base
+ * @since       11.1
+ * @deprecated  12.3
+ * @codeCoverageIgnore
  */
 class JTree extends JObject
 {
 	/**
 	 * Root node
+	 *
+	 * @var    object
+	 * @since  11.1
 	 */
-	var $_root = null;
+	protected $_root = null;
 
 	/**
 	 * Current working node
+	 *
+	 * @var    object
+	 * @since  11.1
 	 */
-	var $_current = null;
+	protected $_current = null;
 
-	function __construct()
+	/**
+	 * Constructor
+	 *
+	 * @since   11.1
+	 */
+	public function __construct()
 	{
+		JLog::add('JTree::__construct() is deprecated.', JLog::WARNING, 'deprecated');
+
 		$this->_root = new JNode('ROOT');
 		$this->_current = & $this->_root;
 	}
 
-	function addChild(&$node, $setCurrent = false)
+	/**
+	 * Method to add a child
+	 *
+	 * @param   array    &$node       The node to process
+	 * @param   boolean  $setCurrent  True to set as current working node
+	 *
+	 * @return  mixed
+	 *
+	 * @since   11.1
+	 */
+	public function addChild(&$node, $setCurrent = false)
 	{
+		JLog::add('JTree::addChild() is deprecated.', JLog::WARNING, 'deprecated');
+
 		$this->_current->addChild($node);
-		if ($setCurrent) {
-			$this->_current =& $node;
+		if ($setCurrent)
+		{
+			$this->_current = &$node;
 		}
 	}
 
-	function getParent()
-	{
-		$this->_current =& $this->_current->getParent();
-	}
-
-	function reset()
-	{
-		$this->_current =& $this->_root;
-	}
-}
-
-/**
- * Tree Node Class.
- *
- * @package 	Joomla.Framework
- * @subpackage	Base
- * @since		1.5
- */
-class JNode extends JObject
-{
 	/**
-	 * Parent node
+	 * Method to get the parent
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
 	 */
-	var $_parent = null;
+	public function getParent()
+	{
+		JLog::add('JTree::getParent() is deprecated.', JLog::WARNING, 'deprecated');
+
+		$this->_current = &$this->_current->getParent();
+	}
 
 	/**
-	 * Array of Children
+	 * Method to get the parent
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
 	 */
-	var $_children = array();
-
-	function __construct()
+	public function reset()
 	{
-		return true;
-	}
+		JLog::add('JTree::reset() is deprecated.', JLog::WARNING, 'deprecated');
 
-	function addChild( &$node )
-	{
-		$node->setParent($this);
-		$this->_children[] = & $node;
-	}
-
-	function &getParent()
-	{
-		return $this->_parent;
-	}
-
-	function setParent( &$node )
-	{
-		$this->_parent = & $node;
-	}
-
-	function hasChildren()
-	{
-		return count($this->_children);
-	}
-
-	function &getChildren()
-	{
-		return $this->_children;
+		$this->_current = &$this->_root;
 	}
 }

@@ -1,77 +1,75 @@
 <?php
 /**
-* @version		$Id: renderer.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Document
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Abstract class for a renderer
  *
- * @abstract
- * @package		Joomla.Framework
- * @subpackage	Document
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ * @since       11.1
  */
 class JDocumentRenderer extends JObject
 {
 	/**
-	* reference to the JDocument object that instantiated the renderer
-	*
-	* @var		object
-	* @access	protected
-	*/
-	var	$_doc = null;
+	 * Reference to the JDocument object that instantiated the renderer
+	 *
+	 * @var    JDocument
+	 * @since  11.1
+	 */
+	protected	$_doc = null;
 
 	/**
 	 * Renderer mime type
 	 *
-	 * @var		string
-	 * @access	private
+	 * @var    string
+	 * @since  11.1
 	 */
-	 var $_mime = "text/html";
+	protected $_mime = "text/html";
 
 	/**
-	* Class constructor
-	*
-	* @access protected
-	* @param object A reference to the JDocument object that instantiated the renderer
-	*/
-	function __construct(&$doc) {
-		$this->_doc =& $doc;
+	 * Class constructor
+	 *
+	 * @param   JDocument  &$doc  A reference to the JDocument object that instantiated the renderer
+	 *
+	 * @since   11.1
+	 */
+	public function __construct(&$doc)
+	{
+		$this->_doc = &$doc;
 	}
 
 	/**
 	 * Renders a script and returns the results as a string
 	 *
-	 * @abstract
-	 * @access public
-	 * @param string 	$name		The name of the element to render
-	 * @param array 	$array		Array of values
-	 * @param string 	$content	Override the output of the renderer
-	 * @return string	The output of the script
+	 * @param   string  $name     The name of the element to render
+	 * @param   array   $params   Array of values
+	 * @param   string  $content  Override the output of the renderer
+	 *
+	 * @return  string  The output of the script
+	 *
+	 * @since   11.1
 	 */
-	function render( $name, $params = array(), $content = null )
+	public function render($name, $params = null, $content = null)
 	{
-
 	}
 
 	/**
 	 * Return the content type of the renderer
 	 *
-	 * @return string The contentType
+	 * @return  string  The contentType
+	 *
+	 * @since   11.1
 	 */
-	function getContentType() {
+	public function getContentType()
+	{
 		return $this->_mime;
 	}
 }

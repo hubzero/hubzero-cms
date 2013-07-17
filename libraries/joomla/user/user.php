@@ -1,280 +1,493 @@
 <?php
 /**
- * @version		$Id: user.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla.Framework
- * @subpackage	User
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package     Joomla.Platform
+ * @subpackage  User
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
-
-jimport( 'joomla.html.parameter');
-
+defined('JPATH_PLATFORM') or die;
 
 /**
  * User class.  Handles all application interaction with a user
  *
- * @package 	Joomla.Framework
- * @subpackage	User
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  User
+ * @since       11.1
  */
 class JUser extends JObject
 {
 	/**
-	 * Unique id
-	 * @var int
+	 * A cached switch for if this user has root access rights.
+	 *
+	 * @var    boolean
+	 * @since  11.1
 	 */
-	var $id				= null;
+	protected $isRoot = null;
+
+	/**
+	 * Unique id
+	 *
+	 * @var    integer
+	 * @since  11.1
+	 */
+	public $id = null;
 
 	/**
 	 * The users real name (or nickname)
-	 * @var string
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $name			= null;
+	public $name = null;
 
 	/**
 	 * The login name
-	 * @var string
+	 *
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $username		= null;
+	public $username = null;
 
 	/**
 	 * The email
-	 * @var string
+	 *
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $email			= null;
+	public $email = null;
 
 	/**
 	 * MD5 encrypted password
-	 * @var string
+	 *
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $password		= null;
+	public $password = null;
 
 	/**
 	 * Clear password, only available when a new password is set for a user
-	 * @var string
+	 *
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $password_clear	= '';
+	public $password_clear = '';
 
 	/**
-	 * Description
-	 * @var string
+	 * User type
+	 * Used in Joomla 1.0 and 1.5 for access control.
+	 *
+	 * @var    string
+	 * @deprecated    12.1
+	 * @see    $_authGroups
+	 * @see    JAccess
+	 * @since  11.1
 	 */
-	var $usertype		= null;
+	public $usertype = null;
 
 	/**
-	 * Description
-	 * @var int
+	 * Block status
+	 *
+	 * @var    integer
+	 * @since  11.1
 	 */
-	var $block			= null;
+	public $block = null;
 
 	/**
-	 * Description
-	 * @var int
+	 * Should this user receive system email
+	 *
+	 * @var    integer
+	 * @since  11.1
 	 */
-	var $sendEmail		= null;
+	public $sendEmail = null;
 
 	/**
-	 * The group id number
-	 * @var int
+	 * Date the user was registered
+	 *
+	 * @var    datetime
+	 * @since  11.1
 	 */
-	var $gid			= null;
+	public $registerDate = null;
 
 	/**
-	 * Description
-	 * @var datetime
+	 * Date of last visit
+	 *
+	 * @var    datetime
+	 * @since  11.1
 	 */
-	var $registerDate	= null;
+	public $lastvisitDate = null;
 
 	/**
-	 * Description
-	 * @var datetime
+	 * Activation hash
+	 *
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $lastvisitDate	= null;
-
-	/**
-	 * Description
-	 * @var string activation hash
-	 */
-	var $activation		= null;
-
-	/**
-	 * Description
-	 * @var string
-	 */
-	var $params			= null;
-
-	/**
-	 * Description
-	 * @var string integer
-	 */
-	var $aid 		= null;
-
-	/**
-	 * Description
-	 * @var boolean
-	 */
-	var $guest     = null;
+	public $activation = null;
 
 	/**
 	 * User parameters
-	 * @var object
+	 *
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_params 	= null;
+	public $params = null;
+
+	/**
+	 * Array of ids of groups that user belongs to
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	public $groups = array();
+
+	/**
+	 * Guest status
+	 *
+	 * @var    boolean
+	 * @since  11.1
+	 */
+	public $guest = null;
+
+	/**
+	 * Last Reset Time
+	 *
+	 * @var    string
+	 * @since  Joomla 2.5.6
+	 */
+	public $lastResetTime = null;
+
+	/**
+	 * Count since last Reset Time
+	 *
+	 * @var    int
+	 * @since  Joomla 2.5.6
+	 */
+	public $resetCount = null;
+
+	/**
+	 * User parameters
+	 * @var    object
+	 * @since  11.1
+	 */
+	protected $_params = null;
+
+	/**
+	 * Authorised access groups
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected $_authGroups = null;
+
+	/**
+	 * Authorised access levels
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected $_authLevels = null;
+
+	/**
+	 * Authorised access actions
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected $_authActions = null;
 
 	/**
 	 * Error message
-	 * @var string
+	 *
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_errorMsg	= null;
-
+	protected $_errorMsg = null;
 
 	/**
-	* Constructor activating the default information of the language
-	*
-	* @access 	protected
-	*/
-	function __construct($identifier = 0)
+	 * @var    array  JUser instances container.
+	 * @since  11.3
+	 */
+	protected static $instances = array();
+
+	/**
+	 * Constructor activating the default information of the language
+	 *
+	 * @param   integer  $identifier  The primary key of the user to load (optional).
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($identifier = 0)
 	{
 		// Create the user parameters object
-		$this->_params = new JParameter( '' );
+		$this->_params = new JRegistry;
 
 		// Load the user if it exists
-		if (!empty($identifier)) {
+		if (!empty($identifier))
+		{
 			$this->load($identifier);
 		}
 		else
 		{
 			//initialise
-			$this->id        = 0;
-			$this->gid       = 0;
+			$this->id = 0;
 			$this->sendEmail = 0;
-			$this->aid       = 0;
-			$this->guest     = 1;
+			$this->aid = 0;
+			$this->guest = 1;
 		}
 	}
 
 	/**
-	 * Returns a reference to the global User object, only creating it if it
+	 * Returns the global User object, only creating it if it
 	 * doesn't already exist.
 	 *
-	 * This method must be invoked as:
-	 * 		<pre>  $user =& JUser::getInstance($id);</pre>
+	 * @param   integer  $identifier  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
 	 *
-	 * @access 	public
-	 * @param 	int 	$id 	The user to load - Can be an integer or string - If string, it is converted to ID automatically.
-	 * @return 	JUser  			The User object.
-	 * @since 	1.5
+	 * @return  JUser  The User object.
+	 *
+	 * @since   11.1
 	 */
-	static function &getInstance($id = 0)
+	public static function getInstance($identifier = 0)
 	{
-		static $instances;
-
-		if (!isset ($instances)) {
-			$instances = array ();
-		}
-
 		// Find the user id
-		if(!is_numeric($id))
+		if (!is_numeric($identifier))
 		{
-			jimport('joomla.user.helper');
-			if (!$id = JUserHelper::getUserId($id)) {
-				//JError::raiseWarning( 'SOME_ERROR_CODE', 'JUser::_load: User '.$id.' does not exist' );
+			if (!$id = JUserHelper::getUserId($identifier))
+			{
+				JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('JLIB_USER_ERROR_ID_NOT_EXISTS', $identifier));
 				$retval = false;
 				return $retval;
 			}
 		}
-
-		if (empty($instances[$id])) {
-			$user = new JUser($id);
-			$instances[$id] = $user;
+		else
+		{
+			$id = $identifier;
 		}
 
-		return $instances[$id];
+		if (empty(self::$instances[$id]))
+		{
+			$user = new JUser($id);
+			self::$instances[$id] = $user;
+		}
+
+		return self::$instances[$id];
 	}
 
 	/**
 	 * Method to get a parameter value
 	 *
-	 * @access 	public
-	 * @param 	string 	$key 		Parameter key
-	 * @param 	mixed	$default	Parameter default value
-	 * @return	mixed				The value or the default if it did not exist
-	 * @since	1.5
+	 * @param   string  $key      Parameter key
+	 * @param   mixed   $default  Parameter default value
+	 *
+	 * @return  mixed  The value or the default if it did not exist
+	 *
+	 * @since   11.1
 	 */
-	function getParam( $key, $default = null )
+	public function getParam($key, $default = null)
 	{
-		return $this->_params->get( $key, $default );
+		return $this->_params->get($key, $default);
 	}
 
 	/**
 	 * Method to set a parameter
 	 *
-	 * @access 	public
-	 * @param 	string 	$key 	Parameter key
-	 * @param 	mixed	$value	Parameter value
-	 * @return	mixed			Set parameter value
-	 * @since	1.5
+	 * @param   string  $key    Parameter key
+	 * @param   mixed   $value  Parameter value
+	 *
+	 * @return  mixed  Set parameter value
+	 *
+	 * @since   11.1
 	 */
-	function setParam( $key, $value )
+	public function setParam($key, $value)
 	{
-		return $this->_params->set( $key, $value );
+		return $this->_params->set($key, $value);
 	}
 
 	/**
 	 * Method to set a default parameter if it does not exist
 	 *
-	 * @access 	public
-	 * @param 	string 	$key 	Parameter key
-	 * @param 	mixed	$value	Parameter value
-	 * @return	mixed			Set parameter value
-	 * @since	1.5
+	 * @param   string  $key    Parameter key
+	 * @param   mixed   $value  Parameter value
+	 *
+	 * @return  mixed  Set parameter value
+	 *
+	 * @since   11.1
 	 */
-	function defParam( $key, $value )
+	public function defParam($key, $value)
 	{
-		return $this->_params->def( $key, $value );
+		return $this->_params->def($key, $value);
 	}
 
 	/**
-	 * Method to check JUser object authorization against an access control
-	 * object and optionally an access extension object
+	 * Proxy to authorise
 	 *
-	 * @access 	public
-	 * @param	string	$acoSection	The ACO section value
-	 * @param	string	$aco		The ACO value
-	 * @param	string	$axoSection	The AXO section value	[optional]
-	 * @param	string	$axo		The AXO value			[optional]
-	 * @return	boolean	True if authorized
-	 * @since	1.5
+	 * @param   string  $action     The name of the action to check for permission.
+	 * @param   string  $assetname  The name of the asset on which to perform the action.
+	 *
+	 * @return  boolean  True if authorised
+	 *
+	 * @deprecated    12.1
+	 * @note    Use the authorise method instead.
+	 * @since   11.1
 	 */
-	function authorize( $acoSection, $aco, $axoSection = null, $axo = null )
+	public function authorize($action, $assetname = null)
 	{
-		// the native calls (Check Mode 1) work on the user id, not the user type
-		$acl	= & JFactory::getACL();
-		$value	= $acl->getCheckMode() == 1 ? $this->id : $this->usertype;
+		// Deprecation warning.
+		JLog::add('JUser::authorize() is deprecated.', JLog::WARNING, 'deprecated');
 
-		return $acl->acl_check( $acoSection, $aco,	'users', $value, $axoSection, $axo );
+		return $this->authorise($action, $assetname);
 	}
 
+	/**
+	 * Method to check JUser object authorisation against an access control
+	 * object and optionally an access extension object
+	 *
+	 * @param   string  $action     The name of the action to check for permission.
+	 * @param   string  $assetname  The name of the asset on which to perform the action.
+	 *
+	 * @return  boolean  True if authorised
+	 *
+	 * @since   11.1
+	 */
+	public function authorise($action, $assetname = null)
+	{
+		// Make sure we only check for core.admin once during the run.
+		if ($this->isRoot === null)
+		{
+			$this->isRoot = false;
+
+			// Check for the configuration file failsafe.
+			$config = JFactory::getConfig();
+			$rootUser = $config->get('root_user');
+
+			// The root_user variable can be a numeric user ID or a username.
+			if (is_numeric($rootUser) && $this->id > 0 && $this->id == $rootUser)
+			{
+				$this->isRoot = true;
+			}
+			elseif ($this->username && $this->username == $rootUser)
+			{
+				$this->isRoot = true;
+			}
+			else
+			{
+				// Get all groups against which the user is mapped.
+				$identities = $this->getAuthorisedGroups();
+				array_unshift($identities, $this->id * -1);
+
+				if (JAccess::getAssetRules(1)->allow('core.admin', $identities))
+				{
+					$this->isRoot = true;
+					return true;
+				}
+			}
+		}
+
+		return $this->isRoot ? true : JAccess::check($this->id, $action, $assetname);
+	}
+
+	/**
+	 * Gets an array of the authorised access levels for the user
+	 *
+	 * @return  array
+	 *
+	 * @deprecated  12.1
+	 * @note    Use the getAuthorisedViewLevels method instead.
+	 * @since   11.1
+	 */
+	public function authorisedLevels()
+	{
+		// Deprecation warning.
+		JLog::add('JUser::authorisedLevels() is deprecated.', JLog::WARNING, 'deprecated');
+
+		return $this->getAuthorisedViewLevels();
+	}
+
+	/**
+	 * Method to return a list of all categories that a user has permission for a given action
+	 *
+	 * @param   string  $component  The component from which to retrieve the categories
+	 * @param   string  $action     The name of the section within the component from which to retrieve the actions.
+	 *
+	 * @return  array  List of categories that this group can do this action to (empty array if none). Categories must be published.
+	 *
+	 * @since   11.1
+	 */
+	public function getAuthorisedCategories($component, $action)
+	{
+		// Brute force method: get all published category rows for the component and check each one
+		// TODO: Modify the way permissions are stored in the db to allow for faster implementation and better scaling
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)->select('c.id AS id, a.name AS asset_name')->from('#__categories AS c')
+			->innerJoin('#__assets AS a ON c.asset_id = a.id')->where('c.extension = ' . $db->quote($component))->where('c.published = 1');
+		$db->setQuery($query);
+		$allCategories = $db->loadObjectList('id');
+		$allowedCategories = array();
+		foreach ($allCategories as $category)
+		{
+			if ($this->authorise($action, $category->asset_name))
+			{
+				$allowedCategories[] = (int) $category->id;
+			}
+		}
+		return $allowedCategories;
+	}
+
+	/**
+	 * Gets an array of the authorised access levels for the user
+	 *
+	 * @return  array
+	 *
+	 * @since   11.1
+	 */
+	public function getAuthorisedViewLevels()
+	{
+		if ($this->_authLevels === null)
+		{
+			$this->_authLevels = array();
+		}
+
+		if (empty($this->_authLevels))
+		{
+			$this->_authLevels = JAccess::getAuthorisedViewLevels($this->id);
+		}
+
+		return $this->_authLevels;
+	}
+	/**
+	 * Gets an array of the authorised user groups
+	 *
+	 * @return  array
+	 *
+	 * @since   11.1
+	 */
+	public function getAuthorisedGroups()
+	{
+		if ($this->_authGroups === null)
+		{
+			$this->_authGroups = array();
+		}
+
+		if (empty($this->_authGroups))
+		{
+			$this->_authGroups = JAccess::getGroupsByUser($this->id);
+		}
+
+		return $this->_authGroups;
+	}
 	/**
 	 * Pass through method to the table for setting the last visit date
 	 *
-	 * @access 	public
-	 * @param	int		$timestamp	The timestamp, defaults to 'now'
-	 * @return	boolean	True on success
-	 * @since	1.5
+	 * @param   integer  $timestamp  The timestamp, defaults to 'now'.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
 	 */
-	function setLastVisit($timestamp=null)
+	public function setLastVisit($timestamp = null)
 	{
 		// Create the user table object
-		$table 	=& $this->getTable();
+		$table = $this->getTable();
 		$table->load($this->id);
 
 		return $table->setLastVisit($timestamp);
@@ -283,52 +496,59 @@ class JUser extends JObject
 	/**
 	 * Method to get the user parameters
 	 *
-	 * This function tries to load an xml file based on the users usertype. The filename of the xml
+	 * This function tries to load an XML file based on the user's usertype. The filename of the xml
 	 * file is the same as the usertype. The functionals has a static variable to store the parameters
 	 * setup file base path. You can call this function statically to set the base path if needed.
 	 *
-	 * @access 	public
-	 * @param	boolean	If true, loads the parameters setup file. Default is false.
-	 * @param	path	Set the parameters setup file base path to be used to load the user parameters.
-	 * @return	object	The user parameters object
-	 * @since	1.5
+	 * @param   boolean  $loadsetupfile  If true, loads the parameters setup file. Default is false.
+	 * @param   path     $path           Set the parameters setup file base path to be used to load the user parameters.
+	 *
+	 * @return  object   The user parameters object.
+	 *
+	 * @since   11.1
 	 */
-	function &getParameters($loadsetupfile = false, $path = null)
+	public function getParameters($loadsetupfile = false, $path = null)
 	{
 		static $parampath;
 
 		// Set a custom parampath if defined
-		if( isset($path) ) {
+		if (isset($path))
+		{
 			$parampath = $path;
 		}
 
 		// Set the default parampath if not set already
-		if( !isset($parampath) ) {
-			$parampath = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_users'.DS.'models';
+		if (!isset($parampath))
+		{
+			$parampath = JPATH_ADMINISTRATOR . 'components/com_users/models';
 		}
 
-		if($loadsetupfile)
+		if ($loadsetupfile)
 		{
 			$type = str_replace(' ', '_', strtolower($this->usertype));
 
-			$file = $parampath.DS.$type.'.xml';
-			if(!file_exists($file)) {
-				$file = $parampath.DS.'user.xml';
+			$file = $parampath . '/' . $type . '.xml';
+			if (!file_exists($file))
+			{
+				$file = $parampath . '/' . 'user.xml';
 			}
 
 			$this->_params->loadSetupFile($file);
 		}
+
 		return $this->_params;
 	}
 
 	/**
 	 * Method to get the user parameters
 	 *
-	 * @access 	public
-	 * @param	object	The user parameters object
-	 * @since	1.5
+	 * @param   object  $params  The user parameters object
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
 	 */
-	function setParameters($params )
+	public function setParameters($params)
 	{
 		$this->_params = $params;
 	}
@@ -337,87 +557,91 @@ class JUser extends JObject
 	 * Method to get the user table object
 	 *
 	 * This function uses a static variable to store the table name of the user table to
-	 * it instantiates. You can call this function statically to set the table name if
+	 * instantiate. You can call this function statically to set the table name if
 	 * needed.
 	 *
-	 * @access 	public
-	 * @param	string	The user table name to be used
-	 * @param	string	The user table prefix to be used
-	 * @return	object	The user table object
-	 * @since	1.5
+	 * @param   string  $type    The user table name to be used
+	 * @param   string  $prefix  The user table prefix to be used
+	 *
+	 * @return  object  The user table object
+	 *
+	 * @since   11.1
 	 */
-	function &getTable( $type = null, $prefix = 'JTable' )
+	public static function getTable($type = null, $prefix = 'JTable')
 	{
 		static $tabletype;
 
-		//Set the default tabletype;
-		if(!isset($tabletype)) {
-			$tabletype['name'] 		= 'user';
-			$tabletype['prefix']	= 'JTable';
+		// Set the default tabletype;
+		if (!isset($tabletype))
+		{
+			$tabletype['name'] = 'user';
+			$tabletype['prefix'] = 'JTable';
 		}
 
-		//Set a custom table type is defined
-		if(isset($type)) {
-			$tabletype['name'] 		= $type;
-			$tabletype['prefix']	= $prefix;
+		// Set a custom table type is defined
+		if (isset($type))
+		{
+			$tabletype['name'] = $type;
+			$tabletype['prefix'] = $prefix;
 		}
 
 		// Create the user table object
-		$table 	=& JTable::getInstance( $tabletype['name'], $tabletype['prefix'] );
-		return $table;
+		return JTable::getInstance($tabletype['name'], $tabletype['prefix']);
 	}
 
 	/**
 	 * Method to bind an associative array of data to a user object
 	 *
-	 * @access 	public
-	 * @param 	array 	$array 	The associative array to bind to the object
-	 * @return 	boolean 		True on success
-	 * @since 1.5
+	 * @param   array  &$array  The associative array to bind to the object
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
 	 */
-	function bind(& $array)
+	public function bind(&$array)
 	{
-		jimport('joomla.user.helper');
-
-		// Lets check to see if the user is new or not
+		// Let's check to see if the user is new or not
 		if (empty($this->id))
 		{
 			// Check the password and create the crypted password
-			if (empty($array['password'])) {
-				$array['password']  = JUserHelper::genRandomPassword();
+			if (empty($array['password']))
+			{
+				$array['password'] = JUserHelper::genRandomPassword();
 				$array['password2'] = $array['password'];
 			}
 
-			if ($array['password'] != $array['password2']) {
-					$this->setError( JText::_( 'PASSWORD DO NOT MATCH.' ) );
-					return false;
+			// TODO: Backend controller checks the password, frontend doesn't but should.
+			// Hence this code is required:
+			if (isset($array['password2']) && $array['password'] != $array['password2'])
+			{
+				$this->setError(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'));
+				return false;
 			}
 
-			$this->password_clear = JArrayHelper::getValue( $array, 'password', '', 'string' );
+			$this->password_clear = JArrayHelper::getValue($array, 'password', '', 'string');
 
-			$salt  = JUserHelper::genRandomPassword(32);
+			$salt = JUserHelper::genRandomPassword(32);
 			$crypt = JUserHelper::getCryptedPassword($array['password'], $salt);
-			$array['password'] = $crypt.':'.$salt;
+			$array['password'] = $crypt . ':' . $salt;
 
 			// Set the registration timestamp
 
-			$now =& JFactory::getDate();
-			$this->set( 'registerDate', $now->toMySQL() );
+			$this->set('registerDate', JFactory::getDate()->toSql());
 
 			// Check that username is not greater than 150 characters
-			$username = $this->get( 'username' );
-			if ( strlen($username) > 150 )
+			$username = $this->get('username');
+			if (strlen($username) > 150)
 			{
-				$username = substr( $username, 0, 150 );
-				$this->set( 'username', $username );
+				$username = substr($username, 0, 150);
+				$this->set('username', $username);
 			}
 
 			// Check that password is not greater than 100 characters
-			$password = $this->get( 'password' );
-			if ( strlen($password) > 100 )
+			$password = $this->get('password');
+			if (strlen($password) > 100)
 			{
-				$password = substr( $password, 0, 100 );
-				$this->set( 'password', $password );
+				$password = substr($password, 0, 100);
+				$this->set('password', $password);
 			}
 		}
 		else
@@ -425,16 +649,17 @@ class JUser extends JObject
 			// Updating an existing user
 			if (!empty($array['password']))
 			{
-				if ( $array['password'] != $array['password2'] ) {
-					$this->setError( JText::_( 'PASSWORD DO NOT MATCH.' ) );
+				if ($array['password'] != $array['password2'])
+				{
+					$this->setError(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'));
 					return false;
 				}
 
-				$this->password_clear = JArrayHelper::getValue( $array, 'password', '', 'string' );
+				$this->password_clear = JArrayHelper::getValue($array, 'password', '', 'string');
 
 				$salt = JUserHelper::genRandomPassword(32);
 				$crypt = JUserHelper::getCryptedPassword($array['password'], $salt);
-				$array['password'] = $crypt.':'.$salt;
+				$array['password'] = $crypt . ':' . $salt;
 			}
 			else
 			{
@@ -443,24 +668,20 @@ class JUser extends JObject
 		}
 
 		// TODO: this will be deprecated as of the ACL implementation
-		$db =& JFactory::getDBO();
+		//		$db = JFactory::getDbo();
 
-		$gid = array_key_exists('gid', $array ) ? $array['gid'] : $this->get('gid');
-
-		$query = 'SELECT name'
-		. ' FROM #__core_acl_aro_groups'
-		. ' WHERE id = ' . (int) $gid
-		;
-		$db->setQuery( $query );
-		$this->set( 'usertype', $db->loadResult());
-
-		if ( array_key_exists('params', $array) )
+		if (array_key_exists('params', $array))
 		{
-			$params	= '';
-			$this->_params->bind($array['params']);
-			if ( is_array($array['params']) ) {
-				$params	= $this->_params->toString();
-			} else {
+			$params = '';
+
+			$this->_params->loadArray($array['params']);
+
+			if (is_array($array['params']))
+			{
+				$params = (string) $this->_params;
+			}
+			else
+			{
 				$params = $array['params'];
 			}
 
@@ -468,8 +689,9 @@ class JUser extends JObject
 		}
 
 		// Bind the array
-		if (!$this->setProperties($array)) {
-			$this->setError("Unable to bind array to user object");
+		if (!$this->setProperties($array))
+		{
+			$this->setError(JText::_('JLIB_USER_ERROR_BIND_ARRAY'));
 			return false;
 		}
 
@@ -482,69 +704,134 @@ class JUser extends JObject
 	/**
 	 * Method to save the JUser object to the database
 	 *
-	 * @access 	public
-	 * @param 	boolean $updateOnly Save the object only if not a new user
-	 * @return 	boolean 			True on success
-	 * @since 1.5
+	 * @param   boolean  $updateOnly  Save the object only if not a new user
+	 *                                Currently only used in the user reset password method.
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
+	 * @throws  exception
 	 */
-	function save( $updateOnly = false )
+	public function save($updateOnly = false)
 	{
 		// Create the user table object
-		$table 	=& $this->getTable();
-		$this->params = $this->_params->toString();
+		$table = $this->getTable();
+		$this->params = (string) $this->_params;
 		$table->bind($this->getProperties());
 
-		// Check and store the object.
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// If user is made a Super Admin group and user is NOT a Super Admin
-		$my =& JFactory::getUser();
-		if ( $this->get('gid') == 25 && $my->get('gid') != 25 )
+		// Allow an exception to be thrown.
+		try
 		{
-			// disallow creation of Super Admin by non Super Admin users
-			$this->setError(JText::_( 'WARNSUPERADMINCREATE' ));
-			return false;
-		}
+			// Check and store the object.
+			if (!$table->check())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
 
-		// If user is made an Admin group and user is NOT a Super Admin
-		if ($this->get('gid') == 24 && !($my->get('gid') == 25 || ($this->get('id') == $my->id && $my->get('gid') == 24)))
+			// If user is made a Super Admin group and user is NOT a Super Admin
+			//
+			// @todo ACL - this needs to be acl checked
+			//
+			$my = JFactory::getUser();
+
+			//are we creating a new user
+			$isNew = empty($this->id);
+
+			// If we aren't allowed to create new users return
+			if ($isNew && $updateOnly)
+			{
+				return true;
+			}
+
+			// Get the old user
+			$oldUser = new JUser($this->id);
+
+			//
+			// Access Checks
+			//
+
+			// The only mandatory check is that only Super Admins can operate on other Super Admin accounts.
+			// To add additional business rules, use a user plugin and throw an Exception with onUserBeforeSave.
+
+			// Check if I am a Super Admin
+			$iAmSuperAdmin = $my->authorise('core.admin');
+
+			// We are only worried about edits to this account if I am not a Super Admin.
+			if ($iAmSuperAdmin != true)
+			{
+				if ($isNew)
+				{
+					// Check if the new user is being put into a Super Admin group.
+					foreach ($this->groups as $groupId)
+					{
+						if (JAccess::checkGroup($groupId, 'core.admin'))
+						{
+							throw new Exception(JText::_('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+						}
+					}
+				}
+				else
+				{
+					// I am not a Super Admin, and this one is, so fail.
+					if (JAccess::check($this->id, 'core.admin'))
+					{
+						throw new Exception(JText::_('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+					}
+
+					if ($this->groups != null)
+					{
+						// I am not a Super Admin and I'm trying to make one.
+						foreach ($this->groups as $groupId)
+						{
+							if (JAccess::checkGroup($groupId, 'core.admin'))
+							{
+								throw new Exception(JText::_('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+							}
+						}
+					}
+				}
+			}
+
+			// Fire the onUserBeforeSave event.
+			JPluginHelper::importPlugin('user');
+			$dispatcher = JDispatcher::getInstance();
+
+			$result = $dispatcher->trigger('onUserBeforeSave', array($oldUser->getProperties(), $isNew, $this->getProperties()));
+			if (in_array(false, $result, true))
+			{
+				// Plugin will have to raise its own error or throw an exception.
+				return false;
+			}
+
+			// Store the user data in the database
+			if (!($result = $table->store()))
+			{
+				throw new Exception($table->getError());
+			}
+
+			// Set the id for the JUser object in case we created a new user.
+			if (empty($this->id))
+			{
+				$this->id = $table->get('id');
+			}
+
+			if ($my->id == $table->id)
+			{
+				$registry = new JRegistry;
+				$registry->loadString($table->params);
+				$my->setParameters($registry);
+			}
+
+			// Fire the onUserAfterSave event
+			$dispatcher->trigger('onUserAfterSave', array($this->getProperties(), $isNew, $result, $this->getError()));
+		}
+		catch (Exception $e)
 		{
-			// disallow creation of Admin by non Super Admin users
-			$this->setError(JText::_( 'WARNSUPERADMINCREATE' ));
+			$this->setError($e->getMessage());
+
 			return false;
 		}
-
-		//are we creating a new user
-		$isnew = !$this->id;
-
-		// If we aren't allowed to create new users return
-		if ($isnew && $updateOnly) {
-			return true;
-		}
-
-		// Get the old user
-		$old = new JUser($this->id);
-
-		// Fire the onBeforeStoreUser event.
-		JPluginHelper::importPlugin( 'user' );
-		$dispatcher =& JDispatcher::getInstance();
-		$dispatcher->trigger( 'onBeforeStoreUser', array( $old->getProperties(), $isnew ) );
-
-		//Store the user data in the database
-		if (!$result = $table->store()) {
-			$this->setError($table->getError());
-		}
-
-		// Set the id for the JUser object in case we created a new user.
-		if (empty($this->id)) {
-			$this->id = $table->get( 'id' );
-		}
-
-		// Fire the onAftereStoreUser event
-		$dispatcher->trigger( 'onAfterStoreUser', array( $this->getProperties(), $isnew, $result, $this->getError() ) );
 
 		return $result;
 	}
@@ -552,59 +839,59 @@ class JUser extends JObject
 	/**
 	 * Method to delete the JUser object from the database
 	 *
-	 * @access 	public
-	 * @param 	boolean $updateOnly Save the object only if not a new user
-	 * @return 	boolean 			True on success
-	 * @since 1.5
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
 	 */
-	function delete( )
+	public function delete()
 	{
-		JPluginHelper::importPlugin( 'user' );
+		JPluginHelper::importPlugin('user');
 
-		//trigger the onBeforeDeleteUser event
-		$dispatcher =& JDispatcher::getInstance();
-		$dispatcher->trigger( 'onBeforeDeleteUser', array( $this->getProperties() ) );
+		// Trigger the onUserBeforeDelete event
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onUserBeforeDelete', array($this->getProperties()));
 
 		// Create the user table object
-		$table 	=& $this->getTable();
+		$table = $this->getTable();
 
 		$result = false;
-		if (!$result = $table->delete($this->id)) {
+		if (!$result = $table->delete($this->id))
+		{
 			$this->setError($table->getError());
 		}
 
-		//trigger the onAfterDeleteUser event
-		$dispatcher->trigger( 'onAfterDeleteUser', array( $this->getProperties(), $result, $this->getError()) );
-		return $result;
+		// Trigger the onUserAfterDelete event
+		$dispatcher->trigger('onUserAfterDelete', array($this->getProperties(), $result, $this->getError()));
 
+		return $result;
 	}
 
 	/**
 	 * Method to load a JUser object by user id number
 	 *
-	 * @access 	public
-	 * @param 	mixed 	$identifier The user id of the user to load
-	 * @param 	string 	$path 		Path to a parameters xml file
-	 * @return 	boolean 			True on success
-	 * @since 1.5
+	 * @param   mixed  $id  The user id of the user to load
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
 	 */
-	function load($id)
+	public function load($id)
 	{
 		// Create the user table object
-		$table 	=& $this->getTable();
+		$table = $this->getTable();
 
-		 // Load the JUserModel object based on the user id or throw a warning.
-		 if(!$table->load($id)) {
-			// JError::raiseWarning( 'SOME_ERROR_CODE', 'JUser::_load: Unable to load user with id: '.$id );
+		// Load the JUserModel object based on the user id or throw a warning.
+		if (!$table->load($id))
+		{
+			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id));
 			return false;
 		}
 
-		/*
-		 * Set the user parameters using the default xml file.  We might want to
-		 * extend this in the future to allow for the ability to have custom
-		 * user parameters, but for right now we'll leave it how it is.
-		 */
-		$this->_params->loadINI($table->params);
+		// Set the user parameters using the default XML file.  We might want to
+		// extend this in the future to allow for the ability to have custom
+		// user parameters, but for right now we'll leave it how it is.
+
+		$this->_params->loadString($table->params);
 
 		// Assuming all is well at this point lets bind the data
 		$this->setProperties($table->getProperties());

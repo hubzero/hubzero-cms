@@ -1,147 +1,118 @@
 <?php
 /**
-* @version		$Id: session.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Table
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Database
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
+
+jimport('joomla.database.table');
 
 /**
  * Session table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @package     Joomla.Platform
+ * @subpackage  Table
+ * @since       11.1
  */
 class JTableSession extends JTable
 {
 	/**
-	 *
-	 * @var int Primary key
-	 */
-	var $session_id			= null;
-
-	/**
-	 *
-	 * @var string
-	 */
-	var $time				= null;
-
-	/**
-	 *
-	 * @var string
-	 */
-	var $userid				= null;
-
-	/**
-	 *
-	 * @var string
-	 */
-	var $usertype			= null;
-
-	/**
-	 *
-	 * @var string
-	 */
-	var $username			= null;
-
-	/**
-	 *
-	 * @var time
-	 */
-	var $gid				= null;
-
-	/**
-	 *
-	 * @var int
-	 */
-	var $guest				= null;
-
-	/**
-	 *
-	 * @var int
-	 */
-	var $client_id			= null;
-
-	/**
-	 *
-	 * @var string
-	 */
-	var $data				= null;
-
-	/**
 	 * Constructor
-	 * @param database A database connector object
+	 *
+	 * @param   JDatabase  &$db  A database connector object.
+	 *
+	 * @since   11.1
 	 */
-	function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__session', 'session_id', $db );
+		parent::__construct('#__session', 'session_id', $db);
 
-		$this->guest 	= 1;
+		$this->guest = 1;
 		$this->username = '';
-		$this->gid 		= 0;
 	}
 
-	function insert($sessionId, $clientId)
+	/**
+	 * Insert a session
+	 *
+	 * @param   string   $sessionId  The session id
+	 * @param   integer  $clientId   The id of the client application
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
+	 */
+	public function insert($sessionId, $clientId)
 	{
-		$this->session_id	= $sessionId;
-		$this->client_id	= $clientId;
-		$this->ip = $_SERVER['REMOTE_ADDR'];
+		$this->session_id = $sessionId;
+		$this->client_id = $clientId;
 
 		$this->time = time();
-		$ret = $this->_db->insertObject( $this->_tbl, $this, 'session_id' );
+		$ret = $this->_db->insertObject($this->_tbl, $this, 'session_id');
 
-		if( !$ret ) {
-			$this->setError(strtolower(get_class( $this ))."::". JText::_( 'store failed' ) ."<br />" . $this->_db->stderr());
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	function update( $updateNulls = false )
-	{
-		$this->time = time();
-		$this->ip = $_SERVER['REMOTE_ADDR'];
-		$ret = $this->_db->updateObject( $this->_tbl, $this, 'session_id', $updateNulls );
-
-		if ($ret)
+		if (!$ret)
 		{
-			$ret = ($this->_db->getAffectedRows() > 0);
-		}		
-		
-		if( !$ret ) {
-			$this->setError(strtolower(get_class( $this ))."::". JText::_( 'store failed' ) ." <br />" . $this->_db->stderr());
+			$this->setError(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED', strtolower(get_class($this)), $this->_db->stderr()));
 			return false;
-		} else {
+		}
+		else
+		{
 			return true;
 		}
 	}
 
 	/**
-	 * Destroys the pesisting session
+	 * Updates the session
+	 *
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
 	 */
-	function destroy($userId, $clientIds = array())
+	public function update($updateNulls = false)
 	{
-		$clientIds = implode( ',', $clientIds );
+		$this->time = time();
+		$ret = $this->_db->updateObject($this->_tbl, $this, 'session_id', $updateNulls);
 
-		$query = 'DELETE FROM #__session'
-			. ' WHERE userid = '. $this->_db->Quote( $userId )
-			. ' AND client_id IN ( '.$clientIds.' )'
-			;
-		$this->_db->setQuery( $query );
+		if (!$ret)
+		{
+			$this->setError(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED', strtolower(get_class($this)), $this->_db->stderr()));
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
-		if ( !$this->_db->query() ) {
-			$this->setError( $this->_db->stderr());
+	/**
+	 * Destroys the pre-existing session
+	 *
+	 * @param   integer  $userId     Identifier of the user for this session.
+	 * @param   array    $clientIds  Array of client ids for which session(s) will be destroyed
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
+	 */
+	public function destroy($userId, $clientIds = array())
+	{
+		$clientIds = implode(',', $clientIds);
+
+		$query = $this->_db->getQuery(true);
+		$query->delete();
+		$query->from($this->_db->quoteName($this->_tbl));
+		$query->where($this->_db->quoteName('userid') . ' = ' . $this->_db->quote($userId));
+		$query->where($this->_db->quoteName('client_id') . ' IN (' . $clientIds . ')');
+		$this->_db->setQuery($query);
+
+		if (!$this->_db->execute())
+		{
+			$this->setError($this->_db->stderr());
 			return false;
 		}
 
@@ -149,33 +120,45 @@ class JTableSession extends JTable
 	}
 
 	/**
-	* Purge old sessions
-	*
-	* @param int 	Session age in seconds
-	* @return mixed Resource on success, null on fail
-	*/
-	function purge( $maxLifetime = 1440 )
+	 * Purge old sessions
+	 *
+	 * @param   integer  $maxLifetime  Session age in seconds
+	 *
+	 * @return  mixed  Resource on success, null on fail
+	 *
+	 * @since   11.1
+	 */
+	public function purge($maxLifetime = 1440)
 	{
 		$past = time() - $maxLifetime;
-		$query = 'DELETE FROM '. $this->_tbl .' WHERE ( time < \''. (int) $past .'\' )'; // Index on 'VARCHAR'
+		$query = $this->_db->getQuery(true);
+		$query->delete();
+		$query->from($this->_db->quoteName($this->_tbl));
+		$query->where($this->_db->quoteName('time') . ' < ' . (int) $past);
 		$this->_db->setQuery($query);
 
-		return $this->_db->query();
+		return $this->_db->execute();
 	}
 
 	/**
 	 * Find out if a user has a one or more active sessions
 	 *
-	 * @param int $userid The identifier of the user
-	 * @return boolean True if a session for this user exists
+	 * @param   integer  $userid  The identifier of the user
+	 *
+	 * @return  boolean  True if a session for this user exists
+	 *
+	 * @since   11.1
 	 */
-	function exists($userid)
+	public function exists($userid)
 	{
-		$query = 'SELECT COUNT(userid) FROM #__session'
-			. ' WHERE userid = '. $this->_db->Quote( $userid );
-		$this->_db->setQuery( $query );
+		$query = $this->_db->getQuery(true);
+		$query->select('COUNT(userid)');
+		$query->from($this->_db->quoteName($this->_tbl));
+		$query->where($this->_db->quoteName('userid') . ' = ' . $this->_db->quote($userid));
+		$this->_db->setQuery($query);
 
-		if ( !$result = $this->_db->loadResult() ) {
+		if (!$result = $this->_db->loadResult())
+		{
 			$this->setError($this->_db->stderr());
 			return false;
 		}
@@ -188,26 +171,32 @@ class JTableSession extends JTable
 	 *
 	 * We must override it because of the non-integer primary key
 	 *
-	 * @access public
-	 * @return true if successful otherwise returns and error message
+	 * @param   integer  $oid  The object id (optional).
+	 *
+	 * @return  mixed  True if successful otherwise an error message
+	 *
+	 * @since   11.1
 	 */
-	function delete( $oid=null )
+	public function delete($oid = null)
 	{
-		//if (!$this->canDelete( $msg ))
+		//if (!$this->canDelete($msg))
 		//{
 		//	return $msg;
 		//}
 
 		$k = $this->_tbl_key;
-		if ($oid) {
+		if ($oid)
+		{
 			$this->$k = $oid;
 		}
 
-		$query = 'DELETE FROM '.$this->_db->nameQuote( $this->_tbl ).
-				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
-		$this->_db->setQuery( $query );
+		$query = $this->_db->getQuery(true);
+		$query->delete();
+		$query->from($this->_db->quoteName($this->_tbl));
+		$query->where($this->_db->quoteName($this->_tbl_key) . ' = ' . $this->_db->quote($this->$k));
+		$this->_db->setQuery($query);
 
-		if ($this->_db->query())
+		if ($this->_db->execute())
 		{
 			return true;
 		}

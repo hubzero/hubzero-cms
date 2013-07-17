@@ -1,11 +1,10 @@
 ++PHP UTF-8++
 
-Version 0.1
+Version 0.5
 
 ++DOCUMENTATION++
 
-Nothing yet, other than source code documentation. A tutorial on
-how to handle UTF-8 with this library is pending. You will find help at;
+Documentation in progress in ./docs dir
 
 http://www.phpwact.org/php/i18n/charsets
 http://www.phpwact.org/php/i18n/utf-8
@@ -42,10 +41,10 @@ http://sourceforge.net/tracker/?group_id=142846&atid=753843
 
 In the VERY WORST case, you can email me: hfuecks gmail com - I tend to be slow to respond though so be warned.
 
-Important Note: when reporting bugs, please provide the following 
+Important Note: when reporting bugs, please provide the following
 information;
 
-PHP version, whether the iconv extension is loaded (in PHP5 it's 
+PHP version, whether the iconv extension is loaded (in PHP5 it's
 there by default), whether the mbstring extension is loaded. The
 following PHP script can be used to determine this information;
 
@@ -68,18 +67,16 @@ if ( extension_loaded('iconv') ) {
 Parts of the code in this library come from other places, under different
 licenses.
 The authors involved have been contacted (see below). Attribution for
-which code came from where can be found in the source code itself.
+which code came from elsewhere can be found in the source code itself.
 
-+Andreas Gohr (author of Dokuwuki: http://splitbrain.org / 
-http://dev.splitbrain.org/view/darcs/dokuwiki/inc/utf8.php) has
-given permission for functions he wrote to be released here and
-under the terms of the LGPL license.
++Andreas Gohr / Chris Smith - Dokuwiki
+There is a fair degree of collaboration / exchange of ideas and code
+beteen Dokuwiki's UTF-8 library;
+http://dev.splitbrain.org/view/darcs/dokuwiki/inc/utf8.php
+and phputf8. Although Dokuwiki is released under GPL, its UTF-8
+library is released under LGPL, hence no conflict with phputf8
 
-Note: that this is potentially a problem (any clarification appreciated
-to hfuecks gmail com) - Dokuwuki is licensed under GPL so is Andi actually
-allowed to "downgrade" to LGPL?
-
-+Henri Sivonen (http://hsivonen.iki.fi/php-utf8/ / 
++Henri Sivonen (http://hsivonen.iki.fi/php-utf8/ /
 http://hsivonen.iki.fi/php-utf8/) has also given permission for his
 code to be released under the terms of the LGPL. He ported a Unicode / UTF-8
 converter from the Mozilla codebase to PHP, which is re-used in phputf8

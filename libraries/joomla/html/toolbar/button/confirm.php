@@ -1,49 +1,57 @@
 <?php
 /**
-* @version		$Id:confirm.php 6961 2007-03-15 16:06:53Z tcp $
-* @package		Joomla.Framework
-* @subpackage	HTML
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a standard button with a confirm dialog
  *
- * @package 	Joomla.Framework
- * @subpackage	HTML
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ * @since       11.1
  */
 class JButtonConfirm extends JButton
 {
 	/**
 	 * Button type
 	 *
-	 * @access	protected
-	 * @var		string
+	 * @var    string
 	 */
-	var $_name = 'Confirm';
+	protected $_name = 'Confirm';
 
-	function fetchButton( $type='Confirm', $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false )
+	/**
+	 * Fetch the HTML for the button
+	 *
+	 * @param   string   $type      Unused string.
+	 * @param   string   $msg       Message to render
+	 * @param   string   $name      Name to be used as apart of the id
+	 * @param   string   $text      Button text
+	 * @param   string   $task      The task associated with the button
+	 * @param   boolean  $list      True to allow use of lists
+	 * @param   boolean  $hideMenu  True to hide the menu on click
+	 *
+	 * @return  string   HTML string for the button
+	 *
+	 * @since   11.1
+	 */
+	public function fetchButton($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
 	{
-		$text	= JText::_($text);
-		$msg	= JText::_($msg, true);
-		$class	= $this->fetchIconClass($name);
-		$doTask	= $this->_getCommand($msg, $name, $task, $list, $hideMenu);
+		$text = JText::_($text);
+		$msg = JText::_($msg, true);
+		$class = $this->fetchIconClass($name);
+		$doTask = $this->_getCommand($msg, $name, $task, $list);
 
-		$html	= "<a href=\"#\" onclick=\"$doTask\" class=\"toolbar\">\n";
-		$html .= "<span class=\"$class\" title=\"$text\">\n";
+		$html = "<a href=\"#\" onclick=\"$doTask\" class=\"toolbar\">\n";
+		$html .= "<span class=\"$class\">\n";
 		$html .= "</span>\n";
-		$html	.= "$text\n";
-		$html	.= "</a>\n";
+		$html .= "$text\n";
+		$html .= "</a>\n";
 
 		return $html;
 	}
@@ -51,41 +59,47 @@ class JButtonConfirm extends JButton
 	/**
 	 * Get the button CSS Id
 	 *
-	 * @access	public
-	 * @return	string	Button CSS Id
-	 * @since	1.5
+	 * @param   string   $type      Button type
+	 * @param   string   $name      Name to be used as apart of the id
+	 * @param   string   $text      Button text
+	 * @param   string   $task      The task associated with the button
+	 * @param   boolean  $list      True to allow use of lists
+	 * @param   boolean  $hideMenu  True to hide the menu on click
+	 *
+	 * @return  string  Button CSS Id
+	 *
+	 * @since   11.1
 	 */
-	function fetchId( $type='Confirm', $name = '', $text = '', $task = '', $list = true, $hideMenu = false )
+	public function fetchId($type = 'Confirm', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
 	{
-		return $this->_parent->_name.'-'.$name;
+		return $this->_parent->getName() . '-' . $name;
 	}
 
 	/**
 	 * Get the JavaScript command for the button
 	 *
-	 * @access	private
-	 * @param	object	$definition	Button definition
-	 * @return	string	JavaScript command string
-	 * @since	1.5
+	 * @param   object   $msg   The message to display.
+	 * @param   string   $name  Not used.
+	 * @param   string   $task  The task used by the application
+	 * @param   boolean  $list  True is requires a list confirmation.
+	 *
+	 * @return  string  JavaScript command string
+	 *
+	 * @since   11.1
 	 */
-	function _getCommand($msg, $name, $task, $list, $hide)
+	protected function _getCommand($msg, $name, $task, $list)
 	{
-		$todo	 = JString::strtolower(JText::_( $name ));
-		$message = JText::sprintf( 'Please make a selection from the list to', $todo );
+		JHtml::_('behavior.framework');
+		$message = JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
 		$message = addslashes($message);
 
-		if ($hide) {
-			if ($list) {
-				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{hideMainMenu();if(confirm('$msg')){submitbutton('$task');}}";
-			} else {
-				$cmd = "javascript:hideMainMenu();if(confirm('$msg')){submitbutton('$task');}";
-			}
-		} else {
-			if ($list) {
-				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{if(confirm('$msg')){submitbutton('$task');}}";
-			} else {
-				$cmd = "javascript:if(confirm('$msg')){submitbutton('$task');}";
-			}
+		if ($list)
+		{
+			$cmd = "if (document.adminForm.boxchecked.value==0){alert('$message');}else{if (confirm('$msg')){Joomla.submitbutton('$task');}}";
+		}
+		else
+		{
+			$cmd = "if (confirm('$msg')){Joomla.submitbutton('$task');}";
 		}
 
 		return $cmd;

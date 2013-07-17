@@ -1,28 +1,25 @@
 /**
- * Joomla! 1.5 Installation template main RTL css file
- *
- * @author		Mati Kochen
- * @package		Joomla
- * @since		1.5
- * @version     1.0
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 body{
 	direction: rtl;
 }
 
-#header2 {
-	background-image: url(../images/j_header_right_rtl.png);
+#header .logo {
+	float: left;
+	padding-left:15px;
 }
 
-#header3 {
-	background-image: url(../images/j_header_left_rtl.png);
+#header span {
+	padding-right: 15px;
 }
 
 #version {
-	float:left;
-	padding-left:5px;
-	padding-right: 0px;
+	float: left;
+	padding-left: 5px;
+	padding-right: 0;
 }
 
 #stepbar {
@@ -30,32 +27,32 @@ body{
 }
 
 #right, #warning {
-	margin-right:180px;
-	margin-left: 0px;
+	margin-right: 180px;
+	margin-left: 0;
 }
 
 #rightpad {
-	float:right;
+	float: right;
 }
 
 .far-right {
-	float:left;
-	padding-right:0px;
-	padding-left:6px;
-	text-align:left;
+	float: left;
+	padding-right: 0;
+	padding-left: 6px;
+	text-align: left;
 }
 
 span.step {
-	padding-right:6px;
-	padding-left:0px;
+	padding-right: 6px;
+	padding-left: 0;
 }
 
 .install-text,
-.install-form{
+.install-form {
 	float:right;
 }
 
-.install-body{
+.install-body {
 	float: left;
 }
 
@@ -69,4 +66,58 @@ h3.moofx-toggler-down {
 
 #srcEncoding{
 	text-align: right;
+}
+
+td.item + td {
+	text-align: right;
+}
+
+/* make the radio buttons vertical to make room for long language strings */
+
+fieldset#jform_db_old label {
+	float: right;
+	clear: left;
+}
+
+fieldset#jform_db_old input {
+	float: right;
+	clear: right;
+}
+
+ /* System Messages */
+
+ #system-message dd ul {
+ 	background-position: 99.5% top;
+ }
+
+ /**
+ * System Standard Messages
+ */
+
+#system-message dd.message ul {
+	background-color: #C3D2E5;
+	background-image: url(../../../media/system/images/notice-info.png) no-repeat;
+}
+
+/**
+ * System Error Messages
+ */
+#system-message dd.error ul {
+	background-color: #E6C0C0;
+	background-image: url(../../../media/system/images/notice-alert.png) no-repeat;
+}
+
+/**
+ * System Notice Messages
+ */
+
+/* System Warning Messages */
+#system-message dd.warning ul {
+	background-color: #E6C8A6;
+	background-image: url(../../../media/system/images/notice-note.png) no-repeat;
+}
+
+#system-message dd.notice ul {
+	background-color: #EFE7B8;
+	background-image: url(../../../media/system/images/notice-note.png) no-repeat;
 }

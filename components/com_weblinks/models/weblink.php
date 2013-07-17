@@ -1,293 +1,108 @@
 <?php
 /**
- * @version		$Id: weblink.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die;
 
-jimport('joomla.application.component.model');
+jimport('joomla.application.component.modelitem');
 
 /**
- * Weblinks Component Weblink Model
+ * Weblinks Component Model for a Weblink record
  *
- * @package		Joomla
- * @subpackage	Weblinks
- * @since 1.5
+ * @package		Joomla.Site
+ * @subpackage	com_weblinks
+ * @since		1.5
  */
-class WeblinksModelWeblink extends JModel
+class WeblinksModelWeblink extends JModelItem
 {
 	/**
-	 * Weblink id
+	 * Model context string.
 	 *
-	 * @var int
+	 * @access	protected
+	 * @var		string
 	 */
-	var $_id = null;
+	protected $_context = 'com_weblinks.weblink';
 
 	/**
-	 * Weblink data
+	 * Method to auto-populate the model state.
 	 *
-	 * @var array
-	 */
-	var $_data = null;
-
-	/**
-	 * Constructor
+	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since 1.5
+	 * @since	1.6
 	 */
-	function __construct()
+	protected function populateState()
 	{
-		parent::__construct();
+		$app = JFactory::getApplication();
+		$params	= $app->getParams();
 
-		$id = JRequest::getVar('id', 0, '', 'int');
-		$this->setId((int)$id);
+		// Load the object state.
+		$id	= JRequest::getInt('id');
+		$this->setState('weblink.id', $id);
+
+		// Load the parameters.
+		$this->setState('params', $params);
 	}
 
 	/**
-	 * Method to set the weblink identifier
+	 * Method to get an ojbect.
 	 *
-	 * @access	public
-	 * @param	int Weblink identifier
-	 */
-	function setId($id)
-	{
-		// Set weblink id and wipe data
-		$this->_id		= $id;
-		$this->_data	= null;
-	}
-
-	/**
-	 * Method to get a weblink
+	 * @param	integer	The id of the object to get.
 	 *
-	 * @since 1.5
+	 * @return	mixed	Object on success, false on failure.
 	 */
-	function &getData()
+	public function &getItem($id = null)
 	{
-		// Load the weblink data
-		if ($this->_loadData())
+		if ($this->_item === null)
 		{
-			// Initialize some variables
-			$user = &JFactory::getUser();
+			$this->_item = false;
 
-			// Make sure the weblink is published
-			if (!$this->_data->published) {
-				JError::raiseError(404, JText::_("Resource Not Found"));
-				return false;
+			if (empty($id)) {
+				$id = $this->getState('weblink.id');
 			}
 
-			// Check to see if the category is published
-			if (!$this->_data->cat_pub) {
-				JError::raiseError( 404, JText::_("Resource Not Found") );
-				return;
-			}
+			// Get a level row instance.
+			$table = JTable::getInstance('Weblink', 'WeblinksTable');
 
-			// Check whether category access level allows access
-			if ($this->_data->cat_access > $user->get('aid', 0)) {
-				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-				return;
+			// Attempt to load the row.
+			if ($table->load($id))
+			{
+				// Check published state.
+				if ($published = $this->getState('filter.published'))
+				{
+					if ($table->state != $published) {
+						return $this->_item;
+					}
+				}
+
+				// Convert the JTable to a clean JObject.
+				$properties = $table->getProperties(1);
+				$this->_item = JArrayHelper::toObject($properties, 'JObject');
+			}
+			elseif ($error = $table->getError()) {
+				$this->setError($error);
 			}
 		}
-		else  $this->_initData();
 
-		return $this->_data;
+		return $this->_item;
 	}
 
 	/**
 	 * Method to increment the hit counter for the weblink
 	 *
-	 * @access	public
+	 * @param	int		Optional ID of the weblink.
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	function hit()
+	public function hit($id = null)
 	{
-		global $mainframe;
-
-		if ($this->_id)
-		{
-			$weblink = & $this->getTable();
-			$weblink->hit($this->_id);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Tests if weblink is checked out
-	 *
-	 * @access	public
-	 * @param	int	A user id
-	 * @return	boolean	True if checked out
-	 * @since	1.5
-	 */
-	function isCheckedOut( $uid=0 )
-	{
-		if ($this->_loadData())
-		{
-			if ($uid) {
-				return ($this->_data->checked_out && $this->_data->checked_out != $uid);
-			} else {
-				return $this->_data->checked_out;
-			}
-		}
-	}
-
-	/**
-	 * Method to checkin/unlock the weblink
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function checkin()
-	{
-		if ($this->_id)
-		{
-			$weblink = & $this->getTable();
-			if(! $weblink->checkin($this->_id)) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Method to checkout/lock the weblink
-	 *
-	 * @access	public
-	 * @param	int	$uid	User ID of the user checking the article out
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function checkout($uid = null)
-	{
-		if ($this->_id)
-		{
-			// Make sure we have a user id to checkout the article with
-			if (is_null($uid)) {
-				$user	=& JFactory::getUser();
-				$uid	= $user->get('id');
-			}
-			// Lets get to it and checkout the thing...
-			$weblink = & $this->getTable();
-			if(!$weblink->checkout($uid, $this->_id)) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Method to store the weblink
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function store($data)
-	{
-		$row =& $this->getTable();
-
-		// Bind the form fields to the web link table
-		if (!$row->bind($data)) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
+		if (empty($id)) {
+			$id = $this->getState('weblink.id');
 		}
 
-		// Create the timestamp for the date
-		$row->date = gmdate('Y-m-d H:i:s');
-
-		// if new item, order last in appropriate group
-		if (!$row->id) {
-			$where = 'catid = ' . (int) $row->catid ;
-			$row->ordering = $row->getNextOrder( $where );
-		}
-		// Make sure the web link table is valid
-		if (!$row->check()) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-
-		// Store the web link table to the database
-		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Method to load content weblink data
-	 *
-	 * @access	private
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function _loadData()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
-		{
-			$query = 'SELECT w.*, cc.title AS category,' .
-					' cc.published AS cat_pub, cc.access AS cat_access'.
-					' FROM #__weblinks AS w' .
-					' LEFT JOIN #__categories AS cc ON cc.id = w.catid' .
-					' WHERE w.id = '. (int) $this->_id;
-			$this->_db->setQuery($query);
-			$this->_data = $this->_db->loadObject();
-			return (boolean) $this->_data;
-		}
-		return true;
-	}
-
-	/**
-	 * Method to initialise the weblink data
-	 *
-	 * @access	private
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function _initData()
-	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
-		{
-			$weblink = new stdClass();
-			$weblink->id					= 0;
-			$weblink->catid				= 0;
-			$weblink->sid				= 0;
-			$weblink->title				= null;
-			$weblink->url				= null;
-			$weblink->description			= null;
-			$weblink->date				= null;
-			$weblink->hits				= 0;
-			$weblink->published			= 0;
-			$weblink->checked_out			= 0;
-			$weblink->checked_out_time 	= 0;
-			$weblink->ordering			= 0;
-			$weblink->archived			= 0;
-			$weblink->approved			= 0;
-			$weblink->params				= null;
-			$weblink->category			= null;
-			$this->_data					= $weblink;
-			return (boolean) $this->_data;
-		}
-		return true;
+		$weblink = $this->getTable('Weblink', 'WeblinksTable');
+		return $weblink->hit($id);
 	}
 }

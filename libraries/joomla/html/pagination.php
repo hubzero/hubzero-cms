@@ -1,28 +1,15 @@
 <?php
 /**
- * @version		$Id: pagination.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla.Framework
- * @subpackage	HTML
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
- * [JOOMLA] zooley (2012-08-10) 
- * NOTE: This a highly modified version of Joomla 1.7's pagination
- * The primary changes were:
- *   1) Removal of "next" and "previous" buttons. These seemed superfluous.
- *   2) Page numbers now try to center on the active page.
- *      ... 5 6 *7* 8 9 ...
- *
  * Pagination Class.  Provides a common interface for content pagination for the
  * Joomla! Platform.
  *
@@ -115,17 +102,10 @@ class JPagination extends JObject
 			$this->set('pages.total', ceil($this->total / $this->limit));
 			$this->set('pages.current', ceil(($this->limitstart + 1) / $this->limit));
 		}
-		else 
-		{
-			$this->set('pages.total', 1);
-			$this->set('pages.current', $this->limitstart + 1);
-		}
 
 		// Set the pagination iteration loop values.
 		$displayedPages = 10;
-
-		// Completely rewritten to center active page - zooley (2012-08-10)
-		/*$this->set('pages.start', $this->get('pages.current') - ($displayedPages / 2));
+		$this->set('pages.start', $this->get('pages.current') - ($displayedPages / 2));
 		if ($this->get('pages.start') < 1)
 		{
 			$this->set('pages.start', 1);
@@ -145,27 +125,7 @@ class JPagination extends JObject
 		else
 		{
 			$this->set('pages.stop', ($this->get('pages.start') + $displayedPages - 1));
-		}*/
-		$this->set('pages.middle', ceil($displayedPages / 2));
-
-		$start_loop = $this->get('pages.current') - $this->get('pages.middle') + 1;
-		$stop_loop  = $this->get('pages.current') + $displayedPages - $this->get('pages.middle');
-
-		$i = $start_loop;
-		if ($stop_loop > $this->get('pages.total')) 
-		{
-			$i = $i + ($this->get('pages.total') - $stop_loop);
-			$stop_loop = $this->get('pages.total');
 		}
-		if ($i <= 0) 
-		{
-			$stop_loop = $stop_loop + (1 - $i);
-			$i = 1;
-		}
-
-		$this->set('pages.i', $i);
-		$this->set('pages.start', $start_loop);
-		$this->set('pages.stop', $stop_loop);
 
 		// If we are viewing all records set the view all flag to true.
 		if ($limit == 0)
@@ -264,7 +224,7 @@ class JPagination extends JObject
 		$html = null;
 		if ($this->get('pages.total') > 1)
 		{
-			$html .= JText::sprintf('JPAGE_CURRENT_OF_TOTAL', $this->get('pages.current'), $this->get('pages.total'));
+			$html .= JText::sprintf('JLIB_HTML_PAGE_CURRENT_OF_TOTAL', $this->get('pages.current'), $this->get('pages.total'));
 		}
 		return $html;
 	}
@@ -295,12 +255,12 @@ class JPagination extends JObject
 		// If there are results found.
 		if ($this->total > 0)
 		{
-			$msg = JText::sprintf('Results of', $fromResult, $toResult, $this->total);
+			$msg = JText::sprintf('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
 			$html .= "\n" . $msg;
 		}
 		else
 		{
-			$html .= "\n" . JText::_('No records found');
+			$html .= "\n" . JText::_('JLIB_HTML_NO_RECORDS_FOUND');
 		}
 
 		return $html;
@@ -322,10 +282,6 @@ class JPagination extends JObject
 
 		$list = array();
 		$list['prefix'] = $this->prefix;
-		$list['i']      = $this->get('pages.i');
-		$list['total']  = $this->get('pages.total');
-		$list['startloop'] = $this->get('pages.start');
-		$list['stoploop']  = $this->get('pages.stop');
 
 		$itemOverride = false;
 		$listOverride = false;
@@ -388,7 +344,7 @@ class JPagination extends JObject
 			else
 			{
 				$list['pages'][$i]['active'] = false;
-				$list['pages'][$i]['data'] = ($itemOverride) ? pagination_item_inactive($page) : $this->_item_inactive($page, true);
+				$list['pages'][$i]['data'] = ($itemOverride) ? pagination_item_inactive($page) : $this->_item_inactive($page);
 			}
 		}
 
@@ -414,14 +370,14 @@ class JPagination extends JObject
 			$list['end']['data'] = ($itemOverride) ? pagination_item_inactive($data->end) : $this->_item_inactive($data->end);
 		}
 
-		//if ($this->total > $this->limit)
-		//{
+		if ($this->total > $this->limit)
+		{
 			return ($listOverride) ? pagination_list_render($list) : $this->_list_render($list);
-		/*}
+		}
 		else
 		{
 			return '';
-		}*/
+		}
 	}
 
 	/**
@@ -441,7 +397,7 @@ class JPagination extends JObject
 		$list['limitstart'] = $this->limitstart;
 		$list['total'] = $this->total;
 		$list['limitfield'] = $this->getLimitBox();
-		$list['pagescounter'] = $this->getResultsCounter(); //$this->getPagesCounter();
+		$list['pagescounter'] = $this->getPagesCounter();
 		$list['pageslinks'] = $this->getPagesLinks();
 
 		$chromePath = JPATH_THEMES . '/' . $app->getTemplate() . '/html/pagination.php';
@@ -475,9 +431,9 @@ class JPagination extends JObject
 		{
 			$limits[] = JHtml::_('select.option', "$i");
 		}
-		$limits[] = JHtml::_('select.option', '50', JText::_('50'));
-		$limits[] = JHtml::_('select.option', '100', JText::_('100'));
-		$limits[] = JHtml::_('select.option', '0', JText::_('all'));
+		$limits[] = JHtml::_('select.option', '50', JText::_('J50'));
+		$limits[] = JHtml::_('select.option', '100', JText::_('J100'));
+		$limits[] = JHtml::_('select.option', '0', JText::_('JALL'));
 
 		$selected = $this->_viewall ? 0 : $this->limit;
 
@@ -488,7 +444,7 @@ class JPagination extends JObject
 				'select.genericlist',
 				$limits,
 				$this->prefix . 'limit',
-				'class="inputbox" size="1" onchange="' . (version_compare(JVERSION, '1.6', 'ge') ? 'Joomla.' : '') . 'submitform();"',
+				'class="inputbox" size="1" onchange="Joomla.submitform();"',
 				'value',
 				'text',
 				$selected
@@ -525,35 +481,13 @@ class JPagination extends JObject
 	 */
 	public function orderUpIcon($i, $condition = true, $task = 'orderup', $alt = 'JLIB_HTML_MOVE_UP', $enabled = true, $checkbox = 'cb')
 	{
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if (($i > 0 || ($i + $this->limitstart > 0)) && $condition)
 		{
-			if (($i > 0 || ($i + $this->limitstart > 0)) && $condition)
-			{
-				return JHtml::_('jgrid.orderUp', $i, $task, '', $alt, $enabled, $checkbox);
-			}
-			else
-			{
-				return '&#160;';
-			}
+			return JHtml::_('jgrid.orderUp', $i, $task, '', $alt, $enabled, $checkbox);
 		}
-		else 
+		else
 		{
-			$alt = ($alt == 'JLIB_HTML_MOVE_UP') ? 'Move Up' : $alt;
-			$alt = JText::_($alt);
-
-			$html = '&nbsp;';
-			if (($i > 0 || ($i + $this->limitstart > 0)) && $condition)
-			{
-				if ($enabled) {
-					$html	= '<a href="#reorder" onclick="return listItemTask(\'cb'.$i.'\',\''.$task.'\')" title="'.$alt.'">';
-					$html	.= '   <img src="images/uparrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
-					$html	.= '</a>';
-				} else {
-					$html	= '<img src="images/uparrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
-				}
-			}
-
-			return $html;
+			return '&#160;';
 		}
 	}
 
@@ -574,35 +508,13 @@ class JPagination extends JObject
 	 */
 	public function orderDownIcon($i, $n, $condition = true, $task = 'orderdown', $alt = 'JLIB_HTML_MOVE_DOWN', $enabled = true, $checkbox = 'cb')
 	{
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if (($i < $n - 1 || $i + $this->limitstart < $this->total - 1) && $condition)
 		{
-			if (($i < $n - 1 || $i + $this->limitstart < $this->total - 1) && $condition)
-			{
-				return JHtml::_('jgrid.orderDown', $i, $task, '', $alt, $enabled, $checkbox);
-			}
-			else
-			{
-				return '&#160;';
-			}
+			return JHtml::_('jgrid.orderDown', $i, $task, '', $alt, $enabled, $checkbox);
 		}
-		else 
+		else
 		{
-			$alt = ($alt == 'JLIB_HTML_MOVE_DOWN') ? 'Move Down' : $alt;
-			$alt = JText::_($alt);
-
-			$html = '&nbsp;';
-			if (($i < $n -1 || $i + $this->limitstart < $this->total - 1) && $condition)
-			{
-				if ($enabled) {
-					$html	= '<a href="#reorder" onclick="return listItemTask(\'cb'.$i.'\',\''.$task.'\')" title="'.$alt.'">';
-					$html	.= '  <img src="images/downarrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
-					$html	.= '</a>';
-				} else {
-					$html	= '<img src="images/downarrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
-				}
-			}
-
-			return $html;
+			return '&#160;';
 		}
 	}
 
@@ -617,17 +529,16 @@ class JPagination extends JObject
 	 */
 	protected function _list_footer($list)
 	{
-		$html = array();
-		$html[] = '<ul class="list-footer">';
+		$html = "<div class=\"list-footer\">\n";
 
-		$html[] = '<li class="counter">' . $list['pagescounter'] . '</li>';
-		$html[] = '<li class="limit"><label for="' . $list['prefix'] . 'limit">' . JText::_('Display Num') . '</label> ' . $list['limitfield'] . '</li>';
-		$html[] = $list['pageslinks'];
+		$html .= "\n<div class=\"limit\">" . JText::_('JGLOBAL_DISPLAY_NUM') . $list['limitfield'] . "</div>";
+		$html .= $list['pageslinks'];
+		$html .= "\n<div class=\"counter\">" . $list['pagescounter'] . "</div>";
 
-		$html[] = '</ul>';
-		$html[] = '<input type="hidden" name="' . $list['prefix'] . 'limitstart" value="' . $list['limitstart'] . '" />';
+		$html .= "\n<input type=\"hidden\" name=\"" . $list['prefix'] . "limitstart\" value=\"" . $list['limitstart'] . "\" />";
+		$html .= "\n</div>";
 
-		return implode("\n", $html);
+		return $html;
 	}
 
 	/**
@@ -642,25 +553,16 @@ class JPagination extends JObject
 	protected function _list_render($list)
 	{
 		// Reverse output rendering for right-to-left display.
-		//$html = '<ul>';
-		$html  = '<li class="start">' . $list['start']['data'] . '</li>' . "\n";
-		$html .= '<li class="prev">' . $list['previous']['data'] . '</li>' . "\n";  //Removed superfluous buttons - zooley (2012-08-10)
-		if ($list['i'] > 1) 
+		$html = '<ul>';
+		$html .= '<li class="pagination-start">' . $list['start']['data'] . '</li>';
+		$html .= '<li class="pagination-prev">' . $list['previous']['data'] . '</li>';
+		foreach ($list['pages'] as $page)
 		{
-			$html .= '<li class="page"><span>...</span></li>' . "\n";
+			$html .= '<li>' . $page['data'] . '</li>';
 		}
-		//foreach ($list['pages'] as $page)
-		for (; $list['i'] <= $list['stoploop'] && $list['i'] <= $list['total']; $list['i']++) 
-		{
-			$html .= '<li class="page">' . $list['pages'][$list['i']]['data'] . '</li>' . "\n";
-		}
-		if (($list['i'] - 1) < $list['total']) 
-		{
-			$html .= '<li class="page"><span>...</span></li>' . "\n";
-		}
-		$html .= '<li class="next">' . $list['next']['data'] . '</li>' . "\n";  //Removed superfluous buttons - zooley (2012-08-10)
-		$html .= '<li class="end">' . $list['end']['data'] . '</li>' . "\n";
-		//$html .= '</ul>';
+		$html .= '<li class="pagination-next">' . $list['next']['data'] . '</li>';
+		$html .= '<li class="pagination-end">' . $list['end']['data'] . '</li>';
+		$html .= '</ul>';
 
 		return $html;
 	}
@@ -681,20 +583,18 @@ class JPagination extends JObject
 		{
 			if ($item->base > 0)
 			{
-				// Added compatibility check for Joomla 1.5 - zooley (2012-08-10)
-				return '<a title="' . $item->text . '" onclick="document.adminForm.' . $this->prefix . 'limitstart.value=' . $item->base
-					. '; ' . (version_compare(JVERSION, '1.6', 'ge') ? 'Joomla.' : '') . 'submitform();return false;">' . $item->text . '</a>';
+				return "<a title=\"" . $item->text . "\" onclick=\"document.adminForm." . $this->prefix . "limitstart.value=" . $item->base
+					. "; Joomla.submitform();return false;\">" . $item->text . "</a>";
 			}
 			else
 			{
-				// Added compatibility check for Joomla 1.5 - zooley (2012-08-10)
-				return '<a title="' . $item->text . '" onclick="document.adminForm.' . $this->prefix
-					. 'limitstart.value=0; ' . (version_compare(JVERSION, '1.6', 'ge') ? 'Joomla.' : '') . 'submitform();return false;">' . $item->text . '</a>';
+				return "<a title=\"" . $item->text . "\" onclick=\"document.adminForm." . $this->prefix
+					. "limitstart.value=0; Joomla.submitform();return false;\">" . $item->text . "</a>";
 			}
 		}
 		else
 		{
-			return '<a title="' . $item->text . '" href="' . $item->link . '">' . $item->text . '</a>';
+			return "<a title=\"" . $item->text . "\" href=\"" . $item->link . "\" class=\"pagenav\">" . $item->text . "</a>";
 		}
 	}
 
@@ -707,24 +607,17 @@ class JPagination extends JObject
 	 *
 	 * @since   11.1
 	 */
-	protected function _item_inactive(&$item, $selected=false)
+	protected function _item_inactive(&$item)
 	{
-		/*$app = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if ($app->isAdmin())
 		{
-			return '<span>' . $item->text . '</span>';
+			return "<span>" . $item->text . "</span>";
 		}
 		else
-		{*/
-			if ($selected)
-			{
-				return '<strong>' . $item->text . '</strong>';
-			}
-			else 
-			{
-				return '<span>' . $item->text . '</span>';
-			}
-		//}
+		{
+			return "<span class=\"pagenav\">" . $item->text . "</span>";
+		}
 	}
 
 	/**
@@ -739,8 +632,6 @@ class JPagination extends JObject
 		// Initialise variables.
 		$data = new stdClass;
 
-		$this->setAdditionalUrlParam('limit', $this->limit);
-
 		// Build the additional URL parameters string.
 		$params = '';
 		if (!empty($this->_additionalUrlParams))
@@ -751,7 +642,7 @@ class JPagination extends JObject
 			}
 		}
 
-		$data->all = new JPaginationObject(JText::_('View All'), $this->prefix);
+		$data->all = new JPaginationObject(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
 		if (!$this->_viewall)
 		{
 			$data->all->base = '0';
@@ -759,8 +650,8 @@ class JPagination extends JObject
 		}
 
 		// Set the start and previous data objects.
-		$data->start = new JPaginationObject(JText::_('Start'), $this->prefix);
-		$data->previous = new JPaginationObject(JText::_('Prev'), $this->prefix);
+		$data->start = new JPaginationObject(JText::_('JLIB_HTML_START'), $this->prefix);
+		$data->previous = new JPaginationObject(JText::_('JPREV'), $this->prefix);
 
 		if ($this->get('pages.current') > 1)
 		{
@@ -776,8 +667,8 @@ class JPagination extends JObject
 		}
 
 		// Set the next and end data objects.
-		$data->next = new JPaginationObject(JText::_('Next'), $this->prefix);
-		$data->end = new JPaginationObject(JText::_('End'), $this->prefix);
+		$data->next = new JPaginationObject(JText::_('JNEXT'), $this->prefix);
+		$data->end = new JPaginationObject(JText::_('JLIB_HTML_END'), $this->prefix);
 
 		if ($this->get('pages.current') < $this->get('pages.total'))
 		{
@@ -792,9 +683,7 @@ class JPagination extends JObject
 
 		$data->pages = array();
 		$stop = $this->get('pages.stop');
-		//for ($i = $this->get('pages.start'); $i <= $stop; $i++)
-		$i = $this->get('pages.i');
-		for (; $i <= $this->get('pages.stop') && $i <= $this->get('pages.total'); $i++) 
+		for ($i = $this->get('pages.start'); $i <= $stop; $i++)
 		{
 			$offset = ($i - 1) * $this->limit;
 			// Set the empty for removal from route
@@ -803,7 +692,7 @@ class JPagination extends JObject
 			$data->pages[$i] = new JPaginationObject($i, $this->prefix);
 			if ($i != $this->get('pages.current') || $this->_viewall)
 			{
-				$data->pages[$i]->base = ($this->_viewall) ? null : $offset;
+				$data->pages[$i]->base = $offset;
 				$data->pages[$i]->link = JRoute::_($params . '&' . $this->prefix . 'limitstart=' . $offset);
 			}
 		}

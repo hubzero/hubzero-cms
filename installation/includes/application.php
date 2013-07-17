@@ -1,139 +1,144 @@
 <?php
 /**
-* @version		$Id: application.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla
-* @subpackage	Installation
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package		Joomla.Installation
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 /**
-* Joomla! Application class
-*
-* Provide many supporting API functions
-*
-* @package		Joomla
-* @final
-*/
+ * Joomla Application class
+ *
+ * Provide many supporting API functions
+ *
+ * @package		Joomla.Installation
+ */
 class JInstallation extends JApplication
 {
 	/**
 	 * The url of the site
 	 *
 	 * @var string
-	 * @access protected
 	 */
-	var $_siteURL = null;
+	protected $_siteURL = null;
 
 	/**
 	* Class constructor
 	*
-	* @access protected
-	* @param	array An optional associative array of configuration settings.
+	* @param	array $config	An optional associative array of configuration settings.
 	* Recognized key values include 'clientId' (this list is not meant to be comprehensive).
+	*
+	* @return	void
 	*/
-	function __construct($config = array())
+	public function __construct(array $config = array())
 	{
 		$config['clientId'] = 2;
 		parent::__construct($config);
 
-		JError::setErrorHandling(E_ALL, 'Ignore');
-		$this->_createConfiguration();
+		$this->_createConfiguration('');
 
-		//Set the root in the URI based on the application name
+		// Set the root in the URI based on the application name.
 		JURI::root(null, str_replace('/'.$this->getName(), '', JURI::base(true)));
 	}
 
 	/**
 	 * Render the application
 	 *
-	 * @access public
+	 * @return	void
 	 */
-	function render()
+	public function render()
 	{
-		$document	=& JFactory::getDocument();
-		$config		=& JFactory::getConfig();
-		$user		=& JFactory::getUser();
+		$document = JFactory::getDocument();
+		$config = JFactory::getConfig();
+		$user = JFactory::getUser();
 
 		switch($document->getType())
 		{
-			case 'html':
-				//set metadata
-				$document->setTitle(JText::_('PAGE_TITLE'));
+			case 'html' :
+				// Set metadata
+				$document->setTitle(JText::_('INSTL_PAGE_TITLE'));
 				break;
-
-			default: break;
+			default :
+				break;
 		}
 
 		// Define component path
-		define( 'JPATH_COMPONENT',					JPATH_BASE.DS.'installer');
-		define( 'JPATH_COMPONENT_SITE',				JPATH_SITE.DS.'installer');
-		define( 'JPATH_COMPONENT_ADMINISTRATOR',	JPATH_ADMINISTRATOR.DS.'installer');
+		define('JPATH_COMPONENT', JPATH_BASE);
+		define('JPATH_COMPONENT_SITE', JPATH_SITE);
+		define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR);
 
-		// Execute the component
+		// Start the output buffer.
 		ob_start();
-		require_once(JPATH_COMPONENT.DS.'installer.php');
+
+		// Import the controller.
+		require_once JPATH_COMPONENT.'/controller.php';
+
+		// Execute the task.
+		$controller	= JControllerLegacy::getInstance('JInstallation');
+		$controller->execute(JRequest::getVar('task'));
+		$controller->redirect();
+
+		// Get output from the buffer and clean it.
 		$contents = ob_get_contents();
 		ob_end_clean();
 
+		$file = JRequest::getCmd('tmpl', 'index');
+
 		$params = array(
-			'template' 	=> 'template',
-			'file'		=> 'index.php',
-			'directory' => JPATH_THEMES
+			'template'	=> 'template',
+			'file'		=> $file.'.php',
+			'directory' => JPATH_THEMES,
+			'params'	=> '{}'
 		);
 
-		$document->setBuffer( $contents, 'installation');
-		$document->setTitle(JText::_('PAGE_TITLE'));
+		$document->setBuffer($contents, 'installation');
+		$document->setTitle(JText::_('INSTL_PAGE_TITLE'));
+
 		$data = $document->render(false, $params);
 		JResponse::setBody($data);
+		if (JFactory::getConfig()->get('debug_lang')) {
+			$this->debugLanguage();
+		}
 	}
 
 	/**
-	* Initialise the application.
-	*
-	* @access public
-	*/
-	function initialise( $options = array())
+	 * Initialise the application.
+	 *
+	 * @param	array	$options
+	 *
+	 * @return	void
+	 */
+	public function initialise($options = array())
 	{
-		//Get the localisation information provided in the localise xml file
+		//Get the localisation information provided in the localise.xml file.
 		$forced = $this->getLocalise();
 
-		// Check URL arguement - useful when user has just set the language preferences
-		if(empty($options['language']))
-		{
-			$vars		= JRequest::getVar('vars');
-			if ( is_array($vars) && ! empty($vars['lang'])  )
-			{
-				$varLang	= $vars['lang'];
-				$options['language']	= $varLang;
+		// Check the request data for the language.
+		if (empty($options['language'])) {
+			$requestLang = JRequest::getCmd('lang', null);
+			if (!is_null($requestLang)) {
+				$options['language'] = $requestLang;
 			}
 		}
 
-		// Check the application state - useful when the user has previously set the language preference
-		if(empty($options['language']))
-		{
-			$configLang = $this->getUserState('application.lang');
-			if ( $configLang ) {
-				$options['language']	= $configLang;
+		// Check the session for the language.
+		if (empty($options['language'])) {
+			$sessionLang = JFactory::getSession()->get('setup.language');
+			if (!is_null($sessionLang)) {
+				$options['language'] = $sessionLang;
 			}
 		}
 
-		// This could be a first-time visit - try to determine what the client accepts
-		if(empty($options['language']))
-		{
-			if ( empty($forced['lang'])) {
-				jimport('joomla.language.helper');
-				$options['language'] = JLanguageHelper::detectLanguage();
+		// This could be a first-time visit - try to determine what the client accepts.
+		if (empty($options['language'])) {
+			if (!empty($forced['language'])) {
+				$options['language'] = $forced['language'];
 			} else {
-				$options['language'] = $forced['lang'];
+				$options['language'] = JLanguageHelper::detectLanguage();
+				if (empty($options['language'])) {
+					$options['language'] = 'en-GB';
+				}
 			}
 		}
 
@@ -142,34 +147,97 @@ class JInstallation extends JApplication
 			$options['language'] = 'en-GB';
 		}
 
-		//Set the language in the class
-		$conf =& JFactory::getConfig();
-		$conf->setValue('config.language', $options['language']);
-		$conf->setValue('config.debug_lang', $forced['debug']);
+		// Set the language in the class
+		$conf = JFactory::getConfig();
+		$conf->set('language', $options['language']);
+		$conf->set('debug_lang', $forced['debug']);
+		$conf->set('sampledata', $forced['sampledata']);
+	}
+
+	/**
+	 * @return	void
+	 */
+	public static function debugLanguage()
+	{
+		ob_start();
+		$lang = JFactory::getLanguage();
+		echo '<h4>Parsing errors in language files</h4>';
+		$errorfiles = $lang->getErrorFiles();
+
+		if (count($errorfiles)) {
+			echo '<ul>';
+
+			foreach ($errorfiles as $file => $error)
+			{
+				echo "<li>$error</li>";
+			}
+			echo '</ul>';
+		}
+		else {
+			echo '<pre>None</pre>';
+		}
+
+		echo '<h4>Untranslated Strings</h4>';
+		echo '<pre>';
+		$orphans = $lang->getOrphans();
+
+		if (count($orphans)) {
+			ksort($orphans, SORT_STRING);
+
+			foreach ($orphans as $key => $occurance)
+			{
+				$guess = str_replace('_', ' ', $key);
+
+				$parts = explode(' ', $guess);
+				if (count($parts) > 1) {
+					array_shift($parts);
+					$guess = implode(' ', $parts);
+				}
+
+				$guess = trim($guess);
+
+
+				$key = trim(strtoupper($key));
+				$key = preg_replace('#\s+#', '_', $key);
+				$key = preg_replace('#\W#', '', $key);
+
+				// Prepare the text
+				$guesses[] = $key.'="'.$guess.'"';
+			}
+
+			echo "\n\n# ".$file."\n\n";
+			echo implode("\n", $guesses);
+		}
+		else {
+			echo 'None';
+		}
+		echo '</pre>';
+		$debug = ob_get_clean();
+		JResponse::appendBody($debug);
 	}
 
 	/**
 	 * Set configuration values
 	 *
-	 * @access private
-	 * @param array 	Array of configuration values
-	 * @param string 	The namespace
+	 * @param	array	$vars		Array of configuration values
+	 * @param	string	$namespace	The namespace
+	 *
+	 * @return	void
 	 */
-	function setCfg( $vars, $namespace = 'config' ) {
-		$this->_registry->loadArray( $vars, $namespace );
+	public function setCfg(array $vars = array(), $namespace = 'config')
+	{
+		$this->_registry->loadArray($vars, $namespace);
 	}
 
 	/**
 	 * Create the configuration registry
 	 *
-	 * @access private
+	 * @return	void
 	 */
-	function _createConfiguration()
+	public function _createConfiguration($file)
 	{
-		jimport( 'joomla.registry.registry' );
-
 		// Create the registry with a default namespace of config which is read only
-		$this->_registry = new JRegistry( 'config' );
+		$this->_registry = new JRegistry('config');
 	}
 
 	/**
@@ -177,25 +245,31 @@ class JInstallation extends JApplication
 	*
 	* @return string The template name
 	*/
-	function getTemplate()
+	public function getTemplate($params = false)
 	{
+		if ((bool) $params) {
+			$template = new stdClass();
+			$template->template = 'template';
+			$template->params = new JRegistry;
+			return $template;
+		}
 		return 'template';
 	}
 
 	/**
 	 * Create the user session
 	 *
-	 * @access private
-	 * @param string		The sessions name
-	 * @return	object 		JSession
+	 * @param	string	$name	The sessions name
+	 *
+	 * @return	object	JSession
 	 */
-	function &_createSession( $name )
+	public function & _createSession($name)
 	{
 		$options = array();
 		$options['name'] = $name;
 
-		$session = &JFactory::getSession($options);
-		if (!is_a($session->get('registry'), 'JRegistry')) {
+		$session = JFactory::getSession($options);
+		if (!$session->get('registry') instanceof JRegistry) {
 			// Registry has been corrupted somehow
 			$session->set('registry', new JRegistry('session'));
 		}
@@ -204,51 +278,83 @@ class JInstallation extends JApplication
 	}
 
 	/**
-	 * returns the langauge code and help url set in the localise.xml file.
-	 * Used for forcing a particular language in localised releases
+	 * Returns the language code and help url set in the localise.xml file.
+	 * Used for forcing a particular language in localised releases.
+	 *
+	 * @return	bool|array	False on failure, array on success.
 	 */
-	function getLocalise()
+	public function getLocalise()
 	{
-		$xml = & JFactory::getXMLParser('Simple');
+		$xml = JFactory::getXML(JPATH_SITE . '/installation/localise.xml');
 
-		if (!$xml->loadFile(JPATH_SITE.DS.'installation'.DS.'localise.xml')) {
-			return 'no file'; //null;
+		if (!$xml) {
+			return false;
 		}
 
 		// Check that it's a localise file
-		if ($xml->document->name() != 'localise') {
-			return 'not a localise'; //null;
+		if ($xml->getName() != 'localise') {
+			return false;
 		}
 
-		$tags =  $xml->document->children();
 		$ret = array();
-		$ret['lang'] 	= $tags[0]->data();
-		$ret['helpurl'] = $tags[1]->data();
-		$ret['debug']	= $tags[2]->data();
-		return  $ret;
 
+		$ret['language'] = (string)$xml->forceLang;
+		$ret['helpurl'] = (string)$xml->helpurl;
+		$ret['debug'] = (string)$xml->debug;
+		$ret['sampledata'] = (string)$xml->sampledata;
+
+		return $ret;
 	}
 
 	/**
-	 * Returns the installed admin language files in the administrative and
-	 * front-end area.
-	 *
-	 * @access private
-	 * @return	array 		Array with installed language packs in admin area
-	 */
-	function getLocaliseAdmin()
-	{
-		jimport('joomla.filesystem.folder');
+ 	 * Returns the installed language files in the administrative and
+ 	 * front-end area.
+ 	 *
+ 	 * @param	boolean	$db
+ 	 *
+ 	 * @return array Array with installed language packs in admin and site area
+ 	 */
+ 	public function getLocaliseAdmin($db=false)
+ 	{
+ 		jimport('joomla.filesystem.folder');
 
-		// Read the files in the admin area
-		$path = JLanguage::getLanguagePath(JPATH_SITE.DS.'administrator');
-		$langfiles['admin'] = JFolder::folders( $path );
+ 		// Read the files in the admin area
+ 		$path = JLanguage::getLanguagePath(JPATH_ADMINISTRATOR);
+ 		$langfiles['admin'] = JFolder::folders($path);
 
-		$path = JLanguage::getLanguagePath(JPATH_SITE);
-		$langfiles['site'] = JFolder::folders( $path );
+ 		// Read the files in the site area
+ 		$path = JLanguage::getLanguagePath(JPATH_SITE);
+ 		$langfiles['site'] = JFolder::folders($path);
 
-		return $langfiles;
-	}
+ 		if ($db) {
+ 			$langfiles_disk = $langfiles;
+ 			$langfiles = array();
+ 			$langfiles['admin'] = array();
+ 			$langfiles['site'] = array();
+ 			$query = $db->getQuery(true);
+ 			$query->select('element,client_id');
+ 			$query->from('#__extensions');
+ 			$query->where('type = '.$db->quote('language'));
+ 			$db->setQuery($query);
+ 			$langs = $db->loadObjectList();
+ 			foreach ($langs as $lang)
+ 			{
+ 				switch($lang->client_id)
+ 				{
+ 					case 0: // site
+ 						if (in_array($lang->element, $langfiles_disk['site'])) {
+ 							$langfiles['site'][] = $lang->element;
+ 						}
+ 						break;
+ 					case 1: // administrator
+ 						if (in_array($lang->element, $langfiles_disk['admin'])) {
+ 							$langfiles['admin'][] = $lang->element;
+ 						}
+ 						break;
+ 				}
+ 			}
+ 		}
+
+ 		return $langfiles;
+ 	}
 }
-
-?>

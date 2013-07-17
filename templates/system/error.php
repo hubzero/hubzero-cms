@@ -1,56 +1,55 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @package		Joomla.Site
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 if (!isset($this->error)) {
-	$this->error = JError::raiseWarning( 403, JText::_('ALERTNOTAUTH') );
-	$this->debug = false; 
+	$this->error = JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	$this->debug = false;
 }
+//get language and direction
+$doc = JFactory::getDocument();
+$this->language = $doc->language;
+$this->direction = $doc->direction;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
-	<title><?php echo $this->error->code ?> - <?php echo $this->title; ?></title>
+	<title><?php echo $this->error->getCode(); ?> - <?php echo $this->title; ?></title>
 	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/error.css" type="text/css" />
-	<?php if($this->direction == 'rtl') : ?>
-	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/error_rtl.css" type="text/css" />
+	<?php if ($this->direction == 'rtl') : ?>
+	<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/error_rtl.css" type="text/css" />
 	<?php endif; ?>
 </head>
 <body>
-	<div align="center">
+	<div class="error">
 		<div id="outline">
 		<div id="errorboxoutline">
-			<div id="errorboxheader"><?php echo $this->error->code ?> - <?php echo $this->error->message ?></div>
+			<div id="errorboxheader"><?php echo $this->error->getCode(); ?> - <?php echo $this->error->getMessage(); ?></div>
 			<div id="errorboxbody">
-			<p><strong><?php echo JText::_('You may not be able to visit this page because of:'); ?></strong></p>
+			<p><strong><?php echo JText::_('JERROR_LAYOUT_NOT_ABLE_TO_VISIT'); ?></strong></p>
 				<ol>
-					<li><?php echo JText::_('An out-of-date bookmark/favourite'); ?></li>
-					<li><?php echo JText::_('A search engine that has an out-of-date listing for this site'); ?></li>
-					<li><?php echo JText::_('A mis-typed address'); ?></li>
-					<li><?php echo JText::_('You have no access to this page'); ?></li>
-					<li><?php echo JText::_('The requested resource was not found'); ?></li>
-					<li><?php echo JText::_('An error has occurred while processing your request.'); ?></li>
+					<li><?php echo JText::_('JERROR_LAYOUT_AN_OUT_OF_DATE_BOOKMARK_FAVOURITE'); ?></li>
+					<li><?php echo JText::_('JERROR_LAYOUT_SEARCH_ENGINE_OUT_OF_DATE_LISTING'); ?></li>
+					<li><?php echo JText::_('JERROR_LAYOUT_MIS_TYPED_ADDRESS'); ?></li>
+					<li><?php echo JText::_('JERROR_LAYOUT_YOU_HAVE_NO_ACCESS_TO_THIS_PAGE'); ?></li>
+					<li><?php echo JText::_('JERROR_LAYOUT_REQUESTED_RESOURCE_WAS_NOT_FOUND'); ?></li>
+					<li><?php echo JText::_('JERROR_LAYOUT_ERROR_HAS_OCCURRED_WHILE_PROCESSING_YOUR_REQUEST'); ?></li>
 				</ol>
-			<p><strong><?php echo JText::_('Please try one of the following pages:'); ?></strong></p>
-			<p>
+			<p><strong><?php echo JText::_('JERROR_LAYOUT_PLEASE_TRY_ONE_OF_THE_FOLLOWING_PAGES'); ?></strong></p>
+
 				<ul>
-					<li><a href="<?php echo $this->baseurl; ?>/index.php" title="<?php echo JText::_('Go to the home page'); ?>"><?php echo JText::_('Home Page'); ?></a></li>
+					<li><a href="<?php echo $this->baseurl; ?>/index.php" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE'); ?>"><?php echo JText::_('JERROR_LAYOUT_HOME_PAGE'); ?></a></li>
 				</ul>
-			</p>
-			<p><?php echo JText::_('If difficulties persist, please contact the system administrator of this site.'); ?></p>
+
+			<p><?php echo JText::_('JERROR_LAYOUT_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR'); ?>.</p>
 			<div id="techinfo">
-			<p><?php echo $this->error->message; ?></p>
+			<p><?php echo $this->error->getMessage(); ?></p>
 			<p>
-				<?php if($this->debug) :
+				<?php if ($this->debug) :
 					echo $this->renderBacktrace();
 				endif; ?>
 			</p>

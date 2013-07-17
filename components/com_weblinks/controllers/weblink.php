@@ -1,137 +1,290 @@
 <?php
 /**
- * @version		$Id: weblink.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// no direct access
+defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controllerform');
 
 /**
- * Weblinks Weblink Controller
- *
- * @package		Joomla
- * @subpackage	Weblinks
- * @since 1.5
+ * @package		Joomla.Site
+ * @subpackage	com_weblinks
+ * @since		1.5
  */
-class WeblinksControllerWeblink extends WeblinksController
+class WeblinksControllerWeblink extends JControllerForm
 {
 	/**
-	* Edit a weblink and show the edit form
-	*
-	* @acces public
-	* @since 1.5
-	*/
-	function edit()
+	 * @since	1.6
+	 */
+	protected $view_item = 'form';
+
+	/**
+	 * @since	1.6
+	 */
+	protected $view_list = 'categories';
+
+	/**
+	 * Method to add a new record.
+	 *
+	 * @return	boolean	True if the article can be added, false if not.
+	 * @since	1.6
+	 */
+	public function add()
 	{
-		$user = & JFactory::getUser();
-
-		// Make sure you are logged in
-		if ($user->get('aid', 0) < 1) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-			return;
+		if (!parent::add()) {
+			// Redirect to the return page.
+			$this->setRedirect($this->getReturnPage());
 		}
-
-		JRequest::setVar('view', 'weblink');
-		JRequest::setVar('layout', 'form');
-
-		$model =& $this->getModel('weblink');
-		$model->checkout();
-
-		parent::display();
 	}
 
 	/**
-	* Saves the record on an edit form submit
-	*
-	* @acces public
-	* @since 1.5
-	*/
-	function save()
+	 * Method override to check if you can add a new record.
+	 *
+	 * @param	array	$data	An array of input data.
+	 * @return	boolean
+	 * @since	1.6
+	 */
+	protected function allowAdd($data = array())
 	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		// Initialise variables.
+		$user		= JFactory::getUser();
+		$categoryId	= JArrayHelper::getValue($data, 'catid', JRequest::getInt('id'), 'int');
+		$allow		= null;
 
-		// Get some objects from the JApplication
-		$db		=& JFactory::getDBO();
-		$user	=& JFactory::getUser();
-
-		// Must be logged in
-		if ($user->get('id') < 1) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-			return;
+		if ($categoryId) {
+			// If the category has been passed in the URL check it.
+			$allow	= $user->authorise('core.create', $this->option.'.category.'.$categoryId);
 		}
 
-		//get data from the request
-		$post = JRequest::getVar('jform', array(), 'post', 'array');
-
-		$model = $this->getModel('weblink');
-
-		if ($model->store($post)) {
-			$msg = JText::_( 'Weblink Saved' );
+		if ($allow === null) {
+			// In the absense of better information, revert to the component permissions.
+			return parent::allowAdd($data);
 		} else {
-			$msg = JText::_( 'Error Saving Weblink' );
+			return $allow;
 		}
-
-		// Check the table in so it can be edited.... we are done with it anyway
-		$model->checkin();
-
-		// admin users gid
-		$gid = 25;
-
-		// list of admins
-		$query = 'SELECT email, name' .
-				' FROM #__users' .
-				' WHERE gid = ' . $gid .
-				' AND sendEmail = 1';
-		$db->setQuery($query);
-		if (!$db->query()) {
-			JError::raiseError( 500, $db->stderr(true));
-			return;
-		}
-		$adminRows = $db->loadObjectList();
-
-		// send email notification to admins
-		foreach ($adminRows as $adminRow) {
-			JUtility::sendAdminMail($adminRow->name, $adminRow->email, '',  JText::_('Web Link'), $post['title']." URL link ".$post[url], $user->get('username'), JURI::base());
-		}
-
-		$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=category&id='.$post['catid'], false), $msg);
 	}
 
 	/**
-	* Cancel the editing of a web link
-	*
-	* @access	public
-	* @since	1.5
-	*/
-	function cancel()
+	 * Method to check if you can add a new record.
+	 *
+	 * @param	array	$data	An array of input data.
+	 * @param	string	$key	The name of the key for the primary key.
+	 *
+	 * @return	boolean
+	 * @since	1.6
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Get some objects from the JApplication
-		$user	= & JFactory::getUser();
+		// Initialise variables.
+		$recordId	= (int) isset($data[$key]) ? $data[$key] : 0;
+		$categoryId = 0;
 
-		// Must be logged in
-		if ($user->get('id') < 1) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-			return;
+		if ($recordId) {
+			$categoryId = (int) $this->getModel()->getItem($recordId)->catid;
 		}
 
-		// Checkin the weblink
-		$model = $this->getModel('weblink');
-		$model->checkin();
+		if ($categoryId) {
+			// The category has been set. Check the category permissions.
+			return JFactory::getUser()->authorise('core.edit', $this->option.'.category.'.$categoryId);
+		} else {
+			// Since there is no asset tracking, revert to the component permissions.
+			return parent::allowEdit($data, $key);
+		}
+	}
 
-		$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=categories', false));
+	/**
+	 * Method to cancel an edit.
+	 *
+	 * @param	string	$key	The name of the primary key of the URL variable.
+	 *
+	 * @return	Boolean	True if access level checks pass, false otherwise.
+	 * @since	1.6
+	 */
+	public function cancel($key = 'w_id')
+	{
+		parent::cancel($key);
+
+		// Redirect to the return page.
+		$this->setRedirect($this->getReturnPage());
+	}
+
+	/**
+	 * Method to edit an existing record.
+	 *
+	 * @param	string	$key	The name of the primary key of the URL variable.
+	 * @param	string	$urlVar	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return	Boolean	True if access level check and checkout passes, false otherwise.
+	 * @since	1.6
+	 */
+	public function edit($key = null, $urlVar = 'w_id')
+	{
+		$result = parent::edit($key, $urlVar);
+
+		return $result;
+	}
+
+	/**
+	 * Method to get a model object, loading it if required.
+	 *
+	 * @param	string	$name	The model name. Optional.
+	 * @param	string	$prefix	The class prefix. Optional.
+	 * @param	array	$config	Configuration array for model. Optional.
+	 *
+	 * @return	object	The model.
+	 * @since	1.5
+	 */
+	public function getModel($name = 'form', $prefix = '', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
+	}
+
+	/**
+	 * Gets the URL arguments to append to an item redirect.
+	 *
+	 * @param	int		$recordId	The primary key id for the item.
+	 * @param	string	$urlVar		The name of the URL variable for the id.
+	 *
+	 * @return	string	The arguments to append to the redirect URL.
+	 * @since	1.6
+	 */
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
+	{
+		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
+		$itemId	= JRequest::getInt('Itemid');
+		$return	= $this->getReturnPage();
+
+		if ($itemId) {
+			$append .= '&Itemid='.$itemId;
+		}
+
+		if ($return) {
+			$append .= '&return='.base64_encode($return);
+		}
+
+		return $append;
+	}
+
+	/**
+	 * Get the return URL.
+	 *
+	 * If a "return" variable has been passed in the request
+	 *
+	 * @return	string	The return URL.
+	 * @since	1.6
+	 */
+	protected function getReturnPage()
+	{
+		$return = JRequest::getVar('return', null, 'default', 'base64');
+
+		if (empty($return) || !JUri::isInternal(base64_decode($return))) {
+			return JURI::base();
+		}
+		else {
+			return base64_decode($return);
+		}
+	}
+
+	/**
+	 * Function that allows child controller access to model data after the data has been saved.
+	 *
+	 * @param	JModel	$model		The data model object.
+	 * @param	array	$validData	The validated data.
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
+	protected function postSaveHook(JModel &$model, $validData = array())
+	{
+		$task = $this->getTask();
+
+		if ($task == 'save') {
+			$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=category&id='.$validData['catid'], false));
+		}
+	}
+
+	/**
+	 * Method to save a record.
+	 *
+	 * @param	string	$key	The name of the primary key of the URL variable.
+	 * @param	string	$urlVar	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 *
+	 * @return	Boolean	True if successful, false otherwise.
+	 * @since	1.6
+	 */
+	public function save($key = null, $urlVar = 'w_id')
+	{
+		$result = parent::save($key, $urlVar);
+
+		// If ok, redirect to the return page.
+		if ($result) {
+			$this->setRedirect($this->getReturnPage());
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Go to a weblink
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
+	public function go()
+	{
+		// Get the ID from the request
+		$id = JRequest::getInt('id');
+
+		// Get the model, requiring published items
+		$modelLink	= $this->getModel('Weblink', '', array('ignore_request' => true));
+		$modelLink->setState('filter.published', 1);
+
+		// Get the item
+		$link	= $modelLink->getItem($id);
+
+		// Make sure the item was found.
+		if (empty($link)) {
+			return JError::raiseWarning(404, JText::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'));
+		}
+
+		// Check whether item access level allows access.
+		$user	= JFactory::getUser();
+		$groups	= $user->getAuthorisedViewLevels();
+
+		if (!in_array($link->access, $groups)) {
+			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Check whether category access level allows access.
+		$modelCat = $this->getModel('Category', 'WeblinksModel', array('ignore_request' => true));
+		$modelCat->setState('filter.published', 1);
+
+		// Get the category
+		$category = $modelCat->getCategory($link->catid);
+
+		// Make sure the category was found.
+		if (empty($category)) {
+			return JError::raiseWarning(404, JText::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'));
+		}
+
+		// Check whether item access level allows access.
+		if (!in_array($category->access, $groups)) {
+			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Redirect to the URL
+		// TODO: Probably should check for a valid http link
+		if ($link->url) {
+			$modelLink->hit($id);
+			JFactory::getApplication()->redirect($link->url);
+		}
+		else {
+			return JError::raiseWarning(404, JText::_('COM_WEBLINKS_ERROR_WEBLINK_URL_INVALID'));
+		}
 	}
 }
-
-?>

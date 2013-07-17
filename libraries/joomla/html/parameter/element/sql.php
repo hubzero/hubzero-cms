@@ -1,44 +1,79 @@
 <?php
 /**
-* @version		$Id:sql.php 6961 2007-03-15 16:06:53Z tcp $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a SQL element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  12.1    Use JFormFieldSQL Instead.
  */
-
 class JElementSQL extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'SQL';
+	 * Element name
+	 *
+	 * @var    string
+	 */
+	protected $_name = 'SQL';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Fetch the sql element
+	 *
+	 * @param   string       $name          Element name
+	 * @param   string       $value         Element value
+	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
+	 * @param   string       $control_name  Control name
+	 *
+	 * @return  string
+	 *
+	 * @deprecated  12.1
+	 * @since   11.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db			= & JFactory::getDBO();
+		// Deprecation warning.
+		JLog::add('JElementSQL::getOptions is deprecated.', JLog::WARNING, 'deprecated');
+
+		$db = JFactory::getDbo();
 		$db->setQuery($node->attributes('query'));
 		$key = ($node->attributes('key_field') ? $node->attributes('key_field') : 'value');
 		$val = ($node->attributes('value_field') ? $node->attributes('value_field') : $name);
-		return JHTML::_('select.genericlist',  $db->loadObjectList(), ''.$control_name.'['.$name.']', 'class="inputbox"', $key, $val, $value, $control_name.$name);
+
+		$options = $db->loadObjectlist();
+
+		// Check for an error.
+		if ($db->getErrorNum())
+		{
+			JError::raiseWarning(500, $db->getErrorMsg());
+			return false;
+		}
+
+		if (!$options)
+		{
+			$options = array();
+		}
+
+		return JHtml::_(
+			'select.genericlist',
+			$options,
+			$control_name . '[' . $name . ']',
+			array(
+				'id' => $control_name . $name,
+				'list.attr' => 'class="inputbox"',
+				'list.select' => $value,
+				'option.key' => $key,
+				'option.text' => $val
+			)
+		);
 	}
 }

@@ -1,16 +1,11 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
@@ -22,14 +17,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<tr>
 		<td align="center">
 			<h1>
-				<?php echo $this->error->code ?> - <?php echo JText::_('An error has occurred') ?>
+				<?php echo $this->error->getCode() ?> - <?php echo JText::_('JERROR_AN_ERROR_HAS_OCCURRED') ?>
+			</h1>
 		</td>
 	</tr>
 	<tr>
 		<td width="39%" align="center">
-			<p><?php echo $this->error->message ?></p>
+			<p><?php echo $this->error->getMessage(); ?></p>
+			<p><a href="index.php"><?php echo JText::_('JGLOBAL_TPL_CPANEL_LINK_TEXT') ?></a></p>
 			<p>
-				<?php if($this->debug) :
+				<?php if ($this->debug) :
 					echo $this->renderBacktrace();
 				endif; ?>
 			</p>

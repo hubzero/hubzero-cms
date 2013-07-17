@@ -1,58 +1,58 @@
 <?php
 /**
-* @version		$Id: article.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package		Joomla.Administrator
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die;
 
+/**
+ * Renders an article element
+ *
+ * @package		Joomla.Administrator
+ * @subpackage	com_content
+ * @deprecated	JParameter is deprecated and will be removed in a future version. Use JForm instead.
+ * @since		1.5
+ */
 class JElementArticle extends JElement
 {
 	/**
 	 * Element name
 	 *
-	 * @access	protected
 	 * @var		string
 	 */
 	var	$_name = 'Article';
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
-		global $mainframe;
-
-		$db			=& JFactory::getDBO();
-		$doc 		=& JFactory::getDocument();
-		$template 	= $mainframe->getTemplate();
+		$app		= JFactory::getApplication();
+		$db			= JFactory::getDbo();
+		$doc		= JFactory::getDocument();
+		$template	= $app->getTemplate();
 		$fieldName	= $control_name.'['.$name.']';
-		$article =& JTable::getInstance('content');
+		$article = JTable::getInstance('content');
 		if ($value) {
 			$article->load($value);
 		} else {
-			$article->title = JText::_('Select an Article');
+			$article->title = JText::_('COM_CONTENT_SELECT_AN_ARTICLE');
 		}
 
 		$js = "
-		function jSelectArticle(id, title, object) {
+		function jSelectArticle_".$name."(id, title, catid, object) {
 			document.getElementById(object + '_id').value = id;
 			document.getElementById(object + '_name').value = title;
-			document.getElementById('sbox-window').close();
+			SqueezeBox.close();
 		}";
 		$doc->addScriptDeclaration($js);
 
-		$link = 'index.php?option=com_content&amp;task=element&amp;tmpl=component&amp;object='.$name;
+		$link = 'index.php?option=com_content&amp;task=element&amp;tmpl=component&amp;function=jSelectArticle_'.$name;
 
-		JHTML::_('behavior.modal', 'a.modal');
-		$html = "\n".'<div style="float: left;"><input style="background: #ffffff;" type="text" id="'.$name.'_name" value="'.htmlspecialchars($article->title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
-//		$html .= "\n &nbsp; <input class=\"inputbox modal-button\" type=\"button\" value=\"".JText::_('Select')."\" />";
-		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.JText::_('Select an Article').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 650, y: 375}}">'.JText::_('Select').'</a></div></div>'."\n";
+		JHtml::_('behavior.modal', 'a.modal');
+		$html = "\n".'<div class="fltlft"><input type="text" id="'.$name.'_name" value="'.htmlspecialchars($article->title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
+//		$html .= "\n &#160; <input class=\"inputbox modal-button\" type=\"button\" value=\"".JText::_('JSELECT')."\" />";
+		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.JText::_('COM_CONTENT_SELECT_AN_ARTICLE').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 650, y: 375}}">'.JText::_('JSELECT').'</a></div></div>'."\n";
 		$html .= "\n".'<input type="hidden" id="'.$name.'_id" name="'.$fieldName.'" value="'.(int)$value.'" />';
 
 		return $html;

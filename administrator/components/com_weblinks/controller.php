@@ -1,205 +1,54 @@
 <?php
 /**
- * @version		$Id: controller.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package		Joomla.Administrator
+ * @subpackage	com_weblinks
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.controller' );
+defined('_JEXEC') or die;
 
 /**
  * Weblinks Weblink Controller
  *
- * @package		Joomla
- * @subpackage	Weblinks
- * @since 1.5
+ * @package		Joomla.Administrator
+ * @subpackage	com_weblinks
+ * @since		1.5
  */
-class WeblinksController extends JController
+class WeblinksController extends JControllerLegacy
 {
-	function __construct($config = array())
+	/**
+	 * Method to display a view.
+	 *
+	 * @param	boolean			$cachable	If true, the view output will be cached
+	 * @param	array			$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return	JController		This object to support chaining.
+	 * @since	1.5
+	 */
+	public function display($cachable = false, $urlparams = false)
 	{
-		parent::__construct($config);
+		require_once JPATH_COMPONENT.'/helpers/weblinks.php';
 
-		// Register Extra tasks
-		$this->registerTask( 'add',  'display' );
-		$this->registerTask( 'edit', 'display' );
-	}
+		// Load the submenu.
+		WeblinksHelper::addSubmenu(JRequest::getCmd('view', 'weblinks'));
 
-	function display( )
-	{
-		switch($this->getTask())
-		{
-			case 'add'     :
-			{
-				JRequest::setVar( 'hidemainmenu', 1 );
-				JRequest::setVar( 'layout', 'form'  );
-				JRequest::setVar( 'view'  , 'weblink');
-				JRequest::setVar( 'edit', false );
+		$view		= JRequest::getCmd('view', 'weblinks');
+		$layout 	= JRequest::getCmd('layout', 'default');
+		$id			= JRequest::getInt('id');
 
-				// Checkout the weblink
-				$model = $this->getModel('weblink');
-				$model->checkout();
-			} break;
-			case 'edit'    :
-			{
-				JRequest::setVar( 'hidemainmenu', 1 );
-				JRequest::setVar( 'layout', 'form'  );
-				JRequest::setVar( 'view'  , 'weblink');
-				JRequest::setVar( 'edit', true );
+		// Check for edit form.
+		if ($view == 'weblink' && $layout == 'edit' && !$this->checkEditId('com_weblinks.edit.weblink', $id)) {
+			// Somehow the person just went to the form - we don't allow that.
+			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setMessage($this->getError(), 'error');
+			$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=weblinks', false));
 
-				// Checkout the weblink
-				$model = $this->getModel('weblink');
-				$model->checkout();
-			} break;
+			return false;
 		}
 
 		parent::display();
-	}
 
-	function save()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$post	= JRequest::get('post');
-		$cid	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
-		$post['id'] = (int) $cid[0];
-
-		$model = $this->getModel('weblink');
-
-		if ($model->store($post)) {
-			$msg = JText::_( 'Weblink Saved' );
-		} else {
-			$msg = JText::_( 'Error Saving Weblink' );
-		}
-
-		// Check the table in so it can be edited.... we are done with it anyway
-		$model->checkin();
-		$link = 'index.php?option=com_weblinks';
-		$this->setRedirect($link, $msg);
-	}
-
-	function remove()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-
-		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to delete' ) );
-		}
-
-		$model = $this->getModel('weblink');
-		if(!$model->delete($cid)) {
-			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
-		}
-
-		$this->setRedirect( 'index.php?option=com_weblinks' );
-	}
-
-
-	function publish()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-
-		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to publish' ) );
-		}
-
-		$model = $this->getModel('weblink');
-		if(!$model->publish($cid, 1)) {
-			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
-		}
-
-		$this->setRedirect( 'index.php?option=com_weblinks' );
-	}
-
-
-	function unpublish()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-
-		if (count( $cid ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
-		}
-
-		$model = $this->getModel('weblink');
-		if(!$model->publish($cid, 0)) {
-			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
-		}
-
-		$this->setRedirect( 'index.php?option=com_weblinks' );
-	}
-
-	function cancel()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		// Checkin the weblink
-		$model = $this->getModel('weblink');
-		$model->checkin();
-
-		$this->setRedirect( 'index.php?option=com_weblinks' );
-	}
-
-
-	function orderup()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$model = $this->getModel('weblink');
-		$model->move(-1);
-
-		$this->setRedirect( 'index.php?option=com_weblinks');
-	}
-
-	function orderdown()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$model = $this->getModel('weblink');
-		$model->move(1);
-
-		$this->setRedirect( 'index.php?option=com_weblinks');
-	}
-
-	function saveorder()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$cid 	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$order 	= JRequest::getVar( 'order', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-		JArrayHelper::toInteger($order);
-
-		$model = $this->getModel('weblink');
-		$model->saveorder($cid, $order);
-
-		$msg = JText::_( 'New ordering saved' );
-		$this->setRedirect( 'index.php?option=com_weblinks', $msg );
+		return $this;
 	}
 }

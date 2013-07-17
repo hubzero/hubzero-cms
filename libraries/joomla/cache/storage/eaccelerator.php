@@ -1,59 +1,52 @@
 <?php
 /**
- * @version		$Id: eaccelerator.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla.Framework
- * @subpackage	Cache
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @package     Joomla.Platform
+ * @subpackage  Cache
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * eAccelerator cache storage handler
  *
- * @package		Joomla.Framework
- * @subpackage	Cache
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Cache
+ * @link        http://eaccelerator.net/
+ * @since       11.1
  */
 class JCacheStorageEaccelerator extends JCacheStorage
 {
 	/**
-	* Constructor
-	*
-	* @access protected
-	* @param array $options optional parameters
-	*/
-	function __construct( $options = array() )
+	 * Constructor
+	 *
+	 * @param   array  $options  Optional parameters.
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($options = array())
 	{
 		parent::__construct($options);
-
-		$config			=& JFactory::getConfig();
-		$this->_hash	= $config->getValue('config.secret');
 	}
 
 	/**
 	 * Get cached data by id and group
 	 *
-	 * @access	public
-	 * @param	string	$id			The cache data id
-	 * @param	string	$group		The cache data group
-	 * @param	boolean	$checkTime	True to verify cache time expiration threshold
-	 * @return	mixed	Boolean false on failure or a cached data string
-	 * @since	1.5
+	 * @param   string   $id         The cache data id
+	 * @param   string   $group      The cache data group
+	 * @param   boolean  $checkTime  True to verify cache time expiration threshold
+	 *
+	 * @return  mixed  Boolean false on failure or a cached data string
+	 *
+	 * @since   11.1
 	 */
-	function get($id, $group, $checkTime)
+	public function get($id, $group, $checkTime = true)
 	{
 		$cache_id = $this->_getCacheId($id, $group);
-		$this->_setExpire($cache_id);
 		$cache_content = eaccelerator_get($cache_id);
-		if($cache_content === null)
+		if ($cache_content === null)
 		{
 			return false;
 		}
@@ -61,62 +54,125 @@ class JCacheStorageEaccelerator extends JCacheStorage
 	}
 
 	/**
+	 * Get all cached data
+	 *
+	 * @return  array    data
+	 *
+	 * @since   11.1
+	 */
+	public function getAll()
+	{
+		parent::getAll();
+
+		$keys = eaccelerator_list_keys();
+
+		$secret = $this->_hash;
+		$data = array();
+
+		foreach ($keys as $key)
+		{
+			/* Trim leading ":" to work around list_keys namespace bug in eAcc. This will still work when bug is fixed */
+			// http://eaccelerator.net/ticket/287
+			$name = ltrim($key['name'], ':');
+			$namearr = explode('-', $name);
+
+			if ($namearr !== false && $namearr[0] == $secret && $namearr[1] == 'cache')
+			{
+				$group = $namearr[2];
+
+				if (!isset($data[$group]))
+				{
+					$item = new JCacheStorageHelper($group);
+				}
+				else
+				{
+					$item = $data[$group];
+				}
+
+				$item->updateSize($key['size'] / 1024);
+
+				$data[$group] = $item;
+			}
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Store the data to by id and group
 	 *
-	 * @access	public
-	 * @param	string	$id		The cache data id
-	 * @param	string	$group	The cache data group
-	 * @param	string	$data	The data to store in cache
-	 * @return	boolean	True on success, false otherwise
-	 * @since	1.5
+	 * @param   string  $id     The cache data id
+	 * @param   string  $group  The cache data group
+	 * @param   string  $data   The data to store in cache
+	 *
+	 * @return  boolean  True on success, false otherwise
+	 *
+	 * @since   11.1
 	 */
-	function store($id, $group, $data)
+	public function store($id, $group, $data)
 	{
 		$cache_id = $this->_getCacheId($id, $group);
-		eaccelerator_put($cache_id.'_expire', time());
 		return eaccelerator_put($cache_id, $data, $this->_lifetime);
 	}
 
 	/**
 	 * Remove a cached data entry by id and group
 	 *
-	 * @access	public
-	 * @param	string	$id		The cache data id
-	 * @param	string	$group	The cache data group
-	 * @return	boolean	True on success, false otherwise
-	 * @since	1.5
+	 * @param   string  $id     The cache data id
+	 * @param   string  $group  The cache data group
+	 *
+	 * @return  boolean  True on success, false otherwise
+	 *
+	 * @since   11.1
 	 */
-	function remove($id, $group)
+	public function remove($id, $group)
 	{
 		$cache_id = $this->_getCacheId($id, $group);
-		eaccelerator_rm($cache_id.'_expire');
 		return eaccelerator_rm($cache_id);
 	}
 
 	/**
 	 * Clean cache for a group given a mode.
 	 *
-	 * group mode		: cleans all cache in the group
-	 * notgroup mode	: cleans all cache not in the group
+	 * @param   string  $group  The cache data group
+	 * @param   string  $mode   The mode for cleaning cache [group|notgroup]
+	 * group mode    : cleans all cache in the group
+	 * notgroup mode : cleans all cache not in the group
 	 *
-	 * @access	public
-	 * @param	string	$group	The cache data group
-	 * @param	string	$mode	The mode for cleaning cache [group|notgroup]
-	 * @return	boolean	True on success, false otherwise
-	 * @since	1.5
+	 * @return  boolean  True on success, false otherwise
+	 *
+	 * @since   11.1
 	 */
-	function clean($group, $mode)
+	public function clean($group, $mode = null)
 	{
+		$keys = eaccelerator_list_keys();
+
+		$secret = $this->_hash;
+
+		if (is_array($keys))
+		{
+			foreach ($keys as $key)
+			{
+				/* Trim leading ":" to work around list_keys namespace bug in eAcc. This will still work when bug is fixed */
+				$key['name'] = ltrim($key['name'], ':');
+
+				if (strpos($key['name'], $secret . '-cache-' . $group . '-') === 0 xor $mode != 'group')
+				{
+					eaccelerator_rm($key['name']);
+				}
+			}
+		}
 		return true;
 	}
 
 	/**
 	 * Garbage collect expired cache data
 	 *
-	 * @access public
-	 * @return boolean  True on success, false otherwise.
+	 * @return  boolean  True on success, false otherwise.
+	 *
+	 * @since   11.1
 	 */
-	function gc()
+	public function gc()
 	{
 		return eaccelerator_gc();
 	}
@@ -124,49 +180,78 @@ class JCacheStorageEaccelerator extends JCacheStorage
 	/**
 	 * Test to see if the cache storage is available.
 	 *
-	 * @static
-	 * @access public
 	 * @return boolean  True on success, false otherwise.
+	 *
+	 * @since   11.1
 	 */
-	function test()
+	public static function test()
 	{
 		return (extension_loaded('eaccelerator') && function_exists('eaccelerator_get'));
 	}
 
 	/**
-	 * Set expire time on each call since memcache sets it on cache creation.
+	 * Lock cached item
 	 *
-	 * @access private
+	 * @param   string   $id        The cache data id
+	 * @param   string   $group     The cache data group
+	 * @param   integer  $locktime  Cached item max lock time
 	 *
-	 * @param string  $key   Cache key to expire.
-	 * @param integer $lifetime  Lifetime of the data in seconds.
+	 * @return  boolean  True on success, false otherwise.
+	 *
+	 * @since   11.1
 	 */
-	function _setExpire($key)
+	public function lock($id, $group, $locktime)
 	{
-		$lifetime	= $this->_lifetime;
-		$expire		= eaccelerator_get($key.'_expire');
+		$returning = new stdClass;
+		$returning->locklooped = false;
 
-		// set prune period
-		if ($expire + $lifetime < time()) {
-			eaccelerator_rm($key);
-			eaccelerator_rm($key.'_expire');
-		} else {
-			eaccelerator_put($key.'_expire',  time());
+		$looptime = $locktime * 10;
+
+		$cache_id = $this->_getCacheId($id, $group);
+
+		$data_lock = eaccelerator_lock($cache_id);
+
+		if ($data_lock === false)
+		{
+
+			$lock_counter = 0;
+
+			// Loop until you find that the lock has been released.
+			// That implies that data get from other thread has finished
+			while ($data_lock === false)
+			{
+
+				if ($lock_counter > $looptime)
+				{
+					$returning->locked = false;
+					$returning->locklooped = true;
+					break;
+				}
+
+				usleep(100);
+				$data_lock = eaccelerator_lock($cache_id);
+				$lock_counter++;
+			}
+
 		}
+		$returning->locked = $data_lock;
+
+		return $returning;
 	}
 
 	/**
-	 * Get a cache_id string from an id/group pair
+	 * Unlock cached item
 	 *
-	 * @access	private
-	 * @param	string	$id		The cache data id
-	 * @param	string	$group	The cache data group
-	 * @return	string	The cache_id string
-	 * @since	1.5
+	 * @param   string  $id     The cache data id
+	 * @param   string  $group  The cache data group
+	 *
+	 * @return  boolean  True on success, false otherwise.
+	 *
+	 * @since   11.1
 	 */
-	function _getCacheId($id, $group)
+	public function unlock($id, $group = null)
 	{
-		$name	= md5($this->_application.'-'.$id.'-'.$this->_hash.'-'.$this->_language);
-		return 'cache_'.$group.'-'.$name;
+		$cache_id = $this->_getCacheId($id, $group);
+		return eaccelerator_unlock($cache_id);
 	}
 }

@@ -1,12 +1,6 @@
 /**
- * CSS Document for offline page
- * @version $Id: error.css 14401 2010-01-26 14:10:00Z louis $
- * @package Joomla
- * @copyright Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license GNU/GPL, see LICENSE.php
- * Joomla! is free software and parts of it may contain or be derived from the
- * GNU General Public License or other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 /* Start Common Styles */
@@ -33,27 +27,32 @@ body {
 	margin-top: 0px;
 }
 
+.error {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 table, td, th, div, pre, blockquote, ul, ol, dl, address,.componentheading,.contentheading,.contentpagetitle,.sectiontableheader,.newsfeedheading {
 	font-family: helvetica, arial, sans-serif;
 	font-weight: normal;
 }
 
 #outline {
-	width: 814px;
-	margin: 0px;
+	width: 900px;
+	margin: 0 auto;
 	padding: 0px;
 	padding-top: 60px;
 	padding-bottom: 60px;
 	background: #FFFFFF;
 }
 #errorboxoutline {
-	width: 600px;
+	width: 900px;
 	margin: 0px;
 	padding: 0px;
 	border: 1px solid #000000;
 }
 #errorboxheader {
-	width: 600px;
+	width: 900px;
 	margin: 0px;
 	padding: 0px;
 	background: #E44249;

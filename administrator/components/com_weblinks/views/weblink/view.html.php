@@ -1,111 +1,82 @@
 <?php
 /**
-* @version		$Id: view.html.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla
-* @subpackage	Weblinks
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die;
 
 /**
- * HTML View class for the WebLinks component
+ * View to edit a weblink.
  *
- * @static
- * @package		Joomla
- * @subpackage	Weblinks
- * @since 1.0
+ * @package		Joomla.Administrator
+ * @subpackage	com_weblinks
+ * @since		1.5
  */
-class WeblinksViewWeblink extends JView
+class WeblinksViewWeblink extends JViewLegacy
 {
-	function display($tpl = null)
+	protected $state;
+	protected $item;
+	protected $form;
+
+	/**
+	 * Display the view
+	 */
+	public function display($tpl = null)
 	{
-		global $mainframe;
+		$this->state	= $this->get('State');
+		$this->item		= $this->get('Item');
+		$this->form		= $this->get('Form');
 
-		if($this->getLayout() == 'form') {
-			$this->_displayForm($tpl);
-			return;
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			JError::raiseError(500, implode("\n", $errors));
+			return false;
 		}
 
-		//get the weblink
-		$weblink =& $this->get('data');
-
-		if ($weblink->url) {
-			// redirects to url if matching id found
-			$mainframe->redirect($weblink->url);
-		}
-
+		$this->addToolbar();
 		parent::display($tpl);
 	}
 
-	function _displayForm($tpl)
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since	1.6
+	 */
+	protected function addToolbar()
 	{
-		global $mainframe, $option;
+		JRequest::setVar('hidemainmenu', true);
 
-		$db		=& JFactory::getDBO();
-		$uri 	=& JFactory::getURI();
-		$user 	=& JFactory::getUser();
-		$model	=& $this->getModel();
+		$user		= JFactory::getUser();
+		$userId		= $user->get('id');
+		$isNew		= ($this->item->id == 0);
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		// Since we don't track these assets at the item level, use the category id.
+		$canDo		= WeblinksHelper::getActions($this->item->catid, 0);
 
+		JToolBarHelper::title(JText::_('COM_WEBLINKS_MANAGER_WEBLINK'), 'weblinks.png');
 
-		$lists = array();
-
-		//get the weblink
-		$weblink	=& $this->get('data');
-		$isNew		= ($weblink->id < 1);
-
-		// fail if checked out not by 'me'
-		if ($model->isCheckedOut( $user->get('id') )) {
-			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'The weblink' ), $weblink->title );
-			$mainframe->redirect( 'index.php?option='. $option, $msg );
-		}
-
-		// Edit or Create?
-		if (!$isNew)
+		// If not checked out, can save the item.
+		if (!$checkedOut && ($canDo->get('core.edit')||(count($user->getAuthorisedCategories('com_weblinks', 'core.create')))))
 		{
-			$model->checkout( $user->get('id') );
+			JToolBarHelper::apply('weblink.apply');
+			JToolBarHelper::save('weblink.save');
 		}
-		else
-		{
-			// initialise new record
-			$weblink->published = 1;
-			$weblink->approved 	= 1;
-			$weblink->order 	= 0;
-			$weblink->catid 	= JRequest::getVar( 'catid', 0, 'post', 'int' );
+		if (!$checkedOut && (count($user->getAuthorisedCategories('com_weblinks', 'core.create')))){
+			JToolBarHelper::save2new('weblink.save2new');
+		}
+		// If an existing item, can save to a copy.
+		if (!$isNew && (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0)) {
+			JToolBarHelper::save2copy('weblink.save2copy');
+		}
+		if (empty($this->item->id)) {
+			JToolBarHelper::cancel('weblink.cancel');
+		}
+		else {
+			JToolBarHelper::cancel('weblink.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		// build the html select list for ordering
-		$query = 'SELECT ordering AS value, title AS text'
-			. ' FROM #__weblinks'
-			. ' WHERE catid = ' . (int) $weblink->catid
-			. ' ORDER BY ordering';
-
-		$lists['ordering'] 			= JHTML::_('list.specificordering',  $weblink, $weblink->id, $query );
-
-		// build list of categories
-		$lists['catid'] 			= JHTML::_('list.category',  'catid', $option, intval( $weblink->catid ) );
-		// build the html select list
-		$lists['published'] 		= JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $weblink->published );
-
-		//clean weblink data
-		JFilterOutput::objectHTMLSafe( $weblink, ENT_QUOTES, 'description' );
-
-		$file 	= JPATH_COMPONENT.DS.'models'.DS.'weblink.xml';
-		$params = new JParameter( $weblink->params, $file );
-
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('weblink',		$weblink);
-		$this->assignRef('params',		$params);
-
-		parent::display($tpl);
+		JToolBarHelper::divider();
+		JToolBarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS_EDIT');
 	}
 }

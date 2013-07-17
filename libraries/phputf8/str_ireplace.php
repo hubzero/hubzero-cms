@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: str_ireplace.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version $Id$
 * @package utf8
 * @subpackage strings
 */
@@ -26,11 +26,11 @@ function utf8_ireplace($search, $replace, $str, $count = NULL){
     if ( !is_array($search) ) {
 
         $slen = strlen($search);
-        $lendif = strlen($replace) - $slen;
         if ( $slen == 0 ) {
             return $str;
         }
 
+        $lendif = strlen($replace) - strlen($search);
         $search = utf8_strtolower($search);
 
         $search = preg_quote($search, '/');

@@ -1,209 +1,350 @@
 <?php
 /**
-* @version		$Id: language.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Language
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Language
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
+
+/**
+ * Allows for quoting in language .ini files.
+ */
+define('_QQ_', '"');
+
+// import some libraries
+jimport('joomla.filesystem.stream');
 
 /**
  * Languages/translation handler class
  *
- * @package 	Joomla.Framework
- * @subpackage	Language
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Language
+ * @since       11.1
  */
 class JLanguage extends JObject
 {
-	/**
-	 * Debug language, If true, highlights if string isn't found
-	 *
-	 * @var		boolean
-	 * @access	protected
-	 * @since	1.5
-	 */
-	var $_debug 	= false;
+	protected static $languages = array();
 
 	/**
-	 * The default language
-	 *
-	 * The default language is used when a language file in the requested language does not exist.
-	 *
-	 * @var		string
-	 * @access	protected
-	 * @since	1.5
+	 * Debug language, If true, highlights if string isn't found.
+	 * @var    boolean
+	 * @since  11.1
 	 */
-	var $_default	= 'en-GB';
+	protected $debug = false;
 
 	/**
-	 * An array of orphaned text
-	 *
-	 * @var		array
-	 * @access	protected
-	 * @since	1.5
+	 * The default language, used when a language file in the requested language does not exist.
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_orphans 	= array();
+	protected $default = 'en-GB';
 
 	/**
-	 * Array holding the language metadata
-	 *
-	 * @var		array
-	 * @access	protected
-	 * @since	1.5
+	 * An array of orphaned text.
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_metadata 	= null;
+	protected $orphans = array();
 
 	/**
-	 * The language to load
-	 *
-	 * @var		string
-	 * @access	protected
-	 * @since	1.5
+	 * Array holding the language metadata.
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_lang = null;
+	protected $metadata = null;
 
 	/**
-	 * List of language files that have been loaded
-	 *
-	 * @var		array of arrays
-	 * @access	public
-	 * @since	1.5
+	 * Array holding the language locale or boolean null if none.
+	 * @var    array|boolean
+	 * @since  11.1
 	 */
-	var $_paths	= array();
+	protected $locale = null;
+
+	/**
+	 * The language to load.
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $lang = null;
+
+	/**
+	 * A nested array of language files that have been loaded
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected $paths = array();
+
+	/**
+	 * List of language files that are in error state
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected $errorfiles = array();
 
 	/**
 	 * Translations
-	 *
-	 * @var		array
-	 * @access	protected
-	 * @since	1.5
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_strings = null;
+	protected $strings = null;
 
 	/**
-	 * An array of used text, used during debugging
-	 *
-	 * @var		array
-	 * @access	protected
-	 * @since	1.5
+	 * An array of used text, used during debugging.
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_used		= array();
+	protected $used = array();
 
 	/**
-	* Constructor activating the default information of the language
-	*
-	* @access	protected
-	*/
-	function __construct($lang = null)
+	 * Counter for number of loads.
+	 * @var    integer
+	 * @since  11.1
+	 */
+	protected $counter = 0;
+
+	/**
+	 * An array used to store overrides.
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected $override = array();
+
+	/**
+	 * Name of the transliterator function for this language.
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $transliterator = null;
+
+	/**
+	 * Name of the pluralSuffixesCallback function for this language.
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $pluralSuffixesCallback = null;
+
+	/**
+	 * Name of the ignoredSearchWordsCallback function for this language.
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $ignoredSearchWordsCallback = null;
+
+	/**
+	 * Name of the lowerLimitSearchWordCallback function for this language.
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $lowerLimitSearchWordCallback = null;
+
+	/**
+	 * Name of the uppperLimitSearchWordCallback function for this language
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $upperLimitSearchWordCallback = null;
+
+	/**
+	 * Name of the searchDisplayedCharactersNumberCallback function for this language.
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $searchDisplayedCharactersNumberCallback = null;
+
+	/**
+	 * Constructor activating the default information of the language.
+	 *
+	 * @param   string   $lang   The language
+	 * @param   boolean  $debug  Indicates if language debugging is enabled.
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($lang = null, $debug = false)
 	{
-		$this->_strings = array ();
+		$this->strings = array();
 
-		if ( $lang == null ) {
-			$lang = $this->_default;
+		if ($lang == null)
+		{
+			$lang = $this->default;
 		}
 
 		$this->setLanguage($lang);
+		$this->setDebug($debug);
+
+		$filename = JPATH_BASE . "/language/overrides/$lang.override.ini";
+
+		if (file_exists($filename) && $contents = $this->parse($filename))
+		{
+			if (is_array($contents))
+			{
+				$this->override = $contents;
+			}
+			unset($contents);
+		}
+
+		// Look for a language specific localise class
+		$class = str_replace('-', '_', $lang . 'Localise');
+		$paths = array();
+		if (defined('JPATH_SITE'))
+		{
+			// Note: Manual indexing to enforce load order.
+			$paths[0] = JPATH_SITE . "/language/overrides/$lang.localise.php";
+			$paths[2] = JPATH_SITE . "/language/$lang/$lang.localise.php";
+		}
+
+		if (defined('JPATH_ADMINISTRATOR'))
+		{
+			// Note: Manual indexing to enforce load order.
+			$paths[1] = JPATH_ADMINISTRATOR . "/language/overrides/$lang.localise.php";
+			$paths[3] = JPATH_ADMINISTRATOR . "/language/$lang/$lang.localise.php";
+		}
+
+		ksort($paths);
+		$path = reset($paths);
+
+		while (!class_exists($class) && $path)
+		{
+			if (file_exists($path))
+			{
+				require_once $path;
+			}
+			$path = next($paths);
+		}
+
+		if (class_exists($class))
+		{
+			/* Class exists. Try to find
+			 * -a transliterate method,
+			 * -a getPluralSuffixes method,
+			 * -a getIgnoredSearchWords method
+			 * -a getLowerLimitSearchWord method
+			 * -a getUpperLimitSearchWord method
+			 * -a getSearchDisplayCharactersNumber method
+			 */
+			if (method_exists($class, 'transliterate'))
+			{
+				$this->transliterator = array($class, 'transliterate');
+			}
+
+			if (method_exists($class, 'getPluralSuffixes'))
+			{
+				$this->pluralSuffixesCallback = array($class, 'getPluralSuffixes');
+			}
+
+			if (method_exists($class, 'getIgnoredSearchWords'))
+			{
+				$this->ignoredSearchWordsCallback = array($class, 'getIgnoredSearchWords');
+			}
+
+			if (method_exists($class, 'getLowerLimitSearchWord'))
+			{
+				$this->lowerLimitSearchWordCallback = array($class, 'getLowerLimitSearchWord');
+			}
+
+			if (method_exists($class, 'getUpperLimitSearchWord'))
+			{
+				$this->upperLimitSearchWordCallback = array($class, 'getUpperLimitSearchWord');
+			}
+
+			if (method_exists($class, 'getSearchDisplayedCharactersNumber'))
+			{
+				$this->searchDisplayedCharactersNumberCallback = array($class, 'getSearchDisplayedCharactersNumber');
+			}
+		}
 
 		$this->load();
 	}
 
 	/**
-	 * Returns a reference to a language object
+	 * Returns a language object.
 	 *
-	 * This method must be invoked as:
-	 * 		<pre>  $browser = &JLanguage::getInstance([$lang);</pre>
+	 * @param   string   $lang   The language to use.
+	 * @param   boolean  $debug  The debug mode.
 	 *
-	 * @access	public
-	 * @param	string $lang  The language to use.
-	 * @return	JLanguage  The Language object.
-	 * @since	1.5
+	 * @return  JLanguage  The Language object.
+	 *
+	 * @since   11.1
 	 */
-	static function & getInstance($lang)
+	public static function getInstance($lang, $debug = false)
 	{
-		$instance = new JLanguage($lang);
-		$reference = & $instance;
-		return $reference;
+		if (!isset(self::$languages[$lang . $debug]))
+		{
+			self::$languages[$lang . $debug] = new JLanguage($lang, $debug);
+		}
+
+		return self::$languages[$lang . $debug];
 	}
 
 	/**
-	* Translate function, mimics the php gettext (alias _) function
-	*
-	* @access	public
-	* @param	string		$string 	The string to translate
-	* @param	boolean	$jsSafe		Make the result javascript safe
-	* @return	string	The translation of the string
-	* @since	1.5
-	*/
-	function _($string, $jsSafe = false)
+	 * Translate function, mimics the php gettext (alias _) function.
+	 *
+	 * The function checks if $jsSafe is true, then if $interpretBackslashes is true.
+	 *
+	 * @param   string   $string                The string to translate
+	 * @param   boolean  $jsSafe                Make the result javascript safe
+	 * @param   boolean  $interpretBackSlashes  Interpret \t and \n
+	 *
+	 * @return  string  The translation of the string
+	 *
+	 * @since   11.1
+	 */
+	public function _($string, $jsSafe = false, $interpretBackSlashes = true)
 	{
-		//$key = str_replace( ' ', '_', strtoupper( trim( $string ) ) );echo '<br />'.$key;
-		$key = strtoupper($string);
-		$key = substr($key, 0, 1) == '_' ? substr($key, 1) : $key;
-
-		if (isset ($this->_strings[$key]))
+		// Detect empty string
+		if ($string == '')
 		{
-			$string = $this->_debug ? "&bull;".trim($this->_strings[$key], '"')."&bull;" : trim($this->_strings[$key], '"');
+			return '';
+		}
+
+		$key = strtoupper($string);
+
+		if (isset($this->strings[$key]))
+		{
+			$string = $this->debug ? '**' . $this->strings[$key] . '**' : $this->strings[$key];
 
 			// Store debug information
-			if ( $this->_debug )
+			if ($this->debug)
 			{
-				$caller = $this->_getCallerInfo();
+				$caller = $this->getCallerInfo();
 
-				if ( ! array_key_exists($key, $this->_used ) ) {
-					$this->_used[$key] = array();
+				if (!array_key_exists($key, $this->used))
+				{
+					$this->used[$key] = array();
 				}
 
-				$this->_used[$key][] = $caller;
+				$this->used[$key][] = $caller;
 			}
-
 		}
 		else
 		{
-			if (defined($string))
+			if ($this->debug)
 			{
-				$string = $this->_debug ? '!!'.constant($string).'!!' : constant($string);
+				$caller = $this->getCallerInfo();
+				$caller['string'] = $string;
 
-				// Store debug information
-				if ( $this->_debug )
+				if (!array_key_exists($key, $this->orphans))
 				{
-					$caller = $this->_getCallerInfo();
-
-					if ( ! array_key_exists($key, $this->_used ) ) {
-						$this->_used[$key] = array();
-					}
-
-					$this->_used[$key][] = $caller;
+					$this->orphans[$key] = array();
 				}
-			}
-			else
-			{
-				if ($this->_debug)
-				{
-					$caller	= $this->_getCallerInfo();
-					$caller['string'] = $string;
 
-					if ( ! array_key_exists($key, $this->_orphans ) ) {
-						$this->_orphans[$key] = array();
-					}
+				$this->orphans[$key][] = $caller;
 
-					$this->_orphans[$key][] = $caller;
-
-					$string = '??'.$string.'??';
-				}
+				$string = '??' . $string . '??';
 			}
 		}
 
-		if ($jsSafe) {
+		if ($jsSafe)
+		{
+			// Javascript filter
 			$string = addslashes($string);
+		}
+		elseif ($interpretBackSlashes)
+		{
+			// Interpret \n and \t characters
+			$string = str_replace(array('\\\\', '\t', '\n'), array("\\", "\t", "\n"), $string);
 		}
 
 		return $string;
@@ -213,48 +354,344 @@ class JLanguage extends JObject
 	 * Transliterate function
 	 *
 	 * This method processes a string and replaces all accented UTF-8 characters by unaccented
-	 * ASCII-7 "equivalents"
+	 * ASCII-7 "equivalents".
 	 *
-	 * @access	public
-	 * @param	string	$string 	The string to transliterate
-	 * @return	string	The transliteration of the string
-	 * @since	1.5
+	 * @param   string  $string  The string to transliterate.
+	 *
+	 * @return  string  The transliteration of the string.
+	 *
+	 * @since   11.1
 	 */
-	static function transliterate($string)
+	public function transliterate($string)
 	{
-		$string = htmlentities(utf8_decode($string));
-		$string = preg_replace(
-			array('/&szlig;/','/&(..)lig;/', '/&([aouAOU])uml;/','/&(.)[^;]*;/'),
-			array('ss',"$1","$1".'e',"$1"),
-			$string);
+		include_once dirname(__FILE__) . '/latin_transliterate.php';
+
+		if ($this->transliterator !== null)
+		{
+			return call_user_func($this->transliterator, $string);
+		}
+
+		$string = JLanguageTransliterate::utf8_latin_to_ascii($string);
+		$string = JString::strtolower($string);
 
 		return $string;
 	}
 
 	/**
-	 * Check if a language exists
+	 * Getter for transliteration function
+	 *
+	 * @return  string  Function name or the actual function for PHP 5.3.
+	 *
+	 * @since   11.1
+	 */
+	public function getTransliterator()
+	{
+		return $this->transliterator;
+	}
+
+	/**
+	 * Set the transliteration function.
+	 *
+	 * @param   mixed  $function  Function name (string) or the actual function for PHP 5.3 (function).
+	 *
+	 * @return  mixed
+	 *
+	 * @since   11.1
+	 */
+	public function setTransliterator($function)
+	{
+		$previous = $this->transliterator;
+		$this->transliterator = $function;
+
+		return $previous;
+	}
+
+	/**
+	 * Returns an array of suffixes for plural rules.
+	 *
+	 * @param   integer  $count  The count number the rule is for.
+	 *
+	 * @return  array    The array of suffixes.
+	 *
+	 * @since   11.1
+	 */
+	public function getPluralSuffixes($count)
+	{
+		if ($this->pluralSuffixesCallback !== null)
+		{
+			return call_user_func($this->pluralSuffixesCallback, $count);
+		}
+		else
+		{
+			return array((string) $count);
+		}
+	}
+
+	/**
+	 * Getter for pluralSuffixesCallback function.
+	 *
+	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 *
+	 * @since   11.1
+	 *
+	 * @deprecated    12.1
+	 * @note    Use JLanguage::getPluralSuffixesCallback method instead
+	 */
+	public function getPluralSufficesCallback()
+	{
+		// Deprecation warning.
+		JLog::add('JLanguage::_getPluralSufficesCallback() is deprecated.', JLog::WARNING, 'deprecated');
+
+		return $this->getPluralSuffixesCallback();
+	}
+
+	/**
+	 * Getter for pluralSuffixesCallback function.
+	 *
+	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 *
+	 * @since   11.1
+	 */
+	public function getPluralSuffixesCallback()
+	{
+		return $this->pluralSuffixesCallback;
+	}
+
+	/**
+	 * Set the pluralSuffixes function.
+	 *
+	 * @param   mixed  $function  Function name (string) or actual function for PHP 5.3 (function)
+	 *
+	 * @return  mixed  Function name or the actual function for PHP 5.3.
+	 *
+	 * @since   11.1
+	 */
+	public function setPluralSuffixesCallback($function)
+	{
+		$previous = $this->pluralSuffixesCallback;
+		$this->pluralSuffixesCallback = $function;
+
+		return $previous;
+	}
+
+	/**
+	 * Returns an array of ignored search words
+	 *
+	 * @return  array  The array of ignored search words.
+	 *
+	 * @since   11.1
+	 */
+	public function getIgnoredSearchWords()
+	{
+		if ($this->ignoredSearchWordsCallback !== null)
+		{
+			return call_user_func($this->ignoredSearchWordsCallback);
+		}
+		else
+		{
+			return array();
+		}
+	}
+
+	/**
+	 * Getter for ignoredSearchWordsCallback function.
+	 *
+	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 *
+	 * @since   11.1
+	 */
+	public function getIgnoredSearchWordsCallback()
+	{
+		return $this->ignoredSearchWordsCallback;
+	}
+
+	/**
+	 * Setter for the ignoredSearchWordsCallback function
+	 *
+	 * @param   mixed  $function  Function name (string) or actual function for PHP 5.3 (function)
+	 *
+	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function)
+	 *
+	 * @since   11.1
+	 */
+	public function setIgnoredSearchWordsCallback($function)
+	{
+		$previous = $this->ignoredSearchWordsCallback;
+		$this->ignoredSearchWordsCallback = $function;
+
+		return $previous;
+	}
+
+	/**
+	 * Returns a lower limit integer for length of search words
+	 *
+	 * @return  integer  The lower limit integer for length of search words (3 if no value was set for a specific language).
+	 *
+	 * @since   11.1
+	 */
+	public function getLowerLimitSearchWord()
+	{
+		if ($this->lowerLimitSearchWordCallback !== null)
+		{
+			return call_user_func($this->lowerLimitSearchWordCallback);
+		}
+		else
+		{
+			return 3;
+		}
+	}
+
+	/**
+	 * Getter for lowerLimitSearchWordCallback function
+	 *
+	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 *
+	 * @since   11.1
+	 */
+	public function getLowerLimitSearchWordCallback()
+	{
+		return $this->lowerLimitSearchWordCallback;
+	}
+
+	/**
+	 * Setter for the lowerLimitSearchWordCallback function.
+	 *
+	 * @param   mixed  $function  Function name (string) or actual function for PHP 5.3 (function)
+	 *
+	 * @return  string|function Function name or the actual function for PHP 5.3.
+	 *
+	 * @since   11.1
+	 */
+	public function setLowerLimitSearchWordCallback($function)
+	{
+		$previous = $this->lowerLimitSearchWordCallback;
+		$this->lowerLimitSearchWordCallback = $function;
+
+		return $previous;
+	}
+
+	/**
+	 * Returns an upper limit integer for length of search words
+	 *
+	 * @return  integer  The upper limit integer for length of search words (20 if no value was set for a specific language).
+	 *
+	 * @since   11.1
+	 */
+	public function getUpperLimitSearchWord()
+	{
+		if ($this->upperLimitSearchWordCallback !== null)
+		{
+			return call_user_func($this->upperLimitSearchWordCallback);
+		}
+		else
+		{
+			return 20;
+		}
+	}
+
+	/**
+	 * Getter for upperLimitSearchWordCallback function
+	 *
+	 * @return  string|function  Function name or the actual function for PHP 5.3.
+	 *
+	 * @since   11.1
+	 */
+	public function getUpperLimitSearchWordCallback()
+	{
+		return $this->upperLimitSearchWordCallback;
+	}
+
+	/**
+	 * Setter for the upperLimitSearchWordCallback function
+	 *
+	 * @param   string  $function  The name of the callback function.
+	 *
+	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 *
+	 * @since   11.1
+	 */
+	public function setUpperLimitSearchWordCallback($function)
+	{
+		$previous = $this->upperLimitSearchWordCallback;
+		$this->upperLimitSearchWordCallback = $function;
+
+		return $previous;
+	}
+
+	/**
+	 * Returns the number of characters displayed in search results.
+	 *
+	 * @return  integer  The number of characters displayed (200 if no value was set for a specific language).
+	 *
+	 * @since   11.1
+	 */
+	public function getSearchDisplayedCharactersNumber()
+	{
+		if ($this->searchDisplayedCharactersNumberCallback !== null)
+		{
+			return call_user_func($this->searchDisplayedCharactersNumberCallback);
+		}
+		else
+		{
+			return 200;
+		}
+	}
+
+	/**
+	 * Getter for searchDisplayedCharactersNumberCallback function
+	 *
+	 * @return  mixed  Function name or the actual function for PHP 5.3.
+	 *
+	 * @since   11.1
+	 */
+	public function getSearchDisplayedCharactersNumberCallback()
+	{
+		return $this->searchDisplayedCharactersNumberCallback;
+	}
+
+	/**
+	 * Setter for the searchDisplayedCharactersNumberCallback function.
+	 *
+	 * @param   string  $function  The name of the callback.
+	 *
+	 * @return  mixed  Function name (string) or the actual function for PHP 5.3 (function).
+	 *
+	 * @since   11.1
+	 */
+	public function setSearchDisplayedCharactersNumberCallback($function)
+	{
+		$previous = $this->searchDisplayedCharactersNumberCallback;
+		$this->searchDisplayedCharactersNumberCallback = $function;
+
+		return $previous;
+	}
+
+	/**
+	 * Checks if a language exists.
 	 *
 	 * This is a simple, quick check for the directory that should contain language files for the given user.
 	 *
-	 * @access	public
-	 * @param	string $lang Language to check
-	 * @param	string $basePath Optional path to check
-	 * @return	boolean True if the language exists
-	 * @since	1.5
+	 * @param   string  $lang      Language to check.
+	 * @param   string  $basePath  Optional path to check.
+	 *
+	 * @return  boolean  True if the language exists.
+	 *
+	 * @since   11.1
 	 */
-	static function exists($lang, $basePath = JPATH_BASE)
+	public static function exists($lang, $basePath = JPATH_BASE)
 	{
-		static	$paths	= array();
+		static $paths = array();
 
 		// Return false if no language was specified
-		if ( ! $lang ) {
+		if (!$lang)
+		{
 			return false;
 		}
 
-		$path	= $basePath.DS.'language'.DS.$lang;
+		$path = "$basePath/language/$lang";
 
 		// Return previous check results if it exists
-		if ( isset($paths[$path]) )
+		if (isset($paths[$path]))
 		{
 			return $paths[$path];
 		}
@@ -262,7 +699,7 @@ class JLanguage extends JObject
 		// Check if the language exists
 		jimport('joomla.filesystem.folder');
 
-		$paths[$path]	= JFolder::exists($path);
+		$paths[$path] = JFolder::exists($path);
 
 		return $paths[$path];
 	}
@@ -270,175 +707,272 @@ class JLanguage extends JObject
 	/**
 	 * Loads a single language file and appends the results to the existing strings
 	 *
-	 * @access	public
-	 * @param	string 	$extension 	The extension for which a language file should be loaded
-	 * @param	string 	$basePath  	The basepath to use
-	 * @param	string	$lang		The language to load, default null for the current language
-	 * @param	boolean $reload		Flag that will force a language to be reloaded if set to true
-	 * @return	boolean	True, if the file has successfully loaded.
-	 * @since	1.5
+	 * @param   string   $extension  The extension for which a language file should be loaded.
+	 * @param   string   $basePath   The basepath to use.
+	 * @param   string   $lang       The language to load, default null for the current language.
+	 * @param   boolean  $reload     Flag that will force a language to be reloaded if set to true.
+	 * @param   boolean  $default    Flag that force the default language to be loaded if the current does not exist.
+	 *
+	 * @return  boolean  True if the file has successfully loaded.
+	 *
+	 * @since   11.1
 	 */
-	function load( $extension = 'joomla', $basePath = JPATH_BASE, $lang = null, $reload = false )
+	public function load($extension = 'joomla', $basePath = JPATH_BASE, $lang = null, $reload = false, $default = true)
 	{
-		if ( ! $lang ) {
-			$lang = $this->_lang;
+		if (!$lang)
+		{
+			$lang = $this->lang;
 		}
 
-		$path = JLanguage::getLanguagePath( $basePath, $lang);
+		$path = self::getLanguagePath($basePath, $lang);
 
-		if ( !strlen( $extension ) ) {
-			$extension = 'joomla';
-		}
-		$filename = ( $extension == 'joomla' ) ?  $lang : $lang . '.' . $extension ;
-		$filename = $path.DS.$filename.'.ini';
+		$internal = $extension == 'joomla' || $extension == '';
+		$filename = $internal ? $lang : $lang . '.' . $extension;
+		$filename = "$path/$filename.ini";
 
 		$result = false;
-		if (isset( $this->_paths[$extension][$filename] ) && ! $reload )
+
+		if (isset($this->paths[$extension][$filename]) && !$reload)
 		{
-			// Strings for this file have already been loaded
-			$result = true;
+			// This file has already been tested for loading.
+			$result = $this->paths[$extension][$filename];
 		}
 		else
 		{
 			// Load the language file
-			$result = $this->_load( $filename, $extension );
+			$result = $this->loadLanguage($filename, $extension);
 
-			// Check if there was a problem with loading the file
-			if ( $result === false )
+			// Check whether there was a problem with loading the file
+			if ($result === false && $default)
 			{
-				// No strings, which probably means that the language file does not exist
-				$path		= JLanguage::getLanguagePath( $basePath, $this->_default);
-				$filename	= ( $extension == 'joomla' ) ?  $this->_default : $this->_default . '.' . $extension ;
-				$filename	= $path.DS.$filename.'.ini';
+				// No strings, so either file doesn't exist or the file is invalid
+				$oldFilename = $filename;
 
-				$result = $this->_load( $filename, $extension, false );
-			}
+				// Check the standard file name
+				$path = self::getLanguagePath($basePath, $this->default);
+				$filename = $internal ? $this->default : $this->default . '.' . $extension;
+				$filename = "$path/$filename.ini";
 
-			// Load overrides
-			if ($basePath == JPATH_BASE)
-			{
-				$app = JFactory::getApplication();
-				$basePath = JPATH_BASE . DS . 'templates' . DS . $app->getTemplate();
-
-				$pathOverride = JLanguage::getLanguagePath($basePath, $lang);
-				$filenameOverride = ($extension == 'joomla') ? $lang : $lang . '.' . $extension;
-				$filenameOverride = $pathOverride . DS . $filenameOverride . '.ini';
-				// Load the language file
-				$resultOverride = $this->_load($filenameOverride, $extension);
-
-				// Check if there was a problem with loading the file
-				if ($resultOverride === false)
+				// If the one we tried is different than the new name, try again
+				if ($oldFilename != $filename)
 				{
-					// No strings, which probably means that the language file does not exist
-					$pathOverride = JLanguage::getLanguagePath($basePath, $this->_default);
-					$filenameOverride = ($extension == 'joomla') ? $this->_default : $this->_default . '.' . $extension;
-					$filenameOverride = $pathOverride . DS . $filenameOverride . '.ini';
-
-					$resultOverride = $this->_load($filename, $extension, false);
+					$result = $this->loadLanguage($filename, $extension, false);
 				}
 			}
-
 		}
 
 		return $result;
-
 	}
+
 	/**
-	* Loads a language file
-	*
-	* This method will not note the successful loading of a file - use load() instead
-	*
-	* @access	private
-	* @param	string The name of the file
-	* @param	string The name of the extension
-	* @return	boolean True if new strings have been added to the language
-	* @see		JLanguage::load()
-	* @since	1.5
-	*/
-	function _load( $filename, $extension = 'unknown', $overwrite = true )
+	 * Loads a language file.
+	 *
+	 * This method will not note the successful loading of a file - use load() instead.
+	 *
+	 * @param   string   $filename   The name of the file.
+	 * @param   string   $extension  The name of the extension.
+	 * @param   boolean  $overwrite  Not used??
+	 *
+	 * @return  boolean  True if new strings have been added to the language
+	 *
+	 * @see     JLanguage::load()
+	 * @since   11.1
+	 */
+	protected function loadLanguage($filename, $extension = 'unknown', $overwrite = true)
 	{
-		$result	= false;
+		$this->counter++;
 
-		if ($content = @file_get_contents( $filename ))
+		$result = false;
+		$strings = false;
+
+		if (file_exists($filename))
 		{
+			$strings = $this->parse($filename);
+		}
 
-			//Take off BOM if present in the ini file
-			if ( $content[0] == "\xEF" && $content[1] == "\xBB" && $content[2] == "\xBF" )
-            {
-				$content = substr( $content, 3 );
-		  	}
-
-			$registry	= new JRegistry();
-			$registry->loadINI($content);
-			$newStrings	= $registry->toArray( );
-
-			if ( is_array( $newStrings) )
+		if ($strings)
+		{
+			if (is_array($strings))
 			{
-				$this->_strings = $overwrite ? array_merge( $this->_strings, $newStrings) : array_merge( $newStrings, $this->_strings);
+				$this->strings = array_merge($this->strings, $strings);
+			}
+
+			if (is_array($strings) && count($strings))
+			{
+				$this->strings = array_merge($this->strings, $this->override);
 				$result = true;
 			}
 		}
 
 		// Record the result of loading the extension's file.
-		if ( ! isset($this->_paths[$extension])) {
-			$this->_paths[$extension] = array();
+		if (!isset($this->paths[$extension]))
+		{
+			$this->paths[$extension] = array();
 		}
 
-		$this->_paths[$extension][$filename] = $result;
+		$this->paths[$extension][$filename] = $result;
 
 		return $result;
 	}
 
 	/**
-	 * Get a matadata language property
+	 * Parses a language file.
 	 *
-	 * @access	public
-	 * @param	string $property	The name of the property
-	 * @param	mixed  $default	The default value
-	 * @return	mixed The value of the property
-	 * @since	1.5
+	 * @param   string  $filename  The name of the file.
+	 *
+	 * @return  array  The array of parsed strings.
+	 *
+	 * @since   11.1
 	 */
-	function get($property, $default = null)
+	protected function parse($filename)
 	{
-		if (isset ($this->_metadata[$property])) {
-			return $this->_metadata[$property];
+		$version = phpversion();
+
+		// Capture hidden PHP errors from the parsing.
+		$php_errormsg = null;
+		$track_errors = ini_get('track_errors');
+		ini_set('track_errors', true);
+
+		if ($version >= '5.3.1')
+		{
+			$contents = file_get_contents($filename);
+			$contents = str_replace('_QQ_', '"\""', $contents);
+			$strings = @parse_ini_string($contents);
 		}
+		else
+		{
+			$strings = @parse_ini_file($filename);
+
+			if ($version == '5.3.0' && is_array($strings))
+			{
+				foreach ($strings as $key => $string)
+				{
+					$strings[$key] = str_replace('_QQ_', '"', $string);
+				}
+			}
+		}
+
+		// Restore error tracking to what it was before.
+		ini_set('track_errors', $track_errors);
+
+		if (!is_array($strings))
+		{
+			$strings = array();
+		}
+
+		if ($this->debug)
+		{
+			// Initialise variables for manually parsing the file for common errors.
+			$blacklist = array('YES', 'NO', 'NULL', 'FALSE', 'ON', 'OFF', 'NONE', 'TRUE');
+			$regex = '/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\-]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/';
+			$this->debug = false;
+			$errors = array();
+			$lineNumber = 0;
+
+			// Open the file as a stream.
+			$stream = new JStream;
+			$stream->open($filename);
+
+			while (!$stream->eof())
+			{
+				$line = $stream->gets();
+				// Avoid BOM error as BOM is OK when using parse_ini
+				if ($lineNumber == 0)
+				{
+					$line = str_replace("\xEF\xBB\xBF", '', $line);
+				}
+				$lineNumber++;
+
+				// Check that the key is not in the blacklist and that the line format passes the regex.
+				$key = strtoupper(trim(substr($line, 0, strpos($line, '='))));
+
+				if (!preg_match($regex, $line) || in_array($key, $blacklist))
+				{
+					$errors[] = $lineNumber;
+				}
+			}
+
+			$stream->close();
+
+			// Check if we encountered any errors.
+			if (count($errors))
+			{
+				if (basename($filename) != $this->lang . '.ini')
+				{
+					$this->errorfiles[$filename] = $filename . JText::sprintf('JERROR_PARSING_LANGUAGE_FILE', implode(', ', $errors));
+				}
+				else
+				{
+					$this->errorfiles[$filename] = $filename . '&#160;: error(s) in line(s) ' . implode(', ', $errors);
+				}
+			}
+			elseif ($php_errormsg)
+			{
+				// We didn't find any errors but there's probably a parse notice.
+				$this->errorfiles['PHP' . $filename] = 'PHP parser errors :' . $php_errormsg;
+			}
+
+			$this->debug = true;
+		}
+
+		return $strings;
+	}
+
+	/**
+	 * Get a metadata language property.
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $default   The default value.
+	 *
+	 * @return  mixed  The value of the property.
+	 *
+	 * @since   11.1
+	 */
+	public function get($property, $default = null)
+	{
+		if (isset($this->metadata[$property]))
+		{
+			return $this->metadata[$property];
+		}
+
 		return $default;
 	}
 
 	/**
-	 * Determine who called JLanguage or JText
+	 * Determine who called JLanguage or JText.
 	 *
-	 * @access	private
-	 * @return	array Caller information
-	 * @since	1.5
+	 * @return  array  Caller information.
+	 *
+	 * @since   11.1
 	 */
-	function _getCallerInfo()
+	protected function getCallerInfo()
 	{
-			// Try to determine the source if none was provided
-		if (!function_exists('debug_backtrace')) {
+		// Try to determine the source if none was provided
+		if (!function_exists('debug_backtrace'))
+		{
 			return null;
 		}
 
-		$backtrace	= debug_backtrace();
-		$info		= array();
+		$backtrace = debug_backtrace();
+		$info = array();
 
 		// Search through the backtrace to our caller
 		$continue = true;
 		while ($continue && next($backtrace))
 		{
-			$step	= current($backtrace);
-			$class	= @ $step['class'];
+			$step = current($backtrace);
+			$class = @ $step['class'];
 
 			// We're looking for something outside of language.php
-			if ($class != 'JLanguage' && $class != 'JText') {
-				$info['function']	= @ $step['function'];
-				$info['class']		= $class;
-				$info['step']		= prev($backtrace);
+			if ($class != 'JLanguage' && $class != 'JText')
+			{
+				$info['function'] = @ $step['function'];
+				$info['class'] = $class;
+				$info['step'] = prev($backtrace);
 
 				// Determine the file and name of the file
-				$info['file']		= @ $step['file'];
-				$info['line']		= @ $step['line'];
+				$info['file'] = @ $step['file'];
+				$info['line'] = @ $step['line'];
 
 				$continue = false;
 			}
@@ -448,206 +982,198 @@ class JLanguage extends JObject
 	}
 
 	/**
-	* Getter for Name
-	*
-	* @access	public
-	* @return	string Official name element of the language
-	* @since	1.5
-	*/
-	function getName() {
-		return $this->_metadata['name'];
+	 * Getter for Name.
+	 *
+	 * @return  string  Official name element of the language.
+	 *
+	 * @since   11.1
+	 */
+	public function getName()
+	{
+		return $this->metadata['name'];
 	}
 
 	/**
-	 * Get a list of language files that have been loaded
+	 * Get a list of language files that have been loaded.
 	 *
-	 * @access	public
-	 * @param	string	$extension	An option extension name
-	 * @return	array
-	 * @since	1.5
+	 * @param   string  $extension  An optional extension name.
+	 *
+	 * @return  array
+	 *
+	 * @since   11.1
 	 */
-	function getPaths($extension = null)
+	public function getPaths($extension = null)
 	{
-		if ( isset($extension) )
+		if (isset($extension))
 		{
-			if ( isset($this->_paths[$extension]) )
-				return $this->_paths[$extension];
+			if (isset($this->paths[$extension]))
+			{
+				return $this->paths[$extension];
+			}
 
 			return null;
 		}
 		else
 		{
-			return $this->_paths;
+			return $this->paths;
 		}
 	}
 
 	/**
-	* Getter for Windows locale code page
-	*
-	* @access	public
-	* @return	string windows locale encoding
-	* @since	1.5
-	*/
-	function getWinCP() {
-		return $this->_metadata['wincodepage'];
-	}
-
-	/**
-	* Getter for backward compatible language name
-	*
-	* @access	public
-	* @return	string backward compatible name
-	* @since	1.5
-	*/
-	function getBackwardLang() {
-		return $this->_metadata['backwardlang'];
-	}
-
-	/**
-	* Get for the language tag (as defined in RFC 3066)
-	*
-	* @access	public
-	* @return	string The language tag
-	* @since	1.5
-	*/
-	function getTag() {
-		return $this->_metadata['tag'];
-	}
-
-	/**
-	* Get locale property
-	*
-	* @access	public
-	* @return	string The locale property
-	* @since	1.5
-	*/
-	function getLocale()
+	 * Get a list of language files that are in error state.
+	 *
+	 * @return  array
+	 *
+	 * @since   11.1
+	 */
+	public function getErrorFiles()
 	{
-		$locales = explode(',', $this->_metadata['locale']);
-
-		for($i = 0; $i < count($locales); $i++ ) {
-			$locale = $locales[$i];
-			$locale = trim($locale);
-			$locales[$i] = $locale;
-		}
-
-		//return implode(',', $locales);
-		return $locales;
+		return $this->errorfiles;
 	}
 
 	/**
-	* Get the RTL property
-	*
-	* @access	public
-	* @return	boolean True is it an RTL language
-	* @since	1.5
-	*/
-	function isRTL() {
-		return $this->_metadata['rtl'];
+	 * Getter for the language tag (as defined in RFC 3066)
+	 *
+	 * @return  string  The language tag.
+	 *
+	 * @since   11.1
+	 */
+	public function getTag()
+	{
+		return $this->metadata['tag'];
 	}
 
 	/**
-	* Set the Debug property
-	*
-	* @access	public
-	* @return	boolean Previous value
-	* @since	1.5
-	*/
-	function setDebug($debug) {
-		$previous	= $this->_debug;
-		$this->_debug = $debug;
+	 * Get the RTL property.
+	 *
+	 * @return  boolean  True is it an RTL language.
+	 *
+	 * @since   11.1
+	 */
+	public function isRTL()
+	{
+		return $this->metadata['rtl'];
+	}
+
+	/**
+	 * Set the Debug property.
+	 *
+	 * @param   boolean  $debug  The debug setting.
+	 *
+	 * @return  boolean  Previous value.
+	 *
+	 * @since   11.1
+	 */
+	public function setDebug($debug)
+	{
+		$previous = $this->debug;
+		$this->debug = $debug;
+
 		return $previous;
 	}
 
 	/**
-	* Get the Debug property
-	*
-	* @access	public
-	* @return	boolean True is in debug mode
-	* @since	1.5
-	*/
-	function getDebug() {
-		return $this->_debug;
+	 * Get the Debug property.
+	 *
+	 * @return  boolean  True is in debug mode.
+	 *
+	 * @since   11.1
+	 */
+	public function getDebug()
+	{
+		return $this->debug;
 	}
 
 	/**
-	 * Get the default language code
+	 * Get the default language code.
 	 *
-	 * @access	public
-	 * @return	string Language code
-	 * @since	1.5
+	 * @return  string  Language code.
+	 *
+	 * @since   11.1
 	 */
-	function getDefault() {
-		return $this->_default;
+	public function getDefault()
+	{
+		return $this->default;
 	}
 
 	/**
-	 * Set the default language code
+	 * Set the default language code.
 	 *
-	 * @access	public
-	 * @return	string Previous value
-	 * @since	1.5
+	 * @param   string  $lang  The language code.
+	 *
+	 * @return  string  Previous value.
+	 *
+	 * @since   11.1
 	 */
-	function setDefault($lang) {
-		$previous	= $this->_default;
-		$this->_default	= $lang;
+	public function setDefault($lang)
+	{
+		$previous = $this->default;
+		$this->default = $lang;
+
 		return $previous;
 	}
 
 	/**
-	* Get the list of orphaned strings if being tracked
-	*
-	* @access	public
-	* @return	array Orphaned text
-	* @since	1.5
-	*/
-	function getOrphans() {
-		return $this->_orphans;
-	}
-
-	/**
-	 * Get the list of used strings
+	 * Get the list of orphaned strings if being tracked.
 	 *
-	 * Used strings are those strings requested and found either as a string or a constant
+	 * @return  array  Orphaned text.
 	 *
-	 * @access	public
-	 * @return	array	Used strings
-	 * @since	1.5
+	 * @since   11.1
 	 */
-	function getUsed() {
-		return $this->_used;
-	}
-
-	/**
-	 * Determines is a key exists
-	 *
-	 * @access	public
-	 * @param	key $key	The key to check
-	 * @return	boolean True, if the key exists
-	 * @since	1.5
-	 */
-	function hasKey($key) {
-		return isset ($this->_strings[strtoupper($key)]);
-	}
-
-	/**
-	 * Returns a associative array holding the metadata
-	 *
-	 * @access	public
-	 * @param	string	The name of the language
-	 * @return	mixed	If $lang exists return key/value pair with the language metadata,
-	 *  				otherwise return NULL
-	 * @since	1.5
-	 */
-
-	function getMetadata($lang)
+	public function getOrphans()
 	{
-		$path = JLanguage::getLanguagePath(JPATH_BASE, $lang);
-		$file = $lang.'.xml';
+		return $this->orphans;
+	}
+
+	/**
+	 * Get the list of used strings.
+	 *
+	 * Used strings are those strings requested and found either as a string or a constant.
+	 *
+	 * @return  array  Used strings.
+	 *
+	 * @since   11.1
+	 */
+	public function getUsed()
+	{
+		return $this->used;
+	}
+
+	/**
+	 * Determines is a key exists.
+	 *
+	 * @param   string  $string  The key to check.
+	 *
+	 * @return  boolean  True, if the key exists.
+	 *
+	 * @since   11.1
+	 */
+	public function hasKey($string)
+	{
+		$key = strtoupper($string);
+
+		return isset($this->strings[$key]);
+	}
+
+	/**
+	 * Returns a associative array holding the metadata.
+	 *
+	 * @param   string  $lang  The name of the language.
+	 *
+	 * @return  mixed  If $lang exists return key/value pair with the language metadata, otherwise return NULL.
+	 *
+	 * @since   11.1
+	 */
+	public static function getMetadata($lang)
+	{
+		$path = self::getLanguagePath(JPATH_BASE, $lang);
+		$file = "$lang.xml";
 
 		$result = null;
-		if(is_file($path.DS.$file)) {
-			$result = JLanguage::_parseXMLLanguageFile($path.DS.$file);
+
+		if (is_file("$path/$file"))
+		{
+			$result = self::parseXMLLanguageFile("$path/$file");
 		}
 
 		return $result;
@@ -656,15 +1182,16 @@ class JLanguage extends JObject
 	/**
 	 * Returns a list of known languages for an area
 	 *
-	 * @access	public
-	 * @param	string	$basePath 	The basepath to use
-	 * @return	array	key/value pair with the language file and real name
-	 * @since	1.5
+	 * @param   string  $basePath  The basepath to use
+	 *
+	 * @return  array  key/value pair with the language file and real name.
+	 *
+	 * @since   11.1
 	 */
-	function getKnownLanguages($basePath = JPATH_BASE)
+	public static function getKnownLanguages($basePath = JPATH_BASE)
 	{
-		$dir = JLanguage::getLanguagePath($basePath);
-		$knownLanguages = JLanguage::_parseLanguageFiles($dir);
+		$dir = self::getLanguagePath($basePath);
+		$knownLanguages = self::parseLanguageFiles($dir);
 
 		return $knownLanguages;
 	}
@@ -672,60 +1199,122 @@ class JLanguage extends JObject
 	/**
 	 * Get the path to a language
 	 *
-	 * @access	public
-	 * @param	string $basePath  The basepath to use
-	 * @param	string $language	The language tag
-	 * @return	string	language related path or null
-	 * @since	1.5
+	 * @param   string  $basePath  The basepath to use.
+	 * @param   string  $language  The language tag.
+	 *
+	 * @return  string  language related path or null.
+	 *
+	 * @since   11.1
 	 */
-	function getLanguagePath($basePath = JPATH_BASE, $language = null )
+	public static function getLanguagePath($basePath = JPATH_BASE, $language = null)
 	{
-		$dir = $basePath.DS.'language';
-		if (!empty($language)) {
-			$dir .= DS.$language;
+		$dir = "$basePath/language";
+
+		if (!empty($language))
+		{
+			$dir .= "/$language";
 		}
+
 		return $dir;
 	}
 
 	/**
-	 * Set the language attributes to the given language
+	 * Set the language attributes to the given language.
 	 *
-	 * Once called, the language still needs to be loaded using JLanguage::load()
+	 * Once called, the language still needs to be loaded using JLanguage::load().
 	 *
-	 * @access	public
-	 * @param	string	$lang	Language code
-	 * @return	string	Previous value
-	 * @since	1.5
+	 * @param   string  $lang  Language code.
+	 *
+	 * @return  string  Previous value.
+	 *
+	 * @since   11.1
 	 */
-	function setLanguage($lang)
+	public function setLanguage($lang)
 	{
-		$previous			= $this->_lang;
-		$this->_lang		= $lang;
-		$this->_metadata	= $this->getMetadata($this->_lang);
+		$previous = $this->lang;
+		$this->lang = $lang;
+		$this->metadata = $this->getMetadata($this->lang);
 
-		//set locale based on the language tag
-		//TODO : add function to display locale setting in configuration
-		$locale = setlocale(LC_TIME, $this->getLocale());
 		return $previous;
 	}
 
 	/**
-	 * Searches for language directories within a certain base dir
+	 * Get the language locale based on current language.
 	 *
-	 * @access	public
-	 * @param	string 	$dir 	directory of files
-	 * @return	array	Array holding the found languages as filename => real name pairs
-	 * @since	1.5
+	 * @return  array  The locale according to the language.
+	 *
+	 * @since   11.1
 	 */
-	function _parseLanguageFiles($dir = null)
+	public function getLocale()
+	{
+		if (!isset($this->locale))
+		{
+			$locale = str_replace(' ', '', isset($this->metadata['locale']) ? $this->metadata['locale'] : '');
+
+			if ($locale)
+			{
+				$this->locale = explode(',', $locale);
+			}
+			else
+			{
+				$this->locale = false;
+			}
+		}
+
+		return $this->locale;
+	}
+
+	/**
+	 * Get the first day of the week for this language.
+	 *
+	 * @return  integer  The first day of the week according to the language
+	 *
+	 * @since   11.1
+	 */
+	public function getFirstDay()
+	{
+		return (int) (isset($this->metadata['firstDay']) ? $this->metadata['firstDay'] : 0);
+	}
+
+	/**
+	 * Searches for language directories within a certain base dir.
+	 *
+	 * @param   string  $dir  Directory of files.
+	 *
+	 * @return  array  Array holding the found languages as filename => real name pairs.
+	 *
+	 * @deprecated    12.1
+	 * @note    Use parseLanguageFiles instead.
+	 * @since   11.1
+	 */
+	public static function _parseLanguageFiles($dir = null)
+	{
+		// Deprecation warning.
+		JLog::add('JLanguage::_parseLanguageFiles() is deprecated.', JLog::WARNING, 'deprecated');
+
+		return self::parseLanguageFiles($dir);
+	}
+
+	/**
+	 * Searches for language directories within a certain base dir.
+	 *
+	 * @param   string  $dir  directory of files.
+	 *
+	 * @return  array  Array holding the found languages as filename => real name pairs.
+	 *
+	 * @since   11.1
+	 */
+	public static function parseLanguageFiles($dir = null)
 	{
 		jimport('joomla.filesystem.folder');
 
-		$languages = array ();
+		$languages = array();
 
 		$subdirs = JFolder::folders($dir);
-		foreach ($subdirs as $path) {
-			$langs = JLanguage::_parseXMLLanguageFiles($dir.DS.$path);
+
+		foreach ($subdirs as $path)
+		{
+			$langs = self::parseXMLLanguageFiles("$dir/$path");
 			$languages = array_merge($languages, $langs);
 		}
 
@@ -733,63 +1322,106 @@ class JLanguage extends JObject
 	}
 
 	/**
+	 * Parses XML files for language information.
+	 *
+	 * @param   string  $dir  Directory of files.
+	 *
+	 * @return  array  Array holding the found languages as filename => metadata array.
+	 *
+	 * @note    Use parseXMLLanguageFiles instead.
+	 * @since   11.1
+	 *
+	 * @deprecated  12.1
+	 */
+	public static function _parseXMLLanguageFiles($dir = null)
+	{
+		// Deprecation warning.
+		JLog::add('JLanguage::_parseXMLLanguageFiles() is deprecated.', JLog::WARNING, 'deprecated');
+
+		return self::parseXMLLanguageFiles($dir);
+	}
+
+	/**
 	 * Parses XML files for language information
 	 *
-	 * @access	public
-	 * @param	string	$dir	 Directory of files
-	 * @return	array	Array holding the found languages as filename => metadata array
-	 * @since	1.5
+	 * @param   string  $dir  Directory of files.
+	 *
+	 * @return  array  Array holding the found languages as filename => metadata array.
+	 *
+	 * @since   11.1
 	 */
-	function _parseXMLLanguageFiles($dir = null)
+	public static function parseXMLLanguageFiles($dir = null)
 	{
-		if ($dir == null) {
+		if ($dir == null)
+		{
 			return null;
 		}
 
-		$languages = array ();
+		$languages = array();
 		jimport('joomla.filesystem.folder');
 		$files = JFolder::files($dir, '^([-_A-Za-z]*)\.xml$');
-		foreach ($files as $file) {
-			if ($content = file_get_contents($dir.DS.$file)) {
-				if ($metadata = JLanguage::_parseXMLLanguageFile($dir.DS.$file)) {
+
+		foreach ($files as $file)
+		{
+			if ($content = file_get_contents("$dir/$file"))
+			{
+				if ($metadata = self::parseXMLLanguageFile("$dir/$file"))
+				{
 					$lang = str_replace('.xml', '', $file);
 					$languages[$lang] = $metadata;
 				}
 			}
 		}
+
 		return $languages;
 	}
 
 	/**
-	 * Parse XML file for language information
+	 * Parse XML file for language information.
 	 *
-	 * @access	public
-	 * @param	string	$path	 Path to the xml files
-	 * @return	array	Array holding the found metadata as a key => value pair
-	 * @since	1.5
+	 * @param   string  $path  Path to the XML files.
+	 *
+	 * @return  array  Array holding the found metadata as a key => value pair.
+	 *
+	 * @deprecated    12.1
+	 * @note    Use parseXMLLanguageFile instead.
+	 * @since   11.1
 	 */
-	function _parseXMLLanguageFile($path)
+	public static function _parseXMLLanguageFile($path)
 	{
-		$xml = & JFactory::getXMLParser('Simple');
+		return self::parseXMLLanguageFile($path);
+	}
 
-		// Load the file
-		if (!$xml || !$xml->loadFile($path)) {
+	/**
+	 * Parse XML file for language information.
+	 *
+	 * @param   string  $path  Path to the XML files.
+	 *
+	 * @return  array  Array holding the found metadata as a key => value pair.
+	 *
+	 * @since   11.1
+	 */
+	public static function parseXMLLanguageFile($path)
+	{
+		// Try to load the file
+		if (!$xml = JFactory::getXML($path))
+		{
 			return null;
 		}
 
-		// Check that it's am metadata file
-		if (!$xml->document || $xml->document->name() != 'metafile') {
+		// Check that it's a metadata file
+		if ((string) $xml->getName() != 'metafile')
+		{
 			return null;
 		}
 
-		$metadata = array ();
+		$metadata = array();
 
-		//if ($xml->document->attributes('type') == 'language') {
+		foreach ($xml->metadata->children() as $child)
+		{
+			$metadata[$child->getName()] = (string) $child;
+		}
 
-			foreach ($xml->document->metadata[0]->children() as $child) {
-				$metadata[$child->name()] = $child->data();
-			}
-		//}
 		return $metadata;
 	}
 }

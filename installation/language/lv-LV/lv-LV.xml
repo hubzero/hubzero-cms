@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metafile version="1.5"  client="installation" >
-	<tag>lv-LV</tag>
-	<name>Latvian</name>
-	<description>Latvian language installation for Joomla</description>
-    <version>1.5.9</version>
-    <creationDate>March 2009</creationDate>
-	<author>Latvian Joomla! Translation Team</author>
-    <copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+<metafile
+	version="2.5"
+	client="installation">
+	<name>Latvian (LV)</name>
+	<version>2.5</version>
+	<creationDate>06.01.2011</creationDate>
+	<author>Latvian Translation Team</author>
+	<copyright>Copyright (C) 2005 - 2013 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<description>Latvian language installation for Joomla 1.6</description>
+	<files>
+		<filename>lv-LV.ini</filename>
+	</files>
 	<metadata>
-		<name>Latvian</name>
+		<name>Latvian (LV)</name>
 		<tag>lv-LV</tag>
 		<rtl>0</rtl>
-		<locale>lv_LV.utf8, lv_LV.UTF-8, lv_LV</locale>
-		<wincodepage>utf-8</wincodepage>
-		<backwardlang>latvian</backwardlang>
 	</metadata>
 	<params />
 </metafile>

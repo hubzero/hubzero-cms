@@ -1,82 +1,86 @@
 <?php
 /**
-* @version		$Id: view.html.php 19343 2010-11-03 18:12:02Z ian $
-* @package		Joomla
-* @subpackage	Weblinks
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die;
 
 /**
- * HTML View class for the WebLinks component
+ * View class for a list of weblinks.
  *
- * @static
- * @package		Joomla
- * @subpackage	Weblinks
- * @since 1.0
+ * @package		Joomla.Administrator
+ * @subpackage	com_weblinks
+ * @since		1.5
  */
-class WeblinksViewWeblinks extends JView
+class WeblinksViewWeblinks extends JViewLegacy
 {
-	function display($tpl = null)
+	protected $items;
+	protected $pagination;
+	protected $state;
+
+	/**
+	 * Display the view
+	 */
+	public function display($tpl = null)
 	{
-		global $mainframe, $option;
+		$this->state		= $this->get('State');
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
 
-		$db		=& JFactory::getDBO();
-		$uri	=& JFactory::getURI();
-
-		$filter_state		= $mainframe->getUserStateFromRequest( $option.'filter_state',		'filter_state',		'',				'word' );
-		$filter_catid		= $mainframe->getUserStateFromRequest( $option.'filter_catid',		'filter_catid',		0,				'int' );
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'filter_order',		'filter_order',		'a.ordering',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'filter_order_Dir',	'filter_order_Dir',	'',				'word' );
-		$search				= $mainframe->getUserStateFromRequest( $option.'search',			'search',			'',				'string' );
-		if (strpos($search, '"') !== false) {
-			$search = str_replace(array('=', '<'), '', $search);
-		}
-		$search = JString::strtolower($search);
-
-		// sanitize $filter_order
-		if (!in_array($filter_order, array('a.title', 'a.published', 'a.ordering', 'category', 'a.hits', 'a.id'))) {
-			$filter_order = 'a.ordering';
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			JError::raiseError(500, implode("\n", $errors));
+			return false;
 		}
 
-		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
-			$filter_order_Dir = '';
-		}
-
-		// Get data from the model
-		$items		= & $this->get( 'Data');
-		$total		= & $this->get( 'Total');
-		$pagination = & $this->get( 'Pagination' );
-
-		// build list of categories
-		$javascript 	= 'onchange="document.adminForm.submit();"';
-		$lists['catid'] = JHTML::_('list.category',  'filter_catid', $option, intval( $filter_catid ), $javascript );
-
-		// state filter
-		$lists['state']	= JHTML::_('grid.state',  $filter_state );
-
-		// table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order'] = $filter_order;
-
-		// search filter
-		$lists['search']= $search;
-
-		$this->assignRef('user',		JFactory::getUser());
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('items',		$items);
-		$this->assignRef('pagination',	$pagination);
-
+		$this->addToolbar();
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since	1.6
+	 */
+	protected function addToolbar()
+	{
+		require_once JPATH_COMPONENT.'/helpers/weblinks.php';
+
+		$state	= $this->get('State');
+		$canDo	= WeblinksHelper::getActions($state->get('filter.category_id'));
+		$user	= JFactory::getUser();
+
+		JToolBarHelper::title(JText::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'weblinks.png');
+		if (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
+			JToolBarHelper::addNew('weblink.add');
+		}
+		if ($canDo->get('core.edit')) {
+			JToolBarHelper::editList('weblink.edit');
+		}
+		if ($canDo->get('core.edit.state')) {
+
+			JToolBarHelper::divider();
+			JToolBarHelper::publish('weblinks.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolBarHelper::unpublish('weblinks.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+
+
+			JToolBarHelper::divider();
+			JToolBarHelper::archiveList('weblinks.archive');
+			JToolBarHelper::checkin('weblinks.checkin');
+		}
+		if ($state->get('filter.state') == -2 && $canDo->get('core.delete')) {
+			JToolBarHelper::deleteList('', 'weblinks.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolBarHelper::divider();
+		} elseif ($canDo->get('core.edit.state')) {
+			JToolBarHelper::trash('weblinks.trash');
+			JToolBarHelper::divider();
+		}
+		if ($canDo->get('core.admin')) {
+			JToolBarHelper::preferences('com_weblinks');
+			JToolBarHelper::divider();
+		}
+
+		JToolBarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS');
 	}
 }

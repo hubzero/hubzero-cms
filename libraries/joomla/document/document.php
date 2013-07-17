@@ -1,691 +1,849 @@
 <?php
 /**
-* @version		$Id: document.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Document
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
-//Register the renderer class with the loader
-JLoader::register('JDocumentRenderer', dirname(__FILE__).DS.'renderer.php');
+JLoader::register('JDocumentRenderer', dirname(__FILE__) . '/renderer.php');
+jimport('joomla.environment.response');
+jimport('joomla.filter.filteroutput');
 
 /**
  * Document class, provides an easy interface to parse and display a document
  *
- * @abstract
- * @package		Joomla.Framework
- * @subpackage	Document
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Document
+ * @since       11.1
  */
 class JDocument extends JObject
 {
 	/**
 	 * Document title
 	 *
-	 * @var	 string
-	 * @access  public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $title = '';
+	public $title = '';
 
 	/**
 	 * Document description
 	 *
-	 * @var	 string
-	 * @access  public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $description = '';
+	public $description = '';
 
 	/**
 	 * Document full URL
 	 *
-	 * @var	 string
-	 * @access  public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $link = '';
+	public $link = '';
 
 	/**
 	 * Document base URL
 	 *
-	 * @var	 string
-	 * @access  public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $base = '';
+	public $base = '';
 
-	 /**
+	/**
 	 * Contains the document language setting
 	 *
-	 * @var	 string
-	 * @access  public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $language = 'en-gb';
+	public $language = 'en-gb';
 
 	/**
 	 * Contains the document direction setting
 	 *
-	 * @var	 string
-	 * @access  public
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $direction = 'ltr';
+	public $direction = 'ltr';
 
 	/**
 	 * Document generator
 	 *
-	 * @var		string
-	 * @access	public
+	 * @var    string
 	 */
-	 var $_generator = 'Joomla! 1.5 - Open Source Content Management';
+	public $_generator = 'Joomla! - Open Source Content Management';
 
 	/**
 	 * Document modified date
 	 *
-	 * @var		string
-	 * @access   private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_mdate = '';
+	public $_mdate = '';
 
 	/**
 	 * Tab string
 	 *
-	 * @var		string
-	 * @access	private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_tab = "\11";
+	public $_tab = "\11";
 
 	/**
 	 * Contains the line end string
 	 *
-	 * @var		string
-	 * @access	private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_lineEnd = "\12";
+	public $_lineEnd = "\12";
 
 	/**
 	 * Contains the character encoding string
 	 *
-	 * @var	 string
-	 * @access  private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_charset = 'utf-8';
+	public $_charset = 'utf-8';
 
 	/**
 	 * Document mime type
 	 *
-	 * @var		string
-	 * @access	private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_mime = '';
+	public $_mime = '';
 
 	/**
 	 * Document namespace
 	 *
-	 * @var		string
-	 * @access   private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_namespace = '';
+	public $_namespace = '';
 
 	/**
 	 * Document profile
 	 *
-	 * @var		string
-	 * @access   private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_profile = '';
+	public $_profile = '';
 
 	/**
 	 * Array of linked scripts
 	 *
-	 * @var		array
-	 * @access   private
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_scripts = array();
+	public $_scripts = array();
 
 	/**
 	 * Array of scripts placed in the header
 	 *
-	 * @var  array
-	 * @access   private
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_script = array();
+	public $_script = array();
 
-	 /**
+	/**
 	 * Array of linked style sheets
 	 *
-	 * @var	 array
-	 * @access  private
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_styleSheets = array();
+	public $_styleSheets = array();
 
 	/**
 	 * Array of included style declarations
 	 *
-	 * @var	 array
-	 * @access  private
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_style = array();
+	public $_style = array();
 
 	/**
 	 * Array of meta tags
 	 *
-	 * @var	 array
-	 * @access  private
+	 * @var    array
+	 * @since  11.1
 	 */
-	var $_metaTags = array();
+	public $_metaTags = array();
 
 	/**
 	 * The rendering engine
 	 *
-	 * @var	 object
-	 * @access  private
+	 * @var    object
+	 * @since  11.1
 	 */
-	var $_engine = null;
+	public $_engine = null;
 
 	/**
 	 * The document type
 	 *
-	 * @var	 string
-	 * @access  private
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_type = null;
+	public $_type = null;
 
 	/**
 	 * Array of buffered output
 	 *
-	 * @var		mixed (depends on the renderer)
-	 * @access	private
+	 * @var    mixed (depends on the renderer)
+	 * @since  11.1
 	 */
-	var $_buffer = null;
-
+	public static $_buffer = null;
 
 	/**
-	* Class constructor
-	*
-	* @access protected
-	* @param	array	$options Associative array of options
-	*/
-	function __construct( $options = array())
+	 * @var    array  JDocument instances container.
+	 * @since  11.3
+	 */
+	protected static $instances = array();
+
+	/**
+	 * Class constructor.
+	 *
+	 * @param   array  $options  Associative array of options
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($options = array())
 	{
 		parent::__construct();
 
-		if (array_key_exists('lineend', $options)) {
+		if (array_key_exists('lineend', $options))
+		{
 			$this->setLineEnd($options['lineend']);
 		}
 
-		if (array_key_exists('charset', $options)) {
+		if (array_key_exists('charset', $options))
+		{
 			$this->setCharset($options['charset']);
 		}
 
-		if (array_key_exists('language', $options)) {
+		if (array_key_exists('language', $options))
+		{
 			$this->setLanguage($options['language']);
 		}
 
-		 if (array_key_exists('direction', $options)) {
+		if (array_key_exists('direction', $options))
+		{
 			$this->setDirection($options['direction']);
 		}
 
-		if (array_key_exists('tab', $options)) {
+		if (array_key_exists('tab', $options))
+		{
 			$this->setTab($options['tab']);
 		}
 
-		if (array_key_exists('link', $options)) {
+		if (array_key_exists('link', $options))
+		{
 			$this->setLink($options['link']);
 		}
 
-		if (array_key_exists('base', $options)) {
+		if (array_key_exists('base', $options))
+		{
 			$this->setBase($options['base']);
 		}
 	}
 
 	/**
-	 * Returns a reference to the global JDocument object, only creating it
+	 * Returns the global JDocument object, only creating it
 	 * if it doesn't already exist.
 	 *
-	 * This method must be invoked as:
-	 * 		<pre>  $document = &JDocument::getInstance();</pre>
+	 * @param   string  $type        The document type to instantiate
+	 * @param   array   $attributes  Array of attributes
 	 *
-	 * @access public
-	 * @param type $type The document type to instantiate
-	 * @return object  The document object.
+	 * @return  object  The document object.
+	 *
+	 * @since   11.1
 	 */
-	static function &getInstance($type = 'html', $attributes = array())
+	public static function getInstance($type = 'html', $attributes = array())
 	{
-		static $instances;
-
-		if (!isset( $instances )) {
-			$instances = array();
-		}
-
 		$signature = serialize(array($type, $attributes));
 
-		if (empty($instances[$signature]))
+		if (empty(self::$instances[$signature]))
 		{
-			$type	= preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
-			$path	= dirname(__FILE__).DS.$type.DS.$type.'.php';
-			$ntype	= null;
+			$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
+			$path = dirname(__FILE__) . '/' . $type . '/' . $type . '.php';
+			$ntype = null;
 
 			// Check if the document type exists
-			if ( ! file_exists($path))
+			if (!file_exists($path))
 			{
 				// Default to the raw format
-				$ntype	= $type;
-				$type	= 'raw';
+				$ntype = $type;
+				$type = 'raw';
 			}
 
 			// Determine the path and class
-			$class = 'JDocument'.$type;
-			if(!class_exists($class))
+			$class = 'JDocument' . $type;
+			if (!class_exists($class))
 			{
-				$path	= dirname(__FILE__).DS.$type.DS.$type.'.php';
-				if (file_exists($path)) {
-					require_once($path);
-				} else {
-					JError::raiseError(500,JText::_('Unable to load document class'));
+				$path = dirname(__FILE__) . '/' . $type . '/' . $type . '.php';
+				if (file_exists($path))
+				{
+					require_once $path;
+				}
+				else
+				{
+					JError::raiseError(500, JText::_('JLIB_DOCUMENT_ERROR_UNABLE_LOAD_DOC_CLASS'));
 				}
 			}
 
-			$instance	= new $class($attributes);
-			$instances[$signature] =& $instance;
+			$instance = new $class($attributes);
+			self::$instances[$signature] = &$instance;
 
-			if ( !is_null($ntype) )
+			if (!is_null($ntype))
 			{
 				// Set the type to the Document type originally requested
 				$instance->setType($ntype);
 			}
 		}
 
-		return $instances[$signature];
+		return self::$instances[$signature];
 	}
 
 	/**
 	 * Set the document type
 	 *
-	 * @access	public
-	 * @param	string $type
+	 * @param   string  $type  Type document is to set to
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setType($type) {
+	public function setType($type)
+	{
 		$this->_type = $type;
+
+		return $this;
 	}
 
-	 /**
+	/**
 	 * Returns the document type
 	 *
-	 * @access	public
-	 * @return	string
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getType() {
+	public function getType()
+	{
 		return $this->_type;
-	}
-
-	/**
-	 * Get the document head data
-	 *
-	 * @access	public
-	 * @return	array	The document head data in array form
-	 */
-	function getHeadData() {
-		// Impelemented in child classes
-	}
-
-	/**
-	 * Set the document head data
-	 *
-	 * @access	public
-	 * @param	array	$data	The document head data in array form
-	 */
-	function setHeadData($data) {
-		// Impelemented in child classes
 	}
 
 	/**
 	 * Get the contents of the document buffer
 	 *
-	 * @access public
-	 * @return 	The contents of the document buffer
+	 * @return  The contents of the document buffer
+	 *
+	 * @since   11.1
 	 */
-	function getBuffer() {
-		return $this->_buffer;
+	public function getBuffer()
+	{
+		return self::$_buffer;
 	}
 
 	/**
 	 * Set the contents of the document buffer
 	 *
-	 * @access public
-	 * @param string 	$content	The content to be set in the buffer
+	 * @param   string  $content  The content to be set in the buffer.
+	 * @param   array   $options  Array of optional elements.
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setBuffer($content) {
-		$this->_buffer = $content;
+	public function setBuffer($content, $options = array())
+	{
+		self::$_buffer = $content;
+
+		return $this;
 	}
 
 	/**
 	 * Gets a meta tag.
 	 *
-	 * @param	string	$name			Value of name or http-equiv tag
-	 * @param	bool	$http_equiv	 META type "http-equiv" defaults to null
-	 * @return	string
-	 * @access	public
+	 * @param   string   $name       Value of name or http-equiv tag
+	 * @param   boolean  $httpEquiv  META type "http-equiv" defaults to null
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getMetaData($name, $http_equiv = false)
+	public function getMetaData($name, $httpEquiv = false)
 	{
 		$result = '';
 		$name = strtolower($name);
-		if($name == 'generator') { 
+		if ($name == 'generator')
+		{
 			$result = $this->getGenerator();
-		} elseif($name == 'description') {
+		}
+		elseif ($name == 'description')
+		{
 			$result = $this->getDescription();
-		} else {
-			if ($http_equiv == true) {
+		}
+		else
+		{
+			if ($httpEquiv == true)
+			{
 				$result = @$this->_metaTags['http-equiv'][$name];
-			} else {
+			}
+			else
+			{
 				$result = @$this->_metaTags['standard'][$name];
 			}
 		}
+
 		return $result;
 	}
 
 	/**
 	 * Sets or alters a meta tag.
 	 *
-	 * @param string  $name			Value of name or http-equiv tag
-	 * @param string  $content		Value of the content tag
-	 * @param bool	$http_equiv	 META type "http-equiv" defaults to null
-	 * @return void
-	 * @access public
+	 * @param   string   $name        Value of name or http-equiv tag
+	 * @param   string   $content     Value of the content tag
+	 * @param   boolean  $http_equiv  META type "http-equiv" defaults to null
+	 * @param   boolean  $sync        Should http-equiv="content-type" by synced with HTTP-header?
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setMetaData($name, $content, $http_equiv = false)
+	public function setMetaData($name, $content, $http_equiv = false, $sync = true)
 	{
 		$name = strtolower($name);
-		if($name == 'generator') { 
+
+		if ($name == 'generator')
+		{
 			$this->setGenerator($content);
-		} elseif($name == 'description') {
+		}
+		elseif ($name == 'description')
+		{
 			$this->setDescription($content);
-		} else {
-			if ($http_equiv == true) {
+		}
+		else
+		{
+			if ($http_equiv == true)
+			{
 				$this->_metaTags['http-equiv'][$name] = $content;
-			} else {
+
+				// Syncing with HTTP-header
+				if ($sync && strtolower($name) == 'content-type')
+				{
+					$this->setMimeEncoding($content, false);
+				}
+			}
+			else
+			{
 				$this->_metaTags['standard'][$name] = $content;
 			}
 		}
+
+		return $this;
 	}
 
-	 /**
+	/**
 	 * Adds a linked script to the page
 	 *
-	 * @param	string  $url		URL to the linked script
-	 * @param	string  $type		Type of script. Defaults to 'text/javascript'
-	 * @access   public
+	 * @param   string   $url    URL to the linked script
+	 * @param   string   $type   Type of script. Defaults to 'text/javascript'
+	 * @param   boolean  $defer  Adds the defer attribute.
+	 * @param   boolean  $async  Adds the async attribute.
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function addScript($url, $type="text/javascript") {
-		$this->_scripts[$url] = $type;
+	public function addScript($url, $type = "text/javascript", $defer = false, $async = false)
+	{
+		$this->_scripts[$url]['mime'] = $type;
+		$this->_scripts[$url]['defer'] = $defer;
+		$this->_scripts[$url]['async'] = $async;
+
+		return $this;
 	}
 
 	/**
 	 * Adds a script to the page
 	 *
-	 * @access   public
-	 * @param	string  $content   Script
-	 * @param	string  $type	Scripting mime (defaults to 'text/javascript')
-	 * @return   void
+	 * @param   string  $content  Script
+	 * @param   string  $type     Scripting mime (defaults to 'text/javascript')
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function addScriptDeclaration($content, $type = 'text/javascript')
+	public function addScriptDeclaration($content, $type = 'text/javascript')
 	{
-		if (!isset($this->_script[strtolower($type)])) {
+		if (!isset($this->_script[strtolower($type)]))
+		{
 			$this->_script[strtolower($type)] = $content;
-		} else {
-			$this->_script[strtolower($type)] .= chr(13).$content;
 		}
+		else
+		{
+			$this->_script[strtolower($type)] .= chr(13) . $content;
+		}
+
+		return $this;
 	}
 
 	/**
 	 * Adds a linked stylesheet to the page
 	 *
-	 * @param	string  $url	URL to the linked style sheet
-	 * @param	string  $type   Mime encoding type
-	 * @param	string  $media  Media type that this stylesheet applies to
-	 * @access   public
+	 * @param   string  $url      URL to the linked style sheet
+	 * @param   string  $type     Mime encoding type
+	 * @param   string  $media    Media type that this stylesheet applies to
+	 * @param   array   $attribs  Array of attributes
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = array())
+	public function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = array())
 	{
-		$this->_styleSheets[$url]['mime']		= $type;
-		$this->_styleSheets[$url]['media']		= $media;
-		$this->_styleSheets[$url]['attribs']	= $attribs;
+		$this->_styleSheets[$url]['mime'] = $type;
+		$this->_styleSheets[$url]['media'] = $media;
+		$this->_styleSheets[$url]['attribs'] = $attribs;
+
+		return $this;
 	}
 
-	 /**
+	/**
 	 * Adds a stylesheet declaration to the page
 	 *
-	 * @param	string  $content   Style declarations
-	 * @param	string  $type		Type of stylesheet (defaults to 'text/css')
-	 * @access   public
-	 * @return   void
+	 * @param   string  $content  Style declarations
+	 * @param   string  $type     Type of stylesheet (defaults to 'text/css')
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function addStyleDeclaration($content, $type = 'text/css')
+	public function addStyleDeclaration($content, $type = 'text/css')
 	{
-		if (!isset($this->_style[strtolower($type)])) {
+		if (!isset($this->_style[strtolower($type)]))
+		{
 			$this->_style[strtolower($type)] = $content;
-		} else {
-			$this->_style[strtolower($type)] .= chr(13).$content;
 		}
+		else
+		{
+			$this->_style[strtolower($type)] .= chr(13) . $content;
+		}
+
+		return $this;
 	}
 
-	 /**
+	/**
 	 * Sets the document charset
 	 *
-	 * @param   string   $type  Charset encoding string
-	 * @access  public
-	 * @return  void
+	 * @param   string  $type  Charset encoding string
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setCharset($type = 'utf-8') {
+	public function setCharset($type = 'utf-8')
+	{
 		$this->_charset = $type;
+
+		return $this;
 	}
 
 	/**
 	 * Returns the document charset encoding.
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getCharset() {
+	public function getCharset()
+	{
 		return $this->_charset;
 	}
 
 	/**
 	 * Sets the global document language declaration. Default is English (en-gb).
 	 *
-	 * @access public
-	 * @param   string   $lang
+	 * @param   string  $lang  The language to be set
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setLanguage($lang = "en-gb") {
+	public function setLanguage($lang = "en-gb")
+	{
 		$this->language = strtolower($lang);
+
+		return $this;
 	}
 
 	/**
 	 * Returns the document language.
 	 *
-	 * @return string
-	 * @access public
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getLanguage() {
+	public function getLanguage()
+	{
 		return $this->language;
 	}
 
 	/**
 	 * Sets the global document direction declaration. Default is left-to-right (ltr).
 	 *
-	 * @access public
-	 * @param   string   $lang
+	 * @param   string  $dir  The language direction to be set
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setDirection($dir = "ltr") {
+	public function setDirection($dir = "ltr")
+	{
 		$this->direction = strtolower($dir);
+
+		return $this;
 	}
 
 	/**
-	 * Returns the document language.
+	 * Returns the document direction declaration.
 	 *
-	 * @return string
-	 * @access public
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getDirection() {
+	public function getDirection()
+	{
 		return $this->direction;
 	}
 
 	/**
 	 * Sets the title of the document
 	 *
-	 * @param	string	$title
-	 * @access   public
+	 * @param   string  $title  The title to be set
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setTitle($title) {
+	public function setTitle($title)
+	{
 		$this->title = $title;
+
+		return $this;
 	}
 
 	/**
 	 * Return the title of the document.
 	 *
-	 * @return   string
-	 * @access   public
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getTitle() {
+	public function getTitle()
+	{
 		return $this->title;
 	}
 
 	/**
 	 * Sets the base URI of the document
 	 *
-	 * @param	string	$base
-	 * @access   public
+	 * @param   string  $base  The base URI to be set
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setBase($base) {
+	public function setBase($base)
+	{
 		$this->base = $base;
+
+		return $this;
 	}
 
 	/**
 	 * Return the base URI of the document.
 	 *
-	 * @return   string
-	 * @access   public
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getBase() {
+	public function getBase()
+	{
 		return $this->base;
 	}
 
 	/**
 	 * Sets the description of the document
 	 *
-	 * @param	string	$title
-	 * @access   public
+	 * @param   string  $description  The description to set
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setDescription($description) {
+	public function setDescription($description)
+	{
 		$this->description = $description;
+
+		return $this;
 	}
 
 	/**
 	 * Return the title of the page.
 	 *
-	 * @return   string
-	 * @access   public
+	 * @return  string
+	 *
+	 * @since    11.1
 	 */
-	function getDescription() {
+	public function getDescription()
+	{
 		return $this->description;
 	}
 
-	 /**
+	/**
 	 * Sets the document link
 	 *
-	 * @param   string   $url  A url
-	 * @access  public
-	 * @return  void
+	 * @param   string  $url  A url
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setLink($url) {
+	public function setLink($url)
+	{
 		$this->link = $url;
+
+		return $this;
 	}
 
 	/**
 	 * Returns the document base url
 	 *
-	 * @access public
 	 * @return string
+	 *
+	 * @since   11.1
 	 */
-	function getLink() {
+	public function getLink()
+	{
 		return $this->link;
 	}
 
-	 /**
+	/**
 	 * Sets the document generator
 	 *
-	 * @param   string
-	 * @access  public
-	 * @return  void
+	 * @param   string  $generator  The generator to be set
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setGenerator($generator) {
+	public function setGenerator($generator)
+	{
 		$this->_generator = $generator;
+
+		return $this;
 	}
 
 	/**
 	 * Returns the document generator
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getGenerator() {
+	public function getGenerator()
+	{
 		return $this->_generator;
 	}
 
-	 /**
+	/**
 	 * Sets the document modified date
 	 *
-	 * @param   string
-	 * @access  public
-	 * @return  void
+	 * @param   string  $date  The date to be set
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setModifiedDate($date) {
+	public function setModifiedDate($date)
+	{
 		$this->_mdate = $date;
+
+		return $this;
 	}
 
 	/**
 	 * Returns the document modified date
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function getModifiedDate() {
+	public function getModifiedDate()
+	{
 		return $this->_mdate;
 	}
 
-	 /**
+	/**
 	 * Sets the document MIME encoding that is sent to the browser.
 	 *
-	 * <p>This usually will be text/html because most browsers cannot yet
+	 * This usually will be text/html because most browsers cannot yet
 	 * accept the proper mime settings for XHTML: application/xhtml+xml
 	 * and to a lesser extent application/xml and text/xml. See the W3C note
 	 * ({@link http://www.w3.org/TR/xhtml-media-types/
-	 * http://www.w3.org/TR/xhtml-media-types/}) for more details.</p>
+	 * http://www.w3.org/TR/xhtml-media-types/}) for more details.
 	 *
-	 * @param	string	$type
-	 * @access   public
-	 * @return   void
+	 * @param   string   $type  The document type to be sent
+	 * @param   boolean  $sync  Should the type be synced with HTML?
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
+	 *
+	 * @link    http://www.w3.org/TR/xhtml-media-types
 	 */
-	function setMimeEncoding($type = 'text/html') {
+	public function setMimeEncoding($type = 'text/html', $sync = true)
+	{
 		$this->_mime = strtolower($type);
+
+		// Syncing with meta-data
+		if ($sync)
+		{
+			$this->setMetaData('content-type', $type, true, false);
+		}
+
+		return $this;
 	}
 
-	 /**
+	/**
+	 * Return the document MIME encoding that is sent to the browser.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	public function getMimeEncoding()
+	{
+		return $this->_mime;
+	}
+
+	/**
 	 * Sets the line end style to Windows, Mac, Unix or a custom string.
 	 *
 	 * @param   string  $style  "win", "mac", "unix" or custom string.
-	 * @access  public
-	 * @return  void
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setLineEnd($style)
+	public function setLineEnd($style)
 	{
-		switch ($style) {
+		switch ($style)
+		{
 			case 'win':
 				$this->_lineEnd = "\15\12";
 				break;
@@ -698,85 +856,118 @@ class JDocument extends JObject
 			default:
 				$this->_lineEnd = $style;
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Returns the lineEnd
 	 *
-	 * @access	private
-	 * @return	string
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function _getLineEnd() {
+	public function _getLineEnd()
+	{
 		return $this->_lineEnd;
 	}
 
 	/**
 	 * Sets the string used to indent HTML
 	 *
-	 * @param	 string	$string	 String used to indent ("\11", "\t", '  ', etc.).
-	 * @access	public
-	 * @return	void
+	 * @param   string  $string  String used to indent ("\11", "\t", '  ', etc.).
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
 	 */
-	function setTab($string) {
+	public function setTab($string)
+	{
 		$this->_tab = $string;
+
+		return $this;
 	}
 
-	 /**
+	/**
 	 * Returns a string containing the unit for indenting HTML
 	 *
-	 * @access	private
-	 * @return	string
+	 * @return  string
+	 *
+	 * @since   11.1
 	 */
-	function _getTab() {
+	public function _getTab()
+	{
 		return $this->_tab;
 	}
 
 	/**
-	* Load a renderer
-	*
-	* @access	public
-	* @param	string	The renderer type
-	* @return	object
-	* @since 1.5
-	*/
-	function &loadRenderer( $type )
+	 * Load a renderer
+	 *
+	 * @param   string  $type  The renderer type
+	 *
+	 * @return  JDocumentRenderer  Object or null if class does not exist
+	 *
+	 * @since   11.1
+	 */
+	public function loadRenderer($type)
 	{
-		$null	= null;
-		$class	= 'JDocumentRenderer'.$type;
+		$class = 'JDocumentRenderer' . $type;
 
-		if( !class_exists( $class ) )
+		if (!class_exists($class))
 		{
-			$path = dirname(__FILE__).DS.$this->_type.DS.'renderer'.DS.$type.'.php';
-			if(file_exists($path)) {
-				require_once($path);
-			} else {
-				JError::raiseError(500,JText::_('Unable to load renderer class'));
+			$path = dirname(__FILE__) . '/' . $this->_type . '/renderer/' . $type . '.php';
+
+			if (file_exists($path))
+			{
+				require_once $path;
+			}
+			else
+			{
+				JError::raiseError(500, JText::_('Unable to load renderer class'));
 			}
 		}
 
-		if ( !class_exists( $class ) ) {
-			return $null;
+		if (!class_exists($class))
+		{
+			return null;
 		}
 
 		$instance = new $class($this);
+
 		return $instance;
+	}
+
+	/**
+	 * Parses the document and prepares the buffers
+	 *
+	 * @param   array  $params  The array of parameters
+	 *
+	 * @return  JDocument instance of $this to allow chaining
+	 *
+	 * @since   11.1
+	 */
+	public function parse($params = array())
+	{
+		return $this;
 	}
 
 	/**
 	 * Outputs the document
 	 *
-	 * @access public
-	 * @param boolean 	$cache		If true, cache the output
-	 * @param boolean 	$compress	If true, compress the output
-	 * @param array		$params		Associative array of attributes
-	 * @return 	The rendered data
+	 * @param   boolean  $cache   If true, cache the output
+	 * @param   array    $params  Associative array of attributes
+	 *
+	 * @return  The rendered data
+	 *
+	 * @since   11.1
 	 */
-	function render( $cache = false, $params = array())
+	public function render($cache = false, $params = array())
 	{
-		JResponse::setHeader( 'Expires', gmdate( 'D, d M Y H:i:s', time() + 900 ) . ' GMT' );
-		if ($mdate = $this->getModifiedDate()) {
-			JResponse::setHeader( 'Last-Modified', $mdate /* gmdate( 'D, d M Y H:i:s', time() + 900 ) . ' GMT' */ );
+		if ($mdate = $this->getModifiedDate())
+		{
+			JResponse::setHeader('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) . ' GMT' */);
 		}
-		JResponse::setHeader( 'Content-Type', $this->_mime .  '; charset=' . $this->_charset);
+
+		JResponse::setHeader('Content-Type', $this->_mime . ($this->_charset ? '; charset=' . $this->_charset : ''));
 	}
 }

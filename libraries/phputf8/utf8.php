@@ -42,16 +42,14 @@ if ( extension_loaded('mbstring')) {
 }
 
 /**
-* Load the faster strlen if mbstring available
+* Check whether PCRE has been compiled with UTF-8 support
 */
-if ( !defined('UTF8_STRLEN') ) {
-    if ( function_exists('mb_strlen') ) {
-        mb_internal_encoding('UTF-8');
-        require_once UTF8 . '/mbstring/strlen.php';
-    } else {
-        require_once UTF8 . '/native/strlen.php';
-    }
+$UTF8_ar = array();
+if ( preg_match('/^.{1}$/u',"ñ",$UTF8_ar) != 1 ) {
+    trigger_error('PCRE is not compiled with UTF-8 support',E_USER_ERROR);
 }
+unset($UTF8_ar);
+
 
 /**
 * Load the smartest implementations of utf8_strpos, utf8_strrpos
@@ -61,20 +59,8 @@ if ( !defined('UTF8_CORE') ) {
     if ( function_exists('mb_substr') ) {
         require_once UTF8 . '/mbstring/core.php';
     } else {
-        require_once UTF8 . '/native/core.php';
-    }
-}
-
-/**
-* Load the smartest implementations of utf8_strtolower and
-* utf8_strtoupper
-*/
-if ( !defined('UTF8_CASE') ) {
-    if ( function_exists('mb_strtolower') ) {
-        require_once UTF8 . '/mbstring/case.php';
-    } else {
         require_once UTF8 . '/utils/unicode.php';
-        require_once UTF8 . '/native/case.php';
+        require_once UTF8 . '/native/core.php';
     }
 }
 

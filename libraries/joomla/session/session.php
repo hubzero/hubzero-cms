@@ -1,206 +1,182 @@
 <?php
 /**
-* @version		$Id: session.php 19338 2010-11-03 14:51:55Z ian $
-* @package		Joomla.Framework
-* @subpackage	Session
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Session
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
-//Register the session storage class with the loader
-JLoader::register('JSessionStorage', dirname(__FILE__).DS.'storage.php');
+jimport('joomla.environment.request');
 
 /**
-* Class for managing HTTP sessions
-*
-* Provides access to session-state values as well as session-level
-* settings and lifetime management methods.
-* Based on the standart PHP session handling mechanism it provides
-* for you more advanced features such as expire timeouts.
-*
-* @package		Joomla.Framework
-* @subpackage	Session
-* @since		1.5
-*/
+ * Class for managing HTTP sessions
+ *
+ * Provides access to session-state values as well as session-level
+ * settings and lifetime management methods.
+ * Based on the standard PHP session handling mechanism it provides
+ * more advanced features such as expire timeouts.
+ *
+ * @package     Joomla.Platform
+ * @subpackage  Session
+ * @since       11.1
+ */
 class JSession extends JObject
 {
 	/**
-	 * internal state
+	 * Internal state.
+	 * One of 'active'|'expired'|'destroyed'|'error'
 	 *
-	 * @access protected
-	 * @var	string $_state one of 'active'|'expired'|'destroyed|'error'
-	 * @see getState()
+	 * @var    string
+	 * @see    getState()
+	 * @since  11.1
 	 */
-	var	$_state	=	'active';
+	protected $_state = 'active';
 
 	/**
-	 * Maximum age of unused session
+	 * Maximum age of unused session in minutes
 	 *
-	 * @access protected
-	 * @var	string $_expire minutes
+	 * @var    string
+	 * @since  11.1
 	 */
-	var	$_expire	=	15;
+	protected $_expire = 15;
 
 	/**
-	 * The session store object
+	 * The session store object.
 	 *
-	 * @access protected
-	 * @var	object A JSessionStorage object
+	 * @var    JSessionStorage
+	 * @since  11.1
 	 */
-	var	$_store	=	null;
+	protected $_store = null;
 
 	/**
-	* security policy
-	*
-	* Default values:
-	*  - fix_browser
-	*  - fix_adress
-	*
-	* @access protected
-	* @var array $_security list of checks that will be done.
-	*/
-	var $_security = array( 'fix_browser' );
+	 * Security policy.
+	 * List of checks that will be done.
+	 *
+	 * Default values:
+	 * - fix_browser
+	 * - fix_adress
+	 *
+	 * @var array
+	 * @since  11.1
+	 */
+	protected $_security = array('fix_browser');
 
 	/**
-	* Force cookies to be SSL only
-	*
-	* @access protected
-	* @default false
-	* @var bool $force_ssl
-	*/
-	var $_force_ssl = false;
+	 * Force cookies to be SSL only
+	 * Default  false
+	 *
+	 * @var    boolean
+	 * @since  11.1
+	 */
+	protected $_force_ssl = false;
 
 	/**
-	* Constructor
-	*
-	* @access protected
-	* @param string $storage
-	* @param array 	$options 	optional parameters
-	*/
-	function __construct( $store = 'none', $options = array() )
+	 * @var    JSession  JSession instances container.
+	 * @since  11.3
+	 */
+	protected static $instance;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   string  $store    The type of storage for the session.
+	 * @param   array   $options  Optional parameters
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($store = 'none', $options = array())
 	{
-		// Register faked "destructor" in PHP4, this needs to happen before creating the session store
-		if (version_compare(PHP_VERSION, '5') == -1) {
-			register_shutdown_function((array(&$this, '__destruct')));
-		}
-
-		//Need to destroy any existing sessions started with session.auto_start
-		if (session_id()) {
+		// Need to destroy any existing sessions started with session.auto_start
+		if (session_id())
+		{
 			session_unset();
 			session_destroy();
 		}
 
-		//set default sessios save handler
+		// Set default sessios save handler
 		ini_set('session.save_handler', 'files');
 
-		//disable transparent sid support
+		// Disable transparent sid support
 		ini_set('session.use_trans_sid', '0');
-		
-		if ($store == 'database')
-		{
-			if (ini_get('session.gc_probability') < 1)
-			{
-				ini_set('session.gc_probability',1);
-			}
-			if (ini_get('session.gc_divisor') < 1)
-			{
-				ini_set('session.gc_divisor',100);
-			}
-		}
 
-		//create handler
-		$this->_store =& JSessionStorage::getInstance($store, $options);
+		// Create handler
+		$this->_store = JSessionStorage::getInstance($store, $options);
 
-		//set options
-		$this->_setOptions( $options );
-
-		/* BEGIN: HUBzero Extension to pass session id in query string when cookie not available */
-		/* This is used, in particular, to allow QuickTime plugin in Safari on the Mac */
-		/* to view private mp4. QuickTime does not pass the browser's cookies to the site */
-		if (!isset($_COOKIE[session_name()]) && isset($_GET['PHPSESSID'])) 
-		{
-			if ((strlen($_GET['PHPSESSID']) == 32) && ctype_alnum($_GET['PHPSESSID']))
-			{
-				if ($this->_store->read($_GET['PHPSESSID']) != '')
-					session_id($_GET['PHPSESSID']);
-			}
-		}
-		/* END: HUBzero Extension to pass session id in query string when cookie not available */
+		// Set options
+		$this->_setOptions($options);
 
 		$this->_setCookieParams();
 
-		//load the session
+		// Load the session
 		$this->_start();
 
-		//initialise the session
+		// Initialise the session
 		$this->_setCounter();
 		$this->_setTimers();
 
-		$this->_state =	'active';
+		$this->_state = 'active';
 
-		// perform security checks
+		// Perform security checks
 		$this->_validate();
 	}
 
-    /**
+	/**
 	 * Session object destructor
 	 *
-	 * @access private
-	 * @since 1.5
+	 * @since   11.1
 	 */
-	function __destruct() {
+	public function __destruct()
+	{
 		$this->close();
 	}
 
 	/**
-	 * Returns a reference to the global Session object, only creating it
+	 * Returns the global Session object, only creating it
 	 * if it doesn't already exist.
 	 *
-	 * This method must be invoked as:
-	 * 		<pre>  $session = &JSession::getInstance();</pre>
+	 * @param   string  $handler  The type of session handler.
+	 * @param   array   $options  An array of configuration options.
 	 *
-	 * @access	public
-	 * @return	JSession	The Session object.
-	 * @since	1.5
+	 * @return  JSession  The Session object.
+	 *
+	 * @since   11.1
 	 */
-	static function & getInstance($handler, $options)
+	public static function getInstance($handler, $options)
 	{
-		static $instance;
-
-		if (!is_object($instance)) {
-			$instance = new JSession($handler, $options);
+		if (!is_object(self::$instance))
+		{
+			self::$instance = new JSession($handler, $options);
 		}
 
-		return $instance;
+		return self::$instance;
 	}
 
 	/**
 	 * Get current state of session
 	 *
-	 * @access public
-	 * @return string The session state
+	 * @return  string  The session state
+	 *
+	 * @since   11.1
 	 */
-    function getState() {
+	public function getState()
+	{
 		return $this->_state;
 	}
 
 	/**
 	 * Get expiration time in minutes
 	 *
-	 * @access public
-	 * @return integer The session expiration time in minutes
+	 * @return  integer  The session expiration time in minutes
+	 *
+	 * @since   11.1
 	 */
-    function getExpire() {
+	public function getExpire()
+	{
 		return $this->_expire;
-    }
+	}
 
 	/**
 	 * Get a session token, if a token isn't set yet one will be generated.
@@ -209,18 +185,21 @@ class JSession extends JObject
 	 * has been generated the system will check the post request to see if
 	 * it is present, if not it will invalidate the session.
 	 *
-	 * @param boolean $forceNew If true, force a new token to be created
-	 * @access public
-	 * @return string The session token
+	 * @param   boolean  $forceNew  If true, force a new token to be created
+	 *
+	 * @return  string  The session token
+	 *
+	 * @since   11.1
 	 */
-	function getToken($forceNew = false)
+	public function getToken($forceNew = false)
 	{
-		$token = $this->get( 'session.token' );
+		$token = $this->get('session.token');
 
-		//create a token
-		if( $token === null || $forceNew ) {
-			$token	=	$this->_createToken( 12 );
-			$this->set( 'session.token', $token );
+		// Create a token
+		if ($token === null || $forceNew)
+		{
+			$token = $this->_createToken(12);
+			$this->set('session.token', $token);
 		}
 
 		return $token;
@@ -230,20 +209,23 @@ class JSession extends JObject
 	 * Method to determine if a token exists in the session. If not the
 	 * session will be set to expired
 	 *
-	 * @param	string	Hashed token to be verified
-	 * @param	boolean	If true, expires the session
-	 * @since	1.5
-	 * @static
+	 * @param   string   $tCheck       Hashed token to be verified
+	 * @param   boolean  $forceExpire  If true, expires the session
+	 *
+	 * @return  boolean
+	 *
+	 * @since   11.1
 	 */
-	function hasToken($tCheck, $forceExpire = true)
+	public function hasToken($tCheck, $forceExpire = true)
 	{
-		// check if a token exists in the session
-		$tStored = $this->get( 'session.token' );
+		// Check if a token exists in the session
+		$tStored = $this->get('session.token');
 
-		//check token
-		if(($tStored !== $tCheck))
+		// Check token
+		if (($tStored !== $tCheck))
 		{
-			if($forceExpire) {
+			if ($forceExpire)
+			{
 				$this->_state = 'expired';
 			}
 			return false;
@@ -252,16 +234,77 @@ class JSession extends JObject
 		return true;
 	}
 
+	/**
+	 * Method to determine a hash for anti-spoofing variable names
+	 *
+	 * @param   boolean  $forceNew  If true, force a new token to be created
+	 *
+	 * @return  string  Hashed var name
+	 *
+	 * @since   11.1
+	 */
+	public static function getFormToken($forceNew = false)
+	{
+		$user = JFactory::getUser();
+		$session = JFactory::getSession();
+		$hash = JApplication::getHash($user->get('id', 0) . $session->getToken($forceNew));
+
+		return $hash;
+	}
+
+	/**
+	 * Checks for a form token in the request.
+	 *
+	 * Use in conjunction with JHtml::_('form.token') or JSession::getFormToken.
+	 *
+	 * @param   string  $method  The request method in which to look for the token key.
+	 *
+	 * @return  boolean  True if found and valid, false otherwise.
+	 *
+	 * @since   12.1
+	 */
+	public static function checkToken($method = 'post')
+	{
+		if ($method == 'default')
+		{
+			trigger_error("JSession::checkToken() doesn't support 'default' for the method parameter.", E_USER_ERROR);
+			return false;
+		}
+
+		$token = self::getFormToken();
+		$app = JFactory::getApplication();
+
+		if (!JRequest::getVar($token, '', $method, 'alnum'))
+		{
+			$session = JFactory::getSession();
+			if ($session->isNew())
+			{
+				// Redirect to login screen.
+				$app->redirect(JRoute::_('index.php'), JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
+				$app->close();
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return true;
+		}
+	}
 
 	/**
 	 * Get session name
 	 *
-	 * @access public
-	 * @return string The session name
+	 * @return  string  The session name
+	 *
+	 * @since   11.1
 	 */
-	function getName()
+	public function getName()
 	{
-		if( $this->_state === 'destroyed' ) {
+		if ($this->_state === 'destroyed')
+		{
 			// @TODO : raise error
 			return null;
 		}
@@ -271,12 +314,14 @@ class JSession extends JObject
 	/**
 	 * Get session id
 	 *
-	 * @access public
-	 * @return string The session name
+	 * @return  string  The session name
+	 *
+	 * @since   11.1
 	 */
-	function getId()
+	public function getId()
 	{
-		if( $this->_state === 'destroyed' ) {
+		if ($this->_state === 'destroyed')
+		{
 			// @TODO : raise error
 			return null;
 		}
@@ -286,26 +331,29 @@ class JSession extends JObject
 	/**
 	 * Get the session handlers
 	 *
-	 * @access public
-	 * @return array An array of available session handlers
+	 * @return  array  An array of available session handlers
+	 *
+	 * @since   11.1
 	 */
-	function getStores()
+	public static function getStores()
 	{
 		jimport('joomla.filesystem.folder');
-		$handlers = JFolder::files(dirname(__FILE__).DS.'storage', '.php$');
+		$handlers = JFolder::files(dirname(__FILE__) . '/storage', '.php$');
 
 		$names = array();
-		foreach($handlers as $handler)
+		foreach ($handlers as $handler)
 		{
 			$name = substr($handler, 0, strrpos($handler, '.'));
-			$class = 'JSessionStorage'.ucfirst($name);
+			$class = 'JSessionStorage' . ucfirst($name);
 
-			//Load the class only if needed
-			if(!class_exists($class)) {
-				require_once(dirname(__FILE__).DS.'storage'.DS.$name.'.php');
+			// Load the class only if needed
+			if (!class_exists($class))
+			{
+				require_once dirname(__FILE__) . '/storage/' . $name . '.php';
 			}
 
-			if(call_user_func_array( array( trim($class), 'test' ), array())) {
+			if (call_user_func_array(array(trim($class), 'test'), array()))
+			{
 				$names[] = $name;
 			}
 		}
@@ -314,69 +362,82 @@ class JSession extends JObject
 	}
 
 	/**
-	* Check whether this session is currently created
-	*
-	* @access public
-	* @return boolean $result true on success
-	*/
-	function isNew()
+	 * Check whether this session is currently created
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
+	 */
+	public function isNew()
 	{
-		$counter = $this->get( 'session.counter' );
-		if( $counter === 1 ) {
+		$counter = $this->get('session.counter');
+		if ($counter === 1)
+		{
 			return true;
 		}
 		return false;
 	}
 
-	 /**
+	/**
 	 * Get data from the session store
 	 *
-	 * @static
-	 * @access public
-	 * @param  string $name			Name of a variable
-	 * @param  mixed  $default 		Default value of a variable if not set
-	 * @param  string 	$namespace 	Namespace to use, default to 'default'
-	 * @return mixed  Value of a variable
+	 * @param   string  $name       Name of a variable
+	 * @param   mixed   $default    Default value of a variable if not set
+	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 *
+	 * @return  mixed  Value of a variable
+	 *
+	 * @since   11.1
 	 */
-	function &get($name, $default = null, $namespace = 'default')
+	public function get($name, $default = null, $namespace = 'default')
 	{
-		$namespace = '__'.$namespace; //add prefix to namespace to avoid collisions
+		// Add prefix to namespace to avoid collisions
+		$namespace = '__' . $namespace;
 
-		if($this->_state !== 'active' && $this->_state !== 'expired') {
+		if ($this->_state !== 'active' && $this->_state !== 'expired')
+		{
 			// @TODO :: generated error here
 			$error = null;
 			return $error;
 		}
 
-		if (isset($_SESSION[$namespace][$name])) {
+		if (isset($_SESSION[$namespace][$name]))
+		{
 			return $_SESSION[$namespace][$name];
 		}
 		return $default;
 	}
 
 	/**
-	 * Set data into the session store
+	 * Set data into the session store.
 	 *
-	 * @access public
-	 * @param  string $name  		Name of a variable
-	 * @param  mixed  $value 		Value of a variable
-	 * @param  string 	$namespace 	Namespace to use, default to 'default'
-	 * @return mixed  Old value of a variable
+	 * @param   string  $name       Name of a variable.
+	 * @param   mixed   $value      Value of a variable.
+	 * @param   string  $namespace  Namespace to use, default to 'default'.
+	 *
+	 * @return  mixed  Old value of a variable.
+	 *
+	 * @since   11.1
 	 */
-	function set($name, $value, $namespace = 'default')
+	public function set($name, $value = null, $namespace = 'default')
 	{
-		$namespace = '__'.$namespace; //add prefix to namespace to avoid collisions
+		// Add prefix to namespace to avoid collisions
+		$namespace = '__' . $namespace;
 
-		if($this->_state !== 'active') {
+		if ($this->_state !== 'active')
+		{
 			// @TODO :: generated error here
 			return null;
 		}
 
-		$old = isset($_SESSION[$namespace][$name]) ?  $_SESSION[$namespace][$name] : null;
+		$old = isset($_SESSION[$namespace][$name]) ? $_SESSION[$namespace][$name] : null;
 
-		if (null === $value) {
+		if (null === $value)
+		{
 			unset($_SESSION[$namespace][$name]);
-		} else {
+		}
+		else
+		{
 			$_SESSION[$namespace][$name] = $value;
 		}
 
@@ -384,84 +445,94 @@ class JSession extends JObject
 	}
 
 	/**
-	* Check wheter data exists in the session store
-	*
-	* @access public
-	* @param string 	$name 		Name of variable
-	* @param  string 	$namespace 	Namespace to use, default to 'default'
-	* @return boolean $result true if the variable exists
-	*/
-	function has( $name, $namespace = 'default' )
+	 * Check whether data exists in the session store
+	 *
+	 * @param   string  $name       Name of variable
+	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 *
+	 * @return  boolean  True if the variable exists
+	 *
+	 * @since   11.1
+	 */
+	public function has($name, $namespace = 'default')
 	{
-		$namespace = '__'.$namespace; //add prefix to namespace to avoid collisions
+		// Add prefix to namespace to avoid collisions.
+		$namespace = '__' . $namespace;
 
-		if( $this->_state !== 'active' ) {
+		if ($this->_state !== 'active')
+		{
 			// @TODO :: generated error here
 			return null;
 		}
 
-		return isset( $_SESSION[$namespace][$name] );
+		return isset($_SESSION[$namespace][$name]);
 	}
 
 	/**
-	* Unset data from the session store
-	*
-	* @access public
-	* @param  string 	$name 		Name of variable
-	* @param  string 	$namespace 	Namespace to use, default to 'default'
-	* @return mixed $value the value from session or NULL if not set
-	*/
-	function clear( $name, $namespace = 'default' )
+	 * Unset data from the session store
+	 *
+	 * @param   string  $name       Name of variable
+	 * @param   string  $namespace  Namespace to use, default to 'default'
+	 *
+	 * @return  mixed   The value from session or NULL if not set
+	 *
+	 * @since   11.1
+	 */
+	public function clear($name, $namespace = 'default')
 	{
-		$namespace = '__'.$namespace; //add prefix to namespace to avoid collisions
+		// Add prefix to namespace to avoid collisions
+		$namespace = '__' . $namespace;
 
-		if( $this->_state !== 'active' ) {
+		if ($this->_state !== 'active')
+		{
 			// @TODO :: generated error here
 			return null;
 		}
 
-		$value	=	null;
-		if( isset( $_SESSION[$namespace][$name] ) ) {
-			$value	=	$_SESSION[$namespace][$name];
-			unset( $_SESSION[$namespace][$name] );
+		$value = null;
+		if (isset($_SESSION[$namespace][$name]))
+		{
+			$value = $_SESSION[$namespace][$name];
+			unset($_SESSION[$namespace][$name]);
 		}
 
 		return $value;
 	}
 
 	/**
-	* Start a session
-	*
-	* Creates a session (or resumes the current one based on the state of the session)
- 	*
-	* @access private
-	* @return boolean $result true on success
-	*/
-	function _start()
+	 * Start a session.
+	 *
+	 * Creates a session (or resumes the current one based on the state of the session)
+	 *
+	 * @return  boolean  true on success
+	 *
+	 * @since   11.1
+	 */
+	protected function _start()
 	{
-		//  start session if not startet
-		if( $this->_state == 'restart' ) {
-			session_id( $this->_createId() );
+		// Start session if not started
+		if ($this->_state == 'restart')
+		{
+			session_id($this->_createId());
+		}
+		else
+		{
+			$session_name = session_name();
+			if (!JRequest::getVar($session_name, false, 'COOKIE'))
+			{
+				if (JRequest::getVar($session_name))
+				{
+					session_id(JRequest::getVar($session_name));
+					setcookie($session_name, '', time() - 3600);
+				}
+			}
 		}
 
 		session_cache_limiter('none');
 		session_start();
 
-		/* BEGIN: HUBzero Extension to regenerate session id if passed a session id that no longer exists */
-		if ($_SESSION === array())
-		{
-			session_destroy();
-			session_id( $this->_createId() );
-			session_start();
-		}
-		/* END: HUBzero Extension to regenerate session id if passed a session id that no longer exists */
-		
-		// Send modified header for IE 6.0 Security Policy
-		header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"');
-
 		return true;
 	}
-
 
 	/**
 	 * Frees all session variables and destroys all data registered to a session
@@ -470,24 +541,31 @@ class JSession extends JObject
 	 * with the current session in its storage (file or DB). It forces new session to be
 	 * started after this method is called. It does not unset the session cookie.
 	 *
-	 * @static
-	 * @access public
-	 * @return void
-	 * @see	session_unset()
-	 * @see	session_destroy()
+	 * @return  boolean  True on success
+	 *
+	 * @see     session_destroy()
+	 * @see     session_unset()
+	 * @since   11.1
 	 */
-	function destroy()
+	public function destroy()
 	{
-		// session was already destroyed
-		if( $this->_state === 'destroyed' ) {
+		// Session was already destroyed
+		if ($this->_state === 'destroyed')
+		{
 			return true;
 		}
 
-		// In order to kill the session altogether, like to log the user out, the session id
-		// must also be unset. If a cookie is used to propagate the session id (default behavior),
-		// then the session cookie must be deleted.
-		if (isset($_COOKIE[session_name()])) {
-			setcookie(session_name(), '', time()-42000, '/');
+		/*
+		 * In order to kill the session altogether, such as to log the user out, the session id
+		 * must also be unset. If a cookie is used to propagate the session id (default behavior),
+		 * then the session cookie must be deleted.
+		 */
+		if (isset($_COOKIE[session_name()]))
+		{
+			$config = JFactory::getConfig();
+			$cookie_domain = $config->get('cookie_domain', '');
+			$cookie_path = $config->get('cookie_path', '/');
+			setcookie(session_name(), '', time() - 42000, $cookie_path, $cookie_domain);
 		}
 
 		session_unset();
@@ -498,16 +576,18 @@ class JSession extends JObject
 	}
 
 	/**
-    * restart an expired or locked session
-	*
-	* @access public
-	* @return boolean $result true on success
-	* @see destroy
-	*/
-	function restart()
+	 * Restart an expired or locked session.
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @see     destroy
+	 * @since   11.1
+	 */
+	public function restart()
 	{
 		$this->destroy();
-		if( $this->_state !==  'destroyed' ) {
+		if ($this->_state !== 'destroyed')
+		{
 			// @TODO :: generated error here
 			return false;
 		}
@@ -515,12 +595,13 @@ class JSession extends JObject
 		// Re-register the session handler after a session has been destroyed, to avoid PHP bug
 		$this->_store->register();
 
-		$this->_state	=   'restart';
-		//regenerate session id
-		$id	=	$this->_createId( strlen( $this->getId() ) );
+		$this->_state = 'restart';
+
+		// Regenerate session id
+		$id = $this->_createId();
 		session_id($id);
 		$this->_start();
-		$this->_state	=	'active';
+		$this->_state = 'active';
 
 		$this->_validate();
 		$this->_setCounter();
@@ -529,257 +610,307 @@ class JSession extends JObject
 	}
 
 	/**
-	* Create a new session and copy variables from the old one
-	*
-	* @abstract
-	* @access public
-	* @return boolean $result true on success
-	*/
-	function fork()
+	 * Create a new session and copy variables from the old one
+	 *
+	 * @return  boolean $result true on success
+	 *
+	 * @since   11.1
+	 */
+	public function fork()
 	{
-		if( $this->_state !== 'active' ) {
+		if ($this->_state !== 'active')
+		{
 			// @TODO :: generated error here
 			return false;
 		}
-		session_regenerate_id();
+
+		// Save values
+		$values = $_SESSION;
+
+		// Keep session config
+		$trans = ini_get('session.use_trans_sid');
+		if ($trans)
+		{
+			ini_set('session.use_trans_sid', 0);
+		}
+		$cookie = session_get_cookie_params();
+
+		// Create new session id
+		$id = $this->_createId();
+
+		// Kill session
+		session_destroy();
+
+		// Re-register the session store after a session has been destroyed, to avoid PHP bug
+		$this->_store->register();
+
+		// Restore config
+		ini_set('session.use_trans_sid', $trans);
+		session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure']);
+
+		// Restart session with new id
+		session_id($id);
+		session_start();
+
 		return true;
 	}
 
-	 /**
+	/**
 	 * Writes session data and ends session
 	 *
 	 * Session data is usually stored after your script terminated without the need
-	 * to call JSession::close(),but as session data is locked to prevent concurrent
+	 * to call JSession::close(), but as session data is locked to prevent concurrent
 	 * writes only one script may operate on a session at any time. When using
 	 * framesets together with sessions you will experience the frames loading one
 	 * by one due to this locking. You can reduce the time needed to load all the
 	 * frames by ending the session as soon as all changes to session variables are
 	 * done.
 	 *
-	 * @access public
-	 * @see	session_write_close()
+	 * @return  void
+	 *
+	 * @see     session_write_close()
+	 * @since   11.1
 	 */
-	function close() {
+	public function close()
+	{
 		session_write_close();
 	}
 
-	 /**
+	/**
 	 * Create a session id
 	 *
-	 * @static
-	 * @access private
-	 * @return string Session ID
+	 * @return  string  Session ID
+	 *
+	 * @since   11.1
 	 */
-	function _createId( )
+	protected function _createId()
 	{
 		$id = 0;
-		while (strlen($id) < 32)  {
+		while (strlen($id) < 32)
+		{
 			$id .= mt_rand(0, mt_getrandmax());
 		}
 
-		$id	= md5( uniqid($id, true));
+		$id = md5(uniqid($id, true));
 		return $id;
 	}
 
-	 /**
+	/**
 	 * Set session cookie parameters
 	 *
-	 * @access private
+	 * @return  void
+	 *
+	 * @since   11.1
 	 */
-	function _setCookieParams() {
-		$cookie	=	session_get_cookie_params();
-		if($this->_force_ssl) {
+	protected function _setCookieParams()
+	{
+		$cookie = session_get_cookie_params();
+		if ($this->_force_ssl)
+		{
 			$cookie['secure'] = true;
 		}
-		
+
 		$config = JFactory::getConfig();
-		
-		$uri = JURI::getInstance($config->getValue('config.live_site'));
-		
-		if ($uri->getHost())
+
+		if ($config->get('cookie_domain', '') != '')
 		{
-			if ($config->getValue('config.cookiesubdomains'))
-			{
-				$cookie['domain'] = '.' . $uri->getHost();
-			}
-			else
-			{
-				$cookie['domain'] = $uri->getHost();
-			}
+			$cookie['domain'] = $config->get('cookie_domain');
 		}
-		
-		session_set_cookie_params( $cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'] );
+
+		if ($config->get('cookie_path', '') != '')
+		{
+			$cookie['path'] = $config->get('cookie_path');
+		}
+		session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure']);
 	}
 
 	/**
-	* Create a token-string
-	*
-	* @access protected
-	* @param int $length lenght of string
-	* @return string $id generated token
-	*/
-	function _createToken( $length = 32 )
+	 * Create a token-string
+	 *
+	 * @param   integer  $length  Length of string
+	 *
+	 * @return  string  Generated token
+	 *
+	 * @since   11.1
+	 */
+	protected function _createToken($length = 32)
 	{
-		static $chars	=	'0123456789abcdef';
-		$max			=	strlen( $chars ) - 1;
-		$token			=	'';
-		$name 			=  session_name();
-		for( $i = 0; $i < $length; ++$i ) {
-			$token .=	$chars[ (rand( 0, $max )) ];
+		static $chars = '0123456789abcdef';
+		$max = strlen($chars) - 1;
+		$token = '';
+		$name = session_name();
+		for ($i = 0; $i < $length; ++$i)
+		{
+			$token .= $chars[(rand(0, $max))];
 		}
 
-		return md5($token.$name);
+		return md5($token . $name);
 	}
 
 	/**
-	* Set counter of session usage
-	*
-	* @access protected
-	* @return boolean $result true on success
-	*/
-	function _setCounter()
+	 * Set counter of session usage
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
+	 */
+	protected function _setCounter()
 	{
-		$counter = $this->get( 'session.counter', 0 );
+		$counter = $this->get('session.counter', 0);
 		++$counter;
 
-		$this->set( 'session.counter', $counter );
+		$this->set('session.counter', $counter);
 		return true;
 	}
 
 	/**
-	* Set the session timers
-	*
-	* @access protected
-	* @return boolean $result true on success
-	*/
-	function _setTimers()
+	 * Set the session timers
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
+	 */
+	protected function _setTimers()
 	{
-		if( !$this->has( 'session.timer.start' ) )
+		if (!$this->has('session.timer.start'))
 		{
-			$start	=	time();
+			$start = time();
 
-			$this->set( 'session.timer.start' , $start );
-			$this->set( 'session.timer.last'  , $start );
-			$this->set( 'session.timer.now'   , $start );
+			$this->set('session.timer.start', $start);
+			$this->set('session.timer.last', $start);
+			$this->set('session.timer.now', $start);
 		}
 
-		$this->set( 'session.timer.last', $this->get( 'session.timer.now' ) );
-		$this->set( 'session.timer.now', time() );
+		$this->set('session.timer.last', $this->get('session.timer.now'));
+		$this->set('session.timer.now', time());
 
 		return true;
 	}
 
 	/**
-	* set additional session options
-	*
-	* @access protected
-	* @param array $options list of parameter
-	* @return boolean $result true on success
-	*/
-	function _setOptions( &$options )
+	 * Set additional session options
+	 *
+	 * @param   array  &$options  List of parameter
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
+	 */
+	protected function _setOptions(&$options)
 	{
-		// set name
-		if( isset( $options['name'] ) ) {
-			session_name( md5($options['name']) );
+		// Set name
+		if (isset($options['name']))
+		{
+			session_name(md5($options['name']));
 		}
 
-		// set id
-		if( isset( $options['id'] ) ) {
-			session_id( $options['id'] );
+		// Set id
+		if (isset($options['id']))
+		{
+			session_id($options['id']);
 		}
 
-		// set expire time
-		if( isset( $options['expire'] ) ) {
-			$this->_expire	=	$options['expire'];
+		// Set expire time
+		if (isset($options['expire']))
+		{
+			$this->_expire = $options['expire'];
 		}
 
-		// get security options
-		if( isset( $options['security'] ) ) {
-			$this->_security	=	explode( ',', $options['security'] );
+		// Get security options
+		if (isset($options['security']))
+		{
+			$this->_security = explode(',', $options['security']);
 		}
 
-		if( isset( $options['force_ssl'] ) ) {
+		if (isset($options['force_ssl']))
+		{
 			$this->_force_ssl = (bool) $options['force_ssl'];
 		}
 
-		//sync the session maxlifetime
+		// Sync the session maxlifetime
 		ini_set('session.gc_maxlifetime', $this->_expire);
 
 		return true;
 	}
 
 	/**
-	* Do some checks for security reason
-	*
-	* - timeout check (expire)
-	* - ip-fixiation
-	* - browser-fixiation
-	*
-	* If one check failed, session data has to be cleaned.
-	*
-	* @access protected
-	* @param boolean $restart reactivate session
-	* @return boolean $result true on success
-	* @see http://shiflett.org/articles/the-truth-about-sessions
-	*/
-	function _validate( $restart = false )
+	 * Do some checks for security reason
+	 *
+	 * - timeout check (expire)
+	 * - ip-fixiation
+	 * - browser-fixiation
+	 *
+	 * If one check failed, session data has to be cleaned.
+	 *
+	 * @param   boolean  $restart  Reactivate session
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @see     http://shiflett.org/articles/the-truth-about-sessions
+	 * @since   11.1
+	 */
+	protected function _validate($restart = false)
 	{
-		// allow to restart a session
-		if( $restart )
+		// Allow to restart a session
+		if ($restart)
 		{
-			$this->_state	=	'active';
+			$this->_state = 'active';
 
-			$this->set( 'session.client.address'	, null );
-			$this->set( 'session.client.forwarded'	, null );
-			$this->set( 'session.client.browser'	, null );
-			$this->set( 'session.token'				, null );
+			$this->set('session.client.address', null);
+			$this->set('session.client.forwarded', null);
+			$this->set('session.client.browser', null);
+			$this->set('session.token', null);
 		}
 
-		// check if session has expired
-		if( $this->_expire )
+		// Check if session has expired
+		if ($this->_expire)
 		{
-			$curTime =	$this->get( 'session.timer.now' , 0  );
-			$maxTime =	$this->get( 'session.timer.last', 0 ) +  $this->_expire;
+			$curTime = $this->get('session.timer.now', 0);
+			$maxTime = $this->get('session.timer.last', 0) + $this->_expire;
 
-			// empty session variables
-			if( $maxTime < $curTime ) {
-				$this->_state	=	'expired';
+			// Empty session variables
+			if ($maxTime < $curTime)
+			{
+				$this->_state = 'expired';
 				return false;
 			}
 		}
 
-		// record proxy forwarded for in the session in case we need it later
-		if( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			$this->set( 'session.client.forwarded', $_SERVER['HTTP_X_FORWARDED_FOR']);
+		// Record proxy forwarded for in the session in case we need it later
+		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+		{
+			$this->set('session.client.forwarded', $_SERVER['HTTP_X_FORWARDED_FOR']);
 		}
 
-		// check for client adress
-		if( in_array( 'fix_adress', $this->_security ) && isset( $_SERVER['REMOTE_ADDR'] ) )
+		// Check for client address
+		if (in_array('fix_adress', $this->_security) && isset($_SERVER['REMOTE_ADDR']))
 		{
-			$ip	= $this->get( 'session.client.address' );
+			$ip = $this->get('session.client.address');
 
-			if( $ip === null ) {
-				$this->set( 'session.client.address', $_SERVER['REMOTE_ADDR'] );
-			}
-			else if( $_SERVER['REMOTE_ADDR'] !== $ip )
+			if ($ip === null)
 			{
-				$this->_state	=	'error';
+				$this->set('session.client.address', $_SERVER['REMOTE_ADDR']);
+			}
+			elseif ($_SERVER['REMOTE_ADDR'] !== $ip)
+			{
+				$this->_state = 'error';
 				return false;
 			}
 		}
 
-		// check for clients browser
-		if( in_array( 'fix_browser', $this->_security ) && isset( $_SERVER['HTTP_USER_AGENT'] ) )
+		// Check for clients browser
+		if (in_array('fix_browser', $this->_security) && isset($_SERVER['HTTP_USER_AGENT']))
 		{
-			$browser = $this->get( 'session.client.browser' );
+			$browser = $this->get('session.client.browser');
 
-			if( $browser === null ) {
-				$this->set( 'session.client.browser', $_SERVER['HTTP_USER_AGENT']);
-			}
-			else if( $_SERVER['HTTP_USER_AGENT'] !== $browser )
+			if ($browser === null)
 			{
-//				$this->_state	=	'error';
-//				return false;
+				$this->set('session.client.browser', $_SERVER['HTTP_USER_AGENT']);
+			}
+			elseif ($_SERVER['HTTP_USER_AGENT'] !== $browser)
+			{
+				// @todo remove code: 				$this->_state	=	'error';
+				// @todo remove code: 				return false;
 			}
 		}
 

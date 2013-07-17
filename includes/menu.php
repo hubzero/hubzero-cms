@@ -1,89 +1,136 @@
 <?php
 /**
- * @version		$Id: menu.php 8682 2007-08-31 18:36:45Z jinx $
- * @package		Joomla.Framework
- * @subpackage	Application
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+// No direct access.
+defined('_JEXEC') or die;
 
 /**
  * JMenu class
  *
- * @package		Joomla.Framework
+ * @package		Joomla.Site
  * @subpackage	Application
  * @since		1.5
  */
 class JMenuSite extends JMenu
 {
 	/**
-	 * Loads the entire menu table into memory
+	 * Loads the entire menu table into memory.
 	 *
-	 * @access public
 	 * @return array
 	 */
-	function load()
+	public function load()
 	{
+		// Initialise variables.
+		$db		= JFactory::getDbo();
+		$app	= JApplication::getInstance('site');
+		$query	= $db->getQuery(true);
 
-		$cache = &JFactory::getCache('_system', 'output');
+		$query->select('m.id, m.menutype, m.title, m.alias, m.note, m.path AS route, m.link, m.type, m.level, m.language');
+		$query->select('m.browserNav, m.access, m.params, m.home, m.img, m.template_style_id, m.component_id, m.parent_id');
+		$query->select('e.element as component');
+		$query->from('#__menu AS m');
+		$query->leftJoin('#__extensions AS e ON m.component_id = e.extension_id');
+		$query->where('m.published = 1');
+		$query->where('m.parent_id > 0');
+		$query->where('m.client_id = 0');
+		$query->order('m.lft');
 
-		if (!$data = $cache->get('menu_items')) {
-		// Initialize some variables
-		$db		= & JFactory::getDBO();
-
-		$sql	= 'SELECT m.*, c.`option` as component' .
-				' FROM #__menu AS m' .
-				' LEFT JOIN #__components AS c ON m.componentid = c.id'.
-				' WHERE m.published = 1'.
-				' ORDER BY m.sublevel, m.parent, m.ordering';
-		$db->setQuery($sql);
-
-		if (!($menus = $db->loadObjectList('id'))) {
-			// JError::raiseWarning('SOME_ERROR_CODE', "Error loading Menus: ".$db->getErrorMsg());
+		// Set the query
+		$db->setQuery($query);
+		if (!($this->_items = $db->loadObjectList('id'))) {
+			JError::raiseWarning(500, JText::sprintf('JERROR_LOADING_MENUS', $db->getErrorMsg()));
 			return false;
 		}
 
-		foreach($menus as $key => $menu)
+		foreach($this->_items as &$item) {
+			// Get parent information.
+			$parent_tree = array();
+			if (isset($this->_items[$item->parent_id])) {
+				$parent_tree  = $this->_items[$item->parent_id]->tree;
+			}
+
+			// Create tree.
+			$parent_tree[] = $item->id;
+			$item->tree = $parent_tree;
+
+			// Create the query array.
+			$url = str_replace('index.php?', '', $item->link);
+			$url = str_replace('&amp;', '&', $url);
+
+			parse_str($url, $item->query);
+		}
+	}
+
+	/**
+	 * Gets menu items by attribute
+	 *
+	 * @param	string	$attributes	The field name
+	 * @param	string	$values		The value of the field
+	 * @param	boolean	$firstonly	If true, only returns the first item found
+	 *
+	 * @return	array
+	 */
+	public function getItems($attributes, $values, $firstonly = false)
+	{
+		$attributes = (array) $attributes;
+		$values 	= (array) $values;
+		$app		= JApplication::getInstance('site');
+
+		if ($app->isSite())
 		{
-			//Get parent information
-			$parent_route = '';
-			$parent_tree  = array();
-			if(($parent = $menus[$key]->parent) && (isset($menus[$parent])) &&
-				(is_object($menus[$parent])) && (isset($menus[$parent]->route)) && isset($menus[$parent]->tree)) {
-				$parent_route = $menus[$parent]->route.'/';
-				$parent_tree  = $menus[$parent]->tree;
-			}
-
-			//Create tree
-			array_push($parent_tree, $menus[$key]->id);
-			$menus[$key]->tree   = $parent_tree;
-
-			//Create route
-			$route = $parent_route.$menus[$key]->alias;
-			$menus[$key]->route  = $route;
-
-			//Create the query array
-			$url = str_replace('index.php?', '', $menus[$key]->link);
-			if(strpos($url, '&amp;') !== false)
+			// Filter by language if not set
+			if (($key = array_search('language', $attributes)) === false)
 			{
-			   $url = str_replace('&amp;','&',$url);
+				if ($app->getLanguageFilter())
+				{
+					$attributes[] 	= 'language';
+					$values[] 		= array(JFactory::getLanguage()->getTag(), '*');
+				}
+			}
+			elseif ($values[$key] === null)
+			{
+				unset($attributes[$key]);
+				unset($values[$key]);
 			}
 
-			parse_str($url, $menus[$key]->query);
+			// Filter by access level if not set
+			if (($key = array_search('access', $attributes)) === false)
+			{
+				$attributes[] = 'access';
+				$values[] = JFactory::getUser()->getAuthorisedViewLevels();
+			}
+			elseif ($values[$key] === null)
+			{
+				unset($attributes[$key]);
+				unset($values[$key]);
+			}
 		}
 
-			$cache->store(serialize($menus), 'menu_items');
-		$this->_items = $menus;
-		} else {
-			$this->_items = unserialize($data);
+		return parent::getItems($attributes, $values, $firstonly);
 	}
+
+	/**
+	 * Get menu item by id
+	 *
+	 * @param	string	$language	The language code.
+	 *
+	 * @return	object	The item object
+	 * @since	1.5
+	 */
+	public function getDefault($language = '*')
+	{
+		if (array_key_exists($language, $this->_default) && JApplication::getInstance('site')->getLanguageFilter()) {
+			return $this->_items[$this->_default[$language]];
+		}
+		elseif (array_key_exists('*', $this->_default)) {
+			return $this->_items[$this->_default['*']];
+		}
+		else {
+			return 0;
+		}
 	}
+
 }

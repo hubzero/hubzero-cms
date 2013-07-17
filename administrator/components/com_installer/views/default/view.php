@@ -1,73 +1,74 @@
 <?php
 /**
- * @version		$Id: view.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Menus
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @package		Joomla.Administrator
+ * @subpackage	com_installer
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.view');
+defined('_JEXEC') or die;
 
 /**
  * Extension Manager Default View
  *
- * @package		Joomla
- * @subpackage	Installer
+ * @package		Joomla.Administrator
+ * @subpackage	com_installer
  * @since		1.5
  */
-class InstallerViewDefault extends JView
+class InstallerViewDefault extends JViewLegacy
 {
+	/**
+	 * @since	1.5
+	 */
 	function __construct($config = null)
 	{
+		$app = JFactory::getApplication();
 		parent::__construct($config);
-		$this->_addPath('template', $this->_basePath.DS.'views'.DS.'default'.DS.'tmpl');
+		$this->_addPath('template', $this->_basePath . '/views/default/tmpl');
+		$this->_addPath('template', JPATH_THEMES.'/'.$app->getTemplate().'/html/com_installer/default');
 	}
 
+	/**
+	 * @since	1.5
+	 */
 	function display($tpl=null)
 	{
-		/*
-		 * Set toolbar items for the page
-		 */
-		JToolBarHelper::title( JText::_( 'Extension Manager'), 'install.png' );
-
-		// Document
-		$document = & JFactory::getDocument();
-		$document->setTitle(JText::_('Extension Manager').' : '.JText::_( $this->getName() ));
-
 		// Get data from the model
-		$state		= &$this->get('State');
+		$state	= $this->get('State');
 
 		// Are there messages to display ?
 		$showMessage	= false;
-		if ( is_object($state) )
-		{
+		if (is_object($state)) {
 			$message1		= $state->get('message');
-			$message2		= $state->get('extension.message');
-			$showMessage	= ( $message1 || $message2 );
+			$message2		= $state->get('extension_message');
+			$showMessage	= ($message1 || $message2);
 		}
 
-		$this->assign('showMessage',	$showMessage);
+		$this->showMessage = $showMessage;
 		$this->assignRef('state',		$state);
 
-		JHTML::_('behavior.tooltip');
+		JHtml::_('behavior.tooltip');
+		$this->addToolbar();
 		parent::display($tpl);
 	}
 
 	/**
-	 * Should be overloaded by extending view
+	 * Add the page title and toolbar.
 	 *
-	 * @param	int $index
+	 * @since	1.6
 	 */
-	function loadItem($index=0)
+	protected function addToolbar()
 	{
+		$canDo	= InstallerHelper::getActions();
+		JToolBarHelper::title(JText::_('COM_INSTALLER_HEADER_' . $this->getName()), 'install.png');
+
+		if ($canDo->get('core.admin')) {
+			JToolBarHelper::preferences('com_installer');
+			JToolBarHelper::divider();
+		}
+
+		// Document
+		$document = JFactory::getDocument();
+		$document->setTitle(JText::_('COM_INSTALLER_TITLE_' . $this->getName()));
 	}
 }

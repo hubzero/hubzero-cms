@@ -1,89 +1,89 @@
 <?php
 /**
- * @version		$Id: format.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla.Framework
- * @subpackage	Registry
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @package     Joomla.Platform
+ * @subpackage  Registry
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Abstract Format for JRegistry
  *
- * @abstract
- * @package 	Joomla.Framework
- * @subpackage	Registry
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Registry
+ * @since       11.1
  */
-class JRegistryFormat extends JObject
+abstract class JRegistryFormat
 {
+	/**
+	 * @var    array  JRegistryFormat instances container.
+	 * @since  11.3
+	 */
+	protected static $instances = array();
+
 	/**
 	 * Returns a reference to a Format object, only creating it
 	 * if it doesn't already exist.
 	 *
-	 * @static
-	 * @param	string	$format	The format to load
-	 * @return	object	Registry format handler
-	 * @since	1.5
+	 * @param   string  $type  The format to load
+	 *
+	 * @return  JRegistryFormat  Registry format handler
+	 *
+	 * @since   11.1
+	 * @throws  JException
 	 */
-	static function &getInstance($format)
+	public static function getInstance($type)
 	{
-		static $instances;
+		// Sanitize format type.
+		$type = strtolower(preg_replace('/[^A-Z0-9_]/i', '', $type));
 
-		if (!isset ($instances)) {
-			$instances = array ();
-		}
-
-		$format = strtolower(JFilterInput::getInstance()->clean($format, 'word'));
-		if (empty ($instances[$format]))
+		// Only instantiate the object if it doesn't already exist.
+		if (!isset(self::$instances[$type]))
 		{
-			$class = 'JRegistryFormat'.$format;
-			if(!class_exists($class))
+			// Only load the file the class does not exist.
+			$class = 'JRegistryFormat' . $type;
+			if (!class_exists($class))
 			{
-				$path    = dirname(__FILE__).DS.'format'.DS.$format.'.php';
-				if (file_exists($path)) {
-					require_once($path);
-				} else {
-					JError::raiseError(500,JText::_('Unable to load format class'));
+				$path = dirname(__FILE__) . '/format/' . $type . '.php';
+				if (is_file($path))
+				{
+					include_once $path;
+				}
+				else
+				{
+					throw new JException(JText::_('JLIB_REGISTRY_EXCEPTION_LOAD_FORMAT_CLASS'), 500, E_ERROR);
 				}
 			}
 
-			$instances[$format] = new $class ();
+			self::$instances[$type] = new $class;
 		}
-		return $instances[$format];
+		return self::$instances[$type];
 	}
 
 	/**
-	 * Converts an XML formatted string into an object
+	 * Converts an object into a formatted string.
 	 *
-	 * @abstract
-	 * @access	public
-	 * @param	string	$data	Formatted string
-	 * @return	object	Data Object
-	 * @since	1.5
+	 * @param   object  $object   Data Source Object.
+	 * @param   array   $options  An array of options for the formatter.
+	 *
+	 * @return  string  Formatted string.
+	 *
+	 * @since   11.1
 	 */
-	function stringToObject( $data, $namespace='' ) {
-		return true;
-	}
+	abstract public function objectToString($object, $options = null);
 
 	/**
-	 * Converts an object into a formatted string
+	 * Converts a formatted string into an object.
 	 *
-	 * @abstract
-	 * @access	public
-	 * @param	object	$object	Data Source Object
-	 * @return	string	Formatted string
-	 * @since	1.5
+	 * @param   string  $data     Formatted string
+	 * @param   array   $options  An array of options for the formatter.
+	 *
+	 * @return  object  Data Object
+	 *
+	 * @since   11.1
 	 */
-	function objectToString( &$object, $options = null ) {
-
-	}
+	abstract public function stringToObject($data, $options = null);
 }

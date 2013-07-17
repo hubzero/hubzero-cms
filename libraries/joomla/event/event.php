@@ -1,61 +1,64 @@
 <?php
 /**
-* @version		$Id: event.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Event
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Event
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
-
-jimport( 'joomla.base.observer' );
+defined('JPATH_PLATFORM') or die;
 
 /**
  * JEvent Class
  *
- * @abstract
- * @package		Joomla.Framework
- * @subpackage	Event
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Event
+ * @since       11.1
  */
-class JEvent extends JObserver
+abstract class JEvent extends JObject
 {
+	/**
+	 * Event object to observe.
+	 *
+	 * @var    object
+	 * @since  11.3
+	 */
+	protected $_subject = null;
 
 	/**
 	 * Constructor
 	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
+	 * @param   object  &$subject  The object to observe.
 	 *
-	 * @param object $subject The object to observe
-	 * @since 1.5
+	 * @since   11.3
 	 */
-	function JEvent(& $subject) {
-		parent::__construct($subject);
+	public function __construct(&$subject)
+	{
+		// Register the observer ($this) so we can be notified
+		$subject->attach($this);
+
+		// Set the subject to observe
+		$this->_subject = &$subject;
 	}
 
 	/**
-	 * Method to trigger events
+	 * Method to trigger events.
+	 * The method first generates the even from the argument array. Then it unsets the argument
+	 * since the argument has no bearing on the event handler.
+	 * If the method exists it is called and returns its return value. If it does not exist it
+	 * returns null.
 	 *
-	 * @access public
-	 * @param array Arguments
-	 * @return mixed Routine return value
-	 * @since 1.5
+	 * @param   array  &$args  Arguments
+	 *
+	 * @return  mixed  Routine return value
+	 *
+	 * @since   11.1
 	 */
-	function update(& $args)
+	public function update(&$args)
 	{
-		/*
-		 * First lets get the event from the argument array.  Next we will unset the
-		 * event argument as it has no bearing on the method to handle the event.
-		 */
+		// First let's get the event from the argument array.  Next we will unset the
+		// event argument as it has no bearing on the method to handle the event.
 		$event = $args['event'];
 		unset($args['event']);
 
@@ -63,9 +66,12 @@ class JEvent extends JObserver
 		 * If the method to handle an event exists, call it and return its return
 		 * value.  If it does not exist, return null.
 		 */
-		if (method_exists($this, $event)) {
-			return call_user_func_array ( array($this, $event), $args );
-		} else {
+		if (method_exists($this, $event))
+		{
+			return call_user_func_array(array($this, $event), $args);
+		}
+		else
+		{
 			return null;
 		}
 	}

@@ -1,3 +1,8 @@
+/**
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 /* Form validation */
 .invalid { border-color: #ff0000; }
 label.invalid { color: #ff0000; }
@@ -77,7 +82,8 @@ label.invalid { color: #ff0000; }
 	background: url(../images/j_button2_image.png) 100% 0 no-repeat;
 }
 
-.button2-left .readmore {
+.button2-left .readmore,
+.button2-left .article {
 	background: url(../images/j_button2_readmore.png) 100% 0 no-repeat;
 }
 
@@ -116,28 +122,29 @@ div.tooltip p {
 }
 
 /* Caption fixes */
-.img_caption.left {
-	float: left;
-	margin-right: 1em;
+/* Caption fixes */
+.img_caption .left {
+        float: left;
+        margin-right: 1em;
 }
 
-.img_caption.right {
-	float: right;
-	margin-left: 1em;
+.img_caption .right {
+        float: right;
+        margin-left: 1em;
 }
 
-.img_caption.left p {
-	clear: left;
-	text-align: center;
+.img_caption .left p {
+        clear: left;
+        text-align: center;
 }
 
-.img_caption.right p {
-	clear: right;
-	text-align: center;
+.img_caption .right p {
+        clear: right;
+        text-align: center;
 }
 
 .img_caption  {
-text-align: center!important;
+	text-align: center!important;
 }
 
 .img_caption.none {
@@ -145,34 +152,6 @@ text-align: center!important;
 	margin-right:auto;
 }
 
-.caption.left {
-	float: left;
-	margin-right: 1em;
-}
-
-.caption.right {
-	float: right;
-	margin-left: 1em;
-}
-
-.caption.left p {
-	clear: left;
-	text-align: center;
-}
-
-.caption.right p {
-	clear: right;
-	text-align: center;
-}
-
-.caption.none {
-	margin-left:auto;
-	margin-right:auto;
-}
-
-.caption  {
-	text-align: center!important;
-}
 
 /* Calendar */
 a img.calendar {

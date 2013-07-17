@@ -1,177 +1,82 @@
 <?php
 /**
-* @version		$Id: view.html.php 19343 2010-11-03 18:12:02Z ian $
-* @package		Joomla
-* @subpackage	Users
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die;
 
 /**
- * HTML View class for the Users component
+ * View class for a list of users.
  *
- * @static
- * @package		Joomla
- * @subpackage	Users
- * @since 1.0
+ * @package		Joomla.Administrator
+ * @subpackage	com_users
+ * @since		1.6
  */
-class UsersViewUsers extends JView
+class UsersViewUsers extends JViewLegacy
 {
-	function display($tpl = null)
+	protected $items;
+	protected $pagination;
+	protected $state;
+
+	/**
+	 * Display the view
+	 */
+	public function display($tpl = null)
 	{
-		global $mainframe, $option;
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
+		$this->state		= $this->get('State');
 
-		$db				=& JFactory::getDBO();
-		$currentUser	=& JFactory::getUser();
-		$acl			=& JFactory::getACL();
-
-		$filter_order		= $mainframe->getUserStateFromRequest( "$option.filter_order",		'filter_order',		'a.name',	'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( "$option.filter_order_Dir",	'filter_order_Dir',	'',			'word' );
-		$filter_type		= $mainframe->getUserStateFromRequest( "$option.filter_type",		'filter_type', 		0,			'string' );
-		$filter_logged		= $mainframe->getUserStateFromRequest( "$option.filter_logged",		'filter_logged', 	0,			'int' );
-		$search				= $mainframe->getUserStateFromRequest( "$option.search",			'search', 			'',			'string' );
-		if (strpos($search, '"') !== false) {
-			$search = str_replace(array('=', '<'), '', $search);
-		}
-		$search = JString::strtolower($search);
-
-		$limit		= $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
-
-		$where = array();
-		if (isset( $search ) && $search!= '')
-		{
-			$searchEscaped = $db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-			$where[] = 'a.username LIKE '.$searchEscaped.' OR a.email LIKE '.$searchEscaped.' OR a.name LIKE '.$searchEscaped;
-		}
-		if ( $filter_type )
-		{
-			if ( $filter_type == 'Public Frontend' )
-			{
-				$where[] = ' a.usertype = \'Registered\' OR a.usertype = \'Author\' OR a.usertype = \'Editor\' OR a.usertype = \'Publisher\' ';
-			}
-			else if ( $filter_type == 'Public Backend' )
-			{
-				$where[] = 'a.usertype = \'Manager\' OR a.usertype = \'Administrator\' OR a.usertype = \'Super Administrator\' ';
-			}
-			else
-			{
-				$where[] = 'a.usertype = LOWER( '.$db->Quote($filter_type).' ) ';
-			}
-		}
-		if ( $filter_logged == 1 )
-		{
-			$where[] = 's.userid = a.id';
-		}
-		else if ($filter_logged == 2)
-		{
-			$where[] = 's.userid IS NULL';
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			JError::raiseError(500, implode("\n", $errors));
+			return false;
 		}
 
-		// exclude any child group id's for this user
-		$pgids = $acl->get_group_children( $currentUser->get('gid'), 'ARO', 'RECURSE' );
+		// Include the component HTML helpers.
+		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-		if (is_array( $pgids ) && count( $pgids ) > 0)
-		{
-			JArrayHelper::toInteger($pgids);
-			$where[] = 'a.gid NOT IN (' . implode( ',', $pgids ) . ')';
-		}
-		$filter = '';
-		if ($filter_logged == 1 || $filter_logged == 2)
-		{
-			$filter = ' INNER JOIN #__session AS s ON s.userid = a.id';
-		}
-
-		// ensure filter_order has a valid value.
-		if (!in_array($filter_order, array('a.name', 'a.username', 'a.block', 'groupname', 'a.email', 'a.lastvisitDate', 'a.id'))) {
-			$filter_order = 'a.name';
-		}
-
-		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
-			$filter_order_Dir = '';
-		}
-
-		$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
-		$where = ( count( $where ) ? ' WHERE (' . implode( ') AND (', $where ) . ')' : '' );
-
-		$query = 'SELECT COUNT(a.id)'
-		. ' FROM #__users AS a'
-		. $filter
-		. $where
-		;
-		$db->setQuery( $query );
-		$total = $db->loadResult();
-
-		jimport('joomla.html.pagination');
-		$pagination = new JPagination( $total, $limitstart, $limit );
-
-		$query = 'SELECT a.*, g.name AS groupname'
-			. ' FROM #__users AS a'
-			. ' INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id'
-			. ' INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id'
-			. ' INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id'
-			. $filter
-			. $where
-			. ' GROUP BY a.id'
-			. $orderby
-		;
-		$db->setQuery( $query, $pagination->limitstart, $pagination->limit );
-		$rows = $db->loadObjectList();
-
-		$n = count( $rows );
-		$template = 'SELECT COUNT(s.userid)'
-			. ' FROM #__session AS s'
-			. ' WHERE s.userid = %d'
-		;
-		for ($i = 0; $i < $n; $i++)
-		{
-			$row = &$rows[$i];
-			$query = sprintf( $template, intval( $row->id ) );
-			$db->setQuery( $query );
-			$row->loggedin = $db->loadResult();
-		}
-
-		// get list of Groups for dropdown filter
-		$query = 'SELECT name AS value, name AS text'
-			. ' FROM #__core_acl_aro_groups'
-			. ' WHERE name != "ROOT"'
-			. ' AND name != "USERS"'
-		;
-		$db->setQuery( $query );
-		$types[] 		= JHTML::_('select.option',  '0', '- '. JText::_( 'Select Group' ) .' -' );
-		foreach( $db->loadObjectList() as $obj )
-		{
-			$types[] = JHTML::_('select.option',  $obj->value, JText::_( $obj->text ) );
-		}
-		$lists['type'] 	= JHTML::_('select.genericlist',   $types, 'filter_type', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'value', 'text', "$filter_type" );
-
-		// get list of Log Status for dropdown filter
-		$logged[] = JHTML::_('select.option',  0, '- '. JText::_( 'Select Log Status' ) .' -');
-		$logged[] = JHTML::_('select.option',  1, JText::_( 'Logged In' ) );
-		$lists['logged'] = JHTML::_('select.genericlist',   $logged, 'filter_logged', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'value', 'text', "$filter_logged" );
-
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search']= $search;
-
-		$this->assignRef('user',		JFactory::getUser());
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('items',		$rows);
-		$this->assignRef('pagination',	$pagination);
-
+		$this->addToolbar();
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since	1.6
+	 */
+	protected function addToolbar()
+	{
+		$canDo	= UsersHelper::getActions();
+
+		JToolBarHelper::title(JText::_('COM_USERS_VIEW_USERS_TITLE'), 'user');
+
+		if ($canDo->get('core.create')) {
+			JToolBarHelper::addNew('user.add');
+		}
+		if ($canDo->get('core.edit')) {
+			JToolBarHelper::editList('user.edit');
+		}
+
+		if ($canDo->get('core.edit.state')) {
+			JToolBarHelper::divider();
+			JToolBarHelper::publish('users.activate', 'COM_USERS_TOOLBAR_ACTIVATE', true);
+			JToolBarHelper::unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
+			JToolBarHelper::custom('users.unblock', 'unblock.png', 'unblock_f2.png', 'COM_USERS_TOOLBAR_UNBLOCK', true);
+			JToolBarHelper::divider();
+		}
+
+		if ($canDo->get('core.delete')) {
+			JToolBarHelper::deleteList('', 'users.delete');
+			JToolBarHelper::divider();
+		}
+
+		if ($canDo->get('core.admin')) {
+			JToolBarHelper::preferences('com_users');
+			JToolBarHelper::divider();
+		}
+
+		JToolBarHelper::help('JHELP_USERS_USER_MANAGER');
 	}
 }

@@ -1,112 +1,123 @@
 <?php
 /**
- * @version		$Id: categories.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport('joomla.application.component.model');
+jimport('joomla.application.component.modellist');
 
 /**
- * Newsfeeds Component Categories Model
+ * This models supports retrieving lists of newsfeed categories.
  *
- * @package		Joomla
- * @subpackage	Newsfeeds
- * @since 1.5
+ * @package		Joomla.Site
+ * @subpackage	com_newsfeeds
+ * @since		1.6
  */
-class NewsfeedsModelCategories extends JModel
+class NewsfeedsModelCategories extends JModelList
 {
 	/**
-	 * Frontpage data array
+	 * Model context string.
 	 *
-	 * @var array
+	 * @var		string
 	 */
-	var $_data = null;
+	public $_context = 'com_newsfeeds.categories';
 
 	/**
-	 * Frontpage total
+	 * The category context (allows other extensions to derived from this model).
 	 *
-	 * @var integer
+	 * @var		string
 	 */
-	var $_total = null;
+	protected $_extension = 'com_newsfeeds';
 
+	private $_parent = null;
+
+	private $_items = null;
 
 	/**
-	 * Constructor
+	 * Method to auto-populate the model state.
 	 *
-	 * @since 1.5
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
 	 */
-	function __construct()
+	protected function populateState()
 	{
-		parent::__construct();
+		$app = JFactory::getApplication();
+		$this->setState('filter.extension', $this->_extension);
 
+		// Get the parent id if defined.
+		$parentId = JRequest::getInt('id');
+		$this->setState('filter.parentId', $parentId);
+
+		$params = $app->getParams();
+		$this->setState('params', $params);
+
+		$this->setState('filter.published',	1);
+		$this->setState('filter.access',	true);
 	}
 
 	/**
-	 * Method to get newsfeed item data for the categories
+	 * Method to get a store id based on model configuration state.
 	 *
-	 * @access public
-	 * @return array
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param	string		$id	A prefix for the store id.
+	 *
+	 * @return	string		A store id.
 	 */
-	function getData()
+	protected function getStoreId($id = '')
 	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_data))
+		// Compile the store id.
+		$id	.= ':'.$this->getState('filter.extension');
+		$id	.= ':'.$this->getState('filter.published');
+		$id	.= ':'.$this->getState('filter.access');
+		$id	.= ':'.$this->getState('filter.parentId');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * redefine the function an add some properties to make the styling more easy
+	 *
+	 * @return mixed An array of data items on success, false on failure.
+	 */
+	public function getItems()
+	{
+		if(!count($this->_items))
 		{
-			$query = $this->_buildQuery();
-			$this->_data = $this->_getList($query);
+			$app = JFactory::getApplication();
+			$menu = $app->getMenu();
+			$active = $menu->getActive();
+			$params = new JRegistry();
+			if($active)
+			{
+				$params->loadString($active->params);
+			}
+			$options = array();
+			$options['countItems'] = $params->get('show_cat_items_cat', 1) || !$params->get('show_empty_categories_cat', 0);
+			$categories = JCategories::getInstance('Newsfeeds', $options);
+			$this->_parent = $categories->get($this->getState('filter.parentId', 'root'));
+			if(is_object($this->_parent))
+			{
+				$this->_items = $this->_parent->getChildren();
+			} else {
+				$this->_items = false;
+			}
 		}
 
-		return $this->_data;
+		return $this->_items;
 	}
 
-	/**
-	 * Method to get the total number of newsfeed items for the categories
-	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getTotal()
+	public function getParent()
 	{
-		// Lets load the content if it doesn't already exist
-		if (empty($this->_total))
+		if(!is_object($this->_parent))
 		{
-			$query = $this->_buildQuery();
-			$this->_total = $this->_getListCount($query);
+			$this->getItems();
 		}
-
-		return $this->_total;
-	}
-
-	function _buildQuery()
-	{
-		$user =& JFactory::getUser();
-		$gid = $user->get('aid', 0);
-
-		/* Query to retrieve all categories that belong under the newsfeeds section and that are published. */
-		$query = 'SELECT cc.*, a.catid, COUNT(a.id) AS numlinks,'
-			. ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END as slug'
-			. ' FROM #__categories AS cc'
-			. ' LEFT JOIN #__newsfeeds AS a ON a.catid = cc.id'
-			. ' WHERE a.published = 1'
-			. ' AND cc.section = \'com_newsfeeds\''
-			. ' AND cc.published = 1'
-			. ' AND cc.access <= '.(int) $gid
-			. ' GROUP BY cc.id'
-			. ' ORDER BY cc.ordering'
-		;
-
-		return $query;
+		return $this->_parent;
 	}
 }
-?>

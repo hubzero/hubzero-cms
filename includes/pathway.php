@@ -1,67 +1,82 @@
 <?php
 /**
-* @version		$Id: pathway.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Application
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+// No direct access.
+defined('_JEXEC') or die;
 
 /**
- * Class to manage the site application pathway
+ * Class to manage the site application pathway.
  *
- * @package 	Joomla
+ * @package		Joomla.Site
+ * @subpackage	Application
  * @since		1.5
  */
 class JPathwaySite extends JPathway
 {
 	/**
-	 * Class constructor
+	 * Class constructor.
+	 *
+	 * @param	array
+	 *
+	 * @return	JPathwaySite
+	 * @since	1.5
 	 */
-	function __construct($options = array())
+	public function __construct($options = array())
 	{
-		//Initialise the array
+		//Initialise the array.
 		$this->_pathway = array();
 
-		$menu   =& JFactory::getApplication()->getMenu();
+		$app	= JApplication::getInstance('site');
+		$menu	= $app->getMenu();
 
-		if($item = $menu->getActive())
-		{
-			$menus	= $menu->getMenu();
-			$home	= $menu->getDefault();
+		if ($item = $menu->getActive()) {
+			$menus = $menu->getMenu();
+			$home = $menu->getDefault();
 
-			if(is_object($home) && ($item->id != $home->id))
-			{
+			if (is_object($home) && ($item->id != $home->id)) {
 				foreach($item->tree as $menupath)
 				{
-					$url  = '';
+					$url = '';
 					$link = $menu->getItem($menupath);
 
 					switch($link->type)
 					{
-						case 'menulink' :
-						case 'url' :
-							$url = $link->link;
-							break;
-						case 'separator' :
+						case 'separator':
 							$url = null;
 							break;
-						default      :
-							$url = 'index.php?Itemid='.$link->id;
+
+						case 'url':
+							if ((strpos($link->link, 'index.php?') === 0) && (strpos($link->link, 'Itemid=') === false)) {
+								// If this is an internal Joomla link, ensure the Itemid is set.
+								$url = $link->link.'&Itemid='.$link->id;
+							}
+							else {
+								$url = $link->link;
+							}
+							break;
+
+						case 'alias':
+							// If this is an alias use the item id stored in the parameters to make the link.
+							$url = 'index.php?Itemid='.$link->params->get('aliasoptions');
+							break;
+
+						default:
+							$router = JSite::getRouter();
+							if ($router->getMode() == JROUTER_MODE_SEF) {
+								$url = 'index.php?Itemid='.$link->id;
+							}
+							else {
+								$url .= $link->link.'&Itemid='.$link->id;
+							}
+							break;
 					}
 
-					$this->addItem( $menus[$menupath]->name, $url);
-
-				} // end foreach
+					$this->addItem($menus[$menupath]->title, $url);
+				}
 			}
-		} // end if getActive
+		}
 	}
 }

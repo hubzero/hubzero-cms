@@ -1,58 +1,60 @@
 <?php
 /**
-* @version		$Id:observer.php 6961 2007-03-15 16:06:53Z tcp $
-* @package		Joomla.Framework
-* @subpackage	Base
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Base
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Abstract observer class to implement the observer design pattern
  *
- * @abstract
- * @subpackage	Base
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Base
+ * @since       11.1
+ * @deprecated  12.3
+ * @codeCoverageIgnore
  */
-class JObserver extends JObject
+abstract class JObserver extends JObject
 {
-
 	/**
-	 * Event object to observe
+	 * Event object to observe.
 	 *
-	 * @access private
-	 * @var object
+	 * @var    object
+	 * @since  11.1
+	 * @deprecated  12.3
 	 */
-	var $_subject = null;
+	protected $_subject = null;
 
 	/**
 	 * Constructor
+	 *
+	 * @param   object  &$subject  The object to observe.
+	 *
+	 * @since   11.1
+	 * @deprecated  12.3
 	 */
-	function __construct(& $subject)
+	public function __construct(&$subject)
 	{
 		// Register the observer ($this) so we can be notified
 		$subject->attach($this);
 
 		// Set the subject to observe
-		$this->_subject = & $subject;
+		$this->_subject = &$subject;
 	}
 
 	/**
 	 * Method to update the state of observable objects
 	 *
-	 * @abstract Implement in child classes
-	 * @access public
-	 * @return mixed
+	 * @param   array  &$args  An array of arguments to pass to the listener.
+	 *
+	 * @return  mixed
+	 *
+	 * @since   11.1
+	 * @deprecated  12.3
 	 */
-	function update(&$args) {
-		return JError::raiseError('9', 'JObserver::update: Method not implemented', 'This method should be implemented in a child class');
-	}
+	public abstract function update(&$args);
 }

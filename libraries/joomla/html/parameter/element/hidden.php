@@ -1,46 +1,76 @@
 <?php
 /**
-* @version		$Id: hidden.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a hidden element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  12.1     Use JFormFieldHidden instead.
  */
-
 class JElementHidden extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'Hidden';
+	 * Element name
+	 *
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $_name = 'Hidden';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Fetch a hidden element
+	 *
+	 * @param   string       $name          Element name
+	 * @param   string       $value         Element value
+	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
+	 * @param   string       $control_name  Control name
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 * @deprecated    12.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="text_area"' );
+		// Deprecation warning.
+		JLog::add('JElementHidden::fetchElement() is deprecated.', JLog::WARNING, 'deprecated');
 
-		return '<input type="hidden" name="'.$control_name.'['.$name.']" id="'.$control_name.$name.'" value="'.$value.'" '.$class.' />';
+		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : 'class="text_area"');
+
+		return '<input type="hidden" name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '" value="' . $value . '" ' . $class
+			. ' />';
 	}
 
-	function fetchTooltip($label, $description, &$xmlElement, $control_name='', $name='') {
+	/**
+	 * Fetch tooltip for a hidden element
+	 *
+
+	 * @param   string       $label         Element label
+	 * @param   string       $description   Element description (which renders as a tool tip)
+	 * @param   JXMLElement  &$xmlElement   Element object
+	 * @param   string       $control_name  Control name
+	 * @param   string       $name          Element name
+	 *
+	 * @return  string
+	 *
+	 * @deprecated    12.1
+	 * @since   11.1
+	 */
+	public function fetchTooltip($label, $description, &$xmlElement, $control_name = '', $name = '')
+	{
+		// Deprecation warning.
+		JLog::add('JElementHidden::fetchTooltip() is deprecated.', JLog::WARNING, 'deprecated');
+
 		return false;
 	}
 }

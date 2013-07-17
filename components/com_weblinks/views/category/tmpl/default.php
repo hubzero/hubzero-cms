@@ -1,42 +1,42 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
-<?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>
-	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-		<?php echo $this->escape($this->params->get('page_title')); ?>
+<?php
+/**
+ * @package		Joomla.Site
+ * @subpackage	com_weblinks
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+// no direct access
+defined('_JEXEC') or die;
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
+?>
+<div class="weblink-category<?php echo $this->pageclass_sfx;?>">
+<?php if ($this->params->get('show_page_heading')) : ?>
+<h1>
+	<?php echo $this->escape($this->params->get('page_heading')); ?>
+</h1>
+<?php endif; ?>
+<?php if($this->params->get('show_category_title', 1)) : ?>
+<h2>
+	<?php echo JHtml::_('content.prepare', $this->category->title, '', 'com_weblinks.category'); ?>
+</h2>
+<?php endif; ?>
+<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
+	<div class="category-desc">
+	<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
+		<img src="<?php echo $this->category->getParams()->get('image'); ?>"/>
+	<?php endif; ?>
+	<?php if ($this->params->get('show_description') && $this->category->description) : ?>
+		<?php echo JHtml::_('content.prepare', $this->category->description, '', 'com_weblinks.category'); ?>
+	<?php endif; ?>
+	<div class="clr"></div>
 	</div>
 <?php endif; ?>
-
-<table width="100%" cellpadding="4" cellspacing="0" border="0" align="center" class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-<?php if ( @$this->category->image || @$this->category->description ) : ?>
-<tr>
-	<td valign="top" class="contentdescription<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-	<?php
-		if ( isset($this->category->image) ) :  echo $this->category->image; endif;
-		echo $this->category->description;
-	?>
-	</td>
-</tr>
+<?php echo $this->loadTemplate('items'); ?>
+<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
+	<div class="cat-children">
+	<h3><?php echo JText::_('JGLOBAL_SUBCATEGORIES') ; ?></h3>
+	<?php echo $this->loadTemplate('children'); ?>
+	</div>
 <?php endif; ?>
-<tr>
-	<td width="60%" colspan="2">
-	<?php echo $this->loadTemplate('items'); ?>
-	</td>
-</tr>
-<?php if ($this->params->get('show_other_cats', 1)): ?>
-<tr>
-	<td width="60%" colspan="2">
-		<ul>
-		<?php foreach ( $this->categories as $category ) : ?>
-			<li>
-				<a href="<?php echo $category->link; ?>" class="category<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-					<?php echo $this->escape($category->title);?></a>
-				&nbsp;
-				<span class="small">
-					(<?php echo $category->numlinks;?>)
-				</span>
-			</li>
-		<?php endforeach; ?>
-		</ul>
-	</td>
-</tr>
-<?php endif; ?>
-</table>
+</div>

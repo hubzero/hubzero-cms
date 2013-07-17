@@ -1,51 +1,46 @@
 <?php
 /**
- * @version		$Id: controller.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package		Joomla.Site
+ * @subpackage	com_search
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die;
 
 /**
  * Search Component Controller
  *
- * @package		Joomla
- * @subpackage	Search
+ * @package		Joomla.Site
+ * @subpackage	com_search
  * @since 1.5
  */
-class SearchController extends JController
+class SearchController extends JControllerLegacy
 {
 	/**
-	 * Method to show the search view
+	 * Method to display a view.
 	 *
-	 * @access	public
+	 * @param	boolean			If true, the view output will be cached
+	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return	JController		This object to support chaining.
 	 * @since	1.5
 	 */
-	function display()
+	public function display($cachable = false, $urlparams = false)
 	{
-		JRequest::setVar('view','search'); // force it to be the polls view
-		parent::display();
+		JRequest::setVar('view', 'search'); // force it to be the search view
+
+		return parent::display($cachable, $urlparams);
 	}
 
 	function search()
 	{
 		// slashes cause errors, <> get stripped anyway later on. # causes problems.
-		$badchars = array('#','>','<','\\'); 
+		$badchars = array('#', '>', '<', '\\');
 		$searchword = trim(str_replace($badchars, '', JRequest::getString('searchword', null, 'post')));
 		// if searchword enclosed in double quotes, strip quotes and do exact match
-		if (substr($searchword,0,1) == '"' && substr($searchword, -1) == '"') { 
-			$post['searchword'] = substr($searchword,1,-1);
+		if (substr($searchword, 0, 1) == '"' && substr($searchword, -1) == '"') {
+			$post['searchword'] = substr($searchword, 1, -1);
 			JRequest::setVar('searchphrase', 'exact');
 		}
 		else {
@@ -53,27 +48,28 @@ class SearchController extends JController
 		}
 		$post['ordering']	= JRequest::getWord('ordering', null, 'post');
 		$post['searchphrase']	= JRequest::getWord('searchphrase', 'all', 'post');
-		$post['limit']  = JRequest::getInt('limit', null, 'post');
-		if($post['limit'] === null) unset($post['limit']);
+		$post['limit']  = JRequest::getUInt('limit', null, 'post');
+		if ($post['limit'] === null) unset($post['limit']);
 
 		$areas = JRequest::getVar('areas', null, 'post', 'array');
 		if ($areas) {
 			foreach($areas as $area)
 			{
-				$post['areas'][] = JFilterInput::clean($area, 'cmd');
+				$post['areas'][] = JFilterInput::getInstance()->clean($area, 'cmd');
 			}
 		}
-		
-		// set Itemid id for links from menu
-		$menu = &JSite::getMenu();
+
+				// set Itemid id for links from menu
+		$app	= JFactory::getApplication();
+		$menu	= $app->getMenu();
 		$items	= $menu->getItems('link', 'index.php?option=com_search&view=search');
 
 		if(isset($items[0])) {
 			$post['Itemid'] = $items[0]->id;
-		} else if (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
+		} elseif (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
 			$post['Itemid'] = JRequest::getInt('Itemid');
-		} 
-		
+		}
+
 		unset($post['task']);
 		unset($post['submit']);
 

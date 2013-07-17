@@ -1,88 +1,102 @@
 <?php
 /**
-* @version		$Id:timezones.php 6961 2007-03-15 16:06:53Z tcp $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a timezones element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  12.1   Use JFormFieldTimeZone instead.
+ * @note        In updating note that JFormFieldTimeZone does not end in s.
  */
-
 class JElementTimezones extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'Timezones';
+	 * Element name
+	 *
+	 * @var   string
+	 */
+	protected $_name = 'Timezones';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Fetch the timezones element
+	 *
+	 * @param   string       $name          Element name
+	 * @param   string       $value         Element value
+	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
+	 * @param   string       $control_name  Control name
+	 *
+	 * @return  string
+	 *
+	 * @deprecated    12.1  Use JFormFieldTimeZone::getGroups instead.
+	 * @note    In updating note that JFormFieldTimeZone does not have an s at the end.
+	 * @since   11.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		if(!strlen($value)) {
-			$conf =& JFactory::getConfig();
-			$value = $conf->getValue('config.offset');
+		// Deprecation warning.
+		JLog::add('JElementTimeZones::_fetchElement() is deprecated.', JLog::WARNING, 'deprecated');
+
+		if (!strlen($value))
+		{
+			$conf = JFactory::getConfig();
+			$value = $conf->get('offset');
 		}
 
 		// LOCALE SETTINGS
-		$timezones = array (
-			JHTML::_('select.option', -12, JText::_('(UTC -12:00) International Date Line West')),
-			JHTML::_('select.option', -11, JText::_('(UTC -11:00) Midway Island, Samoa')),
-			JHTML::_('select.option', -10, JText::_('(UTC -10:00) Hawaii')),
-			JHTML::_('select.option', -9.5, JText::_('(UTC -09:30) Taiohae, Marquesas Islands')),
-			JHTML::_('select.option', -9, JText::_('(UTC -09:00) Alaska')),
-			JHTML::_('select.option', -8, JText::_('(UTC -08:00) Pacific Time (US &amp; Canada)')),
-			JHTML::_('select.option', -7, JText::_('(UTC -07:00) Mountain Time (US &amp; Canada)')),
-			JHTML::_('select.option', -6, JText::_('(UTC -06:00) Central Time (US &amp; Canada), Mexico City')),
-			JHTML::_('select.option', -5, JText::_('(UTC -05:00) Eastern Time (US &amp; Canada), Bogota, Lima')),
-			JHTML::_('select.option', -4, JText::_('(UTC -04:00) Atlantic Time (Canada), Caracas, La Paz')),
-			JHTML::_('select.option', -4.5, JText::_('(UTC -04:30) Venezuela')),
-			JHTML::_('select.option', -3.5, JText::_('(UTC -03:30) St. John\'s, Newfoundland, Labrador')),
-			JHTML::_('select.option', -3, JText::_('(UTC -03:00) Brazil, Buenos Aires, Georgetown')),
-			JHTML::_('select.option', -2, JText::_('(UTC -02:00) Mid-Atlantic')),
-			JHTML::_('select.option', -1, JText::_('(UTC -01:00) Azores, Cape Verde Islands')),
-			JHTML::_('select.option', 0, JText::_('(UTC 00:00) Western Europe Time, London, Lisbon, Casablanca')),
-			JHTML::_('select.option', 1, JText::_('(UTC +01:00) Amsterdam, Berlin, Brussels, Copenhagen, Madrid, Paris')),
-			JHTML::_('select.option', 2, JText::_('(UTC +02:00) Istanbul, Jerusalem, Kaliningrad, South Africa')),
-			JHTML::_('select.option', 3, JText::_('(UTC +03:00) Baghdad, Riyadh, Moscow, St. Petersburg')),
-			JHTML::_('select.option', 3.5, JText::_('(UTC +03:30) Tehran')),
-			JHTML::_('select.option', 4, JText::_('(UTC +04:00) Abu Dhabi, Muscat, Baku, Tbilisi')),
-			JHTML::_('select.option', 4.5, JText::_('(UTC +04:30) Kabul')),
-			JHTML::_('select.option', 5, JText::_('(UTC +05:00) Ekaterinburg, Islamabad, Karachi, Tashkent')),
-			JHTML::_('select.option', 5.5, JText::_('(UTC +05:30) Bombay, Calcutta, Madras, New Delhi, Colombo')),
-			JHTML::_('select.option', 5.75, JText::_('(UTC +05:45) Kathmandu')),
-			JHTML::_('select.option', 6, JText::_('(UTC +06:00) Almaty, Dhaka')),
-			JHTML::_('select.option', 6.5, JText::_('(UTC +06:30) Yagoon')),
-			JHTML::_('select.option', 7, JText::_('(UTC +07:00) Bangkok, Hanoi, Jakarta')),
-			JHTML::_('select.option', 8, JText::_('(UTC +08:00) Beijing, Perth, Singapore, Hong Kong')),
-			JHTML::_('select.option', 8.75, JText::_('(UTC +08:00) Ulaanbaatar, Western Australia')),
-			JHTML::_('select.option', 9, JText::_('(UTC +09:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk')),
-			JHTML::_('select.option', 9.5, JText::_('(UTC +09:30) Adelaide, Darwin, Yakutsk')),
-			JHTML::_('select.option', 10, JText::_('(UTC +10:00) Eastern Australia, Guam, Vladivostok')),
-			JHTML::_('select.option', 10.5, JText::_('(UTC +10:30) Lord Howe Island (Australia)')),
-			JHTML::_('select.option', 11, JText::_('(UTC +11:00) Magadan, Solomon Islands, New Caledonia')),
-			JHTML::_('select.option', 11.5, JText::_('(UTC +11:30) Norfolk Island')),
-			JHTML::_('select.option', 12, JText::_('(UTC +12:00) Auckland, Wellington, Fiji, Kamchatka')),
-			JHTML::_('select.option', 12.75, JText::_('(UTC +12:45) Chatham Island')),
-			JHTML::_('select.option', 13, JText::_('(UTC +13:00) Tonga')),
-			JHTML::_('select.option', 14, JText::_('(UTC +14:00) Kiribati')),);
+		$timezones = array(JHtml::_('select.option', -12, JText::_('UTC__12_00__INTERNATIONAL_DATE_LINE_WEST')),
+			JHtml::_('select.option', -11, JText::_('UTC__11_00__MIDWAY_ISLAND__SAMOA')),
+			JHtml::_('select.option', -10, JText::_('UTC__10_00__HAWAII')),
+			JHtml::_('select.option', -9.5, JText::_('UTC__09_30__TAIOHAE__MARQUESAS_ISLANDS')),
+			JHtml::_('select.option', -9, JText::_('UTC__09_00__ALASKA')),
+			JHtml::_('select.option', -8, JText::_('UTC__08_00__PACIFIC_TIME__US__AMP__CANADA_')),
+			JHtml::_('select.option', -7, JText::_('UTC__07_00__MOUNTAIN_TIME__US__AMP__CANADA_')),
+			JHtml::_('select.option', -6, JText::_('UTC__06_00__CENTRAL_TIME__US__AMP__CANADA___MEXICO_CITY')),
+			JHtml::_('select.option', -5, JText::_('UTC__05_00__EASTERN_TIME__US__AMP__CANADA___BOGOTA__LIMA')),
+			JHtml::_('select.option', -4, JText::_('UTC__04_00__ATLANTIC_TIME__CANADA___CARACAS__LA_PAZ')),
+			JHtml::_('select.option', -4.5, JText::_('UTC__04_30__VENEZUELA')),
+			JHtml::_('select.option', -3.5, JText::_('UTC__03_30__ST__JOHN_S__NEWFOUNDLAND__LABRADOR')),
+			JHtml::_('select.option', -3, JText::_('UTC__03_00__BRAZIL__BUENOS_AIRES__GEORGETOWN')),
+			JHtml::_('select.option', -2, JText::_('UTC__02_00__MID_ATLANTIC')),
+			JHtml::_('select.option', -1, JText::_('UTC__01_00__AZORES__CAPE_VERDE_ISLANDS')),
+			JHtml::_('select.option', 0, JText::_('UTC_00_00__WESTERN_EUROPE_TIME__LONDON__LISBON__CASABLANCA')),
+			JHtml::_('select.option', 1, JText::_('UTC__01_00__AMSTERDAM__BERLIN__BRUSSELS__COPENHAGEN__MADRID__PARIS')),
+			JHtml::_('select.option', 2, JText::_('UTC__02_00__ISTANBUL__JERUSALEM__KALININGRAD__SOUTH_AFRICA')),
+			JHtml::_('select.option', 3, JText::_('UTC__03_00__BAGHDAD__RIYADH__MOSCOW__ST__PETERSBURG')),
+			JHtml::_('select.option', 3.5, JText::_('UTC__03_30__TEHRAN')),
+			JHtml::_('select.option', 4, JText::_('UTC__04_00__ABU_DHABI__MUSCAT__BAKU__TBILISI')),
+			JHtml::_('select.option', 4.5, JText::_('UTC__04_30__KABUL')),
+			JHtml::_('select.option', 5, JText::_('UTC__05_00__EKATERINBURG__ISLAMABAD__KARACHI__TASHKENT')),
+			JHtml::_('select.option', 5.5, JText::_('UTC__05_30__BOMBAY__CALCUTTA__MADRAS__NEW_DELHI__COLOMBO')),
+			JHtml::_('select.option', 5.75, JText::_('UTC__05_45__KATHMANDU')), JHtml::_('select.option', 6, JText::_('UTC__06_00__ALMATY__DHAKA')),
+			JHtml::_('select.option', 6.5, JText::_('UTC__06_30__YAGOON')),
+			JHtml::_('select.option', 7, JText::_('UTC__07_00__BANGKOK__HANOI__JAKARTA__PHNOM_PENH')),
+			JHtml::_('select.option', 8, JText::_('UTC__08_00__BEIJING__PERTH__SINGAPORE__HONG_KONG')),
+			JHtml::_('select.option', 8.75, JText::_('UTC__08_00__WESTERN_AUSTRALIA')),
+			JHtml::_('select.option', 9, JText::_('UTC__09_00__TOKYO__SEOUL__OSAKA__SAPPORO__YAKUTSK')),
+			JHtml::_('select.option', 9.5, JText::_('UTC__09_30__ADELAIDE__DARWIN__YAKUTSK')),
+			JHtml::_('select.option', 10, JText::_('UTC__10_00__EASTERN_AUSTRALIA__GUAM__VLADIVOSTOK')),
+			JHtml::_('select.option', 10.5, JText::_('UTC__10_30__LORD_HOWE_ISLAND__AUSTRALIA_')),
+			JHtml::_('select.option', 11, JText::_('UTC__11_00__MAGADAN__SOLOMON_ISLANDS__NEW_CALEDONIA')),
+			JHtml::_('select.option', 11.5, JText::_('UTC__11_30__NORFOLK_ISLAND')),
+			JHtml::_('select.option', 12, JText::_('UTC__12_00__AUCKLAND__WELLINGTON__FIJI__KAMCHATKA')),
+			JHtml::_('select.option', 12.75, JText::_('UTC__12_45__CHATHAM_ISLAND')), JHtml::_('select.option', 13, JText::_('UTC__13_00__TONGA')),
+			JHtml::_('select.option', 14, JText::_('UTC__14_00__KIRIBATI')));
 
-		return JHTML::_('select.genericlist',  $timezones, ''.$control_name.'['.$name.']', ' class="inputbox"', 'value', 'text', $value, $control_name.$name );
+		return JHtml::_(
+			'select.genericlist',
+			$timezones,
+			$control_name . '[' . $name . ']',
+			array('id' => $control_name . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value)
+		);
 	}
 }

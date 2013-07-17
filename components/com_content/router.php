@@ -1,190 +1,336 @@
 <?php
 /**
-* @version		$Id: router.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package		Joomla.Site
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
+defined('_JEXEC') or die;
+
+jimport('joomla.application.categories');
+
+/**
+ * Build the route for the com_content component
+ *
+ * @param	array	An array of URL arguments
+ * @return	array	The URL arguments to use to assemble the subsequent URL.
+ * @since	1.5
+ */
 function ContentBuildRoute(&$query)
 {
-	$segments = array();
+	$segments	= array();
 
 	// get a menu item based on Itemid or currently active
-	$menu = JFactory::getApplication()->getMenu();
+	$app		= JFactory::getApplication();
+	$menu		= $app->getMenu();
+	$params		= JComponentHelper::getParams('com_content');
+	$advanced	= $params->get('sef_advanced_link', 0);
+
+	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid'])) {
-		$menuItem = &$menu->getActive();
-	} else {
-		$menuItem = &$menu->getItem($query['Itemid']);
+		$menuItem = $menu->getActive();
+		$menuItemGiven = false;
 	}
-	$mView	= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-	$mCatid	= (empty($menuItem->query['catid'])) ? null : $menuItem->query['catid'];
-	$mId	= (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
+	else {
+		$menuItem = $menu->getItem($query['Itemid']);
+		$menuItemGiven = true;
+	}
 
-	if(isset($query['view']))
-	{
+	if (isset($query['view'])) {
 		$view = $query['view'];
-		if(empty($query['Itemid'])) {
-			$segments[] = $query['view'];
-		}
+	}
+	else {
+		// we need to have a view in the query or it is an invalid URL
+		return $segments;
+	}
+
+	// are we dealing with an article or category that is attached to a menu item?
+	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) && $menuItem->query['id'] == intval($query['id'])) {
 		unset($query['view']);
-	};
 
-	// are we dealing with an article that is attached to a menu item?
-	if (($mView == 'article') and (isset($query['id'])) and ($mId == intval($query['id']))) {
+		if (isset($query['catid'])) {
+			unset($query['catid']);
+		}
+		
+		if (isset($query['layout'])) {
+			unset($query['layout']);
+		}
+
+		unset($query['id']);
+
+		return $segments;
+	}
+
+	if ($view == 'category' || $view == 'article')
+	{
+		if (!$menuItemGiven) {
+			$segments[] = $view;
+		}
+
 		unset($query['view']);
-		unset($query['catid']);
-		unset($query['id']);
-	}
 
-	if (isset($view) and ($view == 'section' && !empty($query['Itemid']))) {
-		if (($mView != 'section') or ($mView == 'section' and $mId != intval($query['id']))) {
-			$segments[] = 'section';
-			unset($query['Itemid']);
-		}
-	}
-
-	if (isset($view) and $view == 'category') {
-		if ($mId != intval($query['id']) || $mView != $view) {
-			$segments[] = $query['id'];
-		}
-		unset($query['id']);
-	}
-
-	if (isset($query['catid'])) {
-		// if we are routing an article or category where the category id matches the menu catid, don't include the category segment
-		if ((($view == 'article') and ($mView != 'category') and ($mView != 'article') and ($mCatid != intval($query['catid'])))) {
-			$segments[] = $query['catid'];
-		}
-		unset($query['catid']);
-	};
-
-	if(isset($query['id'])) {
-		if (empty($query['Itemid'])) {
-			$segments[] = $query['id'];
-		} else {
-			if (isset($menuItem->query['id'])) {
-				if($query['id'] != $mId) {
-					$segments[] = $query['id'];
+		if ($view == 'article') {
+			if (isset($query['id']) && isset($query['catid']) && $query['catid']) {
+				$catid = $query['catid'];
+				// Make sure we have the id and the alias
+				if (strpos($query['id'], ':') === false) {
+					$db = JFactory::getDbo();
+					$aquery = $db->setQuery($db->getQuery(true)
+						->select('alias')
+						->from('#__content')
+						->where('id='.(int)$query['id'])
+					);
+					$alias = $db->loadResult();
+					$query['id'] = $query['id'].':'.$alias;
 				}
 			} else {
-				$segments[] = $query['id'];
+				// we should have these two set for this view.  If we don't, it is an error
+				return $segments;
 			}
 		}
+		else {
+			if (isset($query['id'])) {
+				$catid = $query['id'];
+			} else {
+				// we should have id set for this view.  If we don't, it is an error
+				return $segments;
+			}
+		}
+
+		if ($menuItemGiven && isset($menuItem->query['id'])) {
+			$mCatid = $menuItem->query['id'];
+		} else {
+			$mCatid = 0;
+		}
+
+		$categories = JCategories::getInstance('Content');
+		$category = $categories->get($catid);
+
+		if (!$category) {
+			// we couldn't find the category we were given.  Bail.
+			return $segments;
+		}
+
+		$path = array_reverse($category->getPath());
+
+		$array = array();
+
+		foreach($path as $id) {
+			if ((int)$id == (int)$mCatid) {
+				break;
+			}
+
+			list($tmp, $id) = explode(':', $id, 2);
+
+			$array[] = $id;
+		}
+
+		$array = array_reverse($array);
+
+		if (!$advanced && count($array)) {
+			$array[0] = (int)$catid.':'.$array[0];
+		}
+
+		$segments = array_merge($segments, $array);
+
+		if ($view == 'article') {
+			if ($advanced) {
+				list($tmp, $id) = explode(':', $query['id'], 2);
+			}
+			else {
+				$id = $query['id'];
+			}
+			$segments[] = $id;
+		}
 		unset($query['id']);
-	};
+		unset($query['catid']);
+	}
 
-	if(isset($query['year'])) {
-
-		if(!empty($query['Itemid'])) {
-			$segments[] = $query['year'];
-			unset($query['year']);
+	if ($view == 'archive') {
+		if (!$menuItemGiven) {
+			$segments[] = $view;
+			unset($query['view']);
 		}
-	};
 
-	if(isset($query['month'])) {
-
-		if(!empty($query['Itemid'])) {
-			$segments[] = $query['month'];
-			unset($query['month']);
+		if (isset($query['year'])) {
+			if ($menuItemGiven) {
+				$segments[] = $query['year'];
+				unset($query['year']);
+			}
 		}
-	};
 
-	if(isset($query['layout']))
-	{
-		if(!empty($query['Itemid']) && isset($menuItem->query['layout'])) {
+		if (isset($query['year']) && isset($query['month'])) {
+			if ($menuItemGiven) {
+				$segments[] = $query['month'];
+				unset($query['month']);
+			}
+		}
+	}
+
+	// if the layout is specified and it is the same as the layout in the menu item, we
+	// unset it so it doesn't go into the query string.
+	if (isset($query['layout'])) {
+		if ($menuItemGiven && isset($menuItem->query['layout'])) {
 			if ($query['layout'] == $menuItem->query['layout']) {
 
 				unset($query['layout']);
 			}
-		} else {
-			if($query['layout'] == 'default') {
+		}
+		else {
+			if ($query['layout'] == 'default') {
 				unset($query['layout']);
 			}
 		}
-	};
+	}
 
 	return $segments;
 }
 
+
+
+/**
+ * Parse the segments of a URL.
+ *
+ * @param	array	The segments of the URL to parse.
+ *
+ * @return	array	The URL attributes to be used by the application.
+ * @since	1.5
+ */
 function ContentParseRoute($segments)
 {
 	$vars = array();
 
-	//Get the active menu item
-	$menu = JFactory::getApplication()->getMenu();
-	$item =& $menu->getActive();
+	//Get the active menu item.
+	$app	= JFactory::getApplication();
+	$menu	= $app->getMenu();
+	$item	= $menu->getActive();
+	$params = JComponentHelper::getParams('com_content');
+	$advanced = $params->get('sef_advanced_link', 0);
+	$db = JFactory::getDBO();
 
 	// Count route segments
 	$count = count($segments);
 
-	//Standard routing for articles
-	if(!isset($item))
-	{
-		$vars['view']  = $segments[0];
-		$vars['id']    = $segments[$count - 1];
+	// Standard routing for articles.  If we don't pick up an Itemid then we get the view from the segments
+	// the first segment is the view and the last segment is the id of the article or category.
+	if (!isset($item)) {
+		$vars['view']	= $segments[0];
+		$vars['id']		= $segments[$count - 1];
+
 		return $vars;
 	}
 
-	//Handle View and Identifier
-	switch($item->query['view'])
-	{
-		case 'section' :
-		{
-			if($count == 1) {
-				$vars['view'] = 'category';
+	// if there is only one segment, then it points to either an article or a category
+	// we test it first to see if it is a category.  If the id and alias match a category
+	// then we assume it is a category.  If they don't we assume it is an article
+	if ($count == 1) {
+		// we check to see if an alias is given.  If not, we assume it is an article
+		if (strpos($segments[0], ':') === false) {
+			$vars['view'] = 'article';
+			$vars['id'] = (int)$segments[0];
+			return $vars;
+		}
 
-				if(isset($item->query['layout']) && $item->query['layout'] == 'blog') {
-					$vars['layout'] = 'blog';
+		list($id, $alias) = explode(':', $segments[0], 2);
+
+		// first we check if it is a category
+		$category = JCategories::getInstance('Content')->get($id);
+
+		if ($category && $category->alias == $alias) {
+			$vars['view'] = 'category';
+			$vars['id'] = $id;
+
+			return $vars;
+		} else {
+			$query = 'SELECT alias, catid FROM #__content WHERE id = '.(int)$id;
+			$db->setQuery($query);
+			$article = $db->loadObject();
+
+			if ($article) {
+				if ($article->alias == $alias) {
+					$vars['view'] = 'article';
+					$vars['catid'] = (int)$article->catid;
+					$vars['id'] = (int)$id;
+
+					return $vars;
 				}
 			}
+		}
+	}
 
-			if($count == 2) {
-				$vars['view']  = 'article';
-				$vars['catid'] = $segments[$count-2];
+	// if there was more than one segment, then we can determine where the URL points to
+	// because the first segment will have the target category id prepended to it.  If the
+	// last segment has a number prepended, it is an article, otherwise, it is a category.
+	if (!$advanced) {
+		$cat_id = (int)$segments[0];
+
+		$article_id = (int)$segments[$count - 1];
+
+		if ($article_id > 0) {
+			$vars['view'] = 'article';
+			$vars['catid'] = $cat_id;
+			$vars['id'] = $article_id;
+		} else {
+			$vars['view'] = 'category';
+			$vars['id'] = $cat_id;
+		}
+
+		return $vars;
+	}
+
+	// we get the category id from the menu item and search from there
+	$id = $item->query['id'];
+	$category = JCategories::getInstance('Content')->get($id);
+
+	if (!$category) {
+		JError::raiseError(404, JText::_('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+		return $vars;
+	}
+
+	$categories = $category->getChildren();
+	$vars['catid'] = $id;
+	$vars['id'] = $id;
+	$found = 0;
+
+	foreach($segments as $segment)
+	{
+		$segment = str_replace(':', '-', $segment);
+
+		foreach($categories as $category)
+		{
+			if ($category->alias == $segment) {
+				$vars['id'] = $category->id;
+				$vars['catid'] = $category->id;
+				$vars['view'] = 'category';
+				$categories = $category->getChildren();
+				$found = 1;
+				break;
+			}
+		}
+
+		if ($found == 0) {
+			if ($advanced) {
+				$db = JFactory::getDBO();
+				$query = 'SELECT id FROM #__content WHERE catid = '.$vars['catid'].' AND alias = '.$db->Quote($segment);
+				$db->setQuery($query);
+				$cid = $db->loadResult();
+			} else {
+				$cid = $segment;
 			}
 
-			$vars['id']    = $segments[$count-1];
+			$vars['id'] = $cid;
 
-		} break;
-
-		case 'category'   :
-		{
-			$vars['id']   = $segments[$count-1];
-			$vars['view'] = 'article';
-
-		} break;
-
-		case 'frontpage'   :
-		{
-			$vars['id']   = $segments[$count-1];
-			$vars['view'] = 'article';
-
-		} break;
-
-		case 'article' :
-		{
-			$vars['id']	  = $segments[$count-1];
-			$vars['view'] = 'article';
-		} break;
-
-		case 'archive' :
-		{
-			if($count != 1)
-			{
-				$vars['year']  = $count >= 2 ? $segments[$count-2] : null;
+			if ($item->query['view'] == 'archive' && $count != 1){
+				$vars['year']	= $count >= 2 ? $segments[$count-2] : null;
 				$vars['month'] = $segments[$count-1];
-				$vars['view']  = 'archive';
-			} else {
-				$vars['id']	  = $segments[$count-1];
+				$vars['view']	= 'archive';
+			}
+			else {
 				$vars['view'] = 'article';
 			}
 		}
+
+		$found = 0;
 	}
 
 	return $vars;

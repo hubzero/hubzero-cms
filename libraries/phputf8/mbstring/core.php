@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: core.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version $Id$
 * @package utf8
 * @subpackage strings
 */
@@ -11,6 +11,22 @@
 if ( !defined('UTF8_CORE') ) {
     define('UTF8_CORE',TRUE);
 }
+
+//--------------------------------------------------------------------
+/**
+* Wrapper round mb_strlen
+* Assumes you have mb_internal_encoding to UTF-8 already
+* Note: this function does not count bad bytes in the string - these
+* are simply ignored
+* @param string UTF-8 string
+* @return int number of UTF-8 characters in string
+* @package utf8
+* @subpackage strings
+*/
+function utf8_strlen($str){
+    return mb_strlen($str);
+}
+
 
 //--------------------------------------------------------------------
 /**
@@ -25,13 +41,11 @@ if ( !defined('UTF8_CORE') ) {
 * @subpackage strings
 */
 function utf8_strpos($str, $search, $offset = FALSE){
-	if(strlen($str) && strlen($search)) {
-	    if ( $offset === FALSE ) {
-	        return mb_strpos($str, $search);
-	    } else {
-	        return mb_strpos($str, $search, $offset);
-	    }
-	} else return FALSE;
+    if ( $offset === FALSE ) {
+        return mb_strpos($str, $search);
+    } else {
+        return mb_strpos($str, $search, $offset);
+    }
 }
 
 //--------------------------------------------------------------------
@@ -87,4 +101,40 @@ function utf8_substr($str, $offset, $length = FALSE){
     } else {
         return mb_substr($str, $offset, $length);
     }
+}
+
+//--------------------------------------------------------------------
+/**
+* Assumes mbstring internal encoding is set to UTF-8
+* Wrapper around mb_strtolower
+* Make a string lowercase
+* Note: The concept of a characters "case" only exists is some alphabets
+* such as Latin, Greek, Cyrillic, Armenian and archaic Georgian - it does
+* not exist in the Chinese alphabet, for example. See Unicode Standard
+* Annex #21: Case Mappings
+* @param string
+* @return mixed either string in lowercase or FALSE is UTF-8 invalid
+* @package utf8
+* @subpackage strings
+*/
+function utf8_strtolower($str){
+    return mb_strtolower($str);
+}
+
+//--------------------------------------------------------------------
+/**
+* Assumes mbstring internal encoding is set to UTF-8
+* Wrapper around mb_strtoupper
+* Make a string uppercase
+* Note: The concept of a characters "case" only exists is some alphabets
+* such as Latin, Greek, Cyrillic, Armenian and archaic Georgian - it does
+* not exist in the Chinese alphabet, for example. See Unicode Standard
+* Annex #21: Case Mappings
+* @param string
+* @return mixed either string in lowercase or FALSE is UTF-8 invalid
+* @package utf8
+* @subpackage strings
+*/
+function utf8_strtoupper($str){
+    return mb_strtoupper($str);
 }

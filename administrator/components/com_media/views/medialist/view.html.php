@@ -1,49 +1,41 @@
 <?php
 /**
-* @version		$Id: view.html.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla
-* @subpackage	Media
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+defined('_JEXEC') or die;
 
 /**
  * HTML View class for the Media component
  *
- * @static
- * @package		Joomla
- * @subpackage	Media
+ * @package		Joomla.Administrator
+ * @subpackage	com_media
  * @since 1.0
  */
-class MediaViewMediaList extends JView
+class MediaViewMediaList extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		global $mainframe;
-
 		// Do not allow cache
 		JResponse::allowCache(false);
 
-		$style = $mainframe->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
+		$app	= JFactory::getApplication();
+		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
 
-		JHTML::_('behavior.mootools');
+		$lang	= JFactory::getLanguage();
 
-		$document = &JFactory::getDocument();
-		$document->addStyleSheet('components/com_media/assets/medialist-'.$style.'.css');
+		JHtml::_('behavior.framework', true);
+
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('../media/media/css/medialist-'.$style.'.css');
+		if ($lang->isRTL()) :
+			$document->addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
+		endif;
 
 		$document->addScriptDeclaration("
 		window.addEvent('domready', function() {
-			window.top.document.updateUploader && window.top.document.updateUploader();
+			window.parent.document.updateUploader();
 			$$('a.img-preview').each(function(el) {
 				el.addEvent('click', function(e) {
 					new Event(e).stop();
@@ -52,17 +44,16 @@ class MediaViewMediaList extends JView
 			});
 		});");
 
-		$base = JURI::root();
-		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
-		{
-			$base = (substr($base, 0, strlen('https')) != 'https') ? str_replace('http://', 'https://', $base) : $base;
-		}
+		$images = $this->get('images');
+		$documents = $this->get('documents');
+		$folders = $this->get('folders');
+		$state = $this->get('state');
 
-		$this->assign('baseURL', $base);
-		$this->assignRef('images', $this->get('images'));
-		$this->assignRef('documents', $this->get('documents'));
-		$this->assignRef('folders', $this->get('folders'));
-		$this->assignRef('state', $this->get('state'));
+		$this->baseURL = JURI::root();
+		$this->assignRef('images', $images);
+		$this->assignRef('documents', $documents);
+		$this->assignRef('folders', $folders);
+		$this->assignRef('state', $state);
 
 		parent::display($tpl);
 	}

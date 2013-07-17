@@ -1,48 +1,52 @@
 <?php
 /**
-* @version		$Id: link.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	HTML
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a link button
  *
- * @package 	Joomla.Framework
- * @subpackage	HTML
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ * @since       11.1
  */
 class JButtonLink extends JButton
 {
 	/**
 	 * Button type
-	 *
-	 * @access	protected
-	 * @var		string
+	 * @var    string
 	 */
-	var $_name = 'Link';
+	protected $_name = 'Link';
 
-	function fetchButton( $type='Link', $name = 'back', $text = '', $url = null )
+	/**
+	 * Fetch the HTML for the button
+	 *
+	 * @param   string  $type  Unused string.
+	 * @param   string  $name  Name to be used as apart of the id
+	 * @param   string  $text  Button text
+	 * @param   string  $url   The link url
+	 *
+	 * @return  string  HTML string for the button
+	 *
+	 * @since   11.1
+	 */
+	public function fetchButton($type = 'Link', $name = 'back', $text = '', $url = null)
 	{
-		$text	= JText::_($text);
-		$class	= $this->fetchIconClass($name);
-		$doTask	= $this->_getCommand($url);
+		$text = JText::_($text);
+		$class = $this->fetchIconClass($name);
+		$doTask = $this->_getCommand($url);
 
-		$html	= "<a href=\"$doTask\">\n";
-		$html .= "<span class=\"$class\" title=\"$text\">\n";
+		$html = "<a href=\"$doTask\">\n";
+		$html .= "<span class=\"$class\">\n";
 		$html .= "</span>\n";
-		$html	.= "$text\n";
-		$html	.= "</a>\n";
+		$html .= "$text\n";
+		$html .= "</a>\n";
 
 		return $html;
 	}
@@ -50,24 +54,29 @@ class JButtonLink extends JButton
 	/**
 	 * Get the button CSS Id
 	 *
-	 * @access	public
-	 * @return	string	Button CSS Id
-	 * @since	1.5
+	 * @param   string  $type  The button type.
+	 * @param   string  $name  The name of the button.
+	 *
+	 * @return  string  Button CSS Id
+	 *
+	 * @since   11.1
 	 */
-	function fetchId($name)
+	public function fetchId($type = 'Link', $name = '')
 	{
-		return $this->_parent->_name.'-'.$name;
+		return $this->_parent->getName() . '-' . $name;
 	}
 
 	/**
 	 * Get the JavaScript command for the button
 	 *
-	 * @access	private
-	 * @param	object	$definition	Button definition
-	 * @return	string	JavaScript command string
-	 * @since	1.5
+	 * @param   object  $url  Button definition
+	 *
+	 * @return  string  JavaScript command string
+	 *
+	 * @since   11.1
 	 */
-	function _getCommand($url) {
+	protected function _getCommand($url)
+	{
 		return $url;
 	}
 }

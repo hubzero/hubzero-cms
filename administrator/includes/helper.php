@@ -1,46 +1,37 @@
 <?php
 /**
-* @version		$Id: helper.php 22952 2012-03-27 00:40:16Z dextercowley $
-* @package		Joomla
-* @copyright	Copyright (C) 2005 - 2012 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 /**
-* Joomla! Administrator Application helper class
-*
-* Provide many supporting API functions
-*
-* @package		Joomla
-* @final
-*/
+ * Joomla! Administrator Application helper class.
+ * Provide many supporting API functions.
+ *
+ * @package		Joomla.Administrator
+ * @subpackage	Application
+ */
 class JAdministratorHelper
 {
 	/**
-	 * Return the application option string [main component]
+	 * Return the application option string [main component].
 	 *
-	 * @access public
-	 * @return string Option
-	 * @since 1.5
+	 * @return	string		Option.
+	 * @since	1.5
 	 */
-	static function findOption()
+	public static function findOption()
 	{
 		$option = strtolower(JRequest::getCmd('option'));
 
-		$user =& JFactory::getUser();
-		if (!$user->authorize('login', 'administrator')) {
+		$user = JFactory::getUser();
+		if (($user->get('guest')) || !$user->authorise('core.login.admin')) {
 			$option = 'com_login';
 		}
 
-		if(empty($option)) {
+		if (empty($option)) {
 			$option = 'com_cpanel';
 		}
 
@@ -48,5 +39,3 @@ class JAdministratorHelper
 		return $option;
 	}
 }
-
-?>

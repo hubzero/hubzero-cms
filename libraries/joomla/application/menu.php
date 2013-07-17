@@ -1,130 +1,133 @@
 <?php
 /**
- * @version		$Id: menu.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla.Framework
- * @subpackage	Application
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * @package     Joomla.Platform
+ * @subpackage  Application
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * JMenu class
  *
- * @package		Joomla.Framework
- * @subpackage	Application
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Application
+ * @since       11.1
  */
 class JMenu extends JObject
 {
 	/**
 	 * Array to hold the menu items
 	 *
-	 * @access private
-	 * @param array
+	 * @var    array
+	 * @since   11.1
 	 */
-	var $_items = array ();
+	protected $_items = array();
 
 	/**
 	 * Identifier of the default menu item
 	 *
-	 * @access private
-	 * @param integer
+	 * @var    integer
+	 * @since   11.1
 	 */
-	var $_default = 0;
+	protected $_default = array();
 
 	/**
 	 * Identifier of the active menu item
 	 *
-	 * @access private
-	 * @param integer
+	 * @var    integer
+	 * @since  11.1
 	 */
-	var $_active = 0;
+	protected $_active = 0;
 
+	/**
+	 * @var    array  JMenu instances container.
+	 * @since  11.3
+	 */
+	protected static $instances = array();
 
 	/**
 	 * Class constructor
 	 *
-	 * @access public
-	 * @return boolean True on success
+	 * @param   array  $options  An array of configuration options.
+	 *
+	 * @since   11.1
 	 */
-	function __construct($options = array())
+	public function __construct($options = array())
 	{
-		$this->load(); //load the menu items
+		// Load the menu items
+		$this->load();
 
-		foreach ($this->_items as $k => $item)
+		foreach ($this->_items as $item)
 		{
-			if ($item->home) {
-				$this->_default = $item->id;
+			if ($item->home)
+			{
+				$this->_default[trim($item->language)] = $item->id;
 			}
+
+			// Decode the item params
+			$result = new JRegistry;
+			$result->loadString($item->params);
+			$item->params = $result;
 		}
 	}
 
 	/**
-	 * Returns a reference to a JMenu object
+	 * Returns a JMenu object
 	 *
-	 * This method must be invoked as:
-	 * 		<pre>  $menu = &JSite::getMenu();</pre>
+	 * @param   string  $client   The name of the client
+	 * @param   array   $options  An associative array of options
 	 *
-	 * @access	public
-	 * @param   string  $client  The name of the client
-	 * @param array     $options An associative array of options
-	 * @return JMenu 	A menu object.
-	 * @since	1.5
+	 * @return  JMenu  A menu object.
+	 *
+	 * @since   11.1
 	 */
-	static function &getInstance($client, $options = array())
+	public static function getInstance($client, $options = array())
 	{
-		static $instances;
-
-		if (!isset( $instances )) {
-			$instances = array();
-		}
-
-		if (empty($instances[$client]))
+		if (empty(self::$instances[$client]))
 		{
 			//Load the router object
-			$info =& JApplicationHelper::getClientInfo($client, true);
+			$info = JApplicationHelper::getClientInfo($client, true);
 
-			$path = $info->path.DS.'includes'.DS.'menu.php';
-			if(file_exists($path))
+			$path = $info->path . '/includes/menu.php';
+			if (file_exists($path))
 			{
-				require_once $path;
+				include_once $path;
 
 				// Create a JPathway object
-				$classname = 'JMenu'.ucfirst($client);
+				$classname = 'JMenu' . ucfirst($client);
 				$instance = new $classname($options);
 			}
 			else
 			{
-				//$error = JError::raiseError( 500, 'Unable to load menu: '.$client);
-				$error = null; //Jinx : need to fix this
+				//$error = JError::raiseError(500, 'Unable to load menu: '.$client);
+				//TODO: Solve this
+				$error = null;
 				return $error;
 			}
 
-			$instances[$client] = & $instance;
+			self::$instances[$client] = & $instance;
 		}
 
-		return $instances[$client];
+		return self::$instances[$client];
 	}
 
 	/**
 	 * Get menu item by id
 	 *
-	 * @access public
-	 * @param int The item id
-	 * @return mixed The item object, or null if not found
+	 * @param   integer  $id  The item id
+	 *
+	 * @return  mixed    The item object, or null if not found
+	 *
+	 * @since   11.1
 	 */
-	function &getItem($id)
+	public function getItem($id)
 	{
 		$result = null;
-		if (isset($this->_items[$id])) {
+		if (isset($this->_items[$id]))
+		{
 			$result = &$this->_items[$id];
 		}
 
@@ -132,16 +135,20 @@ class JMenu extends JObject
 	}
 
 	/**
-	 * Set the default item by id
+	 * Set the default item by id and language code.
 	 *
-	 * @param int The item id
-	 * @access public
-	 * @return True, if succesfull
+	 * @param   integer  $id        The menu item id.
+	 * @param   string   $language  The language cod (since 1.6).
+	 *
+	 * @return  boolean  True, if successful
+	 *
+	 * @since   11.1
 	 */
-	function setDefault($id)
+	public function setDefault($id, $language = '')
 	{
-		if(isset($this->_items[$id])) {
-			$this->_default = $id;
+		if (isset($this->_items[$id]))
+		{
+			$this->_default[$language] = $id;
 			return true;
 		}
 
@@ -149,77 +156,118 @@ class JMenu extends JObject
 	}
 
 	/**
-	 * Get menu item by id
+	 * Get the default item by language code.
 	 *
-	 * @access public
+	 * @param   string  $language  The language code, default value of * means all.
 	 *
-	 * @return object The item object
+	 * @return  object  The item object
+	 *
+	 * @since   11.1
 	 */
-	function &getDefault()
+	public function getDefault($language = '*')
 	{
-		$item =& $this->_items[$this->_default];
-		return $item;
+		if (array_key_exists($language, $this->_default))
+		{
+			return $this->_items[$this->_default[$language]];
+		}
+		elseif (array_key_exists('*', $this->_default))
+		{
+			return $this->_items[$this->_default['*']];
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	/**
 	 * Set the default item by id
 	 *
-	 * @param int The item id
-	 * @access public
-	 * @return If successfull the active item, otherwise null
+	 * @param   integer  $id  The item id
+	 *
+	 * @return  mixed  If successful the active item, otherwise null
+	 *
+	 * @since   11.1
 	 */
-	function &setActive($id)
+	public function setActive($id)
 	{
-		if(isset($this->_items[$id]))
+		if (isset($this->_items[$id]))
 		{
 			$this->_active = $id;
 			$result = &$this->_items[$id];
 			return $result;
 		}
 
-		$result = null;
-		return $result;
+		return null;
 	}
 
 	/**
-	 * Get menu item by id
+	 * Get menu item by id.
 	 *
-	 * @access public
+	 * @return  object  The item object.
 	 *
-	 * @return object The item object
+	 * @since   11.1
 	 */
-	function &getActive()
+	public function getActive()
 	{
-		if ($this->_active) {
-			$item =& $this->_items[$this->_active];
+		if ($this->_active)
+		{
+			$item = &$this->_items[$this->_active];
 			return $item;
 		}
 
-		$result = null;
-		return $result;
+		return null;
 	}
 
 	/**
 	 * Gets menu items by attribute
 	 *
-	 * @access public
-	 * @param string 	The field name
-	 * @param string 	The value of the field
-	 * @param boolean 	If true, only returns the first item found
-	 * @return array
+	 * @param   string   $attributes  The field name
+	 * @param   string   $values      The value of the field
+	 * @param   boolean  $firstonly   If true, only returns the first item found
+	 *
+	 * @return  array
+	 *
+	 * @since   11.1
 	 */
-	function getItems($attribute, $value, $firstonly = false)
+	public function getItems($attributes, $values, $firstonly = false)
 	{
-		$items = null;
+		$items = array();
+		$attributes = (array) $attributes;
+		$values = (array) $values;
 
-		foreach ($this->_items as  $item)
+		foreach ($this->_items as $item)
 		{
-			if ( ! is_object($item) )
-				continue;
-
-			if ($item->$attribute == $value)
+			if (!is_object($item))
 			{
-				if($firstonly) {
+				continue;
+			}
+
+			$test = true;
+			for ($i = 0, $count = count($attributes); $i < $count; $i++)
+			{
+				if (is_array($values[$i]))
+				{
+					if (!in_array($item->$attributes[$i], $values[$i]))
+					{
+						$test = false;
+						break;
+					}
+				}
+				else
+				{
+					if ($item->$attributes[$i] != $values[$i])
+					{
+						$test = false;
+						break;
+					}
+				}
+			}
+
+			if ($test)
+			{
+				if ($firstonly)
+				{
 					return $item;
 				}
 
@@ -233,28 +281,33 @@ class JMenu extends JObject
 	/**
 	 * Gets the parameter object for a certain menu item
 	 *
-	 * @access public
-	 * @param int The item id
-	 * @return object A JParameter object
+	 * @param   integer  $id  The item id
+	 *
+	 * @return  JRegistry  A JRegistry object
+	 *
+	 * @since   11.1
 	 */
-	function &getParams($id)
+	public function getParams($id)
 	{
-		$ini = '';
-		if ($menu =& $this->getItem($id)) {
-			$ini = $menu->params;
+		if ($menu = $this->getItem($id))
+		{
+			return $menu->params;
 		}
-		$result = new JParameter( $ini );
-
-		return $result;
+		else
+		{
+			return new JRegistry;
+		}
 	}
 
 	/**
 	 * Getter for the menu array
 	 *
-	 * @access public
-	 * @return array
+	 * @return  array
+	 *
+	 * @since   11.1
 	 */
-	function getMenu() {
+	public function getMenu()
+	{
 		return $this->_items;
 	}
 
@@ -262,25 +315,35 @@ class JMenu extends JObject
 	 * Method to check JMenu object authorization against an access control
 	 * object and optionally an access extension object
 	 *
-	 * @access 	public
-	 * @param	integer	$id			The menu id
-	 * @param	integer	$accessid	The users access identifier
-	 * @return	boolean	True if authorized
+	 * @param   integer  $id  The menu id
+	 *
+	 * @return  boolean  True if authorised
+	 *
+	 * @since   11.1
 	 */
-	function authorize($id, $accessid = 0)
+	public function authorise($id)
 	{
-		$menu =& $this->getItem($id);
-		return ((isset($menu->access) ? $menu->access : 0) <= $accessid);
+		$menu = $this->getItem($id);
+		$user = JFactory::getUser();
+
+		if ($menu)
+		{
+			return in_array((int) $menu->access, $user->getAuthorisedViewLevels());
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	/**
 	 * Loads the menu items
 	 *
-	 * @abstract
-	 * @access public
-	 * @return array
+	 * @return  array
+	 *
+	 * @since   11.1
 	 */
-	function load()
+	public function load()
 	{
 		return array();
 	}

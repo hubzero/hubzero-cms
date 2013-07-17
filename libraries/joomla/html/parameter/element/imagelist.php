@@ -1,44 +1,53 @@
 <?php
 /**
-* @version		$Id: imagelist.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a imagelist element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  12.1   Use JFormFieldImageList instead.
  */
-
 class JElementImageList extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'ImageList';
+	 * Element name
+	 *
+	 * @var    string
+	 */
+	protected $_name = 'ImageList';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Fetch imagelist element
+	 *
+	 * @param   string       $name          Element name
+	 * @param   string       $value         Element value
+	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
+	 * @param   string       $control_name  Control name
+	 *
+	 * @return  string
+	 *
+	 * @deprecated    12.1   Use JFormFieldImageLst instead.
+	 * @since   11.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
+		// Deprecation warning.
+		JLog::add('JElementImageList::fetchElement() is deprecated.', JLog::WARNING, 'deprecated');
+
 		$filter = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$';
 		$node->addAttribute('filter', $filter);
 
-		$parameter =& $this->_parent->loadElement('filelist');
+		$parameter = $this->_parent->loadElement('filelist');
 
 		return $parameter->fetchElement($name, $value, $node, $control_name);
 	}

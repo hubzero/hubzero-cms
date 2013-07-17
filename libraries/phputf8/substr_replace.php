@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: substr_replace.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version $Id$
 * @package utf8
 * @subpackage strings
 */

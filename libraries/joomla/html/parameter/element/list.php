@@ -1,50 +1,98 @@
 <?php
 /**
-* @version		$Id: list.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a list element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  Use JFormFieldList instead
  */
-
 class JElementList extends JElement
 {
 	/**
-	* Element type
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'List';
+	 * Element type
+	 *
+	 * @var    string
+	 */
+	protected $_name = 'List';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Get the options for the element
+	 *
+	 * @param   JXMLElement  &$node  JXMLElement node object containing the settings for the element
+	 *
+	 * @return  array
+	 *
+	 * @since   11.1
+	 *
+	 * @deprecated  12.1  Use JFormFieldList::getOptions Instead
+	 */
+	protected function _getOptions(&$node)
 	{
-		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="inputbox"' );
+		// Deprecation warning.
+		JLog::add('JElementList::getOptions() is deprecated.', JLog::WARNING, 'deprecated');
 
-		$options = array ();
+		$options = array();
 		foreach ($node->children() as $option)
 		{
-			$val	= $option->attributes('value');
-			$text	= $option->data();
-			$options[] = JHTML::_('select.option', $val, JText::_($text));
+			$val = $option->attributes('value');
+			$text = $option->data();
+			$options[] = JHtml::_('select.option', $val, JText::_($text));
+		}
+		return $options;
+	}
+
+	/**
+	 * Fetch the HTML code for the parameter element.
+	 *
+	 * @param   string             $name          The field name.
+	 * @param   mixed              $value         The value of the field.
+	 * @param   JSimpleXMLElement  &$node         The current JSimpleXMLElement node.
+	 * @param   string             $control_name  The name of the HTML control.
+	 *
+	 * @return  string
+	 *
+	 * @deprecated    12.1
+	 * @since   11.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
+	{
+		$ctrl = $control_name . '[' . $name . ']';
+		$attribs = ' ';
+
+		if ($v = $node->attributes('size'))
+		{
+			$attribs .= 'size="' . $v . '"';
+		}
+		if ($v = $node->attributes('class'))
+		{
+			$attribs .= 'class="' . $v . '"';
+		}
+		else
+		{
+			$attribs .= 'class="inputbox"';
+		}
+		if ($m = $node->attributes('multiple'))
+		{
+			$attribs .= 'multiple="multiple"';
+			$ctrl .= '[]';
 		}
 
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.$name);
+		return JHtml::_(
+			'select.genericlist',
+			$this->_getOptions($node),
+			$ctrl,
+			array('id' => $control_name . $name, 'list.attr' => $attribs, 'list.select' => $value)
+		);
 	}
 }

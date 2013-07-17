@@ -1,89 +1,82 @@
 <?php
 /**
- * @version		$Id: view.feed.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Contact
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package		Joomla.Site
+ * @subpackage	com_contact
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport('joomla.application.component.view');
+defined('_JEXEC') or die;
 
 /**
- * @pacakge Joomla
- * @subpackage	Contacts
+ * HTML View class for the Contact component
+ *
+ * @package		Joomla.Site
+ * @subpackage	com_contact
+ * @since 1.5
  */
-class ContactViewCategory extends JView
+class ContactViewCategory extends JViewLegacy
 {
-	function display()
+	function display($tpl = null)
 	{
-		global $mainframe;
-
-		$db			=& JFactory::getDBO();
-		$document	=& JFactory::getDocument();
-		$document->link = JRoute::_('index.php?option=com_contact&view=category&catid='.JRequest::getVar('catid',null, '', 'int'));
-		
-		$siteEmail = $mainframe->getCfg('mailfrom');
-		$fromName = $mainframe->getCfg('fromname');
-		$document->editor = $fromName;
-		$document->editorEmail = $siteEmail;
-				
-		$limit 		= JRequest::getVar('limit', $mainframe->getCfg('feed_limit'), '', 'int');
-		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
-		$catid  	= JRequest::getVar('catid', 0, '', 'int');
-
-		$where		= ' WHERE a.published = 1';
-
-		if ( $catid ) {
-			$where .= ' AND a.catid = '. (int) $catid;
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			JError::raiseError(500, implode("\n", $errors));
+			return false;
 		}
 
-		$query = 'SELECT'
-		. ' a.name AS title,'
-		. ' CONCAT( a.con_position, \' - \', a.misc ) AS description,'
-		. ' "" AS date,'
-		. ' c.title AS category,'
-		. ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'
-		. ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(":", c.id, c.alias) ELSE c.id END as catslug'
-		. ' FROM #__contact_details AS a'
-		. ' LEFT JOIN #__categories AS c ON c.id = a.catid'
-		. $where
-		. ' ORDER BY a.catid, a.ordering'
-		;
-		$db->setQuery( $query, 0, $limit );
-		$rows = $db->loadObjectList();
+		$app = JFactory::getApplication();
 
-		foreach ( $rows as $row )
+		$doc	= JFactory::getDocument();
+		$params = $app->getParams();
+		$feedEmail	= $app->getCfg('feed_email', 'author');
+		$siteEmail	= $app->getCfg('mailfrom');
+		$fromName = $app->getCfg('fromname');
+
+		JRequest::setVar('limit', $app->getCfg('feed_limit'));
+		// Get some data from the models
+		$category	= $this->get('Category');
+		$rows		= $this->get('Items');
+
+		$doc->link = JRoute::_(ContactHelperRoute::getCategoryRoute($category->id));
+
+		foreach ($rows as $row)
 		{
 			// strip html from feed item title
-			$title = $this->escape( $row->title );
-			$title = html_entity_decode( $title );
+			$title = $this->escape($row->name);
+			$title = html_entity_decode($title, ENT_COMPAT, 'UTF-8');
+
+			// Compute the contact slug
+			$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
 
 			// url link to article
-			$link = JRoute::_('index.php?option=com_contact&view=contact&id='. $row->slug .'&catid='.$row->catslug );
+			$link = JRoute::_(ContactHelperRoute::getContactRoute($row->slug, $row->catid));
 
-			// strip html from feed item description text
-			$description = $row->description;
-			$date = ( $row->date ? date( 'r', strtotime($row->date) ) : '' );
+			$description	= $row->address;
+			$author			= $row->created_by_alias ? $row->created_by_alias : $row->author;
+			@$date			= ($row->created ? date('r', strtotime($row->created)) : '');
 
 			// load individual item creator class
 			$item = new JFeedItem();
-			$item->title 		= $title;
-			$item->link 		= $link;
-			$item->description 	= $description;
+			$item->title		= $title;
+			$item->link			= $link;
+			$item->description	= $description;
 			$item->date			= $date;
-			$item->category   	= $row->category;
+			$item->category		= $category->title;
+			$item->author		= $author;
+
+			// We don't have the author email so we have to use site in both cases.
+			if ($feedEmail == 'site')
+			{
+				$item->authorEmail = $siteEmail;
+			}
+			elseif($feedEmail == 'author')
+			{
+				$item->authorEmail = $row->author_email;
+			}
 
 			// loads item info into rss array
-			$document->addItem( $item );
+			$doc->addItem($item);
 		}
 	}
 }

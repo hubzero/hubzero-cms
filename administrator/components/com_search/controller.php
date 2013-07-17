@@ -1,46 +1,42 @@
 <?php
 /**
- * @version		$Id: controller.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Search
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die;
 
 /**
- * @package		Joomla
- * @subpackage	Search
+ * Search master display controller.
+ *
+ * @package		Joomla.Administrator
+ * @subpackage	com_search
+ * @since		1.6
  */
-class SearchController extends JController
+class SearchController extends JControllerLegacy
 {
 	/**
-	 * Show Search Statistics
+	 * @var		string	The default view.
+	 * @since	1.6
 	 */
-	function display()
-	{
-		$model	=& $this->getModel( 'Search' );
-		$view   =& $this->getView( 'Search' );
-		$view->setModel( $model, true );
-		$view->display();
-	}
+	protected $default_view = 'searches';
 
 	/**
-	 * Reset Statistics
+	 * Method to display a view.
+	 *
+	 * @param	boolean			If true, the view output will be cached
+	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return	JController		This object to support chaining.
+	 * @since	1.5
 	 */
-	function reset()
+	public function display($cachable = false, $urlparams = false)
 	{
-		$model	=& $this->getModel( 'Search' );
-		$model->reset();
-		$this->setRedirect('index.php?option=com_search');
+		require_once JPATH_COMPONENT.'/helpers/search.php';
+
+		// Load the submenu.
+		SearchHelper::addSubmenu(JRequest::getCmd('view', 'searches'));
+
+		parent::display();
 	}
 }

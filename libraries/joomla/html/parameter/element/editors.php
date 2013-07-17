@@ -1,60 +1,66 @@
 <?php
 /**
-* @version		$Id: editors.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a editors element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  Use JFormFieldEditors instead
  */
-
 class JElementEditors extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'Editors';
+	 * Element name
+	 *
+	 * @var    string
+	 */
+	protected $_name = 'Editors';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Fetch an editor element
+	 *
+	 * @param   string       $name          Element name
+	 * @param   string       $value         Element value
+	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
+	 * @param   string       $control_name  Control name
+	 *
+	 * @return  string
+	 *
+	 * @deprecated    12.1
+	 * @see           JFormFieldEditors::getOptions
+	 * @since   11.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db		= & JFactory::getDBO();
-		$user	= & JFactory::getUser();
+		// Deprecation warning.
+		JLog::add('JElementEditor::fetchElement is deprecated.', JLog::WARNING, 'deprecated');
 
-		//TODO: change to acl_check method
-		if(!($user->get('gid') >= 19) ) {
-			return JText::_('No Access');
-		}
+		$db = JFactory::getDbo();
+		$user = JFactory::getUser();
 
 		// compile list of the editors
-		$query = 'SELECT element AS value, name AS text'
-		. ' FROM #__plugins'
-		. ' WHERE folder = "editors"'
-		. ' AND published = 1'
-		. ' ORDER BY ordering, name'
-		;
-		$db->setQuery( $query );
+		$query = 'SELECT element AS value, name AS text' . ' FROM #__extensions' . ' WHERE folder = "editors"' . ' AND type = "plugin"'
+			. ' AND enabled = 1' . ' ORDER BY ordering, name';
+		$db->setQuery($query);
 		$editors = $db->loadObjectList();
 
-		array_unshift( $editors, JHTML::_('select.option',  '', '- '. JText::_( 'Select Editor' ) .' -' ) );
+		array_unshift($editors, JHtml::_('select.option', '', JText::_('JOPTION_SELECT_EDITOR')));
 
-		return JHTML::_('select.genericlist',   $editors, ''. $control_name .'['. $name .']', 'class="inputbox"', 'value', 'text', $value, $control_name.$name );
+		return JHtml::_(
+			'select.genericlist',
+			$editors,
+			$control_name . '[' . $name . ']',
+			array('id' => $control_name . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value)
+		);
 	}
 }

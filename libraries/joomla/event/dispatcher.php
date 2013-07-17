@@ -1,21 +1,13 @@
 <?php
 /**
-* @version		$Id: dispatcher.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Event
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Event
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
-
-jimport('joomla.base.observable');
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Class to handle dispatching of events.
@@ -23,72 +15,103 @@ jimport('joomla.base.observable');
  * This is the Observable part of the Observer design pattern
  * for the event architecture.
  *
- * @package 	Joomla.Framework
- * @subpackage	Event
- * @since	1.5
- * @see		JPlugin
- * @link http://docs.joomla.org/Tutorial:Plugins Plugin tutorials
+ * @package     Joomla.Platform
+ * @subpackage  Event
+ * @link        http://docs.joomla.org/Tutorial:Plugins Plugin tutorials
+ * @see         JPlugin
+ * @since       11.1
  */
-class JDispatcher extends JObservable
+class JDispatcher extends JObject
 {
 	/**
-	 * Constructor
+	 * An array of Observer objects to notify
 	 *
-	 * @access	protected
+	 * @var    array
+	 * @since  11.3
 	 */
-	function __construct()
+	protected $_observers = array();
+
+	/**
+	 * The state of the observable object
+	 *
+	 * @var    mixed
+	 * @since  11.3
+	 */
+	protected $_state = null;
+
+	/**
+	 * A multi dimensional array of [function][] = key for observers
+	 *
+	 * @var    array
+	 * @since  11.3
+	 */
+	protected $_methods = array();
+
+	/**
+	 * Stores the singleton instance of the dispatcher.
+	 *
+	 * @var    JDispatcher
+	 * @since  11.3
+	 */
+	protected static $instance = null;
+
+	/**
+	 * Returns the global Event Dispatcher object, only creating it
+	 * if it doesn't already exist.
+	 *
+	 * @return  JDispatcher  The EventDispatcher object.
+	 *
+	 * @since   11.1
+	 */
+	public static function getInstance()
 	{
-		parent::__construct();
+		if (self::$instance === null)
+		{
+			self::$instance = new JDispatcher;
+		}
+
+		return self::$instance;
 	}
 
 	/**
-	 * Returns a reference to the global Event Dispatcher object, only creating it
-	 * if it doesn't already exist.
+	 * Get the state of the JDispatcher object
 	 *
-	 * This method must be invoked as:
-	 * 		<pre>  $dispatcher = &JDispatcher::getInstance();</pre>
+	 * @return  mixed    The state of the object.
 	 *
-	 * @access	public
-	 * @return	JDispatcher	The EventDispatcher object.
-	 * @since	1.5
+	 * @since   11.3
 	 */
-	static function & getInstance()
+	public function getState()
 	{
-		static $instance;
-
-		if (!is_object($instance)) {
-			$instance = new JDispatcher();
-		}
-
-		return $instance;
+		return $this->_state;
 	}
 
 	/**
 	 * Registers an event handler to the event dispatcher
 	 *
-	 * @access	public
-	 * @param	string	$event		Name of the event to register handler for
-	 * @param	string	$handler	Name of the event handler
-	 * @return	void
-	 * @since	1.5
+	 * @param   string  $event    Name of the event to register handler for
+	 * @param   string  $handler  Name of the event handler
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
 	 */
-	function register($event, $handler)
+	public function register($event, $handler)
 	{
 		// Are we dealing with a class or function type handler?
 		if (function_exists($handler))
 		{
-			// Ok, function type event handler... lets attach it.
-			$method = array ('event' => $event, 'handler' => $handler);
+			// Ok, function type event handler... let's attach it.
+			$method = array('event' => $event, 'handler' => $handler);
 			$this->attach($method);
 		}
 		elseif (class_exists($handler))
 		{
-			 //Ok, class type event handler... lets instantiate and attach it.
+			// Ok, class type event handler... let's instantiate and attach it.
 			$this->attach(new $handler($this));
 		}
 		else
 		{
-			JError::raiseWarning('SOME_ERROR_CODE', 'JDispatcher::register: Event handler not recognized.', 'Handler: '.$handler );
+			return JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('JLIB_EVENT_ERROR_DISPATCHER', $handler));
 		}
 	}
 
@@ -96,99 +119,161 @@ class JDispatcher extends JObservable
 	 * Triggers an event by dispatching arguments to all observers that handle
 	 * the event and returning their return values.
 	 *
-	 * @access	public
-	 * @param	string	$event			The event name
-	 * @param	array	$args			An array of arguments
-	 * @param	boolean	$doUnpublished	[DEPRECATED]
-	 * @return	array	An array of results from each function call
-	 * @since	1.5
+	 * @param   string  $event  The event to trigger.
+	 * @param   array   $args   An array of arguments.
+	 *
+	 * @return  array  An array of results from each function call.
+	 *
+	 * @since   11.1
 	 */
-	function trigger($event, $args = null, $doUnpublished = false)
+	public function trigger($event, $args = array())
 	{
-		// Initialize variables
-		$result = array ();
+		// Initialise variables.
+		$result = array();
 
 		/*
 		 * If no arguments were passed, we still need to pass an empty array to
 		 * the call_user_func_array function.
 		 */
-		if ($args === null) {
-			$args = array ();
+		$args = (array) $args;
+
+		$event = strtolower($event);
+
+		// Check if any plugins are attached to the event.
+		if (!isset($this->_methods[$event]) || empty($this->_methods[$event]))
+		{
+			// No Plugins Associated To Event!
+			return $result;
+		}
+		// Loop through all plugins having a method matching our event
+		foreach ($this->_methods[$event] as $key)
+		{
+			// Check if the plugin is present.
+			if (!isset($this->_observers[$key]))
+			{
+				continue;
+			}
+
+			// Fire the event for an object based observer.
+			if (is_object($this->_observers[$key]))
+			{
+				$args['event'] = $event;
+				$value = $this->_observers[$key]->update($args);
+			}
+			// Fire the event for a function based observer.
+			elseif (is_array($this->_observers[$key]))
+			{
+				$value = call_user_func_array($this->_observers[$key]['handler'], $args);
+			}
+			if (isset($value))
+			{
+				$result[] = $value;
+			}
 		}
 
-		/*
-		 * We need to iterate through all of the registered observers and
-		 * trigger the event for each observer that handles the event.
-		 */
-		foreach ($this->_observers as $observer)
+		return $result;
+	}
+
+	/**
+	 * Attach an observer object
+	 *
+	 * @param   object  $observer  An observer object to attach
+	 *
+	 * @return  void
+	 *
+	 * @since   11.3
+	 */
+	public function attach($observer)
+	{
+		if (is_array($observer))
 		{
-			if (is_array($observer))
+			if (!isset($observer['handler']) || !isset($observer['event']) || !is_callable($observer['handler']))
 			{
-				/*
-				 * Since we have gotten here, we know a little something about
-				 * the observer.  It is a function type observer... lets see if
-				 * it handles our event.
-				 */
-				if ($observer['event'] == $event)
+				return;
+			}
+
+			// Make sure we haven't already attached this array as an observer
+			foreach ($this->_observers as $check)
+			{
+				if (is_array($check) && $check['event'] == $observer['event'] && $check['handler'] == $observer['handler'])
 				{
-					if (function_exists($observer['handler']))
-					{
-						$result[] = call_user_func_array($observer['handler'], $args);
-					}
-					else
-					{
-						/*
-						 * Couldn't find the function that the observer specified..
-						 * wierd, lets throw an error.
-						 */
-						JError::raiseWarning('SOME_ERROR_CODE', 'JDispatcher::trigger: Event Handler Method does not exist.', 'Method called: '.$observer['handler']);
-					}
-				}
-				else
-				{
-					 // Handler doesn't handle this event, move on to next observer.
-					continue;
+					return;
 				}
 			}
-			elseif (is_object($observer))
+
+			$this->_observers[] = $observer;
+			end($this->_observers);
+			$methods = array($observer['event']);
+		}
+		else
+		{
+			if (!($observer instanceof JEvent))
 			{
-				/*
-				 * Since we have gotten here, we know a little something about
-				 * the observer.  It is a class type observer... lets see if it
-				 * is an object which has an update method.
-				 */
-				if (method_exists($observer, 'update'))
+				return;
+			}
+
+			// Make sure we haven't already attached this object as an observer
+			$class = get_class($observer);
+
+			foreach ($this->_observers as $check)
+			{
+				if ($check instanceof $class)
 				{
-					/*
-					 * Ok, now we know that the observer is both not an array
-					 * and IS an object.  Lets trigger its update method if it
-					 * handles the event and return any results.
-					 */
-					if (method_exists($observer, $event))
-					{
-						$args['event'] = $event;
-						$result[] = $observer->update($args);
-					}
-					else
-					{
-						/*
-						 * Handler doesn't handle this event, move on to next
-						 * observer.
-						 */
-						continue;
-					}
+					return;
 				}
-				else
+			}
+
+			$this->_observers[] = $observer;
+			$methods = array_diff(get_class_methods($observer), get_class_methods('JPlugin'));
+		}
+
+		$key = key($this->_observers);
+
+		foreach ($methods as $method)
+		{
+			$method = strtolower($method);
+
+			if (!isset($this->_methods[$method]))
+			{
+				$this->_methods[$method] = array();
+			}
+
+			$this->_methods[$method][] = $key;
+		}
+	}
+
+	/**
+	 * Detach an observer object
+	 *
+	 * @param   object  $observer  An observer object to detach.
+	 *
+	 * @return  boolean  True if the observer object was detached.
+	 *
+	 * @since   11.3
+	 */
+	public function detach($observer)
+	{
+		// Initialise variables.
+		$retval = false;
+
+		$key = array_search($observer, $this->_observers);
+
+		if ($key !== false)
+		{
+			unset($this->_observers[$key]);
+			$retval = true;
+
+			foreach ($this->_methods as &$method)
+			{
+				$k = array_search($key, $method);
+
+				if ($k !== false)
 				{
-					/*
-					 * At this point, we know that the registered observer is
-					 * neither a function type observer nor an object type
-					 * observer.  PROBLEM, lets throw an error.
-					 */
-					JError::raiseWarning('SOME_ERROR_CODE', 'JDispatcher::trigger: Unknown Event Handler.', $observer );
+					unset($method[$k]);
 				}
 			}
 		}
-		return $result;
+
+		return $retval;
 	}
 }

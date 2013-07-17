@@ -1,19 +1,13 @@
 <?php
 /**
-* @version		$Id: model.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Application
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  Application
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Base class for a Joomla Model
@@ -21,266 +15,289 @@ defined('JPATH_BASE') or die();
  * Acts as a Factory class for application specific objects and
  * provides many supporting API functions.
  *
- * @abstract
- * @package		Joomla.Framework
- * @subpackage	Application
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Application
+ * @since       11.1
  */
-class JModel extends JObject
+abstract class JModel extends JObject
 {
 	/**
-	 * The model (base) name
+	 * Indicates if the internal state has been set
 	 *
-	 * @var string
-	 * @access	protected
+	 * @var    boolean
+	 * @since  11.1
 	 */
-	var $_name;
+	protected $__state_set = null;
 
 	/**
 	 * Database Connector
 	 *
-	 * @var object
-	 * @access	protected
+	 * @var    object
+	 * @since  11.1
 	 */
-	var $_db;
+	protected $_db;
 
 	/**
-	 * An state object
+	 * The model (base) name
 	 *
-	 * @var string
-	 * @access	protected
+	 * @var    string
+	 * @note   Replaces _name variable in 11.1
+	 * @since  11.1
 	 */
-	var $_state;
+	protected $name;
 
 	/**
-	 * Constructor
+	 * The URL option for the component.
 	 *
-	 * @since	1.5
+	 * @var    string
+	 * @since  11.1
 	 */
-	function __construct($config = array())
-	{
-		//set the view name
-		if (empty( $this->_name ))
-		{
-			if (array_key_exists('name', $config))  {
-				$this->_name = $config['name'];
-			} else {
-				$this->_name = $this->getName();
-			}
-		}
-
-		//set the model state
-		if (array_key_exists('state', $config))  {
-			$this->_state = $config['state'];
-		} else {
-			$this->_state = new JObject();
-		}
-
-		//set the model dbo
-		if (array_key_exists('dbo', $config))  {
-			$this->_db = $config['dbo'];
-		} else {
-			$this->_db = &JFactory::getDBO();
-		}
-
-		// set the default view search path
-		if (array_key_exists('table_path', $config)) {
-			$this->addTablePath($config['table_path']);
-		} else if (defined( 'JPATH_COMPONENT_ADMINISTRATOR' )){
-			$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
-		}
-	}
+	protected $option = null;
 
 	/**
-	 * Returns a reference to the a Model object, always creating it
+	 * A state object
 	 *
-	 * @param	string	The model type to instantiate
-	 * @param	string	Prefix for the model class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	mixed	A model object, or false on failure
-	 * @since	1.5
-	*/
-	static function &getInstance( $type, $prefix = '', $config = array() )
-	{
-		$type		= preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
-		$modelClass	= $prefix.ucfirst($type);
-		$result		= false;
-
-		if (!class_exists( $modelClass ))
-		{
-			jimport('joomla.filesystem.path');
-			$path = JPath::find(
-				JModel::addIncludePath(),
-				JModel::_createFileName( 'model', array( 'name' => $type))
-			);
-			if ($path)
-			{
-				require_once $path;
-
-				if (!class_exists( $modelClass ))
-				{
-					JError::raiseWarning( 0, 'Model class ' . $modelClass . ' not found in file.' );
-					return $result;
-				}
-			}
-			else return $result;
-		}
-
-		$result = new $modelClass($config);
-		return $result;
-	}
+	 * @var    string
+	 * @note   Replaces _state variable in 11.1
+	 * @since  11.1
+	 */
+	protected $state;
 
 	/**
-	 * Method to set model state variables
+	 * The event to trigger when cleaning cache.
 	 *
-	 * @access	public
-	 * @param	string	The name of the property
-	 * @param	mixed	The value of the property to set
-	 * @return	mixed	The previous value of the property
-	 * @since	1.5
+	 * @var      string
+	 * @since    11.1
 	 */
-	function setState( $property, $value=null )
-	{
-		return $this->_state->set($property, $value);
-	}
-
-	/**
-	 * Method to get model state variables
-	 *
-	 * @access	public
-	 * @param	string	Optional parameter name
-	 * @return	object	The property where specified, the state object where omitted
-	 * @since	1.5
-	 */
-	function getState($property = null)
-	{
-		return $property === null ? $this->_state : $this->_state->get($property);
-	}
-
-	/**
-	 * Method to get the database connector object
-	 *
-	 * @access	public
-	 * @return	object JDatabase connector object
-	 * @since	1.5
-	 */
-	function &getDBO()
-	{
-		return $this->_db;
-	}
-
-	/**
-	 * Method to set the database connector object
-	 *
-	 * @param	object	$db	A JDatabase based object
-	 * @return	void
-	 * @since	1.5
-	 */
-	function setDBO(&$db)
-	{
-		$this->_db =& $db;
-	}
-
-	/**
-	 * Method to get the model name
-	 *
-	 * The model name by default parsed using the classname, or it can be set
-	 * by passing a $config['name�] in the class constructor
-	 *
-	 * @access	public
-	 * @return	string The name of the model
-	 * @since	1.5
-	 */
-	function getName()
-	{
-		$name = $this->_name;
-
-		if (empty( $name ))
-		{
-			$r = null;
-			if (!preg_match('/Model(.*)/i', get_class($this), $r)) {
-				JError::raiseError (500, "JModel::getName() : Can't get or parse class name.");
-			}
-			$name = strtolower( $r[1] );
-		}
-
-		return $name;
-	}
-
-	/**
-	 * Method to get a table object, load it if necessary.
-	 *
-	 * @access	public
-	 * @param	string The table name. Optional.
-	 * @param	string The class prefix. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	object	The table
-	 * @since	1.5
-	 */
-	function &getTable($name='', $prefix='Table', $options = array())
-	{
-		if (empty($name)) {
-			$name = $this->getName();
-		}
-
-		if($table = &$this->_createTable( $name, $prefix, $options ))  {
-			return $table;
-		}
-
-		JError::raiseError( 0, 'Table ' . $name . ' not supported. File not found.' );
-		$null = null;
-        return $null;
-	}
+	protected $event_clean_cache = null;
 
 	/**
 	 * Add a directory where JModel should search for models. You may
 	 * either pass a string or an array of directories.
 	 *
-	 * @access	public
-	 * @param	string	A path to search.
-	 * @return	array	An array with directory elements
-	 * @since	1.5
+	 * @param   mixed   $path    A path or array[sting] of paths to search.
+	 * @param   string  $prefix  A prefix for models.
+	 *
+	 * @return  array  An array with directory elements. If prefix is equal to '', all directories are returned.
+	 *
+	 * @since   11.1
 	 */
-	static function addIncludePath( $path='' )
+	public static function addIncludePath($path = '', $prefix = '')
 	{
 		static $paths;
 
-		if (!isset($paths)) {
+		if (!isset($paths))
+		{
 			$paths = array();
 		}
-		if (!empty( $path ) && !in_array( $path, $paths )) {
-			jimport('joomla.filesystem.path');
-			array_unshift($paths, JPath::clean( $path ));
+
+		if (!isset($paths[$prefix]))
+		{
+			$paths[$prefix] = array();
 		}
-		return $paths;
+
+		if (!isset($paths['']))
+		{
+			$paths[''] = array();
+		}
+
+		if (!empty($path))
+		{
+			jimport('joomla.filesystem.path');
+
+			if (!in_array($path, $paths[$prefix]))
+			{
+				array_unshift($paths[$prefix], JPath::clean($path));
+			}
+
+			if (!in_array($path, $paths['']))
+			{
+				array_unshift($paths[''], JPath::clean($path));
+			}
+		}
+
+		return $paths[$prefix];
 	}
 
 	/**
 	 * Adds to the stack of model table paths in LIFO order.
 	 *
-	 * @static
-	 * @param	string|array The directory (-ies) to add.
-	 * @return	void
+	 * @param   mixed  $path  The directory as a string or directories as an array to add.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
 	 */
-	function addTablePath($path)
+	public static function addTablePath($path)
 	{
 		jimport('joomla.database.table');
 		JTable::addIncludePath($path);
 	}
 
 	/**
-	 * Returns an object list
+	 * Create the filename for a resource
 	 *
-	 * @param	string The query
-	 * @param	int Offset
-	 * @param	int The number of records
-	 * @return	array
-	 * @access	protected
-	 * @since	1.5
+	 * @param   string  $type   The resource type to create the filename for.
+	 * @param   array   $parts  An associative array of filename information.
+	 *
+	 * @return  string  The filename
+	 *
+	 * @since   11.1
 	 */
-	function &_getList( $query, $limitstart=0, $limit=0 )
+	protected static function _createFileName($type, $parts = array())
 	{
-		$this->_db->setQuery( $query, $limitstart, $limit );
+		$filename = '';
+
+		switch ($type)
+		{
+			case 'model':
+				$filename = strtolower($parts['name']) . '.php';
+				break;
+
+		}
+		return $filename;
+	}
+
+	/**
+	 * Returns a Model object, always creating it
+	 *
+	 * @param   string  $type    The model type to instantiate
+	 * @param   string  $prefix  Prefix for the model class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  mixed   A model object or false on failure
+	 *
+	 * @since   11.1
+	 */
+	public static function getInstance($type, $prefix = '', $config = array())
+	{
+		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
+		$modelClass = $prefix . ucfirst($type);
+
+		if (!class_exists($modelClass))
+		{
+			jimport('joomla.filesystem.path');
+			$path = JPath::find(self::addIncludePath(null, $prefix), self::_createFileName('model', array('name' => $type)));
+			if (!$path)
+			{
+				$path = JPath::find(self::addIncludePath(null, ''), self::_createFileName('model', array('name' => $type)));
+			}
+			if ($path)
+			{
+				require_once $path;
+
+				if (!class_exists($modelClass))
+				{
+					JError::raiseWarning(0, JText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $modelClass));
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		return new $modelClass($config);
+	}
+
+	/**
+	 * Constructor
+	 *
+	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 *
+	 * @since   11.1
+	 */
+	public function __construct($config = array())
+	{
+		// Guess the option from the class name (Option)Model(View).
+		if (empty($this->option))
+		{
+			$r = null;
+
+			if (!preg_match('/(.*)Model/i', get_class($this), $r))
+			{
+				JError::raiseError(500, JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'));
+			}
+
+			$this->option = 'com_' . strtolower($r[1]);
+		}
+
+		// Set the view name
+		if (empty($this->name))
+		{
+			if (array_key_exists('name', $config))
+			{
+				$this->name = $config['name'];
+			}
+			else
+			{
+				$this->name = $this->getName();
+			}
+		}
+
+		// Set the model state
+		if (array_key_exists('state', $config))
+		{
+			$this->state = $config['state'];
+		}
+		else
+		{
+			$this->state = new JObject;
+		}
+
+		// Set the model dbo
+		if (array_key_exists('dbo', $config))
+		{
+			$this->_db = $config['dbo'];
+		}
+		else
+		{
+			$this->_db = JFactory::getDbo();
+		}
+
+		// Set the default view search path
+		if (array_key_exists('table_path', $config))
+		{
+			$this->addTablePath($config['table_path']);
+		}
+		elseif (defined('JPATH_COMPONENT_ADMINISTRATOR'))
+		{
+			$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
+		}
+
+		// Set the internal state marker - used to ignore setting state from the request
+		if (!empty($config['ignore_request']))
+		{
+			$this->__state_set = true;
+		}
+
+		// Set the clean cache event
+		if (isset($config['event_clean_cache']))
+		{
+			$this->event_clean_cache = $config['event_clean_cache'];
+		}
+		elseif (empty($this->event_clean_cache))
+		{
+			$this->event_clean_cache = 'onContentCleanCache';
+		}
+
+	}
+
+	/**
+	 * Gets an array of objects from the results of database query.
+	 *
+	 * @param   string   $query       The query.
+	 * @param   integer  $limitstart  Offset.
+	 * @param   integer  $limit       The number of records.
+	 *
+	 * @return  array  An array of results.
+	 *
+	 * @since   11.1
+	 */
+	protected function _getList($query, $limitstart = 0, $limit = 0)
+	{
+		$this->_db->setQuery($query, $limitstart, $limit);
 		$result = $this->_db->loadObjectList();
 
 		return $result;
@@ -289,15 +306,16 @@ class JModel extends JObject
 	/**
 	 * Returns a record count for the query
 	 *
-	 * @param	string The query
-	 * @return	int
-	 * @access	protected
-	 * @since	1.5
+	 * @param   string  $query  The query.
+	 *
+	 * @return  integer  Number of rows for query
+	 *
+	 * @since   11.1
 	 */
-	function _getListCount( $query )
+	protected function _getListCount($query)
 	{
-		$this->_db->setQuery( $query );
-		$this->_db->query();
+		$this->_db->setQuery($query);
+		$this->_db->execute();
 
 		return $this->_db->getNumRows();
 	}
@@ -305,49 +323,186 @@ class JModel extends JObject
 	/**
 	 * Method to load and return a model object.
 	 *
-	 * @access	private
-	 * @param	string	The name of the view
-	 * @param   string  The class prefix. Optional.
-	 * @return	mixed	Model object or boolean false if failed
-	 * @since	1.5
+	 * @param   string  $name    The name of the view
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration settings to pass to JTable::getInstance
+	 *
+	 * @return  mixed  Model object or boolean false if failed
+	 *
+	 * @since   11.1
+	 * @see     JTable::getInstance
 	 */
-	function &_createTable( $name, $prefix = 'Table', $config = array())
+	protected function _createTable($name, $prefix = 'Table', $config = array())
 	{
-		$result = null;
-
 		// Clean the model name
-		$name	= preg_replace( '/[^A-Z0-9_]/i', '', $name );
-		$prefix = preg_replace( '/[^A-Z0-9_]/i', '', $prefix );
+		$name = preg_replace('/[^A-Z0-9_]/i', '', $name);
+		$prefix = preg_replace('/[^A-Z0-9_]/i', '', $prefix);
 
-		//Make sure we are returning a DBO object
-		if (!array_key_exists('dbo', $config))  {
-			$config['dbo'] =& $this->getDBO();;
+		// Make sure we are returning a DBO object
+		if (!array_key_exists('dbo', $config))
+		{
+			$config['dbo'] = $this->getDbo();
 		}
 
-		$instance =& JTable::getInstance($name, $prefix, $config );
-		return $instance;
+		return JTable::getInstance($name, $prefix, $config);
 	}
 
 	/**
-	 * Create the filename for a resource
+	 * Method to get the database driver object
 	 *
-	 * @access	private
-	 * @param	string 	$type  The resource type to create the filename for
-	 * @param	array 	$parts An associative array of filename information
-	 * @return	string The filename
-	 * @since	1.5
+	 * @return  JDatabase
 	 */
-	static function _createFileName($type, $parts = array())
+	public function getDbo()
 	{
-		$filename = '';
+		return $this->_db;
+	}
 
-		switch($type)
+	/**
+	 * Method to get the model name
+	 *
+	 * The model name. By default parsed using the classname or it can be set
+	 * by passing a $config['name'] in the class constructor
+	 *
+	 * @return  string  The name of the model
+	 *
+	 * @since   11.1
+	 */
+	public function getName()
+	{
+		if (empty($this->name))
 		{
-			case 'model':
-				$filename = strtolower($parts['name']).'.php';
-				break;
-
+			$r = null;
+			if (!preg_match('/Model(.*)/i', get_class($this), $r))
+			{
+				JError::raiseError(500, JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'));
+			}
+			$this->name = strtolower($r[1]);
 		}
-		return $filename;
+
+		return $this->name;
+	}
+
+	/**
+	 * Method to get model state variables
+	 *
+	 * @param   string  $property  Optional parameter name
+	 * @param   mixed   $default   Optional default value
+	 *
+	 * @return  object  The property where specified, the state object where omitted
+	 *
+	 * @since   11.1
+	 */
+	public function getState($property = null, $default = null)
+	{
+		if (!$this->__state_set)
+		{
+			// Protected method to auto-populate the model state.
+			$this->populateState();
+
+			// Set the model state set flag to true.
+			$this->__state_set = true;
+		}
+
+		return $property === null ? $this->state : $this->state->get($property, $default);
+	}
+
+	/**
+	 * Method to get a table object, load it if necessary.
+	 *
+	 * @param   string  $name     The table name. Optional.
+	 * @param   string  $prefix   The class prefix. Optional.
+	 * @param   array   $options  Configuration array for model. Optional.
+	 *
+	 * @return  JTable  A JTable object
+	 *
+	 * @since   11.1
+	 */
+	public function getTable($name = '', $prefix = 'Table', $options = array())
+	{
+		if (empty($name))
+		{
+			$name = $this->getName();
+		}
+
+		if ($table = $this->_createTable($name, $prefix, $options))
+		{
+			return $table;
+		}
+
+		JError::raiseError(0, JText::sprintf('JLIB_APPLICATION_ERROR_TABLE_NAME_NOT_SUPPORTED', $name));
+
+		return null;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
+	 *
+	 * @note    Calling getState in this method will result in recursion.
+	 * @since   11.1
+	 */
+	protected function populateState()
+	{
+	}
+
+	/**
+	 * Method to set the database driver object
+	 *
+	 * @param   JDatabase  &$db  A JDatabase based object
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	public function setDbo(&$db)
+	{
+		$this->_db = &$db;
+	}
+
+	/**
+	 * Method to set model state variables
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $value     The value of the property to set or null.
+	 *
+	 * @return  mixed  The previous value of the property or null if not set.
+	 *
+	 * @since   11.1
+	 */
+	public function setState($property, $value = null)
+	{
+		return $this->state->set($property, $value);
+	}
+
+	/**
+	 * Clean the cache
+	 *
+	 * @param   string   $group      The cache group
+	 * @param   integer  $client_id  The ID of the client
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	protected function cleanCache($group = null, $client_id = 0)
+	{
+		// Initialise variables;
+		$conf = JFactory::getConfig();
+		$dispatcher = JDispatcher::getInstance();
+
+		$options = array(
+			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : JRequest::getCmd('option')),
+			'cachebase' => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'));
+
+		$cache = JCache::getInstance('callback', $options);
+		$cache->clean();
+
+		// Trigger the onContentCleanCache event.
+		$dispatcher->trigger($this->event_clean_cache, $options);
 	}
 }

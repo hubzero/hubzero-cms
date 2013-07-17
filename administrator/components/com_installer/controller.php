@@ -1,191 +1,62 @@
 <?php
 /**
- * @version		$Id: controller.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Installer
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package		Joomla.Administrator
+ * @subpackage	com_installer
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License, see LICENSE.php
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
-jimport('joomla.client.helper');
+defined('_JEXEC') or die;
 
 /**
  * Installer Controller
  *
- * @package		Joomla
- * @subpackage	Installer
+ * @package		Joomla.Administrator
+ * @subpackage	com_installer
  * @since		1.5
  */
-class InstallerController extends JController
+class InstallerController extends JControllerLegacy
 {
 	/**
-	 * Display the extension installer form
+	 * Method to display a view.
 	 *
-	 * @access	public
-	 * @return	void
+	 * @param	boolean			If true, the view output will be cached
+	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return	JController		This object to support chaining.
 	 * @since	1.5
 	 */
-	function installform()
+	public function display($cachable = false, $urlparams = false)
 	{
-		global $mainframe;
+		require_once JPATH_COMPONENT.'/helpers/installer.php';
 
-		$model	= &$this->getModel( 'Install' );
-		$model->setState( 'install.directory', $mainframe->getCfg( 'config.tmp_path' ));
+		// Get the document object.
+		$document = JFactory::getDocument();
 
-		$view	= &$this->getView( 'Install');
+		// Set the default view name and format from the Request.
+		$vName		= JRequest::getCmd('view', 'install');
+		$vFormat	= $document->getType();
+		$lName		= JRequest::getCmd('layout', 'default');
 
-		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
-		$view->assignRef('ftp', $ftp);
+		// Get and render the view.
+		if ($view = $this->getView($vName, $vFormat)) {
+			$ftp	= JClientHelper::setCredentialsFromRequest('ftp');
+			$view->assignRef('ftp', $ftp);
 
-		$view->setModel( $model, true );
-		$view->display();
-	}
+			// Get the model for the view.
+			$model = $this->getModel($vName);
 
-	/**
-	 * Install an extension
-	 *
-	 * @access	public
-	 * @return	void
-	 * @since	1.5
-	 */
-	function doInstall()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+			// Push the model into the view (as default).
+			$view->setModel($model, true);
+			$view->setLayout($lName);
 
-		$model	= &$this->getModel( 'Install' );
-		$view	= &$this->getView( 'Install' );
-
-		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
-		$view->assignRef('ftp', $ftp);
-
-		if ($model->install()) {
-			$cache = &JFactory::getCache('mod_menu');
-			$cache->clean();
+			// Push document object into the view.
+			$view->assignRef('document', $document);
+			// Load the submenu.
+			InstallerHelper::addSubmenu($vName);
+			$view->display();
 		}
 
-		$view->setModel( $model, true );
-		$view->display();
-	}
-
-	/**
-	 * Manage an extension type (List extensions of a given type)
-	 *
-	 * @access	public
-	 * @return	void
-	 * @since	1.5
-	 */
-	function manage()
-	{
-		$type	= JRequest::getWord('type', 'components');
-		$model	= &$this->getModel( $type );
-		$view	= &$this->getView( $type );
-
-		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
-		$view->assignRef('ftp', $ftp);
-
-		$view->setModel( $model, true );
-		$view->display();
-	}
-
-	/**
-	 * Enable an extension (If supported)
-	 *
-	 * @access	public
-	 * @return	void
-	 * @since	1.5
-	 */
-	function enable()
-	{
-		// Check for request forgeries
-		JRequest::checkToken( 'request' ) or jexit( 'Invalid Token' );
-
-		$type	= JRequest::getWord('type', 'components');
-		$model	= &$this->getModel( $type );
-		$view	= &$this->getView( $type );
-
-		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
-		$view->assignRef('ftp', $ftp);
-
-		if (method_exists($model, 'enable')) {
-			$eid = JRequest::getVar('eid', array(), '', 'array');
-			JArrayHelper::toInteger($eid, array());
-			$model->enable($eid);
-		}
-
-		$view->setModel( $model, true );
-		$view->display();
-	}
-
-	/**
-	 * Disable an extension (If supported)
-	 *
-	 * @access	public
-	 * @return	void
-	 * @since	1.5
-	 */
-	function disable()
-	{
-		// Check for request forgeries
-		JRequest::checkToken( 'request' ) or jexit( 'Invalid Token' );
-
-		$type	= JRequest::getWord('type', 'components');
-		$model	= &$this->getModel( $type );
-		$view	= &$this->getView( $type );
-
-		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
-		$view->assignRef('ftp', $ftp);
-
-		if (method_exists($model, 'disable')) {
-			$eid = JRequest::getVar('eid', array(), '', 'array');
-			JArrayHelper::toInteger($eid, array());
-			$model->disable($eid);
-		}
-
-		$view->setModel( $model, true );
-		$view->display();
-	}
-
-	/**
-	 * Remove an extension (Uninstall)
-	 *
-	 * @access	public
-	 * @return	void
-	 * @since	1.5
-	 */
-	function remove()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$type	= JRequest::getWord('type', 'components');
-		$model	= &$this->getModel( $type );
-		$view	= &$this->getView( $type );
-
-		$ftp =& JClientHelper::setCredentialsFromRequest('ftp');
-		$view->assignRef('ftp', $ftp);
-
-		$eid = JRequest::getVar('eid', array(), '', 'array');
-
-		// Update to handle components radio box
-		// Checks there is only one extensions, we're uninstalling components
-		// and then checks that the zero numbered item is set (shouldn't be a zero
-		// if the eid is set to the proper format)
-		if((count($eid) == 1) && ($type == 'components') && (isset($eid[0]))) $eid = array($eid[0] => 0);
-
-		JArrayHelper::toInteger($eid, array());
-		$result = $model->remove($eid);
-
-		$view->setModel( $model, true );
-		$view->display();
+		return $this;
 	}
 }

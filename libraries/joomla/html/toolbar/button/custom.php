@@ -1,38 +1,42 @@
 <?php
 /**
-* @version		$Id: custom.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	HTML
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a custom button
  *
- * @package 	Joomla.Framework
- * @subpackage	 HTML
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ * @since       11.1
  */
 class JButtonCustom extends JButton
 {
 	/**
 	 * Button type
 	 *
-	 * @access	protected
-	 * @var		string
+	 * @var    string
 	 */
-	var $_name = 'Custom';
+	protected $_name = 'Custom';
 
-	function fetchButton( $type='Custom', $html = '', $id = 'custom' )
+	/**
+	 * Fetch the HTML for the button
+	 *
+	 * @param   string  $type  Button type, unused string.
+	 * @param   string  $html  HTML strng for the button
+	 * @param   string  $id    CSS id for the button
+	 *
+	 * @return  string   HTML string for the button
+	 *
+	 * @since   11.1
+	 */
+	public function fetchButton($type = 'Custom', $html = '', $id = 'custom')
 	{
 		return $html;
 	}
@@ -40,12 +44,16 @@ class JButtonCustom extends JButton
 	/**
 	 * Get the button CSS Id
 	 *
-	 * @access	public
-	 * @return	string	Button CSS Id
-	 * @since	1.5
+	 * @param   string  $type  Not used.
+	 * @param   string  $html  Not used.
+	 * @param   string  $id    The id prefix for the button.
+	 *
+	 * @return  string  Button CSS Id
+	 *
+	 * @since   11.1
 	 */
-	function fetchId( $type='Custom', $html = '', $id = 'custom' )
+	public function fetchId($type = 'Custom', $html = '', $id = 'custom')
 	{
-		return $this->_parent->_name.'-'.$id;
+		return $this->_parent->getName() . '-' . $id;
 	}
 }

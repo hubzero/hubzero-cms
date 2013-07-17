@@ -1,3 +1,8 @@
+/**
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 body {
 	background: #fff;
 	font-family: Tahoma,Helvetica,Arial,sans-serif;
@@ -15,7 +20,7 @@ h1 {
 
 h2 {
 	font-family: Arial, Helvetica,sans-serif;
-	font-size: 14px;;
+	font-size: 14px;
 	font-weight: normal;
 	color: #333;
 }

@@ -1,208 +1,367 @@
 <?php
 /**
-* @version $Id: loader.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package    Joomla.Platform
+ *
+ * @copyright  Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
+ */
 
-if(!defined('DS')) {
-	define( 'DS', DIRECTORY_SEPARATOR );
-}
+defined('JPATH_PLATFORM') or die;
 
 /**
- * @package		Joomla.Framework
+ * Static class to handle loading of libraries.
+ *
+ * @package  Joomla.Platform
+ * @since    11.1
  */
-class JLoader
+abstract class JLoader
 {
-	 /**
-	 * Loads a class from specified directories.
+	/**
+	 * Container for already imported library paths.
 	 *
-	 * @param string $name	The class name to look for ( dot notation ).
-	 * @param string $base	Search this directory for the class.
-	 * @param string $key	String used as a prefix to denote the full path of the file ( dot notation ).
-	 * @return void
-	 * @since 1.5
+	 * @var    array
+	 * @since  11.1
 	 */
-	static function import( $filePath, $base = null, $key = 'libraries.' )
+	protected static $classes = array();
+
+	/**
+	 * Container for already imported library paths.
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected static $imported = array();
+
+	/**
+	 * Container for registered library class prefixes and path lookups.
+	 *
+	 * @var    array
+	 * @since  12.1
+	 */
+	protected static $prefixes = array();
+
+	/**
+	 * Method to discover classes of a given type in a given path.
+	 *
+	 * @param   string   $classPrefix  The class name prefix to use for discovery.
+	 * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
+	 * @param   boolean  $force        True to overwrite the autoload path value for the class if it already exists.
+	 * @param   boolean  $recurse      Recurse through all child directories as well as the parent path.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	public static function discover($classPrefix, $parentPath, $force = true, $recurse = false)
 	{
-		static $paths;
-
-		if (!isset($paths)) {
-			$paths = array();
-		}
-
-		$keyPath = $key ? $key . $filePath : $filePath;
-
-		if (!isset($paths[$keyPath]))
+		try
 		{
-			if ( ! $base ) {
-				$base =  dirname( __FILE__ );
-			}
-
-			$parts = explode( '.', $filePath );
-
-			$classname = array_pop( $parts );
-			switch($classname)
+			if ($recurse)
 			{
-				case 'helper' :
-					$classname = ucfirst(array_pop( $parts )).ucfirst($classname);
-					break;
-
-				default :
-					$classname = ucfirst($classname);
-					break;
-			}
-
-			$path  = str_replace( '.', DS, $filePath );
-
-			if (strpos($filePath, 'joomla') === 0)
-			{
-				/*
-				 * If we are loading a joomla class prepend the classname with a
-				 * capital J.
-				 */
-				$classname	= 'J'.$classname;
-				$classes	= JLoader::register($classname, $base.DS.$path.'.php');
-				$rs			= isset($classes[strtolower($classname)]);
+				$iterator = new RecursiveIteratorIterator(
+					new RecursiveDirectoryIterator($parentPath),
+					RecursiveIteratorIterator::SELF_FIRST
+				);
 			}
 			else
 			{
-				/*
-				 * If it is not in the joomla namespace then we have no idea if
-				 * it uses our pattern for class names/files so just include.
-				 */
-				$rs   = include($base.DS.$path.'.php');
+				$iterator = new DirectoryIterator($parentPath);
 			}
 
-			$paths[$keyPath] = $rs;
+			foreach ($iterator as $file)
+			{
+				$fileName = $file->getFilename();
+
+				// Only load for php files.
+				// Note: DirectoryIterator::getExtension only available PHP >= 5.3.6
+				if ($file->isFile() && substr($fileName, strrpos($fileName, '.') + 1) == 'php')
+				{
+					// Get the class name and full path for each file.
+					$class = strtolower($classPrefix . preg_replace('#\.php$#', '', $fileName));
+
+					// Register the class with the autoloader if not already registered or the force flag is set.
+					if (empty(self::$classes[$class]) || $force)
+					{
+						self::register($class, $file->getPath() . '/' . $fileName);
+					}
+				}
+			}
 		}
-
-		return $paths[$keyPath];
-	}
-
-	/**
-	 * Add a class to autoload
-	 *
-	 * @param	string $classname	The class name
-	 * @param	string $file		Full path to the file that holds the class
-	 * @return	array|boolean  		Array of classes
-	 * @since 	1.5
-	 */
-	static function & register ($class = null, $file = null)
-	{
-		static $classes;
-
-		if(!isset($classes)) {
-			$classes    = array();
-		}
-
-		if($class && is_file($file))
+		catch (UnexpectedValueException $e)
 		{
-			// Force to lower case.
-			$class = strtolower($class);
-			$classes[$class] = $file;
-
-			// In php4 we load the class immediately.
-			// In HUBzero we load the class immediately
-			//if((version_compare( phpversion(), '5.0' ) < 0)) {
-				JLoader::load($class);
-			//}
-
+			// Exception will be thrown if the path is not a directory. Ignore it.
 		}
-
-		return $classes;
 	}
 
 	/**
-	 * Load the file for a class
+	 * Method to get the list of registered classes and their respective file paths for the autoloader.
 	 *
-	 * @access  public
-	 * @param   string  $class  The class that will be loaded
-	 * @return  boolean True on success
-	 * @since   1.5
+	 * @return  array  The array of class => path values for the autoloader.
+	 *
+	 * @since   11.1
 	 */
-	static function load( $class )
+	public static function getClassList()
 	{
-		$class = strtolower($class); //force to lower case
+		return self::$classes;
+	}
 
-		if (class_exists($class)) {
-			  return;
+	/**
+	 * Loads a class from specified directories.
+	 *
+	 * @param   string  $key   The class name to look for (dot notation).
+	 * @param   string  $base  Search this directory for the class.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
+	 */
+	public static function import($key, $base = null)
+	{
+		// Only import the library if not already attempted.
+		if (!isset(self::$imported[$key]))
+		{
+			// Setup some variables.
+			$success = false;
+			$parts = explode('.', $key);
+			$class = array_pop($parts);
+			$base = (!empty($base)) ? $base : dirname(__FILE__);
+			$path = str_replace('.', DIRECTORY_SEPARATOR, $key);
+
+			// Handle special case for helper classes.
+			if ($class == 'helper')
+			{
+				$class = ucfirst(array_pop($parts)) . ucfirst($class);
+			}
+			// Standard class.
+			else
+			{
+				$class = ucfirst($class);
+			}
+
+			// If we are importing a library from the Joomla namespace set the class to autoload.
+			if (strpos($path, 'joomla') === 0)
+			{
+				// Since we are in the Joomla namespace prepend the classname with J.
+				$class = 'J' . $class;
+
+				// Only register the class for autoloading if the file exists.
+				if (is_file($base . '/' . $path . '.php'))
+				{
+					self::$classes[strtolower($class)] = $base . '/' . $path . '.php';
+					$success = true;
+				}
+			}
+			/*
+			 * If we are not importing a library from the Joomla namespace directly include the
+			* file since we cannot assert the file/folder naming conventions.
+			*/
+			else
+			{
+				// If the file exists attempt to include it.
+				if (is_file($base . '/' . $path . '.php'))
+				{
+					$success = (bool) include_once $base . '/' . $path . '.php';
+				}
+			}
+
+			// Add the import key to the memory cache container.
+			self::$imported[$key] = $success;
 		}
 
-		$classes = JLoader::register();
-		if(array_key_exists( strtolower($class), $classes)) {
-			include($classes[$class]);
+		return self::$imported[$key];
+	}
+
+	/**
+	 * Load the file for a class.
+	 *
+	 * @param   string  $class  The class to be loaded.
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   11.1
+	 */
+	public static function load($class)
+	{
+		// Sanitize class name.
+		$class = strtolower($class);
+
+		// If the class already exists do nothing.
+		if (class_exists($class))
+		{
 			return true;
 		}
+
+		// If the class is registered include the file.
+		if (isset(self::$classes[$class]))
+		{
+			include_once self::$classes[$class];
+			return true;
+		}
+
 		return false;
 	}
-}
 
-/**
- * When calling a class that hasn't been defined, __autoload will attempt to
- * include the correct file for that class.
- *
- * This function get's called by PHP. Never call this function yourself.
- *
- * @param 	string 	$class
- * @access 	public
- * @return  boolean
- * @since   1.5
- */
+	/**
+	 * Directly register a class to the autoload list.
+	 *
+	 * @param   string   $class  The class name to register.
+	 * @param   string   $path   Full path to the file that holds the class to register.
+	 * @param   boolean  $force  True to overwrite the autoload path value for the class if it already exists.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	public static function register($class, $path, $force = true)
+	{
+		// Sanitize class name.
+		$class = strtolower($class);
 
-include_once(JPATH_ROOT . DS . 'vendor' . DS . 'autoload.php');
-
-function __autoload($class)
-{
-	if(JLoader::load($class)) {
-		return true;
+		// Only attempt to register the class if the name and file exist.
+		if (!empty($class) && is_file($path))
+		{
+			// Register the class with the autoloader if not already registered or the force flag is set.
+			if (empty(self::$classes[$class]) || $force)
+			{
+				self::$classes[$class] = $path;
+			}
+		}
 	}
-	return false;
+
+	/**
+	 * Register a class prefix with lookup path.  This will allow developers to register library
+	 * packages with different class prefixes to the system autoloader.  More than one lookup path
+	 * may be registered for the same class prefix, but if this method is called with the reset flag
+	 * set to true then any registered lookups for the given prefix will be overwritten with the current
+	 * lookup path.
+	 *
+	 * @param   string   $prefix  The class prefix to register.
+	 * @param   string   $path    Absolute file path to the library root where classes with the given prefix can be found.
+	 * @param   boolean  $reset   True to reset the prefix with only the given lookup path.
+	 *
+	 * @return  void
+	 *
+	 * @since   12.1
+	 */
+	public static function registerPrefix($prefix, $path, $reset = false)
+	{
+		// Verify the library path exists.
+		if (!file_exists($path))
+		{
+			throw new RuntimeException('Library path ' . $path . ' cannot be found.', 500);
+		}
+
+		// If the prefix is not yet registered or we have an explicit reset flag then set set the path.
+		if (!isset(self::$prefixes[$prefix]) || $reset)
+		{
+			self::$prefixes[$prefix] = array($path);
+		}
+		// Otherwise we want to simply add the path to the prefix.
+		else
+		{
+			self::$prefixes[$prefix][] = $path;
+		}
+	}
+
+	/**
+	 * Method to setup the autoloaders for the Joomla Platform.  Since the SPL autoloaders are
+	 * called in a queue we will add our explicit, class-registration based loader first, then
+	 * fall back on the autoloader based on conventions.  This will allow people to register a
+	 * class in a specific location and override platform libraries as was previously possible.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.3
+	 */
+	public static function setup()
+	{
+		// Register the base path for Joomla platform libraries.
+		self::registerPrefix('J', JPATH_PLATFORM . '/joomla');
+
+		// Register the autoloader functions.
+		spl_autoload_register(array('JLoader', 'load'));
+		spl_autoload_register(array('JLoader', '_autoload'));
+	}
+
+	/**
+	 * Autoload a class based on name.
+	 *
+	 * @param   string  $class  The class to be loaded.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.3
+	 */
+	private static function _autoload($class)
+	{
+		foreach (self::$prefixes as $prefix => $lookup)
+		{
+			if (strpos($class, $prefix) === 0)
+			{
+				return self::_load(substr($class, strlen($prefix)), $lookup);
+			}
+		}
+	}
+
+	/**
+	 * Load a class based on name and lookup array.
+	 *
+	 * @param   string  $class   The class to be loaded (wihtout prefix).
+	 * @param   array   $lookup  The array of base paths to use for finding the class file.
+	 *
+	 * @return  void
+	 *
+	 * @since   12.1
+	 */
+	private static function _load($class, $lookup)
+	{
+		// Split the class name into parts separated by camelCase.
+		$parts = preg_split('/(?<=[a-z0-9])(?=[A-Z])/x', $class);
+
+		// If there is only one part we want to duplicate that part for generating the path.
+		$parts = (count($parts) === 1) ? array($parts[0], $parts[0]) : $parts;
+
+		foreach ($lookup as $base)
+		{
+			// Generate the path based on the class name parts.
+			$path = $base . '/' . implode('/', array_map('strtolower', $parts)) . '.php';
+
+			// Load the file if it exists.
+			if (file_exists($path))
+			{
+				return include $path;
+			}
+		}
+	}
 }
 
 /**
  * Global application exit.
  *
- * This function provides a single exit point for the framework.
+ * This function provides a single exit point for the platform.
  *
- * @param mixed Exit code or string. Defaults to zero.
- */
-function jexit($message = 0) {
-    exit($message);
-}
-
-/**
- * Intelligent file importer
+ * @param   mixed  $message  Exit code or string. Defaults to zero.
  *
- * @access public
- * @param string $path A dot syntax path
- * @since 1.5
- */
-function jimport( $path ) {
-	return JLoader::import($path);
-}
-
-/**
- * Intelligent HUBzero file importer
+ * @return  void
  *
- * @access public
- * @param string $path A underscore syntax path
+ * @codeCoverageIgnore
+ * @since   11.1
  */
-function ximport($path)
+function jexit($message = 0)
 {
-	if (class_exists($path))
-	{
-		return true;
-	}
+	exit($message);
+}
 
-	if (substr(strtolower($path),0,7) == 'hubzero')
-	{
-		return JLoader::import(str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
-	}
+/**
+ * Intelligent file importer.
+ *
+ * @param   string  $path  A dot syntax path.
+ *
+ * @return  boolean  True on success.
+ *
+ * @since   11.1
+ */
+function jimport($path)
+{
+	return JLoader::import($path);
 }

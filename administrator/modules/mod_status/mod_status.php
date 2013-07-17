@@ -1,85 +1,59 @@
 <?php
 /**
-* @version		$Id: mod_status.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package		Joomla.Administrator
+ * @subpackage	mod_status
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+// No direct access.
+defined('_JEXEC') or die;
 
-global $task;
+// Initialise variables.
+$config	= JFactory::getConfig();
+$user	= JFactory::getUser();
+$db		= JFactory::getDbo();
+$lang	= JFactory::getLanguage();
 
-// Initialize some variables
-$config		=& JFactory::getConfig();
-$user		=& JFactory::getUser();
-$db			=& JFactory::getDBO();
-$lang		=& JFactory::getLanguage();
-$session	=& JFactory::getSession();
+// Get the number of unread messages in your inbox.
+$query	= $db->getQuery(true);
+$query->select('COUNT(*)');
+$query->from('#__messages');
+$query->where('state = 0 AND user_id_to = '.(int) $user->get('id'));
 
-$sid	= $session->getId();
-$output = array();
-
-// Legacy Mode
-if (defined('_JLEGACY')) {
-	$output[] = '<span class="legacy-mode">'.JText::_('Legacy').': '._JLEGACY.'</span>';
-}
-
-// Print the preview button
-$output[] = "<span class=\"preview\"><a href=\"".JURI::root()."\" target=\"_blank\">".JText::_('Preview')."</a></span>";
-
-// Get the number of unread messages in your inbox
-$query = 'SELECT COUNT(*)'
-. ' FROM #__messages'
-. ' WHERE state = 0'
-. ' AND user_id_to = '.(int) $user->get('id');
-$db->setQuery( $query );
-$unread = $db->loadResult();
-
-if (JRequest::getInt('hidemainmenu')) {
-	$inboxLink = '<a>';
-} else {
-	$inboxLink = '<a href="index.php?option=com_messages">';
-}
-
-// Print the inbox message
-if ($unread) {
-	$output[] = $inboxLink.'<span class="unread-messages">'.$unread.'</span></a>';
-} else {
-	$output[] = $inboxLink.'<span class="no-unread-messages">'.$unread.'</span></a>';
-}
-
-// Get the number of logged in users
-$query = 'SELECT COUNT( session_id )'
-. ' FROM #__session'
-. ' WHERE guest <> 1'
-;
 $db->setQuery($query);
-$online_num = intval( $db->loadResult() );
+$unread = (int) $db->loadResult();
 
-//Print the logged in users message
-$output[] = "<span class=\"loggedin-users\">".$online_num."</span>";
+// Get the number of back-end logged in users.
+$query->clear();
+$query->select('COUNT(session_id)');
+$query->from('#__session');
+$query->where('guest = 0 AND client_id = 1');
 
-if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu') ) {
-	 // Print the logout message
-	 $output[] = "<span class=\"logout\">".JText::_('Logout')."</span>";
+$db->setQuery($query);
+$count = (int) $db->loadResult();
+
+// Set the inbox link.
+if (JRequest::getInt('hidemainmenu')) {
+	$inboxLink = '';
 } else {
-	// Print the logout message
-	$output[] = "<span class=\"logout\"><a href=\"index.php?option=com_login&amp;task=logout\">".JText::_('Logout')."</a></span>";
+	$inboxLink = JRoute::_('index.php?option=com_messages');
 }
 
-// reverse rendering order for rtl display
-if ( $lang->isRTL() ) {
-	$output = array_reverse( $output );
+// Set the inbox class.
+if ($unread) {
+	$inboxClass = 'unread-messages';
+} else {
+	$inboxClass = 'no-unread-messages';
 }
 
-// output the module
-foreach ($output as $item){
-	echo $item;
-}
+// Get the number of frontend logged in users.
+$query->clear();
+$query->select('COUNT(session_id)');
+$query->from('#__session');
+$query->where('guest = 0 AND client_id = 0');
+
+$db->setQuery($query);
+$online_num = (int) $db->loadResult();
+
+require JModuleHelper::getLayoutPath('mod_status', $params->get('layout', 'default'));

@@ -1,68 +1,85 @@
 <?php
 /**
-* @version		$Id: folderlist.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	Parameter
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a filelist element
  *
- * @package 	Joomla.Framework
- * @subpackage		Parameter
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  Parameter
+ * @since       11.1
+ * @deprecated  12.1 Use JFormFieldFolderList instead.
  */
-
 class JElementFolderlist extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'Folderlist';
+	 * Element name
+	 *
+	 * @var    string
+	 */
+	protected $_name = 'Folderlist';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	/**
+	 * Fetch a folderlist element
+	 *
+	 * @param   string       $name          Element name
+	 * @param   string       $value         Element value
+	 * @param   JXMLElement  &$node         JXMLElement node object containing the settings for the element
+	 * @param   string       $control_name  Control name
+	 *
+	 * @return  string
+	 *
+	 * @deprecated    12.1  Use JFormFieldFolderlist::getOptions instead.
+	 * @since   11.1
+	 */
+	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		jimport( 'joomla.filesystem.folder' );
+		// Deprecation warning.
+		JLog::add('JElementFolderList::fetchElement() is deprecated.', JLog::WARNING, 'deprecated');
 
-		// path to images directory
-		$path		= JPATH_ROOT.DS.$node->attributes('directory');
-		$filter		= $node->attributes('filter');
-		$exclude	= $node->attributes('exclude');
-		$folders	= JFolder::folders($path, $filter);
+		jimport('joomla.filesystem.folder');
 
-		$options = array ();
+		// Initialise variables.
+		$path = JPATH_ROOT . '/' . $node->attributes('directory');
+		$filter = $node->attributes('filter');
+		$exclude = $node->attributes('exclude');
+		$folders = JFolder::folders($path, $filter);
+
+		$options = array();
 		foreach ($folders as $folder)
 		{
 			if ($exclude)
 			{
-				if (preg_match( chr( 1 ) . $exclude . chr( 1 ), $folder )) {
+				if (preg_match(chr(1) . $exclude . chr(1), $folder))
+				{
 					continue;
 				}
 			}
-			$options[] = JHTML::_('select.option', $folder, $folder);
+			$options[] = JHtml::_('select.option', $folder, $folder);
 		}
 
-		if (!$node->attributes('hide_none')) {
-			array_unshift($options, JHTML::_('select.option', '-1', '- '.JText::_('Do not use').' -'));
+		if (!$node->attributes('hide_none'))
+		{
+			array_unshift($options, JHtml::_('select.option', '-1', JText::_('JOPTION_DO_NOT_USE')));
 		}
 
-		if (!$node->attributes('hide_default')) {
-			array_unshift($options, JHTML::_('select.option', '', '- '.JText::_('Use default').' -'));
+		if (!$node->attributes('hide_default'))
+		{
+			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_USE_DEFAULT')));
 		}
 
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.$name);
+		return JHtml::_(
+			'select.genericlist',
+			$options,
+			$control_name . '[' . $name . ']',
+			array('id' => 'param' . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value)
+		);
 	}
 }

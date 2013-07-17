@@ -1,38 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="module" version="1.5.0">
-	<name>Statistics</name>
+<extension
+	type="module"
+	version="2.5"
+	client="site"
+	method="upgrade">
+	<name>mod_stats</name>
 	<author>Joomla! Project</author>
 	<creationDate>July 2004</creationDate>
-	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<copyright>Copyright (C) 2005 - 2013 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>1.5.0</version>
-	<description>DESCSTATISTICS</description>
+	<version>2.5.0</version>
+	<description>MOD_STATS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_stats">mod_stats.php</filename>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>		<filename>mod_stats.xml</filename>
 	</files>
-	<params>
-		<param name="serverinfo" type="radio" default="0" label="Server Info" description="Display server information">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="siteinfo" type="radio" default="0" label="Site Info" description="Display site information">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="counter" type="radio" default="0" label="Hit Counter" description="Display hit counter">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="increase" type="text" default="0" label="Increase counter" description="Enter the amount of hits to increase counter by" />
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
-	</params>
-	<params group="advanced">
-		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
-	</params>
-</install>
+	<languages>
+		<language tag="en-GB">en-GB.mod_stats.ini</language>
+		<language tag="en-GB">en-GB.mod_stats.sys.ini</language>
+	</languages>
+	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_STATISTICS" />
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="serverinfo"
+					type="radio"
+					default="0"
+					label="MOD_STATS_FIELD_SERVERINFO_LABEL"
+					description="MOD_STATS_FIELD_SERVERINFO_DESC">
+					<option
+						value="1">JYES</option>
+					<option
+						value="0">JNO</option>
+				</field>
+				<field
+					name="siteinfo"
+					type="radio"
+					default="0"
+					label="MOD_STATS_FIELD_SITEINFO_LABEL"
+					description="MOD_STATS_FIELD_SITEINFO_DESC">
+					<option
+						value="1">JYES</option>
+					<option
+						value="0">JNO</option>
+				</field>
+				<field
+					name="counter"
+					type="radio"
+					default="0"
+					label="MOD_STATS_FIELD_COUNTER_LABEL"
+					description="MOD_STATS_FIELD_COUNTER_DESC">
+					<option
+						value="1">JYES</option>
+					<option
+						value="0">JNO</option>
+				</field>
+				<field
+					name="increase"
+					type="text"
+					default="0"
+					label="MOD_STATS_FIELD_INCREASECOUNTER_LABEL"
+					description="MOD_STATS_FIELD_INCREASECOUNTER_DESC" />
+			</fieldset>
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="1">JGLOBAL_USE_GLOBAL</option>
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+				<field
+					name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+				<field
+					name="cachemode"
+					type="hidden"
+					default="static">
+					<option
+						value="static"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

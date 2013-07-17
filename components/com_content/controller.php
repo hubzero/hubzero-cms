@@ -1,373 +1,78 @@
 <?php
 /**
- * @version		$Id: controller.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package		Joomla.Site
+ * @subpackage	com_content
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die;
 
 /**
  * Content Component Controller
  *
- * @package		Joomla
- * @subpackage	Content
- * @since 1.5
+ * @package		Joomla.Site
+ * @subpackage	com_content
+ * @since		1.5
  */
-class ContentController extends JController
+class ContentController extends JControllerLegacy
 {
-	/**
-	 * Method to show an article as the main page display
-	 *
-	 * @access	public
-	 * @since	1.5
-	 */
-	function display()
+	function __construct($config = array())
 	{
-		JHTML::_('behavior.caption');
-
-		// Set a default view if none exists
-		if ( ! JRequest::getCmd( 'view' ) ) {
-			$default	= JRequest::getInt('id') ? 'article' : 'frontpage';
-			JRequest::setVar('view', $default );
+		// Article frontpage Editor pagebreak proxying:
+		if (JRequest::getCmd('view') === 'article' && JRequest::getCmd('layout') === 'pagebreak') {
+			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
+		}
+		// Article frontpage Editor article proxying:
+		elseif(JRequest::getCmd('view') === 'articles' && JRequest::getCmd('layout') === 'modal') {
+			JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
+			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
 
-		// View caching logic -- simple... are we logged in?
-		$user = &JFactory::getUser();
-		$view = JRequest::getVar('view');
-		$viewcache = JRequest::getVar('viewcache',1,'POST','INT');
+		parent::__construct($config);
+	}
+
+	/**
+	 * Method to display a view.
+	 *
+	 * @param	boolean			If true, the view output will be cached
+	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return	JController		This object to support chaining.
+	 * @since	1.5
+	 */
+	public function display($cachable = false, $urlparams = false)
+	{
+		$cachable = true;
+
+		JHtml::_('behavior.caption');
+
+		// Set the default view name and format from the Request.
+		// Note we are using a_id to avoid collisions with the router and the return page.
+		// Frontend is a bit messier than the backend.
+		$id		= JRequest::getInt('a_id');
+		$vName	= JRequest::getCmd('view', 'categories');
+		JRequest::setVar('view', $vName);
+
+		$user = JFactory::getUser();
 
 		if ($user->get('id') ||
-			($view == 'category' && JRequest::getVar('layout') != 'blog' && $viewcache == 0) ||
-			 $view == 'archive' && $viewcache == 0) {
-			parent::display(false);
-		} else {
-			parent::display(true);
-		}
-	}
-
-	/**
-	* Edits an article
-	*
-	* @access	public
-	* @since	1.5
-	*/
-	function edit()
-	{
-		$user	=& JFactory::getUser();
-
-		// Create a user access object for the user
-		$access					= new stdClass();
-		$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
-		$access->canEditOwn		= $user->authorize('com_content', 'edit', 'content', 'own');
-		$access->canPublish		= $user->authorize('com_content', 'publish', 'content', 'all');
-
-		// Create the view
-		$view = & $this->getView('article', 'html');
-
-		// Get/Create the model
-		$model = & $this->getModel('Article');
-
-		// new record
-		if (!($access->canEdit || $access->canEditOwn)) {
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			($_SERVER['REQUEST_METHOD'] == 'POST' &&
+				(($vName == 'category' && JRequest::getCmd('layout') != 'blog') || $vName == 'archive' ))) {
+			$cachable = false;
 		}
 
-		if( $model->get('id') > 1 && $user->get('gid') <= 19 && $model->get('created_by') != $user->id ) {
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+		$safeurlparams = array('catid'=>'INT', 'id'=>'INT', 'cid'=>'ARRAY', 'year'=>'INT', 'month'=>'INT', 'limit'=>'UINT', 'limitstart'=>'UINT',
+			'showall'=>'INT', 'return'=>'BASE64', 'filter'=>'STRING', 'filter_order'=>'CMD', 'filter_order_Dir'=>'CMD', 'filter-search'=>'STRING', 'print'=>'BOOLEAN', 'lang'=>'CMD', 'Itemid'=>'INT');
+
+		// Check for edit form.
+		if ($vName == 'form' && !$this->checkEditId('com_content.edit.article', $id)) {
+			// Somehow the person just went to the form - we don't allow that.
+			return JError::raiseError(403, JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 		}
 
-		if ( $model->isCheckedOut($user->get('id')))
-		{
-			$msg = JText::sprintf('DESCBEINGEDITTED', JText::_('The item'), $model->get('title'));
-			$this->setRedirect(JRoute::_('index.php?view=article&id='.$model->get('id'), false), $msg);
-			return;
-		}
+		parent::display($cachable, $safeurlparams);
 
-		//Checkout the article
-		$model->checkout();
-
-		// Push the model into the view (as default)
-		$view->setModel($model, true);
-
-		// Set the layout
-		$view->setLayout('form');
-
-		// Display the view
-		$view->display();
-	}
-
-	/**
-	* Saves the content item an edit form submit
-	*
-	* @todo
-	*/
-	function save()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		// Initialize variables
-		$db			= & JFactory::getDBO();
-		$user		= & JFactory::getUser();
-		$task		= JRequest::getVar('task', null, 'default', 'cmd');
-
-		// Make sure you are logged in and have the necessary access rights
-		if ($user->get('gid') < 19) {
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-			return;
-		}
-
-		// Create a user access object for the user
-		$access					= new stdClass();
-		$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
-		$access->canEditOwn		= $user->authorize('com_content', 'edit', 'content', 'own');
-		$access->canPublish		= $user->authorize('com_content', 'publish', 'content', 'all');
-
-		if (!($access->canEdit || $access->canEditOwn)) {
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
-		}
-
-		//get data from the request
-		$model = $this->getModel('article');
-
-		//get data from request
-		$post = JRequest::get('post');
-		$post['text'] = JRequest::getVar('text', '', 'post', 'string', JREQUEST_ALLOWRAW);
-
-		//preform access checks
-		$isNew = ((int) $post['id'] < 1);
-
-		if ($model->store($post)) {
-			$msg = JText::_( 'Article Saved' );
-
-			if($isNew) {
-				$post['id'] = (int) $model->get('id');
-			}
-		} else {
-			$msg = JText::_( 'Error Saving Article' );
-			JError::raiseError( 500, $model->getError() );
-		}
-
-		// manage frontpage items
-		//TODO : Move this into a frontpage model
-		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_frontpage'.DS.'tables'.DS.'frontpage.php');
-		$fp = new TableFrontPage($db);
-
-		if (JRequest::getVar('frontpage', false, '', 'boolean'))
-		{
-			// toggles go to first place
-			if (!$fp->load($post['id']))
-			{
-				// new entry
-				$query = 'INSERT INTO #__content_frontpage' .
-						' VALUES ( '.(int) $post['id'].', 1 )';
-				$db->setQuery($query);
-				if (!$db->query()) {
-					JError::raiseError( 500, $db->stderr());
-				}
-				$fp->ordering = 1;
-			}
-		}
-		else
-		{
-			// no frontpage mask
-			if (!$fp->delete($post['id'])) {
-				$msg .= $fp->stderr();
-			}
-			$fp->ordering = 0;
-		}
-		$fp->reorder();
-
-		$model->checkin();
-
-		// gets section name of item
-		$query = 'SELECT s.title' .
-				' FROM #__sections AS s' .
-				' WHERE s.scope = "content"' .
-				' AND s.id = ' . (int) $post['sectionid'];
-		$db->setQuery($query);
-		// gets category name of item
-		$section = $db->loadResult();
-
-		$query = 'SELECT c.title' .
-				' FROM #__categories AS c' .
-				' WHERE c.id = ' . (int) $post['catid'];
-		$db->setQuery($query);
-		$category = $db->loadResult();
-
-		if ($isNew)
-		{
-			// messaging for new items
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_messages'.DS.'tables'.DS.'message.php');
-
-			// load language for messaging
-			$lang =& JFactory::getLanguage();
-			$lang->load('com_messages');
-
-			$query = 'SELECT id' .
-					' FROM #__users' .
-					' WHERE sendEmail = 1';
-			$db->setQuery($query);
-			$users = $db->loadResultArray();
-			foreach ($users as $user_id)
-			{
-				$msg = new TableMessage($db);
-				$msg->send($user->get('id'), $user_id, JText::_('New Item'), JText::sprintf('ON_NEW_CONTENT', $user->get('username'), $post['title'], $section, $category));
-			}
-		} else {
-			// If the article isn't new, then we need to clean the cache so that our changes appear realtime :)
-			$cache = &JFactory::getCache('com_content');
-			$cache->clean();
-		}
-
-		if ($access->canPublish)
-		{
-			// Publishers, admins, etc just get the stock msg
-			$msg = JText::_('Item successfully saved.');
-		}
-		else
-		{
-			$msg = $isNew ? JText::_('THANK_SUB') : JText::_('Item successfully saved.');
-		}
-		
-		$referer = JRequest::getString('ret',  base64_encode(JURI::base()), 'get');
-		$referer = base64_decode($referer);
-		if (!JURI::isInternal($referer)) {
-			$referer = '';
-		}
-		$this->setRedirect($referer, $msg);		
-	}
-
-	/**
-	* Cancels an edit article operation
-	*
-	* @access	public
-	* @since	1.5
-	*/
-	function cancel()
-	{
-		// Initialize some variables
-		$db		= & JFactory::getDBO();
-		$user	= & JFactory::getUser();
-
-		// Get an article table object and bind post variabes to it [We don't need a full model here]
-		$article = & JTable::getInstance('content');
-		$article->bind(JRequest::get('post'));
-
-		if ($user->authorize('com_content', 'edit', 'content', 'all') || ($user->authorize('com_content', 'edit', 'content', 'own') && $article->created_by == $user->get('id'))) {
-			$article->checkin();
-		}
-
-		// If the task was edit or cancel, we go back to the content item
-		$referer = JRequest::getString('ret', base64_encode(JURI::base()), 'get');
-		$referer = base64_decode($referer);
-		if (!JURI::isInternal($referer)) {
-			$referer = '';
-		}
-		$this->setRedirect($referer);
-	}
-
-	/**
-	* Rates an article
-	*
-	* @access	public
-	* @since	1.5
-	*/
-	function vote()
-	{
-		$url	= JRequest::getVar('url', '', 'default', 'string');
-		$rating	= JRequest::getVar('user_rating', 0, '', 'int');
-		$id		= JRequest::getVar('cid', 0, '', 'int');
-
-		// Get/Create the model
-		$model = & $this->getModel('Article' );
-
-		$model->setId($id);
-		
-		if(!JURI::isInternal($url)) {
-			$url = JRoute::_('index.php?option=com_content&view=article&id='.$id);
-		}
-
-		if ($model->storeVote($rating)) {
-			$this->setRedirect($url, JText::_('Thanks for rating!'));
-		} else {
-			$this->setRedirect($url, JText::_('You already rated this article today!'));
-		}
-	}
-
-	/**
-	 * Searches for an item by a key parameter
-	 *
-	 * @access	public
-	 * @since	1.5
-	 */
-	function findkey()
-	{
-		// Initialize variables
-		$db		= & JFactory::getDBO();
-		$keyref	= JRequest::getVar('keyref', null, 'default', 'cmd');
-		JRequest::setVar('keyref', $keyref);
-
-		// If no keyref left, throw 404
-		if( empty($keyref) === true ) {
-			JError::raiseError( 404, JText::_("Key Not Found") );
-		}
-
-		$keyref	= $db->Quote( '%keyref='.$db->getEscaped( $keyref, true ).'%', false );
-		$query	= 'SELECT id' .
-				' FROM #__content' .
-				' WHERE attribs LIKE '.$keyref;
-		$db->setQuery($query);
-		$id = (int) $db->loadResult();
-
-		if ($id > 0)
-		{
-			// Create the view
-			$view =& $this->getView('article', 'html');
-
-			// Get/Create the model
-			$model =& $this->getModel('Article' );
-
-			// Set the id of the article to display
-			$model->setId($id);
-
-			// Push the model into the view (as default)
-			$view->setModel($model, true);
-
-			// Display the view
-			$view->display();
-		}
-		else {
-			JError::raiseError( 404, JText::_( 'Key Not Found' ) );
-		}
-	}
-
-	/**
-	 * Output the pagebreak dialog
-	 *
-	 * @access 	public
-	 * @since 	1.5
-	 */
-	function ins_pagebreak()
-	{
-		// Create the view
-		$view = & $this->getView('article', 'html');
-
-		// Set the layout
-		$view->setLayout('pagebreak');
-
-		// Display the view
-		$view->display();
+		return $this;
 	}
 }

@@ -1,36 +1,30 @@
-<?php // no direct access
-defined('_JEXEC') or die('Restricted access');
+<?php
+/**
+ * @package		Joomla.Site
+ * @subpackage	mod_whosonline
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-if ($showmode == 0 || $showmode == 2) :
-    if ($count['guest'] != 0 || $count['user'] != 0) :
-        echo JText::_('We have') . '&nbsp;';
-		if ($count['guest'] == 1) :
-		    echo JText::sprintf('guest', '1');
-		else :
-		    if ($count['guest'] > 1) :
-			    echo JText::sprintf('guests', $count['guest']);
-			endif;
-		endif;
+// no direct access
+defined('_JEXEC') or die;
+?>
 
-		if ($count['guest'] != 0 && $count['user'] != 0) :
-		    echo '&nbsp;' . JText::_('and') . '&nbsp;';
-	    endif;
+<?php if ($showmode == 0 || $showmode == 2) : ?>
+	<?php $guest = JText::plural('MOD_WHOSONLINE_GUESTS', $count['guest']); ?>
+	<?php $member = JText::plural('MOD_WHOSONLINE_MEMBERS', $count['user']); ?>
+	<p><?php echo JText::sprintf('MOD_WHOSONLINE_WE_HAVE', $guest, $member); ?></p>
+<?php endif; ?>
 
-		if ($count['user'] == 1) :
-		    echo JText::sprintf('member', '1');
-		else :
-		    if ($count['user'] > 1) :
-			    echo JText::sprintf('members', $count['user']);
-			endif;
-		endif;
-		echo '&nbsp;' . JText::_('online');
-    endif;
-endif;
-
-if(($showmode > 0) && count($names)) : ?>
-    <ul>
-<?php foreach($names as $name) : ?>
-	    <li><strong><?php echo $name->username; ?></strong></li>
-<?php endforeach;  ?>
+<?php if (($showmode > 0) && count($names)) : ?>
+	<ul  class="whosonline<?php echo $moduleclass_sfx ?>" >
+	<?php if ($params->get('filter_groups')):?>
+		<p><?php echo JText::_('MOD_WHOSONLINE_SAME_GROUP_MESSAGE'); ?></p>
+	<?php endif;?>
+	<?php foreach($names as $name) : ?>
+		<li>
+			<?php echo $name->username; ?>
+		</li>
+	<?php endforeach;  ?>
 	</ul>
 <?php endif;

@@ -1,239 +1,268 @@
 <?php
 /**
- * @version		$Id: languages.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @subpackage	Menus
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @package     Joomla.Administrator
+ * @subpackage  com_installer
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die;
 
 // Import library dependencies
-require_once(dirname(__FILE__).DS.'extension.php');
-jimport( 'joomla.filesystem.folder' );
+jimport('joomla.application.component.modellist');
+jimport('joomla.updater.update');
 
 /**
- * Installer Languages Model
+ * Languages Installer Model
  *
- * @package		Joomla
- * @subpackage	Installer
- * @since		1.5
+ * @package     Joomla.Administrator
+ * @subpackage  com_installer
+ * @since       2.5.7
  */
-class InstallerModelLanguages extends InstallerModel
+class InstallerModelLanguages extends JModelList
 {
-	/**
-	 * Extension Type
-	 * @var	string
-	 */
-	var $_type = 'language';
 
 	/**
-	 * Overridden constructor
-	 * @access	protected
-	 */
-	function __construct()
-	{
-		global $mainframe;
-
-		// Call the parent constructor
-		parent::__construct();
-
-		// Set state variables from the request
-		$this->setState('filter.string', $mainframe->getUserStateFromRequest( "com_installer.languages.string", 'filter', '', 'string' ));
-		$this->setState('filter.client', $mainframe->getUserStateFromRequest( "com_installer.languages.client", 'client', -1, 'int' ));
-	}
-
-	function _loadItems()
-	{
-		global $mainframe, $option;
-
-		$db = &JFactory::getDBO();
-
-		if ($this->_state->get('filter.client') < 0) {
-			$client = 'all';
-			// Get the site languages
-			$langBDir = JLanguage::getLanguagePath(JPATH_SITE);
-			$langDirs = JFolder::folders($langBDir);
-
-			for ($i=0; $i < count($langDirs); $i++)
-			{
-				$lang = new stdClass();
-				$lang->folder = $langDirs[$i];
-				$lang->client = 0;
-				$lang->baseDir = $langBDir;
-				$languages[] = $lang;
-			}
-			// Get the admin languages
-			$langBDir = JLanguage::getLanguagePath(JPATH_ADMINISTRATOR);
-			$langDirs = JFolder::folders($langBDir);
-
-			for ($i=0; $i < count($langDirs); $i++)
-			{
-				$lang = new stdClass();
-				$lang->folder = $langDirs[$i];
-				$lang->client = 1;
-				$lang->baseDir = $langBDir;
-				$languages[] = $lang;
-			}
-		}
-		else
-		{
-			$clientInfo =& JApplicationHelper::getClientInfo($this->_state->get('filter.client'));
-			$client = $clientInfo->name;
-			$langBDir = JLanguage::getLanguagePath($clientInfo->path);
-			$langDirs = JFolder::folders($langBDir);
-
-			for ($i=0, $n=count($langDirs); $i < $n; $i++)
-			{
-				$lang = new stdClass();
-				$lang->folder = $langDirs[$i];
-				$lang->client = $clientInfo->id;
-				$lang->baseDir = $langBDir;
-
-				if ($this->_state->get('filter.string')) {
-					if (strpos($lang->folder, $this->_state->get('filter.string')) !== false) {
-						$languages[] = $lang;
-					}
-				} else {
-					$languages[] = $lang;
-				}
-			}
-		}
-
-		$rows = array();
-		$rowid = 0;
-		foreach ($languages as $language)
-		{
-			$files = JFolder::files( $language->baseDir.DS.$language->folder, '^([-_A-Za-z]*)\.xml$' );
-			foreach ($files as $file)
-			{
-				$data = JApplicationHelper::parseXMLLangMetaFile($language->baseDir.DS.$language->folder.DS.$file);
-
-				$row 			= new StdClass();
-				$row->id 		= $rowid;
-				$row->client_id = $language->client;
-				$row->language 	= $language->baseDir.DS.$language->folder;
-
-				// If we didn't get valid data from the xml file, move on...
-				if (!is_array($data)) {
-					continue;
-				}
-
-				// Populate the row from the xml meta file
-				foreach($data as $key => $value) {
-					$row->$key = $value;
-				}
-
-				// if current than set published
-				$clientVals =& JApplicationHelper::getClientInfo($row->client_id);
-				$lang = JComponentHelper::getParams('com_languages');
-				if ( $lang->get($clientVals->name, 'en-GB') == basename( $row->language ) ) {
-					$row->published	= 1;
-				} else {
-					$row->published = 0;
-				}
-
-				$row->checked_out = 0;
-				$row->jname = JString::strtolower( str_replace( " ", "_", $row->name ) );
-				$rows[] = $row;
-				$rowid++;
-			}
-		}
-		$this->setState('pagination.total', count($rows));
-		// if the offset is greater than the total, then can the offset
-		if($this->_state->get('pagination.offset') > $this->_state->get('pagination.total')) {
-			$this->setState('pagination.offset',0);
-		}
-
-		if($this->_state->get('pagination.limit') > 0) {
-			$this->_items = array_slice( $rows, $this->_state->get('pagination.offset'), $this->_state->get('pagination.limit') );
-		} else {
-			$this->_items = $rows;
-		}
-	}
-
-	/**
-	 * Remove (uninstall) an extension
+	 * Constructor override, defines a white list of column filters.
 	 *
-	 * @static
-	 * @return boolean True on success
-	 * @since 1.0
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JModelList
 	 */
-	function remove($eid=array())
+	public function __construct($config = array())
 	{
-		global $mainframe;
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'update_id', 'update_id',
+				'name', 'name',
+			);
+		}
 
-		$lang =& JFactory::getLanguage();
-		$lang->load('com_installer');
+		parent::__construct($config);
+	}
 
-		// Initialize variables
-		$failed = array ();
+	/**
+	 * Method to get the available languages database query.
+	 *
+	 * @return	JDatabaseQuery	The database query
+	 */
+	protected function _getListQuery()
+	{
+		$db     = JFactory::getDBO();
+		$query  = $db->getQuery(true);
+
+		// Select the required fields from the updates table
+		$query->select('update_id, name, version, detailsurl, type');
+
+		$query->from('#__updates');
+
+		// This Where clause will avoid to list languages already installed.
+		$query->where('extension_id = 0');
+
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search))
+		{
+			$search = $db->Quote('%' . $db->escape($search, true) . '%');
+			$query->where('(name LIKE ' . $search . ')');
+		}
+
+		// Add the list ordering clause.
+		$listOrder	= $this->state->get('list.ordering');
+		$orderDirn	= $this->state->get('list.direction');
+		$query->order($db->escape($listOrder) . ' ' . $db->escape($orderDirn));
+
+		return $query;
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string  A store id.
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id	.= ':' . $this->getState('filter.search');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   null  $ordering   list order
+	 * @param   null  $direction  direction in the list
+	 *
+	 * @return  void
+	 */
+	protected function populateState($ordering = 'name', $direction = 'asc')
+	{
+		// Initialise variables.
+		$app = JFactory::getApplication();
+
+		$value = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $value);
+
+		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
+
+		parent::populateState($ordering, $direction);
+	}
+
+	/**
+	 * Method to find available languages in the Accredited Languages Update Site.
+	 *
+	 * @param   int  $cache_timeout  time before refreshing the cached updates
+	 *
+	 * @return  bool
+	 */
+	public function findLanguages($cache_timeout = 0)
+	{
+		$updater = JUpdater::getInstance();
 
 		/*
-		 * Ensure eid is an array of extension ids
-		 * TODO: If it isn't an array do we want to set an error and fail?
+		 * The following function uses extension_id 600, that is the english language extension id.
+		 * In #__update_sites_extensions you should have 600 linked to the Accredited Translations Repo
 		 */
-		if (!is_array($eid)) {
-			$eid = array ($eid);
-		}
-		// construct the list of all language
-		$this->_loadItems();
+		$updater->findUpdates(array(600), $cache_timeout);
 
-		// Get a database connector
-		$db =& JFactory::getDBO();
+		return true;
+	}
 
-		// Get an installer object for the extension type
-		jimport('joomla.installer.installer');
-		$installer	=& JInstaller::getInstance($db, $this->_type);
+	/**
+	 * Install languages in the system.
+	 *
+	 * @param   array  $lids  array of language ids selected in the list
+	 *
+	 * @return  bool
+	 */
+	public function install($lids)
+	{
+		$app			= JFactory::getApplication();
+		$installer		= JInstaller::getInstance();
 
-		// Uninstall the chosen extensions
-		foreach ($eid as $id)
+		// Loop through every selected language
+		foreach ($lids as $id)
 		{
-			$item = $this->_items[$id];
+			// Loads the update database object that represents the language
+			$language = JTable::getInstance('update');
+			$language->load($id);
 
-			// Get client information
-			$client	=& JApplicationHelper::getClientInfo($item->client_id);
-
-			// Don't delete a default ( published language )
-			$params = JComponentHelper::getParams('com_languages');
-			$tag	= basename($item->language);
-			if ( $params->get($client->name, 'en-GB') == $tag ) {
-				$failed[]	= $id;
-				JError::raiseWarning('', JText::_('UNINSTALLLANGPUBLISHEDALREADY'));
-				return;
+			// Get the url to the XML manifest file of the selected language
+			$remote_manifest 	= $this->_getLanguageManifest($id);
+			if (!$remote_manifest)
+			{
+				// Could not find the url, the information in the update server may be corrupt
+				$message 	= JText::sprintf('COM_INSTALLER_MSG_LANGUAGES_CANT_FIND_REMOTE_MANIFEST', $language->name);
+				$message 	.= ' ' . JText::_('COM_INSTALLER_MSG_LANGUAGES_TRY_LATER');
+				$app->enqueueMessage($message);
+				continue;
 			}
 
-			$result = $installer->uninstall( 'language', $item->language );
-
-			// Build an array of extensions that failed to uninstall
-			if ($result === false) {
-				$failed[] = $id;
+			// Based on the language XML manifest get the url of the package to download
+			$package_url 		= $this->_getPackageUrl($remote_manifest);
+			if (!$package_url)
+			{
+				// Could not find the url , maybe the url is wrong in the update server, or there is not internet access
+				$message 	= JText::sprintf('COM_INSTALLER_MSG_LANGUAGES_CANT_FIND_REMOTE_PACKAGE', $language->name);
+				$message 	.= ' ' . JText::_('COM_INSTALLER_MSG_LANGUAGES_TRY_LATER');
+				$app->enqueueMessage($message);
+				continue;
 			}
+
+			// Download the package to the tmp folder
+			$package 			= $this->_downloadPackage($package_url);
+
+			// Install the package
+			if (!$installer->install($package['dir']))
+			{
+				// There was an error installing the package
+				$message 	= JText::sprintf('COM_INSTALLER_INSTALL_ERROR', $language->name);
+				$message 	.= ' ' . JText::_('COM_INSTALLER_MSG_LANGUAGES_TRY_LATER');
+				$app->enqueueMessage($message);
+				continue;
+			}
+
+			// Package installed successfully
+			$app->enqueueMessage(JText::sprintf('COM_INSTALLER_INSTALL_SUCCESS', $language->name));
+
+			// Cleanup the install files in tmp folder
+			if (!is_file($package['packagefile']))
+			{
+				$config = JFactory::getConfig();
+				$package['packagefile'] = $config->get('tmp_path') . '/' . $package['packagefile'];
+			}
+			JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
+
+			// Delete the installed language from the list
+			$language->delete($id);
 		}
 
-		if (count($failed)) {
-			// There was an error in uninstalling the package
-			$msg = JText::sprintf('UNINSTALLEXT', JText::_($this->_type), JText::_('Error'));
-			$result = false;
-		} else {
-			// Package uninstalled sucessfully
-			$msg = JText::sprintf('UNINSTALLEXT', JText::_($this->_type), JText::_('Success'));
-			$result = true;
+	}
+
+	/**
+	 * Gets the manifest file of a selected language from a the language list in a update server.
+	 *
+	 * @param   int  $uid  the id of the language in the #__updates table
+	 *
+	 * @return string
+	 */
+	protected function _getLanguageManifest($uid)
+	{
+		$instance = JTable::getInstance('update');
+		$instance->load($uid);
+		$detailurl = trim($instance->detailsurl);
+		return $detailurl;
+	}
+
+	/**
+	 * Finds the url of the package to download.
+	 *
+	 * @param   string  $remote_manifest  url to the manifest XML file of the remote package
+	 *
+	 * @return string|bool
+	 */
+	protected function _getPackageUrl( $remote_manifest )
+	{
+		$update = new JUpdate;
+		$update->loadFromXML($remote_manifest);
+		$package_url = trim($update->get('downloadurl', false)->_data);
+
+		return $package_url;
+	}
+
+	/**
+	 * Download a language package from an URL and unpack it in the tmp folder.
+	 *
+	 * @param   string  $url  url of the package
+	 *
+	 * @return array|bool Package details or false on failure
+	 */
+	protected function _downloadPackage($url)
+	{
+
+		// Download the package from the given URL
+		$p_file = JInstallerHelper::downloadPackage($url);
+
+		// Was the package downloaded?
+		if (!$p_file)
+		{
+			JError::raiseWarning('', JText::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'));
+			return false;
 		}
 
-		$mainframe->enqueueMessage($msg);
-		$this->setState('action', 'remove');
-		$this->setState('message', $installer->message);
-		// re-construct the list of all language
-		$this->_loadItems();
+		$config		= JFactory::getConfig();
+		$tmp_dest	= $config->get('tmp_path');
 
-		return $result;
+		// Unpack the downloaded package file
+		$package = JInstallerHelper::unpack($tmp_dest . '/' . $p_file);
+
+		return $package;
 	}
 }

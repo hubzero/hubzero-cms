@@ -1,51 +1,63 @@
 <?php
 /**
-* @version		$Id: separator.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla.Framework
-* @subpackage	HTML
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Renders a button separator
  *
- * @package 	Joomla.Framework
- * @subpackage		HTML
- * @since		1.5
+ * @package     Joomla.Platform
+ * @subpackage  HTML
+ * @since       11.1
  */
 class JButtonSeparator extends JButton
 {
 	/**
 	 * Button type
 	 *
-	 * @access	protected
-	 * @var		string
+	 * @var   string
 	 */
-	var $_name = 'Separator';
+	protected $_name = 'Separator';
 
-	function render( &$definition )
+	/**
+	 * Get the HTML for a separator in the toolbar
+	 *
+	 * @param   array  &$definition  Class name and custom width
+	 *
+	 * @return  The HTML for the separator
+	 *
+	 * @since  11.1
+	 *
+	 * @see    JButton::render()
+	 */
+	public function render(&$definition)
 	{
-		/*
-		 * Initialize variables
-		 */
-		$html	= null;
-		$class	= null;
-		$style	= null;
+		// Initialise variables.
+		$class = null;
+		$style = null;
 
 		// Separator class name
 		$class = (empty($definition[1])) ? 'spacer' : $definition[1];
 		// Custom width
-		$style = (empty($definition[2])) ? null : ' style="width:' .  intval($definition[2]) . 'px;"';
+		$style = (empty($definition[2])) ? null : ' style="width:' . intval($definition[2]) . 'px;"';
 
-		return '<td class="' . $class . '"' . $style . ">\n</td>\n";
+		return '<li class="' . $class . '"' . $style . ">\n</li>\n";
+	}
+
+	/**
+	 * Empty implementation (not required for separator)
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	public function fetchButton()
+	{
 	}
 }

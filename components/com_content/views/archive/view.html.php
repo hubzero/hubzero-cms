@@ -1,126 +1,150 @@
 <?php
 /**
- * @version		$Id: view.html.php 21040 2011-03-31 15:54:16Z dextercowley $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-require_once (JPATH_COMPONENT.DS.'view.php');
+defined('_JEXEC') or die;
 
 /**
  * HTML View class for the Content component
  *
- * @package		Joomla
- * @subpackage	Content
+ * @package		Joomla.Site
+ * @subpackage	com_content
  * @since 1.5
  */
-class ContentViewArchive extends ContentView
+class ContentViewArchive extends JViewLegacy
 {
+	protected $state = null;
+	protected $item = null;
+	protected $items = null;
+	protected $pagination = null;
+
 	function display($tpl = null)
 	{
-		global $mainframe, $option;
+		$app = JFactory::getApplication();
+		$user		= JFactory::getUser();
 
-		if (empty( $layout ))
-		{
-			// degrade to default
-			$layout = 'list';
-		}
+		$state 		= $this->get('State');
+		$items 		= $this->get('Items');
+		$pagination	= $this->get('Pagination');
 
-		// Initialize some variables
-		$user		=& JFactory::getUser();
-		$pathway	=& $mainframe->getPathway();
-		$document	=& JFactory::getDocument();
+		$pathway	= $app->getPathway();
+		$document	= JFactory::getDocument();
 
 		// Get the page/component configuration
-		$params = &$mainframe->getParams('com_content');
+		$params = &$state->params;
 
-		// Request variables
-		$task 		= JRequest::getCmd('task');
-		$limit		= $mainframe->getUserStateFromRequest('com_content.'.$this->getLayout().'.limit', 'limit', $params->get('display_num', 20), 'int');
-		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
-		$month		= JRequest::getInt( 'month' );
-		$year		= JRequest::getInt( 'year' );
-		$filter		= JRequest::getString( 'filter' );
-		JRequest::setVar('limit', (int) $limit);
-
-		// Get some data from the model
-		$state = & $this->get( 'state' );
-		$items = & $this->get( 'data'  );
-		$total = & $this->get( 'total' );
-
-		// Add item to pathway
-		$pathway->addItem(JText::_('Archive'), '');
-
-		$params->def('filter',			1);
-		$params->def('filter_type',		'title');
-
-		jimport('joomla.html.pagination');
-		$pagination = new JPagination($total, $limitstart, $limit);
-
-		$menus	= &JSite::getMenu();
-		$menu	= $menus->getActive();
-
-		// because the application sets a default page title, we need to get it
-		// right from the menu item itself
-		if (is_object( $menu )) {
-			$menu_params = new JParameter( $menu->params );
-			if (!$menu_params->get( 'page_title')) {
-				$params->set('page_title',	JText::_( 'Archives' ));
-			}
-		} else {
-			$params->set('page_title',	JText::_( 'Archives' ));
+		foreach ($items as $item)
+		{
+			$item->catslug = ($item->category_alias) ? ($item->catid . ':' . $item->category_alias) : $item->catid;
+			$item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
 		}
-		$document->setTitle( $params->get( 'page_title' ) );
+
+
 
 		$form = new stdClass();
 		// Month Field
 		$months = array(
-			JHTML::_('select.option',  null, JText::_( 'Month' ) ),
-			JHTML::_('select.option',  '01', JText::_( 'JANUARY_SHORT' ) ),
-			JHTML::_('select.option',  '02', JText::_( 'FEBRUARY_SHORT' ) ),
-			JHTML::_('select.option',  '03', JText::_( 'MARCH_SHORT' ) ),
-			JHTML::_('select.option',  '04', JText::_( 'APRIL_SHORT' ) ),
-			JHTML::_('select.option',  '05', JText::_( 'MAY_SHORT' ) ),
-			JHTML::_('select.option',  '06', JText::_( 'JUNE_SHORT' ) ),
-			JHTML::_('select.option',  '07', JText::_( 'JULY_SHORT' ) ),
-			JHTML::_('select.option',  '08', JText::_( 'AUGUST_SHORT' ) ),
-			JHTML::_('select.option',  '09', JText::_( 'SEPTEMBER_SHORT' ) ),
-			JHTML::_('select.option',  '10', JText::_( 'OCTOBER_SHORT' ) ),
-			JHTML::_('select.option',  '11', JText::_( 'NOVEMBER_SHORT' ) ),
-			JHTML::_('select.option',  '12', JText::_( 'DECEMBER_SHORT' ) )
+			'' => JText::_('COM_CONTENT_MONTH'),
+			'01' => JText::_('JANUARY_SHORT'),
+			'02' => JText::_('FEBRUARY_SHORT'),
+			'03' => JText::_('MARCH_SHORT'),
+			'04' => JText::_('APRIL_SHORT'),
+			'05' => JText::_('MAY_SHORT'),
+			'06' => JText::_('JUNE_SHORT'),
+			'07' => JText::_('JULY_SHORT'),
+			'08' => JText::_('AUGUST_SHORT'),
+			'09' => JText::_('SEPTEMBER_SHORT'),
+			'10' => JText::_('OCTOBER_SHORT'),
+			'11' => JText::_('NOVEMBER_SHORT'),
+			'12' => JText::_('DECEMBER_SHORT')
 		);
-		$form->monthField	= JHTML::_('select.genericlist',   $months, 'month', 'size="1" class="inputbox"', 'value', 'text', $month );
-
+		$form->monthField = JHtml::_(
+			'select.genericlist',
+			$months,
+			'month',
+			array(
+				'list.attr' => 'size="1" class="inputbox"',
+				'list.select' => $state->get('filter.month'),
+				'option.key' => null
+			)
+		);
 		// Year Field
 		$years = array();
-		$years[] = JHTML::_('select.option',  null, JText::_( 'Year' ) );
-		for ($l = date('Y'), $i = $l - 10; $i <= $l; $i++) {
-			$years[] = JHTML::_('select.option',  $i, $i );
+		$years[] = JHtml::_('select.option', null, JText::_('JYEAR'));
+		for ($i = 2000; $i <= 2020; $i++) {
+			$years[] = JHtml::_('select.option', $i, $i);
 		}
-		$form->yearField	= JHTML::_('select.genericlist',   $years, 'year', 'size="1" class="inputbox"', 'value', 'text', $year );
-		$form->limitField	= $pagination->getLimitBox();
+		$form->yearField = JHtml::_(
+			'select.genericlist',
+			$years,
+			'year',
+			array('list.attr' => 'size="1" class="inputbox"', 'list.select' => $state->get('filter.year'))
+		);
+		$form->limitField = $pagination->getLimitBox();
 
-		$this->assign('filter' 		, $filter);
-		$this->assign('year'  		, $year);
-		$this->assign('month' 		, $month);
+		//Escape strings for HTML output
+		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-		$this->assignRef('form',		$form);
-		$this->assignRef('items',		$items);
-		$this->assignRef('params',		$params);
-		$this->assignRef('user',		$user);
-		$this->assignRef('pagination',	$pagination);
+		$this->filter = $state->get('list.filter');
+		$this->assignRef('form', $form);
+		$this->assignRef('items', $items);
+		$this->assignRef('params', $params);
+		$this->assignRef('user', $user);
+		$this->assignRef('pagination', $pagination);
+
+		$this->_prepareDocument();
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Prepares the document
+	 */
+	protected function _prepareDocument()
+	{
+		$app		= JFactory::getApplication();
+		$menus		= $app->getMenu();
+		$pathway	= $app->getPathway();
+		$title 		= null;
+
+		// Because the application sets a default page title,
+		// we need to get it from the menu item itself
+		$menu = $menus->getActive();
+		if ($menu)
+		{
+			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+		} else {
+			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+		}
+
+		$title = $this->params->get('page_title', '');
+		if (empty($title)) {
+			$title = $app->getCfg('sitename');
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+		}
+		$this->document->setTitle($title);
+
+		if ($this->params->get('menu-meta_description'))
+		{
+			$this->document->setDescription($this->params->get('menu-meta_description'));
+		}
+
+		if ($this->params->get('menu-meta_keywords'))
+		{
+			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+		}
+
+		if ($this->params->get('robots'))
+		{
+			$this->document->setMetadata('robots', $this->params->get('robots'));
+		}
 	}
 }
 ?>
