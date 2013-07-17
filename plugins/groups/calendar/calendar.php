@@ -1688,6 +1688,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$view->calendar            = new stdClass;
 		$view->calendar->id        = null;
 		$view->calendar->title     = null;
+		$view->calendar->url       = null;
 		$view->calendar->color     = null;
 		$view->calendar->published = 1;
 		if (isset($calendarId) && $calendarId != '')
