@@ -281,6 +281,10 @@ class CoursesTableAssetGroup extends JTable
 	private function makeAliasUnique()
 	{
 		$sql = "SELECT alias from $this->_tbl WHERE `unit_id`=" . $this->_db->Quote(intval($this->unit_id));
+		if ($this->id)
+		{
+			$sql .= " AND `id`!=" . $this->_db->Quote(intval($this->id));
+		}
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadResultArray();
 
