@@ -137,11 +137,23 @@ if (!$this->course->offering()->access('view')) { ?>
 				<span class="prev btn">
 					<?php echo JText::_('Prev'); ?>
 				</span>
-			<?php } else if ($lecture->sibling('prev')) { ?>
-				<a class="prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
-					<?php echo JText::_('Prev'); ?>
-				</a>
-			<?php } ?>
+			<?php } else {
+				$ky = $lecture->key();
+				for ($ky; $ky >= 0; $ky--)
+				{
+					$lecture->key($ky);
+					$prev = $lecture->sibling('prev');
+					if ($prev && $prev->isPublished()) 
+					{
+						?>
+						<a class="prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
+							<?php echo JText::_('Prev'); ?>
+						</a>
+						<?php
+						break;
+					}
+				}
+			} ?>
 			<?php 
 
 			$uAlias = $unit->get('alias');
@@ -157,7 +169,23 @@ if (!$this->course->offering()->access('view')) { ?>
 				// If NOT the last assetgroup
 				if (!$unit->assetgroups()->isLast())
 				{
-					$gAlias = $unit->assetgroups()->fetch('next')->get('alias');
+					//$key = $unit->assetgroups()->key();
+					//echo $current;
+					foreach ($unit->assetgroups() as $k => $assetgroup)
+					{
+						//echo $k .' '. $assetgroup->get('alias').'<br />';
+						if ($k <= $current)
+						{
+							continue;
+						}
+						//echo $k . ' ' . $key.'<br />';
+						if ($assetgroup->isPublished())
+						{
+							$gAlias = $assetgroup->get('alias');
+							break;
+						}
+					}
+					//$gAlias = $unit->assetgroups()->fetch('next')->get('alias');
 				}
 				// If the last assetgroup AND NOT the last unit
 				if ($unit->assetgroups()->isLast() && !$this->course->offering()->units()->isLast())
@@ -171,8 +199,15 @@ if (!$this->course->offering()->access('view')) { ?>
 						// Does the next unit have any assetgroups?
 						if ($next->assetgroups()->total())
 						{
-							// Get the alias of the next assetgroup
-							$gAlias = $next->assetgroups(0)->get('alias');
+							foreach ($next->assetgroups() as $nag)
+							{
+								if ($nag->isPublished())
+								{
+									// Get the alias of the next assetgroup
+									$gAlias = $next->assetgroups(0)->get('alias');
+									break;
+								}
+							}
 						}
 					}
 				}
