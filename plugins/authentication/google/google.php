@@ -225,7 +225,21 @@ class plgAuthenticationGoogle extends JPlugin
 	 * @param	object	$response	 Authentication response object
 	 * @return	boolean
 	 */
-	public function onAuthenticate($credentials, $options, &$response)
+	public function onAuthenticate( $credentials, $options, &$response )
+	{
+		return $this->onUserAuthenticate($credentials, $options, $response);
+	}
+
+	/**
+	 * This method should handle any authentication and report back to the subject
+	 *
+	 * @access	public
+	 * @param   array 	$credentials Array holding the user credentials
+	 * @param 	array   $options     Array of extra options
+	 * @param	object	$response	 Authentication response object
+	 * @return	boolean
+	 */
+	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Included needed google api classes
 		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');

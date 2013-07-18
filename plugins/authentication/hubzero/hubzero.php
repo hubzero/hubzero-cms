@@ -48,7 +48,7 @@ class plgAuthenticationHubzero extends JPlugin
 	 * @param object $subject The object to observe
 	 * @param array  $config  An array that holds the plugin configuration
 	 */
-	public function plgAuthenticationHubzer(& $subject, $config) {
+	public function plgAuthenticationHubzero(& $subject, $config) {
 		parent::__construct($subject, $config);
 	}
 
@@ -62,6 +62,20 @@ class plgAuthenticationHubzero extends JPlugin
 	 * @return	boolean
 	 */
 	function onAuthenticate( $credentials, $options, &$response )
+	{
+		return $this->onUserAuthenticate($credentials, $options, $response);
+	}
+
+	/**
+	 * This method should handle any authentication and report back to the subject
+	 *
+	 * @access	public
+	 * @param   array 	$credentials Array holding the user credentials
+	 * @param 	array   $options     Array of extra options
+	 * @param	object	$response	 Authentication response object
+	 * @return	boolean
+	 */
+	function onUserAuthenticate( $credentials, $options, &$response )
 	{
 		jimport('joomla.user.helper');
 		ximport('Hubzero_User_Profile');
@@ -93,7 +107,7 @@ class plgAuthenticationHubzero extends JPlugin
 			$conditions = ' WHERE username=' . $db->Quote($credentials['username']);
 		}
 
-		$query = 'SELECT `id`, `username`, `password`, `gid`'
+		$query = 'SELECT `id`, `username`, `password`'
 				. ' FROM `#__users`'
 				. $conditions;
 
