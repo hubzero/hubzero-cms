@@ -239,7 +239,14 @@ class Hubzero_Migration
 		define('JPATH_LIBRARIES', JPATH_ROOT . DS . 'libraries');
 		define('JPATH_XMLRPC', JPATH_ROOT . DS . 'xmlrpc');
 
-		require(JPATH_LIBRARIES.DS.'loader.php');
+		if (is_file(JPATH_LIBRARIES.DS.'cms.php'))
+		{
+			require_once JPATH_BASE.DS.'includes'.DS.'framework.php';
+		}
+		else
+		{
+			require_once JPATH_LIBRARIES.DS.'loader.php';
+		}
 
 		JLoader::import('joomla.error.error');
 		JLoader::import('joomla.factory');
