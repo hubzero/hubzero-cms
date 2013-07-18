@@ -652,7 +652,7 @@ a.ui-slider-handle {
 	
 	width:100%;
 	height:100%;
-	z-index:999;
+	z-index:9999;
 	background:#000;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
 	filter: alpha(opacity = 95);

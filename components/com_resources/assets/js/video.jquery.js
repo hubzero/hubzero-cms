@@ -640,6 +640,12 @@ HUB.Video = {
 		//add replay to video container
 		$jQ( replay ).hide().appendTo("#video-container").fadeIn("slow");
 		
+		//remove close video button if not in popup
+		if (!window.opener)
+		{
+			$jQ("#video-container").find('#replay-back').remove();
+		}
+		
 		//set the title
 		$jQ("#replay-details #title").html( "<span>Title:</span> " + document.title );
 		

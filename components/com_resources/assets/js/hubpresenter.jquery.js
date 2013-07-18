@@ -839,11 +839,17 @@ HUB.Presenter = {
 								<a target='_blank' href=\"http://twitter.com/home?status=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
 							</div> \
 						</div> \
-						<a id=\"replay-back\" href=\"#\">&laquo; Back to site</a> \
+						<a id=\"replay-back\" href=\"#\">&laquo; Close Presentation</a> \
 						<a id=\"replay-now\" href=\"#\">Replay Presentation</a> \
 					  </div>";
 		
 		jQ( replay ).hide().appendTo("#presenter-container").fadeIn("slow");
+		
+		//remove close presentation button if not in popup
+		if (!window.opener)
+		{
+			jQ("#presenter-container").find('#replay-back').remove();
+		}
 		
 		jQ("#replay-details #title").html( "<span>Title:</span> " + jQ("#presenter-header #title").html() );
 		
