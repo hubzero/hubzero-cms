@@ -120,6 +120,19 @@ class JSession extends JObject
 		// Set options
 		$this->_setOptions($options);
 
+		/* BEGIN: HUBzero Extension to pass session id in query string when cookie not available */
+		/* This is used, in particular, to allow QuickTime plugin in Safari on the Mac */
+		/* to view private mp4. QuickTime does not pass the browser's cookies to the site */
+		if (!isset($_COOKIE[session_name()]) && isset($_GET['PHPSESSID'])) 
+		{
+			if ((strlen($_GET['PHPSESSID']) == 32) && ctype_alnum($_GET['PHPSESSID']))
+			{
+				if ($this->_store->read($_GET['PHPSESSID']) != '')
+					session_id($_GET['PHPSESSID']);
+			}
+		}
+		/* END: HUBzero Extension to pass session id in query string when cookie not available */
+
 		$this->_setCookieParams();
 
 		// Load the session
