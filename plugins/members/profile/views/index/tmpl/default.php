@@ -1463,7 +1463,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				?>
 				<li class="profile-optin section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('Receive Promotional Emails'); ?></div>
+						<div class="key"><?php echo JText::_('Receive Email Updates'); ?></div>
 						<div class="value"><?php echo $mailPreferenceValue; ?></div>
 						<br class="clear" />
 						<?php
@@ -1484,7 +1484,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							);
 							
 							//build option list
-							$optin_html  = "<strong>Would you like to receive promotional emails (newsletters, surveys, etc.)?</strong>";
+							$optin_html  = "<strong>Would you like to receive email updates (newsletters, etc.)?</strong>";
 							$optin_html .= '<label for="mailPreferenceOption">';
 							$optin_html .= '<select name="mailPreferenceOption">';
 							foreach ($options as $key => $value)
@@ -1497,7 +1497,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							
 							$editview->registration_field = "mailPreferenceOption";
 							$editview->profile_field = "mailPreferenceOption";
-							$editview->title =  JText::_('Receive Promotional Emails');
+							$editview->title =  JText::_('Receive Email Updates');
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = $optin_html;

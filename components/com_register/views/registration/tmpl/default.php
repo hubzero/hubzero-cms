@@ -1026,9 +1026,9 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		
 		$html .= "\t".'<fieldset>'."\n";
-		$html .= "\t\t".'<legend>'.JText::_('Receive Promotional Emails').'</legend>'."\n";
+		$html .= "\t\t".'<legend>'.JText::_('Receive Email Updates').'</legend>'."\n";
 		$html .= '<label for="mailPreferenceOption">';
-		$html .= 'Would you like to receive promotional emails (newsletters, surveys, etc.)? ' . $required;
+		$html .= 'Would you like to receive email updates (newsletters, etc.)? ' . $required;
 		$html .= '<select name="mailPreferenceOption">';
 		foreach ($options as $key => $value)
 		{

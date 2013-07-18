@@ -514,7 +514,7 @@ $defaultCountries = array(
 						<?php if (isset($errors['mailPreferenceOption'])): ?>
 							<p class="warning">Please make a selection.</p>
 						<?php endif; ?>
-						<label for="mailPreferenceOption">Would you like to receive promotional emails (newsletters, surveys, etc.)?</label>
+						<label for="mailPreferenceOption">Would you like to receive email updates (newsletters, etc.)?</label>
 						<div class="indented">
 							<select size="3" name="mailPreferenceOption">
 								<option value="-1" selected="selected">- Select email option &mdash;</option>
