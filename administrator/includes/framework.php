@@ -19,9 +19,8 @@ defined('_JEXEC') or die;
 /*
  * Installation check, and check on removal of the install directory.
  */
-if (!file_exists(JPATH_CONFIGURATION.'/configuration.php') || (filesize(JPATH_CONFIGURATION.'/configuration.php') < 10) || file_exists(JPATH_INSTALLATION.'/index.php')) {
-	header('Location: ../installation/index.php');
-	exit();
+if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) ) {
+	die('Error - Configuration file does not exist');
 }
 
 //
