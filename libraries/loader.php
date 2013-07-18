@@ -365,3 +365,24 @@ function jimport($path)
 {
 	return JLoader::import($path);
 }
+
+include_once(JPATH_ROOT . DS . 'vendor' . DS . 'autoload.php');
+
+/**
+ * Intelligent HUBzero file importer
+ *
+ * @access public
+ * @param string $path A underscore syntax path
+ */
+function ximport($path)
+{
+	if (class_exists($path))
+	{
+		return true;
+	}
+
+	if (substr(strtolower($path),0,7) == 'hubzero')
+	{
+		return JLoader::import(str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
+	}
+}
