@@ -254,7 +254,8 @@ class JUser extends JObject
 		{
 			if (!$id = JUserHelper::getUserId($identifier))
 			{
-				JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('JLIB_USER_ERROR_ID_NOT_EXISTS', $identifier));
+				//@FIXME: HUBZERO comments this out, not sure why we would get this error in normal operation though
+				//JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('JLIB_USER_ERROR_ID_NOT_EXISTS', $identifier));
 				$retval = false;
 				return $retval;
 			}
@@ -883,7 +884,8 @@ class JUser extends JObject
 		// Load the JUserModel object based on the user id or throw a warning.
 		if (!$table->load($id))
 		{
-			JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id));
+			//@FIXME: HUBZERO comments this out, not sure why we would get this error in normal operation though
+			//JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('JLIB_USER_ERROR_UNABLE_TO_LOAD_USER', $id));
 			return false;
 		}
 
