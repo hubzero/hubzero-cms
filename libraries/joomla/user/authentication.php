@@ -290,6 +290,10 @@ class JAuthentication extends JObject
 		 */
 		foreach ($plugins as $plugin)
 		{
+			if (!empty($options['authenticator']) && ($plugin->name != $options['authenticator'])) {
+				continue;
+			}
+            
 			$className = 'plg' . $plugin->type . $plugin->name;
 			if (class_exists($className))
 			{
