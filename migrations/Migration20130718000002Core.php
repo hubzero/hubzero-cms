@@ -268,7 +268,20 @@ class Migration20130718000002Core extends Hubzero_Migration
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 			{
 				// Rebuild categories
-				JTable::getInstance('Category')->rebuild();
+				// Use the MySQL driver for this
+				$config = JFactory::getConfig();
+				$database = JDatabase::getInstance(
+					array(
+						'driver'   => 'mysql',
+						'host'     => $config->getValue('host'),
+						'user'     => $config->getValue('user'),
+						'password' => $config->getValue('password'),
+						'database' => $config->getValue('db')
+					) 
+				);
+
+				$table = new JTableCategory($database);
+				$table->rebuild();
 
 				// Rebuild assets
 				self::rebuildAssets();
