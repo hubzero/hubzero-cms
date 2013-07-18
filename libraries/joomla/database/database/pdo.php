@@ -41,13 +41,6 @@ class JDatabasePDO extends JDatabase
 	var $_nullDate		= '0000-00-00 00:00:00';
 
 	/**
-	 * Quote for named objects
-	 *
-	 * @var string
-	 */
-	var $_nameQuote		= '`';
-
-	/**
 	* Database object constructor
 	*
 	* @access	public
@@ -66,19 +59,19 @@ class JDatabasePDO extends JDatabase
 
 		// perform a number of fatality checks, then return gracefully
 		if (!class_exists( 'PDO' )) {
-			$this->_errorNum = 1;
-			$this->_errorMsg = 'The PDO adapter "pdo" is not available.';
+			$this->errorNum = 1;
+			$this->errorMsg = 'The PDO adapter "pdo" is not available.';
 			return;
 		}
 
 		// connect to the server
-		if (!($this->_resource = new PDO("mysql:host=${host}", $user, $password))) {
-			$this->_errorNum = 2;
-			$this->_errorMsg = 'Could not connect to MySQL';
+		if (!($this->connection = new PDO("mysql:host=${host}", $user, $password))) {
+			$this->errorNum = 2;
+			$this->errorMsg = 'Could not connect to MySQL';
 			return;
 		}
 
-		$this->_resource->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		// finalize initialization
 		parent::__construct($options);
 
@@ -97,8 +90,8 @@ class JDatabasePDO extends JDatabase
 	function __destruct()
 	{
 		$return = false;
-		if (is_object($this->_resource)) {
-			$this->_resource = null;
+		if (is_object($this->connection)) {
+			$this->connection = null;
 			$return = true;
 		}
 		return $return;
@@ -111,7 +104,7 @@ class JDatabasePDO extends JDatabase
 	 * @access public
 	 * @return boolean  True on success, false otherwise.
 	 */
-	function test()
+	public static function test()
 	{
 		return class_exists('PDO');
 	}
@@ -127,7 +120,7 @@ class JDatabasePDO extends JDatabase
 	{
 		try 
 		{
-			$this->_resource->query('SELECT 1');
+			$this->connection->query('SELECT 1');
 		} 
 		catch (PDOException $e) 
 		{
@@ -152,20 +145,37 @@ class JDatabasePDO extends JDatabase
 			return false;
 		}
 		
-		if ($this->_resource->exec('USE ' . $database) === false) {
-			$this->_errorNum = 3;
-			$this->_errorMsg = 'Could not connect to database';
+		if ($this->connection->exec('USE ' . $database) === false) {
+			$this->errorNum = 3;
+			$this->errorMsg = 'Could not connect to database';
 			var_dump($result);
 			return false;
 		}
 
 		// if running mysql 5, set sql-mode to mysql40 - thereby circumventing strict mode problems
-		if ($this->_resource->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
+		if ($this->connection->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 			$this->setQuery( "SET sql_mode = 'MYSQL40'" );
 			$this->query();
 		}
 
 		return true;
+	}
+
+	public function quote($text, $escape = true)
+	{
+		return ($escape ? $this->escape($text) : '\'' . $text . '\'');
+	}
+
+	public function escape($text, $extra = false)
+	{
+		$result = $this->connection->quote($text);
+
+		if ($extra)
+		{
+			$result = addcslashes($result, '%_');
+		}
+
+		return $result;
 	}
 
 	/**
@@ -187,7 +197,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	function setUTF()
 	{
-		$this->_resource->exec("SET NAMES 'utf8'");
+		$this->connection->exec("SET NAMES 'utf8'");
 	}
 
 	/**
@@ -201,7 +211,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	function getEscaped( $text, $extra = false )
 	{
-		$result = substr($this->_resource->quote($text), 1, -1);
+		$result = substr($this->connection->quote($text), 1, -1);
 		if ($extra) {
 			$result = addcslashes( $result, '%_' );
 		}
@@ -214,47 +224,75 @@ class JDatabasePDO extends JDatabase
 	 * @access	public
 	 * @return mixed A database resource if successful, FALSE if not.
 	 */
-	function query()
-	{
-		if (!is_object($this->_resource)) {
-			return false;
+	public function execute() {
+		if (!is_object($this->connection))
+		{
+			// Legacy error handling switch based on the JError::$legacy switch.
+			// @deprecated  12.1
+			if (JError::$legacy)
+			{
+				if ($this->debug)
+				{
+					JError::raiseError(500, 'JDatabaseMySQL::query: ' . $this->errorNum . ' - ' . $this->errorMsg);
+				}
+				return false;
+			}
+			else
+			{
+				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
+				throw new JDatabaseException($this->errorMsg, $this->errorNum);
+			}
 		}
 
 		// Take a local copy so that we don't modify the original query and cause issues later
-		$sql = $this->_sql;
-		if ($this->_limit > 0 || $this->_offset > 0) {
-			$sql .= ' LIMIT ' . max($this->_offset, 0) . ', ' . max($this->_limit, 0);
-		}
-		// MOVED ABOVE if/LOG SECTION
-		$this->_errorNum = 0;
-		$this->_errorMsg = '';
-		$starttime = microtime(true); // ADDED
-		$this->_cursor = $this->_resource->query($sql);
-		$endtime = microtime(true); // ADDED
-		if ($this->_debug) {
-			$this->_ticker++;
-			// ADDED ALL THE timediff LOGIC
-			$timediff = ($endtime - $starttime);
-			$this->timer += $timediff;
-			if($timediff > 1000)
-			{
-				$timediff = "!!!!! ".$timediff;
-			}
-			$this->_log[] = "(".$timediff."): ".$sql;
-			//$this->_log[] = $sql;
-		}
+		$sql = $this->replacePrefix((string) $this->sql);
 
-		if (!$this->_cursor)
+		if ($this->limit > 0 || $this->offset > 0)
 		{
-			$this->_errorNum .= $this->_resource->errorCode();
-			$this->_errorMsg .= $this->_resource->errorInfo()." SQL=$sql";
-
-			if ($this->_debug) {
-				JError::raiseError(500, 'JDatabaseMySQL::query: '.$this->_errorNum.' - '.$this->_errorMsg );
-			}
-			return false;
+			$sql .= ' LIMIT ' . $this->offset . ', ' . $this->limit;
 		}
-		return $this->_cursor;
+
+		// If debugging is enabled then let's log the query.
+		if ($this->debug)
+		{
+			// Increment the query counter and add the query to the object queue.
+			$this->count++;
+			$this->log[] = $sql;
+
+			JLog::add($sql, JLog::DEBUG, 'databasequery');
+		}
+
+		// Reset the error values.
+		$this->errorNum = 0;
+		$this->errorMsg = '';
+
+		// Execute the query.
+		$this->cursor = $this->connection->query($sql);
+
+		// If an error occurred handle it.
+		if (!$this->cursor)
+		{
+			$this->_errorNum .= $this->connection->errorCode();
+			$this->_errorMsg .= $this->connection->errorInfo()." SQL=$sql";
+
+			// Legacy error handling switch based on the JError::$legacy switch.
+			// @deprecated  12.1
+			if (JError::$legacy)
+			{
+				if ($this->debug)
+				{
+					JError::raiseError(500, 'JDatabasePDO::query: ' . $this->errorNum . ' - ' . $this->errorMsg);
+				}
+				return false;
+			}
+			else
+			{
+				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'databasequery');
+				throw new JDatabaseException($this->errorMsg, $this->errorNum);
+			}
+		}
+
+		return $this->cursor;
 	}
 
 	/**
@@ -266,7 +304,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	function getAffectedRows()
 	{
-		return $this->_cursor->rowCount();
+		return $this->cursor->rowCount();
 	}
 
 	/**
@@ -277,28 +315,28 @@ class JDatabasePDO extends JDatabase
 	 */
 	function queryBatch( $abort_on_error=true, $p_transaction_safe = false)
 	{
-		$this->_errorNum = 0;
-		$this->_errorMsg = '';
+		$this->errorNum = 0;
+		$this->errorMsg = '';
 		if ($p_transaction_safe) {
-			$this->_sql = rtrim($this->_sql, "; \t\r\n\0");
-			$this->_resource->beginTransaction();
+			$this->sql = rtrim($this->sql, "; \t\r\n\0");
+			$this->connection->beginTransaction();
 		}
-		$query_split = $this->splitSql($this->_sql);
+		$query_split = $this->splitSql($this->sql);
 		$error = 0;
 		foreach ($query_split as $command_line) {
 			$command_line = trim( $command_line );
 			if ($command_line != '') {
-				$this->_cursor = $this->_resource->query( $command_line );
-				if ($this->_debug) {
-					$this->_ticker++;
-					$this->_log[] = $command_line;
+				$this->cursor = $this->connection->query( $command_line );
+				if ($this->debug) {
+					$this->ticker++;
+					$this->log[] = $command_line;
 				}
-				if (!$this->_cursor) {
+				if (!$this->cursor) {
 					$error = 1;
-					$this->_errorNum .= $this->_resource->errorCode();
-					$this->_errorMsg .= $this->_resource->errorInfo()." SQL=$command_line <br />";
+					$this->errorNum .= $this->connection->errorCode();
+					$this->errorMsg .= $this->connection->errorInfo()." SQL=$command_line <br />";
 					if ($abort_on_error) {
-						return $this->_cursor;
+						return $this->cursor;
 					}
 				}
 			}
@@ -314,8 +352,8 @@ class JDatabasePDO extends JDatabase
 	 */
 	function explain()
 	{
-		$temp = $this->_sql;
-		$this->_sql = "EXPLAIN $this->_sql";
+		$temp = $this->sql;
+		$this->sql = "EXPLAIN $this->sql";
 
 		if (!($cur = $this->query())) {
 			return null;
@@ -342,7 +380,7 @@ class JDatabasePDO extends JDatabase
 		$buffer .= '</tbody></table>';
 		$cur->closeCursor();
 
-		$this->_sql = $temp;
+		$this->sql = $temp;
 
 		return $buffer;
 	}
@@ -355,7 +393,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	function getNumRows( $cur=null )
 	{
-		return $cur ? $cur->rowCount() : $this->_cursor->rowCount();
+		return $cur ? $cur->rowCount() : $this->cursor->rowCount();
 	}
 
 	/**
@@ -421,7 +459,7 @@ class JDatabasePDO extends JDatabase
 	* @param string The field name of a primary key
 	* @return array If <var>key</var> is empty as sequential list of returned records.
 	*/
-	function loadAssocList( $key='' )
+	function loadAssocList( $key='', $column = null )
 	{
 		if (!($cur = $this->query())) {
 			return null;
@@ -444,7 +482,7 @@ class JDatabasePDO extends JDatabase
 	* @access	public
 	* @return 	object
 	*/
-	function loadObject( )
+	function loadObject($class = 'stdClass')
 	{
 		if (!($cur = $this->query())) {
 			return null;
@@ -467,7 +505,7 @@ class JDatabasePDO extends JDatabase
 	* @param string The field name of a primary key
 	* @return array If <var>key</var> is empty as sequential list of returned records.
 	*/
-	function loadObjectList( $key='' )
+	function loadObjectList($key = '', $class = 'stdClass')
 	{
 		if (!($cur = $this->query())) {
 			return null;
@@ -537,9 +575,9 @@ class JDatabasePDO extends JDatabase
 	 * @param	object	An object whose properties match table fields
 	 * @param	string	The name of the primary key. If provided the object property is updated.
 	 */
-	function insertObject( $table, &$object, $keyName = NULL )
+	public function insertObject( $table, $object, $keyName = NULL )
 	{
-		$fmtsql = 'INSERT INTO '.$this->nameQuote($table).' ( %s ) VALUES ( %s ) ';
+		$fmtsql = 'INSERT INTO '.$this->quoteName($table).' ( %s ) VALUES ( %s ) ';
 		$fields = array();
 		foreach (get_object_vars( $object ) as $k => $v) {
 			if (is_array($v) or is_object($v) or $v === NULL) {
@@ -548,8 +586,8 @@ class JDatabasePDO extends JDatabase
 			if ($k[0] == '_') { // internal field
 				continue;
 			}
-			$fields[] = $this->nameQuote( $k );
-			$values[] = $this->isQuoted( $k ) ? $this->Quote( $v ) : (int) $v;
+			$fields[] = $this->quoteName( $k );
+			$values[] = $this->quote( $v );
 		}
 		$this->setQuery( sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) ) );
 		if (!$this->query()) {
@@ -568,9 +606,9 @@ class JDatabasePDO extends JDatabase
 	 * @access public
 	 * @param [type] $updateNulls
 	 */
-	function updateObject( $table, &$object, $keyName, $updateNulls=true )
+	public function updateObject( $table, &$object, $keyName, $updateNulls=true )
 	{
-		$fmtsql = 'UPDATE '.$this->nameQuote($table).' SET %s WHERE %s';
+		$fmtsql = 'UPDATE '.$this->quoteName($table).' SET %s WHERE %s';
 		$tmp = array();
 		foreach (get_object_vars( $object ) as $k => $v)
 		{
@@ -591,7 +629,7 @@ class JDatabasePDO extends JDatabase
 			} else {
 				$val = $this->isQuoted( $k ) ? $this->Quote( $v ) : (int) $v;
 			}
-			$tmp[] = $this->nameQuote( $k ) . '=' . $val;
+			$tmp[] = $this->quoteName( $k ) . '=' . $val;
 		}
 		$this->setQuery( sprintf( $fmtsql, implode( ",", $tmp ) , $where ) );
 		return $this->query();
@@ -604,7 +642,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	function insertid()
 	{
-		return $this->_resource->lastInsertId();
+		return $this->connection->lastInsertId();
 	}
 
 	/**
@@ -614,7 +652,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	function getVersion()
 	{
-		return $this->_resource->getAttribute(PDO::ATTR_SERVER_VERSION);
+		return $this->connection->getAttribute(PDO::ATTR_SERVER_VERSION);
 	}
 
 	/**
@@ -711,9 +749,10 @@ class JDatabasePDO extends JDatabase
 	 * @param 	string $table - table we're looking for
 	 * @return 	bool
 	 */
-	function tableExists( $table )
+	public function tableExists( $table )
 	{
-		$this->setQuery( 'SHOW TABLES LIKE ' . str_replace('#__', $this->_table_prefix, $this->Quote($table)) );
+		$query = 'SHOW TABLES LIKE ' . str_replace('#__', $this->tablePrefix, $this->Quote($table, false));
+		$this->setQuery($query);
 		$this->query();
 
 		return ($this->getAffectedRows() > 0) ? true : false;
@@ -727,7 +766,7 @@ class JDatabasePDO extends JDatabase
 	 * @param	string $field - A field name
 	 * @return	bool          - true if table has field, false otherwise
 	 */
-	function tableHasField( $table, $field )
+	public function tableHasField( $table, $field )
 	{
 		$this->setQuery( 'SHOW FIELDS FROM ' . $table );
 		$fields = $this->loadObjectList('Field');
@@ -743,11 +782,26 @@ class JDatabasePDO extends JDatabase
 	 * @param	string $key   - A key name
 	 * @return	bool          - true if table has key, false otherwise
 	 */
-	function tableHaskey( $table, $key )
+	public function tableHaskey( $table, $key )
 	{
 		$this->setQuery( 'SHOW KEYS FROM ' . $table );
 		$keys = $this->loadObjectList('Key_name');
 
 		return (in_array($key, array_keys($keys))) ? true : false;
 	}
+
+	public function dropTable($table, $ifExists = true) {}
+	public function fetchArray($cursor = null) {}
+	public function fetchAssoc($cursor = null) {}
+	public function fetchObject($cursor = null, $class = 'stdClass') {}
+	public function freeResult($cursor = null) {}
+	public function getQuery($new = false) {}
+	public function getTableColumns($table, $typeOnly = true) {}
+	public function getTableKeys($tables) {}
+	public function lockTable($tableName) {}
+	public function renameTable($oldTable, $newTable, $backup = null, $prefix = null) {}
+	public function transactionCommit() {}
+	public function transactionRollback() {}
+	public function transactionStart() {}
+	public function unlockTables() {}
 }
