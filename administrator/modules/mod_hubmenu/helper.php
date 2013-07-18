@@ -61,8 +61,16 @@ class modHubMenuHelper
 		}
 
 		// Menu Types
-		require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_menus' . DS . 'helpers' . DS . 'helper.php');
-		$menuTypes 	= MenusHelper::getMenuTypelist();
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_menus' . DS . 'helpers' . DS . 'menus.php');
+			$menuTypes = MenusHelper::getMenuTypes();
+		}
+		else
+		{
+			require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_menus' . DS . 'helpers' . DS . 'helper.php');
+			$menuTypes = MenusHelper::getMenuTypelist();
+		}
 
 		/*
 		 * Get the menu object
