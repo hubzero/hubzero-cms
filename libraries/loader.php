@@ -224,6 +224,7 @@ abstract class JLoader
 			if (empty(self::$classes[$class]) || $force)
 			{
 				self::$classes[$class] = $path;
+				self::load($class); // HUBzero loads class immediately
 			}
 		}
 	}
