@@ -306,6 +306,23 @@ class JTableUser extends JTable
 		{
 			// Don't have a table key, insert the row.
 			$return = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+			$count = 0;
+
+			while (($this->$k < '1000') || ($this->$k == '65534') || posix_getpwuid($this->$k) != false)
+			{
+				$query = 'DELETE FROM '. $this->_tbl . ' WHERE '. $this->_tbl_key .' = '. (int) $this->$k;
+                		$this->_db->setQuery( $query );
+				$this->_db->query();
+
+				if ($count++ > 1010)
+				{
+					$this->setError( strtolower(get_class( $this ))."::". JText::_( 'store failed' ) ."<br />" . $this->_db->getErrorMsg() );
+					return false;				
+				}
+
+				$this->$k = null;
+				$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+			}
 		}
 
 		// Handle error if it exists.
