@@ -391,7 +391,13 @@ class JURI extends JObject
 		$uri .= in_array('pass', $parts) ? (!empty($this->_pass) ? ':' : '') . $this->_pass . (!empty($this->_user) ? '@' : '') : '';
 		$uri .= in_array('host', $parts) ? $this->_host : '';
 		$uri .= in_array('port', $parts) ? (!empty($this->_port) ? ':' : '') . $this->_port : '';
-		$uri .= in_array('path', $parts) ? $this->_path : '';
+		/* START: HUBzero [I forget why we have this] Related to WIP for special group handling */
+		//$uri .= in_array('path', $parts) ? $this->_path : '';
+		if (in_array('path', $parts))
+		{
+			$uri .= (empty($uri) || (!empty($this->_path) && ($this->_path{0} == '/'))) ? $this->_path : '/'.$this->_path;
+		}
+		/* END: HUBzero [I forget why we have this] Related to WIP for special group handling */
 		$uri .= in_array('query', $parts) ? (!empty($query) ? '?' . $query : '') : '';
 		$uri .= in_array('fragment', $parts) ? (!empty($this->_fragment) ? '#' . $this->_fragment : '') : '';
 
