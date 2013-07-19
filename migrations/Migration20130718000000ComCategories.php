@@ -193,14 +193,14 @@ class Migration20130718000000ComCategories extends Hubzero_Migration
 			$db->setQuery($query);
 			$db->query();
 
-			// Insert default "uncategorised" categories
+			// Insert default "uncategorised" categories (set acces to 0, because we'll increment it later with all the old categories)
 			$query  = "INSERT INTO `#__categories` (parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,created_user_id,created_time,modified_user_id,modified_time,hits,language)";
 			$query .= " VALUES ";
-			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_content', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:26:37', 0, '0000-00-00 00:00:00', 0, '*'),";
-			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_banners', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{\"target\":\"\",\"image\":\"\",\"foobar\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:35', 0, '0000-00-00 00:00:00', 0, '*'),";
-			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_contact', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:57', 0, '0000-00-00 00:00:00', 0, '*'),";
-			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_newsfeeds', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:15', 0, '0000-00-00 00:00:00', 0, '*'),";
-			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_weblinks', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:33', 0, '0000-00-00 00:00:00', 0, '*');";
+			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_content', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:26:37', 0, '0000-00-00 00:00:00', 0, '*'),";
+			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_banners', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\",\"foobar\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:35', 0, '0000-00-00 00:00:00', 0, '*'),";
+			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_contact', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:57', 0, '0000-00-00 00:00:00', 0, '*'),";
+			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_newsfeeds', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:15', 0, '0000-00-00 00:00:00', 0, '*'),";
+			$query .= "( 0, 0, 0, 1, 'uncategorised', 'com_weblinks', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:33', 0, '0000-00-00 00:00:00', 0, '*');";
 			$db->setQuery($query);
 			$db->query();
 

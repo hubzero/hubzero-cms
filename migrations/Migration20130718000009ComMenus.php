@@ -266,9 +266,30 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 
 		if ($first)
 		{
+			// Joomla seems to expect the root item to be 1...blah!
+			// So, if id 1 is taken, we need to clear it out
+			$query = "SELECT * FROM `#__menu` WHERE `id` = 1;";
+			$db->setQuery($query);
+			$result = $db->loadObject();
+
+			if ($result)
+			{
+				$result->id = NULL;
+				$db->insertObject('#__menu', $result);
+				$id = $db->insertid();
+
+				$query = "UPDATE `#__menu` SET `parent_id` = '{$id}' WHERE `parent_id` = '1';";
+				$db->setQuery($query);
+				$db->query();
+
+				$query = "DELETE FROM `#__menu` WHERE `id` = '1';";
+				$db->setQuery($query);
+				$db->query();
+			}
+
 			// Insert new root menu item
-			$query  = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)\n";
-			$query .= "VALUES ('', 'Menu_Item_Root', 'root', '', '', '', '', 1, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 0, 0, '*', 0);";
+			$query  = "INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)\n";
+			$query .= "VALUES ('1', '', 'Menu_Item_Root', 'root', '', '', '', '', 1, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 0, 0, '*', 0);";
 			$db->setQuery($query);
 			$db->query();
 
@@ -336,6 +357,97 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 				$table = new JTableMenu($database);
 				$table->rebuild();
 			}
+
+			// Update menu params (specifically to fix menu_image)
+			$query = "SELECT `id`, `params`, `link` FROM `#__menu`;";
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+
+			if (count($results) > 0)
+			{
+				foreach ($results as $r)
+				{
+					$params = trim($r->params);
+					if (empty($params) || $params == '{}')
+					{
+						continue;
+					}
+
+					$array = array();
+					$ar    = explode("\n", $params);
+
+					foreach ($ar as $a)
+					{
+						$a = trim($a);
+						if (empty($a))
+						{
+							continue;
+						}
+
+						$ar2 = explode("=", $a);
+						if ($ar2[0] == 'menu_image' && $ar2[1] == "-1")
+						{
+							$ar2[1] = "0";
+						}
+
+						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
+					}
+
+					// Check to see if this menu item points to an article
+					preg_match('/index\.php\?option=com_content&view=article&id=([0-9]+)/', $r->link, $matches);
+
+					// Need to merge in content params (if applicable), as menu item params now take precidence
+					if (isset($matches[1]) && !empty($matches[1]))
+					{
+						$query = "SELECT `attribs` FROM `#__content` WHERE `id` = '{$matches[1]}';";
+						$db->setQuery($query);
+						$art_params = json_decode($db->loadResult());
+
+						foreach ($art_params as $k => $v)
+						{
+							if (($v !== null) && ($v !== '') && array_key_exists($k, $array))
+							{
+								$array[$k] = $v;
+							}
+						}
+					}
+
+					$query = "UPDATE `#__menu` SET `params` = " . $db->Quote(json_encode($array)) . " WHERE `id` = {$r->id};";
+					$db->setQuery($query);
+					$db->query();
+				}
+			}
+
+			// Update component_id -> extension_id
+			$query = "SELECT `id`, `link`, `component_id` FROM `#__menu` WHERE `component_id` != '0';";
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+
+			if (count($results) > 0)
+			{
+				foreach ($results as $r)
+				{
+					preg_match('/index\.php\?option=([a-z0-9_]+)/', $r->link, $matches);
+
+					if (isset($matches[1]) && !empty($matches[1]))
+					{
+						$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$matches[1]}' AND `type` = 'component' ORDER BY `client_id` ASC LIMIT 1;";
+						$db->setQuery($query);
+						$id = $db->loadResult();
+
+						$id = (!is_null($id)) ? $id : '0';
+
+						$query = "UPDATE `#__menu` SET `component_id` = '{$id}' WHERE `id` = '{$r->id}';";
+						$db->setQuery($query);
+						$db->query();
+					}
+				}
+			}
+
+			// Set language for all menu items
+			$query = "UPDATE `#__menu` SET `language` = '*';";
+			$db->setQuery($query);
+			$db->query();
 		}
 
 		// @FIXME: this index effectively prevents one from having two menu items with the same alias, even in different menus?

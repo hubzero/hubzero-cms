@@ -64,12 +64,7 @@ class Migration20130718000002Core extends Hubzero_Migration
 				(23,1,0,0,1,'com_templates','com_templates','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
 				(24,1,0,0,1,'com_users','com_users','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.own\":{\"6\":1},\"core.edit.state\":[]}'),
 				(25,1,0,0,1,'com_weblinks','com_weblinks','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":[],\"core.edit\":{\"4\":1},\"core.edit.state\":{\"5\":1},\"core.edit.own\":[]}'),
-				(26,1,0,0,1,'com_wrapper','com_wrapper','{}'),
-				(27,8,0,0,2,'com_content.category.2', 'Uncategorised', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[],\"core.edit.own\":[]}'),
-				(28,3,0,0,2,'com_banners.category.3', 'Uncategorised', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
-				(29,7,0,0,2,'com_contact.category.4', 'Uncategorised', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[],\"core.edit.own\":[]}'),
-				(30,19,0,0,2,'com_newsfeeds.category.5', 'Uncategorised', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[],\"core.edit.own\":[]}'),
-				(31,25,0,0,2,'com_weblinks.category.6', 'Uncategorised', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[],\"core.edit.own\":[]}');";
+				(26,1,0,0,1,'com_wrapper','com_wrapper','{}');";
 
 			$db->setQuery($query);
 			$db->query();
@@ -213,12 +208,6 @@ class Migration20130718000002Core extends Hubzero_Migration
 					$obj    = $db->loadObject();
 					$result = (is_object($obj) && is_numeric($obj->id))    ? $obj->id      : '';
 					$level  = (is_object($obj) && is_numeric($obj->level)) ? $obj->level+1 : 4;
-
-					// Set parent id of "uncategorised" articles
-					if ($art->catid == "0")
-					{
-						$result = 27;
-					}
 
 					$query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES (";
 					$query .= $db->Quote($result) . ',';                                            // parent_id

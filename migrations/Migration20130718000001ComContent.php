@@ -166,6 +166,18 @@ class Migration20130718000001ComContent extends Hubzero_Migration
 			$db->query();
 		}
 
+		// Update "uncategoriesed" cat_id from 0
+		$query = "SELECT `id` FROM `#__categories` WHERE extension = 'com_content' AND `alias` = 'uncategorised';";
+		$db->setQuery($query);
+		$id = $db->loadResult();
+
+		if (is_numeric($id))
+		{
+			$query = "UPDATE `#__content` set `catid` = '{$id}' WHERE `catid` = '0';";
+			$db->setQuery($query);
+			$db->query();
+		}
+
 		// Convert params to json
 		$query = "SELECT `id`, `attribs` FROM `#__content` WHERE `attribs` IS NOT NULL OR `attribs` != '';";
 		$db->setQuery($query);
