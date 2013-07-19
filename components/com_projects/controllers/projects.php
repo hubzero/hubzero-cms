@@ -3354,15 +3354,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$dir = Hubzero_View_Helper_Html::niceidformat( $useid );
 		}
-		$webdir = $this->_config->get('imagepath', '/site/projects');
-		if (substr($webdir, 0, 1) != DS) 
-		{
-			$webdir = DS . $webdir;
-		}
-		if (substr($webdir, -1, 1) == DS) 
-		{
-			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-		}
+		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$path  = $prefix . $webdir;
 		$path .= !$id && $tempid ? DS . 'temp' : '';
 		$path .= DS . $dir . DS . 'images';
@@ -3482,15 +3474,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$prefix = JPATH_ROOT;	
 		
 		// Get web directory
-		$webdir = $this->_config->get('imagepath', '/site/projects');
-		if (substr($webdir, 0, 1) != DS) 
-		{
-			$webdir = DS.$webdir;
-		}
-		if (substr($webdir, -1, 1) == DS) 
-		{
-			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-		}
+		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		
 		$from_dir =  Hubzero_View_Helper_Html::niceidformat( $temid );
 		// Use if or alias?
@@ -3559,15 +3543,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$dir = Hubzero_View_Helper_Html::niceidformat( $id );
 		}
-		$webdir = $this->_config->get('imagepath', '/site/projects');
-		if (substr($webdir, 0, 1) != DS) 
-		{
-			$webdir = DS . $webdir;
-		}
-		if (substr($webdir, -1, 1) == DS) 
-		{
-			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-		}
+		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$path   = $prefix . $webdir;
 		$path  .= $temp ? DS . 'temp' : '';
 		$path  .= DS . $dir . DS . 'images';
@@ -3662,15 +3638,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$dir = Hubzero_View_Helper_Html::niceidformat( $useid );
 		}
 		
-		$webdir = $this->_config->get('imagepath', '/site/projects');
-		if (substr($webdir, 0, 1) != DS) 
-		{
-			$webdir = DS . $webdir;
-		}
-		if (substr($webdir, -1, 1) == DS) 
-		{
-			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-		}
+		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$path   = $prefix . $webdir;
 		$path  .= !$id && $tempid ? DS . 'temp' : '';
 		$path  .= DS . $dir;
@@ -3773,15 +3741,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Build the file path
-		$webdir = $this->_config->get('imagepath', '/site/projects');
-		if (substr($webdir, 0, 1) != DS) 
-		{
-			$webdir = DS . $webdir;
-		}
-		if (substr($webdir, -1, 1) == DS) 
-		{
-			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-		}
+		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$path  = $webdir;
 		$path .= !$id && $tempid ? DS . 'temp' : '';
 		$path .= DS . $dir . DS . 'images';
@@ -3818,7 +3778,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	protected function _buildPathway( $project = null, $group = null ) 
 	{
 		$pathway = JFactory::getApplication()->getPathway();
-		$group_tasks 	= array('start', 'setup', 'view');	
+		$group_tasks = array('start', 'setup', 'view');	
 		
 		// Add group
 

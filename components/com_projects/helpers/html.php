@@ -254,65 +254,54 @@ class ProjectsHtml
 	 * @param      string $prefix
 	 * @return     string
 	 */
-	public function getFileAttribs( $path, $base_path = '', $get = '', $prefix = JPATH_ROOT )
+	public function getFileAttribs( $path = '', $base_path = '', $get = '', $prefix = JPATH_ROOT )
 	{
-		// Return nothing if no path provided
 		if (!$path) 
 		{
 			return '';
 		}
-		
-		if ($base_path) 
+				
+		// Get extension
+		if ($get == 'ext') 
 		{
-			// Strip any trailing slash
-			if (substr($base_path, -1) == DS) 
-			{ 
-				$base_path = substr($base_path, 0, strlen($base_path) - 1);
-			}
-			// Ensure a starting slash
-			if (substr($base_path, 0, 1) != DS) 
-			{ 
-				$base_path = DS.$base_path;
-			}
+			$ext = explode('.', basename($path));
+			$ext = count($ext) > 1 ? end($ext) : '';
+			return strtoupper($ext);
 		}
 		
-		// Ensure a starting slash
-		if (substr($path, 0, 1) != DS) 
-		{ 
-			$path = DS.$path;
+		$path = DS . trim($path, DS);
+		if ($base_path)
+		{
+			$base_path = DS . trim($base_path, DS);	
 		}
+		
 		if (substr($path, 0, strlen($base_path)) == $base_path) 
 		{
 			// Do nothing
 		} 
 		else 
 		{
-			$path = $base_path.$path;
+			$path = $base_path . $path;
 		}
-		$path = $prefix.$path;
-
-		$file_name_arr = explode(DS, $path);
-	    $type = end($file_name_arr);
-	
-		if($get == 'ext') 
-		{
-			$ext = explode('.',$type);
-			$ext = end($ext);
-			return strtoupper($ext);
-		}
+		$path = $prefix . $path;
 	
 		$fs = '';
 		
 		// Get the file size if the file exist
 		if (file_exists( $path )) 
 		{
-			$fs = filesize( $path );
+			try
+			{
+				$fs = filesize( $path );
+			}
+			catch (Exception $e)
+			{
+				// could not get file size
+			}			
 		}
-		if($get == 'size') 
-		{
-			$fs = ProjectsHtml::formatSize($fs);
-			return ($fs) ? $fs : '';
-		}
+		$fs = ProjectsHtml::formatSize($fs);
+		return ($fs) ? $fs : '';
+
 	}
 	
 	/**

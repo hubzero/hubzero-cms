@@ -584,4 +584,48 @@ class PublicationAttachment extends JTable
 		
 		return $pub;
 	}	
+	
+	/**
+	 * Get pub associations
+	 * 
+	 * @param      integer 	$projectid
+	 * @param      string	$type
+	 * @param      integer 	$primary
+	 * @return     array
+	 */	
+	public function getPubAssociations ( $projectid = 0, $type = 'file', $primary = 1) 
+	{	
+		if (!$projectid ) 
+		{
+			return false;
+		}
+		
+		$assoc = array();
+		
+		$query = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
+		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
+		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
+		$query.= " WHERE P.project_id=".$projectid." AND a.type='$type' ";
+		$query.= $primary ? " AND a.role=1 " : "";
+		$query.= " GROUP BY a.path ";
+		$query.= " ORDER BY v.id DESC ";
+		$this->_db->setQuery( $query );
+		$result = $this->_db->loadObjectList();
+		
+		if ($result) 
+		{
+			foreach ($result as $r)
+			{
+				$pub = array();
+				$pub['id'] = $r->publication_id;
+				$pub['title'] = $r->title;
+				$pub['version'] = $r->version_number;
+				$pub['version_label'] = $r->version_label;
+								
+				$assoc[$r->path][] = $pub; 
+			}
+		}
+		
+		return $assoc;
+	}
 }

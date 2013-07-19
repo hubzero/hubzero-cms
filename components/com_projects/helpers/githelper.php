@@ -274,6 +274,10 @@ class ProjectsGitHelper extends JObject {
 		// Set exec command for retrieving different commit information
 		switch ( $return ) 
 		{
+			case 'combined':
+				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%H"';
+				break;
+			
 			case 'date':
 			default:
 				$exec = ' log --pretty=format:%ci ';
@@ -348,6 +352,19 @@ class ProjectsGitHelper extends JObject {
 		{
 			return NULL;
 		}
+		if ($return == 'combined')
+		{
+			$arr  = explode("\t", $out[0]);			
+			$data = explode("||", $arr[0]);
+			
+			$entry = array();
+			$entry['date']  	= $data[0];
+			$entry['num'] 		= count($out);
+			$entry['author'] 	= $data[1];
+			$entry['email'] 	= $data[2];
+			return $entry;
+		}
+				
 		if ($return == 'content' || $return == 'blob')
 		{
 			return $out;

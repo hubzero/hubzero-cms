@@ -324,7 +324,7 @@ class plgProjectsFiles extends JPlugin
 					
 				case 'serve': 
 					$arr['html'] 	= $this->serve(); 
-					break;				
+					break;	
 					
 				// Connections
 				case 'connect':
@@ -962,7 +962,8 @@ class plgProjectsFiles extends JPlugin
 			$dirsize 	= $this->getDiskUsage($path, $prefix, true);							
 		}
 		
-		//check to make sure we have a file and its not too big
+		// Some checks
+		/*
 		if ($size == 0) 
 		{
 			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
@@ -970,6 +971,7 @@ class plgProjectsFiles extends JPlugin
 			
 			return json_encode(array('error' => JText::_('File is empty')));
 		}
+		*/
 		if ($size > $sizeLimit) 
 		{
 			$failedVal = $failedVal ? $failedVal . ', ' . $file : $file;
@@ -1274,10 +1276,12 @@ class plgProjectsFiles extends JPlugin
 																
 				// Check file size
 				$sizelimit = ProjectsHtml::formatSize($this->_config->get('maxUpload', '104857600'));
+				/*
 				if ($files['size'][$i] == 0)
 				{
 					$this->setError( JText::_('Cannot accept zero-byte files.'));
 				}
+				*/
 				if ( $files['size'][$i] > intval($this->_config->get('maxUpload', '104857600')))
 				{
 					$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
@@ -1377,7 +1381,6 @@ class plgProjectsFiles extends JPlugin
 								// Git add
 								$new = isset($updated[$file]) ? false : true;
 								$this->_git->gitAdd($path, $file, $commitMsg, $new);
-
 							}
 						}						
 					}
@@ -4019,9 +4022,16 @@ class plgProjectsFiles extends JPlugin
 	protected function _writeToFile($content = '', $filename = '', $append = false, $dir = 'logs' ) 
 	{
 		// Get temp path
-		$temp  	 = $this->getProjectPath ($this->_project->alias, $dir);
-		$sfile 	 = $filename ? $filename : $this->prefix . $temp . DS . 'sync_' . $this->_project->alias . '.hidden';
-		
+		if (!$filename)
+		{
+			$temp  	 = $this->getProjectPath ($this->_project->alias, $dir);
+			$sfile 	 = $this->prefix . $temp . DS . 'sync_' . $this->_project->alias . '.hidden';
+		}
+		else
+		{
+			$sfile = $filename;
+		}
+				
 		$place   = $append == true ? 'a' : 'w';
 		$content = $append ? $content . "\n" : $content; 
 		
@@ -5522,23 +5532,32 @@ class plgProjectsFiles extends JPlugin
 		{
 			$entry['fpath']		= $fpath;
 			$e 					= $norecurse ? $entry['name'] : $entry['fpath'];
-			$entry['bites']		= filesize($this->prefix . $fullpath . DS . $e);
-			$entry['size']		= ProjectsHtml::getFileAttribs( $e, $fullpath, 'size', $this->prefix );
-			$entry['ext']		= ProjectsHtml::getFileAttribs( $entry['name'], $fullpath, 'ext' );
-			$entry['date']  	= $this->_git->gitLog($path, $fpath, '', 'date');
-			$entry['revisions'] = $this->_git->gitLog($path, $fpath, '', 'num');
-			$entry['author'] 	= $this->_git->gitLog($path, $fpath, '', 'author');
-			$entry['email'] 	= $this->_git->gitLog($path, $fpath, '', 'email');
+			$entry['bytes']		= filesize($this->prefix . $fullpath . DS . $e);
+			$entry['size']		= ProjectsHtml::formatSize($entry['bytes']);
+			$entry['ext']		= ProjectsHtml::getFileAttribs( $e, $fullpath, 'ext', $this->prefix );			
+									
+			$gitData = $this->_git->gitLog($path, $fpath, '', 'combined');			
+			$entry['date']  	= $gitData['date'];
+			$entry['revisions'] = $gitData['num'];
+			$entry['author'] 	= $gitData['author'];
+			$entry['email'] 	= $gitData['email'];
+						
+			// Publishing
+			$entry['pid'] 				= '';
+			$entry['pub_title'] 		= '';
+			$entry['pub_version'] 		= '';
+			$entry['pub_version_label'] = '';
+			$entry['pub_num']			= 0;
 			
 			// Is file linked with a publication?
-			if ($this->_publishing) 
+			if ($this->_publishing && $this->_pubassoc && isset($this->_pubassoc[$fpath])) 
 			{
-				$pA = new PublicationAttachment( $this->_database );
-				$pub = $pA->getPubAssociation($this->_project->id, $fpath);
-				$entry['pid'] = $pub['id'];
-				$entry['pub_title'] = $pub['title'];
-				$entry['pub_version'] = $pub['version'];
+				$pub = $this->_pubassoc[$fpath][0];
+				$entry['pid'] 				= $pub['id'];
+				$entry['pub_title']	 		= $pub['title'];
+				$entry['pub_version'] 		= $pub['version'];
 				$entry['pub_version_label'] = $pub['version_label'];
+				$entry['pub_num']			= count($this->_pubassoc[$fpath]);
 			}
 		}		
 		return $entry;
@@ -5618,7 +5637,7 @@ class plgProjectsFiles extends JPlugin
 				
 				if ($sortby == 'sizes') 
 				{
-					$sorting[] = $file['bites'];
+					$sorting[] = $file['bytes'];
 				}
 				elseif ($sortby == 'modified') 
 				{
@@ -5787,6 +5806,13 @@ class plgProjectsFiles extends JPlugin
 		if ($get_count)
 		{
 			return count($out);
+		}
+		
+		// Get pub associations	
+		if ($this->_publishing)
+		{
+			$pA = new PublicationAttachment( $this->_database );
+			$this->_pubassoc = $pA->getPubAssociations($this->_project->id, 'file');
 		}
 		
 		// Return files
@@ -6172,5 +6198,32 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		return $used;		
+	}
+	
+	/**
+	 * Makes file name safe to use
+	 *
+	 * @param string $file The name of the file [not full path]
+	 * @return string The sanitized string
+	 */
+	public function makeSafeFile($file) 
+	{
+	//	$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
+		$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#');
+		return preg_replace($regex, '', $file);
+	}
+	
+	/**
+	 * Makes path name safe to use.
+	 *
+	 * @access	public
+	 * @param	string The full path to sanitise.
+	 * @return	string The sanitised string.
+	 */
+	static function makeSafeDir($path)
+	{
+		$ds = (DS == '\\') ? '\\' . DS : DS;
+		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
+		return preg_replace($regex, '', $path);
 	}
 }

@@ -416,8 +416,8 @@ qq.FileUploaderBasic.prototype = {
             return false;
             
         } else if (size === 0){            
-            this._error('emptyError', name);
-            return false;
+            //this._error('emptyError', name);
+            //return false;
                                                      
         } else if (size && this._options.sizeLimit && size > this._options.sizeLimit){            
             this._error('sizeError', name);
@@ -465,6 +465,11 @@ qq.FileUploaderBasic.prototype = {
             bytes = bytes / 1024;
             i++;  
         } while (bytes > 99);
+
+		if (bytes == 0)
+		{
+			return '0b';
+		}
         
         return Math.max(bytes, 0.1).toFixed(1) + ['kB', 'MB', 'GB', 'TB', 'PB', 'EB'][i];          
     }
@@ -609,9 +614,9 @@ qq.extend(qq.FileUploader.prototype, {
         var size = this._find(item, 'size');
         size.style.display = 'inline';
         
-        var text; 
-        if (loaded != total){
-            text = Math.round(loaded / total * 100) + '% from ' + this._formatSize(total);
+        var text;		
+		if (loaded != total) {
+            text = Math.round(loaded / total * 100)  + '% from ' + this._formatSize(total);
         } else {                                   
             text = this._formatSize(total);
         }          
@@ -1189,8 +1194,7 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
                                 
         var xhr = this._xhrs[id] = new XMLHttpRequest();
         var self = this;
-
-                                        
+                                       
          // build query string
         params = params || {};
      	params['qqfile'] = name;

@@ -427,7 +427,7 @@ qq.extend(qq.ButtonFileUploader.prototype, {
 		 
         var text; 
 		var perc = Math.round(loaded / total * 100);
-		text = perc + '% from ' + this._formatSize(total);
+		text = total > 0 ? perc + '% from ' + this._formatSize(total) : 'loaded';
 		
         if (perc >= 99) {   
 	        text = this._formatSize(total);

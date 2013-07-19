@@ -312,12 +312,15 @@ class PublicationLog extends JTable
 			WHERE L.publication_id=V.publication_id ) AS total_primary ";
 		$query .= " FROM #__publications as C, #__publication_categories AS t, #__publication_versions as V ";
 		$query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.user_id='$uid' ";
-		$query .= " LEFT JOIN #__publication_stats as S ON S.publication_id = V.publication_id AND period='14' ";
+		$query .= " JOIN $this->_tbl as L ON L.publication_id = V.publication_id AND L.year='$thisYearNum' 
+					AND L.month='$pastMonthNum' AND L.page_views > 0  ";
+	//	$query .= " LEFT JOIN #__publication_stats as S ON S.publication_id = V.publication_id AND period='14' ";
 		$query .= " WHERE C.id=V.publication_id AND V.state=1 AND C.category = t.id AND
 					V.main=1 AND V.published_up < '" . date('Y-m-d H:i:s') . "'";
 	//	$query .= " AND S.users > 0 ";
 		$query .= " GROUP BY V.publication_id ";
-		$query .= " ORDER BY S.users DESC, V.id ASC ";
+	//	$query .= " ORDER BY S.users DESC, V.id ASC ";
+		$query .= " ORDER BY L.page_views DESC, V.id ASC ";
 		$query .= $limit? "LIMIT " . $limit : '';
 		
 		$this->_db->setQuery( $query );

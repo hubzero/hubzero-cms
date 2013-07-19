@@ -112,7 +112,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.'<a name="ext"></a>'.n;
 	$html .= t.t.'<h2>'.JText::_('COM_PROJECTS_DESCRIBE_PROJECT').'</h2>'.n;
 	$html .= t.t.t.'<label>'.JText::_('COM_PROJECTS_ABOUT'). ': <span class="optional">'.JText::_('OPTIONAL').'</span>';
-	//$html .= t.t.t.'<span class="hint rightfloat">'.JText::_('COM_PROJECTS_PLEASE_USE').' <a href="/wiki/Help:WikiFormatting" rel="external">'.JText::_('COM_PROJECTS_WIKI_FORMATTING').'</a> '.JText::_('COM_PROJECTS_WIKI_TO_COMPOSE').'</span> '.n;
+	//$html .= t.t.t.'<span class="hint rightfloat">'.JText::_('COM_PROJECTS_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('COM_PROJECTS_WIKI_FORMATTING').'</a> '.JText::_('COM_PROJECTS_WIKI_TO_COMPOSE').'</span> '.n;
 	$html .= t.t.t.'<span class="clear"></span>'.n;
 	if($this->project->id) {
 		//$html .= t.t.t.'<p id="previewit" class="previewit showaslink">'.JText::_('COM_PROJECTS_PREVIEW').'</p>'.n;
