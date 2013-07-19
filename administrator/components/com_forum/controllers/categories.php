@@ -120,7 +120,15 @@ class ForumControllerCategories extends Hubzero_Controller
 				{
 					case 'group':
 						$group = Hubzero_Group::getInstance($s->scope_id);
-						$ky = $s->scope . ' (' . Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0) . ')';
+						$ky = $s->scope;
+						if ($group)
+						{
+							$ky .= ' (' . Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0) . ')';
+						}
+						else
+						{
+							$ky .= ' (' . $s->scope_id . ')';
+						}
 					break;
 					case 'course':
 						$offering = CoursesModelOffering::getInstance($s->scope_id);
