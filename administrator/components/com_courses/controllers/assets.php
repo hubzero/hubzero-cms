@@ -93,13 +93,31 @@ class CoursesControllerAssets extends Hubzero_Controller
 
 		$tbl = new CoursesTableAsset($this->database);
 
-		$this->view->rows = $tbl->find(array(
+		$rows = $tbl->find(array(
 			'w' => $this->view->filters
 		));
+		$r = array();
+		if ($rows)
+		{
+			foreach ($rows as $row)
+			{
+				$r[$row->id] = $row;
+			}
+		}
+		$this->view->rows = $r;
 
-		$this->view->assets = $tbl->find(array(
+		$assets = $tbl->find(array(
 			'w' => array('course_id' => $this->view->filters['course_id'])
 		));
+		$a = array();
+		if ($assets)
+		{
+			foreach ($assets as $row)
+			{
+				$a[$row->id] = $row;
+			}
+		}
+		$this->view->assets = $a;
 
 		$this->view->total = count($this->view->rows);
 
