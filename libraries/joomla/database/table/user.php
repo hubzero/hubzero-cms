@@ -237,8 +237,16 @@ class JTableUser extends JTable
 		$xid = intval($this->_db->loadResult());
 		if ($xid && $xid != intval($this->id))
 		{
-			$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
-			return false;
+			//$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
+			//return false;
+			
+			$usersConfig = JComponentHelper::getParams( 'com_users' );
+			$allow_dupes = $usersConfig->get( 'allow_duplicate_emails' );		
+			
+			if (!$allow_dupes) {
+				$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
+				return false;
+			}
 		}
 
 		// check for root_user != username
