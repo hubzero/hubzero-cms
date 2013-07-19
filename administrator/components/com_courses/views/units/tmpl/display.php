@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions('unit');
 
-JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . JText::_('Units') . ' ]</small></small>', 'courses.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
@@ -117,17 +117,17 @@ foreach ($this->rows as $row)
 		case 1:
 			$class = 'publish';
 			$task = 'unpublish';
-			$alt = JText::_('COM_WISHLIST_PUBLISHED');
+			$alt = JText::_('COM_COURSES_PUBLISHED');
 		break;
 		case 2:
 			$class = 'expire';
 			$task = 'publish';
-			$alt = JText::_('COM_WISHLIST_TRASHED');
+			$alt = JText::_('COM_COURSES_TRASHED');
 		break;
 		case 0:
 			$class = 'unpublish';
 			$task = 'publish';
-			$alt = JText::_('COM_WISHLIST_UNPUBLISHED');
+			$alt = JText::_('COM_COURSES_UNPUBLISHED');
 		break;
 	}
 ?>

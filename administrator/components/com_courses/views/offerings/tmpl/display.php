@@ -42,7 +42,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $canDo = CoursesHelper::getActions('offering');
 
-JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . JText::_('Offerings') . ' ]</small></small>', 'courses.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();

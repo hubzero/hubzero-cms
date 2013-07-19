@@ -301,7 +301,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'],
-				JText::_('COM_COURSES_MEMBER_SAVED')
+				JText::_('Student(s) successfully saved')
 			);
 			return;
 		}
@@ -365,7 +365,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id . '&section=' . $section_id,
-			JText::sprintf('%s Item(s) removed.', $num)
+			JText::sprintf('%s Student(s) removed.', $num)
 		);
 	}
 
