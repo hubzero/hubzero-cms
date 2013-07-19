@@ -186,7 +186,7 @@ $v = $browser->getBrowserMajorVersion();
 						<div class="clear"></div>
 <?php if ($this->debug) { ?>
 						<p class="error">
-							<?php echo $this->error->message; ?>
+							<?php echo $this->error->getMessage(); ?>
 						</p>
 <?php } ?>
 					</div><!-- / .main section -->
