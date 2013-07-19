@@ -201,6 +201,10 @@ class plgProjectsDatabases extends JPlugin
 			}
 		}
 
+
+		// detect CR as new line
+		ini_set('auto_detect_line_endings', true);
+
 		if ($raw_op) 
 		{
 			$this->$act_func(); exit();
