@@ -166,10 +166,10 @@ class SupportModelConditions extends JObject
 			array(
 				$this->_operator('=', 'is', true),
 				$this->_operator('!=', 'is not', false),
-				$this->_operator('<', 'less than', false),
-				$this->_operator('>', 'grater than', false),
-				$this->_operator('=<', 'less than or equal to', false),
-				$this->_operator('>=', 'greater than or equal to', false)
+				$this->_operator('lt', 'less than', false),
+				$this->_operator('gt', 'grater than', false),
+				$this->_operator('=lt', 'less than or equal to', false),
+				$this->_operator('gt=', 'greater than or equal to', false)
 			),
 			'text'
 		);
@@ -210,8 +210,8 @@ class SupportModelConditions extends JObject
 		$conditions->created = $this->_expression(
 			array(
 				$this->_operator('=', 'on', true),
-				$this->_operator('<', 'before', false),
-				$this->_operator('>', 'after', false)
+				$this->_operator('lt', 'before', false),
+				$this->_operator('gt', 'after', false)
 			),
 			'text'
 		);
