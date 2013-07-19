@@ -32,11 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Set date time format
-$dateFormat = '%d %b %Y';
+$dateFormat = '%b %Y';
 $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'd M Y';
+	$dateFormat = 'M Y';
 	$tz = true;
 }
 
@@ -816,7 +816,9 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 								}
 
 								$('#users-overview-total').text(item.datapoint[1]);
+								$('#users-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
 								$('#runs-overview-total').text(datasets[1].data[item.dataIndex][1]);
+								$('#runs-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
 
 								updateTables(yyyy, mm);
 
@@ -891,7 +893,9 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 								}
 
 								$('#runs-overview-total').text(item.datapoint[1]);
+								$('#runs-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
 								$('#users-overview-total').text(datasets[0].data[item.dataIndex][1]);
+								$('#users-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
 
 								updateTables(yyyy, mm);
 
