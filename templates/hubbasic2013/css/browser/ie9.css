@@ -4,3 +4,9 @@
 	IE 9 Windows hacks
 	-- -- -- -- -- -- --
 */
+	#splash .inner-wrap {
+		background: transparent url("/templates/hubbasic2013/images/layout/glass-stripes.png");
+	}
+	#splash .inner-wrap .inner {
+		background: transparent url("/templates/hubbasic2013/images/layout/glass.png");
+	}
