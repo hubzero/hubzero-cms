@@ -503,6 +503,24 @@ class ForumModelPost extends JObject
 				}
 			break;
 
+			case 'download':
+				switch (strtolower($this->get('scope')))
+				{
+					case 'group':
+						$link .= '/' . $this->get('id') . '/';
+					break;
+
+					case 'course':
+						$link .= '&post=' . $this->get('id') . '&file=';
+					break;
+
+					case 'site':
+					default:
+						$link .= '&post=' . $this->get('id') . '&file=';
+					break;
+				}
+			break;
+
 			case 'permalink':
 			default:
 
@@ -553,7 +571,7 @@ class ForumModelPost extends JObject
 				$this->set('content_parsed', $p->parse("\n" . stripslashes($this->get('comment')), $wikiconfig));
 				$this->set('content_parsed', $this->get('content_parsed') . $attach->getAttachment(
 					$this->get('id'), 
-					$this->link() . '&post=' . $this->get('id') . '&file=', 
+					$this->link('download'), 
 					$this->_config
 				));
 
