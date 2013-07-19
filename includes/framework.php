@@ -20,7 +20,8 @@ defined('_JEXEC') or die;
 // Installation check, and check on removal of the install directory.
 //
 if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) ) {
-	die('Error - Configuration file does not exist');
+	echo 'No configuration file found. Exiting...';
+	exit();
 }
 
 //
@@ -44,8 +45,27 @@ ob_start();
 require_once JPATH_CONFIGURATION.'/configuration.php';
 ob_end_clean();
 
+if (!class_exists('JConfig'))
+{
+	echo 'Invalid configuration file. Exiting...';
+	exit();
+}
+
 // System configuration.
 $config = new JConfig();
+
+/* if configuration just has an install key and no other properties then redirect into the installer */
+
+if (count(get_object_vars($config)) <= 1)
+{
+	if( file_exists( JPATH_INSTALLATION . DS . 'index.php' ) ) {
+		header( 'Location: installation/index.php' );
+		exit();
+	} else {
+		echo 'No installation code available. Exiting...';
+		exit();
+	}
+}
 
 // Set the error_reporting
 switch ($config->error_reporting)
