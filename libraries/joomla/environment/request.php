@@ -518,7 +518,7 @@ class JRequest
 				// Redirect to login screen.
 				$app = JFactory::getApplication();
 				$return = JRoute::_('index.php');
-				$app->redirect($return, JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
+				$app->redirect($return, JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'error');
 				$app->close();
 			}
 			else
