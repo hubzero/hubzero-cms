@@ -32,11 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Set date time format
-$dateFormat = '%b %Y'; //%d 
+$dateFormat = '%d %b %Y';
 $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'M Y'; //d 
+	$dateFormat = 'd M Y';
 	$tz = true;
 }
 
@@ -69,20 +69,12 @@ $database =& JFactory::getDBO();
 
 $topvals = new ResourcesStatsToolsTopvals($database);
 
-switch ($this->params->get('defaultDataset', 'cumulative'))
-{
-	case 'yearly': $prd = 12; break;
-	case 'monthly': $prd = 1; break;
-	case 'cumulative': 
-	default: $prd = 14; break;
-}
-
 if (intval($this->params->get('cache', 1)))
 {
 	$cache =& JFactory::getCache('callback');
 	$cache->setCaching(1);
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getOverview'), $this->resource->id, $prd);
+	$results = $cache->call(array('plgResourcesUsage', 'getOverview'), $this->resource->id);
 }
 else 
 {
@@ -124,89 +116,31 @@ if ($results)
 
 	$current = end($results);
 }
-
+$current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 ?>
 	<h3 id="plg-usage-header">
 		<a name="usage"></a>
 		<?php echo JText::_('PLG_RESOURCES_USAGE'); ?> 
 	</h3>
 	<form method="get" action="<?php echo JRoute::_($url); ?>">
-		<?php
-		$usageConfig = JComponentHelper::getParams('com_usage');
-		$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
-		if (file_exists(JPATH_ROOT . $tool_map . '.gif') || file_exists(JPATH_ROOT . $tool_map . '.xml')) { ?>
-			<div id="geo-overview-wrap" class="usage-wrap">
-				<div class="four columns first">
-					<h4><?php echo JText::_('World usage'); ?></h4>
-					<p><?php echo JText::sprintf('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
-				</div><!-- / .four columns first -->
-				<div class="four columns second third fourth">
-				<?php if (file_exists(JPATH_ROOT . $tool_map . '.xml')) { ?>
-					<div id="div_map" style="width:100%; height:300px"></div>
-					<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=<?php echo $usageConfig->get('mapsApiKey'); ?>&amp;sensor=false"> </script>
-					<script type="text/javascript" src="//gmaps-samples-v3.googlecode.com/svn/trunk/xmlparsing/util.js"> </script>
-					<script type="text/javascript">
-					if (!jq) {
-						var jq = $;
-					}
-					if (jQuery()) {
-						var $ = jq;
-
-						var infowindow, map;
-
-						function initMap() {
-							var myLatlng = new google.maps.LatLng(<?php echo $this->params->get('mapLat', 20); ?>,<?php echo $this->params->get('mapLong', 0); ?>);
-							var myOptions = {
-								zoom: <?php echo $this->params->get('mapZoom', 2); ?>,
-								center: myLatlng,
-								mapTypeId: google.maps.MapTypeId.ROADMAP
-							}
-							map = new google.maps.Map(document.getElementById("div_map"), myOptions);
-
-							var urlstr="<?php echo rtrim(JURI::getInstance()->base(), DS) . $tool_map; ?>.xml";
-
-							downloadUrl(urlstr, function(data) {
-								var markers = data.documentElement.getElementsByTagName("marker");
-								for (var i = 0; i < markers.length; i++) {
-									var latlng = new google.maps.LatLng(parseFloat(markers[i].getAttribute("lat")), parseFloat(markers[i].getAttribute("lng")));
-									var marker = createMarker(markers[i].getAttribute("info"), latlng);
-								}
-							});
-						}
-
-						function createMarker(info, latlng) {
-							if (info) {
-								info = info.replace(/_br_/gi,'<br />');
-								info = info.replace(/_hr_/gi,'<hr />');
-								info = info.replace(/_b_/gi,'<b>');
-								info = info.replace(/_bb_/gi,'</b>');
-							}
-								var marker = new google.maps.Marker({position: latlng, map: map});
-								google.maps.event.addListener(marker, "click", function() {
-									if (infowindow) infowindow.close();
-									infowindow = new google.maps.InfoWindow({content: info});
-									infowindow.open(map, marker);
-								});
-								return marker;
-
-						}
-
-						$(document).ready(function() {
-							initMap()
-						});
-					}
-					</script>
-				<?php } else if (file_exists(JPATH_ROOT . $tool_map . '.gif')) { ?>
-					<p>
-						<a href="<?php echo $tool_map; ?>.png" title="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
-							<img style="width:100%;max-width:510px;" src="<?php echo $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
-						</a>
-					</p>
-				<?php } ?>
-				</div><!-- / .four columns second third fourth -->
-				<div style="clear:left;"></div>
-			</div>
-		<?php } ?>
+	<?php
+	$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
+	if (file_exists(JPATH_ROOT . $tool_map . '.gif')) { ?>
+		<div id="geo-overview-wrap" class="usage-wrap">
+			<div class="four columns first">
+				<h4><?php echo JText::_('World usage'); ?></h4>
+				<p><?php echo JText::sprintf('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
+			</div><!-- / .four columns first -->
+			<div class="four columns second third fourth">
+				<p>
+					<a href="<?php echo $tool_map; ?>.png" title="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
+						<img style="width:100%;max-width:510px;" src="<?php echo $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
+					</a>
+				</p>
+			</div><!-- / .four columns second third fourth -->
+			<div style="clear:left;"></div>
+		</div>
+	<?php } ?>
 
 	<?php if ($results) { ?>
 		<div id="user-overview-wrap" class="usage-wrap">
@@ -231,7 +165,7 @@ if ($results)
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 				<p class="total">
 					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
-					<span id="users-overview-date"><time datetime="<?php echo $result->datetime; ?>"><?php echo JHTML::_('date', $result->datetime, $dateFormat, $tz); ?></time></span></span>
+					<span><?php echo JText::_('in'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, $dateFormat, $tz); ?></time></span></span>
 				</p>
 			</div><!-- / .four columns first -->
 			<div class="four columns second third fourth">
@@ -651,7 +585,7 @@ if ($results)
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
 				<p class="total">
 					<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
-					<span id="runs-overview-date"><time datetime="<?php echo $result->datetime; ?>"><?php echo JHTML::_('date', $result->datetime, $dateFormat, $tz); ?></time></span></span>
+					<span><?php echo JText::_('in'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, $dateFormat, $tz); ?></time></span></span>
 				</p>
 			</div><!-- / .four columns first -->
 			<div class="four columns second third fourth">
@@ -745,7 +679,9 @@ if ($results)
 				var jq = $;
 			}
 			if (jQuery()) {
-				var $ = jq;
+				var $ = jq,
+					plotU = null,
+					plotR = null;
 
 				var month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -874,17 +810,13 @@ if ($results)
 							if (item) {
 								var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
 								var yyyy = item.series.data[item.dataIndex][0].getFullYear();
-								var mnth = month_short[mm - 1];
 								// Prepend 0s
 								if (mm < 10) {
 									mm = '0' + mm
 								}
 
 								$('#users-overview-total').text(item.datapoint[1]);
-								$('#users-overview-date').text(mnth + ' ' + yyyy);
-
 								$('#runs-overview-total').text(datasets[1].data[item.dataIndex][1]);
-								$('#runs-overview-date').text(mnth + ' ' + yyyy);
 
 								updateTables(yyyy, mm);
 
@@ -896,7 +828,7 @@ if ($results)
 								plotR.highlight(0, item.dataIndex);
 							}
 						});
-						var plotU = $.plot(placeholderU, [datasets[0]], options);
+						plotU = $.plot(placeholderU, [datasets[0]], options);
 
 
 						var timelineOptions = {
@@ -953,17 +885,13 @@ if ($results)
 							if (item) {
 								var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
 								var yyyy = item.series.data[item.dataIndex][0].getFullYear();
-								var mnth = month_short[mm - 1];
 								// Prepend 0s
 								if (mm < 10) {
 									mm = '0' + mm
 								}
 
 								$('#runs-overview-total').text(item.datapoint[1]);
-								$('#runs-overview-date').text(mnth + ' ' + yyyy);
-
 								$('#users-overview-total').text(datasets[0].data[item.dataIndex][1]);
-								$('#users-overview-date').text(mnth + ' ' + yyyy);
 
 								updateTables(yyyy, mm);
 
@@ -975,7 +903,7 @@ if ($results)
 								plotU.highlight(0, item.dataIndex);
 							}
 						});
-						var plotR = $.plot(placeholderR, [datasets[1]], options);
+						plotR = $.plot(placeholderR, [datasets[1]], options);
 
 
 						var uoTimeline = $("#users-overview-timeline");
@@ -1131,12 +1059,14 @@ if ($results)
 						});
 						$(window).bind('resizeEnd', function() {
 							//plotCharts();
-							if (plotU) {
+							//$('#users-overview div.tickLabel').remove();
+							//$('#runs-overview div.tickLabel').remove();
+							if (typeof(plotU) != 'undefined') {
 								plotU.resize();
 								plotU.setupGrid();
 								plotU.draw();
 							}
-							if (plotR) {
+							if (typeof(plotR) != 'undefined') {
 								plotR.resize();
 								plotR.setupGrid();
 								plotR.draw();
