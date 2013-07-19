@@ -229,13 +229,6 @@ class plgSupportAnswers extends JPlugin
 					return false;
 				}
 
-				$database->setQuery("DELETE FROM #__answers_log WHERE rid=" . $referenceid);
-				if (!$database->query()) 
-				{
-					$this->setError($database->getErrorMsg());
-					return false;
-				}
-
 				$message .= JText::sprintf('This is to notify you that your answer to question #%s was removed from the site due to granted complaint received from a user.', $parentid);
 			break;
 
@@ -258,14 +251,6 @@ class plgSupportAnswers extends JPlugin
 				{
 					foreach ($answers as $answer)
 					{
-						// Delete response's log entry
-						$database->setQuery("DELETE FROM #__answers_log WHERE rid=" . $answer->id);
-						if (!$database->query()) 
-						{
-							$this->setError($database->getErrorMsg());
-							return false;
-						}
-
 						// Delete response
 						$database->setQuery("UPDATE #__answers_responses SET state='2' WHERE id=" . $answer->id);
 						if (!$database->query()) 
@@ -277,14 +262,6 @@ class plgSupportAnswers extends JPlugin
 						// Collect responders names
 						$responders[] = $answer->created_by;
 					}
-				}
-
-				// Delete all tag associations
-				$database->setQuery("DELETE FROM #__answers_tags WHERE questionid=" . $referenceid);
-				if (!$database->query()) 
-				{
-					$this->setError($database->getErrorMsg());
-					return false;
 				}
 
 				$database->setQuery("UPDATE #__answers_questions SET state='2', reward='0' WHERE id=" . $referenceid);
