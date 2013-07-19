@@ -86,36 +86,38 @@ HUB.Resources = {
 		});
 		
 		$('.metadata').each(function(i, meta) {
-			$('.rankinfo').live('mouseover', function(e) {
-				$(this).addClass('active');
-			});
-			$('.rankinfo').live('mouseout', function(e) {
-				$(this).removeClass('active');
-			});
+			$('.rankinfo')
+				.on('mouseover', function(e) {
+					$(this).addClass('active');
+				})
+				.on('mouseout', function(e) {
+					$(this).removeClass('active');
+				});
 		});
 		
 		// Audience info pop-up
 		$('.explainscale').each(function(k, ex) {	
 			$('.usagescale').each(function(i, item) {
-				$(item).live('mouseover', function() {					
+				$(item).on('mouseover', function() {					
 					$(ex).addClass('active');
 				});
 			});
 			$('.usagescale').each(function(i, item) {
-				$(item).live('mouseout', function() {
+				$(item).on('mouseout', function() {
 					$(ex).removeClass('active');
 				});
 			});
 		});
 		
 		// Primary-document info pop-up
-		if ($('#primary-document') && $('#primary-document_pop')) {
-			$('#primary-document').live('mouseover', function(e) {
-				$('#primary-document_pop').show();
-			});
-			$('#primary-document').live('mouseout', function(e) {
-				$('#primary-document_pop').hide();
-			});
+		if ($('#primary-document').length && $('#primary-document_pop').length) {
+			$('#primary-document')
+				.on('mouseover', function(e) {
+					$('#primary-document_pop').show();
+				})
+				.on('mouseout', function(e) {
+					$('#primary-document_pop').hide();
+				});
 		}
 		
 		//HUBpresenter open window
@@ -180,8 +182,8 @@ HUB.Resources = {
 		//------------------------
 		
 		var target = $('.showcase-pane')[0];
-        	
-		if ($('#showcase') && target) {	
+
+		if ($('#showcase').length && target) {	
 			var sidemargin = 4,
 				thumbwidth = 110,
 				moveto = 0,
@@ -190,19 +192,19 @@ HUB.Resources = {
 			
 			var next = $('#showcase-next'),
 				prev = $('#showcase-prev');
-			
+
 			thwidth = $('.thumbima').length * sidemargin * 2 + $('.thumbima').length * thumbwidth;
-			var win_width = $('#showcase-window').offsetWidth;
+			var win_width = $('#showcase-window').offset().left;
 			
 			if (thwidth/win_width < 1) {
 				next.addClass('inactive');
 				prev.addClass('inactive');
 			}
-					
+
 			// go next		
-			if (next) {
-				$(next).live('mouseover', function() {
-					var win_width = $('#showcase-window').offsetWidth;
+			if (next.length > 0) {
+				next.on('mouseover', function() {
+					var win_width = $('#showcase-window').offset().left;
 					if (thwidth/win_width < 1) {
 						$(this).addClass('inactive');
 						prev.addClass('inactive');
@@ -211,31 +213,28 @@ HUB.Resources = {
 						prev.removeClass('inactive');
 					}
 				});
-											
-				$(next).click(function() {
-					var win_width = $('#showcase-window').offsetWidth;
+
+				next.on('click', function() {
+					var win_width = $('#showcase-window').offset().left;
 					if (thwidth/win_width < 1) {
 					 	panels = 0;	
 					} else {
 						panels = Math.round(thwidth/win_width);
 					}
-					
+
 					if (panels >= 1 && active < panels) {
 						active ++;
 						moveto -= win_width;
-								
-						/*var fx = new Fx.Styles(target, {duration: 600, wait: false});
-						 fx.start({
-							'left': [moveto]
-						});*/
+
+						$(target).css('left', moveto);
 					}
 				});
 			}
 			
 			// go prev
-			if (prev) {
-				$(prev).live('mouseover', function() {
-					var win_width = $('#showcase-window').offsetWidth;
+			if (prev.length > 0) {
+				prev.on('mouseover', function() {
+					var win_width = $('#showcase-window').offset().left;
 					if (thwidth/win_width < 1) {
 						$(this).addClass('inactive');
 						next.addClass('inactive');
@@ -245,18 +244,15 @@ HUB.Resources = {
 					}
 				});
 				
-				$(prev).click(function() {
-					var win_width = $('#showcase-window').offsetWidth;
-					var panels = Math.round(thwidth/win_width);	
+				prev.on('click', function() {
+					var win_width = $('#showcase-window').offset().left,
+						panels = Math.round(thwidth/win_width);	
 					
 					if (panels >= 1 && active > 0) {
 						active --;
 						moveto += win_width;
-	
-						/*var fxright = new Fx.Styles(target, {duration: 600, wait: false});
-						 fxright.start({
-							'left': [moveto]
-						});*/
+
+						$(target).css('left', moveto);
 					}
 				});
 			}
