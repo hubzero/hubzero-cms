@@ -213,6 +213,19 @@ class Migration20130718000000ComCategories extends Hubzero_Migration
 			{
 				foreach ($results as $r)
 				{
+					// Collapse duplicate section/categories down into one level
+					$query = "SELECT `id` FROM `#__categories` WHERE `alias` = '{$r->alias}';";
+					$db->setQuery($query);
+					if ($db->loadResult())
+					{
+						// Set any categories that were in recently added section to have that new category id as parent_id
+						$query = "UPDATE  `#__categories` SET parent_id = 0 WHERE section = {$r->id};";
+						$db->setQuery($query);
+						$db->query();
+
+						continue;
+					}
+
 					$query  = "INSERT INTO `#__categories` (parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,created_user_id,created_time,modified_user_id,modified_time,hits,language) VALUES ";
 					$query .= "(";
 					$query .= '"0",';                                # parent_id
