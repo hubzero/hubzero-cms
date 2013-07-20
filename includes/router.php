@@ -447,13 +447,12 @@ class JRouterSite extends JRouter
 							}
 						}
 
-						// @FIXME: START FROM HUBZERO J1.5, NOT SURE WHAT TO DO WITH IT
-						// Pass local URLs through, but record Itemid
-						//if (strpos($item->route, "://") === false) {
-						//	$vars['Itemid'] = $item->id;
-						//	break;
-						//}
-						// @FIXME: END FROM HUBZERO J1.5, NOT SURE WHAT TO DO WITH IT */						
+						/* START: HUBzero extension to pass local URLs through, but record Itemid (we want the content parser to handle this) */
+						if (strpos($item->route, "://") === false) {
+							$vars['Itemid'] = $item->id;
+							break;
+						}
+						/* END: HUBzero extension to pass local URLs through */
 					}
 					/* END: HUBzero Extension to handle external url menu items differently */
 
@@ -477,10 +476,17 @@ class JRouterSite extends JRouter
 				if ($route) {
 					$route = substr($route, 1);
 				}
+
+				/* START: HUBzero extension to set vars if found (lines previously outside of if statement below) */
+				$vars['Itemid'] = $found->id;
+				$vars['option'] = $found->component;
+				/* END: HUBzero extension to set vars if found */
 			}
 
-			$vars['Itemid'] = $found->id;
-			$vars['option'] = $found->component;
+			/* START: HUBzero extension to ignore the following two Joomla lines (moved to if statement above) */
+			//$vars['Itemid'] = $found->id;
+			//$vars['option'] = $found->component;
+			/* END: HUBzero extension to ignore the following two Joomla lines */
 		}
 
 		/* START: HUBzero Extension to parse com_content component specially */
@@ -931,179 +937,97 @@ class JRouterSite extends JRouter
 	 */
 	function _parseContentRoute(&$segments)
 	{
-		$view = 'article';
-		$menu =& JFactory::getApplication()->getMenu(true);
-		$item =& $menu->getActive();
-		$db = & JFactory::getDBO();
+		$vars  = array();
+		$view  = 'article';
+		$menu  =& JFactory::getApplication()->getMenu(true);
+		$item  =& $menu->getActive();
+		$db    =& JFactory::getDBO();
 		$count = count($segments);
 
+		// Item is numeric, assume user knows the article ID, and is trying to access directly
 		if (($count == 1) && (is_numeric($segments[0])))
 		{
 			$vars['option'] = 'com_content';
-			return $vars;
+			$vars['id']     = $segments[0];
+			$vars['view']   = 'article';
+			$item->query['view'] = 'article';
 		}
-
-		if (empty($segments) || empty($segments[0]))
-		{
-			return array();
-
-			if (empty($item->query['view']) || $item->query['view'] != 'article')
-				return array();
-
-			$section = empty($item->query['section']) ? '' : $item->query['section'];
-			$category = empty($item->query['category']) ? '' : $item->query['category'];
-			$alias = empty($item->query['alias']) ? '' : $item->query['alias'];
-
-			if (empty($section) && !empty($category))
-				$section = $category;
-			else if (!empty($section) && empty($category))
-				$category = $section;
-
-			if (empty($alias) && !empty($category))
-				$alias = $category;
-
-			if (!empty($alias)) {
-
-				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-						"#__content.alias=" . $db->Quote($alias) . " AND ";
-
-				if (!empty($category))
-					$query .= "#__content.catid=#__categories.id AND " . "#__categories.alias=" . $db->Quote($category) . " AND " .
-					"#__content.sectionid=#__sections.id AND " . "#__sections.alias=" . $db->Quote($section) . "";
-				else
-					$query .= "#__content.catid=0 AND #__content.sectionid=0";
-
-				$query .= " AND #__content.state='1' LIMIT 1;";
-
-				$db->setQuery($query);
-				$row =& $db->loadResult();
-				$vars['id'] = $row;
-			}
-
-			return $vars;
-		}
-
-		if (!empty($id) || empty($segments[0]))
-			array_shift($segments);
-
-		//decode the route segments
-		//$segments = $this->_decodeSegments($segments);
-		$count = count($segments);
-
-		if ($count > 3) {
-			//echo "XRouter::_parseContentRoute(): Too many component segments<br>";
-			return array();
-		}
-
-		$query = "SELECT `#__content`.id,`#__content`.alias,`#__content`.catid,`#__categories`.alias,`#__content`.sectionid,`#__sections`.alias " .
-				"FROM `#__content`,`#__categories`,`#__sections` " .
-				"WHERE `#__content`.catid=`#__categories`.id AND `#__content`.sectionid=`#__sections`.id ";
-
-		if ($count == 3)
-		{
-			if (is_numeric($segments[2]))
-				$query .= " AND #__content.id=" . $db->Quote($segments[2]) . " ";
-			else
-				$query .= " AND #__content.alias=" . $db->Quote($segments[2]) . " ";
-
-			if (is_numeric($segments[1]))
-				$query .= " AND #__content.catid=" . $db->Quote($segments[1]) . " ";
-			else
-				$query .= " AND #__categories.alias=" . $db->Quote($segments[1]) . " ";
-
-			if (is_numeric($segments[0]))
-				$query .= " AND #__content.sectionid=" . $db->Quote($segments[0]) . " ";
-			else
-				$query .= " AND #__sections.alias=" . $db->Quote($segments[0]) . " ";
-
-			$query .= " AND #__content.state='1' LIMIT 1;";
-		}
-		else if ($count == 2)
-		{
-			if (!empty($id)) {
-				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-						"#__content.alias=" . $db->Quote($segments[1]) . " AND " .
-						"#__content.catid=#__categories.id AND " .
-						"#__categories.alias=" . $db->Quote($segments[0]) . " AND " .
-						"#__categories.section=#__sections.id AND " .
-						"#__sections.id=(SELECT sectionid FROM `#__content` WHERE id='" . $id . "') AND #__content.state='1' LIMIT 1;";
-			} else {
-				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-						"#__content.alias=" . $db->Quote($segments[1]) . " AND " .
-						"#__content.catid=#__categories.id AND " .
-						"#__categories.alias=" . $db->Quote($segments[0]) . " AND " .
-						"#__categories.section=#__sections.id AND " .
-						"#__sections.alias=" . $db->Quote($segments[0]) . " AND #__content.state='1' LIMIT 1;";
-			}
-		}
-		else if ($count == 1 && 0)
-		{
-			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-					"#__content.alias=" . $db->Quote($segments[0]) . " AND " .
-					"#__content.catid=(SELECT catid FROM `#__content` WHERE id='" . $id ."') AND #__content.state='1' LIMIT 1;";
-		}
+		// Count 1 - we're either looking for an article alias that matches and is in the uncategorised category,
+		// or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy reasons)
 		else if ($count == 1)
 		{
-			$page = $segments[0];
-			$category = $segments[0];
-			$section = $segments[0];
+			// First, do query
+			$query  = "SELECT con.`id`, cat.`alias`, cat.`path` FROM `#__content` AS con";
+			$query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
+			$query .= " WHERE con.`alias` = " . $db->quote($segments[0]);
+			$db->setQuery($query);
+			$result = $db->loadObject();
 
-			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-					"#__content.alias=" . $db->Quote($page) . " AND " .
-					"(" .
-					"(#__content.catid=#__categories.id AND " . "#__categories.alias=" . $db->Quote($category) . " AND " .
-					"#__content.sectionid=#__sections.id AND " . "#__sections.alias=" . $db->Quote($section) . ")" .
-					" OR " .
-					"(#__content.catid=0 AND #__content.sectionid=0) " .
-					") AND #__content.state='1' LIMIT 1;";
+			// Now, check for uncategorised article with provided alias
+			if ($result->alias == 'uncategorised')
+			{
+				// Success, that's it
+				$segments = array();
+				$vars['option'] = 'com_content';
+				$vars['id']     = $result->id;
+				$vars['view']   = 'article';
+				$item->query['view'] = 'article';
+			}
+			else
+			{
+				// It wasn't uncategorised, so now try and see if its in a category scheme of all the same aliases
+				$path  = explode('/', $result->path);
+				$found = true;
 
+				foreach ($path as $p)
+				{
+					if ($p != $segments[0])
+					{
+						$found = false;
+						continue;
+					}
+				}
+
+				if ($found)
+				{
+					// Success, that's it
+					$segments = array();
+					$vars['option'] = 'com_content';
+					$vars['id']     = $result->id;
+					$vars['view']   = 'article';
+					$item->query['view'] = 'article';
+				}
+			}
 		}
-		else if ($count == 0)
+		else if ($count > 1)
 		{
-			$page = '';
-			$category = '';
-			$section = '';
-
-			$routesegments = explode('/', $item->route);
-			$rcount = count($routesegments);
-			//echo "routesegments = "; print_r($routesegments); echo "<br>";
-			if ($rcount > 2) {
-				$section = $routesegments[$rcount-3];
-				$category = $routesegments[$rcount-2];
-				$page = $routesegments[$rcount-1];
-			}
-			if ($rcount > 1) {
-				$section = $routesegments[$rcount-2];
-				$category = $routesegments[$rcount-1];
-				$page = $category;
-			}
-			else if ($rcount > 0) {
-				$section = $routesegments[$rcount-1];
-				$category = $section;
-				$page = $category;
+			// Build the path
+			$path = array();
+			for ($i=0; $i < ($count-1); $i++)
+			{
+				$path[] = $segments[$i];
 			}
 
-			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-					"#__content.alias=" . $db->Quote($page) . " AND " .
-					"#__content.catid=#__categories.id AND " .
-					"#__categories.alias=" . $db->Quote($category) . " AND " .
-					"#__categories.section=#__sections.id AND " .
-					"#__sections.alias=" . $db->Quote($section) . " AND #__content.state='1' LIMIT 1;";
+			$path = implode('/', $path);
+
+			// Now, do query (path is all but last segment, and last segment is article alias)
+			$query  = "SELECT con.`id` FROM `#__content` AS con";
+			$query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
+			$query .= " WHERE con.`alias` = " . $db->quote($segments[$count-1]);
+			$query .= " AND cat.`path` = " . $db->quote($path);
+			$db->setQuery($query);
+
+			if ($result = $db->loadResult())
+			{
+				// Success, that's it
+				$segments = array();
+				$vars['option'] = 'com_content';
+				$vars['id']     = $result;
+				$vars['view']   = 'article';
+				$item->query['view'] = 'article';
+			}
 		}
 
-		$db->setQuery($query);
-		$row = $db->loadResult();
-
-		if (!empty($row))
-		{
-			$segments = array();
-			$vars['option'] = 'com_content';
-			$vars['id'] = $row;
-			$vars['view'] = 'article';
-			$item->query['view'] = 'article';
-			return $vars;
-		}
-
-		return array();
+		return $vars;
 	}
 }
