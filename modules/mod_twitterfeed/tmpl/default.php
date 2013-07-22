@@ -45,6 +45,7 @@ $screenName = ltrim($this->params->get('twitterID'), '@');
 $widgetSettings  = '';
 $widgetSettings .= ($this->params->get('displayHeader') == 'no') ? ' noheader' : '';
 $widgetSettings .= ($this->params->get('displayFooter') == 'no') ? ' nofooter' : '';
+$widgetSettings .= ($this->params->get('displayBorders') == 'no') ? ' noborders' : '';
 ?>
 
 <h3><?php echo $this->params->get('moduleTitle'); ?></h3>  

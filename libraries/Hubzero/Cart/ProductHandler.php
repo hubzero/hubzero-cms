@@ -158,8 +158,8 @@ class Course_Type_Handler extends Type_Handler
 		//$offering = $course->offerings()->current();
 		$offering = $course->offering($this->item['meta']['offeringId']);
 		
-		//mail('ishunko@purdue.edu', 'ok', print_r($offering, 1)); 
-		$offering->add($userId);							
+		//$offering->add($userId);	
+		$offering->remove($userId);				
 	}
 }
 
