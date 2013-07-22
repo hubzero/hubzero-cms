@@ -755,6 +755,21 @@
 			size="50" />
 
 		<field
+			name="api_server"
+			type="radio"
+			label="COM_CONFIG_FIELD_API_ENABLE_LABEL"
+			description="COM_CONFIG_FIELD_API_ENABLE_DESC"
+			required="true"
+			default="0"
+			filter="integer">
+			<option
+				value="1">JYES</option>
+			<option
+				value="0">JNO</option>
+			
+		</field>
+
+		<field
 			name="helpurl"
 			type="helpsite"
 			label="COM_CONFIG_FIELD_HELP_SERVER_LABEL"

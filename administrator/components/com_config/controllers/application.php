@@ -23,6 +23,14 @@ class ConfigControllerApplication extends JControllerLegacy
 	 */
 	function __construct($config = array())
 	{
+		/* @FIXME: START HUBzero Fix for who can access global config
+		// Make sure the user is authorized to view this page
+		$user = & JFactory::getUser();
+		if (!$user->authorize( 'com_config', 'manage' )) {
+			JFactory::getApplication()->redirect('index.php', JText::_('ALERTNOTAUTH'));
+		}
+		*/
+
 		parent::__construct($config);
 
 		// Map the apply task to the save method.

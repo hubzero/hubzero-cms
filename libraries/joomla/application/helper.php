@@ -93,6 +93,12 @@ class JApplicationHelper
 			$obj->name = 'installation';
 			$obj->path = JPATH_INSTALLATION;
 			self::$_clients[2] = clone $obj;
+
+			// HUBzero API Client
+			$obj->id = 4;
+			$obj->name = 'api';
+			$obj->path = JPATH_SITE . DS . 'api';
+			self::$_clients[4] = clone $obj;
 		}
 
 		// If no client id has been passed return the whole array
