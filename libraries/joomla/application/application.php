@@ -1078,8 +1078,8 @@ class JApplication extends JObject
 			if ($session->isNew())
 			{
 				$query->insert($query->qn('#__session'))
-					->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time'))
-					->values($query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . $query->q((int) time()));
+					->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
+					->values($query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . $query->q((int) time()) . ', ' . $query->q($_SERVER['REMOTE_ADDR']));
 				$db->setQuery($query);
 			}
 			else
@@ -1087,11 +1087,11 @@ class JApplication extends JObject
 				$query->insert($query->qn('#__session'))
 					->columns(
 						$query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('guest') . ', ' .
-						$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username')
+						$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') .  ', ' . $query->q('ip')
 					)
 					->values(
 						$query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . (int) $user->get('guest') . ', ' .
-						$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $user->get('id') . ', ' . $query->q($user->get('username'))
+						$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $user->get('id') . ', ' . $query->q($user->get('username')) .  ', ' . $query->q($_SERVER['REMOTE_ADDR'])
 					);
 
 				$db->setQuery($query);

@@ -85,6 +85,7 @@ class JSessionStorageDatabase extends JSessionStorage
 			$query->update($db->quoteName('#__session'))
 			->set($db->quoteName('data') . ' = ' . $db->quote($data))
 			->set($db->quoteName('time') . ' = ' . $db->quote((int) time()))
+			->set($db->quoteName('ip') . ' = ' . $db->quote($_SERVER['REMOTE_ADDR']))
 			->where($db->quoteName('session_id') . ' = ' . $db->quote($id));
 
 			// Try to update the session data in the database table.
