@@ -638,7 +638,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$rtrn = JRequest::getVar('return', '');
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn, false)
 		);
 	}
 
