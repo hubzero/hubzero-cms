@@ -573,7 +573,23 @@
 	<fieldset
 		name="site"
 		label="CONFIG_SITE_SETTINGS_LABEL">
-
+		<field
+			name="application_env"
+			type="list"
+			default="production"
+			label="COM_CONFIG_FIELD_ENVIRONMENT_DESC"
+			description="COM_CONFIG_FIELD_ENVIRONMENT_DESC"
+			required="true"
+			filter="cmd">
+			<option
+				value="production">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_PRODUCTION</option>
+			<option
+				value="staging">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_STAGING</option>
+			<option
+				value="testing">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_TESTING</option>
+			<option
+				value="development">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_DEVELOPMENT</option>
+		</field>
 		<field
 			name="sitename"
 			type="text"
