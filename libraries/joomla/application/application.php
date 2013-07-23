@@ -1023,7 +1023,9 @@ class JApplication extends JObject
 
 		$db = JFactory::getDBO();
 
+		// START: HUBzero, allow php session garbage collection handle this
 		// Remove expired sessions from the database.
+		/*
 		$time = time();
 		if ($time % 2)
 		{
@@ -1036,6 +1038,8 @@ class JApplication extends JObject
 			$db->setQuery($query);
 			$db->execute();
 		}
+		*/
+		// END: HUBzero, allow php session garbage collection handle this 
 
 		// Check to see the the session already exists.
 		if (($this->getCfg('session_handler') != 'database' && ($time % 2 || $session->isNew()))
