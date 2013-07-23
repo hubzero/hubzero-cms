@@ -517,6 +517,34 @@ class JDatabaseMySQL extends JDatabase
 			$sql .= ' LIMIT ' . $this->offset . ', ' . $this->limit;
 		}
 
+		// START: HUBzero query timer
+
+		$timer = 0;
+
+		// Reset the error values.
+ 		$this->errorNum = 0;
+ 		$this->errorMsg = '';
+
+		$starttime = microtime(true);
+ 		$this->cursor = mysql_query($sql, $this->connection);
+		$endtime = microtime(true);
+
+		// If debugging is enabled then let's log the query.
+		if ($this->debug) {
+			// Increment the query counter and add the query to the object queue.
+			$this->count++;
+			$timediff = ($endtime - $starttime);
+			$this->timer += $timediff;
+			if($timediff > 1000)
+			{
+				$timediff = "!!!!! ".$timediff;
+			}
+			$this->log[] = "(".$timediff."): ".$sql;
+
+			JLog::add(str_replace("\n","",$sql), JLog::DEBUG, 'databasequery');
+		}
+
+		/*
 		// If debugging is enabled then let's log the query.
 		if ($this->debug)
 		{
@@ -533,6 +561,8 @@ class JDatabaseMySQL extends JDatabase
 
 		// Execute the query.
 		$this->cursor = mysql_query($sql, $this->connection);
+		*/
+		// END: HUBzero query timer
 
 		// If an error occurred handle it.
 		if (!$this->cursor)
