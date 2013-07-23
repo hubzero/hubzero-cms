@@ -416,6 +416,9 @@ class plgProjectsFiles extends JPlugin
 			$subdir = '';
 		}
 		
+		// Write config file
+		$this->writeGitConfig( $this->_project->alias, $this->_config, $this->_case);
+		
 		// Build URL
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;		
 		$url 	= ($this->_case != 'files' && $this->_app->name) 
@@ -4048,9 +4051,16 @@ class plgProjectsFiles extends JPlugin
 	protected function _readFile($filename = '', $dir = 'logs', $readAll = false) 
 	{
 		// Get temp path
-		$temp  = $this->getProjectPath ($this->_project->alias, $dir);
-		$sfile 	 = $filename ? $filename : $this->prefix . $temp . DS . 'sync_' . $this->_project->alias . '.hidden';
-		
+		if (!$filename)
+		{
+			$temp  	 = $this->getProjectPath ($this->_project->alias, $dir);
+			$sfile 	 = $this->prefix . $temp . DS . 'sync_' . $this->_project->alias . '.hidden';
+		}
+		else
+		{
+			$sfile = $filename;
+		}
+				
 		if (is_file($sfile))
 		{
 			if ($readAll == true)
@@ -5316,7 +5326,7 @@ class plgProjectsFiles extends JPlugin
 	 */
 	protected function getGitHelper()
 	{
-		if (!isset($this->git))
+		if (!isset($this->_git))
 		{
 			// Git helper
 			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
@@ -6225,5 +6235,84 @@ class plgProjectsFiles extends JPlugin
 		$ds = (DS == '\\') ? '\\' . DS : DS;
 		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
 		return preg_replace($regex, '', $path);
+	}
+	
+	/**
+	 * Write config for direct Git access
+	 * 
+	 * @param      string	$alias
+	 * @param      object 	$config
+	 * @param      string  	$case
+	 * 
+	 * @return     void
+	 */
+	public function writeGitConfig($alias = '', $config = NULL, $case = 'files') 
+	{
+		if (!$alias || !$config)
+		{
+			return false;
+		}
+		
+		// Get site name
+		$jconfig =& JFactory::getConfig();		
+		$sitename = $jconfig->getValue('config.sitename') ? $jconfig->getValue('config.sitename') : 'myhub';
+
+		// Get configs
+		$gitConfigPath 	= '/etc/apache2/' . $sitename . '.conf.d/projects';		
+		$prefix 		= $config->get('offroot', 0) ? '' : JPATH_ROOT;
+		$webpath 		= $prefix . DS . trim($config->get('webpath'), DS);
+		$group 			= $config->get('group_prefix', 'pr-') . $alias;
+		$configFile 	= $gitConfigPath . DS . 'projects.conf';
+
+		// Load psystem configs
+		$sysconfig =& JComponentHelper::getParams( 'com_system' );
+		
+		// We need the config path set up by admin beforehand
+		if ( !is_dir($gitConfigPath) )
+		{
+			return false;
+		}
+
+		// Make sure the config for this project wasn't written already
+		if (is_file($configFile))
+		{
+			$read = $this->_readFile($configFile, '', true);
+			
+			if (preg_match("/\/" . $alias . "\/git\/" . $case . "/", $read))
+			{
+				return true;
+			}
+		}
+
+		// Config text
+		$ctext  = '############' . "\n";
+		$ctext .= 'ScriptAlias /projects/' . $alias . '/git/ /usr/lib/git-core/git-http-backend/' . "\n";
+		$ctext .= '<Location /projects/' . $alias . '/git/' . $case . '>' . "\n";
+		$ctext .= "\t" . 'SetEnv GIT_PROJECT_ROOT ' . $webpath . DS . $alias . "\n";
+		$ctext .= "\t" . 'SetEnv GIT_HTTP_EXPORT_ALL' . "\n";
+		$ctext .= "\t" . 'Options +ExecCGI' . "\n";
+		$ctext .= "\t" . 'AuthType Basic' . "\n";
+		$ctext .= "\t" . 'AuthBasicProvider ldap' . "\n";
+		$ctext .= "\t" . 'AuthName "' . $sitename . ' Project \'' . $alias . '\'"' . "\n";
+		$ctext .= "\t" . 'AuthzLDAPAuthoritative on' . "\n";
+		$ctext .= "\t" . 'AuthLDAPBindDN "' . $sysconfig->get('ldap_managerdn') . '"' . "\n";
+		$ctext .= "\t" . 'AuthLDAPBindPassword "' . $sysconfig->get('ldap_managerpw') . '"' . "\n";
+		$ctext .= "\t" . 'AuthLDAPGroupAttributeIsDN off' . "\n";
+		$ctext .= "\t" . 'AuthLDAPGroupAttribute memberUid' . "\n";
+		$ctext .= "\t" . 'AuthLDAPURL ' . $sysconfig->get('ldap_primary') . '/ou=users,' . $sysconfig->get('ldap_basedn') . "\n";
+		$ctext .= "\t" . 'Require ldap-group cn=' . $group . ',ou=groups,' . $sysconfig->get('ldap_basedn') . "\n";
+		$ctext .= "\t" . 'Allow from all' . "\n";
+		$ctext .= '</Location>' . "\n";
+		$ctext .= '############' . "\n";
+
+		//echo '<pre>' . $ctext . '</pre>';
+
+		// Write to config file
+		$this->_writeToFile($ctext, $configFile, true);
+		
+		// Restart apache
+		exec('/etc/init.d/apache2 restart');
+
+		return true;	
 	}
 }

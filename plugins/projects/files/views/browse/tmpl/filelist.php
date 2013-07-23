@@ -40,7 +40,7 @@ if ($this->subdir && count($desect_path) > 0)
 {
 	for ($p = 0; $p < count($desect_path); $p++) 
 	{
-		$parent  .= count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
+		$parent   = count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
 		$url  	 .= DS . $desect_path[$p];
 		$path_bc .= ' &raquo; <span><a href="'. $this->url . '/?subdir='
 			. urlencode($url) . '" class="folder">' . $desect_path[$p].'</a></span> ';
