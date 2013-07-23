@@ -280,7 +280,9 @@ Content-type: text/html;charset=utf-8";
 									?>
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border-right: 1px solid #dedede; border-left: 1px solid #dedede;" bgcolor="#ffffff">
 										<tbody>											
-											<?php foreach ($this->pubstats as $stat) { 
+											<?php 
+												$i = 0;
+												foreach ($this->pubstats as $stat) { 
 												// Get pub image
 												$pubthumb = $this->helper->getThumb(
 													$stat->publication_id, 
@@ -289,6 +291,13 @@ Content-type: text/html;charset=utf-8";
 													false, 
 													$stat->cat_url
 												);
+												
+												$i++;
+												
+												if ($i > $this->limit)
+												{
+													break;
+												}
 												
 												$sefManage 	= $baseManage . DS . $stat->publication_id;
 												$sefView 	= $baseView . DS . $stat->publication_id;
@@ -299,10 +308,10 @@ Content-type: text/html;charset=utf-8";
 												?>
 											<tr>
 												<td width="25"></td>
-												<td width="60">
+												<td width="75">
 													<a href="<?php echo $link; ?>"><img width="55" border="0" src="<?php echo $thumb; ?>" label="Image" editable="true"></a>
 												</td>
-												<td width="560">
+												<td width="545">
 													<p style="color: #333; font-weight:bold;"><a href="<?php echo $link; ?>" style="color: #333; text-decoration: none;"><?php echo $stat->title; ?></a></p>
 													<table cellpadding="0" cellspacing="0" border="0" align="left" style="font-size: 12px; padding: 0; margin: 0;">
 				                                        <tbody>
@@ -334,8 +343,8 @@ Content-type: text/html;charset=utf-8";
 											</tr>
 											<tr>
 												<td width="25" height="25"><div style="height: 25px !important; visibility: hidden; color: #FFFFFF">----</div></td>
-												<td width="120"></td>
-												<td width="500"></td>
+												<td width="75"></td>
+												<td width="545"></td>
 												<td width="25"></td>
 											</tr>
 											<?php } ?>
@@ -385,7 +394,7 @@ Content-type: text/html;charset=utf-8";
 										
 											<tr>
 												<td width="25"></td>
-												<td width="620"><p style="text-align: right; font-size: 12px; color: #999; margin: 15px 0; ">To unsubscribe, edit your message settings at <a href="<?php echo $profileLink . DS . 'messages' . DS . 'settings'; ?>" style="color: #33a9cf;"><?php echo $base; ?></a></p></td>
+												<td width="620"><p style="text-align: right; font-size: 12px; color: #999; margin: 15px 0; ">To unsubscribe, adjust "Receive monthly usage reports and other news" setting on your profile at <a href="<?php echo $profileLink . '/profile'; ?>" style="color: #33a9cf;"><?php echo $base; ?></a></p></td>
 												<td width="25"></td>
 											</tr>
 										</tbody>
