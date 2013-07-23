@@ -185,73 +185,113 @@ class modHubMenuHelper
 		{
 			$menu->addChild(new JMenuNode(JText::_('Components'), null, 'components'), true);
 
-			$query = 'SELECT *' .
-				' FROM #__components' .
-				' WHERE ' . $db->NameQuote('option') . ' NOT IN ("com_frontpage", "com_media", "com_system", "com_groups", "com_members")' .
-				' AND enabled = 1' .
-				' ORDER BY ordering, name';
-			$db->setQuery($query);
-			$comps = $db->loadObjectList(); // component list
-			$subs = array(); // sub menus
+			$subs  = array(); // sub menus
 			$langs = array(); // additional language files to load
 
-			// first pass to collect sub-menu items
-			foreach ($comps as $row)
+			if (version_compare(JVERSION, '2.5', 'ge'))
 			{
-				if ($row->parent)
+				// @FIXME: do this correctly!
+				// Prepare the query.
+				$query = $db->getQuery(true);
+				$query->select('*');
+				$query->from('#__extensions');
+				$query->where('enabled = 1');
+				$query->where('type = "component"');
+				$db->setQuery($query);
+
+				// component list
+				$comps = $db->loadObjectList();
+
+				// Load additional language files
+				if (array_key_exists('.menu', $langs)) 
 				{
-					if (!array_key_exists($row->parent, $subs)) 
-					{
-						$subs[$row->parent] = array ();
-					}
-					$subs[$row->parent][] = $row;
-					$langs[$row->option . '.menu'] = true;
-				} 
-				elseif (trim($row->admin_menu_link)) 
-				{
-					$langs[$row->option . '.menu'] = true;
+					unset($langs['.menu']);
 				}
-			}
-
-			// Load additional language files
-			if (array_key_exists('.menu', $langs)) 
-			{
-				unset($langs['.menu']);
-			}
-			foreach ($langs as $lang_name => $nothing) 
-			{
-				$lang->load($lang_name);
-			}
-
-			foreach ($comps as $row)
-			{
-				if ($editAllComponents | $user->authorize('administration', 'edit', 'components', $row->option))
+				foreach ($langs as $lang_name => $nothing) 
 				{
-					if ($row->parent == 0 && (trim($row->admin_menu_link) || array_key_exists($row->id, $subs)))
-					{
-						$text = $lang->hasKey($row->option) ? JText::_($row->option) : $row->name;
-						$link = $row->admin_menu_link ? "index.php?$row->admin_menu_link" : "index.php?option=$row->option";
+					$lang->load($lang_name);
+				}
 
-						if (array_key_exists($row->id, $subs)) 
+				foreach ($comps as $row)
+				{
+					if ($editAllComponents || $user->authorize('administration', 'edit', 'components', $row->element))
+					{
+						$text = $lang->hasKey($row->element) ? JText::_($row->element) : $row->name;
+						$link = "index.php?element=$row->element";
+
+						$menu->addChild(new JMenuNode($text, $link, $row->admin_menu_img));
+					}
+				}
+				$menu->getParent();
+			}
+			else
+			{
+				$query = 'SELECT *' .
+					' FROM #__components' .
+					' WHERE ' . $db->NameQuote('option') . ' NOT IN ("com_frontpage", "com_media", "com_system", "com_groups", "com_members")' .
+					' AND enabled = 1' .
+					' ORDER BY ordering, name';
+				$db->setQuery($query);
+				$comps = $db->loadObjectList(); // component list
+
+				// first pass to collect sub-menu items
+				foreach ($comps as $row)
+				{
+					if ($row->parent)
+					{
+						if (!array_key_exists($row->parent, $subs)) 
 						{
-							$menu->addChild(new JMenuNode($text, $link, $row->admin_menu_img), true);
-							foreach ($subs[$row->id] as $sub) 
+							$subs[$row->parent] = array ();
+						}
+						$subs[$row->parent][] = $row;
+						$langs[$row->option . '.menu'] = true;
+					} 
+					elseif (trim($row->admin_menu_link)) 
+					{
+						$langs[$row->option . '.menu'] = true;
+					}
+				}
+
+				// Load additional language files
+				if (array_key_exists('.menu', $langs)) 
+				{
+					unset($langs['.menu']);
+				}
+				foreach ($langs as $lang_name => $nothing) 
+				{
+					$lang->load($lang_name);
+				}
+
+				foreach ($comps as $row)
+				{
+					if ($editAllComponents | $user->authorize('administration', 'edit', 'components', $row->option))
+					{
+						if ($row->parent == 0 && (trim($row->admin_menu_link) || array_key_exists($row->id, $subs)))
+						{
+							$text = $lang->hasKey($row->option) ? JText::_($row->option) : $row->name;
+							$link = $row->admin_menu_link ? "index.php?$row->admin_menu_link" : "index.php?option=$row->option";
+
+							if (array_key_exists($row->id, $subs)) 
 							{
-								$key  = $row->option . '.' . $sub->name;
-								$text = $lang->hasKey($key) ? JText::_($key) : $sub->name;
-								$link = $sub->admin_menu_link ? "index.php?$sub->admin_menu_link" : null;
-								$menu->addChild(new JMenuNode($text, $link, $sub->admin_menu_img));
+								$menu->addChild(new JMenuNode($text, $link, $row->admin_menu_img), true);
+								foreach ($subs[$row->id] as $sub) 
+								{
+									$key  = $row->option . '.' . $sub->name;
+									$text = $lang->hasKey($key) ? JText::_($key) : $sub->name;
+									$link = $sub->admin_menu_link ? "index.php?$sub->admin_menu_link" : null;
+									$menu->addChild(new JMenuNode($text, $link, $sub->admin_menu_img));
+								}
+								$menu->getParent();
+							} 
+							else 
+							{
+								$menu->addChild(new JMenuNode($text, $link, $row->admin_menu_img));
 							}
-							$menu->getParent();
-						} 
-						else 
-						{
-							$menu->addChild(new JMenuNode($text, $link, $row->admin_menu_img));
 						}
 					}
 				}
+				$menu->getParent();
 			}
-			$menu->getParent();
 		}
 
 		/*
