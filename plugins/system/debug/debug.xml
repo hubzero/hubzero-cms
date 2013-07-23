@@ -130,6 +130,24 @@
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
+
+				<field name="log-database-errors" type="radio"
+					default="0"
+					description="PLG_DEBUG_FIELD_LOG_DATABASE_ERROR_DESC"
+					label="PLG_DEBUG_FIELD_LOG_DATABASE_ERROR_LABEL"
+				>
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+
+				<field name="log-database-queries" type="radio"
+					default="0"
+					description="PLG_DEBUG_FIELD_LOG_DATABASE_QUERY_DESC"
+					label="PLG_DEBUG_FIELD_LOG_DATABASE_QUERY_LABEL"
+				>
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

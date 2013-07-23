@@ -38,6 +38,18 @@ class plgSystemDebug extends JPlugin
 			JLog::addLogger(array('text_file' => 'deprecated.php'), JLog::ALL, array('deprecated'));
 		}
 
+		// Log database errors
+		if ($this->params->get('log-database-errors'))
+		{
+			JLog::addLogger(array('text_file' => 'jdatabase.error.php'), JLog::ALL, array('database'));
+		}
+
+		// Log database queries
+		if ($this->params->get('log-database-queries'))
+		{
+			JLog::addLogger(array('text_file' => 'jdatabase.query.php'), JLog::ALL, array('databasequery'));
+		}
+
 		// Only if debugging or language debug is enabled
 		if (JDEBUG || JFactory::getApplication()->getCfg('debug_lang'))
 		{

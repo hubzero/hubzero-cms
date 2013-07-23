@@ -371,7 +371,7 @@ class JDatabaseMySQLi extends JDatabaseMySQL
 			$this->count++;
 			$this->log[] = $sql;
 
-			JLog::add($sql, JLog::DEBUG, 'databasequery');
+			JLog::add(str_replace("\n","",$sql), JLog::DEBUG, 'databasequery');
 		}
 
 		// Reset the error values.
@@ -393,13 +393,14 @@ class JDatabaseMySQLi extends JDatabaseMySQL
 			{
 				if ($this->debug)
 				{
+					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
 					JError::raiseError(500, 'JDatabaseMySQLi::query: ' . $this->errorNum . ' - ' . $this->errorMsg);
 				}
 				return false;
 			}
 			else
 			{
-				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'databasequery');
+				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
 				throw new JDatabaseException($this->errorMsg, $this->errorNum);
 			}
 		}
