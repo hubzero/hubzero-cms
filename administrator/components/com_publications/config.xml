@@ -48,15 +48,11 @@
 		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for issuing DOIs (what goes after doi:)" />
 		<param name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
 		<param name="doi_service" type="text" menu="hide" default="" label="DOI service" description="Purdue Libraries DOI service" />
+		<param name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
+		<param name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
 		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for Purdue Libraries DOI service" />
 		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<param name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
-		<param name="issue_arch" type="radio" default="0" label="Enable Dark Archive option" description="Allow contributors to store dark archive of a publication version">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="ark_shoulder" type="text" menu="hide" default="" label="ARK shoulder" description="Shoulder for issuing ARKs (what goes after ark:/)" />	
-		<param name="ark_prefix" type="text" menu="hide" default="" label="ARK handle prefix" description="Prefix for ARK handles (e.g. test handles)" />	
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate Org supported tools" />
 		<param name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe Org supported tools" />
@@ -130,5 +126,11 @@
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="repository" type="list" default="0" label="Trusted Digital Repository" description="Trusted Digital Repository">
+			<option value="0">no</option>
+			<option value="1">yes</option>
+		</param>
+		<param name="aip_path" type="text" menu="hide" default="/srv/AIP" label="AIP path" description="AIP path (for trusted digital repos)" />
 	</params>
 </config>

@@ -37,132 +37,16 @@ defined('_JEXEC') or die('Restricted access');
 class PublicationUtilities
 {	
 	/**
-	 * Short description for 'updateDoi'
+	 * Register DOI with configures DOI service
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string &$doi Parameter description (if any) ...
-	 * @param      array $row Parameter description (if any) ...
-	 * @param      array $authors Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @param      array $metadata Parameter description (if any) ...
-	 * @param      string &$doierr Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public function updateDoi( $doi, $row, $authors, $config, $metadata = array(), &$doierr = '', $sendXML = true)
-	{		
-		if (!$doi)
-		{
-			$doierr .= 'Missing DOI handle for update';
-			return false;
-		}
-		
-		// Get configs
-		$juri =& JURI::getInstance();
-		
-		$jconfig 	=& JFactory::getConfig();
-		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
-		
-		// Collect metadata
-		$metadata['publisher']  = $config->get('doi_publisher', $jconfig->getValue('config.sitename') );
-		$metadata['pubYear'] 	= $row->published_up && $row->published_up != '0000-00-00 00:00:00' 
-			? date( 'Y', strtotime($row->published_up)) : date( 'Y' );
-		
-		// Get config
-		$livesite = $jconfig->getValue('config.live_site') 
-			? $jconfig->getValue('config.live_site') 
-			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-		if (!$livesite) 
-		{
-			$doierr .= 'Missing live site configuration';
-			return false;
-		}
-
-		$metadata['url'] = $livesite.DS.'publications'.DS.$row->publication_id.DS.'?v='.$row->version_number;
-		$metadata['title'] = stripslashes(htmlspecialchars($row->title));
-		
-		// Get first author / creator name
-		if (count($authors) > 0) 
-		{
-			$creatorName = $authors[0]->name;
-		}
-		else 
-		{
-			$creator = JUser::getInstance($row->created_by);
-			$creatorName = $creator->get('name');
-		}
-
-		// Format name
-		$nameParts    = explode(" ", $creatorName);
-		$metadata['creator']  = end($nameParts);
-		$metadata['creator'] .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
-				
-		// Start XML
-		if ($sendXML == true)
-		{
-			$xdoc 		= new DomDocument;
-			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi, $do = 'doi');	
-			$xmlschema 	= 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd';
-
-			// Load the xml document in the DOMDocument object
-			$xdoc->loadXML($xmlfile);
-		}
-		
-		/*EZID parses text received based on new lines. */
-		$input  = "_target: " . $metadata['url'] ."\n";
-		$input .= "datacite.creator: " . $metadata['creator'] . "\n";
-		$input .= "datacite.title: ". $metadata['title'] . "\n";
-		$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
-		$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
-		$input .= "datacite.resourcetype: " . $metadata['resourceType'] . "\n";
-		$input .= "_profile: datacite". "\n";
-	    		
-		//Validate the XML file against the schema
-		if ($sendXML == true && $xdoc->schemaValidate($xmlschema)) 
-		{
-			/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
-		    $input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
-		}
-		elseif ($sendXML == true)
-		{
-			$doierr .= "XML is invaild. Unable to upload XML as it is invalid. Please modify the created DOI with a valid XML .\n";
-			return false;
-		}
-				
-		// Make service path
-		$call  = $service . DS . 'id' . DS . 'doi:' . $doi;	
-
-	    $ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $call);
-
-	    /* Purdue Hubzero Username/Password */
-	    curl_setopt($ch, CURLOPT_USERPWD, '');
-	    curl_setopt($ch, CURLOPT_POST, true);
-
-	    curl_setopt($ch, CURLOPT_HTTPHEADER,
-	      array('Content-Type: text/plain; charset=UTF-8',
-	            'Content-Length: ' . strlen($input)));
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	    $output = curl_exec($ch);
-	    curl_close($ch);
-				
-		return true;
-	}
-	
-	/**
-	 * Short description for 'registerDoi'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $row Parameter description (if any) ...
-	 * @param      array $authors Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @param      array $metadata Parameter description (if any) ...
-	 * @param      string &$doierr Parameter description (if any) ...
-	 * @param      string $do Parameter description (if any) ...
-	 * @param      string $partial Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array 	$row 		Publication version info
+	 * @param      array 	$authors 	Publication version authors
+	 * @param      array 	$config 	Publications component config
+	 * @param      array 	$metadata 	Array of metadata
+	 * @param      string 	&$doierr 	Collector for errors
+	 * @param      string 	$do 		'doi' or 'ark'
+	 * @param      int 		$reserve 	Reserving DOI? (no extended XML metadata)
+	 * @return     true on success or false on error
 	 */
 	public function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $do = 'doi', $reserve = 0 )
 	{
@@ -171,6 +55,8 @@ class PublicationUtilities
 		$shoulder   = $do == 'doi' ? $config->get('doi_shoulder', '10.5072' ) : $config->get('ark_shoulder', '/99999' );
 		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
 		$prefix     = $do == 'doi' ? $config->get('doi_prefix', '' ) : $config->get('ark_prefix', '' );
+		$userpw		= $config->get('doi_userpw', '' );
+		
 		$handle     = '';
 		$doi 		= '';
 		
@@ -230,11 +116,10 @@ class PublicationUtilities
 		$input .= "datacite.resourcetype: " . $metadata['resourceType'] . "\n";
 		$input .= "_profile: datacite";
 
+		// cURL Request
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $call);
-
-		/* Purdue Hubzero Username/Password */
-		curl_setopt($ch, CURLOPT_USERPWD, '');
+		curl_setopt($ch, CURLOPT_USERPWD, $userpw);
 		curl_setopt($ch, CURLOPT_POST, true);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
@@ -267,7 +152,7 @@ class PublicationUtilities
 		{
 			$xdoc 		= new DomDocument;
 			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi, $do);	
-			$xmlschema 	= 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd';
+			$xmlschema 	= trim($config->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 			
 			//Load the xml document in the DOMDocument object
 			$xdoc->loadXML($xmlfile);
@@ -319,17 +204,131 @@ class PublicationUtilities
 		
 		return $handle ? $doi : NULL;
 	}
-	
+
 	/**
-	 * Short description for 'getXml'
+	 * Update DOI information
 	 * 
 	 * Long description (if any) ...
 	 * 
-	 * @param      array $row Parameter description (if any) ...
-	 * @param      array $authors Parameter description (if any) ...
-	 * @param      array $metadata Parameter description (if any) ...
-	 * @param      unknown $doi Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string 	$doi 		DOI handle, e.g. 10.4231/D3F47GT6N
+	 * @param      array 	$row 		Publication version info
+	 * @param      array 	$authors 	Publication version authors
+	 * @param      array 	$config 	Publications component config
+	 * @param      array 	$metadata 	Array of metadata
+	 * @param      string 	&$doierr 	Collector for errors
+	 * @param      boolean 	$sendXML 	Send XML metadata or not
+	 * @return     true on success or false on error
+	 */
+	public function updateDoi( $doi, $row, $authors, $config, $metadata = array(), &$doierr = '', $sendXML = true)
+	{		
+		if (!$doi)
+		{
+			$doierr .= 'Missing DOI handle for update';
+			return false;
+		}
+		
+		// Get configs
+		$juri =& JURI::getInstance();
+		
+		$jconfig 	=& JFactory::getConfig();
+		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
+		$userpw		= $config->get('doi_userpw', '' );
+		
+		// Collect metadata
+		$metadata['publisher']  = $config->get('doi_publisher', $jconfig->getValue('config.sitename') );
+		$metadata['pubYear'] 	= $row->published_up && $row->published_up != '0000-00-00 00:00:00' 
+								? date( 'Y', strtotime($row->published_up)) : date( 'Y' );
+		
+		// Get config
+		$livesite = $jconfig->getValue('config.live_site') 
+			? $jconfig->getValue('config.live_site') 
+			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+		if (!$livesite) 
+		{
+			$doierr .= 'Missing live site configuration';
+			return false;
+		}
+
+		$metadata['url'] = $livesite . DS . 'publications' . DS . $row->publication_id . DS . '?v=' . $row->version_number;
+		$metadata['title'] = stripslashes(htmlspecialchars($row->title));
+		
+		// Get first author / creator name
+		if (count($authors) > 0) 
+		{
+			$creatorName = $authors[0]->name;
+		}
+		else 
+		{
+			$creator = JUser::getInstance($row->created_by);
+			$creatorName = $creator->get('name');
+		}
+
+		// Format name
+		$nameParts    		  = explode(" ", $creatorName);
+		$metadata['creator']  = end($nameParts);
+		$metadata['creator'] .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
+				
+		// Start XML
+		if ($sendXML == true)
+		{
+			$xdoc 		= new DomDocument;
+			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi, $do = 'doi');	
+			$xmlschema 	= trim($config->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
+
+			// Load the xml document in the DOMDocument object
+			$xdoc->loadXML($xmlfile);
+		}
+		
+		/*EZID parses text received based on new lines. */
+		$input  = "_target: " . $metadata['url'] ."\n";
+		$input .= "datacite.creator: " . $metadata['creator'] . "\n";
+		$input .= "datacite.title: ". $metadata['title'] . "\n";
+		$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
+		$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
+		$input .= "datacite.resourcetype: " . $metadata['resourceType'] . "\n";
+		$input .= "_profile: datacite". "\n";
+	    		
+		//Validate the XML file against the schema
+		if ($sendXML == true && $xdoc->schemaValidate($xmlschema)) 
+		{
+			/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
+		    $input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
+		}
+		elseif ($sendXML == true)
+		{
+			$doierr .= "XML is invaild. Unable to upload XML as it is invalid. Please modify the created DOI with a valid XML .\n";
+			return false;
+		}
+				
+		// Make service path
+		$call  = $service . DS . 'id' . DS . 'doi:' . $doi;	
+
+		// cURL Request
+	    $ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $call);
+	    curl_setopt($ch, CURLOPT_USERPWD, $userpw);
+	    curl_setopt($ch, CURLOPT_POST, true);
+
+	    curl_setopt($ch, CURLOPT_HTTPHEADER,
+	      array('Content-Type: text/plain; charset=UTF-8',
+	            'Content-Length: ' . strlen($input)));
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	    $output = curl_exec($ch);
+	    curl_close($ch);
+				
+		return true;
+	}
+	
+	/**
+	 * Get XML
+	 * 
+	 * @param      array 	$row 		Publication version info
+	 * @param      array 	$authors 	Publication version authors
+	 * @param      array 	$metadata 	Array of metadata
+	 * @param      string 	$doi 		DOI handle, e.g. 10.4231/D3F47GT6N
+	 * @param      string 	$do 		'doi' or 'ark'
+	 * @return     xml output
 	 */
 	public function getXml( $row, $authors, $metadata, $doi = 0, $do = 'doi')
 	{
