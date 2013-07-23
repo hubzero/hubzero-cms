@@ -756,7 +756,7 @@ class JApplication extends JObject
 		// If status is success, any error will have been raised by the user plugin
 		if ($response->status !== JAuthentication::STATUS_SUCCESS)
 		{
-			JError::raiseWarning('102001', $response->error_message);
+			return JError::raiseWarning('102001', $response->error_message);
 		}
 
 		return false;
