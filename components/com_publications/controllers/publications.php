@@ -423,11 +423,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Get major types
 		$t = new PublicationCategory( $this->database );
 		$view->categories = $t->getCategories(array('itemCount' => 1));
-		
-		// Get pub stats for each author			
-		$pubLog = new PublicationLog($this->database);
-		$pubstats = $pubLog->getAuthorStats('1012');
-		
+				
 		// Output HTML
 		if ($this->getError()) 
 		{
