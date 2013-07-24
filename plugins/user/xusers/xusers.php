@@ -50,6 +50,11 @@ class plgUserXusers extends JPlugin
 		parent::__construct($subject, $config);
 	}
 
+	public function onUserLogin($user, $options = array())
+	{
+		return $this->onLoginUser($user, $options);
+	}
+
 	/**
 	* This method should handle any login logic and report back to the subject
 	*
@@ -210,6 +215,11 @@ class plgUserXusers extends JPlugin
 		return true;
 	}
 
+	public function onUserAfterSave($user, $isnew, $success, $msg)
+	{
+		return $this->onAfterStoreUser($user, $isnew, $success, $msg);
+	}
+
 	/**
 	 * Method is called after user data is stored in the database
 	 *
@@ -366,6 +376,11 @@ class plgUserXusers extends JPlugin
 		}
 	}
 
+	public function onUserAfterDelete($user, $succes, $msg)
+	{
+		return $this->onAfterDeleteUser($user, $succes, $msg);
+	}
+
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
@@ -387,6 +402,11 @@ class plgUserXusers extends JPlugin
 		Hubzero_Auth_Link::delete_by_user_id($user['id']);
 
 		return true;
+	}
+
+	public function onUserLogout($user, $options = array())
+	{
+		return $this->onLogoutUser($user, $options);
 	}
 
 	/**
