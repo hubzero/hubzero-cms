@@ -36,7 +36,7 @@ jimport('joomla.application.component.view');
 /**
  * User link account view class
  */
-class UserViewLink extends JView
+class UsersViewLink extends JViewLegacy
 {
 	function display($tpl = null)
 	{
@@ -54,9 +54,9 @@ class UserViewLink extends JView
 		}
 
 		// Get and add the js and extra css to the page
-		Hubzero_Document::addComponentStylesheet('com_user', 'link.css');
-		Hubzero_Document::addComponentStylesheet('com_user', 'providers.css');
-		Hubzero_Document::addComponentScript('com_user', 'assets/js/link');
+		Hubzero_Document::addComponentStylesheet('com_users', 'link.css');
+		Hubzero_Document::addComponentStylesheet('com_users', 'providers.css');
+		Hubzero_Document::addComponentScript('com_users', 'assets/js/link');
 
 		// Import a few things
 		ximport('Hubzero_Auth_Link');

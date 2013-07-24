@@ -39,7 +39,7 @@ class UsersViewLogin extends JViewLegacy
 		// Make sure we're using a secure connection
 		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
 		{
-			$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			die('insecure connection and redirection failed');
 		}
 
@@ -78,6 +78,7 @@ class UsersViewLogin extends JViewLegacy
 		$auth = '';
 		if($return = JRequest::getVar('return', null))
 		{
+			$this->return = $return;
 			$return = base64_decode($return);
 			$query  = parse_url($return);
 			if (is_array($query) && isset($query['query']))
@@ -133,7 +134,6 @@ class UsersViewLogin extends JViewLegacy
 		$this->authenticators = $authenticators;
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
-		
 		$authenticator = JRequest::getVar('authenticator', '', 'method');
 
 		JPluginHelper::importPlugin('authentication');

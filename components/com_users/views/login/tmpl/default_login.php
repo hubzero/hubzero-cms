@@ -30,6 +30,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+$app = JFactory::getApplication();
 ?>
 
 <?php if ($this->params->get('show_page_title',1)) : ?>
@@ -48,7 +49,7 @@ if (!empty($error_message))
 // If an account is being linked, and the authenticator is hubzero, give a message
 if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
 {
-	echo '<p class="warning">To link your two accounts, you need to login with your ' . $mainframe->getCfg('sitename') . ' account.  You will only need to do this once.</p>';
+	echo '<p class="warning">To link your two accounts, you need to login with your ' . $app->getCfg('sitename') . ' account.  You will only need to do this once.</p>';
 }
 
 ?>
