@@ -84,7 +84,7 @@ class JRouterSite extends JRouter
 
 			if ($registration_incomplete)
 			{
-				if (($vars['option'] == 'com_user'))
+				if ($vars['option'] == 'com_users')
 				{
 					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
 						return $vars;
@@ -117,7 +117,7 @@ class JRouterSite extends JRouter
 						}
 						elseif ($session->get('linkaccount', true))
 						{
-							$vars['option'] = 'com_user';
+							$vars['option'] = 'com_users';
 							$vars['view']   = 'link';
 						}
 						else
@@ -156,7 +156,7 @@ class JRouterSite extends JRouter
 
 			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{
-				if ($vars['option'] == 'com_user')
+				if ($vars['option'] == 'com_users')
 				{
 					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
 						return $vars;
@@ -190,7 +190,7 @@ class JRouterSite extends JRouter
 					return $vars;
 				}
 
-				if ($vars['option'] == 'com_user' && ($vars['view'] == 'logout' || $vars['task'] == 'logout' || JRequest::getWord('task') == 'logout')) {
+				if ($vars['option'] == 'com_users' && ($vars['view'] == 'logout' || $vars['task'] == 'logout' || JRequest::getWord('task') == 'logout')) {
 					return $vars;
 				}
 
