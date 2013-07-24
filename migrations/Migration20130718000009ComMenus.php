@@ -448,6 +448,32 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 			$query = "UPDATE `#__menu` SET `language` = '*';";
 			$db->setQuery($query);
 			$db->query();
+
+			// Fix com_user->com_users in menu items
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = 'com_users';";
+			$db->setQuery($query);
+			$id = $db->loadResult();
+
+			$query = "SELECT * FROM `#__menu` WHERE `menutype` = 'default' AND (`alias` = 'login' OR `alias` = 'logout' OR `alias` = 'remind' OR `alias` = 'reset');";
+			$db->setQuery($query);
+			if ($results = $db->loadObjectList())
+			{
+				foreach ($results as $r)
+				{
+					$link = preg_replace('/(index\.php\?option=com_user)(&view=[a-z]+)/', '${1}s${2}', $r->link);
+					$params = json_decode($r->params);
+
+					if ($r->alias == 'login')
+					{
+						$params->login_redirect_url = $params->login;
+						unset($params->login);
+					}
+
+					$query = "UPDATE `#__menu` SET `link` = " . $db->quote($link) . ", `component_id` = '{$id}', `params` = " . $db->quote(json_encode($params)) . " WHERE `id` = '{$r->id}';";
+					$db->setQuery($query);
+					$db->query();
+				}
+			}
 		}
 
 		// @FIXME: this index effectively prevents one from having two menu items with the same alias, even in different menus?
