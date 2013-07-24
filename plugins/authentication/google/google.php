@@ -124,7 +124,7 @@ class plgAuthenticationGoogle extends JPlugin
 	 */
 	public function login(&$credentials, &$options)
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		// Included needed google api class
 		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
@@ -147,13 +147,22 @@ class plgAuthenticationGoogle extends JPlugin
 
 		// If someone is logged in already, then we're linking an account
 		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'login' : 'link';
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			$com_user = 'com_users';
+			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		}
+		else
+		{
+			$com_user = 'com_user';
+			$task     = ($juser->get('guest')) ? 'login' : 'link';
+		}
 
 		// Set up the config for the google api instance
 		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
-		$client->setRedirectUri($service . '/index.php?option=com_user&task=' . $task . '&authenticator=google');
+		$client->setRedirectUri($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=google');
 
 		// If we have a code comeing back, the user has authorized our app, and we can authenticate
 		if (JRequest::getVar('code', NULL))
@@ -168,8 +177,8 @@ class plgAuthenticationGoogle extends JPlugin
 		else
 		{
 			// User didn't authorize our app or clicked cancel
-			$mainframe->redirect(JRoute::_('index.php?option=com_user&view=login&return=' . $return),
-				'To log in via Google, you must authorize the ' . $mainframe->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
+				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
 				'error');
 		}
 	}
@@ -184,7 +193,7 @@ class plgAuthenticationGoogle extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		// Included needed google api classes
 		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
@@ -196,13 +205,22 @@ class plgAuthenticationGoogle extends JPlugin
 
 		// If someone is logged in already, then we're linking an account
 		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'login' : 'link';
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			$com_user = 'com_users';
+			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		}
+		else
+		{
+			$com_user = 'com_user';
+			$task     = ($juser->get('guest')) ? 'login' : 'link';
+		}
 
 		// Set up the config for the google api instance
 		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
-		$client->setRedirectUri($service . '/index.php?option=com_user&task=' . $task . '&authenticator=google');
+		$client->setRedirectUri($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=google');
 		$client->setAccessType('online');
 		$client->setState($view->return);
 		$client->setApprovalPrompt('auto');
@@ -213,7 +231,7 @@ class plgAuthenticationGoogle extends JPlugin
 
 		// Create and follow the authorization URL
 		$authUrl = $client->createAuthUrl();
-		$mainframe->redirect($authUrl);
+		$app->redirect($authUrl);
 	}
 
 	/**
@@ -317,7 +335,7 @@ class plgAuthenticationGoogle extends JPlugin
 	 */
 	public function link()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		// Included needed google api classes
 		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
@@ -329,11 +347,22 @@ class plgAuthenticationGoogle extends JPlugin
 		$juri    =& JURI::getInstance();
 		$service = trim($juri->base(), DS);
 
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			$com_user = 'com_users';
+			$task     = 'user.link';
+		}
+		else
+		{
+			$com_user = 'com_user';
+			$task     = 'link';
+		}
+
 		// Set up the config for the google api instance
 		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
-		$client->setRedirectUri($service . '/index.php?option=com_user&task=link&authenticator=google');
+		$client->setRedirectUri($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=google');
 
 		// Create OAuth2 Instance
 		$oauth2 = new Google_Oauth2Service($client);
@@ -360,7 +389,7 @@ class plgAuthenticationGoogle extends JPlugin
 			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
 			{
 				// This google account is already linked to another hub account
-				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
 					'This google account appears to already be linked to a hub account', 
 					'error');
 			}
@@ -376,8 +405,8 @@ class plgAuthenticationGoogle extends JPlugin
 		else
 		{
 			// User didn't authorize our app, or, clicked cancel...
-			$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To log in via Google, you must authorize the ' . $mainframe->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
 				'error');
 		}
 	}

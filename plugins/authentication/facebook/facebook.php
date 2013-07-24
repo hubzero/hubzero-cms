@@ -121,7 +121,7 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function login(&$credentials, &$options)
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		if($return = JRequest::getVar('return', '', 'method', 'base64'))
 		{
@@ -133,13 +133,14 @@ class plgAuthenticationFacebook extends JPlugin
 		}
 
 		$options['return'] = $b64dreturn;
+		$com_user = (version_compare(JVERSION, '2.5', 'ge')) ? 'com_users' : 'com_user';
 
 		// Check to make sure they didn't deny our application permissions
 		if(JRequest::getVar('error', NULL))
 		{
 			// User didn't authorize our app or clicked cancel
-			$mainframe->redirect(JRoute::_('index.php?option=com_user&view=login&return=' . $return),
-				'To log in via Facebook, you must authorize the ' . $mainframe->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
+				'To log in via Facebook, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
 				'error');
 		}
 	}
@@ -154,7 +155,7 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		// Get the hub url
 		$juri    =& JURI::getInstance();
@@ -173,7 +174,16 @@ class plgAuthenticationFacebook extends JPlugin
 
 		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
 		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'login' : 'link';
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			$com_user = 'com_users';
+			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		}
+		else
+		{
+			$com_user = 'com_user';
+			$task     = ($juser->get('guest')) ? 'login' : 'link';
+		}
 
 		// Set up the config for the facebook sdk instance
 		$config               = array();
@@ -188,14 +198,14 @@ class plgAuthenticationFacebook extends JPlugin
 		$params = array(
 			'scope'        => 'email,user_birthday', // this is where you would specify more information from the facebook profile
 			'display'      => 'page',
-			'redirect_uri' => $service . '/index.php?option=com_user&task=' . $task . '&authenticator=facebook' . $return
+			'redirect_uri' => $service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=facebook' . $return
 		);
 
 		// Get the login URL
 		$loginUrl = $facebook->getLoginUrl($params);
 
 		// Redirect to the login URL
-		$mainframe->redirect($loginUrl);
+		$app->redirect($loginUrl);
 	}
 
 	/**
@@ -288,7 +298,7 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function link()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		$juser = JFactory::getUser();
 
@@ -316,7 +326,7 @@ class plgAuthenticationFacebook extends JPlugin
 			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
 			{
 				// This facebook account is already linked to another hub account
-				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
 					'This facebook account appears to already be linked to a hub account', 
 					'error');
 			}
@@ -331,8 +341,8 @@ class plgAuthenticationFacebook extends JPlugin
 		else
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-				'To link the current account with your Facebook account, you must authorize the ' . $mainframe->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+				'To link the current account with your Facebook account, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
 				'error');
 		}
 	}

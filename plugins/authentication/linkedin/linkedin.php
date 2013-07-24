@@ -116,7 +116,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function login(&$credentials, &$options)
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		$jsession =& JFactory::getSession();
 
@@ -132,6 +132,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 
 		// Set the return variable
 		$options['return'] = $b64dreturn;
+		$com_user = (version_compare(JVERSION, '2.5', 'ge')) ? 'com_users' : 'com_user';
 
 		// Set up linkedin configuration
 		$linkedin_config['appKey']    = $this->params->get('api_key');
@@ -143,8 +144,8 @@ class plgAuthenticationLinkedIn extends JPlugin
 		if(!JRequest::getVar('oauth_verifier', NULL))
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$mainframe->redirect(JRoute::_('index.php?option=com_user&view=login&return=' . $return),
-				'To log in via LinkedIn, you must authorize the ' . $mainframe->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
+				'To log in via LinkedIn, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
 				'error');
 		}
 
@@ -178,17 +179,26 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		// If someone is logged in already, then we're linking an account
 		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'login' : 'link';
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			$com_user = 'com_users';
+			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		}
+		else
+		{
+			$com_user = 'com_user';
+			$task     = ($juser->get('guest')) ? 'login' : 'link';
+		}
 
 		// Set up the redirect URL
 		$juri        =& JURI::getInstance();
 		$service     = trim($juri->base(), DS);
 		$return      = isset($view->return) ? "&return=".$view->return : '';
-		$redirect_to = "{$service}/index.php?option=com_user&task={$task}&authenticator=linkedin{$return}";
+		$redirect_to = "{$service}/index.php?option={$com_user}&task={$task}&authenticator=linkedin{$return}";
 
 		// User initiated LinkedIn connection, setup linkedin configuration
 		$linkedin_config['callbackUrl'] = $redirect_to . '&' . LINKEDIN::_GET_TYPE . '=initiate&' . LINKEDIN::_GET_RESPONSE . '=1';
@@ -212,7 +222,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 				$jsession->set('linkedin.oauth.request', $reply['linkedin']);
 
 				// Redirect the user to the LinkedIn authentication/authorization page to initiate validation
-				$mainframe->redirect(LINKEDIN::_URL_AUTH . $reply['linkedin']['oauth_token']);
+				$app->redirect(LINKEDIN::_URL_AUTH . $reply['linkedin']['oauth_token']);
 			}
 			return;
 		}
@@ -317,7 +327,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function link()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 		$juser    = JFactory::getUser();
 		$jsession =& JFactory::getSession();
 
@@ -331,8 +341,8 @@ class plgAuthenticationLinkedIn extends JPlugin
 		if(!JRequest::getVar('oauth_verifier', NULL))
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To log in via LinkedIn, you must authorize the ' . $mainframe->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				'To log in via LinkedIn, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
 				'error');
 		}
 
@@ -377,7 +387,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
 			{
 				// This linkedin account is already linked to another hub account
-				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
 					'This linkedin account appears to already be linked to a hub account', 
 					'error');
 			}
@@ -392,8 +402,8 @@ class plgAuthenticationLinkedIn extends JPlugin
 		else // no authorization
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To log in via LinkedIn, you must authorize the ' . $mainframe->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				'To log in via LinkedIn, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
 				'error');
 		}
 	}

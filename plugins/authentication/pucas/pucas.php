@@ -64,7 +64,7 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function logout()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		phpCAS::setDebug();
 		if(!phpCAS::isInitialized())
@@ -104,7 +104,7 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function status()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		$status = array();
 
@@ -154,7 +154,7 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		phpCAS::setDebug();
 		if(!phpCAS::isInitialized())
@@ -178,13 +178,22 @@ class plgAuthenticationPUCAS extends JPlugin
 
 		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
 		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'login' : 'link';
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			$com_user = 'com_users';
+			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		}
+		else
+		{
+			$com_user = 'com_user';
+			$task     = ($juser->get('guest')) ? 'login' : 'link';
+		}
 
-		phpCAS::setFixedServiceURL($service . '/index.php?option=com_user&task=' . $task . '&authenticator=pucas' . $return);
+		phpCAS::setFixedServiceURL($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=pucas' . $return);
 		phpCAS::setNoCasServerValidation();
 		phpCAS::forceAuthentication();
 
-		$mainframe->redirect($service . '/index.php?option=com_user&task=' . $task . '&authenticator=pucas' . $return);
+		$app->redirect($service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=pucas' . $return);
 	}
 
 	/**
@@ -279,7 +288,7 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function link()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		// Get the user
 		$juser = JFactory::getUser();
@@ -303,7 +312,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
 			{
 				// This purdue cas account is already linked to another hub account
-				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
 					'This Purdue Career Account appears to already be linked to a hub account', 
 					'error');
 			}
@@ -318,7 +327,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		else
 		{
 			// User somehow got redirect back without being authenticated (not sure how this would happen?)
-			$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
 				'There was an error linking your Purdue Career Account, please try again later.', 
 				'error');
 		}
