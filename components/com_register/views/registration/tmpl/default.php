@@ -126,14 +126,15 @@ defined('_JEXEC') or die('Restricted access');
 		if(!empty($authenticators))
 		{
 			$doc =& JFactory::getDocument();
-			$doc->addStylesheet(DS . 'components' . DS . 'com_user' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
+			$com_users = (version_compare(JVERSION, '1.6', 'ge')) ? 'com_users' : 'com_user';
+			$doc->addStylesheet(DS . 'components' . DS . $com_users . DS . 'assets' . DS . 'css' . DS . 'providers.css');
 			$html .= '<div class="explaination"><p class="info">You can choose to log in via one of these services, and we\'ll help you fill in the info below!</p></div>';
 			$html .= '<fieldset>';
 			$html .= '<legend>Connect With</legend>';
 			$html .= '<div id="providers">';
 			foreach($authenticators as $a)
 			{
-				$html .= '<a class="account-group" id="'.$a['name'].'" href="'.JRoute::_('index.php?option=com_user&view=login&authenticator='.$a['name']).'">';
+				$html .= '<a class="account-group" id="'.$a['name'].'" href="'.JRoute::_('index.php?option='.$com_users.'&view=login&authenticator='.$a['name']).'">';
 				$html .= '<p>'.$a['display'].' account</p>';
 				$html .= '</a>';
 			}
