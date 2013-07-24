@@ -84,15 +84,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				// Get the display name for the current plugin being used
 				$paramsClass = 'JParameter';
+				$com_user    = 'com_user';
 				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
 					$paramsClass = 'JRegistry';
+					$com_user    = 'com_users';
 				}
 				$plugin       = JPluginHelper::getPlugin('authentication', $domain->name);
 				$pparams      = new $paramsClass($plugin->params);
 				$display_name = $pparams->get('display_name', ucfirst($domain->name));
 ?>
-				<a href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $domain->name); ?>">
+				<a href="<?php echo JRoute::_('index.php?option=' . $com_user . '&view=login&authenticator=' . $domain->name); ?>">
 					<div class="account-group inactive" id="<?php echo $domain->name; ?>">
 						<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
 						<div class="account-id"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_CLICK_TO_LINK'); ?></div>
