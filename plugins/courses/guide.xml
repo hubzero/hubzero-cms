@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/courses/blog.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<install version="1.5" type="plugin" course="courses">
+	<name>Courses - Guide</name>
+	<author>HUBzero</author>
+	<creationDate>July 2013</creationDate>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<version>1.5</version>
+	<description>Display course getting started guide page</description>
+	<files>
+		<filename plugin="guide">guide.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_courses_guide.ini</language>
+	</languages>
+	<params>
+		<param name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the plugin.">
+			<option value="anyone">Any HUB Visitor</option>
+			<option value="registered">Only Registered HUB Users</option>
+			<option value="members">Only Course Members</option>
+			<option value="nobody">Disabled/Off</option>
+		</param>
+	</params>
+</install>

@@ -100,6 +100,13 @@ class CoursesTableMember extends JTable
 	var $student = NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $first_visit = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object
