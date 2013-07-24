@@ -140,15 +140,15 @@ class UsersModelReset extends JModelForm
 		// Get the token and user id from the confirmation process.
 		$app	= JFactory::getApplication();
 		$token	= $app->getUserState('com_users.reset.token', null);
-		$userId	= $app->getUserState('com_users.reset.user', null);
+		$id		= $app->getUserState('com_users.reset.user', null);
 
 		// Check the token and user id.
-		if (empty($token) || empty($userId)) {
+		if (empty($token) || empty($id)) {
 			return new JException(JText::_('COM_USERS_RESET_COMPLETE_TOKENS_MISSING'), 403);
 		}
 
 		// Get the user object.
-		$user = JUser::getInstance($userId);
+		$user = JUser::getInstance($id);
 
 		// Check for a user and that the tokens match.
 		if (empty($user) || $user->activation !== $token) {
@@ -162,19 +162,48 @@ class UsersModelReset extends JModelForm
 			return false;
 		}
 
-		// Generate the new password hash.
-		$salt		= JUserHelper::genRandomPassword(32);
-		$crypted	= JUserHelper::getCryptedPassword($data['password1'], $salt);
-		$password	= $crypted.':'.$salt;
+		// Initiate profile classs
+		$profile = new Hubzero_User_Profile();
+		$profile->load( $id );
 
-		// Update the user object.
-		$user->password			= $password;
-		$user->activation		= '';
-		$user->password_clear	= $data['password1'];
+		if (Hubzero_User_Helper::isXDomainUser($user->get('id'))) {
+			JError::raiseError( 403, JText::_('This is a linked account. To change your password you must change it using the procedures available where the account you are linked to is managed.') );
+			return;
+		}
 
-		// Save the user to the database.
-		if (!$user->save(true)) {
-			return new JException(JText::sprintf('COM_USERS_USER_SAVE_FAILED', $user->getError()), 500);
+		$password_rules = Hubzero_Password_Rule::getRules();
+
+		$password1 = $data['password1'];
+		$password2 = $data['password2'];
+
+		if (!empty($password1)) {
+			$msg = Hubzero_Password_Rule::validate($password1,$password_rules,$profile->get('username'));
+		} else {
+			$msg = array();
+		}
+
+		if (!$password1 || !$password2) {
+			$this->setError( JText::_('you must enter your new password twice to ensure we have it correct') );
+		} elseif ($password1 != $password2) {
+			$this->setError( JText::_('the new password and confirmation you entered do not match. Please try again') );
+		} elseif (!Hubzero_Registration_Helper::validpassword($password1)) {
+			$this->setError( JText::_('the password you entered was invalid password. You may be using characters that are not allowed') );
+		} elseif (!empty($msg)) {
+			$this->setError( JText::_('the password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
+		}
+
+		if ($this->getError()) {
+			$this->setError( $this->getError() );
+			return false;
+		}
+
+		// Encrypt the password and update the profile
+		$result = Hubzero_User_Password::changePassword($profile->get('username'), $password1);
+
+		// Save the changes
+		if (!$result) {
+			$this->setError( JText::_('There was an error changing your password.') );
+			return false;
 		}
 
 		// Flush the user data from the session.

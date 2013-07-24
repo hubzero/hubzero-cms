@@ -85,7 +85,7 @@ HUB.User = {
 					{
 						password.val('');
 						password.focus();
-						error.html(response.error.message);
+						error.html(response.error);
 						error.slideDown('fast', function(){});
 					}
 				},

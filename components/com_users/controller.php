@@ -37,6 +37,11 @@ class UsersController extends JControllerLegacy
 		$lName	 = JRequest::getCmd('layout', 'default');
 
 		if ($view = $this->getView($vName, $vFormat)) {
+			if ($vName == 'register' || $vName == 'registration') {
+				$this->setRedirect( JRoute::_('index.php?option=com_register', false) );
+				return;
+			}
+
 			// Do any specific processing by view.
 			switch ($vName) {
 				case 'registration':

@@ -36,6 +36,22 @@ class UsersViewLogin extends JViewLegacy
 		$this->state	= $this->get('State');
 		$this->params	= $this->state->get('params');
 
+		// Make sure we're using a secure connection
+		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+		{
+			$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			die('insecure connection and redirection failed');
+		}
+
+		// Get and add the js and extra css to the page
+		Hubzero_Document::addComponentStylesheet('com_users', 'login.css');
+		Hubzero_Document::addComponentStylesheet('com_users', 'providers.css');
+		Hubzero_Document::addComponentScript('com_users', 'assets/js/login');
+
+		Hubzero_Document::addSystemStylesheet('uniform.css');
+		Hubzero_Document::addSystemScript('jquery.uniform');
+		Hubzero_Document::addSystemScript('jquery.hoverIntent');
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseError(500, implode('<br />', $errors));
@@ -52,6 +68,101 @@ class UsersViewLogin extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
 		$this->prepareDocument();
+
+		$uri = JURI::getInstance();
+		$furl = base64_encode($uri->toString());
+		$this->freturn = $furl;
+
+		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
+		// Parse the return to retrive the authenticator, and remove it from the list below
+		$auth = '';
+		if($return = JRequest::getVar('return', null))
+		{
+			$return = base64_decode($return);
+			$query  = parse_url($return);
+			if (is_array($query) && isset($query['query']))
+			{
+				$query  = $query['query'];
+				$query  = explode('&', $query);
+				$auth   = '';
+				foreach($query as $q)
+				{
+					$n = explode('=', $q);
+					if($n[0] == 'authenticator')
+					{
+						$auth = $n[1];
+					}
+				}
+			}
+		}
+
+		// Figure out whether or not any of our third party auth plugins are turned on 
+		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
+		$multiAuth      = false;
+		$plugins        = JPluginHelper::getPlugin('authentication');
+		$authenticators = array();
+
+		foreach($plugins as $p)
+		{
+			if($p->name != 'hubzero' && $p->name != $auth)
+			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
+				$pparams = new $paramsClass($p->params);
+				$display = $pparams->get('display_name', ucfirst($p->name));
+				$authenticators[] = array('name' => $p->name, 'display' => $display);
+				$multiAuth = true;
+			}
+		}
+
+		// Override $multiAuth if authenticator is set to hubzero
+		if(JRequest::getWord('authenticator') == 'hubzero')
+		{
+			$multiAuth = false;
+		}
+
+		// Set the return if we have it...
+		$returnUrl = (base64_decode($url) != '/members/myaccount') ? "&return={$url}" : '';
+
+		$this->multiAuth = $multiAuth;
+		$this->returnUrl = $returnUrl;
+		$this->authenticators = $authenticators;
+
+		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
+		
+		$authenticator = JRequest::getVar('authenticator', '', 'method');
+
+		JPluginHelper::importPlugin('authentication');
+
+		foreach ($plugins as $plugin)
+		{
+			$className = 'plg'.$plugin->type.$plugin->name;
+
+			if (class_exists($className))
+			{
+				$myplugin = new $className($this,(array)$plugin);
+
+				if (method_exists($className,'status'))
+				{
+					$status[$plugin->name] = $myplugin->status();
+					$this->status = $status;
+				}
+					
+				if ($plugin->name != $authenticator)
+					continue;
+
+				if (method_exists($className,'display'))
+				{
+					$result = $myplugin->display($this, $tpl);
+
+					return $result;
+				}
+			}
+		}
 
 		parent::display($tpl);
 	}
@@ -104,4 +215,6 @@ class UsersViewLogin extends JViewLegacy
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 	}
+
+	function attach() {}
 }

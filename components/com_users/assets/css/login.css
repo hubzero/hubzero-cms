@@ -35,7 +35,7 @@
 	z-index: 500;
 }
 #authentication.multiAuth #inner {
-	background: url('/components/com_user/assets/img/line.png') 50% 50% repeat-y;
+	background: url('/components/com_users/assets/img/line.png') 50% 50% repeat-y;
 	overflow: hidden;
 }
 #authentication .error {
@@ -174,10 +174,10 @@ p.callToAction {
 	background-color: #FFF;
 }
 #authentication #credentials-hub input[type="text"] {
-	background-image: url('/components/com_user/assets/img/user.png');
+	background-image: url('/components/com_users/assets/img/user.png');
 }
 #authentication #credentials-hub input[type="password"] {
-	background-image: url('/components/com_user/assets/img/padlock.png');
+	background-image: url('/components/com_users/assets/img/padlock.png');
 }
 #authentication #credentials-hub input[type="submit"] {
 	width: 100%;

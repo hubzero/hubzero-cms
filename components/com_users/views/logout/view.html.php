@@ -26,18 +26,7 @@
  *
  * This file incorporates work covered by the following copyright and  
  * permission notice:  
- *                      
- * 		@version		$Id:       view.html.php 14401 2010-01-26 14:10:00Z louis $
- * 		@package		Joomla    
- * 		@subpackage	Login   
- * 		@copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * 		@license		GNU/GPL,   see LICENSE.php
- *                      Joomla! is free software. This version may have been modified pursuant
- *                      to the GNU General Public License, and as distributed it includes or
- *                      is derivative of works licensed under the GNU General Public License or
- *                      other free or open source software licenses.
- *                      See COPYRIGHT.php for copyright notices and details.
-
+ *
  * @package   hubzero-cms-joomla
  * @file      components/com_user/views/logout/view.html.php
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
@@ -57,9 +46,8 @@ jimport( 'joomla.application.component.view');
  * @subpackage	Users
  * @since	1.0       
  */
-class UserViewLogout extends JView
+class UsersViewLogout extends JViewLegacy
 {
-
 	/**
 	 * Short description for 'display'
 	 * 
@@ -70,12 +58,9 @@ class UserViewLogout extends JView
 	 */
 	function display($tpl = null)
 	{
-		global $mainframe, $option;
-
 		// Initialize variables
 		$document	=& JFactory::getDocument();
 		$user		=& JFactory::getUser();
-		$pathway	=& $mainframe->getPathway();
 		$image		= '';
 
 		$menu   =& JSite::getMenu();
@@ -116,10 +101,6 @@ class UserViewLogout extends JView
 
 		$title = JText::_( 'Logout');
 
-		// pathway item
-		if (count($pathway->getPathWay()) <= 0) {
-			$pathway->addItem($title, '' );
-		}
 		// Set page title
 		$document->setTitle( $title );
 
