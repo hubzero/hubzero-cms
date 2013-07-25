@@ -15,7 +15,7 @@ class Migration20130723163332ComCourses extends Hubzero_Migration
 	{
 		$query = "";
 
-		if ($db->tableHasField('#__courses_members', 'first_visit'))
+		if (!$db->tableHasField('#__courses_members', 'first_visit'))
 		{
 			$query = "ALTER TABLE `#__courses_members` ADD `first_visit` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
 		}
