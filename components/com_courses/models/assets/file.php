@@ -152,6 +152,18 @@ class FileAssetHandler extends AssetHandler
 
 		// Move the file to the site folder
 		set_time_limit(60);
+
+		// Scan for viruses
+		exec("clamscan -i --no-summary --block-encrypted {$_FILES['files']['tmp_name'][0]}", $output, $status);
+		if ($status == 1)
+		{
+			// Scan failed, delete asset and association and return an error
+			$assetObj->delete();
+			$assocObj->delete();
+			JFolder::delete($uploadDirectory);
+			return array('error' => 'File rejected because the anti-virus scan failed.');
+		}
+
 		if(!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path))
 		{
 			// Move failed, delete asset and association and return an error

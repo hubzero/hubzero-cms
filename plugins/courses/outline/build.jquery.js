@@ -899,7 +899,7 @@ HUB.CoursesOutline = {
 				if(extension[extension.length - 1] == 'zip') {
 					$('.unit').find("#" + progressBarId + " .filename").html('unzipping...');
 				} else {
-					$('.unit').find("#" + progressBarId + " .filename").html('finalizing upload...');
+					$('.unit').find("#" + progressBarId + " .filename").html('running virus scan and finalizing upload...');
 				}
 			}
 		},
