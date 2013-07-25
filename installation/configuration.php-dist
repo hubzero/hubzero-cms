@@ -23,7 +23,7 @@ class JConfig {
 	public $display_offline_message = '1';
 	public $offline_image = '';
 	public $sitename = 'Joomla!';				// Name of Joomla site
-	public $editor = 'tinymce';
+	public $editor = 'none';
 	public $captcha = '0';
 	public $list_limit = '20';
 	public $root_user = '42';
@@ -89,7 +89,7 @@ class JConfig {
 
 	/* SEO Settings */
 	public $sef = '1';
-	public $sef_rewrite = '0';
+	public $sef_rewrite = '1';
 	public $sef_suffix = '0';
 	public $unicodeslugs = '0';
 

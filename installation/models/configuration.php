@@ -52,7 +52,7 @@ class JInstallationModelConfiguration extends JModelLegacy
 		$registry->set('display_offline_message', 1);
 		$registry->set('offline_image', '');
 		$registry->set('sitename', $options->site_name);
-		$registry->set('editor', 'tinymce');
+		$registry->set('editor', 'none');
 		$registry->set('captcha', '0');
 		$registry->set('list_limit', 20);
 		$registry->set('access', 1);
@@ -112,7 +112,8 @@ class JInstallationModelConfiguration extends JModelLegacy
 
 		/* SEO Settings */
 		$registry->set('sef', 1);
-		$registry->set('sef_rewrite', 0);
+		//$registry->set('sef_rewrite', 0);
+		$registry->set('sef_rewrite', 1);
 		$registry->set('sef_suffix', 0);
 		$registry->set('unicodeslugs', 0);
 
