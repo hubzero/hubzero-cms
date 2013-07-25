@@ -402,8 +402,8 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 	$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 ?>
-	<div class="flowplayer" style="width: ' . $width . 'px; height: ' . $height . 'px;">
-		<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>
+	<div class="flowplayer">
+		<video id="movie<?php echo rand(0, 1000); ?>" preload controls>
 <?php
 	switch ($ext)
 	{
