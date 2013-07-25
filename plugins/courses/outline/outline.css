@@ -258,6 +258,9 @@
 	.object:after {
 		content: "\f0c3";
 	}
+	.swf:after {
+		content: "\f03d";
+	}
 
 /* lecture */
 	.embedded-video iframe {

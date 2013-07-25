@@ -885,6 +885,9 @@ ul {
 .object:after {
 	content: "\f0c3";
 }
+.swf:after {
+	content: "\f03d";
+}
 
 .asset-group-item .checker {
 	margin-right: 0;
