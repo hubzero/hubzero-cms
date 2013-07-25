@@ -70,6 +70,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					if ($a->get('type') == 'video' && $a->isPublished())
 					{
 						$used = $a->get('id');
+						$used_title = $a->get('title');
 						echo $a->render($this->course);
 
 						// Break - only 'render' first video available (should we do something about multiple video assets?)
@@ -81,9 +82,12 @@ if (!$this->course->offering()->access('view')) { ?>
 			</div><!-- / .video-player-wrap -->
 			<div class="video-meta">
 				<h3>
-					<?php echo $lecture->get('title'); ?>
+					<?php if (trim($lecture->get('title')) !== '--') : ?>
+						<?php echo $lecture->get('title'); ?>
+					<?php else : ?>
+						<?php echo $used_title; ?>
+					<?php endif; ?>
 				</h3>
-			
 
 			<ul class="lecture-assets">
 				<?php

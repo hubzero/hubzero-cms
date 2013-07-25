@@ -108,11 +108,11 @@ if (!$this->course->offering()->access('view')) { ?>
 											<?php foreach ($agt->children() as $ag) { ?>
 												<?php if ($ag->isAvailable() && $ag->isPublished()) : ?>
 													<div class="asset-group">
-														<h5>
-															<!-- <a href="<?php echo JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>"> -->
+														<?php if (trim($ag->get('title')) !== '--') : ?>
+															<h5>
 																<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
-															<!-- </a> -->
-														</h5>
+															</h5>
+														<?php endif; ?>
 														<?php if ($ag->assets()->total()) { ?>
 														<ul class="asset-list">
 															<?php
