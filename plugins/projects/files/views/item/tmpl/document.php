@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $file 	= $this->item;	
 $me 	= ($file['email'] == $this->juser->get('email') || $file['author'] == $this->juser->get('name'))  ? 1 : 0;
 $c 		= $this->c;
-$when 	= ProjectsHtml::formatTime($file['date']);
+$when 	= $file['date'] ? ProjectsHtml::formatTime($file['date']) : 'N/A';
 
 // LaTeX?
 $tex = ProjectsCompiler::isTexFile(basename($file['name']));

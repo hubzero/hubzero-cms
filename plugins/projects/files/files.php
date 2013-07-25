@@ -488,7 +488,7 @@ class plgProjectsFiles extends JPlugin
 			$filters['sortby'], 
 			$filters['sortdir']
 		);
-		
+				
 		$view->rSync 		= $this->_rSync;						
 		$view->url			= $url;
 		$view->sync			= $sync;
@@ -1636,7 +1636,13 @@ class plgProjectsFiles extends JPlugin
 						if ($this->_task != 'saveprov')
 						{
 							// Git add
-							$this->_git->gitAdd($path, $afile, $commitMsgZip);	
+							$this->_git->gitAdd($path, $afile, $commitMsgZip);
+							
+							// Commit every 10 items
+							//if ($z % 10 == 0)
+							//{
+								$this->_git->gitCommit($path, $commitMsgZip); 
+							//}	
 						}
 						
 						$z++;																	
@@ -1787,7 +1793,13 @@ class plgProjectsFiles extends JPlugin
 						if ($this->_task != 'saveprov')
 						{
 							// Git add
-							$this->_git->gitAdd($path, $afile, $commitMsgZip);	
+							$this->_git->gitAdd($path, $afile, $commitMsgZip);
+							
+							// Commit every 10 items
+							//if ($z % 10 == 0)
+							//{
+								$this->_git->gitCommit($path, $commitMsgZip); 
+							//}	
 						}
 						
 						$z++;																
@@ -5545,12 +5557,19 @@ class plgProjectsFiles extends JPlugin
 			$entry['bytes']		= filesize($this->prefix . $fullpath . DS . $e);
 			$entry['size']		= ProjectsHtml::formatSize($entry['bytes']);
 			$entry['ext']		= ProjectsHtml::getFileAttribs( $e, $fullpath, 'ext', $this->prefix );			
-									
-			$gitData = $this->_git->gitLog($path, $fpath, '', 'combined');			
-			$entry['date']  	= $gitData['date'];
-			$entry['revisions'] = $gitData['num'];
-			$entry['author'] 	= $gitData['author'];
-			$entry['email'] 	= $gitData['email'];
+			
+			// Get last commit data
+			if ($this->_fileinfo && isset($this->_fileinfo[$fpath]))
+			{
+				$gitData = $this->_fileinfo[$fpath];
+			}
+			else
+			{
+				$gitData = $this->_git->gitLog($path, $fpath, '', 'combined');							
+			}
+			$entry['date']  	= isset($gitData['date']) ? $gitData['date'] : NULL;
+			$entry['author'] 	= isset($gitData['author']) ? $gitData['author'] : NULL;
+			$entry['email'] 	= isset($gitData['email']) ? $gitData['email'] : NULL;
 						
 			// Publishing
 			$entry['pid'] 				= '';
@@ -5825,6 +5844,9 @@ class plgProjectsFiles extends JPlugin
 			$this->_pubassoc = $pA->getPubAssociations($this->_project->id, 'file');
 		}
 		
+		// Get detailed info for all commits (much faster than individual git log)
+		$this->_fileinfo = $this->_git->gitLogAll($path, $subdir);
+				
 		// Return files
 		if (count($out) > 0) 
 		{
@@ -5870,6 +5892,12 @@ class plgProjectsFiles extends JPlugin
 					else
 					{
 						$file = $this->getFileInfo($fpath, $path, $fullpath, $get_count, $norecurse);
+						
+						// Skip uncommitted files
+						if (!$file['date'])
+						{
+							continue;
+						}
 					}
 					
 					if (!in_array($file, $files))

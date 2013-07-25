@@ -257,6 +257,46 @@ class ProjectsGitHelper extends JObject {
 	}
 	
 	/**
+	 * Show logs in subdir
+	 * 
+	 * @param      string	$path		repository path
+	 * @param      string  	$file		file path
+	 *
+	 * @return     string
+	 */
+	public function gitLogAll ($path = '', $subdir = '') 
+	{
+		chdir($this->_prefix . $path);
+		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae" --name-only ' . $subdir;
+		
+		// Exec command
+		exec($this->_gitpath . ' '. $exec . ' 2>&1', $out1);
+		
+		$collector = array();
+		$entry 	   = array();
+		
+		foreach ($out1 as $line)
+		{	
+			if (substr($line, 0, 3) == '>>>')
+			{
+				$line = str_replace('>>>', '', $line);
+				$data = explode("||", $line);
+
+				$entry = array();
+				$entry['date']  	= $data[0];
+				$entry['author'] 	= $data[1];
+				$entry['email'] 	= $data[2];				
+			}
+			elseif ($line != '' && !isset($collector[$line]))
+			{
+				$collector[$line] = $entry;
+			}
+		}
+				
+		return $collector;
+	}
+	
+	/**
 	 * Show commit log detail
 	 * 
 	 * @param      string	$path		repository path
@@ -275,7 +315,7 @@ class ProjectsGitHelper extends JObject {
 		switch ( $return ) 
 		{
 			case 'combined':
-				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%H"';
+				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae" --name-only ';
 				break;
 			
 			case 'date':
