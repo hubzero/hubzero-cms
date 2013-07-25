@@ -212,9 +212,15 @@ class CoursesModelAsset extends CoursesModelAbstract
 		require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
 
 		$view = new CoursesTableAssetViews($this->_db);
-		$view->asset_id  = $this->_tbl->id;
-		$view->viewed    = date('Y-m-d H:i:s', time());
-		$view->viewed_by = JFactory::getUser()->get('id');
+		$view->asset_id          = $this->_tbl->id;
+		$view->course_id         = $this->get('course_id');
+		$view->viewed            = date('Y-m-d H:i:s', time());
+		$view->viewed_by         = JFactory::getUser()->get('id');
+		$view->ip                = $_SERVER['REMOTE_ADDR'];
+		$view->url               = $_SERVER['REQUEST_URI'];
+		$view->referrer          = $_SERVER['HTTP_REFERER'];
+		$view->user_agent_string = $_SERVER['HTTP_USER_AGENT'];
+		$view->session_id        = JFactory::getSession()->getId();
 		if (!$view->store()) 
 		{
 			$this->setError($view->getError());
