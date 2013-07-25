@@ -241,7 +241,7 @@ function getMonthName($month)
 								position: "nw",
 								margin: [50, 5]
 							},
-							xaxis: { mode: "time", tickLength: 0, tickDecimals: 0,
+							xaxis: { mode: "time", tickLength: 0, tickDecimals: 0, <?php if (count($o) <= 12) { echo 'ticks: ' . count($o) . ','; } ?>
 								tickFormatter: function (val, axis) {
 									var d = new Date(val);
 									return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
