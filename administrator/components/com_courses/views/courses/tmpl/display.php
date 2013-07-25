@@ -85,6 +85,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Alias'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></th>
+				<th scope="col"><?php echo JText::_('Cert.'); ?></th>
 				<th scope="col"><?php echo JText::_('Managers'); ?></th>
 				<th scope="col"><?php echo JText::_('Offerings'); ?></th>
 				<th scope="col"><?php echo JText::_('Pages'); ?></th>
@@ -92,17 +93,26 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
 <?php
 $i = 0;
 $k = 0;
+
+$paramsClass = 'JParameter';
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$paramsClass = 'JRegistry';
+}
+
 foreach ($this->rows as $row)
 {
 	$offerings = $row->offerings(array('count' => true));
 	$pages     = $row->pages(array('count' => true, 'active' => array(0, 1)));
+
+	$params = new $paramsClass($row->get('params'));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -159,6 +169,20 @@ foreach ($this->rows as $row)
 					</a>
 					<?php } ?>
 <?php } ?>
+				</td>
+				<td>
+					<?php if ($params->get('certificate', '')) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=certificates&amp;course=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Certificate set'); ?>">
+						<span class="state publish">
+							<span class="text"><?php echo JText::_('Certificate set'); ?></span>
+						</span>
+					<?php } else { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=certificates&amp;course=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('No certificate set'); ?>">
+						<span class="state unpublish">
+							<span class="text"><?php echo JText::_('No certificate set'); ?></span>
+						</span>
+					<?php } ?>
+					</a>
 				</td>
 				<td>
 					<span class="glyph member" title="<?php echo JText::_('Manage membership'); ?>">
