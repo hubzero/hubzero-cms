@@ -50,6 +50,10 @@ if (isset($manifest) && is_file($manifest))
 
 	$type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
 }
+else if (in_array(substr($this->model->get('url'), -3), array('mov', 'mp4', 'm4v', 'ogg', 'ogv', 'webm')))
+{
+	$type = 'standalone';
+}
 else
 {
 	$type = 'none';
@@ -156,7 +160,7 @@ elseif ($type == 'html5')
 	$height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
 }
 
-if ($type != 'none')
+if ($type == 'hubpresenter' || $type == 'html5')
 {
 	// Include media tracking for html5 and hubpresenter videos
 	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
@@ -389,6 +393,38 @@ if ($type != 'none')
 		</div><!-- /#content -->
 	</div>
 	<div id="twofinger">Use two Fingers to Scroll</div>
+<?php elseif ($type == 'standalone') : ?>
+<?php
+	jimport('joomla.filesystem.file');
+	$path = $path . DS . $this->model->get('url');
+	$ext  = strtolower(JFile::getExt(JPATH_ROOT . $path));
+	$doc  = JFactory::getDocument();
+	$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
+	$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+?>
+	<div class="flowplayer" style="width: ' . $width . 'px; height: ' . $height . 'px;">
+		<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>
+<?php
+	switch ($ext)
+	{
+		case 'mov':
+		case 'mp4':
+		case 'm4v':
+			echo '<source src="' . $path . '" type="video/mp4" />';
+		break;
+
+		case 'ogg':
+		case 'ogv':
+			echo '<source src="' . $path . '" type="video/ogg" />';
+		break;
+
+		case 'webm':
+			echo '<source src="' . $path . '" type="video/webm" />';
+		break;
+	}
+?>
+		</video>
+	</div>
 <?php else : ?>
 	<p class="warning">This lecture has no playable videos associated with it</p>
 <?php endif; ?>
