@@ -95,21 +95,6 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 	</div><!-- / .aside -->
 
 	<div class="subject">
-		<!-- <form action="<?php echo JRoute::_($base); ?>" method="post">
-			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
-				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search categories'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
-					<input type="hidden" name="active" value="discussions" />
-					<input type="hidden" name="unit" value="manage" />
-					<input type="hidden" name="action" value="search" />
-				</fieldset>
-			</div>
-		</form> -->
 <?php if (count($this->sections) > 0) { ?>
 
 	<?php 
@@ -121,11 +106,13 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		}
 	?>
 		<div class="container">
+			<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
+			<form action="<?php echo JRoute::_($base); ?>" method="post">
+			<?php } ?>
 			<table class="entries categories">
 				<caption>
 				<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
-					<a name="s<?php echo $section->id; ?>"></a>
-					<form action="<?php echo JRoute::_($base); ?>" method="post">
+						<!-- <a name="s<?php echo $section->id; ?>"></a> [!] This seems to cause some serious display issues -->
 						<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
 						<input type="submit" value="<?php echo JText::_('Save'); ?>" />
 						<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
@@ -136,7 +123,6 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<input type="hidden" name="action" value="savesection" />
 						<input type="hidden" name="unit" value="manage" />
 						<input type="hidden" name="active" value="discussions" />
-					</form>
 				<?php } else { ?>
 					<?php echo $this->escape(stripslashes($section->title)); ?>
 				<?php } ?>
@@ -216,7 +202,10 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		<?php } ?>
 				</tbody>
 			</table>
-		</div>
+			<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
+			</form>
+			<?php } ?>
+		</div><!-- /.container -->
 	<?php } // foreach ?>
 
 <?php } else { ?>
