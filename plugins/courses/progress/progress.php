@@ -176,7 +176,19 @@ class plgCoursesProgress extends JPlugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'), false),
+				JRoute::_($this->base, false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_($this->base . '&active=progress', false),
 				'You don\'t have permission to do this!',
 				'warning'
 			);
@@ -247,6 +259,18 @@ class plgCoursesProgress extends JPlugin
 			$section->store();
 		}
 
+		// If section managers can't edit, then also make the above change for all sections of this course
+		if (!$this->course->config()->get('section_grade_policy', true))
+		{
+			$sections = $this->course->offering()->sections();
+
+			foreach ($sections as $s)
+			{
+				$s->set('grade_policy_id', $gp->get('id'));
+				$s->store();
+			}
+		}
+
 		if (JRequest::getInt('no_html', false))
 		{
 			echo json_encode(array('success'=>true, 'message'=>'Scoring policy successfully saved!'));
@@ -285,30 +309,35 @@ class plgCoursesProgress extends JPlugin
 			return;
 		}
 
-		$section = $this->course->offering()->section();
-
-		// Get the grading policy id
-		$gpId = $section->get('grade_policy_id');
-		$gp = new CoursesModelGradePolicies($gpId);
-
-		// If they're not already using the default, let's delete it
-		if ($gpId != 1)
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
 		{
-			if (!$gp->delete())
-			{
-				// Redirect with message
-				JFactory::getApplication()->redirect(
-					JRoute::_($this->base . '&active=progress', false),
-					'Something went wrong!',
-					'error'
-				);
-				return;
-			}
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_($this->base . '&active=progress', false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
 		}
+
+		$section = $this->course->offering()->section();
 
 		// Now set them back to the default
 		$section->set('grade_policy_id', 1);
 		$section->store();
+
+		// If section managers can't edit, then also make the above change for all sections of this course
+		if (!$this->course->config()->get('section_grade_policy', true))
+		{
+			$sections = $this->course->offering()->sections();
+
+			foreach ($sections as $s)
+			{
+				$s->set('grade_policy_id', 1);
+				$s->store();
+			}
+		}
 
 		// Redirect with message
 		JFactory::getApplication()->redirect(
