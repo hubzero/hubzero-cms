@@ -9,8 +9,8 @@
 
 */
 
-	#system-debug {
-		background: transparent;
+	div#system-debug {
+		border: none;
 		margin: 30px 30px 0 30px;
 		padding: 30px;
 		color: #999;
@@ -20,6 +20,18 @@
 		-ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 		-o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 		box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+	}
+	div#system-debug code {
+		border: none;
+		background: transparent;
+	}
+	div#system-debug h1 {
+		background: #494949 url("../images/layout/noise.png");
+		margin: -30px -30px 30px -30px;
+	}
+	div#system-debug div.dbgHeader {
+		margin: 1px 0 0 0;
+		border: none;
 	}
 	#system-debug h4,
 	#system-debug h3 {
