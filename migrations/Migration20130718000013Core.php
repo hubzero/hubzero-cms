@@ -147,11 +147,7 @@ class Migration20130718000013Core extends Hubzero_Migration
 			$db->setQuery($query);
 			$db->query();
 
-			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-			$query .= " VALUES ('files_joomla', 'file', 'joomla', '', 0, 1, 1, 1, '{\"legacy\":false,\"name\":\"files_joomla\",\"type\":\"file\",\"creationDate\":\"April 2013\",\"author\":\"Joomla! Project\",\"copyright\":\"(C) 2005 - 2013 Open Source Matters. All rights reserved\",\"authorEmail\":\"admin@joomla.org\",\"authorUrl\":\"www.joomla.org\",\"version\":\"2.5.11\",\"description\":\"FILES_JOOMLA_XML_DESCRIPTION\",\"group\":\"\"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);\n";
-			$query .= "INSERT INTO `#__schemas` (`extension_id`, `version_id`) VALUES (LAST_INSERT_ID(), '2.5.11');";
-			$query .= "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-			$query .= " VALUES ('PKG_JOOMLA', 'package', 'pkg_joomla', '', 0, 1, 1, 1, '{\"legacy\":false,\"name\":\"PKG_JOOMLA\",\"type\":\"package\",\"creationDate\":\"2006\",\"author\":\"Joomla! Project\",\"copyright\":\"Copyright (C) 2005 - 2013 Open Source Matters. All rights reserved.\",\"authorEmail\":\"admin@joomla.org\",\"authorUrl\":\"http:\\/\\/www.joomla.org\",\"version\":\"2.5.0\",\"description\":\"PKG_JOOMLA_XML_DESCRIPTION\",\"group\":\"\"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+			$query = "INSERT INTO `#__schemas` (`extension_id`, `version_id`) VALUES (700, '2.5.11');";
 			$db->setQuery($query);
 			$db->query();
 		}
