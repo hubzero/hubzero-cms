@@ -54,7 +54,7 @@ function goUpDir()
 <form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<legend>
-			<span><?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . 'pagefiles' . ($this->listdir ? DS . $this->listdir : ''); ?>
+			<span><?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . ($this->course_id ? $this->course_id . DS : '') . 'pagefiles' . ($this->listdir ? DS . $this->listdir : ''); ?>
 			<?php // Files- echo $this->dirPath; ?></span>
 		</legend>
 		<div id="ajax-uploader-before">&nbsp;</div>

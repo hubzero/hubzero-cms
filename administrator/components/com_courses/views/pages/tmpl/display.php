@@ -67,17 +67,21 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th colspan="5">
+				<?php if ($this->course->exists()) { ?>
 					(<a href="index.php?option=<?php echo $this->option; ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
 					<a href="index.php?option=<?php echo $this->option; ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
-<?php if ($this->offering->exists()) { ?>
+					<?php if ($this->offering->exists()) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>: 
-<?php } ?>
+					<?php } ?>
+				<?php } else { ?>
+					<?php echo JText::_('User Guide'); ?>:
+				<?php } ?>
 					<?php echo JText::_('Pages'); ?>
 				</th>
 			</tr>

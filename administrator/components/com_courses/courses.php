@@ -69,7 +69,12 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 JSubMenuHelper::addEntry(
 	JText::_('Courses'), 
 	'index.php?option=' .  $option . '&controller=courses', 
-	($controllerName != 'students' && $controllerName != 'roles')
+	(!in_array($controllerName, array('students', 'roles', 'pages')))
+);
+JSubMenuHelper::addEntry(
+	JText::_('Pages'), 
+	'index.php?option=' .  $option . '&controller=pages', 
+	$controllerName == 'pages'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Students'), 

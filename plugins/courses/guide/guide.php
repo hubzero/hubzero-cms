@@ -151,12 +151,28 @@ class plgCoursesGuide extends Hubzero_Plugin
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 			Hubzero_Document::addPluginScript('courses', $this->_name);
 
-			$action = strtolower(JRequest::getWord('unit', ''));
+			/*$action = strtolower(JRequest::getWord('unit', ''));
 			if ($action && $action != 'edit' && $action != 'save' && $action != 'mark')
 			{
 				$action = 'download';
 			}
 
+			if ($act = strtolower(JRequest::getWord('action', '')))
+			{
+				$action = $act;
+			}*/
+			$action = strtolower(JRequest::getWord('group', ''));
+			if ($action && $action != 'edit' && $action != 'delete')
+			{
+				$action = 'download';
+			}//JRequest::getWord('group', '')
+
+			$active = strtolower(JRequest::getWord('unit', ''));
+
+			if ($active == 'add')
+			{
+				$action = 'add';
+			}
 			if ($act = strtolower(JRequest::getWord('action', '')))
 			{
 				$action = $act;
@@ -184,10 +200,7 @@ class plgCoursesGuide extends Hubzero_Plugin
 				case 'save':   $this->_save();   break;
 				case 'mark':   $this->_mark();   break;
 
-				case 'upload':   $this->_fileUpload();   break;
 				case 'download': $this->_fileDownload(); break;
-				case 'list':     $this->_fileList();     break;
-				case 'remove':   $this->_fileDelete();   break;
 
 				default: $this->_default(); break;
 			}
@@ -216,20 +229,19 @@ class plgCoursesGuide extends Hubzero_Plugin
 	{
 		$this->view->setLayout('default');
 
+		$active = JRequest::getVar('unit', '');
+
 		$pages = $this->view->offering->pages(array(
 			'course_id'   => 0,
-			'offering_id' => 0,
-			'limit'       => 1,
-			'start'       => 0
+			'offering_id' => 0
 		));
-		if ($pages)
+		$page = $this->view->offering->page($active);
+		if (!$active || !$page->exists())
 		{
-			$this->view->page = $pages[0];
+			$page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
 		}
-		else
-		{
-			$this->view->page = new CoursesModelPage(0);
-		}
+		//$this->view->pages = $pages;
+		$this->view->page  = $page;
 	}
 
 	/**
@@ -254,102 +266,6 @@ class plgCoursesGuide extends Hubzero_Plugin
 	/**
 	 * Set redirect and message
 	 * 
-	 * @param      object $url  URL to redirect to
-	 * @return     string
-	 */
-	public function _edit($model=null)
-	{
-		if ($this->view->juser->get('guest'))
-		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . ($this->view->offering->section()->get('alias') != '__default' ? ':' . $this->view->offering->section()->get('alias') : '') . '&active=' . $this->_name, false, true);
-			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
-			);
-			return;
-		}
-		if (!$this->view->offering->access('manage'))
-		{
-			return $this->_default();
-		}
-
-		Hubzero_Document::addSystemScript('jquery.fileuploader');
-		$this->view->setLayout('edit');
-
-		if (is_object($model))
-		{
-			$this->view->model = $model;
-		}
-		else
-		{
-			//$page = JRequest::getWord('unit', '');
-
-			//$this->view->model = $this->view->offering->page($page); //new CoursesModelPage($page);
-			$pages = $this->view->offering->pages(array(
-				'course_id'   => 0,
-				'offering_id' => 0,
-				'limit'       => 1,
-				'start'       => 0
-			));
-			if ($pages)
-			{
-				$this->view->model = $pages[0];
-			}
-			else
-			{
-				$this->view->model = new CoursesModelPage(0);
-			}
-		}
-		$this->view->notifications = $this->getPluginMessage();
-	}
-
-	/**
-	 * Set redirect and message
-	 * 
-	 * @param      object $url  URL to redirect to
-	 * @return     string
-	 */
-	public function _save()
-	{
-		if ($this->view->juser->get('guest'))
-		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . ($this->view->offering->section()->get('alias') != '__default' ? ':' . $this->view->offering->section()->get('alias') : '') . '&active=' . $this->_name, false, true);
-			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
-			);
-			return;
-		}
-		if (!$this->view->offering->access('manage'))
-		{
-			return $this->_default();
-		}
-
-		$page = JRequest::getVar('fields', array(), 'post');
-
-		$model = new CoursesModelPage($page['id']);
-
-		if (!$model->bind($page))
-		{
-			//$this->setError($model->getError());
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->_edit($model);
-		}
-
-		if (!$model->store(true))
-		{
-			//$this->setError($model->getError());
-			$this->addPluginMessage($model->getError(), 'error');
-			return $this->_edit($model);
-		}
-
-		//return $this->_list();
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . ($this->view->offering->section()->get('alias') != '__default' ? ':' . $this->view->offering->section()->get('alias') : '') . '&active=' . $this->_name)
-		);
-	}
-
-	/**
-	 * Set redirect and message
-	 * 
 	 * @param      string $url  URL to redirect to
 	 * @param      string $msg  Message to send
 	 * @param      string $type Message type (message, error, warning, info)
@@ -365,373 +281,13 @@ class plgCoursesGuide extends Hubzero_Plugin
 	}
 
 	/**
-	 * Upload a file to the wiki via AJAX
-	 * 
-	 * @return     string
-	 */
-	public function _ajaxUpload()
-	{
-		// Check if they're logged in
-		if ($this->view->juser->get('guest')) 
-		{
-			ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
-			exit();
-		}
-
-		//allowed extensions for uplaod
-		//$allowedExtensions = array("png","jpeg","jpg","gif");
-		
-		//max upload size
-		$sizeLimit = $this->params->get('maxAllowed', 40000000);
-
-		// get the file
-		if (isset($_GET['qqfile']))
-		{
-			$stream = true;
-			$file = $_GET['qqfile'];
-			$size = (int) $_SERVER["CONTENT_LENGTH"];
-		}
-		elseif (isset($_FILES['qqfile']))
-		{
-			//$files = JRequest::getVar('qqfile', '', 'files', 'array');
-			
-			$stream = false;
-			$file = $_FILES['qqfile']['name'];
-			$size = (int) $_FILES['qqfile']['size'];
-		}
-		else
-		{
-			ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('File not found')));
-			exit();
-		}
-
-		//define upload directory and make sure its writable
-		$path = $this->_path();
-		if (!is_dir($path)) 
-		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
-			{
-				ob_clean();
-				header('Content-type: text/plain');
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
-				exit();
-			}
-		}
-
-		if (!is_writable($path))
-		{
-			ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
-			exit();
-		}
-
-		//check to make sure we have a file and its not too big
-		if ($size == 0) 
-		{
-			ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('File is empty')));
-			exit();
-		}
-		if ($size > $sizeLimit) 
-		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
-			ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
-			exit();
-		}
-
-		// don't overwrite previous files that were uploaded
-		$pathinfo = pathinfo($file);
-		$filename = $pathinfo['filename'];
-		
-		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
-		$filename = str_replace(' ', '_', $filename);
-		
-		$ext = $pathinfo['extension'];
-		while (file_exists($path . DS . $filename . '.' . $ext)) 
-		{
-			$filename .= rand(10, 99);
-		}
-
-		$file = $path . DS . $filename . '.' . $ext;
-
-		if ($stream)
-		{
-			//read the php input stream to upload file
-			$input = fopen("php://input", "r");
-			$temp = tmpfile();
-			$realSize = stream_copy_to_stream($input, $temp);
-			fclose($input);
-		
-			//move from temp location to target location which is user folder
-			$target = fopen($file , "w");
-			fseek($temp, 0, SEEK_SET);
-			stream_copy_to_stream($temp, $target);
-			fclose($target);
-		}
-		else
-		{
-			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
-		}
-
-		ob_clean();
-		header('Content-type: text/plain');
-		echo json_encode(array(
-			'success'   => true, 
-			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(JPATH_ROOT, '', $path)
-		));
-		exit();
-	}
-
-	/**
-	 * Upload a file to the wiki
-	 * 
-	 * @return     void
-	 */
-	public function _fileUpload()
-	{
-		// Check if they're logged in
-		if ($this->view->juser->get('guest')) 
-		{
-			return $this->_files();
-		}
-
-		if (JRequest::getVar('no_html', 0))
-		{
-			return $this->_ajaxUpload();
-		}
-
-		// Ensure we have an ID to work with
-		$listdir = JRequest::getInt('listdir', 0, 'post');
-		if (!$listdir) 
-		{
-			$this->setError(JText::_('WIKI_NO_ID'));
-			return $this->_files();
-		}
-
-		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
-		{
-			$this->setError(JText::_('WIKI_NO_FILE'));
-			return $this->_files();
-		}
-
-		// Build the upload path if it doesn't exist
-		$path = $this->_path();
-
-		if (!is_dir($path)) 
-		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
-			{
-				$this->setError(JText::_('Error uploading. Unable to create path.'));
-				return $this->_files();
-			}
-		}
-
-		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = urldecode($file['name']);
-		$file['name'] = JFile::makeSafe($file['name']);
-		$file['name'] = str_replace(' ', '_', $file['name']);
-
-		// Upload new files
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
-		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
-		}
-
-		// Push through to the media view
-		return $this->_files();
-	}
-
-	/**
 	 * Build and return the file path
 	 * 
 	 * @return     string
 	 */
 	private function _path()
 	{
-		return JPATH_ROOT . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS . 'guide';
-	}
-
-	/**
-	 * Delete a file in the wiki
-	 * 
-	 * @return     void
-	 */
-	public function _fileDelete()
-	{
-		// Check if they're logged in
-		if ($this->view->juser->get('guest')) 
-		{
-			return $this->_files();
-		}
-
-		$no_html = JRequest::getVar('no_html', 0);
-
-		// Incoming file
-		$file = trim(JRequest::getVar('file', '', 'get'));
-		if (!$file) 
-		{
-			$this->setError(JText::_('No file name provided.'));
-			if ($no_html)
-			{
-				ob_clean();
-				header('Content-type: text/plain');
-				echo json_encode(array(
-					'success'   => false, 
-					'error'     => $this->getError()
-				));
-				exit();
-			}
-			return $this->_files();
-		}
-
-		// Build the file path
-		$path = $this->_path();
-
-		// Delete the file
-		if (!file_exists($path . DS . $file) or !$file) 
-		{
-			$this->setError(JText::_('File not found.'));
-			if ($no_html)
-			{
-				ob_clean();
-				header('Content-type: text/plain');
-				echo json_encode(array(
-					'success'   => false, 
-					'error'     => $this->getError()
-				));
-				exit();
-			}
-			return $this->_files();
-		} 
-		else 
-		{
-			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
-			{
-				$this->setError(JText::_('Unable to delete file.'));
-				if ($no_html)
-				{
-					ob_clean();
-					header('Content-type: text/plain');
-					echo json_encode(array(
-						'success'   => false, 
-						'error'     => $this->getError()
-					));
-					exit();
-				}
-			} 
-		}
-
-		if ($no_html)
-		{
-			/*ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode(array(
-				'success'   => true
-			));
-			exit();*/
-			return $this->_fileList();
-		}
-
-		// Push through to the media view
-		return $this->_files();
-	}
-
-	/**
-	 * Display a form for uploading files
-	 * 
-	 * @return     void
-	 */
-	public function _files()
-	{
-		$this->view->setLayout('files');
-
-		if ($this->getError()) 
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-	}
-
-	/**
-	 * Display a list of files
-	 * 
-	 * @return     void
-	 */
-	public function _fileList()
-	{
-		$path = $this->_path();
-
-		$folders = array();
-		$docs    = array();
-
-		if (is_dir($path))
-		{
-			// Loop through all files and separate them into arrays of images, folders, and other
-			$dirIterator = new DirectoryIterator($path);
-			foreach ($dirIterator as $file)
-			{
-				if ($file->isDot())
-				{
-					continue;
-				}
-
-				if ($file->isDir())
-				{
-					$name = $file->getFilename();
-					$folders[$path . DS . $name] = $name;
-					continue;
-				}
-
-				if ($file->isFile())
-				{
-					$name = $file->getFilename();
-					if (('cvs' == strtolower($name))
-					 || ('.svn' == strtolower($name)))
-					{
-						continue;
-					}
-
-					$docs[$path . DS . $name] = $name;
-				}
-			}
-
-			ksort($folders);
-			ksort($docs);
-		}
-
-		$this->view->docs    = $docs;
-		$this->view->folders = $folders;
-
-		if ($this->getError()) 
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		$this->view->setLayout('list');
+		return JPATH_ROOT . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS . 'pagefiles';
 	}
 
 	/**

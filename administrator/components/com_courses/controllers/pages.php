@@ -99,13 +99,13 @@ class CoursesControllerPages extends Hubzero_Controller
 		}
 
 		$this->view->course = CoursesModelCourse::getInstance($this->view->filters['course']);
-		if (!$this->view->course->exists())
+		/*if (!$this->view->course->exists())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=courses'
 			);
 			return;
-		}
+		}*/
 
 		if ($this->view->offering->exists())
 		{
@@ -354,7 +354,9 @@ class CoursesControllerPages extends Hubzero_Controller
 	{
 		$course_id = JRequest::getInt('course', 0);
 
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $course_id . DS . 'pagefiles';
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
+		$path .= ($course_id) ? DS . $course_id : '';
+		$path .= DS . 'pagefiles';
 		if ($listdir)
 		{
 			$path .= DS . $listdir;

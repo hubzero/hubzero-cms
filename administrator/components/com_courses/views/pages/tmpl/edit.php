@@ -86,9 +86,29 @@ JToolBarHelper::cancel();
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
+					<th><?php echo JText::_('Type'); ?></th>
+				<?php if ($this->row->get('course_id')) { ?>
+					<?php if ($this->row->get('offering_id')) { ?>
+						<td><?php echo JText::_('Offering page'); ?></td>
+					<?php } else { ?>
+						<td><?php echo JText::_('Course overview page'); ?></td>
+					<?php } ?>
+				<?php } else { ?>
+					<td><?php echo JText::_('User Guide'); ?></td>
+				<?php } ?>
+				</tr>
+			<?php if ($this->row->get('course_id')) { ?>
+				<tr>
+					<th><?php echo JText::_('Course ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
+				</tr>
+			<?php } ?>
+			<?php if ($this->row->get('offering_id')) { ?>
+				<tr>
 					<th><?php echo JText::_('Offering ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
 				</tr>
+			<?php } ?>
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
