@@ -3039,7 +3039,7 @@ class WikiParser
 	private function _tocLine($anchor, $tocLine, $tocnumber, $level)
 	{
 		return "\n" . '<li class="toclevel-' . $level . '">' .
-						'<a href="' . JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&pagename=' . $this->pagename) . '#' . $anchor . '">' .
+						'<a href="' . JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename')) . '#' . $anchor . '">' .
 							'<span class="tocnumber">' . $tocnumber . ' </span>' .
 							'<span class="toctext">' . $tocLine . '</span>' .
 						'</a>';
