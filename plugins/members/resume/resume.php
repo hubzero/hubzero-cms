@@ -105,7 +105,7 @@ class plgMembersResume extends JPlugin
 		// Check if they're a site admin (from Joomla)
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			if ($this->juser->authorise('core.admin', $this->_option . '.component'))
+			if ($juser->authorise('core.admin', $this->_option . '.component'))
 			{
 				return 1;
 			}

@@ -109,7 +109,7 @@ class plgMembersPoints extends JPlugin
 
 		$database =& JFactory::getDBO();
 		$tables = $database->getTableList();
-		$table = $database->_table_prefix . 'users_points';
+		$table = $database->getPrefix() . 'users_points';
 
 		if (!in_array($table,$tables)) 
 		{
