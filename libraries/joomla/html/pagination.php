@@ -102,10 +102,17 @@ class JPagination extends JObject
 			$this->set('pages.total', ceil($this->total / $this->limit));
 			$this->set('pages.current', ceil(($this->limitstart + 1) / $this->limit));
 		}
+		else 
+		{
+			$this->set('pages.total', 1);
+			$this->set('pages.current', $this->limitstart + 1);
+		}
 
 		// Set the pagination iteration loop values.
 		$displayedPages = 10;
-		$this->set('pages.start', $this->get('pages.current') - ($displayedPages / 2));
+
+		// Completely rewritten to center active page - zooley (2012-08-10)
+		/*$this->set('pages.start', $this->get('pages.current') - ($displayedPages / 2));
 		if ($this->get('pages.start') < 1)
 		{
 			$this->set('pages.start', 1);
@@ -125,7 +132,27 @@ class JPagination extends JObject
 		else
 		{
 			$this->set('pages.stop', ($this->get('pages.start') + $displayedPages - 1));
+		}*/
+		$this->set('pages.middle', ceil($displayedPages / 2));
+
+		$start_loop = $this->get('pages.current') - $this->get('pages.middle') + 1;
+		$stop_loop  = $this->get('pages.current') + $displayedPages - $this->get('pages.middle');
+
+		$i = $start_loop;
+		if ($stop_loop > $this->get('pages.total')) 
+		{
+			$i = $i + ($this->get('pages.total') - $stop_loop);
+			$stop_loop = $this->get('pages.total');
 		}
+		if ($i <= 0) 
+		{
+			$stop_loop = $stop_loop + (1 - $i);
+			$i = 1;
+		}
+
+		$this->set('pages.i', $i);
+		$this->set('pages.start', $start_loop);
+		$this->set('pages.stop', $stop_loop);
 
 		// If we are viewing all records set the view all flag to true.
 		if ($limit == 0)
@@ -282,6 +309,10 @@ class JPagination extends JObject
 
 		$list = array();
 		$list['prefix'] = $this->prefix;
+		$list['i']      = $this->get('pages.i');
+		$list['total']  = $this->get('pages.total');
+		$list['startloop'] = $this->get('pages.start');
+		$list['stoploop']  = $this->get('pages.stop');
 
 		$itemOverride = false;
 		$listOverride = false;
@@ -344,7 +375,7 @@ class JPagination extends JObject
 			else
 			{
 				$list['pages'][$i]['active'] = false;
-				$list['pages'][$i]['data'] = ($itemOverride) ? pagination_item_inactive($page) : $this->_item_inactive($page);
+				$list['pages'][$i]['data'] = ($itemOverride) ? pagination_item_inactive($page) : $this->_item_inactive($page, true);
 			}
 		}
 
@@ -370,14 +401,14 @@ class JPagination extends JObject
 			$list['end']['data'] = ($itemOverride) ? pagination_item_inactive($data->end) : $this->_item_inactive($data->end);
 		}
 
-		if ($this->total > $this->limit)
-		{
+		//if ($this->total > $this->limit)
+		//{
 			return ($listOverride) ? pagination_list_render($list) : $this->_list_render($list);
-		}
+		/*}
 		else
 		{
 			return '';
-		}
+		}*/
 	}
 
 	/**
@@ -397,7 +428,7 @@ class JPagination extends JObject
 		$list['limitstart'] = $this->limitstart;
 		$list['total'] = $this->total;
 		$list['limitfield'] = $this->getLimitBox();
-		$list['pagescounter'] = $this->getPagesCounter();
+		$list['pagescounter'] = $this->getResultsCounter(); //$this->getPagesCounter();
 		$list['pageslinks'] = $this->getPagesLinks();
 
 		$chromePath = JPATH_THEMES . '/' . $app->getTemplate() . '/html/pagination.php';
@@ -529,16 +560,17 @@ class JPagination extends JObject
 	 */
 	protected function _list_footer($list)
 	{
-		$html = "<div class=\"list-footer\">\n";
+		$html = array();
+		$html[] = '<ul class="list-footer">';
 
-		$html .= "\n<div class=\"limit\">" . JText::_('JGLOBAL_DISPLAY_NUM') . $list['limitfield'] . "</div>";
-		$html .= $list['pageslinks'];
-		$html .= "\n<div class=\"counter\">" . $list['pagescounter'] . "</div>";
+		$html[] = '<li class="counter">' . $list['pagescounter'] . '</li>';
+		$html[] = '<li class="limit"><label for="' . $list['prefix'] . 'limit">' . JText::_('JGLOBAL_DISPLAY_NUM') . '</label> ' . $list['limitfield'] . '</li>';
+		$html[] = $list['pageslinks'];
 
-		$html .= "\n<input type=\"hidden\" name=\"" . $list['prefix'] . "limitstart\" value=\"" . $list['limitstart'] . "\" />";
-		$html .= "\n</div>";
+		$html[] = '</ul>';
+		$html[] = '<input type="hidden" name="' . $list['prefix'] . 'limitstart" value="' . $list['limitstart'] . '" />';
 
-		return $html;
+		return implode("\n", $html);
 	}
 
 	/**
@@ -553,16 +585,22 @@ class JPagination extends JObject
 	protected function _list_render($list)
 	{
 		// Reverse output rendering for right-to-left display.
-		$html = '<ul>';
-		$html .= '<li class="pagination-start">' . $list['start']['data'] . '</li>';
-		$html .= '<li class="pagination-prev">' . $list['previous']['data'] . '</li>';
-		foreach ($list['pages'] as $page)
+		$html  = '<li class="pagination-start start">' . $list['start']['data'] . '</li>' . "\n";
+		$html .= '<li class="pagination-prev prev">' . $list['previous']['data'] . '</li>' . "\n";
+		if ($list['i'] > 1) 
 		{
-			$html .= '<li>' . $page['data'] . '</li>';
+			$html .= '<li class="page"><span>...</span></li>' . "\n";
 		}
-		$html .= '<li class="pagination-next">' . $list['next']['data'] . '</li>';
-		$html .= '<li class="pagination-end">' . $list['end']['data'] . '</li>';
-		$html .= '</ul>';
+		for (; $list['i'] <= $list['stoploop'] && $list['i'] <= $list['total']; $list['i']++) 
+		{
+			$html .= '<li class="page">' . $list['pages'][$list['i']]['data'] . '</li>' . "\n";
+		}
+		if (($list['i'] - 1) < $list['total']) 
+		{
+			$html .= '<li class="page"><span>...</span></li>' . "\n";
+		}
+		$html .= '<li class="pagination-next next">' . $list['next']['data'] . '</li>' . "\n";
+		$html .= '<li class="pagination-end end">' . $list['end']['data'] . '</li>' . "\n";
 
 		return $html;
 	}
@@ -607,17 +645,24 @@ class JPagination extends JObject
 	 *
 	 * @since   11.1
 	 */
-	protected function _item_inactive(&$item)
+	protected function _item_inactive(&$item, $selected=false)
 	{
-		$app = JFactory::getApplication();
+		/*$app = JFactory::getApplication();
 		if ($app->isAdmin())
 		{
-			return "<span>" . $item->text . "</span>";
+			return '<span>' . $item->text . '</span>';
 		}
 		else
-		{
-			return "<span class=\"pagenav\">" . $item->text . "</span>";
-		}
+		{*/
+			if ($selected)
+			{
+				return '<strong>' . $item->text . '</strong>';
+			}
+			else 
+			{
+				return '<span class="pagenav">' . $item->text . '</span>';
+			}
+		//}
 	}
 
 	/**
