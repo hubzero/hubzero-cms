@@ -282,6 +282,10 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 				$db->setQuery($query);
 				$db->query();
 
+				$query = "UPDATE `#__modules_menu` SET `menuid` = '{$id}' WHERE `menuid` = '1';";
+				$db->setQuery($query);
+				$db->query();
+
 				$query = "DELETE FROM `#__menu` WHERE `id` = '1';";
 				$db->setQuery($query);
 				$db->query();
