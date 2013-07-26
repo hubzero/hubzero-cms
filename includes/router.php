@@ -641,7 +641,7 @@ class JRouterSite extends JRouter
 		// Get the query data
 		$query = $uri->getQuery(true);
 
-		if (!isset($query['option'])) {
+		if (!isset($query['option']) || (isset($query['option']) && $query['option'] == 'com_content' && $query['task'] == 'view')) {
 			/* START: HUBzero Extension to handle section, category, alias routing of com_content pages */
 			$parts = $this->_buildContentRoute($query);
 
@@ -862,66 +862,44 @@ class JRouterSite extends JRouter
 	function _buildContentRoute(&$query)
 	{
 		$segments = array();
+		$db       = JFactory::getDBO();
 
+		// Don't parse calls to other com_content views
 		if (!empty($query['view']) && $query['view'] != 'article')
-			return $segments;
-
-		if (empty($query['id']))
 		{
-			$section = empty($query['section']) ? '' : $query['section'];
-			$category = empty($query['category']) ? '' : $query['category'];
-			$alias = empty($query['alias']) ? '' : $query['alias'];
-
-			if (!empty($section))
-				$segments[] = $section;
-
-			if (!empty($category) && $category != $section)
-				$segments[] = $category;
-
-			if (!empty($alias) && $alias != $category)
-				$segments[] = $alias;
-
-			return($segments);
-		}
-
-		$db =& JFactory::getDBO();
-		$id = intval($query['id']);
-
-		$sql = "SELECT #__sections.alias AS section, #__categories.alias AS category, #__content.alias AS alias FROM jos_sections, jos_categories, jos_content WHERE #__content.id='" . $id . "' AND #__content.sectionid=#__sections.id AND #__content.catid=#__categories.id LIMIT 1;";
-		$db->setQuery($sql);
-		$row =& $db->loadObject();
-
-		if (!empty($row))
-		{
-			$segments[] = $row->section;
-
-			if ($row->category != $row->section)
-				$segments[] = $row->category;
-
-			if ($row->alias != $row->category)
-				$segments[] = $row->alias;
-
-			unset($query['view']);
-			unset($query['id']);
-			unset($query['catid']);
-
 			return $segments;
 		}
-		else {
-			$sql = "SELECT #__content.alias AS alias FROM jos_content WHERE #__content.id='" . $id . "' AND #__content.sectionid=0 AND #__content.catid=0 LIMIT 1;";
-			$db->setQuery($sql);
-			$row =& $db->loadObject();
 
-			if (!empty($row)) {
-				$segments[] = $row->alias;
-				unset($query['view']);
-				unset($query['id']);
-				return $segments;
+		if (!empty($query['id']))
+		{
+			$q = "SELECT `path` FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id={$query['id']}' AND published=1";
+			$db->setQuery($q);
+			if ($menuitem = $db->loadResult())
+			{
+				$segments = explode('/', $menuitem);
+			}
+			else
+			{
+				$q  = "SELECT cat.`path`, con.`alias` AS con_alias, cat.`alias` AS cat_alias FROM `#__content` AS con";
+				$q .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
+				$q .= " WHERE con.`id` = '{$query['id']}'";
+				$db->setQuery($q);
+				if ($result = $db->loadObject())
+				{
+					if ($result->cat_alias == 'uncategorised')
+					{
+						$segments[] = $result->con_alias;
+					}
+					else
+					{
+						$segments   = explode('/', $result->path);
+						$segments[] = $result->con_alias;
+					}
+				}
 			}
 		}
 
-		$segments[] = 'content';
-		$segments[] = $id;
+		unset($query['task']);
 		unset($query['view']);
 		unset($query['id']);
 		return $segments;
