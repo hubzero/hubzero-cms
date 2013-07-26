@@ -212,8 +212,11 @@ class Migration20130718000005Core extends Hubzero_Migration
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$r->option}';";
 				$db->setQuery($query);
-				if ($db->loadResult())
+				if ($id = $db->loadResult())
 				{
+					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->enabled}', `params` = '{$r->params}', `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+					$db->setQuery($query);
+					$db->query();
 					continue;
 				}
 
@@ -254,8 +257,11 @@ class Migration20130718000005Core extends Hubzero_Migration
 			{
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = 'plg_{$r->folder}_{$r->element}';";
 				$db->setQuery($query);
-				if ($db->loadResult())
+				if ($id = $db->loadResult())
 				{
+					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->published}', `params` = '{$r->params}', `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+					$db->setQuery($query);
+					$db->query();
 					continue;
 				}
 
