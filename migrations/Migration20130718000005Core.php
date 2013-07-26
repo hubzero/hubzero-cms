@@ -52,7 +52,7 @@ class Migration20130718000005Core extends Hubzero_Migration
 			foreach ($results as $r)
 			{
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
-				$query .= "VALUES ('{$r->name}', 'component', '{$r->option}', '', 0, {$r->enabled}, 1, {$r->iscore}, '', '{$r->params}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+				$query .= "VALUES ('{$r->name}', 'component', '{$r->option}', '', 1, {$r->enabled}, 1, {$r->iscore}, '', '{$r->params}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
 				$db->setQuery($query);
 				$db->query();
 			}
@@ -172,8 +172,7 @@ class Migration20130718000005Core extends Hubzero_Migration
 			$db->query();
 
 			// Convert params to json
-			// @FIXME: do we even need to do this?
-			/*$query = "SELECT `extension_id`, `params` FROM `#__extensions` WHERE `params` IS NOT NULL OR `params` != '';";
+			$query = "SELECT `extension_id`, `params` FROM `#__extensions` WHERE `params` IS NOT NULL OR `params` != '';";
 			$db->setQuery($query);
 			$results = $db->loadObjectList();
 
@@ -206,18 +205,21 @@ class Migration20130718000005Core extends Hubzero_Migration
 					$db->setQuery($query);
 					$db->query();
 				}
-			}*/
+			}
+
+			// Update com_config defaults
+			$query  = "UPDATE `jos_extensions` SET `name` = 'com_config',";
+			$query .= " `client_id` = '1',";
+			$query .= " `access` = '0',";
+			$query .= " `params` = '{\"filters\":{\"1\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"6\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"7\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"2\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"3\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"4\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"5\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"10\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"12\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"8\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"}}}'";
+			$query .= " WHERE `element` = 'com_config';";
+			$db->setQuery($query);
+			$db->query();
 
 			// Delete plugins and components tables
 			if ($db->tableExists('#__plugins'))
 			{
 				$query = "DROP TABLE IF EXISTS `#__plugins`;";
-				$db->setQuery($query);
-				$db->query();
-			}
-			if ($db->tableExists('#__components'))
-			{
-				$query = "DROP TABLE IF EXISTS `#__components`;";
 				$db->setQuery($query);
 				$db->query();
 			}
