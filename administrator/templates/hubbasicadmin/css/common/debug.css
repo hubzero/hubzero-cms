@@ -6,13 +6,15 @@
  */
 
 /* System Debug */
-	#system-debug {
+	div#system-debug {
 		background: #fff;
 		margin: 0;
 		padding: 1.61803399em 2.23606798em 0.61803399em 2.23606798em;
+		border: none;
 		border-top: 1px solid #e9e9e9;
+		clear: both;
 	}
-	
+
 	#system-debug ol,
 	#system-debug ul,
 	#system-debug li {
@@ -23,4 +25,36 @@
 		#system-debug {
 			display: none;
 		}
+	}
+
+	#system-debug h1 {
+		color: #ddd;
+		margin: 0;
+		padding: 0.5em 1em;
+		font-size: 1.3em;
+		line-height: 1;
+		text-shadow: 0px -1px 2px #333;
+		-webkit-border-radius: 0.27em 0.27em 0 0;
+		-moz-border-radius: 0.27em 0.27em 0 0;
+		border-radius: 0.27em 0.27em 0 0;
+		background: #6e6e6e url("../../images/nav/noise.png");
+		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
+		box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
+	}
+	#system-debug a h3 {
+		padding: 0.5em 1em;
+		color: #666;
+		text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.8);
+	}
+	#system-debug a:hover h3, 
+	#system-debug a:focus h3 {
+		text-shadow: 0px -1px 2px #333;
+	}
+	#system-debug div.dbgHeader {
+		border: none;
+		margin-top: 1px;
+	}
+	#system-debug div.dbgContainer {
+		border: none;
 	}
