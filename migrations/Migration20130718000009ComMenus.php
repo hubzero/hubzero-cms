@@ -339,6 +339,31 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 					}
 				}
 			}
+
+			// Add entries for components menu on backend
+			$query = "SELECT * FROM `#__components` WHERE `parent` = '0' AND `iscore` = '0' AND `enabled` = '1' AND `admin_menu_link` != '' AND `admin_menu_link` IS NOT NULL;";
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+
+			if (count($results) > 0)
+			{
+				foreach ($results as $r)
+				{
+					$alias = str_replace(' ', '', strtolower($r->name));
+					$link  = 'index.php?' . $r->admin_menu_link;
+					// Insert item
+					$query  = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `language`, `client_id`)\n";
+					$query .= "VALUES ('main', '{$r->name}', '{$alias}', '{$alias}', '{$link}', 'component', 1, 1, 1, {$r->id}, '*', 1);";
+					$db->setQuery($query);
+					$db->query();
+				}
+			}
+
+			// Switch to default menu
+			$query = "UPDATE `#__modules` SET `module` = 'mod_menu' WHERE `position` = 'menu' AND `client_id` = '1';";
+			$db->setQuery($query);
+			$db->query();
+
 			// If we have the nested set class available, use it to rebuild lft/rgt
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 			{
@@ -474,6 +499,14 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 					$db->query();
 				}
 			}
+		}
+
+		// Now we can get rid of the components table as well
+		if ($db->tableExists('#__components'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__components`;";
+			$db->setQuery($query);
+			$db->query();
 		}
 
 		// @FIXME: this index effectively prevents one from having two menu items with the same alias, even in different menus?
