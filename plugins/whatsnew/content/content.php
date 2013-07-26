@@ -179,28 +179,7 @@ class plgWhatsnewContent extends JPlugin
 					}
 					else 
 					{
-						$database->setQuery("SELECT path FROM #__menu WHERE link='index.php?option=com_content&view=article&id=" . $row->id . "' AND published=1 LIMIT 1");
-						$menuitem = $database->loadRow();
-						if ($menuitem[0]) 
-						{
-							$path = DS . $menuitem[0];
-						} 
-						else 
-						{
-							$path = '';
-							if ($row->category) 
-							{
-								$path .= DS . $row->category;
-							}
-							if ($row->alias) 
-							{
-								$path .= DS . $row->alias;
-							}
-							if (!$path) 
-							{
-								$path = JRoute::_($row->href);
-							}
-						}
+						$path = JRoute::_($row->href);
 					}
 					
 					$rows[$key]->href = $path;
