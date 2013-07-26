@@ -218,16 +218,16 @@ class Migration20130718000013Core extends Hubzero_Migration
 			if ($db->tableExists('#__templates_menu'))
 			{
 				// Insert all templates from extensions
-				/*$query = "SELECT `template`, `client_id` FROM `#__templates_menu`;";
+				$query = "SELECT * FROM `#__extensions` WHERE `type` = 'template';";
 				$db->setQuery($query);
 				$result = $db->loadObjectList();
 
 				foreach ($result as $r)
 				{
-					$query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`) VALUES ('{$r->template}', '{$r->client_id}', '1', '".ucfirst($r->template)."', '{}');";
+					$query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`) VALUES ('{$r->element}', '{$r->client_id}', '0', '".ucfirst($r->element)."', '{}');";
 					$db->setQuery($query);
 					$db->query();
-				}*/
+				}
 
 				// Update current templates to have home = 1 (one for site and one for admin)
 				$query = "SELECT `template`, `client_id` FROM `#__templates_menu`;";
@@ -236,7 +236,7 @@ class Migration20130718000013Core extends Hubzero_Migration
 
 				foreach ($result as $r)
 				{
-					$query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`) VALUES ('{$r->template}', '{$r->client_id}', '1', '".ucfirst($r->template)."', '{}');";
+					$query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `template` = '{$r->template}';";
 					$db->setQuery($query);
 					$db->query();
 				}
