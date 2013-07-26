@@ -39,7 +39,7 @@ foreach ($plugins as $plugin)
 							}
 							?>
 							<li>
-								<strong><?php echo $cat['title']; ?></strong> <span><?php echo JText::_('PLG_COURSES_' . $cat['name'] . '_BLURB'); ?></span>
+								<strong class="<?php echo $cat['name']; ?>"><?php echo $cat['title']; ?></strong> <span><?php echo JText::_('PLG_COURSES_' . $cat['name'] . '_BLURB'); ?></span>
 							</li>
 							<?php
 						}

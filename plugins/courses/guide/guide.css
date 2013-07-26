@@ -154,6 +154,41 @@
 		top: 40%;
 	}
 
+	.guide-nav ul li strong:before {
+		height: 1em;
+		width: 1em;
+		margin: 0;
+		padding: 0;
+		font-size: 24px;
+		line-height: 1;
+		font-family: "Fontcons";
+		font-style: normal;
+		font-weight: normal;
+		text-indent: 0em;
+		position: absolute;
+		top: 28px;
+		left: -88px;
+		text-align: center;
+		color: #ffc;
+	}
+	.guide-nav ul li .outline:before { content: "\f0ae"; }
+	.guide-nav ul li .members:before { content: "\f007"; }
+	.guide-nav ul li .wiki:before { content: "\f072"; }
+	.guide-nav ul li .announcements:before { content: "\f095"; }
+	.guide-nav ul li .messages:before { content: "\2709"; }
+	.guide-nav ul li .forum:before,
+	.guide-nav ul li .discussions:before { content: "\f086"; }
+	.guide-nav ul li .syllabus:before { content: "\f05a"; } /*  \f0cb \f071*/
+	.guide-nav ul li .wishlist:before { content: "\f078"; }
+	.guide-nav ul li .calendar:before { content: "\f073"; }
+	.guide-nav ul li .usage:before { content: "\f080"; }
+	.guide-nav ul li .projects:before { content: "\f03f"; }
+	.guide-nav ul li .progress:before { content: "\f012"; } /* \f091 */
+	.guide-nav ul li .dashboard:before { content: "\f083"; }
+	.guide-nav ul li .notes:before { content: "\270D"; }
+	.guide-nav ul li .pages:before { content: "\f016"; }
+	.guide-nav ul li .guide:before { content: "\f059"; }
+
 /* Guide content */
 	.course_guide .subject {
 		border: none;
