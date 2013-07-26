@@ -363,11 +363,6 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 				}
 			}
 
-			// Switch to default menu
-			$query = "UPDATE `#__modules` SET `module` = 'mod_menu' WHERE `position` = 'menu' AND `client_id` = '1';";
-			$db->setQuery($query);
-			$db->query();
-
 			// If we have the nested set class available, use it to rebuild lft/rgt
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 			{
