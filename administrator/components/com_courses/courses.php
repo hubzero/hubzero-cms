@@ -73,7 +73,7 @@ JSubMenuHelper::addEntry(
 );
 JSubMenuHelper::addEntry(
 	JText::_('Pages'), 
-	'index.php?option=' .  $option . '&controller=pages', 
+	'index.php?option=' .  $option . '&controller=pages&course=0', 
 	$controllerName == 'pages'
 );
 JSubMenuHelper::addEntry(
