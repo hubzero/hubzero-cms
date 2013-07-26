@@ -50,13 +50,18 @@
 	.toolbar-box .icon-32-delete:before       { content: "\f014"; }
 	.toolbar-box .icon-32-help:before         { content: "\f059"; }
 	.toolbar-box .icon-32-cancel:before       { content: "\f057"; }
-	.toolbar-box .icon-32-checkin:before      { }
+	.toolbar-box .icon-32-checkin:before      { content: "\2611"; }
 	.toolbar-box .icon-32-options:before      { content: "\2692"; }
 	.toolbar-box .icon-32-apply:before        { content: "\f058"; }
 	.toolbar-box .icon-32-back:before         { content: "\2190"; }
 	.toolbar-box .icon-32-export:before	      { content: "\f08e"; }
 	.toolbar-box .icon-32-forward:before      { content: "\2192"; }
 	.toolbar-box .icon-32-save:before         { content: "\2605"; } /* \f063 */
+	.toolbar-box .icon-32-save-new:before         { content: "\2605"; }
+	.toolbar-box .icon-32-save-new:after         { content: "\271A"; bottom: 0; right: 0; color: #222;}
+	.toolbar-box .icon-32-save-copy:before         { content: "\2605"; }
+	.toolbar-box .icon-32-save-copy:after         { content: "\f0c5";  bottom: 0; right: 0; color: #222;}
+
 	.toolbar-box .icon-32-edit:before         { content: "\270E"; }
 	.toolbar-box .icon-32-copy:before         { content: "\f060"; }
 	.toolbar-box .icon-32-move:before         { content: "\f047"; }
@@ -112,7 +117,7 @@
 	.toolbar-box .icon-32-delete-style:before { }
 	.toolbar-box .icon-32-purge:before        { content: "\21BB"; }
 	.toolbar-box .icon-32-remove:before       { content: "\2296"; }
-	.toolbar-box .icon-32-featured:before     { }
+	.toolbar-box .icon-32-featured:before     { content: "\f04e"; }
 	.toolbar-box .icon-32-stats:before        { content: "\25F7"; }
 	.toolbar-box .icon-32-config:before       { content: "\2699"; }
 	.toolbar-box .toolbar-inactive:before     { }

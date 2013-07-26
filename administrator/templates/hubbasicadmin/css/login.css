@@ -416,8 +416,11 @@
 		float: right;
 		margin-top: -2.61803399em;
 	}
-	.button-holder {
+	html.j15 .button-holder {
 		display: none;
+	}
+	html.j25 .button-holder {
+		margin-top: -3.3em;
 	}
 /* Header */
 	#header {
@@ -518,7 +521,8 @@
 	form fieldset legend {
 		display: none;
 	}
-	form .button_holder {
+	form .button_holder,
+	form .button-holder {
 		float: right;
 		background: none;
 		border: none;
@@ -545,7 +549,8 @@
 	}
 /* Buttons */
 	input[type=submit],
-	.button_holder a {
+	.button_holder a,
+	.button-holder a {
 		padding: 0.25em 1em;
 		display: inline-block;
 		font-family: 'Cabin', sans-serif;
@@ -590,7 +595,8 @@
 		display: inline-block;
 	}
 	input[type=submit]:hover,
-	.button_holder a:hover {
+	.button_holder a:hover,
+	.button-holder a:hover {
 		color: #fff;
 		background: #000;
 		background: -webkit-gradient(linear, left top, left bottom, from(#444), to(#000));
@@ -603,7 +609,8 @@
 		text-decoration: none;
 	}
 	input[type=submit]:active,
-	.button_holder a:active {
+	.button_holder a:active,
+	.button-holder a:active {
 		top: 1px;
 		color: #666;
 		background: #444;
@@ -616,6 +623,7 @@
 		-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#000000, endColorstr=#444444)";
 	}
 	.button_holder a,
+	.button-holder a,
 	input[type=submit] {
 		padding: .25em 1em;
 	}
