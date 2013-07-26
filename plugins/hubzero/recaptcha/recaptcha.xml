@@ -34,8 +34,8 @@
 		<filename>recaptcha/api.php</filename>
 	</files>
 	<languages folder="lang">
-        <language tag="en-GB">en-GB.plg_hubzero_recaptcha.ini</language>
-    </languages>
+        	<language tag="en-GB">en-GB.plg_hubzero_recaptcha.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -46,13 +46,14 @@
 				<field type="radio" name="ajax" default="1" label="HUBZERO_RECAPTCHA_TYPE" description="HUBZERO_RECAPTCHA_TYPE_DESC">
 					<option value="0">HUBZERO_RECAPTCHA_IFRAME</option>
 					<option value="1">HUBZERO_RECAPTCHA_AJAX</option>
-				</param>
+				</field>
 				<field type="list" name="template" default="clean" label="HUBZERO_RECAPTCHA_TEMPLATE" description="HUBZERO_RECAPTCHA_TEMPLATE_DESC">
 					<option value="red">HUBZERO_RECAPTCHA_RED</option>
 					<option value="white">HUBZERO_RECAPTCHA_WHITE</option>
 					<option value="blackglass">HUBZERO_RECAPTCHA_BLACKGLASS</option>
 					<option value="clean">HUBZERO_RECAPTCHA_CLEAN</option>
-				</fieldset>
-			</fields>
-		</config>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </extension>

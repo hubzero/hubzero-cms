@@ -22,4 +22,4 @@
 		<param name="help_file_path" type="text"	label="help file base path" description="" default="" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 	</params>
-<config>
+</config>

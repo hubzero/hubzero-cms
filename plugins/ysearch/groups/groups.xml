@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/publications/related/related.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/ysearch/groups.xml
+@copyright      Copyright 2005-2013 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2013 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -27,27 +27,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension version="1.7" type="plugin" group="publications">
-	<name>Publication - Related</name>
-	<author>Alissa Nedossekina</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+<extension version="1.7" type="plugin" group="ysearch">
+	<name>YSearch - Groups</name>
+	<author>Steve Snyder</author>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Displays related publication</description>
+	<description>Search plugin for groups</description>
 	<files>
-		<filename plugin="related">related.php</filename>
+		<filename plugin="groups">groups.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_publication_related.ini</language>
+		<language tag="en-GB">en-GB.plg_ysearch_groups.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-				<field name="miniview" type="radio" default="0" label="Minimal view" description="Determines detailed or minimal display of related items">
-					<option value="1">yes</option>
-					<option value="0">no</option>
-				</field>
-			</fieldset>
 		</fields>
 	</config>
 </extension>
+

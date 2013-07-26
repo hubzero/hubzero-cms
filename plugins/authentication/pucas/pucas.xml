@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="domain" type="text" size="20" default="Purdue Career Account (CAS)" label="Domain" description="Domain name" />
 				<field name="display_name" type="text" size="32" label="Display name" description="Text to display on the site when referencing this plugin" default="Purdue Career" />
-			</fieldset
+			</fieldset>
 		</fields>
 	</config>
 </extension>

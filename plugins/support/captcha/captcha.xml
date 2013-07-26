@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/publications/related/related.xml
+@file           plugins/support/captcha.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,27 +27,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension version="1.7" type="plugin" group="publications">
-	<name>Publication - Related</name>
-	<author>Alissa Nedossekina</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+<extension version="1.7" type="plugin" group="support">
+	<name>Support - Captcha</name>
+	<author>Shawn Rice</author>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Displays related publication</description>
+	<description>Captcha plugin for support tickets</description>
 	<files>
-		<filename plugin="related">related.php</filename>
+		<filename plugin="captcha">captcha.php</filename>
 	</files>
-	<languages>
-		<language tag="en-GB">en-GB.plg_publication_related.ini</language>
-	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-				<field name="miniview" type="radio" default="0" label="Minimal view" description="Determines detailed or minimal display of related items">
-					<option value="1">yes</option>
-					<option value="0">no</option>
-				</field>
-			</fieldset>
 		</fields>
 	</config>
 </extension>

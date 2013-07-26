@@ -50,7 +50,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="feed">Activity feed</option>
 					<option value="collections">User's Collections</option>
 				</field>
-			</fieldset
+			</fieldset>
 		</fields>
 	</config>
 </extension>

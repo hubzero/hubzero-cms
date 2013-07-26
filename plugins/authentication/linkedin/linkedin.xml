@@ -45,7 +45,7 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="api_key"      type="text" size="32" label="API Key"         description="Your Hub's LinkedIn App ID/Key" />
 				<field name="app_secret"   type="text" size="32" label="Consumer Secret" description="Consumer Secret provided when your hub is registered on LinkedIn" />
 				<field name="display_name" type="text" size="32" label="Display name"    description="Text to display on the site when referencing this plugin" default="LinkedIn" />
-			</fieldset
+			</fieldset>
 		</fields>
 	</config>
 </extension>

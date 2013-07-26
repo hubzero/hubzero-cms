@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 @package        hubzero-cms
 @file           plugins/groups/projects.xml
@@ -25,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<?xml version="1.0" encoding="utf-8"?>
 <extension version="1.7" type="plugin" group="groups">
 	<name>Groups - Projects</name>
 	<author>Alissa Nedossekina</author>
