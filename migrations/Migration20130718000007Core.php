@@ -16,8 +16,8 @@ class Migration20130718000007Core extends Hubzero_Migration
 		if (!$db->tableExists('#__user_usergroup_map'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__user_usergroup_map` (
-						`user_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT ' /* comment truncated */' ,
-						`group_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT ' /* comment truncated */' ,
+						`user_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Foreign Key to #__users.id' ,
+						`group_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Foreign Key to #__usergroups.id' ,
 						PRIMARY KEY (`user_id`, `group_id`) )
 						ENGINE = InnoDB
 						DEFAULT CHARACTER SET = utf8
@@ -28,10 +28,10 @@ class Migration20130718000007Core extends Hubzero_Migration
 		if (!$db->tableExists('#__usergroups'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__usergroups` (
-						`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT ' /* comment truncated */' ,
-						`parent_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT ' /* comment truncated */' ,
-						`lft` INT(11) NOT NULL DEFAULT '0' COMMENT ' /* comment truncated */' ,
-						`rgt` INT(11) NOT NULL DEFAULT '0' COMMENT ' /* comment truncated */' ,
+						`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary Key' ,
+						`parent_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Adjacency List Reference Id' ,
+						`lft` INT(11) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.' ,
+						`rgt` INT(11) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.' ,
 						`title` VARCHAR(100) NOT NULL DEFAULT '' ,
 						PRIMARY KEY (`id`) ,
 						UNIQUE INDEX `idx_usergroup_parent_title_lookup` (`parent_id` ASC, `title` ASC) ,
@@ -39,7 +39,6 @@ class Migration20130718000007Core extends Hubzero_Migration
 						INDEX `idx_usergroup_adjacency_lookup` (`parent_id` ASC) ,
 						INDEX `idx_usergroup_nested_set_lookup` USING BTREE (`lft` ASC, `rgt` ASC) )
 						ENGINE = InnoDB
-						AUTO_INCREMENT = 13
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 			$db->setQuery($query);
@@ -192,7 +191,7 @@ class Migration20130718000007Core extends Hubzero_Migration
 						ENGINE = InnoDB
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci
-						COMMENT = '' /* comment truncated */;\n";
+						COMMENT = 'Simple user profile storage table';\n";
 			$db->setQuery($query);
 			$db->query();
 		}

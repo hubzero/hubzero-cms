@@ -105,7 +105,7 @@ class Migration20130718000013Core extends Hubzero_Migration
 		if (!$db->tableExists('#__overrider'))
 		{
 			$query .= "CREATE  TABLE IF NOT EXISTS `#__overrider` (
-							`id` INT(10) NOT NULL AUTO_INCREMENT COMMENT ' /* comment truncated */' ,
+							`id` INT(10) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key' ,
 							`constant` VARCHAR(255) NOT NULL ,
 							`string` TEXT NOT NULL ,
 							`file` VARCHAR(255) NOT NULL ,
