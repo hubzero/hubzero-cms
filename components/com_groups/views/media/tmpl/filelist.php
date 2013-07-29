@@ -36,46 +36,7 @@ $app =& JFactory::getApplication();
 ximport('Hubzero_Group');
 $group = Hubzero_Group::getInstance($this->listdir);
 ?>
-		<script type="text/javascript">
-			function updateDir()
-			{
-				var allPaths = window.top.document.forms[0].dirPath.options;
-				for (i=0; i<allPaths.length; i++)
-				{
-					allPaths.item(i).selected = false;
-					if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
-						allPaths.item(i).selected = true;
-					}
-				}
-			}
-			function deleteFile(file)
-			{
-				if (confirm("Delete file \""+file+"\"?")) {
-					return true;
-				}
-
-				return false;
-			}
-			function deleteFolder(folder, numFiles)
-			{
-				if (numFiles > 0) {
-					alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
-					return false;
-				}
-
-				if (confirm('Delete folder "'+folder+'"?')) {
-					return true;
-				}
-
-				return false;
-			}
-			
-			function showFilePath(file) {
-				var path = prompt('The file path is:', file);
-				return false;
-			}
-			
-		</script>
+		
 	<div id="file_list">
 		<form action="index.php" method="post" id="filelist">
 <?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
@@ -127,16 +88,24 @@ for ($i=0; $i<count($docs); $i++)
 	}
 ?>
 					<tr>
-						<td><img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" /></td>
-						<td width="100%"><?php echo $docs[$doc_name]; ?></td>
-						<td>
+						<td class="file-icon">
+							<img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" />
+						</td>
+						<td class="file-delete">
+							<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
+								<img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
+							</a>
+						</td>
+						<td class="file-name">
+							<?php echo $docs[$doc_name]; ?>
+						</td>
+						<td class="file-path">
 							<?php if(is_object($group)) : ?>
 								<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'groups'.DS.$group->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="Show File Path">
 									<img src="/components/com_groups/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" />
 								</a>
 							<?php endif; ?>
 						</td>
-						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
 					</tr>
 <?php
 	next($docs);
@@ -171,3 +140,44 @@ for ($i=0; $i<count($images); $i++)
 <?php } ?>
 		</form>
 	</div>
+	
+<script type="text/javascript">
+	function updateDir()
+	{
+		var allPaths = window.top.document.forms[0].dirPath.options;
+		for (i=0; i<allPaths.length; i++)
+		{
+			allPaths.item(i).selected = false;
+			if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
+				allPaths.item(i).selected = true;
+			}
+		}
+	}
+	function deleteFile(file)
+	{
+		if (confirm("Delete file \""+file+"\"?")) {
+			return true;
+		}
+
+		return false;
+	}
+	function deleteFolder(folder, numFiles)
+	{
+		if (numFiles > 0) {
+			alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
+			return false;
+		}
+
+		if (confirm('Delete folder "'+folder+'"?')) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	function showFilePath(file) {
+		var path = prompt('The file path is:', file);
+		return false;
+	}
+	
+</script>
