@@ -252,6 +252,13 @@ class Hubzero_Migration
 		JLoader::import('joomla.factory');
 		JLoader::import('joomla.base.object');
 		JLoader::import('joomla.database.database');
+
+		if (!defined('JVERSION'))
+		{
+			JLoader::import('joomla.version');
+			$version = new JVersion();
+			define('JVERSION', $version->getShortVersion());
+		}
 	}
 
 	/**
