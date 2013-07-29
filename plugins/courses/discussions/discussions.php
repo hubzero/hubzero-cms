@@ -192,9 +192,10 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
 		if ($section->id)
 		{
-			$section->state = $unit->get('state');
-			$section->title = $unit->get('title');
-			$section->alias = $unit->get('alias');
+			$section->state    = $unit->get('state');
+			$section->title    = $unit->get('title');
+			$section->alias    = $unit->get('alias');
+			$section->ordering = $unit->get('ordering');
 			if ($section->check())
 			{
 				$section->store();
@@ -319,7 +320,9 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$this->sections = $this->section->getRecords(array(
 				'state'    => 1, 
 				'scope'    => 'course',
-				'scope_id' => $this->offering->get('id')
+				'scope_id' => $this->offering->get('id'),
+				'sort_Dir' => 'DESC',
+				'sort'     => 'ordering ASC, created ASC, title'
 			));
 
 			// Make a list of linked sections
@@ -350,6 +353,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 						$section->scope     = 'course';
 						$section->scope_id  = $this->offering->get('id');
 						$section->object_id = $unit->get('id');
+						$section->ordering  = $unit->get('ordering');
 						if ($section->check())
 						{
 							$section->store();
@@ -1354,7 +1358,9 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$view->sections = $this->section->getRecords(array(
 				'state'    => $view->filters['state'],
 				'scope'    => $view->filters['scope'], 
-				'scope_id' => $view->filters['scope_id']
+				'scope_id' => $view->filters['scope_id'],
+				'sort_Dir' => 'DESC',
+				'sort'     => 'ordering ASC, created ASC, title'
 			));
 		}
 		else

@@ -166,6 +166,13 @@ class ForumCategory extends JTable
 	var $object_id = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $ordering = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -379,6 +386,10 @@ class ForumCategory extends JTable
 		{
 			$this->created = date('Y-m-d H:i:s', time());
 			$this->created_by = $juser->get('id');
+			if (!$this->ordering)
+			{
+				$this->ordering = $this->getHighestOrdering($this->scope, $this->scope_id);
+			}
 		}
 		else 
 		{
@@ -387,6 +398,19 @@ class ForumCategory extends JTable
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the last page in the ordering
+	 * 
+	 * @param      string  $offering_id
+	 * @return     integer
+	 */
+	public function getHighestOrdering($scope, $scope_id)
+	{
+		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope);
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
 	}
 
 	/**

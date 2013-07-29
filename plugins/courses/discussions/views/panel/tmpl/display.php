@@ -163,7 +163,7 @@ if (count($inst) > 0)
 							}
 			?>
 			<?php foreach ($this->sections as $section) { ?>
-					<div class="category category-results" id="sc<?php echo $section->id; ?>">
+					<div class="category category-results closed" id="sc<?php echo $section->id; ?>">
 						<div class="category-header">
 							<span class="category-title"><?php echo $this->escape(stripslashes($section->title)); ?></span>
 							<span class="category-discussions count"><?php echo $section->threads; ?></span>
@@ -375,6 +375,7 @@ if (count($inst) > 0)
 						<input type="hidden" name="action" value="savethread" />
 
 						<p class="instructions">
+							<?php echo JText::_('Click on a section and category to the left to view a list of comments.'); ?><br /><br />
 							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
 						</p>
 					</form>
