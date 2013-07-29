@@ -953,6 +953,22 @@
 		line-height: 1;
 		cursor: pointer;
 	}
+	.main-navigation ul#menu a span {
+		display: inline-block;
+		width: 1em;
+		overflow: hidden;
+		margin-left: 1em;
+	}
+	.main-navigation ul#menu a span img {
+		display: none;
+	}
+	.main-navigation ul#menu a span:before {
+		display: inline-block;
+		content: "\273D";
+		font-family: "Fontcons";
+		width: 1em;
+		overflow: hidden;
+	}
 	.main-navigation ul#menu ul li a {
 		padding: 0.61803399em;
 		color: #999;
@@ -2245,6 +2261,7 @@
 		-o-border-radius: 0.27em 0.27em 0 0;
 		border-radius: 0.27em 0.27em 0 0;
 	}
+	.panel h3.pane-toggler-down:after,
 	.panel h3.jpane-toggler-down:after {
 		content: "\2193";
 	}
@@ -2367,6 +2384,7 @@
 		background: none;
 	}
 /* Tooltip */
+	.tip-wrap .tip,
 	.tool-tip {
 		float: left;
 		background: #333;
