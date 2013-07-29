@@ -173,6 +173,10 @@ class plgCoursesGuide extends Hubzero_Plugin
 			{
 				$action = 'add';
 			}
+			if ($active == 'mark')
+			{
+				$action = 'mark';
+			}
 			if ($act = strtolower(JRequest::getWord('action', '')))
 			{
 				$action = $act;
