@@ -260,7 +260,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+<?php /*if (version_compare(JVERSION, '1.6', 'ge')) { ?>
 	<?php if ($canDo->get('core.admin')): ?>
 	<div class="col width-100 fltlft">
 		<fieldset class="panelform">
@@ -271,7 +271,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 	<?php endif; ?>
-<?php } ?>
+<?php }*/ ?>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>
