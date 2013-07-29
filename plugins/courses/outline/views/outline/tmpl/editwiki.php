@@ -45,25 +45,25 @@ $asset = new CoursesModelAsset($id);
 		<div class="title-error error">Please provide a title first</div>
 		<p>
 			<label for="title">Title: </label><span class="required">*required</span>
-			<input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?= $asset->get('title') ?>" />
+			<input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?php echo $asset->get('title') ?>" />
 		</p>
 
 		<label for="content">Content: </label>
-<?
+<?php
 		ximport('Hubzero_Wiki_Editor');
 		$editor =& Hubzero_Wiki_Editor::getInstance();
 
-		echo $editor->display('content', 'content', $asset->get('content'), 'no-footer', '35', '10');
+		echo $editor->display('content', 'content', $asset->get('content'), '', '35', '10');
 ?>
 
-<? // @TODO: implement asset insertion to wiki body! ?>
+<?php // @TODO: implement asset insertion to wiki body! ?>
 
 <!--		<div class="wiki-include-assets">
 			<div class="wiki-assets-inner">
 				<p class="help">Drag an asset from below, to the text box above to include it in your wiki.</p>
 				<ul>
 -->
-<?
+<?php
 					$assetgroups = array();
 					foreach ($this->course->offering()->units() as $unit) :
 						foreach($unit->assetgroups() as $agt) :
@@ -119,10 +119,10 @@ $asset = new CoursesModelAsset($id);
 		<p>
 			<label for="scope_id">Attach to:</label>
 			<select name="scope_id">
-				<? foreach($assetgroups as $assetgroup) : ?>
-					<? $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-					<option value="<?= $assetgroup['id'] ?>" <?= $selected ?>><?= $assetgroup['title'] ?></option>
-				<? endforeach; ?>
+				<?php foreach ($assetgroups as $assetgroup) : ?>
+					<?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
+					<option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $assetgroup['title'] ?></option>
+				<?php endforeach; ?>
 			</select>
 		</p>
 
