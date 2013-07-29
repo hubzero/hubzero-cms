@@ -125,6 +125,7 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
+$database = JFactory::getDBO();
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -146,7 +147,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	
 	//get group invite emails
 	ximport('Hubzero_Group_InviteEmail');
-	$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail( $this->database );
+	$hubzeroGroupInviteEmail = new Hubzero_Group_InviteEmail($database);
 	$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
 	
 	//get group membership
