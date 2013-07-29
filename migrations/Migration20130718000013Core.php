@@ -213,6 +213,16 @@ class Migration20130718000013Core extends Hubzero_Migration
 
 			if ($db->tableExists('#__templates_menu'))
 			{
+				$query = "INSERT INTO `#__template_styles` VALUES 
+					(2, 'bluestork', '1', '0', 'Bluestork - Default', '{\"useRoundedCorners\":\"1\",\"showSiteName\":\"0\"}'),
+					(3, 'atomic', '0', '0', 'Atomic - Default', '{}'),
+					(4, 'beez_20', 0, 0, 'Beez2 - Default', '{\"wrapperSmall\":\"53\",\"wrapperLarge\":\"72\",\"logo\":\"images\\/joomla_black.gif\",\"sitetitle\":\"Joomla!\",\"sitedescription\":\"Open Source Content Management\",\"navposition\":\"left\",\"templatecolor\":\"personal\",\"html5\":\"0\"}'),
+					(5, 'hathor', '1', '0', 'Hathor - Default', '{\"showSiteName\":\"0\",\"colourChoice\":\"\",\"boldText\":\"0\"}'),
+					(6, 'beez5', 0, 0, 'Beez5 - Default', '{\"wrapperSmall\":\"53\",\"wrapperLarge\":\"72\",\"logo\":\"images\\/sampledata\\/fruitshop\\/fruits.gif\",\"sitetitle\":\"Joomla!\",\"sitedescription\":\"Open Source Content Management\",\"navposition\":\"left\",\"html5\":\"0\"}');";
+
+				$db->setQuery($query);
+				$db->query();
+
 				// Insert all templates from extensions
 				$query = "SELECT * FROM `#__extensions` WHERE `type` = 'template';";
 				$db->setQuery($query);
@@ -220,6 +230,13 @@ class Migration20130718000013Core extends Hubzero_Migration
 
 				foreach ($result as $r)
 				{
+					$query = "SELECT * FROM `#__template_styles` WHERE `template` = '{$r->element}';";
+					$db->setQuery($query);
+					if ($db->loadResult())
+					{
+						continue;
+					}
+
 					$query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`) VALUES ('{$r->element}', '{$r->client_id}', '0', '".ucfirst($r->element)."', '{}');";
 					$db->setQuery($query);
 					$db->query();
@@ -279,6 +296,11 @@ class Migration20130718000013Core extends Hubzero_Migration
 							`last_check_timestamp` BIGINT(20) NULL DEFAULT '0',
 							PRIMARY KEY  (`update_site_id`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Update Sites';\n";
+
+			$query .= "INSERT INTO `#__update_sites` VALUES ";
+			$query .= "(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 0),";
+			$query .= "(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 0),";
+			$query .= "(3, 'Accredited Joomla! Translations','collection','http://update.joomla.org/language/translationlist.xml', 1 ,0);";
 		}
 		if (!$db->tableExists('#__update_sites_extensions'))
 		{
@@ -287,6 +309,8 @@ class Migration20130718000013Core extends Hubzero_Migration
 							`extension_id` INT(11) NOT NULL DEFAULT '0',
 							PRIMARY KEY (`update_site_id`, `extension_id`)
 						) ENGINE = InnoDB CHARACTER SET utf8 COMMENT = 'Links extensions to update sites';\n";
+
+			$query .= "INSERT INTO `#__update_sites_extensions` VALUES (1, 700), (2, 700), (3, 600);";
 		}
 		if (!$db->tableExists('#__update_categories'))
 		{

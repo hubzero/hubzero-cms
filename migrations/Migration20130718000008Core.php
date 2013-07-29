@@ -38,6 +38,13 @@ class Migration20130718000008Core extends Hubzero_Migration
 						)  DEFAULT CHARSET=utf8;";
 			$db->setQuery($query);
 			$db->query();
+
+			$query  = "INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `ordering`)";
+			$query .= " VALUES ";
+			$query .= "(1, 'en-GB', 'English (UK)', 'English (UK)', 'en', 'en', '', '', '', 1, 1);";
+
+			$db->setQuery($query);
+			$db->query();
 		}
 	}
 }
