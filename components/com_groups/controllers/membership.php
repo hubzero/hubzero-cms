@@ -567,7 +567,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 		else
 		{
-			$this->_handleError(404, JText::_('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
+			$this->_errorHandler(404, JText::_('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
 		}
 
 		// Log the invite acceptance
