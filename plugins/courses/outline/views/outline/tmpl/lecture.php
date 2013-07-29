@@ -142,6 +142,8 @@ if (!$this->course->offering()->access('view')) { ?>
 					<?php echo JText::_('Prev'); ?>
 				</span>
 			<?php } else {
+				$found = false;
+				// Find the previous lecture
 				$ky = $lecture->key();
 				for ($ky; $ky >= 0; $ky--)
 				{
@@ -149,12 +151,54 @@ if (!$this->course->offering()->access('view')) { ?>
 					$prev = $lecture->sibling('prev');
 					if ($prev && $prev->isPublished()) 
 					{
+						$found = true;
 						?>
 						<a class="prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
 							<?php echo JText::_('Prev'); ?>
 						</a>
 						<?php
 						break;
+					}
+				}
+				if (!$found)
+				{
+					$punit = $this->course->offering()->units()->fetch('prev');
+					// Make sure it's published
+					if ($punit->isAvailable())
+					{
+						$puAlias = $punit->get('alias');
+						// Does the next unit have any assetgroups?
+						if ($punit->assetgroups()->total())
+						{
+							foreach ($punit->assetgroups() as $pag)
+							{
+								if ($pag->isPublished())
+								{
+									// Get the alias of the next assetgroup
+									if (!$pag->children()->total())
+									{
+										// No sub-asset groups = empty grouping
+										continue;
+									}
+									$item = $pag->children()->fetch('last');
+									//foreach ($pag->children() as $item)
+									//{
+										if ($item->isPublished())
+										{
+											$pgAlias = $item->get('alias'); //$next->assetgroups(0)->get('alias');
+											?>
+						<a class="prev btn" href="<?php echo JRoute::_($base . '&unit=' . $puAlias . '&b=' . $pgAlias); ?>">
+							<?php echo JText::_('Prev'); ?>
+						</a>
+						<?php
+											break;
+										}
+									//}
+									//$gAlias = $nag->get('alias'); //$next->assetgroups(0)->get('alias');
+									//break;
+								}
+							}
+						}
 					}
 				}
 			} ?>
@@ -191,8 +235,9 @@ if (!$this->course->offering()->access('view')) { ?>
 					}
 					//$gAlias = $unit->assetgroups()->fetch('next')->get('alias');
 				}
+
 				// If the last assetgroup AND NOT the last unit
-				if ($unit->assetgroups()->isLast() && !$this->course->offering()->units()->isLast())
+				if (!$gAlias && $unit->assetgroups()->isLast() && !$this->course->offering()->units()->isLast())
 				{
 					// Get the alias of the next unit
 					$next = $this->course->offering()->units()->fetch('next');
@@ -208,8 +253,21 @@ if (!$this->course->offering()->access('view')) { ?>
 								if ($nag->isPublished())
 								{
 									// Get the alias of the next assetgroup
-									$gAlias = $next->assetgroups(0)->get('alias');
-									break;
+									if (!$nag->children()->total())
+									{
+										// No sub-asset groups = empty grouping
+										continue;
+									}
+									foreach ($nag->children() as $item)
+									{
+										if ($item->isPublished())
+										{
+											$gAlias = $item->get('alias'); //$next->assetgroups(0)->get('alias');
+											break;
+										}
+									}
+									//$gAlias = $nag->get('alias'); //$next->assetgroups(0)->get('alias');
+									//break;
 								}
 							}
 						}
