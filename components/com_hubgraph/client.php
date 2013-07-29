@@ -10,7 +10,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 {
 	private static $inst;
 	private static $defaultSettings = array(
-		'host' => 'unix:///tmp/hubgraph-server.sock',
+		'host' => 'unix:///var/run/hubgraph-server.sock',
 	        'port' => NULL,
 		'showTagCloud' => TRUE,
 		'enabledOptions' => ''
