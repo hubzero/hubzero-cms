@@ -24,6 +24,149 @@ if (!HUB.Plugins) {
 	HUB.Plugins = {};
 }
 
+(function($, undefined) {
+	"use strict";
+
+	// Register a prefilter that checks whether the `iframe` option is set, and
+	// switches to the "iframe" data type if it is `true`.
+	$.ajaxPrefilter(function(options, origOptions, jqXHR) {
+		if (options.iframe) {
+			options.originalURL = options.url;
+			return "iframe";
+		}
+	});
+
+	// Register a transport for the "iframe" data type. It will only activate
+	// when the "files" option has been set to a non-empty list of enabled file
+	// inputs.
+	$.ajaxTransport("iframe", function(options, origOptions, jqXHR) {
+		var form = null,
+			iframe = null,
+			name = "iframe-" + $.now(),
+			files = $(options.files).filter(":file:enabled"),
+			markers = null,
+			accepts = null;
+
+		// This function gets called after a successful submission or an abortion
+		// and should revert all changes made to the page to enable the
+		// submission via this transport.
+		function cleanUp() {
+			markers.prop("disabled", false);
+			form.remove();
+			iframe.one("load", function() { iframe.remove(); });
+			iframe.attr("src", "javascript:false;");
+		}
+
+		// Remove "iframe" from the data types list so that further processing is
+		// based on the content type returned by the server, without attempting an
+		// (unsupported) conversion from "iframe" to the actual type.
+		options.dataTypes.shift();
+
+		// Use the data from the original AJAX options, as it doesn't seem to be 
+		// copied over since jQuery 1.7.
+		// See https://github.com/cmlenz/jquery-iframe-transport/issues/6
+		options.data = origOptions.data;
+
+		if (files.length) {
+			form = $("<form enctype='multipart/form-data' method='post'></form>").
+				hide().attr({action: options.originalURL, target: name});
+
+			// If there is any additional data specified via the `data` option,
+			// we add it as hidden fields to the form. This (currently) requires
+			// the `processData` option to be set to false so that the data doesn't
+			// get serialized to a string.
+			if (typeof(options.data) === "string" && options.data.length > 0) {
+				$.error("data must not be serialized");
+			}
+			$.each(options.data || {}, function(name, value) {
+				if ($.isPlainObject(value)) {
+					name = value.name;
+					value = value.value;
+				}
+				$("<input type='hidden' />").attr({name:  name, value: value}).
+					appendTo(form);
+			});
+
+			// Add a hidden `X-Requested-With` field with the value `IFrame` to the
+			// field, to help server-side code to determine that the upload happened
+			// through this transport.
+			$("<input type='hidden' value='IFrame' name='X-Requested-With' />").
+				appendTo(form);
+
+			// Borrowed straight from the JQuery source.
+			// Provides a way of specifying the accepted data type similar to the
+			// HTTP "Accept" header
+			if (options.dataTypes[0] && options.accepts[options.dataTypes[0]]) {
+				accepts = options.accepts[options.dataTypes[0]] + (options.dataTypes[0] !== "*" ? ", */*; q=0.01" : "");
+			} else {
+				accepts = options.accepts["*"];
+			}
+			$("<input type='hidden' name='X-HTTP-Accept'>").
+				attr("value", accepts).appendTo(form);
+
+			// Move the file fields into the hidden form, but first remember their
+			// original locations in the document by replacing them with disabled
+			// clones. This should also avoid introducing unwanted changes to the
+			// page layout during submission.
+			markers = files.after(function(idx) {
+				return $(this).clone().prop("disabled", true);
+			}).next();
+			files.appendTo(form);
+
+			return {
+
+				// The `send` function is called by jQuery when the request should be
+				// sent.
+				send: function(headers, completeCallback) {
+					iframe = $("<iframe src='javascript:false;' name='" + name + "' id='" + name + "' style='display:none'></iframe>");
+
+					// The first load event gets fired after the iframe has been injected
+					// into the DOM, and is used to prepare the actual submission.
+					iframe.one("load", function() {
+
+						// The second load event gets fired when the response to the form
+						// submission is received. The implementation detects whether the
+						// actual payload is embedded in a `<textarea>` element, and
+						// prepares the required conversions to be made in that case.
+						iframe.one("load", function() {
+							var doc = this.contentWindow ? this.contentWindow.document : (this.contentDocument ? this.contentDocument : this.document),
+								root = doc.documentElement ? doc.documentElement : doc.body,
+								textarea = root.getElementsByTagName("textarea")[0],
+								type = textarea && textarea.getAttribute("data-type") || null,
+								status = textarea && textarea.getAttribute("data-status") || 200,
+								statusText = textarea && textarea.getAttribute("data-statusText") || "OK",
+								content = {
+									html: root.innerHTML,
+									text: type ? textarea.value : root ? (root.textContent || root.innerText) : null
+								};
+							cleanUp();
+							completeCallback(status, statusText, content, type ? ("Content-Type: " + type) : null);
+						});
+
+						// Now that the load handler has been set up, submit the form.
+						form[0].submit();
+					});
+
+					// After everything has been set up correctly, the form and iframe
+					// get injected into the DOM so that the submission can be
+					// initiated.
+					$("body").append(form, iframe);
+				},
+
+				// The `abort` function is called by jQuery when the request should be
+				// aborted.
+				abort: function() {
+					if (iframe !== null) {
+						iframe.unbind("load").attr("src", "javascript:false;");
+						cleanUp();
+					}
+				}
+
+			};
+		}
+	});
+})(jQuery);
+
 var _DEBUG = false;
 
 HUB.Plugins.CoursesForum = {
@@ -87,97 +230,104 @@ HUB.Plugins.CoursesForum = {
 
 		// Do some voodoo to get AJAX file upload working
 		if (cfrm.length > 0) {
-			$('<iframe id="upload_target" name="upload_target" style="display:none;"></iframe>') //src="about:blank?nocache=' + Math.random() + '"
-				.on('load', function(){
-					var data = null;
-					if ($(this).contents()) {
-						data = jQuery.parseJSON($(this).contents().text());
-					}
-					if (data) {
-						if (_DEBUG) {
-							window.console && console.log(data);
-						}
-						// Deactivate previous items
-						$('#' + feed.data('active')).removeClass('active');
-						feed.data('active', '');
-
-						// Deactivate the add comment button
-						abtn.removeClass('active');
-
-						// Hide the "add comment" form and reset the fields
-						cfrm.hide();
-						cfrm.find('#field_comment').val('');
-						cfrm.find('input[type=file]').val('');
-
-						// Set some data so we know when/where to start pulling new results from
-						feed.data('thread_last_change', data.thread.lastchange);
-						feed.data('thread', data.thread.lastid);
-						if (_DEBUG) {
-							window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
-						}
-
-						header.text(data.thread.total + ' comments');
-
-						// Update discussions list
-						//feed.html(data.threads.html);
-						if (data.threads.posts.length > 0) {
-							$('#threads_lastchange').val(data.threads.lastchange);
-
-							//var list = feed.find('div.category-results ul.discussions');//last = $('#threads_lastchange');
-							//list.empty();
-
-							for (var i = 0; i< data.threads.posts.length; i++) 
-							{
-								var item = data.threads.posts[i];
-
-								if ($('#thread' + item.id).length) {
-									// Comment already exists!
-									continue;
-								}
-								var list = $('#category' + item.category_id);
-								if (!list.length) {
-									list = $('#categorynew');
-								}
-								if (!list.length) {
-									continue;
-								}
-								if (list.find('li.comments-none').length) {
-									list.empty();
-								}
-								list.prepend($(item.html).hide().fadeIn());
-								//$(list.parent().parent()).find('span.count').text();
-
-								if (item.mine) {
-									var mine = $('#categorymine');
-									if (mine.find('li.comments-none').length) {
-										mine.empty();
-									}
-									mine.prepend($(item.html).hide().fadeIn());
-								}
-
-								//list.prepend($(item.html).hide().fadeIn());
-							}
-						}
-
-						// Append thread data and fade it in
-						thread.html(data.thread.html).hide().fadeIn();
-
-						// Apply plugins to loaded content
-						jQuery(document).trigger('ajaxLoad');
-					}
-				})
-				.appendTo(cfrm);
-
 			cfrm
-				.attr('target', 'upload_target')
 				.on('submit', function(e) {
+					e.preventDefault();
+
 					if ($('#field-category_id').val() == 0 || $('#field-category_id').val() == '0' || !$('#field-category_id').val()) {
 						$(this).find('fieldset').append($('<p class="error">Please select a category.</p>'));
 						e.stopImmediatePropagation();
 						return false;
 					}
-					$(this).attr('action', $(this).attr('action').nohtml());
-					return true;
+
+					if ($(this).find('textarea').val() == '') {
+						if (typeof(wykiwygs) != 'undefined' && wykiwygs.length > 0) {
+							for (var i = 0; i < wykiwygs.length; i++) 
+							{
+								if (wykiwygs[i].d) {
+									wykiwygs[i].t.value = wykiwygs[i].makeWiki();
+									wykiwygs[i].e.body.innerHTML = '';
+								}
+							}
+						}
+					}
+
+					$.ajax($(this).attr('action').nohtml(), {
+						data: $(this).serializeArray(),
+						files: $(":file", this),
+						iframe: true,
+						processData: false
+					}).complete(function(response) {
+						var data = jQuery.parseJSON(response.responseText);
+						if (data) {
+							if (_DEBUG) {
+								window.console && console.log(data);
+							}
+							// Deactivate previous items
+							$('#' + feed.data('active')).removeClass('active');
+							feed.data('active', '');
+
+							// Deactivate the add comment button
+							abtn.removeClass('active');
+
+							// Hide the "add comment" form and reset the fields
+							cfrm.hide();
+							cfrm.find('#field_comment').val('');
+							cfrm.find('input[type=file]').val('');
+
+							// Set some data so we know when/where to start pulling new results from
+							feed.data('thread_last_change', data.thread.lastchange);
+							feed.data('thread', data.thread.lastid);
+							if (_DEBUG) {
+								window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+							}
+
+							header.text(data.thread.total + ' comments');
+
+							// Update discussions list
+							//feed.html(data.threads.html);
+							if (data.threads.posts.length > 0) {
+								$('#threads_lastchange').val(data.threads.lastchange);
+
+								for (var i = 0; i< data.threads.posts.length; i++) 
+								{
+									var item = data.threads.posts[i];
+
+									if ($('#thread' + item.id).length) {
+										// Comment already exists!
+										continue;
+									}
+									var list = $('#category' + item.category_id);
+									if (!list.length) {
+										list = $('#categorynew');
+									}
+									if (!list.length) {
+										continue;
+									}
+									if (list.find('li.comments-none').length) {
+										list.empty();
+									}
+									list.prepend($(item.html).hide().fadeIn());
+
+									if (item.mine) {
+										var mine = $('#categorymine');
+										if (mine.find('li.comments-none').length) {
+											mine.empty();
+										}
+										mine.prepend($(item.html).hide().fadeIn());
+									}
+								}
+							}
+
+							// Append thread data and fade it in
+							thread.html(data.thread.html).hide().fadeIn();
+
+							// Apply plugins to loaded content
+							jQuery(document).trigger('ajaxLoad');
+						}
+					});
+
+					return false;
 				});
 		}
 
@@ -278,57 +428,53 @@ HUB.Plugins.CoursesForum = {
 				var frm = $($(this).closest('form')),
 					id = frm.attr('id') + '-iframe';
 
-				// Iframe method for handling AJAX-like file uploads
-				$('<iframe src="about:blank?nocache=' + Math.random() + '" id="' + id + '" name="' + id + '" style="display:none;"></iframe>')
-					.on('load', function(){
-						data = jQuery.parseJSON($(this).contents().text());
-
-						if (data) {
-							if (_DEBUG) {
-								window.console && console.log(data);
-							}
-							feed.data('thread_last_change', data.thread.lastchange);
-							feed.data('thread', data.thread.lastid);
-							if (_DEBUG) {
-								window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
-							}
-
-							if (data.thread.posts) {
-								plgn.updateComments(data.thread.posts, 'append');
-							/*if (data.threads.posts.length > 0) {
-								var last = $('#threads_lastchange');
-
-								for (var i = 0; i< data.threads.posts.length; i++) 
-								{
-									item = data.threads.posts[i];
-
-									if ($('#thread' + item.id).length) {
-										// Comment already exists!
-										continue;
-									}
-
-									if (item.created > last.val()) {
-										last.val(item.created);
-									}
-
-									feed.find('ul.discussions').prepend($(item.html).hide().fadeIn());
-								}
-							}*/
-							}
-						}
-					})
-					.appendTo(frm.parent());
-
 				// Adjust the target and action for the form
 				frm.attr('target', id)
-					.on('submit', function() {
+					.on('submit', function(e) {
+						e.preventDefault();
+
+						if ($(this).find('textarea').val() == '') {
+							if (typeof(wykiwygs) != 'undefined' && wykiwygs.length > 0) {
+								for (var i = 0; i < wykiwygs.length; i++) 
+								{
+									if (wykiwygs[i].d) {
+										wykiwygs[i].t.value = wykiwygs[i].makeWiki();
+										wykiwygs[i].e.body.innerHTML = '';
+									}
+								}
+							}
+						}
+
 						var b = $(frm.parent().parent()).find('a.reply');
 							b.removeClass('active')
 								.text(b.attr('data-txt-inactive'));
 
 						$(frm.parent()).addClass('hide');
 						var act = frm.attr('action').split("?")[0];
-						frm.attr('action', act.nohtml() + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'));
+
+						$.ajax(act.nohtml() + '&thread=' + feed.data('thread') + '&start_at=' + feed.data('thread_last_change'), {
+							data: $(this).serializeArray(),
+							files: $(":file", this),
+							iframe: true,
+							processData: false
+						}).complete(function(response) {
+							data = jQuery.parseJSON(response.responseText);
+
+							if (data) {
+								if (_DEBUG) {
+									window.console && console.log(data);
+								}
+								feed.data('thread_last_change', data.thread.lastchange);
+								feed.data('thread', data.thread.lastid);
+								if (_DEBUG) {
+									window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+								}
+
+								if (data.thread.posts) {
+									plgn.updateComments(data.thread.posts, 'append');
+								}
+							}
+						});
 						return true;
 					});
 			});

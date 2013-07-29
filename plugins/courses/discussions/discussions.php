@@ -2603,6 +2603,18 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			return $this->editthread($model);
 		}
 
+		// Double comment?
+		$query  = "SELECT * FROM #__forum_posts WHERE object_id=" . $this->database->Quote($model->object_id);
+		$query .= " AND scope_id=" . $this->database->Quote($model->scope_id) . " AND scope=" . $this->database->Quote($model->scope);
+		$query .= " AND comment=" . $this->database->Quote($model->comment) . " AND created_by=" . $this->database->Quote($model->created_by);
+		$query .= " LIMIT 1";
+
+		$this->database->setQuery($query);
+		if ($result = $this->database->loadAssoc()) 
+		{
+			$model->bind($result);
+		}
+
 		// Load the category
 		$category = new ForumCategory($this->database);
 		$category->load(intval($model->category_id));
