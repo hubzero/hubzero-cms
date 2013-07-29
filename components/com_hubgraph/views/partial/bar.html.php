@@ -43,6 +43,6 @@
 	</li>
 <? endif; ?>
 </ul>
-<ol class="tags" id="tag-suggestions"></ol>
+<ol id="tag-suggestions"></ol>
 <ol id="suggestions"></ol>
 

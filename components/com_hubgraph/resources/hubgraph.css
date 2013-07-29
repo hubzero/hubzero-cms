@@ -11,9 +11,10 @@
 .search-bar {
 	padding-right: 211px;
 	position: relative;
+	height: 40px;
 }
 .search-bar input {
-	height: 38px;
+	height: 100%;
 	width: 100%;
 	border-top-left-radius: 6px;
 }
@@ -38,7 +39,7 @@
 	position: absolute;
 	top: 0;
 	right: 0;
-	height: 38px;
+	height: 100%;
 	width: 214px;
 	text-align: center;
 	border: 1px outset #ddd;
@@ -641,7 +642,7 @@ a.ui-selectmenu {
 }
 span.ui-selectmenu-status {
 	margin: 0 !important;
-	line-height: 2em;
+	padding-left: 0;
 }
 .ui-selectmenu-menu {
 	font-size: x-small;
@@ -670,12 +671,16 @@ span.ui-selectmenu-status {
 	padding-right: 2px;
 	cursor: pointer;
 }
+.quasi-button a {
+	float: none !important;
+}
+.quasi-button label {
+}
 .quasi-button select, .quasi-button a {
 	margin: 0;
-	background: #f00 !important;
 	border: 1px solid #fff;
 }
-.tags li .quasi-button a span {
+.quasi-button a span {
 	background-color: transparent;
 }
 #tag-suggestions .label {
@@ -685,6 +690,14 @@ span.ui-selectmenu-status {
 #tag-suggestions .label:hover {
 	background: transparent;
 	border: 1px solid transparent;
+}
+#tag-suggestions button {
+	border: 0;
+	background: transparent;
+}
+#tag-suggestions a {
+	color: #333;
+	font-size: x-small;
 }
 .aside small.aside-before, .aside:before {
 	display: none;

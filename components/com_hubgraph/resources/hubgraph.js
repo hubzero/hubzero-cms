@@ -89,7 +89,7 @@ jQuery(function($) {
 					if (dupe) {
 						return false;
 					}
-					var li = $('<li class="' + type + ' unapplied"><input type="hidden" value="' + id + '" name="' + (type == 'section' ? 'domain' : type + 's[]') + '"><strong>' + type.charAt(0).toUpperCase() + type.substr(1) + ': </strong> ' + title + ' </li>')
+					var li = $('<li class="' + type + ' unapplied"><input type="hidden" value="' + id + '" name="' + (type == 'section' ? 'domain' : type + 's[]') + '"><label>' + type.charAt(0).toUpperCase() + type.substr(1) + ': </label> ' + title + ' </li>')
 						.prepend($('<a class="remove"></a>').click(function() {
 							li.remove();
 							ajaxLoad();
