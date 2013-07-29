@@ -179,12 +179,12 @@ class CronControllerPlugins extends Hubzero_Controller
 		}
 		else 
 		{
-			$query = 'SELECT p.*, u.name AS editor, g.title AS groupname'
+			$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
 				. ' FROM #__extensions AS p'
 				. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
 				. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'
 				. $where
-				. ' GROUP BY p.id'
+				. ' GROUP BY p.extension_id'
 				. $orderby;
 		}
 		$this->database->setQuery($query, $this->view->pagination->limitstart, $this->view->pagination->limit);

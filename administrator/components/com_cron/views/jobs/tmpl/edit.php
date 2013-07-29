@@ -262,11 +262,11 @@ window.addEvent('domready', Fields.initialise);
 			{
 				$pth = false;
 				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
+				/*if (version_compare(JVERSION, '1.6', 'ge'))
 				{
 					$pth = true;
 					$paramsClass = 'JRegistry';
-				}
+				}*/
 				
 				foreach ($this->plugins as $plugin)
 				{
@@ -509,7 +509,7 @@ window.addEvent('domready', Fields.initialise);
 	</div>
 	<div class="clr"></div>
 
-<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+<?php /*if (version_compare(JVERSION, '1.6', 'ge')) { ?>
 	<?php if ($canDo->get('core.admin')): ?>
 		<div class="col width-100 fltlft">
 			<fieldset class="panelform">
@@ -520,7 +520,7 @@ window.addEvent('domready', Fields.initialise);
 		</div>
 		<div class="clr"></div>
 	<?php endif; ?>
-<?php } ?>
+<?php }*/ ?>
 	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

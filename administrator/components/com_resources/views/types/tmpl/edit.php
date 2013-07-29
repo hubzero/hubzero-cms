@@ -287,7 +287,14 @@ window.addEvent('domready', Fields.initialise);
 				<tbody>
 				<?php 
 				$database =& JFactory::getDBO();
-				$database->setQuery( "SELECT * FROM #__plugins WHERE folder='resources'" );
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$database->setQuery( "SELECT * FROM #__extensions WHERE `type`='plugin' AND `folder`='resources'" );
+				}
+				else
+				{
+					$database->setQuery( "SELECT * FROM #__plugins WHERE `folder`='resources'" );
+				}
 				$plugins = $database->loadObjectList();
 
 				foreach ($plugins as $plugin)

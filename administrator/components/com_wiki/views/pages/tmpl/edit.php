@@ -99,11 +99,11 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('PARAMETERS'); ?></span></legend>
 			
 			<?php 
-			$paramsClass = 'JRegistry';
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
+			//$paramsClass = 'JRegistry';
+			//if (version_compare(JVERSION, '1.6', 'lt'))
+			//{
 				$paramsClass = 'JParameter';
-			}
+			//}
 			$params = new $paramsClass($this->row->params, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
 			echo $params->render();
 			?>

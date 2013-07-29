@@ -147,11 +147,11 @@ class WishlistControllerLists extends Hubzero_Controller
 			$this->view->row->load($id);
 		}
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		/*if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$m = new WishlistModelList();
 			$this->view->form = $m->getForm();
-		}
+		}*/
 
 		// Set any errors
 		if ($this->getError()) 

@@ -179,12 +179,12 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		}
 		else 
 		{
-			$query = 'SELECT p.*, u.name AS editor, g.title AS groupname'
+			$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
 				. ' FROM #__extensions AS p'
 				. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
 				. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'
 				. $where
-				. ' GROUP BY p.id'
+				. ' GROUP BY p.extension_id'
 				. $orderby;
 		}
 		$this->database->setQuery($query, $this->view->pagination->limitstart, $this->view->pagination->limit);
@@ -317,10 +317,21 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			$cid = JRequest::getVar('cid', array(0), '', 'array');
 			JArrayHelper::toInteger($cid, array(0));
 			
-			$this->view->row = JTable::getInstance('plugin');
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$this->view->row = JTable::getInstance('extension');
+			}
+			else
+			{
+				$this->view->row = JTable::getInstance('plugin');
+			}
 
 			// load the row from the db table
 			$this->view->row->load($cid[0]);
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$this->view->row->published = $this->view->row->enabled;
+			}
 		}
 		
 		// Is this entry checked out?
@@ -370,15 +381,28 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		if ($this->view->row->ordering > -10000 && $this->view->row->ordering < 10000)
 		{
 			// build the html select list for ordering
-			$query = 'SELECT ordering AS value, name AS text'
-				. ' FROM #__plugins'
-				. ' WHERE folder = '.$this->database->Quote($this->_folder)
-				. ' AND published > 0'
-				. ' AND '. ($client == 'admin' ? "client_id='1'" : "client_id='0'")
-				. ' AND ordering > -10000'
-				. ' AND ordering < 10000'
-				. ' ORDER BY ordering'
-			;
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$query = 'SELECT ordering AS value, name AS text'
+					. ' FROM #__extensions'
+					. ' WHERE type='.$this->database->Quote('plugin').' AND folder = '.$this->database->Quote($this->_folder)
+					. ' AND enabled > 0'
+					. ' AND '. ($client == 'admin' ? "client_id='1'" : "client_id='0'")
+					. ' AND ordering > -10000'
+					. ' AND ordering < 10000'
+					. ' ORDER BY ordering';
+			}
+			else
+			{
+				$query = 'SELECT ordering AS value, name AS text'
+					. ' FROM #__plugins'
+					. ' WHERE folder = '.$this->database->Quote($this->_folder)
+					. ' AND published > 0'
+					. ' AND '. ($client == 'admin' ? "client_id='1'" : "client_id='0'")
+					. ' AND ordering > -10000'
+					. ' AND ordering < 10000'
+					. ' ORDER BY ordering';
+			}
 			$order = JHTML::_('list.genericordering',  $query);
 			
 			$this->view->lists['ordering'] = JHTML::_('select.genericlist', $order, 'ordering', 'class="inputbox" size="1"', 'value', 'text', intval($this->view->row->ordering));
@@ -391,10 +415,10 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		$this->view->lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->view->row->published);
 
 		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		/*if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
-		}
+		}*/
 
 		$this->view->params = new $paramsClass(
 			$this->view->row->params, 

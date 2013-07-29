@@ -747,10 +747,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 		}
 
 		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
+		//if (version_compare(JVERSION, '1.6', 'ge'))
+		//{
+		//	$paramsClass = 'JRegistry';
+		//}
 
 		// Get params definitions
 		$this->view->params  = new $paramsClass($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
@@ -801,8 +801,8 @@ class ResourcesControllerItems extends Hubzero_Controller
 			// Get all contributors linked to this resource
 			$ma = new MembersAssociation($this->database);
 			$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
-					FROM $ma->_tbl AS a  
-					LEFT JOIN $mp->_tbl AS n ON n.uidNumber=a.authorid 
+					FROM " . $ma->getTableName() . " AS a  
+					LEFT JOIN " . $mp->getTableName() . " AS n ON n.uidNumber=a.authorid 
 					WHERE a.subtable='resources'
 					AND a.subid=" . $this->view->row->id . " 
 					ORDER BY a.ordering";
@@ -1712,13 +1712,25 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$group_id = 'g.id';
 		$aro_id = 'aro.id';
 
-		$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$query = "SELECT a.id AS value, a.name AS text, g.title AS groupname"
+			. "\n FROM #__users AS a"
+			. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
+			. "\n INNER JOIN #__usergroups AS g ON " . $group_id . " = gm.group_id"
+			. "\n WHERE a.block = '0' AND " . $group_id . "=8"
+			. "\n ORDER BY ". $order;
+		}
+		else
+		{
+			$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
 			. "\n FROM #__users AS a"
 			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
 			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
 			. "\n INNER JOIN #__core_acl_aro_groups AS g ON " . $group_id . " = gm.group_id"
 			. "\n WHERE a.block = '0' AND " . $group_id . "=25"
 			. "\n ORDER BY ". $order;
+		}
 
 		$database->setQuery($query);
 		$result = $database->loadObjectList();
@@ -1726,7 +1738,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 		if ($nouser)
 		{
 			$users[] = JHTML::_('select.option', '0', 'Do not change', 'value', 'text');
-			$users = array_merge($users, $result);
+			$users = ($result && is_array($result)) ? array_merge($users, $result) : $users;
 		}
 		else
 		{

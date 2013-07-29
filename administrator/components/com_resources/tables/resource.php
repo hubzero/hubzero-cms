@@ -1006,13 +1006,20 @@ class ResourcesResource extends JTable
 	 */
 	public function getItems($filters=array())
 	{
+		$gname = 'g.title';
+		$gtbl = '#__viewlevels AS g ON g.id = (r.access + 1)';
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$gname = 'g.name';
+			$gtbl = '#__groups AS g ON g.id = r.access';
+		}
 		$sql = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, CASE WHEN r.modified != '0000-00-00 00:00:00' THEN r.modified ELSE r.created END AS modified, r.access, 
 				r.published, r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.params, u.name AS editor, 
-				g.name AS groupname, t.type AS typetitle, 
+				$gname AS groupname, t.type AS typetitle, 
 				(SELECT count(*) FROM #__resource_assoc AS ra WHERE ra.parent_id=r.id) AS children 
 				FROM $this->_tbl AS r 
 				LEFT JOIN #__users AS u ON u.id = r.checked_out 
-				LEFT JOIN #__groups AS g ON g.id = r.access
+				LEFT JOIN $gtbl
 				LEFT JOIN #__resource_types AS t ON r.type=t.id
 				WHERE r.standalone=1";
 		if (isset($filters['status']) && $filters['status'] != 'all')
@@ -1098,16 +1105,24 @@ class ResourcesResource extends JTable
 	 */
 	public function getItemChildren($filters=array())
 	{
+		$gname = 'g.title';
+		$gtbl = '#__viewlevels AS g ON g.id = (r.access + 1)';
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$gname = 'g.name';
+			$gtbl = '#__groups AS g ON g.id = r.access';
+		}
+
 		if (isset($filters['parent_id']) && $filters['parent_id'] > 0)
 		{
 			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published, 
-						r.publish_up, r.publish_down, r.path, r.checked_out, r.checked_out_time, r.standalone, u.name AS editor, g.name AS groupname, 
+						r.publish_up, r.publish_down, r.path, r.checked_out, r.checked_out_time, r.standalone, u.name AS editor, $gname AS groupname, 
 						lt.type AS logicaltitle, ra.*, gt.type as grouptitle, t.type AS typetitle, NULL as position, 
 						(SELECT count(*) FROM #__resource_assoc AS rraa WHERE rraa.child_id=r.id AND rraa.parent_id!=" . $this->_db->Quote($filters['parent_id']) . ") AS multiuse
 						FROM #__resource_types AS t, 
 						$this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.checked_out
-						LEFT JOIN #__groups AS g ON g.id = r.access
+						LEFT JOIN $gtbl
 						LEFT JOIN #__resource_types AS lt ON lt.id=r.logical_type, 
 						#__resource_assoc AS ra 
 						LEFT JOIN #__resource_types AS gt ON gt.id=ra.grouping
@@ -1116,11 +1131,11 @@ class ResourcesResource extends JTable
 		else
 		{
 			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published, 
-						r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.path, r.standalone, u.name AS editor, g.name AS groupname, 
+						r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.path, r.standalone, u.name AS editor, $gname AS groupname, 
 						t.type AS typetitle, NULL as logicaltitle
 						FROM $this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.checked_out
-						LEFT JOIN #__groups AS g ON g.id = r.access
+						LEFT JOIN $gtbl
 						LEFT JOIN #__resource_types AS t ON t.id=r.type
 						WHERE r.standalone!=1 
 						AND NOT EXISTS(SELECT * FROM #__resource_assoc AS a WHERE a.child_id = r.id)";
