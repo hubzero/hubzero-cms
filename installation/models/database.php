@@ -18,6 +18,9 @@ require_once JPATH_INSTALLATION.'/helpers/database.php';
  */
 class JInstallationModelDatabase extends JModelLegacy
 {
+	static $non_prefixed_tables = array('app','display','domainclass','domainclasses','fileperm','host','hosttype','ipusers','job',
+		'joblog','orgtypes','session','sessionlog','sessionpriv','summary_andmore','summary_andmore_vals','summary_misc',
+		'summary_misc_vals','summary_simusage','summary_simusage_vals','summary_user','user_map','view','viewlog','viewperm');
 
 	static protected $userId = 0;
 
@@ -413,7 +416,7 @@ class JInstallationModelDatabase extends JModelLegacy
 			foreach ($tables as $table)
 			{
 				// If the table uses the given prefix, back it up.
-				if (strpos($table, $prefix) === 0) {
+				if ((strpos($table, $prefix) === 0) || (in_array($table, self::$non_prefixed_tables))) {
 					// Backup table name.
 					$backupTable = str_replace($prefix, $backup, $table);
 
@@ -472,6 +475,23 @@ class JInstallationModelDatabase extends JModelLegacy
 			return false;
 		}
 
+		// Build the create database query.
+                $query = 'CREATE DATABASE '.$db->quoteName($name).'_metrics CHARACTER SET `utf8`';
+
+                // Run the create database query.
+                $db->setQuery($query);
+
+                try
+                {
+                        $db->execute();
+                }
+                catch (RuntimeException $e)
+                {
+                        // If an error occurred return false.
+                        return false;
+                }
+
+
 		return true;
 	}
 
@@ -497,7 +517,7 @@ class JInstallationModelDatabase extends JModelLegacy
 			foreach ($tables as $table)
 			{
 				// If the table uses the given prefix, drop it.
-				if (strpos($table, $prefix) === 0) {
+				if ((strpos($table, $prefix) === 0) || (in_array($table, self::$non_prefixed_tables))) {
 					// Drop the table.
 					try
 					{
