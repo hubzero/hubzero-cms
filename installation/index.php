@@ -57,7 +57,9 @@ if (file_exists(JPATH_CONFIGURATION.'/configuration.php') && (filesize(JPATH_CON
 
 if (file_exists(JPATH_CONFIGURATION.'/configuration.php'))
 {
+	ob_start();
 	require_once(JPATH_CONFIGURATION.'/configuration.php');
+	ob_end_clean();
 
 	if (class_exists('JConfig'))
 	{
@@ -76,6 +78,16 @@ if (file_exists(JPATH_CONFIGURATION.'/configuration.php'))
 			exit();
 		}
 	}
+	else
+	{
+		echo 'Invalid configuration file. Exiting...';
+		exit();
+	}
+}
+else
+{
+	echo 'No configuration file found. Exiting...';
+	exit();
 }
 
 //
