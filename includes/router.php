@@ -641,7 +641,7 @@ class JRouterSite extends JRouter
 		// Get the query data
 		$query = $uri->getQuery(true);
 
-		if (!isset($query['option']) || (isset($query['option']) && $query['option'] == 'com_content' && $query['task'] == 'view')) {
+		if (!isset($query['option']) || (isset($query['option']) && $query['option'] == 'com_content' && isset($query['task']) && $query['task'] == 'view')) {
 			/* START: HUBzero Extension to handle section, category, alias routing of com_content pages */
 			$parts = $this->_buildContentRoute($query);
 
