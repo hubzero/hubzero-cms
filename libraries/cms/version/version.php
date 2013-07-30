@@ -97,9 +97,9 @@ final class JVersion
 	 */
 	public function getLongVersion()
 	{
-		return $this->PRODUCT . ' ' . $this->RELEASE . '.' . $this->DEV_LEVEL . ' '
+		return "HUBzero 1.2.0 (" . $this->PRODUCT . ' ' . $this->RELEASE . '.' . $this->DEV_LEVEL . ' '
 				. $this->DEV_STATUS . ' [ ' . $this->CODENAME . ' ] ' . $this->RELDATE . ' '
-				. $this->RELTIME . ' ' . $this->RELTZ;
+				. $this->RELTIME . ' ' . $this->RELTZ . ")";
 	}
 
 	/**
