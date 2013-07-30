@@ -242,7 +242,14 @@ class EventsCategory extends JTable
 		{
 			$section = $this->section;
 		}
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE section=" . $this->_db->Quote($section));
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE section=" . $this->_db->Quote($section));
+		}
+		else
+		{
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE extension=" . $this->_db->Quote($section));
+		}
 		return $this->_db->loadResult();
 	}
 }

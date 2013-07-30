@@ -316,8 +316,16 @@ class EventsHtml
 	{
 		$database =& JFactory::getDBO();
 
-		$catsql = "SELECT id AS value, name AS text FROM #__categories "
-				. "WHERE section='$option' AND access<='$gid' AND published='1' ORDER BY ordering";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$catsql = "SELECT id AS value, name AS text FROM #__categories "
+					. "WHERE section='$option' AND access<='$gid' AND published='1' ORDER BY ordering";
+		}
+		else
+		{
+			$catsql = "SELECT id AS value, title AS text FROM #__categories "
+					. "WHERE extension='$option' AND access<='$gid' AND published='1' ORDER BY lft";
+		}
 
 		$categories[] = JHTML::_('select.option', '0', JText::_('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
 

@@ -1814,8 +1814,8 @@ class MembersControllerProfiles extends Hubzero_Controller
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $assetId));
+			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $assetId));
 
 			if ($this->config->get('access-admin-' . $assetType))
 			{

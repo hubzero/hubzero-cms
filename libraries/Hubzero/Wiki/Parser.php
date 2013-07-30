@@ -64,7 +64,14 @@ class Hubzero_Wiki_Parser extends JObservable
 		if (!$parser) 
 		{
 			$database =& JFactory::getDBO();
-			$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikiparser%' ORDER BY published DESC LIMIT 1");
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikiparser%' ORDER BY published DESC LIMIT 1");
+			}
+			else
+			{
+				$database->setQuery("SELECT element FROM #__extensions WHERE folder='hubzero' AND type='plugin' AND enabled=1 AND element LIKE 'wikiparser%' ORDER BY enabled DESC LIMIT 1");
+			}
 			$parser = $database->loadResult();
 		}
 		$this->_name = $parser;

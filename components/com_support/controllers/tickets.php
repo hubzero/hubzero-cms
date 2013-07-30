@@ -3250,13 +3250,28 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	private function _userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$query = "SELECT a.username AS value, a.name AS text, g.name AS groupname"
+		$group_id = 'g.id';
+		$aro_id = 'aro.id';
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$query = "SELECT a.username AS value, a.name AS text, g.title AS groupname"
+			. "\n FROM #__users AS a"
+			. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
+			. "\n INNER JOIN #__usergroups AS g ON " . $group_id . " = gm.group_id"
+			. "\n WHERE a.block = '0' AND " . $group_id . "=8"
+			. "\n ORDER BY ". $order;
+		}
+		else
+		{
+			$query = "SELECT a.username AS value, a.name AS text, g.name AS groupname"
 			. "\n FROM #__users AS a"
 			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
-			. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
-			. "\n WHERE a.block = '0' AND g.id=25"
+			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
+			. "\n INNER JOIN #__core_acl_aro_groups AS g ON " . $group_id . " = gm.group_id"
+			. "\n WHERE a.block = '0' AND " . $group_id . "=25"
 			. "\n ORDER BY ". $order;
+		}
 
 		$this->database->setQuery($query);
 		if ($nouser) 

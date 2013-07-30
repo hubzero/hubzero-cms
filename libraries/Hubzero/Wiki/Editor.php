@@ -64,7 +64,14 @@ class Hubzero_Wiki_Editor extends JObservable
 		if (!$editor) 
 		{
 			$database =& JFactory::getDBO();
-			$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikieditor%' ORDER BY published DESC LIMIT 1");
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikieditor%' ORDER BY published DESC LIMIT 1");
+			}
+			else
+			{
+				$database->setQuery("SELECT element FROM #__extensions WHERE folder='hubzero' AND type='plugin' AND enabled=1 AND element LIKE 'wikieditor%' ORDER BY enabled DESC LIMIT 1");
+			}
 			$editor = $database->loadResult();
 		}
 		$this->_name = $editor;

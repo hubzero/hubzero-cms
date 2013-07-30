@@ -2138,7 +2138,14 @@ class EventsControllerEvents extends Hubzero_Controller
 	 */
 	private function _getCategories()
 	{
-		$sql = "SELECT * FROM #__categories WHERE section='" . $this->_option . "' AND published = '1' ORDER BY ordering ASC";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$sql = "SELECT * FROM #__categories WHERE section='" . $this->_option . "' AND published = '1' ORDER BY ordering ASC";
+		}
+		else
+		{
+			$sql = "SELECT * FROM #__categories WHERE extension='" . $this->_option . "' AND published = '1' ORDER BY lft ASC";
+		}
 
 		$this->database->setQuery($sql);
 		$cats = $this->database->loadObjectList();

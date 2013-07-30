@@ -154,14 +154,23 @@ class modMySessions
 		$this->toolsConfig = JComponentHelper::getParams('com_tools');
 		
 		//set ACL for com_tools
-		$jacl =& JFactory::getACL();
-		$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
-		$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
-		$jacl->addACL('com_tools', 'manage', 'users', 'manager');
-		
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$jacl =& JFactory::getACL();
+			$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
+			$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
+			$jacl->addACL('com_tools', 'manage', 'users', 'manager');
+
+			$authorized = $this->juser->authorize('com_tools', 'manage');
+		}
+		else
+		{
+			$authorized = JFactory::getUser()->authorise('core.manage', 'com_tools');
+		}
+
 		// Ensure we have a connection to the middleware
 		$this->error = false;
-		if (!$mwdb || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$this->juser->authorize('com_tools', 'manage'))) 
+		if (!$mwdb || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized)) 
 		{
 			$this->error = true;
 			return false;
