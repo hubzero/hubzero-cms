@@ -318,6 +318,32 @@ class JInstallationModelConfiguration extends JModelLegacy
 			return false;
 		}
 
+		// add the basic profile
+		$query = "INSERT INTO #__xprofiles (uidNumber,name,givenName,username,gidNumber,gid,homeDirectory,email,userPassword,registerDate,modifiedDate,emailConfirmed,jobsAllowed) VALUES (62, 'Administrator', 'Administrator', 'admin', '100', 'users', " . $db->Quote("/home/admin") . ", " . $db->Quote($options->admin_email) .", " . $db->Quote($cryptpass) .", " . $db->quote($installdate) . ", " . $db->quote($nullDate) . ", '1','3')";
+		$db->setQuery($query);
+		try
+                {
+                        $db->execute();
+                }
+                catch (RuntimeException $e)
+                {
+                        $this->setError($e->getMessage());
+                        return false;
+                }
+
+		// add password
+		$query = "INSERT INTO #__users_password (user_id,passhash) VALUES (62, ".$db->Quote($cryptpass).")";
+		$db->setQuery($query);
+		try
+                {
+                        $db->execute();
+                }
+                catch (RuntimeException $e)
+                {
+                        $this->setError($e->getMessage());
+                        return false;
+                }
+
 		return true;
 	}
 }
