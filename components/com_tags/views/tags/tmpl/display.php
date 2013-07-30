@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=' . $option . '&task=view'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=view'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<label for="actags">Enter tags:</label>
@@ -114,9 +114,9 @@ if ($this->newtags) {
 		if ($this->showsizes == 1) {
 			$size = $this->min_font_size + ($newtag->tcount - $this->min_qty) * $this->step;
 			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></span></li>' . "\n";
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=' . $this->option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></span></li>' . "\n";
 		} else {
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></li>'."\n";
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $this->option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tl);
@@ -152,9 +152,9 @@ if ($tags) {
 		if ($this->showsizes == 1) {
 			$size = $this->min_font_size + ($tag->tcount - $this->min_qty) * $this->step;
 			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
-			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size, 1) .'em"><a href="' . JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></span></li>' . "\n";
+			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size, 1) .'em"><a href="' . JRoute::_('index.php?option=' . $this->option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></span></li>' . "\n";
 		} else {
-			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></li>'."\n";
+			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $this->option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tll);
@@ -186,7 +186,7 @@ echo $html;
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
