@@ -39,46 +39,23 @@ class JInstallationController extends JControllerLegacy
 		// Set the default view name and format from the Request.
 		if (file_exists(JPATH_CONFIGURATION.'/configuration.php') && (filesize(JPATH_CONFIGURATION.'/configuration.php') > 10) && file_exists(JPATH_INSTALLATION.'/index.php')) {
 			$default_view	= 'remove';
-		} else {
+		} else  {
 			$default_view	= 'language';
 		}
 		*/
-		if (!file_exists(JPATH_CONFIGURATION.'/configuration.php')) 
-		{
-			$default_view = 'noconfig';
-		}
-		else 
-		{
-			require_once(JPATH_CONFIGURATION.'/configuration.php');
-
-			if (!class_exists('JConfig'))
-			{
-				$default_view = 'invalidconfig';
-			}
-			else
-			{
-				$CONFIG = new JConfig();
-
-				if (count(get_object_vars($CONFIG)) > 1)
-				{
-					$default_view = 'hasconfig';
-				}
-				else
-				{
-					$default_view = 'language';
-				}
-			}
-		}
+		$default_view   = 'language';
 
 		$model = $this->getModel('Setup', 'JInstallationModel', array('dbo' => null));
 
 		$options = $model->getOptions();
 
 		$vName = JRequest::getWord('view', $default_view);
+		
+		$CONFIG = new JConfig();
 
 		if (empty($options['installkey']) || ($options['installkey'] != $CONFIG->installkey))
 		{
-			if (!in_array($vName,array('installkey','language','hasconfig','noconfig','invalidconfig')))
+			if ($vName != 'language')
 			{
 				$vName = "installkey";
 				JRequest::setVar('view', 'installkey');
