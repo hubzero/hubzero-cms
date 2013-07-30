@@ -98,6 +98,7 @@ defined('_JEXEC') or die;
 									</em>
 								</td>
 							</tr>
+							<?php /*
 							<tr>
 								<td colspan="2">
 									<?php echo $this->form->getLabel('db_prefix'); ?>
@@ -110,6 +111,7 @@ defined('_JEXEC') or die;
 									</em>
 								</td>
 							</tr>
+							*/ ?>
 							<tr>
 								<td colspan="2">
 									<?php echo $this->form->getLabel('db_old'); ?>

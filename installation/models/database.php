@@ -79,6 +79,8 @@ class JInstallationModelDatabase extends JModelLegacy
 			return false;
 		}
 
+		$options->db_prefix = 'jos_';
+
 		// Validate database table prefix.
 		if (!preg_match('#^[a-zA-Z]+[a-zA-Z0-9_]*$#', $options->db_prefix)) {
 			$this->setError(JText::_('INSTL_DATABASE_PREFIX_INVALID_CHARS'));

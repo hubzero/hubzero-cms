@@ -73,6 +73,8 @@ class JFormFieldPrefix extends JFormField
 			$prefix = $session['db_prefix'];
 		}
 
+		$prefix = 'jos_'; // HUBzero currently assumes a jos_ prefix in scattered locations
+
 		// Initialize JavaScript field attributes.
 		$onchange	= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
