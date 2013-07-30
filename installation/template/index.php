@@ -7,6 +7,12 @@
 
 defined('_JEXEC') or die;
 
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Browser.php');
+
+$browser = new Hubzero_Browser();
+$b = $browser->getBrowser();
+$v = $browser->getBrowserMajorVersion();
+
 $doc = JFactory::getDocument();
 
 // Include the component HTML helpers.
@@ -32,11 +38,17 @@ JText::script('INSTL_PROCESS_BUSY');
 JText::script('INSTL_SITE_SAMPLE_LOADED');
 JText::script('INSTL_FTP_SETTINGS_CORRECT');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" >
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
 
+		<link href="../media/system/css/fontcons.css" rel="stylesheet" type="text/css" />
+		<link href="../media/system/css/notifications.css" rel="stylesheet" type="text/css" />
 		<!--[if IE 7]>
 			<link href="template/css/ie7.css" rel="stylesheet" type="text/css" />
 		<![endif]-->
@@ -48,8 +60,8 @@ JText::script('INSTL_FTP_SETTINGS_CORRECT');
 	</head>
 	<body>
 		<div id="header">
-			<span class="logo"><a href="http://www.joomla.org" target="_blank"><img src="template/images/logo.png" alt="Joomla!" /></a></span>
-			<h1>Joomla! <?php echo JVERSION; ?> <?php echo JText::_('INSTL_INSTALLATION') ?></h1>
+			<span class="logo"><a href="http://hubzero.org" target="_blank"><img src="template/images/hub.png" alt="HUBzero" /></a></span>
+			<h1>HUBzero <?php echo HVERSION; ?> <?php echo JText::_('INSTL_INSTALLATION') ?></h1>
 		</div>
 		<jdoc:include type="message" />
 		<div id="content-box">
@@ -74,8 +86,8 @@ JText::script('INSTL_FTP_SETTINGS_CORRECT');
 			</div>
 		</div>
 		<div id="copyright">
-			<?php $joomla= '<a href="http://www.joomla.org">Joomla!&#174;</a>';
-			echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $joomla) ?>
+			<?php $hubzero= '<a href="http://hubzero.org">HUBzero&#174;</a>';
+			echo JText::sprintf('JGLOBAL_ISFREESOFTWARE', $hubzero) ?>
 		</div>
 	</body>
 </html>
