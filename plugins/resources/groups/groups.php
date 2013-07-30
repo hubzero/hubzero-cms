@@ -83,7 +83,7 @@ class plgResourcesGroups extends Hubzero_Plugin
 			'metadata' => ''
 		);
 
-		if (!$resource->group_owner)
+		if (!$resource->group_owner || substr($resource->group_owner, 0, strlen('app-')) == 'app-')
 		{
 			return $arr;
 		}
