@@ -71,6 +71,56 @@ class JInstallationControllerSetup extends JControllerLegacy
 		$vars = $model->storeOptions($return);
 
 		// Redirect to the next page.
+		$this->setRedirect('index.php?view=installkey');
+	}
+
+	/**
+	 * Method to check installer key before allowing installation.
+	 *
+	 * @return      void
+	 * @since       HUBzero 1.2
+	 */
+
+	public function installkey()
+	{
+		// Get the application object.
+		$app = JFactory::getApplication();
+
+		// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get the setup model.
+		$model = $this->getModel('Setup', 'JInstallationModel', array('dbo' => null));
+
+		// Get the posted values from the request and validate them.
+		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$return	= $model->validate($data, 'installkey');
+
+		// Check for validation errors.
+		if ($return === false) {
+
+			// Get the validation messages.
+			$errors	= $model->getErrors();
+
+			// Push up to three validation messages out to the user.
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			{
+				if ($errors[$i] instanceof Exception) {
+					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+				} else {
+					$app->enqueueMessage($errors[$i], 'warning');
+				}
+			}
+
+			// Redirect back to the installkey screen.
+			$this->setRedirect('index.php?view=installkey');
+			return false;
+		}
+
+		// Store the options in the session.
+		$vars = $model->storeOptions($return);
+
+		// Redirect to the next page.
 		$this->setRedirect('index.php?view=preinstall');
 	}
 

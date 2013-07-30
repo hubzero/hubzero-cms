@@ -80,9 +80,65 @@ class JInstallationControllerSetup extends JControllerLegacy
 		$vars = $model->storeOptions($return);
 
 		// Redirect to the next page.
-		$r->view = 'preinstall';
+		//$r->view = 'preinstall';
+		$r->view = 'installkey';
 		$this->sendResponse($r);
 	}
+
+
+	/**
+         * Method to check installer key before allowing installation.
+         *
+         * @return      void
+         * @since       HUBzero 1.2
+         */
+        public function installkey()
+        {
+                // Check for request forgeries.
+                JSession::checkToken() or $this->sendResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
+
+                // Get the application object.
+                $app = JFactory::getApplication();
+
+                // Get the setup model.
+                $model = $this->getModel('Setup', 'JInstallationModel', array('dbo' => null));
+
+                // Get the posted values from the request and validate them.
+                $data = JRequest::getVar('jform', array(), 'post', 'array');
+                $return = $model->validate($data, 'installkey');
+
+                $r = new JObject();
+                // Check for validation errors.
+                if ($return === false) {
+			// Store the options in the session.
+                        $vars = $model->storeOptions($data);
+
+                        // Get the validation messages.
+                        $errors = $model->getErrors();
+
+                        // Push up to three validation messages out to the user.
+                        for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+                        {
+                                if ($errors[$i] instanceof Exception) {
+                                        $app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+                                } else {
+                                        $app->enqueueMessage($errors[$i], 'warning');
+                                }
+                        }
+
+                        // Redirect back to the language selection screen.
+                        $r->view = 'installkey';
+                        $this->sendResponse($r);
+                        return false;
+                }
+
+                // Store the options in the session.
+                $vars = $model->storeOptions($return);
+
+                // Redirect to the next page.
+                $r->view = 'preinstall';
+                $this->sendResponse($r);
+        }
 
 	/**
 	 * @return	void
