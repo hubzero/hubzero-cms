@@ -17,26 +17,29 @@ class JHtmlInstallation
 			case 'language':
 				$on = 1;
 				break;
-			case 'preinstall':
+			case 'installkey':
 				$on = 2;
 				break;
-			case 'license':
+			case 'preinstall':
 				$on = 3;
 				break;
-			case 'database':
+			case 'license':
 				$on = 4;
 				break;
-			case 'filesystem':
+			case 'database':
 				$on = 5;
 				break;
-			case 'site':
+			case 'filesystem':
 				$on = 6;
 				break;
-			case 'complete':
+			case 'site':
 				$on = 7;
 				break;
+			case 'complete':
+				$on = 8;
+				break;
 			case 'remove':
-				$on = 7;
+				$on = 9;
 				break;
 			default:
 				$on = 1;
@@ -44,12 +47,13 @@ class JHtmlInstallation
 
  		$html = '<h2>'.JText::_('INSTL_STEPS_TITLE').'</h2>' .
 			'<div class="step'.($on == 1 ? ' active' : '').'" id="language">'.JText::_('INSTL_STEP_1_LABEL').'</div>' .
-			'<div class="step'.($on == 2 ? ' active' : '').'" id="preinstall">'.JText::_('INSTL_STEP_2_LABEL').'</div>' .
-			'<div class="step'.($on == 3 ? ' active' : '').'" id="license">'.JText::_('INSTL_STEP_3_LABEL').'</div>' .
-			'<div class="step'.($on == 4 ? ' active' : '').'" id="database">'.JText::_('INSTL_STEP_4_LABEL').'</div>' .
-			'<div class="step'.($on == 5 ? ' active' : '').'" id="filesystem">'.JText::_('INSTL_STEP_5_LABEL').'</div>' .
-			'<div class="step'.($on == 6 ? ' active' : '').'" id="site">'.JText::_('INSTL_STEP_6_LABEL').'</div>' .
-			'<div class="step'.($on == 7 ? ' active' : '').'" id="complete">'.JText::_('INSTL_STEP_7_LABEL').'</div>';
+			'<div class="step'.($on == 2 ? ' active' : '').'" id="installkey">'.JText::_('INSTL_STEP_2_LABEL').'</div>' .
+			'<div class="step'.($on == 3 ? ' active' : '').'" id="preinstall">'.JText::_('INSTL_STEP_3_LABEL').'</div>' .
+			'<div class="step'.($on == 4 ? ' active' : '').'" id="license">'.JText::_('INSTL_STEP_4_LABEL').'</div>' .
+			'<div class="step'.($on == 5 ? ' active' : '').'" id="database">'.JText::_('INSTL_STEP_5_LABEL').'</div>' .
+			'<div class="step'.($on == 6 ? ' active' : '').'" id="filesystem">'.JText::_('INSTL_STEP_6_LABEL').'</div>' .
+			'<div class="step'.($on == 7 ? ' active' : '').'" id="site">'.JText::_('INSTL_STEP_7_LABEL').'</div>' .
+			'<div class="step'.($on == 8 ? ' active' : '').'" id="complete">'.JText::_('INSTL_STEP_8_LABEL').'</div>';
 			return $html;
 	}
 }

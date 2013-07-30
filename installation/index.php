@@ -4,6 +4,9 @@
  * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
+error_log("");
+error_log($_SERVER['SCRIPT_NAME']);
+error_log("");
 
 // PHP 5 check
 if (version_compare(PHP_VERSION, '5.2.4', '<')) {
@@ -45,9 +48,34 @@ error_reporting(E_ALL);
 /*
  * Check for existing configuration file.
  */
+/*
 if (file_exists(JPATH_CONFIGURATION.'/configuration.php') && (filesize(JPATH_CONFIGURATION.'/configuration.php') > 10) && !file_exists(JPATH_INSTALLATION.'/index.php')) {
 	header('Location: ../index.php');
 	exit();
+}
+*/
+
+if (file_exists(JPATH_CONFIGURATION.'/configuration.php'))
+{
+	require_once(JPATH_CONFIGURATION.'/configuration.php');
+
+	if (class_exists('JConfig'))
+	{
+		// System configuration
+		$CONFIG = new JConfig();
+
+		if (count(get_object_vars($CONFIG)) > 1)
+		{
+			header( 'Location: ..' );
+			exit();
+		}
+
+		if (empty($CONFIG->installkey))
+		{
+			echo 'Invalid configuration file. Exiting...';
+			exit();
+		}
+	}
 }
 
 //
@@ -59,6 +87,11 @@ require_once JPATH_LIBRARIES.'/import.php';
 
 // Botstrap the CMS libraries.
 require_once JPATH_LIBRARIES.'/cms.php';
+
+require_once JPATH_INSTALLATION."/models/rules/prefix.php";    // class JFormRulePrefix extends JFormRule
+require_once JPATH_INSTALLATION."/models/fields/prefix.php";   // class JFormFieldPrefix extends JFormField
+require_once JPATH_INSTALLATION."/models/fields/sample.php";   // class JFormFieldSample extends JFormFieldRadio
+require_once JPATH_INSTALLATION."/models/fields/language.php"; // class JFormFieldLanguage extends JFormFieldList
 
 // Joomla library imports.
 jimport('joomla.database.table');
