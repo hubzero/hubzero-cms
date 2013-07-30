@@ -121,7 +121,8 @@ class JInstallationModelDatabase extends JModelLegacy
 				return false;
 			}
 
-			if ($type == ('mysql' || 'mysqli')) {
+			//if ($type == ('mysql' || 'mysqli')) {
+			if ($type == 'mysql' || $type == 'mysqli' || $type == 'pdo_mysql') {
 				// @internal MySQL versions pre 5.1.6 forbid . / or \ or NULL
 				if ((preg_match('#[\\\/\.\0]#', $options->db_name)) && (!version_compare($db_version, '5.1.6', '>='))) {
 					$this->setError(JText::sprintf('INSTL_DATABASE_INVALID_NAME', $db_version));
@@ -176,28 +177,33 @@ class JInstallationModelDatabase extends JModelLegacy
 			}
 
 			// Set the appropriate schema script based on UTF-8 support.
-			if ($type == 'mysqli' || $type == 'mysql')
+			if ($type == 'mysqli' || $type == 'mysql' || $type == 'pdo_mysql')
 			{
-				$schema = 'sql/mysql/joomla.sql';
+				$schemas[] = 'sql/mysql/joomla.sql';
+				$schemas[] = 'sql/mysql/hubzero.sql';
 			}
 			elseif ($type == 'sqlsrv' || $type == 'sqlazure')
 			{
-				$schema = 'sql/sqlazure/joomla.sql';
+				$schemas[] = 'sql/sqlazure/joomla.sql';
 			}
 			else
 			{
-				$schema = 'sql/'. $type . '/joomla.sql';
-			}
-			// Check if the schema is a valid file
-			if (!JFile::exists($schema)) {
-				$this->setError(JText::sprintf('INSTL_ERROR_DB', JText::_('INSTL_DATABASE_NO_SCHEMA')));
-				return false;
+				$schemas[] = 'sql/'. $type . '/joomla.sql';
 			}
 
-			// Attempt to import the database schema.
-			if (!$this->populateDatabase($db, $schema)) {
-				$this->setError(JText::sprintf('INSTL_ERROR_DB', $this->getError()));
-				return false;
+			foreach ($schemas as $schema)
+			{
+				// Check if the schema is a valid file
+				if (!JFile::exists($schema)) {
+					$this->setError(JText::sprintf('INSTL_ERROR_DB', JText::_('INSTL_DATABASE_NO_SCHEMA')));
+					return false;
+				}
+
+				// Attempt to import the database schema.
+				if (!$this->populateDatabase($db, $schema)) {
+					$this->setError(JText::sprintf('INSTL_ERROR_DB', $this->getError()));
+					return false;
+				}
 			}
 
 			// Attempt to update the table #__schema.
@@ -254,10 +260,11 @@ class JInstallationModelDatabase extends JModelLegacy
 					$this->setError(JText::sprintf('INSTL_DATABASE_COULD_NOT_REFRESH_MANIFEST_CACHE', $extension->name));
 					return false;
 				}
+
 			}
 
 			// Load the localise.sql for translating the data in joomla.sql/joomla_backwards.sql
-			$dblocalise = 'sql/'.(($type == 'mysqli') ? 'mysql' : $type).'/localise.sql';
+			$dblocalise = 'sql/'.(($type == 'mysqli' || $type == 'pdo_myql') ? 'mysql' : $type).'/localise.sql';
 			if (JFile::exists($dblocalise)) {
 				if (!$this->populateDatabase($db, $dblocalise)) {
 					$this->setError(JText::sprintf('INSTL_ERROR_DB', $this->getError()));
@@ -331,7 +338,8 @@ class JInstallationModelDatabase extends JModelLegacy
 
 		// Build the path to the sample data file.
 		$type = $options->db_type;
-		if ($type == 'mysqli') {
+		//if ($type == 'mysqli') {
+		if ($type == 'mysqli' || $type == 'pdo_mysql') {
 			$type = 'mysql';
 		}
 		elseif ($type == 'sqlsrv') {
