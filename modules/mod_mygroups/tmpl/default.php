@@ -33,9 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
 $groups = $this->groups;
+$total = count($this->groups);
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
-<?php if ($groups && count($groups) > 0) { ?>
+<?php if ($groups && $total > 0) { ?>
 	<ul class="compactlist mygroups">
 <?php
 	$i = 0;
@@ -69,8 +70,12 @@ $groups = $this->groups;
 	<p><?php echo JText::_('MOD_MYGROUPS_NO_GROUPS'); ?></p>
 <?php } ?>
 
+<?php if ($total > $this->limit) { ?>
+	<p><?php echo JText::sprintf('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, ($total - $this->limit)); ?></p>
+<?php } ?>
+
 	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=groups'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_MY_GROUPS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=groups'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_MY_GROUPS'); ?> (<?php echo $total; ?>)</a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
 	</ul>
