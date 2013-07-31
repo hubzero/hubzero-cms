@@ -96,6 +96,9 @@ class UsersControllerRegistration extends UsersController
 	 */
 	public function register()
 	{
+		JError::raiseError(403, JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+		return false;
+
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 

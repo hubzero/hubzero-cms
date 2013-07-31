@@ -37,14 +37,12 @@ class UsersController extends JControllerLegacy
 		$lName	 = JRequest::getCmd('layout', 'default');
 
 		if ($view = $this->getView($vName, $vFormat)) {
-			if ($vName == 'register' || $vName == 'registration') {
-				$this->setRedirect( JRoute::_('index.php?option=com_register', false) );
-				return;
-			}
-
 			// Do any specific processing by view.
 			switch ($vName) {
 				case 'registration':
+					JError::raiseError(403, JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+					return;
+
 					// If the user is already logged in, redirect to the profile page.
 					$user = JFactory::getUser();
 					if ($user->get('guest') != 1) {
