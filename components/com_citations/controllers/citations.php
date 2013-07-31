@@ -79,7 +79,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Instantiate a new view
-		$this->view->title = JText::_(strtoupper($this->_name));
+		$this->view->title = JText::_(strtoupper($this->_option));
 
 		$this->view->database = $this->database;
 
@@ -119,7 +119,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 	public function browseTask()
 	{
 		// Instantiate a new view
-		$this->view->title    = JText::_(strtoupper($this->_name));
+		$this->view->title    = JText::_(strtoupper($this->_option));
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
 		$this->view->isAdmin = false;
@@ -345,7 +345,12 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
 		$this->view->display();
 	}
-	
+
+	/**
+	 * View a citation entry
+	 * 
+	 * @return     void
+	 */
 	public function viewTask()
 	{
 		//set vars for view
@@ -424,7 +429,12 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->juser = $this->juser;
 		$this->view->display();
 	}
-	
+
+	/**
+	 * Get Open URL
+	 * 
+	 * @return     string
+	 */
 	private function openUrl()
 	{
 		//var to store open url stuff
@@ -433,25 +443,25 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'text' => '',
 			'icon' => ''
 		);
-		
+
 		//get the users id to make lookup
 		$userIp = $this->getIP();
-		
+
 		//get the param for ip regex to use machine ip
 		$ipRegex = array('10.\d{2,5}.\d{2,5}.\d{2,5}'); 
-		
+
 		$useMachineIp = false;
-		foreach($ipRegex as $ipr)
+		foreach ($ipRegex as $ipr)
 		{
 			$match = preg_match('/'.$ipr.'/i', $userIp);
-			if($match)
+			if ($match)
 			{
 				$useMachineIp = true;
 			}
 		}
-		
+
 		//make url based on if were using machine ip or users
-		if($useMachineIp)
+		if ($useMachineIp)
 		{
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
 		}
@@ -459,7 +469,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		{
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $userIp;
 		}
-		
+
 		//get the resolver
 		$r = null;
 		if (function_exists('curl_init'))
@@ -471,11 +481,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$r = curl_exec($cURL);
 			curl_close($cURL);
 		}
-		
+
 		//parse the return from resolver lookup
 		$xml = simplexml_load_string($r);
 		$resolver = $xml->resolverRegistryEntry->resolver;
-		
+
 		//if we have resolver set vars for creating open urls
 		if ($resolver != null) 
 		{
@@ -483,10 +493,15 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$openUrl['text'] = $resolver->linkText;
 			$openUrl['icon'] = $resolver->linkIcon;
 		}
-		
+
 		return $openUrl;
 	}
-	
+
+	/**
+	 * Get user IP
+	 * 
+	 * @return     string
+	 */
 	private function getIP()
 	{
 		foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) 
@@ -512,7 +527,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 	public function loginTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task))),
+			JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
 			JText::_('You must be a logged in to access this area.'),
 			'warning'
 		);
@@ -593,7 +608,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'type'       => '', 
 			'type_title' => ' - Select a Type &mdash;'
 		));
-		
+
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getInt('id', 0);
 
@@ -602,28 +617,28 @@ class CitationsControllerCitations extends Hubzero_Controller
 		{
 			$id = 0;
 		}
-		
+
 		// Load the object
 		$this->view->row = new CitationsCitation($this->database);
 		$this->view->row->load($id);
-		
+
 		//make sure title isnt too long
 		$maxTitleLength = 30;
 		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength) ? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;' : $this->view->row->title;
-		
+
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
-		$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
+		$pathway->addItem( JText::_(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
 		if ($id && $id != 0)
 		{
 			$pathway->addItem( $shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->row->id);
 		}
 		$pathway->addItem( 'Edit', 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
-		
+
 		// Set the page title
 		$document =& JFactory::getDocument();
 		$document->setTitle( "Edit Citation: " . $shortenedTitle );
-		
+
 		//push jquery to doc
 		$document =& JFactory::getDocument();
 		if (!JPluginHelper::isEnabled('system', 'jquery'))
@@ -639,7 +654,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_name);
 		
 		// Instantiate a new view
-		$this->view->title  = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_task));
+		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		$this->view->config = $this->config;
 		
 		// Load the associations object
@@ -898,7 +913,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Esnure we have an ID to work with
 		if (!$id) 
 		{
-			JError::raiseError(500, JText::_('NO_CITATION_ID'));
+			JError::raiseError(500, JText::_('COM_CITATIONS_NO_CITATION_ID'));
 			return;
 		}
 
@@ -923,7 +938,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				JError::raiseError(500, JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				JError::raiseError(500, JText::_('COM_CITATIONS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
 			}
 		}
@@ -1114,6 +1129,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 		echo 'format' . JRequest::getVar('format', 'apa');
 	}
 
+	/**
+	 * Serve up an image
+	 * 
+	 * @return     void
+	 */
 	public function downloadimageTask()
 	{
 		// get the image we want to serve

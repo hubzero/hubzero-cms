@@ -50,7 +50,7 @@ class CitationsControllerImport extends Hubzero_Controller
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=import'))),
+				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=import', false, true))),
 				JText::_('You must be a logged in to access this area.'),
 				'warning'
 			);
