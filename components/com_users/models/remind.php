@@ -108,7 +108,8 @@ class UsersModelRemind extends JModelForm
 
 		// Get the user id.
 		$db->setQuery((string) $query);
-		$user = $db->loadObject();
+		$users = $db->loadObjectList('id');
+		$usersnames = array();
 
 		// Check for an error.
 		if ($db->getErrorNum()) {
@@ -117,14 +118,24 @@ class UsersModelRemind extends JModelForm
 		}
 
 		// Check for a user.
-		if (empty($user)) {
+		if (count($users) < 1) {
 			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
 			return false;
 		}
 
-		// Make sure the user isn't blocked.
-		if ($user->block) {
-			$this->setError(JText::_('COM_USERS_USER_BLOCKED'));
+		foreach ($users as $user) {
+			// Make sure the user isn't blocked.
+			if ($user->block) {
+				unset($users[$user->id]);
+			} else {
+				$usersnames[] = $user->username;
+				$email = $user->email;
+			}
+		}
+
+		// Check for a user.
+		if (count($users) < 1) {
+			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
 			return false;
 		}
 
@@ -137,7 +148,8 @@ class UsersModelRemind extends JModelForm
 		$mode	= $config->get('force_ssl', 0) == 2 ? 1 : -1;
 
 		// Put together the email template data.
-		$data = JArrayHelper::fromObject($user);
+		$data = array();
+		$data['username']	= implode(', ', $usersnames);
 		$data['fromname']	= $config->get('fromname');
 		$data['mailfrom']	= $config->get('mailfrom');
 		$data['sitename']	= $config->get('sitename');
@@ -156,7 +168,7 @@ class UsersModelRemind extends JModelForm
 		);
 
 		// Send the password reset request email.
-		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $user->email, $subject, $body);
+		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $email, $subject, $body);
 
 		// Check for an error.
 		if ($return !== true) {

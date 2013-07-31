@@ -15,7 +15,7 @@ JHtml::_('behavior.formvalidation');
 			<legend><?php echo JText::_('Email New Password'); ?></legend>
 
 			<?php foreach ($this->form->getFieldsets() as $fieldset): ?>
-			<p><?php echo JText::_($fieldset->label); ?>
+			<p><?php echo JText::_($fieldset->label); ?></p>
 				<?php foreach ($this->form->getFieldset($fieldset->name) as $name => $field): ?>
 					<?php echo $field->label; ?>
 					<?php echo $field->input; ?>

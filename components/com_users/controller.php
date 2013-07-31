@@ -64,6 +64,8 @@ class UsersController extends JControllerLegacy
 
 				// Handle view specific models.
 				case 'profile':
+					JError::raiseError(403, JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+					return;
 
 					// If the user is a guest, redirect to the login page.
 					$user = JFactory::getUser();

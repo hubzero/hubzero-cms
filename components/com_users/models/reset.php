@@ -244,29 +244,12 @@ class UsersModelReset extends JModelForm
 			return false;
 		}
 
-		// Find the user id for the given token.
-		$db	= $this->getDbo();
-		$query	= $db->getQuery(true);
-		$query->select('activation');
-		$query->select('id');
-		$query->select('block');
-		$query->from($db->quoteName('#__users'));
-		$query->where($db->quoteName('username').' = '.$db->Quote($data['username']));
+		// Get the token and user id from the confirmation process.
+		$app	= JFactory::getApplication();
+		$id		= $app->getUserState('com_users.reset.user', null);
 
-		// Get the user id.
-		$db->setQuery((string) $query);
-		$user = $db->loadObject();
-
-		// Check for an error.
-		if ($db->getErrorNum()) {
-			return new JException(JText::sprintf('COM_USERS_DATABASE_ERROR', $db->getErrorMsg()), 500);
-		}
-
-		// Check for a user.
-		if (empty($user)) {
-			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
-			return false;
-		}
+		// Get the user object.
+		$user = JUser::getInstance($id);
 
 		$parts	= explode( ':', $user->activation );
 		$crypt	= $parts[0];
@@ -293,7 +276,6 @@ class UsersModelReset extends JModelForm
 		// Push the user data into the session.
 		$app = JFactory::getApplication();
 		$app->setUserState('com_users.reset.token', $crypt.':'.$salt);
-		$app->setUserState('com_users.reset.user', $user->id);
 
 		return true;
 	}
@@ -333,12 +315,12 @@ class UsersModelReset extends JModelForm
 			return false;
 		}
 
-		// Find the user id for the given email address.
+		// Find the user id for the given username
 		$db	= $this->getDbo();
 		$query	= $db->getQuery(true);
 		$query->select('id');
 		$query->from($db->quoteName('#__users'));
-		$query->where($db->quoteName('email').' = '.$db->Quote($data['email']));
+		$query->where($db->quoteName('username').' = '.$db->Quote($data['username']));
 
 		// Get the user object.
 		$db->setQuery((string) $query);
@@ -422,6 +404,10 @@ class UsersModelReset extends JModelForm
 		if ($return !== true) {
 			return new JException(JText::_('COM_USERS_MAIL_FAILED'), 500);
 		}
+
+		// Push the user data into the session.
+		$app = JFactory::getApplication();
+		$app->setUserState('com_users.reset.user', $user->id);
 
 		return true;
 	}
