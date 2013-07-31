@@ -247,4 +247,9 @@ abstract class JPluginHelper
 
 		return self::$plugins;
 	}
+
+	static function loadLanguage($extension, $basePath = JPATH_BASE)
+	{
+		return JFactory::getLanguage()->load( strtolower($extension), $basePath);
+	}
 }
