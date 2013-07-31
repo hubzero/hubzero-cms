@@ -15,7 +15,7 @@
 	div.draggable .compactlist li.course {
 		/*background-position: 0.7em 0.7em;*/
 		position: relative;
-		/*padding-right:5em;*/
+		padding-right: 5em;
 	}
 	div.draggable .compactlist li.course a {
 	}
