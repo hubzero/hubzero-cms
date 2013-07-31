@@ -108,11 +108,6 @@ class plgCoursesPages extends Hubzero_Plugin
 
 		// Is the user a course manager?
 		$total = $offering->pages(array('count' => true));
-		if (!$offering->access('manage') && !$total)
-		{
-			// Don't show the tab if no pages
-			return;
-		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 

@@ -27,7 +27,7 @@ if (!$this->page)
 	<div id="pages-introduction">
 		<div class="instructions">
 			<p><?php echo JText::_('No supplementary pages found.'); ?></p>
-		</p>
+		</div>
 	</div>
 	<?php
 }
