@@ -41,16 +41,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 	<?php if ($this->emp) {  ?>
-		<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Employer Dashboard'); ?></a></li>
+		<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Employer Dashboard'); ?></a></li>
 		<?php if ($filters['filterby'] == 'shortlisted') { ?>
-		<li><a class="complete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo JText::_('All Candidates'); ?></a></li>
+		<li><a class="complete btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo JText::_('All Candidates'); ?></a></li>
 		<?php } else { ?>
-		<li><a class="shortlist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('Candidate Shortlist'); ?></a></li>
+		<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('Candidate Shortlist'); ?></a></li>
 		<?php } ?>
 	<?php } else {  ?>
 		<li>
 			<!-- <?php echo JText::_('You are logged in as a site administrator.'); ?> -->
-			<a class="myjobs" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Administrator Dashboard'); ?></a>
+			<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('Administrator Dashboard'); ?></a>
 		</li>
 	<?php } ?>
 	</ul>

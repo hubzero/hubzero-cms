@@ -47,61 +47,63 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
     <ul id="useroptions">
     <?php if($juser->get('guest')) { ?> 
-    	<li><?php echo JText::_('PLEASE').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=view').'?action=login">'.JText::_('ACTION_LOGIN').'</a> '.JText::_('ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+    	<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
     <?php } else if($this->emp && $this->allowsubscriptions) {  ?>
-    	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-        <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
+    	<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+        <li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
     <?php } else if($this->admin) { ?>
-    	<li><?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?>
-        	<a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a></li>
+    	<li><?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
+        	<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
 	<?php } else { ?>  
-    	<li><a class="myresume" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addresume'); ?>"><?php echo JText::_('JOBS_MY_RESUME'); ?></a></li>
+    	<li><a class="myresume btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_MY_RESUME'); ?></a></li>
     <?php } ?>  		
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<?php
-		if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
-<form action="<?php echo JRoute::_('index.php?option='.$option.a.'task=confirm'); ?>" method="post" id="hubForm"  >
-	<div class="explaination">
-			<p><?php echo JText::_('SUBSCRIBE_HINT_EMPLOYER_INFO') ?></p>		
-	</div>
-    <fieldset id="subForm">
-		<h3><?php echo JText::_('SUBSCRIPTION_EMPLOYER_INFORMATION'); ?></h3>
 
-		<label>
-			<?php echo JText::_( 'EMPLOYER_COMPANY_NAME' ); ?>:
-            <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
-			<input class="inputbox" type="text" id="companyName" name="companyName" size="50" maxlength="100" value="<?php echo $this->employer->companyName; ?>" />
-		</label>
-        <label>
-			<?php echo JText::_( 'EMPLOYER_COMPANY_LOCATION' ); ?>:
-            <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
-			<input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50" maxlength="200" value="<?php echo $this->employer->companyLocation; ?>" />  
-		</label>
-         <label>
-			<?php echo JText::_( 'EMPLOYER_COMPANY_WEBSITE' ); ?>:
-			<input class="inputbox" type="text" id="companyWebsite" name="companyWebsite" size="50" maxlength="200" value="<?php echo $this->employer->companyWebsite; ?>" />
-		</label>		
-	</fieldset>
-    <div class="clear"></div>
-    <div class="explaination">
-			<p><?php echo JText::_('SUBSCRIBE_HINT_PICK') ?></p>		
-           <h4><?php echo JText::_('SUBSCRIBE_NEXT_STEP') ?></h4>
-            <p><?php echo JText::_('SUBSCRIBE_HINT_PAYMENT') ?></p>
-            <?php if($promoline) { ?> 
-            <p class="promo"><?php echo $promoline; ?></p>   
-            <?php } ?>     		
-	</div>
-    <fieldset>
-		<h3><?php echo JText::_('SUBSCRIPTION_DETAILS'); ?></h3>
-		<label>
-			<?php echo JText::_( 'SUBSCRIBE_SELECT_SERVICE' ); ?>:          
-            <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
-        </label>
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=confirm'); ?>" method="post" id="hubForm">
+		<div class="explaination">
+				<p><?php echo JText::_('COM_JOBS_SUBSCRIBE_HINT_EMPLOYER_INFO') ?></p>
+		</div>
+		<fieldset id="subForm">
+			<legend><?php echo JText::_('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION'); ?></legend>
+
+			<label for="companyName">
+				<?php echo JText::_( 'COM_JOBS_EMPLOYER_COMPANY_NAME' ); ?>:
+				<span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
+				<input class="inputbox" type="text" id="companyName" name="companyName" size="50" maxlength="100" value="<?php echo $this->escape($this->employer->companyName); ?>" />
+			</label>
+			<label for="companyLocation">
+				<?php echo JText::_( 'COM_JOBS_EMPLOYER_COMPANY_LOCATION' ); ?>:
+				<span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
+				<input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50" maxlength="200" value="<?php echo $this->escape($this->employer->companyLocation); ?>" />  
+			</label>
+			<label for="companyWebsite">
+				<?php echo JText::_( 'COM_JOBS_EMPLOYER_COMPANY_WEBSITE' ); ?>:
+				<input class="inputbox" type="text" id="companyWebsite" name="companyWebsite" size="50" maxlength="200" value="<?php echo $this->escape($this->employer->companyWebsite); ?>" />
+			</label>
+		</fieldset>
+		<div class="clear"></div>
+
+		<div class="explaination">
+			<p><?php echo JText::_('COM_JOBS_SUBSCRIBE_HINT_PICK') ?></p>
+			<h4><?php echo JText::_('COM_JOBS_SUBSCRIBE_NEXT_STEP') ?></h4>
+			<p><?php echo JText::_('COM_JOBS_SUBSCRIBE_HINT_PAYMENT') ?></p>
+		<?php if ($promoline) { ?> 
+			<p class="promo"><?php echo $promoline; ?></p>
+		<?php } ?>
+		</div>
+		<fieldset>
+			<legend><?php echo JText::_('COM_JOBS_SUBSCRIPTION_DETAILS'); ?></legend>
+
+			<label>
+				<?php echo JText::_( 'COM_JOBS_SUBSCRIBE_SELECT_SERVICE' ); ?>:
+				<span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
+			</label>
 			<?php 
 				$html = '';
 				$now = date( 'Y-m-d H:i:s', time() );
@@ -113,18 +115,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if($thissub) {
 						$length = $this->subscription->status==0 ? $this->subscription->pendingunits : $this->subscription->units;
 						$expires  = $this->subscription->expires > $now && $this->subscription->status==1 ?  '<p class="yes">' : '<p class="no">';
-						$expires .= JText::_( 'YOUR' ).' '.$length.'-'.$this->services[$i]->unitmeasure.' '.JText::_( 'SUBSCRIPTION' ).' ';
+						$expires .= JText::_( 'COM_JOBS_YOUR' ).' '.$length.'-'.$this->services[$i]->unitmeasure.' '.JText::_( 'COM_JOBS_SUBSCRIPTION' ).' ';
 						if($this->subscription->status==1) {
-							$expires .= $this->subscription->expires > $now ? strtolower(JText::_( 'SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(JText::_( 'SUBSCRIPTION_STATUS_EXPIRED' )) ;
-							$expires .= ' '.JText::_( 'ON' ).' '.JHTML::_('date', $this->subscription->expires, '%d %b %Y').'.';
+							$expires .= $this->subscription->expires > $now ? strtolower(JText::_( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(JText::_( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED' )) ;
+							$expires .= ' '.JText::_( 'COM_JOBS_ON' ).' '.JHTML::_('date', $this->subscription->expires, '%d %b %Y').'.';
 						}
 						else {
-						$expires .= JText::_( 'SUBSCRIPTION_IS_PENDING' ) ;
+						$expires .= JText::_( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' ) ;
 						}
 
-						$expires .= '</p>'.n;
-						$expires .= $this->subscription->expires > $now ? ' <a href="'.JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid).'" class="cancelit" id="showconfirm">[ '.JText::_( 'SUBSCRIPTION_CANCEL_THIS' ).' ]</a>' : '';
-						$expires .= $this->subscription->pendingunits > 0 && $this->subscription->status==1  ? '<p class="no">'.JText::_( 'SUBSCRIPTION_EXTEND_REQUEST_PENDING' ).'</p>' :'';
+						$expires .= '</p>'."\n";
+						$expires .= $this->subscription->expires > $now ? ' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid).'" class="cancelit" id="showconfirm">[ '.JText::_( 'COM_JOBS_SUBSCRIPTION_CANCEL_THIS' ).' ]</a>' : '';
+						$expires .= $this->subscription->pendingunits > 0 && $this->subscription->status==1  ? '<p class="no">'.JText::_( 'COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING' ).'</p>' :'';
 
 					}
 
@@ -142,62 +144,63 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$unitsChoice = JobsHtml::formSelect('units_'.$this->services[$i]->id, $units_select, '', "option units");
 					$iniprice = $thissub ? 0 : $this->services[$i]->unitprice;
 
-					$html .= '<div class="bindtogether product">'.n;
-					$html .= t.t.t.'  <input class="option service" type="radio" name="serviceid" id="service_'.$this->services[$i]->id.'" value="'.$this->services[$i]->id.'" ';
+					$html .= '<div class="bindtogether product">'."\n";
+					$html .= '  <input class="option service" type="radio" name="serviceid" id="service_'.$this->services[$i]->id.'" value="'.$this->services[$i]->id.'" ';
 					if($thissub or ($this->subscription->serviceid==0 && $i==0) ){
 						$html .= 'checked="checked"';
 					}
 					$html .= ' /> ';
-					$html .= $this->services[$i]->title.' - <span class="priceline">'.$this->services[$i]->currency.' '.$this->services[$i]->unitprice.'  '.JText::_( 'PER' ).' '.$this->services[$i]->unitmeasure.'</span>'.n;
-					$html .= '<span> '.$this->services[$i]->description.'</span>'.n;
+					$html .= $this->services[$i]->title.' - <span class="priceline">'.$this->services[$i]->currency.' '.$this->services[$i]->unitprice.'  '.JText::_( 'COM_JOBS_PER' ).' '.$this->services[$i]->unitmeasure.'</span>'."\n";
+					$html .= '<span> '.$this->services[$i]->description.'</span>'."\n";
 
-					$html .= '<div class="subdetails" id="plan_'.$this->services[$i]->id.'">'.n;
+					$html .= '<div class="subdetails" id="plan_'.$this->services[$i]->id.'">'."\n";
 					$html .= $thissub ? $expires : '';
 					if($thissub or ($this->subscription->serviceid==0 && $i==0))
 					{
-						$html .= JobsHtml::confirmscreen(JRoute::_('index.php?option='.$option.a.'task=dashboard'.a.'uid='.$this->uid), JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid));
+						$html .= JobsHtml::confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid));
 					}
 				
-					$html .= t.t.t.'<label> ';
-					$html .= $thissub ? JText::_( 'SUBSCRIPTION_EXTEND_OR_RENEW' ) : JText::_( 'ACTION_SIGN_UP' );
-					$html .= ' '.JText::_( 'for' ).' '.n;
-					$html .= t.t.t.$unitsChoice;
-					$html .= t.t.t.$this->services[$i]->unitmeasure.'(s) </label>'.n;
-					$html .= '<span class="totalprice">'.JText::_( 'SUBSCRIBE_YOUR_TOTAL' ).' ';
-					$html .= $thissub ? strtolower(JText::_( 'NEW' )).' ' : '';
-					$html .= JText::_( 'SUBSCRIBE_PAYMENT_WILL_BE' ).' <span class="no">'.$this->services[$i]->currency.'</span> <span id="injecttotal_'.$this->services[$i]->id.'"> '.$iniprice.'</span>';
-					$html .= '.</span>'.n;
+					$html .= '<label> ';
+					$html .= $thissub ? JText::_( 'COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW' ) : JText::_( 'COM_JOBS_ACTION_SIGN_UP' );
+					$html .= ' '.JText::_( 'for' ).' '."\n";
+					$html .= $unitsChoice;
+					$html .= $this->services[$i]->unitmeasure.'(s) </label>'."\n";
+					$html .= '<span class="totalprice">'.JText::_( 'COM_JOBS_SUBSCRIBE_YOUR_TOTAL' ).' ';
+					$html .= $thissub ? strtolower(JText::_( 'COM_JOBS_NEW' )).' ' : '';
+					$html .= JText::_( 'COM_JOBS_SUBSCRIBE_PAYMENT_WILL_BE' ).' <span class="no">'.$this->services[$i]->currency.'</span> <span id="injecttotal_'.$this->services[$i]->id.'"> '.$iniprice.'</span>';
+					$html .= '.</span>'."\n";
 
 					// GOOGLE Checkout (TBD)
-					$html .= '<input type="hidden" class="product-price" value="'.$this->services[$i]->unitprice.'" />'.n;
-					$html .= '<input type="hidden" class="product-title" value="'.$this->services[$i]->title.'" />'.n;
+					$html .= '<input type="hidden" class="product-price" value="'.$this->escape($this->services[$i]->unitprice).'" />'."\n";
+					$html .= '<input type="hidden" class="product-title" value="'.$this->escape($this->services[$i]->title).'" />'."\n";
 					//$html .= '<div  role="button" alt="Add to cart" tabindex="0" class="googlecart-add-button"> </div>';
 
-					$html .= '</div>'.n;
-					$html .= '</div>'.n;
-					$html .= '<input type="hidden" name="price_'.$this->services[$i]->id.'" id="price_'.$this->services[$i]->id.'" value="'.$this->services[$i]->unitprice.'" />'.n;
+					$html .= '</div>'."\n";
+					$html .= '</div>'."\n";
+					$html .= '<input type="hidden" name="price_'.$this->services[$i]->id.'" id="price_'.$this->services[$i]->id.'" value="'.$this->escape($this->services[$i]->unitprice).'" />'."\n";
 				}
 				echo $html;
-				$btn = $this->subscription->id ? JText::_( 'SUBSCRIPTION_SAVE' ) : JText::_( 'SUBSCRIPTION_PROCESS_ORDER' );
-			?>		
-          <label>
-			<?php echo JText::_( 'SUBSCRIPTION_CONTACT_PHONE' ).': <span class="required">'.JText::_( 'REQUIRED_WITH_PAYMENT' ).'</span>'; ?>
-			<input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15" value="<?php echo $this->subscription->contact; ?>" />
-		</label>
-  	<div class="submitblock">
-    	 <input type="hidden" name="subid" value="<?php echo $this->employer->subscriptionid; ?>" />
-   		 <input type="hidden" name="uid" value="<?php echo $this->uid; ?>" />
-		 <input type="submit" class="option" value="<?php echo $btn; ?>" />
-    </div>		
-	</fieldset>
-</form>
+				$btn = $this->subscription->id ? JText::_( 'COM_JOBS_SUBSCRIPTION_SAVE' ) : JText::_( 'COM_JOBS_SUBSCRIPTION_PROCESS_ORDER' );
+			?>
+			<label for="contact">
+				<?php echo JText::_( 'COM_JOBS_SUBSCRIPTION_CONTACT_PHONE' ).': <span class="required">'.JText::_( 'COM_JOBS_REQUIRED_WITH_PAYMENT' ).'</span>'; ?>
+				<input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15" value="<?php echo $this->escape($this->subscription->contact); ?>" />
+			</label>
 
-<div class="clear"></div>
+			<div class="submitblock">
+				<input type="hidden" name="subid" value="<?php echo $this->employer->subscriptionid; ?>" />
+				<input type="hidden" name="uid" value="<?php echo $this->uid; ?>" />
+				<input type="submit" class="option" value="<?php echo $btn; ?>" />
+			</div>
+		</fieldset>
+	</form>
+	<div class="clear"></div>
 </div>
-<?php if(1==2) { // GOOGLE Checkout (TBD) ?>
+
+<?php if (1==2) { // GOOGLE Checkout (TBD) ?>
 <script id="googlecart-script" type="text/javascript"
-  src="http://checkout.google.com/seller/gsc/v2/cart.js?mid=MERCHANT_ID"
-  aid="UA-8883888-8"
-  currency="USD">
+	src="http://checkout.google.com/seller/gsc/v2/cart.js?mid=MERCHANT_ID"
+	aid="UA-8883888-8"
+	currency="USD">
 </script>
 <?php } ?>

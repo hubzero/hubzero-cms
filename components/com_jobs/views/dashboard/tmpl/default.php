@@ -46,12 +46,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$class= 'no';
 	switch( $this->subscription->status )
 	{
-		case '0':    $status = JText::_('JOB_STATUS_PENDING');
+		case '0':    $status = JText::_('COM_JOBS_JOB_STATUS_PENDING');
 		break;
-		case '1':    $status = JText::_('JOB_STATUS_ACTIVE');
+		case '1':    $status = JText::_('COM_JOBS_JOB_STATUS_ACTIVE');
 					 $class  = 'yes';
 		break;
-		case '2':    $status = JText::_('JOB_STATUS_CANCELLED');
+		case '2':    $status = JText::_('COM_JOBS_JOB_STATUS_CANCELLED');
 		break;
 		default: 	 $status = JText::_('N/A');
 		break;
@@ -60,13 +60,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$today = date( 'Y-m-d');
 
 	$status 	= $this->subscription->expires < $today && $this->subscription->status==1
-				? JText::_('SUBSCRIPTION_STATUS_EXPIRED')
+				? JText::_('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED')
 				: $status;
 	$length 	= $this->subscription->status==0
 				? $this->subscription->pendingunits
 				: $this->subscription->units;
 	$pending 	= $this->subscription->pendingunits && $this->subscription->status==1
-				? ' <span class="no">('.$this->subscription->pendingunits.' '.JText::_('ADDITIONAL').' '.$this->service->unitmeasure.'MULTIPLE_S'.' '.JText::_('MONTHS_PENDING').')</span>'
+				? ' <span class="no">('.$this->subscription->pendingunits.' '.JText::_('COM_JOBS_ADDITIONAL').' '.$this->service->unitmeasure.'MULTIPLE_S'.' '.JText::_('COM_JOBS_MONTHS_PENDING').')</span>'
 				: '';
 	$expiredate = $this->subscription->expires
 				? JHTML::_('date', $this->subscription->expires, '%d %b %Y',0)
@@ -75,9 +75,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	// site admins
 	if($this->masteradmin) {
 		$this->subscription->code = JText::_(' N/A');
-		$this->service->title = JText::_('NOTICE_ADMIN_UNLIMITED_ACCESS');
+		$this->service->title = JText::_('COM_JOBS_NOTICE_ADMIN_UNLIMITED_ACCESS');
 		$class  = 'yes';
-		$status = JText::_('SUBSCRIPTION_STATUS_ACTIVE_ADMIN');
+		$status = JText::_('COM_JOBS_SUBSCRIPTION_STATUS_ACTIVE_ADMIN');
 	}
 
 ?>
@@ -88,7 +88,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  <?php if($this->emp && !$this->masteradmin) {  ?>
 <div id="content-header-extra">
     <ul id="useroptions">
-        <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
+        <li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_JOBS_SHORTLIST'); ?></a></li>
    </ul>
 </div><!-- / #content-header-extra -->
  <?php } ?>  
@@ -106,36 +106,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="columns two first">
 	<div id="activities">
-    	<h3><?php echo JText::_('DASHBOARD_ACTIVITIES'); ?></h3>
-    	<h4><?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'">'.JText::_('ACTION_BROWSE_RESUMES').' ('.$this->stats['total_resumes'].')</a>'; ?></h4>
-        <span class="sub-heading"><?php echo JText::_('DASHBOARD_TOTAL_POOL'); ?></span>
+    	<h3><?php echo JText::_('COM_JOBS_DASHBOARD_ACTIVITIES'); ?></h3>
+    	<h4><?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=resumes').'">'.JText::_('COM_JOBS_ACTION_BROWSE_RESUMES').' ('.$this->stats['total_resumes'].')</a>'; ?></h4>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_DASHBOARD_TOTAL_POOL'); ?></span>
         <p>
         	<span class="view">
-				<?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'" class="cancelit">[ '.JText::_( 'DASHBOARD_VIEW' ).' ]</a>'; ?>
+				<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=resumes').'" class="cancelit">[ '.JText::_( 'COM_JOBS_DASHBOARD_VIEW' ).' ]</a>'; ?>
             </span><?php echo $this->stats['total_resumes']; ?>
         </p>
-        <span class="sub-heading"><?php echo JText::_('DASHBOARD_SHORTLISTED'); ?></span>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_DASHBOARD_SHORTLISTED'); ?></span>
         <p>
         	<span class="view">
 				<?php if($this->stats['shortlisted'] > 0) {
-				echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=batch').'?pile=shortlisted" class="cancelit">[ '.JText::_( 'DASHBOARD_DOWNLOAD' ).' ]</a> &nbsp;&nbsp;&nbsp;'; }
-				echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted" class="cancelit">[ '.JText::_( 'DASHBOARD_VIEW' ).' ]</a>'; ?>
+				echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=batch').'?pile=shortlisted" class="cancelit">[ '.JText::_( 'COM_JOBS_DASHBOARD_DOWNLOAD' ).' ]</a> &nbsp;&nbsp;&nbsp;'; }
+				echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted" class="cancelit">[ '.JText::_( 'COM_JOBS_DASHBOARD_VIEW' ).' ]</a>'; ?>
             </span><?php echo $this->stats['shortlisted']; ?>
         </p>       
-        <span class="sub-heading"><?php echo JText::_('DASHBOARD_APPLIED_TO_ADS'); ?></span>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_DASHBOARD_APPLIED_TO_ADS'); ?></span>
         <p>
         	<span class="view">
 				<?php if($this->stats['applied'] > 0) {
-				echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=batch').'?pile=applied" class="cancelit">[ '.JText::_( 'DASHBOARD_DOWNLOAD' ).' ]</a> &nbsp;&nbsp;&nbsp;'; }
-				echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=applied" class="cancelit">[ '.JText::_( 'DASHBOARD_VIEW' ).' ]</a>'; ?>
+				echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=batch').'?pile=applied" class="cancelit">[ '.JText::_( 'COM_JOBS_DASHBOARD_DOWNLOAD' ).' ]</a> &nbsp;&nbsp;&nbsp;'; }
+				echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=applied" class="cancelit">[ '.JText::_( 'COM_JOBS_DASHBOARD_VIEW' ).' ]</a>'; ?>
             </span><?php echo $this->stats['applied']; ?>
         </p>
         <div class="spacer"></div>
-        <h4><span><?php echo JText::_('DASHBOARD_MANAGE_ADS').' ('.count($this->myjobs).')'; ?></span></h4>
+        <h4><span><?php echo JText::_('COM_JOBS_DASHBOARD_MANAGE_ADS').' ('.count($this->myjobs).')'; ?></span></h4>
        
         <p class="reg">
-        	<span><?php echo JText::_('DASHBOARD_YOU_HAVE_CURRENTLY').' '.$this->activejobs.' '.JText::_('DASHBOARD_PUBLISHED_ADS');
-			if(!$this->masteradmin) { ?> <br /><?php echo $allowed_ads.' '.JText::_('DASHBOARD_NUMBER_ADS_STILL_ALLOWED'); } ?></span>			
+        	<span><?php echo JText::_('COM_JOBS_DASHBOARD_YOU_HAVE_CURRENTLY').' '.$this->activejobs.' '.JText::_('COM_JOBS_DASHBOARD_PUBLISHED_ADS');
+			if(!$this->masteradmin) { ?> <br /><?php echo $allowed_ads.' '.JText::_('COM_JOBS_DASHBOARD_NUMBER_ADS_STILL_ALLOWED'); } ?></span>			
         </p>
         <?php if(count($this->myjobs) > 0) {
 		foreach ($this->myjobs as $mj) { ?>
@@ -143,48 +143,48 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if($mj->status == 3) { echo '_inactive'; }
 					else if($mj->status == 4 or $mj->status == 0) { echo '_pending'; } ?>">  
                     	<span class="view"><?php if($mj->status == 1)
-						{ echo $mj->applications.' '.JText::_('DASHBOARD_APPLICATIONS').' <a href="'.JRoute::_('index.php?option='.$option.a.'task=job'.a.'code='.$mj->code).'#applications" class="cancelit">[ '.JText::_( 'DASHBOARD_VIEW' ).' ]</a>'; }
-						else if($mj->status == 4) { echo '('.strtolower(JText::_('JOB_STATUS_DRAFT')).')'; }
-						else if($mj->status == 0) { echo '('.strtolower(JText::_('JOB_STATUS_PENDING')).')'; }
-						else if($mj->status == 3) { echo '('.strtolower(JText::_('JOB_STATUS_INACTIVE')).')'; } ?>
+						{ echo $mj->applications.' '.JText::_('COM_JOBS_DASHBOARD_APPLICATIONS').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&code='.$mj->code).'#applications" class="cancelit">[ '.JText::_( 'COM_JOBS_DASHBOARD_VIEW' ).' ]</a>'; }
+						else if($mj->status == 4) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_DRAFT')).')'; }
+						else if($mj->status == 0) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_PENDING')).')'; }
+						else if($mj->status == 3) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_INACTIVE')).')'; } ?>
                     	</span> 
-					<?php echo '<span class="code">'.$mj->code.'</span>: <a href="'.JRoute::_('index.php?option='.$option.a.'task=job'.a.'code='.$mj->code).'">'.Hubzero_View_Helper_Html::shortenText($mj->title, 50, 0).'</a>';  ?>     
+					<?php echo '<span class="code">'.$mj->code.'</span>: <a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&code='.$mj->code).'">'.Hubzero_View_Helper_Html::shortenText($mj->title, 50, 0).'</a>';  ?>     
         	</p>
         <?php }
 		} ?>
     <?php if($this->subscription->status == 1 or $this->masteradmin) { ?>
         <p class="reg">
-        	<a class="add" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addjob'); ?>"><?php echo JText::_('DASHBOARD_AD_NEW_JOB'); ?></a>
+        	<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_DASHBOARD_AD_NEW_JOB'); ?></a>
         </p>
          <?php } ?>
     </div>
 </div>
 <div class="columns two second">
 	<div id="subinfo">
-    	<h3><?php echo JText::_('SUBSCRIPTION_DETAILS'); ?><span><?php echo JText::_('JOB_REFERENCE_CODE').': '.$this->subscription->code; ?></span></h3>
-    	<span class="sub-heading"><?php echo JText::_('SUBSCRIPTION_SERVICE'); ?></span>
+    	<h3><?php echo JText::_('COM_JOBS_SUBSCRIPTION_DETAILS'); ?><span><?php echo JText::_('COM_JOBS_JOB_REFERENCE_CODE').': '.$this->subscription->code; ?></span></h3>
+    	<span class="sub-heading"><?php echo JText::_('COM_JOBS_SUBSCRIPTION_SERVICE'); ?></span>
         <p><?php echo $this->service->title; ?></p>
-        <span class="sub-heading"><?php echo JText::_('JOBS_TABLE_STATUS'); ?></span>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_TABLE_STATUS'); ?></span>
         <p class="<?php echo $class; ?>"><?php echo $status; ?></p>
         
         <?php if(!$this->masteradmin) { ?>
-        <span class="sub-heading"><?php echo JText::_('SUBSCRIPTION_LENGTH'); ?></span>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_SUBSCRIPTION_LENGTH'); ?></span>
         <p><?php echo $length.'-'.$this->service->unitmeasure.$pending; ?></p>
-        <span class="sub-heading"><?php echo JText::_('SUBSCRIPTION_EXPIRE_DATE'); ?></span>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_SUBSCRIPTION_EXPIRE_DATE'); ?></span>
         <p><?php echo $expiredate; ?></p>
         <p>
-			<?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=subscribe').'" class="cancelit">[ '.JText::_( 'SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL' ).' ]</a>'; ?>
+			<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=subscribe').'" class="cancelit">[ '.JText::_( 'COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL' ).' ]</a>'; ?>
         </p>
-       <?php echo JobsHtml::confirmscreen(JRoute::_('index.php?option='.$option.a.'task=dashboard'.a.'uid='.$this->uid), JRoute::_('index.php?option='.$option.a.'task=cancel'.a.'uid='.$this->uid)); ?>    	
+       <?php echo JobsHtml::confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid)); ?>    	
         <div class="spacer"></div>
-        <h3><?php echo JText::_('SUBSCRIPTION_EMPLOYER_INFORMATION'); ?><span><?php echo JText::_('EMPLOYER_USERNAME').': '.$this->login; ?></span></h3>
-        <span class="sub-heading"><?php echo JText::_('EMPLOYER_COMPANY'); ?></span>
-        <p><?php $emp_com = $this->employer->companyName ? $this->employer->companyName : JText::_('NOTICE_UNSPECIFIED') ; echo $emp_com ?></p>
-        <span class="sub-heading"><?php echo JText::_('EMPLOYER_LOCATION'); ?></span>
-        <p><?php $emp_loc = $this->employer->companyLocation ? $this->employer->companyLocation : JText::_('NOTICE_UNSPECIFIED') ; echo $emp_loc ?></p>
-        <span class="sub-heading"><?php echo JText::_('EMPLOYER_WEBSITE'); ?></span>
-        <p><?php $emp_web = $this->employer->companyWebsite ? $this->employer->companyWebsite : JText::_('NOTICE_UNSPECIFIED') ; echo $emp_web ?></p>
-         <p><?php echo '<a href="'.JRoute::_('index.php?option='.$option.a.'task=subscribe').'" class="cancelit">[ '.JText::_( 'EMPLOYER_EDIT_INFO' ).' ]</a>'; ?></p>
+        <h3><?php echo JText::_('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION'); ?><span><?php echo JText::_('COM_JOBS_EMPLOYER_USERNAME').': '.$this->login; ?></span></h3>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_EMPLOYER_COMPANY'); ?></span>
+        <p><?php $emp_com = $this->employer->companyName ? $this->employer->companyName : JText::_('COM_JOBS_NOTICE_UNSPECIFIED') ; echo $emp_com ?></p>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_EMPLOYER_LOCATION'); ?></span>
+        <p><?php $emp_loc = $this->employer->companyLocation ? $this->employer->companyLocation : JText::_('COM_JOBS_NOTICE_UNSPECIFIED') ; echo $emp_loc ?></p>
+        <span class="sub-heading"><?php echo JText::_('COM_JOBS_EMPLOYER_WEBSITE'); ?></span>
+        <p><?php $emp_web = $this->employer->companyWebsite ? $this->employer->companyWebsite : JText::_('COM_JOBS_NOTICE_UNSPECIFIED') ; echo $emp_web ?></p>
+         <p><?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=subscribe').'" class="cancelit">[ '.JText::_( 'COM_JOBS_EMPLOYER_EDIT_INFO' ).' ]</a>'; ?></p>
          <?php } ?>
     </div>
 </div>

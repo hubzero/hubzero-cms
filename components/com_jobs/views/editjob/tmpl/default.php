@@ -64,12 +64,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <div id="content-header-extra">
 	<ul id="useroptions">
 	<?php if($this->emp) {  ?>
-		<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-		<li><a class="shortlist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
+		<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+		<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
 	 <?php } else { ?> 
 	 	<li>
-			<!-- <?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?> -->
-			<a class="myjobs" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a>
+			<!-- <?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?> -->
+			<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
 		</li> 
 	 <?php } ?>
 	</ul>
@@ -94,10 +94,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <div class="main section">
 	<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 		<div class="explaination">
-			<p><?php echo JText::_('EDITJOB_OVERVIEW_INFO'); ?></p>
+			<p><?php echo JText::_('COM_JOBS_EDITJOB_OVERVIEW_INFO'); ?></p>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('EDITJOB_JOB_OVERVIEW'); ?></legend>
+			<legend><?php echo JText::_('COM_JOBS_EDITJOB_JOB_OVERVIEW'); ?></legend>
 			
 			<input type="hidden" name="task" value="savejob" />
 			<input type="hidden" name="code" value="<?php echo $job->code; ?>" />
@@ -106,19 +106,19 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<input type="hidden" name="employerid" value="<?php echo $this->uid; ?>" />
 			
 			<label for="title">
-				<?php echo JText::_('EDITJOB_JOB_TITLE'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<?php echo JText::_('COM_JOBS_EDITJOB_JOB_TITLE'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<input name="title" maxlength="190" id="title" type="text" value="<?php echo $this->escape($job->title); ?>" />
 			</label>
 			
 			<label for="companyLocation">
-				<?php echo JText::_('EDITJOB_JOB_LOCATION'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<?php echo JText::_('COM_JOBS_EDITJOB_JOB_LOCATION'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<input name="companyLocation" maxlength="190" id="companyLocation" type="text" value="<?php echo $this->escape(stripslashes($job->companyLocation)); ?>" />
 			</label>
 		<?php if (!$usonly && !empty($countries)) { ?>
 			<label for="companyLocationCountry">
-				<?php echo JText::_('EDITJOB_COUNTRY'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<?php echo JText::_('COM_JOBS_EDITJOB_COUNTRY'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<select name="companyLocationCountry" id="companyLocationCountry">
-					<option value=""><?php echo JText::_('OPTION_SELECT_FROM_LIST'); ?></option>
+					<option value=""><?php echo JText::_('COM_JOBS_OPTION_SELECT_FROM_LIST'); ?></option>
 				<?php 				
 				foreach ($countries as $country) 
 				{
@@ -131,25 +131,25 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</select>
 			</label>
 		<?php } else { ?>
-			<p class="hint"><?php echo JText::_('EDITJOB_US_ONLY'); ?></p>
+			<p class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_US_ONLY'); ?></p>
 			<input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
 		<?php } ?>
 			<label>
-				<?php echo JText::_('EMPLOYER_COMPANY_NAME'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<?php echo JText::_('COM_JOBS_EMPLOYER_COMPANY_NAME'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<input name="companyName" maxlength="120" id="companyName" type="text" value="<?php echo $this->escape(stripslashes($job->companyName)); ?>" />
 			</label>
 			<label>
-				<?php echo JText::_('EMPLOYER_COMPANY_WEBSITE'); ?>: 
+				<?php echo JText::_('COM_JOBS_EMPLOYER_COMPANY_WEBSITE'); ?>: 
 				<input name="companyWebsite" maxlength="190" id="companyWebsite" type="text" value="<?php echo $this->escape(stripslashes($job->companyWebsite)); ?>" />
 			</label>
-			<p class="hint"><?php echo JText::_('EDITJOB_HINT_COMPANY'); ?></p>
+			<p class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_COMPANY'); ?></p>
 		</fieldset>
 
 		<div class="explaination">
-			<p><?php echo JText::_('EDITJOB_DESC_INFO'); ?></p>
+			<p><?php echo JText::_('COM_JOBS_EDITJOB_DESC_INFO'); ?></p>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('EDITJOB_JOB_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('REQUIRED'); ?></span></legend>
+			<legend><?php echo JText::_('COM_JOBS_EDITJOB_JOB_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span></legend>
 			<label>
 				&nbsp;
 			<?php 
@@ -161,60 +161,60 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		</fieldset>
 
 		<div class="explaination">
-			<p><?php echo JText::_('EDITJOB_SPECIFICS_INFO'); ?></p>
+			<p><?php echo JText::_('COM_JOBS_EDITJOB_SPECIFICS_INFO'); ?></p>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('EDITJOB_JOB_SPECIFICS'); ?></legend>
+			<legend><?php echo JText::_('COM_JOBS_EDITJOB_JOB_SPECIFICS'); ?></legend>
 			
 			<label>
-				<?php echo JText::_('EDITJOB_CATEGORY'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_CATEGORY'); ?>: 
 				<?php echo JobsHtml::formSelect('cid', $this->cats, $job->cid, '', ''); ?>
 			</label>
 			<label>
-				<?php echo JText::_('EDITJOB_TYPE'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_TYPE'); ?>: 
 				<?php echo JobsHtml::formSelect('type', $this->types, $job->type, '', ''); ?>
 			</label>
 			<label for="startdate">
-				<?php echo JText::_('EDITJOB_START_DATE'); ?>:
-				<input type="text" class="option level" name="startdate" id="startdate" size="10" maxlength="10" value="<?php echo $startdate; ?>" /> <span class="hint"><?php echo JText::_('EDITJOB_HINT_DATE_FORMAT'); ?></span>
+				<?php echo JText::_('COM_JOBS_EDITJOB_START_DATE'); ?>:
+				<input type="text" class="option level" name="startdate" id="startdate" size="10" maxlength="10" value="<?php echo $startdate; ?>" /> <span class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
 			</label>
 			<label for="closedate">
-				<?php echo JText::_('EDITJOB_CLOSE_DATE'); ?>:
-				<input  type="text" class="option level" name="closedate" id="closedate" size="10" maxlength="10" value="<?php echo $closedate; ?>" /> <span class="hint"><?php echo JText::_('EDITJOB_HINT_DATE_FORMAT'); ?></span>
+				<?php echo JText::_('COM_JOBS_EDITJOB_CLOSE_DATE'); ?>:
+				<input  type="text" class="option level" name="closedate" id="closedate" size="10" maxlength="10" value="<?php echo $closedate; ?>" /> <span class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
 			</label>
 			<label for="applyExternalUrl">
-				<?php echo JText::_('EDITJOB_EXTERNAL_URL'); ?>:
+				<?php echo JText::_('COM_JOBS_EDITJOB_EXTERNAL_URL'); ?>:
 				<input  type="text" name="applyExternalUrl" id="applyExternalUrl" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($job->applyExternalUrl)); ?>" />
 			</label>
 			<label for="applyInternal">
 				<input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1"<?php echo $job->applyInternal ? ' checked="checked" ' : ''; ?> /> 
-				<?php echo JText::_('EDITJOB_ALLOW_INTERNAL_APPLICATION'); ?>
+				<?php echo JText::_('COM_JOBS_EDITJOB_ALLOW_INTERNAL_APPLICATION'); ?>
 			</label>
 		</fieldset>
 		
 		<div class="explaination">
-			<p><?php echo JText::_('EDITJOB_CONTACT_DETAILS'); ?></p>
+			<p><?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_DETAILS'); ?></p>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('EDITJOB_CONTACT_INFO'); ?> <span>(<?php echo JText::_('OPTIONAL'); ?>)</span></legend>
+			<legend><?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_INFO'); ?> <span>(<?php echo JText::_('COM_JOBS_OPTIONAL'); ?>)</span></legend>
 			
 			<label for="contactName">
-				<?php echo JText::_('EDITJOB_CONTACT_NAME'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_NAME'); ?>: 
 				<input name="contactName" id="contactName" maxlength="100"  type="text" value="<?php echo $job->contactName ? $this->escape(stripslashes($job->contactName)) : $this->escape(stripslashes($profile->get('name'))); ?>" />
 			</label>
 			<label for="contactEmail">
-				<?php echo JText::_('EDITJOB_CONTACT_EMAIL'); ?>:
+				<?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_EMAIL'); ?>:
 				<input name="contactEmail" id="contactEmail" maxlength="100"  type="text" value="<?php echo $job->contactEmail ? $this->escape(stripslashes($job->contactEmail)) : $this->escape(stripslashes($profile->get('email'))); ?>" />
 			</label>
 			<label for="contactPhone">
-				<?php echo JText::_('EDITJOB_CONTACT_PHONE'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_PHONE'); ?>: 
 				<input name="contactPhone" id="contactPhone" maxlength="100"  type="text" value="<?php echo $job->contactPhone ? $this->escape(stripslashes($job->contactPhone)) : $this->escape(stripslashes($profile->get('phone'))); ?>" />
 			</label>
 		</fieldset>
 		<p class="submit">
-			<input type="submit" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? JText::_('ACTION_SAVE_PREVIEW') : JText::_('ACTION_SAVE'); ?>" />
+			<input type="submit" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? JText::_('COM_JOBS_ACTION_SAVE_PREVIEW') : JText::_('COM_JOBS_ACTION_SAVE'); ?>" />
 			<span class="cancelaction">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('CANCEL'); ?></a>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_CANCEL'); ?></a>
 			</span>
 		</p>
 	</form>

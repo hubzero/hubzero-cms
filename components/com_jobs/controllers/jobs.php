@@ -143,7 +143,7 @@ class JobsControllerJobs extends Hubzero_Controller
 	protected function _buildTitle()
 	{
 		$this->_title  = JText::_(strtoupper($this->_option));
-		$this->_title .= $this->_industry ? ' ' . JText::_('IN') . ' ' . $this->_industry : '';
+		$this->_title .= $this->_industry ? ' ' . JText::_('COM_JOBS_IN') . ' ' . $this->_industry : '';
 		if ($this->_subtitle) 
 		{
 			$this->_title .= ': ' . $this->_subtitle;
@@ -167,7 +167,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$pathway =& $app->getPathway();
 
 		$comtitle  = JText::_(strtoupper($this->_option));
-		$comtitle .= $this->_industry ? ' ' . JText::_('IN') . ' ' . $this->_industry : '';
+		$comtitle .= $this->_industry ? ' ' . JText::_('COM_JOBS_IN') . ' ' . $this->_industry : '';
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -259,7 +259,7 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	public function login()
 	{
-		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
 		);
@@ -279,7 +279,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Ensure we have a trigger
 		if (!$trigger) 
 		{
-			echo Hubzero_View_Helper_Html::error(JText::_('ERROR_NO_TRIGGER_FOUND'));
+			echo Hubzero_View_Helper_Html::error(JText::_('COM_JOBS_ERROR_NO_TRIGGER_FOUND'));
 			return;
 		}
 
@@ -350,7 +350,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$action = JRequest::getVar('action', '');
 		if ($action == 'login' && $this->juser->get('guest')) 
 		{
-			$this->_msg = JText::_('MSG_PLEASE_LOGIN_OPTIONS');
+			$this->_msg = JText::_('COM_JOBS_MSG_PLEASE_LOGIN_OPTIONS');
 			$this->login();
 			return;
 		}
@@ -473,12 +473,12 @@ class JobsControllerJobs extends Hubzero_Controller
 			// get job types
 			$jt = new JobType($this->database);
 			$types = $jt->getTypes();
-			$types[0] = JText::_('TYPE_ANY');
+			$types[0] = JText::_('COM_JOBS_TYPE_ANY');
 
 			// get job categories
 			$jc = new JobCategory($this->database);
 			$cats = $jc->getCats();
-			$cats[0] = JText::_('CATEGORY_ANY');
+			$cats[0] = JText::_('COM_JOBS_CATEGORY_ANY');
 
 			// get users with resumes
 			$js = new JobSeeker($this->database);
@@ -518,7 +518,7 @@ class JobsControllerJobs extends Hubzero_Controller
 				$subscription = new Subscription($this->database);
 				if ($subscription->loadSubscription($employer->subscriptionid, $this->juser->get('id'), '', $status=array(0))) 
 				{
-					$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_PENDING');
+					$this->_msg_warning = JText::_('COM_JOBS_WARNING_SUBSCRIPTION_PENDING');
 					$this->dashboard();
 					return;
 				}
@@ -557,7 +557,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($uid && $this->juser->get('id') != $uid && !$this->_admin) 
 		{
 			// not authorized
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_JOBS_ALERTNOTAUTH'));
 			return;
 		}
 		$uid = $uid ? $uid : $this->juser->get('id');
@@ -666,7 +666,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($uid && $this->juser->get('id') != $uid && !$this->_admin) 
 		{
 			// not authorized
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_JOBS_ALERTNOTAUTH'));
 			return;
 		}
 		$uid = $uid ? $uid : $this->juser->get('id');
@@ -717,7 +717,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		if (!$serviceid or !$service->loadService('', $serviceid)) 
 		{
-			JError::raiseError(500, JText::_('ERROR_SUBSCRIPTION_CHOOSE_SERVICE'));
+			JError::raiseError(500, JText::_('COM_JOBS_ERROR_SUBSCRIPTION_CHOOSE_SERVICE'));
 			return;
 		}
 
@@ -737,7 +737,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			if ($total && !$contact) 
 			{
 				// need contact info with payment
-				JError::raiseError(500, JText::_('ERROR_SUBSCRIPTION_NO_PHONE'));
+				JError::raiseError(500, JText::_('COM_JOBS_ERROR_SUBSCRIPTION_NO_PHONE'));
 				return;
 			}
 
@@ -849,12 +849,12 @@ class JobsControllerJobs extends Hubzero_Controller
 			return;
 		}
 		
-		$this->_msg = $subid ? JText::_('MSG_SUBSCRIPTION_PROCESSED') : JText::_('MSG_SUBSCRIPTION_ACCEPTED');
+		$this->_msg = $subid ? JText::_('COM_JOBS_MSG_SUBSCRIPTION_PROCESSED') : JText::_('COM_JOBS_MSG_SUBSCRIPTION_ACCEPTED');
 		if ($units) 
 		{
 			$this->_msg .= $autoapprove && !$total
-					? ' ' . JText::_('MSG_SUBSCRIPTION_YOU_HAVE_ACCESS') . ' ' . $subscription->units . ' ' . JText::_('MONTHS')
-					: ' ' . JText::_('MSG_SUBSCRIPTION_WE_WILL_CONTACT');
+					? ' ' . JText::_('COM_JOBS_MSG_SUBSCRIPTION_YOU_HAVE_ACCESS') . ' ' . $subscription->units . ' ' . JText::_('COM_JOBS_MONTHS')
+					: ' ' . JText::_('COM_JOBS_MSG_SUBSCRIPTION_WE_WILL_CONTACT');
 		}
 
 		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=dashboard&msg=' . $this->_msg);
@@ -881,7 +881,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($uid && $this->juser->get('id') != $uid && !$this->_admin) 
 		{
 			// not authorized
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_JOBS_ALERTNOTAUTH'));
 			return;
 		}
 		$uid = $uid ? $uid : $this->juser->get('id');
@@ -890,7 +890,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$employer = new Employer($this->database);
 		if (!$employer->loadEmployer($uid)) 
 		{
-			JError::raiseError(404, JText::_('ERROR_EMPLOYER_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_JOBS_ERROR_EMPLOYER_NOT_FOUND'));
 			return;
 		}
 
@@ -898,7 +898,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$subscription = new Subscription($this->database);
 		if (!$subscription->load($employer->subscriptionid)) 
 		{
-			JError::raiseError(404, JText::_('ERROR_SUBSCRIPTION_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_JOBS_ERROR_SUBSCRIPTION_NOT_FOUND'));
 			return;
 		}
 
@@ -906,7 +906,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$service = new Service($this->database);
 		if (!$service->loadService('', $subscription->serviceid)) 
 		{
-			JError::raiseError(404, JText::_('ERROR_SERVICE_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_JOBS_ERROR_SERVICE_NOT_FOUND'));
 			return;
 		}
 
@@ -919,7 +919,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		// cancel previous subscription & issue a refund if applicable
 		if ($subscription->cancelSubscription($employer->subscriptionid, $refund, $unitsleft)) 
 		{
-			$this->_msg = JText::_('MSG_SUBSCRIPTION_CANCELLED');
+			$this->_msg = JText::_('COM_JOBS_MSG_SUBSCRIPTION_CANCELLED');
 			$this->view();
 			return;
 		}
@@ -979,7 +979,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		} 
 		else if (!isset($employer->id)) 
 		{
-			JError::raiseError(404, JText::_('ERROR_EMPLOYER_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_JOBS_ERROR_EMPLOYER_NOT_FOUND'));
 			return;
 		}
 
@@ -997,7 +997,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		if (!$service->loadService('', $subscription->serviceid) && !$this->_admin) 
 		{
-			JError::raiseError(404, JText::_('ERROR_SERVICE_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_JOBS_ERROR_SERVICE_NOT_FOUND'));
 			return;
 		} 
 		else 
@@ -1098,7 +1098,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Login required
 		if ($juser->get('guest')) 
 		{
-			$this->_msg = JText::_('MSG_LOGIN_RESUME');
+			$this->_msg = JText::_('COM_JOBS_MSG_LOGIN_RESUME');
 			$this->login();
 		} 
 		else 
@@ -1139,7 +1139,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			}
 
 			// Error view
-			$this->setError(JText::_('ERROR_JOB_INACTIVE'));
+			$this->setError(JText::_('COM_JOBS_ERROR_JOB_INACTIVE'));
 			$view = new JView(array('name'=>'error'));
 			$view->title = JText::_(strtoupper($this->_name));
 			if ($this->getError()) 
@@ -1161,7 +1161,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Login required
 		if ($juser->get('guest')) 
 		{
-			$this->_msg = JText::_('MSG_LOGIN_APPLY');
+			$this->_msg = JText::_('COM_JOBS_MSG_LOGIN_APPLY');
 			$this->login();
 			return;
 		}
@@ -1224,7 +1224,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
-			$this->_msg = JText::_('MSG_LOGIN_SAVE_APPLICATION');
+			$this->_msg = JText::_('COM_JOBS_MSG_LOGIN_SAVE_APPLICATION');
 			$this->login();
 			return;
 		}
@@ -1235,7 +1235,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		if (!$job->loadJob($code)) 
 		{
-			$this->setError(JText::_('ERROR_APPLICATION_ERROR'));
+			$this->setError(JText::_('COM_JOBS_ERROR_APPLICATION_ERROR'));
 		} 
 
 		// Load application if exists
@@ -1246,7 +1246,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		if ($this->_task == 'withdraw' && !$ja->id)
 		{
-			$this->setError(JText::_('ERROR_WITHDRAW_ERROR'));
+			$this->setError(JText::_('COM_JOBS_ERROR_WITHDRAW_ERROR'));
 		}
 
 		// Save
@@ -1273,8 +1273,8 @@ class JobsControllerJobs extends Hubzero_Controller
 			}
 			else 
 			{
-				$this->_msg_passed = $this->_task == 'withdraw' ? JText::_('MSG_APPLICATION_WITHDRAWN') : JText::_('MSG_APPLICATION_ACCEPTED');
-				$this->_msg_passed = $appid ? JText::_('MSG_APPLICATION_EDITS_ACCEPTED') : $this->_msg_passed;
+				$this->_msg_passed = $this->_task == 'withdraw' ? JText::_('COM_JOBS_MSG_APPLICATION_WITHDRAWN') : JText::_('COM_JOBS_MSG_APPLICATION_ACCEPTED');
+				$this->_msg_passed = $appid ? JText::_('COM_JOBS_MSG_APPLICATION_EDITS_ACCEPTED') : $this->_msg_passed;
 			}
 		}
 
@@ -1309,7 +1309,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		if (!$job) 
 		{
-			$this->setError(JText::_('ERROR_JOB_INACTIVE'));
+			$this->setError(JText::_('COM_JOBS_ERROR_JOB_INACTIVE'));
 
 			// Set the pathway
 			$app =& JFactory::getApplication();
@@ -1336,7 +1336,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($juser->get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin) 
 		{
 			// check validity of subscription
-			$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_INVALID');
+			$this->_msg_warning = JText::_('COM_JOBS_WARNING_SUBSCRIPTION_INVALID');
 			$this->dashboard();
 			return;
 		}
@@ -1349,8 +1349,8 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($juser->get('guest') && $job->status != 1) 
 		{
 			// Not authorized
-			$error  = JText::_('ERROR_NOT_AUTHORIZED_JOB_VIEW');
-			$error .= $juser->get('guest') ? ' ' . JText::_('WARNING_LOGIN_REQUIRED') : '';
+			$error  = JText::_('COM_JOBS_ERROR_NOT_AUTHORIZED_JOB_VIEW');
+			$error .= $juser->get('guest') ? ' ' . JText::_('COM_JOBS_WARNING_LOGIN_REQUIRED') : '';
 			$this->setError($error);
 
 			// Output HTML
@@ -1366,12 +1366,12 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($job->status != 1 && !$this->_admin && (!$this->_emp && $juser->get('id') != $job->employerid)) 
 		{
 			// Not authorized
-			JError::raiseError(403, JText::_('ERROR_NOT_AUTHORIZED_JOB_VIEW'));
+			JError::raiseError(403, JText::_('COM_JOBS_ERROR_NOT_AUTHORIZED_JOB_VIEW'));
 			return;
 		}
 
 		// Set page title
-		$this->_subtitle = $job->status==4 ? JText::_('ACTION_PREVIEW_AD') . ' ' . $job->code : $job->title;
+		$this->_subtitle = $job->status==4 ? JText::_('COM_JOBS_ACTION_PREVIEW_AD') . ' ' . $job->code : $job->title;
 		$this->_buildTitle();
 
 		// Get category & type names
@@ -1455,7 +1455,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		{
 			if (!$job->loadJob($code)) 
 			{
-				JError::raiseError(404, JText::_('ERROR_JOB_NOT_FOUND'));
+				JError::raiseError(404, JText::_('COM_JOBS_ERROR_JOB_NOT_FOUND'));
 				return;
 			}
 
@@ -1468,7 +1468,7 @@ class JobsControllerJobs extends Hubzero_Controller
 				$code = $job->code;
 			} else 
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				JError::raiseError(403, JText::_('COM_JOBS_ALERTNOTAUTH'));
 				return;
 			}
 
@@ -1487,14 +1487,14 @@ class JobsControllerJobs extends Hubzero_Controller
 		// load Employer
 		if (!$employer->loadEmployer($employerid)) 
 		{
-			JError::raiseError(404, JText::_('ERROR_EMPLOYER_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_JOBS_ERROR_EMPLOYER_NOT_FOUND'));
 			return;
 		}
 
 		// check validity of subscription
 		if ($this->juser->get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin) 
 		{
-			$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_INVALID');
+			$this->_msg_warning = JText::_('COM_JOBS_WARNING_SUBSCRIPTION_INVALID');
 			$this->dashboard();
 			return;
 		}
@@ -1517,13 +1517,13 @@ class JobsControllerJobs extends Hubzero_Controller
 				$job->bind($_POST);
 				$this->_job     = $job;
 				$this->_jobcode = $code;
-				$this->setError(JText::_('ERROR_MISSING_INFORMATION'));
+				$this->setError(JText::_('COM_JOBS_ERROR_MISSING_INFORMATION'));
 				$this->editjob();
 				return;
 			}
 		}
 
-		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : JText::_('JOBS_DEFAULT_COUNTRY') ;
+		$job->companyLocationCountry = $job->companyLocationCountry ? $job->companyLocationCountry : JText::_('COM_JOBS_JOBS_DEFAULT_COUNTRY') ;
 
 		// Save new information
 		if (!$min) 
@@ -1544,20 +1544,20 @@ class JobsControllerJobs extends Hubzero_Controller
 
 			if ($allowed_ads <=0) 
 			{
-				$this->setError(JText::_('ERROR_JOB_CANT_PUBLISH_OVER_LIMIT'));
+				$this->setError(JText::_('COM_JOBS_ERROR_JOB_CANT_PUBLISH_OVER_LIMIT'));
 			} 
 			else 
 			{
 				// confirm 
 				$job->status       = !$autoapprove && !$this->_masteradmin ? 0 : 1;
 				$job->opendate     = !$autoapprove && !$this->_masteradmin ? '' : date('Y-m-d H:i:s'); // set open date as of now, if confirming new ad publication
-				$this->_msg_passed = !$autoapprove && !$this->_masteradmin ? JText::_('MSG_SUCCESS_JOB_PENDING_APPROVAL') : JText::_('MSG_SUCCESS_JOB_POSTED');
+				$this->_msg_passed = !$autoapprove && !$this->_masteradmin ? JText::_('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL') : JText::_('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
 			}
 		} 
 		else if ($job->status==1 && $this->_task == 'unpublish') 
 		{
 			$job->status = 3;
-			$this->_msg_warning = JText::_('MSG_JOB_UNPUBLISHED');
+			$this->_msg_warning = JText::_('COM_JOBS_MSG_JOB_UNPUBLISHED');
 		} 
 		else if ($job->status==3 && $this->_task == 'reopen') 
 		{
@@ -1566,12 +1566,12 @@ class JobsControllerJobs extends Hubzero_Controller
 
 			if ($allowed_ads <= 0) 
 			{
-				$this->setError(JText::_('ERROR_JOB_CANT_REOPEN_OVER_LIMIT'));
+				$this->setError(JText::_('COM_JOBS_ERROR_JOB_CANT_REOPEN_OVER_LIMIT'));
 			}
 			else 
 			{
 				$job->status = 1;
-				$this->_msg_passed = JText::_('MSG_JOB_REOPENED');
+				$this->_msg_passed = JText::_('COM_JOBS_MSG_JOB_REOPENED');
 			}
 		} 
 		else if ($this->_task == 'remove') 
@@ -1599,7 +1599,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		if ($this->_task == 'remove') 
 		{
-			$this->_msg_passed = JText::_('MSG_JOB_REMOVED');
+			$this->_msg_passed = JText::_('COM_JOBS_MSG_JOB_REMOVED');
 			$this->dashboard();
 			return;
 		}
@@ -1651,7 +1651,7 @@ class JobsControllerJobs extends Hubzero_Controller
 				$subscription = new Subscription($this->database);
 				if ($subscription->loadSubscription($employer->subscriptionid, $this->juser->get('id'), '', $status=array(0))) 
 				{
-					$this->_msg_warning = JText::_('WARNING_SUBSCRIPTION_PENDING');
+					$this->_msg_warning = JText::_('COM_JOBS_WARNING_SUBSCRIPTION_PENDING');
 					$this->dashboard();
 					return;
 				}
@@ -1667,7 +1667,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		{
 			if (!$job->loadJob($code)) 
 			{
-				JError::raiseError(404, JText::_('ERROR_JOB_NOT_FOUND'));
+				JError::raiseError(404, JText::_('COM_JOBS_ERROR_JOB_NOT_FOUND'));
 				return;
 			}
 			// check if user is authorized to edit
@@ -1680,7 +1680,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			} 
 			else 
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				JError::raiseError(403, JText::_('COM_JOBS_ALERTNOTAUTH'));
 				return;
 			}
 		}
@@ -1701,7 +1701,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		// load Employer
 		if (!$employer->loadEmployer($uid) && !$this->_admin) 
 		{
-			JError::raiseError(404, JText::_('ERROR_EMPLOYER_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_JOBS_ERROR_EMPLOYER_NOT_FOUND'));
 			return;
 		} 
 		else if (!$employer->id && $this->_admin) 
@@ -1734,11 +1734,11 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		// get job types
 		$types = $jt->getTypes();
-		$types[0] = JText::_('TYPE_ANY');
+		$types[0] = JText::_('COM_JOBS_TYPE_ANY');
 
 		// get job categories
 		$cats = $jc->getCats();
-		$cats[0] = JText::_('CATEGORY_NO_SPECIFIC');
+		$cats[0] = JText::_('COM_JOBS_CATEGORY_NO_SPECIFIC');
 
 		// Set page title
 		$this->_buildTitle();
@@ -2103,7 +2103,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 			if (!$result) 
 			{
-            	JError::raiseError(404, JText::_('ERROR_ARCHIVE_FAILED'));
+            	JError::raiseError(404, JText::_('COM_JOBS_ERROR_ARCHIVE_FAILED'));
 			} 
 			else 
 			{
@@ -2113,7 +2113,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		else 
 		{
 			$this->_task = 'dashboard';
-			$this->setError(JText::_('ERROR_ARCHIVE_FAILED'));
+			$this->setError(JText::_('COM_JOBS_ERROR_ARCHIVE_FAILED'));
 			$this->dashboard();
 		}
 	}
@@ -2135,7 +2135,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		{
 			if (!extension_loaded('zip')) 
 			{
-				JError::raiseError(500, JText::_('ERROR_MISSING_PHP_LIBRARY'));
+				JError::raiseError(500, JText::_('COM_JOBS_ERROR_MISSING_PHP_LIBRARY'));
 				return;
 			}
 			
@@ -2184,13 +2184,13 @@ class JobsControllerJobs extends Hubzero_Controller
 			}
 			else
 			{
-				$this->setError('ERROR_ARCHIVE_FAILED');
+				$this->setError('COM_JOBS_ERROR_ARCHIVE_FAILED');
 				return;
 			}
 
 			if ($i == 0) 
 			{
-				$this->setError('ERROR_ARCHIVE_FAILED');
+				$this->setError('COM_JOBS_ERROR_ARCHIVE_FAILED');
 				return;
 			} 
 			else 
@@ -2242,7 +2242,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$objS = new Service($this->database);
 		$now = date('Y-m-d H:i:s', time());
 
-		$default1 = array (
+		$default1 = array(
 			'id'          => 0,
 			'title'       => JText::_('Employer Service, Basic'),
 			'category'    => strtolower(JText::_('jobs')),
@@ -2259,7 +2259,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			'changed'     => $now,
 			'params'      => "promo=First 3 months FREE\npromomaxunits=3\nmaxads=1"
 		);
-		$default2 = array (
+		$default2 = array(
 			'id'          => 0,
 			'title'       => JText::_('Employer Service, Premium'),
 			'category'    => strtolower(JText::_('jobs')),
