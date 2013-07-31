@@ -46,10 +46,10 @@ defined('_JEXEC') or die( 'Restricted access');
 		<h3>Help</h3>
 		<ul>
 			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-				<li><a class="add-citation" href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">Submit a citation</a></li>
+				<li><a class="add-citation" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">Submit a citation</a></li>
 			<?php endif; ?>
 			<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
-				<li><a class="import-citation" href="<?php echo JRoute::_('index.php?option='.$option.'&task=import'); ?>">Import citations</a></li>
+				<li><a class="import-citation" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=import'); ?>">Import citations</a></li>
 			<?php endif; ?>	
 		</ul>
 	</div><!-- / .aside -->
@@ -60,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access');
 		</div>
 		<div class="two columns second">
 			<h3>Can I submit a citation?</h3>
-			<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
+			<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
 		</div>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
@@ -74,7 +74,7 @@ defined('_JEXEC') or die( 'Restricted access');
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<label for="csearch">Keyword or phrase:</label>
@@ -86,7 +86,7 @@ defined('_JEXEC') or die( 'Restricted access');
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>">Browse the list of available citations</a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available citations</a></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
@@ -118,19 +118,19 @@ foreach ($yearlystats as $year=>$amt)
 	$tot += (intval($amt['affiliate']) + intval($amt['non-affiliate']));
 }
 
-$html  = '<table summary="'.JText::_('CITATIONS_TABLE_METRICS_YEAR').'">'."\n";
-$html .= "\t".'<caption>'.JText::_('CITATIONS_TABLE_METRICS_YEAR').'</caption>'."\n";
+$html  = '<table summary="'.JText::_('COM_CITATIONS_TABLE_METRICS_YEAR').'">'."\n";
+$html .= "\t".'<caption>'.JText::_('COM_CITATIONS_TABLE_METRICS_YEAR').'</caption>'."\n";
 $html .= "\t".'<thead>'."\n";
 $html .= "\t\t".'<tr>'."\n";
-$html .= "\t\t\t".'<th scope="col" class="textual-data">'.JText::_('CITATIONS_YEAR').'</th>'."\n";
-$html .= "\t\t\t".'<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> '.JText::_('CITATIONS_AFFILIATED').'</th>'."\n";
-$html .= "\t\t\t".'<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> '.JText::_('CITATIONS_NONAFFILIATED').'</th>'."\n";
-$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('CITATIONS_TOTAL').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="col" class="textual-data">'.JText::_('COM_CITATIONS_YEAR').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> '.JText::_('COM_CITATIONS_AFFILIATED').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> '.JText::_('COM_CITATIONS_NONAFFILIATED').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
-$html .= "\t\t\t".'<th class="numerical-data" colspan="3">'.JText::_('CITATIONS_TOTAL').'</th>'."\n";
+$html .= "\t\t\t".'<th class="numerical-data" colspan="3">'.JText::_('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t\t".'<td class="numerical-data highlight">'.$tot.'</td>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</tfoot>'."\n";
@@ -211,18 +211,18 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 	$tabcnt = 1 - $tabcnt;
 }
 
-$html .= '<table summary="'.JText::_('CITATIONS_TABLE_METRICS_TYPE').'">'."\n";
-$html .= "\t".'<caption>'.JText::_('CITATIONS_TABLE_METRICS_TYPE').'</caption>'."\n";
+$html .= '<table summary="'.JText::_('COM_CITATIONS_TABLE_METRICS_TYPE').'">'."\n";
+$html .= "\t".'<caption>'.JText::_('COM_CITATIONS_TABLE_METRICS_TYPE').'</caption>'."\n";
 $html .= "\t".'<thead>'."\n";
 $html .= "\t\t".'<tr>'."\n";
-$html .= "\t\t\t".'<th scope="col" class="textual-data">'.JText::_('CITATIONS_TYPE').'</th>'."\n";
-$html .= "\t\t\t".'<th scope="col" class="textual-data">'.JText::_('CITATIONS_PERCENT').'</th>'."\n";
-$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('CITATIONS_TOTAL').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="col" class="textual-data">'.JText::_('COM_CITATIONS_TYPE').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="col" class="textual-data">'.JText::_('COM_CITATIONS_PERCENT').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="col" class="numerical-data">'.JText::_('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
-$html .= "\t\t\t".'<th class="text-data">'.JText::_('CITATIONS_TOTAL').'</th>'."\n";
+$html .= "\t\t\t".'<th class="text-data">'.JText::_('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t\t".'<td class="textual-data">100%</td>'."\n";
 $html .= "\t\t\t".'<td class="numerical-data">'.$sumval.'</td>'."\n";
 $html .= "\t\t".'</tr>'."\n";

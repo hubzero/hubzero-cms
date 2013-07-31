@@ -49,9 +49,9 @@ switch ($this->which)
 	<thead>
 		<tr>
 			<th class="th_image" colspan="2"></th>
-			<th<?php if($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=projects').'/?action=all'.a.'sortby=title'.a.'sortdir='.$sortbyDir?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_TITLE'); ?></a></th>
-			<th<?php if($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=projects').'/?action=all'.a.'sortby=status'.a.'sortdir='.$sortbyDir?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_STATUS'); ?></a></th>
-			<th<?php if($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=projects').'/?action=all'.a.'sortby=role'.a.'sortdir='.$sortbyDir?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_MY_ROLE'); ?></a></th>
+			<th<?php if($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=projects').'/?action=all'.a.'sortby=title'.a.'sortdir='.$sortbyDir?>" class="re_sort"><?php echo JText::_('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
+			<th<?php if($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=projects').'/?action=all'.a.'sortby=status'.a.'sortdir='.$sortbyDir?>" class="re_sort"><?php echo JText::_('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
+			<th<?php if($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members'.a.'id='.$juser->get('id').a.'active=projects').'/?action=all'.a.'sortby=role'.a.'sortdir='.$sortbyDir?>" class="re_sort"><?php echo JText::_('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -61,8 +61,8 @@ switch ($this->which)
 	{
 			$thumb = ProjectsHTML::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 			$goto  = $use_alias ? 'alias='.$row->alias : 'id='.$row->id;
-			$role = $row->role == 1 ? JText::_('PLG_MEMBERS_STATUS_MANAGER') : JText::_('PLG_MEMBERS_STATUS_COLLABORATOR');
-			$setup = ($row->setup_stage < $setup_complete) ? JText::_('PLG_MEMBERS_STATUS_SETUP') : '';
+			$role = $row->role == 1 ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : JText::_('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR');
+			$setup = ($row->setup_stage < $setup_complete) ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_SETUP') : '';
 
 			$i++; ?>
 			<tr class="mline">
@@ -78,16 +78,16 @@ switch ($this->which)
 					$html = '';
 					if($row->owner && $row->confirmed == 1) {
 						if($row->state == 1 && $row->setup_stage >= $setup_complete) {
-							$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('PLG_MEMBERS_STATUS_ACTIVE').'</a></span>';
+							$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE').'</a></span>';
 						}
 						else if ($row->setup_stage < $setup_complete) {
-								$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('PLG_MEMBERS_STATUS_SETUP').'</a></span> ';
+								$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('PLG_MEMBERS_PROJECTS_STATUS_SETUP').'</a></span> ';
 						}
 						else if($row->state == 0) {
-							$html .= '<span class="suspended">'.JText::_('PLG_MEMBERS_STATUS_SUSPENDED').'</span> ';
+							$html .= '<span class="suspended">'.JText::_('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED').'</span> ';
 						}
 						else if($row->state == 5) {
-							$html .= '<span class="pending">'.JText::_('PLG_MEMBERS_STATUS_PENDING').'</span> ';
+							$html .= '<span class="pending">'.JText::_('PLG_MEMBERS_PROJECTS_STATUS_PENDING').'</span> ';
 						}
 					}
 					echo $html;
@@ -95,7 +95,7 @@ switch ($this->which)
 				?>
 				</td>
 				<td class="th_role">
-					<?php echo $row->role == 1 ? JText::_('PLG_MEMBERS_STATUS_MANAGER') : JText::_('PLG_MEMBERS_STATUS_COLLABORATOR') ;?>
+					<?php echo $row->role == 1 ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : JText::_('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR') ;?>
 				</td>
 			</tr>
 <?php
@@ -104,5 +104,5 @@ switch ($this->which)
 	</tbody>
 	</table>
 <?php } else { ?>
-	<p class="noresults"><?php echo JText::_('PLG_MEMBERS_NO_PROJECTS'); ?></p>
+	<p class="noresults"><?php echo JText::_('PLG_MEMBERS_PROJECTS_NO_PROJECTS'); ?></p>
 <?php } ?>

@@ -380,7 +380,7 @@ if ($label == "none") {
 						</tbody>
 					</table>
 				<?php else : ?>
-					<p class="warning"><?php echo JText::_('NO_CITATIONS_FOUND'); ?></p>
+					<p class="warning"><?php echo JText::_('COM_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 				<?php endif; ?>
 				<?php 
 					$this->pageNav->setAdditionalUrlParam('task', 'browse');

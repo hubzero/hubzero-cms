@@ -83,7 +83,7 @@ class plgMembersResume extends JPlugin
 		// if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber') || $this->isEmployer($user, $member))
 		{
-			$areas['resume'] = ucfirst(JText::_('Resume'));
+			$areas['resume'] = JText::_('PLG_RESUME');
 		}
 
 		return $areas;
@@ -561,11 +561,11 @@ class plgMembersResume extends JPlugin
 
 				// get job types
 				$types = $jt->getTypes();
-				$types[0] = JText::_('TYPE_ANY');
+				$types[0] = JText::_('PLG_RESUME_TYPE_ANY');
 
 				// get job categories
 				$cats = $jc->getCats();
-				$cats[0] = JText::_('CATEGORY_ANY');
+				$cats[0] = JText::_('PLG_RESUME_CATEGORY_ANY');
 
 				$out .= "\t\t" . '<div class="selectgroup catssel">' . "\n";
 				$out .= "\t\t" . '<label>' . "\n";
@@ -579,10 +579,10 @@ class plgMembersResume extends JPlugin
 				$out .= "\t\t\t\t" . '<div class="submitblock">' . "\n";
 				$out .= "\t\t\t\t" . '<span class="selectgroup">' . "\n";
 				$out .= "\t\t\t\t" . '<input type="submit" value="';
-				$out .= $editpref==1 ? JText::_('ACTION_SAVE_AND_INCLUDE') : JText::_('ACTION_SAVE') ;
+				$out .= $editpref==1 ? JText::_('PLG_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_RESUME_ACTION_SAVE') ;
 				$out .= '" /> <span class="cancelaction">';
 				$out .= '<a href="'.JRoute::_('index.php?option=' . $option . '&id=' . $member->get('uidNumber') . '&active=resume') . '">';
-				$out .= JText::_('CANCEL').'</a></span>' . "\n";
+				$out .= JText::_('PLG_RESUME_CANCEL').'</a></span>' . "\n";
 				$out .= "\t\t\t\t" . '</span>' . "\n";
 				$out .= "\t\t\t\t" . '</div>' . "\n";
 				$out .= "\t\t" . '<input type="hidden" name="activeres" value="';
@@ -620,14 +620,14 @@ class plgMembersResume extends JPlugin
 			$out .= "\t\t" . '<tr>' . "\n";
 			$out .= "\t\t\t" . '<th class="col halfwidth">'.ucfirst(JText::_('PLG_RESUME_RESUME')).'</th>' . "\n";
 			$out .= "\t\t\t" . '<th class="col">'.JText::_('PLG_RESUME_LAST_UPDATED').'</th>' . "\n";
-			$out .= $self ? "\t\t\t\t" . '<th scope="col">'.JText::_('PLG_RESUME_OPTIONS').'</th>'.n : '';
+			$out .= $self ? "\t\t\t\t" . '<th scope="col">'.JText::_('PLG_RESUME_OPTIONS').'</th>'."\n" : '';
 			$out .= "\t\t" . '</tr>' . "\n";
 			$out .= "\t" . '</thead>' . "\n";
 			$out .= "\t" . '<tbody>' . "\n";
 			$out .= "\t\t" . '<tr>' . "\n";
 			$out .= "\t\t\t" . '<td>';
 			$title = $resume->title ?  stripslashes($resume->title) : $resume->filename;
-			$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('Resume')) : $member->get('name').' '.ucfirst(JText::_('Resume'));
+			$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.JText::_('PLG_RESUME') : $member->get('name').' '.JText::_('PLG_RESUME');
 			if ($edittitle && $self) 
 			{
 				$out .= '<form id="editTitleForm" method="post" action="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=savetitle').'" >' . "\n";
@@ -635,7 +635,7 @@ class plgMembersResume extends JPlugin
 				$out .= "\t\t\t" . '<label class="resume">' . "\n";
 				$out .= "\t\t\t\t" . ' <input type="text" name="title" value="'.$title.'" class="gettitle" maxlength="40" />' . "\n";
 				$out .= "\t\t\t\t" . '<input type="hidden" name="author" value="'.$member->get('uidNumber').'" />' . "\n";
-				$out .= "\t\t\t\t" . '<input type="submit" value="'.JText::_('ACTION_SAVE').'" />' . "\n";
+				$out .= "\t\t\t\t" . '<input type="submit" value="'.JText::_('PLG_RESUME_ACTION_SAVE').'" />' . "\n";
 				$out .= "\t\t\t" . '</label>' . "\n";
 				$out .= "\t" . '</fieldset>' . "\n";
 				$out .= '</form>' . "\n";
@@ -651,7 +651,7 @@ class plgMembersResume extends JPlugin
 			$out .= '</td>' . "\n";
 			$out .= "\t\t\t" . '<td>'.JHTML::_('date',$resume->created, '%d %b %Y').'</td>' . "\n";
 			//if (!$emp) {
-			$out .= "\t\t\t" . '<td><a class="trash" href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=deleteresume') . '" title="' . JText::_('ACTION_DELETE_THIS_RESUME') . '">' . JText::_('ACTION_DELETE') . '</a> ';
+			$out .= "\t\t\t" . '<td><a class="trash" href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=deleteresume') . '" title="' . JText::_('APLG_RESUME_CTION_DELETE_THIS_RESUME') . '">' . JText::_('PLG_RESUME_ACTION_DELETE') . '</a> ';
 			//$out .= '<a class="edittitle" href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=edittitle').'" title="'.JText::_('Edit resume title').'">'.JText::_('Edit title').'</a>';
 			$out .= '</td>' . "\n";
 			//}
@@ -671,11 +671,11 @@ class plgMembersResume extends JPlugin
 			$out .= ' <form class="addResumeForm" method="post" action="'.JRoute::_('index.php?option=' . $option . '&id=' . $member->get('uidNumber') . '&active=resume') . '" enctype="multipart/form-data">' . "\n";
 			$out .= "\t" . '<fieldset>' . "\n";
 			$out .= "\t\t" . '<legend>' . "\n";
-			$out .= ($resume->id && $file) ? JText::_('ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . JText::_('PLS_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n" :  JText::_('ACTION_UPLOAD_A_RESUME') . "\n";
+			$out .= ($resume->id && $file) ? JText::_('PLG_RESUME_ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . JText::_('PLG_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n" :  JText::_('PLG_RESUME_ACTION_UPLOAD_A_RESUME') . "\n";
 			$out .= "\t\t" . '</legend>' . "\n";
 			$out .= "\t\t" . '<div>' . "\n";
 			$out .= "\t\t\t" . '<label>' . "\n";
-			$out .= "\t\t\t\t" . JText::_('ACTION_ATTACH_FILE') . "\n";
+			$out .= "\t\t\t\t" . JText::_('PLG_RESUME_ACTION_ATTACH_FILE') . "\n";
 			$out .= "\t\t\t\t" . '<input type="file" name="uploadres" id="uploadres" />' . "\n";
 			$out .= "\t\t\t" . '</label>' . "\n";
 			//$out .= "\t\t\t" . '<label>' . "\n";	
@@ -686,7 +686,7 @@ class plgMembersResume extends JPlugin
 			$out .= "\t\t" . '<input type="hidden" name="action" value="uploadresume" />' . "\n";
 			$out .= "\t\t" . '<input type="hidden" name="path" value="' . $path . '" />' . "\n";
 			$out .= "\t\t" . '<input type="hidden" name="emp" value="' . $emp . '" />' . "\n";
-			$out .= "\t\t" . '<input type="submit" value="' . JText::_('ACTION_UPLOAD') . '" />' . "\n";
+			$out .= "\t\t" . '<input type="submit" value="' . JText::_('PLG_RESUME_ACTION_UPLOAD') . '" />' . "\n";
 			$out .= "\t" . '</fieldset>' . "\n";
 			$out .= '</form>' . "\n";
 		}
@@ -714,8 +714,8 @@ class plgMembersResume extends JPlugin
 		$out = '';
 
 		$thumb = $this->getThumb($seeker->uid);
-		$jobtype = $jt->getType($seeker->sought_type, strtolower(JText::_('TYPE_ANY')));
-		$jobcat = $jc->getCat($seeker->sought_cid, strtolower(JText::_('CATEGORY_ANY')));
+		$jobtype = $jt->getType($seeker->sought_type, strtolower(JText::_('PLG_RESUME_TYPE_ANY')));
+		$jobcat = $jc->getCat($seeker->sought_cid, strtolower(JText::_('PLG_RESUME_CATEGORY_ANY')));
 
 		//$title = $seeker->title ?  $seeker->title : $seeker->filename;
 		$title = JText::_('ACTION_DOWNLOAD') . ' ' . $seeker->name . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
@@ -755,15 +755,15 @@ class plgMembersResume extends JPlugin
 
 		if ($seeker->mine) 
 		{
-			$out .= '<span class="editbt"><a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=editprefs') . '" title="'.JText::_('ACTION_EDIT_MY_PROFILE') . '">&nbsp;</a></span>' . "\n";
+			$out .= '<span class="editbt"><a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=editprefs') . '" title="'.JText::_('PLG_RESUME_ACTION_EDIT_MY_PROFILE') . '">&nbsp;</a></span>' . "\n";
 		}
 		else if ($emp or $admin) 
 		{
 			$out .= '<span id ="o' . $seeker->uid . '"><a href="';
 			$out .= JRoute::_('index.php?option=com_jobs&oid=' . $seeker->uid . '&task=shortlist') . '" class="favvit" title="';
-			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('ACTION_REMOVE_FROM_SHORTLIST') : JText::_('ACTION_ADD_TO_SHORTLIST');
+			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('PLG_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_RESUME_ACTION_ADD_TO_SHORTLIST');
 			$out .= '" >';
-			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('ACTION_REMOVE_FROM_SHORTLIST') : JText::_('ACTION_ADD_TO_SHORTLIST');
+			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('PLG_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_RESUME_ACTION_ADD_TO_SHORTLIST');
 			$out .= '</a></span>' . "\n";
 		}
 			/*
@@ -782,7 +782,7 @@ class plgMembersResume extends JPlugin
 		}
 		else 
 		{
-			$out .- '<span class="unavail">'.JText::_('ACTION_DOWNLOAD').'</span>' . "\n";
+			$out .- '<span class="unavail">'.JText::_('PLG_RESUME_ACTION_DOWNLOAD').'</span>' . "\n";
 		}
 
 		$out .= '</span>' . "\n";
@@ -836,7 +836,7 @@ class plgMembersResume extends JPlugin
 
 		if (!$path) 
 		{
-			$this->setError(JText::_('SUPPORT_NO_UPLOAD_DIRECTORY'));
+			$this->setError(JText::_('PLG_RESUME_SUPPORT_NO_UPLOAD_DIRECTORY'));
 			return $this->view($database, $option, $member, $emp);
 		}
 
@@ -845,7 +845,7 @@ class plgMembersResume extends JPlugin
 
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('SUPPORT_NO_FILE'));
+			$this->setError(JText::_('PLG_RESUME_SUPPORT_NO_FILE'));
 			return $this->view($database, $option, $member, $emp);
 		}
 

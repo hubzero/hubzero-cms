@@ -55,18 +55,18 @@ if (count($this->activities) > 0 ) {
 		<tr>
 			<td class="p-ima">
 				<?php if($i == $more) { echo '<a name="more"></a>'; } ?>
-				<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'"><img src="'.$thumb.'" alt="'.$title.'" /></a>'; ?></td>
+				<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'.$thumb.'" alt="'.$title.'" /></a>'; ?></td>
 			<td>
-				<span class="rightfloat mini faded<?php echo $timeclass; ?>"><?php echo ProjectsHTML::timeAgo($a->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?> </span>
-				<span class="project-name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto); ?>"><?php echo Hubzero_View_Helper_Html::shortenText($title, 65, 0); ?></a></span>
+				<span class="rightfloat mini faded<?php echo $timeclass; ?>"><?php echo ProjectsHTML::timeAgo($a->recorded).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?> </span>
+				<span class="project-name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto); ?>"><?php echo Hubzero_View_Helper_Html::shortenText($title, 65, 0); ?></a></span>
 				<div class="mline <?php echo $class; ?><?php if($a->admin) { echo ' admin-action'; } ?>" id="tr_<?php echo $a->id; ?>">
 				<span>
-				<span class="actor"><?php echo $a->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $a->name; ?></span> <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>	
+				<span class="actor"><?php echo $a->admin == 1 ? JText::_('PLG_MEMBERS_PROJECTS_ADMIN') : $a->name; ?></span> <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>	
 				</span>
 				</div>
 				<?php if($a->commentable) { ?>	
 				<span class="comment">
-				<?php if(count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('COM_PROJECTS_COMMENT') : ' '.count($comments).' '.JText::_('COM_PROJECTS_COMMENTS'); } ?>  <?php if(isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('COM_PROJECTS_NEW').'</span>'; } ?> 
+				<?php if(count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('PLG_MEMBERS_PROJECTS_COMMENT') : ' '.count($comments).' '.JText::_('PLG_MEMBERS_PROJECTS_COMMENTS'); } ?>  <?php if(isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('PLG_MEMBERS_PROJECTS_NEW').'</span>'; } ?> 
 				</span>
 			<?php 
 				if(count($comments) > 0) { 
@@ -78,7 +78,7 @@ if (count($this->activities) > 0 ) {
 					?>
 					<li class="quote" id="c_<?php echo $comment->id; ?>">
 						<?php echo stripslashes(ProjectsHTML::replaceUrls($comment->comment, 'external')); ?>
-						<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo ProjectsHTML::timeAgo($comment->created).' '.JText::_('COM_PROJECTS_AGO'); ?></span></span>
+						<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo ProjectsHTML::timeAgo($comment->created).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?></span></span>
 					</li>	
 					<?php } ?>
 				</ol>
@@ -90,14 +90,14 @@ if (count($this->activities) > 0 ) {
 </tbody>
 </table>
 <?php } else { ?>
-<p class="noresults"><?php echo JText::_('COM_PROJECTS_NO_ACTIVITIES'); ?></p>
+<p class="noresults"><?php echo JText::_('PLG_MEMBERS_PROJECTS_NO_ACTIVITIES'); ?></p>
 <?php } ?>
 <div id="more-updates" class="nav_pager">
 <?php 
 if($this->total > $this->filters['limit']) { 
 	$limit = $this->filters['limit'] + $this->limit; ?>	
-	<p><a href="<?php echo JRoute::_('index.php?option=com_members'.a.'id='.$this->uid.a.'active=projects').'?action=updates'.a.'limit='.$limit.a.'prev='.$this->filters['limit'].'#more';  ?>"><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
+	<p><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->uid.'&active=projects').'?action=updates&limit='.$limit.'&prev='.$this->filters['limit'].'#more';  ?>"><?php echo JText::_('PLG_MEMBERS_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
 <?php } else if($this->filters['limit'] != $this->limit) { ?>
-	<p><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+	<p><?php echo JText::_('PLG_MEMBERS_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 <?php } ?>
 </div><!-- / #more-updates -->

@@ -48,7 +48,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->loadLanguage('', JPATH_ROOT);
+		$this->loadLanguage();
 	}
 
 	/**
