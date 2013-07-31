@@ -28,6 +28,13 @@
 					size="10"
 				/>
 
+				<field name="filter_users" type="textarea"
+					description="PLG_DEBUG_FIELD_ALLOWED_USERS_DESC"
+					label="PLG_DEBUG_FIELD_ALLOWED_USERS_LABEL"
+					col="35"
+					row="5"
+				/>
+
 				<field name="profile" type="radio"
 					default="1"
 					description="PLG_DEBUG_FIELD_PROFILING_DESC"
@@ -59,6 +66,15 @@
 					default="1"
 					description="PLG_DEBUG_FIELD_MEMORY_DESC"
 					label="PLG_DEBUG_FIELD_MEMORY_LABEL"
+				>
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+
+				<field name="css" type="radio"
+					default="0"
+					description="PLG_DEBUG_FIELD_CSS_DESC"
+					label="PLG_DEBUG_FIELD_CSS_LABEL"
 				>
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>

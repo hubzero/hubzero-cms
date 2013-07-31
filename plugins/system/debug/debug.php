@@ -130,6 +130,25 @@ class plgSystemDebug extends JPlugin
 				return;
 			}
 		}
+		/* [!] HUBZERO - Add ability to show deubg output to specified users
+		 * zooley (2012-08-29)
+		 */
+		else 
+		{
+			$filterUsers = $this->params->get('filter_users', null);
+
+			if (!empty($filterUsers)) 
+			{
+				$filterUsers = explode(',', $filterUsers);
+				$filterUsers = array_map('trim', $filterUsers);
+
+				if (!in_array(JFactory::getUser()->get('username'), $filterUsers)) 
+				{
+					echo $contents;
+					return;
+				}
+			}
+		}
 
 		// Load language file
 		$this->loadLanguage('plg_system_debug');
@@ -191,6 +210,13 @@ class plgSystemDebug extends JPlugin
 		}
 
 		$html .= '</div>';
+
+		/* [!] HUBZERO - Add CSS diagnostics */
+                if ($this->params->get('css', 0) && is_file(JPATH_ROOT . '/media/system/css/diagnostics.css'))
+                {
+                        $cssdebug = '<link rel="stylesheet" href="/media/system/css/diagnostics.css" type="text/css" />' . "\n";
+                        $contents = str_replace('</head>', $cssdebug.'</head>', $contents);
+                }
 
 		echo str_replace('</body>', $html . '</body>', $contents);
 	}
@@ -423,7 +449,7 @@ class plgSystemDebug extends JPlugin
 
 		$html = '';
 
-		$html .= '<h4>' . JText::sprintf('PLG_DEBUG_QUERIES_LOGGED',  $db->getCount()) . '</h4>';
+		$html .= '<h4>' . JText::sprintf('PLG_DEBUG_QUERIES_LOGGED',  $db->getCount()) .": ".$db->timer.' seconds</h4>';
 
 		$html .= '<ol>';
 
