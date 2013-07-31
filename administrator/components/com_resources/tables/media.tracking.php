@@ -48,6 +48,7 @@ class ResourceMediaTracking extends JTable
 	var $farthest_position_timestamp 	= NULL;
 	var $completed 						= NULL;
 	var $total_views 					= NULL;
+	var $total_viewing_time             = NULL;
 	
 	//-----
 	

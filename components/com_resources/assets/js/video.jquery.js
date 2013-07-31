@@ -755,8 +755,14 @@ HUB.Video = {
 			//make ajax call
 			$jQ.ajax({
 				type: 'POST',
-				data: { event: eventType, resourceid: resourceId, time: playerTime, duration: playerDuration },
+				dataType: 'json',
 				url: url,
+				data: {
+					event: eventType,
+					resourceid: resourceId,
+					time: playerTime,
+					duration: playerDuration
+				},
 				error: function( jqXHR, status, error )
 				{
 					console.log(error);
@@ -865,11 +871,9 @@ HUB.Video = {
 	
 	getSubtitles: function()
 	{
-		var count = 0,
-			parsed = "",
-			subs = new Array(),
+		var subs = new Array(),
 			sub_files = $jQ("div[data-type=subtitle]");
-		
+			
 		//loop through each subs file and get the contents then add to subs object
 		sub_files.each(function(i){
 			var lang = $jQ(this).attr("data-lang"),
@@ -879,19 +883,17 @@ HUB.Video = {
 			$jQ.ajax({
 				url: src,
 				async: false,
+				dataType: 'json',
 				success: function( content ) {
-					parsed = HUB.Video.parseSubtitles( content );
+					var parsed = HUB.Video.parseSubtitles( content );
 					sub = { "lang" : lang, "subs" : parsed, "auto" : auto };
 					subs.push(sub);
-					count++;
 				}
 			});
 		});
 		
 		//return subs object
-		if(count == sub_files.length) {
-			return subs;
-		}
+		return subs;
 	},
 	
 	//-----

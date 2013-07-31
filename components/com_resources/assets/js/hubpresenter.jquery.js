@@ -1410,9 +1410,7 @@ HUB.Presenter = {
 	
 	getSubtitles: function()
 	{
-		var count = 0,
-			parsed = "",
-			subs = new Array(),
+		var subs = new Array(),
 			sub_files = jQ("div[data-type=subtitle]");
 		
 		//loop through each subs file and get the contents then add to subs object
@@ -1424,8 +1422,9 @@ HUB.Presenter = {
 			jQ.ajax({
 				url: src,
 				async: false,
+				dataType: 'json',
 				success: function( content ) {
-					parsed = HUB.Presenter.parseSubtitles( content );
+					var parsed = HUB.Presenter.parseSubtitles( content );
 					sub = { "lang" : lang, "subs" : parsed, "auto" : auto };
 					subs.push(sub);
 					count++;
@@ -1434,9 +1433,7 @@ HUB.Presenter = {
 		});
 		
 		//return subs object
-		if(count == sub_files.length) {
-			return subs;
-		}
+		return subs;
 	},
 	
 	//-----
