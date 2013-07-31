@@ -507,6 +507,7 @@ class VideoMacro extends WikiMacro
 			$link .= $scope . DS;
 		}
 		$type = 'File';
+		$this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
 		if (in_array(strtolower(JFile::getExt($file)), $this->imgs)) 
 		{
 			if (JRequest::getVar('format') == 'pdf')
