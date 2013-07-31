@@ -233,9 +233,13 @@ class plgCoursesPages extends Hubzero_Plugin
 		}
 		else
 		{
-			$page = JRequest::getWord('unit', '');
+			$page = JRequest::getVar('unit', '');
 
 			$this->view->model = $this->view->offering->page($page); //new CoursesModelPage($page);
+		}
+		if (!$this->view->model)
+		{
+			$this->view->model =  new CoursesModelPage($page);
 		}
 		$this->view->notifications = $this->getPluginMessage();
 	}
@@ -261,7 +265,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			return $this->_list();
 		}
 
-		$page = JRequest::getVar('fields', array(), 'post');
+		$page = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		$model = new CoursesModelPage($page['id']);
 
