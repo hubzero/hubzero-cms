@@ -72,6 +72,13 @@ class CoursesTableGradeBook extends JTable
 	var $scope_id = NULL;
 
 	/**
+	 * decimal(5,2)
+	 * 
+	 * @var decimal
+	 */
+	var $override = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -80,6 +87,32 @@ class CoursesTableGradeBook extends JTable
 	public function __construct(&$db)
 	{
 		parent::__construct('#__courses_grade_book', 'id', $db);
+	}
+
+	/**
+	 * Load gradebook entry by user and asset id
+	 * 
+	 * @param      string $user_id
+	 * @param      string $asset_id
+	 * @return     array
+	 */
+	public function loadByUserAndAssetId($user_id, $asset_id)
+	{
+		$db = $this->_db;
+		$query  = 'SELECT *';
+		$query .= ' FROM '.$this->_tbl;
+		$query .= ' WHERE `scope` = "asset" AND `user_id` = ' . $db->quote($user_id) . ' AND `scope_id` = ' . $db->quote($asset_id);
+		$db->setQuery( $query );
+
+		if ($result = $db->loadAssoc())
+		{
+			return $this->bind($result);
+		}
+		else
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
 	}
 
 	/**

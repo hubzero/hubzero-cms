@@ -127,7 +127,14 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			}
 			if ($grade->scope == 'asset')
 			{
-				$grades[$grade->user_id]['assets'][$grade->scope_id] = $grade->score;
+				if ($grade->override)
+				{
+					$grades[$grade->user_id]['assets'][$grade->scope_id] = array('score'=>$grade->override, 'override'=>true);
+				}
+				else
+				{
+					$grades[$grade->user_id]['assets'][$grade->scope_id] = array('score'=>$grade->score, 'override'=>false);
+				}
 			}
 		}
 
@@ -231,7 +238,15 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				continue;
 			}
 
-			$grades[$grade->user_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->score, 'type'=>$grade->subtype);
+			// Check for overrides
+			if ($grade->override)
+			{
+				$grades[$grade->user_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->override, 'type'=>$grade->subtype);
+			}
+			else
+			{
+				$grades[$grade->user_id][$grade->unit_id][$grade->scope_id] = array('score'=>$grade->score, 'type'=>$grade->subtype);
+			}
 		}
 
 		foreach ($grades as $user_id=>$values)

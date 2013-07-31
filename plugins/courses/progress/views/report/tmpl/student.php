@@ -108,7 +108,7 @@ foreach($assets as $asset)
 			// Form is still active and they are allowed to see their score
 			if($results_closed == 'score' || $results_closed == 'details')
 			{
-				$score = $grades[$this->juser->get('id')]['assets'][$asset->id];
+				$score = $grades[$this->juser->get('id')]['assets'][$asset->id]['score'];
 			}
 			else
 			{
@@ -138,7 +138,7 @@ foreach($assets as $asset)
 				// Form is still active and they are allowed to see their score
 				if($results_open == 'score' || $results_open == 'details')
 				{
-					$score = $grades[$this->juser->get('id')]['assets'][$asset->id];
+					$score = $grades[$this->juser->get('id')]['assets'][$asset->id]['score'];
 				}
 				else
 				{

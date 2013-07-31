@@ -1,0 +1,168 @@
+/**
+ * @package	 hubzero-cms
+ * @file		plugins/courses/progress/gradebook.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Overall styles */
+table caption {
+	text-align: center;
+}
+table tbody td {
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+}
+table tbody .editing {
+	padding: 4px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+}
+.gradebook thead {
+	background: #D1D9DE;
+}
+.gradebook thead td {
+	padding: 0;
+	border: 1px solid #CCCCCC;
+}
+.gradebook .form-name-inner {
+	border-bottom: none;
+	padding: 8px 0;
+	margin: 0;
+	font-weight: bold;
+	background: #EEEEEE;
+	background: rgba(240,240,240,.5);
+	overflow: hidden;
+}
+.gradebook .row-entry,
+.add {
+	background: #F9F9F9;
+}
+.gradebook .even {
+	background: #FCFCFC;
+}
+.gradebook tbody tr:hover {
+	background: #EEEEEE;
+}
+.gradebook .cell-title {
+	text-align: left;
+	width: 200px;
+	min-width: 200px;
+	max-width: 200px;
+}
+.gradebook .cell-entry {
+	text-align: center;
+	cursor: pointer;
+	width: 90px;
+	min-width: 90px;
+	max-width: 90px;
+	position: relative;
+	overflow: hidden;
+}
+.cell-entry:hover {
+	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+}
+.gradebook .form-name {
+	text-align: center;
+	position: relative;
+}
+.gradebook .override.active {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	background: #FF9400;
+	top: -25px;
+	right: -25px;
+	content: "";
+	-ms-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.gradebook .override.active:hover {
+	background: #FF5C51;
+}
+.gradebook .override.active:before {
+	position: absolute;
+	font-family: "fontcons";
+	content: "\273D";
+	top: 30px;
+	right: 20px;
+	color: #FFFFFF;
+	font-size: 11px;
+}
+.gradebook .override.active:hover:before {
+	content: "\f08a";
+}
+.gradebook .search-box {
+	vertical-align: bottom;
+	padding: 13px;
+}
+.gradebook .search-box input {
+	width: 100%;
+	background: rgba(255, 255, 255, .7);
+}
+
+.add {
+	margin-top: 10px;
+	cursor: pointer;
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+}
+
+.gradebook .edit-grade {
+	width: 4em;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
+.tooltip-top, .tooltip-right {
+	float: left;
+	min-width: 50px;
+	max-width: 200px;
+	z-index: 1030;
+	font-size: 0.85em;
+	padding: 0.5em 1em;
+	color: #eee;
+	border: none;
+	opacity: 0.8;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	border-radius: 0.5em;
+	background-color: #252525;
+	background-image: -moz-linear-gradient(top,#333,#111);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#333),to(#111));
+	background-image: -webkit-linear-gradient(top,#333,#111);
+	background-image: -o-linear-gradient(top,#333,#111);
+	background-image: linear-gradient(to bottom,#333,#111);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff333333', endColorstr='#ff111111', GradientType=0);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.tooltip-right {
+	max-width: 500px;
+}
+.tooltip-top:after, .tooltip-right:after {
+	content: "";
+	border-color: #252525 transparent transparent transparent;
+	border-style: solid;
+	border-width: 4px;
+	height: 0;
+	width: 0;
+	display: block;
+	overflow: hidden;
+	position: absolute;
+	bottom: -8px;
+	left: 50%;
+	margin-left: -4px;
+}
+.tooltip-right:after {
+	border-color: transparent #252525 transparent transparent;
+	top: 50%;
+	bottom: auto;
+	left: -8px;
+	margin-top: -4px;
+	margin-left: 0;
+}

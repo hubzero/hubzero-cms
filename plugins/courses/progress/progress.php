@@ -32,6 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 
 /**
  * Courses Plugin class for user progress
@@ -108,28 +110,6 @@ class plgCoursesProgress extends JPlugin
 			return $arr;
 		}
 
-		// Create user object
-		$this->juser  = JFactory::getUser();
-		$this->course = $course;
-		$this->base   = 'index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
-
-		if ($action = JRequest::getWord('action', false))
-		{
-			$this->$action();
-		}
-
-		$layout = ($course->offering()->section()->access('manage')) ? 'instructor' : 'student';
-
-		// If this is an instructor, see if they want the overall view, or an individual student
-		if($layout == 'instructor')
-		{
-			if($student_id = JRequest::getInt('id', false))
-			{
-				$layout = 'student';
-				$this->juser  = JFactory::getUser($student_id);
-			}
-		}
-
 		// Check to see if user is member and plugin access requires members
 		if (!$course->offering()->section()->access('view')) 
 		{
@@ -137,26 +117,36 @@ class plgCoursesProgress extends JPlugin
 			return $arr;
 		}
 
-		// Add some styles to the view
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', 'progress');
-		Hubzero_Document::addPluginScript('courses', 'progress', $layout.'progress');
+		$this->juser  = JFactory::getUser();
+		$this->course = $course;
+		$this->base   = 'index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
+		$this->base  .= ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 
 		// Instantiate a vew
-		ximport('Hubzero_Plugin_View');
-		$view = new Hubzero_Plugin_View(
+		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
-				'element' => $this->_name,
+				'element' => $active,
 				'name'    => 'report',
-				'layout'  => $layout
+				'layout'  => 'student'
 			)
 		);
-		$view->course  = $course;
-		$view->juser   = $this->juser;
-		$view->option  = 'com_courses';
+		$this->view->course  = $course;
+		$this->view->juser   = $this->juser;
+		$this->view->option  = 'com_courses';
 
-		$arr['html'] = $view->loadTemplate();
+		switch (JRequest::getWord('action'))
+		{
+			case 'showgradebook':       $this->showgradebook();       break;
+			case 'savegradebookitem':   $this->savegradebookitem();   break;
+			case 'savegradebookentry':  $this->savegradebookentry();  break;
+			case 'resetgradebookentry': $this->resetgradebookentry(); break;
+			case 'policysave':          $this->policysave();          break;
+			case 'restoredefaults':     $this->restoredefaults();     break;
+			default:                    $this->progress();            break;
+		}
+
+		$arr['html'] = $this->view->loadTemplate();
 
 		// Return the output
 		return $arr;
@@ -167,10 +157,197 @@ class plgCoursesProgress extends JPlugin
 	 *
 	 * @return void
 	 **/
+	private function progress()
+	{
+		$layout = ($this->course->offering()->section()->access('manage')) ? 'instructor' : 'student';
+
+		// If this is an instructor, see if they want the overall view, or an individual student
+		if($layout == 'instructor')
+		{
+			if($student_id = JRequest::getInt('id', false))
+			{
+				$layout = 'student';
+				$this->view->juser  = JFactory::getUser($student_id);
+			}
+		}
+
+		// Add some styles to the view
+		Hubzero_Document::addPluginStylesheet('courses', 'progress');
+		Hubzero_Document::addPluginScript('courses', 'progress', $layout.'progress');
+
+		// Set the layout
+		$this->view->setLayout($layout);
+	}
+
+	/**
+	 * Display gradebook
+	 *
+	 * @return void
+	 **/
+	private function showgradebook()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_($this->base, false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
+		// Add some styles to the view
+		Hubzero_Document::addPluginStylesheet('courses', 'progress', 'gradebook.css');
+		Hubzero_Document::addPluginScript('courses', 'progress', 'gradebook');
+		Hubzero_Document::addSystemScript('jquery.fancyselect.min');
+		Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
+
+		$this->view->setLayout('gradebook');
+	}
+
+	/**
+	 * Save a gradebook item
+	 *
+	 * @return void
+	 **/
+	private function savegradebookitem()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_($this->base, false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
+		echo json_encode(array('success'=>true));
+		exit();
+	}
+
+	/**
+	 * Save a gradebook entry
+	 *
+	 * @return void
+	 **/
+	private function savegradebookentry()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_($this->base, false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
+		// Get request variables
+		if (!$user_id = JRequest::getInt('student_id', false))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+		if (!$asset_id = JRequest::getInt('asset_id', false))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+		if (!$grade_value = JRequest::getVar('grade', false))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		$grade = new CoursesTableGradeBook(JFactory::getDBO());
+		$grade->loadByUserAndAssetId($user_id, $asset_id);
+
+		if (!$grade->id)
+		{
+			$grade->set('user_id', $user_id);
+			$grade->set('scope', 'asset');
+			$grade->set('scope_id', $asset_id);
+		}
+
+		$grade->set('override', $grade_value);
+
+		if (!$grade->store())
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		echo json_encode(array('success'=>true));
+		exit();
+	}
+
+	/**
+	 * Reset a grade book entry...i.e. remove the override
+	 *
+	 * @return void
+	 **/
+	private function resetgradebookentry()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_($this->base, false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
+		// Get request variables
+		if (!$user_id = JRequest::getInt('student_id', false))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+		if (!$asset_id = JRequest::getInt('asset_id', false))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		$grade = new CoursesTableGradeBook(JFactory::getDBO());
+		$grade->loadByUserAndAssetId($user_id, $asset_id);
+
+		if (!$grade->id)
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		$grade->set('override', NULL);
+
+		// Store (true to update nulls)
+		if (!$grade->store(true))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		echo json_encode(array('success'=>true, 'score'=>$grade->score));
+		exit();
+	}
+
+	/**
+	 * Save grading policy
+	 *
+	 * @return void
+	 **/
 	private function policysave()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
-
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
@@ -295,8 +472,6 @@ class plgCoursesProgress extends JPlugin
 	 **/
 	private function restoredefaults()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
-
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
@@ -355,8 +530,6 @@ class plgCoursesProgress extends JPlugin
 	 **/
 	private function refresh()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
-
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
