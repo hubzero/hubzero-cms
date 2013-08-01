@@ -76,4 +76,85 @@ class modLoginHelper
 		$user = JFactory::getUser();
 		return (!$user->get('guest')) ? 'logout' : 'login';
 	}
+
+	/**
+	 * Display module content
+	 * 
+	 * @return     void
+	 */
+	static function display($params, $module)
+	{
+		$app      = JFactory::getApplication();
+		$document = JFactory::getDocument();
+
+		// Make sure we're using a secure connection
+		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+		{
+			$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			die('insecure connection and redirection failed');
+		}
+
+		ximport('Hubzero_Document');
+
+		// Get and add the js and extra css to the page
+		Hubzero_Document::addComponentStylesheet('com_users', 'login.css');
+		Hubzero_Document::addComponentStylesheet('com_users', 'providers.css');
+		Hubzero_Document::addComponentScript('com_users', 'assets/js/login');
+
+		Hubzero_Document::addSystemStylesheet('uniform.css');
+		Hubzero_Document::addSystemScript('jquery.uniform');
+		Hubzero_Document::addSystemScript('jquery.hoverIntent');
+
+		$type 	 = self::getType();
+		$return	 = self::getReturnURL($params, $type);
+		$freturn = base64_encode($_SERVER['REQUEST_URI']);
+
+		// If we have a return set with an authenticator in it, we're linking an existing account
+		// Parse the return to retrive the authenticator, and remove it from the list below
+		$auth = '';
+		if($areturn = JRequest::getVar('return', null))
+		{
+			$areturn = base64_decode($areturn);
+			$query   = parse_url($areturn);
+			$query   = $query['query'];
+			$query   = explode('&', $query);
+			$auth    = '';
+			foreach($query as $q)
+			{
+				$n = explode('=', $q);
+				if($n[0] == 'authenticator')
+				{
+					$auth = $n[1];
+				}
+			}
+		}
+
+		// Figure out whether or not any of our third party auth plugins are turned on 
+		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
+		$multiAuth      = false;
+		$plugins        = JPluginHelper::getPlugin('authentication');
+		$authenticators = array();
+
+		foreach($plugins as $p)
+		{
+			if($p->name != 'hubzero' && $p->name != $auth)
+			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
+				$pparams = new $paramsClass($p->params);
+				$display = $pparams->get('display_name', ucfirst($p->name));
+				$authenticators[] = array('name' => $p->name, 'display' => $display);
+				$multiAuth = true;
+			}
+		}
+
+		// Set the return if we have it...
+		$r = ($return) ? "&return={$return}" : '';
+
+		require(JModuleHelper::getLayoutPath($module->module));
+	}
 }
