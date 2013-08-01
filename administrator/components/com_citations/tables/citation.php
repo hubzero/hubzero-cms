@@ -469,7 +469,9 @@ class CitationsCitation extends JTable
 		
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
-			$query  = "SELECT COUNT(*)
+			$query  = "SELECT COUNT(b.id) FROM
+			 			(
+						SELECT r.id, COUNT(DISTINCT tag.tag) AS uniques
 						FROM $this->_tbl AS r 
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
@@ -516,6 +518,11 @@ class CitationsCitation extends JTable
 		
 		$query .= $this->buildQuery($filter, $admin);
 		
+		if (isset($filter['tag']) && $filter['tag'] != '')
+		{
+			$query .= ") as b";
+		}
+		
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -538,11 +545,11 @@ class CitationsCitation extends JTable
 		{
 			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "') > 0)";
 
-			if ($admin = true)
-			{
-				$query .= " OR LOWER(u.username) = " . $this->_db->Quote(strtolower($filter['search'])) . "
-							OR r.uid = " . $this->_db->Quote($filter['search']);
-			}
+			//if ($admin = true)
+			//{
+			//	$query .= " OR LOWER(u.username) = " . $this->_db->Quote(strtolower($filter['search'])) . "
+			//				OR r.uid = " . $this->_db->Quote($filter['search']);
+			//}
 		}
 
 		//tag search
