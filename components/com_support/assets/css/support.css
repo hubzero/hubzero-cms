@@ -780,6 +780,7 @@
 /* Comments */
 	ol.comments .comment-content {
 		margin-bottom: 0;
+		word-wrap: break-word;
 	}
 	ol.comments .comment-changelog {
 		margin: 0 0 1em 70px;
