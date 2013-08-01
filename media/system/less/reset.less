@@ -94,8 +94,9 @@
 	img {
 		/* Responsive images (ensure images don't scale beyond their parents) */
 		max-width: 100%; /* Part 1: Set a maxium relative to the parent */
-		width: auto\9; /* IE7-8 need help adjusting responsive images */
-		height: auto; /* Part 2: Scale the height according to the width, otherwise you get stretching */
+		/* The following two lines seem to have unintended bad affects in IE 8, 9 */
+		/* width: auto\9; IE7-8 need help adjusting responsive images */
+		/* height: auto; Part 2: Scale the height according to the width, otherwise you get stretching */
 		vertical-align: middle;
 		border: 0;
 		-ms-interpolation-mode: bicubic;
