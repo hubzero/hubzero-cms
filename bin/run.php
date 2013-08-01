@@ -148,7 +148,7 @@ if(isset($options['p']) || isset($options['print']))
 $extension = null;
 if (isset($options['e']) && $options['e'] !== false)
 {
-	if (!preg_match('/^com_[a-z]+$|^mod_[a-z]+$|^plg_[a-z]+_[a-z]+$|^core$/i', $options['e']))
+	if (!preg_match('/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|^plg_[[:alnum:]]+_[[:alnum:]]+$|^core$/i', $options['e']))
 	{
 		echo 'Error: extension should match the pattern of com_*, mod_*, plg_*_*, or core.' . "\n\n";
 		exit();

@@ -382,7 +382,7 @@ class Hubzero_Migration
 		foreach ($files as $file)
 		{
 			// Make sure they have a php extension and proper filename format
-			if (preg_match('/^Migration[0-9]{14}[a-zA-Z]+\.php$/', $file))
+			if (preg_match('/^Migration[0-9]{14}[[:alnum:]]+\.php$/', $file))
 			{
 				// If an extension was provided...match against it...
 				if (empty($ext) || (!empty($ext) && preg_match('/Migration[0-9]{14}'.$ext.'\.php/', $file)))
