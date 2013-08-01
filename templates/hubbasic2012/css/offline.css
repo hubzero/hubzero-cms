@@ -1,0 +1,433 @@
+/*
+
+	-- -- -- -- -- -- --
+	offline CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Fonts */
+	@font-face {
+		font-family: 'Fontcons';
+		src: url('/media/system/css/fonts/fontcons-webfont.eot');
+		src: url('/media/system/css/fonts/fontcons-webfont.eot?#iefix') format('embedded-opentype'), 
+			 url('/media/system/css/fonts/fontcons-webfont.woff') format('woff'), 
+			 url('/media/system/css/fonts/fontcons-webfont.ttf') format('truetype'),
+			 url('/media/system/css/fonts/fontcons-webfont.svg#FontconsRegular') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+	@font-face {
+		font-family: 'Share-Regular';
+		src: url('fonts/Share-Regular-webfont.eot');
+		src: url('fonts/Share-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/Share-Regular-webfont.woff') format('woff'),
+			 url('fonts/Share-Regular-webfont.ttf') format('truetype'),
+			 url('fonts/Share-Regular-webfont.svg#Share-Regular') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	html {
+		font-family: sans-serif;
+		-ms-text-size-adjust: 100%;
+		-webkit-text-size-adjust: 100%;
+	}
+
+/* Body */
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size: 0.8em;
+		line-height: 1.6em;
+		color: #666;
+		background: #ececec url("../images/layout/noise-lite.png");
+		text-rendering: optimizeLegibility;
+		min-width: 100px;
+		height: 100%;
+	}
+/* Links */
+	a, 
+	a:active, 
+	a:visited {
+		text-decoration: none;
+		color: #178bc1; /* 62a0b2 #0fa1ca;*/
+		border-bottom: 1px dotted #344e54;
+		border-bottom: 1px dotted rgba(52, 78, 85, 0.4);
+	}
+	a:hover {
+		color: #222;
+		border-bottom: 1px solid #999;
+	}
+/* Elements */
+/* Prevents sub and sup affecting line-height in all browsers */
+	sub,
+	sup {
+		position: relative;
+		font-size: 75%;
+		line-height: 0;
+		vertical-align: baseline;
+	}
+	sup {
+		top: -0.5em;
+	}
+	sub {
+		bottom: -0.25em;
+	}
+	b,
+	strong {
+		font-weight: bold;
+	}
+	i,
+	em {
+		font-style: italic;
+	}
+	iframe {
+		overflow: hidden;
+	}
+	p {
+		padding: 0;
+		margin: 1em 0;
+	}
+	strong {
+		font-weight: bold;
+	}
+	hr {
+		clear: both;
+		visibility: hidden;
+		height: 15px;
+	}
+	abbr {
+		border-bottom: 1px dotted #333;
+	}
+	em {
+		font-style: italic;
+	}
+/* Headers */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: 'Share-Regular', 'RopaSansRegular', 'LacunaRegular', 'Impact', 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-weight: 600;
+		font-weight: normal;
+		color: #565656;
+		margin: 1em 0;
+	}
+	h2 {
+		font-size: 1.8em;
+		line-height: 1.3;
+		font-size: 1.9em;
+	}
+	h3 {
+		font-size: 1.5em;
+		font-size: 1.6em;
+	}
+	h4,
+	h5,
+	h6 {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-weight: bold;
+	}
+
+	#container {
+		width: 500px;
+		margin: 100px auto 100px auto;
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		-moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+	}
+
+/* Shortcuts */
+	#top {
+		border-top: 3px solid #0fa1ca;
+		background: -moz-linear-gradient(left, #333333 0%, #565656 50%, #333333 100%);
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#333333), color-stop(50%,#565656), color-stop(100%,#333333));
+		background: -webkit-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%);
+		background: -o-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%);
+		background: -ms-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%);
+		background: linear-gradient(to right, #333333 0%,#565656 50%,#333333 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#243236', endColorstr='#4e5d61');
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#243236, endColorstr=#4e5d61)";
+	}
+	#top .inner-wrap {
+		background-color: transparent;
+		background-image: -webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40,from(rgba(150, 150, 150, 0.2)), color-stop(0.3, rgba(150, 150, 150, 0.3)),  to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, from(rgba(203, 203, 203, 0.1)), color-stop(0.2, rgba(203, 203, 203, 0.2)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, from(rgba(203, 203, 203, 0.1)), color-stop(0.2, rgba(203, 203, 203, 0.2)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 38, 50% 50%, 46, from(rgba(113, 113, 113, 0.3)), color-stop(0.3, rgba(113, 113, 113, 0.4)),  to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 20, 50% 50%, 80, from(rgba(113, 113, 113, 0)), color-stop(0.3, rgba(113, 113, 113, 0.2)),  to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 90, from(rgba(113, 113, 113, 0)), color-stop(0.5, rgba(113, 113, 113, 0.2)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 50, from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 26, 50% 50%, 30, from(rgba(50, 50, 50, 0.2)), color-stop(0.2, rgba(50, 50, 50, 0.3)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, from(rgba(50, 50, 50, 0.3)), color-stop(0.2, rgba(50, 50, 50, 0.4)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 30, 50% 50%, 50, from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.1)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 26, 50% 50%, 30, from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent)),
+						-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, from(rgba(209, 209, 209, 0.2)), color-stop(0.2, rgba(209, 209, 209, 0.3)), to(transparent));
+		background-image: -webkit-radial-gradient(circle contain, rgba(150, 150, 150, 0.2) 36px, rgba(150, 150, 150, 0.3) 38px, transparent 40px),
+						-webkit-radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						-webkit-radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						-webkit-radial-gradient(circle contain, rgba(113, 113, 113, 0.2) 38px, rgba(113, 113, 113, 0.3) 41px, transparent 46px),
+						-webkit-radial-gradient(circle contain, rgba(113, 113, 113, 0) 20px, rgba(113, 113, 113, 0.2) 38px, transparent 80px),
+						-webkit-radial-gradient(circle contain, rgba(113, 113, 113, 0) 30px, rgba(113, 113, 113, 0.2) 60px, transparent 90px),
+						-webkit-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 30px, rgba(50, 50, 50, 0.3) 34px, transparent 50px),
+						-webkit-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 16px, rgba(50, 50, 50, 0.3) 17px, transparent 20px),
+						-webkit-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 26px, rgba(50, 50, 50, 0.3) 27px, transparent 30px),
+						-webkit-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 36px, rgba(50, 50, 50, 0.3) 37px, transparent 40px),
+						-webkit-radial-gradient(circle contain, rgba(209, 209, 209, 0.1) 30px, rgba(209, 209, 209, 0.1) 34px, transparent 50px),
+						-webkit-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px),
+						-webkit-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px),
+						-webkit-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px);
+		background-image: -moz-radial-gradient(circle contain, rgba(150, 150, 150, 0.2) 36px, rgba(150, 150, 150, 0.3) 38px, transparent 40px),
+						-moz-radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						-moz-radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						-moz-radial-gradient(circle contain, rgba(113, 113, 113, 0.2) 38px, rgba(113, 113, 113, 0.3) 41px, transparent 46px),
+						-moz-radial-gradient(circle contain, rgba(113, 113, 113, 0) 20px, rgba(113, 113, 113, 0.2) 38px, transparent 80px),
+						-moz-radial-gradient(circle contain, rgba(113, 113, 113, 0) 30px, rgba(113, 113, 113, 0.2) 60px, transparent 90px),
+						-moz-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 30px, rgba(50, 50, 50, 0.3) 34px, transparent 50px),
+						-moz-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 16px, rgba(50, 50, 50, 0.3) 17px, transparent 20px),
+						-moz-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 26px, rgba(50, 50, 50, 0.3) 27px, transparent 30px),
+						-moz-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 36px, rgba(50, 50, 50, 0.3) 37px, transparent 40px),
+						-moz-radial-gradient(circle contain, rgba(209, 209, 209, 0.1) 30px, rgba(209, 209, 209, 0.1) 34px, transparent 50px),
+						-moz-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px),
+						-moz-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px),
+						-moz-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px);
+		background-image: -o-radial-gradient(circle contain, rgba(150, 150, 150, 0.2) 36px, rgba(150, 150, 150, 0.3) 38px, transparent 40px),
+						-o-radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						-o-radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						-o-radial-gradient(circle contain, rgba(113, 113, 113, 0.2) 38px, rgba(113, 113, 113, 0.3) 41px, transparent 46px),
+						-o-radial-gradient(circle contain, rgba(113, 113, 113, 0) 20px, rgba(113, 113, 113, 0.2) 38px, transparent 80px),
+						-o-radial-gradient(circle contain, rgba(113, 113, 113, 0) 30px, rgba(113, 113, 113, 0.2) 60px, transparent 90px),
+						-o-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 30px, rgba(50, 50, 50, 0.3) 34px, transparent 50px),
+						-o-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 16px, rgba(50, 50, 50, 0.3) 17px, transparent 20px),
+						-o-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 26px, rgba(50, 50, 50, 0.3) 27px, transparent 30px),
+						-o-radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 36px, rgba(50, 50, 50, 0.3) 37px, transparent 40px),
+						-o-radial-gradient(circle contain, rgba(209, 209, 209, 0.1) 30px, rgba(209, 209, 209, 0.1) 34px, transparent 50px),
+						-o-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px),
+						-o-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px),
+						-o-radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px);
+		background-image: radial-gradient(circle contain, rgba(150, 150, 150, 0.2) 36px, rgba(150, 150, 150, 0.3) 38px, transparent 40px),
+						radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						radial-gradient(circle contain, rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px),
+						radial-gradient(circle contain, rgba(113, 113, 113, 0.2) 38px, rgba(113, 113, 113, 0.3) 41px, transparent 46px),
+						radial-gradient(circle contain, rgba(113, 113, 113, 0) 20px, rgba(113, 113, 113, 0.2) 38px, transparent 80px),
+						radial-gradient(circle contain, rgba(113, 113, 113, 0) 30px, rgba(113, 113, 113, 0.2) 60px, transparent 90px),
+						radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 30px, rgba(50, 50, 50, 0.3) 34px, transparent 50px),
+						radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 16px, rgba(50, 50, 50, 0.3) 17px, transparent 20px),
+						radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 26px, rgba(50, 50, 50, 0.3) 27px, transparent 30px),
+						radial-gradient(circle contain, rgba(50, 50, 50, 0.2) 36px, rgba(50, 50, 50, 0.3) 37px, transparent 40px),
+						radial-gradient(circle contain, rgba(209, 209, 209, 0.1) 30px, rgba(209, 209, 209, 0.1) 34px, transparent 50px),
+						radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px),
+						radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px),
+						radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px);
+		background-position: 197px 251px, 313px 499px, 419px 359px,263px 433px,449px 197px,389px 317px,439px 281px,541px 263px,397px 449px,191px 463px,271px 271px,491px 397px,211px 349px;
+		-webkit-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
+		-moz-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
+		-ms-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
+		-o-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
+		background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
+		box-shadow: inset 0 0 4em rgba(0, 0, 0, 0.4);
+		*background-image: none;
+	}
+	#top .inner {
+		padding: 0;
+		background: rgba(15, 161, 207, 0.1) url("../images/layout/noise.png");
+	}
+
+/* Topbar */
+	#topbar {
+		margin: 0 30px;
+		padding: 0 30px;
+		background: #2a2a2a url("../images/layout/stripes-white.png");
+		vertical-align: baseline;
+		position: relative;
+	}
+	#topbar p {
+		color: #B1B1B1;
+		margin: 0;
+		padding: 1.2em 1.7em 1.2em 0;
+		font-size: 0.875em;
+		line-height: 1;
+	}
+	#topbar a {
+		margin: 0;
+		padding: 0;
+		border: none;
+		text-decoration: none;
+		color: #888;
+		text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+	}
+	#topbar a:hover {
+		color: #f2f2f2;
+		border-bottom: 1px solid #eee;
+	}
+	#topbar:after {
+		content: "."; 
+		display: block; 
+		height: 0; 
+		clear: both; 
+		visibility: hidden;
+	}
+
+/* Masthead */
+	#masthead {
+		margin: 0 30px;
+		padding: 0;
+		box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+		position: relative;
+		background: #fff;
+		height: 97px;
+		z-index: 777;
+		box-shadow: 0 0.25em 0.25em -15px rgba(0, 0, 0, 0.6);
+	}
+	#masthead .inner {
+		padding: 0;
+		height: 97px;
+		width: 100%;
+		background: transparent url("../images/layout/stripes.png") left top repeat-x;
+	}
+	#masthead h1 {
+		color: #333333;
+		font-size: 2em;
+		margin: 0;
+		margin: 15px 0 0 26px;
+		float: left;
+		text-transform: lowercase;
+	}
+	#masthead h1 a {
+		position: relative; 
+		display: block; 
+		height: 44px;
+		background: transparent;
+		border: none;
+		color: #c00;
+		background: transparent url("../images/logos/hub.png") 0 0 no-repeat;
+		font-family: 'Share-Regular', 'Impact', 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size: 35px;
+		font-weight: normal;
+		font-style: normal;
+		padding: 24px 0 0 80px;
+		color: #333;
+	}
+	#masthead h1 a:hover {
+		color: #c00;
+	}
+	#masthead h1:after {
+		position: absolute;
+		top: 40px;
+		right: 30px;
+		content: "\f05e";
+		font-family: "Fontcons";
+		color: #ccc;
+		font-size: 1.2em;
+	}
+
+/* Splash */
+	#splash {
+		height: auto;
+	}
+
+/* Footer */
+	#footer {
+		padding: 0;
+		
+		color: #AAACAC;
+		font-size: 0.9em;
+		text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+		background: #333333 url("../images/layout/stripes-white.png");
+		position: relative;
+	}
+	#footer ul#legalese {
+		margin: 0;
+		padding: 1.25em 30px;
+		overflow: hidden;
+		text-align: right;
+		list-style: none;
+		font-size: 0.85em;
+		color: #777;
+	}
+	#footer ul#legalese li {
+		display: inline;
+		margin-left: 2em;
+	}
+	#footer ul#legalese .policy {
+		position: absolute;
+		margin: 0;
+		left: 30px;
+		text-align: left;
+	}
+	#footer ul#legalese a {
+		color: #aaa;
+	}
+
+/* Congratulations box */
+	#offline-message {
+		width: 20em;
+		margin: 40px auto 40px auto;
+		background: #000;
+		background: rgba(0, 0, 0, 0.4);
+		-webkit-border-radius: 1em;
+		-moz-border-radius: 1em;
+		-ms-border-radius: 1em;
+		-o-border-radius: 1em;
+		border-radius: 1em;
+		padding: 30px;
+		text-align: center;
+		color: #ddd;
+		text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+		*background: #000;
+		filter: alpha(opacity = 60);
+	}
+	#offline-message h2 {
+		margin: 0;
+		padding: 0;
+		color: #fff;
+	}
+	#offline-message a:hover {
+		color: #fff;
+		border-bottom: 1px solid #fff;
+	}
+
+/* Debug */
+	#system-debug {
+		display: none;
+	}
+
+/* [!] Opera */
+	html.opera #top .inner-wrap {
+		background: transparent url("../images/layout/bokeh.png");
+	}
+
+/* [!] IE 8 */
+	html.ie8 #container {
+		border: 1px solid #ccc\9;
+	}
+	html.ie8 #top .inner-wrap {
+		background: transparent url("../images/layout/bokeh.png")\9;
+	}
+	html.ie8 #top .inner {
+		background: transparent url("../images/layout/noise.png")\9;
+	}
+	html.ie8 #masthead .inner {
+		background: transparent url("../../images/layout/stripes.png") left top repeat-x !important;
+	}
+	html.ie8 #masthead h1:after {
+		font-size: 3.2em\9;
+	}
+
+/* [!] IE 9 */
+	html.ie9 #top .inner-wrap {
+		background: transparent url("../images/layout/bokeh.png");
+	}
+	html.ie9 #top .inner {
+		background: transparent url("../images/layout/noise.png");
+	}
+	html.ie9 #masthead .inner {
+		background: transparent url("../../images/layout/stripes.png") left top repeat-x !important;
+	}
