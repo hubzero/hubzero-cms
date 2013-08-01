@@ -72,7 +72,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 
 		// Load tracking information for user for this resource
 		$trackingInformation = $mediaTracking->getTrackingInformationForUserAndResource($juser->get('id'), $resourceid, 'course');
-		
+
 		// Are we creating a new tracking record
 		if (!is_object($trackingInformation))
 		{
@@ -88,9 +88,20 @@ class CoursesControllerMedia extends Hubzero_Controller
 			$trackingInformation->farthest_position_timestamp = date('Y-m-d H:i:s');
 			$trackingInformation->completed                   = 0;
 			$trackingInformation->total_views                 = 1;
+			$trackingInformation->total_viewing_time          = 0;
 		}
 		else
 		{
+			// Get the amount of video watched from last tracking event
+			$time_viewed = (int)$time - (int)$trackingInformation->current_position;
+
+			// If we have a positive value and its less then our ten second threshold,
+			// add viewing time to total watched time
+			if ($time_viewed < 10 && $time_viewed > 0)
+			{
+				$trackingInformation->total_viewing_time += $time_viewed;
+			}
+
 			// Set the new current position
 			$trackingInformation->current_position           = $time;
 			$trackingInformation->current_position_timestamp = date('Y-m-d H:i:s');
