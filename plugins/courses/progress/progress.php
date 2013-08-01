@@ -138,6 +138,7 @@ class plgCoursesProgress extends JPlugin
 		switch (JRequest::getWord('action'))
 		{
 			case 'showgradebook':       $this->showgradebook();       break;
+			case 'getData':             $this->getData();             break;
 			case 'savegradebookitem':   $this->savegradebookitem();   break;
 			case 'savegradebookentry':  $this->savegradebookentry();  break;
 			case 'resetgradebookentry': $this->resetgradebookentry(); break;
@@ -198,13 +199,81 @@ class plgCoursesProgress extends JPlugin
 			return;
 		}
 
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_($this->base . '&active=progress', false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
+		}
+
 		// Add some styles to the view
 		Hubzero_Document::addPluginStylesheet('courses', 'progress', 'gradebook.css');
 		Hubzero_Document::addPluginScript('courses', 'progress', 'gradebook');
-		Hubzero_Document::addSystemScript('jquery.fancyselect.min');
-		Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
+		Hubzero_Document::addSystemScript('handlebars');
+		//Hubzero_Document::addSystemScript('jquery.fancyselect.min');
+		//Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
 
 		$this->view->setLayout('gradebook');
+	}
+
+	/**
+	 * Get gradebook assets
+	 *
+	 * @return void
+	 **/
+	private function getData()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		// Get all section members
+		$members = $this->course->offering()->section()->members(array('student'=>1));
+		$mems    = array();
+
+		foreach ($members as $m)
+		{
+			$mems[] = array('id'=>$m->get('user_id'), 'name'=>JFactory::getUser($m->get('user_id'))->get('name'));
+		}
+
+		// Refresh the grades
+		$this->course->offering()->gradebook()->refresh();
+
+		// Get the grades
+		$grades = $this->course->offering()->gradebook()->grades();
+
+		// Get the assets
+		$asset  = new CoursesTableAsset(JFactory::getDBO());
+		$assets = $asset->find(
+			array(
+				'w' => array(
+					'course_id'  => $this->course->get('id'),
+					'section_id' => $this->course->offering()->section()->get('id'),
+					'asset_type' => 'form',
+					'state'      => 1
+				),
+				'order_by'  => 'title',
+				'order_dir' => 'ASC'
+			)
+		);
+
+		echo json_encode(array('assets'=>$assets, 'members'=>$mems, 'grades'=>$grades));
+		exit();
 	}
 
 	/**
@@ -217,13 +286,8 @@ class plgCoursesProgress extends JPlugin
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
-			// Redirect with message
-			JFactory::getApplication()->redirect(
-				JRoute::_($this->base, false),
-				'You don\'t have permission to do this!',
-				'warning'
-			);
-			return;
+			echo json_encode(array('success'=>false));
+			exit();
 		}
 
 		echo json_encode(array('success'=>true));
@@ -240,13 +304,15 @@ class plgCoursesProgress extends JPlugin
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
-			// Redirect with message
-			JFactory::getApplication()->redirect(
-				JRoute::_($this->base, false),
-				'You don\'t have permission to do this!',
-				'warning'
-			);
-			return;
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
 		}
 
 		// Get request variables
@@ -298,13 +364,8 @@ class plgCoursesProgress extends JPlugin
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
-			// Redirect with message
-			JFactory::getApplication()->redirect(
-				JRoute::_($this->base, false),
-				'You don\'t have permission to do this!',
-				'warning'
-			);
-			return;
+			echo json_encode(array('success'=>false));
+			exit();
 		}
 
 		// Get request variables

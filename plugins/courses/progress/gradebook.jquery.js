@@ -25,10 +25,59 @@ if (!jq) {
 HUB.Plugins.CoursesProgress = {
 	jQuery: jq,
 
+	loadData: function ( )
+	{
+		var $ = this.jQuery,
+			g = $('.gradebook'),
+			f = $('.gradebook-form');
+
+		// Render template
+		var source   = $('#gradebook-template').html(),
+			template = Handlebars.compile(source);
+
+		// Add helpers
+		Handlebars.registerHelper('getGrade', function ( grades, member_id, asset_id ) {
+			return grades[member_id]['assets'][asset_id]['score'];
+		});
+		Handlebars.registerHelper('ifAreEqual', function ( val1, val2 ) {
+			return (val1 === val2) ? ' selected="selected"' : '';
+		});
+		Handlebars.registerHelper('evenOrOdd', function ( idx ) {
+			return (idx & 1) ? 'odd' : 'even';
+		});
+		Handlebars.registerHelper('evenOrOdd', function ( idx ) {
+			return (idx & 1) ? 'odd' : 'even';
+		});
+		Handlebars.registerHelper('shorten', function ( title, length ) {
+			return (title.length < length) ? title : title.substring(0, length)+'...';
+		});
+		Handlebars.registerHelper('ifIsOverride', function ( grades, member_id, asset_id ) {
+			return (grades[member_id]['assets'][asset_id]['override']) ? ' active' : '';
+		});
+
+		// Get data
+		$.ajax({
+			url      : f.attr('action') + '&action=getData',
+			dataType : 'json',
+			success  : function ( data, textStatus, jqXHR ) {
+				var context = {assets: data.assets, members: data.members, grades: data.grades};
+				var html    = template(context);
+
+				// Remove loading icon
+				g.find('.loading').hide();
+				f.html(html);
+
+				// Initialize the rest of the page
+				HUB.Plugins.CoursesProgress.initialize();
+			}
+		});
+	},
+
 	initialize: function ( )
 	{
 		var $ = this.jQuery,
-			g = $('.gradebook');
+			g = $('.gradebook'),
+			f = $('.gradebook-form');
 
 		// Add tool tips to form title and student names
 		$('.form-name').tooltip({
@@ -259,5 +308,5 @@ HUB.Plugins.CoursesProgress = {
 };
 
 jQuery(document).ready(function($){
-	HUB.Plugins.CoursesProgress.initialize();
+	HUB.Plugins.CoursesProgress.loadData();
 });

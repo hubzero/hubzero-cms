@@ -5,6 +5,17 @@
  * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/* Loading */
+.loading {
+	height: 250px;
+	width: 250px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -125px;
+	margin-top: -125px;
+}
+
 /* Overall styles */
 table caption {
 	text-align: center;
