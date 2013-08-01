@@ -1668,7 +1668,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		$newstate = JRequest::getVar('newstate', '');
 		$access   = JRequest::getInt('access', 0);
-		$comment  = JRequest::getVar('comment', '');
+		$comment  = JRequest::getVar('comment', '', 'post', 'none', 2);
 
 		if ($newstate && !intval($newstate)) 
 		{
