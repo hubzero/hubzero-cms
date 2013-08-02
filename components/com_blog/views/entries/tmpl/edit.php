@@ -159,6 +159,18 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 							<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
 							<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
 						</select>
+				</label>
+			</div>
+			
+			<div class="group">
+				<label for="field-publish_up">
+					<?php echo JText::_('COM_BLOG_PUBLISH_UP'); ?>
+					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_up)); ?>" />
+				</label>
+
+				<label for="field-publish_down">
+					<?php echo JText::_('COM_BLOG_PUBLISH_DOWN'); ?>
+					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_down)); ?>" />
 					</label>
 				</div>
 			</div>
