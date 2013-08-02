@@ -356,6 +356,8 @@ $wgHtmlEntityAliases = array(
 	'رلم' => 'rlm',
 );
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'utfnormalutil.php');
+
 /**
  * XHTML sanitizer for MediaWiki
  * @addtogroup Parser
