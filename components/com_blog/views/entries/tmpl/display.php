@@ -53,7 +53,7 @@ $first = $this->model->entries('first');
 	}
 	$feed = str_replace('https:://','http://', $feed);
 	?>
-	<p><a class="feed btn" href="<?php echo $feed; ?>"><?php echo JText::_('COM_BLOG_FEED'); ?></a></p>
+	<p><a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo JText::_('COM_BLOG_FEED'); ?></a></p>
 </div>
 
 <div class="main section">
@@ -61,7 +61,7 @@ $first = $this->model->entries('first');
 		<div class="aside">
 		<?php if ($this->config->get('access-create-entry')) { ?>
 			<p>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
 					<?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?>
 				</a>
 			</p>
@@ -162,7 +162,7 @@ $first = $this->model->entries('first');
 		<?php } ?>
 
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_BLOG_SEARCH'); ?>" />
 				<fieldset class="entry-search">
 					<input type="text" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -172,9 +172,9 @@ $first = $this->model->entries('first');
 			<div class="container">
 				<h3>
 				<?php if (isset($this->filters['search']) && $this->filters['search']) { ?>
-					<?php echo JText::sprintf('Search for "%s"', $this->filters['search']); ?>
+					<?php echo JText::sprintf('COM_BLOG_SEARCH_FOR', $this->filters['search']); ?>
 				<?php } else if (!isset($this->filters['year']) || !$this->filters['year']) { ?>
-					<?php echo JText::_('Latest Entries'); ?>
+					<?php echo JText::_('COM_BLOG_LATEST_ENTRIES'); ?>
 				<?php } else { 
 					$format = '%b %Y';
 					if (version_compare(JVERSION, '1.6', 'ge'))
@@ -218,7 +218,7 @@ $first = $this->model->entries('first');
 						<dl class="entry-meta">
 							<dt>
 								<span>
-									<?php echo JText::sprintf('Entry #%s', $row->get('id')); ?>
+									<?php echo JText::sprintf('COM_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
 								</span>
 							</dt>
 							<dd class="date">

@@ -56,7 +56,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 	<h2><?php echo $this->title; ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
+	<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
 </div>
 
 <div class="main section">
@@ -105,15 +105,15 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					</tr>
 				</tbody>
 			</table>
-			<h4 id="files-header"><?php echo JText::_('Uploaded files'); ?></h4>
+			<h4 id="files-header"><?php echo JText::_('COM_BLOG_FIELD_FILES'); ?></h4>
 			<iframe width="100%" height="370" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media"></iframe>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></legend>
 
-			<label<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-				<?php echo JText::_('COM_BLOG_TITLE'); ?>
-				<input type="text" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
+			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
+				<?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?>
+				<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 			</label>
 
 		<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
@@ -127,7 +127,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('entry[content]', 'entrycontent', $this->escape(stripslashes($this->entry->get('content'))), '', '50', '40');
 				?>
-				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -142,33 +142,41 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<?php } ?>
 				<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
 			</label>
-			
-			<div class="group">
-				<label for="field-allow_comments">
-					<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
-					<?php echo JText::_('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
-				</label>
 
-				<label for="field-state">
-					<?php echo JText::_('COM_BLOG_FIELD_PRIVACY'); ?>
-					<select name="entry[state]" id="field-state">
-						<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
-						<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
-						<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>
-					</select>
-				</label>
+			<div class="grid">
+				<div class="col span-half">
+					<label for="field-allow_comments">
+						<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
+						<?php echo JText::_('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
+					</label>
+				</div>
+
+				<div class="col span-half omega">
+					<label for="field-state">
+						<?php echo JText::_('COM_BLOG_FIELD_PRIVACY'); ?>
+						<select name="entry[state]" id="field-state">
+							<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
+							<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
+							<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+						</select>
+					</label>
+				</div>
 			</div>
-			
-			<div class="group">
-				<label for="field-publish_up">
-					<?php echo JText::_('COM_BLOG_PUBLISH_UP'); ?>
-					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
-				</label>
 
-				<label for="field-publish_down">
-					<?php echo JText::_('COM_BLOG_PUBLISH_DOWN'); ?>
-					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
-				</label>
+			<div class="grid">
+				<div class="col span-half">
+					<label for="field-publish_up">
+						<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_UP'); ?>
+						<input type="text" name="entry[publish_up]" class="datetime-field" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+					</label>
+				</div>
+
+				<div class="col span-half omega">
+					<label for="field-publish_down">
+						<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
+						<input type="text" name="entry[publish_down]" class="datetime-field" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
+					</label>
+				</div>
 			</div>
 		</fieldset>
 		<div class="clear"></div>

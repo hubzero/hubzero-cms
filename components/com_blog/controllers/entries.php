@@ -392,7 +392,8 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->_buildTitle();
 		$this->_buildPathway();
 		$this->_getStyles();
-		$this->_getScripts();
+		$this->_getScripts('assets/js/jquery-ui-timepicker-addon');
+		$this->_getScripts('assets/js/' . $this->_name);
 
 		$this->view->title = ($this->config->get('title')) 
 							? $this->config->get('title') 

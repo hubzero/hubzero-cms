@@ -45,7 +45,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=archive'); ?>">
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=archive'); ?>">
 			<?php echo JText::_('COM_BLOG_ARCHIVE'); ?>
 		</a>
 	</p>
@@ -55,7 +55,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<div class="aside">
 <?php if ($this->config->get('access-create-entry')) { ?>
 		<p>
-			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
 				<?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?>
 			</a>
 		</p>
@@ -254,25 +254,28 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<h3>
 		<a name="comments"></a>
 		<?php echo JText::_('COM_BLOG_COMMENTS_HEADER'); ?>
-		<?php
-			$feed = JRoute::_($this->row->link() . '/comments.rss');
-			if (substr($feed, 0, 4) != 'http') 
-			{
-				$jconfig =& JFactory::getConfig();
-				$live_site = rtrim(JURI::base(), '/');
-				
-				$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
-			}
-			$feed = str_replace('https:://', 'http://', $feed);
-		?>
-		<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('COM_BLOG_COMMENTS_FEED'); ?>"><?php echo JText::_('COM_BLOG_FEED'); ?></a>
 	</h3>
 	<div class="aside">
-		<p>
-			<a class="add btn" href="#post-comment">
-				<?php echo JText::_('COM_BLOG_ADD_A_COMMENT'); ?>
-			</a>
-		</p>
+		<div class="container blog-entries-years">
+			<h4><?php echo JText::_('COM_BLOG_COMMENTS_FEED'); ?></h4>
+			<p>
+				<?php echo JText::_('COM_BLOG_COMMENTS_FEED_EXPLANATION'); ?>
+			</p>
+			<p>
+				<?php
+					$feed = JRoute::_($this->row->link() . '/comments.rss');
+					if (substr($feed, 0, 4) != 'http') 
+					{
+						$jconfig =& JFactory::getConfig();
+						$live_site = rtrim(JURI::base(), '/');
+						
+						$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+					}
+					$feed = str_replace('https:://', 'http://', $feed);
+				?>
+				<a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo JText::_('COM_BLOG_FEED'); ?></a>
+			</p>
+		</div>
 	</div><!-- / .aside -->
 	<div class="subject">
 	<?php if ($this->row->comments('count') > 0) { ?>
@@ -308,49 +311,12 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<?php } ?>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-</div><!-- / .below section -->
 
-<div class="below section">
 	<h3>
 		<a name="post-comment"></a>
 		<?php echo JText::_('Post a comment'); ?>
 	</h3>
 
-	<div class="aside">
-		<table class="wiki-reference" summary="Wiki Syntax Reference">
-			<caption>Wiki Syntax Reference</caption>
-			<tbody>
-				<tr>
-					<td>'''bold'''</td>
-					<td><b>bold</b></td>
-				</tr>
-				<tr>
-					<td>''italic''</td>
-					<td><i>italic</i></td>
-				</tr>
-				<tr>
-					<td>__underline__</td>
-					<td><span style="text-decoration:underline;">underline</span></td>
-				</tr>
-				<tr>
-					<td>{{{monospace}}}</td>
-					<td><code>monospace</code></td>
-				</tr>
-				<tr>
-					<td>~~strike-through~~</td>
-					<td><del>strike-through</del></td>
-				</tr>
-				<tr>
-					<td>^superscript^</td>
-					<td><sup>superscript</sup></td>
-				</tr>
-				<tr>
-					<td>,,subscript,,</td>
-					<td><sub>subscript</sub></td>
-				</tr>
-			</tbody>
-		</table>
-	</div><!-- / .aside -->
 	<div class="subject">
 		<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
 			<p class="comment-member-photo">
@@ -436,11 +402,12 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						<strong><?php echo JText::_('COM_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
+						<?php echo JText::_('COM_BLOG_COMMENT_HELP'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
 					</p>
 				</div>
 			</fieldset>
 		</form>
 	</div><!-- / .subject -->
+	<div class="clear"></div>
 </div><!-- / .below section -->
 <?php } ?>

@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_blog/blog.jquery.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_blog/assets/js/blog.jquery.js
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,4 +40,18 @@ jQuery(document).ready(function (jq) {
 				}
 				return res;
 			});
+
+	if ($('#hubForm').length > 0) {
+		$('input.datetime-field').datetimepicker({  
+				duration: '',
+				showTime: true,
+				constrainInput: false,
+				stepMinutes: 1,
+				stepHours: 1,
+				altTimeField: '',
+				time24h: true,
+				dateFormat: 'yy-mm-dd',
+				timeFormat: 'hh:mm:00'
+			});
+	}
 });

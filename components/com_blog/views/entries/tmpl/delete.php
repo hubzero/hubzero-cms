@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 
 <div id="content-header-extra">
-	<p><a class="archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
+	<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">

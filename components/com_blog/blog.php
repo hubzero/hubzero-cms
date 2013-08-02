@@ -31,6 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
+	error_reporting(E_ALL);
+	@ini_set('display_errors','1');
+}
+
+$option = JRequest::getCmd('option', 'com_blog');
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -41,10 +49,6 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 ximport('Hubzero_View_Helper_Html');
 
-//require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'blog.entry.php');
-//require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'blog.comment.php');
-//require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'blog.member.php');
-//require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'blog.tags.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'blog.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'entries'));
