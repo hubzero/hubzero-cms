@@ -254,6 +254,8 @@
 		background-position: 0 -1px;
 		-webkit-border-radius: 0.25em;
 		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
 		        border-radius: 0.25em;
 	}
 	body .wikipage pre,
@@ -270,6 +272,8 @@
 		padding: 0.2em 0.4em;
 		-webkit-border-radius: 0.25em;
 		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
 		        border-radius: 0.25em;
 	}
 
@@ -294,13 +298,6 @@
 		padding: 0.4045084975em 0.61803399em;
 		border-bottom: 1px solid #dadada;
 	}
-	/*table tr:nth-child(odd),
-	table tr.odd {
-		background-color: #f9f9f9;
-	}
-	table tr.even {
-		background-color: #fff;
-	}*/
 	table th {
 		font-weight: bold;
 		white-space: nowrap;
@@ -474,7 +471,6 @@
 		padding: 0 30px;
 		position: relative;
 		background: #ececec url("../images/layout/noise-lite.png");
-		/*min-height: 5.5em;*/
 	}
 	#masthead .inner {
 		padding: 0;
@@ -484,11 +480,6 @@
 		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
-		/*position: fixed;
-		left: 30px;
-		right: 30px;
-		min-height: 5.5em;
-		z-index: 999;*/
 	}
 	#masthead .inner:before,
 	#masthead .inner:after {
@@ -639,10 +630,10 @@
 		float: left;
 		margin: 0 0.5em 0 0;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 	}
 	#account span.account-email {
 		display: block;
@@ -923,8 +914,6 @@
 		line-height: 0;
 		clear: both;
 	}
-	#content .inner {
-	}
 
 	/* Content header */
 	.com_content .content-header,
@@ -1042,10 +1031,10 @@
 		padding: 30px;
 		background: #494949 url("../images/layout/noise.png");
 		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		   -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 	}
 	#ancillary ul {
 		padding: 10px 0 0 0;
@@ -1056,11 +1045,9 @@
 		background: #ececec url("../images/layout/noise-lite.png");
 	}
 	#footer ul#legalese {
-		margin: 0;
 		padding: 1.25em 30px;
 		overflow: hidden;
 		text-align: right;
-		list-style: none;
 		font-size: 0.85em;
 		color: #777;
 		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
@@ -1111,10 +1098,10 @@
 		left: 32px;
 		border: none;
 		-webkit-border-radius: 69px;
-		-moz-border-radius: 69px;
-		-ms-border-radius: 69px;
-		-o-border-radius: 69px;
-		border-radius: 69px;
+		   -moz-border-radius: 69px;
+		    -ms-border-radius: 69px;
+		     -o-border-radius: 69px;
+		        border-radius: 69px;
 		background-color: #FEFEFE;
 	}
 	/* Icon */
@@ -1164,12 +1151,6 @@
 		    -ms-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		     -o-box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		        box-shadow: inset 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-	}
-
-/* Sub-menu 
-	#page_container .sub-menu li.active a,
-	#page_container .sub-menu li.active a:hover {
-		background: #fff;
 	}
 
 /* Content columns */
@@ -1237,9 +1218,6 @@
 		right: 269px;
 		_display: none;
 	}
-	#page_content .aside:before {
-		right: 230px;
-	}
 	#page_content .section .aside:before {
 		right: 210px;
 		top: 0;
@@ -1247,13 +1225,6 @@
 	}
 	.aside.expanded:before {
 		right: 40%;
-	}
-	#page_content .aside:after {
-		right: 250px;
-	}
-	#page_content .section .aside:after {
-		right: 230px;
-		top: -10px;
 	}
 	.aside.expanded:after {
 		right: 40%;
@@ -1670,10 +1641,10 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1, endColorstr=#e8e8e8)";
 		border: 1px solid #aaaaaa;
 		-webkit-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		   -moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		    -ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		     -o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		        box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 	}
 	#page_options a:hover {
 		background: transparent;
@@ -1749,10 +1720,10 @@
 		padding: 0 0.5em;
 		margin-right: 0.2em;
 		-webkit-border-radius: 0.25em 0 0 0.25em;
-		-moz-border-radius: 0.25em 0 0 0.25em;
-		-ms-border-radius: 0.25em 0 0 0.25em;
-		-o-border-radius: 0.25em 0 0 0.25em;
-		border-radius: 0.25em 0 0 0.25em;
+		   -moz-border-radius: 0.25em 0 0 0.25em;
+		    -ms-border-radius: 0.25em 0 0 0.25em;
+		     -o-border-radius: 0.25em 0 0 0.25em;
+		        border-radius: 0.25em 0 0 0.25em;
 	}
 	#page_options a:before,
 	#content-header-extra a:before {
@@ -1858,10 +1829,10 @@
 		line-height: 2.1;
 		padding: 0 0.5em;
 		-webkit-border-radius: 0 0.25em 0.25em 0;
-		-moz-border-radius: 0 0.25em 0.25em 0;
-		-ms-border-radius: 0 0.25em 0.25em 0;
-		-o-border-radius: 0 0.25em 0.25em 0;
-		border-radius: 0 0.25em 0.25em 0;
+		   -moz-border-radius: 0 0.25em 0.25em 0;
+		    -ms-border-radius: 0 0.25em 0.25em 0;
+		     -o-border-radius: 0 0.25em 0.25em 0;
+		        border-radius: 0 0.25em 0.25em 0;
 		content: "\2192";
 		font-family: 'Fontcons';
 	}
@@ -2124,7 +2095,7 @@
 		color: red;
 	}
 	#hubForm .optional {
-		color: #999999;
+		color: #999;
 	}
 	#hubForm .hint {
 		color: #999;
@@ -2545,10 +2516,10 @@ System styles
 		background: rgba(0, 0, 0, 0.2);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.5em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.5em;
 		color: #fff;
 	}
 	body #fav a:hover {

@@ -2,7 +2,7 @@
 
 /* Tabbed view containers */
 	.com_resources .upperpane {
-		padding: 30px;
+		padding: 10px 30px 30px 30px;
 		background: #fff;
 		border-bottom: 1px dotted #e4e4e4;
 	}
