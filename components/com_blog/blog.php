@@ -31,12 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
 $option = JRequest::getCmd('option', 'com_blog');
 
 if (version_compare(JVERSION, '1.6', 'lt'))
