@@ -90,13 +90,15 @@ if (!$this->course->offering()->access('view')) { ?>
 						</p>
 				<?php } else { ?>
 					<div class="unit-availability">
-						<div class="details clearfix">
+						
 						<!-- <p class="status posted">Posted</p> -->
 					<?php if (!$unit->assetgroups()->total() && !$unit->assets()->total()) { ?>
+						<div class="details empty">
 							<p class="info">
 								No content found for this unit.
 							</p>
 					<?php } else { ?>
+						<div class="details notempty clearfix">
 							<div class="detailsWrapper">
 								<?php foreach ($unit->assetgroups() as $agt) { ?>
 									<?php if ($agt->isAvailable() && $agt->isPublished() && count($agt->children()) > 0) { ?>

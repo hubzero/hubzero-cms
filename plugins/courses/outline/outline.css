@@ -62,8 +62,11 @@
 	#course-outline .unit-availability {
 		padding: 5px 0;
 	}
-	#course-outline .details {
+	#course-outline .details.notempty {
 		width: 100%;
+	}
+	#course-outline .details.empty {
+		padding: 0 20px;
 	}
 	#course-outline h3:after {
 		display: block;
@@ -75,6 +78,7 @@
 	}
 	#course-outline h3.unit-content-available:after {
 		content: "\f0d7";
+		clear: left;
 	}
 	#course-outline .unit {
 		position: relative;
