@@ -164,7 +164,7 @@ $first = $this->model->entries('first');
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_BLOG_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<input type="text" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="text" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
 			</div><!-- / .container -->
