@@ -19,10 +19,10 @@ a:focus {
 	}
 
 #video-container {
-	text-align:center;
-	position:relative;
+	text-align: center;
+	position: relative;
 	}
-	
+
 #video-subtitles {
 	position:absolute;
 	bottom: 30px;
@@ -544,6 +544,7 @@ a.ui-slider-handle {
 	margin: 0px;
 	display: none;
 	border-bottom: 1px solid #ccc;
+	background: #FFF;
 }
 #transcript-toolbar {
 	position: relative;

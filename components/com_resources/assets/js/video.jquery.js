@@ -1187,7 +1187,7 @@ HUB.Video = {
 			if (currentTime >= start && currentTime <= end)
 			{
 				//add active class to active transcript line
-				$jQ('.transcript-line-text:contains("'+text+'")').parents('.transcript-line').addClass('active');
+				$jQ('.transcript-line').eq(i).addClass('active')
 				
 				//if were not scrolling in the box
 				//only scroll if we just switched to a new line
