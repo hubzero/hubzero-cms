@@ -21,6 +21,8 @@ HUB.Video = {
 		flash = false;
 		seeking = false;
 		track = "";
+		transcriptLineActive = 0;
+		transcriptBoxScrolling = false;
 		browser = navigator.userAgent;
 		canSendTracking = true;
 		sendingTracking = false;
@@ -555,6 +557,8 @@ HUB.Video = {
 		}
 	},
 	
+	//-----
+	
 	resume: function( time )
 	{
 		if (!$jQ("#video-container #resume").length)
@@ -786,59 +790,70 @@ HUB.Video = {
 	
 	subtitles: function()
 	{
-		var sub_titles = [];
-		var auto = false;
-		
-		sub_titles = HUB.Video.getSubtitles();
+		var auto       = false
+			sub_titles = HUB.Video.getSubtitles();
 		
 		//create elements on page to hold subtitles
 		if(sub_titles.length > 0) {
-			$jQ("#video-toolbar").after("<div id=\"video-subtitles\"></div>");
-			$jQ("#full-screen").after("<ul id=\"subtitle-picker\"><li><a href=\"javascript:void(0);\">CC</a><ul id=\"cc\"><li><a class=\"active\" rel=\"\" href=\"#\">None</a></ul></li></ul>");
-
-			for(n=0; n<sub_titles.length; n++) {
-				var sub = sub_titles[n],
-					sub_lang = sub.lang.toLowerCase(),
-					sub_lang_text = sub.lang;
-				
-				//do we auto play
-				if(parseInt(sub.auto))
-				{
-					auto = true;
-					track = sub_lang;
-				}
-				
-				$jQ("#video-subtitles").append("<div id=\"" + sub_lang + "\"></div>");
-				$jQ("#cc").append("<li><a rel=\"" + sub_lang + "\" class=\"" + sub_lang + "\" href=\"javascript:void(0);\">" + sub_lang_text + "</a></li>");
-			}
 			
-			//if we are auto showing subs make sure picker reflects that
-			if(auto) {
-				$jQ("#subtitle-picker a").addClass("active");
-				$jQ("#cc a").removeClass("active");
-				$jQ("#cc a." + track).addClass("active");
-			}
+			//setup subtitle picker
+			HUB.Video.setupSubtitlePicker( sub_titles );
 			
-			$jQ("#subtitle-picker ul a").live("click", function(e) {
-				track = this.rel;
-				
-				if(track != "") {
-					$jQ("#subtitle-picker a").addClass("active");
-				} else {
-					$jQ("#subtitle-picker a").removeClass("active");
-				}
-				
-				$jQ("#cc a").removeClass("active");
-				$jQ(this).addClass("active");
-				
-				e.preventDefault();
-			});
+			//setup transcript viewer
+			HUB.Video.transcriptSetup( sub_titles );
 			
+			//sync subtitles
 			var syncInterval = setInterval( 
 				function() {
 					HUB.Video.syncSubtitles( sub_titles );
 				}, 100);
 		}
+	},
+	
+	//-----
+	
+	setupSubtitlePicker: function( sub_titles )
+	{
+		$jQ("#video-toolbar").after("<div id=\"video-subtitles\"></div>");
+		$jQ("#full-screen").after("<ul id=\"subtitle-picker\"><li><a href=\"javascript:void(0);\">CC</a><ul id=\"cc\"><li><a class=\"active\" rel=\"\" href=\"#\">None</a></ul></li></ul>");
+
+		for(n=0; n<sub_titles.length; n++) {
+			var sub = sub_titles[n],
+				sub_lang = sub.lang.toLowerCase(),
+				sub_lang_text = sub.lang;
+			
+			//do we auto play
+			if(parseInt(sub.auto))
+			{
+				auto = true;
+				track = sub_lang;
+			}
+			
+			$jQ("#video-subtitles").append("<div id=\"" + sub_lang + "\"></div>");
+			$jQ("#cc").append("<li><a rel=\"" + sub_lang + "\" class=\"" + sub_lang + "\" href=\"javascript:void(0);\">" + sub_lang_text + "</a></li>");
+		}
+		
+		//if we are auto showing subs make sure picker reflects that
+		if(auto) {
+			$jQ("#subtitle-picker a").addClass("active");
+			$jQ("#cc a").removeClass("active");
+			$jQ("#cc a." + track).addClass("active");
+		}
+		
+		$jQ("#subtitle-picker ul a").live("click", function(e) {
+			track = this.rel;
+			
+			if(track != "") {
+				$jQ("#subtitle-picker a").addClass("active");
+			} else {
+				$jQ("#subtitle-picker a").removeClass("active");
+			}
+			
+			$jQ("#cc a").removeClass("active");
+			$jQ(this).addClass("active");
+			
+			e.preventDefault();
+		});
 	},
 	
 	//-----
@@ -883,7 +898,7 @@ HUB.Video = {
 			$jQ.ajax({
 				url: src,
 				async: false,
-				dataType: 'json',
+				dataType: 'html',
 				success: function( content ) {
 					var parsed = HUB.Video.parseSubtitles( content );
 					sub = { "lang" : lang, "subs" : parsed, "auto" : auto };
@@ -964,6 +979,240 @@ HUB.Video = {
 	
 	//-----
 	
+	transcriptSetup: function( sub_titles )
+	{
+		//dont add transcript stuff if we dont have needed html
+		if (!$jQ('#transcript-container').length)
+		{
+			return;
+		}
+		
+		//add transcript toggle and add container
+		$jQ('#video-container')
+			.append('<a href="javascript:void(0);" id="transcript-toggle">Show Transcript</a>');
+		
+		//add subtitles
+		for (var i = 0, n = sub_titles.length; i < n; i++)
+		{
+			var language = sub_titles[i].lang,
+				subs     = sub_titles[i].subs;
+			
+			//add language to subtitle language picker
+			$jQ('#transcript-selector').append('<option value="' + language.toLowerCase() + '">' + language + '</option>');
+			
+			//add container for each language transcript
+			$jQ('#transcript-container #transcripts').append('<div class="transcript transcript-' + language.toLowerCase() + '"></div>')
+			
+			for(var a = 0, b = subs.length; a < b; a++)
+			{
+				var time = subs[a].start,
+					text = subs[a].text;
+					line = '<div class="transcript-line" data-time="' + time + '"><div class="transcript-line-time">' + HUB.Video.formatTime( time ) + '</div><div class="transcript-line-text">' + text + '</div></div>'
+				$jQ('.transcript-' + language.toLowerCase()).append( line );
+			}
+		}
+		
+		//show first transcript
+		$jQ('#transcripts').find('.transcript').first().show();
+		
+		//further setup
+		HUB.Video.transcriptToggle();
+		HUB.Video.transcriptFontChanger();
+		HUB.Video.transcriptSearch();
+		HUB.Video.transcriptJumpTo();
+		
+		//sync transcript
+		setInterval(function() {
+			HUB.Video.transcriptSync( sub_titles );
+		}, 500);
+	},
+	
+	//-----
+	
+	transcriptToggle: function()
+	{
+		//add click event to transcript toggle
+		$jQ('#video-container').on('click', '#transcript-toggle', function(event) {
+			event.preventDefault();
+			
+			//if we opened via popup, must resize window
+			if (window.opener)
+			{
+				var transcriptContainerHeight = $jQ('#transcript-container').outerHeight(true),
+					windowWidth = (!flash) ? window.innerWidth : $jQ("#video-flowplayer").outerWidth(true),
+					windowHeight = (!flash) ? window.outerHeight : $jQ("#video-flowplayer").outerHeight(true) + 52;
+					
+				if ($jQ('#transcript-container').is(':visible'))
+				{
+					window.resizeTo(windowWidth, windowHeight - transcriptContainerHeight);
+				}
+				else
+				{
+					window.resizeTo(windowWidth, windowHeight + transcriptContainerHeight);
+				}
+			}
+			
+			//change title
+			if ($jQ(this).text() == 'Show Transcript')
+			{
+				$jQ(this).text('Hide Transcript');
+			}
+			else
+			{
+				$jQ(this).text('Show Transcript');
+			}
+			
+			//slide toggle the transcript pane
+			$jQ('#transcript-container').slideToggle();
+		});
+		
+		//handle switching languages
+		$jQ('#transcript-selector').on('change', function(event) {
+			var language = $jQ(this).val();
+			$jQ('#transcripts').find('.transcript').hide();
+			$jQ('#transcripts').find('.transcript-' + language).show();
+		});
+	},
+	
+	//-----
+	
+	transcriptFontChanger: function()
+	{
+		//make font smaller
+		$jQ('#font-smaller').on('click',function(event){
+			event.preventDefault();
+			var transcriptLines   = $jQ('.transcript-line'), 
+				currentFontSize   = parseFloat(transcriptLines.css('font-size'), 10),
+				currentLineHeight = parseFloat(transcriptLines.css('line-height'), 10),
+				newFontSize       = currentFontSize - 2,
+				newLineHeight     = currentLineHeight - 2;
+				
+				if (newFontSize >= 8)
+				{
+					transcriptLines.css({
+						'font-size': newFontSize + 'px',
+						'line-height': newLineHeight + 'px'
+					});
+					
+					if (newFontSize == 8)
+					{
+						$jQ('#font-smaller').addClass('inactive');
+					}
+				}
+				
+				$jQ('#font-bigger').removeClass('inactive');
+		});
+		
+		//make font bigger
+		$jQ('#font-bigger').on('click',function(event){
+			event.preventDefault();
+			var transcriptLines   = $jQ('.transcript-line'), 
+				currentFontSize   = parseFloat(transcriptLines.css('font-size'), 10),
+				currentLineHeight = parseFloat(transcriptLines.css('line-height'), 10),
+				newFontSize       = currentFontSize + 2,
+				newLineHeight     = currentLineHeight + 2;
+			
+			if (newFontSize <= 18)
+			{
+				transcriptLines.css({
+					'font-size': newFontSize + 'px',
+					'line-height': newLineHeight + 'px'
+				});
+				
+				if (newFontSize == 18)
+				{
+					$jQ('#font-bigger').addClass('inactive');
+				}
+			}
+			
+			$jQ('#font-smaller').removeClass('inactive');
+		});
+	},
+	
+	//-----
+	
+	transcriptSearch: function()
+	{
+		$jQ('#transcript-search').on('keyup change', function(event) {
+			$jQ('.transcript-line-text').removeHighlight();
+			$jQ('.transcript-line-text').highlight( $jQ(this).val() );
+		});
+	},
+	
+	//-----
+	
+	transcriptJumpTo: function()
+	{
+		$jQ('.transcript-line').on('click', function(event) {
+			event.preventDefault();
+			var time = $jQ(this).data('time');
+			
+			HUB.Video.seek( time );
+		});
+	},
+	
+	//-----
+	
+	transcriptSync: function( sub_titles )
+	{
+		var currentTime = HUB.Video.getCurrent(),
+			currentTranscript = $jQ('#transcript-selector').val();
+		
+		//get the subs for the track we have selected
+		for(i in sub_titles) {
+			if(sub_titles[i].lang.toLowerCase() == currentTranscript) {
+				var subs = sub_titles[i].subs;
+			}
+		}
+		
+		//flag to know if user is scrolling in box
+		$jQ('#transcripts').on('scroll', function(event) {
+			transcriptBoxScrolling = true;
+			clearTimeout($jQ.data(this, 'scrollTimer'));
+			$jQ.data(this, 'scrollTimer', setTimeout(function() {
+				transcriptBoxScrolling = false;
+			}, 250));
+		});
+		
+		//remove all previously set active lines
+		$jQ('.transcript-line').removeClass('active');
+		
+		//set our active transcript line
+		for (i in subs)
+		{
+			var start = subs[i].start,
+				end   = subs[i].end,
+				text  = subs[i].text;
+				
+			if (currentTime >= start && currentTime <= end)
+			{
+				//add active class to active transcript line
+				$jQ('.transcript-line-text:contains("'+text+'")').parents('.transcript-line').addClass('active');
+				
+				//if were not scrolling in the box
+				//only scroll if we just switched to a new line
+				if (!transcriptBoxScrolling && transcriptLineActive != i)
+				{
+					//get height of each transcript line to know how far to scroll down
+					var lineHeight = $jQ('.transcript-line').outerHeight(true);
+					
+					//only scroll after the half way point down
+					if (lineHeight * i > $jQ('#transcripts').outerHeight(true) / 2)
+					{
+						var middle = $jQ('#transcripts').outerHeight(true) / 2;
+						
+						$jQ('#transcripts').scrollTo(lineHeight * i - middle + lineHeight, 300, 'easeInOutQuad' );
+					}
+				}
+				
+				//set active line
+				transcriptLineActive = i
+			}
+		}
+	},
+	
+	//-----
+	
 	strip: function( content )
 	{
 		return content.replace(/^\s+|\s+$/g,"");
@@ -1004,3 +1253,58 @@ $jQ(document).ready(function() {
 	HUB.Video.loading();
 });
 
+
+
+/*
+
+highlight v4
+
+Highlights arbitrary terms.
+
+<http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html>
+
+MIT license.
+
+Johann Burkard
+<http://johannburkard.de>
+<mailto:jb@eaio.com>
+
+*/
+
+jQuery.fn.highlight = function(pat) {
+ function innerHighlight(node, pat) {
+  var skip = 0;
+  if (node.nodeType == 3) {
+   var pos = node.data.toUpperCase().indexOf(pat);
+   if (pos >= 0) {
+    var spannode = document.createElement('span');
+    spannode.className = 'highlight';
+    var middlebit = node.splitText(pos);
+    var endbit = middlebit.splitText(pat.length);
+    var middleclone = middlebit.cloneNode(true);
+    spannode.appendChild(middleclone);
+    middlebit.parentNode.replaceChild(spannode, middlebit);
+    skip = 1;
+   }
+  }
+  else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
+   for (var i = 0; i < node.childNodes.length; ++i) {
+    i += innerHighlight(node.childNodes[i], pat);
+   }
+  }
+  return skip;
+ }
+ return this.length && pat && pat.length ? this.each(function() {
+  innerHighlight(this, pat.toUpperCase());
+ }) : this;
+};
+
+jQuery.fn.removeHighlight = function() {
+ return this.find("span.highlight").each(function() {
+  this.parentNode.firstChild.nodeName;
+  with (this.parentNode) {
+   replaceChild(this.firstChild, this);
+   normalize();
+  }
+ }).end();
+};

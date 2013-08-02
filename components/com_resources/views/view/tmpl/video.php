@@ -114,6 +114,16 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 	<?php endif; ?>   
 </div><!-- /#video-container -->
 
+<div id="transcript-container">
+	<div id="transcript-toolbar">
+		<select id="transcript-selector"></select>
+		<input type="text" id="transcript-search" placeholder="Search Transcript..." />
+		<a href="javascript:void(0);" id="font-bigger"></a>
+		<a href="javascript:void(0);" id="font-smaller"></a>
+	</div>
+	<div id="transcripts"></div>
+</div>
+
 <?php
 $document =& JFactory::getDocument();
 $document->setTitle( $this->resource->title );

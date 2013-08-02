@@ -173,7 +173,7 @@ HUB.Resources = {
 				}
 				
 				//open poup
-		 		video_window = window.open( href,'videowindow','height=' + h + ', width=' + w + ', menubar=no, toolbar=no, titlebar=no, resizable=no');
+		 		video_window = window.open( href,'videowindow','height=' + h + ', width=' + w + ', menubar=no, toolbar=no, titlebar=no, resizable=yes');
 			}
 		});
 		
