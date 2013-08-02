@@ -12,6 +12,14 @@
 	-- -- -- -- -- -- --
 
 */
+	/* Disable fancybox lock to allow overlay to scroll with page */
+	body.fancybox-lock {
+		overflow: visible;
+		position: relative;
+	}
+	.fancybox-overlay-fixed {
+		position: absolute;
+	}
 	#page_menu li .guide:before {
 		content: "\f059";
 	}

@@ -46,6 +46,7 @@ jQuery(document).ready(function(jq){
 						guide.css('margin-bottom', ($('#page_container').offset().top - 340) + 'px');
 					}
 				}
+				$('div.fancybox-wrap').css('position', 'absolute');
 			},
 			beforeClose: function() {
 				$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
