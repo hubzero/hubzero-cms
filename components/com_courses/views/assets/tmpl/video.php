@@ -260,6 +260,15 @@ if ($type == 'hubpresenter' || $type == 'html5')
 			</video>
 		<?php endif; ?>
 	</div><!-- /#video-container -->
+	<div id="transcript-container">
+		<div id="transcript-toolbar">
+			<select id="transcript-selector"></select>
+			<input type="text" id="transcript-search" placeholder="Search Transcript..." />
+			<a href="javascript:void(0);" id="font-bigger"></a>
+			<a href="javascript:void(0);" id="font-smaller"></a>
+		</div>
+		<div id="transcripts"></div>
+	</div>
 <?php elseif($type == 'hubpresenter') : ?>
 	<div id="presenter-shortcuts-box"> 
 		<h2>Keyboard Shortcuts</h2>
