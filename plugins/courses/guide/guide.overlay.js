@@ -37,6 +37,16 @@ jQuery(document).ready(function(jq){
 			tpl: {
 				wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
 			},
+			afterShow: function() {
+				var guide = $('div.guide-instructions');
+				if (guide.length > 0) {
+					var m = guide.css('margin-top');
+					console.log(m);
+					if (m != '0px') {
+						guide.css('margin-bottom', ($('#page_container').offset().top - 340) + 'px');
+					}
+				}
+			},
 			beforeClose: function() {
 				$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
 					// Nothing to see here
@@ -45,4 +55,14 @@ jQuery(document).ready(function(jq){
 			}
 		}
 	);
+
+	$(window).resize(function() {
+		var guide = $('div.guide-instructions');
+		if (guide.length > 0) {
+			var m = guide.css('margin-top');
+			if (m != '0px') {
+				guide.css('margin-bottom', ($('#page_container').offset().top - 340) + 'px');
+			}
+		}
+	});
 });
