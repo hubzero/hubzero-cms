@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$option = JRequest::getCmd('option', 'com_answers');
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -41,17 +43,10 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'question.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'question.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'response.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'questionslog.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'economy.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'member.php');
-//require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
-
-//ximport('Hubzero_View_Helper_Html');
-//ximport('Hubzero_Filter');
-//ximport('Hubzero_Comment');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'questions'));
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))

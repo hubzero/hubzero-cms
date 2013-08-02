@@ -53,7 +53,7 @@ if (!$this->question->get('anonymous'))
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="search btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
+			<a class="icon-search search btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
 				<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
 			</a>
 		</li>
@@ -141,9 +141,9 @@ if (!$this->question->get('anonymous'))
 				<p class="entry-title">
 					<strong><?php echo $name; ?></strong> 
 					<a class="permalink" href="<?php echo JRoute::_($this->question->link()); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
-						<span class="entry-date-at">@</span> 
+						<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
 						<span class="date"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('time'); ?></time></span> 
-						<span class="entry-date-on">on</span> 
+						<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
 						<span class="date"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('date'); ?></time></span>
 					</a>
 				</p><!-- / .question-title -->
@@ -248,7 +248,7 @@ if (!$this->question->get('anonymous'))
 				<tfoot>
 					<tr>
 						<td colspan="3">
-							* <?php echo JText::_('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?> <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo JText::_('Read further details'); ?></a>.
+							* <?php echo JText::_('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?> <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_READ_FURTHER_DETAILS'); ?></a>.
 						</td>
 					</tr>
 				</tfoot>
@@ -347,7 +347,7 @@ if (!$this->question->get('anonymous'))
 							$anon = 1;
 						}
 					?>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo JText::_('Member picture'); ?>" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo JText::_('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
 				</p>
 				<fieldset>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -374,17 +374,17 @@ if (!$this->question->get('anonymous'))
 
 					<div class="sidenote">
 						<p>
-							<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
+							<strong><?php echo JText::_('COM_ANSWERS_COMMENT_KEEP_RELEVANT'); ?></strong>
 						</p>
 						<p>
-							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
+							<?php echo JText::_('COM_ANSWERS_COMMENT_HELP'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
 						</p>
 					</div>
 				</fieldset>
 			</form>
 			<?php } else { ?>
 				<p>
-					Please <a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->question->link('answer'), false, true))); ?>">login</a> to answer this question.
+					<?php echo JText::sprintf('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->question->link('answer'), false, true))) . '">' . JText::_('COM_ANSWERS_LOGIN') . '</a>'); ?>
 				</p>
 			<?php } ?>
 		</div><!-- / .subject -->

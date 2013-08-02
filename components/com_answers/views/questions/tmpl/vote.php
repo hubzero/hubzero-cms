@@ -37,21 +37,21 @@ $juser = JFactory::getUser();
 ?>
 <span class="vote-like">
 	<?php if ($juser->get("guest")) { ?>
-		<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: Please login to vote.">
-			<?php echo $votes; ?><span> Like</span>
+		<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo JText::_('COM_ANSWERS_VOTE_LIKE_LOGIN'); ?>">
+			<?php echo $votes; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 		</span>
 	<?php } else { ?>
 		<?php if ($this->question->get('created_by') == $juser->get('username')) { ?>
-			<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote :: You cannot vote for your own entry.">
-				<?php echo $votes; ?><span> Like</span>
+			<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo JText::_('COM_ANSWERS_VOTE_CANT_VOTE_FOR_SELF'); ?>">
+				<?php echo $votes; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 			</span>
 		<?php } elseif ($this->voted) { ?>
-			<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Voted Up :: You already voted this up.">
-				<?php echo $votes; ?><span> Like</span>
+			<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo JText::_('COM_ANSWERS_VOTE_ALREADY'); ?>">
+				<?php echo $votes; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 			</span>
 		<?php } else { ?>
-			<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=vote&id=' . $this->question->get('id') . '&vote=1'); ?>" title="Vote this up :: <?php echo $votes; ?> people liked this">
-				<?php echo $votes; ?><span> Like</span>
+			<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=vote&id=' . $this->question->get('id') . '&vote=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $votes); ?>">
+				<?php echo $votes; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 			</a>
 		<?php } ?>
 	<?php } ?>
