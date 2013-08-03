@@ -12,22 +12,38 @@
 	-- -- -- -- -- -- --
 
 */
-	/* Disable fancybox lock to allow overlay to scroll with page */
-	body.fancybox-lock {
-		overflow: visible;
-		position: relative;
+
+	/*@font-face {
+		font-family: 'BloklettersPotlood';
+		src: url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.eot');
+		src: url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.eot?#iefix') format('embedded-opentype'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.woff') format('woff'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.ttf') format('truetype'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.svg#BloklettersPotlood') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}*/
+	@font-face {
+		font-family: 'BloklettersBalpen';
+		src: url('/plugins/courses/guide/fonts/Blokletters-Balpen-webfont.eot');
+		src: url('/plugins/courses/guide/fonts/Blokletters-Balpen-webfont.eot?#iefix') format('embedded-opentype'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Balpen-webfont.woff') format('woff'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Balpen-webfont.ttf') format('truetype'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Balpen-webfont.svg#BloklettersBalpen') format('svg');
+		font-weight: normal;
+		font-style: normal;
 	}
-	.fancybox-overlay-fixed {
-		position: absolute;
-	}
-	/* Disable fancybox lock to allow overlay to scroll with page */
-	body.fancybox-lock {
-		overflow: visible;
-		position: relative;
-	}
-	.fancybox-overlay-fixed {
-		position: absolute;
-	}
+	/*@font-face {
+		font-family: 'BloklettersViltstift';
+		src: url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.eot');
+		src: url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.eot?#iefix') format('embedded-opentype'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.woff') format('woff'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.ttf') format('truetype'),
+		     url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.svg#BloklettersViltstift') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}*/
+
 	#page_menu li .guide:before {
 		content: "\f059";
 	}
@@ -45,7 +61,7 @@
 	#guide-content,
 	#guide-content h2,
 	#guide-content h3 {
-		font-family: "Comic Sans", "Comic Sans MS", cursive, sans-serif;
+		font-family: "BloklettersBalpen", "Comic Sans", "Comic Sans MS", cursive, sans-serif;
 		color: #fff;
 	}
 	#guide-content .fancybox-skin {
@@ -70,7 +86,7 @@
 	.guide-onemorething {
 		margin: 6em auto 0 auto;
 		position: relative;
-		width: 17em;
+		width: 19em;
 	}
 	.guide-luck {
 		font-size: 2.2em;
@@ -89,7 +105,7 @@
 	.guide-instructions {
 		padding: 1em;
 		position: relative;
-		margin: 0 auto 55px auto;
+		margin: 0 auto 34px auto;
 		width: 13em;
 	}
 	.guide-instructions:after {
@@ -126,7 +142,7 @@
 		list-style: none;
 	}
 	.guide-nav ul li {
-		margin: 0 0 0 110px;
+		margin: 0 0 0 109px;
 		padding: 19px 0;
 		font-size: 1.5em;
 		position: relative;
