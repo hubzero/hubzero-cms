@@ -174,7 +174,7 @@ echo $html;
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<label for="tsearch">Keyword or phrase:</label>
