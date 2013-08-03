@@ -30,9 +30,17 @@ function PollBuildRoute( &$query )
 
 	// Get the menu items for this component.
 	if (!$items) {
-		$component	= &JComponentHelper::getComponent('com_poll');
-		$menu		= &JSite::getMenu();
-		$items		= $menu->getItems('componentid', $component->id);
+		$app		= JFactory::getApplication();
+		$menu		= $app->getMenu();
+		$component	= JComponentHelper::getComponent('com_poll');
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$items		= $menu->getItems('component_id', $component->id);
+		}
+		else
+		{
+			$items		= $menu->getItems('componentid', $component->id);
+		}
 	}
 
 	// Search for an appropriate menu item.
