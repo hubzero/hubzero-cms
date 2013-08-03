@@ -109,7 +109,7 @@ class PubInstall extends JObject {
 	public function installPublishing( ) 
 	{
 		$queries 	= array();
-		$prefix 	= $this->_db->_table_prefix;
+		$prefix 	= $this->_db->getPrefix();
 		$iniSetup 	= 0;
 		
 		// Access

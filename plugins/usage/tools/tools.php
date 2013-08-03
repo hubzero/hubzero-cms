@@ -675,7 +675,7 @@ class plgUsageTools extends JPlugin
 
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();
-		$table = $database->_table_prefix . 'stats_tops';
+		$table = $database->getPrefix() . 'stats_tops';
 		if (!in_array($table,$tables)) 
 		{
 			return '<p class="error">' . JText::_('Error: Required database table not found . ') . '</p>';

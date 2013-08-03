@@ -588,7 +588,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				/*if ($model->isTool()) 
 				{
 					$tables = $this->database->getTableList();
-					$table  = $this->database->_table_prefix . 'tool_version';
+					$table  = $this->database->getPrefix() . 'tool_version';
 
 					if (in_array($table, $tables)) 
 					{

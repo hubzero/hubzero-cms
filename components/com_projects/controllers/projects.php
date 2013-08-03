@@ -349,7 +349,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	protected function _checkTables()
 	{
 		$tables = $this->database->getTableList();
-		$prefix = $this->database->_table_prefix;
+		$prefix = $this->database->getPrefix();
 
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 			. DS . 'com_projects' . DS . 'helpers' . DS . 'install.php');

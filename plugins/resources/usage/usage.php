@@ -114,7 +114,7 @@ class plgResourcesUsage extends JPlugin
 		$database =& JFactory::getDBO();
 
 		$tables = $database->getTableList();
-		$table = $database->_table_prefix . 'resource_stats_tools';
+		$table = $database->getPrefix() . 'resource_stats_tools';
 
 		if ($model->resource->alias) 
 		{

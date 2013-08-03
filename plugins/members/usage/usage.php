@@ -95,7 +95,7 @@ class plgMembersUsage extends JPlugin
 
 		$database =& JFactory::getDBO();
 		$tables = $database->getTableList();
-		$table = $database->_table_prefix . 'author_stats';
+		$table = $database->getPrefix() . 'author_stats';
 
 		if (!in_array($table,$tables)) 
 		{

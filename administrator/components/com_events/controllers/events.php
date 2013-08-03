@@ -49,7 +49,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$this->config->load();
 
 		$tables = $this->database->getTableList();
-		$table = $this->database->_table_prefix . 'events_respondent_race_rel';
+		$table = $this->database->getPrefix() . 'events_respondent_race_rel';
 		if (!in_array($table, $tables)) 
 		{
 			$this->database->setQuery("CREATE TABLE `#__events_respondent_race_rel` (

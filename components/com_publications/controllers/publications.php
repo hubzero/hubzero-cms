@@ -291,7 +291,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	protected function _checkTables()
 	{
 		$tables = $this->database->getTableList();
-		$prefix = $this->database->_table_prefix;
+		$prefix = $this->database->getPrefix();
 		
 		// Enable publication logs (NEW)
 		if (!in_array($prefix . 'publication_logs', $tables)) 

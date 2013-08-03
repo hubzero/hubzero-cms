@@ -90,7 +90,7 @@ class ResourcesModelResource extends JObject
 			$this->curtool  = null;
 
 			$tables = $this->_db->getTableList();
-			$table  = $this->_db->_table_prefix . 'tool_version';
+			$table  = $this->_db->getPrefix() . 'tool_version';
 
 			if (in_array($table, $tables)) 
 			{

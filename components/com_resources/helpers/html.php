@@ -1897,7 +1897,7 @@ class ResourcesHtml
 				$lurl ='';
 				$database =& JFactory::getDBO();
 				$tables = $database->getTableList();
-				$table = $database->_table_prefix . 'tool_version';
+				$table = $database->getPrefix() . 'tool_version';
 
 				if (in_array($table,$tables)) 
 				{

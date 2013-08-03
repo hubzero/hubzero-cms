@@ -126,7 +126,7 @@ class plgPublicationsUsage extends JPlugin
 		$database =& JFactory::getDBO();
 		
 		$tables = $database->getTableList();
-		$table = $database->_table_prefix . 'publication_stats';
+		$table = $database->getPrefix() . 'publication_stats';
 
 		if ($publication->alias) 
 		{
