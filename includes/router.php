@@ -941,6 +941,11 @@ class JRouterSite extends JRouter
 			$db->setQuery($query);
 			$result = $db->loadObject();
 
+			if (empty($result))
+			{
+				return $vars;
+			}
+
 			// Now, check for uncategorised article with provided alias
 			if ($result->alias == 'uncategorised')
 			{
