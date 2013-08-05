@@ -102,8 +102,7 @@
 
 /* [!] HACK - IE 7 and older */
 	.tags li a {
-		/*.ie7-fontcons-before('tag', @char);
-		zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="tag-before"></small>' + this.innerHTML + '<small class="tag-after">&bull;</small>');*/
+		*zoom: ~"expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class=tag-before></small>' + this.innerHTML + '<small class=tag-after>&bull;</small>')";
 	}
 	.tags li a small.tag-after {
 		*background-color: transparent;
@@ -117,9 +116,7 @@
 		*display: inline !important;
 	}
 	.tags li a {
-		*display: inline-block;
 		*line-height: 1em !important;
-		*padding: 6px 6px 5px 6px !important;
 	}
 	.tags li a span {
 		*background-color: @tagCountBackground;
