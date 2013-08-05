@@ -543,7 +543,7 @@
 	#masthead h1 a:hover {
 		color: #c00;
 	}
-	#masthead h1 a .tagline {
+	#masthead h1 .tagline {
 		display: block; 
 		position: absolute;
 		text-transform: uppercase;
