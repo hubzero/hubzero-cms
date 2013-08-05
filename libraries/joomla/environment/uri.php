@@ -224,8 +224,9 @@ class JURI extends JObject
 			$live_site = $config->get('live_site');
 			if (trim($live_site) != '')
 			{
+				$scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://" : "http://";
 				$uri = self::getInstance($live_site);
-				self::$base['prefix'] = $uri->toString(array('scheme', 'host', 'port'));
+				self::$base['prefix'] = $scheme.$uri->toString(array('host', 'port'));
 				self::$base['path'] = rtrim($uri->toString(array('path')), '/\\');
 
 				if (JPATH_BASE == JPATH_ADMINISTRATOR)
