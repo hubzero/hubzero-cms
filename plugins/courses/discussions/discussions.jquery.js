@@ -309,12 +309,30 @@ HUB.Plugins.CoursesForum = {
 									}
 									list.prepend($(item.html).hide().fadeIn());
 
+									var count = $('#ct' + item.category_id + ' span.count');
+									if (count.length > 0) {
+										count.text(parseInt(count.text()) + 1);
+									}
+
+									var category = count.closest('div.category');
+									if (category.length > 0) {
+										var ccount = category.find('span.category-discussions');
+										if (ccount.length > 0) {
+											ccount.text(parseInt(ccount.text()) + 1);
+										}
+									}
+
 									if (item.mine) {
 										var mine = $('#categorymine');
 										if (mine.find('li.comments-none').length) {
 											mine.empty();
 										}
 										mine.prepend($(item.html).hide().fadeIn());
+
+										var ccount = $('#ctmine').find('span.category-discussions');
+										if (ccount.length > 0) {
+											ccount.text(parseInt(ccount.text()) + 1);
+										}
 									}
 								}
 							}
