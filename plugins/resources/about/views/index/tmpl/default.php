@@ -186,7 +186,16 @@ if (!$this->model->access('view-all')) {
 			$cite->date = date("Y-m-d H:i:s");
 			$cite->url = '';
 			$cite->type = '';
-			$cite->author = implode(';', $this->model->contributors('name')); //$this->helper->ul_contributors;
+			$authors = array();
+			$contributors = $this->model->contributors('!submitter');
+			if ($contributors)
+			{
+				foreach ($contributors as $contributor)
+				{
+					$authors[] = $contributor->name;
+				}
+			}
+			$cite->author = implode(';', $authors); //$this->helper->ul_contributors;
 			
 			if ($this->model->params->get('show_citation') == 2) {
 				$citations = '';

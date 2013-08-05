@@ -235,7 +235,16 @@ if ($shots) {
 
 			$cite->url = '';
 			$cite->type = '';
-			$cite->author = implode(';', $this->model->contributors('name')); //$this->helper->ul_contributors;
+			$authors = array();
+			$contributors = $this->model->contributors('!submitter');
+			if ($contributors)
+			{
+				foreach ($contributors as $contributor)
+				{
+					$authors[] = $contributor->name;
+				}
+			}
+			$cite->author = implode(';', $authors);
 			
 			// Get contribtool params
 			$tconfig =& JComponentHelper::getParams( 'com_tools' );
