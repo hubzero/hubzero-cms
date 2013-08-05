@@ -103,9 +103,9 @@ HUB.Plugins.CoursesProgress = {
 
 		$('.nxt').click(function() {
 			if (Math.round(Math.abs(s.css('left').replace('px', ''))) < Math.round(HUB.Plugins.CoursesProgress.offset)) {
+				var sv = slider.slider('value');
+				slider.slider('value', sv+=1);
 				s.animate({left:'-='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
-					var sv = slider.slider('value');
-					slider.slider('value', sv+=1);
 					if (Math.abs(Math.round(s.css('left').replace('px', ''))) == Math.round(HUB.Plugins.CoursesProgress.offset)) {
 						$('.nxt').addClass('disabled');
 					}
@@ -119,9 +119,9 @@ HUB.Plugins.CoursesProgress = {
 
 		$('.prv').click(function() {
 			if (Math.round(s.css('left').replace('px', '')) < 0) {
+				var sv = slider.slider('value');
+				slider.slider('value', sv-=1);
 				s.animate({left:'+='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
-					var sv = slider.slider('value');
-					slider.slider('value', sv-=1);
 					if (Math.round(s.css('left').replace('px', '')) == 0) {
 						$('.prv').addClass('disabled');
 					}
@@ -373,9 +373,10 @@ HUB.Plugins.CoursesProgress = {
 		}
 
 		$('.slider').slider({
-			min   : 0,
-			max   : (rowCnt - cnt),
-			value : 0,
+			min     : 0,
+			max     : (rowCnt - cnt),
+			value   : 0,
+			animate : true,
 			slide : function( event, ui ) {
 				HUB.Plugins.CoursesProgress.move(HUB.Plugins.CoursesProgress.colWidth * ui.value);
 			}

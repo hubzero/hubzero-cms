@@ -275,10 +275,13 @@
 	width: 100%;
 }
 .navigation .disabled {
-	opacity: 0.6;
+	opacity: 0.5;
 }
 .navigation .disabled:hover {
 	cursor: default;
 	background: #DDDDDD;
 	background: rgba(240,240,240,.5);
+}
+.ui-slider-handle:hover {
+	cursor: move;
 }
