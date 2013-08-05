@@ -35,14 +35,14 @@ $showwarning = ($this->version=='current' or !$this->status['published']) ? 0 : 
 
 ?>
 	<div class="explaination">
-		<h4><?php echo JText::_('TAGS_WHAT_ARE_TAGS'); ?></h4>
-		<p><?php echo JText::_('TAGS_EXPLANATION'); ?></p>
+		<h4><?php echo JText::_('COM_TOOLS_TAGS_WHAT_ARE_TAGS'); ?></h4>
+		<p><?php echo JText::_('COM_TOOLS_TAGS_EXPLANATION'); ?></p>
 	</div>
 	<fieldset>
-		<legend><?php echo JText::_('TAGS_ADD'); ?></legend>
+		<legend><?php echo JText::_('COM_TOOLS_TAGS_ADD'); ?></legend>
 <?php if (!empty($this->fats)) { ?>
 		<fieldset>
-			<legend><?php echo JText::_('TAGS_SELECT_FOCUS_AREA'); ?>:</legend>
+			<legend><?php echo JText::_('COM_TOOLS_TAGS_SELECT_FOCUS_AREA'); ?>:</legend>
 			<?php
 			foreach ($this->fats as $key => $value)
 			{
@@ -57,7 +57,7 @@ $showwarning = ($this->version=='current' or !$this->status['published']) ? 0 : 
 		</fieldset>
 <?php } ?>
 		<label>
-			<?php echo JText::_('TAGS_ASSIGNED'); ?>:
+			<?php echo JText::_('COM_TOOLS_TAGS_ASSIGNED'); ?>:
 			<?php
 			JPluginHelper::importPlugin( 'hubzero' );
 			$dispatcher =& JDispatcher::getInstance();
@@ -71,5 +71,5 @@ $showwarning = ($this->version=='current' or !$this->status['published']) ? 0 : 
 			}
 			?>
 		</label>
-		<p><?php echo JText::_('TAGS_NEW_EXPLANATION'); ?></p>
+		<p><?php echo JText::_('COM_TOOLS_TAGS_NEW_EXPLANATION'); ?></p>
 	</fieldset><div class="clear"></div>

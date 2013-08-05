@@ -38,8 +38,8 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		<li><a class="idon-status status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -50,7 +50,7 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
 	
-	<h4><?php echo JText::_('CONTRIBTOOL_FINAL_REVIEW'); ?>:</h4>
+	<h4><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FINAL_REVIEW'); ?>:</h4>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=finalizeversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm" name="versionForm">
 		<fieldset class="versionfield">
 			<div class="two columns first">
@@ -62,30 +62,30 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 				<input type="hidden" name="app" value="<?php echo $this->status['toolname'] ?>" />
 				<div>
 					<h4>Tool Information <a class="edit button" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname']); ?>" title="Edit this version information">Edit</a></h4>
-					<p><span class="heading"><?php echo JText::_('TITLE'); ?>: </span><span class="desc"><?php echo $this->escape(stripslashes($this->status['title'])); ?></span></p>
-					<p><span class="heading"><?php echo JText::_('VERSION'); ?>: </span><span class="desc"><?php echo $this->escape(stripslashes($this->status['version'])); ?></span>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_TITLE'); ?>: </span><span class="desc"><?php echo $this->escape(stripslashes($this->status['title'])); ?></span></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_VERSION'); ?>: </span><span class="desc"><?php echo $this->escape(stripslashes($this->status['version'])); ?></span>
 						<span class="actionlink">[<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&action=confirm&app=' . $this->status['toolname']); ?>">edit</a>]</span></p>
-					<p><span class="heading"><?php echo JText::_('DESCRIPTION'); ?>: </span><span class="desc"><?php echo $this->escape(stripslashes($this->status['description'])); ?></span></p>
-					<p><span class="heading"><?php echo JText::_('TOOL_ACCESS'); ?>: </span><span class="desc"> <?php echo $toolaccess; ?></span></p>
-					<p><span class="heading"><?php echo JText::_('SOURCE_CODE'); ?>: </span><span class="desc"> <?php echo $codeaccess; ?></span></p>
-					<p><span class="heading"><?php echo JText::_('WIKI_ACCESS'); ?>: </span><span class="desc"> <?php echo $wikiaccess; ?></span></p>
-					<p><span class="heading"><?php echo JText::_('SCREEN_SIZE'); ?>: </span><span class="desc"> <?php echo $this->status['vncGeometry']; ?></span></p>
-					<p><span class="heading"><?php echo JText::_('DEVELOPERS'); ?>: </span><span class="desc"> <?php echo ToolsHelperHtml::getDevTeam($this->status['developers']); ?></span></p>
-					<p><span class="heading"><?php echo JText::_('AUTHORS'); ?>: </span><span class="desc"> <?php echo ToolsHelperHtml::getDevTeam($this->status['authors']); ?></span></p>
-					<p><a href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->status['toolname'] . '&rev=dev'); ?>"><?php echo JText::_('PREVIEW_RES_PAGE'); ?></a></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_DESCRIPTION'); ?>: </span><span class="desc"><?php echo $this->escape(stripslashes($this->status['description'])); ?></span></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_TOOL_ACCESS'); ?>: </span><span class="desc"> <?php echo $toolaccess; ?></span></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_SOURCE_CODE'); ?>: </span><span class="desc"> <?php echo $codeaccess; ?></span></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_WIKI_ACCESS'); ?>: </span><span class="desc"> <?php echo $wikiaccess; ?></span></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_SCREEN_SIZE'); ?>: </span><span class="desc"> <?php echo $this->status['vncGeometry']; ?></span></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_DEVELOPERS'); ?>: </span><span class="desc"> <?php echo ToolsHelperHtml::getDevTeam($this->status['developers']); ?></span></p>
+					<p><span class="heading"><?php echo JText::_('COM_TOOLS_AUTHORS'); ?>: </span><span class="desc"> <?php echo ToolsHelperHtml::getDevTeam($this->status['authors']); ?></span></p>
+					<p><a href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->status['toolname'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW_RES_PAGE'); ?></a></p>
 				</div>
 			</div>
 			<div class="two columns second">
 				<h4>
-					<?php echo JText::_('TOOL_LICENSE'); ?> 
+					<?php echo JText::_('COM_TOOLS_TOOL_LICENSE'); ?> 
 					<span class="actionlink">
-						[<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname'] . '&action=confirm'); ?>"><?php echo JText::_('EDIT'); ?></a>]
+						[<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname'] . '&action=confirm'); ?>"><?php echo JText::_('COM_TOOLS_EDIT'); ?></a>]
 					</span>
 				</h4>
 				<pre class="licensetxt"><?php echo $this->escape(stripslashes($this->status['license'])); ?></pre>
 			</div>
 			<div class="moveon">
-				<input type="submit" value="<?php echo JText::_('APPROVE_THIS_TOOL'); ?>" />
+				<input type="submit" value="<?php echo JText::_('COM_TOOLS_APPROVE_THIS_TOOL'); ?>" />
 			</div>
 		</fieldset>
 	</form>

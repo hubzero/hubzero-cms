@@ -42,14 +42,14 @@ if ($this->version == 'dev') {
 	<?php } ?>
 		<div class="six columns first second third fourth">
 			<label for="acmembers">
-				<?php echo JText::_('AUTHORS_ENTER_LOGINS'); ?>
+				<?php echo JText::_('COM_TOOLS_AUTHORS_ENTER_LOGINS'); ?>
 				<?php 
 				JPluginHelper::importPlugin('hubzero');
 				$dispatcher =& JDispatcher::getInstance();
 				$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
 				if (count($mc) > 0) {
 					echo $mc[0];
-				} else { ?> <span class="hint"><?php echo JText::_('ADD_AUTHORS_INSTRUCTIONS'); ?></span>
+				} else { ?> <span class="hint"><?php echo JText::_('COM_TOOLS_ADD_AUTHORS_INSTRUCTIONS'); ?></span>
 				<input type="text" name="new_authors" id="acmembers" value="" />
 				<?php } ?>
 			</label>
@@ -75,7 +75,7 @@ if ($this->roles)
 		</div>
 		<div class="six columns sixth">
 			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('ADD'); ?>" />
+				<input type="submit" value="<?php echo JText::_('COM_TOOLS_ADD'); ?>" />
 			</p>
 		</div>
 		<div class="clear"></div>
@@ -88,7 +88,7 @@ if ($this->roles)
 	</fieldset>
 </form>
 <?php } else { ?>
-<p class="warning"><?php echo JText::_('AUTHORS_CANT_CHANGE'); ?></p>
+<p class="warning"><?php echo JText::_('COM_TOOLS_AUTHORS_CANT_CHANGE'); ?></p>
 <?php } ?>
 <?php	
 // Do we have any contributors associated with this resource?
@@ -173,7 +173,7 @@ foreach ($this->contributors as $contributor)
 					?></td>
 					<td class="t">
 						<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
-							<span><img src="/components/<?php echo $this->option; ?>/assets/img/trash.gif" alt="<?php echo JText::_('DELETE'); ?>" /></span>
+							<span><img src="/components/<?php echo $this->option; ?>/assets/img/trash.gif" alt="<?php echo JText::_('COM_TOOLS_DELETE'); ?>" /></span>
 						</a>
 					</td>
 				</tr>
@@ -185,5 +185,5 @@ foreach ($this->contributors as $contributor)
 		</table>
 	</form>
 <?php } else { ?>
-	<p><?php echo JText::_('AUTHORS_NONE_FOUND'); ?></p>
+	<p><?php echo JText::_('COM_TOOLS_AUTHORS_NONE_FOUND'); ?></p>
 <?php } ?>

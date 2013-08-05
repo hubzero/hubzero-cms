@@ -43,10 +43,10 @@ defined('_JEXEC') or die('Restricted access');
 		// Can't view wishes on a private list if not list admin
 	if (!$wishlist->public && $admin!= 2) { ?>
 		<div id="content-header">
-			<h2><?php echo JText::_('PRIVATE_LIST'); ?></h2>
+			<h2><?php echo JText::_('COM_WISHLIST_PRIVATE_LIST'); ?></h2>
 		</div><!-- / #content-header -->
 		<div class="main section">
-			<p class="error"><?php echo JText::_('ALERTNOTAUTH_PRIVATE_LIST'); ?></p>
+			<p class="error"><?php echo JText::_('COM_WISHLIST_ALERTNOTAUTH_PRIVATE_LIST'); ?></p>
 		</div><!-- / .main section -->
 	<?php } else { ?>
 		<div id="content-header">
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 			<ul id="useroptions">
 				<li class="last">
 					<a class="nav_wishlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
-						<?php echo JText::_('WISHES_ALL'); ?>
+						<?php echo JText::_('COM_WISHLIST_WISHES_ALL'); ?>
 					</a>
 				</li>
 			</ul>
@@ -66,36 +66,36 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="main section">
 			<form id="hubForm" method="post"  action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=savesettings&listid=' . $wishlist->id); ?>">
 				<div class="explaination">
-					<p><?php echo JText::_('WISHLIST_SETTINGS_INFO'); ?></p>
+					<p><?php echo JText::_('COM_WISHLIST_SETTINGS_INFO'); ?></p>
 				</div>
 				<fieldset>
-					<legend><?php echo JText::_('WISH_LIST_INFORMATION'); ?></legend>
+					<legend><?php echo JText::_('COM_WISHLIST_INFORMATION'); ?></legend>
 					
 					<label>
-						<?php echo JText::_('WISHLIST_TITLE'); ?>: 
+						<?php echo JText::_('COM_WISHLIST_TITLE'); ?>: 
 		<?php if ($wishlist->category== 'resource') { ?>
 						<span class="highighted"><?php echo $wishlist->title; ?></span>
 						<input name="title" id="title" type="hidden" value="<?php echo $this->escape($wishlist->title); ?>" />
 					</label>
-					<p class="hint"><?php echo JText::_('WISHLIST_TITLE_NOTE'); ?></p>
+					<p class="hint"><?php echo JText::_('COM_WISHLIST_TITLE_NOTE'); ?></p>
 		<?php } else { ?>
 						<input name="title" id="title" type="text" value="<?php echo $this->escape($wishlist->title); ?>" />
 					</label>
 		<?php } ?>
 					<label>
-						<?php echo JText::_('WISHLIST_DESC'); ?> (<?php echo JText::_('OPTIONAL'); ?>): 
+						<?php echo JText::_('COM_WISHLIST_DESC'); ?> (<?php echo JText::_('COM_WISHLIST_OPTIONAL'); ?>): 
 						<textarea name="description" rows="10" cols="50"><?php echo $wishlist->description; ?></textarea>
 					</label>
 					
 					<label>
-						<?php echo JText::_('WISHLIST_THIS_LIST_IS'); ?>: 
+						<?php echo JText::_('COM_WISHLIST_THIS_LIST_IS'); ?>: 
 						<input class="option" type="radio" name="public" value="1" <?php 
 			if ($wishlist->public==1) {
 				echo ' checked="checked"';
 			}
 			if ($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
 				echo ' disabled="disabled"';
-			} ?> /> <?php echo JText::_('WISHLIST_PUBLIC'); ?>
+			} ?> /> <?php echo JText::_('COM_WISHLIST_PUBLIC'); ?>
 
 						<input class="option" type="radio" name="public" value="0" <?php 
 			if ($wishlist->public==0) {
@@ -103,24 +103,24 @@ defined('_JEXEC') or die('Restricted access');
 			}
 			if ($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
 				echo ' disabled="disabled"';
-			} ?> /> <?php echo JText::_('WISHLIST_PRIVATE'); ?>
+			} ?> /> <?php echo JText::_('COM_WISHLIST_PRIVATE'); ?>
 					</label>
 				</fieldset>
 				<div class="clear"></div>
 				
 				<div class="explaination">
-					<p><?php echo JText::_('WISHLIST_SETTINGS_EDIT_GROUPS'); ?></p>
+					<p><?php echo JText::_('COM_WISHLIST_SETTINGS_EDIT_GROUPS'); ?></p>
 				</div>
 				<fieldset>
-					<legend><?php echo JText::_('WISHLIST_OWNER_GROUPS'); ?></legend>
+					<legend><?php echo JText::_('COM_WISHLIST_OWNER_GROUPS'); ?></legend>
 					<div class="field-wrap">
 						<table class="tktlist">
 							<thead>
 								<tr>
 									<th style="width:20px;"></th>
-									<th><?php echo JText::_('WISHLIST_SETTINGS_GROUP_CN'); ?></th>
-									<th><?php echo JText::_('WISHLIST_GROUP_NUM_MEMBERS'); ?></th>
-									<th style="width:80px;"><?php echo JText::_('WISHLIST_GROUP_OPTIONS'); ?></th>
+									<th><?php echo JText::_('COM_WISHLIST_SETTINGS_GROUP_CN'); ?></th>
+									<th><?php echo JText::_('COM_WISHLIST_GROUP_NUM_MEMBERS'); ?></th>
+									<th style="width:80px;"><?php echo JText::_('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -144,7 +144,7 @@ defined('_JEXEC') or die('Restricted access');
 									<td><?php echo $cn; ?></td>
 									<td><?php echo count($members); ?></td>
 									<td>
-										<?php echo ($n>1 && !in_array($wishlist->groups[$i], $wishlist->nativegroups)) ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&group='.$wishlist->groups[$i]).'" class="delete">'.JText::_('WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
+										<?php echo ($n>1 && !in_array($wishlist->groups[$i], $wishlist->nativegroups)) ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&group='.$wishlist->groups[$i]).'" class="delete">'.JText::_('COM_WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
 									</td>
 								</tr>
 				
@@ -154,7 +154,7 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 			<?php } else { ?>
 								<tr>
-									<td colspan="4"><?php echo JText::_('WISHLIST_NO_OWNER_GROUPS_FOUND'); ?>.</td>
+									<td colspan="4"><?php echo JText::_('COM_WISHLIST_NO_OWNER_GROUPS_FOUND'); ?>.</td>
 								</tr>
 			<?php } ?>
 							</tbody>
@@ -162,26 +162,26 @@ defined('_JEXEC') or die('Restricted access');
 					</div>
 					
 					<label>
-						<?php echo JText::_('WISHLIST_SETTINGS_ADD_GROUPS'); ?>: 
+						<?php echo JText::_('COM_WISHLIST_SETTINGS_ADD_GROUPS'); ?>: 
 						<input name="newgroups"  type="text" value="" />
-						<span><?php echo JText::_('WISHLIST_GROUP_HINT'); ?></span>
+						<span><?php echo JText::_('COM_WISHLIST_GROUP_HINT'); ?></span>
 					</label>
 				</fieldset>
 				<div class="clear"></div>
 				
 				<div class="explaination">
-					<p><?php echo JText::_('WISHLIST_INDIVIDUALS_HINT'); ?></p>
+					<p><?php echo JText::_('COM_WISHLIST_INDIVIDUALS_HINT'); ?></p>
 				</div>
 				<fieldset>
-					<legend><?php echo JText::_('WISHLIST_INDIVIDUALS'); ?></legend>
+					<legend><?php echo JText::_('COM_WISHLIST_INDIVIDUALS'); ?></legend>
 					<div class="field-wrap">
 						<table class="tktlist">
 							<thead>
 								<tr>
 									<th style="width:20px;"></th>
-									<th><?php echo JText::_('WISHLIST_IND_NAME'); ?></th>
-									<th><?php echo JText::_('WISHLIST_IND_LOGIN'); ?></th>
-									<th style="width:80px;"><?php echo JText::_('WISHLIST_GROUP_OPTIONS'); ?></th>
+									<th><?php echo JText::_('COM_WISHLIST_IND_NAME'); ?></th>
+									<th><?php echo JText::_('COM_WISHLIST_IND_LOGIN'); ?></th>
+									<th style="width:80px;"><?php echo JText::_('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -200,7 +200,7 @@ defined('_JEXEC') or die('Restricted access');
 									<td><?php echo $kuser->get('name'); ?></td>
 									<td><?php echo $kuser->get('username'); ?></td>
 									<td>
-										<?php echo ($n> 1 && !in_array($wishlist->owners[$i], $wishlist->nativeowners))  ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->owners[$i]).'" class="delete">'.JText::_('WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
+										<?php echo ($n> 1 && !in_array($wishlist->owners[$i], $wishlist->nativeowners))  ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->owners[$i]).'" class="delete">'.JText::_('COM_WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
 									</td>
 								</tr>
 					<?php
@@ -209,7 +209,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 			} else { ?>
 								<tr>
-									<td colspan="4"><?php echo JText::_('WISHLIST_NO_IND_FOUND'); ?></td>
+									<td colspan="4"><?php echo JText::_('COM_WISHLIST_NO_IND_FOUND'); ?></td>
 								</tr>
 			<?php } ?>
 							</tbody>
@@ -217,27 +217,27 @@ defined('_JEXEC') or die('Restricted access');
 					</div>
 					
 					<label>
-						<?php echo JText::_('WISHLIST_ADD_IND'); ?>: 
+						<?php echo JText::_('COM_WISHLIST_ADD_IND'); ?>: 
 						<input name="newowners" id="newowners" type="text" value="" />
-						<span><?php echo JText::_('WISHLIST_ENTER_LOGINS'); ?></span>
+						<span><?php echo JText::_('COM_WISHLIST_ENTER_LOGINS'); ?></span>
 					</label>
 				</fieldset>
 				<div class="clear"></div>
 
 		<?php if ($wishlist->allow_advisory) { ?>
 				<div class="explaination">
-					<p><?php echo JText::_('WISHLIST_ADD_ADVISORY_INFO'); ?></p>
+					<p><?php echo JText::_('COM_WISHLIST_ADD_ADVISORY_INFO'); ?></p>
 				</div>
 				<fieldset>
-					<legend><?php echo JText::_('WISHLIST_ADVISORY'); ?></legend>
+					<legend><?php echo JText::_('COM_WISHLIST_ADVISORY'); ?></legend>
 					<div class="field-wrap">
 						<table class="tktlist">
 							<thead>
 								<tr>
 									<th style="width:20px;"></th>
-									<th><?php echo JText::_('WISHLIST_IND_NAME'); ?></th>
-									<th><?php echo JText::_('WISHLIST_IND_LOGIN'); ?></th>
-									<th style="width:80px;"><?php echo JText::_('WISHLIST_GROUP_OPTIONS'); ?></th>
+									<th><?php echo JText::_('COM_WISHLIST_IND_NAME'); ?></th>
+									<th><?php echo JText::_('COM_WISHLIST_IND_LOGIN'); ?></th>
+									<th style="width:80px;"><?php echo JText::_('COM_WISHLIST_GROUP_OPTIONS'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -258,7 +258,7 @@ defined('_JEXEC') or die('Restricted access');
 									<td><?php echo $quser->get('name'); ?></td>
 									<td><?php echo $quser->get('username'); ?></td>
 									<td>
-										<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->advisory[$i]); ?>" class="delete"><?php echo JText::_('WISHLIST_OPTION_REMOVE'); ?></a>
+										<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->advisory[$i]); ?>" class="delete"><?php echo JText::_('COM_WISHLIST_OPTION_REMOVE'); ?></a>
 									</td>
 								</tr>
 						<?php
@@ -267,7 +267,7 @@ defined('_JEXEC') or die('Restricted access');
 					}
 				} else { ?>
 								<tr>
-									<td colspan="4"><?php echo JText::_('WISHLIST_NO_ADVISORY_FOUND'); ?></td>
+									<td colspan="4"><?php echo JText::_('COM_WISHLIST_NO_ADVISORY_FOUND'); ?></td>
 								</tr>
 				<?php } ?>
 							</tbody>
@@ -275,9 +275,9 @@ defined('_JEXEC') or die('Restricted access');
 					</div>
 					
 					<label>
-						<?php echo JText::_('WISHLIST_ADD_ADVISORY_MEMBERS'); ?>: 
+						<?php echo JText::_('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>: 
 						<input name="newadvisory" id="newadvisory" type="text" value="" />
-						<span><?php echo JText::_('WISHLIST_ENTER_LOGINS'); ?></span>
+						<span><?php echo JText::_('COM_WISHLIST_ENTER_LOGINS'); ?></span>
 					</label>
 				<?php if ($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) { ?>
 					<input type="hidden" name="public" value="<?php echo $wishlist->public; ?>" />
@@ -287,10 +287,10 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } // -- end if allow advisory ?>
 
 				<p class="submit">
-					<input type="submit" name="submit" value="<?php echo JText::_('SAVE'); ?>" />
+					<input type="submit" name="submit" value="<?php echo JText::_('COM_WISHLIST_SAVE'); ?>" />
 					<span class="cancelaction">
 						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
-							<?php echo JText::_('CANCEL'); ?>
+							<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>
 						</a>
 					</span>
 				</p>

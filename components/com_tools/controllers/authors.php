@@ -86,7 +86,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 		}
 		if (!$id) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			if ($show)
 			{
 				$this->displayTask($id);
@@ -260,7 +260,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 		// Ensure we have a resource ID ($pid) to work with
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -293,7 +293,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 		// Ensure we have a resource ID ($pid) to work with
 		if (!$pid) 
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_COM_CONTRIBUTE_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -330,7 +330,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -338,7 +338,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 		// Ensure we have a parent ID to work with
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -401,7 +401,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			JError::raiseError(500, JText::_('No resource ID found'));
+			JError::raiseError(500, JText::_('COM_TOOLS_No resource ID found'));
 			return;
 		}
 

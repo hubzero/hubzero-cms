@@ -111,7 +111,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	public function pipelineTask()
 	{
 		// Set the page title
-		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_task));
+		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -157,12 +157,12 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_option)), 
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('PIPELINE'), 
+			JText::_('COM_TOOLS_PIPELINE'), 
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
 		);
 
@@ -226,7 +226,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -235,7 +235,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if (!$status) 
 		{
-			JError::raiseError(404, JText::_('ERR_STATUS_CANNOT_FIND'));
+			JError::raiseError(404, JText::_('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
 			return;
 		}
 
@@ -286,8 +286,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->view->admin  = $this->config->get('access-admin-component');
 
 		// Set the page title
-		$this->view->title  = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_task));
-		$this->view->title .= $status['toolname'] ? ' ' . JText::_('FOR') . ' ' . $status['toolname'] : '';
+		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
+		$this->view->title .= $status['toolname'] ? ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'] : '';
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -299,16 +299,16 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_option)), 
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('PIPELINE'), 
+			JText::_('COM_TOOLS_PIPELINE'), 
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)) . ' ' . JText::_('FOR') . ' ' . $status['toolname'], 
+			JText::_(strtoupper($this->_task)) . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'], 
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=status&app=' . $status['toolname']
 		);
 
@@ -370,7 +370,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -383,8 +383,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_controller);
 
 		// Set the page title
-		$this->view->title  = JText::_(strtoupper($this->_name)) . ': ';
-		$this->view->title .= ($this->_action=='confirm') ? JText::_('CONTRIBTOOL_APPROVE_TOOL') : JText::_('TASK_VERSIONS');
+		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ';
+		$this->view->title .= ($this->_action=='confirm') ? JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : JText::_('COM_TOOLS_TASK_VERSIONS');
 
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
@@ -409,18 +409,18 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_option)), 
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('STATUS') . ' ' . JText::_('FOR') . ' ' . $this->view->status['toolname'], 
+			JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $this->view->status['toolname'], 
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=status&app=' . $this->view->status['toolname']
 		);
 		if ($this->_action != 'confirm') 
 		{
 			$pathway->addItem(
-				JText::_('TASK_VERSIONS'), 
+				JText::_('COM_TOOLS_TASK_VERSIONS'), 
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=versions&app=' . $this->view->status['toolname']
 			);
 		}
@@ -483,7 +483,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -492,7 +492,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if (!$status) 
 		{
-			JError::raiseError(404, JText::_('ERR_STATUS_CANNOT_FIND'));
+			JError::raiseError(404, JText::_('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
 			return;
 		}
 
@@ -501,7 +501,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_controller);
 
 		// Set the page title
-		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('CONTRIBTOOL_APPROVE_TOOL');
+		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -509,12 +509,12 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_option)), 
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('STATUS') . ' ' . JText::_('FOR') . ' ' . $status['toolname'], 
+			JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'], 
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
 		);
 
@@ -570,7 +570,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -579,7 +579,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if (!$status) 
 		{
-			JError::raiseError(404, JText::_('ERR_STATUS_CANNOT_FIND'));
+			JError::raiseError(404, JText::_('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
 			return;
 		}
 
@@ -606,8 +606,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_controller);
 
 		// Set the page title
-		$this->view->title  = JText::_(strtoupper($this->_name)) . ': ';
-		$this->view->title .= ($this->_action == 'confirm') ? JText::_('CONTRIBTOOL_APPROVE_TOOL') : JText::_('TASK_LICENSE');
+		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ';
+		$this->view->title .= ($this->_action == 'confirm') ? JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : JText::_('COM_TOOLS_TASK_LICENSE');
 
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
@@ -616,20 +616,20 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_option)), 
 				'index.php?option=' . $this->_option
 			);
 		}
 		if (count($pathway->getPathWay()) <= 1) 
 		{
 			$pathway->addItem(
-				JText::_('STATUS').' '.JText::_('FOR').' '.$status['toolname'], 
+				JText::_('COM_TOOLS_STATUS').' '.JText::_('COM_TOOLS_FOR').' '.$status['toolname'], 
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
 			);
 			if ($this->_action != 'confirm') 
 			{
 				$pathway->addItem(
-					JText::_('TASK_LICENSE'), 
+					JText::_('COM_TOOLS_TASK_LICENSE'), 
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=license&app=' . $this->_toolid
 				);
 			}
@@ -690,9 +690,9 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 			if ($action != 'confirm') 
 			{
-				$this->_msg = JText::_('NOTICE_CHANGE_LICENSE_SAVED');
+				$this->_msg = JText::_('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED');
 				//$this->_task = 'status';
-				//$this->addComponentMessage(JText::_('NOTICE_CHANGE_LICENSE_SAVED'));
+				//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED'));
 				$this->statusTask();
 			}
 			else 
@@ -737,7 +737,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		);
 
 		// Set the page title
-		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' .  JText::_('TASK_CREATE_NEW_TOOL');
+		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' .  JText::_('COM_TOOLS_TASK_CREATE_NEW_TOOL');
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -749,14 +749,14 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_option)), 
 				'index.php?option=' . $this->_option
 			);
 		}
 		if (count($pathway->getPathWay()) <= 1) 
 		{
 			$pathway->addItem(
-				JText::_('TASK_CREATE_NEW_TOOL'),
+				JText::_('COM_TOOLS_TASK_CREATE_NEW_TOOL'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=create'
 			);
 		}
@@ -810,7 +810,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// check access rights
 		if ($this->_toolid && !$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -819,12 +819,12 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if ($this->_toolid && !$status) 
 		{
-			JError::raiseError(404, JText::_('ERR_EDIT_CANNOT_FIND'));
+			JError::raiseError(404, JText::_('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
 			return;
 		}
 
 		// Set the page title
-		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('TASK_EDIT_TOOL');
+		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_('COM_TOOLS_TASK_EDIT_TOOL');
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -836,18 +836,18 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_option)), 
 				'index.php?option=' . $this->_option
 			);
 		}
 		if (count($pathway->getPathWay()) <= 1) 
 		{
 			$pathway->addItem(
-				JText::_('STATUS') . ' ' . JText::_('FOR') . ' ' . $status['toolname'], 
+				JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'], 
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']
 			);
 			$pathway->addItem(
-				JText::_('TASK_EDIT_TOOL'), 
+				JText::_('COM_TOOLS_TASK_EDIT_TOOL'), 
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&app=' . $status['toolname']
 			);
 		}
@@ -971,7 +971,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			// make sure user is authorized to go further
 			if (!$this->_checkAccess($id)) 
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 				return;
 			}
 		}
@@ -979,7 +979,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (!Hubzero_Tool::validate($tool, $err, $id))
 		{
 			// display form with errors
-			//$title = JText::_(strtoupper($this->_name)).': '.JText::_('EDIT_TOOL');
+			//$title = JText::_(strtoupper($this->_option)).': '.JText::_('COM_TOOLS_EDIT_TOOL');
 			//$document =& JFactory::getDocument();
 			//$document->setTitle($title);
 			if (is_array($err))
@@ -1211,7 +1211,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		// display status page
 		//$this->_task = 'status';
-		//$this->_msg = $id ? JText::_('NOTICE_TOOL_INFO_CHANGED'): JText::_('NOTICE_TOOL_INFO_REGISTERED');
+		//$this->_msg = $id ? JText::_('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED'): JText::_('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED');
 		$hzg->update();
 		$hzt->update();
 		$hztv->update(); // @FIXME: look
@@ -1233,7 +1233,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		$this->setRedirect(
 			JRoute::_('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $hzt->toolname),
-			($id ? JText::_('NOTICE_TOOL_INFO_CHANGED') : JText::_('NOTICE_TOOL_INFO_REGISTERED'))
+			($id ? JText::_('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED') : JText::_('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED'))
 		);
 	}
 
@@ -1265,7 +1265,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
                 
 			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . JPATH_ROOT;
 
-			if (!$this->_invokescript($command, JText::_('NOTICE_PROJECT_AREA_CREATED'), $output)) 
+			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'), $output)) 
 			{
 				return false;
 			}
@@ -1277,7 +1277,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		else 
 		{
 			$output['class'] = 'error';
-			$output['msg'] = JText::_('ERR_CANNOT_RETRIEVE');
+			$output['msg'] = JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE');
 			return false;
 		}
 	}
@@ -1310,7 +1310,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1360,8 +1360,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				{
 					$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
 				}
-				//$this->addComponentMessage(JText::_('NOTICE_CHANGE_VERSION_SAVED'));
-				$this->_msg = JText::_('NOTICE_CHANGE_VERSION_SAVED');
+				//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_CHANGE_VERSION_SAVED'));
+				$this->_msg = JText::_('COM_TOOLS_NOTICE_CHANGE_VERSION_SAVED');
 				//$this->_task = 'status';
 				$this->statusTask();
 				return;
@@ -1404,7 +1404,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1412,7 +1412,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if ($action != 'confirm') 
 		{
-			$this->_msg = JText::_('Release notes saved.');
+			$this->_msg = JText::_('COM_TOOLS_Release notes saved.');
 			//$this->_task = 'status';
 			$this->statusTask();
 			return;
@@ -1452,7 +1452,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1484,8 +1484,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		{
 			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
 		}
-		//$this->addComponentMessage(JText::_('NOTICE_STATUS_CHANGED'));
-		$this->_msg = JText::_('NOTICE_STATUS_CHANGED');
+		//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_STATUS_CHANGED'));
+		$this->_msg = JText::_('COM_TOOLS_NOTICE_STATUS_CHANGED');
 		//$this->_task = 'status';
 		$this->statusTask();
 	}
@@ -1524,7 +1524,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1557,7 +1557,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				$this->_error = $error;
 				$xlog->logDebug(__FUNCTION__ . "() state changing to approved, action confirm");
 				$this->_action = 'confirm';
-				$this->_task = JText::_('CONTRIBTOOL_APPROVE_TOOL');
+				$this->_task = JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 				$this->versionsTask();
 				return;
 			}
@@ -1566,7 +1566,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				$this->_error = $error;
 				$xlog->logDebug(__FUNCTION__ . "() state changing to approved, action new");
 				$this->_action = 'new';
-				$this->_task = JText::_('CONTRIBTOOL_APPROVE_TOOL');
+				$this->_task = JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 				$this->versionsTask();
 				return;
 			}
@@ -1629,8 +1629,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$xlog->logDebug(__FUNCTION__ . "() after newUpdateTicket");
 		}
 
-		//$this->addComponentMessage(JText::_('NOTICE_STATUS_CHANGED'));
-		$this->_msg = JText::_('NOTICE_STATUS_CHANGED');
+		//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_STATUS_CHANGED'));
+		$this->_msg = JText::_('COM_TOOLS_NOTICE_STATUS_CHANGED');
 		//$this->_task = 'status';
 		$this->statusTask();
 	}
@@ -1662,7 +1662,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1680,8 +1680,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if ($comment)
 		{
 			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, '', '', $comment, $access, 1);
-			$this->_msg = JText::_('NOTICE_MSG_SENT');
-			//$this->addComponentMessage(JText::_('NOTICE_MSG_SENT'));
+			$this->_msg = JText::_('COM_TOOLS_NOTICE_MSG_SENT');
+			//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_MSG_SENT'));
 		}
 
 		//$this->_task = 'status';
@@ -1754,7 +1754,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		{
 			case 1:
 				$action = 'contribtool_info_changed';
-				$headline = JText::_('tool information changed');
+				$headline = JText::_('COM_TOOLS_tool information changed');
 				//$users = $team;
 			break;
 
@@ -1769,19 +1769,19 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 			case 3:
 				$action = 'contribtool_new_message';
-				$headline = JText::_('new message');
+				$headline = JText::_('COM_TOOLS_new message');
 				//$users = $this->config->get('access-admin-component') && $access != 1 ? $team : $admins;
 			break;
 
 			case 4:
 				$action = 'contribtool_status_changed';
-				$headline = JText::_('new tool registration');
+				$headline = JText::_('COM_TOOLS_new tool registration');
 				//$users = array_merge($team, $admins);
 			break;
 
 			case 5:
 				$action = 'contribtool_status_changed';
-				$headline = JText::_('tool registration cancelled');
+				$headline = JText::_('COM_TOOLS_tool registration cancelled');
 				//$users = array_merge($team, $admins);
 			break;
 		}
@@ -1793,8 +1793,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$users = array_unique($users);
 
 		// Build e-mail components
-		$subject = JText::_(strtoupper($this->_name)) . ', ' . JText::_('TOOL') . ' ' . $status['toolname'] . '(#' . $toolid . '): ' . $headline;
-		$from    = $jconfig->getValue('config.sitename') . ' ' . JText::_('CONTRIBTOOL');
+		$subject = JText::_(strtoupper($this->_option)) . ', ' . JText::_('COM_TOOLS_TOOL') . ' ' . $status['toolname'] . '(#' . $toolid . '): ' . $headline;
+		$from    = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_TOOLS_CONTRIBTOOL');
 		$hub     = array(
 			'email' => $jconfig->getValue('config.mailfrom'), 
 			'name'  => $from
@@ -1803,18 +1803,18 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$live_site = rtrim(JURI::base(),'/');
 		
 		// Compose Message
-		$message  = strtoupper(JText::_('TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
-		$message .= strtoupper(JText::_('SUMMARY')) . ': ' . $summary . "\r\n";
-		$message .= strtoupper(JText::_('WHEN')) . ' ' . JHTML::_('date', date('Y-m-d H:i:s', time()), '%d %b, %Y') . "\r\n";
-		$message .= strtoupper(JText::_('BY')) . ': ' . $this->juser->get('username') . "\r\n";
+		$message  = strtoupper(JText::_('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
+		$message .= strtoupper(JText::_('COM_TOOLS_SUMMARY')) . ': ' . $summary . "\r\n";
+		$message .= strtoupper(JText::_('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', date('Y-m-d H:i:s', time()), '%d %b, %Y') . "\r\n";
+		$message .= strtoupper(JText::_('COM_TOOLS_BY')) . ': ' . $this->juser->get('username') . "\r\n";
 		$message .= '----------------------------' . "\r\n\r\n";
 		if ($comment) 
 		{
-			$message .= strtoupper(JText::_('MESSAGE')) . ': ' . "\r\n";
+			$message .= strtoupper(JText::_('COM_TOOLS_MESSAGE')) . ': ' . "\r\n";
 			$message .= $comment . "\r\n";
 			$message .= '----------------------------' . "\r\n\r\n";
 		}
-		$message .= JText::_('TIP_URL_TO_STATUS') . "\r\n";
+		$message .= JText::_('COM_TOOLS_TIP_URL_TO_STATUS') . "\r\n";
 		$message .= $live_site.JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']) . "\r\n";
 
 		// fire off message
@@ -1824,7 +1824,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$dispatcher =& JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option))) 
 			{
-				$this->addComponentMessage(JText::_('Failed to message users.'), 'error');
+				$this->addComponentMessage(JText::_('COM_TOOLS_Failed to message users.'), 'error');
 			}
 		}
 	}
@@ -1859,7 +1859,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if (isset($oldstuff['toolname']) && isset($newstuff['toolname']) && $oldstuff['toolname'] != $newstuff['toolname']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOLNAME'),
+					'field'  => JText::_('COM_TOOLS_TOOLNAME'),
 					'before' => $oldstuff['toolname'],
 					'after'  => $newstuff['toolname']
 				);
@@ -1867,26 +1867,26 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['title'] != $newstuff['title']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOL') . ' ' . strtolower(JText::_('TITLE')),
+					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
 					'before' => $oldstuff['title'],
 					'after'  => $newstuff['title']
 				);
-				$summary .= strtolower(JText::_('TITLE'));
+				$summary .= strtolower(JText::_('COM_TOOLS_TITLE'));
 			}
 			if ($oldstuff['version'] != '' && $oldstuff['version'] != $newstuff['version']) 
 			{
 				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('DEV_VERSION_LABEL')),
+					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
 					'before' => $oldstuff['version'],
 					'after'  => $newstuff['version']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('VERSION'));
+				$summary .= strtolower(JText::_('COM_TOOLS_VERSION'));
 			}
 			else if ($oldstuff['version'] == '' && $newstuff['version'] != '') 
 			{
 				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('DEV_VERSION_LABEL')),
+					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
 					'before' => '',
 					'after'  => $newstuff['version']
 				);
@@ -1894,76 +1894,76 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['description'] != $newstuff['description']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOL') . ' ' . strtolower(JText::_('DESCRIPTION')),
+					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
 					'before' => $oldstuff['description'],
 					'after'  => $newstuff['description']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('DESCRIPTION'));
+				$summary .= strtolower(JText::_('COM_TOOLS_DESCRIPTION'));
 			}
 			if ($oldstuff['toolaccess'] != $newstuff['toolaccess']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOL_ACCESS'),
+					'field'  => JText::_('COM_TOOLS_TOOL_ACCESS'),
 					'before' => $oldstuff['toolaccess'],
 					'after'  => $newstuff['toolaccess']
 				);
 				if ($newstuff['toolaccess'] == '@GROUP') 
 				{
 					$log['changes'][] = array(
-						'field'  => JText::_('ALLOWED_GROUPS'),
+						'field'  => JText::_('COM_TOOLS_ALLOWED_GROUPS'),
 						'before' => implode(',', $oldstuff['membergroups']),
 						'after'  => implode(',', $newstuff['membergroups'])
 					);
 				}
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('TOOL_ACCESS'));
+				$summary .= strtolower(JText::_('COM_TOOLS_TOOL_ACCESS'));
 			}
 			if ($oldstuff['codeaccess'] != $newstuff['codeaccess']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('CODE_ACCESS'),
+					'field'  => JText::_('COM_TOOLS_CODE_ACCESS'),
 					'before' => $oldstuff['codeaccess'],
 					'after'  => $newstuff['codeaccess']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('CODE_ACCESS'));
+				$summary .= strtolower(JText::_('COM_TOOLS_CODE_ACCESS'));
 			}
 			if ($oldstuff['wikiaccess'] != $newstuff['wikiaccess']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('WIKI_ACCESS'),
+					'field'  => JText::_('COM_TOOLS_WIKI_ACCESS'),
 					'before' => $oldstuff['wikiaccess'],
 					'after'  => $newstuff['wikiaccess']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('WIKI_ACCESS'));
+				$summary .= strtolower(JText::_('COM_TOOLS_WIKI_ACCESS'));
 			}
 			if (isset($oldstuff['vncGeometry']) && isset($newstuff['vncGeometry']) && $oldstuff['vncGeometry'] != $newstuff['vncGeometry']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('VNC_GEOMETRY'),
+					'field'  => JText::_('COM_TOOLS_VNC_GEOMETRY'),
 					'before' => $oldstuff['vncGeometry'],
 					'after'  => $newstuff['vncGeometry']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('VNC_GEOMETRY'));
+				$summary .= strtolower(JText::_('COM_TOOLS_VNC_GEOMETRY'));
 			}
 			if (isset($oldstuff['developers']) && isset($newstuff['developers']) && $oldstuff['developers'] != $newstuff['developers']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('DEVELOPMENT_TEAM'),
+					'field'  => JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
 					'before' => ToolsHelperHtml::getDevTeam($oldstuff['developers']),
 					'after'  => ToolsHelperHtml::getDevTeam($newstuff['developers'])
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('DEVELOPMENT_TEAM'));
+				$summary .= strtolower(JText::_('COM_TOOLS_DEVELOPMENT_TEAM'));
 			}
 
 			// end of tool information changes
 			if ($summary) 
 			{
-				$summary .= ' ' . JText::_('INFO_CHANGED');
+				$summary .= ' ' . JText::_('COM_TOOLS_INFO_CHANGED');
 				$action = 1;
 			}
 
@@ -1971,7 +1971,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['priority'] != $newstuff['priority']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('PRIORITY'),
+					'field'  => JText::_('COM_TOOLS_PRIORITY'),
 					'before' => ToolsHelperHtml::getPriority($oldstuff['priority']),
 					'after'  => ToolsHelperHtml::getPriority($newstuff['priority'])
 				);
@@ -1980,11 +1980,11 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['toolstate'] != $newstuff['toolstate']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('STATUS'),
+					'field'  => JText::_('COM_TOOLS_STATUS'),
 					'before' => ToolsHelperHtml::getStatusName($oldstuff['toolstate'], $oldstate),
 					'after'  => ToolsHelperHtml::getStatusName($newstuff['toolstate'], $newstate)
 				);
-				$summary = JText::_('STATUS') . ' ' . JText::_('TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . JText::_('TO') . ' ' . $newstate;
+				$summary = JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . JText::_('COM_TOOLS_TO') . ' ' . $newstate;
 				$email   = 1; // send email about status changes
 				$action  = 2;
 			}
@@ -2062,7 +2062,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['toolname'] != $newstuff['toolname']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOLNAME'),
+					'field'  => JText::_('COM_TOOLS_TOOLNAME'),
 					'before' => $oldstuff['toolname'],
 					'after'  => $newstuff['toolname']
 				);
@@ -2070,26 +2070,26 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['title'] != $newstuff['title']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOL') . ' ' . strtolower(JText::_('TITLE')),
+					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
 					'before' => $oldstuff['title'],
 					'after'  => $newstuff['title']
 				);
-				$summary .= strtolower(JText::_('TITLE'));
+				$summary .= strtolower(JText::_('COM_TOOLS_TITLE'));
 			}
 			if ($oldstuff['version']!='' && $oldstuff['version'] != $newstuff['version']) 
 			{
 				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('DEV_VERSION_LABEL')),
+					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
 					'before' => $oldstuff['version'],
 					'after'  => $newstuff['version']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('VERSION'));
+				$summary .= strtolower(JText::_('COM_TOOLS_VERSION'));
 			}
 			else if ($oldstuff['version']=='' && $newstuff['version']!='') 
 			{
 				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('DEV_VERSION_LABEL')),
+					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
 					'before' => '',
 					'after'  => $newstuff['version']
 				);
@@ -2097,76 +2097,76 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['description'] != $newstuff['description']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOL') . ' ' . strtolower(JText::_('DESCRIPTION')),
+					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
 					'before' => $oldstuff['description'],
 					'after'  => $newstuff['description']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('DESCRIPTION'));
+				$summary .= strtolower(JText::_('COM_TOOLS_DESCRIPTION'));
 			}
 			if ($oldstuff['exec'] != $newstuff['exec']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TOOL_ACCESS'),
+					'field'  => JText::_('COM_TOOLS_TOOL_ACCESS'),
 					'before' => $oldstuff['exec'],
 					'after'  => $newstuff['exec']
 				);
 				if ($newstuff['exec']=='@GROUP') 
 				{
 					$log['changes'][] = array(
-						'field'  => JText::_('ALLOWED_GROUPS'),
+						'field'  => JText::_('COM_TOOLS_ALLOWED_GROUPS'),
 						'before' => '',
 						'after'  => ToolsHelperHtml::getGroups($newstuff['membergroups'])
 					);
 				}
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('TOOL_ACCESS'));
+				$summary .= strtolower(JText::_('COM_TOOLS_TOOL_ACCESS'));
 			}
 			if ($oldstuff['code'] != $newstuff['code']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('CODE_ACCESS'),
+					'field'  => JText::_('COM_TOOLS_CODE_ACCESS'),
 					'before' => $oldstuff['code'],
 					'after'  => $newstuff['code']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('CODE_ACCESS'));
+				$summary .= strtolower(JText::_('COM_TOOLS_CODE_ACCESS'));
 			}
 			if ($oldstuff['wiki'] != $newstuff['wiki']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('WIKI_ACCESS'),
+					'field'  => JText::_('COM_TOOLS_WIKI_ACCESS'),
 					'before' => $oldstuff['wiki'],
 					'after'  => $newstuff['wiki']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('WIKI_ACCESS'));
+				$summary .= strtolower(JText::_('COM_TOOLS_WIKI_ACCESS'));
 			}
 			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('VNC_GEOMETRY'),
+					'field'  => JText::_('COM_TOOLS_VNC_GEOMETRY'),
 					'before' => $oldstuff['vncGeometry'],
 					'after'  => $newstuff['vncGeometry']
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('VNC_GEOMETRY'));
+				$summary .= strtolower(JText::_('COM_TOOLS_VNC_GEOMETRY'));
 			}
 			if ($oldstuff['developers'] != $newstuff['developers']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('DEVELOPMENT_TEAM'),
+					'field'  => JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
 					'before' => ToolsHelperHtml::getDevTeam($oldstuff['developers']),
 					'after'  => ToolsHelperHtml::getDevTeam($newstuff['developers'])
 				);
 				$summary .= $summary == '' ? '' : ', ';
-				$summary .= strtolower(JText::_('DEVELOPMENT_TEAM'));
+				$summary .= strtolower(JText::_('COM_TOOLS_DEVELOPMENT_TEAM'));
 			}
 
 			// end of tool information changes
 			if ($summary) 
 			{
-				$summary .= ' ' . JText::_('INFO_CHANGED');
+				$summary .= ' ' . JText::_('COM_TOOLS_INFO_CHANGED');
 				$action = 1;
 			}
 
@@ -2174,7 +2174,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['priority'] != $newstuff['priority']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('PRIORITY'),
+					'field'  => JText::_('COM_TOOLS_PRIORITY'),
 					'before' => ToolsHelperHtml::getPriority($oldstuff['priority']),
 					'after'  => ToolsHelperHtml::getPriority($newstuff['priority'])
 				);
@@ -2183,11 +2183,11 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($oldstuff['state'] != $newstuff['state']) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_CHANGED_FROM'),
+					'field'  => JText::_('COM_TOOLS_TICKET_CHANGED_FROM'),
 					'before' => ToolsHelperHtml::getStatusName($oldstuff['state'], $oldstate),
 					'after'  => ToolsHelperHtml::getStatusName($newstuff['state'], $newstate)
 				);
-				$summary = JText::_('STATUS') . ' ' . JText::_('TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . JText::_('TO') . ' ' . $newstate;
+				$summary = JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . JText::_('COM_TOOLS_TO') . ' ' . $newstate;
 				$email = 1; // send email about status changes
 				$action = 2;
 			}
@@ -2245,7 +2245,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$row->created  = date("Y-m-d H:i:s");
 		$row->login    = $this->juser->get('username');
 		$row->severity = 'normal';
-		$row->summary  = JText::_('NEW_TOOL_SUBMISSION') . ': ' . $tool['toolname'];
+		$row->summary  = JText::_('COM_TOOLS_NEW_TOOL_SUBMISSION') . ': ' . $tool['toolname'];
 		$row->report   = $tool['toolname'];
 		$row->section  = 2;
 		$row->type     = 3;
@@ -2275,7 +2275,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				$obj->saveTicketId($toolid, $row->id);
 
 				// make a record
-				$this->_updateTicket($toolid, '', '', JText::_('NOTICE_TOOL_REGISTERED'), 0, 1, 4, $tool);
+				$this->_updateTicket($toolid, '', '', JText::_('COM_TOOLS_NOTICE_TOOL_REGISTERED'), 0, 1, 4, $tool);
 			}
 		}
 
@@ -2310,7 +2310,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -2319,17 +2319,17 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if (!$status) 
 		{
-			JError::raiseError(404, JText::_('ERR_EDIT_CANNOT_FIND'));
+			JError::raiseError(404, JText::_('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
 			return;
 		}
 		if ($status['state'] == ToolsHelperHtml::getStatusNum('Abandoned')) 
 		{
-			JError::raiseError(404, JText::_('ERR_ALREADY_CANCELLED'));
+			JError::raiseError(404, JText::_('COM_TOOLS_ERR_ALREADY_CANCELLED'));
 			return;
 		}
 		if ($status['published'] == 1) 
 		{
-			JError::raiseError(404, JText::_('ERR_CANNOT_CANCEL_PUBLISHED_TOOL'));
+			JError::raiseError(404, JText::_('COM_TOOLS_ERR_CANNOT_CANCEL_PUBLISHED_TOOL'));
 			return;
 		}
 
@@ -2343,12 +2343,12 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$obj->updateTool($this->_toolid, ToolsHelperHtml::getStatusNum('Abandoned') , 5);
 
 		// add comment to ticket
-		$this->_updateTicket($this->_toolid, '', '', JText::_('NOTICE_TOOL_CANCELLED'), 0, 1, 5);
+		$this->_updateTicket($this->_toolid, '', '', JText::_('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);
 
 		// continue output
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-			JText::_('NOTICE_TOOL_CANCELLED')
+			JText::_('COM_TOOLS_NOTICE_TOOL_CANCELLED')
 		);
 	}
 
@@ -2370,7 +2370,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		$command = '/usr/bin/sudo -u apps /usr/bin/licensetool -hubdir ' . JPATH_ROOT . ' -type raw -license ' . $fname . ' ' . $toolname;
 
-		if (!$this->_invokescript($command, JText::_('NOTICE_LICENSE_CHECKED_IN'), $output)) 
+		if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_LICENSE_CHECKED_IN'), $output)) 
 		{
 			return false;
 		}
@@ -2400,13 +2400,13 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if ($status != 0) 
 		{
 			$output['class'] = 'error';
-			$output['msg'] = JText::_('ERR_OPERATION_FAILED');
+			$output['msg'] = JText::_('COM_TOOLS_ERR_OPERATION_FAILED');
 			$success = 0;
 		}
 
 		if ($success) 
 		{
-			$output['msg'] = JText::_('SUCCESS') . ': ' . $successmsg;
+			$output['msg'] = JText::_('COM_TOOLS_SUCCESS') . ': ' . $successmsg;
 		}
 
 		$msg = '';

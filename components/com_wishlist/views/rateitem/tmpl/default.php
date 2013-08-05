@@ -106,11 +106,11 @@ $cls = ' tooltips';
 $juser = JFactory::getUser();
 if (!$juser->get('guest')) {
 	// Logged in
-	$like_title = JText::_('I like this.');
-	$dislike_title = JText::_('I dislike this.');
+	$like_title = JText::_('COM_WISHLIST_VOTING_I_LIKE_THIS');
+	$dislike_title = JText::_('COM_WISHLIST_VOTING_I_DISLIKE_THIS');
 	
 	if ($this->item->vote) {
-		$like_title = $dislike_title = JText::_('You have already voted.');
+		$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_ALREADY_VOTED');
 		if ($this->item->vote == $this->item->positive) {
 			$lcls = ' chosen';
 		}
@@ -119,29 +119,29 @@ if (!$juser->get('guest')) {
 		}
 	}
 	if ($juser->get('id') == $this->item->proposed_by) {
-		$like_title = $dislike_title = JText::_('You cannot vote for your own wish.');
+		$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_CANNOT_VOTE_FOR_OWN');
 		//$this->item->positive = 0;
 	}
 	if ($this->item->status == 1 || $this->item->status == 3 || $this->item->status == 4) { 
-		$like_title = $dislike_title = JText::_('Voting is closed for this wish.');
+		$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_CLOED');
 	}
 } else {
 	// Not logged in
-	$like_title = $dislike_title = JText::_('Please login to vote.');
+	$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_LOGIN_TO_VOTE');
 	//$this->item->positive = 0;
 }
 ?>
 <span class="vote-like<?php echo $lcls; ?>">
 <?php if ($this->item->vote || $juser->get('guest') || $juser->get('id') == $this->item->proposed_by) { ?>
-	<span class="vote-button <?php echo ($this->item->positive > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote up'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->positive; ?><span> Like</span></span>
+	<span class="vote-button <?php echo ($this->item->positive > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote up'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->positive; ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_LIKE'); ?></span></span>
 <?php } else { ?>
-	<a class="vote-button <?php echo ($this->item->positive > 0) ? 'like' : 'like'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('Vote up'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->positive; ?><span> Like</span></a>
+	<a class="vote-button <?php echo ($this->item->positive > 0) ? 'like' : 'like'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->positive; ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_LIKE'); ?></span></a>
 <?php } ?>
 </span>
 <span class="vote-dislike<?php echo $dcls; ?>">
 <?php if ($this->item->vote || $juser->get('guest') || $juser->get('id') == $this->item->proposed_by) { ?>
-	<span class="vote-button <?php echo ($this->item->negative > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote down'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->negative; ?><span> Dislike</span></span>
+	<span class="vote-button <?php echo ($this->item->negative > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote down'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->negative; ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_DISLIKE'); ?></span></span>
 <?php } else { ?>
-	<a class="vote-button <?php echo ($this->item->negative > 0) ? 'dislike' : 'dislike'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('Vote down'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->negative; ?><span> Dislike</span></a>
+	<a class="vote-button <?php echo ($this->item->negative > 0) ? 'dislike' : 'dislike'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->id.'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->negative; ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_DISLIKE'); ?></span></a>
 <?php } ?>
 </span>

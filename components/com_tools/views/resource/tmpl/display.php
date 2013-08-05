@@ -48,8 +48,8 @@ else {
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -74,7 +74,7 @@ else {
 	<form action="index.php" method="post" id="hubForm">
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
 <?php if ($this->step !=1 ) { ?>
-			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?> " class="returntoedit" /></span>
+			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
 <?php } ?>
 			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
 		</div>
@@ -140,7 +140,7 @@ else {
 
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
 <?php if ($this->step != 1) { ?>
-			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?> " class="returntoedit" /></span>
+			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
 <?php } ?>
 			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
 		</div>

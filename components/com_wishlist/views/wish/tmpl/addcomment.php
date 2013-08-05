@@ -42,7 +42,7 @@ if (!$this->juser->get('guest')) {
 		<div class="below section<?php echo $class; ?>">
 			<h3>
 				<a name="commentform"></a>
-				<?php echo JText::_('ACTION_ADD_COMMENT'); ?>
+				<?php echo JText::_('COM_WISHLIST_ACTION_ADD_COMMENT'); ?>
 			</h3>
 			<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
 				<div class="aside">
@@ -120,11 +120,11 @@ if (!$this->juser->get('guest')) {
 						<fieldset>
 							<div class="grouping">
 								<label>
-									 <?php echo JText::_('ACTION_ATTACH_FILE'); ?>
+									 <?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
 									<input type="file" name="upload" />
 								</label>
 								<label>
-									 <?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
+									 <?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
 									<input type="text" name="description" value="" />
 								</label>
 							</div>
@@ -132,19 +132,19 @@ if (!$this->juser->get('guest')) {
 
 						<label id="comment-anonymous-label">
 							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" /> 
-							<?php echo JText::_('POST_COMMENT_ANONYMOUSLY'); ?>
+							<?php echo JText::_('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('POST_COMMENT'); ?>" />
+							<input type="submit" value="<?php echo JText::_('COM_WISHLIST_POST_COMMENT'); ?>" />
 						</p>
 
 						<div class="sidenote">
 							<p>
-								<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
+								<strong><?php echo JText::_('COM_WISHLIST_COMMENT_KEEP_POLITE'); ?></strong>
 							</p>
 							<p>
-								Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
+								<?php echo JText::_('COM_WISHLIST_PLAN_FORMATTING_HELP'); ?> <a href="/wiki/Help:WikiFormatting" class="popup 400x500">Wiki syntax</a> is supported.
 							</p>
 						</div>
 					</fieldset>
@@ -172,11 +172,11 @@ if (!$this->juser->get('guest')) {
 								<fieldset>
 									<div class="grouping">
 										<label>
-											<?php echo JText::_('ACTION_ATTACH_FILE'); ?>
+											<?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
 											<input type="file" name="upload"  />
 										</label>
 										<label>
-											<?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
+											<?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
 											<input type="text" name="description" value="" />
 										</label>
 									</div>
@@ -184,12 +184,12 @@ if (!$this->juser->get('guest')) {
 								
 								<label class="reply-anonymous-label">
 									<input class="option" type="checkbox" name="anonymous" value="1" /> 
-									<?php echo JText::_('POST_COMMENT_ANONYMOUSLY'); ?>
+									<?php echo JText::_('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 								</label>
 							
 								<p class="submit">
-									<input type="submit" value="<?php echo JText::_('POST_COMMENT'); ?>" /> 
-									<a class="closeform cancelreply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&listid='.$this->listid.'&wishid='.$this->wishid.'#c'.$this->refid); ?>" id="close_<?php echo $this->refid; ?>"><?php echo JText::_('CANCEL'); ?></a>
+									<input type="submit" value="<?php echo JText::_('COM_WISHLIST_POST_COMMENT'); ?>" /> 
+									<a class="closeform cancelreply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&listid='.$this->listid.'&wishid='.$this->wishid.'#c'.$this->refid); ?>" id="close_<?php echo $this->refid; ?>"><?php echo JText::_('COM_WISHLIST_CANCEL'); ?></a>
 								</p>
 							</fieldset>
 						</form>

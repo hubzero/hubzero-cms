@@ -36,7 +36,7 @@ if ($this->allowupload) { ?>
 		<fieldset>
 			<label for="upload">
 				<input type="file" class="option" name="upload" id="upload" />
-				<input type="submit" class="option" value="<?php echo strtolower(JText::_('UPLOAD')); ?>" />
+				<input type="submit" class="option" value="<?php echo strtolower(JText::_('COM_TOOLS_UPLOAD')); ?>" />
 			</label>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -49,10 +49,10 @@ if ($this->allowupload) { ?>
 	</form>
 <?php } else { ?>
 	<p class="warning">
-		<?php echo JText::_('SUPPORTING_DOCS_ONLY_CURRENT'); ?> <?php echo JText::_('PLEASE'); ?> 
+		<?php echo JText::_('COM_TOOLS_SUPPORTING_DOCS_ONLY_CURRENT'); ?> <?php echo JText::_('COM_TOOLS_PLEASE'); ?> 
 		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=resource&step=3&app='.$this->resource->alias.'&editversion=current'); ?>'" target="_top">
-			<?php echo strtolower(JText::_('EDIT_CURRENT_VERSION')); ?>
-		</a>, <?php echo JText::_('IF_YOU_NEED_CHANGES'); ?>
+			<?php echo strtolower(JText::_('COM_TOOLS_EDIT_CURRENT_VERSION')); ?>
+		</a>, <?php echo JText::_('COM_TOOLS_IF_YOU_NEED_CHANGES'); ?>
 	</p>
 <?php } ?>
 
@@ -76,7 +76,7 @@ if ($this->children) {
 	jimport('joomla.filesystem.file');
 
 	if ($this->allowupload) {
-		$out .= '<p>'.JText::_('ATTACH_EDIT_TITLE_EXPLANATION').'</p>'."\n";
+		$out .= '<p>'.JText::_('COM_TOOLS_ATTACH_EDIT_TITLE_EXPLANATION').'</p>'."\n";
 	}
 	$out .= '<table class="list">'."\n";
 
@@ -129,7 +129,7 @@ if ($this->children) {
 			$out .= '  <td class="d">';
 			//ContribtoolHtml::orderUpIcon( $i, $id, $child->id, 'a' )
 			if ($i > 0 || ($i+0 > 0)) {
-		    	$out .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('MOVE_UP').'"><span>'.JText::_('MOVE_UP').'</span></a>';
+		    	$out .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';
   			} else {
   		    	$out .= '&nbsp;';
 			}
@@ -138,12 +138,12 @@ if ($this->children) {
 			$out .= '  <td class="u">';
 		//ContribtoolHtml::orderDownIcon( $i, $n, $id, $child->id, 'a' );
 			if ($i < $n-1 || $i+0 < $n-1) {
-				$out .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('MOVE_DOWN').'"><span>'.JText::_('MOVE_DOWN').'</span></a>';
+				$out .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_TOOLS_MOVE_DOWN').'"><span>'.JText::_('COM_TOOLS_MOVE_DOWN').'</span></a>';
   			} else {
   		    	$out .= '&nbsp;';
 			}
 			$out .= '</td>';
-			$out .= '  <td class="t"><a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;tmpl=component&amp;id='.$child->id.'&amp;pid='.$this->resource->id.'"><img src="/components/com_tools/assets/img/trash.gif" alt="'.JText::_('DELETE').'" /></a></td>';
+			$out .= '  <td class="t"><a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;tmpl=component&amp;id='.$child->id.'&amp;pid='.$this->resource->id.'"><img src="/components/com_tools/assets/img/trash.gif" alt="'.JText::_('COM_TOOLS_DELETE').'" /></a></td>';
 		}
 		$out .= ' </tr>';
 
@@ -151,6 +151,6 @@ if ($this->children) {
 	}
 	$out .= '</table>';
 } else {
-	$out .= '<p>'.JText::_('ATTACH_NONE_FOUND').'</p>';
+	$out .= '<p>'.JText::_('COM_TOOLS_ATTACH_NONE_FOUND').'</p>';
 }
 echo $out;

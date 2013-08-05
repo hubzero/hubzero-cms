@@ -56,10 +56,10 @@ $title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[
 			<input type="hidden" name="task" value="save" />
 			<fieldset class="uploading">
 				<label class="ss_title" for="ss_title">
-					<?php echo JText::_('SS_TITLE'); ?>:
+					<?php echo JText::_('COM_TOOLS_SS_TITLE'); ?>:
 					<input type="text" name="title" id="ss_title"  size="127" maxlength="127" value="<?php echo $this->escape($title); ?>" class="input_restricted" />
 				</label>
-				<input type="submit" id="ss_pop_save" value="<?php echo strtolower(JText::_('SAVE')); ?>" />
+				<input type="submit" id="ss_pop_save" value="<?php echo strtolower(JText::_('COM_TOOLS_SAVE')); ?>" />
 			</fieldset>
  		</form>
 	</div>

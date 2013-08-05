@@ -32,11 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div class="explaination">
-	<h4><?php echo JText::_('AUTHORS_NO_LOGIN'); ?></h4>
-	<p><?php echo JText::_('AUTHORS_NO_LOGIN_EXPLANATION'); ?></p>
+	<h4><?php echo JText::_('COM_TOOLS_AUTHORS_NO_LOGIN'); ?></h4>
+	<p><?php echo JText::_('COM_TOOLS_AUTHORS_NO_LOGIN_EXPLANATION'); ?></p>
 </div>
 <fieldset>
-	<legend><?php echo JText::_('AUTHORS_AUTHORS'); ?></legend>
+	<legend><?php echo JText::_('COM_TOOLS_AUTHORS_AUTHORS'); ?></legend>
 	<div class="field-wrap">
 		<iframe name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;controller=authors&amp;rid=<?php echo $this->row->id; ?>&amp;tmpl=component&amp;version=<?php echo $this->version; ?>" width="100%" height="400" frameborder="0"></iframe>
 	</div>

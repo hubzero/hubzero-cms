@@ -76,7 +76,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -84,7 +84,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// Ensure we have a parent ID to work with
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -161,7 +161,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$pid = JRequest::getInt('pid', 0);
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -173,7 +173,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -181,7 +181,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_FILE'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_FILE'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -247,7 +247,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($pid);
 				return;
 			}
@@ -256,7 +256,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_UPLOADING'));
 		} 
 		else 
 		{
@@ -322,7 +322,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$pid = JRequest::getInt('pid', 0);
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -334,7 +334,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -342,7 +342,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$id = JRequest::getInt('id', 0);
 		if (!$id) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -356,7 +356,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// Check for stored file
 		if ($row->path == '') 
 		{
-			$this->setError(JText::_('Error: file path not found.'));
+			$this->setError(JText::_('COM_TOOLS_Error: file path not found.'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -371,14 +371,14 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// Check if the folder even exists
 		if (!is_dir($path) or !$path) 
 		{
-			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 		} 
 		else 
 		{
 			// Attempt to delete the file
 			if (!JFolder::delete($path)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
 			}
 
 			// Delete associations to the resource
@@ -411,7 +411,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			JError::raiseError(500, JText::_('CONTRIBUTE_NO_ID'));
+			JError::raiseError(500, JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			return;
 		}
 

@@ -57,37 +57,37 @@ $elements = new ResourcesElements($data, $type->customFields);
 $fields = $elements->render();
 ?>
 	<div class="explaination"> 
-		<p class="help"><?php echo $this->dev ? JText::_('SIDE_EDIT_PAGE') : JText::_('SIDE_EDIT_PAGE_CURRENT'); ?></p>
-		<p><?php echo JText::_('COMPOSE_ABSTRACT_HINT'); ?></p>
+		<p class="help"><?php echo $this->dev ? JText::_('COM_TOOLS_SIDE_EDIT_PAGE') : JText::_('COM_TOOLS_SIDE_EDIT_PAGE_CURRENT'); ?></p>
+		<p><?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT_HINT'); ?></p>
 	</div>
 	<fieldset>
-		<legend><?php echo JText::_('COMPOSE_ABOUT'); ?></legend>
+		<legend><?php echo JText::_('COM_TOOLS_COMPOSE_ABOUT'); ?></legend>
 		<label for="field-title">
-			<?php echo JText::_('COMPOSE_TITLE'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+			<?php echo JText::_('COM_TOOLS_COMPOSE_TITLE'); ?>: <span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 <?php if ($this->dev) { ?>
 			<input type="text" name="title" id="field-title" maxlength="127" value="<?php echo $this->escape(stripslashes($this->status['title'])); ?>" />
 <?php } else { ?>
 			<input type="text" name="rtitle" id="field-title" maxlength="127" value="<?php echo $this->escape(stripslashes($this->status['title'])); ?>" disabled="disabled" />
 			<input type="hidden" name="title" maxlength="127" value="<?php echo $this->escape(stripslashes($this->status['title'])); ?>" />
-			<p class="warning"><?php echo JText::_('TITLE_CANT_CHANGE'); ?></p>
+			<p class="warning"><?php echo JText::_('COM_TOOLS_TITLE_CANT_CHANGE'); ?></p>
 <?php } ?>
 		</label>
 		<label for="field-description">
-			<?php echo JText::_('COMPOSE_AT_A_GLANCE'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+			<?php echo JText::_('COM_TOOLS_COMPOSE_AT_A_GLANCE'); ?>: <span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 			<input type="text" name="description" id="field-description" maxlength="256" value="<?php echo $this->escape(stripslashes($this->status['description'])); ?>" />
 		</label>
 		<label for="field-fulltxt">
-			<?php echo JText::_('COMPOSE_ABSTRACT'); ?>:
+			<?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT'); ?>:
 			<textarea name="fulltxt" id="field-fulltxt" cols="50" rows="20"><?php echo $this->escape(stripslashes($this->status['fulltxt'])); ?></textarea>
-			<span class="hint"><a href="/wiki/Help:WikiFormatting"><?php echo JText::_('WIKI_FORMATTING'); ?></a> <?php echo JText::_('COMPOSE_TIP_ALLOWED'); ?>.</span>
+			<span class="hint"><a href="/wiki/Help:WikiFormatting"><?php echo JText::_('COM_TOOLS_WIKI_FORMATTING'); ?></a> <?php echo JText::_('COM_TOOLS_COMPOSE_TIP_ALLOWED'); ?>.</span>
 		</label>
 	</fieldset><div class="clear"></div>
 
 	<div class="explaination">
-		<p><?php echo JText::_('COMPOSE_CUSTOM_FIELDS_EXPLANATION'); ?></p>
+		<p><?php echo JText::_('COM_TOOLS_COMPOSE_CUSTOM_FIELDS_EXPLANATION'); ?></p>
 	</div>
 	<fieldset>
-		<legend><?php echo JText::_('COMPOSE_DETAILS'); ?></legend>
+		<legend><?php echo JText::_('COM_TOOLS_COMPOSE_DETAILS'); ?></legend>
 <?php 
 echo $fields;
 ?>

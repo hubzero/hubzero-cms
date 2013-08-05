@@ -143,7 +143,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Do we have a tool ID
 		if (!$this->_toolid) 
 		{
-			JError::raiseError(403, JText::_('No tool found.'));
+			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
 		}
 
@@ -157,7 +157,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Check for a status
 		if (count($status) <= 0) 
 		{
-			JError::raiseError(500, JText::_('ERR_CANNOT_RETRIEVE'));
+			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
 		}
 		
@@ -171,7 +171,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		$command .= ' -password "' . $pw . '"';
 		$command .= ' -hubdir ' . JPATH_ROOT;
 
-		$this->_invokeScript($command, JText::_('NOTICE_PROJECT_AREA_CREATED'));
+		$this->_invokeScript($command, JText::_('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
 
 		// Set errors to view
 		if ($this->getError())
@@ -217,7 +217,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Do we have a tool ID
 		if (!$this->_toolid) 
 		{
-			JError::raiseError(403, JText::_('No tool found.'));
+			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
 		}
 
@@ -231,7 +231,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Check for a status
 		if (count($status) <= 0) 
 		{
-			JError::raiseError(500, JText::_('ERR_CANNOT_RETRIEVE'));
+			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
 		}
 
@@ -239,14 +239,14 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . JPATH_ROOT . ' ' . $status['toolname'];
 		error_log($command);
 		// Invoke the script
-		if ($this->_invokeScript($command, JText::_('NOTICE_REV_INSTALLED'))) 
+		if ($this->_invokeScript($command, JText::_('COM_TOOLS_NOTICE_REV_INSTALLED'))) 
 		{
 			// Extract revision number
 			$rev = explode('installed revision: ', $this->getMessage());
 
 			if (!isset($rev[1]) || !intval($rev[1])) 
 			{
-				$this->setError(JText::_('ERR_CANNOT_SAVE_REVISION_INFO'));
+				$this->setError(JText::_('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
 			}
 			else 
 			{
@@ -255,7 +255,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				$hztv->revision = intval($rev[1]);
 				if (!$hztv->update()) 
 				{
-					$this->setError(JText::_('Error saving revision update to installed tool'));
+					$this->setError(JText::_('COM_TOOLS_Error saving revision update to installed tool'));
 				}
 			}
 		}
@@ -305,7 +305,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Do we have a tool ID
 		if (!$this->_toolid) 
 		{
-			JError::raiseError(403, JText::_('No tool found.'));
+			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
 		}
 
@@ -319,7 +319,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Check for a status
 		if (count($status) <= 0) 
 		{
-			JError::raiseError(500, JText::_('ERR_CANNOT_RETRIEVE'));
+			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
 		}
 
@@ -329,11 +329,11 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Unpublish all previous versions
 		if (!$objV->unpublish($this->_toolid)) 
 		{
-			$this->setError(JText::_('ERR_FAILED_TO_UNPUBLISH_PREV_VERSIONS'));
+			$this->setError(JText::_('COM_TOOLS_ERR_FAILED_TO_UNPUBLISH_PREV_VERSIONS'));
 		}
 		else 
 		{
-			$this->setMessage(JText::_('NOTICE_UNPUBLISHED_PREV_VERSIONS'));
+			$this->setMessage(JText::_('COM_TOOLS_NOTICE_UNPUBLISHED_PREV_VERSIONS'));
 		}
 
 		// Set errors to view
@@ -380,7 +380,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Do we have a tool ID
 		if (!$this->_toolid) 
 		{
-			JError::raiseError(403, JText::_('No tool found.'));
+			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
 		}
 
@@ -394,7 +394,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		// Check for a status
 		if (count($status) <= 0) 
 		{
-			JError::raiseError(500, JText::_('ERR_CANNOT_RETRIEVE'));
+			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
 		}
 
@@ -419,7 +419,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		{
 			// bad format
 			$result = false;
-			$this->setError(JText::_('ERR_MISSING_REVISION_OR_BAD_FORMAT'));
+			$this->setError(JText::_('COM_TOOLS_ERR_MISSING_REVISION_OR_BAD_FORMAT'));
 		}
 		else if (count($tools) > 0 && $status['revision']) 
 		{
@@ -429,7 +429,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				if ($t->revision == $status['revision']) 
 				{
 					$result = false;
-					$this->setError(JText::_('ERR_REVISION_EXISTS') . ' ' . $status['revision']);
+					$this->setError(JText::_('COM_TOOLS_ERR_REVISION_EXISTS') . ' ' . $status['revision']);
 				}
 			}
 			// check that revision number is greater than in previous version
@@ -437,7 +437,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			if ($currentrev && (intval($currentrev) > intval($status['revision']))) 
 			{
 				$result = false;
-				$this->setError(JText::_('ERR_REVISION_GREATER'));
+				$this->setError(JText::_('COM_TOOLS_ERR_REVISION_GREATER'));
 			}
 		}
 
@@ -459,7 +459,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		{
 			if ($this->_finalizeTool($out)) 
 			{
-				$this->setMessage(JText::_('Version finalized.'));
+				$this->setMessage(JText::_('COM_TOOLS_Version finalized.'));
 			}
 			else 
 			{
@@ -487,7 +487,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			// DOI already exists for this revision
 			if ($bingo) 
 			{
-				$this->setError(JText::_('ERR_DOI_ALREADY_EXISTS') . ': ' . $bingo);
+				$this->setError(JText::_('COM_TOOLS_ERR_DOI_ALREADY_EXISTS') . ': ' . $bingo);
 			}
 			else 
 			{
@@ -517,22 +517,22 @@ class ToolsControllerAdmin extends Hubzero_Controller
 					{
 						if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'], 0, $doiSuccess)) 
 						{
-							$this->setMessage(JText::_('SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
+							$this->setMessage(JText::_('COM_TOOLS_SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
 						}
 						else 
 						{
-							$this->setError(JText::_('ERR_DOI_STORE_FAILED'));
+							$this->setError(JText::_('COM_TOOLS_ERR_DOI_STORE_FAILED'));
 							$result = false;
 						}
 					}
 					else 
 					{
-						$this->setError(JText::_('DOI already exists: ') . $objDOI->doi);
+						$this->setError(JText::_('COM_TOOLS_DOI already exists: ') . $objDOI->doi);
 					}
 				}
 				else 
 				{
-					$this->setError(JText::_('ERR_DOI_STORE_FAILED'));
+					$this->setError(JText::_('COM_TOOLS_ERR_DOI_STORE_FAILED'));
 					$this->setError($doierr);
 					$result = false;
 				}
@@ -590,7 +590,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 
 			if (!$new_hztv->update())
 			{
-				$this->setError(JText::_('Failed to update tool instance.'));
+				$this->setError(JText::_('COM_TOOLS_Failed to update tool instance.'));
 				$result = false;
 			}
 			else
@@ -608,11 +608,11 @@ class ToolsControllerAdmin extends Hubzero_Controller
 					// save tool info
 					if (!$hzt->update()) 
 					{
-						$this->setError(JText::_('Failed to update tool.'));
+						$this->setError(JText::_('COM_TOOLS_Failed to update tool.'));
 					}
 					else 
 					{
-						$this->setMessage(JText::_('NOTICE_TOOL_MARKED_PUBLISHED'));
+						$this->setMessage(JText::_('COM_TOOLS_NOTICE_TOOL_MARKED_PUBLISHED'));
 					}
 				}
 
@@ -621,11 +621,11 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				{
 					if ($hzt->unpublishVersion($hztv_cur->instance)) 
 					{
-						$this->setMessage(JText::_('NOTICE_UNPUBLISHED_PREV_VERSION_DB'));
+						$this->setMessage(JText::_('COM_TOOLS_NOTICE_UNPUBLISHED_PREV_VERSION_DB'));
 					}
 					else 
 					{
-						$this->setError(JText::_('ERR_FAILED_TO_UNPUBLISH_PREV_VERSION_DB'));
+						$this->setError(JText::_('COM_TOOLS_ERR_FAILED_TO_UNPUBLISH_PREV_VERSION_DB'));
 					}
 				}
 
@@ -636,11 +636,11 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				$objA = new ToolAuthor($this->database);
 				if ($objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname'])) 
 				{
-					$this->setMessage(JText::_('Authors saved successfully.'));
+					$this->setMessage(JText::_('COM_TOOLS_Authors saved successfully.'));
 				}
 				else 
 				{
-					$this->setError(JText::_('There was a problem saving authors. Version ID: ' . $currentid));
+					$this->setError(JText::_('COM_TOOLS_There was a problem saving authors. Version ID: ' . $currentid));
 				}
 
 				// transfer screenshots
@@ -651,11 +651,11 @@ class ToolsControllerAdmin extends Hubzero_Controller
 					$screenshots = new ToolsControllerScreenshots();
 					if ($screenshots->transfer($devid, $currentid, $status['resourceid'])) 
 					{
-						$this->setMessage(JText::_('Screenshots (if avaliable) transferred successfully.'));
+						$this->setMessage(JText::_('COM_TOOLS_Screenshots (if avaliable) transferred successfully.'));
 					}
 					else 
 					{
-						$this->setError(JText::_('There was a problem transferring screenshots.'));
+						$this->setError(JText::_('COM_TOOLS_There was a problem transferring screenshots.'));
 					}
 				}
 
@@ -729,7 +729,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::create('/tmp', 0777)) 
 				{
-					$out .= JText::_('ERR_UNABLE_TO_CREATE_PATH') . ' /tmp';
+					$out .= JText::_('COM_TOOLS_ERR_UNABLE_TO_CREATE_PATH') . ' /tmp';
 					return false;
 				}
 			}
@@ -743,7 +743,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . JPATH_ROOT . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
 			$xlog->logDebug("finalizeTool(): checkpoint 3: $command");
 
-			if (!$this->_invokescript($command, JText::_('NOTICE_VERSION_FINALIZED'))) 
+			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_VERSION_FINALIZED'))) 
 			{
 				$out .= " invoke script failure";
 				return false;
@@ -767,7 +767,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				if (!JFolder::create($file_path, 0777)) 
 				{
 					$xlog->logDebug("findalizeTool(): failed to create tarball path $file_path");
-					$out .= JText::_('ERR_UNABLE_TO_CREATE_TAR_PATH');
+					$out .= JText::_('COM_TOOLS_ERR_UNABLE_TO_CREATE_TAR_PATH');
 					return false;
 				}
 			}
@@ -787,7 +787,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		}
 		else 
 		{
-			$out = JText::_('ERR_CANNOT_RETRIEVE');
+			$out = JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE');
 			return false;
 		}
 		return true;
@@ -827,7 +827,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			break;
 
 			default:
-				$this->setError(JText::_('Wiki access unknown') . ': ' . $wikiaccess);
+				$this->setError(JText::_('COM_TOOLS_Wiki access unknown') . ': ' . $wikiaccess);
 			break;
 		}
 
@@ -852,7 +852,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			break;
 
 			default:
-				$this->setError(JText::_('Wiki access unknown') . ': ' . $wikiaccess);
+				$this->setError(JText::_('COM_TOOLS_Wiki access unknown') . ': ' . $wikiaccess);
 			break;
 		}
 
@@ -874,13 +874,13 @@ class ToolsControllerAdmin extends Hubzero_Controller
 
 		if ($status != 0) 
 		{
-			$this->setError(JText::_('ERR_OPERATION_FAILED'));
+			$this->setError(JText::_('COM_TOOLS_ERR_OPERATION_FAILED'));
 			$success = false;
 		}
 
 		if ($success) 
 		{
-			$this->setMessage(JText::_('SUCCESS') . ': ' . $successmsg);
+			$this->setMessage(JText::_('COM_TOOLS_SUCCESS') . ': ' . $successmsg);
 			// Print out results or errors
 			foreach ($rawoutput as $line)
 			{

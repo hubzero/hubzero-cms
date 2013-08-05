@@ -31,16 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->versionlabel = ($this->version == 'current') ? JText::_('CURRENTLY_PUBLISHED') : JText::_('DEVELOPMENT');
+$this->versionlabel = ($this->version == 'current') ? JText::_('COM_TOOLS_CURRENTLY_PUBLISHED') : JText::_('COM_TOOLS_DEVELOPMENT');
 if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
 <form action="index.php" name="hubForm" id="screenshots-form" method="post" enctype="multipart/form-data">
 	<h3>
-		<?php echo JText::_('EXISTING_SS'); ?> 
+		<?php echo JText::_('COM_TOOLS_EXISTING_SS'); ?> 
 		<?php if ($this->published) { ?>
-			(<?php echo $this->version=='dev' ? JText::_('DEVELOPMENT').' '.strtolower(JText::_('VERSION')) : JText::_('CURRENTLY_PUBLISHED').' '.strtolower(JText::_('VERSION'));  ?>)
+			(<?php echo $this->version=='dev' ? JText::_('COM_TOOLS_DEVELOPMENT').' '.strtolower(JText::_('COM_TOOLS_VERSION')) : JText::_('COM_TOOLS_CURRENTLY_PUBLISHED').' '.strtolower(JText::_('COM_TOOLS_VERSION'));  ?>)
 		<?php } ?>
 	</h3> 
 
@@ -147,7 +147,7 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		if (strtolower(end($images[$i]['type'])) == 'swf') 
 		{
 			$g++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO').' #'.$g;
+			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('COM_TOOLS_DEMO').' #'.$g;
 			$els .= '<li>';
 				$els .= '<a class="popup" rel="external" href="'.$this->wpath.DS.$images[$i]['img'].'" title="'.$title.'">';
 					$els .= '<img src="'.$this->wpath.DS.$tn.'" alt="'.$title.'" id="ss_'.$i.'" />';
@@ -157,11 +157,11 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		else 
 		{
 			$k++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title']: JText::_('SCREENSHOT').' #'.$k;
+			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title']: JText::_('COM_TOOLS_SCREENSHOT').' #'.$k;
 			$els .= '<li>';
 				$els .= '<span class="dev_ss">';
-					$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="edit_ss popup" rel="external">'.JText::_('edit').'</a>';
-					$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="delete_ss">'.JText::_('delete').'</a>';
+					$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="edit_ss popup" rel="external">'.JText::_('COM_TOOLS_EDIT').'</a>';
+					$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="delete_ss">'.JText::_('COM_TOOLS_DELETE').'</a>';
 				$els .= '</span>';
 				$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="popup" title="'.$title.'">';
 					$els .= '<img src="'.$this->wpath.DS.$tn.'" alt="'.$title.'" id="ss_'.$i.'" />';
@@ -188,22 +188,22 @@ if ($els) {
 	$html .= '<div class="clear"></div></div>'."\n";
 } else {
 	// No images available
-	$html .= '<p class="upload_ss">'.JText::_('UPLOAD_NO_SS').'</p>';
+	$html .= '<p class="upload_ss">'.JText::_('COM_TOOLS_UPLOAD_NO_SS').'</p>';
 }
 echo $html;
 ?>
 	<div class="clear"></div>
 
-	<h3><?php echo JText::_('UPLOAD_NEW_SS'); ?></h3>
+	<h3><?php echo JText::_('COM_TOOLS_UPLOAD_NEW_SS'); ?></h3>
 
 	<fieldset class="uploading">
 		<label>
 			<input type="file" class="option" name="upload" />
 		</label>
 		<label class="ss_title" for="title">
-			<?php echo JText::_('SS_TITLE').':'; ?>
+			<?php echo JText::_('COM_TOOLS_SS_TITLE').':'; ?>
 			<input type="text" name="title"  size="127" maxlength="127" value="" class="input_restricted" />
-			<input type="submit" class="upload" value="<?php echo strtolower(JText::_('UPLOAD')); ?>" />
+			<input type="submit" class="upload" value="<?php echo strtolower(JText::_('COM_TOOLS_UPLOAD')); ?>" />
 		</label>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -219,7 +219,7 @@ echo $html;
 <?php if ($this->published && $this->version=='dev') { ?>
 	<form action="index.php" name="copySSForm"  method="post" enctype="multipart/form-data">
 		<fieldset style="border-top:1px solid #ccc;padding-top:1em;">
-			<legend><?php echo JText::_('Copy Screenshots'); ?></legend>
+			<legend><?php echo JText::_('COM_TOOLS_Copy Screenshots'); ?></legend>
 			
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -230,9 +230,9 @@ echo $html;
 			<label>
 				<?php 
 				$v = $this->version=='dev' ? 'current' : 'development';
-				echo JText::_('From').' '.$v.' '.strtolower(JText::_('VERSION'));
+				echo JText::_('COM_TOOLS_From').' '.$v.' '.strtolower(JText::_('COM_TOOLS_VERSION'));
 				?>
-				<input type="submit" class="upload" value="<?php echo strtolower(JText::_('COPY')); ?>" />
+				<input type="submit" class="upload" value="<?php echo strtolower(JText::_('COM_TOOLS_COPY')); ?>" />
 			</label>
 		</fieldset>
 	</form>

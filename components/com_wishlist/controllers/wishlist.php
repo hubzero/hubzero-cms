@@ -563,14 +563,14 @@ class WishlistController extends JObject
 
 				if ($resource->title && $resource->standalone == 1  && $resource->published == 1) 
 				{
-					$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('WISHLIST_NAME_RESOURCE_TOOL').' '.$resource->alias : JText::_('WISHLIST_NAME_RESOURCE_ID').' '.$resource->id;
+					$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('COM_WISHLIST_NAME_RESOURCE_TOOL').' '.$resource->alias : JText::_('COM_WISHLIST_NAME_RESOURCE_ID').' '.$resource->id;
 					$id = $obj->createlist($cat, $refid, 1, $rtitle, $resource->title);
 				}
 			}
 			else if (!$id && $cat == 'user') 
 			{
 				// create private list for user
-				$id = $obj->createlist($cat, $refid, 0, JText::_('WISHLIST_NAME_MY_WISHLIST'));
+				$id = $obj->createlist($cat, $refid, 0, JText::_('COM_WISHLIST_NAME_MY_WISHLIST'));
 			}
 			else if (!$id && $cat == 'group') 
 			{
@@ -578,7 +578,7 @@ class WishlistController extends JObject
 				if (Hubzero_Group::exists($refid)) 
 				{
 					$group = Hubzero_Group::getInstance($refid);
-					$id = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('WISHLIST_NAME_GROUP'));
+					$id = $obj->createlist($cat, $refid, 0, $group->cn.' '.JText::_('COM_WISHLIST_NAME_GROUP'));
 				}
 			}
 		}
@@ -649,13 +649,13 @@ class WishlistController extends JObject
 			{
 				if (!$plugin) 
 				{
-					$this->_msg = JText::_('WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
+					$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
 					$this->login();
 				}
 				else 
 				{
 					// not authorized
-					JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+					JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
 					return;
 				}
 				return;
@@ -735,7 +735,7 @@ class WishlistController extends JObject
 
 		if (!$wish) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}
 
@@ -743,7 +743,7 @@ class WishlistController extends JObject
 		$wishlist = $obj->get_wishlist($wish->wishlist, $refid, $cat);
 		if (!$wishlist) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 		else 
@@ -785,7 +785,7 @@ class WishlistController extends JObject
 			// Go through some access checks
 			if ($juser->get('guest') && $action) 
 			{
-				$this->_msg = ($action=="addbonus") ? JText::_('MSG_LOGIN_TO_ADD_POINTS') : '';
+				$this->_msg = ($action=="addbonus") ? JText::_('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
 				$this->login();
 				return;
 			}
@@ -793,7 +793,7 @@ class WishlistController extends JObject
 			if (!$wishlist->public && $juser->get('guest')) 
 			{
 				// need to log in to private list
-				$this->_msg = JText::_('WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
+				$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
 				$this->login();
 				return;
 			}
@@ -801,7 +801,7 @@ class WishlistController extends JObject
 			if ($wish->private && $juser->get('guest')) 
 			{
 				// need to log in to view private wish
-				$this->_msg = JText::_('WARNING_LOGIN_PRIVATE_WISH');
+				$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
 				$this->login();
 				return;
 			}
@@ -822,14 +822,14 @@ class WishlistController extends JObject
 			// Deleted wish
 			if ($wish->status == 2 && !$this->_admin) 
 			{
-				JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+				JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 				return;
 			}
 
 			if ($wish->private && !$this->_admin) 
 			{
 				// need to be admin to view private wish
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
 				return;
 			}
 
@@ -1023,7 +1023,7 @@ class WishlistController extends JObject
 
 		if (!$this->_admin) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1123,7 +1123,7 @@ class WishlistController extends JObject
 		if (!$wishlist) 
 		{
 			// list not found
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 
@@ -1150,7 +1150,7 @@ class WishlistController extends JObject
 		// Login required
 		if ($juser->get('guest')) 
 		{
-			$this->_msg = JText::_('WARNING_LOGIN_MANAGE_SETTINGS');
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_MANAGE_SETTINGS');
 			$this->login();
 			return;
 		}
@@ -1214,7 +1214,7 @@ class WishlistController extends JObject
 		// Make sure we have wish id
 		if (!$wishid) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}
 
@@ -1224,7 +1224,7 @@ class WishlistController extends JObject
 
 		if (!$objWish->load($wishid)) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}
 
@@ -1343,14 +1343,14 @@ class WishlistController extends JObject
 			$admin_email = $jconfig->getValue('config.mailfrom');
 
 			// to wish assignee
-			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('WISH').' #'.$wishid.' '.JText::_('MSG_HAS_BEEN_ASSIGNED_TO_YOU');
+			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_WISH').' #'.$wishid.' '.JText::_('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
 
 			$from = array();
 			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 
-			$name = JText::_('UNKNOWN');
-			$login = JText::_('UNKNOWN');
+			$name = JText::_('COM_WISHLIST_UNKNOWN');
+			$login = JText::_('COM_WISHLIST_UNKNOWN');
 			$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
 			if (is_object($ruser)) 
 			{
@@ -1359,27 +1359,27 @@ class WishlistController extends JObject
 			}
 			if ($objWish->anonymous) 
 			{
-				$name = JText::_('ANONYMOUS');
+				$name = JText::_('COM_WISHLIST_ANONYMOUS');
 			}
 
 			$message  = '----------------------------'.r.n;
-			$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
-			$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
-			$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
-			$message .= ' '.JText::_('BY').' '.$name.' ';
+			$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
+			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
+			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 			$message .= $objWish->anonymous ? '' : '('.$login.')';
 			$message .= r.n.r.n;
 
 			$message .= '----------------------------'.r.n;
 			$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
-			$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_ASSIGNED_WISH').'.';
+			$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_ASSIGNED_WISH').'.';
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
 
 			if (!$dispatcher->trigger('onSendMessage', array('wishlist_wish_assigned', $subject, $message, $from, array($objWish->assigned), $this->_option))) 
 			{
-				$this->setError(JText::_('ERROR_FAILED_MSG_ASSIGNEE'));
+				$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 			}
 		}
 
@@ -1415,7 +1415,7 @@ class WishlistController extends JObject
 		{
 			if (!$category) 
 			{
-				JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+				JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 				return;
 			}
 			else 
@@ -1447,7 +1447,7 @@ class WishlistController extends JObject
 		// cannot add a wish to a non-existing list
 		if (!$listid) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 		else 
@@ -1458,7 +1458,7 @@ class WishlistController extends JObject
 		// list not found - seems to be an incorrect id
 		if (!$wishlist) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 
@@ -1478,7 +1478,7 @@ class WishlistController extends JObject
 		// Login required
 		if ($juser->get('guest')) 
 		{
-			$this->_msg = JText::_('WARNING_WISHLIST_LOGIN_TO_ADD');
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
 			$this->login();
 			return;
 		}
@@ -1489,7 +1489,7 @@ class WishlistController extends JObject
 		// this is a private list, can't add to it
 		if (!$wishlist->public && !$this->_admin) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1564,7 +1564,7 @@ class WishlistController extends JObject
 		// Login required
 		if ($juser->get('guest')) 
 		{
-			$this->_msg = JText::_('WARNING_WISHLIST_LOGIN_TO_ADD');
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
 			$this->login();
 			return;
 		}
@@ -1580,7 +1580,7 @@ class WishlistController extends JObject
 		$row = new Wish ($database);
 		if (!JRequest::getVar('subject', '')) 
 		{
-			$this->setError(JText::_('WISHLIST_ERROR_NO_SUBJECT'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_SUBJECT'));
 			$row->bind($_POST);
 		}
 		else if (!$row->bind($_POST)) 
@@ -1600,7 +1600,7 @@ class WishlistController extends JObject
 			}
 			else 
 			{
-				$this->setError(JText::_('ERROR_INVALID_USER_NAME'));
+				$this->setError(JText::_('COM_WISHLIST_ERROR_INVALID_USER_NAME'));
 			}
 		}
 
@@ -1610,12 +1610,12 @@ class WishlistController extends JObject
 			// Is it an actual number?
 			if (!is_numeric($reward)) 
 			{
-				$this->setError(JText::_('ERROR_INVALID_AMOUNT'));
+				$this->setError(JText::_('COM_WISHLIST_ERROR_INVALID_AMOUNT'));
 			}
 			// Are they offering more than they can afford?
 			if ($reward > $funds) 
 			{
-				$this->setError(JText::_('ERROR_NO_FUNDS'));
+				$this->setError(JText::_('COM_WISHLIST_ERROR_NO_FUNDS'));
 			}
 		}
 
@@ -1690,11 +1690,11 @@ class WishlistController extends JObject
 			$admin_email = $jconfig->getValue('config.mailfrom');
 
 			// Get author name
-			$name 	= JText::_('UNKNOWN');
-			$login 	= JText::_('UNKNOWN');
+			$name 	= JText::_('COM_WISHLIST_UNKNOWN');
+			$login 	= JText::_('COM_WISHLIST_UNKNOWN');
 			if ($row->anonymous) 
 			{
-				$name = JText::_('ANONYMOUS');
+				$name = JText::_('COM_WISHLIST_ANONYMOUS');
 			}
 			else 
 			{
@@ -1706,7 +1706,7 @@ class WishlistController extends JObject
 				}
 			}
 
-			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$wishlist->title.' '.JText::_('from').' '.$name;
+			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '.$wishlist->title.' '.JText::_('from').' '.$name;
 			$from = array();
 			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 			$from['email'] = $jconfig->getValue('config.mailfrom');
@@ -1716,10 +1716,10 @@ class WishlistController extends JObject
 			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
 
 			$message  = '----------------------------'."\r\n";
-			$message .= JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST')."\r\n";
-			$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject)."\r\n";
-			$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$row->proposed, '%d %b, %Y');
-			$message .= ' '.JText::_('BY').' '.$name.' ';
+			$message .= JText::_('COM_WISHLIST_WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('COM_WISHLIST_WISHLIST')."\r\n";
+			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject)."\r\n";
+			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$row->proposed, '%d %b, %Y');
+			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 			$message .= $row->anonymous ? '' : '('.$login.')';
 			$message .= "\r\n";
 			$message .= '----------------------------'."\r\n\r\n";
@@ -1730,14 +1730,14 @@ class WishlistController extends JObject
 			}
 
 			$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid='.$row->id);
-			$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
+			$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
 
 			if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option))) 
 			{
-				$this->setError(JText::_('ERROR_FAILED_MESSAGE_OWNERS'));
+				$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 			}
 		}
 
@@ -1745,7 +1745,7 @@ class WishlistController extends JObject
 		{
 			// put the  amount on hold
 			$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
-			$BTL->hold($reward, JText::_('BANKING_HOLD') . ' #' . $row->id . ' ' . JText::_('FOR') . ' ' . $wishlist->title, 'wish', $row->id);
+			$BTL->hold($reward, JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->id . ' ' . JText::_('COM_WISHLIST_FOR') . ' ' . $wishlist->title, 'wish', $row->id);
 		}
 
 		$saved = $wishid ? 2 : 3;
@@ -1775,7 +1775,7 @@ class WishlistController extends JObject
 
 		if (!$wishid) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}
 		// Check if wish exists on this list
@@ -1783,7 +1783,7 @@ class WishlistController extends JObject
 
 		if (!$wishlist) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 		else 
@@ -1812,7 +1812,7 @@ class WishlistController extends JObject
 
 			if (!$this->_admin && $objWish->proposed_by != $juser->get('id')) 
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
 				return;
 			}
 
@@ -1880,17 +1880,17 @@ class WishlistController extends JObject
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
 					// to wish author
-					$subject1 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('YOUR_WISH') . ' #' . $wishid . ' is ' . $status;
+					$subject1 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('COM_WISHLIST_YOUR_WISH') . ' #' . $wishid . ' is ' . $status;
 
 					// to wish assignee
-					$subject2 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('WISH') . ' #' . $wishid . ' ' . JText::_('HAS_BEEN') . ' ' . JText::_('MSG_ASSIGNED_TO_YOU');
+					$subject2 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . JText::_('COM_WISHLIST_HAS_BEEN') . ' ' . JText::_('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 
-					$name = JText::_('UNKNOWN');
-					$login = JText::_('UNKNOWN');
+					$name = JText::_('COM_WISHLIST_UNKNOWN');
+					$login = JText::_('COM_WISHLIST_UNKNOWN');
 					$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) 
 					{
@@ -1899,14 +1899,14 @@ class WishlistController extends JObject
 					}
 					if ($objWish->anonymous) 
 					{
-						$name = JText::_('ANONYMOUS');
+						$name = JText::_('COM_WISHLIST_ANONYMOUS');
 					}
 
 					$message  = '----------------------------'."\r\n";
-					$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST')."\r\n";
-					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject)."\r\n";
-					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
-					$message .= ' '.JText::_('BY').' '.$name.' ';
+					$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('COM_WISHLIST')."\r\n";
+					$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject)."\r\n";
+					$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
+					$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 					$message .= $objWish->anonymous ? '' : '('.$login.')';
 					$message .= "\r\n\r\n";
 
@@ -1914,15 +1914,15 @@ class WishlistController extends JObject
 					$as_mes = $message;
 					if ($status!='pending') 
 					{
-						$message .= JText::_('YOUR_WISH').' '.JText::_('HAS_BEEN').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'."\r\n";
+						$message .= JText::_('COM_WISHLIST_YOUR_WISH').' '.JText::_('COM_WISHLIST_HAS_BEEN').' '.$status.' '.JText::_('COM_WISHLIST_BY_LIST_ADMINS').'.'."\r\n";
 					}
 					else 
 					{
-						$message .= JText::_('MSG_WISH_STATUS_CHANGED_TO').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'."\r\n";
+						$message .= JText::_('COM_WISHLIST_MSG_WISH_STATUS_CHANGED_TO').' '.$status.' '.JText::_('COM_WISHLIST_BY_LIST_ADMINS').'.'."\r\n";
 					}
 					$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $cat . '&rid=' . $refid . '&wishid=' . $wishid);
-					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_WISH').'.';
-					$as_mes  .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_ASSIGNED_WISH').'.';
+					$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_WISH').'.';
+					$as_mes  .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_ASSIGNED_WISH').'.';
 				}
 			}
 			// no status change, only information
@@ -1947,14 +1947,14 @@ class WishlistController extends JObject
 
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_status_changed', $subject1, $message, $from, array($objWish->proposed_by), $this->_option))) 
 					{
-						$this->setError(JText::_('ERROR_FAILED_MSG_AUTHOR'));
+						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 					}
 
 					if ($objWish->assigned && $objWish->proposed_by != $objWish->assigned && $status=='accepted') 
 					{
 						if (!$dispatcher->trigger('onSendMessage', array('wishlist_wish_assigned', $subject2, $as_mes, $from, array($objWish->assigned), $this->_option))) 
 						{
-							$this->setError(JText::_('ERROR_FAILED_MSG_ASSIGNEE'));
+							$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 						}
 					}
 				}
@@ -1995,13 +1995,13 @@ class WishlistController extends JObject
 		// missing wish id 
 		if (!$wishid) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}
 		// missing or invalid resource ID
 		if ($category == 'resource' && (!$refid or !intval($refid))) 
 		{
-			JError::raiseError(404, JText::_('ERROR_INVALID_RESOURCE_ID'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_INVALID_RESOURCE_ID'));
 			return;
 		}
 		else if ($category == 'general') 
@@ -2010,7 +2010,7 @@ class WishlistController extends JObject
 		}
 		else if ($category == 'group' && !$cn) 
 		{
-			JError::raiseError(404, JText::_('ERROR_INVALID_GROUP_CN'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_INVALID_GROUP_CN'));
 			return;
 		}
 
@@ -2044,7 +2044,7 @@ class WishlistController extends JObject
 				}
 				else 
 				{
-					JError::raiseError(404, JText::_('ERROR_INVALID_GROUP_CN'));
+					JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_INVALID_GROUP_CN'));
 					return;
 				}
 			}
@@ -2065,7 +2065,7 @@ class WishlistController extends JObject
 				}
 				else 
 				{
-					JError::raiseError(404, JText::_('ERROR_RESOURCE_ID_NOT_FOUND'));
+					JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_RESOURCE_ID_NOT_FOUND'));
 					return;
 				}
 			}
@@ -2075,14 +2075,14 @@ class WishlistController extends JObject
 				if (Hubzero_Group::exists($refid)) 
 				{
 					$group = Hubzero_Group::getInstance($refid);
-					$newlist = $obj->createlist($cat, $refid, 0, $group->cn . ' ' . JText::_('GROUP'));
+					$newlist = $obj->createlist($cat, $refid, 0, $group->cn . ' ' . JText::_('COM_WISHLIST_GROUP'));
 				}
 			}
 
 			// cannot add a wish to a non-found list
 			if (!$newlist) 
 			{
-				JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+				JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 				return;
 			}
 			else if ($listid != $newlist) 
@@ -2103,7 +2103,7 @@ class WishlistController extends JObject
 
 				if (!$objWish->store()) 
 				{
-					JError::raiseError(500, JText::_('ERROR_WISH_MOVE_FAILED'));
+					JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
 					return;
 				}
 				else 
@@ -2163,8 +2163,8 @@ class WishlistController extends JObject
 					$oldtitle = $objWishlist->getTitle($listid);
 					$newtitle = $objWishlist->getTitle($newlist);
 
-					$name = JText::_('UNKNOWN');
-					$login = JText::_('UNKNOWN');
+					$name = JText::_('COM_WISHLIST_UNKNOWN');
+					$login = JText::_('COM_WISHLIST_UNKNOWN');
 					$ruser =& Hubzero_User_Profile::getInstance($objWish->proposed_by);
 					if (is_object($ruser)) 
 					{
@@ -2174,11 +2174,11 @@ class WishlistController extends JObject
 
 					if ($objWish->anonymous) 
 					{
-						$name = JText::_('ANONYMOUS');
+						$name = JText::_('COM_WISHLIST_ANONYMOUS');
 					}
 
-					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('NEW_WISH').' '.JText::_('FOR').' '.$newtitle.' '.JText::_('FROM').' '.$name.' - '.JText::_('TRANSFERRED');
-					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('YOUR_WISH').' #'.$wishid.' '.JText::_('WISH_TRANSFERRED_TO_DIFFERENT_LIST');
+					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '.$newtitle.' '.JText::_('COM_WISHLIST_FROM').' '.$name.' - '.JText::_('COM_WISHLIST_TRANSFERRED');
+					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_YOUR_WISH').' #'.$wishid.' '.JText::_('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
 
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
@@ -2189,29 +2189,29 @@ class WishlistController extends JObject
 					$owners   = $objOwner->get_owners($newlist, $this->admingroup);
 
 					$message  = '----------------------------' . "\r\n";
-					$message .= JText::_('WISH').' #'.$wishid.', '.$newtitle.' '.JText::_('WISHLIST') . "\r\n";
-					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject) . "\r\n";
-					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
-					$message .= ' '.JText::_('BY').' '.$name.' ';
+					$message .= JText::_('COM_WISHLIST_WISH').' #'.$wishid.', '.$newtitle.' '.JText::_('COM_WISHLIST') . "\r\n";
+					$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject) . "\r\n";
+					$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
+					$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 					$message .= $objWish->anonymous ? '' : '('.$login.')' . "\r\n";
-					$message .= JText::_('WISH_TRANSFERRED_FROM_WISHLIST').' "'.$oldtitle.'"';
+					$message .= JText::_('COM_WISHLIST_WISH_TRANSFERRED_FROM_WISHLIST').' "'.$oldtitle.'"';
 					$message .= "\r\n\r\n";
 
 					$message .= '----------------------------' . "\r\n";
 					$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&id='.$newlist.'&wishid=' . $wishid);
-					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
+					$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
 
 					JPluginHelper::importPlugin('xmessage');
 					$dispatcher =& JDispatcher::getInstance();
 
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->_option))) 
 					{
-						$this->setError(JText::_('ERROR_FAILED_MESSAGE_OWNERS'));
+						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 					}
 
 					if (!$dispatcher->trigger('onSendMessage', array('support_item_transferred', $subject2, $message, $from, array($objWish->proposed_by), $this->_option))) 
 					{
-						$this->setError(JText::_('ERROR_FAILED_MSG_AUTHOR'));
+						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 					}
 				}
 			}
@@ -2246,7 +2246,7 @@ class WishlistController extends JObject
 		// missing wish id 
 		if (!$wishid or !$listid) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}
 
@@ -2257,7 +2257,7 @@ class WishlistController extends JObject
 
 		if (!$wishlist) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 
@@ -2290,23 +2290,23 @@ class WishlistController extends JObject
 		// missing amount
 		if ($amount == 0) 
 		{
-			JError::raiseError(500, JText::_('ERROR_INVALID_AMOUNT'));
+			JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_INVALID_AMOUNT'));
 			return;
 		}
 		if ($amount < 0) 
 		{
-			JError::raiseError(500, JText::_('ERROR_NEGATIVE_BONUS'));
+			JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_NEGATIVE_BONUS'));
 			return;
 		}
 		else if ($amount > $funds) 
 		{
-			JError::raiseError(500, JText::_('ERROR_NO_FUNDS'));
+			JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_NO_FUNDS'));
 			return;
 		}
 
 		// put the  amount on hold
 		$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
-		$BTL->hold($amount, JText::_('BANKING_HOLD').' #'.$wishid.' '.JText::_('FOR').' '.$wishlist->title, 'wish', $wishid);
+		$BTL->hold($amount, JText::_('COM_WISHLIST_BANKING_HOLD').' #'.$wishid.' '.JText::_('COM_WISHLIST_FOR').' '.$wishlist->title, 'wish', $wishid);
 
 		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 
@@ -2332,7 +2332,7 @@ class WishlistController extends JObject
 
 		if (!$wishid) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}
 
@@ -2340,7 +2340,7 @@ class WishlistController extends JObject
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
 		if (!$wishlist) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND_ON_LIST'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
 			return;
 		}
 		else 
@@ -2370,7 +2370,7 @@ class WishlistController extends JObject
 			$objWish->load($wishid);
 			if (!$this->_admin && $objWish->proposed_by != $juser->get('id')) 
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
 				return;
 			}
 
@@ -2397,7 +2397,7 @@ class WishlistController extends JObject
 			}
 			else 
 			{
-				$this->_error = JText::_('ERROR_WISH_DELETE_FAILED');
+				$this->_error = JText::_('COM_WISHLIST_ERROR_WISH_DELETE_FAILED');
 			}
 		}
 
@@ -2438,7 +2438,7 @@ class WishlistController extends JObject
 		// cannot rank a wish if list/wish is not found
 		if (!$listid or !$wishid) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 
@@ -2448,14 +2448,14 @@ class WishlistController extends JObject
 		// cannot proceed if wish id is not found
 		if (!$wishlist or !$item) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 
 		// is this wish on correct list?
 		if ($listid != $wishlist->id)
 		{
-			JError::raiseError(404, JText::_('ERROR_WISH_NOT_FOUND_ON_LIST'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
 			return;
 		}
 
@@ -2474,7 +2474,7 @@ class WishlistController extends JObject
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			$this->_msg = JText::_('WARNING_LOGIN_TO_RANK') ;
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_TO_RANK') ;
 			$this->login();
 			return;
 		}
@@ -2485,7 +2485,7 @@ class WishlistController extends JObject
 		// Need to be list admin
 		if (!$this->_admin) 
 		{
-			JError::raiseError(404, JText::_('ALERTNOTAUTH_ACTION'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ALERTNOTAUTH_ACTION'));
 			return;
 		}
 
@@ -2715,7 +2715,7 @@ class WishlistController extends JObject
 
 		if (!$wishlist) 
 		{
-			JError::raiseError(404, JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 
@@ -2735,7 +2735,7 @@ class WishlistController extends JObject
 		if (!$id && !$ajax) 
 		{
 			// cannot proceed
-			$this->setError(JText::_('ERROR_WISH_NOT_FOUND'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 
 			// Output HTML
 			$view = new JView(array('name'=>'error'));
@@ -2751,7 +2751,7 @@ class WishlistController extends JObject
 		// is the user logged in?
 		if ($juser->get('guest')) 
 		{
-			$this->_msg = JText::_('WARNING_LOGIN_TO_ADD_COMMENT');
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
 			$this->login();
 			return;
 		}
@@ -2819,7 +2819,7 @@ class WishlistController extends JObject
 				$attach->webpath = $live_site . $webpath;
 				$attach->uppath  = JPATH_ROOT . $webpath;
 				$attach->output  = 'email';
-				$subject = JText::_(strtoupper($this->_name)) . ', ' . JText::_('MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . JText::_('BY') . ' ' . $name;
+				$subject = JText::_(strtoupper($this->_name)) . ', ' . JText::_('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . JText::_('BY') . ' ' . $name;
 
 				// email components	
 				$from = array();
@@ -2827,29 +2827,29 @@ class WishlistController extends JObject
 				$from['email'] = $jconfig->getValue('config.mailfrom');
 
 				// for the wish owner
-				$subject1 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_COMMENTED_YOUR_WISH').' #'.$wishid;
+				$subject1 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH').' #'.$wishid;
 
 				// for the person to whom wish is assigned
-				$subject2 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_COMMENTED_ON_WISH').' #'.$wishid.' '.JText::_('MSG_ASSIGNED_TO_YOU');
+				$subject2 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_ON_WISH').' #'.$wishid.' '.JText::_('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
 				// for original commentor 
-				$subject3 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_REPLIED_YOUR_COMMENT').' #'.$wishid;
+				$subject3 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_REPLIED_YOUR_COMMENT').' #'.$wishid;
 
 				// for others included in the conversation thread.
-				$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
+				$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
 
-				$message  = JText::_('WISH').' #'.$wishid.', '.$wishlist->title.' '.JText::_('WISHLIST') . "\r\n";
-				$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject) . "\r\n";
+				$message  = JText::_('COM_WISHLIST_WISH').' #'.$wishid.', '.$wishlist->title.' '.JText::_('COM_WISHLIST') . "\r\n";
+				$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject) . "\r\n";
 				$message .= '----------------------------' . "\r\n";
-				$message .= JText::_('MSG_COMMENT_BY').' '.$name.' ';
+				$message .= JText::_('COM_WISHLIST_MSG_COMMENT_BY').' '.$name.' ';
 				$message .= $row->anonymous ? '' : '('.$login.')';
-				$message .= ' '.JText::_('MSG_POSTED_ON').' '.JHTML::_('date',$row->added, '%d %b, %Y').':' . "\r\n";
+				$message .= ' '.JText::_('COM_WISHLIST_MSG_POSTED_ON').' '.JHTML::_('date',$row->added, '%d %b, %Y').':' . "\r\n";
 				$message .= $attach->parse(Hubzero_View_Helper_Html::purifyText($row->comment)) . "\r\n\r\n";
 				$message .= "\r\n";
 
 				$message .= '----------------------------' . "\r\n";
 				$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
-				$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
+				$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
 
 				JPluginHelper::importPlugin('xmessage');
 				$dispatcher =& JDispatcher::getInstance();
@@ -2864,7 +2864,7 @@ class WishlistController extends JObject
 					// send message to wish owner
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_posted', $subject1, $message, $from, array($objWish->proposed_by), $this->_option))) 
 					{
-						$this->setError(JText::_('ERROR_FAILED_MSG_AUTHOR'));
+						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 					}
 				} // -- end send to wish author
 
@@ -2875,7 +2875,7 @@ class WishlistController extends JObject
 					// send message to person to who wish is assigned
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_posted', $subject2, $message, $from, array($objWish->assigned), $this->_option))) 
 					{
-						$this->setError(JText::_('ERROR_FAILED_MSG_ASSIGNEE'));
+						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 					}
 				} // -- end send message to person to who wish is assigned
 
@@ -2892,7 +2892,7 @@ class WishlistController extends JObject
 						$contacted[] = 	$parent->added_by;
 						if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->added_by), $this->_option))) 
 						{
-							$this->setError(JText::_('ERROR_FAILED_MSG_COMMENTOR'));
+							$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 						}
 					}
 				}
@@ -2905,7 +2905,7 @@ class WishlistController extends JObject
 				{
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option))) 
 					{
-						$this->setError(JText::_('ERROR_FAILED_MSG_COMMENTOR'));
+						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 					}
 				}
 			} // -- end if success
@@ -2934,7 +2934,7 @@ class WishlistController extends JObject
 		// Do we have a reply ID?
 		if (!$replyid or !$row->load($replyid)) 
 		{
-			$this->setError(JText::_('ERROR_REPLY_NOT_FOUND'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_REPLY_NOT_FOUND'));
 			return;
 		}
 		if ($row->added_by == $juser->get('id')) 
@@ -2950,7 +2950,7 @@ class WishlistController extends JObject
 		}
 		else 
 		{
-			$this->setError(JText::_('ERROR_CANNOT_DELETE_REPLY'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'));
 			return;
 		}
 
@@ -2991,7 +2991,7 @@ class WishlistController extends JObject
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			$this->_msg = JText::_('WARNING_LOGIN_TO_ADD_COMMENT');
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
 			$this->login();
 			return;
 		}
@@ -3047,7 +3047,7 @@ class WishlistController extends JObject
 			// Set the pathway
 			$this->_buildPathway($wishlist);
 
-			$this->_msg = JText::_('WARNING_WISHLIST_LOGIN_TO_RATE');
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_RATE');
 			$this->login();
 			return;
 		}
@@ -3131,7 +3131,7 @@ class WishlistController extends JObject
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create(JPATH_ROOT . $webpath, 0777)) 
 			{
-				$out .= JText::_('ERR_UNABLE_TO_CREATE_PATH');
+				$out .= JText::_('COM_WISHLIST_ERR_UNABLE_TO_CREATE_PATH');
 				return false;
 			}
 		}
@@ -3603,7 +3603,7 @@ class WishlistController extends JObject
 	{
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('ERROR_NO_UPLOAD_DIRECTORY'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_UPLOAD_DIRECTORY'));
 			return '';
 		}
 
@@ -3611,7 +3611,7 @@ class WishlistController extends JObject
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('ERROR_NO_FILE'));
+			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_FILE'));
 			return '';
 		}
 
@@ -3640,16 +3640,16 @@ class WishlistController extends JObject
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return 'ATTACHMENT: ' . JText::_('UNABLE_TO_CREATE_UPLOAD_PATH');
+				$this->setError(JText::_('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return 'ATTACHMENT: ' . JText::_('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH');
 			}
 		}
 
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
-			return 'ATTACHMENT: ' . JText::_('ERROR_UPLOADING');
+			$this->setError(JText::_('COM_WISHLIST_ERROR_UPLOADING'));
+			return 'ATTACHMENT: ' . JText::_('COM_WISHLIST_ERROR_UPLOADING');
 		} 
 		else 
 		{

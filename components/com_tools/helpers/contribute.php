@@ -171,14 +171,14 @@ class ContribtoolHtml
 
 		// Set the periods of time
 		$periods = array(
-			JText::_('SECOND'), 
-			JText::_('MINUTE'), 
-			JText::_('HOUR'), 
-			JText::_('DAY'), 
-			JText::_('WEEK'), 
-			JText::_('MONTH'), 
-			JText::_('YEAR'), 
-			JText::_('DECADE')
+			JText::_('COM_TOOLS_SECOND'), 
+			JText::_('COM_TOOLS_MINUTE'), 
+			JText::_('COM_TOOLS_HOUR'), 
+			JText::_('COM_TOOLS_DAY'), 
+			JText::_('COM_TOOLS_WEEK'), 
+			JText::_('COM_TOOLS_MONTH'), 
+			JText::_('COM_TOOLS_YEAR'), 
+			JText::_('COM_TOOLS_DECADE')
 		);
 
 		// Set the number of seconds per period
@@ -214,14 +214,14 @@ class ContribtoolHtml
 		if ($number != 1)
 		{
 			$periods = array(
-				JText::_('SECONDS'), 
-				JText::_('MINUTES'), 
-				JText::_('HOURS'), 
-				JText::_('DAYS'), 
-				JText::_('WEEKS'), 
-				JText::_('MONTHS'), 
-				JText::_('YEARS'), 
-				JText::_('DECADES')
+				JText::_('COM_TOOLS_SECONDS'), 
+				JText::_('COM_TOOLS_MINUTES'), 
+				JText::_('COM_TOOLS_HOURS'), 
+				JText::_('COM_TOOLS_DAYS'), 
+				JText::_('COM_TOOLS_WEEKS'), 
+				JText::_('COM_TOOLS_MONTHS'), 
+				JText::_('COM_TOOLS_YEARS'), 
+				JText::_('COM_TOOLS_DECADES')
 			);
 		}
 
@@ -324,15 +324,15 @@ class ContribtoolHtml
 		$live_site = rtrim(JURI::base(),'/');
 		$sitename = $jconfig->getValue('config.sitename');
 		
-		$toolnum = ($status['state']!=9) ? JText::_('THIS_TOOL').'  ': '';
+		$toolnum = ($status['state']!=9) ? JText::_('COM_TOOLS_THIS_TOOL').'  ': '';
 		if (!$status['published'] && ContribtoolHtml::toolActive($status['state']) ) {
-			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('UNDER_DEVELOPMENT')).' '.JText::_('ON').' '.$sitename;
+			$toolnum .= JText::_('COM_TOOLS_IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('COM_TOOLS_TOOLS')). ' '.strtolower(JText::_('COM_TOOLS_UNDER_DEVELOPMENT')).' '.JText::_('COM_TOOLS_ON').' '.$sitename;
 		}
 		else if($status['published'] && ContribtoolHtml::toolActive($status['state'])) {
-			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('PUBLISHED')).' '.JText::_('ON').' '.$sitename;
+			$toolnum .= JText::_('COM_TOOLS_IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('COM_TOOLS_TOOLS')). ' '.strtolower(JText::_('COM_TOOLS_PUBLISHED')).' '.JText::_('COM_TOOLS_ON').' '.$sitename;
 		}
 		else if($status['state']==8) {
-			$toolnum .= JText::_('WAS_ONCE_PUBLISHED').' '.JText::_('ON').' '.$sitename.' '.JText::_('NOW_RETIRED');
+			$toolnum .= JText::_('COM_TOOLS_WAS_ONCE_PUBLISHED').' '.JText::_('COM_TOOLS_ON').' '.$sitename.' '.JText::_('COM_TOOLS_NOW_RETIRED');
 		}
 
 		return $toolnum;
@@ -424,15 +424,15 @@ class ContribtoolHtml
 	{
 		switch ($statusNum)
 		{
-			case 1: $statusName = JText::_('REGISTERED'); break;
-			case 2: $statusName = JText::_('CREATED');    break;
-			case 3: $statusName = JText::_('UPLOADED');   break;
-			case 4: $statusName = JText::_('INSTALLED');  break;
-			case 5: $statusName = JText::_('UPDATED');    break;
-			case 6: $statusName = JText::_('APPROVED');   break;
-			case 7: $statusName = JText::_('PUBLISHED');  break;
-			case 8: $statusName = JText::_('RETIRED');    break;
-			case 9: $statusName = JText::_('ABANDONED');  break;
+			case 1: $statusName = JText::_('COM_TOOLS_REGISTERED'); break;
+			case 2: $statusName = JText::_('COM_TOOLS_CREATED');    break;
+			case 3: $statusName = JText::_('COM_TOOLS_UPLOADED');   break;
+			case 4: $statusName = JText::_('COM_TOOLS_INSTALLED');  break;
+			case 5: $statusName = JText::_('COM_TOOLS_UPDATED');    break;
+			case 6: $statusName = JText::_('COM_TOOLS_APPROVED');   break;
+			case 7: $statusName = JText::_('COM_TOOLS_PUBLISHED');  break;
+			case 8: $statusName = JText::_('COM_TOOLS_RETIRED');    break;
+			case 9: $statusName = JText::_('COM_TOOLS_ABANDONED');  break;
 		}
 
 		return $statusName;
@@ -511,14 +511,14 @@ class ContribtoolHtml
 				} 
 				else 
 				{
-					$login = JText::_('UNKNOWN');
+					$login = JText::_('COM_TOOLS_UNKNOWN');
 				}
 				$team .= ($member != end($members)) ? $login . ', ' : $login;
 			}
 		}
 		else 
 		{
-			$team .= JText::_('N/A');
+			$team .= JText::_('COM_TOOLS_N/A');
 		}
 		return $team;
 	}
@@ -563,7 +563,7 @@ class ContribtoolHtml
 			case '@GROUP':
 				if (count($groups)>0) 
 				{
-					$toolaccess = JText::_('RESTRICTED') . ' ' . JText::_('TO') . ' ' . JText::_('GROUP_OR_GROUPS') . ' ';
+					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
 					foreach ($groups as $group) 
 					{
 						$toolaccess .= ($group != end($groups)) ? $group->cn . ', ' : $group->cn;
@@ -571,14 +571,14 @@ class ContribtoolHtml
 				}
 				else 
 				{ 
-					$toolaccess = JText::_('RESTRICTED') . ' ' . JText::_('TO') . ' ' . JText::_('UNSPECIFIED') . ' ' . JText::_('GROUP_OR_GROUPS');
+					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_UNSPECIFIED') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS');
 				}
 			break;
 
-			case '@US': $toolaccess = JText::_('TOOLACCESS_US'); break;
-			case '@PU': $toolaccess = JText::_('TOOLACCESS_PU'); break;
-			case '@D1': $toolaccess = JText::_('TOOLACCESS_D1'); break;
-			default:    $toolaccess = JText::_('ACCESS_OPEN');   break;
+			case '@US': $toolaccess = JText::_('COM_TOOLS_TOOLACCESS_US'); break;
+			case '@PU': $toolaccess = JText::_('COM_TOOLS_TOOLACCESS_PU'); break;
+			case '@D1': $toolaccess = JText::_('COM_TOOLS_TOOLACCESS_D1'); break;
+			default:    $toolaccess = JText::_('COM_TOOLS_ACCESS_OPEN');   break;
 		}
 
 		return $toolaccess;
@@ -597,9 +597,9 @@ class ContribtoolHtml
 	{
 		switch ($access)
 		{
-			case '@OPEN': $codeaccess = JText::_('OPEN_SOURCE');   break;
-			case '@DEV':  $codeaccess = JText::_('CLOSED_SOURCE'); break;
-			default:      $codeaccess = JText::_('UNSPECIFIED');   break;
+			case '@OPEN': $codeaccess = JText::_('COM_TOOLS_OPEN_SOURCE');   break;
+			case '@DEV':  $codeaccess = JText::_('COM_TOOLS_CLOSED_SOURCE'); break;
+			default:      $codeaccess = JText::_('COM_TOOLS_UNSPECIFIED');   break;
 		}
 
 		return $codeaccess;
@@ -618,9 +618,9 @@ class ContribtoolHtml
 	{
 		switch ($access)
 		{
-			case '@OPEN': $wikiaccess = JText::_('ACCESS_OPEN');       break;
-			case '@DEV':  $wikiaccess = JText::_('ACCESS_RESTRICTED'); break;
-			default:      $wikiaccess = JText::_('UNSPECIFIED');       break;
+			case '@OPEN': $wikiaccess = JText::_('COM_TOOLS_ACCESS_OPEN');       break;
+			case '@DEV':  $wikiaccess = JText::_('COM_TOOLS_ACCESS_RESTRICTED'); break;
+			default:      $wikiaccess = JText::_('COM_TOOLS_UNSPECIFIED');       break;
 		}
 
 		return $wikiaccess;
@@ -636,13 +636,13 @@ class ContribtoolHtml
 	 */
 	public function writeApproval($active_stage)
 	{
-		//$stages = array(JText::_('CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('CONTRIBTOOL_STEP_APPEND_NOTES'), JText::_('CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
-		$stages = array(JText::_('CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
+		//$stages = array(JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
+		$stages = array(JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
 		$key = array_keys($stages, $active_stage);
 
 		$html = "\t\t".'<div class="clear"></div>'."\n";
 		$html .= "\t\t".'<ol id="steps">'."\n";
-		$html .= "\t\t".' <li>'.JText::_('CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
+		$html .= "\t\t".' <li>'.JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
 
 		for ($i=0, $n=count( $stages ); $i < $n; $i++)
 			{
@@ -687,7 +687,7 @@ class ContribtoolHtml
 				{
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . JText::_('ACCESS_' . strtoupper($as[$i])) . '</option>';
+				$html .= '>' . JText::_('COM_TOOLS_ACCESS_' . strtoupper($as[$i])) . '</option>';
 			}
 		}
 		$html .= '</select>';
@@ -706,7 +706,7 @@ class ContribtoolHtml
 	public function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner">'."\n";
-		$html .= '<option value="">'.JText::_('SELECT_GROUP').'</option>'."\n";
+		$html .= '<option value="">'.JText::_('COM_TOOLS_SELECT_GROUP').'</option>'."\n";
 		foreach ($groups as $group)
 		{
 			$html .= '<option value="'.$group->cn.'"';
@@ -744,7 +744,7 @@ class ContribtoolHtml
 			{
 				$note = $notes[$i];
 				$out .= ' <li>'."\n";
-				$out .= '  <span><span>'.JText::_('EDIT').'</span></span>'."\n";
+				$out .= '  <span><span>'.JText::_('COM_TOOLS_EDIT').'</span></span>'."\n";
 				$out .= $note->note;
 				$out .= ' </li>'."\n";
 			}

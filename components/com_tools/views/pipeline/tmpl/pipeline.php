@@ -48,19 +48,19 @@ ximport('Hubzero_View_Helper_Html');
 </div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>" method="get">
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TOOLS_SEARCH'); ?>" />
 			<fieldset class="entry-search">
 				<label for="search">
-					<?php echo JText::_('FIND_TOOL'); ?>
+					<?php echo JText::_('COM_TOOLS_FIND_TOOL'); ?>
 				</label>
-				<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" />
+				<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TOOLS_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -75,36 +75,36 @@ ximport('Hubzero_View_Helper_Html');
 			<ul class="entries-menu order-options">
 				<?php if ($this->admin) { ?>	
 				<li>
-					<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.priority, f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.priority, f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_STATUS'); ?>">
-						&darr; <?php echo JText::_('Status'); ?>
+					<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.priority, f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.priority, f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS'); ?>">
+						&darr; <?php echo JText::_('COM_TOOLS_STATUS'); ?>
 					</a>
 				</li>
 				<?php } else { ?>
 				<li>
-					<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.registered') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_STATUS'); ?>">
-						&darr; <?php echo JText::_('Status'); ?>
+					<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.registered') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS'); ?>">
+						&darr; <?php echo JText::_('COM_TOOLS_STATUS'); ?>
 					</a>
 				</li>
 				<?php } ?>
 				<li>
-					<a class="sort-date<?php if ($this->filters['sortby'] == 'f.registered') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_REG'); ?>">
-						&darr; <?php echo JText::_('Date'); ?>
+					<a class="sort-date<?php if ($this->filters['sortby'] == 'f.registered') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_SORTBY_REG'); ?>">
+						&darr; <?php echo JText::_('COM_TOOLS_DATE'); ?>
 					</a>
 				</li>
 				<li>
-					<a class="sort-name<?php if ($this->filters['sortby'] == 'f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_NAME'); ?>">
-						&darr; <?php echo JText::_('Alias'); ?>
+					<a class="sort-name<?php if ($this->filters['sortby'] == 'f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_SORTBY_NAME'); ?>">
+						&darr; <?php echo JText::_('COM_TOOLS_ALIAS'); ?>
 					</a>
 				</li>
 				<?php if ($this->admin) { ?>
 				<li>
-					<a class="sort-priority<?php if ($this->filters['sortby'] == 'f.priority') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.priority') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('PRIORITY'); ?>">
-						&darr; <?php echo JText::_('Priority'); ?>
+					<a class="sort-priority<?php if ($this->filters['sortby'] == 'f.priority') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.priority') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_PRIORITY'); ?>">
+						&darr; <?php echo JText::_('COM_TOOLS_PRIORITY'); ?>
 					</a>
 				</li>
 				<li>
-					<a class="sort-change <?php if ($this->filters['sortby'] == 'f.state_changed DESC') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state_changed DESC') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('LAST_STATUS_CHANGE'); ?>">
-						&darr; <?php echo JText::_('Status Change'); ?>
+					<a class="sort-change <?php if ($this->filters['sortby'] == 'f.state_changed DESC') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state_changed DESC') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_LAST_STATUS_CHANGE'); ?>">
+						&darr; <?php echo JText::_('COM_TOOLS_STATUS_CHANGE'); ?>
 					</a>
 				</li>
 				<?php } ?>
@@ -112,32 +112,32 @@ ximport('Hubzero_View_Helper_Html');
 			
 			<ul class="entries-menu filter-options">
 				<li>
-					<a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_ALL'); ?>">
-						<?php echo JText::_('All'); ?>
+					<a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_ALL'); ?>">
+						<?php echo JText::_('COM_TOOLS_ALL'); ?>
 					</a>
 				</li>
 				<li>
-					<a class="filter-mine<?php if ($this->filters['filterby'] == 'mine') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=mine&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_MINE'); ?>">
-						<?php echo JText::_('Mine'); ?>
+					<a class="filter-mine<?php if ($this->filters['filterby'] == 'mine') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=mine&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_MINE'); ?>">
+						<?php echo JText::_('COM_TOOLS_MINE'); ?>
 					</a>
 				</li>
 				<li>
-					<a class="filter-published<?php if ($this->filters['filterby'] == 'published') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=published&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_PUBLISHED'); ?>">
-						<?php echo JText::_('Published'); ?>
+					<a class="filter-published<?php if ($this->filters['filterby'] == 'published') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=published&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_PUBLISHED'); ?>">
+						<?php echo JText::_('COM_TOOLS_PUBLISHED'); ?>
 					</a>
 				</li>
 				<?php if ($this->admin) { ?>
 				<li>
-					<a class="filter-dev<?php if ($this->filters['filterby'] == 'dev') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=dev&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_ALL_DEV'); ?>">
-						<?php echo JText::_('Development'); ?>
+					<a class="filter-dev<?php if ($this->filters['filterby'] == 'dev') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=dev&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_ALL_DEV'); ?>">
+						<?php echo JText::_('COM_TOOLS_DEVELOPMENT'); ?>
 					</a>
 				</li>
 				<?php } ?>
 			</ul>
 			
-			<table class="tools entries" summary="<?php echo JText::_('Tools in the pipeline'); ?>">
+			<table class="tools entries" summary="<?php echo JText::_('COM_TOOLS_IN_THE_PIPELINE'); ?>">
 				<caption>
-					<?php echo JText::_('CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?> 
+					<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?> 
 					<span>
 						(<?php echo ($this->filters['start'] + 1); ?> - <?php echo $this->filters['start'] + count($this->rows); ?> of <?php echo $this->pageNav->total; ?>)
 					</span>
@@ -145,11 +145,11 @@ ximport('Hubzero_View_Helper_Html');
 				<thead>
 					<tr>
 						<th scope="col"></th>
-						<th scope="col"><?php echo JText::_('Title'); ?></th>
-						<th scope="col"><?php echo JText::_('Alias'); ?></th>
-						<th scope="col"><?php echo JText::_('STATUS'); ?></th>
-						<!-- <th scope="col"><?php echo JText::_('LAST_STATUS_CHANGE'); ?></th> -->
-						<th scope="col"><?php echo JText::_('LINKS'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_TOOLS_TITLE'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_TOOLS_ALIAS'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_TOOLS_STATUS'); ?></th>
+						<!-- <th scope="col"><?php echo JText::_('COM_TOOLS_LAST_STATUS_CHANGE'); ?></th> -->
+						<th scope="col"><?php echo JText::_('COM_TOOLS_LINKS'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -176,7 +176,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 								<?php echo $this->escape(stripslashes($row->title)); ?>
 							</a><br />
 							<span class="entry-details">
-								<?php echo JText::_('REGISTERED'); ?>
+								<?php echo JText::_('COM_TOOLS_REGISTERED'); ?>
 								<span class="entry-date"><?php echo JHTML::_('date', $row->registered, $dateFormat, $tz); ?></span>
 							</span>
 						</td>
@@ -187,34 +187,34 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</td>
 						<td style="white-space: nowrap;">
 							<a class="entry-status" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $row->toolname); ?>">
-								<?php echo JText::_($status); ?>
+								<?php echo JText::_('COM_TOOLS_' . $status); ?>
 							</a><br />
 							<span class="entry-details">
-								<span class="entry-time"><?php echo Hubzero_View_Helper_Html::timeAgo($row->state_changed) . ' ' . JText::_('AGO'); ?></span>
+								<span class="entry-time"><?php echo Hubzero_View_Helper_Html::timeAgo($row->state_changed) . ' ' . JText::_('COM_TOOLS_AGO'); ?></span>
 							</span>
 						</td>
 						<td style="white-space: nowrap;" <?php if (!ToolsHelperHtml::toolEstablished($row->state)) { echo ' class="disabled_links" ';} ?>>
 						<?php if (!ToolsHelperHtml::toolActive($row->state)) { ?>
 							<span class="entry-page">
-								<?php echo JText::_('RESOURCE'); ?>
+								<?php echo JText::_('COM_TOOLS_RESOURCE'); ?>
 							</span>
 						<?php } else { ?>
 							<a class="entry-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $row->toolname); ?>">
-								<?php echo JText::_('RESOURCE'); ?>
+								<?php echo JText::_('COM_TOOLS_RESOURCE'); ?>
 							</a>
 						<?php } ?>
 							|
 							<a class="entry-history" href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->ticketid); ?>">
-								<?php echo strtolower(JText::_('HISTORY')); ?>
+								<?php echo strtolower(JText::_('COM_TOOLS_HISTORY')); ?>
 							</a>
 							|
 						<?php if (strtolower($status) == 'abandoned') { ?>
 							<span class="entry-wiki">
-								<?php echo strtolower(JText::_('PROJECT')); ?>
+								<?php echo strtolower(JText::_('COM_TOOLS_PROJECT')); ?>
 							</span>
 						<?php } else { ?>
 							<a class="entry-wiki" href="<?php echo $developer_url . $project_path . $row->toolname; ?>/wiki" rel="external">
-								<?php echo strtolower(JText::_('PROJECT')); ?>
+								<?php echo strtolower(JText::_('COM_TOOLS_PROJECT')); ?>
 							</a>
 						<?php } ?>
 						</td>

@@ -1867,10 +1867,19 @@ class ResourcesHtml
 		switch ($resource->type)
 		{
 			case 7:
-				$jacl =& JFactory::getACL();
-				$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
-				$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
-				$jacl->addACL('com_tools', 'manage', 'users', 'manager');
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					$jacl =& JFactory::getACL();
+					$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
+					$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
+					$jacl->addACL('com_tools', 'manage', 'users', 'manager');
+
+					$authorized = $juser->authorize('com_tools', 'manage');
+				}
+				else
+				{
+					$authorized = $juser->authorise('core.manage', 'com_tools.' . $this->get('id'));
+				}
 
 				$juser =& JFactory::getUser();
 
@@ -1879,7 +1888,7 @@ class ResourcesHtml
 				// Ensure we have a connection to the middleware
 				$this->can_launch = true;
 				if (!$mconfig->get('mw_on')
-				 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) 
+				 || ($mconfig->get('mw_on') > 1 && !$authorized)) 
 				{
 					$pop   = self::warning(JText::_('Session invocation is currently disabled.'));
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);

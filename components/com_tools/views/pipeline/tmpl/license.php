@@ -55,8 +55,8 @@ if ($this->licenses)
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a class="status btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		<li><a class="icon-status status btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -76,10 +76,10 @@ if ($this->licenses)
 		</h3>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>" method="post" id="versionForm" name="versionForm">
 			<fieldset class="versionfield">
-				<label><?php echo JText::_('CODE_ACCESS'); ?>:</label> 
+				<label><?php echo JText::_('COM_TOOLS_CODE_ACCESS'); ?>:</label> 
 				<?php echo ToolsHelperHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
 				
-				<div id="lic_cl"><?php echo JText::_('LICENSE'); ?>:</div>
+				<div id="lic_cl"><?php echo JText::_('COM_TOOLS_LICENSE'); ?>:</div>
 				<div class="licinput" >
 					<textarea name="license" cols="50" rows="15" id="license"><?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
 					<?php 
@@ -101,39 +101,39 @@ if ($this->licenses)
 					<input type="hidden" name="alias" value="<?php echo $this->status['toolname']; ?>" />
 				</div>  
 				<div id="lic">
-					<label><?php echo JText::_('LICENSE_TEMPLATE'); ?>:</label> 
+					<label><?php echo JText::_('COM_TOOLS_LICENSE_TEMPLATE'); ?>:</label> 
 					<?php echo ToolsHelperHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 				</div>     
 				<div id="legendnotes">
 					<p>
-						<?php echo JText::_('LICENSE_TEMPLATE_TIP'); ?>:
-						<br />[<?php echo JText::_('YEAR'); ?>]
-						<br />[<?php echo JText::_('OWNER'); ?>]
-						<br />[<?php echo JText::_('ORGANIZATION'); ?>]
-						<br />[<?php echo strtoupper(JText::_('ONE_LINE_DESCRIPTION')); ?>]
-						<br />[<?php echo JText::_('URL'); ?>]
+						<?php echo JText::_('COM_TOOLS_LICENSE_TEMPLATE_TIP'); ?>:
+						<br />[<?php echo strtoupper(JText::_('COM_TOOLS_YEAR')); ?>]
+						<br />[<?php echo strtoupper(JText::_('COM_TOOLS_OWNER')); ?>]
+						<br />[<?php echo strtoupper(JText::_('COM_TOOLS_ORGANIZATION')); ?>]
+						<br />[<?php echo strtoupper(JText::_('COM_TOOLS_ONE_LINE_DESCRIPTION')); ?>]
+						<br />[<?php echo strtoupper(JText::_('COM_TOOLS_URL')); ?>]
 					</p>
 					<label for="field-authorize">
 						<input type="checkbox" name="authorize" id="field-authorize" value="1" /> 
-						<?php echo JText::_('LICENSE_CERTIFY').' <strong>'.JText::_('OPEN_SOURCE').'</strong> '.JText::_('LICENSE_UNDER_SPECIFIED'); ?>
+						<?php echo JText::_('COM_TOOLS_LICENSE_CERTIFY').' <strong>'.JText::_('COM_TOOLS_OPEN_SOURCE').'</strong> '.JText::_('COM_TOOLS_LICENSE_UNDER_SPECIFIED'); ?>
 					</label>
 				</div>
 				<div class="moveon">
-					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+					<input type="submit" value="<?php echo JText::_('COM_TOOLS_SAVE'); ?>" />
 				</div>
 			</fieldset>
 		</form>
 	</div><!-- / .two columns first -->
 	<div class="two columns second">
-    	<h3><?php echo JText::_('CONTRIBTOOL_LICENSE_WHAT_OPTIONS'); ?></h3>
+    	<h3><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_LICENSE_WHAT_OPTIONS'); ?></h3>
 		<p class="opensource">
-			<?php echo '<strong>'.ucfirst(JText::_('OPEN_SOURCE')).'</strong><br />'.JText::_('CONTRIBTOOL_LICENSE_IF_YOU_CHOOSE').' <a href="http://www.opensource.org/" rel="external" title="Open Source Initiative">'.strtolower(JText::_('OPEN_SOURCE')).'</a>, '.JText::_('CONTRIBTOOL_LICENSE_OPEN_TXT'); ?>
+			<?php echo '<strong>'.ucfirst(JText::_('COM_TOOLS_OPEN_SOURCE')).'</strong><br />'.JText::_('COM_TOOLS_CONTRIBTOOL_LICENSE_IF_YOU_CHOOSE').' <a href="http://www.opensource.org/" rel="external" title="Open Source Initiative">'.strtolower(JText::_('COM_TOOLS_OPEN_SOURCE')).'</a>, '.JText::_('COM_TOOLS_CONTRIBTOOL_LICENSE_OPEN_TXT'); ?>
 		</p>
 		<p class="error">
-			<?php echo JText::_('CONTRIBTOOL_LICENSE_ATTENTION'); ?>
+			<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_LICENSE_ATTENTION'); ?>
 		</p>
 		<p class="closedsource">
-			<strong><?php echo ucfirst(JText::_('CLOSED_SOURCE')); ?></strong><br /><?php echo JText::_('CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?>
+			<strong><?php echo ucfirst(JText::_('COM_TOOLS_CLOSED_SOURCE')); ?></strong><br /><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?>
 		</p>
 	</div><!-- / .two columns second -->
 	<div class="clear"></div>

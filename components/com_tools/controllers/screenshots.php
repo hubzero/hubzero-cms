@@ -77,7 +77,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -89,7 +89,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->check_access($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -99,7 +99,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 
 		if ($vid == NULL) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_VERSION_ID_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -154,7 +154,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$version = JRequest::getVar('version', 'dev');
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -163,7 +163,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$this->view->file = JRequest::getVar('filename', '');
 		if (!$this->view->file) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -178,7 +178,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 
 		if ($vid == NULL) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_VERSION_ID_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -197,7 +197,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$app =& JFactory::getApplication();
 
 		// Set the page title
-		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('TASK_EDIT_SS');
+		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_TASK_EDIT_SS');
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -230,7 +230,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$vid = JRequest::getInt('vid', 0);
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -281,7 +281,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$version = JRequest::getVar('version', 'dev');
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -290,7 +290,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$file = JRequest::getVar('filename', '');
 		if (!$file) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -308,7 +308,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 
 		if ($vid == NULL) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_VERSION_ID_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -323,7 +323,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		// Check if the folder even exists
 		if (!is_dir($path) or !$path) 
 		{
-			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 			$this->displayTask($pid, $version);
 			return;
 		} 
@@ -337,7 +337,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 
 			if (!JFile::delete($path . DS . $file)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($pid, $version);
 				return;
 			}
@@ -370,7 +370,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$pid = JRequest::getInt('pid', 0);
 		if (!$pid) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -394,7 +394,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_FILE'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_FILE'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -410,7 +410,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		// Make sure we have an allowed format
 		if (!in_array(strtolower($file_ext), $allowed)) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_WRONG_FILE_FORMAT'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_WRONG_FILE_FORMAT'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -421,7 +421,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 
 		if ($vid == NULL) 
 		{
-			$this->setError(JText::_('CONTRIBUTE_VERSION_ID_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
 			return;
 		}
@@ -472,7 +472,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') . $path);
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH') . $path);
 				$this->displayTask($pid, $version);
 				return;
 			}
@@ -481,7 +481,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_UPLOADING'));
 		}
 		else 
 		{
@@ -644,7 +644,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 
 		if ($from == 0 or $to == 0 or $rid == 0) 
 		{
-			JError::raiseError(500, JText::_('Missing ids'));
+			JError::raiseError(500, JText::_('COM_TOOLS_Missing ids'));
 			return;
 		}
 
@@ -677,7 +677,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		{
 			if ($from == 0 or $to == 0 or $rid == 0) 
 			{
-				JError::raiseError(500, JText::_('Missing ids'));
+				JError::raiseError(500, JText::_('COM_TOOLS_Missing ids'));
 				return;
 			}
 
@@ -691,12 +691,12 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 				}
 				else 
 				{
-					echo JText::_('Success!');
+					echo JText::_('COM_TOOLS_Success!');
 				}
 			}
 			else if ($this->_task != 'copy') 
 			{
-				$this->setError(JText::_('Didn\'t work. There were some problems...'));
+				$this->setError(JText::_('COM_TOOLS_Didn\'t work. There were some problems...'));
 			}
 		}
 		else 
@@ -744,7 +744,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		{
 			if (!JFolder::create($src, 0777)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return false;
 			}
 		}
@@ -800,7 +800,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$rid) 
 		{
-			JError::raiseError(500, JText::_('CONTRIBUTE_NO_ID'));
+			JError::raiseError(500, JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			return;
 		}
 		// Get resource information

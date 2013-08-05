@@ -101,7 +101,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		// make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -215,7 +215,7 @@ class ToolsControllerResource extends Hubzero_Controller
 
 			if (!$hztv->update()) 
 			{
-				JError::raiseError(500, JText::_('Error updating tool tables.'));
+				JError::raiseError(500, JText::_('COM_TOOLS_Error updating tool tables.'));
 				return;
 			} 
 			else 
@@ -356,7 +356,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_controller);
 
 		// Set the document title
-		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
+		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -372,11 +372,11 @@ class ToolsControllerResource extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 1) 
 		{
 			$pathway->addItem(
-				JText::_('STATUS') . ' ' . JText::_('FOR') . ' ' . $status['toolname'], 
+				JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'], 
 				'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
 			);
 			$pathway->addItem(
-				JText::_('EDIT_TOOL_PAGE'), 
+				JText::_('COM_TOOLS_EDIT_TOOL_PAGE'), 
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $alias . '&task=start&step=1'
 			);
 		}
@@ -445,13 +445,13 @@ class ToolsControllerResource extends Hubzero_Controller
 		}
 		else if ($newtool) 
 		{
-			$this->addComponentMessage(JText::_('NOTICE_RES_PUBLISHED'));
-			//$this->setMessage(JText::_('NOTICE_RES_PUBLISHED'));
+			$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_RES_PUBLISHED'));
+			//$this->setMessage(JText::_('COM_TOOLS_NOTICE_RES_PUBLISHED'));
 		}
 		else 
 		{
-			$this->addComponentMessage(JText::_('NOTICE_RES_UPDATED'));
-			//$this->setMessage(JText::_('NOTICE_RES_UPDATED'));
+			$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_RES_UPDATED'));
+			//$this->setMessage(JText::_('COM_TOOLS_NOTICE_RES_UPDATED'));
 		}
 
 		return true;
@@ -536,7 +536,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		// Make sure user is authorized to go further
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -591,7 +591,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$lang =& JFactory::getLanguage();
 		if (!$lang->load(strtolower('com_resources'), JPATH_BASE)) 
 		{
-			$this->setError(JText::_('Failed to load language file'));
+			$this->setError(JText::_('COM_TOOLS_Failed to load language file'));
 		}
 
 		// Push CSS to the document
@@ -602,7 +602,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$this->_getStyles('com_resources');
 
 		// Set the document title
-		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
+		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
@@ -618,11 +618,11 @@ class ToolsControllerResource extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 1) 
 		{
 			$pathway->addItem(
-				JText::_('STATUS') . ' ' . JText::_('FOR') . ' ' . $thistool->toolname, 
+				JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $thistool->toolname, 
 				'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
 			);
 			$pathway->addItem(
-				JText::_('EDIT_TOOL_PAGE'), 
+				JText::_('COM_TOOLS_EDIT_TOOL_PAGE'), 
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $alias . '&task=start&step=1'
 			);
 		}

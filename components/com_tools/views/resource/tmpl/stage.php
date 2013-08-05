@@ -31,20 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$this->stages = array(JText::_('CONTRIBTOOL_STEP_DESCRIPTION'),JText::_('CONTRIBTOOL_STEP_CONTRIBUTORS'),
-JText::_('CONTRIBTOOL_STEP_ATTACHMENTS'),JText::_('CONTRIBTOOL_STEP_TAGS'), JText::_('CONTRIBTOOL_STEP_FINALIZE'));
+$this->stages = array(JText::_('COM_TOOLS_CONTRIBTOOL_STEP_DESCRIPTION'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONTRIBUTORS'),
+JText::_('COM_TOOLS_CONTRIBTOOL_STEP_ATTACHMENTS'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_TAGS'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE'));
 $key = $this->stage-1;
 
 $html = "\t\t".'<div class="clear"></div>'."\n";
 $html .= "\t\t".'<ol id="steps" style="border-bottom:1px solid #ccc;margin-bottom:0;padding-bottom:0.7em;">'."\n";
-$html .= "\t\t".' <li>'.JText::_('CONTRIBTOOL_EDIT_PAGE_FOR').' ';
+$html .= "\t\t".' <li>'.JText::_('COM_TOOLS_CONTRIBTOOL_EDIT_PAGE_FOR').' ';
 if ($this->version=='dev') 
 {
-	$html .= JText::_('CONTRIBTOOL_TIP_NEXT_TOOL_RELEASE');
+	$html .= JText::_('COM_TOOLS_CONTRIBTOOL_TIP_NEXT_TOOL_RELEASE');
 }
 else 
 {
-	$html .= JText::_('CONTRIBTOOL_TIP_CURRENT_VERSION');
+	$html .= JText::_('COM_TOOLS_CONTRIBTOOL_TIP_CURRENT_VERSION');
 }
 $html .= ':</li>'."\n";
 
@@ -79,7 +79,7 @@ if ($this->version=='dev')
 {
 	if ($this->vnum) 
 	{
-		$html .= 'devversion">'.ucfirst(JText::_('VERSION')).' '.$this->vnum;
+		$html .= 'devversion">'.ucfirst(JText::_('COM_TOOLS_VERSION')).' '.$this->vnum;
 	}
 	else 
 	{
@@ -89,7 +89,7 @@ if ($this->version=='dev')
 }
 else if ($this->version=='current' ) 
 {
-	$html .= 'currentversion">'.ucfirst(JText::_('VERSION')).' '.$this->vnum.' - '.JText::_('published now (changes take effect immediately)');
+	$html .= 'currentversion">'.ucfirst(JText::_('COM_TOOLS_VERSION')).' '.$this->vnum.' - '.JText::_('published now (changes take effect immediately)');
 }
 $html .= ($this->version=='dev' && $this->status['published']) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias . '&editversion=current').'">'.JText::_('change current published version instead').'</a></span>' : '';
 $html .= ($this->version=='current' && $this->status['published']) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias).'">'.JText::_('change upcoming version instead').'</a></span>' : '' ;

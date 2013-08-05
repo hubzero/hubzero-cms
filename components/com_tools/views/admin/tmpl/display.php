@@ -34,13 +34,13 @@ defined('_JEXEC') or die('Restricted access');
 <div id="output">
 <?php if ($this->getError()) { ?>
 	<p class="error">
-		<strong><?php echo JText::_('NOTICE_PROBLEMS'); ?></strong><br />
+		<strong><?php echo JText::_('COM_TOOLS_NOTICE_PROBLEMS'); ?></strong><br />
 		<?php echo implode('<br />* ', $this->getErrors()); ?>
 	</p>
 <?php } ?>
 <?php if ($this->messages && !empty($this->messages)) { ?>
 	<p class="passed">
-		<strong><?php echo JText::_('NOTICE_OK_ACTIONS'); ?></strong><br />
+		<strong><?php echo JText::_('COM_TOOLS_NOTICE_OK_ACTIONS'); ?></strong><br />
 		<?php echo implode('<br />* ', $this->messages); ?>
 	</p>
 <?php } ?>
