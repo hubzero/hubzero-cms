@@ -17,66 +17,110 @@
 }
 
 /* Overall styles */
-table caption {
-	text-align: center;
+.gradebook-container {
+	position: relative;
+	overflow: hidden;
 }
-table tbody td {
-	border: 1px solid #CCCCCC;
+.gradebook-container .slidable-outer {
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	bottom: 0;
+	left: 225px;
+	right: 0;
+	border-right: 1px solid #CCCCCC;
+}
+.gradebook-container .slidable {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+	border-bottom: 1px solid #CCCCCC;
+}
+.gradebook-container .slidable-inner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.gradebook-container .cell {
+	border-left: 1px solid #CCCCCC;
+	border-top: 1px solid #CCCCCC;
+	background: #F9F9F9;
 	padding: 10px;
+	width: 115px;
+	min-width: 115px;
+	max-width: 115px;
+	height: 42px;
+	min-height: 42px;
+	max-height: 42px;
+	position: relative;
+	overflow: hidden;
+	box-sizing: border-box;
 }
-table tbody .editing {
+.gradebook-container .gradebook-column:last-child {
+	border-right: 1px solid #CCCCCC;
+}
+.gradebook-container .cell:first-child {
+	background: #D1D9DE;
+}
+.gradebook-container .search-box {
+	height: 55px;
+	max-height: 55px;
+	min-height: 55px;
+	box-sizing: border-box;
+}
+.gradebook-container .search-box input {
+	width: 100%;
+	background: rgba(255, 255, 255, .7);
+}
+.gradebook-container .editing {
 	padding: 4px;
 	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
 }
-.gradebook thead {
-	background: #D1D9DE;
+.gradebook-container .gradebook-column {
+	float: left;
 }
-.gradebook thead td {
+.gradebook-container .gradebook-students {
+	border-bottom: 1px solid #CCCCCC;
+}
+.gradebook-container .gradebook-students .cell{
+	width: 225px;
+	max-width: 225px;
+	min-width: 225px;
+}
+.gradebook .form-name {
+	text-align: center;
+	position: relative;
 	padding: 0;
-	border: 1px solid #CCCCCC;
+	height: 55px;
+	max-height: 55px;
+	min-height: 55px;
 }
-.gradebook .form-name-inner {
+.gradebook-container .form-name-inner {
 	border-bottom: none;
-	padding: 8px 0;
+	padding: 5px 0;
 	margin: 0;
 	font-weight: bold;
 	background: #EEEEEE;
 	background: rgba(240,240,240,.5);
 	overflow: hidden;
+	height: 55px;
+	max-height: 55px;
+	min-height: 55px;
+	box-sizing: border-box;
 }
-.gradebook .row-entry,
-.add {
-	background: #F9F9F9;
-}
-.gradebook .even {
-	background: #FCFCFC;
-}
-.gradebook tbody tr:hover {
-	background: #EEEEEE;
-}
-.gradebook .cell-title {
+.gradebook-container .cell-title {
 	text-align: left;
-	width: 200px;
-	min-width: 200px;
-	max-width: 200px;
 }
-.gradebook .cell-entry {
+.gradebook-container .cell-entry {
 	text-align: center;
 	cursor: pointer;
-	width: 90px;
-	min-width: 90px;
-	max-width: 90px;
-	position: relative;
-	overflow: hidden;
 }
-.cell-entry:hover {
-	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
-}
-.gradebook .form-name {
-	text-align: center;
-	position: relative;
-}
-.gradebook .override.active {
+.gradebook-container .override.active {
 	position: absolute;
 	width: 50px;
 	height: 50px;
@@ -90,10 +134,10 @@ table tbody .editing {
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
-.gradebook .override.active:hover {
+.gradebook-container .override.active:hover {
 	background: #FF5C51;
 }
-.gradebook .override.active:before {
+.gradebook-container .override.active:before {
 	position: absolute;
 	font-family: "fontcons";
 	content: "\273D";
@@ -102,18 +146,20 @@ table tbody .editing {
 	color: #FFFFFF;
 	font-size: 11px;
 }
-.gradebook .override.active:hover:before {
+.gradebook-container .override.active:hover:before {
 	content: "\f08a";
 }
-.gradebook .search-box {
-	vertical-align: bottom;
-	padding: 13px;
+.gradebook-container .edit-grade {
+	width: 4em;
+	padding: 5px;
+	box-sizing: border-box;
 }
-.gradebook .search-box input {
-	width: 100%;
-	background: rgba(255, 255, 255, .7);
+.gradebook-container .cell-entry:hover {
+	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
 }
-
+.gradebook-container .even {
+	background: #FCFCFC;
+}
 .add {
 	margin-top: 10px;
 	cursor: pointer;
@@ -121,12 +167,7 @@ table tbody .editing {
 	padding: 10px;
 }
 
-.gradebook .edit-grade {
-	width: 4em;
-	padding: 5px;
-	box-sizing: border-box;
-}
-
+/* Tooltips */
 .tooltip-top, .tooltip-right {
 	float: left;
 	min-width: 50px;
@@ -176,4 +217,68 @@ table tbody .editing {
 	left: -8px;
 	margin-top: -4px;
 	margin-left: 0;
+}
+
+/* Slider / Nav */
+.navigation {
+	display: none;
+	margin-top: 10px;
+	overflow: hidden;
+	background: #D1D9DE;
+}
+.navigation .prv,
+.navigation .nxt {
+	width: 40px;
+	height: 40px;
+	background: #DDDDDD;
+	background: rgba(240,240,240,.5);
+	display: block;
+	float: left;
+	border: 1px solid #CCCCCC;
+	position: relative;
+	box-sizing: border-box;
+}
+.navigation .prv:hover,
+.navigation .nxt:hover {
+	background: #D1D9DE;
+	cursor: pointer;
+}
+.navigation .nxt {
+	float: right;
+}
+.navigation .prv:before,
+.navigation .nxt:before {
+	position: absolute;
+	content: "";
+	font-family: "fontcons";
+	font-size: 20px;
+	top: 9px;
+	left: 9px;
+}
+.navigation .prv:before {
+	content: "\f0d9";
+}
+.navigation .nxt:before {
+	content: "\f0da";
+}
+.slider-container {
+	display: block;
+	margin: 0px 40px 0 40px;
+	height: 40px;
+	box-sizing: border-box;
+	background: #F9F9F9;
+	padding: 12px 20px;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+.slider-container .slider {
+	width: 100%;
+}
+.navigation .disabled {
+	opacity: 0.6;
+}
+.navigation .disabled:hover {
+	cursor: default;
+	background: #DDDDDD;
+	background: rgba(240,240,240,.5);
 }

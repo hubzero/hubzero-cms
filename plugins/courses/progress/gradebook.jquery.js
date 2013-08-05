@@ -23,7 +23,9 @@ if (!jq) {
 }
 
 HUB.Plugins.CoursesProgress = {
-	jQuery: jq,
+	jQuery   : jq,
+	colWidth : 0,
+	offset   : 0,
 
 	loadData: function ( )
 	{
@@ -66,8 +68,11 @@ HUB.Plugins.CoursesProgress = {
 				// Remove loading icon
 				g.find('.loading').hide();
 				f.html(html);
+				$('.navigation').show();
 
-				// Initialize the rest of the page
+				$(window).resize(HUB.Plugins.CoursesProgress.resizeTable);
+
+				HUB.Plugins.CoursesProgress.resizeTable();
 				HUB.Plugins.CoursesProgress.initialize();
 			}
 		});
@@ -93,6 +98,40 @@ HUB.Plugins.CoursesProgress = {
 
 		// Add fancy select boxes
 		//$('.form-type select').HUBfancyselect();
+		var s      = g.find('.slidable-inner'),
+			slider = $('.slider');
+
+		$('.nxt').click(function() {
+			if (Math.round(Math.abs(s.css('left').replace('px', ''))) < Math.round(HUB.Plugins.CoursesProgress.offset)) {
+				s.animate({left:'-='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
+					var sv = slider.slider('value');
+					slider.slider('value', sv+=1);
+					if (Math.abs(Math.round(s.css('left').replace('px', ''))) == Math.round(HUB.Plugins.CoursesProgress.offset)) {
+						$('.nxt').addClass('disabled');
+					}
+
+					$('.prv').removeClass('disabled');
+				});
+			} else {
+				$('.nxt').addClass('disabled');
+			}
+		});
+
+		$('.prv').click(function() {
+			if (Math.round(s.css('left').replace('px', '')) < 0) {
+				s.animate({left:'+='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
+					var sv = slider.slider('value');
+					slider.slider('value', sv-=1);
+					if (Math.round(s.css('left').replace('px', '')) == 0) {
+						$('.prv').addClass('disabled');
+					}
+
+					$('.nxt').removeClass('disabled');
+				});
+			} else {
+				$('.prv').addClass('disabled');
+			}
+		});
 
 		// Prevent form submission via "enter"
 		$('.gradebook-form').submit(function ( e ) {
@@ -110,19 +149,25 @@ HUB.Plugins.CoursesProgress = {
 				e.preventDefault();
 				// Shift + tab
 				if (e.shiftKey) {
-					if (t.prev('.cell-entry').length) {
-						t.prev('.cell-entry').trigger('click');
-					} else if (t.parent('tr').prev('tr').find('td:not(.cell-title)').last().length) {
-						t.parent('tr').prev('tr').find('td:not(.cell-title)').last().trigger('click');
+					var r = t.data('rownum').match(/cell-row([0-9]*)/i);
+					var p = t.parent('.gradebook-column').prev('.gradebook-column').find('.'+r[0]);
+					var n = t.parent('.gradebook-column').siblings().last().find('.cell-row'+(parseInt(r[1], 10)-1));
+					if (p.length) {
+						p.trigger('click');
+					} else if (n.length) {
+						n.trigger('click');
 					} else {
 						t.find('.edit-grade').blur();
 					}
 				// Tab
 				} else {
-					if (t.next('.cell-entry').length) {
-						t.next('.cell-entry').trigger('click');
-					} else if (t.parent('tr').next('tr').find('td:not(.cell-title)').first().length) {
-						t.parent('tr').next('tr').find('td:not(.cell-title)').first().trigger('click');
+					var r = t.data('rownum').match(/cell-row([0-9]*)/i);
+					var n = t.parent('.gradebook-column').next('.gradebook-column').find('.'+r[0]);
+					var p = t.parent('.gradebook-column').siblings().first().find('.cell-row'+(parseInt(r[1], 10)+1));
+					if (n.length) {
+						n.trigger('click');
+					} else if (p.length) {
+						p.trigger('click');
 					} else {
 						t.find('.edit-grade').blur();
 					}
@@ -133,13 +178,13 @@ HUB.Plugins.CoursesProgress = {
 				s.html(c);
 			// Up key
 			} else if (e.keyCode === 38) {
-				var i = $(t.parent('tr').prev('tr').find('td')[t[0].cellIndex]);
+				var i = $(t.prev('.cell-entry'));
 				if (i.length) {
 					i.trigger('click');
 				}
 			// Down key
 			} else if (e.keyCode === 40) {
-				var i = $(t.parent('tr').next('tr').find('td')[t[0].cellIndex]);
+				var i = $(t.next('.cell-entry'));
 				if (i.length) {
 					i.trigger('click');
 				}
@@ -267,24 +312,102 @@ HUB.Plugins.CoursesProgress = {
 			$('.search-box input').on("keyup", function ( e ) {
 				var search = $(this).val();
 				if(search != '') {
-					$(".gradebook tbody tr td.cell-title:not(:caseInsensitiveContains('"+search+"'))").parent().hide();
-					$(".gradebook tbody tr td.cell-title:caseInsensitiveContains('"+search+"')").parent().show();
+					var neg = $(".gradebook-container .cell-title:not(:caseInsensitiveContains('"+search+"'))");
+					var pos = $(".gradebook-container .cell-title:caseInsensitiveContains('"+search+"')");
+
+					neg.each(function() {
+						$($('.'+$(this).data('rownum'))).hide();
+					});
+					pos.each(function() {
+						$($('.'+$(this).data('rownum'))).show();
+					});
 
 					// Add no results node
-					if($(".gradebook tbody tr:visible").length == 0 && $('#none').length == 0) {
-						$(".gradebook").append("<p id=\"none\" class=\"warning\">Sorry, no students match your search.</p>");
+					if(pos.length == 0 && $('#none').length == 0) {
+						$(".navigation").before("<div id=\"none\" class=\"warning clear\">Sorry, no students match your search.</div>");
 					}
 
 					// Remove no results node if we have results
-					if($(".gradebook tbody tr:visible").length >= 1 && $("#none").length == 1 ) {
+					if(pos.length >= 1 && $("#none").length == 1 ) {
 						$(".gradebook #none").remove();
 					}
 				} else {
 					$(".gradebook #none").remove();
-					$(".gradebook tbody tr").show();
+					$(".gradebook-container .cell").show();
 				}
 			});
 		}
+	},
+
+	resizeTable: function ( ) 
+	{
+		// Reset slidable 'right' before doing width calculations
+		$('.slidable').css({right : 0});
+
+		// Calculate width of each column (range 100 - 150 px)
+		var w      = $('.slidable-inner').width(),
+			rLow   = Math.ceil(w / 150),
+			rhigh  = Math.floor(w / 100),
+			cnt    = Math.min(rLow, rhigh),
+			width  = w / cnt,
+			rowCnt = $('.gradebook-container .gradebook-column:not(.gradebook-students)').length;
+			offset = (rowCnt - cnt) * width;
+
+		// Set CSS
+		$('.gradebook-container .gradebook-column:not(.gradebook-students) .cell').css({
+			'width'     : width + 'px',
+			'min-width' : width + 'px',
+			'max-width' : width + 'px'
+		});
+		$('.slidable').css({right :'-'+width+'px'});
+		$('.slidable-inner').css({left : 0});
+
+		// Disable prev button by default
+		$('.prv').addClass('disabled');
+
+		// Check if all columns are showing and disable next button as necessary
+		if (offset === 0) {
+			$('.nxt').addClass('disabled');
+		} else {
+			$('.nxt').removeClass('disabled');
+		}
+
+		$('.slider').slider({
+			min   : 0,
+			max   : (rowCnt - cnt),
+			value : 0,
+			slide : function( event, ui ) {
+				HUB.Plugins.CoursesProgress.move(HUB.Plugins.CoursesProgress.colWidth * ui.value);
+			}
+		});
+
+		// Initialize the rest of the page
+		HUB.Plugins.CoursesProgress.colWidth = width;
+		HUB.Plugins.CoursesProgress.offset   = offset;
+	},
+
+	move: function ( loc )
+	{
+		var s = $('.slidable-inner');
+
+		s.stop().animate({left:'-'+(loc)+'px'}, function ( e ) {
+			var l = Math.round(Math.abs(s.css('left').replace('px', ''))),
+				o = Math.round(HUB.Plugins.CoursesProgress.offset);
+
+			if (l == 0 && o == 0) {
+				$('.prv').addClass('disabled');
+				$('.nxt').addClass('disabled');
+			} else if (l != 0 && l == o) {
+				$('.nxt').addClass('disabled');
+				$('.prv').removeClass('disabled');
+			} else if (l != 0 && l < o) {
+				$('.nxt').removeClass('disabled');
+				$('.prv').removeClass('disabled');
+			} else {
+				$('.prv').addClass('disabled');
+				$('.nxt').removeClass('disabled');
+			}
+		});
 	},
 
 	isValid: function ( newVal, curVal )
