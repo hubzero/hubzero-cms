@@ -62,7 +62,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 								<div id="offline-message">
 									<h2><?php echo JText::_('TPL_HUBBASIC_OFFLINE'); ?></h2>
 									<p>
-										<?php echo $mainframe->getCfg('offline_message'); ?>
+										<?php echo $config->getValue('config.offline_message'); ?>
 									</p>
 								</div>
 							</div><!-- / .wrap -->
