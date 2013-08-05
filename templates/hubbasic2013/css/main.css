@@ -1218,8 +1218,12 @@
 		right: 269px;
 		_display: none;
 	}
+	#page_content .aside:before {
+		top: 75px;
+		right: 259px;
+	}
 	#page_content .section .aside:before {
-		right: 210px;
+		right: 239px;
 		top: 0;
 		bottom: 0;
 	}
