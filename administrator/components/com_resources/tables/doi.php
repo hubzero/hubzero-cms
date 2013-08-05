@@ -319,9 +319,16 @@ class ResourcesDoi extends JTable
 			$out = explode('/', $output);
 			$handle = trim(end($out));
 		}
-		else 
+		else
 		{
-			$doierr = $success . $output;
+			if (empty($output))
+			{
+				$doierr = "$success: " . curl_error($ch);
+			}
+			else
+			{
+				$doierr = "$success: " . $output;
+			}
 			$doierr.= ' ' . $call;
 			$handle = 0;
 		}
