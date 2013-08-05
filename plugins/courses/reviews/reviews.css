@@ -65,20 +65,20 @@
 		/*color: #febe4d;*/
 		background: transparent;
 	}
-	.reviews-summary .avgrating:before {
+	.com_courses .avgrating:before {
 		font-family: 'Fontcons';
 	}
-	.reviews-summary .no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
-	.reviews-summary .half-stars:before      { content: "\f089\00a0\2606\2606\2606\2606"; }
-	.reviews-summary .one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
-	.reviews-summary .onehalf-stars:before   { content: "\2605\f089\00a0\2606\2606\2606"; }
-	.reviews-summary .two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
-	.reviews-summary .twohalf-stars:before   { content: "\2605\2605\f089\00a0\2606\2606"; }
-	.reviews-summary .three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
-	.reviews-summary .threehalf-stars:before { content: "\2605\2605\2605\f089\00a0\2606"; }
-	.reviews-summary .four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
-	.reviews-summary .fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
-	.reviews-summary .five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
+	.com_courses .no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
+	.com_courses .half-stars:before      { content: "\f089\00a0\2606\2606\2606\2606"; }
+	.com_courses .one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
+	.com_courses .onehalf-stars:before   { content: "\2605\f089\00a0\2606\2606\2606"; }
+	.com_courses .two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
+	.com_courses .twohalf-stars:before   { content: "\2605\2605\f089\00a0\2606\2606"; }
+	.com_courses .three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
+	.com_courses .threehalf-stars:before { content: "\2605\2605\2605\f089\00a0\2606"; }
+	.com_courses .four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
+	.com_courses .fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
+	.com_courses .five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
 	.reviews-summary .avgrating:before {
 		font-size: 2em;
 	}
@@ -148,6 +148,7 @@
 		border-radius: 0.25em;
 		text-align: center;
 		padding: 0.5em 0 0.3em 0;
+		background-image: none;
 	}
 	.comment-body .avgrating:before {
 		margin-right: 1em;
