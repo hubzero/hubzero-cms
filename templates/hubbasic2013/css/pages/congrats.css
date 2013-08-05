@@ -197,16 +197,16 @@
 		top: -20px;
 		border-color: transparent transparent #f9f9f9 #f9f9f9;
 	}
-	#features .col {
+	#features .columns {
 		position: relative;
 		margin: 0;
 		padding: 0;
 		width: 33.33%;
 	}
-	#features .col.omega {
+	#features .columns.first {
 		width: 33.34%;
 	}
-	#features .col:after {
+	#features .columns:after {
 		position: absolute;
 		top: -20px;
 		left: 20px;
@@ -217,44 +217,42 @@
 		height: 20px;
 	}
 
-	#features .col p,
-	#features .col ul {
+	#features .columns p,
+	#features .columns ul {
 		border: none;
 	}
-	#features .col p,
-	#features .col form {
+	#features .columns p,
+	#features .columns form {
 		margin: 0;
 		padding: 30px 30px 30px 30px;
 	}
-	#features .col form p,
-	#features .col p + p {
+	#features .columns form p,
+	#features .columns p + p {
 		padding-top: 0;
 	}
-	#features .col form {
+	#features .columns form {
 		padding-bottom: 0;
 	}
-	#features .col p.btn-container {
+	#features .columns p.btn-container {
 		text-align: center;
 	}
-	#features .col div:first-child {
+	#features .columns div:first-child {
 		position: relative;
 		background: #fff;
 		margin: 0 0 0 -1px;
 		padding: 0;
 		border-left: 1px solid #e1e1e1;
 		border-right: 1px solid #e1e1e1;
-		min-height: 164px;
 		min-height: 301px;
 	}
-	#features .col:first-child>div {
+	#features .columns.first div:first-child {
 		border-left: none;
 		margin-left: 0;
 	}
-	#features .col.omega div:first-child {
+	#features .columns.third div:first-child {
 		border-right: none;
 	}
-	html.firefox #features .col div:first-child {
-		min-height: 174px;
+	html.firefox #features .columns div:first-child {
 		min-height: 311px;
 	}
 
