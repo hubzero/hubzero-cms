@@ -37,6 +37,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $comment = new Hubzero_Item_Comment($this->database);
 
+$edit = JRequest::getInt('editcomment', 0);
+
 ?>
 <?php if ($this->params->get('access-view-comment')) { ?>
 	<!-- <div class="below section"> -->
@@ -82,7 +84,8 @@ $comment = new Hubzero_Item_Comment($this->database);
 	<?php } ?>
 	<!-- </div>/ .below section -->
 
-	<?php if ($this->depth <= 1 && $this->params->get('access-review-comment') && !$comment->hasRated($this->obj->get('id'), $this->obj_type, $this->juser->get('id'))) { ?>
+	<?php if (($this->depth <= 1 && $this->params->get('access-review-comment') && !$comment->hasRated($this->obj->get('id'), $this->obj_type, $this->juser->get('id'))) 
+		|| $edit) { ?>
 	<?php //if ($this->params->get('access-create-comment')) { ?>
 	<div class="below section">
 		<h3 class="post-comment-title">
@@ -93,46 +96,11 @@ $comment = new Hubzero_Item_Comment($this->database);
 			<?php echo JText::_('PLG_COURSES_REVIEWS_POST_A_COMMENT'); ?>
 		<?php } ?>
 		</h3>
-		<!-- <div class="aside">
-			<table class="wiki-reference" summary="<?php echo JText::_('PLG_COURSES_REVIEWS_WIKI_SYNTAX_REFERENCE'); ?>">
-				<caption><?php echo JText::_('PLG_COURSES_REVIEWS_WIKI_SYNTAX_REFERENCE'); ?></caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-				</tbody>
-			</table>
-		</div><!- / .aside -
-		<div class="subject"> -->
+
 			<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<span class="comment-anchor"><a name="post-comment"></a></span>
-<?php
+					<?php
 					ximport('Hubzero_User_Profile');
 					ximport('Hubzero_User_Profile_Helper');
 					
@@ -143,11 +111,11 @@ $comment = new Hubzero_Item_Comment($this->database);
 						$jxuser->load($this->juser->get('id'));
 						$anonymous = 0;
 					}
-?>
+					?>
 					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anonymous); ?>" alt="" />
 				</p>
 				<fieldset>
-<?php
+				<?php
 				if (!$this->juser->get('guest')) 
 				{
 					if (($replyto = JRequest::getInt('replyto', 0))) 
@@ -168,7 +136,7 @@ $comment = new Hubzero_Item_Comment($this->database);
 								$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $reply->created_by) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 							}
 						}
-?>
+					?>
 					<blockquote cite="c<?php echo $this->replyto->id ?>">
 						<p>
 							<strong><?php echo $name; ?></strong> 
@@ -177,49 +145,60 @@ $comment = new Hubzero_Item_Comment($this->database);
 						</p>
 						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($reply->content), 300, 0); ?></p>
 					</blockquote>
-<?php
+					<?php
 					}
 				}
 
 				$comment->parent = JRequest::getInt('replyto', 0);
-				if (($edit = JRequest::getInt('editcomment', 0))) 
+				if ($edit) 
 				{
 					$comment->load($edit);
-					if ($comment->created_by != $this->juser->get('id'))
+					/*if ($comment->created_by != $this->juser->get('id'))
 					{
 						$comment = new Hubzero_Item_Comment($this->database);
+					}*/
+					?>
+					<p class="warning">
+						<strong>Note:</strong> You are editing a comment originally posted <br />
+						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $timeformat, $tz); ?></time></span> 
+						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $dateformat, $tz); ?></time></span>
+					</p>
+					<?php
+					if ($comment->parent)
+					{
+						$this->depth = 2;
 					}
 				}
-?>
+				?>
 				<?php if ($this->depth <= 1) {  // && $this->params->get('access-review-comment') ?>
 					<fieldset class="rating">
 						<legend><?php echo JText::_('PLG_COURSES_REVIEWS_FORM_RATING'); ?>:</legend>
-						
-							<input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->rating == 1) { echo ' checked="checked"'; } ?> /> 
+
+						<input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->rating == 1) { echo ' checked="checked"'; } ?> /> 
 						<label for="review_rating_1">
 							&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_POOR'); ?>
 						</label>
-						
-							<input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->rating == 2) { echo ' checked="checked"'; } ?> /> 
+
+						<input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->rating == 2) { echo ' checked="checked"'; } ?> /> 
 						<label for="review_rating_2">
 							&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
 						</label>
-						
-							<input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->rating == 3) { echo ' checked="checked"'; } ?> /> 
+
+						<input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->rating == 3) { echo ' checked="checked"'; } ?> /> 
 						<label for="review_rating_3">
 							&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
 						</label>
-						
-							<input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($comment->rating == 4) { echo ' checked="checked"'; } ?> /> 
+
+						<input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($comment->rating == 4) { echo ' checked="checked"'; } ?> /> 
 						<label for="review_rating_4">
 							&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_VERY_GOOD'); ?>
 						</label>
-						
-							<input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->rating == 5) { echo ' checked="checked"'; } ?> /> 
+
+						<input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->rating == 5) { echo ' checked="checked"'; } ?> /> 
 						<label for="review_rating_5">
 							&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
@@ -227,49 +206,46 @@ $comment = new Hubzero_Item_Comment($this->database);
 					</fieldset>
 					<div class="clear"></div>
 				<?php } ?>
+
 					<label>
 						<?php echo JText::_('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
-<?php
-					if (!$this->juser->get('guest')) 
-					{
-						ximport('Hubzero_Wiki_Editor');
-						$editor =& Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('comment[content]', 'commentcontent', $comment->content, 'minimal', '40', '15');
-					/*} else {
-						$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
-?>
-						<p class="warning">
-							You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
-						</p>
-<?php
-					*/
-					}
-?>
+						<?php
+						if (!$this->juser->get('guest')) 
+						{
+							ximport('Hubzero_Wiki_Editor');
+							$editor =& Hubzero_Wiki_Editor::getInstance();
+							echo $editor->display('comment[content]', 'commentcontent', $comment->content, 'minimal', '40', '20');
+						/*} else {
+							$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
+							?>
+							<p class="warning">
+								You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
+							</p>
+							<?php
+						*/
+						}
+						?>
 					</label>
 
 
 					<label id="comment-anonymous-label">
-<?php if ($this->params->get('comments_anon', 1)) { ?>
+					<?php if ($this->params->get('comments_anon', 1)) { ?>
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->anonymous) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Post anonymously'); ?>
-<?php } else { ?>
+					<?php } else { ?>
 						&nbsp; <input class="option" type="hidden" name="comment[anonymous]" id="comment-anonymous" value="0" />
-<?php } ?>
+					<?php } ?>
 					</label>
+
 					<p class="submit">
 						<input type="submit" name="submit" value="<?php echo JText::_('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" />
 					</p>
 
-<?php 			/*} else { ?>
-					<p class="warning">
-						<?php echo JText::_('Comments are closed on this entry.'); ?>
-					</p>
-<?php 			}*/ ?>
 					<input type="hidden" name="comment[id]" value="<?php echo $comment->id; ?>" />
 					<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
 					<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $comment->parent; ?>" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo $this->juser->get('id'); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo ($comment->id ? $comment->created_by : $this->juser->get('id')); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="action" value="save" />
 

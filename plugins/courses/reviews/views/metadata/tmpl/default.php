@@ -94,7 +94,7 @@ switch ($avg)
 				<th>5 star</th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[5] / $total)*100 : 0; ?>%;">
+						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[5] / $total, 2)*100 : 0; ?>%;">
 							<span><?php echo $this->escape($distribution[5]); ?></span>
 						</strong>
 					</span>
@@ -104,7 +104,7 @@ switch ($avg)
 				<th>4 star</th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[4] / $total)*100 : 0; ?>%;">
+						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[4] / $total, 2)*100 : 0; ?>%;">
 							<span><?php echo $this->escape($distribution[4]); ?></span>
 						</strong>
 					</span>
@@ -114,7 +114,7 @@ switch ($avg)
 				<th>3 star</th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[3] / $total)*100 : 0; ?>%;">
+						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[3] / $total, 2)*100 : 0; ?>%;">
 							<span><?php echo $this->escape($distribution[3]); ?></span>
 						</strong>
 					</span>
@@ -124,7 +124,7 @@ switch ($avg)
 				<th>2 star</th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[2] / $total)*100 : 0; ?>%;">
+						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[2] / $total, 2)*100 : 0; ?>%;">
 							<span><?php echo $this->escape($distribution[2]); ?></span>
 						</strong>
 					</span>
@@ -134,7 +134,7 @@ switch ($avg)
 				<th>1 star</th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[1] / $total)*100 : 0; ?>%;">
+						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[1] / $total, 2)*100 : 0; ?>%;">
 							<span><?php echo $this->escape($distribution[1]); ?></span>
 						</strong>
 					</span>

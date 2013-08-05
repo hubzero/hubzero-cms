@@ -75,13 +75,13 @@ defined('_JEXEC') or die('Restricted access');
 
 	switch ($this->comment->rating)
 	{
-		case 1:   $rating = ' one-stars';       $strs = '&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
-		case 2:   $rating = ' two-stars';       $strs = '&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;'; break;
-		case 3:   $rating = ' three-stars';     $strs = '&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;'; break;
-		case 4:   $rating = ' four-stars';      $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;'; break;
-		case 5:   $rating = ' five-stars';      $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;'; break;
+		case 1:   $rating = ' one-stars';   $strs = '&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
+		case 2:   $rating = ' two-stars';   $strs = '&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;'; break;
+		case 3:   $rating = ' three-stars'; $strs = '&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;'; break;
+		case 4:   $rating = ' four-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;'; break;
+		case 5:   $rating = ' five-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;'; break;
 		case 0:
-		default:  $rating = ' no-stars';      $strs = '&#x2729;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
+		default:  $rating = ' no-stars';    $strs = '&#x2729;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
 	}
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->id; ?>">
@@ -90,23 +90,23 @@ defined('_JEXEC') or die('Restricted access');
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $this->comment->anonymous); ?>" alt="" />
 			</p>
 			<div class="comment-content">
-<?php
-			if ($this->params->get('comments_votable', 1))
-			{
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'courses',
-						'element' => 'reviews',
-						'name'    => 'view',
-						'layout'  => 'vote'
-					)
-				);
-				$view->option = $this->option;
-				$view->item   = $this->comment;
-				$view->url    = $this->url;
-				$view->display();
-			}
-?>
+				<?php
+				if ($this->params->get('comments_votable', 1))
+				{
+					$view = new Hubzero_Plugin_View(
+						array(
+							'folder'  => 'courses',
+							'element' => 'reviews',
+							'name'    => 'view',
+							'layout'  => 'vote'
+						)
+					);
+					$view->option = $this->option;
+					$view->item   = $this->comment;
+					$view->url    = $this->url;
+					$view->display();
+				}
+				?>
 				<p class="comment-title">
 					<strong>
 					<?php if (!$this->comment->anonymous) { ?>
@@ -120,6 +120,11 @@ defined('_JEXEC') or die('Restricted access');
 					<a class="permalink" href="<?php echo $this->url . '#c' . $this->comment->id; ?>" title="<?php echo JText::_('PLG_COURSES_REVIEWS_PERMALINK'); ?>">
 						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeformat, $tz); ?></time></span> 
 						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateformat, $tz); ?></time></span>
+						<?php if ($this->comment->modified && $this->comment->modified != '0000-00-00 00:00:00') { ?>
+							&mdash; <?php echo JText::_('Edited'); ?>
+							<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeformat, $tz); ?></time></span> 
+							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateformat, $tz); ?></time></span>
+						<?php } ?>
 					</a>
 				</p>
 				<div class="comment-body">
@@ -139,49 +144,42 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				?>
 				</div><!-- / .comment-body -->
-				
-<?php 		if ($this->comment->filename) { ; ?>
+
+			<?php if ($this->comment->filename) { ?>
 				<div class="attachment">
 					<p>Attached file: <?php echo '<a href="' . JURI::base() . 'site' . DS . 'comments' . DS . $this->comment->filename . '" target="_blank">' . $this->comment->filename . '</a>'; ?></p>
 				</div>
-<?php 			} ?>
-				
-<?php 		if ($this->comment->state != 3) { ?>
+			<?php } ?>
+
+			<?php if ($this->comment->state != 3) { ?>
 				<p class="comment-options">
-					<!-- <li> -->
-						<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>">
-							<?php echo JText::_('PLG_COURSES_REVIEWS_REPORT_ABUSE'); ?>
-						</a>
-					<!-- </li> -->
-<?php 			if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<!-- <li> -->
-						<a class="reply" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
-							<?php echo JText::_('PLG_COURSES_REVIEWS_REPLY'); ?>
-						</a>
-					<!-- </li> -->
-<?php 			} ?>
-<?php 			if (($this->params->get('access-edit-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<!-- <li> -->
-						<a class="edit" href="<?php echo JRoute::_($rtrn . 'editcomment=' . $this->comment->id . '#post-comment'); ?>">
-							<?php echo JText::_('PLG_COURSES_REVIEWS_EDIT'); ?>
-						</a>
-					<!-- </li> -->
-<?php 			} ?>
-<?php 			if (($this->params->get('access-delete-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<!-- <li> -->
-						<a class="delete" href="<?php echo JRoute::_($rtrn . 'action=delete&comment=' . $this->comment->id); ?>">
-							<?php echo JText::_('PLG_COURSES_REVIEWS_DELETE'); ?>
-						</a>
-					<!-- </li> -->
-<?php 			} ?>
+				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
+					<a class="icon-reply reply" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
+						--><?php echo JText::_('PLG_COURSES_REVIEWS_REPLY'); ?><!-- 
+					--></a>
+				<?php } ?>
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>"><!-- 
+						--><?php echo JText::_('PLG_COURSES_REVIEWS_REPORT_ABUSE'); ?><!-- 
+					--></a>
+				<?php if (($this->params->get('access-edit-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
+					<a class="icon-edit edit" href="<?php echo JRoute::_($rtrn . 'editcomment=' . $this->comment->id . '#post-comment'); ?>"><!-- 
+						--><?php echo JText::_('PLG_COURSES_REVIEWS_EDIT'); ?><!-- 
+					--></a>
+				<?php } ?>
+				<?php if (($this->params->get('access-delete-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
+					<a class="icon-delete delete" href="<?php echo JRoute::_($rtrn . 'action=delete&comment=' . $this->comment->id); ?>"><!-- 
+						--><?php echo JText::_('PLG_COURSES_REVIEWS_DELETE'); ?><!-- 
+					--></a>
+				<?php } ?>
 				</p><!-- / .comment-options -->
-<?php 		} ?>
-<?php 		if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
+			<?php } ?>
+
+			<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
 				<div class="addcomment hide" id="comment-form<?php echo $this->comment->id; ?>">
 					<form action="<?php echo JRoute::_($this->url); ?>" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<legend><span><?php echo JText::sprintf('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->anonymous ? $this->comment->name : JText::_('PLG_COURSES_REVIEWS_ANONYMOUS'))); ?></span></legend>
-							
+
 							<input type="hidden" name="comment[id]" value="0" />
 							<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
 							<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
@@ -190,7 +188,7 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="action" value="save" />
-							
+
 							<label for="comment-<?php echo $this->comment->id; ?>-content">
 								<span><?php echo JText::_('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?></span>
 								<textarea name="comment[content]" id="comment-<?php echo $this->comment->id; ?>-content" rows="4" cols="50" placeholder="<?php echo JText::_('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?>"></textarea>
@@ -204,12 +202,12 @@ defined('_JEXEC') or die('Restricted access');
 								&nbsp; <input class="option" type="hidden" name="comment[anonymous]" value="0" /> 
 						<?php } ?>
 							</label>
-							
-							<!-- <label>
+
+							<!-- <label for="commentFile">
 								<?php echo JText::_('PLG_COURSES_REVIEWS_ATTACH_FILE'); ?>:
 								<input type="file" name="commentFile" id="commentFile" />
 							</label> -->
-							
+
 							<p class="submit">
 								<input type="submit" value="<?php echo JText::_('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" /> 
 								<a class="cancelreply" href="<?php echo JRoute::_($this->url . '#c' . $this->comment->id); ?>">
@@ -219,9 +217,9 @@ defined('_JEXEC') or die('Restricted access');
 						</fieldset>
 					</form>
 				</div><!-- / .addcomment -->
-<?php 		} ?>
+			<?php } ?>
 			</div><!-- / .comment-content -->
-<?php
+			<?php
 			if ($this->comment->replies) 
 			{
 				$view = new Hubzero_Plugin_View(
@@ -242,5 +240,5 @@ defined('_JEXEC') or die('Restricted access');
 				$view->cls        = $cls;
 				$view->display();
 			}
-?>
+			?>
 		</li>

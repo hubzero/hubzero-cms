@@ -63,7 +63,22 @@
 	.reviews-summary .avgrating {
 		text-align: center;
 		/*color: #febe4d;*/
+		background: transparent;
 	}
+	.reviews-summary .avgrating:before {
+		font-family: 'Fontcons';
+	}
+	.reviews-summary .no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
+	.reviews-summary .half-stars:before      { content: "\f089\00a0\2606\2606\2606\2606"; }
+	.reviews-summary .one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
+	.reviews-summary .onehalf-stars:before   { content: "\2605\f089\00a0\2606\2606\2606"; }
+	.reviews-summary .two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
+	.reviews-summary .twohalf-stars:before   { content: "\2605\2605\f089\00a0\2606\2606"; }
+	.reviews-summary .three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
+	.reviews-summary .threehalf-stars:before { content: "\2605\2605\2605\f089\00a0\2606"; }
+	.reviews-summary .four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
+	.reviews-summary .fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
+	.reviews-summary .five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
 	.reviews-summary .avgrating:before {
 		font-size: 2em;
 	}
