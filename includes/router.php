@@ -74,6 +74,11 @@ class JRouterSite extends JRouter
 
 		$vars += parent::parse($uri);
 
+		if (empty($vars['option']))
+		{
+			JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
+		}
+
 		/* START: HUBzero Extensions Follow to force registration and email confirmation */
 		$juser = &JFactory::getUser();
 
