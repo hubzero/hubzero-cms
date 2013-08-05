@@ -127,10 +127,10 @@ class UsersViewLogin extends JViewLegacy
 		}
 
 		// Set the return if we have it...
-		$returnUrl = (base64_decode($url) != '/members/myaccount') ? "&return={$url}" : '';
+		$this->returnQueryString = (!empty($return)) ? "&return={$return}" : '';
 
 		$this->multiAuth = $multiAuth;
-		$this->returnUrl = $returnUrl;
+		$this->return = $return;
 		$this->authenticators = $authenticators;
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default

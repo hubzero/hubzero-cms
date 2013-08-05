@@ -62,10 +62,10 @@ if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
 				<h3>Sign in with your:</h2>
 				<?php foreach($this->authenticators as $a) : ?>
 					<div class="account-group-wrap">
-						<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnUrl); ?>">
+						<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
 							<p><?php echo $a['display']; ?> account</p>
 						</a>
-						<a class="sign-out" href="<?php echo JRoute::_('index.php?option=com_users&task=logout&authenticator=' . $a['name'] . ((!empty($this->returnUrl)) ? $this->returnUrl : '&return=' . base64_encode('/login'))); ?>">
+						<a class="sign-out" href="<?php echo JRoute::_('index.php?option=com_users&task=logout&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
 							Not <span class="current-user"><?php echo (isset($this->status[$a['name']]['username'])) ? $this->status[$a['name']]['username'] : ''; ?></span>? Sign out.
 						</a>
 					</div>
