@@ -21,6 +21,9 @@
 	position: relative;
 	overflow: hidden;
 }
+.gradebook-form {
+	display: none;
+}
 .gradebook-container .slidable-outer {
 	position: absolute;
 	overflow: hidden;

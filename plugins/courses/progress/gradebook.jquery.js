@@ -66,9 +66,10 @@ HUB.Plugins.CoursesProgress = {
 				var html    = template(context);
 
 				// Remove loading icon
-				g.find('.loading').hide();
+				g.find('.loading').fadeOut();
 				f.html(html);
-				$('.navigation').show();
+				f.fadeIn();
+				$('.navigation').fadeIn();
 
 				$(window).resize(HUB.Plugins.CoursesProgress.resizeTable);
 
@@ -88,12 +89,14 @@ HUB.Plugins.CoursesProgress = {
 		$('.form-name').tooltip({
 			position : 'top center',
 			offset   : [-5, 0],
-			tipClass : 'tooltip-top'
+			tipClass : 'tooltip-top',
+			predelay : 400
 		});
 		$('.cell-title').tooltip({
 			position : 'center right',
 			offset   : [0, 5],
-			tipClass : 'tooltip-right'
+			tipClass : 'tooltip-right',
+			predelay : 400
 		});
 
 		// Add fancy select boxes
