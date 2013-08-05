@@ -86,7 +86,7 @@ class MediaModelManager extends JModelLegacy
 		return $list;
 	}
 
-	function getFolderTree($base = null)
+	function getFolderTreeJoomla($base = null)
 	{
 		// Get some paths from the request
 		if (empty($base)) {
@@ -131,5 +131,59 @@ class MediaModelManager extends JModelLegacy
 		$tree['data'] = (object) array('name' => JText::_('COM_MEDIA_MEDIA'), 'relative' => '', 'absolute' => $base);
 
 		return $tree;
+	}
+
+	function getFolderTree($base = null)
+	{
+		// Get some paths from the request
+		if (empty($base)) {
+			$base = COM_MEDIA_BASE;
+		}
+
+		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_MEDIA_BASE.'/');
+
+		// convert splfileinfo instance into the structure the view wants. return the relative and parent path as well since it's useful to find where the node belongs
+		$mkData = function($fi) use($mediaBase) {
+			$rel = preg_replace('#^'.preg_quote($mediaBase).'\/?#', '', $fi);
+			$lastSlash = strrpos($rel, DIRECTORY_SEPARATOR);
+			return array(array(
+				'data' => (object)array(
+					'name'     => preg_replace('#[.].*?$#', '', $fi->getBaseName()),
+					'relative' => $rel,
+					'absolute' => (string)$fi
+				),
+				'children' => array()
+			), $rel, $lastSlash ? substr($rel, 0, $lastSlash) : '');
+		};
+
+		list($path) = $mkData(new SplFileInfo($base));
+
+		foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base), RecursiveIteratorIterator::SELF_FIRST) as $file) {
+			// skip hidden files
+			if (substr($file->getFileName(), 0, 1) == '.') {
+				continue;
+			}
+			list($data, $rel, $parent) = $mkData($file);
+	
+			// find a place to put the node by walking through parents
+			$pos =& $path;
+			if (($parents = explode(DIRECTORY_SEPARATOR, $parent))) {
+				foreach ($parents as $idx=>$par) {
+					if ($key = implode(DIRECTORY_SEPARATOR, array_slice($parents, 0, $idx + 1))) {
+						$pos =& $pos['children'][$key];
+					}
+				}
+			}
+			$pos['children'][$rel] = $data;
+		}
+
+		// recursive natural sort
+		$naturalSort = function(&$node) use(&$naturalSort) {
+			uksort($node['children'], function($a, $b) { return strcasecmp($a, $b); } );
+			$node['children'] = array_map($naturalSort, $node['children']);
+			return $node;
+		};
+
+		return $naturalSort($path);
 	}
 }
