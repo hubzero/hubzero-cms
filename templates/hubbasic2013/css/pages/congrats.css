@@ -5,6 +5,25 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/*
+
+	-- -- -- -- -- -- --
+	congratulations page CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	@font-face {
+		font-family: 'Socicons';
+		src: url('/media/system/css/fonts/socicons-webfont.eot');
+		src: url('/media/system/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'), 
+			 url('/media/system/css/fonts/socicons-webfont.woff') format('woff'), 
+			 url('/media/system/css/fonts/socicons-webfont.ttf') format('truetype'),
+			 url('/media/system/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+
 	.com_content .contentpaneopen {
 		padding: 0px;
 	}
@@ -13,10 +32,10 @@
 		border: none\9;
 		margin-top: -1px\9;
 	}
-/* Misc */
+
+/* Splash area */
 	#splash .wrap {
 		padding: 30px;
-		/*overflow: hidden;*/
 	}
 	#splash .inner-wrap .inner .wrap:before,
 	#splash .inner-wrap .inner .wrap:after {
@@ -26,58 +45,130 @@
 
 /* Congratulations box */
 	#congrats {
-		width: 45em;
-		margin: 40px auto 0 auto;
-		background: #000;
-		background: rgba(0, 0, 0, 0.4);
-		-webkit-border-radius: 1em;
-		-moz-border-radius: 1em;
-		-ms-border-radius: 1em;
-		-o-border-radius: 1em;
-		border-radius: 1em;
-		padding: 30px;
-		text-align: center;
+		width: 20em;
+		margin: 30px auto 50px auto;
+		text-align: left;
 		color: #ddd;
-		text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
-		*background: #000;
-		filter: alpha(opacity = 60);
+		text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+		position: relative;
+		padding-left: 5em;
+	}
+	small.congrats-before,
+	#congrats:before {
+		height: 1px;
+		display: block;
+		width: 77.5%;
+		position: absolute;
+		top: 2.5em;
+		left: 4.3em;
+		content: "";
+		background: #fff;
+		background: rgba(255, 255, 255, 0.3);
+	}
+	small.congrats-after,
+	#congrats:after {
+		content: "\f002";
+		font-family: "Socicons";
+		font-size: 5em;
+		position: absolute;
+		top: 0.35em;
+		left: 0.1em;
+		color: #fff;
+		text-shadow: none;
+		color: #fff;
+		color: rgba(255, 255, 255, 0.5);
+		-webkit-transition: all 0.3s ease-in-out;
+		   -moz-transition: all 0.3s ease-in-out;
+		     -o-transition: all 0.3s ease-in-out;
+		        transition: all 0.3s ease-in-out;
+		opacity: 1;
+	}
+	#congrats:hover:after {
+		color: #fff;
+		-webkit-animation: whitePulse 2s infinite;
+		   -moz-animation: whitePulse 2s infinite;
+		     -o-animation: whitePulse 2s infinite;
+		        animation: whitePulse 2s infinite;
+	}
+	@-webkit-keyframes whitePulse {
+		from {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
+		50% {
+			color: #fff;
+			text-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+		}
+		to {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
+	}
+	@-moz-keyframes whitePulse {
+		from {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
+		50% {
+			color: #fff;
+			text-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+		}
+		to {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
+	}
+	@-o-keyframes whitePulse {
+		from {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
+		50% {
+			color: #fff;
+			text-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+		}
+		to {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
+	}
+	@keyframes whitePulse {
+		from {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
+		50% {
+			color: #fff;
+			text-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+		}
+		to {
+			color: rgba(255, 255, 255, 0.5);
+			text-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+		}
 	}
 	#congrats h2 {
 		margin: 0;
 		padding: 0;
 		color: #fff;
 	}
-	#congrats h2 sup {
-		font-size: 75%;
-		font-weight: normal;
+	#congrats a {
+		color: #fff;
+		border-bottom: 1px dotted #ddd;
+	}
+	#congrats a:hover {
+		color: #fff;
+		border-bottom: 1px solid #fff;
 	}
 
 /* Freatured items */
 	#features {
-		/*margin: -30px 0 0 0;
-		background: #fff;*/
-		background: #ececec url("../../images/layout/noise-lite.png");
+		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		background: #fff;
 		padding: 0;
 	}
-	
 	#features .wrap {
-		
 		padding: 0;
-		/*-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);*/
 	}
-	/*#features .columns {
-		background: url("../../images/layout/stripes.png") 0 bottom repeat-x;
-		padding: 0 0 10px 0;
-		position: relative;
-	}
-	#features .columns {
-		margin-top: -30px;
-	}*/
 	#features h2 {
 		display: none;
 	}
@@ -87,7 +178,7 @@
 		padding: 20px 30px 30px 30px;
 		margin: 0;
 		font-weight: normal;
-		background: #f9f9f9 url("../../images/layout/noise-lite.png");
+		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		position: relative;
 	}
 	#features h3:before,
@@ -150,11 +241,6 @@
 		background: #fff;
 		margin: 0 0 0 -1px;
 		padding: 0;
-		/*-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);*/
 		border-left: 1px solid #e1e1e1;
 		border-right: 1px solid #e1e1e1;
 		min-height: 164px;
@@ -186,9 +272,10 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
 		border: 1px solid #CCC;
 		-webkit-box-shadow: inset 0 0 1px #fff;
-		-moz-box-shadow: inset 0 0 1px #fff;
-		-ms-box-shadow: inset 0 0 1px #fff;
-		box-shadow: inset 0 0 1px #fff;
+		   -moz-box-shadow: inset 0 0 1px #fff;
+		    -ms-box-shadow: inset 0 0 1px #fff;
+		     -o-box-shadow: inset 0 0 1px #fff;
+		        box-shadow: inset 0 0 1px #fff;
 		text-shadow: 0 1px 0 #fff;
 		border-color: #CCC #CCC #AAA #AAA;
 		padding: 0.4em 0.91em 0.4em 0.91em;
@@ -197,10 +284,10 @@
 		-webkit-background-clip: padding-box;
 		display: inline-block;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		outline: 0;
 		font-size: 1em;
 		white-space: nowrap;
@@ -222,10 +309,10 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1, endColorstr=#e8e8e8)";
 		border: 1px solid #aaaaaa;
 		-webkit-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		   -moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		    -ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		     -o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		        box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 	}
 
 /* Highlight section */
@@ -233,30 +320,24 @@
 		padding: 0 30px;
 		margin: 0 -30px;
 		text-align: center;
-		background: #e1e1e1 url("../../images/layout/noise-lite.png");
+		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		color: #5a5a5a;
 		text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
-		/*background: #677182 url("../../images/layout/noise-white.png");
-		color: #fff;
-		text-shadow: 0px -1px 2px rgba(0, 0, 0, 0.4);
-		background: #3e3e3e url("../../images/layout/noise.png");
-		color: #fff;
-		text-shadow: 0px -1px 2px rgba(0, 0, 0, 0.4);*/
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 		font-size: 2em;
 	}
 	.highlight-section p {
 		padding: 60px;
 		margin: 0;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);/*-0.125em 0 0.25em rgba(0, 0, 0, 0.1), 0.125em 0 0.25em rgba(0, 0, 0, 0.1), 0 -0.125em 0.25em rgba(255, 255, 255, 0.4);*/
+		   -moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		    -ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		     -o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		        box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	}
 	.highlight-section a {
 		padding: 0.5em 0.7em;
@@ -268,10 +349,10 @@
 		margin-bottom: 2px;
 		display: inline-block;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		background: #37aecd;
 		background: -webkit-gradient(linear, left top, left bottom, from(#59c7e7), to(#37aecd));
 		background: -webkit-linear-gradient(#59c7e7, #37aecd);
@@ -283,14 +364,18 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59c7e7,endColorstr=#37aecd);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59c7e7, endColorstr=#37aecd)";
 		border: 1px solid #37aecd;
-		-webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-		-moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-		-ms-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-		-o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		   -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 	}
 	.highlight-section a:hover {
-		box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		   -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		    -ms-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		     -o-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		        box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 	}
 
 /* Section wrap */
@@ -347,6 +432,7 @@
 	
 /* Block section */
 	.blocks-section {
+		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		position: relative;
 		z-index: 1;
 	}
@@ -354,41 +440,10 @@
 		background: #fff;
 		position: relative;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-	}
-	.blocks-section .two:before,
-	.blocks-section .two:after {
-		content: '\00A0';
-		z-index: -1;
-		position: absolute;
-		left: 11px;
-		bottom: 11px;
-		width: 200px;
-		max-width: 300px; /* avoid rotation causing ugly appearance at large container widths */
-		max-height: 100px;
-		height: 10px;
-		-webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-		-moz-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-		-ms-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-		-o-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-		-webkit-transform: skew(-15deg) rotate(-6deg);
-		-moz-transform: skew(-15deg) rotate(-6deg);
-		-ms-transform: skew(-15deg) rotate(-6deg);
-		-o-transform: skew(-15deg) rotate(-6deg);
-		transform: skew(-15deg) rotate(-6deg);
-	}
-	.blocks-section .two:after {
-		left: auto;
-		right: 11px;
-		-webkit-transform: skew(15deg) rotate(6deg);
-		-moz-transform: skew(15deg) rotate(6deg);
-		-ms-transform: skew(15deg) rotate(6deg);
-		-o-transform: skew(15deg) rotate(6deg);
-		transform: skew(15deg) rotate(6deg);
+		   -moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		    -ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		     -o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		        box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	}
 	.blocks-section .two p {
 		margin: 1.7em;
@@ -401,18 +456,29 @@
 
 /* Support section */
 	.support-section {
-		background: url("../../images/layout/stripes.png") 0 bottom repeat-x;
-		padding: 0 0 10px 0;
-		margin-bottom: 15px;
+		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		padding: 0;
+		margin: 0;
 	}
 	.support-section .wrap {
-		background: #fff;
-		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		position: relative;
 		display: block;
+		margin: 0;
 		z-index: 1;
+	}
+
+/* [!] Ie 7 */
+	html.ie7 #congrats {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="congrats-before"></small>' + this.innerHTML + '<small class="congrats-after">&#xf002;&nbsp;</small>');
+	}
+	html.ie7 small.congrats-before {
+		*background: #b1c1ca;
+	}
+	html.ie7 small.congrats-after {
+		*color: #b1c1ca;
+		*line-height: 1;
+		*top: 0.1em;
+	}
+	html.ie7 #features h3 {
+		*padding-top: 30px;
 	}

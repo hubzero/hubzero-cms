@@ -1,11 +1,17 @@
 /**
  * @package     hubzero-cms
- * @file        templates/hubbasic/css/pages/home.css
- * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @file        templates/hubbasic2013/css/pages/home.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/*
 
+	-- -- -- -- -- -- --
+	home page CSS
+	-- -- -- -- -- -- --
+
+*/
 
 	@font-face {
 		font-family: 'Socicons';
@@ -28,7 +34,7 @@
 		margin-top: -1px\9;
 	}
 
-/* Congratulations box */
+/* Splash area */
 	#splash .wrap {
 		padding: 30px;
 	}
@@ -38,6 +44,7 @@
 		*display: none;
 	}
 
+/* Welcome message */
 	#welcome {
 		width: 18em;
 		margin: 30px auto 50px auto;
@@ -47,6 +54,7 @@
 		position: relative;
 		padding-left: 5em;
 	}
+	small.welcome-before,
 	#welcome:before {
 		height: 1px;
 		display: block;
@@ -58,6 +66,7 @@
 		background: #fff;
 		background: rgba(255, 255, 255, 0.3);
 	}
+	small.welcome-after,
 	#welcome:after {
 		content: "\f002";
 		font-family: "Socicons";
@@ -70,18 +79,17 @@
 		color: #fff;
 		color: rgba(255, 255, 255, 0.5);
 		-webkit-transition: all 0.3s ease-in-out;
-		-moz-transition: all 0.3s ease-in-out;
-		-o-transition: all 0.3s ease-in-out;
-		transition: all 0.3s ease-in-out;
-		
+		   -moz-transition: all 0.3s ease-in-out;
+		     -o-transition: all 0.3s ease-in-out;
+		        transition: all 0.3s ease-in-out;
 		opacity: 1;
 	}
 	#welcome:hover:after {
 		color: #fff;
 		-webkit-animation: whitePulse 2s infinite;
-		-moz-animation: whitePulse 2s infinite;
-		-o-animation: whitePulse 2s infinite;
-		animation: whitePulse 2s infinite;
+		   -moz-animation: whitePulse 2s infinite;
+		     -o-animation: whitePulse 2s infinite;
+		        animation: whitePulse 2s infinite;
 	}
 	@-webkit-keyframes whitePulse {
 		from {
@@ -170,7 +178,7 @@
 		padding: 20px 30px 30px 30px;
 		margin: 0;
 		font-weight: normal;
-		background: #f9f9f9 url("../../images/layout/noise-lite.png");
+		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		position: relative;
 	}
 	#features h3:before,
@@ -300,20 +308,20 @@
 		color: #5a5a5a;
 		text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 		font-size: 2em;
 	}
 	.highlight-section p {
 		padding: 60px;
 		margin: 0;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		   -moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		    -ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		     -o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		        box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	}
 	.highlight-section a {
 		padding: 0.5em 0.7em;
@@ -325,10 +333,10 @@
 		margin-bottom: 2px;
 		display: inline-block;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		background: #37aecd;
 		background: -webkit-gradient(linear, left top, left bottom, from(#59c7e7), to(#37aecd));
 		background: -webkit-linear-gradient(#59c7e7, #37aecd);
@@ -340,14 +348,18 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59c7e7,endColorstr=#37aecd);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59c7e7, endColorstr=#37aecd)";
 		border: 1px solid #37aecd;
-		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		-o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		   -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 	}
 	.highlight-section a:hover {
-		box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		   -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		    -ms-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		     -o-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+		        box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 	}
 
 /* Section wrap */
@@ -403,19 +415,18 @@
 	}
 
 	.resources-section {
-		background: #ececec url("../../images/layout/noise-lite.png");
+		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		position: relative;
 		z-index: 1;
-		*zoom: 1;
 	}
 	.resources-section .two {
 		background: #fff;
 		position: relative;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		   -moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		    -ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		     -o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		        box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	}
 	.resources-section .two p {
 		margin: 1.7em;
@@ -428,7 +439,7 @@
 
 /* Events section */
 	.events-section {
-		background: #f9f9f9 url("../images/layout/noise-lite.png");
+		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		padding: 0;
 		margin: 0;
 	}
@@ -549,13 +560,12 @@
 		letter-spacing: 0.1em;
 		text-shadow: 0 1px 1px #fff;
 		-webkit-border-radius: 0 0 0.25em 0.25em;
-		-moz-border-radius: 0 0 0.25em 0.25em;
-		-ms-border-radius: 0 0 0.25em 0.25em;
-		-o-border-radius: 0 0 0.25em 0.25em;
-		border-radius: 0 0 0.25em 0.25em;
+		   -moz-border-radius: 0 0 0.25em 0.25em;
+		    -ms-border-radius: 0 0 0.25em 0.25em;
+		     -o-border-radius: 0 0 0.25em 0.25em;
+		        border-radius: 0 0 0.25em 0.25em;
 	}
 	.event-date {
-
 		width: 40px;
 		margin-right: 0.5em;
 		margin-bottom: 1em;
@@ -567,4 +577,20 @@
 	}
 	.event-headline .time {
 		display: block;
+	}
+
+/* [!] Ie 7 */
+	html.ie7 #welcome {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="welcome-before"></small>' + this.innerHTML + '<small class="welcome-after">&#xf002;&nbsp;</small>');
+	}
+	html.ie7 small.welcome-before {
+		*background: #b1c1ca;
+	}
+	html.ie7 small.welcome-after {
+		*color: #b1c1ca;
+		*line-height: 1;
+		*top: 0.1em;
+	}
+	html.ie7 #features h3 {
+		*padding-top: 30px;
 	}

@@ -120,10 +120,10 @@
 									transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
 									transparent 75%, transparent);
 	-webkit-background-size: 30px 30px;
-	-moz-background-size: 30px 30px;
-	-ms-background-size: 30px 30px;
-	-o-background-size: 30px 30px;
-	background-size: 30px 30px; /* Controls the size of the stripes */
+	   -moz-background-size: 30px 30px;
+	    -ms-background-size: 30px 30px;
+	     -o-background-size: 30px 30px;
+	        background-size: 30px 30px;
 }
 
 #tab {
@@ -152,9 +152,12 @@
 	background: rgba(0, 0, 0, 0.15);
 	position: relative;
 	font-weight: normal;
+	/* [!] IE 7 */
+	*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="tab-before">&#xf059;&nbsp;</small>' + this.innerHTML);
 }
+#tab small.tab-before,
 #tab a:before {
-	content: "\f059"; /*\f055";*/
+	content: "\f059";
 	font-family: "Fontcons";
 	position: absolute;
 	font-size: 1.8em;

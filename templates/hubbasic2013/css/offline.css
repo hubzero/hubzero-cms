@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic2013/css/offline.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 /*
 
 	-- -- -- -- -- -- --
@@ -29,11 +36,11 @@
 	}
 	@font-face {
 		font-family: 'Share-Regular';
-		src: url('fonts/Share-Regular-webfont.eot');
-		src: url('fonts/Share-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-			 url('fonts/Share-Regular-webfont.woff') format('woff'),
-			 url('fonts/Share-Regular-webfont.ttf') format('truetype'),
-			 url('fonts/Share-Regular-webfont.svg#Share-Regular') format('svg');
+		src: url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.eot');
+		src: url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.woff') format('woff'),
+			 url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.ttf') format('truetype'),
+			 url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.svg#Share-Regular') format('svg');
 		font-weight: normal;
 		font-style: normal;
 	}
@@ -52,7 +59,7 @@
 		font-size: 0.8em;
 		line-height: 1.6em;
 		color: #666;
-		background: #ececec url("../images/layout/noise-lite.png");
+		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		text-rendering: optimizeLegibility;
 		min-width: 100px;
 		height: 100%;
@@ -146,10 +153,12 @@
 	#container {
 		width: 500px;
 		margin: 100px auto 100px auto;
-		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
-		-moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
-		box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		   -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		    -ms-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		     -o-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		        box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
 	}
 
 /* Shortcuts */
@@ -226,7 +235,7 @@
 	}
 	#splash .inner-wrap .inner .wrap {
 		min-height: 90px;
-		background: transparent url("../images/layout/noise-white.png") 0 0;
+		background: transparent url("/templates/hubbasic2013/images/layout/noise-white.png") 0 0;
 		position: relative;
 	}
 
@@ -234,7 +243,7 @@
 	#masthead {
 		padding: 30px 30px 0 30px;
 		position: relative;
-		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
 		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
 		   -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
 		    -ms-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
@@ -282,6 +291,7 @@
 	#masthead h1 a:hover {
 		color: #615287;
 	}
+	#masthead small.h1-after,
 	#masthead h1:after {
 		position: absolute;
 		top: 45px;
@@ -297,13 +307,13 @@
 		margin: 0;
 		padding: 0 30px;
 		vertical-align: baseline;
-		background: #3e3e3e url("../images/layout/noise.png");
+		background: #3e3e3e url("/templates/hubbasic2013/images/layout/noise.png");
 		display: block;
 		font-size: 0.85em;
 	}
 	#sub-masthead .inner {
 		padding: 0 30px;
-		background: #494949 url("../images/layout/noise.png");
+		background: #494949 url("/templates/hubbasic2013/images/layout/noise.png");
 		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		   -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
@@ -379,7 +389,7 @@
 		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		background: #f9f9f9 url("../images/layout/noise-lite.png");
+		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
 	}
 	#footer ul#legalese li {
 		padding: 0.4em 0;
@@ -420,6 +430,7 @@
 		position: relative;
 		padding-left: 5em;
 	}
+	small.offline-before,
 	#offline-message:before {
 		height: 1px;
 		display: block;
@@ -431,6 +442,7 @@
 		background: #fff;
 		background: rgba(255, 255, 255, 0.3);
 	}
+	small.offline-after,
 	#offline-message:after {
 		content: "\f05e";
 		font-family: "Fontcons";
@@ -527,6 +539,55 @@
 /* Debug */
 	#system-debug {
 		display: none;
+	}
+
+/* [!] IE 7 */
+	html.ie7 #container {
+		*border: 1px solid #ccc;
+	}
+	html.ie7 #splash {
+		*border-left: 1px solid #40586a;
+		*border-right: 1px solid #40586a;
+	}
+	html.ie7 #splash .inner-wrap {
+		*background: transparent url("/templates/hubbasic2013/images/layout/glass-stripes.png");
+	}
+	html.ie7 #splash .inner-wrap .inner {
+		*border-left: 1px solid #4b677c;
+		*border-right: 1px solid #4b677c;
+		*background: transparent url("/templates/hubbasic2013/images/layout/glass.png");
+	}
+	html.ie7 #masthead .inner {
+		*border: 1px solid #ccc;
+		*border-bottom: none;
+		*height: 5.8em;
+	}
+	html.ie7 #masthead {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="h1-after">&#xf002;&nbsp;</small>');
+	}
+	html.ie7 #masthead small.h1-after {
+		*font-size: 3.2em;
+		*line-height: 1;
+	}
+	html.ie7 #sub-masthead .inner {
+		*border-left: 1px solid #2a2a2a;
+		*border-right: 1px solid #2a2a2a;
+	}
+	html.ie7 #footer ul#legalese {
+		*border: 1px solid #ccc;
+		*border-top: none;
+	}
+	html.ie7 #offline-message {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="offline-before"></small>' + this.innerHTML + '<small class="offline-after">&#xf05e;&nbsp;</small>');
+	}
+	html.ie7 small.offline-before {
+		*background: #b1c1ca;
+		*top: 3.5em;
+	}
+	html.ie7 small.offline-after {
+		*color: #b1c1ca;
+		*line-height: 1;
+		*top: 0.1em;
 	}
 
 /* [!] IE 8 */

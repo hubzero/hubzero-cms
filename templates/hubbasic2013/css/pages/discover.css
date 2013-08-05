@@ -5,6 +5,14 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/*
+
+	-- -- -- -- -- -- --
+	discover page CSS
+	-- -- -- -- -- -- --
+
+*/
+
 	span.fontcon-before,
 	span.fontcon-after,
 	#content .col div:before {
@@ -22,10 +30,10 @@
 		margin-left: -1em;
 		font-weight: normal;
 		-webkit-transition: all 300ms ease; 
-		-moz-transition: all 300ms ease; 
-		-ms-transition: all 300ms ease; 
-		-o-transition: all 300ms ease; 
-		transition: all 300ms ease;
+		   -moz-transition: all 300ms ease; 
+		    -ms-transition: all 300ms ease; 
+		     -o-transition: all 300ms ease; 
+		        transition: all 300ms ease;
 		border: 1px solid #dadada;
 		border-radius: 50%;
 		text-align: center;
@@ -34,10 +42,6 @@
 	#content .col div:hover:before {
 		top: 0.2em;
 		color: #250b23;
-	}
-	span.fontcon-before,
-	span.fontcon-after {
-		*top: 1.2em;
 	}
 	#content .grid {
 		margin-bottom: 2em;
@@ -98,52 +102,6 @@
 	#content .col div.wish:before {
 		content: "\f078";
 	}
-	/* [!] HACKS - IE 7 */
-	#content .col div.wiki {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf072;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.presentation {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf040;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.quote {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x275D;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.tag {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf02c;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.feedback {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf086;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.note {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf075;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.wish {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf078;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.contribute {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf01b;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.tool {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x2692;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.donate {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf04d;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.blog {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf036;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.poll {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf080;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.event {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf073;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.cart {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf04d;&nbsp;</span>' + this.innerHTML);
-	}
-	#content .col div.new {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x273D;&nbsp;</span>' + this.innerHTML);
-	}
 
 	#content .col h2 { 
 		font-weight: normal;
@@ -164,4 +122,56 @@
 	#content .col h3 a { 
 		border: none;
 		color: #565656;
+	}
+
+/* [!] IE 7 */
+	html.ie7 span.fontcon-before,
+	html.ie7 span.fontcon-after {
+		*top: 0.2em;
+		*margin-left: -3em;
+	}
+	html.ie7 #content .col div.wiki {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf072;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.presentation {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf040;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.quote {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x275D;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.tag {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf02c;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.feedback {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf086;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.note {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf075;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.wish {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf078;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.contribute {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf01b;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.tool {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x2692;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.donate {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf04d;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.blog {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf036;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.poll {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf080;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.event {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf073;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.cart {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf04d;&nbsp;</span>' + this.innerHTML);
+	}
+	html.ie7 #content .col div.new {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x273D;&nbsp;</span>' + this.innerHTML);
 	}
