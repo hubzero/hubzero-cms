@@ -214,14 +214,14 @@ class Migration20130718000005Core extends Hubzero_Migration
 				$db->setQuery($query);
 				if ($id = $db->loadResult())
 				{
-					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->enabled}', `params` = '{$r->params}', `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->enabled}', `params` = " . $db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
 					$db->setQuery($query);
 					$db->query();
 					continue;
 				}
 
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
-				$query .= "VALUES ('{$r->option}', 'component', '{$r->option}', '', 1, {$r->enabled}, 1, {$r->iscore}, '', '{$r->params}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+				$query .= "VALUES ('{$r->option}', 'component', '{$r->option}', '', 1, {$r->enabled}, 1, {$r->iscore}, '', " . $db->quote($r->params) . ", '', '', 0, '0000-00-00 00:00:00', 0, 0);";
 				$db->setQuery($query);
 				$db->query();
 			}
@@ -259,7 +259,7 @@ class Migration20130718000005Core extends Hubzero_Migration
 				$db->setQuery($query);
 				if ($id = $db->loadResult())
 				{
-					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->published}', `params` = '{$r->params}', `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->published}', `params` = " . $db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
 					$db->setQuery($query);
 					$db->query();
 					continue;
