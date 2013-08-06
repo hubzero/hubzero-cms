@@ -26,6 +26,7 @@ HUB.Plugins.CoursesProgress = {
 	jQuery   : jq,
 	colWidth : 0,
 	offset   : 0,
+	cnt      : 0,
 
 	loadData: function ( )
 	{
@@ -101,18 +102,18 @@ HUB.Plugins.CoursesProgress = {
 
 		// Add fancy select boxes
 		//$('.form-type select').HUBfancyselect();
+
 		var s      = g.find('.slidable-inner'),
 			slider = $('.slider');
 
 		$('.nxt').click(function() {
-			if (Math.round(Math.abs(s.css('left').replace('px', ''))) < Math.round(HUB.Plugins.CoursesProgress.offset)) {
+			if (Math.ceil(Math.abs(s.css('left').replace('px', ''))) < Math.ceil(HUB.Plugins.CoursesProgress.offset) && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv+=1);
 				s.animate({left:'-='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
-					if (Math.abs(Math.round(s.css('left').replace('px', ''))) == Math.round(HUB.Plugins.CoursesProgress.offset)) {
+					if (Math.ceil(Math.abs(s.css('left').replace('px', ''))) == Math.ceil(HUB.Plugins.CoursesProgress.offset)) {
 						$('.nxt').addClass('disabled');
 					}
-
 					$('.prv').removeClass('disabled');
 				});
 			} else {
@@ -121,14 +122,13 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		$('.prv').click(function() {
-			if (Math.round(s.css('left').replace('px', '')) < 0) {
+			if (Math.ceil(s.css('left').replace('px', '')) < 0 && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv-=1);
 				s.animate({left:'+='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
-					if (Math.round(s.css('left').replace('px', '')) == 0) {
+					if (Math.ceil(s.css('left').replace('px', '')) == 0) {
 						$('.prv').addClass('disabled');
 					}
-
 					$('.nxt').removeClass('disabled');
 				});
 			} else {
@@ -156,21 +156,90 @@ HUB.Plugins.CoursesProgress = {
 					var p = t.parent('.gradebook-column').prev('.gradebook-column').find('.'+r[0]);
 					var n = t.parent('.gradebook-column').siblings().last().find('.cell-row'+(parseInt(r[1], 10)-1));
 					if (p.length) {
-						p.trigger('click');
+						// Make sure the next item isn't off the page
+						var s      = $('.slidable-inner'),
+							left   = s.css('left').replace('px', ''),
+							offset = HUB.Plugins.CoursesProgress.offset,
+							colwid = HUB.Plugins.CoursesProgress.colWidth,
+							cnt    = HUB.Plugins.CoursesProgress.cnt,
+							item   = $(t.parent('.gradebook-column')),
+							colnum = item.data('colnum'),
+							hidden = Math.ceil(Math.abs(left / colwid));
+
+						if (colnum <= hidden) {
+							var num = colwid * (hidden - 1),
+								val = hidden - 1;
+
+							if (!s.is(':animated')) {
+								HUB.Plugins.CoursesProgress.move(num, function() {
+									p.trigger('click');
+								}, val);
+							}
+						} else {
+							p.trigger('click');
+						}
 					} else if (n.length) {
-						n.trigger('click');
+						// Make sure the next item isn't off the page
+						var s      = $('.slidable-inner'),
+							offset = HUB.Plugins.CoursesProgress.offset,
+							colwid = HUB.Plugins.CoursesProgress.colWidth,
+							cnt    = HUB.Plugins.CoursesProgress.cnt,
+							total  = $('.gradebook-container .gradebook-column:not(.gradebook-students)').length;
+
+						if (offset) {
+							if (!s.is(':animated')) {
+								HUB.Plugins.CoursesProgress.move((colwid * (total - cnt)), function() {
+									n.trigger('click');
+								}, (total - cnt));
+							}
+						} else {
+							n.trigger('click');
+						}
 					} else {
 						t.find('.edit-grade').blur();
 					}
 				// Tab
 				} else {
-					var r = t.data('rownum').match(/cell-row([0-9]*)/i);
-					var n = t.parent('.gradebook-column').next('.gradebook-column').find('.'+r[0]);
-					var p = t.parent('.gradebook-column').siblings().first().find('.cell-row'+(parseInt(r[1], 10)+1));
+					var r = t.data('rownum').match(/cell-row([0-9]*)/i),
+						n = t.parent('.gradebook-column').next('.gradebook-column').find('.'+r[0]),
+						s = $('.slidable-inner'),
+						p = t.parent('.gradebook-column').siblings().first().find('.cell-row'+(parseInt(r[1], 10)+1));
+
 					if (n.length) {
-						n.trigger('click');
+						// Make sure the next item isn't off the page
+						var left   = s.css('left').replace('px', ''),
+							offset = HUB.Plugins.CoursesProgress.offset,
+							colwid = HUB.Plugins.CoursesProgress.colWidth,
+							cnt    = HUB.Plugins.CoursesProgress.cnt,
+							item   = $(t.parent('.gradebook-column')),
+							colnum = item.data('colnum'),
+							hidden = Math.ceil(Math.abs((offset - left) / colwid));
+
+						if (colnum >= hidden) {
+							var num = colwid * (colnum - cnt + 2),
+								val = colnum - cnt + 2;
+
+							if (!s.is(':animated')) {
+								HUB.Plugins.CoursesProgress.move(num, function() {
+									n.trigger('click');
+								}, val);
+							}
+						} else {
+							n.trigger('click');
+						}
 					} else if (p.length) {
-						p.trigger('click');
+						// Make sure the next item isn't off the page
+						var left = s.css('left').replace('px', '');
+
+						if (left != 0) {
+							if (!s.is(':animated')) {
+								HUB.Plugins.CoursesProgress.move(0, function() {
+									p.trigger('click');
+								}, 0);
+							}
+						} else {
+							p.trigger('click');
+						}
 					} else {
 						t.find('.edit-grade').blur();
 					}
@@ -386,17 +455,22 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		// Initialize the rest of the page
+		HUB.Plugins.CoursesProgress.cnt      = cnt;
 		HUB.Plugins.CoursesProgress.colWidth = width;
 		HUB.Plugins.CoursesProgress.offset   = offset;
 	},
 
-	move: function ( loc )
+	move: function ( loc, callback, val )
 	{
 		var s = $('.slidable-inner');
 
-		s.stop().animate({left:'-'+(loc)+'px'}, function ( e ) {
-			var l = Math.round(Math.abs(s.css('left').replace('px', ''))),
-				o = Math.round(HUB.Plugins.CoursesProgress.offset);
+		if ($.type(val) === 'number') {
+			$('.slider').slider('value', val);
+		}
+
+		s.animate({left:'-'+(loc)+'px'}, function ( e ) {
+			var l = Math.ceil(Math.abs(s.css('left').replace('px', ''))),
+				o = Math.ceil(HUB.Plugins.CoursesProgress.offset);
 
 			if (l == 0 && o == 0) {
 				$('.prv').addClass('disabled');
@@ -410,6 +484,10 @@ HUB.Plugins.CoursesProgress = {
 			} else {
 				$('.prv').addClass('disabled');
 				$('.nxt').removeClass('disabled');
+			}
+
+			if ($.type(callback) === 'function') {
+				callback();
 			}
 		});
 	},

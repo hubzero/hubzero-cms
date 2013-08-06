@@ -51,7 +51,7 @@ $base .= '&offering='.$this->course->offering()->get('alias').'&section='.$this-
 		<div class="slidable">
 			<div class="slidable-inner">
 				{{#each assets}}
-					<div class="gradebook-column">
+					<div class="gradebook-column" data-colnum="{{@index}}">
 						<div class="cell form-name" title="{{this.title}}">
 							<div class="form-name-inner">
 								<div class="form-title">
