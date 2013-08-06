@@ -50,7 +50,7 @@ $levels = array(
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
+		<li class="last"><a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 	<?php

@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>">
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>">
 				<?php echo JText::_('COM_GROUPS_NEW'); ?>
 			</a>
 		</li>

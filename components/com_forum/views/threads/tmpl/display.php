@@ -1,4 +1,33 @@
 <?php 
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2013 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 
@@ -21,7 +50,7 @@ ximport('Hubzero_User_Profile_Helper');
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias')); ?>">
+		<a class="icon-comments comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias')); ?>">
 			<?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?>
 		</a>
 	</p>
@@ -37,7 +66,7 @@ ximport('Hubzero_User_Profile_Helper');
 <div class="main section">
 	<div class="aside">
 		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_ALL_TAGS'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('COM_FORUM_ALL_TAGS'); ?></h3>
 		<?php if ($this->thread->tags('cloud')) { ?>
 			<?php echo $this->thread->tags('cloud'); ?>
 		<?php } else { ?>
@@ -47,7 +76,7 @@ ximport('Hubzero_User_Profile_Helper');
 
 	<?php if ($this->thread->participants()->total() > 0) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_PARTICIPANTS'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('COM_FORUM_PARTICIPANTS'); ?></h3>
 			<ul>
 			<?php 
 				$anon = false;
@@ -86,7 +115,7 @@ ximport('Hubzero_User_Profile_Helper');
 			{
 				$cls = 'file';
 				$title = $attachment->get('description', $attachment->get('filename'));
-				if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $attachment->get('filename')))
+				if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
 				{
 					$cls = 'img';
 				}
@@ -167,12 +196,12 @@ ximport('Hubzero_User_Profile_Helper');
 								) { ?>
 						<p class="comment-options">
 							<?php if ($row->get('parent') && $this->config->get('access-delete-post')) { ?>
-							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=delete'); ?>">
+							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=delete'); ?>">
 								<?php echo JText::_('COM_FORUM_DELETE'); ?>
 							</a>
 							<?php } ?>
 							<?php if ((!$row->get('parent') && $this->config->get('access-edit-thread')) || ($row->get('parent') && $this->config->get('access-edit-post'))) { ?>
-							<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=edit'); ?>">
+							<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=edit'); ?>">
 								<?php echo JText::_('COM_FORUM_EDIT'); ?>
 							</a>
 							<?php } ?>

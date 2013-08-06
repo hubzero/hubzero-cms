@@ -73,7 +73,7 @@ else
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="group btn" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+			<a class="icon-group group btn" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
 		</li>
 	</ul>
 </div><!-- / #content-header-extra -->

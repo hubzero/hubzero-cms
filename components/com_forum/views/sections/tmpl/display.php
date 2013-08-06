@@ -1,4 +1,33 @@
 <?php 
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2013 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+ 
 defined('_JEXEC') or die( 'Restricted access' );
 
 $dateFormat = '%d %b, %Y';
@@ -157,12 +186,12 @@ foreach ($this->sections as $section)
 
 			<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
 				<?php if ($this->config->get('access-delete-section')) { ?>
-					<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+					<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
 						<span><?php echo JText::_('Delete'); ?></span>
 					</a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias') && $section->get('id')) { ?>
-					<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
+					<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
 						<span><?php echo JText::_('Edit'); ?></span>
 					</a>
 				<?php } ?>
@@ -172,7 +201,7 @@ foreach ($this->sections as $section)
 				<tfoot>
 					<tr>
 						<td<?php if ($section->categories()->total() > 0) { echo ' colspan="5"'; } ?>>
-							<a class="add btn" id="addto-<?php echo $section->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=new'); ?>">
+							<a class="icon-add add btn" id="addto-<?php echo $section->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=new'); ?>">
 								<span><?php echo JText::_('Add Category'); ?></span>
 							</a>
 						</td>
@@ -211,12 +240,12 @@ foreach ($this->sections as $section)
 					<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-categort')) { ?>
 						<td class="entry-options">
 							<?php if (($row->get('created_by') == $juser->get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
-								<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $row->get('alias') . '&task=edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
+								<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $row->get('alias') . '&task=edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
 									<span><?php echo JText::_('Edit'); ?></span>
 								</a>
 							<?php } ?>
 							<?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
-								<a class="delete tooltips" title="<?php echo JText::_('COM_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $row->get('alias') . '&task=delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+								<a class="icon-delete delete tooltips" title="<?php echo JText::_('COM_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $row->get('alias') . '&task=delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
 									<span><?php echo JText::_('Delete'); ?></span>
 								</a>
 							<?php } ?>

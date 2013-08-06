@@ -40,7 +40,7 @@ $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pa
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
+		<li class="last"><a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -51,7 +51,7 @@ $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pa
 <form name="groupPages" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 	<div class="explaination">
 		<p>This is where you can manage any of your groups custom content pages. There is no limit to the number of custom pages and pages can contain text, images, links to files. The pages support wiki syntax that is used throughout the hub.</p>
-		<p><a class="add btn" href="<?php echo JRoute::_($base_link.'&task=addpage'); ?>">Add a New Group Page</a></p>
+		<p><a class="icon-add add btn" href="<?php echo JRoute::_($base_link.'&task=addpage'); ?>">Add a New Group Page</a></p>
 	</div>
 	<fieldset>
 		<legend>Manage Pages</legend>

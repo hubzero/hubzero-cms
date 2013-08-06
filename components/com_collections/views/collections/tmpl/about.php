@@ -47,7 +47,7 @@ $base = 'index.php?option=' . $this->option;
 <div id="content-header-extra">
 	<ul>
 		<li>
-			<a class="about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
+			<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
 				<span><?php echo JText::_('Getting started'); ?></span>
 			</a>
 		</li>

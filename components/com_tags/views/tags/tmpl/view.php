@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
 			</a>
 		</li>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option); //.'&tag='.$this->tagstring); ?>" method="get">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); //.'&tag='.$this->tagstring); ?>" method="get">
 		
 	<div class="aside">
 		<div class="container">
@@ -75,9 +75,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$blob = $cat['category'];
 				}
 
-				$url  = 'index.php?option='.$this->option.'&tag='.$this->tagstring;
-				$url .= ($blob) ? '&area='. stripslashes($blob) : '';
-				$url .= ($this->filters['sort']) ? '&sort='.$this->filters['sort'] : '';
+				$url  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring;
+				$url .= ($blob) ? '&area=' . stripslashes($blob) : '';
+				$url .= ($this->filters['sort']) ? '&sort=' . $this->filters['sort'] : '';
 				$sef = JRoute::_($url);
 				$sef = str_replace('%20',',',$sef);
 				$sef = str_replace(' ',',',$sef);
@@ -90,11 +90,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					$app =& JFactory::getApplication();
 					$pathway =& $app->getPathway();
-					$pathway->addItem($cat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
+					$pathway->addItem($cat['title'],'index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . stripslashes($blob) . '&sort=' . $this->filters['sort']);
 				}
 
 				// Build the HTML
-				$l = "\t".'<li><a'.$a.' href="'.$sef.'">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">'.$cat['total'].'</span></a>';
+				$l = "\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 				// Are there sub-categories?
 				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 					// An array for storing the HTML we make

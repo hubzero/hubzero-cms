@@ -1,17 +1,36 @@
 <?php 
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2013 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
-
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:m a';
-	$tz = true;
-}
 
 $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'];
 ?>
@@ -20,7 +39,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
+	<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
 </div>
 <div class="clear"></div>
 
@@ -31,7 +50,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 <div class="main section">
 	<div class="aside">
 		<div class="container">
-			<h3><?php echo JText::_('Last Post'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('Last Post'); ?></h3>
 			<p>
 			<?php
 			$last = $this->category->lastActivity();
@@ -45,7 +64,8 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 			?>
 				<a href="<?php echo JRoute::_($base . '&thread=' . $last->get('thread')); ?>" class="entry-date">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+					<span class="time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> 
+					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
 				</a>
 				<span class="entry-author">
@@ -59,7 +79,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 		</div><!-- / .container -->
 	<?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('Start Your Own'); ?></h3>
 		<?php if (!$this->category->get('closed')) { ?>
 			<p>
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
@@ -91,7 +111,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 					<input type="hidden" name="task" value="search" />
 				</fieldset>
 			</div><!-- / .container -->
-			
+
 			<div class="container">
 				<ul class="entries-menu order-options">
 					<li>
@@ -202,12 +222,12 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 						<?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 							<td class="entry-options">
 								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
-									<a class="edit" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=edit'); ?>">
+									<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=edit'); ?>">
 										<?php echo JText::_('COM_FORUM_EDIT'); ?>
 									</a>
 								<?php } ?>
 								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
-									<a class="delete" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=delete'); ?>">
+									<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=delete'); ?>">
 										<?php echo JText::_('COM_FORUM_DELETE'); ?>
 									</a>
 								<?php } ?>
