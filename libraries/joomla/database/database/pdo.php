@@ -791,13 +791,51 @@ class JDatabasePDO extends JDatabase
 		return (in_array($key, array_keys($keys))) ? true : false;
 	}
 
+	/**
+	 * Retrieves field information about a given table.
+	 *
+	 * @param   string   $table     The name of the database table.
+	 * @param   boolean  $typeOnly  True to only return field types.
+	 *
+	 * @return  array  An array of fields for the database table.
+	 *
+	 * @since   11.1
+	 * @throws  JDatabaseException
+	 */
+	public function getTableColumns($table, $typeOnly = true)
+	{
+		$result = array();
+
+		// Set the query to get the table fields statement.
+		$this->setQuery('SHOW FULL COLUMNS FROM ' . $this->quoteName($table));
+		$fields = $this->loadObjectList();
+
+		// If we only want the type as the value add just that to the list.
+		if ($typeOnly)
+		{
+			foreach ($fields as $field)
+			{
+				$result[$field->Field] = preg_replace("/[(0-9)]/", '', $field->Type);
+			}
+		}
+		// If we want the whole field data object add that to the list.
+		else
+		{
+			foreach ($fields as $field)
+			{
+				$result[$field->Field] = $field;
+			}
+		}
+
+		return $result;
+	}
+
 	public function dropTable($table, $ifExists = true) {}
 	public function fetchArray($cursor = null) {}
 	public function fetchAssoc($cursor = null) {}
 	public function fetchObject($cursor = null, $class = 'stdClass') {}
 	public function freeResult($cursor = null) {}
 	public function getQuery($new = false) {}
-	public function getTableColumns($table, $typeOnly = true) {}
 	public function getTableKeys($tables) {}
 	public function lockTable($tableName) {}
 	public function renameTable($oldTable, $newTable, $backup = null, $prefix = null) {}
