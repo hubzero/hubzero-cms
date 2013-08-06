@@ -82,7 +82,7 @@
 }
 .gradebook-container .editing {
 	padding: 4px;
-	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+	box-shadow: inset 0 0 10px rgba(255, 148, 0, .5);
 }
 .gradebook-container .gradebook-column {
 	float: left;
@@ -158,7 +158,7 @@
 	box-sizing: border-box;
 }
 .gradebook-container .cell-entry:hover {
-	box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, .1);
 }
 .gradebook-container .even {
 	background: #FCFCFC;
@@ -278,12 +278,12 @@
 	width: 100%;
 }
 .navigation .disabled {
-	opacity: 0.5;
+	opacity: 0.2;
 }
 .navigation .disabled:hover {
 	cursor: default;
 	background: #DDDDDD;
-	background: rgba(240,240,240,.5);
+	background: rgba(240,240,240,.2);
 }
 .ui-slider-handle:hover {
 	cursor: move;
