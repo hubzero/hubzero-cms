@@ -163,11 +163,152 @@
 .gradebook-container .even {
 	background: #FCFCFC;
 }
-.add {
-	margin-top: 10px;
-	cursor: pointer;
+
+/* Controls / buttons */
+.controls {
+	display: none;
+	overflow: hidden;
+	background: #F9F9F9;
+	padding: 10px 10px 10px 0;
 	border: 1px solid #CCCCCC;
+	border-bottom: none;
+	background: rgb(224, 227, 230);
+	float: right;
+}
+.controls .button {
+	border: 1px solid #CCCCCC;
+	margin-left: 10px;
 	padding: 10px;
+
+	box-sizing: border-box;
+	display: block;
+	float: right;
+	height: 40px;
+	width: 40px;
+	position: relative;
+	box-shadow: inset 0 0 5px rgba(255, 255, 255, .8);
+}
+.controls .button:hover {
+	cursor: pointer;
+	background: #D1D9DE;
+	box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+}
+.controls .button.active {
+	box-shadow: inset 1px 1px 2px rgba(0, 0, 0, .5);
+	background: transparent;
+	cursor: default;
+}
+.controls .button:before {
+	position: absolute;
+	font-family: "fontcons";
+	content: "";
+	top: 10px;
+	left: 10px;
+	font-size: 20px;
+}
+/*.controls .refresh:hover:before {
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+
+	-ms-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}*/
+.controls .addrow:before {
+	content: "\271A";
+}
+.controls .refresh:before {
+	content: "\f021";
+}
+.controls .progress-button:before {
+	content: "\f004";
+}
+.controls .gradebook-button:before {
+	content: "\f02d";
+}
+.controls .progress-button:before,
+.controls .gradebook-button:before {
+	left: 25px;
+}
+.controls .progress-button,
+.controls .gradebook-button {
+	width: 70px;
+}
+.controls .progress-button {
+	margin-left: 0;
+}
+
+/* Slider / Nav */
+.navigation {
+	display: none;
+	margin-top: 10px;
+	overflow: hidden;
+	background: #D1D9DE;
+}
+.navigation .prv,
+.navigation .nxt {
+	width: 40px;
+	height: 40px;
+	background: #DDDDDD;
+	background: rgba(240,240,240,.5);
+	display: block;
+	float: left;
+	border: 1px solid #CCCCCC;
+	position: relative;
+	box-shadow: inset 0 0 5px rgba(255, 255, 255, .8);
+	box-sizing: border-box;
+}
+.navigation .prv:hover,
+.navigation .nxt:hover {
+	background: #D1D9DE;
+	cursor: pointer;
+}
+.navigation .nxt {
+	float: right;
+}
+.navigation .prv:before,
+.navigation .nxt:before {
+	position: absolute;
+	content: "";
+	font-family: "fontcons";
+	font-size: 20px;
+	top: 9px;
+	left: 9px;
+}
+.navigation .prv:before {
+	content: "\f0d9";
+}
+.navigation .nxt:before {
+	content: "\f0da";
+}
+.slider-container {
+	display: block;
+	margin: 0px 40px 0 40px;
+	height: 40px;
+	box-sizing: border-box;
+	background: #F9F9F9;
+	padding: 12px 20px;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+.slider-container .slider {
+	width: 100%;
+}
+.navigation .disabled {
+	opacity: 0.2;
+}
+.navigation .disabled:hover {
+	cursor: default;
+	background: #DDDDDD;
+	background: rgba(240,240,240,.2);
+}
+.ui-slider-handle:hover {
+	cursor: move;
 }
 
 /* Tooltips */
@@ -220,71 +361,4 @@
 	left: -8px;
 	margin-top: -4px;
 	margin-left: 0;
-}
-
-/* Slider / Nav */
-.navigation {
-	display: none;
-	margin-top: 10px;
-	overflow: hidden;
-	background: #D1D9DE;
-}
-.navigation .prv,
-.navigation .nxt {
-	width: 40px;
-	height: 40px;
-	background: #DDDDDD;
-	background: rgba(240,240,240,.5);
-	display: block;
-	float: left;
-	border: 1px solid #CCCCCC;
-	position: relative;
-	box-sizing: border-box;
-}
-.navigation .prv:hover,
-.navigation .nxt:hover {
-	background: #D1D9DE;
-	cursor: pointer;
-}
-.navigation .nxt {
-	float: right;
-}
-.navigation .prv:before,
-.navigation .nxt:before {
-	position: absolute;
-	content: "";
-	font-family: "fontcons";
-	font-size: 20px;
-	top: 9px;
-	left: 9px;
-}
-.navigation .prv:before {
-	content: "\f0d9";
-}
-.navigation .nxt:before {
-	content: "\f0da";
-}
-.slider-container {
-	display: block;
-	margin: 0px 40px 0 40px;
-	height: 40px;
-	box-sizing: border-box;
-	background: #F9F9F9;
-	padding: 12px 20px;
-	border-top: 1px solid #CCCCCC;
-	border-bottom: 1px solid #CCCCCC;
-}
-.slider-container .slider {
-	width: 100%;
-}
-.navigation .disabled {
-	opacity: 0.2;
-}
-.navigation .disabled:hover {
-	cursor: default;
-	background: #DDDDDD;
-	background: rgba(240,240,240,.2);
-}
-.ui-slider-handle:hover {
-	cursor: move;
 }

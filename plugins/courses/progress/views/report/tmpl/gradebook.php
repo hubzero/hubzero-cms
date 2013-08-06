@@ -36,7 +36,7 @@ $base .= '&offering='.$this->course->offering()->get('alias').'&section='.$this-
 
 ?>
 
-<script id="gradebook-template" type="text/x-handlebars-template">
+<script id="gradebook-template-main" type="text/x-handlebars-template">
 	<div class="gradebook-container">
 		<div class="gradebook-column gradebook-students">
 			<div class="cell search-box"><input type="text" placeholder="Search students" /></div>
@@ -48,42 +48,54 @@ $base .= '&offering='.$this->course->offering()->get('alias').'&section='.$this-
 			{{/each}}
 		</div>
 		<div class="slidable-outer">
-		<div class="slidable">
-			<div class="slidable-inner">
-				{{#each assets}}
-					<div class="gradebook-column" data-colnum="{{@index}}">
-						<div class="cell form-name" title="{{this.title}}">
-							<div class="form-name-inner">
-								<div class="form-title">
-									{{shorten title 10}}
-								</div>
-								<div class="form-type">
-									<select name="type" disabled="disabled">
-										<option value="exam"{{ifAreEqual subtype "exam"}}>Exam</option>
-										<option value="quiz"{{ifAreEqual subtype "quiz"}}>Quiz</option>
-										<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						{{#each ../members}}
-							<div class="cell cell-entry cell-row{{@index}}" data-asset-id="{{../id}}" data-student-id="{{this.id}}" data-rownum="cell-row{{@index}}">
-								<div class="cell-score">{{getGrade ../../grades this.id ../id}}</div>
-								<div class="override{{ifIsOverride ../../grades this.id ../id}}"></div>
-							</div>
-						{{/each}}
-					</div>
-				{{/each}}
+			<div class="slidable">
+				<div class="slidable-inner">
+				</div>
 			</div>
 		</div>
-		</div>
 	</div>
+</script>
+
+<script id="gradebook-template-asset" type="text/x-handlebars-template">
+	{{#each assets}}
+		<div class="gradebook-column" data-colnum="{{@index}}">
+			<div class="cell form-name" title="{{this.title}}">
+				<div class="form-name-inner">
+					<div class="form-title">
+						{{shorten title 10}}
+					</div>
+					<div class="form-type">
+						<select name="type" disabled="disabled">
+							<option value="exam"{{ifAreEqual subtype "exam"}}>Exam</option>
+							<option value="quiz"{{ifAreEqual subtype "quiz"}}>Quiz</option>
+							<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			{{#each ../members}}
+				<div class="cell cell-entry cell-row{{@index}}" data-asset-id="{{../id}}" data-student-id="{{this.id}}" data-rownum="cell-row{{@index}}">
+					<div class="cell-score">{{getGrade ../../grades this.id ../id}}</div>
+					<div class="override{{ifIsOverride ../../grades this.id ../id}}"></div>
+				</div>
+			{{/each}}
+		</div>
+	{{/each}}
 </script>
 
 <div class="gradebook">
 	<div class="loading">
 		<img src="/components/com_courses/assets/img/loading-light.gif" />
 	</div>
+
+	<div class="controls clear">
+		<div class="progress-button button"></div>
+		<div class="gradebook-button button active"></div>
+		<div class="addrow button"></div>
+		<div class="refresh button"></div>
+	</div>
+
+	<div class="clear"></div>
 
 	<form action="<?php echo JRoute::_($base); ?>" class="gradebook-form"></form>
 

@@ -30,13 +30,9 @@ HUB.Plugins.CoursesProgress = {
 
 	loadData: function ( )
 	{
-		var $ = this.jQuery,
-			g = $('.gradebook'),
-			f = $('.gradebook-form');
-
-		// Render template
-		var source   = $('#gradebook-template').html(),
-			template = Handlebars.compile(source);
+		var $         = this.jQuery,
+			gradebook = $('.gradebook'),
+			form      = $('.gradebook-form');
 
 		// Add helpers
 		Handlebars.registerHelper('getGrade', function ( grades, member_id, asset_id ) {
@@ -44,12 +40,6 @@ HUB.Plugins.CoursesProgress = {
 		});
 		Handlebars.registerHelper('ifAreEqual', function ( val1, val2 ) {
 			return (val1 === val2) ? ' selected="selected"' : '';
-		});
-		Handlebars.registerHelper('evenOrOdd', function ( idx ) {
-			return (idx & 1) ? 'odd' : 'even';
-		});
-		Handlebars.registerHelper('evenOrOdd', function ( idx ) {
-			return (idx & 1) ? 'odd' : 'even';
 		});
 		Handlebars.registerHelper('shorten', function ( title, length ) {
 			return (title.length < length) ? title : title.substring(0, length)+'...';
@@ -60,20 +50,38 @@ HUB.Plugins.CoursesProgress = {
 
 		// Get data
 		$.ajax({
-			url      : f.attr('action') + '&action=getData',
+			url      : form.attr('action') + '&action=getData',
 			dataType : 'json',
 			success  : function ( data, textStatus, jqXHR ) {
-				var context = {assets: data.assets, members: data.members, grades: data.grades};
-				var html    = template(context);
+				// Render template - main portion
+				var source    = $('#gradebook-template-main').html(),
+					template  = Handlebars.compile(source),
+					context   = {members: data.members},
+					html      = template(context);
+
+				// Insert into page (it is currently hidden)
+				form.html(html);
+
+				// Now render assets portion
+				source   = $('#gradebook-template-asset').html();
+				template = Handlebars.compile(source);
+				context  = {assets: data.assets, members: data.members, grades: data.grades};
+				html     = template(context);
+
+				// Inser the assets into their place
+				$('.slidable-inner').html(html);
 
 				// Remove loading icon
-				g.find('.loading').fadeOut();
-				f.html(html);
-				f.fadeIn();
+				gradebook.find('.loading').fadeOut();
+				// Fade in table and navigation
+				form.fadeIn();
 				$('.navigation').fadeIn();
+				$('.controls').fadeIn();
 
+				// Resize table on resize window
 				$(window).resize(HUB.Plugins.CoursesProgress.resizeTable);
 
+				// Do initial resize and setup of events
 				HUB.Plugins.CoursesProgress.resizeTable();
 				HUB.Plugins.CoursesProgress.initialize();
 			}
@@ -335,6 +343,18 @@ HUB.Plugins.CoursesProgress = {
 					p.find('.override').removeClass('active');
 				}
 			});
+		});
+
+		$('.gradebook').on('click', '.controls .refresh', function ( e ) {
+			var t = $(this),
+				f = $('.gradebook-form');
+
+			f.html('').hide();
+			$('.navigation').hide();
+			$('.controls').hide();
+			$('.loading').show();
+
+			HUB.Plugins.CoursesProgress.loadData();
 		});
 
 		// Add a new gradebook item
