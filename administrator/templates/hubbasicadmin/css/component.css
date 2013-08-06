@@ -872,6 +872,69 @@
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
 	}
+/* [!] J2.6+ */
+	/* MODAL STYLES */
+	h2.modal-title {
+		margin-left: 15px;
+		margin-bottom: 0;
+		margin-top: 5px;
+		padding: 0;
+		font-size: 1.2em;
+	}
+	ul.menu_types {
+		padding: 0 0 0 15px;
+		width: 95%;
+		margin: 0;
+	}
+	ul.menu_types li,
+	dl.menu_type dd ul li {
+		width: 240px;
+		list-style: none;
+		display: block;
+		float: left;
+		margin-right: 10px;
+	}
+	ul.menu_types li {
+		width: 47%;
+	}
+	dl.menu_type {
+		width: 240px;
+		margin: 0;
+		padding: 0;
+	}
+	dl.menu_type dt {
+		font-weight: bold;
+		font-size: 1.091em;
+		float: left;
+		margin: 13px 0 5px 0;
+		border-bottom: 1px solid #666;
+		width: 240px;
+	}
+	dl.menu_type dd {
+		clear: left;
+		margin: 0;
+	}
+	dl.menu_type dd ul li {
+		margin: 0;
+	}
+	ul#new-modules-list {
+		padding: 5px 0 0 15px;
+		width:95%;
+		margin: 0;
+		list-style: none;
+		border-top: 1px solid #666;
+	}
+	ul#new-modules-list li {
+		list-style: none;
+		display: block;
+		float:left;
+		margin: 0 20px 0 0;
+		width: 47%;
+	}
+	ul#new-modules-list li a {
+		font-size: 1.091em;
+		line-height: 1.8em;
+	}
 /* Notifications */
 	#system-message {
 		margin-bottom: 1.61803399em;
