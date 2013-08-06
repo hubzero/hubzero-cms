@@ -138,7 +138,6 @@ class modEventsCalendar
 	public function run()
 	{
 		$lang =& JFactory::getLanguage();
-		$Config_lang = $lang->getBackwardLang();
 
 		// Check the events component
 		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php'))
@@ -282,7 +281,7 @@ class modEventsCalendar
 		$database =& JFactory::getDBO();
 
 		$juser =& JFactory::getUser();
-		$gid = $juser->get('gid');
+		//$gid = $juser->get('gid');
 
 		$cal_year  = date("Y", $time);
 		$cal_month = date("m", $time);
@@ -336,7 +335,7 @@ class modEventsCalendar
 			$selected_date = "$cal_year-$cal_month-$do";
 
 			$sql = "SELECT #__events.* FROM #__events, #__categories as b"
-				. "\n WHERE #__events.catid = b.id AND b.access <= $gid AND #__events.access <= $gid"
+				. "\n WHERE #__events.catid = b.id " // AND b.access <= $gid AND #__events.access <= $gid"
 				. "\n AND ((publish_up >= '$selected_date 00:00:00' AND publish_up <= '$selected_date 23:59:59')"
 				. "\n OR (publish_down >= '$selected_date 00:00:00' AND publish_down <= '$selected_date 23:59:59')"
 				. "\n OR (publish_up <= '$selected_date 00:00:00' AND publish_down >= '$selected_date 23:59:59')) AND state='1'"

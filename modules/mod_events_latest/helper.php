@@ -268,11 +268,10 @@ class modEventsLatest
 
 		// Get the user GID (used in some queries)
 		$juser =& JFactory::getUser();
-		$gid = $juser->get('gid');
+		//$gid = $juser->get('gid');
 
 		// Get the site language setting
 		$lang =& JFactory::getLanguage();
-		$Config_lang = $lang->getBackwardLang();
 
 		// Get module parameters
 		$mode              = $this->params->get('mode')                ? abs(intval($this->params->get('mode'))) : 4;
@@ -364,7 +363,8 @@ class modEventsLatest
 
 		// Display only events that are not announcements
 		$query = "SELECT #__events.* FROM #__events, #__categories as b"
-			. "\nWHERE #__events.catid = b.id AND b.access <= $gid AND #__events.access <= $gid AND (#__events.state='1' $ancmnt AND #__events.checked_out='0')"
+			. "\nWHERE #__events.catid = b.id " // AND b.access <= $gid AND #__events.access <= $gid 
+                        . "\n   AND (#__events.state='1' $ancmnt AND #__events.checked_out='0')"
 			. "\n	AND ((publish_up <= '$todayBegin%' AND publish_down >= '$todayBegin%')"
 			. "\n	OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
 			. "\n   OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"
