@@ -153,8 +153,8 @@ HUB.Plugins.CoursesProgress = {
 				// Shift + tab
 				if (e.shiftKey) {
 					var r = t.data('rownum').match(/cell-row([0-9]*)/i);
-					var p = t.parent('.gradebook-column').prev('.gradebook-column').find('.'+r[0]);
-					var n = t.parent('.gradebook-column').siblings().last().find('.cell-row'+(parseInt(r[1], 10)-1));
+					var p = t.parent('.gradebook-column').prev('.gradebook-column').find('.'+r[0]+':visible');
+					var n = t.parent('.gradebook-column').siblings().last().find('.cell-row'+(parseInt(r[1], 10)-1)+':visible');
 					if (p.length) {
 						// Make sure the next item isn't off the page
 						var s      = $('.slidable-inner'),
@@ -201,9 +201,9 @@ HUB.Plugins.CoursesProgress = {
 				// Tab
 				} else {
 					var r = t.data('rownum').match(/cell-row([0-9]*)/i),
-						n = t.parent('.gradebook-column').next('.gradebook-column').find('.'+r[0]),
+						n = t.parent('.gradebook-column').next('.gradebook-column').find('.'+r[0]+':visible'),
 						s = $('.slidable-inner'),
-						p = t.parent('.gradebook-column').siblings().first().find('.cell-row'+(parseInt(r[1], 10)+1));
+						p = t.parent('.gradebook-column').siblings().first().find('.cell-row'+(parseInt(r[1], 10)+1)+':visible');
 
 					if (n.length) {
 						// Make sure the next item isn't off the page
