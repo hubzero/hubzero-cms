@@ -353,13 +353,13 @@ class ForumPost extends JTable
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
 		{
-			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$this->created_by = $juser->get('id');
+			$this->created    = ($this->created && $this->created != '0000-00-00 00:00:00') ? $this->created : date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->created_by = ($this->created_by) ? $this->created_by : $juser->get('id');
 		} 
 		else 
 		{
-			$this->modified = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$this->modified_by = $juser->get('id');
+			$this->modified    = ($this->modified && $this->modified != '0000-00-00 00:00:00') ? $this->modified : date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->modified_by = ($this->modified_by) ? $this->modified_by : $juser->get('id');
 		}
 
 		if (!$this->parent) 
