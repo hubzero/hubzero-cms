@@ -84,25 +84,34 @@ if($rt->type == "Series" || $rt->type == "Courses") {
 }
 
 //get the contributors for the resource
-$sql = "SELECT authorid FROM #__author_assoc "
+$sql = "SELECT authorid, role, name FROM #__author_assoc "
 	 . "WHERE subtable='resources' "
 	 . "AND subid=" . $parent->id . " "
 	 . "ORDER BY ordering";
 	
 $this->database->setQuery( $sql );
-$author_ids = $this->database->loadResultArray();
+$lectureAuthors = $this->database->loadObjectList();
 
 //get the author names from ids
-$authors = array();
-if ($author_ids && is_array($author_ids))
+$a = array();
+foreach ($lectureAuthors as $la)
 {
-	foreach ($author_ids as $ai) 
+	//if this is a submitter lets continue
+	if ($la->role == 'submitter')
 	{
-		$author =& JUser::getInstance($ai);
-		$authors[] = $author->name;
+		continue;
+	}
+	//load author object
+	$author =& JUser::getInstance( $la->authorid );
+	if (is_object($author) && $author->id)
+	{
+		$a[] = '<a href="/members/' . $author->id . '">' . $author->name . '</a>';
+	}
+	else
+	{
+		$a[] = $la->name;
 	}
 }
-
 
 //check to see if already have subtitles
 if (!isset($presentation->subtitles))
@@ -171,7 +180,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 <div id="presenter-container" class="<?php echo $presenationFormat; ?>">
 	<div id="presenter-header">
 		<div id="title"><?php echo $rr->title; ?></div>
-		<div id="author"><?php if($authors) { echo "by: " . implode(", ", $authors); } ?></div>
+		<div id="author"><?php if($a) { echo "by: " . implode(", ", $a); } ?></div>
 		<!--<div id="slide_title"></div>-->
 	</div><!-- /#header -->
 	
