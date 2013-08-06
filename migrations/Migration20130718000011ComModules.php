@@ -13,6 +13,8 @@ class Migration20130718000011ComModules extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
+		$first = false;
+
 		$query = "ALTER TABLE `#__modules` ENGINE = InnoDB;\n";
 		$query .= "ALTER TABLE `#__modules_menu` ENGINE = InnoDB;";
 		$db->setQuery($query);
@@ -23,6 +25,8 @@ class Migration20130718000011ComModules extends Hubzero_Migration
 			$query = "ALTER TABLE `#__modules` DROP `numnews`;";
 			$db->setQuery($query);
 			$db->query();
+
+			$first = true;
 		}
 		if ($db->tableHasField('#__modules', 'control'))
 		{
@@ -97,29 +101,69 @@ class Migration20130718000011ComModules extends Hubzero_Migration
 			$db->query();
 		}
 
-		$query = "UPDATE `#__modules` SET `module` = 'mod_menu' WHERE `module` = 'mod_mainmenu';";
-		$db->setQuery($query);
-		$db->query();
-
-		// Add modules_menu entry for hubmenu, submenu, title, and toolbar
-		$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'menu';";
-		$db->setQuery($query);
-		$ids[] = $db->loadResult();
-		$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'submenu';";
-		$db->setQuery($query);
-		$ids[] = $db->loadResult();
-		$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'title';";
-		$db->setQuery($query);
-		$ids[] = $db->loadResult();
-		$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'toolbar';";
-		$db->setQuery($query);
-		$ids[] = $db->loadResult();
-
-		foreach ($ids as $id)
+		if ($first)
 		{
-			$query = "INSERT INTO `#__modules_menu` VALUES ({$id}, 0);";
+			$query = "UPDATE `#__modules` SET `module` = 'mod_menu' WHERE `module` = 'mod_mainmenu';";
 			$db->setQuery($query);
 			$db->query();
+
+			// Add modules_menu entry for hubmenu, submenu, title, and toolbar
+			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'menu';";
+			$db->setQuery($query);
+			$ids[] = $db->loadResult();
+			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'submenu';";
+			$db->setQuery($query);
+			$ids[] = $db->loadResult();
+			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'title';";
+			$db->setQuery($query);
+			$ids[] = $db->loadResult();
+			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'toolbar';";
+			$db->setQuery($query);
+			$ids[] = $db->loadResult();
+
+			foreach ($ids as $id)
+			{
+				$query = "INSERT INTO `#__modules_menu` VALUES ({$id}, 0);";
+				$db->setQuery($query);
+				$db->query();
+			}
+
+			// Update menu params (specifically to fix menu_image)
+			$query = "SELECT `id`, `params` FROM `#__modules`;";
+			$db->setQuery($query);
+			$results = $db->loadObjectList();
+
+			if (count($results) > 0)
+			{
+				foreach ($results as $r)
+				{
+					$params = trim($r->params);
+					if (empty($params) || $params == '{}')
+					{
+						continue;
+					}
+
+					$array = array();
+					$ar    = explode("\n", $params);
+
+					foreach ($ar as $a)
+					{
+						$a = trim($a);
+						if (empty($a))
+						{
+							continue;
+						}
+
+						$ar2 = explode("=", $a);
+
+						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
+					}
+
+					$query = "UPDATE `#__modules` SET `params` = " . $db->Quote(json_encode($array)) . " WHERE `id` = {$r->id};";
+					$db->setQuery($query);
+					$db->query();
+				}
+			}
 		}
 	}
 }
