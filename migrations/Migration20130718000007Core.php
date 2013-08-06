@@ -89,10 +89,11 @@ class Migration20130718000007Core extends Hubzero_Migration
 			$db->query();
 
 			// Add rows to usergroup map table for existing users
-			$query  = "SELECT u.id AS user_id, g.value FROM `#__users` AS u\n";
-			$query .= "LEFT JOIN `#__core_acl_aro` AS acl ON u.id = acl.value\n";
-			$query .= "LEFT JOIN `#__core_acl_groups_aro_map` AS map ON acl.id = map.aro_id\n";
-			$query .= "LEFT JOIN `#__core_acl_aro_groups` AS g ON map.group_id = g.id;\n";
+			$query  = "SELECT id AS user_id, usertype AS value FROM `#__users`;";
+			//$query  = "SELECT u.id AS user_id, g.value FROM `#__users` AS u\n";
+			//$query .= "LEFT JOIN `#__core_acl_aro` AS acl ON u.id = acl.value\n";
+			//$query .= "LEFT JOIN `#__core_acl_groups_aro_map` AS map ON acl.id = map.aro_id\n";
+			//$query .= "LEFT JOIN `#__core_acl_aro_groups` AS g ON map.group_id = g.id;\n";
 
 			$db->setQuery($query);
 			$results = $db->loadObjectList();
