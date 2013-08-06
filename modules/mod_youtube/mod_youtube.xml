@@ -95,4 +95,64 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="lazy" type="radio" default="1" label="Lazy Loading" description="Use javascript to dynamically load the Youtube feed to the page. Displays no content without javascript. Otherwise use normal PHP method and using caching to improve performance.">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="type" type="list" default="user" label="Youtube Feed Type" description="Select the type of Youtube Feed (Playlist, User Channel, or by Search Term)">
+					<option value="playlists">Playlist</option>
+					<option value="users">User Channel</option>
+					<option value="videos">Video Search</option>
+				</field>
+				<field name="q" type="text" size="50" default="" label=" Playlist ID, User Channel, or Search Term" description="Enter either a Youtube playlist id, Youtube user channel, or a search term that you would like to be parsed." />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="title" type="radio" default="1" label="Show Feed Title" description="Display feed title.">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="alttitle" type="text" size="50" default="" label="Alternative Title" description="Title to be displayed instead of the Youtube parsed title." />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="desc" type="radio" default="1" label="Show Feed Description" description="Display feed description.">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="altdesc" type="textarea" rows="10" cols="40" default="" label="Alternative Description" description="Description to be displayed instead of the Youtube parsed description." />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="image" type="radio" default="1" label="YouTube Logo" description="Show the YouTube Logo">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="altimage" type="text" size="50" default="" label="Alternative Logo" description="Logo to be displayed instead of the Youtube logo." />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="videos" type="text" default="3" label="Number of Videos" description="Enter number of videos to display." />
+				<field name="random" type="radio" default="0" label="Randomize Videos" description="Randomize the selection of videos.">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="layout" type="radio" default="vertical" label="Layout Orientation" description="Display items vertically or horizontally.">
+					<option value="vertical">Vertical</option>
+					<option value="horizontal">Horizontal</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="link" type="radio" default="1" label="Show View More link" description="Show the link to all videos">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="altlink" type="text" default="" size="50" label="Alternative Link" description="Link to be displayed instead of the Youtube parsed link." />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+					<option value="1">Use global</option>
+					<option value="0">No caching</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
+			</fieldset>
+		</fields>
+	</config>
 </install>

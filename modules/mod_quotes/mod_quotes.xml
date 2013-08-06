@@ -50,7 +50,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="10">10</option>
 			<option value="15">15</option>
 			<option value="">All</option>
-    	</param>
+		</param>
 	</params>
 	<params group="advanced">
 		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
@@ -59,6 +59,29 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+				<field name="maxquotes" type="list" default="" label="Maximum Number of Quotes" description="Define max number of quotes to display on the page">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="5">5</option>
+					<option value="10">10</option>
+					<option value="15">15</option>
+					<option value="">All</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+			</fieldset>
+		</fields>
+	</config>
 	<languages>
 		<language tag="en-GB">en-GB.mod_quotes.ini</language>
 	</languages>

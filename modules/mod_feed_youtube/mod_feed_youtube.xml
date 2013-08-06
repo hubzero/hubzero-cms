@@ -86,4 +86,54 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="rssurl" type="text" size="50" default="" label="Feed URL" description="Enter the URL of the RSS feed" />
+				<field name="rsstitle" type="radio" default="1" label="Feed Title" description="Display news feed title">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="feedtitle" type="text" size="50" default="" label="Alternative Title" description="Title to display instead of the feed title" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="rssdesc" type="radio" default="1" label="Feed Description" description="Show the description text for the whole Feed">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="feeddesc" type="text" size="50" default="" label="Alternative Description" description="Description to display instead of the feed description" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="rssimage" type="radio" default="1" label="YouTube Image" description="Show the YouTube image">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="imagepath" type="text" size="50" default="" label="Path to YouTube image" description="Enter the path to YouTube image" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="rssitems" type="text" default="3" label="Items" description="Enter number of RSS items to display" />
+				<field name="pick_random" type="radio" default="0" label="Random items" description="Display items in random or feed-defined order">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="webpath" type="text" size="50" default="/site/youtube" label="Local Path to Thumbnails" description="Enter the path to store video thumbnails locally" />
+				<field name="layout" type="radio" default="vertical" label="Layout" description="Select whether to display items vertically or horizontally">
+					<option value="vertical">Vertical</option>
+					<option value="horizontal">Horizontal</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="showmorelink" type="radio" default="1" label="Show View More link" description="Show the link to all videos">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="moreurl" type="text" default="" size="50" label="View More URL" description="Enter the URL to more videos " />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+					<option value="1">Use global</option>
+					<option value="0">No caching</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
+			</fieldset>
+		</fields>
+	</config>
 </install>

@@ -67,6 +67,33 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 		</param>
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
+				<field type="spacer" />
+				
+				<field name="show_screenshots" type="list" default="0" label="Show Session Screenshots" description="Select wether to show session screenshots or not.">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="show_storage" type="list" default="1" label="Show storage" description="Select wether to show the storage meter or not.">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field type="spacer" />
+				
+				<field name="quick_launch" type="list" default="0" label="Quick Launch" description="Have quick launch link in title bar for each session?">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="terminate_double_check" type="list" default="1" label="Confirm Terminate" description="Does user need to confirm terminating sessions?">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 	<languages>
 		<language tag="en-GB">en-GB.mod_mysessions.ini</language>
 	</languages>

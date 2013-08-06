@@ -66,4 +66,29 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</param>
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="catid" type="category" default="0" label="Category" description="A content category" />
+				<field name="container" type="text" default="" label="Content Container" description="A CSS ID for a content container" />
+				<field name="rotate" type="radio" default="1" label="Auto-Rotate" description="Select whether to have pane rotation automatically animated">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="animation" type="list" default="slide" label="Animation Type" description="Choose the method to use to animate between slides.">
+					<option value="slide">Slid across</option>
+					<option value="fade">Cross-fade</option>
+				</field>
+				<field name="random" type="radio" default="0" label="Random order" description="Select whether to display slides in random order or by article ordering">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="limitslides" type="text" default="0" label="Limit Slides" description="A number of slides to display (will display all if not set)" />
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </install>

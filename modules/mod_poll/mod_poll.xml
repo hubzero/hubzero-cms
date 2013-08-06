@@ -23,4 +23,19 @@
 		</param>
 		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addpath="/administrator/components/com_poll/elements">
+				<field name="id" type="poll" default="" label="Poll" description="PARAMMODULEPOLL" />
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
+					<option value="1">Use global</option>
+					<option value="0">No caching</option>
+				</field>
+				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+			</fieldset>
+		</fields>
+	</config>
 </install>

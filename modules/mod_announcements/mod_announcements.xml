@@ -46,8 +46,8 @@
 		<param name="word_count" type="text" size="6" default="100" label="Word Count" description="Limit characters in item description" />
 		<param name="webpath" type="text" size="50" default="/site/announcements" label="Image path" description="Enter the path to item images" />
 		<param name="default_image" type="text" size="50" default="" label="Default image" description="Enter full path to the default image" />
-		<param name="subscribe_path" type="text" size="50" default="" label="Path to subscription page" description="Enter the url of rss feed or maillist subscription page" />	
-		<param name="subscribe_label" type="text" size="50" default="Subscribe" label="Label for subscribe link" description="Enter the text for the subscription link" />		
+		<param name="subscribe_path" type="text" size="50" default="" label="Path to subscription page" description="Enter the url of rss feed or maillist subscription page" />
+		<param name="subscribe_label" type="text" size="50" default="Subscribe" label="Label for subscribe link" description="Enter the text for the subscription link" />
 	</params>
 	<params group="advanced">
 		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
@@ -56,4 +56,54 @@
 		</param>
 		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="catid" type="category" default="0" label="Category" description="A content category" />
+				<field name="container" type="text" default="" label="Content Container" description="A CSS ID for a content container" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="numitems" type="text" default="5" label="Items" description="Enter number of news items to display" />
+				<field name="show_image" type="radio" default="0" label="Item image" description="Show images associated with announcements">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="show_desc" type="radio" default="0" label="Item description" description="Show announcement descriptions">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="show_morelink" type="radio" default="0" label="More link" description="Show 'read more' link for each announcement">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="show_viewall" type="radio" default="0" label="View all link" description="Show 'view all' link for all announcements">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="show_search" type="radio" default="0" label="Item search" description="Show a search box for announcements">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="show_date" type="radio" default="0" label="Article date" description="Show date of announcement article">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="show_subscribe" type="radio" default="0" label="Subscribtion option" description="Show an option to subscribe to feed/maillist">
+					<option value="1">Show</option>
+					<option value="0">Hide</option>
+				</field>
+				<field name="word_count" type="text" size="6" default="100" label="Word Count" description="Limit characters in item description" />
+				<field name="webpath" type="text" size="50" default="/site/announcements" label="Image path" description="Enter the path to item images" />
+				<field name="default_image" type="text" size="50" default="" label="Default image" description="Enter full path to the default image" />
+				<field name="subscribe_path" type="text" size="50" default="" label="Path to subscription page" description="Enter the url of rss feed or maillist subscription page" />
+				<field name="subscribe_label" type="text" size="50" default="Subscribe" label="Label for subscribe link" description="Enter the text for the subscription link" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+					<option value="1">Use global</option>
+					<option value="0">No caching</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
+			</fieldset>
+		</fields>
+	</config>
 </install>

@@ -86,6 +86,56 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+				<field name="startday" type="text" default="0" label="Start day" description="The day (number) the calendar should start on" />
+				<field name="max_events" type="text" default="10" label="Max events" description="The maximum number of events to display" />
+				<field name="mode" type="radio" default="2" label="Display last month" description="Display the calendar for the previous month">
+					<option value="0">Display events for current week and following week only</option>
+					<option value="1">Display events for current week and following week, including past events</option>
+					<option value="2">Display events for +'days' range</option>
+					<option value="3">Display events for +-'days' range</option>
+					<option value="4">Events for current month</option>
+				</field>
+				<field name="announcements" type="list" default="0" label="Announcements" description="Exclude events listed as announcments from the list.">
+					<option value="0">Include All</option>
+					<option value="1">Exclude Announcements</option>
+					<option value="2">Announcements Only</option>
+				</field>
+				<field name="days" type="text" default="365" label="Days" description="The range of days relative to current day to display events for mode 1 or 3" />
+				<field name="display_links" type="radio" default="0" label="Display links" description="Display event titles as links to the 'details' com_events task which will display details of the event.">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+				<field name="display_year" type="radio" default="0" label="Display year" description="Display year when displaying dates in the non-customized event's listing.">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+				<field name="display_date_style" type="radio" default="0" label="Display date style" description="1 (default is 0) disables the application of the css style 'mod_events_latest_date' to the displayed events.  Use this when full customization of the display format is desired. See customFormat parameter below.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="display_title_style" type="radio" default="0" label="Display title style" description="1 (default is 0) disables the application of the css style 'mod_events_latest_title' to the displayed event's title.  Use this when full customization of the display format is desired. See customFormat parameter below.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="no_repeat" type="radio" default="1" label="No repeat events" description="Show event multiple times if it repeats">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="char_limit" type="text" default="150" label="Character limit" description="Character limit if displaying any content" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+			</fieldset>
+		</fields>
+	</config>
 	<languages>
 		<language tag="en-GB">en-GB.mod_events_latest.ini</language>
 	</languages>

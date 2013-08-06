@@ -38,6 +38,14 @@
 		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
 		<param name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+				<field name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
+			</fieldset>
+		</fields>
+	</config>
 	<languages>
 		<language tag="en-GB">en-GB.mod_application_env.ini</language>
 	</languages>

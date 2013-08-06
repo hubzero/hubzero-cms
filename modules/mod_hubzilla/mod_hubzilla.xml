@@ -44,6 +44,16 @@
 		<param name="posTop" type="text" default="auto" label="Top" description="Top position" />
 		<param name="posBottom" type="text" default="5px" label="Bottom" description="Bottom position" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="posLeft" type="text" default="auto" label="Left" description="Left position" />
+				<field name="posRight" type="text" default="5px" label="Right" description="Right position" />
+				<field name="posTop" type="text" default="auto" label="Top" description="Top position" />
+				<field name="posBottom" type="text" default="5px" label="Bottom" description="Bottom position" />
+			</fieldset>
+		</fields>
+	</config>
 	<languages>
 		<language tag="en-GB">en-GB.mod_hubzilla.ini</language>
 	</languages>

@@ -49,5 +49,12 @@ HUBzero is a registered trademark of Purdue University.
 	<params>
 		<param name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

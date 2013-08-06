@@ -76,4 +76,40 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="alias" type="text" default="" label="Alias of banner instance" description="If multiple banners are used on this hub, specify a unique name for this banner. E.g. 'homepage'" />
 		<param name="noflash_link" type="text" default="" label="URL for image link" description="Determines URL when clicking on random image" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="height" type="radio" default="230" label="Height of banner" description="Height of banner">
+					<option value="100">100</option>
+					<option value="180">180</option>
+					<option value="230">230</option>
+					<option value="350">350</option>
+				</field>
+				<field name="width" type="radio" default="600" label="Width of banner" description="Width of banner">
+					<option value="600">600</option>
+					<option value="650">650</option>
+				</field>
+				<field name="stype" type="radio" default="0" label="Slideshow Type" description="Determines whether to display flash rotation or random image on each page load">
+					<option value="0">Rotating Slideshow</option>
+					<option value="1">Random Image on Page Load</option>
+				</field>
+				<field name="transitiontype" type="radio" default="fade" label="Trasition type" description="Slide transition effect">
+					<option value="fade">fade</option>
+					<option value="flyin">fly from left</option>
+				</field>
+				<field name="random" type="radio" default="0" label="Random order" description="Determines order of slides.">
+					<option value="1">yes</option>
+					<option value="0">no</option>
+				</field>
+				<field name="timerdelay" type="radio" default="fade" label="Time for each slide (seconds)" description="Slide time in seconds">
+					<option value="8000">8</option>
+					<option value="10000">10</option>
+					<option value="12000">12</option>
+				</field>
+				<field name="image_dir" type="text" default="/site/slideshow" label="Images directory" description="Directory where images for banner are stored" />
+				<field name="alias" type="text" default="" label="Alias of banner instance" description="If multiple banners are used on this hub, specify a unique name for this banner. E.g. 'homepage'" />
+				<field name="noflash_link" type="text" default="" label="URL for image link" description="Determines URL when clicking on random image" />
+			</fieldset>
+		</fields>
+	</config>
 </install>

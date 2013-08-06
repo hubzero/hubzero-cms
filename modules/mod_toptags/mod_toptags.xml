@@ -53,13 +53,36 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Show</option>
 		</param>
 	</params>
-        <params group="advanced">
-                <param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-                        <option value="1">Use global</option>
-                        <option value="0">No caching</option>
-                </param>
-                <param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
-        </params>
-
+	<params group="advanced">
+		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+			<option value="1">Use global</option>
+			<option value="0">No caching</option>
+		</param>
+		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="numtags" type="text" default="25" label="Number of tags" description="The number of tags to display." />
+				<field name="exclude" type="textarea" rows="3" cols="40" default="" label="Excluded Tags" description="List of tags to exclude from popular tags list." />
+				<field name="message" type="textarea" rows="3" cols="40" default="" label="Message" description="The message to be displayed if no tags are found" />
+				<field name="sortby" type="list" default="alphabeta" label="Sort by" description="The sort order for tags found">
+					<option value="alphabeta">Alphabetically</option>
+					<option value="popularity">By Popularity</option>
+				</field>
+				<field name="morelnk" type="radio" default="0" label="More links" description="Display a link to more tags">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+					<option value="1">Use global</option>
+					<option value="0">No caching</option>
+				</field>
+				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

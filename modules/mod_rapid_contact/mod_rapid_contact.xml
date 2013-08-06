@@ -75,5 +75,44 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="anti_spam_a" type="text" default="2" label="Anti-Spam Answer" description="The correct answer to the anti-spam question" />
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="If you want to apply a custom style, change this class suffix." />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="name_label" type="text" default="Name:" label="Name Label" description="The label next to the name input." />
+				<field name="email_label" type="text" default="Email:" label="Email Label" description="The label next to the email input." />
+				<field name="subject_label" type="text" default="Subject:" label="Subject Label" description="The label next to the subject input." />
+				<field name="message_label" type="text" default="Message:" label="Message Label" description="The label next to the message text area." />
+				<field name="email_recipient" type="text" default="" label="Email Recipient" description="The recipient of the contact mail." />
+				<field name="button_text" type="text" default="Send Message" label="Button Text" description="The text on the send button" /> 
+				<field name="page_text" type="text" default="Thank you for your contact." label="Thank you text" description="The text displayed to the user when he sends a message" />
+				<field name="error_text" type="text" default="Your message could not be sent. Please try again." label="Error page text" description="The text displayed to the user when the message fails to be sent" />
+				<field name="no_email" type="text" default="Please write your email" label="No Email Error Message" description="The error message when the user does not write an email" />
+				<field name="invalid_email" type="text" default="Please write a valid email" label="Invalid Email Error Message" description="The error message when the user writes an invalid email" />
+				<field name="from_name" type="text" default="Rapid Contact" label="Mail From Name" description="The name of the message's sender" />
+				<field name="from_email" type="text" default="rapid_contact@yoursite.com" label="Mail From Email" description="The email of the message's sender" />
+				<field name="exact_url" type="radio" default="1" label="Exact URL" description="This is an advanced option about the url retrieval way. If your site is http and your server/host supports https this should be No.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="disable_https" type="radio" default="0" label="Disable HTTPS" description="This is an advanced option about the url retrieval way. Please enable it if Rapid Contact posts in https and your site is http.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="pre_text" type="text" default="" label="Small Intro Text" description="A small text shown before (above) the message form" />
+				<field name="fixed_url" type="radio" default="0" label="Fixed URL" description="A simple solution to people that want to use Rapid Contact in an exact page. Change this to Yes and write the URL of Rapid Contact in the Fixed URL Address parameter">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="fixed_url_address" type="text" default="" label="Fixed URL Address" description="If fixed url is true, this address is used for Rapid Contact to post itself."/>
+				<field name="enable_anti_spam" type="radio" default="1" label="Enable Anti-spam" description="Enable this to use the anti-spam question for anti-spam control">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="anti_spam_q" type="text" default="How many eyes has a typical person?" label="Anti-Spam Question" description="A small text question, preventing you from every automated spam" />
+				<field name="anti_spam_a" type="text" default="2" label="Anti-Spam Answer" description="The correct answer to the anti-spam question" />
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="If you want to apply a custom style, change this class suffix." />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

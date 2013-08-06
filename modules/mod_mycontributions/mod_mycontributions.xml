@@ -30,43 +30,67 @@ HUBzero is a registered trademark of Purdue University.
 <install type="module" version="1.5">
 	<name>My Contributions</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>This module will display a list of contributions</description>
 	<files>
 		<filename module="mod_mycontributions">mod_mycontributions.php</filename>
 		<filename>index.html</filename>
-        <filename>tmpl/index.html</filename>
-        <filename>tmpl/default.php</filename>
-	   <filename>images/attention.gif</filename>
-	   <filename>images/check.gif</filename>
-	   <filename>images/draft.gif</filename>
-	   <filename>images/pending.gif</filename>
-	   <filename>images/qanda.gif</filename>
-	   <filename>images/warning.gif</filename>
-	   <filename>images/wheel.gif</filename>
-	   <filename>images/wishlist.gif</filename>
-	   <filename>mod_mycontributions.css</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>images/attention.gif</filename>
+		<filename>images/check.gif</filename>
+		<filename>images/draft.gif</filename>
+		<filename>images/pending.gif</filename>
+		<filename>images/qanda.gif</filename>
+		<filename>images/warning.gif</filename>
+		<filename>images/wheel.gif</filename>
+		<filename>images/wishlist.gif</filename>
+		<filename>mod_mycontributions.css</filename>
 	</files>
 	<params>
-        <param name="show_tools" type="radio" default="1" label="Show tools separately" description="Select whether to show tool contributions separately from other types">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </param>
-		 <param name="get_questions" type="radio" default="1" label="Show questions on tools" description="Select whether to show open questions count on tools">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </param>
-		 <param name="get_wishes" type="radio" default="1" label="Show wishes on tools" description="Select whether to show open wishes count on tools">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </param>
-		 <param name="get_tickets" type="radio" default="1" label="Show tickets on tools" description="Select whether to show open tickets count on tools">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </param>
+		<param name="show_tools" type="radio" default="1" label="Show tools separately" description="Select whether to show tool contributions separately from other types">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="get_questions" type="radio" default="1" label="Show questions on tools" description="Select whether to show open questions count on tools">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="get_wishes" type="radio" default="1" label="Show wishes on tools" description="Select whether to show open wishes count on tools">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="get_tickets" type="radio" default="1" label="Show tickets on tools" description="Select whether to show open tickets count on tools">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="limit_tools" type="text" size="6" default="10" label="Limit tools" description="Limit number of tool contributions displayed" />
 		<param name="limit_other" type="text" size="6" default="10" label="Limit other contributions" description="Limit number of other contributions displayed" />
-    </params>
+	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="show_tools" type="radio" default="1" label="Show tools separately" description="Select whether to show tool contributions separately from other types">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="get_questions" type="radio" default="1" label="Show questions on tools" description="Select whether to show open questions count on tools">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="get_wishes" type="radio" default="1" label="Show wishes on tools" description="Select whether to show open wishes count on tools">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="get_tickets" type="radio" default="1" label="Show tickets on tools" description="Select whether to show open tickets count on tools">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="limit_tools" type="text" size="6" default="10" label="Limit tools" description="Limit number of tool contributions displayed" />
+				<field name="limit_other" type="text" size="6" default="10" label="Limit other contributions" description="Limit number of other contributions displayed" />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

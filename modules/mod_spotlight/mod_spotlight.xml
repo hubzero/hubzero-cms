@@ -143,4 +143,111 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is re-cached" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="spotone" type="radio" default="tools" label="Spot 1 Content" description="Select content type for the first featured item.">
+					<option value="tools">Tools</option>
+					<option value="nontools">Non-tools</option>
+					<option value="members">Members</option>
+					<option value="topics">Topics</option>
+					<option value="itunes">iTunes</option>
+					<option value="answers">Question</option>
+					<option value="blog">Blog</option>
+				</field>
+				<field name="spottwo" type="radio" default="nontools" label="Spot 2 Content" description="Select content type for the second featured item.">
+					<option value="tools">Tools</option>
+					<option value="nontools">Non-tools</option>
+					<option value="members">Members</option>
+					<option value="topics">Topics</option>
+					<option value="itunes">iTunes</option>
+					<option value="answers">Question</option>
+					<option value="blog">Blog</option>
+				</field>
+				<field name="spotthree" type="radio" default="contributors" label="Spot 3 Content" description="Select content type for the third featured item.">
+					<option value="tools">Tools</option>
+					<option value="nontools">Non-tools</option>
+					<option value="members">Members</option>
+					<option value="topics">Topics</option>
+					<option value="itunes">iTunes</option>
+					<option value="answers">Question</option>
+					<option value="blog">Blog</option>
+				</field>
+				<field name="spotfour" type="radio" default="topics" label="Spot 4 Content" description="Select content type for the fourth featured item.">
+					<option value="tools">Tools</option>
+					<option value="nontools">Non-tools</option>
+					<option value="members">Members</option>
+					<option value="topics">Topics</option>
+					<option value="itunes">iTunes</option>
+					<option value="answers">Question</option>
+					<option value="blog">Blog</option>
+				</field>
+				<field name="spotfive" type="radio" default="" label="Spot 5 Content" description="Select content type for the fifth featured item.">
+					<option value="tools">Tools</option>
+					<option value="nontools">Non-tools</option>
+					<option value="members">Members</option>
+					<option value="topics">Topics</option>
+					<option value="itunes">iTunes</option>
+					<option value="answers">Question</option>
+					<option value="blog">Blog</option>
+				</field>
+				<field name="spotsix" type="radio" default="" label="Spot 6 Content" description="Select content type for the sixth featured item.">
+					<option value="tools">Tools</option>
+					<option value="nontools">Non-tools</option>
+					<option value="members">Members</option>
+					<option value="topics">Topics</option>
+					<option value="itunes">iTunes</option>
+					<option value="answers">Question</option>
+					<option value="blog">Blog</option>
+				</field>
+				<field name="spotseven" type="radio" default="" label="Spot 7 Content" description="Select content type for the seventh featured item.">
+					<option value="tools">Tools</option>
+					<option value="nontools">Non-tools</option>
+					<option value="members">Members</option>
+					<option value="topics">Topics</option>
+					<option value="itunes">iTunes</option>
+					<option value="answers">Question</option>
+					<option value="blog">Blog</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="numspots" type="radio" default="3" label="Number of Spots" description="How many features to display">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+				</field>
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+				<field name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />	
+				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="minranking" type="text" default="6.0" label="Minimum Ranking" description="A minimum ranking for resources that can be selected" />
+				<field name="tag" type="text" default="" label="Tag" description="A tag to be the pool that resources entries are drawn from" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="show" type="radio" default="contributors" label="Select from" description="Select random entries from either all members or contributors only">
+					<option value="">All members</option>
+					<option value="contributors">Contributors only</option>
+				</field>
+				<field name="min_contributions" type="text" default="0" label="Min. # Contributions" description="The minimum number of contributions a profile must have to be selected" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="itunes_tag" type="text" default="" label="iTunes Tag" description="A tag to be the pool that iTunes content entries are drawn from" />
+				<field name="default_itunespic" type="text" default="" label="Default iTunes Picture" description="URL to default picture for featured iTunes content" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="topics_tag" type="text" default="" label="Topics Tag" description="A tag to be the pool that Topics entries are drawn from" />
+				<field name="default_topicpic" type="text" default="" label="Default Topics Picture" description="URL to default picture for featured topics" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="default_questionpic" type="text" default="" label="Default Question Picture" description="URL to default picture for featured question" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="default_blogpic" type="text" default="" label="Default Blog Picture" description="URL to default picture for featured blog" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is re-cached" />
+			</fieldset>
+		</fields>
+	</config>
 </install>

@@ -54,5 +54,22 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</param>
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
+				<field name="sort" type="list" default="publish_up" label="Sort" description="The default sort for items.">
+					<option value="publish_up">Published</option>
+					<option value="title">Title</option>
+					<option value="usage">Usage</option>
+				</field>
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

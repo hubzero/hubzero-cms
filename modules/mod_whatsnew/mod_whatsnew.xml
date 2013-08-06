@@ -65,5 +65,29 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="cssId" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+				<field name="limit" type="text" default="5" label="Number of entries" description="The number of entries to display." />
+				<field name="feed" type="list" default="1" label="Feed link" description="Select whether to display a feed link">
+					<option value="1">Display link</option>
+					<option value="0">Hide link</option>
+				</field>
+				<field name="period" type="text" default="resources:month" label="category:period" description="Time period and category to pull results for." />
+				<field name="tagged" type="radio" default="0" label="Show My Interests" description="Display whats new by the tags the user has listed as their interests.">
+					<option value="0">Hide</option>
+					<option value="1">Show</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

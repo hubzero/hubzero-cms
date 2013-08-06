@@ -58,4 +58,21 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="no">No</option>
 		</param>
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleTitle" type="text" default="" label="Module Title Text" description="The title of the module block." />
+				<field name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." />
+				<field name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." />
+				<field name="displayHeader" type="list" default="yes" label="Display Header" description="Display Twitter Widget Header.">
+					<option value="yes">Yes</option>
+					<option value="no">No</option>
+				</field>
+				<field name="displayFooter" type="list" default="yes" label="Display Footer" description="Display Twitter Widget Footer.">
+					<option value="yes">Yes</option>
+					<option value="no">No</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </install>

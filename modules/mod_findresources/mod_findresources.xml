@@ -54,5 +54,18 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="cssId" type="text" default="findresources" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
+				<field name="limit" type="text" default="25" label="Number of Tags" description="The number of tags to display." />
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

@@ -56,8 +56,28 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="yes">Yes</option>
 		</param>
 	</params>
-        <languages>
-                <language tag="en-GB">en-GB.mod_latestdiscussions.ini</language>
-        </languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
+				<field type="spacer" />
+				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
+				<field name="charlimit" type="text" default="100" label="Length of Comment Preview" description="Number of characters to display in forum comment." />
+				<field name="forum" type="list" default="both" label="Included Discussions From" description="Where the discussions are pulled from.">
+					<option value="site">Site Forum</option>
+					<option value="group">Group Forums</option>
+					<option value="both">Site Forum and Group Forums</option>
+				</field>
+				<field name="morelink" type="text" default="" label="More Link" description="More link address."  size="100" />
+				<field name="feedlink" type="list" default="yes" label="Feed Link" description="Include Feed Link">
+					<option value="no">no</option>
+					<option value="yes">Yes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+	<languages>
+		<language tag="en-GB">en-GB.mod_latestdiscussions.ini</language>
+	</languages>
 </install>
 

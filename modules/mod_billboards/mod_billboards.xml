@@ -64,4 +64,29 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="pager">Yes</option>
 		</param>
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="collection" type="sql" default="1" label="Billboard Collection" description="Select the billboard collection to use" query="SELECT id AS value, name AS collection FROM #__billboard_collection" />
+				<field name="transition" type="list" default="scrollHorz" label="Slide Transition Style" description="Select the effect used to transition between slides">
+					<option value="scrollHorz">Scroll Horizontal</option>
+					<option value="scrollVert">Scroll Vertical</option>
+					<option value="fade">Fade</option>
+					<option value="shuffle">Shuffle</option>
+					<option value="zoom">Zoom</option>
+					<option value="turnLeft">Turn Left</option>
+				</field>
+				<field name="random" type="radio" default="0" label="Random" description="Randomly order billboards?">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="timeout" type="text" default="5" label="Slide Time" description="Time length of each slide (in seconds)" />
+				<field name="speed" type="text" default="1" label="Transition Speed" description="Time length of slide transitions (in seconds)" />
+				<field name="pager" type="list" default="pager" label="Display Pager" description="Display the billboard pager?">
+					<option value="null">No</option>
+					<option value="pager">Yes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </install>
