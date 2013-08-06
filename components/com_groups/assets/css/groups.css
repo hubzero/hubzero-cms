@@ -1606,3 +1606,6 @@ p.warning {
 .com_groups .innerwrap {
 	position: relative;
 }
+.com_groups #content-header {
+	padding-right: 180px;
+}
