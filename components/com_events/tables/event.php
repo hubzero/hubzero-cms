@@ -443,7 +443,9 @@ class EventsEvent extends JTable
 				$select_date = $filters['select_date'];
 				$select_date_fin = $filters['select_date_fin'];
 
-				$sql = "SELECT $this->_tbl.* 
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					$sql = "SELECT $this->_tbl.* 
 						FROM #__categories AS b, $this->_tbl
 						WHERE $this->_tbl.catid = b.id 
 						AND b.access <= $gid 
@@ -453,6 +455,19 @@ class EventsEvent extends JTable
 							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
 							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down >= '" . $this->_db->getEscaped($select_date_fin) . "%')) 
 							AND $this->_tbl.state = '1'";
+				}
+				else
+				{
+					$sql = "SELECT $this->_tbl.* 
+						FROM #__categories AS b, $this->_tbl
+						WHERE $this->_tbl.catid = b.id 
+						AND (((publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_up <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
+							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
+							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
+							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down >= '" . $this->_db->getEscaped($select_date_fin) . "%')) 
+							AND $this->_tbl.state = '1'";
+				}
+
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) . ")" : ")";
 				
 				//did we pass in a scope filter
@@ -480,11 +495,21 @@ class EventsEvent extends JTable
 			case 'year':
 				$year = $filters['year'];
 
-				$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
-						WHERE $this->_tbl.catid = b.id AND b.access <= $gid AND $this->_tbl.access <= $gid
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
+						WHERE $this->_tbl.catid = b.id AND b.access <= $gid AND $this->_tbl.access <= $gid 
 						AND publish_up LIKE '" . $this->_db->getEscaped($year) . "%' AND (publish_down >= '" . $this->_db->getEscaped($year) . "%' OR publish_down = '0000-00-00 00:00:00')
 						AND $this->_tbl.state = '1'";
-				
+				}
+				else
+				{
+					$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl 
+						WHERE $this->_tbl.catid = b.id  
+						AND publish_up LIKE '" . $this->_db->getEscaped($year) . "%' AND (publish_down >= '" . $this->_db->getEscaped($year) . "%' OR publish_down = '0000-00-00 00:00:00')
+						AND $this->_tbl.state = '1'";
+				}
+
 				//did we pass in a scope filter
 				if (isset($filters['scope']) && $filters['scope'] != '')
 				{
@@ -545,12 +570,24 @@ class EventsEvent extends JTable
 			case 'day':
 				$select_date = $filters['select_date'];
 
-				$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl 
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl 
 						WHERE $this->_tbl.catid = b.id AND b.access <= $gid AND $this->_tbl.access <= $gid AND 
 							((publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_up <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
 							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
 							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down >= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
 							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')";
+				}
+				else
+				{
+					$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl 
+						WHERE $this->_tbl.catid = b.id AND
+							((publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_up <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down >= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')";
+				}
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
 				$sql .= ") AND $this->_tbl.state = '1'";
 				
@@ -620,11 +657,21 @@ class EventsEvent extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT a.*, cc.name AS category, u.name AS editor, g.name AS groupname 
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query = "SELECT a.*, cc.name AS category, u.name AS editor, g.name AS groupname 
 				FROM $this->_tbl AS a 
 				LEFT JOIN #__users AS u ON u.id = a.checked_out 
 				LEFT JOIN #__groups AS g ON g.id = a.access
 				LEFT JOIN #__categories AS cc ON a.catid=cc.id";
+		}
+		else
+		{
+			$query = "SELECT a.*, cc.title AS category, u.name AS editor, 'Public' as groupname
+				FROM $this->_tbl AS a 
+				LEFT JOIN #__users AS u ON u.id = a.checked_out 
+				LEFT JOIN #__categories AS cc ON a.catid=cc.id";
+		}
 
 		$where = array();
 		if ($filters['catid'] > 0) 
