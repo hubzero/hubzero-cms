@@ -1085,3 +1085,117 @@ a.ui-slider-handle {
 #presenter-container.presentation-hd .list-slider {
 	width:280px;
 }
+
+
+
+/*---------------------------------------------------------------
+    Transcript Viewer
+---------------------------------------------------------------*/
+#transcript-toggle {
+	position: absolute;
+	bottom: 0px;
+	right: 20px;
+	padding: 3px 8px;
+	margin: 0;
+	background: #efefef;
+	border:1px solid #ccc;
+	border-bottom: none;
+	color: #555;
+	font-size: 11px;
+	font-weight: bold;
+}
+#transcript-container {
+	padding: 0px;
+	margin: 0px;
+	display: none;
+	border-bottom: 1px solid #ccc;
+	background: #FFF;
+}
+#transcript-toolbar {
+	position: relative;
+	background: #efefef;
+	padding: 0;
+	margin: 0;
+	/*border-top: 1px solid #ccc;*/
+	border-bottom: 1px solid #ccc;
+	height: 36px;
+}
+#transcript-selector {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+#transcript-search {
+	position: absolute;
+	top: 4px;
+	right: 10px;
+	background: #FFF;
+	font-size: 11px;
+	width: 150px;
+}
+#font-smaller,
+#font-bigger {
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	width: 20px;
+	height: 20px;
+	border: none;
+}
+#font-bigger {
+	right: 170px;
+}
+#font-smaller:before,
+#font-bigger:before {
+	content: '\f031';
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-family: 'Fontcons';
+	font-size: 14px;
+	color: #555;
+}
+#font-bigger:before {
+	font-size: 24px;
+}
+#font-smaller:hover:before,
+#font-bigger:hover:before {
+	color: #000;
+}
+#font-smaller.inactive:before,
+#font-bigger.inactive:before {
+	color: #aaa;
+}
+#transcripts {
+	overflow-y: scroll;
+	height: 250px;
+}
+.transcript {
+	padding: 0 10px;
+	margin: 10px 0;
+	display: none;
+}
+.transcript-line {
+	overflow: hidden;
+	padding: 0 3px;
+	font-size: 12px;
+	line-height: 16px;
+	border-radius: 3px;
+}
+.transcript-line:hover {
+	background: #efeffe;
+	cursor: pointer;
+}
+.transcript-line.active,
+.transcript-line.active:hover {
+	background: #f0f0f0;
+	font-weight: bold;
+}
+.transcript-line-time {
+	float: left;
+	margin-right: 10px;
+	color: #aaa;
+}
+.transcript-line-text {
+	color: #444;
+}

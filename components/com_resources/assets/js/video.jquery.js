@@ -75,9 +75,8 @@ HUB.Video = {
 			//get window padding if any
 			toolbar = window.outerHeight - window.innerHeight;
 			padding = window.outerWidth - window.innerWidth;
-		
-			//if we are not using firefox lets attempt to resize popup
-			if( !browser.match(/Firefox/g) && isPopup) {
+			
+			if(isPopup) {
 				window.resizeTo(resize_width + padding, resize_height + toolbar);
 			}
 		}
@@ -107,8 +106,6 @@ HUB.Video = {
 			var player = HUB.Video.getPlayer();
 			$jQ("#video-flowplayer").height( player.getClip().metaData.height );
 		}
-		
-		
 	},
 	
 	//-----
@@ -1038,17 +1035,14 @@ HUB.Video = {
 			//if we opened via popup, must resize window
 			if (window.opener)
 			{
-				var transcriptContainerHeight = $jQ('#transcript-container').outerHeight(true),
-					windowWidth = (!flash) ? window.innerWidth : $jQ("#video-flowplayer").outerWidth(true),
-					windowHeight = (!flash) ? window.outerHeight : $jQ("#video-flowplayer").outerHeight(true) + 52;
-					
+				var transcriptContainerHeight = $jQ('#transcript-container').outerHeight(true);
 				if ($jQ('#transcript-container').is(':visible'))
 				{
-					window.resizeTo(windowWidth, windowHeight - transcriptContainerHeight);
+					window.resizeBy(0, -transcriptContainerHeight);
 				}
 				else
 				{
-					window.resizeTo(windowWidth, windowHeight + transcriptContainerHeight);
+					window.resizeBy(0, transcriptContainerHeight);
 				}
 			}
 			

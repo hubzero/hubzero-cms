@@ -354,8 +354,20 @@ $presentation->subtitles = array_values($presentation->subtitles);
 			</div>
 		</div><!-- /#right -->
 	</div><!-- /#content -->
+	
+	<div id="transcript-container">
+		<div id="transcript-toolbar">
+			<select id="transcript-selector"></select>
+			<input type="text" id="transcript-search" placeholder="Search Transcript..." />
+			<a href="javascript:void(0);" id="font-bigger"></a>
+			<a href="javascript:void(0);" id="font-smaller"></a>
+		</div>
+		<div id="transcripts"></div>
+	</div>
+	
 </div>
 <div id="twofinger">Use two Fingers to Scroll</div>
+
 
 <?php
 $this->doc->setTitle(stripslashes($rr->title));
