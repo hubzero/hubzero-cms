@@ -3,6 +3,10 @@
 	.com_members .innerwrap {
 		position: relative;
 	}
+	#page_options + #page_header {
+		margin-right: 0;
+		padding-right: 11em;
+	}
 /* Content blocks */
 	#page_header {
 		border-bottom: 1px dotted #e1e1e1;
