@@ -19,7 +19,7 @@ $canEdit	= $this->item->params->get('access-edit');
 $user		= JFactory::getUser();
 
 ?>
-<div class="item-page<?php echo $this->pageclass_sfx?>">
+<div class="contentpaneopen item-page<?php echo $this->pageclass_sfx?>">
 <?php if ($this->params->get('show_page_heading')) : ?>
 	<h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -33,6 +33,7 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
  ?>
 
 <?php if ($params->get('show_title')) : ?>
+	<div class="content-header">
 	<h2>
 	<?php if ($params->get('link_titles') && !empty($this->item->readmore_link)) : ?>
 		<a href="<?php echo $this->item->readmore_link; ?>">
@@ -41,6 +42,7 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
 		<?php echo $this->escape($this->item->title); ?>
 	<?php endif; ?>
 	</h2>
+</div><!-- / .content-header -->
 <?php endif; ?>
 
 <?php if ($canEdit ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
