@@ -1013,6 +1013,10 @@
 	#content .inner {
 		margin: -30px 0 0 0;  /* Pull the container above the top background to get an overlap */
 	}
+	/* [!] J2.5 Hide edit buttons etc. on com_content pages */
+	.com_content ul.actions {
+		display: none;
+	}
 	.com_content .content-header,
 	#content-header {
 		margin: 0;
