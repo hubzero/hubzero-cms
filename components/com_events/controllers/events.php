@@ -56,7 +56,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		{
 			$this->dateFormat = 'd M Y';
 			$this->dateFormatShort = 'd M';
-			$this->timeFormat = 'H:i p';
+			$this->timeFormat = 'h:i A';
 			$this->yearFormat  = "Y";
 			$this->monthFormat = "m";
 			$this->dayFormat   = "d";

@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+        $dateFormat = 'd M Y';
+        $tz = false;
+}
+
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -112,7 +121,7 @@ if (count($this->rows) > 0) {
 			<ul class="events">
 				<li>
 					<dl class="event-details">
-						<dt><?php echo JHTML::_('date',$this->year.'-'.$this->month.'-'.$this->day.' 00:00:00', '%d %b, %Y', 0); ?></dt>
+						<dt><?php echo JHTML::_('date',$this->year.'-'.$this->month.'-'.$this->day.' 00:00:00', $dateFormat, $tz); ?></dt>
 					</dl>
 					<div class="ewrap">
 						<ul class="events">
