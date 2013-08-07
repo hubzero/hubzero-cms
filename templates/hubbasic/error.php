@@ -146,13 +146,13 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					<a name="content"></a>
 
 					<div id="outline">
-						<div id="errorbox" class="code-<?php echo $this->error->code ?>">
-							<h2><?php echo $this->error->message ?></h2>
+						<div id="errorbox" class="code-<?php echo $this->error->getCode(); ?>">
+							<h2><?php echo $this->error->getMessage(); ?></h2>
 
 							<p><?php echo JText::_('You may not be able to visit this page because of:'); ?></p>
 
 							<ol>
-<?php if ($this->error->code != 403) { ?>
+<?php if ($this->error->getCode() != 403) { ?>
 								<li><?php echo JText::_('An out-of-date bookmark/favourite.'); ?></li>
 								<li><?php echo JText::_('A search engine that has an out-of-date listing for this site.'); ?></li>
 								<li><?php echo JText::_('A mis-typed address.'); ?></li>
@@ -161,7 +161,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 								<li><?php echo JText::_('This page may belong to a group with restricted access.  Only members of the group can view the contents.'); ?></li>
 								<li><?php echo JText::_('An error has occurred while processing your request.'); ?></li>
 							</ol>
-<?php if ($this->error->code != 403) { ?>
+<?php if ($this->error->getCode() != 403) { ?>
 							<p><?php echo JText::_('If difficulties persist, please contact the system administrator of this site.'); ?></p>
 <?php } else { ?>
 							<p><?php echo JText::_('If difficulties persist and you feel that you should have access to the page, please file a trouble report by clicking on the Help! option on the menu above.'); ?></p>
