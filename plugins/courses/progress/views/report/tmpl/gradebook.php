@@ -58,14 +58,14 @@ $base .= '&offering='.$this->course->offering()->get('alias').'&section='.$this-
 
 <script id="gradebook-template-asset" type="text/x-handlebars-template">
 	{{#each assets}}
-		<div class="gradebook-column" data-colnum="{{@index}}">
+		<div class="gradebook-column" data-colnum="{{@index}}" data-asset-id="{{this.id}}">
 			<div class="cell form-name" title="{{this.title}}">
 				<div class="form-name-inner">
 					<div class="form-title">
 						{{shorten title 10}}
 					</div>
 					<div class="form-type">
-						<select name="type" disabled="disabled">
+						<select name="type">
 							<option value="exam"{{ifAreEqual subtype "exam"}}>Exam</option>
 							<option value="quiz"{{ifAreEqual subtype "quiz"}}>Quiz</option>
 							<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>

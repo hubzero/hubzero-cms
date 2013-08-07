@@ -52,7 +52,6 @@
 .gradebook-container .cell {
 	border-left: 1px solid #CCCCCC;
 	border-top: 1px solid #CCCCCC;
-	background: #F9F9F9;
 	padding: 10px;
 	width: 115px;
 	min-width: 115px;
@@ -86,6 +85,7 @@
 }
 .gradebook-container .gradebook-column {
 	float: left;
+	background: #F9F9F9;
 }
 .gradebook-container .gradebook-students {
 	border-bottom: 1px solid #CCCCCC;
@@ -163,6 +163,14 @@
 .gradebook-container .even {
 	background: #FCFCFC;
 }
+.gradebook-container .cell-entry input {
+	text-align: center;
+}
+.gradebook-container .form-title input {
+	padding: 0;
+	width: 75%;
+	text-align: center;
+}
 
 /* Controls / buttons */
 .controls {
@@ -226,7 +234,7 @@
 	content: "\f021";
 }
 .controls .progress-button:before {
-	content: "\f004";
+	content: "\f012";
 }
 .controls .gradebook-button:before {
 	content: "\f02d";
@@ -309,6 +317,7 @@
 }
 .ui-slider-handle:hover {
 	cursor: move;
+	cursor: ew-resize;
 }
 
 /* Tooltips */

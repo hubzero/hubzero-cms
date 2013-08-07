@@ -27,8 +27,10 @@ HUB.Plugins.CoursesProgress = {
 	colWidth : 0,
 	offset   : 0,
 	cnt      : 0,
+	members  : {},
+	assets   : {},
 
-	loadData: function ( )
+	loadData: function ( doInit )
 	{
 		var $         = this.jQuery,
 			gradebook = $('.gradebook'),
@@ -36,7 +38,7 @@ HUB.Plugins.CoursesProgress = {
 
 		// Add helpers
 		Handlebars.registerHelper('getGrade', function ( grades, member_id, asset_id ) {
-			return grades[member_id]['assets'][asset_id]['score'];
+			return ($.type(grades) === 'object' && $.type(grades[member_id]['assets'][asset_id]) !== 'undefined') ? grades[member_id]['assets'][asset_id]['score'] : '';
 		});
 		Handlebars.registerHelper('ifAreEqual', function ( val1, val2 ) {
 			return (val1 === val2) ? ' selected="selected"' : '';
@@ -45,7 +47,7 @@ HUB.Plugins.CoursesProgress = {
 			return (title.length < length) ? title : title.substring(0, length)+'...';
 		});
 		Handlebars.registerHelper('ifIsOverride', function ( grades, member_id, asset_id ) {
-			return (grades[member_id]['assets'][asset_id]['override']) ? ' active' : '';
+			return ($.type(grades) === 'object' && $.type(grades[member_id]['assets'][asset_id]) !== 'undefined' && grades[member_id]['assets'][asset_id]['override']) ? ' active' : '';
 		});
 
 		// Get data
@@ -83,7 +85,12 @@ HUB.Plugins.CoursesProgress = {
 
 				// Do initial resize and setup of events
 				HUB.Plugins.CoursesProgress.resizeTable();
-				HUB.Plugins.CoursesProgress.initialize();
+				if (doInit) {
+					HUB.Plugins.CoursesProgress.initialize();
+				}
+
+				HUB.Plugins.CoursesProgress.members = data.members;
+				HUB.Plugins.CoursesProgress.assets  = data.assets;
 			}
 		});
 	},
@@ -95,12 +102,12 @@ HUB.Plugins.CoursesProgress = {
 			f = $('.gradebook-form');
 
 		// Add tool tips to form title and student names
-		$('.form-name').tooltip({
+		/*$('.form-name').tooltip({
 			position : 'top center',
 			offset   : [-5, 0],
 			tipClass : 'tooltip-top',
 			predelay : 400
-		});
+		});*/
 		$('.cell-title').tooltip({
 			position : 'center right',
 			offset   : [0, 5],
@@ -151,7 +158,7 @@ HUB.Plugins.CoursesProgress = {
 
 		// Overload certain keys to emulate excel-like behavior
 		g.on('keydown', '.cell-entry', function ( e ) {
-			var t = $(this);
+			var t = $(this),
 				s = t.find('.cell-score'),
 				c = t.data('init-val');
 
@@ -274,6 +281,20 @@ HUB.Plugins.CoursesProgress = {
 			}
 		});
 
+		// Overload certain keys to emulate excel-like behavior
+		g.on('keydown', '.form-title', function ( e ) {
+			var t   = $(this),
+				val = t.data('init-val');
+
+			// Esc key
+			if (e.keyCode === 27) {
+				t.html(val);
+			// Enter key
+			} else if (e.keyCode === 13) {
+				t.find('input').blur();
+			}
+		});
+
 		// Add click event to cells to enter edit mode
 		$('.gradebook').on('click', '.cell-entry', function ( e ) {
 			var t = $(this);
@@ -319,6 +340,88 @@ HUB.Plugins.CoursesProgress = {
 			}
 		});
 
+		// Add click event to cells to enter edit mode
+		$('.gradebook').on('click', '.form-title', function ( e ) {
+			var t = $(this);
+
+			if (!t.find('input').length) {
+				var val = $.trim(t.parents('.form-name').attr('title'));
+
+				// Store initial value
+				t.data('init-val', $.trim(t.html()));
+
+				// Edit form title and focus
+				t.html('<input class="edit-title" type="text" name="title" value="'+val+'" />');
+				t.find('input').focus();
+
+				t.find('input').focusout(function() {
+					if ($(this).val() != val) {
+						var f = $('.gradebook-form'),
+							d = [];
+
+						d.push({"name":"action",     "value":"savegradebookitem"});
+						d.push({"name":"asset_id",   "value":t.parents('.gradebook-column').data('asset-id')});
+						d.push({"name":"title",      "value":t.find('.edit-title').val()});
+
+						// Submit save
+						$.ajax({
+							type     : "POST",
+							url      : f.attr('action'),
+							data     : d,
+							dataType : 'json',
+							success  : function ( data, textStatus, jqXHR ) {
+								t.html(data.title);
+
+								// Move based on alphabetic list
+								var list = $('.gradebook-container .gradebook-column:not(.gradebook-students)');
+								function sortAlpha ( a, b ) {
+									return ($.trim($(a).find('.form-title').html().toLowerCase()) > $.trim($(b).find('.form-title').html().toLowerCase())) ? 1 : -1;
+								}
+
+								result = list.sort(sortAlpha);
+								$('.slidable-inner').html(result);
+
+								// Reset indices
+								list = $('.gradebook-container .gradebook-column:not(.gradebook-students)');
+								list.each(function ( idx, itm ) {
+									$(itm).attr('data-colnum', idx);
+								});
+
+								// Make sure the next item isn't off the page
+								var s      = $('.slidable-inner'),
+									left   = s.css('left').replace('px', ''),
+									offset = HUB.Plugins.CoursesProgress.offset,
+									colwid = HUB.Plugins.CoursesProgress.colWidth,
+									cnt    = HUB.Plugins.CoursesProgress.cnt,
+									item   = $(t.parents('.gradebook-column')),
+									colnum = item.data('colnum'),
+									max    = $('.slider').slider('option', 'max'),
+									num    = 0,
+									val    = 0;
+
+								if (colnum > max) {
+									num = colwid * max;
+									val = max;
+								} else {
+									num = colwid * colnum;
+									val = colnum;
+								}
+
+								if (!s.is(':animated')) {
+									HUB.Plugins.CoursesProgress.move(num, function() {
+										$('.gradebook-column[data-colnum="'+colnum+'"]').css({'background-color' : "#FFFF99"});
+										$('.gradebook-column[data-colnum="'+colnum+'"]').animate({'background-color' : "initial"}, 2000);
+									}, val);
+								}
+							}
+						});
+					} else {
+						t.html(t.data('init-val'));
+					}
+				});
+			}
+		});
+
 		$('.gradebook').on('click', '.override.active', function ( e ) {
 			var t = $(this),
 				f = $('.gradebook-form'),
@@ -354,56 +457,68 @@ HUB.Plugins.CoursesProgress = {
 			$('.controls').hide();
 			$('.loading').show();
 
-			HUB.Plugins.CoursesProgress.loadData();
+			HUB.Plugins.CoursesProgress.loadData( false );
 		});
 
 		// Add a new gradebook item
-		/*$('.add').click(function() {
-			// Clone and existing row, strip values, and insert
-			var tr = $('table tbody tr').last().clone();
-			var html  = '<input class="edit-title" type="text" name="name" placeholder="Name" />';
+		$('.addrow').click(function() {
+			var t = $(this),
+				f = $('.gradebook-form'),
+				d = [];
 
-			var newClass = (tr.hasClass('odd')) ? 'even' : 'odd';
-			tr.removeClass('even odd').addClass(newClass);
+			d.push({"name":"action", "value":"savegradebookitem"});
 
-			tr.find('.cell-title').html(html);
-			tr.find('.cell-entry').html('');
-			$('table tbody').append(tr);
-
-			var newItemTitle = $('table tbody .cell-title input').last();
-			newItemTitle.focus();
-			newItemTitle.focusout(function() {
-				if (newItemTitle.val() === '') {
-					newItemTitle.parents('tr').fadeOut(function() {
-						newItemTitle.parents('tr').remove();
+			// Submit save
+			$.ajax({
+				type     : "POST",
+				url      : f.attr('action'),
+				data     : d,
+				dataType : 'json',
+				success  : function ( data, textStatus, jqXHR ) {
+					var assets = [];
+					assets.push({
+						id    : data.id,
+						title : data.title,
 					});
-				} else {
-					var form = $('.gradebook-form');
 
-					// Submit save
-					$.ajax({
-						type     : "POST",
-						url      : form.attr('action'),
-						data     : form.serializeArray(),
-						dataType : 'json',
-						success  : function ( data, textStatus, jqXHR ) {
-							newItemTitle.parents('.cell-title').html(newItemTitle.val());
-							newItemTitle.remove();
+					// Render template
+					var source    = $('#gradebook-template-asset').html(),
+						template  = Handlebars.compile(source),
+						context   = {members: HUB.Plugins.CoursesProgress.members, assets: assets},
+						html      = template(context),
+						cnt       = HUB.Plugins.CoursesProgress.cnt;
+
+					$('.slidable-inner').append(html);
+					var slider = $('.slider');
+
+					// Fix up index
+					var numCols = $('.gradebook-container .gradebook-column:not(.gradebook-students)').length;
+					$('.gradebook-container .gradebook-column:not(.gradebook-students)').last().attr('data-colnum', numCols-1);
+
+					var val = parseInt(numCols - cnt, 10),
+						loc = (numCols - HUB.Plugins.CoursesProgress.cnt) * HUB.Plugins.CoursesProgress.colWidth;
+
+					HUB.Plugins.CoursesProgress.resizeTable(
+						function () {
+							HUB.Plugins.CoursesProgress.move(loc, function() {
+								var item = $('.gradebook-container .gradebook-column:not(.gradebook-students)').last().find('.form-title');
+								item.trigger('click');
+							}, val);
 						}
-					});
+					);
 				}
 			});
-		});*/
+		});
 
 		// Search/filter by student name
 		if ($('.search-box input').length) {
 			jQuery.expr[':'].caseInsensitiveContains = function ( a, i, m ) {
-				return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0; 
+				return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
 			};
 
 			$('.search-box input').on("keyup", function ( e ) {
 				var search = $(this).val();
-				if(search != '') {
+				if(search !== '') {
 					var neg = $(".gradebook-container .cell-title:not(:caseInsensitiveContains('"+search+"'))");
 					var pos = $(".gradebook-container .cell-title:caseInsensitiveContains('"+search+"')");
 
@@ -415,7 +530,7 @@ HUB.Plugins.CoursesProgress = {
 					});
 
 					// Add no results node
-					if(pos.length == 0 && $('#none').length == 0) {
+					if(pos.length === 0 && $('#none').length === 0) {
 						$(".navigation").before("<div id=\"none\" class=\"warning clear\">Sorry, no students match your search.</div>");
 					}
 
@@ -431,7 +546,7 @@ HUB.Plugins.CoursesProgress = {
 		}
 	},
 
-	resizeTable: function ( ) 
+	resizeTable: function ( callback )
 	{
 		// Reset slidable 'right' before doing width calculations
 		$('.slidable').css({right : 0});
@@ -478,6 +593,10 @@ HUB.Plugins.CoursesProgress = {
 		HUB.Plugins.CoursesProgress.cnt      = cnt;
 		HUB.Plugins.CoursesProgress.colWidth = width;
 		HUB.Plugins.CoursesProgress.offset   = offset;
+
+		if ($.type(callback) === 'function') {
+			callback();
+		}
 	},
 
 	move: function ( loc, callback, val )
@@ -492,13 +611,13 @@ HUB.Plugins.CoursesProgress = {
 			var l = Math.ceil(Math.abs(s.css('left').replace('px', ''))),
 				o = Math.ceil(HUB.Plugins.CoursesProgress.offset);
 
-			if (l == 0 && o == 0) {
+			if (l === 0 && o === 0) {
 				$('.prv').addClass('disabled');
 				$('.nxt').addClass('disabled');
-			} else if (l != 0 && l == o) {
+			} else if (l !== 0 && l === o) {
 				$('.nxt').addClass('disabled');
 				$('.prv').removeClass('disabled');
-			} else if (l != 0 && l < o) {
+			} else if (l !== 0 && l < o) {
 				$('.nxt').removeClass('disabled');
 				$('.prv').removeClass('disabled');
 			} else {
@@ -520,7 +639,7 @@ HUB.Plugins.CoursesProgress = {
 			return false;
 		}
 
-		if (newVal == '') {
+		if (newVal === '') {
 			return false;
 		}
 
@@ -533,5 +652,5 @@ HUB.Plugins.CoursesProgress = {
 };
 
 jQuery(document).ready(function($){
-	HUB.Plugins.CoursesProgress.loadData();
+	HUB.Plugins.CoursesProgress.loadData( true );
 });

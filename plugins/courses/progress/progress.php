@@ -290,7 +290,40 @@ class plgCoursesProgress extends JPlugin
 			exit();
 		}
 
-		echo json_encode(array('success'=>true));
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		$asset = new CoursesTableAsset(JFactory::getDBO());
+
+		// Get request variables
+		if ($asset_id = JRequest::getInt('asset_id', false))
+		{
+			$asset->load($asset_id);
+			$asset->set('title', JRequest::getVar('title', 'New Item'));
+			$asset->set('subtype', JRequest::getWord('type', $asset->get('subtype')));
+		}
+		else
+		{
+			$asset->set('title', 'New Item');
+			$asset->set('type', 'form');
+			$asset->set('subtype', 'quiz');
+			$asset->set('created', date("Y-m-d H:i:s"));
+			$asset->set('created_by', JFactory::getUser()->get('id'));
+			$asset->set('state', 1);
+			$asset->set('course_id', $this->course->get('id'));
+		}
+
+		if (!$asset->store())
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		echo json_encode(array('id'=>$asset->get('id'), 'title'=>$asset->get('title')));
 		exit();
 	}
 
