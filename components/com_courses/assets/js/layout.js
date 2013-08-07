@@ -14,7 +14,6 @@ jQuery(function($) {
 			'bottom': 0,
 			'left': 0,
 			'right': 0,
-			'height': 60,
 			'background': '#222'
 		});
 		$('.navbar .question-info').css('color', '#FFF');
