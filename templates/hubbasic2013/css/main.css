@@ -914,7 +914,10 @@
 		line-height: 0;
 		clear: both;
 	}
-
+	/* [!] J2.5 Hide edit buttons etc. on com_content pages */
+	.com_content ul.actions {
+		display: none;
+	}
 	/* Content header */
 	.com_content .content-header,
 	#content-header {
