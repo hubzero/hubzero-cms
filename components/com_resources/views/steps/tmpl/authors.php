@@ -39,7 +39,7 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 
 <div id="content-header-extra">
 	<p>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
 			<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
 		</a>
 	</p>

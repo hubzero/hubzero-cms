@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Browse Events'); ?></a>
+			<a class="icon-browse browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Browse Events'); ?></a>
 		</li>
 	</ul>
 </div>

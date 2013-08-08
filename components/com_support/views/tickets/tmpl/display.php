@@ -44,9 +44,9 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 <div id="content-header-extra">
 	<ul id="useroptions">
 <?php if ($this->acl->check('read', 'tickets')) { ?>
-		<li><a class="stats btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>"><?php echo JText::_('Stats'); ?></a></li>
+		<li><a class="icon-stats stats btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>"><?php echo JText::_('Stats'); ?></a></li>
 <?php } ?>
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
+		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

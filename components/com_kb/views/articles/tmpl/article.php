@@ -52,7 +52,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+		<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
 	</p>
 </div>
 <div class="main section">
@@ -209,7 +209,7 @@ if ($this->config->get('allow_comments')) {
 	<div class="aside">
 	<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
 		<p>
-			<a class="add btn" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
+			<a class="icon-add add btn" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
 		</p>
 	<?php } ?>
 	</div>
@@ -299,9 +299,9 @@ if ($this->comments) {
 						$lnk = $rtrn;
 					}
 				?>
-					<a class="reply" href="<?php echo $lnk; ?>"><?php echo JText::_('Reply'); ?></a>
+					<a class="icon-reply reply" href="<?php echo $lnk; ?>"><?php echo JText::_('Reply'); ?></a>
 				<?php } ?>
-					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$comment->id.'&parent='.$this->article->id); ?>">Report abuse</a>
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$comment->id.'&parent='.$this->article->id); ?>">Report abuse</a>
 				</p>
 			<?php } ?>
 			</div>
@@ -368,9 +368,9 @@ if ($this->comments) {
 					<?php if (!$reply->reports) { ?>
 						<p class="comment-options">
 						<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
-							<a class="reply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
+							<a class="icon-reply reply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
 						<?php } ?>
-							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$reply->id.'&parent='.$this->article->id); ?>">Report abuse</a>
+							<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$reply->id.'&parent='.$this->article->id); ?>">Report abuse</a>
 						</p>
 					<?php } ?>
 					</div>
@@ -434,7 +434,7 @@ if ($this->comments) {
 								<?php echo $content; ?>
 							<?php if (!$response->reports) { ?>
 								<p class="comment-options">
-									<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$response->id.'&parent='.$this->article->id); ?>">Report abuse</a>
+									<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=kb&id='.$response->id.'&parent='.$this->article->id); ?>">Report abuse</a>
 								</p>
 							<?php } ?>
 							</div>

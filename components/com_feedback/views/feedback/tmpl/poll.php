@@ -40,7 +40,7 @@ jimport('joomla.application.module.helper');
 <div id="content-header-extra">
 	<ul>
 		<li>
-			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 				<?php echo JText::_('Main page'); ?>
 			</a>
 		</li>

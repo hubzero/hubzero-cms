@@ -125,7 +125,7 @@ ximport('Hubzero_User_Profile_Helper');
 	<ul id="useroptions">
 <?php if ($prev) { ?>
 		<li>
-			<a class="prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+			<a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 				<?php echo JText::_('PREV'); ?>
 			</a>
 		</li>
@@ -137,7 +137,7 @@ ximport('Hubzero_User_Profile_Helper');
 		</li>
 <?php if ($next) { ?>
 		<li>
-			<a class="next btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+			<a class="icon-next next opposite btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 				<?php echo JText::_('NEXT'); ?>
 			</a>
 		</li>

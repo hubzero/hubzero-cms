@@ -46,7 +46,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+		<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
 	</p>
 </div>
 <div class="main section">
