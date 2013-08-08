@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>" class="shoppingcart btn"><?php echo JText::_('COM_STORE_CART'); ?></a></li>
+		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>" class="icon-basket shoppingcart btn"><?php echo JText::_('COM_STORE_CART'); ?></a></li>
 	</ul>
 </div>
 

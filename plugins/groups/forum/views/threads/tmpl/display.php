@@ -18,7 +18,7 @@ ximport('Hubzero_User_Profile_Helper');
 ?>
 <ul id="page_options">
 	<li>
-		<a class="comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->get('alias')); ?>">
+		<a class="icon-comments comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->get('alias')); ?>">
 			<?php echo JText::_('All discussions'); ?>
 		</a>
 	</li>
@@ -148,14 +148,14 @@ ximport('Hubzero_User_Profile_Helper');
 						<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->get('created_by')) { ?>
 						<p class="comment-options">
 							<?php if ($this->config->get('access-delete-thread')) { ?>
-							<a class="delete" href="<?php echo JRoute::_($base . '/delete'); ?>">
-								<?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?>
-							</a>
+							<a class="icon-delete delete" href="<?php echo JRoute::_($base . '/delete'); ?>"><!-- 
+								--><?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?><!-- 
+							--></a>
 							<?php } ?>
 							<?php if ($this->config->get('access-edit-thread')) { ?>
-							<a class="edit" href="<?php echo JRoute::_($base . '/edit'); ?>">
-								<?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?>
-							</a>
+							<a class="icon-edit edit" href="<?php echo JRoute::_($base . '/edit'); ?>"><!-- 
+								--><?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?><!-- 
+							--></a>
 							<?php } ?>
 						</p>
 						<?php } ?>

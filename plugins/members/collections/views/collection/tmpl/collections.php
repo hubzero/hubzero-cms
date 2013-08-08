@@ -97,7 +97,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	<?php if (!$this->juser->get('guest')) { ?>
 		<?php if ($this->params->get('access-create-collection')) { ?>
 		<p>
-			<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
+			<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
 				<span><?php echo JText::_('New collection'); ?></span>
 			</a>
 		</p>

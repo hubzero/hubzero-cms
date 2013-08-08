@@ -129,6 +129,22 @@
 	dl.entry-meta dd.entry-options a.delete {
 		right: 2em;
 	}
+	dd.entry-options .edit:before,
+	dd.entry-options .delete:before,
+	.entry-title .edit:before,
+	.entry-title .delete:before {
+		margin-right: 1em;
+		font-family: "Fontcons";
+		font-weight: normal;
+	}
+	dd.entry-options .edit:before,
+	.entry-title .edit:before {
+		content: "\270E";
+	}
+	dd.entry-options .delete:before,
+	.entry-title .delete:before {
+		content: "\f014";
+	}
 
 /* Entry */
 	div.entry {

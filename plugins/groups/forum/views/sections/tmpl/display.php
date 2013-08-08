@@ -129,12 +129,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				<?php } ?>
 			<?php if ($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) { ?>
 				<?php if ($this->config->get('access-delete-section')) { ?>
-					<a class="delete" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+					<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
 						<span><?php echo JText::_('Delete'); ?></span>
 					</a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias')) { ?>
-					<a class="edit" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
+					<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
 						<span><?php echo JText::_('Edit'); ?></span>
 					</a>
 				<?php } ?>
@@ -144,7 +144,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				<tfoot>
 					<tr>
 						<td<?php if ($section->categories()->total() > 0) { echo ' colspan="5"'; } ?>>
-							<a class="add btn" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/new'); ?>">
+							<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/new'); ?>">
 								<span><?php echo JText::_('Add Category'); ?></span>
 							</a>
 						</td>
@@ -183,12 +183,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
 						<td class="entry-options">
 							<?php if ($row->get('created_by') == $juser->get('id') || $this->config->get('access-edit-category')) { ?>
-								<a class="edit" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/' . $row->get('alias') . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
+								<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/' . $row->get('alias') . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
 									<span><?php echo JText::_('Edit'); ?></span>
 								</a>
 							<?php } ?>
 							<?php if ($this->config->get('access-delete-category')) { ?>
-								<a class="delete tooltips" title="<?php echo JText::_('PLG_GROUPS_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/' . $row->get('alias') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+								<a class="icon-delete delete tooltips" title="<?php echo JText::_('PLG_GROUPS_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $section->get('alias') . '/' . $row->get('alias') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
 									<span><?php echo JText::_('Delete'); ?></span>
 								</a>
 							<?php } ?>

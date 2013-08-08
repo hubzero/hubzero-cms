@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <ul id="page_options">
 	<li>
-		<a class="btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
+		<a class="icon-prev btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
 			<?php echo JText::_('Back to Manage Calendars'); ?>
 		</a>
 	</li>

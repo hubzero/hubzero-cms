@@ -40,7 +40,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 ?>
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>
@@ -54,9 +54,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 		<fieldset>
 			<legend><?php echo JText::_('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
-			<label<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
+			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('PLG_MEMBERS_BLOG_TITLE'); ?>
-				<input type="text" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
+				<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -130,14 +130,14 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			</label>
 			
 			<div class="group">
-				<label>
-					<input type="checkbox" class="option" name="entry[allow_comments]" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
+				<label for="field-allow_comments">
+					<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
 					<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
 				</label>
 
-				<label>
+				<label for="field-state">
 					<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PRIVACY'); ?>
-					<select name="entry[state]">
+					<select name="entry[state]" id="field-state">
 						<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
 						<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
 						<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>
@@ -148,24 +148,14 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<div class="group">
 				<label for="field-publish_up">
 					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
-					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_up)); ?>" />
-				</label>
-
-				<label for="field-publish_down">
-					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
-					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_down)); ?>" />
-				</label>
-			</div>
-			
-			<div class="group">
-				<label for="field-publish_up">
-					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
 					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+					<span class="hint">Date format: YYYY-MM-dd hh:mm:ss</span>
 				</label>
 
 				<label for="field-publish_down">
 					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
 					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
+					<span class="hint">Date format: YYYY-MM-dd hh:mm:ss</span>
 				</label>
 			</div>
 		</fieldset>

@@ -37,8 +37,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="storefront btn"><?php echo JText::_('COM_STORE_STOREFRONT'); ?></a></li>
-		<li class="last"><a class="mypoints btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo JText::_('COM_STORE_MY_POINTS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="icon-store storefront btn"><?php echo JText::_('COM_STORE_STOREFRONT'); ?></a></li>
+		<li class="last"><a class="icon-points mypoints btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo JText::_('COM_STORE_MY_POINTS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

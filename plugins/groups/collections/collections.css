@@ -346,6 +346,12 @@
 		content: "\f014";
 		margin-right: 0;
 	}
+	.icon-follow:before {
+		content: "\f06e";
+	}
+	.icon-unfollow:before {
+		content: "\f070";
+	}
 	.post .actions a.follow:before {
 		content: "\f06e";
 		margin-right: 0;
@@ -555,10 +561,13 @@
 		vertical-align: middle;
 		text-shadow: 0 1px 1px #fff;
 	}
+	.btn {
+		line-height: 1;
+	}
 	.btn.follow,
 	.btn.unfollow,
 	.btn.repost {
-		padding: 0.4em 0.91em 0.4em 2.91em;
+		padding: 0.7em 0.91em 0.7em 2.91em;
 	}
 	.btn.follow:before,
 	.btn.unfollow:before,

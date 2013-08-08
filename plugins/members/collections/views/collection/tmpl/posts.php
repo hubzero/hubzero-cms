@@ -87,7 +87,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		</ul>
 		<?php if ($this->params->get('access-create-collection')) { ?>
 		<p>
-			<a class="add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&task=post/new'); ?>">
+			<a class="icon-add add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&task=post/new'); ?>">
 				<?php echo JText::_('New post'); ?>
 			</a>
 		</p>

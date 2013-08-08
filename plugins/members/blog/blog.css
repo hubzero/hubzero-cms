@@ -203,6 +203,23 @@
 		right: 0;
 		position: absolute;
 	}
+	dd.entry-options .edit:before,
+	dd.entry-options .delete:before,
+	.entry-title .edit:before,
+	.entry-title .delete:before {
+		margin-right: 1em;
+		font-family: "Fontcons";
+		font-weight: normal;
+	}
+	dd.entry-options .edit:before,
+	.entry-title .edit:before {
+		content: "\270E";
+	}
+	dd.entry-options .delete:before,
+	.entry-title .delete:before {
+		content: "\f014";
+	}
+
 	div.entry .entry-title .edit,
 	div.entry .entry-title .delete {
 		top: 0.5em;

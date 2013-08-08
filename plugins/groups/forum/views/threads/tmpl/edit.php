@@ -12,7 +12,7 @@ if ($this->post->exists()) {
 ?>
 <ul id="page_options">
 	<li>
-		<a class="comments btn" href="<?php echo JRoute::_($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')); ?>">
+		<a class="icon-comments comments btn" href="<?php echo JRoute::_($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')); ?>">
 			<?php echo JText::_('All discussions'); ?>
 		</a>
 	</li>

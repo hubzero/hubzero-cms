@@ -142,9 +142,9 @@ if (!$this->question->get('anonymous'))
 					<strong><?php echo $name; ?></strong> 
 					<a class="permalink" href="<?php echo JRoute::_($this->question->link()); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
 						<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
-						<span class="date"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('time'); ?></time></span> 
+						<span class="icon-time time"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('time'); ?></time></span> 
 						<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
-						<span class="date"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('date'); ?></time></span>
+						<span class="icon-date date"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('date'); ?></time></span>
 					</a>
 				</p><!-- / .question-title -->
 
@@ -172,13 +172,13 @@ if (!$this->question->get('anonymous'))
 			<p class="entry-status">
 		<?php if (!$this->question->isReported()) { ?>
 				<span>
-					<a class="abuse" href="<?php echo JRoute::_($this->question->link('report')); ?>" title="<?php echo JText::_('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>">
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->question->link('report')); ?>" title="<?php echo JText::_('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>">
 						<?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?>
 					</a>
 				</span>
 			<?php if ($this->question->get('created_by') == $this->juser->get('username') && $this->question->isOpen()) { ?>
 				<span>
-					<a class="delete" href="<?php echo JRoute::_($this->question->link('delete')); ?>" title="<?php echo JText::_('COM_ANSWERS_DELETE_QUESTION'); ?>">
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->question->link('delete')); ?>" title="<?php echo JText::_('COM_ANSWERS_DELETE_QUESTION'); ?>">
 						<?php echo JText::_('COM_ANSWERS_DELETE'); ?>
 					</a>
 				</span>
@@ -213,8 +213,8 @@ if (!$this->question->get('anonymous'))
 					<input type="hidden" name="task" value="deleteq" />
 
 					<p class="submit">
-						<input class="btn-success btn-primary" type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
-						<a class="btn-danger btn-auxiliary" href="<?php echo JRoute::_($this->question->link()); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
+						<input class="btn btn-success btn-primary" type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
+						<a class="btn btn-danger btn-secondary" href="<?php echo JRoute::_($this->question->link()); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
 					</p>
 				</form>
 			</div><!-- / .subject-wrap -->

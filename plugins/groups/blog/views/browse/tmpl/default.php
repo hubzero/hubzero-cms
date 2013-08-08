@@ -42,14 +42,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 <ul id="page_options">
 	<?php if ($this->canpost) { ?>
 	<li>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
+		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
 		</a>
 	</li>
 	<?php } ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 	<li>
-		<a class="config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
 			<?php echo JText::_('Settings'); ?>
 		</a>
 	</li>
@@ -261,10 +261,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 					<?php } ?>
 						<dd class="entry-options">
 						<?php if ($this->juser->get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-							<a class="edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>">
+							<a class="icon-edit edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>">
 								<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>
 							</a>
-							<a class="delete" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
+							<a class="icon-delete delete" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
 								<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>
 							</a>
 						<?php } ?>

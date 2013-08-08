@@ -49,7 +49,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <?php if ($this->authorized == 'manager') { ?>
 <ul id="page_options">
 	<li>
-		<a id="new-group-message" class="message btn" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>">
+		<a id="new-group-message" class="icon-email message btn" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>">
 			<span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span>
 		</a>
 	</li>

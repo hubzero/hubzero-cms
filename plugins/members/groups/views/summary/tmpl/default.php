@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <ul id="page_options">
 	<li>
-		<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>">
+		<a class="icon-add btn add" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>">
 			<?php echo JText::_('PLG_MEMBERS_GROUPS_CREATE'); ?>
 		</a>
 	</li>

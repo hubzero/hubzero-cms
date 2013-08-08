@@ -68,8 +68,8 @@ if (!$mode || ($mode && $mode != 'static')) {
 <?php if ($mode == 'static' && $this->config->get('access-admin') && $this->controller == 'page' && $this->task == 'display') { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
 		<ul id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>">
-			<li><a class="edit btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=edit'); ?>">Edit</a></li>
-			<li class="last"><a class="history btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=history'); ?>">History</a></li>
+			<li><a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=edit'); ?>">Edit</a></li>
+			<li class="last"><a class="icon-history history btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=history'); ?>">History</a></li>
 		</ul>
 	</div><!-- /#content-header-extra -->
 <?php } ?>

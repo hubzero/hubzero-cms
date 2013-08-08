@@ -42,13 +42,13 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <ul id="page_options">
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
 	<li>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
+		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
 			<?php echo JText::_('PLG_MEMBERS_BLOG_NEW_ENTRY'); ?>
 		</a>
 	</li>
 <?php endif; ?>
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_($base); ?>">
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>">
 			<?php echo JText::_('PLG_MEMBERS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>

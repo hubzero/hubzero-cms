@@ -38,10 +38,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <ul id="page_options">
 	<li>
-		<a class="btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
+		<a class="icon-prev btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
 			<?php echo JText::_('Back to Events Calendar'); ?>
 		</a>
-		<a class="btn add" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">
+		<a class="icon-add btn add" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">
 			<?php echo JText::_('Add Calendar'); ?>
 		</a>
 		

@@ -41,7 +41,7 @@ $month = date("m", strtotime($this->event->publish_up));
 
 <ul id="page_options">
 	<li>
-		<a class="btn date" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
+		<a class="icon-date btn date" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
 			<?php echo JText::_('Back to Calendar'); ?>
 		</a>
 	</li>

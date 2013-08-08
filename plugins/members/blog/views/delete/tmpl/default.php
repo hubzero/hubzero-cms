@@ -34,7 +34,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_($base); ?>">
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>
@@ -46,7 +46,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	<form action="<?php echo JRoute::_($base . '&task=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
 		<div class="explaination">
 		<?php if ($this->authorized) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+			<p><a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 		<?php } ?>
 		</div>
 		<fieldset class="delete-entry">

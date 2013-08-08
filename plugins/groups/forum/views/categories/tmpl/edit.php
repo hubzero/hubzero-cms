@@ -8,7 +8,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 ?>
 <ul id="page_options">
 	<li>
-		<a class="categories btn" href="<?php echo JRoute::_($base); ?>">
+		<a class="icon-folder categories btn" href="<?php echo JRoute::_($base); ?>">
 			<?php echo JText::_('All categories'); ?>
 		</a>
 	</li>

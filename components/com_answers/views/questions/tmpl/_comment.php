@@ -83,12 +83,12 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!-- 
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!-- 
 						--><?php echo JText::_('COM_ANSWERS_DELETE'); ?><!-- 
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
-					<a class="edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!-- 
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!-- 
 						--><?php echo JText::_('COM_ANSWERS_EDIT'); ?><!-- 
 					--></a>
 				<?php } ?>
@@ -96,16 +96,16 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="reply active" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_ANSWERS_CANCEL'); ?><!-- 
 				--></a>
 					<?php } else { ?>
-					<a class="reply" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_ANSWERS_REPLY'); ?><!-- 
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?><!-- 
 				--></a>
 				<?php if ($juser->get('username') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid')) { ?>

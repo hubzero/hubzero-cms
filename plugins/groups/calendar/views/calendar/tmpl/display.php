@@ -39,11 +39,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if (in_array($this->juser->get('id'), $this->members)) : ?>
 	<ul id="page_options">
 		<li>
-			<a class="btn add" title="<?php echo JText::_('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=add'); ?>">
+			<a class="icon-add btn add" title="<?php echo JText::_('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=add'); ?>">
 				<?php echo JText::_('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>
 			</a>
 			<?php if ($this->authorized == 'manager') : ?>
-				<a class="btn date" title="<?php echo JText::_('Manage Calendars'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
+				<a class="icon-date btn date" title="<?php echo JText::_('Manage Calendars'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
 					<?php echo JText::_('Manage Calendars'); ?>
 				</a>
 			<?php endif; ?>

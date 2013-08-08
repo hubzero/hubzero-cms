@@ -40,12 +40,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
 <ul id="page_options">
 	<li>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
+		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
 		</a>
 	</li>
 	<li>
-		<a class="config btn" href="<?php echo JRoute::_($base . '&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
 			<?php echo JText::_('Settings'); ?>
 		</a>
 	</li>

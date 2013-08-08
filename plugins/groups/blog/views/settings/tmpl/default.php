@@ -35,7 +35,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 ?>
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Archive'); ?>">
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Archive'); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>

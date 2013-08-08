@@ -50,11 +50,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
-		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+		<a class="icon-unfollow unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
 			<span><?php echo JText::_('Unfollow All'); ?></span>
 		</a>
 		<?php } else { ?>
-		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+		<a class="icon-follow follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
 			<span><?php echo JText::_('Follow All'); ?></span>
 		</a>
 		<?php } ?>
@@ -72,7 +72,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				</a>
 			</li>
 			<li>
-				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
+				<a class="posts count" href="<?php echo JRoute::_($base . '&scope=posts'); ?>">
 					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
 				</a>
 			</li>

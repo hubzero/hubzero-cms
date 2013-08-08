@@ -74,7 +74,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$title = ($this->admin) ? JText::_('WISHLIST_TITLE_PRIORITIZED') : JText::_('WISHLIST_TITLE_RECENT_WISHES');
+$title = ($this->admin) ? JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
 if(count($this->wishlist->items) > 0 && $this->items > $this->filters['limit']) {
 	$title .= ' <span>(<a href="'.JRoute::_('index.php?option=com_wishlist'.a.'task=wishlist'.a.'category='. $this->wishlist->category.a.'rid='.$this->wishlist->referenceid).'">'.JText::_('view all') .' '.$this->items.'</a>)</span>';
 }
@@ -85,7 +85,7 @@ else {
 
 <?php if($this->admin != 0) { ?>
 	<p id="page_options">
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>"><?php echo JText::_('ADD_NEW_WISH'); ?></a>
+		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>"><?php echo JText::_('COM_WISHLIST_ADD_NEW_WISH'); ?></a>
 	</p>
 <?php } else { ?>
 	<?php $return = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=wishlist'); ?>
@@ -163,25 +163,25 @@ else {
 <?php 			if (!$item->reports) { ?>
 							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 							<span class="entry-details">
-								<?php echo JText::_('WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
+								<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
 								<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
 								<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateFormat, $tz); ?></time></span>
 								<span class="entry-details-divider">&bull;</span>
-								<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
+								<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 							</span>
 <?php 			} else { ?>
-							<span class="warning adjust"><?php echo JText::_('NOTICE_POSTING_REPORTED'); ?></span>
+							<span class="warning adjust"><?php echo JText::_('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?></span>
 <?php 			} ?>
 						</td>
 <?php 			if ($this->config->get('banking')) { ?>
 						<td class="reward">
 							<span class="entry-reward">
 <?php 					if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
-								<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
+								<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('COM_WISHLIST_MULTIPLE_USERS').' '.JText::_('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('COM_WISHLIST_POINTS').' '.JText::_('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
 <?php 					} else if ($item->status == 0 || $item->status == 6) { ?>
-								<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
+								<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' :: '.JText::_('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
 <?php 					} else { ?>
-								<span class="inactive" title="<?php echo JText::_('WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
+								<span class="inactive" title="<?php echo JText::_('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
 <?php 					} ?>
 							</span>
 						</td>
@@ -212,30 +212,30 @@ else {
 							{
 								case 0:
 									if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3)) {
-										$html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.JText::_('WISH_RANK_THIS').'</a>'."\n";
+										$html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.JText::_('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
 									} else if (isset($item->ranked) && $item->ranked) {
 										//$html .= JText::_('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
 										$html .= '<span class="priority-level-base">
 											<span class="priority-level" style="width: '.(($item->ranking/50)*100).'%">
-												<span>'.JText::_('WISH_PRIORITY').': '.$item->ranking.'</span>
+												<span>'.JText::_('COM_WISHLIST_WISH_PRIORITY').': '.$item->ranking.'</span>
 											</span>
 										</span>';
 									}
 									if ($item->accepted == 1) {
-										$html .= '<span class="accepted">'.JText::_('WISH_STATUS_ACCEPTED').'</span>';
+										$html .= '<span class="accepted">'.JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED').'</span>';
 									}
 								break;
 								case 1:
-									$html .= '<span class="granted">'.JText::_('WISH_STATUS_GRANTED').'</span>';
+									$html .= '<span class="granted">'.JText::_('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
 									/*if ($item->granted != '0000-00-00 00:00:00') {
 										$html .= ' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b %y').'</span>';
 									}*/
 								break;
 								case 3:
-									$html .= '<span class="rejected">'.JText::_('WISH_STATUS_REJECTED').'</span>';
+									$html .= '<span class="rejected">'.JText::_('COM_WISHLIST_WISH_STATUS_REJECTED').'</span>';
 								break;
 								case 4:
-									$html .= '<span class="withdrawn">'.JText::_('WISH_STATUS_WITHDRAWN').'</span>';
+									$html .= '<span class="withdrawn">'.JText::_('COM_WISHLIST_WISH_STATUS_WITHDRAWN').'</span>';
 								break;
 							}
 							echo $html;
@@ -246,7 +246,7 @@ else {
 	<?php } // foreach ?>
 <?php } else { ?>
 						<tr>
-							<td><?php echo JText::_('WISHLIST_NO_WISHES_BE_FIRST'); ?></td>
+							<td><?php echo JText::_('COM_WISHLIST_NO_WISHES_BE_FIRST'); ?></td>
 						</tr>
 <?php } ?>
 				</tbody>

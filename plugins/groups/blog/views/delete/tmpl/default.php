@@ -36,7 +36,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_($base); ?>">
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>
@@ -48,7 +48,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<form action="<?php echo JRoute::_($base . '&action=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
 		<div class="explaination">
 		<?php if ($this->authorized) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+			<p><a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 		<?php } ?>
 		</div>
 		<fieldset>

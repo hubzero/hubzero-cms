@@ -65,7 +65,7 @@ if ($this->role_filter)
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<ul id="page_options">
 			<li>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
 					<?php echo JText::_('Invite Members'); ?>
 				</a>
 			</li>

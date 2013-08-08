@@ -38,11 +38,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
-			<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+			<a class="icon-unfollow unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
 				<span><?php echo JText::_('Unfollow All'); ?></span>
 			</a>
 		<?php } else { ?>
-			<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+			<a class="icon-follow follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
 				<span><?php echo JText::_('Follow All'); ?></span>
 			</a>
 		<?php } ?>
@@ -79,12 +79,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<?php if (!$this->juser->get('guest')) { ?>
 		<p>
 		<?php if ($this->params->get('access-create-collection')) { ?>
-			<a class="add btn" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
+			<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
 				<span><?php echo JText::_('New collection'); ?></span>
 			</a>
 		<?php } //else { ?>
 			<?php if ($this->params->get('access-manage-collection')) { ?>
-			<a class="config btn tooltips" href="<?php echo JText::_($base . '&scope=settings'); ?>" title="<?php echo JText::_('Manage content creation settings'); ?>">
+			<a class="icon-config config btn tooltips" href="<?php echo JText::_($base . '&scope=settings'); ?>" title="<?php echo JText::_('Manage content creation settings'); ?>">
 				<span><?php echo JText::_('Settings'); ?></span>
 			</a>
 			<?php } ?>

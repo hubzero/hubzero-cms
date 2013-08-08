@@ -64,7 +64,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		</span>
 <?php if (!$this->juser->get('guest')) { ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-		<a class="add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+		<a class="icon-add add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
 			<span><?php echo JText::_('New post'); ?></span>
 		</a>
 	<?php } else { ?>

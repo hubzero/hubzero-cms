@@ -57,11 +57,11 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 <ul id="page_options">
 	<li>
 		<?php if (JRequest::getVar('action') == 'edit') : ?>
-			<a class="btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=details&event_id='.$this->event->id); ?>">
+			<a class="icon-prev btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=details&event_id='.$this->event->id); ?>">
 				<?php echo JText::_('Back to Event'); ?>
 			</a>
 		<?php else : ?>
-			<a class="btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
+			<a class="icon-prev btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$this->year.'&month='.$this->month); ?>">
 				<?php echo JText::_('Back to Events Calendar'); ?>
 			</a>
 		<?php endif; ?>
