@@ -170,7 +170,7 @@ class modMySessions
 
 		// Ensure we have a connection to the middleware
 		$this->error = false;
-		if (!$mwdb || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized)) 
+		if (!$mwdb || !$mwdb->connected() || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized)) 
 		{
 			$this->error = true;
 			return false;
