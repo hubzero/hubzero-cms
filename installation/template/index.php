@@ -67,7 +67,9 @@ JText::script('INSTL_FTP_SETTINGS_CORRECT');
 		<div id="content-box">
 			<div id="content-pad">
 				<div id="stepbar">
-					<?php echo JHtml::_('installation.stepbar'); ?>
+					<div class="container">
+						<?php echo JHtml::_('installation.stepbar'); ?>
+					</div>
 					<div class="box"></div>
 				</div>
 				<div id="warning">
