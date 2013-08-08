@@ -145,7 +145,7 @@ class EventsControllerCategories extends Hubzero_Controller
 		}
 		else
 		{
-			$this->database->setQuery("SELECT  c.*, 'Public' AS groupname, u.name AS editor, cc.color AS color, "
+			$this->database->setQuery("SELECT  c.*, c.alias AS name, 'Public' AS groupname, u.name AS editor, cc.color AS color, "
 				. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
 				. "\nFROM #__categories AS c"
 				. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
@@ -221,7 +221,7 @@ class EventsControllerCategories extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('EVENTS_CAL_LANG_CATEGORY_CHECKEDOUT')
+				JText::_('COM_EVENTS_CAL_LANG_CATEGORY_CHECKEDOUT')
 			);
 			return;
 		}
@@ -262,7 +262,7 @@ class EventsControllerCategories extends Hubzero_Controller
 			false
 		);
 
-		$imgFiles = $this->readDirectory(JPATH_ROOT . DS . 'images' . DS . 'stories');
+		$imgFiles = $this->readDirectory(JPATH_ROOT . DS . 'site' . DS . 'media' . DS . 'images');
 		$images = array(JHTML::_('select.option', '', JText::_('Select Image'), 'value', 'text'));
 		foreach ($imgFiles as $file)
 		{
@@ -296,11 +296,14 @@ class EventsControllerCategories extends Hubzero_Controller
 			false
 		);
 
-		// Get list of groups
-		$this->database->setQuery("SELECT id AS value, name AS text FROM #__groups ORDER BY id");
-		$this->view->groups = $this->database->loadObjectList();
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			// Get list of groups
+			$this->database->setQuery("SELECT id AS value, name AS text FROM #__groups ORDER BY id");
+			$this->view->groups = $this->database->loadObjectList();
 
-		$this->view->glist = JHTML::_('select.genericlist', $this->view->groups, 'access', 'class="inputbox" size="1"','value', 'text', intval($this->view->row->access), false, false);
+			$this->view->glist = JHTML::_('select.genericlist', $this->view->groups, 'access', 'class="inputbox" size="1"','value', 'text', intval($this->view->row->access), false, false);
+		}
 
 		// Set any errors
 		if ($this->getError()) 
@@ -333,7 +336,10 @@ class EventsControllerCategories extends Hubzero_Controller
 		$files   = JFolder::files($path, $filter, $recurse, $fullpath);
 		$folders = JFolder::folders($path, $filter, $recurse, $fullpath);
 		// Merge files and folders into one array
-		$arr = array_merge($files, $folders);
+		if (is_array($files) && is_array($folders))
+		{
+			$arr = array_merge($files, $folders);
+		}
 		// Sort them all
 		asort($arr);
 		return $arr;
@@ -434,7 +440,7 @@ class EventsControllerCategories extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_CATEGORY_PUBLISHED')
+			JText::_('COM_EVENTS_CAL_LANG_CATEGORY_PUBLISHED')
 		);
 	}
 
@@ -476,7 +482,7 @@ class EventsControllerCategories extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_CATEGORY_UNPUBLISHED')
+			JText::_('COM_EVENTS_CAL_LANG_CATEGORY_UNPUBLISHED')
 		);
 	}
 
@@ -583,7 +589,7 @@ class EventsControllerCategories extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('EVENTS_CAL_LANG_CATEGORY_NOTEMPTY', implode("\', \'", $cids)),
+				JText::sprintf('COM_EVENTS_CAL_LANG_CATEGORY_NOTEMPTY', implode("\', \'", $cids)),
 				'warning'
 			);
 			return;
@@ -592,7 +598,7 @@ class EventsControllerCategories extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_CATEGORY_REMOVED')
+			JText::_('COM_EVENTS_CAL_LANG_CATEGORY_REMOVED')
 		);
 	}
 

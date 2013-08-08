@@ -158,7 +158,7 @@ class EventsHtml
 				. "WHERE extension='$option' AND published='1'";
 
 		}
-		$categories[] = JHTML::_('select.option', '0', JText::_('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
+		$categories[] = JHTML::_('select.option', '0', JText::_('COM_EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
 
 		$database->setQuery($catsql);
 		$categories = array_merge( $categories, $database->loadObjectList() );
@@ -179,14 +179,14 @@ class EventsHtml
 	 */
 	public function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
-		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
-							JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_TUESDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));
-		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;'.JText::_('EVENTS_CAL_LANG_BYDAYNUMBER').'<br />', 'value', 'text');
+		$day_name = array('<span style="color:red;">'.JText::_('COM_EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
+							JText::_('COM_EVENTS_CAL_LANG_MONDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_TUESDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_WEDNESDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_THURSDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_FRIDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_SATURDAYSHORT'));
+		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;'.JText::_('COM_EVENTS_CAL_LANG_BYDAYNUMBER').'<br />', 'value', 'text');
 		for ($a=0; $a<7; $a++)
 		{
 			$name_of_day = '&nbsp;'.$day_name[$a];
@@ -207,13 +207,13 @@ class EventsHtml
 	 */
 	public function buildWeekDaysCheck($reccurweekdays, $args)
 	{
-		$day_name = array('<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
-							JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_TUESDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-							JText::_('EVENTS_CAL_LANG_SATURDAYSHORT'));
+		$day_name = array('<span style="color:red;">'.JText::_('COM_EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
+							JText::_('COM_EVENTS_CAL_LANG_MONDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_TUESDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_WEDNESDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_THURSDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_FRIDAYSHORT'),
+							JText::_('COM_EVENTS_CAL_LANG_SATURDAYSHORT'));
 		$tosend = '';
 		if ($reccurweekdays == '') {
 			$split = array();
@@ -249,11 +249,11 @@ class EventsHtml
 	public function buildWeeksCheck($reccurweeks, $args)
 	{
 		$week_name = array('',
-							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 1<br />',
-							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 2<br />',
-							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 3<br />',
-							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 4<br />',
-							JText::_('EVENTS_CAL_LANG_REP_WEEK').' 5<br />');
+							JText::_('COM_EVENTS_CAL_LANG_REP_WEEK').' 1<br />',
+							JText::_('COM_EVENTS_CAL_LANG_REP_WEEK').' 2<br />',
+							JText::_('COM_EVENTS_CAL_LANG_REP_WEEK').' 3<br />',
+							JText::_('COM_EVENTS_CAL_LANG_REP_WEEK').' 4<br />',
+							JText::_('COM_EVENTS_CAL_LANG_REP_WEEK').' 5<br />');
 		$tosend = '';
 		$checked = '';
 
@@ -295,13 +295,13 @@ class EventsHtml
 		$dayname = '';
 		switch ($daynb)
 		{
-			case '0': $dayname = JText::_('EVENTS_CAL_LANG_SUNDAY');    break;
-			case '1': $dayname = JText::_('EVENTS_CAL_LANG_MONDAY');    break;
-			case '2': $dayname = JText::_('EVENTS_CAL_LANG_TUESDAY');   break;
-			case '3': $dayname = JText::_('EVENTS_CAL_LANG_WEDNESDAY'); break;
-			case '4': $dayname = JText::_('EVENTS_CAL_LANG_THURSDAY');  break;
-			case '5': $dayname = JText::_('EVENTS_CAL_LANG_FRIDAY');    break;
-			case '6': $dayname = JText::_('EVENTS_CAL_LANG_SATURDAY');  break;
+			case '0': $dayname = JText::_('COM_EVENTS_CAL_LANG_SUNDAY');    break;
+			case '1': $dayname = JText::_('COM_EVENTS_CAL_LANG_MONDAY');    break;
+			case '2': $dayname = JText::_('COM_EVENTS_CAL_LANG_TUESDAY');   break;
+			case '3': $dayname = JText::_('COM_EVENTS_CAL_LANG_WEDNESDAY'); break;
+			case '4': $dayname = JText::_('COM_EVENTS_CAL_LANG_THURSDAY');  break;
+			case '5': $dayname = JText::_('COM_EVENTS_CAL_LANG_FRIDAY');    break;
+			case '6': $dayname = JText::_('COM_EVENTS_CAL_LANG_SATURDAY');  break;
 		}
 		return $dayname;
 	}

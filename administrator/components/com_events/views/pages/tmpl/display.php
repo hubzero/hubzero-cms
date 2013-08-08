@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=com_events">'.JText::_('EVENTS').'</a>: <small><small>[ '.JText::_('PAGES').' ]</small></small>', 'edit.png');
+JToolBarHelper::title('<a href="index.php?option=com_events">'.JText::_('COM_EVENTS').'</a>: <small><small>[ '.JText::_('COM_EVENTS_PAGES').' ]</small></small>', 'event.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
@@ -53,7 +53,7 @@ function submitbutton(pressbutton)
 	<h2><?php echo stripslashes($this->event->title); ?></h2>
 	
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label>
+		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
@@ -63,9 +63,9 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JText::_('ID'); ?></th>
-				<th><?php echo JText::_('TITLE'); ?></th>
-				<th colspan="3"><?php echo JText::_('REORDER'); ?></th>
+				<th><?php echo JText::_('COM_EVENTS_ID'); ?></th>
+				<th><?php echo JText::_('COM_EVENTS_TITLE'); ?></th>
+				<th colspan="3"><?php echo JText::_('COM_EVENTS_REORDER'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -85,7 +85,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editpage&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo stripslashes($row->title).' ('.stripslashes($row->alias).')'; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editpage&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo $this->escape(stripslashes($row->title)).' ('.$this->escape(stripslashes($row->alias)).')'; ?></a></td>
 				<td><?php echo $this->pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
 				<td><?php echo $this->pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
 				<td><?php echo $row->ordering; ?></td>

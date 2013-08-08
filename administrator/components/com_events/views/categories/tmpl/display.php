@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('EVENTS_MANAGER').': <small><small>[ '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORIES').' ]</small></small>', 'event.png');
+JToolBarHelper::title(JText::_('COM_EVENTS_MANAGER').': <small><small>[ '.JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORIES').' ]</small></small>', 'event.png');
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 JToolBarHelper::spacer();
@@ -48,11 +48,11 @@ JHTML::_('behavior.tooltip');
 			<tr>
 				<th scope="col">#</th>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NUM_RECORDS'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_E_PUBLISHING'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
-				<th scope="col" colspan="2"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_REORDER'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_NUM_RECORDS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_E_PUBLISHING'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
+				<th scope="col" colspan="2"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_REORDER'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -96,7 +96,7 @@ JHTML::_('behavior.tooltip');
 					</span>
 <?php } else { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id;?>">
-						<?php echo $this->escape(stripslashes($row->name)); ?> <?php echo $this->escape(stripslashes($row->title)); ?>
+						<?php echo $this->escape(stripslashes($row->name)); ?> &mdash; <?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 <?php } ?>
 				</td>
@@ -115,8 +115,8 @@ JHTML::_('behavior.tooltip');
 				</td>
 				<td>
 				<?php if ($i > 0 || ($i+$this->pageNav->limitstart > 0)) { ?>
-					<a class="order" href="#reorder" class="order up" onclick="return listItemTask('cb<?php echo $i;?>','orderup')" title="Move Up">
-						<span><img src="images/uparrow.png" alt="Move up" /></span>
+					<a href="#reorder" class="order up jgrid" onclick="return listItemTask('cb<?php echo $i;?>','orderup')" title="Move Up">
+						<span class="state downarrow"><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/uparrow.png" alt="Move up" /><?php } else { ?><span>Move up</span><?php } ?></span>
 					</a>
 				<?php } else { ?>
 					&nbsp;
@@ -124,8 +124,8 @@ JHTML::_('behavior.tooltip');
 				</td>
 				<td>
 				<?php if ($i < $n-1 || $i+$this->pageNav->limitstart < $this->pageNav->total-1) { ?>
-					<a class="order" href="#reorder" class="order down" onclick="return listItemTask('cb<?php echo $i;?>','orderdown')" title="Move Down">
-						<span><img src="images/downarrow.png" alt="Move down" /></span>
+					<a href="#reorder" class="order down jgrid" onclick="return listItemTask('cb<?php echo $i;?>','orderdown')" title="Move Down">
+						<span class="state uparrow"><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/downarrow.png" alt="Move down" /><?php } else { ?><span>Move down</span><?php } ?></span>
 					</a>
 				<?php } else { ?>
 					&nbsp;

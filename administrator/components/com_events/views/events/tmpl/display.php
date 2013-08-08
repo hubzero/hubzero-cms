@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('EVENTS_MANAGER'), 'event.png');
+JToolBarHelper::title(JText::_('COM_EVENTS_MANAGER'), 'event.png');
 JToolBarHelper::addNew('addpage', 'Add Page');
-JToolBarHelper::custom('respondents', 'assign', JText::_('VIEW_RESPONDENTS'), JText::_('VIEW_RESPONDENTS'), true, false);
+JToolBarHelper::custom('respondents', 'assign', JText::_('COM_EVENTS_VIEW_RESPONDENTS'), JText::_('COM_EVENTS_VIEW_RESPONDENTS'), true, false);
 JToolBarHelper::spacer();
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
@@ -48,7 +48,7 @@ JHTML::_('behavior.tooltip');
 
 <form action="index.php?option=<?php echo $this->option; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('EVENTS_SEARCH'); ?>:</label>
+		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
 		<?php echo $this->clist; ?>
@@ -61,15 +61,15 @@ JHTML::_('behavior.tooltip');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEAT'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ANNOUNCEMENT'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_REPEAT'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ANNOUNCEMENT'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
 				<th scope="col"><?php echo JText::_('Pages'); ?></th>
 			</tr>
 		</thead>
@@ -119,11 +119,11 @@ $row = &$this->rows[$i];
 	if ($row->reccurtype > 0) {
 		switch ($row->reccurtype)
 		{
-			case "1": $reccur = JText::_('EVENTS_CAL_LANG_REP_WEEK');  break;
-			case "2": $reccur = JText::_('EVENTS_CAL_LANG_REP_WEEK');  break;
-			case "3": $reccur = JText::_('EVENTS_CAL_LANG_REP_MONTH'); break;
-			case "4": $reccur = JText::_('EVENTS_CAL_LANG_REP_MONTH'); break;
-			case "5": $reccur = JText::_('EVENTS_CAL_LANG_REP_YEAR');  break;
+			case "1": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_WEEK');  break;
+			case "2": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_WEEK');  break;
+			case "3": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_MONTH'); break;
+			case "4": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_MONTH'); break;
+			case "5": $reccur = JText::_('COM_EVENTS_CAL_LANG_REP_YEAR');  break;
 		}
 		if ($row->reccurday >= 0) {
 			$dayname = EventsHtml::getLongDayName($row->reccurday);
@@ -132,20 +132,20 @@ $row = &$this->rows[$i];
 				//$pairorimpair = $row->reccurweeks == "pair" ? _CAL_LANG_REP_WEEKPAIR : ($row->reccurweeks == "impair" ? _CAL_LANG_REP_WEEKIMPAIR : _CAL_LANG_REP_WEEK);
 
 				if (trim($row->reccurweeks) == 'pair') {
-					$pairorimpair = JText::_('EVENTS_CAL_LANG_REP_WEEKPAIR');
+					$pairorimpair = JText::_('COM_EVENTS_CAL_LANG_REP_WEEKPAIR');
 				} else if ($row->reccurweeks == 'impair') {
-					$pairorimpair = JText::_('EVENTS_CAL_LANG_REP_WEEKIMPAIR');
+					$pairorimpair = JText::_('COM_EVENTS_CAL_LANG_REP_WEEKIMPAIR');
 				} else {
-					$pairorimpair = JText::_('EVENTS_CAL_LANG_REP_WEEK');
+					$pairorimpair = JText::_('COM_EVENTS_CAL_LANG_REP_WEEK');
 				}
-				echo JText::_('EVENTS_CAL_LANG_EACH').'&nbsp;'.$dayname.'&nbsp;'.$pairorimpair;
+				echo JText::_('COM_EVENTS_CAL_LANG_EACH').'&nbsp;'.$dayname.'&nbsp;'.$pairorimpair;
 			//} elseif ($row->reccurtype == 1) {
 			//	echo $dayname."&nbsp;"._CAL_LANG_EACHOF."&nbsp;".$reccur;
 			} else {
-				echo JText::_('EVENTS_CAL_LANG_EACH').'&nbsp;'.$reccur;
+				echo JText::_('COM_EVENTS_CAL_LANG_EACH').'&nbsp;'.$reccur;
 			}
 		} else {
-			echo JText::_('EVENTS_CAL_LANG_EACH').'&nbsp;'.$reccur;
+			echo JText::_('COM_EVENTS_CAL_LANG_EACH').'&nbsp;'.$reccur;
 		}
 	} else {
 		$bits_up = explode('-',$row->publish_up);
@@ -153,7 +153,7 @@ $row = &$this->rows[$i];
 		$bits_dn = explode('-',$row->publish_down);
 		$bdn = explode(' ', end($bits_dn));
 		if ($bup[0] != $bdn[0]) {
-			echo JText::_('EVENTS_CAL_LANG_ALLDAYS');
+			echo JText::_('COM_EVENTS_CAL_LANG_ALLDAYS');
 		} else {
 			echo '&nbsp;';
 		}
@@ -179,16 +179,16 @@ $row = &$this->rows[$i];
 	$times = '';
 	if (isset($row->publish_up)) {
 		if ($row->publish_up == '0000-00-00 00:00:00') {
-			$times .= JText::_('EVENTS_CAL_LANG_FROM').' : '.JText::_('EVENTS_CAL_LANG_ALWAYS').'<br />';
+			$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JText::_('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
 		} else {
-			$times .= JText::_('EVENTS_CAL_LANG_FROM').' : '.$row->publish_up.'<br />';
+			$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.$row->publish_up.'<br />';
 		}
 	}
 	if (isset($row->publish_down)) {
 		if ($row->publish_down == '0000-00-00 00:00:00') {
-			$times .= JText::_('EVENTS_CAL_LANG_TO').' : '.JText::_('EVENTS_CAL_LANG_NEVER').'<br />';
+			$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JText::_('COM_EVENTS_CAL_LANG_NEVER').'<br />';
 		} else {
-			$times .= JText::_('EVENTS_CAL_LANG_TO').' : '.$row->publish_down.'<br />';
+			$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.$row->publish_down.'<br />';
 		}
 	}
 

@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'editcat') ? JText::_('EDIT') : JText::_('NEW');
-JToolBarHelper::title(JText::_('EVENT').': <small><small>[ '. $text.' '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY').' ]</small></small>', 'event.png');
+$text = ($this->task == 'editcat') ? JText::_('COM_EVENTS_EDIT') : JText::_('COM_EVENTS_NEW');
+JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': <small><small>[ '. $text.' '.JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY').' ]</small></small>', 'event.png');
 JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::spacer();
@@ -66,26 +66,32 @@ function submitbutton(pressbutton, section)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Details'); ?></span></legend>
 
+			<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+			<input type="hidden" name="access" value="<?php echo $this->row->access; ?>" />
+			<?php } ?>
+
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
+						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
 						<td><input type="text" name="title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" maxlength="50" title="A short name to appear in menus" /></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NAME'); ?>:</td>
+						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_NAME'); ?>:</td>
 						<td><input type="text" name="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" maxlength="255" title="A long name to be displayed in headings" /></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
+						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
 						<td><?php echo $this->orderlist; ?></td>
 					</tr>
+				<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESSLEVEL'); ?>:</td>
+						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ACCESSLEVEL'); ?>:</td>
 						<td><?php echo $this->glist; ?></td>
 					</tr>
+				<?php } ?>
 					<tr>
-						<td class="key" style="vertical-align: top;"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</td>
+						<td class="key" style="vertical-align: top;"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</td>
 						<td><?php echo $editor->display('description', stripslashes($this->row->description), '100%', 'auto', '45', '10', false); ?></td>
 					</tr>
 				</tbody>
@@ -99,7 +105,7 @@ function submitbutton(pressbutton, section)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_IMAGE'); ?>:</td>
+						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_IMAGE'); ?>:</td>
 						<td><?php echo $this->imagelist; ?></td>
 						<td rowspan="2">
 			<script type="text/javascript">
@@ -113,7 +119,7 @@ function submitbutton(pressbutton, section)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_IMAGE_POSITION'); ?>:</td>
+						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_IMAGE_POSITION'); ?>:</td>
 						<td><?php echo $this->iposlist; ?></td>
 					</tr>
 				</tbody>

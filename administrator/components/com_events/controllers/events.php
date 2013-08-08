@@ -142,7 +142,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		);
 
 		// Get list of categories
-		$categories[] = JHTML::_('select.option', '0', '- ' . JText::_('EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
+		$categories[] = JHTML::_('select.option', '0', '- ' . JText::_('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$this->database->setQuery("SELECT id AS value, title AS text FROM #__categories WHERE section='$this->_option' ORDER BY ordering");
@@ -236,7 +236,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$cat = new EventsCategory($this->database);
 		if ($cat->getCategoryCount($this->_option) < 1) 
 		{
-			JError::raiseError(500, JText::_('EVENTS_LANG_NEED_CATEGORY'));
+			JError::raiseError(500, JText::_('COM_EVENTS_LANG_NEED_CATEGORY'));
 			return;
 		}
 
@@ -252,7 +252,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		 && $this->view->row->checked_out <> $this->juser->get('id')) 
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option;
-			$this->_message = JText::_('EVENTS_CAL_LANG_WARN_CHECKEDOUT');
+			$this->_message = JText::_('COM_EVENTS_CAL_LANG_WARN_CHECKEDOUT');
 		}
 
 		$document =& JFactory::getDocument();
@@ -273,7 +273,7 @@ class EventsControllerEvents extends Hubzero_Controller
 
 			if (trim($this->view->row->publish_down) == '0000-00-00 00:00:00') 
 			{
-				$this->view->row->publish_down = JText::_('EVENTS_CAL_LANG_NEVER');
+				$this->view->row->publish_down = JText::_('COM_EVENTS_CAL_LANG_NEVER');
 			}
 
 			$event_up = new EventsDate($this->view->row->publish_up);
@@ -692,7 +692,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_SAVED')
+			JText::_('COM_EVENTS_CAL_LANG_SAVED')
 		);
 	}
 
@@ -781,7 +781,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_PUBLISHED')
+			JText::_('COM_EVENTS_CAL_LANG_PUBLISHED')
 		);
 	}
 
@@ -820,7 +820,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_UNPUBLISHED')
+			JText::_('COM_EVENTS_CAL_LANG_UNPUBLISHED')
 		);
 	}
 
@@ -933,7 +933,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_REMOVED')
+			JText::_('COM_EVENTS_CAL_LANG_REMOVED')
 		);
 	}
 }

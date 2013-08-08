@@ -2,10 +2,23 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS' ).'</a>: <small><small>[ '.JText::_('RESPONDANTS').' ]</small></small>', 'user.png' );
-JToolBarHelper::custom('download', 'upload', JText::_('DOWNLOAD_CSV'), JText::_('DOWNLOAD_CSV'), false, false);
+JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'COM_EVENTS' ).'</a>: <small><small>[ '.JText::_('COM_EVENTS_RESPONDANTS').' ]</small></small>', 'user.png' );
+JToolBarHelper::custom('download', 'upload', JText::_('COM_EVENTS_DOWNLOAD_CSV'), JText::_('COM_EVENTS_DOWNLOAD_CSV'), false, false);
 JToolBarHelper::deleteList( '', 'remove', JText::_('Delete') );
 JToolBarHelper::cancel();
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$tz = true;
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+}
+else
+{
+	$tz = 0;
+	$dateFormat = '%d %b %Y';
+	$timeFormat = '%I:%M %p';
+}
 
 $rows = $this->resp->getRecords();
 $pageNav = $this->resp->getPaginator();
@@ -32,14 +45,14 @@ function submitbutton(pressbutton)
 
 		<label for="filter_sortby"><?php echo JText::_('SORT'); ?>:</label>
 		<select name="sortby" id="filter_sortby">
-			<option value="id DESC"<?php if ($this->resp->getOrdering() == 'id DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID_DESC'); ?></option>
-			<option value="id ASC"<?php if ($this->resp->getOrdering() == 'id ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID_ASC'); ?></option>
-			<option value="name DESC"<?php if ($this->resp->getOrdering() == 'name DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('NAME_DESC'); ?></option>
-			<option value="name ASC"<?php if ($this->resp->getOrdering() == 'name ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('NAME_ASC'); ?></option>
-			<option value="special DESC"<?php if ($this->resp->getOrdering() == 'special DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('SPECIAL_DESC'); ?></option>
-			<option value="special ASC"<?php if ($this->resp->getOrdering() == 'special ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('SPECIAL_ASC'); ?></option>
-			<option value="registered DESC"<?php if ($this->resp->getOrdering() == 'registered DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('REGISTERED_DESC'); ?></option>
-			<option value="registered ASC"<?php if ($this->resp->getOrdering() == 'registered ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('REGISTERED_ASC'); ?></option>
+			<option value="id DESC"<?php if ($this->resp->getOrdering() == 'id DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_ID_DESC'); ?></option>
+			<option value="id ASC"<?php if ($this->resp->getOrdering() == 'id ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_ID_ASC'); ?></option>
+			<option value="name DESC"<?php if ($this->resp->getOrdering() == 'name DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_NAME_DESC'); ?></option>
+			<option value="name ASC"<?php if ($this->resp->getOrdering() == 'name ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_NAME_ASC'); ?></option>
+			<option value="special DESC"<?php if ($this->resp->getOrdering() == 'special DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_SPECIAL_DESC'); ?></option>
+			<option value="special ASC"<?php if ($this->resp->getOrdering() == 'special ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_SPECIAL_ASC'); ?></option>
+			<option value="registered DESC"<?php if ($this->resp->getOrdering() == 'registered DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_REGISTERED_DESC'); ?></option>
+			<option value="registered ASC"<?php if ($this->resp->getOrdering() == 'registered ASC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_EVENTS_REGISTERED_ASC'); ?></option>
 		</select>
 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
@@ -49,11 +62,11 @@ function submitbutton(pressbutton)
 		<thead>
  			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $rows );?>);" /></th>
-				<th scope="col"><?php echo JText::_('NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('EMAIL'); ?></th>
-				<th scope="col"><?php echo JText::_('REGISTERED'); ?></th>
-				<th scope="col"><?php echo JText::_('SPECIAL_NEEDS'); ?></th>
-				<th scope="col"><?php echo JText::_('COMMENT'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_EMAIL'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_REGISTERED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_SPECIAL_NEEDS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_COMMENT'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -76,18 +89,18 @@ for ($i=0, $n=count( $rows ); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=respondent&amp;id=<?php echo $row->id; ?>&amp;event_id=<?php echo $this->event->id; ?>"><?php echo stripslashes($row->last_name . ', ' . $row->first_name); ?></a></td>
-				<td><a href="mailto:<?php echo $row->email ?>"><?php echo $row->email; ?></a></td>
-				<td><?php echo JHTML::_('date', $row->registered, '%d %b. %Y'); ?></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=respondent&amp;id=<?php echo $row->id; ?>&amp;event_id=<?php echo $this->event->id; ?>"><?php echo $this->escape(stripslashes($row->last_name . ', ' . $row->first_name)); ?></a></td>
+				<td><a href="mailto:<?php echo $row->email ?>"><?php echo $this->escape($row->email); ?></a></td>
+				<td><?php echo JHTML::_('date', $row->registered, $dateFormat, $tz); ?></td>
 				<td><?php 
 				if (!empty($row->dietary_needs)) {
-					echo 'Dietary needs: '.htmlentities($row->dietary_needs).'<br />';
+					echo 'Dietary needs: '.$this->escape($row->dietary_needs).'<br />';
 				}
 				if ($row->disability_needs) {
 					echo 'Disability consideration requested';
 				}
 				?></td>
-				<td><?php echo htmlentities($row->comment); ?></td>
+				<td><?php echo $this->escape($row->comment); ?></td>
 			</tr>
 <?php
 	$k = 1 - $k;

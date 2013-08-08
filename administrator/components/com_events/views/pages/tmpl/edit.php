@@ -29,9 +29,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$text = ( $this->task == 'editpage' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
+$text = ( $this->task == 'editpage' ? JText::_( 'COM_EVENTS_EDIT' ) : JText::_( 'COM_EVENTS_NEW' ) );
 
-JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS_PAGE' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'event.png' );
+JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'COM_EVENTS_PAGE' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'event.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -53,10 +53,10 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-	<h2><?php echo stripslashes($this->event->title); ?></h2>
+	<h2><?php echo $this->escape(stripslashes($this->event->title)); ?></h2>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('PAGE'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_EVENTS_PAGE'); ?></span></legend>
 			
 			<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->page->id; ?>" />
@@ -67,11 +67,11 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="title"><?php echo JText::_('TITLE'); ?>:</label></td>
+						<td class="key"><label for="title"><?php echo JText::_('COM_EVENTS_TITLE'); ?>:</label></td>
 						<td><input type="text" name="title" id="title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="alias"><?php echo JText::_('ALIAS'); ?>:</label></td>
+						<td class="key"><label for="alias"><?php echo JText::_('COM_EVENTS_ALIAS'); ?>:</label></td>
 						<td>
 							<input type="text" name="alias" id="alias" value="<?php echo $this->escape(stripslashes($this->page->alias)); ?>" size="50" />
 							<br /><span>A short identifier for this page. Ex: "agenda". Alpha-numeric characters only. No spaces.</span>
@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="pagetext"><?php echo JText::_('PAGE_TEXT'); ?>:</label><br />
+							<label for="pagetext"><?php echo JText::_('COM_EVENTS_PAGE_TEXT'); ?>:</label><br />
 							<?php echo $editor->display('pagetext', $this->escape(stripslashes($this->page->pagetext)), '100%', '350px', '40', '10'); ?>
 						</td>
 					</tr>
@@ -88,7 +88,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table>
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th>Ordering</th>
