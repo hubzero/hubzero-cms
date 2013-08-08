@@ -90,7 +90,14 @@ class EventsControllerCategories extends Hubzero_Controller
 		{
 			$table = substr($this->view->section, 4);
 
-			$this->database->setQuery("SELECT name FROM #__components WHERE link='option=" . $this->view->section . "'");
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$this->database->setQuery("SELECT name FROM #__components WHERE link='option=" . $this->view->section . "'");
+			}
+			else
+			{
+				$this->database->setQuery("SELECT name FROM #__extensions WHERE type='component' AND element='" . $this->view->section . "'");
+			}
 			$this->view->section_name = $this->database->loadResult();
 			if ($this->database->getErrorNum()) 
 			{
@@ -104,7 +111,14 @@ class EventsControllerCategories extends Hubzero_Controller
 		}
 
 		// Get the total number of records
-		$this->database->setQuery("SELECT count(*) FROM #__categories WHERE section='" . $this->view->section . "'");
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->database->setQuery("SELECT count(*) FROM #__categories WHERE section='" . $this->view->section . "'");
+		}
+		else
+		{
+			$this->database->setQuery("SELECT count(*) FROM #__categories WHERE extension='" . $this->view->section . "'");
+		}
 		$this->view->total = $this->database->loadResult();
 		if ($this->database->getErrorNum()) 
 		{
@@ -113,19 +127,37 @@ class EventsControllerCategories extends Hubzero_Controller
 		}
 
 		// dmcd may 22/04  added #__events_categories table to fetch category color property
-		$this->database->setQuery("SELECT  c.*, g.name AS groupname, u.name AS editor, cc.color AS color, "
-		. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
-		. "\nFROM #__categories AS c"
-		. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
-		. "\nLEFT JOIN #__groups AS g ON g.id = c.access"
-		. "\nLEFT JOIN #__$table AS s1 ON s1.catid = c.id"
-		. "\nLEFT JOIN #__$table AS s2 ON s2.catid = c.id AND s2.checked_out > 0"
-		. "\nLEFT JOIN #__${table}_categories AS cc ON cc.id = c.id"
-		. "\nWHERE section='" . $this->view->section . "'"
-		. "\nGROUP BY c.id"
-		. "\nORDER BY c.ordering, c.name"
-		. "\nLIMIT $limitstart,$limit"
-		);
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->database->setQuery("SELECT  c.*, g.name AS groupname, u.name AS editor, cc.color AS color, "
+				. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
+				. "\nFROM #__categories AS c"
+				. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
+				. "\nLEFT JOIN #__groups AS g ON g.id = c.access"
+				. "\nLEFT JOIN #__$table AS s1 ON s1.catid = c.id"
+				. "\nLEFT JOIN #__$table AS s2 ON s2.catid = c.id AND s2.checked_out > 0"
+				. "\nLEFT JOIN #__${table}_categories AS cc ON cc.id = c.id"
+				. "\nWHERE section='" . $this->view->section . "'"
+				. "\nGROUP BY c.id"
+				. "\nORDER BY c.ordering, c.name"
+				. "\nLIMIT $limitstart,$limit"
+			);
+		}
+		else
+		{
+			$this->database->setQuery("SELECT  c.*, 'Public' AS groupname, u.name AS editor, cc.color AS color, "
+				. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
+				. "\nFROM #__categories AS c"
+				. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
+				. "\nLEFT JOIN #__$table AS s1 ON s1.catid = c.id"
+				. "\nLEFT JOIN #__$table AS s2 ON s2.catid = c.id AND s2.checked_out > 0"
+				. "\nLEFT JOIN #__${table}_categories AS cc ON cc.id = c.id"
+				. "\nWHERE extension='" . $this->view->section . "'"
+				. "\nGROUP BY c.id"
+				. "\nORDER BY c.title"
+				. "\nLIMIT $limitstart,$limit"
+			);
+		}
 
 		// Execute query
 		$this->view->rows = $this->database->loadObjectList();

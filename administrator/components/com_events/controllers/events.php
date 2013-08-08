@@ -143,7 +143,14 @@ class EventsControllerEvents extends Hubzero_Controller
 
 		// Get list of categories
 		$categories[] = JHTML::_('select.option', '0', '- ' . JText::_('EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
-		$this->database->setQuery("SELECT id AS value, title AS text FROM #__categories WHERE section='$this->_option' ORDER BY ordering");
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->database->setQuery("SELECT id AS value, title AS text FROM #__categories WHERE section='$this->_option' ORDER BY ordering");
+		}
+		else
+		{
+			$this->database->setQuery("SELECT id AS value, title AS text FROM #__categories WHERE extension='$this->_option'");
+		}
 		$categories = array_merge($categories, $this->database->loadObjectList());
 		$this->view->clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
 		
@@ -313,7 +320,14 @@ class EventsControllerEvents extends Hubzero_Controller
 		}
 
 		// Get list of groups
-		$this->database->setQuery("SELECT id AS value, name AS text FROM #__groups ORDER BY id");
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->database->setQuery("SELECT id AS value, name AS text FROM #__groups ORDER BY id");
+		}
+		else
+		{
+			$this->database->setQuery("SELECT 0 AS value, 'Public' AS text");
+		}
 		$groups = $this->database->loadObjectList();
 
 		// Build the html select list
