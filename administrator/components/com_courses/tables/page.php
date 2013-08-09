@@ -43,18 +43,25 @@ Class CoursesTablePage extends JTable
 	var $id = NULL;
 
 	/**
-	 * varchar(100)
+	 * int(11)
 	 * 
 	 * @var string
 	 */
 	var $course_id = NULL;
 
 	/**
-	 * varchar(100)
+	 * int(11)
 	 * 
 	 * @var string
 	 */
 	var $offering_id = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var string
+	 */
+	var $section_id = NULL;
 
 	/**
 	 * varchar(100)
@@ -172,6 +179,19 @@ Class CoursesTablePage extends JTable
 				$filters['offering_id'] = intval($filters['offering_id']);
 			}
 			$where[] = "r.`offering_id` IN (" . $filters['offering_id'] . ")";
+		}
+		if (isset($filters['section_id']))
+		{
+			if (is_array($filters['section_id']))
+			{
+				$filters['section_id'] = array_map('intval', $filters['section_id']);
+				$filters['section_id'] = implode(',', $filters['section_id']);
+			}
+			else
+			{
+				$filters['section_id'] = intval($filters['section_id']);
+			}
+			$where[] = "r.`section_id` IN (" . $filters['section_id'] . ")";
 		}
 		if (isset($filters['url']) && $filters['url'])
 		{
