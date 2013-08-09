@@ -129,7 +129,7 @@ class Migration20130718000011ComModules extends Hubzero_Migration
 			}
 
 			// Update menu params (specifically to fix menu_image)
-			$query = "SELECT `id`, `params` FROM `#__modules`;";
+			$query = "SELECT `id`, `params`, `module` FROM `#__modules`;";
 			$db->setQuery($query);
 			$results = $db->loadObjectList();
 
@@ -157,6 +157,11 @@ class Migration20130718000011ComModules extends Hubzero_Migration
 						$ar2 = explode("=", $a);
 
 						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
+
+						if ($r->module == 'mod_breadcrumbs')
+						{
+							$array['showHere'] = 0;
+						}
 					}
 
 					$query = "UPDATE `#__modules` SET `params` = " . $db->Quote(json_encode($array)) . " WHERE `id` = {$r->id};";
