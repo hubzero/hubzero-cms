@@ -830,6 +830,9 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE,endColorstr=#DDD);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EEE, endColorstr=#DDD)";
 }
+.instructor .pagenav {
+	margin: 10px;
+}
 .tooltip {
 	color: #FFF;
 	padding: 4px;

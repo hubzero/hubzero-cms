@@ -249,7 +249,20 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function syncGrades($course_id, $user_id=null)
 	{
-		$user = (!is_null($user_id)) ? "AND cfr.user_id = {$user_id}" : '';
+		if (!is_null($user_id))
+		{
+			if (!is_array($user_id))
+			{
+				$user_id = (array) $user_id;
+			}
+
+			$user_id = implode(',', $user_id);
+			$user = "AND cfr.user_id IN ({$user_id})";
+		}
+		else
+		{
+			$user = '';
+		}
 
 		$this->_db->execute("INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`)
 
@@ -266,8 +279,7 @@ class CoursesTableGradeBook extends JTable
 			LEFT JOIN `#__courses_form_questions` cfq ON cfq.id = cfr2.question_id
 			LEFT JOIN `#__courses_form_answers` cfa ON cfa.id = cfr2.answer_id AND cfa.correct
 			LEFT JOIN `#__courses_form_deployments` cfd ON cfr.deployment_id = cfd.id
-			LEFT JOIN `#__courses_forms` cf ON cfd.form_id = cf.id
-			LEFT JOIN `#__courses_assets` ca ON cf.asset_id = ca.id
+			LEFT JOIN `#__courses_assets` ca ON SUBSTRING(ca.url, 30) = cfd.crumb
 			WHERE ca.course_id = {$course_id} {$user}
 			GROUP BY name, email, deployment_id, version
 

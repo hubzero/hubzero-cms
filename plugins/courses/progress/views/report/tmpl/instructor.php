@@ -37,11 +37,30 @@ ximport('Hubzero_User_Profile_Helper');
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 
+$total = $this->course->offering()->section()->members(array('student'=>1, 'count'=>true));
+$start = JRequest::getInt('limitstart', 0);
+$limit = JRequest::getInt('limit', 10);
+
 // Get all section members
-$members = $this->course->offering()->section()->members(array('student'=>1));
+$members = $this->course->offering()->section()->members(array('student'=>1, 'start'=>$start, 'limit'=>$limit));
+$m = array();
+
+// Get member id's for refresh filter
+foreach ($members as $member)
+{
+	$m[] = $member->get('user_id');
+}
 
 // Refresh the grades
-$this->course->offering()->gradebook()->refresh();
+$this->course->offering()->gradebook()->refresh($m);
+
+// Initiate paging
+jimport('joomla.html.pagination');
+$pagination = new JPagination(
+	$total, 
+	$start, 
+	$limit
+);
 
 // Get the grades
 $grades    = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
@@ -217,6 +236,13 @@ $policy = $gradePolicy->get('description');
 			</div>
 			<div class="clear"></div>
 		<? endforeach; ?>
+		<?php //if ($total > $limit) : ?>
+			<form action="<?= JRoute::_($base . '&active=progress') ?>" method="GET">
+				<div class="pagenav">
+					<?php echo $pagination->getListFooter() ?>
+				</div>
+			</form>
+		<?php //endif; ?>
 	<? else : ?>
 		<p class="info">The section does not currently have anyone enrolled</p>
 	<? endif; ?>

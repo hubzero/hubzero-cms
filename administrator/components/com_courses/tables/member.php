@@ -422,7 +422,7 @@ class CoursesTableMember extends JTable
 			$query .= " " . $filters['sort_Dir'];
 		}
 
-		if (!empty($filters['start']) && !empty($filters['limit']))
+		if ((isset($filters['start']) && is_numeric($filters['start']) && $filters['start'] >= 0) && !empty($filters['limit']))
 		{
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
