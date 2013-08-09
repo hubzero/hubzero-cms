@@ -31,9 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = '/index.php?option='.$this->option.'&controller=offering&active=progress&gid='.$this->course->get('alias');
-$base .= '&offering='.$this->course->offering()->get('alias').'&section='.$this->course->offering()->section()->get('alias');
-
+$base = 'index.php?option='.$this->option.'&controller=offering&active=progress&gid='.$this->course->get('alias');
+$base .= '&offering='.$this->course->offering()->get('alias');
+$base .= ($this->course->offering()->section()->get('alias') != '__default') ? ':'.$this->course->offering()->section()->get('alias') : '';
 ?>
 
 <script id="gradebook-template-main" type="text/x-handlebars-template">
