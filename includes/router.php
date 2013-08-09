@@ -887,7 +887,7 @@ class JRouterSite extends JRouter
 			{
 				$q  = "SELECT cat.`path`, con.`alias` AS con_alias, cat.`alias` AS cat_alias FROM `#__content` AS con";
 				$q .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
-				$q .= " WHERE con.`id` = '{$query['id']}'";
+				$q .= " WHERE con.state=1 AND con.`id` = '{$query['id']}'";
 				$db->setQuery($q);
 				if ($result = $db->loadObject())
 				{
@@ -942,7 +942,7 @@ class JRouterSite extends JRouter
 			// First, do query
 			$query  = "SELECT con.`id`, cat.`alias`, cat.`path` FROM `#__content` AS con";
 			$query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
-			$query .= " WHERE con.`alias` = " . $db->quote($segments[0]);
+			$query .= " WHERE con.state=1 AND con.`alias` = " . $db->quote($segments[0]);
 			$db->setQuery($query);
 			$result = $db->loadObject();
 
@@ -1001,7 +1001,7 @@ class JRouterSite extends JRouter
 			// Now, do query (path is all but last segment, and last segment is article alias)
 			$query  = "SELECT con.`id` FROM `#__content` AS con";
 			$query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
-			$query .= " WHERE con.`alias` = " . $db->quote($segments[$count-1]);
+			$query .= " WHERE con.state=1 AND con.`alias` = " . $db->quote($segments[$count-1]);
 			$query .= " AND cat.`path` = " . $db->quote($path);
 			$db->setQuery($query);
 
