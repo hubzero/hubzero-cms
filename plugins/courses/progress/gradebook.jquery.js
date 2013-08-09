@@ -548,6 +548,10 @@ HUB.Plugins.CoursesProgress = {
 	{
 		// Reset slidable 'right' before doing width calculations
 		$('.slidable').css({right : 0});
+		$('.gradebook').css({
+			'margin-right' : 0,
+			'margin-left'  : 0
+		});
 
 		// Calculate width of each column (range 100 - 150 px)
 		var w      = $('.slidable-inner').width(),
@@ -571,8 +575,12 @@ HUB.Plugins.CoursesProgress = {
 		$('.prv').addClass('disabled');
 
 		// Check if all columns are showing and disable next button as necessary
-		if (offset === 0) {
+		if (offset <= 0) {
 			$('.nxt').addClass('disabled');
+			$('.gradebook').css({
+				'margin-right' : ((offset*-1)/2)+'px',
+				'margin-left'  : ((offset*-1)/2)+'px'
+			});
 		} else {
 			$('.nxt').removeClass('disabled');
 		}
