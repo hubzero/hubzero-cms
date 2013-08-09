@@ -313,25 +313,32 @@ class CronModelJob extends JObject
 	 */
 	public function toArray()
 	{
-                $buffer = $this->profile();
+		$buffer = $this->profile();
 
-                $start_run = explode(' ',$buffer[0]);
-                $end_run = explode(' ',$buffer[1]);
+		if (!is_array($buffer) || !isset($buffer[0]))
+		{
+			$buffer = array(
+				'0 0 0 0 0',
+				'0 0 0 0 0'
+			);
+		}
+		$start_run = explode(' ', $buffer[0]);
+		$end_run   = explode(' ', $buffer[1]);
 
 		return array(
-			'id'       => $this->get('id'),
-			'title'    => $this->get('title'),
-			'plugin'   => $this->get('plugin'),
-			'event'    => $this->get('event'),
-			'last_run' => $this->get('last_run'),
-			'next_run' => $this->get('next_run'),
-			'active'   => $this->get('active'),
-                        'start_time'=>round($start_run[2],3) ,
-                        'start_mem' =>round($start_run[4],3) ,
-                        'end_time'  =>round($end_run[2],3) ,
-                        'end_mem'   =>round($end_run[4],3) ,
-                        'delta_time'=>round($end_run[2]-$start_run[2],3) ,
-                        'delta_mem' =>round($end_run[4]-$start_run[4],3)
+			'id'         => $this->get('id'),
+			'title'      => $this->get('title'),
+			'plugin'     => $this->get('plugin'),
+			'event'      => $this->get('event'),
+			'last_run'   => $this->get('last_run'),
+			'next_run'   => $this->get('next_run'),
+			'active'     => $this->get('active'),
+			'start_time' => round($start_run[2], 3),
+			'start_mem'  => round($start_run[4], 3),
+			'end_time'   => round($end_run[2], 3),
+			'end_mem'    => round($end_run[4], 3),
+			'delta_time' => round($end_run[2] - $start_run[2], 3),
+			'delta_mem'  => round($end_run[4] - $start_run[4], 3)
 		);
 	}
 }
