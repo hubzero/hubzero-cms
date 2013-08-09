@@ -60,7 +60,7 @@ class EventsControllerEvents extends Hubzero_Controller
 			$this->yearFormat  = "Y";
 			$this->monthFormat = "m";
 			$this->dayFormat   = "d";
-			$this->tz = true;
+			$this->tz = false;
 		}
 
 		$this->_setup();
