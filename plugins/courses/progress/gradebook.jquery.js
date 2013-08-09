@@ -125,7 +125,7 @@ HUB.Plugins.CoursesProgress = {
 			if (Math.ceil(Math.abs(s.css('left').replace('px', ''))) < Math.ceil(HUB.Plugins.CoursesProgress.offset) && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv+=1);
-				s.animate({left:'-='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
+				s.animate({left:'-='+HUB.Plugins.CoursesProgress.colWidth+'px'}, 'fast', function() {
 					if (Math.ceil(Math.abs(s.css('left').replace('px', ''))) == Math.ceil(HUB.Plugins.CoursesProgress.offset)) {
 						$('.nxt').addClass('disabled');
 					}
@@ -140,7 +140,7 @@ HUB.Plugins.CoursesProgress = {
 			if (Math.ceil(s.css('left').replace('px', '')) < 0 && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv-=1);
-				s.animate({left:'+='+HUB.Plugins.CoursesProgress.colWidth+'px'}, function() {
+				s.animate({left:'+='+HUB.Plugins.CoursesProgress.colWidth+'px'}, 'fast', function() {
 					if (Math.ceil(s.css('left').replace('px', '')) == 0) {
 						$('.prv').addClass('disabled');
 					}
@@ -583,7 +583,7 @@ HUB.Plugins.CoursesProgress = {
 			min     : 0,
 			max     : (rowCnt - cnt),
 			value   : 0,
-			animate : true,
+			animate : 'fast',
 			slide : function( event, ui ) {
 				HUB.Plugins.CoursesProgress.move(HUB.Plugins.CoursesProgress.colWidth * ui.value);
 			}
@@ -607,7 +607,7 @@ HUB.Plugins.CoursesProgress = {
 			$('.slider').slider('value', val);
 		}
 
-		s.animate({left:'-'+(loc)+'px'}, function ( e ) {
+		s.animate({left:'-'+(loc)+'px'}, 'fast', function ( e ) {
 			var l = Math.ceil(Math.abs(s.css('left').replace('px', ''))),
 				o = Math.ceil(HUB.Plugins.CoursesProgress.offset);
 
