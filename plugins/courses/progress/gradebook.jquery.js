@@ -410,7 +410,7 @@ HUB.Plugins.CoursesProgress = {
 								if (!s.is(':animated')) {
 									HUB.Plugins.CoursesProgress.move(num, function() {
 										$('.gradebook-column[data-colnum="'+colnum+'"]').css({'background-color' : "#FFFF99"});
-										$('.gradebook-column[data-colnum="'+colnum+'"]').animate({'background-color' : "initial"}, 2000);
+										$('.gradebook-column[data-colnum="'+colnum+'"]').animate({'background-color' : "#F9F9F9"}, 2000);
 									}, val);
 								}
 							}
