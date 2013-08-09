@@ -313,6 +313,24 @@ Content-type: text/html;charset=utf-8";
 											</tr>
 										</table>
 										<!-- ====== End Header Spacer ====== -->
+										<!-- ====== Start Header ====== -->
+										<table width="650" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse;">
+											<tbody>
+												<tr>
+													<td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+														Below is a list of support tickets currently assigned to you.
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<!-- ====== End Header ====== -->
+										<!-- ====== Start Header Spacer ====== -->
+										<table  width="650" cellpadding="0" cellspacing="0" border="0">
+											<tr style="border-collapse: collapse;">
+												<td height="30" style="border-collapse: collapse;"></td>
+											</tr>
+										</table>
+										<!-- ====== End Header Spacer ====== -->
 								<?php 
 								if (isset($this->tickets['critical']))
 								{
@@ -508,8 +526,13 @@ Content-type: text/html;charset=utf-8";
 										continue;
 									}
 
+									$k = 0;
 									foreach ($tickets as $ticket)
 									{
+										if ($k >= 10)
+										{
+											break;
+										}
 										if (!$ticket->summary)
 										{
 											$ticket->summary = substr($ticket->report, 0, 70);
@@ -566,6 +589,7 @@ Content-type: text/html;charset=utf-8";
 										<!-- ====== End Footer Spacer ====== -->
 								<?php
 										$i++;
+										$k++;
 										// Subtract one from total for each ticket passed
 										$more--;
 									}
@@ -573,11 +597,11 @@ Content-type: text/html;charset=utf-8";
 								?>
 								<?php if ($more) { ?>
 										<!-- ====== Start Header ====== -->
-										<table width="650" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse;">
+										<table width="650" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse; text-align: center;">
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px;">
-														... and <b><?php echo $more; ?></b> more open tickets.</span>
+														... and <b><?php echo $more; ?></b> more open tickets.
 													</td>
 												</tr>
 											</tbody>
