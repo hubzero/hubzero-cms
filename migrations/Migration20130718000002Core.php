@@ -138,7 +138,11 @@ class Migration20130718000002Core extends Hubzero_Migration
 					$query = "SELECT `id` FROM `#__assets` WHERE `name` = " . $db->Quote($cat->extension);
 					$db->setQuery($query);
 					$result = $db->loadResult();
-					$result = (is_numeric($result)) ? $result : '';
+					if (!is_numeric($result))
+					{
+						// If we don't find the component entry, continue
+						continue;
+					}
 
 					$query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES (";
 					$query .= $db->Quote($result) . ',';                                                             // parent_id (from list entered above)
@@ -206,8 +210,21 @@ class Migration20130718000002Core extends Hubzero_Migration
 					$query = "SELECT `id`, `level` FROM `#__assets` WHERE `name` = " . $db->Quote('com_content.category.'.$art->catid);
 					$db->setQuery($query);
 					$obj    = $db->loadObject();
-					$result = (is_object($obj) && is_numeric($obj->id))    ? $obj->id      : '';
 					$level  = (is_object($obj) && is_numeric($obj->level)) ? $obj->level+1 : 4;
+					if (is_object($obj) && is_numeric($obj->id))
+					{
+						$result = $obj->id;
+					}
+					else
+					{
+						// We didn't find a parent id, so just use the 'uncategorised' category
+						$query = "SELECT `asset_id` FROM `#__categories` WHERE `extension` = 'com_content' AND `alias` = 'uncategorised';";
+						$db->setQuery($query);
+						if (!$result = $db->loadResult())
+						{
+							continue;
+						}
+					}
 
 					$query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES (";
 					$query .= $db->Quote($result) . ',';                                            // parent_id
