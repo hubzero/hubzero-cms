@@ -139,6 +139,7 @@ class plgCoursesProgress extends JPlugin
 		{
 			case 'showgradebook':       $this->showgradebook();       break;
 			case 'getData':             $this->getData();             break;
+			case 'exportcsv':           $this->exportcsv();           break;
 			case 'savegradebookitem':   $this->savegradebookitem();   break;
 			case 'savegradebookentry':  $this->savegradebookentry();  break;
 			case 'resetgradebookentry': $this->resetgradebookentry(); break;
@@ -273,6 +274,83 @@ class plgCoursesProgress extends JPlugin
 		);
 
 		echo json_encode(array('assets'=>$assets, 'members'=>$mems, 'grades'=>$grades));
+		exit();
+	}
+
+	/**
+	 * Export gradebook to csv
+	 *
+	 * @return void
+	 **/
+	private function exportcsv()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		// Get all section members
+		$members = $this->course->offering()->section()->members(array('student'=>1));
+
+		// Refresh the grades
+		$this->course->offering()->gradebook()->refresh();
+
+		// Get the grades
+		$grades = $this->course->offering()->gradebook()->grades();
+
+		// Get the assets
+		$asset  = new CoursesTableAsset(JFactory::getDBO());
+		$assets = $asset->find(
+			array(
+				'w' => array(
+					'course_id'  => $this->course->get('id'),
+					'section_id' => $this->course->offering()->section()->get('id'),
+					'asset_type' => 'form',
+					'state'      => 1
+				),
+				'order_by'  => 'title',
+				'order_dir' => 'ASC'
+			)
+		);
+
+		$section  = ($this->course->offering()->section()->get('alias') != '__default') ? '.'.$this->course->offering()->section()->get('alias') : '';
+		$filename = $this->course->get('alias') . $section . '.gradebook.csv';
+
+		// Set content type headers
+		header("Content-type: application/csv");
+		header("Content-Disposition: attachment; filename={$filename}");
+		header("Pragma: no-cache");
+		header("Expires: 0");
+
+		$row   = array();
+		$row[] = 'Student Name';
+		foreach ($assets as $a)
+		{
+			$row[] = $a->title;
+		}
+		echo implode(',', $row) . "\n";
+
+		foreach ($members as $m)
+		{
+			$row   = array();
+			$row[] = JFactory::getUser($m->get('user_id'))->get('name');
+			foreach($assets as $a)
+			{
+				$row[] = $grades[$m->get('user_id')]['assets'][$a->id]['score'];
+			}
+			echo implode(',', $row) . "\n";
+		}
+
+		// That's all
 		exit();
 	}
 

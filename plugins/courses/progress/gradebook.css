@@ -219,8 +219,8 @@
 	position: absolute;
 	font-family: "fontcons";
 	content: "";
-	top: 10px;
-	left: 10px;
+	top: 11px;
+	left: 11px;
 	font-size: 20px;
 }
 /*.controls .refresh:hover:before {

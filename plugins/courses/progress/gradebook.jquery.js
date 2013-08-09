@@ -52,8 +52,9 @@ HUB.Plugins.CoursesProgress = {
 
 		// Get data
 		$.ajax({
-			url      : form.attr('action') + '&action=getData',
+			url      : form.attr('action'),
 			dataType : 'json',
+			data     : [{'name': 'action', 'value': 'getData'}],
 			success  : function ( data, textStatus, jqXHR ) {
 				// Render template - main portion
 				var source    = $('#gradebook-template-main').html(),
@@ -456,6 +457,23 @@ HUB.Plugins.CoursesProgress = {
 			$('.loading').show();
 
 			HUB.Plugins.CoursesProgress.loadData();
+		});
+
+		g.off('click', '.controls .progress-button').on('click', '.controls .progress-button', function ( e ) {
+			var t = $(this),
+				f = $('.gradebook-form');
+
+			window.location.href = f.attr('action');
+		});
+
+		g.off('click', '.controls .export').on('click', '.controls .export', function ( e ) {
+			var t = $(this),
+				f = $('.gradebook-form'),
+				a = f.attr('action');
+
+			a += (a.search('/?/')) ? '&action=exportcsv' : '?action=exportcsv';
+
+			window.open(a);
 		});
 
 		// Add a new gradebook item
