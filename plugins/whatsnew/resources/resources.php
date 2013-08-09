@@ -310,10 +310,16 @@ class plgWhatsnewResources extends JPlugin
 		// Get the component params and merge with resource params
 		$config =& JComponentHelper::getParams('com_resources');
 		$paramClass = 'JParameter';
+		$dateFormat = '%d %b %Y';
+		$tz = null;
+
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramClass = 'JRegistry';
+			$dateFormat = 'd M Y';
+			$tz = false;
 		}
+
 		$rparams = new $paramClass($row->params);
 		$params = $config;
 		$params->merge($rparams);
@@ -322,9 +328,9 @@ class plgWhatsnewResources extends JPlugin
 		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, '%d %b %Y');    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, '%d %b %Y');   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, '%d %b %Y'); break;
+			case 1: $thedate = JHTML::_('date', $row->created, $dateFormat, $tz);    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, $dateFormat, $tz);   break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, $dateFormat, $tz); break;
 		}
 
 		$juri =& JURI::getInstance();
