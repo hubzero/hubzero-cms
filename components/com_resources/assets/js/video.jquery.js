@@ -552,6 +552,10 @@ HUB.Video = {
 			//we have handled
 			doneLoading = true;
 		}
+		else
+		{
+			doneLoading = true;
+		}
 	},
 	
 	//-----
