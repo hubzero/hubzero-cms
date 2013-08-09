@@ -30,13 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$tz = 0;
-$dateFormat = '%d %b %Y';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = true;
-}
+	$tz = 0;
+	$dateFormat = '%d %b %Y';
+
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$dateFormat = 'd M Y';
+		$tz = null;
+	}
+
 	/* Job Posting */
 
 	// load some classes
@@ -49,8 +51,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$job->cat = $job->cat ? $job->cat : 'unspecified';
 	$job->type = $job->type ? $job->type : 'unspecified';
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%d %b %Y',0) : 'N/A';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%d %b %Y',0) : 'N/A';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, $dateFormat, $tz) : 'N/A';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, $dateFormat, $tz) : 'N/A';
 
 	// Transform the wikitext to HTML
 	$wikiconfig = array(

@@ -30,13 +30,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = "%Y-%m-%d";
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = "Y-m-d";
-	$tz = true;
-}
+	$dateFormat = "%Y-%m-%d";
+	$tz = 0;
+
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$dateFormat = "Y-m-d";
+		$tz = false;
+	}
 
 	/* Post New Job / Edit Job Form */
 

@@ -30,6 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+	$dateFormat = '%d %b %Y';
+	$tz = 0;
+
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$dateFormat = 'd M Y';
+		$tz = false;
+	}
+
 	/* Employer Dashboard View */
 
 	// load some classes
@@ -69,7 +78,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				? ' <span class="no">('.$this->subscription->pendingunits.' '.JText::_('COM_JOBS_ADDITIONAL').' '.$this->service->unitmeasure.'MULTIPLE_S'.' '.JText::_('COM_JOBS_MONTHS_PENDING').')</span>'
 				: '';
 	$expiredate = $this->subscription->expires
-				? JHTML::_('date', $this->subscription->expires, '%d %b %Y',0)
+				? JHTML::_('date', $this->subscription->expires,$dateFormat,$tz)
 				: JText::_('N/A');
 
 	// site admins
