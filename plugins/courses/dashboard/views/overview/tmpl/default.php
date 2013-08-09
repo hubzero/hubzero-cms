@@ -66,7 +66,7 @@ $query  = "SELECT sd.*
 $database->setQuery($query);
 $rows = $database->loadObjectList();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias');
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '');
 ?>
 
 	<h3 class="heading">
@@ -122,15 +122,16 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						{
 							case 'unit':
 								$obj = new CoursesModelUnit($row->scope_id);
-								$url = $base;
+								$url = $base . '&active=outline';
 							break;
 							case 'asset_group':
 								$obj = new CoursesModelAssetGroup($row->scope_id);
-								$url = $base;
+								$unit = CoursesModelUnit::getInstance($obj->get('unit_id'));
+								$url = $base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $obj->get('alias');
 							break;
 							case 'asset':
 								$obj = new CoursesModelAsset($row->scope_id);
-								$url = $base . '&unit=&b=&c=';
+								$url = $base . '&active=outline&unit=&b=&c=';
 							break;
 						}
 					?>
