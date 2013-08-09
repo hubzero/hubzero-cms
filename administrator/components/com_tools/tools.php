@@ -44,6 +44,8 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 else 
 {
+	$option = JRequest::getCmd('option');
+
 	if (!JFactory::getUser()->authorise('core.manage', $option)) 
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
