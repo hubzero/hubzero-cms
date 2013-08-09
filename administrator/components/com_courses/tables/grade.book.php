@@ -249,7 +249,7 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function syncGrades($course_id, $user_id=null)
 	{
-		if (!is_null($user_id))
+		if (!is_null($user_id) && !empty($user_id))
 		{
 			if (!is_array($user_id))
 			{
