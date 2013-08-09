@@ -820,6 +820,15 @@ class ResourcesHtml
 	 */
 	public function title($option, $resource, $params, $show_edit, $config=null, $show_posted=1)
 	{
+		$dateFormat = '%d %b %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'd M Y';
+			$tz = false;
+		}
+
 		$mode = JRequest::getWord('mode', '');
 
 		$txt = '';
@@ -858,7 +867,7 @@ class ResourcesHtml
 			$typenorm = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($resource->getTypeTitle()));
 
 			$html .= '<p>' . JText::_('COM_RESOURCES_POSTED') . ' ';
-			$html .= ($thedate) ? JHTML::_('date', $thedate, '%d %b %Y') . ' ' : '';
+			$html .= ($thedate) ? JHTML::_('date', $thedate, $dateFormat, $tz) . ' ' : '';
 			$html .= JText::_('COM_RESOURCES_IN') . ' <a href="' . JRoute::_('index.php?option=' . $option . '&type=' . $typenorm) . '">' . $resource->getTypeTitle() . '</a></p>' . "\n";
 		}
 
@@ -973,6 +982,21 @@ class ResourcesHtml
 	 */
 	public function about($database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $option, $fsize)
 	{
+		$exp1Format = '%B %d, %Y';
+		$exp2Format = '%I:%M %p, %B %d, %Y';
+		$yearFormat = '%Y';
+		$dateFormat = '%d %b %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$exp1Format = 'M d, Y';
+			$exp2Format = 'h:i A, M d, Y';
+			$yearFormat = 'Y';
+			$dateFormat = 'd M Y';
+			$tz = false;
+		}
+
 		$live_site = rtrim(JURI::base(),'/');
 		
 		//if ($resource->type != 31 || $resource->type != 2 || !$thistool) {
@@ -1307,8 +1331,8 @@ class ResourcesHtml
 				if ($resource->revision!='dev') 
 				{
 					$versiontext .=  ' - '.JText::_('COM_RESOURCES_PUBLISHED_ON').' ';
-					$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, '%d %b %Y'): JHTML::_('date', $resource->publish_up, '%d %b %Y');
-					$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.JText::_('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, '%d %b %Y'): '';
+					$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, $dateFormat, $tz): JHTML::_('date', $resource->publish_up, $dateFormat, $tz);
+					$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.JText::_('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, $dateFormat, $tz): '';
 				} 
 				else 
 				{
@@ -1318,7 +1342,7 @@ class ResourcesHtml
 			else if ($curtool) 
 			{
 				$versiontext .= $curtool->version.'</strong> - '.JText::_('PUBLISHED_ON').' ';
-				$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, '%d %b %Y'): JHTML::_('date', $resource->publish_up, '%d %b %Y');
+				$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, $dateFormat, $tz): JHTML::_('date', $resource->publish_up, $dateFormat, $tz);
 			}
 
 			if ($revision == 'dev') 
@@ -1412,7 +1436,7 @@ class ResourcesHtml
 					// Build our citation object
 					$cite = new stdClass();
 					$cite->title = $resource->title;
-					$cite->year = JHTML::_('date', $thedate, '%Y');
+					$cite->year = JHTML::_('date', $thedate, $yearFormat, $tz);
 					if ($alltools && ($resource->doi || $resource->doi_label)) 
 					{
 						// Get contribtool params
@@ -1460,14 +1484,14 @@ class ResourcesHtml
 		{
 			if (substr($attribs->get('timeof', ''), -8, 8) == '00:00:00') 
 			{
-				$exp = '%B %d, %Y';
+				$exp = $exp1Format;
 			} 
 			else 
 			{
-				$exp = '%I:%M %p, %B %d, %Y';
+				$exp = $exp2Format;
 			}
 			$seminar_time = ($attribs->get('timeof', '') != '0000-00-00 00:00:00' || $attribs->get('timeof', '') != '')
-						  ? JHTML::_('date', $attribs->get('timeof', ''), $exp)
+						  ? JHTML::_('date', $attribs->get('timeof', ''), $exp, $tz)
 						  : '';
 			$html .= self::tableRow(JText::_('COM_RESOURCES_TIME'), $seminar_time);
 		}

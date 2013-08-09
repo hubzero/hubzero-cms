@@ -2400,6 +2400,17 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 */
 	protected function citation()
 	{
+		$monthFormat = '%b';
+		$yearFormat = '%Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$yearFormat = 'Y';
+			$monthFormat = 'M';
+			$tz = false;
+		}
+
 		// Get contribtool params
 		$tconfig =& JComponentHelper::getParams('com_tools');
 
@@ -2476,7 +2487,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 						$doc .= "%0 " . JText::_('COM_RESOURCES_GENERIC') . "\r\n";
 						break; // generic
 				}
-				$doc .= "%D " . JHTML::_('date', $thedate, '%Y') . "\r\n";
+				$doc .= "%D " . JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
 				$author_array = explode(';', $row->author);
@@ -2495,7 +2506,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$doc .= "%U " . $url . "\r\n";
 				if ($thedate) 
 				{
-					$doc .= "%8 " . JHTML::_('date', $thedate, '%b') . "\r\n";
+					$doc .= "%8 " . JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
 				}
 				//$doc .= "\r\n";
 				if ($handle) 
@@ -2540,9 +2551,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 						$addarray['author'][$i]['last']  = ($last) ? trim($last) : '';
 					}
 				}
-				$addarray['month'] = JHTML::_('date', $thedate, '%b');
+				$addarray['month'] = JHTML::_('date', $thedate, $monthFormat, $tz);
 				$addarray['url']   = $url;
-				$addarray['year']  = JHTML::_('date', $thedate, '%Y');
+				$addarray['year']  = JHTML::_('date', $thedate, $yearFormat, $tz);
 				if ($handle) 
 				{
 					$addarray['doi'] = $handle;
