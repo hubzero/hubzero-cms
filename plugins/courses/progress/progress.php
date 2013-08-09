@@ -388,7 +388,7 @@ class plgCoursesProgress extends JPlugin
 		{
 			$asset->set('title', 'New Item');
 			$asset->set('type', 'form');
-			$asset->set('subtype', 'quiz');
+			$asset->set('subtype', 'exam');
 			$asset->set('created', date("Y-m-d H:i:s"));
 			$asset->set('created_by', JFactory::getUser()->get('id'));
 			$asset->set('state', 1);
