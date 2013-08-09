@@ -49,8 +49,8 @@ $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
 	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
+	$timeFormat = 'h:i A';
+	$tz = false;
 }
 ?>
 <div id="content-header">

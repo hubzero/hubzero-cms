@@ -38,9 +38,9 @@ if (!defined('ANSWERS_DATE_FORMAT'))
 		define('ANSWERS_DATE_YEAR', "Y");
 		define('ANSWERS_DATE_MONTH', "m");
 		define('ANSWERS_DATE_DAY', "d");
-		define('ANSWERS_DATE_TIMEZONE', true);
+		define('ANSWERS_DATE_TIMEZONE', false);
 		define('ANSWERS_DATE_FORMAT', 'd M Y');
-		define('ANSWERS_TIME_FORMAT', 'H:i p');
+		define('ANSWERS_TIME_FORMAT', 'h:i A');
 	}
 	else
 	{
