@@ -130,12 +130,12 @@ class modMyCourses
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='ta' AND c.state=1";
+					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='ta'";
 
 		switch ($type)
 		{
 			case 'all':
-				$query = "( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY title ASC"; //( $query1 ) UNION 
+				$query = "( $query2 ) UNION ( $query3 ) UNION ( $query4 ) UNION ( $query5 ) ORDER BY title ASC"; //( $query1 ) UNION 
 			break;
 			case 'manager':
 				$query = $query2; //"( $query1 ) UNION ( $query2 )";
