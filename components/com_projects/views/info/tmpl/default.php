@@ -25,6 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M d, Y';
+	$tz = false;
+}
+
 $view = $this->info;
 $goto = $this->goto;
 
@@ -96,7 +105,7 @@ $privacy = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_
 			</tr>
 			<tr>
 				<td class="htd"><?php echo JText::_('COM_PROJECTS_CREATED'); ?></td>
-				<td><?php echo JHTML::_('date', $view->project->created, '%b %d, %Y'); ?></td>
+				<td><?php echo JHTML::_('date', $view->project->created, $dateFormat, $tz); ?></td>
 			</tr>
 		</tbody>
 	</table>

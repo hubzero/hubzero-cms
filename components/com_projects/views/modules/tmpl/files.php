@@ -24,6 +24,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%m/%d/%Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'm/d/Y';
+	$tz = false;
+}
+
 ?>
 <div class="sidebox">
 		<h4 class="assets"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$this->goto.a.'active=files'); ?>" class="hlink"><?php echo ucfirst(JText::_('COM_PROJECTS_FILES')); ?></a>
@@ -40,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li>
 				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=files'.a.$this->goto).'/?action=download'.a.'file='.urlencode($file['fpath']); ?>" title="<?php echo $file['name']; ?>"><?php echo ProjectsHtml::shortenFileName($file['name']); ?></a>
 				<span class="block faded mini">
-					<?php echo $file['size']; ?> | <?php echo JText::_('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo JHTML::_('date', strtotime($file['date']), '%m/%d/%Y'); ?> &middot; <?php echo ProjectsHtml::shortenName($file['author']); ?>
+					<?php echo $file['size']; ?> | <?php echo JText::_('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo JHTML::_('date', strtotime($file['date']), $dateFormat, $tz); ?> &middot; <?php echo ProjectsHtml::shortenName($file['author']); ?>
 				</span>
 			</li>
 		<?php } ?>

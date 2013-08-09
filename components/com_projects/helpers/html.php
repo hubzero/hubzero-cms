@@ -31,6 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M d, Y';
+	$tz = false;
+}
+
+
 if (!defined('n')) {
 
 /**
@@ -666,7 +676,7 @@ class ProjectsHtml
 		$html.= t.t.' 	<div id="options-dock">' . "\n";
 		$html.= t.t.' 		<div>' . "\n";
 		$html.= t.t.' 			<p>' . JText::_('COM_PROJECTS_JOINED') 
-				. ' ' . JHTML::_('date', $view->project->since, '%b %d, %Y') . '</p>' . "\n";
+				. ' ' . JHTML::_('date', $view->project->since, $dateFormat, $tz) . '</p>' . "\n";
 		if ($options) 
 		{ 
 			$html.= t.t.'			<ul>' . "\n";

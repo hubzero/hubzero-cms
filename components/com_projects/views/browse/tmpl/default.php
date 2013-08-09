@@ -24,6 +24,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'b d, Y';
+	$tz = false;
+}
+
 $html  = '';
 $use_alias = $this->config->get('use_alias', 0);
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -140,7 +150,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= t.t.t.t.'<td class="mini faded">';
 			if($row->owner && $row->confirmed == 1) {
 				if($row->state == 1 && $row->setup_stage >= $setup_complete) {
-					$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('COM_PROJECTS_ACTIVE').'</a></span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, '%b %d, %Y');
+					$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('COM_PROJECTS_ACTIVE').'</a></span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 				}
 				else if ($row->setup_stage < $setup_complete) {
 						$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('COM_PROJECTS_STATUS_SETUP').'</a></span> '.JText::_('COM_PROJECTS_IN_PROGRESS');
@@ -149,7 +159,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 					$html .= '<span class="faded italic">'.JText::_('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
 				}
 				else if($row->state == 5) {
-					$html .= '<span class="italic pending">'.JText::_('COM_PROJECTS_STATUS_PENDING').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, '%b %d, %Y');
+					$html .= '<span class="italic pending">'.JText::_('COM_PROJECTS_STATUS_PENDING').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 				}
 			}
 			$html .= '</td>'.n;

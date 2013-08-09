@@ -24,6 +24,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%d %b. %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M. Y';
+	$tz = false;
+}
+
 $html  = '';
 
 // Do some text cleanup
@@ -56,14 +66,14 @@ if($this->project->state == 1)
 	$class = 'active';
 	$note  = '<span class="' . $class . '" >' 
 	. JText::_('COM_PROJECTS_ACTIVE') . '</span> ' . JText::_('COM_PROJECTS_SINCE') . ' '
-	. JHTML::_('date', $this->project->created, '%d %b. %Y');
+	. JHTML::_('date', $this->project->created, $dateFormat, $tz);
 }
 else if($this->project->state == 5)
 {
 	$class = 'pending';
 	$note  = '<span class="' . $class . '" >' 
 	. JText::_('COM_PROJECTS_STATUS_PENDING') . '</span> ' . JText::_('COM_PROJECTS_SINCE') . ' '
-	. JHTML::_('date', $this->project->created, '%d %b. %Y');
+	. JHTML::_('date', $this->project->created, $dateFormat, $tz);
 }
 else 
 {

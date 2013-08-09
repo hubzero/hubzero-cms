@@ -24,6 +24,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M d, Y';
+	$tz = false;
+}
+
 $html  = '';
 $use_alias = $this->config->get('use_alias', 0);
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -153,7 +163,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			: htmlentities(ProjectsHtml::cleanText($row->title));
 			$html .='">'.ProjectsHtml::cleanText($row->title).'</a><span class="block mini faded">'.$row->alias.'</span></td>'.n;
 			$html .= '<td class="mini faded">';
-			$html .= JHTML::_('date', $row->created, '%b %d, %Y');
+			$html .= JHTML::_('date', $row->created, $dateFormat, $tz);
 			$html .= '</td>'.n;
 			$html .= '<td class="mini faded">' . '<a href="/members/'.$row->created_by_user.'">'.$row->authorname.'</a>' ;
 			$profile = Hubzero_User_Profile::getInstance($row->created_by_user);

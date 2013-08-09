@@ -1945,7 +1945,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 * @return     void
 	 */
 	protected function _save($pid = 0, $what = 'info', $setup = 1, $tempid = 0) 
-	{			
+	{
+		$dateFormat = '%b %d, %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'M d, Y';
+			$tz = false;
+		}
+
 		// Incoming
 		$name 		= trim(JRequest::getVar( 'name', '', 'post' ));
 		$title 		= trim(JRequest::getVar( 'title', '', 'post' ));
@@ -2103,7 +2112,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						if ($key == 'grant_status' && $old_params != $project->params)
 						{
 							// Meta data for comment
-							$meta = '<meta>' . JHTML::_('date', date( 'Y-m-d H:i:s' ), '%b %d, %Y')
+							$meta = '<meta>' . JHTML::_('date', date( 'Y-m-d H:i:s' ), $dateFormat, $tz)
 							. ' - ' . $this->juser->get('name') . '</meta>';
 							
 							$cbase   = $obj->admin_notes;
@@ -2792,6 +2801,15 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 */	
 	protected function _process() 
 	{
+		$dateFormat = '%b %d, %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'M d, Y';
+			$tz = false;
+		}
+
 		// Incoming
 		$reviewer 	= JRequest::getVar( 'reviewer', '' );
 		$action  	= JRequest::getVar( 'action', '' );
@@ -2866,7 +2884,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			// Meta data for comment
 			$now = date( 'Y-m-d H:i:s' );
 			$actor = $this->juser->get('name');
-			$meta = '<meta>' . JHTML::_('date', $now, '%b %d, %Y') . ' - ' . $actor . '</meta>';				
+			$meta = '<meta>' . JHTML::_('date', $now, $dateFormat, $tz) . ' - ' . $actor . '</meta>';				
 						
 			// Save approval
 			if ($reviewer == 'sensitive')
