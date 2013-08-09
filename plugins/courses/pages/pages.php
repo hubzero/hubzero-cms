@@ -107,7 +107,25 @@ class plgCoursesPages extends Hubzero_Plugin
 		}
 
 		// Is the user a course manager?
-		$total = $offering->pages(array('count' => true));
+		//$total = $offering->pages(array('count' => true));
+		// Section specific pages
+		$total = $offering->pages(array(
+			'count' => true,
+			'section_id' => $offering->section()->get('id')
+		), true);
+
+		// Offering specific pages
+		$total += $offering->pages(array(
+			'count' => true,
+			'section_id' => 0
+		), true);
+
+		// All course pages
+		$total += $offering->pages(array(
+			'count' => true,
+			'course_id'   => 0,
+			'offering_id' => 0
+		), true);
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
@@ -193,13 +211,42 @@ class plgCoursesPages extends Hubzero_Plugin
 
 		$active = JRequest::getVar('unit', '');
 
-		$pages = $this->view->offering->pages();
+		// Section specific pages
+		$spages = $this->view->offering->pages(array(
+			'section_id' => $this->view->offering->section()->get('id')
+		), true);
 
-		$page = $this->view->offering->page($active);
+		// Offering specific pages
+		$opages = $this->view->offering->pages(array(
+			'section_id' => 0
+		), true);
+
+		// All course pages
+		$gpages = $this->view->offering->pages(array(
+			'course_id'   => 0,
+			'offering_id' => 0
+		), true);
+
+		$pages = array_merge($spages, $opages);
+		$pages = array_merge($pages, $gpages);
+
+		//$page = $this->view->offering->page($active);
+		if ($active)
+		{
+			foreach ($pages as $p)
+			{
+				if ($p->get('url') == $active)
+				{
+					$page = $p;
+					break;
+				}
+			}
+		}
 		if (!$active || !$page->exists())
 		{
 			$page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
 		}
+		$this->view->pages = $pages;
 		$this->view->page  = $page;
 	}
 
@@ -219,7 +266,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			);
 			return;
 		}
-		if (!$this->view->offering->access('manage'))
+		if (!$this->view->offering->access('manage', 'section'))
 		{
 			return $this->_list();
 		}
@@ -242,6 +289,36 @@ class plgCoursesPages extends Hubzero_Plugin
 			$this->view->model =  new CoursesModelPage($page);
 		}
 		$this->view->notifications = $this->getPluginMessage();
+
+		if ($this->view->model->exists())
+		{
+			// Ensure section managers can only edit section pages
+			if (!$this->view->model->get('section_id') && !$this->view->offering->access('manage'))
+			{
+				return $this->_list();
+			}
+		}
+
+		// Section specific pages
+		$spages = $this->view->offering->pages(array(
+			'section_id' => $this->view->offering->section()->get('id')
+		), true);
+
+		// Offering specific pages
+		$opages = $this->view->offering->pages(array(
+			'section_id' => 0
+		), true);
+
+		// All course pages
+		$gpages = $this->view->offering->pages(array(
+			'course_id'   => 0,
+			'offering_id' => 0
+		), true);
+
+		$pages = array_merge($spages, $opages);
+		$pages = array_merge($pages, $gpages);
+
+		$this->view->pages = $pages;
 	}
 
 	/**
@@ -260,7 +337,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			);
 			return;
 		}
-		if (!$this->view->offering->access('manage'))
+		if (!$this->view->offering->access('manage', 'section'))
 		{
 			return $this->_list();
 		}
@@ -274,6 +351,12 @@ class plgCoursesPages extends Hubzero_Plugin
 			//$this->setError($model->getError());
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->_edit($model);
+		}
+
+		// Ensure section managers can only edit section pages
+		if (!$model->get('section_id') && !$this->view->offering->access('manage'))
+		{
+			return $this->_list();
 		}
 
 		if (!$model->store(true))
@@ -388,6 +471,12 @@ class plgCoursesPages extends Hubzero_Plugin
 			echo json_encode(array('error' => JText::_('File not found')));
 			exit();
 		}
+
+		/*$page = new CoursesModelPage(JRequest::getInt('page', 0));
+		if (!$page->exists())
+		{
+			$page = null;
+		}*/
 
 		//define upload directory and make sure its writable
 		$path = $this->_path();
@@ -509,6 +598,12 @@ class plgCoursesPages extends Hubzero_Plugin
 			return $this->_files();
 		}
 
+		/*$page = new CoursesModelPage(JRequest::getInt('page', 0));
+		if (!$page->exists())
+		{
+			$page = null;
+		}*/
+
 		// Build the upload path if it doesn't exist
 		$path = $this->_path();
 
@@ -543,9 +638,41 @@ class plgCoursesPages extends Hubzero_Plugin
 	 * 
 	 * @return     string
 	 */
-	private function _path()
+	private function _path($page=null)
 	{
-		return JPATH_ROOT . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS . $this->view->course->get('id') . DS . 'pagefiles' . DS . $this->view->offering->get('id');
+		$path = JPATH_ROOT . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS;
+		if (is_object($page))
+		{
+			if (!$page->get('offering_id'))
+			{
+				$path .= 'pagefiles';
+			}
+			else
+			{
+				$path .= $this->view->course->get('id') . DS;
+
+				if ($page->get('section_id'))
+				{
+					$path .= 'sections' . DS . $page->get('section_id') . DS . 'pagefiles';
+				}
+				else
+				{
+					$path .= 'pagefiles' . DS . $this->view->offering->get('id');
+				}
+			}
+		}
+		else
+		{
+			if (!$this->view->offering->access('manage') && $this->view->offering->access('manage', 'section'))
+			{
+				$path .= $this->view->course->get('id') . DS . 'sections' . DS . $this->view->offering->section()->get('id') . DS . 'pagefiles';
+			}
+			else
+			{
+				$path .= $this->view->course->get('id') . DS . 'pagefiles' . DS . $this->view->offering->get('id');
+			}
+		}
+		return $path;
 	}
 
 	/**
@@ -580,6 +707,12 @@ class plgCoursesPages extends Hubzero_Plugin
 			}
 			return $this->_files();
 		}
+
+		/*$page = new CoursesModelPage(JRequest::getInt('page', 0));
+		if (!$page->exists())
+		{
+			$page = null;
+		}*/
 
 		// Build the file path
 		$path = $this->_path();
@@ -651,6 +784,8 @@ class plgCoursesPages extends Hubzero_Plugin
 				$this->view->setError($error);
 			}
 		}
+
+		$this->view->page = new CoursesModelPage(JRequest::getInt('page', 0));
 	}
 
 	/**
@@ -660,7 +795,15 @@ class plgCoursesPages extends Hubzero_Plugin
 	 */
 	public function _fileList()
 	{
-		$path = $this->_path();
+		//$page = new CoursesModelPage(JRequest::getInt('page', 0));
+		$page = new CoursesModelPage(JRequest::getInt('page', 0));
+		if (!$page->exists())
+		{
+			$page->set('offering_id', $this->view->offering->get('id'));
+			$page->set('section_id', JRequest::getInt('section_id', 0));
+		}
+
+		$path = $this->_path($page);
 
 		$folders = array();
 		$docs    = array();
@@ -778,8 +921,21 @@ class plgCoursesPages extends Hubzero_Plugin
 			return;
 		}
 
+		$page = $this->view->offering->page(JRequest::getVar('unit', ''));
+		if (!$page->exists())
+		{
+			$pages = $this->view->offering->pages(array(
+				'url'         => JRequest::getVar('unit', ''),
+				'offering_id' => array(0, $this->view->offering->get('id')),
+				'section_id'  => array(0, $this->view->offering->section()->get('id')),
+				'limit'       => 1,
+				'start'       => 0
+			), true);
+			$page = isset($pages[0]) ? $pages[0] : null;
+		}
+
 		// Add JPATH_ROOT
-		$filename = $this->_path() . DS . ltrim($filename, DS);
+		$filename = $this->_path($page) . DS . ltrim($filename, DS);
 
 		// Ensure the file exist
 		if (!file_exists($filename)) 

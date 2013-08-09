@@ -37,7 +37,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		<form action="/index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="<?php echo JRoute::_($base . '&action=list&tmpl=component'); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="<?php echo JRoute::_($base . '&action=list&tmpl=component&page=' . $this->page->get('id') . '&section_id=' . $this->page->get('section_id')); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
 
@@ -56,6 +56,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+				<input type="hidden" name="page" value="<?php echo $this->page->get('id'); ?>" />
+				<input type="hidden" name="section_id" value="<?php echo $this->page->get('section_id'); ?>" />
 				<input type="hidden" name="active" value="pages" />
 				<input type="hidden" name="action" value="upload" />
 				<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />

@@ -24,32 +24,32 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$pages = $this->offering->pages();
+//$pages = $this->offering->pages();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
 ?>
 <div class="pages-menu">
 	<ul>
-<?php if (count($pages) > 0) { ?>
+<?php if (count($this->pages) > 0) { ?>
 		<?php
-		foreach ($pages as $page)
+		foreach ($this->pages as $page)
 		{
 			?>
 		<li>
-			<a<?php if ($page->get('url') == $this->page->get('url')) { echo ' class="active"'; } ?> href="<?php echo JRoute::_($base . '&unit=' . $page->get('url')); ?>"><?php echo $this->escape(stripslashes($page->get('title'))); ?></a>
+			<a class="<?php echo $page->get('section_id') ? 'page-section' : ($page->get('offering_id') ? 'page-offering' : 'page-courses'); ?> page<?php if ($page->get('url') == $this->page->get('url')) { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&unit=' . $page->get('url')); ?>"><?php echo $this->escape(stripslashes($page->get('title'))); ?></a>
 		</li>
 			<?php
 		}
 		?>
 <?php } else { ?>
 		<li>
-			<a class="active" href="<?php echo $base; ?>"><?php echo JText::_('Notice!'); ?></a>
+			<a class="active page" href="<?php echo $base; ?>"><?php echo JText::_('Notice!'); ?></a>
 		</li>
 <?php } ?>
 	</ul>
-<?php if ($this->offering->access('manage')) { ?>
+<?php if ($this->offering->access('manage', 'section')) { ?>
 	<p>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&unit=add'); ?>">
+		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&unit=add'); ?>">
 			<?php echo JText::_('Add page'); ?>
 		</a>
 	</p>

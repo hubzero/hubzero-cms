@@ -55,13 +55,17 @@
 	#page_menu li .guide:before {
 		content: "\f059";
 	}
-	#page_content.course_guide {
+	/*#page_content.course_guide {
 		margin: 0;
-	}
+	}*/
 
 /* Overlay content */
 	#guide-overlay {
 		display: none;
+	}
+	.fancybox-overlay #guide-overlay,
+	.course_guide #guide-overlay {
+		display: block;
 	}
 	#guide-content {
 		margin-top: 50px;
@@ -117,7 +121,8 @@
 		width: 13em;
 	}
 	.guide-instructions:after {
-		content: "\273D";
+		/*content: "\273D";*/
+		content: "\f059";
 		font-family: "Fontcons";
 		display: block;
 		width: 1em;
@@ -210,6 +215,9 @@
 		left: -88px;
 		text-align: center;
 		color: #ffc;
+	}
+	.course_guide .guide-nav ul li strong:before {
+		color: #333;
 	}
 	.guide-nav ul li .outline:before { content: "\f0ae"; }
 	.guide-nav ul li .members:before { content: "\f007"; }
@@ -307,13 +315,13 @@
 	.course_guide .guide-menu p {
 		text-align: center;
 	}
-	.course_guide .guide-wrap {
+	/*.course_guide .guide-wrap {
 		margin: 0 0 -5000px 20px;
 		border-top: 1px solid #e9e9e9;
 		border-left: 1px solid #e9e9e9;
 		background: #f9f9f9;
 		padding: 20px 20px 5020px 20px;;
-	}
+	}*/
 	.course_guide .guide-content {
 		position: relative;
 	}

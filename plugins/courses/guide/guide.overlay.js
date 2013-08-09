@@ -20,12 +20,8 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 	
-	$.fancybox.open(
-		[{
-			href: '#guide-overlay'
-		}],
-		{
-			type: 'inline',
+	$('#page_menu a.guide').fancybox({
+			type: 'ajax',
 			width: '100%',
 			height: 'auto',
 			autoSize: false,
@@ -37,6 +33,10 @@ jQuery(document).ready(function(jq){
 			tpl: {
 				wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
 			},
+			beforeLoad: function() {
+				//this.element.attr('href', this.element.attr('href').nohtml());
+				this.href = this.element.attr('href').nohtml();
+			},
 			afterShow: function() {
 				var guide = $('div.guide-instructions');
 				if (guide.length > 0) {
@@ -47,15 +47,47 @@ jQuery(document).ready(function(jq){
 					}
 				}
 				$('div.fancybox-wrap').css('position', 'absolute');
-			},
-			beforeClose: function() {
-				$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
-					// Nothing to see here
-					//console.log(response);
-				});
 			}
-		}
-	);
+	});
+
+	if ($('#guide-overlay').length > 0) {
+		$.fancybox.open(
+			[{
+				href: '#guide-overlay'
+			}],
+			{
+				type: 'inline',
+				width: '100%',
+				height: 'auto',
+				autoSize: false,
+				fitToView: false,
+				titleShow: false,
+				closeBtn: false,
+				closeClick: true,
+				topRatio: 0,
+				tpl: {
+					wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
+				},
+				afterShow: function() {
+					var guide = $('div.guide-instructions');
+					if (guide.length > 0) {
+						var m = guide.css('margin-top');
+						console.log(m);
+						if (m != '0px') {
+							guide.css('margin-bottom', ($('#page_container').offset().top - 340) + 'px');
+						}
+					}
+					$('div.fancybox-wrap').css('position', 'absolute');
+				},
+				beforeClose: function() {
+					$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
+						// Nothing to see here
+						//console.log(response);
+					});
+				}
+			}
+		);
+	}
 
 	$(window).resize(function() {
 		var guide = $('div.guide-instructions');

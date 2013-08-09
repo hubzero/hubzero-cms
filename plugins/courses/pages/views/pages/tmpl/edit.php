@@ -15,6 +15,7 @@ $view->controller = $this->controller;
 $view->course     = $this->course;
 $view->offering   = $this->offering;
 $view->page       = $this->model;
+$view->pages      = $this->pages;
 $view->display();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
@@ -47,6 +48,18 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				</div>
 				<div class="clear"></div>
 
+			<?php if ($this->offering->access('manage')) { ?>
+				<label for="field-section_id">
+					<?php echo JText::_('Page appears for section:'); ?>
+					<select name="fields[section_id]" id="field-section_id">
+						<option value="0"<?php if ($this->model->get('section_id') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('- All sections -'); ?></option>
+					<?php foreach ($this->offering->sections() as $section) { ?>
+						<option value="<?php echo $section->get('id'); ?>"<?php if ($section->get('id') == $this->model->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+					<?php } ?>
+					</select>
+				</label>
+			<?php } ?>
+
 				<label for="fields_content">Content: <span class="required"><?php echo JText::_('required'); ?></span>
 					<?php
 						ximport('Hubzero_Wiki_Editor');
@@ -57,17 +70,17 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				</label>
 
 				<div class="field-wrap">
-				<div class="grid">
-					<div class="col span-half">
-						<div id="file-uploader" data-action="<?php echo JRoute::_($base . '&action=upload&no_html=1'); ?>" data-list="<?php echo JRoute::_($base . '&action=list&no_html=1'); ?>">
-							<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="<?php echo JRoute::_($base . '&action=list&tmpl=component'); ?>"></iframe>
+					<div class="grid">
+						<div class="col span-half">
+							<div id="file-uploader" data-action="<?php echo JRoute::_($base . '&action=upload&no_html=1&section_id='); ?>" data-section="<?php echo $this->model->get('section_id'); ?>" data-list="<?php echo JRoute::_($base . '&action=list&no_html=1&section_id='); ?>">
+								<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="<?php echo JRoute::_($base . '&action=list&tmpl=component&page=' . $this->model->get('id') . '&section_id=' . $this->model->get('section_id')); ?>"></iframe>
+							</div>
+						</div>
+						<div class="col span-half omega">
+							<div id="file-uploader-list"></div>
 						</div>
 					</div>
-					<div class="col span-half omega">
-						<div id="file-uploader-list"></div>
-					</div>
 				</div>
-			</div>
 
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
@@ -76,9 +89,12 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 			<input type="hidden" name="fields[active]" value="<?php echo $this->model->get('active', 1); ?>" />
 			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->offering->get('id'); ?>" />
+		<?php if ($this->offering->access('manage', 'section') && !$this->offering->access('manage')) { ?>
+			<input type="hidden" name="fields[section_id]" value="<?php echo $this->offering->section()->get('id'); ?>" />
+		<?php } ?>
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->model->get('id'); ?>" />
-	
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />

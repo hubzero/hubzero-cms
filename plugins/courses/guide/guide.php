@@ -67,10 +67,6 @@ class plgCoursesGuide extends Hubzero_Plugin
 			return;
 		}
 
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
-
 		ximport('Hubzero_Plugin_View');
 		$this->view = new Hubzero_Plugin_View(
 			array(
@@ -97,6 +93,10 @@ class plgCoursesGuide extends Hubzero_Plugin
 	 */
 	public function &onCourseAreas()
 	{
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+		Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
+
 		$area = array(
 			'name' => $this->_name,
 			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
@@ -200,11 +200,11 @@ class plgCoursesGuide extends Hubzero_Plugin
 
 			switch ($action)
 			{
-				case 'edit':   $this->_edit();   break;
-				case 'save':   $this->_save();   break;
+				//case 'edit':   $this->_edit();   break;
+				//case 'save':   $this->_save();   break;
 				case 'mark':   $this->_mark();   break;
 
-				case 'download': $this->_fileDownload(); break;
+				//case 'download': $this->_fileDownload(); break;
 
 				default: $this->_default(); break;
 			}
@@ -231,9 +231,9 @@ class plgCoursesGuide extends Hubzero_Plugin
 	 */
 	public function _default()
 	{
-		$this->view->setLayout('default');
+		$this->view->setLayout('overlay');
 
-		$active = JRequest::getVar('unit', '');
+		/*$active = JRequest::getVar('unit', '');
 
 		$pages = $this->view->offering->pages(array(
 			'course_id'   => 0,
@@ -245,7 +245,7 @@ class plgCoursesGuide extends Hubzero_Plugin
 			$page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
 		}
 		//$this->view->pages = $pages;
-		$this->view->page  = $page;
+		$this->view->page  = $page;*/
 	}
 
 	/**

@@ -13,7 +13,7 @@
 
 */
 	#page_menu li .pages:before {
-		content: "\f016";
+		content: "\f05a";
 	}
 	#page_content.course_pages {
 		margin: 0;
@@ -70,10 +70,19 @@
 		color: #444;
 	}
 	.course_pages .pages-menu li a:before {
-		content: "\f016";
+		content: "\f0f5";
 		font-family: 'Fontcons';
 		color: #999;
 		margin-right: 0.5em;
+	}
+	.course_pages .pages-menu li a.page-section:before {
+		content: "\f0f5";
+	}
+	.course_pages .pages-menu li a.page-offering:before {
+		content: "\f016";
+	}
+	.course_pages .pages-menu li a.page-courses:before {
+		content: "\f059";
 	}
 	.course_pages .pages-menu li a.active:before,
 	.course_pages .pages-menu li a:hover:before {
@@ -135,6 +144,14 @@
 	.course_pages .manager-options a:hover {
 		color: #333;
 	}
+	.course_pages .manager-options a.edit:before {
+		content: "\270E";
+		font-family: "Fontcons";
+	}
+	.course_pages .manager-options a.delete:before {
+		content: "\f014";
+		font-family: "Fontcons";
+	}
 
 	.course_pages .embedded-plugin {
 		background: url("/components/com_wiki/assets/img/checkered.png");
@@ -149,6 +166,29 @@
 		top: 50%;
 		display: block;
 		position: relative;
+	}
+	.course_pages .figure {
+		display: inline-block;
+		background: #efefef;
+		border: 1px solid #e1e1e1;
+		padding: 4px;
+	}
+	.course_pages .figure img {
+		margin: 0; /*.5em;*/
+		padding: 0;
+		background: transparent;
+		text-align: center;
+		display: block;
+	}
+	.course_pages .figure a {
+		border: none;
+	}
+	.course_pages .figcaption {
+		display: block;
+		margin: 0;
+		padding: 0.5em 0;
+		background: #efefef;
+		font-size: 0.85em;
 	}
 
 /* Drag and drop file upload */
