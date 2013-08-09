@@ -381,7 +381,7 @@ class plgCoursesProgress extends JPlugin
 		if ($asset_id = JRequest::getInt('asset_id', false))
 		{
 			$asset->load($asset_id);
-			$asset->set('title', JRequest::getVar('title', 'New Item'));
+			$asset->set('title', JRequest::getVar('title', $asset->get('title')));
 			$asset->set('subtype', JRequest::getWord('type', $asset->get('subtype')));
 		}
 		else

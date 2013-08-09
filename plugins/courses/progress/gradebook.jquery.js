@@ -369,7 +369,9 @@ HUB.Plugins.CoursesProgress = {
 							data     : d,
 							dataType : 'json',
 							success  : function ( data, textStatus, jqXHR ) {
-								t.html(data.title);
+								var title = (data.title.length < 10) ? data.title : data.title.substring(0, 10)+'...';
+								t.html(title);
+								t.parents('.form-name').attr('title', data.title);
 
 								// Move based on alphabetic list
 								var list = $('.gradebook-container .gradebook-column:not(.gradebook-students)');
@@ -421,6 +423,28 @@ HUB.Plugins.CoursesProgress = {
 			}
 		});
 
+		// Add click event to cells to enter edit mode
+		g.off('change', '.form-type select').on('change', '.form-type select', function ( e ) {
+			var t = $(this),
+				f = $('.gradebook-form'),
+				d = [];
+
+				d.push({"name":"action",     "value":"savegradebookitem"});
+				d.push({"name":"asset_id",   "value":t.parents('.gradebook-column').data('asset-id')});
+				d.push({"name":"type",       "value":t.val()});
+
+				// Submit save
+				$.ajax({
+					type     : "POST",
+					url      : f.attr('action'),
+					data     : d,
+					dataType : 'json',
+					success  : function ( data, textStatus, jqXHR ) {
+						// Success
+					}
+				});
+		});
+
 		g.off('click', '.override.active').on('click', '.override.active', function ( e ) {
 			var t = $(this),
 				f = $('.gradebook-form'),
@@ -455,6 +479,7 @@ HUB.Plugins.CoursesProgress = {
 			$('.navigation').hide();
 			$('.controls').hide();
 			$('.loading').show();
+			$(".gradebook #none").remove();
 
 			HUB.Plugins.CoursesProgress.loadData();
 		});
