@@ -60,7 +60,7 @@ else
 
 Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview');
 ?>
-<div id="content-header">
+<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 	<h2>
 		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 	</h2>
@@ -70,7 +70,7 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 	</p>
 	<?php } ?>
 	<p id="page_identity">
-		<a class="browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
+		<a class="icon-browse browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
 			<?php echo JText::_('Course catalog'); ?>
 		</a>
 	</p>

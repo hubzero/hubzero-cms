@@ -45,7 +45,7 @@ $tmpl    = JRequest::getWord('tmpl', false);
 $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 
 if (!$no_html && $tmpl != 'component') : ?>
-	<div id="content-header">
+	<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>

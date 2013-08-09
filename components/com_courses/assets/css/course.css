@@ -59,6 +59,8 @@
 	}
 	#content-header h2 {
 		padding: 0px;
+	}
+	#content-header.with-identity h2 {
 		margin-right: 320px;
 	}
 	#content-header p {

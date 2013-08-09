@@ -175,7 +175,7 @@
 	#page_menu li .progress:before { content: "\f012"; } /* \f091 */
 	#page_menu li .dashboard:before { content: "\f083"; }
 	#page_menu li .notes:before { content: "\270D"; }
-	#page_menu li .pages:before { content: "\f016"; }
+	#page_menu li .pages:before { content: "\f05a"; } /* \f016 */
 	#page_menu li .guide:before { content: "\f059"; }
 
 	#page_menu li.protected {

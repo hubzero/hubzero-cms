@@ -849,7 +849,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function pages($filters=array())
+	public function pages($filters=array(), $reload=false)
 	{
 		if (!isset($filters['offering_id']))
 		{
@@ -871,7 +871,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!isset($this->_pages) || !is_array($this->_pages))
+		if (!isset($this->_pages) || !is_array($this->_pages) || $reload)
 		{
 			$tbl = new CoursesTablePage($this->_db);
 
