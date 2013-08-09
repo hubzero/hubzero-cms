@@ -233,7 +233,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 		foreach ($results as $grade)
 		{
-			if (is_null($grade->score))
+			if (is_null($grade->score) && is_null($grade->override))
 			{
 				continue;
 			}
