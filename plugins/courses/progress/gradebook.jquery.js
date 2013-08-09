@@ -30,7 +30,7 @@ HUB.Plugins.CoursesProgress = {
 	members  : {},
 	assets   : {},
 
-	loadData: function ( doInit )
+	loadData: function ( )
 	{
 		var $         = this.jQuery,
 			gradebook = $('.gradebook'),
@@ -85,9 +85,7 @@ HUB.Plugins.CoursesProgress = {
 
 				// Do initial resize and setup of events
 				HUB.Plugins.CoursesProgress.resizeTable();
-				if (doInit) {
-					HUB.Plugins.CoursesProgress.initialize();
-				}
+				HUB.Plugins.CoursesProgress.initialize();
 
 				HUB.Plugins.CoursesProgress.members = data.members;
 				HUB.Plugins.CoursesProgress.assets  = data.assets;
@@ -121,7 +119,7 @@ HUB.Plugins.CoursesProgress = {
 		var s      = g.find('.slidable-inner'),
 			slider = $('.slider');
 
-		$('.nxt').click(function() {
+		$('.nxt').unbind('click').click(function() {
 			if (Math.ceil(Math.abs(s.css('left').replace('px', ''))) < Math.ceil(HUB.Plugins.CoursesProgress.offset) && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv+=1);
@@ -136,7 +134,7 @@ HUB.Plugins.CoursesProgress = {
 			}
 		});
 
-		$('.prv').click(function() {
+		$('.prv').unbind('click').click(function() {
 			if (Math.ceil(s.css('left').replace('px', '')) < 0 && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv-=1);
@@ -157,7 +155,7 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		// Overload certain keys to emulate excel-like behavior
-		g.on('keydown', '.cell-entry', function ( e ) {
+		g.off('keydown', '.cell-entry').on('keydown', '.cell-entry', function ( e ) {
 			var t = $(this),
 				s = t.find('.cell-score'),
 				c = t.data('init-val');
@@ -282,7 +280,7 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		// Overload certain keys to emulate excel-like behavior
-		g.on('keydown', '.form-title', function ( e ) {
+		g.off('keydown', '.form-title').on('keydown', '.form-title', function ( e ) {
 			var t   = $(this),
 				val = t.data('init-val');
 
@@ -296,7 +294,7 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		// Add click event to cells to enter edit mode
-		$('.gradebook').on('click', '.cell-entry', function ( e ) {
+		g.off('click', '.cell-entry').on('click', '.cell-entry', function ( e ) {
 			var t = $(this);
 
 			if (!t.find('input').length) {
@@ -341,7 +339,7 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		// Add click event to cells to enter edit mode
-		$('.gradebook').on('click', '.form-title', function ( e ) {
+		g.off('click', '.form-title').on('click', '.form-title', function ( e ) {
 			var t = $(this);
 
 			if (!t.find('input').length) {
@@ -422,7 +420,7 @@ HUB.Plugins.CoursesProgress = {
 			}
 		});
 
-		$('.gradebook').on('click', '.override.active', function ( e ) {
+		g.off('click', '.override.active').on('click', '.override.active', function ( e ) {
 			var t = $(this),
 				f = $('.gradebook-form'),
 				d = [],
@@ -448,7 +446,7 @@ HUB.Plugins.CoursesProgress = {
 			});
 		});
 
-		$('.gradebook').on('click', '.controls .refresh', function ( e ) {
+		g.off('click', '.controls .refresh').on('click', '.controls .refresh', function ( e ) {
 			var t = $(this),
 				f = $('.gradebook-form');
 
@@ -457,11 +455,11 @@ HUB.Plugins.CoursesProgress = {
 			$('.controls').hide();
 			$('.loading').show();
 
-			HUB.Plugins.CoursesProgress.loadData( false );
+			HUB.Plugins.CoursesProgress.loadData();
 		});
 
 		// Add a new gradebook item
-		$('.addrow').click(function() {
+		$('.addrow').unbind('click').click(function() {
 			var t = $(this),
 				f = $('.gradebook-form'),
 				d = [];
