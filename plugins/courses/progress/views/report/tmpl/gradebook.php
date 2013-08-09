@@ -89,10 +89,11 @@ $base .= '&offering='.$this->course->offering()->get('alias').'&section='.$this-
 	</div>
 
 	<div class="controls clear">
-		<div class="progress-button button"></div>
-		<div class="gradebook-button button active"></div>
-		<div class="addrow button"></div>
-		<div class="refresh button"></div>
+		<div title="progress view" class="progress-button button"></div>
+		<div title="gradebook view" class="gradebook-button button active"></div>
+		<div title="add a new entry" class="addrow button"></div>
+		<div title="export to csv" class="export button"></div>
+		<div title="refresh gradebook view" class="refresh button"></div>
 	</div>
 
 	<div class="clear"></div>

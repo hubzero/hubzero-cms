@@ -61,6 +61,8 @@
 	max-height: 42px;
 	position: relative;
 	overflow: hidden;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .gradebook-container .gradebook-column:last-child {
@@ -73,6 +75,8 @@
 	height: 55px;
 	max-height: 55px;
 	min-height: 55px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .gradebook-container .search-box input {
@@ -114,6 +118,8 @@
 	height: 55px;
 	max-height: 55px;
 	min-height: 55px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .gradebook-container .cell-title {
@@ -155,6 +161,8 @@
 .gradebook-container .edit-grade {
 	width: 4em;
 	padding: 5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .gradebook-container .cell-entry:hover {
@@ -188,6 +196,8 @@
 	margin-left: 10px;
 	padding: 10px;
 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	display: block;
 	float: right;
@@ -239,6 +249,9 @@
 .controls .gradebook-button:before {
 	content: "\f02d";
 }
+.controls .export:before {
+	content: "\f0f6";
+}
 .controls .progress-button:before,
 .controls .gradebook-button:before {
 	left: 25px;
@@ -269,6 +282,8 @@
 	border: 1px solid #CCCCCC;
 	position: relative;
 	box-shadow: inset 0 0 5px rgba(255, 255, 255, .8);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .navigation .prv:hover,
@@ -298,6 +313,8 @@
 	display: block;
 	margin: 0px 40px 0 40px;
 	height: 40px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	background: #F9F9F9;
 	padding: 12px 20px;
