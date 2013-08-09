@@ -1,6 +1,15 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 $i = 1;
+
+$dateFormat = '%d %b %Y';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = false;
+}
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -55,7 +64,7 @@ $i = 1;
 					$pa = new PublicationAuthor( $this->database );
 					$authors = $pa->getAuthors($row->version_id); 
 					$info = array();
-					$info[] =  JHTML::_('date', $row->published_up, '%d %b %Y');	
+					$info[] =  JHTML::_('date', $row->published_up, $dateFormat, $tz);	
 					$info[] = $row->cat_name;	
 					$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
 					
@@ -83,7 +92,7 @@ $i = 1;
 					$pa = new PublicationAuthor( $this->database );
 					$authors = $pa->getAuthors($row->version_id); 
 					$info = array();
-					$info[] =  JHTML::_('date', $row->published_up, '%d %b %Y');	
+					$info[] =  JHTML::_('date', $row->published_up, $dateFormat, $tz);	
 					$info[] = $row->cat_name;	
 					$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
 					

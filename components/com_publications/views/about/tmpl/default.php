@@ -1,6 +1,15 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+$yearFormat = "%Y";
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$yearFormat = "Y";
+	$tz = false;
+}
+
 $abstract = stripslashes($this->publication->abstract);
 if ($this->publication->abstract) {
 	$document =& JFactory::getDocument();
@@ -53,7 +62,7 @@ if ($this->params->get('show_citation') && $this->publication->state == 1)
 		// Build our citation object
 		$cite = new stdClass();
 		$cite->title = $this->publication->title;
-		$cite->year = JHTML::_('date', $this->publication->published_up, '%Y');
+		$cite->year = JHTML::_('date', $this->publication->published_up, $yearFormat, $tz);
 	
 		$cite->location = '';
 		$cite->date = '';

@@ -715,7 +715,16 @@ class PublicationHelper extends JObject
 	 * @return     string HTML
 	 */
 	public function getPubStateProperty($row, $get = 'class', $version = 1) 
-	{	
+	{
+		$dateFormat = '%d %b %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'd m Y';
+			$tz = false;
+		}
+	
 		$status 	= '';
 		$date 		= '';
 		$class 		= '';
@@ -728,7 +737,7 @@ class PublicationHelper extends JObject
 				$class  = 'unpublished';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_UNPUBLISHED');
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED'))
-					.' ' . JHTML::_('date', $row->published_down, '%d %b %Y');
+					.' ' . JHTML::_('date', $row->published_down, $dateFormat, $tz);
 				break;
 				
 			case 1: 
@@ -736,7 +745,7 @@ class PublicationHelper extends JObject
 				$status.= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PUBLISHED');
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, '%d %b %Y');
+					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
 				break;
 				
 			case 3:
@@ -744,14 +753,14 @@ class PublicationHelper extends JObject
 				$class = 'draft';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DRAFT');
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_STARTED'))
-					.' ' . JHTML::_('date', $row->created, '%d %b %Y');
+					.' ' . JHTML::_('date', $row->created, $dateFormat, $tz);
 				break;
 				
 			case 4: 
 				$class   = 'ready';
 				$status .= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_READY');
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, '%d %b %Y');
+					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
 				break;
 				
 			case 5: 
@@ -759,7 +768,7 @@ class PublicationHelper extends JObject
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PENDING');
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
-					.' ' . JHTML::_('date', $row->published_up, '%d %b %Y');
+					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
 				break;
 					
 			case 6: 
@@ -767,7 +776,7 @@ class PublicationHelper extends JObject
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DARKARCHIVE');
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, '%d %b %Y');
+					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
 				break;	
 		}
 		

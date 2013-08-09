@@ -875,6 +875,15 @@ class PublicationsHtml
 	
 	public function showVersionInfo ( $publication, $version, $option, $config, $lastPubRelease ) 
 	{
+		$dateFormat = '%b %d, %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'm d, Y';
+			$tz = false;
+		}
+
 		$text = '';
 		if($version == 'dev') 
 		{
@@ -883,7 +892,7 @@ class PublicationsHtml
 			$text .= JText::_('COM_PUBLICATIONS_VERSION').' <strong>'
 			      .$publication->version_label.'</strong> ('.JText::_('COM_PUBLICATIONS_IN_DEVELOPMENT').')';
 			$text .= '<span class="block">'.JText::_('COM_PUBLICATIONS_CREATED').' ';
-			$text .= JText::_('COM_PUBLICATIONS_ON').' '.JHTML::_('date', $publication->created, '%b %d, %Y').'</span>';
+			$text .= JText::_('COM_PUBLICATIONS_ON').' '.JHTML::_('date', $publication->created, $dateFormat, $tz).'</span>';
 		}
 		else
 		{
@@ -899,25 +908,25 @@ class PublicationsHtml
 					$text .= ($publication->published_up > $now) 
 						? JText::_('COM_PUBLICATIONS_TO_BE_RELEASED') 
 						: strtolower(JText::_('COM_PUBLICATIONS_PUBLISHED'));
-					$text .= ' ' . JText::_('COM_PUBLICATIONS_ON').' '.JHTML::_('date', $publication->published_up, '%b %d, %Y').' ';          
+					$text .= ' ' . JText::_('COM_PUBLICATIONS_ON').' '.JHTML::_('date', $publication->published_up, $dateFormat, $tz).' ';          
 					break;
 				case 4:  
 					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_READY')).')';  
 					$text .= '<span class="block">'.JText::_('COM_PUBLICATIONS_FINALIZED').' ';
 					$text .= JText::_('COM_PUBLICATIONS_ON') . ' ' 
-					. JHTML::_('date', $publication->published_up, '%b %d, %Y').'</span>';  
+					. JHTML::_('date', $publication->published_up, $dateFormat, $tz).'</span>';  
 					$class = 'ready';        
 					break;
 				case 5:
 					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_PENDING_APPROVAL')).')';  
 					$text .= '<span class="block">'.JText::_('COM_PUBLICATIONS_SUBMITTED').' ';
 					$text .= JText::_('COM_PUBLICATIONS_ON') . ' '
-					.JHTML::_('date', $publication->submitted, '%b %d, %Y').'</span>';
+					.JHTML::_('date', $publication->submitted, $dateFormat, $tz).'</span>';
 					if ($publication->published_up > $now) 
 					{
 						$text .= '<span class="block">';
 						$text .= JText::_('COM_PUBLICATIONS_TO_BE_RELEASED') . ' ' . JText::_('COM_PUBLICATIONS_ON') . ' ' 
-							. JHTML::_('date', $publication->published_up, '%b %d, %Y');
+							. JHTML::_('date', $publication->published_up, $dateFormat, $tz);
 						$text .= '</span>';
 					}
 					$class = 'pending';       
@@ -930,7 +939,7 @@ class PublicationsHtml
 						: JText::_('COM_PUBLICATIONS_RELEASED');
 
 					$text .= ' ' . JText::_('COM_PUBLICATIONS_ON') . ' ' 
-						. JHTML::_('date', $publication->published_up, '%b %d, %Y');
+						. JHTML::_('date', $publication->published_up, $dateFormat, $tz);
 					$text .= '</span>';
 					$text .= $publication->ark ? '<span class="archid">'.JText::_('ark').':'.$publication->ark.'</span>' : '';  
 					$class = 'archived';   
@@ -939,7 +948,7 @@ class PublicationsHtml
 					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_UNPUBLISHED')).')';  
 					$text .= '<span class="block">'.JText::_('COM_PUBLICATIONS_RELEASED').' ';
 					$text .= JText::_('COM_PUBLICATIONS_ON') . ' '
-					. JHTML::_('date', $publication->published_up, '%b %d, %Y').'</span>';
+					. JHTML::_('date', $publication->published_up, $dateFormat, $tz).'</span>';
 					$class = $publication->main == 1 ? 'unpublished' : 'archive';        
 					break;		
 			}
@@ -971,6 +980,15 @@ class PublicationsHtml
 	
 	public function showAccessMessage( $publication, $option, $authorized, $restricted, $editlink = '' ) 
 	{
+		$dateFormat = '%b %d, %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'm d, Y';
+			$tz = false;
+		}
+
 		$msg = '';
 		$project = '';
 		$now = date( 'Y-m-d H:i:s', time() );
@@ -1028,7 +1046,7 @@ class PublicationsHtml
 					if ($publication->published_up > $now) 
 					{
 						$msg = JText::_('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO') 
-							. ' ' . JHTML::_('date', $publication->published_up, '%b %d, %Y') ; 
+							. ' ' . JHTML::_('date', $publication->published_up, $dateFormat, $tz) ; 
 					}
 					
 					break;
@@ -1252,6 +1270,15 @@ class PublicationsHtml
 
 	public function writeResults( &$database, &$lines, $filters = array(), $show_date = 3 ) 
 	{
+		$dateFormat = '%d %b %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'd m Y';
+			$tz = false;
+		}
+
 		$juser =& JFactory::getUser();
 
 		$config =& JComponentHelper::getParams( 'com_publications' );
@@ -1296,9 +1323,9 @@ class PublicationsHtml
 			switch ($show_date) 
 			{
 				case 0: $view->thedate = ''; break;
-				case 1: $view->thedate = JHTML::_('date', $line->created, '%d %b %Y');    	break;
-				case 2: $view->thedate = JHTML::_('date', $line->modified, '%d %b %Y');   	break;
-				case 3: $view->thedate = JHTML::_('date', $line->published_up, '%d %b %Y'); break;
+				case 1: $view->thedate = JHTML::_('date', $line->created, $dateFormat, $tz);    	break;
+				case 2: $view->thedate = JHTML::_('date', $line->modified, $dateFormat, $tz);   	break;
+				case 3: $view->thedate = JHTML::_('date', $line->published_up, $dateFormat, $tz); break;
 			}
 			
 			$html .= $view->loadTemplate();

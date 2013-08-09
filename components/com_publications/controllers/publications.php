@@ -1894,6 +1894,17 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	 */	
 	protected function _citation()
 	{		
+		$monthFormat = "%b";
+		$yearFormat = "%Y";
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$yearFormat = "Y";
+			$monthFormat = "M";
+			$tz = false;
+		}
+		
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );
 		$format = JRequest::getVar( 'format', 'bibtex' );
@@ -1959,7 +1970,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		{
 			case 'endnote':
 				$doc  = "%0 ".JText::_('COM_PUBLICATIONS_GENERIC')."\r\n";
-				$doc .= "%D " . JHTML::_('date', $thedate, '%Y') . "\r\n";
+				$doc .= "%D " . JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($publication->title)) . "\r\n";
 
 				if($authors) 
@@ -1982,7 +1993,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				$doc .= "%U " . $url . "\r\n";
 				if ($thedate) 
 				{
-					$doc .= "%8 " . JHTML::_('date', $thedate, '%b') . "\r\n";
+					$doc .= "%8 " . JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
 				}
 				if ($publication->doi) 
 				{
@@ -2018,9 +2029,9 @@ class PublicationsControllerPublications extends Hubzero_Controller
 						$i++;
 					}
 				}
-				$addarray['month'] = JHTML::_('date', $thedate, '%b');
+				$addarray['month'] = JHTML::_('date', $thedate, $monthFormat, $tz);
 				$addarray['url']   = $url;
-				$addarray['year']  = JHTML::_('date', $thedate, '%Y');
+				$addarray['year']  = JHTML::_('date', $thedate, $yearFormat, $tz);
 				if ($publication->doi) 
 				{
 					$addarray['doi'] = 'doi:' . DS . $publication->doi;

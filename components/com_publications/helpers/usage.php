@@ -131,7 +131,7 @@ class PublicationUsage
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$this->dateFormat = 'd M Y';
-			$this->tz = true;
+			$this->tz = null;
 		}
 	}
 

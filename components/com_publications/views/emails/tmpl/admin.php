@@ -25,6 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%m/%d/%Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+        $dateFormat = 'm/d/Y';
+        $tz = false;
+}
+
 $juri =& JURI::getInstance();
 
 $sef = JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias);
@@ -43,7 +52,7 @@ $message  = JText::_('COM_PROJECTS_EMAIL_ADMIN_NOTIFICATION') ."\n";
 $message .= '-------------------------------' ."\n";
 $message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias . ')' . "\n";
 $message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' ' 
-		 . JHTML::_('date', $this->project->created, '%m/%d/%Y') . ' ' 
+		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' ' 
 		 . JText::_('COM_PROJECTS_BY') . ' ';
 $message .= $this->project->owned_by_group 
 			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
