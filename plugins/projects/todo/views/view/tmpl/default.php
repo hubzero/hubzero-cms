@@ -24,6 +24,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%m/%d/%Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'm/d/Y';
+	$tz = false;
+}
+
 $next = $this->filters['start'] + $this->filters['limit'];
 $prev = $this->filters['start'] - $this->filters['limit'];
 $prev = $prev < 0 ? 0 : $prev;
@@ -192,9 +202,9 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 								<span class="todo-content" id="td-content-<?php echo $todo->id; ?>"><?php echo stripslashes($todo->content); ?></span>
 								<span class="todo-options" id="td-options-<?php echo $todo->id; ?>">
 								<?php if($todo->state == 1) { ?>
-									<span class="todo-assigned"> <?php echo $todo->closedbyname; ?></span> <?php if($todo->closed && $todo->closed != '0000-00-00 00:00:00' ) { echo '<span class="todo-due">'.JText::_('COM_PROJECTS_CHECKED_OFF').' '.JHTML::_('date', $todo->closed, '%m/%d/%Y').'</span>'; } ?>
+									<span class="todo-assigned"> <?php echo $todo->closedbyname; ?></span> <?php if($todo->closed && $todo->closed != '0000-00-00 00:00:00' ) { echo '<span class="todo-due">'.JText::_('COM_PROJECTS_CHECKED_OFF').' '.JHTML::_('date', $todo->closed, $dateFormat, $tz).'</span>'; } ?>
 								<?php } else { ?>	
-								<?php echo '<span class="todo-assigned" id="td-assigned-'.$todo->id.'">'.$todo->assignedname.'</span>'; ?> <?php if($todo->duedate && $todo->duedate != '0000-00-00 00:00:00' ) { echo '<span class="todo-due" id="td-due-'.$todo->id.'">'.JText::_('COM_PROJECTS_DUE').' '.JHTML::_('date', $todo->duedate, '%m/%d/%Y').$overdue.'</span>'; }?>
+								<?php echo '<span class="todo-assigned" id="td-assigned-'.$todo->id.'">'.$todo->assignedname.'</span>'; ?> <?php if($todo->duedate && $todo->duedate != '0000-00-00 00:00:00' ) { echo '<span class="todo-due" id="td-due-'.$todo->id.'">'.JText::_('COM_PROJECTS_DUE').' '.JHTML::_('date', $todo->duedate, $dateFormat, $tz).$overdue.'</span>'; }?>
 								<?php } ?>	
 								</span>
 								<input type="hidden" name="idx" id="idx-<?php echo $todo->id; ?>" value="<?php echo $index; ?>" />

@@ -24,6 +24,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%m/%d/%Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'm/d/Y';
+	$tz = false;
+}
+
 $team_ids = array('0' => '');
 $class = $this->item->color ? 'pin_'.$this->item->color : 'pin_grey';
 	
@@ -58,7 +68,7 @@ if($this->item->state == 1) {
 }
 
 // Due?
-$due = ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' ) ? JHTML::_('date', $this->item->duedate, '%m/%d/%Y') : '';
+$due = ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' ) ? JHTML::_('date', $this->item->duedate, $dateFormat, $tz) : '';
 
 // Author name
 $profile->load( $this->item->created_by );	
@@ -95,7 +105,7 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 				<span class="pin">&nbsp;</span>	
 				<div class="todo-content">
 					<span class="todo-body"><?php echo stripslashes($this->item->content); ?></span>
-					<p class="td-info"><?php echo JText::_('COM_PROJECTS_CREATED').' '.JHTML::_('date', $this->item->created, '%m/%d/%Y').' '.JText::_('COM_PROJECTS_BY').' '.ProjectsHtml::shortenName($author); ?></p>	
+					<p class="td-info"><?php echo JText::_('COM_PROJECTS_CREATED').' '.JHTML::_('date', $this->item->created, $dateFormat, $tz).' '.JText::_('COM_PROJECTS_BY').' '.ProjectsHtml::shortenName($author); ?></p>	
 					<?php if($this->item->state == 0) { ?>	
 					<?php if(count($this->lists) > 0 ) { ?>
 						<label><?php echo ucfirst(JText::_('COM_PROJECTS_TODO_CHOOSE_LIST')); ?>:
@@ -123,7 +133,7 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 					</label>
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" />
 					<?php } else if($this->item->state == 1) { ?>
-						<p class="td-info"><?php echo JText::_('COM_PROJECTS_TODO_CHECKED_OFF').' '.JHTML::_('date', $this->item->closed, '%m/%d/%Y').' '.JText::_('COM_PROJECTS_BY').' '.ProjectsHtml::shortenName($closedby); ?></p>	
+						<p class="td-info"><?php echo JText::_('COM_PROJECTS_TODO_CHECKED_OFF').' '.JHTML::_('date', $this->item->closed, $dateFormat, $tz).' '.JText::_('COM_PROJECTS_BY').' '.ProjectsHtml::shortenName($closedby); ?></p>	
 						<p class="td-info"><?php echo JText::_('COM_PROJECTS_TODO_TOOK').' '.$diff.' '.JText::_('COM_PROJECTS_TODO_TO_COMPLETE'); ?></p>	
 					<?php } ?>	
 				</div>
