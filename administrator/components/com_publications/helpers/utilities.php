@@ -332,7 +332,16 @@ class PublicationUtilities
 	 */
 	public function getXml( $row, $authors, $metadata, $doi = 0, $do = 'doi')
 	{
-		$datePublished = JHTML::_('date', $row->published_up, '%Y-%m-%d');
+		$dateFormat = '%Y-%m-%d'
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'Y-m-d';
+			$tz = false;
+		}
+
+		$datePublished = JHTML::_('date', $row->published_up, $dateFormat, $tz);
 		$dateAccepted  = date( 'Y-m-d' );
 		
 		$xmlfile = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns="http://datacite.org/schema/kernel-2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-2.1 http://schema.datacite.org/meta/kernel-2.1/metadata.xsd">';

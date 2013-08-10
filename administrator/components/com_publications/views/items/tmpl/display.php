@@ -30,6 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%d %b, %Y';
+$dateFormat = '%d %b %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat2 = 'd M, Y';
+	$dateFormat = 'd M Y';
+	$tz = false;
+}
+
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Publication Manager') . '</a>', 'addedit.png');
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
@@ -117,7 +128,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
 		$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, '%d %b, %Y').'<br />'
+				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, $dateFormat2, $tz).'<br />'
 				 : '';
 		$info .= ($row->checked_out)
 				 ? JText::_('Checked out by').': '.$row->checked_out.'<br />'
@@ -129,8 +140,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$class 	= PublicationsHtml::getPubStateProperty($row, 'class');
 	$task 	= PublicationsHtml::getPubStateProperty($row, 'task');
 	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00' 
-			? JHTML::_('date', $row->modified, '%d %b %Y') 
-			: JHTML::_('date', $row->created, '%d %b %Y');
+			? JHTML::_('date', $row->modified, $dateFormat, $tz) 
+			: JHTML::_('date', $row->created, $dateFormat, $tz);
 ?>
 			<tr class="<?php echo "row$k"; ?> <?php echo $row->state == 5 ? 'attention' : ''; ?>">
 				<td>

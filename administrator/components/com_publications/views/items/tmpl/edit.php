@@ -30,6 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%d %b %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = false;
+}
+
 $text = ($this->task == 'edit' 
 	? JText::_('Edit') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')' 
 	: JText::_('New'));
@@ -392,7 +401,7 @@ $tagcontent = end($field);
 				<td class="paramlist_key">Unpublished</td>
 				<td>
 					<?php echo $this->row->published_down != NULL && $this->row->published_down != '0000-00-00 00:00:00' 
-					? JHTML::_('date', $this->row->published_down, '%d %b %Y')
+					? JHTML::_('date', $this->row->published_down, $dateFormat, $tz)
 					: 'N/A'; ?>
 				</td>
 			</tr>
