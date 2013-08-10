@@ -571,7 +571,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	protected function _features() 
 	{		
 		// Get language file
-		JPlugin::loadLanguage( 'com_projects_features' );
+		//JPlugin::loadLanguage( 'com_projects_features' );
+		$lang = JFactory::getLanguage();
+		$lang->load('com_projects_features');
 		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'intro', 'layout'=>'features') );
