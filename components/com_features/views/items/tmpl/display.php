@@ -32,13 +32,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 $dateFormat = '%d %b %Y';
+$dateFormat2 = '%d %b. %Y';
 $timeFormat = '%I:%M %p';
 $tz = 0;
+
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
 	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
+	$dateFormat2 = 'd M. Y';
+	$timeFormat = 'h:i A';
+	$tz = null;
 }
 
 $types = array(
@@ -348,7 +351,7 @@ if (count($this->rows) > 0)
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
 					$html .= '<p class="title"><a href="' . JRoute::_('index.php?option=com_members&id='.$id) . '">' . stripslashes($title) . '</a></p>' . "\n";
-					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, '%d %b. %Y') . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
+					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, $dateFormat, $tz) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) 
 					{
 						$html .= ' <span>|</span> <a class="delete" href="' . JRoute::_('index.php?option=' . $this->option . '&task=delete&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_DELETE') . '</a>' . "\n";
