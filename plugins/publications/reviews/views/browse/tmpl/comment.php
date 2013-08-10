@@ -25,6 +25,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'h:i A';
+	$tz = null;
+}
+
+
 $wikiconfig = array(
 	'option'   => $this->option,
 	'scope'    => 'reply',
@@ -61,7 +73,7 @@ if ($this->reply->anonymous != 1) {
 <div class="comment-content">
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
-		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->reply->added, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->reply->added, '%d %b, %Y', 0); ?></span></a>
+		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->reply->added, $timeFormat, $tz); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->reply->added, $dateFormat, $tz); ?></span></a>
 	</p>
 <?php if ($this->abuse && $this->reply->abuse_reports > 0) { ?>
 	<p class="warning"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_NOTICE_POSTING_REPORTED'); ?></p>

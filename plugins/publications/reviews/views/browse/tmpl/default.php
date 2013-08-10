@@ -25,6 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$timeFormat = 'h:i A';
+	$tz = null;
+}
+
 $database =& JFactory::getDBO();
 $juser =& JFactory::getUser();
 $html = '';
@@ -133,7 +144,7 @@ if ($this->reviews)
 		$html .= "\t\t\t".'<p><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_PUBLICATION_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></p>'."\n";
 		$html .= "\t\t".'<p class="comment-title">'."\n";
 		$html .= "\t\t".'	<strong>'. $name.'</strong> '."\n";
-		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=reviews#c'.$review->id).'" >@ <span class="time">'. JHTML::_('date',$review->created, '%I:%M %p', 0).'</span> on <span class="date">'.JHTML::_('date',$review->created, '%d %b, %Y', 0).'</span></a>'."\n";
+		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=reviews#c'.$review->id).'" >@ <span class="time">'. JHTML::_('date',$review->created, $timeFormat, $tz).'</span> on <span class="date">'.JHTML::_('date',$review->created, $dateFormat, $tz).'</span></a>'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-title -->'."\n";
 		if ($abuse && $abuse_reports > 0) {
 			$html .= "\t\t\t".'<p class="warning">'.JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_REPORTED_AS_ABUSIVE').'</p>';

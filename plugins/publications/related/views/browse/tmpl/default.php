@@ -25,6 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 $juser =& JFactory::getUser();
 $database =& JFactory::getDBO();
 
@@ -112,7 +121,7 @@ else { ?>
 <?php } ?>
 								<tr>
 									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_DATE'); ?></th>
-									<td><?php echo JHTML::_('date',$line->published_up, '%d %b, %Y'); ?></td>
+									<td><?php echo JHTML::_('date',$line->published_up, $dateFormat, $tz); ?></td>
 								</tr>
 								<tr>
 									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>
