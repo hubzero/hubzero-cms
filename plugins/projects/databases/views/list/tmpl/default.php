@@ -109,7 +109,7 @@ $document =& JFactory::getDocument();
 					<a href="/projects/<?=$this->project->alias?>/databases/delete/?db_id=<?=$r['id']?>" class="delete-db">Delete</a>
 				</td>
 			</tr>
-		<?endforeach;?>
+		<?php endforeach;?>
 		</tbody>
 	</table>
 	<?php
