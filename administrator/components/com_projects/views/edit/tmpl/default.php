@@ -1,6 +1,16 @@
 <?php
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%d %b. %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M. Y';
+	$tz = false;
+}
+
 JToolBarHelper::title( '<a href="index.php?option=com_projects">'.JText::_( 'Projects' ).'</a>: '.stripslashes($this->obj->title).' <small><small>('.$this->obj->alias.', #'.$this->obj->id.')</small></small>', 'addedit.png' );
 JToolBarHelper::spacer();
 JToolBarHelper::save();
@@ -16,7 +26,7 @@ $profile->load( $this->obj->created_by_user );
 $status = '';
 $row = $this->obj;
 if($row->state == 1 && $row->setup_stage >= $setup_complete) {
-	$status   = '<span class="active">'.JText::_('COM_PROJECTS_ACTIVE').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, '%d %b. %Y');
+	$status   = '<span class="active">'.JText::_('COM_PROJECTS_ACTIVE').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 }
 else if($row->state == 2) {
 	$status  = '<span class="deleted">'.JText::_('COM_PROJECTS_DELETED').'</span> ';

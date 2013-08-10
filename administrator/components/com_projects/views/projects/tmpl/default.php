@@ -2,6 +2,15 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b. %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M. Y';
+	$tz = false;
+}
+
 JToolBarHelper::title( JText::_( 'Projects' ), 'user.png' );
 JToolBarHelper::preferences('com_projects', '550');
 JToolBarHelper::editList();
@@ -79,7 +88,7 @@ function submitbutton(pressbutton)
 				// Determine status
 				$status = '';
 				if($row->state == 1 && $row->setup_stage >= $setup_complete) {
-					$status = '<span class="active">'.JText::_('Active').'</span> '.JText::_('since').' '.JHTML::_('date', $row->created, '%d %b. %Y');
+					$status = '<span class="active">'.JText::_('Active').'</span> '.JText::_('since').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 				}
 				else if($row->state == 2) {
 					$status  = '<span class="deleted">'.JText::_('Deleted').'</span> ';
