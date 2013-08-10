@@ -30,6 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 JToolBarHelper::title( JText::_( 'MEMBERS' ).': <small><small>[ Manage Points ]</small></small>', 'user.png' );
 JToolBarHelper::preferences('com_members', '550');
 
@@ -92,7 +101,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 
 <?php if (count($this->stats) > 0) { ?>
 		<table class="adminlist" summary="Summary of user point activity">
-			<caption>Economy Activity Stats as of <?php echo JHTML::_('date', date( "Y-m-d H:i:s" ), '%d %b, %Y'); ?></caption>
+			<caption>Economy Activity Stats as of <?php echo JHTML::_('date', date( "Y-m-d H:i:s" ), $dateFormat, $tz); ?></caption>
 			<thead>
 				<tr>
 					<th scope="col" rowspan="2">Activity</th>
