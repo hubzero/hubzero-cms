@@ -30,6 +30,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 ?>
 <a name="messages"></a>
 <h3><?php echo JText::_('MESSAGES'); ?></h3>
@@ -59,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<tr>
 							<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&active=messages&task=viewmessage&msg='.$row->id); ?>"><?php echo stripslashes($row->subject); ?></a></td>
 							<td><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo stripslashes($row->name); ?></a></td>
-							<td><?php echo JHTML::_('date', $row->created, '%d %b, %Y'); ?></td>
+							<td><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></td>
 						</tr>
 					<?php } ?>
 				<?php } else { ?>
