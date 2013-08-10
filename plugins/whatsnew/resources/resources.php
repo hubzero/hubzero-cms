@@ -300,6 +300,15 @@ class plgWhatsnewResources extends JPlugin
 	 */
 	public function out($row, $period)
 	{
+		$dateFormat = '%d %b %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'd M Y';
+			$tz = false;
+		}
+
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
