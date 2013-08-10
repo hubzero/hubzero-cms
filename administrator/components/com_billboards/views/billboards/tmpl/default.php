@@ -29,6 +29,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 JHTML::_('behavior.tooltip');
 
 // Menu
@@ -73,7 +83,7 @@ $juser =& JFactory::getUser();
 		{
 			$checked = JHTMLGrid::_checkedOut($row);
 			$info = ($row->checked_out_time != '0000-00-00 00:00:00')
-					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, '%d %b, %Y').'<br />'
+					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, $dateFormat, $tz).'<br />'
 					 : '';
 			if ($row->editor) 
 			{
