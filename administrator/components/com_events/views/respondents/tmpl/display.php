@@ -4,6 +4,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'COM_EVENTS' ).'</a>: <small><small>[ '.JText::_('COM_EVENTS_RESPONDANTS').' ]</small></small>', 'user.png' );
 JToolBarHelper::custom('download', 'upload', JText::_('COM_EVENTS_DOWNLOAD_CSV'), JText::_('COM_EVENTS_DOWNLOAD_CSV'), false, false);
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M. Y';
+	$tz = false;
+}
+
 JToolBarHelper::deleteList( '', 'remove', JText::_('Delete') );
 JToolBarHelper::cancel();
 
