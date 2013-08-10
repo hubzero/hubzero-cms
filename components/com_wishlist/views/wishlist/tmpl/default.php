@@ -37,12 +37,13 @@ $dateformat = '%d %b %Y';
 $dateformat2 = '%d %b %y';
 $timeformat = '%I:%M %p';
 $tz = 0;
+
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
 	$dateformat = 'd M Y';
 	$dateformat2 = 'd M y';
 	$timeformat = 'h:i A';
-	$tz = false;
+	$tz = null;
 }
 
 /* Wish List */

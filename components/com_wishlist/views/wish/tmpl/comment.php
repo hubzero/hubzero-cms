@@ -45,8 +45,8 @@ $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
 	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
-	$tz = true;
+	$timeformat = 'h:i A';
+	$tz = null;
 }
 
 ximport('Hubzero_Wiki_Parser');
