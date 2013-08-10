@@ -2,8 +2,8 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'COM_EVENTS' ).'</a>: <small><small>[ '.JText::_('COM_EVENTS_RESPONDANTS').' ]</small></small>', 'user.png' );
-JToolBarHelper::custom('download', 'upload', JText::_('COM_EVENTS_DOWNLOAD_CSV'), JText::_('COM_EVENTS_DOWNLOAD_CSV'), false, false);
+$dateFormat = '%d %b. %Y';
+$tz = null;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
@@ -11,21 +11,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
+JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'COM_EVENTS' ).'</a>: <small><small>[ '.JText::_('COM_EVENTS_RESPONDANTS').' ]</small></small>', 'user.png' );
+JToolBarHelper::custom('download', 'upload', JText::_('COM_EVENTS_DOWNLOAD_CSV'), JText::_('COM_EVENTS_DOWNLOAD_CSV'), false, false);
 JToolBarHelper::deleteList( '', 'remove', JText::_('Delete') );
 JToolBarHelper::cancel();
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$tz = true;
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-}
-else
-{
-	$tz = 0;
-	$dateFormat = '%d %b %Y';
-	$timeFormat = '%I:%M %p';
-}
 
 $rows = $this->resp->getRecords();
 $pageNav = $this->resp->getPaginator();

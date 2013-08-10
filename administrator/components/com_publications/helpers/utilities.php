@@ -332,7 +332,7 @@ class PublicationUtilities
 	 */
 	public function getXml( $row, $authors, $metadata, $doi = 0, $do = 'doi')
 	{
-		$dateFormat = '%Y-%m-%d'
+		$dateFormat = '%Y-%m-%d';
 		$tz = null;
 
 		if (version_compare(JVERSION, '1.6', 'ge'))

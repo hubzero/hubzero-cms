@@ -78,7 +78,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				? ' <span class="no">('.$this->subscription->pendingunits.' '.JText::_('COM_JOBS_ADDITIONAL').' '.$this->service->unitmeasure.'MULTIPLE_S'.' '.JText::_('COM_JOBS_MONTHS_PENDING').')</span>'
 				: '';
 	$expiredate = $this->subscription->expires
-				? JHTML::_('date', $this->subscription->expires,$dateFormat,$tz)
+				? JHTML::_('date', $this->subscription->expires, $dateFormat, $tz)
 				: JText::_('N/A');
 
 	// site admins
