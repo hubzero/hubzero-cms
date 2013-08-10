@@ -30,6 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 $canDo = ResourcesHelper::getActions('resource');
 
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Resource Manager') . '</a>', 'resources.png');
@@ -266,7 +275,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$checked = JHTMLGrid::_checkedOut($row);
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
-				 ? JText::_('Checked out') . ': ' . JHTML::_('date', $row->checked_out_time, '%d %b, %Y') . '<br />'
+				 ? JText::_('Checked out') . ': ' . JHTML::_('date', $row->checked_out_time, $dateFormat, $tz) . '<br />'
 				 : '';
 		if ($row->editor)
 		{
