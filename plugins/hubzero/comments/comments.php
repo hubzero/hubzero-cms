@@ -31,6 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$timeFormat = 'h:i A';
+	$tz = null;
+}
+
 jimport('joomla.plugin.plugin');
 
 /**
@@ -619,7 +630,7 @@ class plgHubzeroComments extends JPlugin
 				}
 				
 				// Prepare the title
-				$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date',$row->created, '%I:%M %p', 0).' on '.JHTML::_('date',$row->created, '%d %b, %Y', 0);
+				$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date',$row->created, $timeFormat, $tz).' on '.JHTML::_('date',$row->created, $dateFormat, $tz);
 				
 				// Strip html from feed item description text
 				if ($row->reports) {
@@ -660,7 +671,7 @@ class plgHubzeroComments extends JPlugin
 						}
 
 						// Prepare the title
-						$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author).' @ '.JHTML::_('date',$reply->created, '%I:%M %p', 0).' on '.JHTML::_('date',$reply->created, '%d %b, %Y', 0);
+						$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author).' @ '.JHTML::_('date',$reply->created, $timeFormat, $tz).' on '.JHTML::_('date',$reply->created, $dateFormat, $tz);
 
 						// Strip html from feed item description text
 						if ($reply->reports) {
@@ -701,7 +712,7 @@ class plgHubzeroComments extends JPlugin
 								}
 
 								// Prepare the title
-								$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author).' @ '.JHTML::_('date',$response->created, '%I:%M %p', 0).' on '.JHTML::_('date',$response->created, '%d %b, %Y', 0);
+								$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author).' @ '.JHTML::_('date',$response->created, $timeFormat, $tz).' on '.JHTML::_('date',$response->created, $dateFormat, $tz);
 
 								// Strip html from feed item description text
 								if ($response->reports) {
