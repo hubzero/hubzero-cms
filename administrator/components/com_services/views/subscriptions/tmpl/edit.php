@@ -29,13 +29,23 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 JToolBarHelper::title( '<a href="index.php?option=com_services">'.JText::_( 'Services &amp; Subscriptions Manager' ).'</a>', 'addedit.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-$added = (intval( $this->subscription->added ) <> 0) ? JHTML::_('date', $this->subscription->added, '%d %b, %Y') : NULL ;
-$updated = (intval( $this->subscription->updated ) <> 0) ? JHTML::_('date', $this->subscription->updated, '%d %b, %Y') : 'N/A';
-$expires = (intval( $this->subscription->expires) <> 0) ? JHTML::_('date', $this->subscription->expires, '%d %b, %Y') : 'N/A';
+$added = (intval( $this->subscription->added ) <> 0) ? JHTML::_('date', $this->subscription->added, $dateFormat, $tz) : NULL ;
+$updated = (intval( $this->subscription->updated ) <> 0) ? JHTML::_('date', $this->subscription->updated, $dateFormat, $tz) : 'N/A';
+$expires = (intval( $this->subscription->expires) <> 0) ? JHTML::_('date', $this->subscription->expires, $dateFormat, $tz) : 'N/A';
 
 $status = '';
 $pending = $this->subscription->currency.' '.$this->subscription->pendingpayment;
