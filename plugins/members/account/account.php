@@ -865,7 +865,8 @@ class plgMembersAccount extends Hubzero_Plugin
 		if(!JFile::exists($base.$user.$ssh.$auth))
 		{
 			// Try to create their authorized keys file
-			JFile::write($base.$user.$ssh.$auth, '');
+			$content = ''; // J25 passes param by reference so couldn't use constant below
+			JFile::write($base.$user.$ssh.$auth, $content);
 			if (!JFile::exists($base.$user.$ssh.$auth))
 			{
 				return $key = false;
