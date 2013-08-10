@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	if (version_compare(JVERSION, '1.6', 'ge'))
 	{
 		$dateFormat = 'd M Y';
-		$tz = false;
+		$tz = null;
 	}
 
 	/* Employer Dashboard View */
