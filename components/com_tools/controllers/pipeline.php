@@ -1701,6 +1701,15 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
 	{
+		$dateFormat = '%d %b, %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'd M, Y';
+			$tz = false;
+		}
+
 		$jconfig =& JFactory::getConfig();
 
 		$headline = '';
@@ -1805,7 +1814,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// Compose Message
 		$message  = strtoupper(JText::_('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
 		$message .= strtoupper(JText::_('COM_TOOLS_SUMMARY')) . ': ' . $summary . "\r\n";
-		$message .= strtoupper(JText::_('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', date('Y-m-d H:i:s', time()), '%d %b, %Y') . "\r\n";
+		$message .= strtoupper(JText::_('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', date('Y-m-d H:i:s', time()), $dateFormat, $tz) . "\r\n";
 		$message .= strtoupper(JText::_('COM_TOOLS_BY')) . ': ' . $this->juser->get('username') . "\r\n";
 		$message .= '----------------------------' . "\r\n\r\n";
 		if ($comment) 

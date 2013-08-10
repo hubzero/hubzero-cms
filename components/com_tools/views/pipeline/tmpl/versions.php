@@ -25,6 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b. %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M. Y';
+	$tz = false;
+}
+
 $juser = &JFactory::getUser();
 ?>
 <div id="content-header">
@@ -114,7 +123,7 @@ $hubDOIpath = $rconfig->get('doi');
 					</td>
 					<td>
 						<?php if ($t->state != 3) { ?>
-							<?php echo $t->released ? JHTML::_('date', $t->released, '%d %b. %Y') : 'N/A'; ?>
+							<?php echo $t->released ? JHTML::_('date', $t->released, $dateFormat, $tz) : 'N/A'; ?>
 						<?php } else { ?>
 							<span class="yes"><?php echo JText::_('COM_TOOLS_UNDER_DEVELOPMENT'); ?></span>
 						<?php } ?>
