@@ -25,6 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M d, Y';
+	$tz = false;
+}
+
 $mconfig =& JComponentHelper::getParams( 'com_members' );
 $path  = $mconfig->get('webpath');
 if (substr($path, 0, 1) != DS) {
@@ -123,7 +132,7 @@ if (substr($default_thumb, 0, 1) != DS) {
 				<td<?php echo $usr_class; ?>><a href="/members/<?php echo $owner->userid; ?>" <?php if($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname).' ('.$owner->userid.')'; ?>"<?php } ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini"><?php echo $role; ?></td>
-				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, '%b %d, %Y') : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>				
+				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, $dateFormat, $tz) : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>				
 				<td><?php echo $owner->groupdesc ? Hubzero_View_Helper_Html::shortenText($owner->groupdesc, 30, 0) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
 				<td class="mini"><?php echo $lastvisit; ?></td>
 			</tr>
