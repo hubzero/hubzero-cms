@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%m/%d/%Y';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'm/d/Y';
+	$tz = null;
+}
+
 // Set some ordering variables
 $start   = ($this->filters['start']) ? '&start='.$this->filters['start'] : '';
 $imgasc  = '<img src="'.DS.'components'.DS.$this->option.DS.'images'.DS.'sort_asc.png">';
@@ -179,7 +188,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 						</td>
 						<td><?php echo $record->uname; ?></td>
 						<td class="col-time"><?php echo $record->time; ?></td>
-						<td><?php echo JHTML::_('date', $record->date, '%m/%d/%Y', 0); ?></td>
+						<td><?php echo JHTML::_('date', $record->date, $dateFormat, $tz); ?></td>
 						<td><?php echo $record->pname; ?></td>
 						<td class="last"><?php echo $record->description; ?></td>
 					</tr>

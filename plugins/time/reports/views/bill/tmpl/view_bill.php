@@ -30,6 +30,17 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$dateFormat = '%B %e, %Y at %l:%M:%S %P';
+$dateFormat2 = '%m-%d-%Y';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'F j, Y at g:i:s A';
+	$dateFormat2 = 'm-d-Y';
+	$tz = null;
+}
 ?>
 
 <div id="plg_time_reports">
@@ -52,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 			<caption>
 				<?php echo JText::_(ucfirst($this->report->report_type)
 					. ' generated on '
-					. JHTML::_('date', $this->report->time_stamp, '%B %e, %Y at %l:%M:%S %P', 0)
+					. JHTML::_('date', $this->report->time_stamp, $dateFormat, $tz)
 					. ' for ' . $this->hubname);
 				?>
 			</caption>
@@ -80,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 						} ?>
 					<tr class="<?php echo $cls; ?>">
 						<td class="report_time"><?php echo $record->time; ?></td>
-						<td class="report_date"><?php echo JHTML::_('date', $record->date, '%m-%d-%Y', 0); ?></td>
+						<td class="report_date"><?php echo JHTML::_('date', $record->date, $dateFormat2, $tz); ?></td>
 						<td><?php echo $record->pname; ?></td>
 						<td><?php echo $record->description; ?></td>
 					</tr>

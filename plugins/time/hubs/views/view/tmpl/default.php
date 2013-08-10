@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%m/%d/%Y';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'm/d/Y';
+	$tz = null;
+}
+
 // Set some ordering variables
 $start   = ($this->filters['start']) ? '&start='.$this->filters['start'] : '';
 $imgasc  = '<img src="'.DS.'components'.DS.$this->option.DS.'images'.DS.'sort_asc.png">';
@@ -96,7 +105,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 							</a>
 						</td>
 						<td><?php echo $hub->liaison; ?></td>
-						<td><?php echo ($hub->anniversary_date != '0000-00-00') ? JHTML::_('date', $hub->anniversary_date, '%m/%d/%Y', 0) : ''; ?></td>
+						<td><?php echo ($hub->anniversary_date != '0000-00-00') ? JHTML::_('date', $hub->anniversary_date, $dateFormat, $tz) : ''; ?></td>
 						<td><?php echo $hub->support_level; ?></td>
 					</tr>
 					<?php } // close foreach

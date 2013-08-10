@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%b %e, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M j, Y';
+	$tz = false;
+}
+
 // if count of contacts is greater than zero, set ccount true
 $ccount = (count($this->contacts) > 0) ? true : false;
 ?>
@@ -78,7 +87,7 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 
 			<div class="grouping" id="anniversary-grouping">
 				<label for="anniversary_date"><?php echo JText::_('PLG_TIME_HUBS_ANNIVERSARY_DATE'); ?>:</label>
-				<?php echo ($this->row->anniversary_date != '0000-00-00') ? JHTML::_('date', $this->row->anniversary_date, '%b %e, %Y', 0) : ''; ?>
+				<?php echo ($this->row->anniversary_date != '0000-00-00') ? JHTML::_('date', $this->row->anniversary_date, $dateFormat, $tz) : ''; ?>
 			</div>
 
 			<div class="grouping" id="support-grouping">

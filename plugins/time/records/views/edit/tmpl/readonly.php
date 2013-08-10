@@ -30,6 +30,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$dateFormat = '%b %e, %Y';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M j, Y';
+	$tz = null;
+}
 ?>
 
 <div id="dialog-confirm"></div>
@@ -94,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<div class="grouping" id="date-group">
 			<label for="date"><?php echo JText::_('PLG_TIME_RECORDS_DATE'); ?>:</label>
-			<?php echo ($this->row->date != '0000-00-00 00:00:00') ? JHTML::_('date', $this->row->date, '%b %e, %Y', 0) : ''; ?>
+			<?php echo ($this->row->date != '0000-00-00 00:00:00') ? JHTML::_('date', $this->row->date, $dateFormat, $tz) : ''; ?>
 		</div>
 	</div>
 
