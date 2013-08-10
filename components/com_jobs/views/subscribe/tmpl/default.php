@@ -33,11 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$dateFormat = '%d %b %Y';
 	$tz = null;
 
-        if (version_compare(JVERSION, '1.6', 'ge'))
-        {
-                $dateFormat = 'd M Y';
-                $tz = false;
-        }
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$dateFormat = 'd M Y';
+		$tz = false;
+	}
 
 	/* Subscription screen */
 
