@@ -260,6 +260,15 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	{
 		$juser =& JFactory::getUser();
 
+		$yearFormat = '%Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$yearFormat = 'Y';
+			$tz = false;
+		}
+
 		//  Limit one-time batch size
 		$limit = JRequest::getInt('limit', 2);
 
@@ -316,7 +325,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				if ($results) 
 				{
 					$title = $results[0]->title ? $results[0]->title : $resource->title;
-					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, '%Y')) : date('Y');
+					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, $yearFormat, $tz)) : date('Y');
 				}
 				else 
 				{
