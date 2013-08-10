@@ -37,13 +37,13 @@ $tzString = $tzString[0].")";
 
 $dateFormat = '%d %b %Y';
 $timeFormat = '%I:%M %p';
-$tz = 0;
+$tz = null;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
         $dateFormat = 'd M Y';
 	$timeFormat = 'h:i A';
-        $tz = null;
+        $tz = false;
 }
 
 $this->row->content = stripslashes($this->row->content);
