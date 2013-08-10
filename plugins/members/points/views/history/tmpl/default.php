@@ -30,6 +30,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
 ?>
 
 <h3 class="section-header">
@@ -70,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php if ($this->hist) : ?>
 					<?php foreach ($this->hist as $item) : ?>
 						<tr>
-							<td><?php echo JHTML::_('date',$item->created, '%d %b, %Y'); ?></td>
+							<td><?php echo JHTML::_('date',$item->created, $dateFormat, $tz); ?></td>
 							<td><?php echo $item->description; ?></td>
 							<td><?php echo $item->type; ?></td>
 						

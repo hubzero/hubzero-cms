@@ -29,6 +29,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 //get the database object
 $database =& JFactory::getDBO();
 ?>
@@ -131,7 +140,7 @@ $database =& JFactory::getDBO();
 						}
 					
 						//date received
-						$date = JHTML::_('date', $row->created, '%d %b, %Y');
+						$date = JHTML::_('date', $row->created, $dateFormat, $tz);
 					
 						//delete link
 						$del_link = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash');

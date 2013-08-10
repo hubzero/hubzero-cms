@@ -647,6 +647,17 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _savecomment() 
 	{
+		$yearFormat = '%Y';
+		$monthFormat = '%m';
+		$tz = 0;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$yearFormat = 'Y';
+			$monthFormat = 'm';
+			$tz = null;
+		}
+
 		// Ensure the user is logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
@@ -690,7 +701,7 @@ class plgMembersBlog extends JPlugin
 
 			// Build the SEF referenced in the message
 			$juri =& JURI::getInstance();
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->member->get('uidNumber').'&active=blog&task='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias.'#comments);
+			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->member->get('uidNumber').'&active=blog&task='.JHTML::_('date',$this->entry->publish_up, $yearFormat, $tz).'/'.JHTML::_('date',$this->entry->publish_up, $monthFormat, $tz).'/'.$this->entry->alias.'#comments);
 			if (substr($sef,0,1) == '/') {
 				$sef = substr($sef,1,strlen($sef));
 			}
