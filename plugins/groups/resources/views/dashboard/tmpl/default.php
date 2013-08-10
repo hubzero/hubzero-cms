@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M, Y';
+	$tz = false;
+}
+
 if ($this->results) {
 	ximport('Hubzero_View_Helper_Html');
 
@@ -130,7 +139,7 @@ if ($this->results) {
 <?php } ?>
 									<tr>
 										<th><?php echo JText::_('PLG_GROUPS_RESOURCES_DATE'); ?></th>
-										<td><?php echo JHTML::_('date',$line->publish_up, '%d %b, %Y'); ?></td>
+										<td><?php echo JHTML::_('date',$line->publish_up, $dateFormat, $tz); ?></td>
 									</tr>
 									<tr>
 										<th><?php echo JText::_('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>

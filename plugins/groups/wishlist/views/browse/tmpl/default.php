@@ -70,8 +70,8 @@ $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
 	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
+	$timeFormat = 'h:i a';
+	$tz = null;
 }
 
 $title = ($this->admin) ? JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
@@ -228,7 +228,7 @@ else {
 								case 1:
 									$html .= '<span class="granted">'.JText::_('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
 									/*if ($item->granted != '0000-00-00 00:00:00') {
-										$html .= ' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, '%d %b %y').'</span>';
+										$html .= ' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, $dateFormat, $tz).'</span>';
 									}*/
 								break;
 								case 3:

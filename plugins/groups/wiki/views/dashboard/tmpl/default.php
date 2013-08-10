@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b. %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M. Y';
+	$tz = false;
+}
+
 if ($this->rows) {
 ?>
 	<table class="activity" id="wiki-list" summary="<?php echo JText::_('PLG_GROUPS_WIKI_DASHBOARD_SUMMARY'); ?>">
@@ -59,7 +68,7 @@ if ($this->rows) {
 				<th scope="row"><span class="<?php echo $c; ?>"><?php echo $t; ?></span></th>
 				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&pagename='.$row->pagename.'&scope='.$row->scope); ?>"><?php echo stripslashes($row->title); ?></a></td>
 				<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo $name; ?></a></td>
-				<td class="date"><?php echo JHTML::_('date', $row->created, "%d %b. %Y"); ?></td>
+				<td class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></td>
 			</tr>
 <?php
 	}
