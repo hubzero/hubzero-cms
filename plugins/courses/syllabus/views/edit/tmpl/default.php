@@ -31,6 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$yearFormat = '%Y';
+$monthFormat = '%m';
+$tz = 0;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$yearFormat = 'Y';
+	$monthFormat = 'm';
+	$tz = null;
+}
+
 //tag editor
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
@@ -148,7 +159,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_COURSES_BLOG_SAVE'); ?>" />
 		<?php if ($this->entry->id) { ?>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, $yearFormat, $tz).'/'.JHTML::_('date',$this->entry->publish_up, $monthFormat, $tz).'/'.$this->entry->alias); ?>">Cancel</a>
 		<?php } ?>
 	</p>
 </form>
