@@ -30,6 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%d %b %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = false;
+}
+
 $ids = array();
 foreach ($this->rows as $row)
 {
@@ -181,7 +190,7 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape(stripslashes($row->type)); ?>
 				</td>
 				<!-- <td>
-					<?php echo JHTML::_('date', $row->created, '%d %b %Y'); ?>
+					<?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?>
 				</td> -->
 				<td>
 					<?php if ($row->state == 2) { ?>

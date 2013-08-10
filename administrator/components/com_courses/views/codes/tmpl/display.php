@@ -30,6 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%d %b %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = false;
+}
+
 $canDo = CoursesHelper::getActions('unit');
 
 JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
@@ -133,14 +142,14 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td>
 				<td>
-					<?php echo JHTML::_('date', $row->get('created'), '%d %b %Y'); ?>
+					<?php echo JHTML::_('date', $row->get('created'), $dateFormat, $tz); ?>
 				</td>
 				<td>
-					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), '%d %b %Y') : JText::_('(never)'); ?>
+					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), $dateFormat, $tz) : JText::_('(never)'); ?>
 				</td>
 <?php if ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') { ?>
 				<td>
-					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), '%d %b %Y') : JText::_('(unredeemed)'); ?>
+					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), $dateFormat, $tz) : JText::_('(unredeemed)'); ?>
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=students&amp;task=edit&amp;section=<?php echo $row->get('section_id'); ?>&amp;id[]=<?php echo $row->get('redeemed_by'); ?>">
