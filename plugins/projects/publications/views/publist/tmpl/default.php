@@ -25,6 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M d, Y';
+	$tz = false;
+}
+
 $publishing = 
 	is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 		.'com_publications' . DS . 'tables' . DS . 'publication.php')
@@ -61,7 +70,7 @@ if ($items) {
 	<ul>
 		<?php foreach ($items as $item) { 
 		?>
-		<li class="publications"><a href="<?php echo JRoute::_($route . a . 'id=' . $item->id);  ?>"><?php echo $item->title; ?></a> <span class="public-list-info"> - <?php echo JText::_('COM_PROJECTS_PUBLISHED') . ' ' . JHTML::_('date', $item->published_up, '%b %d, %Y') . ' ' . JText::_('COM_PROJECTS_IN') . ' <a href="'.JRoute::_('index.php?option=com_publications&category='.$item->cat_url).'">' . $item->cat_name . '</a>'; ?></span></li>	
+		<li class="publications"><a href="<?php echo JRoute::_($route . a . 'id=' . $item->id);  ?>"><?php echo $item->title; ?></a> <span class="public-list-info"> - <?php echo JText::_('COM_PROJECTS_PUBLISHED') . ' ' . JHTML::_('date', $item->published_up, $dateFormat, $tz) . ' ' . JText::_('COM_PROJECTS_IN') . ' <a href="'.JRoute::_('index.php?option=com_publications&category='.$item->cat_url).'">' . $item->cat_name . '</a>'; ?></span></li>	
 		<?php
 		} ?>
 	</ul>
