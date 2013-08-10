@@ -130,6 +130,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<span class="mini">
 					<a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo JText::_('PLG_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo JText::_('PLG_RESUME_LINKEDIN'); ?></a>
 				</span>
+			<?php } ?>
 	<?php } else { ?>
 			<span class="unavail"><?php echo JText::_('PLG_RESUME_ACTION_DOWNLOAD'); ?></span>
 	<?php } ?>
