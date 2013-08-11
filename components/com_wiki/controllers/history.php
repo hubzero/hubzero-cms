@@ -198,13 +198,13 @@ class WikiControllerHistory extends Hubzero_Controller
 		// Do some error checking
 		if (!$diff) 
 		{
-			$this->setError(JText::_('WIKI_ERROR_MISSING_VERSION'));
+			$this->setError(JText::_('COM_WIKI_ERROR_MISSING_VERSION'));
 			$this->displayTask();
 			return;
 		}
 		if ($diff == $oldid) 
 		{
-			$this->setError(JText::_('WIKI_ERROR_SAME_VERSIONS'));
+			$this->setError(JText::_('COM_WIKI_ERROR_SAME_VERSIONS'));
 			$this->displayTask();
 			return;
 		}

@@ -91,12 +91,12 @@ if ($this->page->id) {
 	<ul class="sub-menu">
 		<li class="page-text">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">
-				<span><?php echo JText::_('WIKI_TAB_ARTICLE'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_TAB_ARTICLE'); ?></span>
 			</a>
 		</li>
 		<li class="page-edit active">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=edit'); ?>">
-				<span><?php echo JText::_('WIKI_TAB_EDIT'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_TAB_EDIT'); ?></span>
 			</a>
 		</li>
 <?php //if ($this->page->pagename != 'MainPage') { ?>
@@ -121,15 +121,15 @@ if ($this->page->id) {
 <?php
 if ($this->page->id && !$this->config->get('access-modify')) {
 	if ($this->page->params->get( 'allow_changes' ) == 1) { ?>
-		<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
+		<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
 <?php } else { ?>
-		<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+		<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php }
 }
 ?>
 
 <?php if ($this->page->state == 1 && !$this->config->get('access-manage')) { ?>
-	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } ?>
 
 <?php if ($this->getError()) { ?>
@@ -252,8 +252,8 @@ if ($templates) {
 		
 	<?php if ($this->config->get('access-edit')) { ?>
 		<label for="title">
-			<?php echo JText::_('WIKI_FIELD_TITLE'); ?>:
-			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
+			<?php echo JText::_('COM_WIKI_FIELD_TITLE'); ?>:
+			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 			<input type="text" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" size="38" />
 		</label>
 	<?php } else { ?>
@@ -261,8 +261,8 @@ if ($templates) {
 	<?php } ?>
 		
 		<label for="pagetext" style="position: relative;">
-			<?php echo JText::_('WIKI_FIELD_PAGETEXT'); ?>: 
-			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
+			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>: 
+			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 			<?php
 			ximport('Hubzero_Wiki_Editor');
 			$editor =& Hubzero_Wiki_Editor::getInstance();
@@ -303,7 +303,7 @@ if ($this->config->get('access-edit')) {
 		$juser =& JFactory::getUser();
 		if (!$this->page->id || $this->page->created_by == $juser->get('id') || $this->config->get('access-manage')) { ?>
 			<label for="params_mode">
-				<?php echo JText::_('WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
+				<?php echo JText::_('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 				<select name="params[mode]" id="params_mode">
 					<option value="knol"<?php if ($mode == 'knol') { echo ' selected="selected"'; } ?>>Knowledge article with specific authors</option>
 					<option value="wiki"<?php if ($mode == 'wiki') { echo ' selected="selected"'; } ?>>Wiki page anyone can edit</option>
@@ -317,7 +317,7 @@ if ($this->config->get('access-edit')) {
 <?php 	} ?>
 	
 			<label<?php echo $cls; ?> for="params_authors">
-					<?php echo JText::_('WIKI_FIELD_AUTHORS'); ?>:
+					<?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:
 					<?php 
 					JPluginHelper::importPlugin( 'hubzero' );
 					$dispatcher =& JDispatcher::getInstance();
@@ -346,12 +346,12 @@ if ($this->config->get('access-edit')) {
 	
 			<label<?php echo $cls; ?> for="params_allow_changes">
 				<input class="option" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->params->get( 'allow_changes' ) == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('WIKI_FIELD_ALLOW_CHANGES'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
 			</label>
 	
 			<label<?php echo $cls; ?> for="params_allow_comments">
 				<input class="option" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->params->get( 'allow_comments' ) == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('WIKI_FIELD_ALLOW_COMMENTS'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
 			</label>
 <?php } else { ?>
 			<input type="hidden" name="params[mode]" value="<?php echo $mode; ?>" />
@@ -366,7 +366,7 @@ if ($this->config->get('access-edit')) {
 <?php if ($this->config->get('access-manage')) { ?>
 			<label for="state">
 				<input class="option" type="checkbox" name="page[state]" id="state"<?php if ($this->page->state == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('WIKI_FIELD_STATE'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>
 			</label>
 <?php } ?>
 		</fieldset>
@@ -375,13 +375,13 @@ if ($this->config->get('access-edit')) {
 <?php if ($this->config->get('access-edit')) { ?>
 	<?php if (!$this->sub) { ?>
 		<div class="explaination">
-			<p><?php echo JText::_('WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
+			<p><?php echo JText::_('COM_WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
 		</div>
 	<?php } ?>
 		<fieldset>
 			<legend><?php echo JText::_('Metadata'); ?></legend>
 			<label>
-				<?php echo JText::_('WIKI_FIELD_TAGS'); ?>:
+				<?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php 
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 				if (count($tf) > 0) {
@@ -390,16 +390,16 @@ if ($this->config->get('access-edit')) {
 					echo '<input type="text" name="tags" value="'. $this->tags .'" size="38" />';
 				}
 				?>
-				<span class="hint"><?php echo JText::_('WIKI_FIELD_TAGS_HINT'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</label>
 <?php } else { ?>
 		<input type="hidden" name="tags" value="<?php echo $this->escape($this->tags); ?>" />
 <?php } ?>
 
 			<label>
-				<?php echo JText::_('WIKI_FIELD_EDIT_SUMMARY'); ?>:
+				<?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
 				<input type="text" name="revision[summary]" value="<?php echo $this->escape($this->revision->summary); ?>" size="38" />
-				<span class="hint"><?php echo JText::_('WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
 			</label>
 			<input type="hidden" name="revision[minor_edit]" value="1" />
 		</fieldset>

@@ -82,11 +82,11 @@ if (!$mode || ($mode && $mode != 'static'))
 <?php if (!$this->sub) { ?>
 <div class="section">
 	<div class="aside">
-		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
+		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 <?php } ?>
-		<p><?php echo JText::_('WIKI_COMMENTS_EXPLANATION'); ?></p>
+		<p><?php echo JText::_('COM_WIKI_COMMENTS_EXPLANATION'); ?></p>
 <?php if (!$this->sub) { ?>
 	</div><!-- / .subject -->
 </div><!-- / .section -->
@@ -96,7 +96,7 @@ if (!$mode || ($mode && $mode != 'static'))
 <div class="main section">
 	<?php if ($this->sub) { ?>
 	<p class="comment-add-btn">
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
 	</p>
 	<?php } ?>
 	<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
@@ -106,7 +106,7 @@ if (!$mode || ($mode && $mode != 'static'))
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>" method="get">
 			<fieldset class="controls">
 				<label for="filter-version">
-					<?php echo JText::_('WIKI_COMMENT_REVISION'); ?>:
+					<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
 					<select name="version" id="filter-version">
 						<option value=""><?php echo JText::_('ALL'); ?></option>
 <?php
@@ -164,7 +164,7 @@ if ($this->comments) {
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>" method="post" id="commentform">
 		<h3 id="commentform-title">
 			<a name="commentform"></a>
-			<?php echo JText::_('WIKI_ADD_COMMENT'); ?>
+			<?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?>
 		</h3>
 		<div class="aside">
 			<table class="wiki-reference" summary="Wiki Syntax Reference">
@@ -224,16 +224,16 @@ if ($this->comments) {
 			<fieldset>
 <?php if (!$this->mycomment->parent) { ?>
 				<fieldset>
-					<legend><?php echo JText::_('WIKI_FIELD_RATING'); ?>:</legend>
-					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->rating == 1) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo JText::_('WIKI_FIELD_RATING_ONE'); ?></label>
+					<legend><?php echo JText::_('COM_WIKI_FIELD_RATING'); ?>:</legend>
+					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->rating == 1) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo JText::_('COM_WIKI_FIELD_RATING_ONE'); ?></label>
 					<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->rating == 2) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
 					<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->rating == 3) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
 					<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->rating == 4) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
-					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->rating == 5) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo JText::_('WIKI_FIELD_RATING_FIVE'); ?></label>
+					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->rating == 5) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo JText::_('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
 				</fieldset>
 <?php } ?>
 				<label>
-					<?php echo JText::_('WIKI_FIELD_COMMENTS'); ?>:
+					<?php echo JText::_('COM_WIKI_FIELD_COMMENTS'); ?>:
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
@@ -262,7 +262,7 @@ if ($this->comments) {
 <?php } ?>
 				<label id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"<?php if ($this->mycomment->anonymous != 0) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::_('WIKI_FIELD_ANONYMOUS'); ?>
+					<?php echo JText::_('COM_WIKI_FIELD_ANONYMOUS'); ?>
 				</label>
 
 				<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" /></p>

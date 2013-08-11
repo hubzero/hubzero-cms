@@ -65,7 +65,7 @@ class WikiHtml
 		} 
 		else 
 		{
-			$html = '<p>'.JText::_('WIKI_PAGE_HAS_NO_TAGS').'</p>';
+			$html = '<p>'.JText::_('COM_WIKI_PAGE_HAS_NO_TAGS').'</p>';
 		}
 		return $html;
 	}
@@ -149,7 +149,7 @@ class WikiHtml
 					}
 				}
 				$cons = implode(', ', $cons);
-				$html .= ($cons) ? '<p class="topic-contributors">' . JText::_('WIKI_PAGE_CONTRIBUTIONS_BY') . ' ' . $cons . '</p>' . "\n" : '';
+				$html .= ($cons) ? '<p class="topic-contributors">' . JText::_('COM_WIKI_PAGE_CONTRIBUTIONS_BY') . ' ' . $cons . '</p>' . "\n" : '';
 			}
 		}
 		return $html;

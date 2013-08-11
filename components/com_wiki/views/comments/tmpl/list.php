@@ -62,11 +62,11 @@ if (count($this->comments) > 0) {
 	$html .= '<ol class="comments">'."\n";
 	foreach ($this->comments as $comment)
 	{
-		$author = JText::_('WIKI_AUTHOR_ANONYMOUS');
+		$author = JText::_('COM_WIKI_AUTHOR_ANONYMOUS');
 		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
 
 		if ($comment->anonymous != 1) {
-			$author = JText::_('WIKI_AUTHOR_UNKNOWN');
+			$author = JText::_('COM_WIKI_AUTHOR_UNKNOWN');
 			//$cuser =& JUser::getInstance($comment->created_by);
 			if (is_object($cuser)) {
 				$author = $cuser->get('name');
@@ -122,7 +122,7 @@ if (count($this->comments) > 0) {
 			$html .= "\t\t\t\t".'<a class="reply" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment&parent='.$comment->id).'" title="'.JText::sprintf('WIKI_COMMENT_REPLY_TO',$author).'">'.JText::_('Reply').'</a>'."\n";
 			
 		}
-		//$html .= t.t.t.' | <a class="abuse" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=reportcomment&id='.$comment->id).'">'.JText::_('WIKI_COMMENT_REPORT').'</a>';
+		//$html .= t.t.t.' | <a class="abuse" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=reportcomment&id='.$comment->id).'">'.JText::_('COM_WIKI_COMMENT_REPORT').'</a>';
 		//$html .= '</p><p class="actions">&nbsp;</p>'.n;
 		$html .= "\t\t\t".'</p>'."\n";
 		$html .= "\t\t".'</div><!-- .comment-content -->'."\n";

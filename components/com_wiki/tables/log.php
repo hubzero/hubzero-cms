@@ -106,14 +106,14 @@ class WikiLog extends JTable
 		$this->pid = intval($this->pid);
 		if (!$this->pid) 
 		{
-			$this->setError(JText::_('WIKI_LOGS_MUST_HAVE_PAGE_ID'));
+			$this->setError(JText::_('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
 			return false;
 		}
 
 		$this->uid = intval($this->uid);
 		if (!$this->uid) 
 		{
-			$this->setError(JText::_('WIKI_LOGS_MUST_HAVE_USER_ID'));
+			$this->setError(JText::_('COM_WIKI_LOGS_MUST_HAVE_USER_ID'));
 			return false;
 		}
 

@@ -45,7 +45,7 @@ if (!$juser->get('guest')) { ?>
 	<?php if ($this->config->get('access-create')) { ?>
 		<li>
 			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
-				<?php echo JText::_('WIKI_NEW_PAGE'); ?>
+				<?php echo JText::_('COM_WIKI_NEW_PAGE'); ?>
 			</a>
 		</li>
 	<?php } ?>
@@ -56,33 +56,33 @@ if (!$juser->get('guest')) { ?>
 	<ul class="sub-menu">
 		<li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">
-				<span><?php echo JText::_('WIKI_TAB_ARTICLE'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_TAB_ARTICLE'); ?></span>
 			</a>
 		</li>
 <?php if ($this->page->id && strtolower($this->page->getNamespace()) != 'special') { ?>
 	<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-edit'))) { ?>
 		<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=edit'); ?>">
-				<span><?php echo JText::_('WIKI_TAB_EDIT'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_TAB_EDIT'); ?></span>
 			</a>
 		</li>
 	<?php } ?>
 	<?php if ($this->config->get('access-comment-view')) { ?>
 		<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=comments'); ?>">
-				<span><?php echo JText::_('WIKI_TAB_COMMENTS'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_TAB_COMMENTS'); ?></span>
 			</a>
 		</li>
 	<?php } ?>
 		<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=history'); ?>">
-				<span><?php echo JText::_('WIKI_TAB_HISTORY'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_TAB_HISTORY'); ?></span>
 			</a>
 		</li>
 	<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 		<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=delete'); ?>">
-				<span><?php echo JText::_('WIKI_DELETE_PAGE'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_DELETE_PAGE'); ?></span>
 			</a>
 		</li>
 	<?php } ?>

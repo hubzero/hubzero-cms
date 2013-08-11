@@ -124,7 +124,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 			<?php echo $this->revision->pagehtml; ?>
 		</div>
 		<p class="timestamp">
-			<?php echo JText::_('WIKI_PAGE_CREATED').' <time datetime="' . $first->created . '">'.JHTML::_('date', $first->created, $dateFormat, $tz).'</time>, '.JText::_('WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created . '">'.JHTML::_('date', $this->revision->created, $dateFormat, $tz) . '</time>'; ?>
+			<?php echo JText::_('COM_WIKI_PAGE_CREATED').' <time datetime="' . $first->created . '">'.JHTML::_('date', $first->created, $dateFormat, $tz).'</time>, '.JText::_('COM_WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created . '">'.JHTML::_('date', $this->revision->created, $dateFormat, $tz) . '</time>'; ?>
 			<?php if ($stats = $this->page->getMetrics()) { ?>
 			<span class="article-usage">
 				<?php echo $stats['visitors']; ?> Visitors, <?php echo $stats['visits']; ?> Visits
@@ -133,7 +133,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 		</p>
 <?php if ($tags) { ?>
 		<div class="article-tags">
-			<h3><?php echo JText::_('WIKI_PAGE_TAGS'); ?></h3>
+			<h3><?php echo JText::_('COM_WIKI_PAGE_TAGS'); ?></h3>
 			<?php echo $tags; ?>
 		</div>
 <?php } ?>

@@ -198,7 +198,7 @@ class WikiControllerPage extends Hubzero_Controller
 			// Ensure the special page exists
 			if (!in_array(strtolower($this->view->layout), $this->_getSpecialPages()))
 			{
-				//JError::raiseWarning(404, JText::_('WIKI_WARNING_NOT_FOUND'));
+				//JError::raiseWarning(404, JText::_('COM_WIKI_WARNING_NOT_FOUND'));
 				$this->setRedirect(
 					JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->view->page->scope)
 				);
@@ -249,7 +249,7 @@ class WikiControllerPage extends Hubzero_Controller
 		// Check if the page is group restricted and the user is authorized
 		if (!$this->config->get('access-view')) 
 		{
-			JError::raiseWarning(403, JText::_('WIKI_WARNING_NOT_AUTH'));
+			JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
 			return;
 		}
 
@@ -460,7 +460,7 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename),
-				JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'),
+				JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
 				'warning'
 			);
 			return;
@@ -471,7 +471,7 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename),
-				JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'),
+				JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
 				'warning'
 			);
 			return;
@@ -989,7 +989,7 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->scope),
-				JText::_('WIKI_ERROR_PAGE_NOT_FOUND'),
+				JText::_('COM_WIKI_ERROR_PAGE_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -1000,7 +1000,7 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->scope),
-				JText::_('WIKI_ERROR_NOTAUTH'),
+				JText::_('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
 			);
 			return;
@@ -1135,7 +1135,7 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->scope),
-				JText::_('WIKI_ERROR_NOTAUTH'),
+				JText::_('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
 			);
 			return;
@@ -1229,7 +1229,7 @@ class WikiControllerPage extends Hubzero_Controller
 			$p->load($newpagename, $scope);
 			if ($p->exist()) 
 			{
-				$this->setError(JText::_('WIKI_ERROR_PAGE_EXIST').' '.JText::_('CHOOSE_ANOTHER_PAGENAME'));
+				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST').' '.JText::_('CHOOSE_ANOTHER_PAGENAME'));
 				$this->renameTask($page);
 				return;
 			}

@@ -106,17 +106,17 @@ $first = end($this->revisions);
 			This article has <?php echo count($this->revisions); ?> versions, was created on <time datetime="<?php echo $first->created; ?>"><?php echo $first->created; ?></time> and last edited on <time datetime="<?php echo $this->revisions[0]->created; ?>"><?php echo $this->revisions[0]->created; ?></time>.
 		</p>
 			<div class="container">
-				<p><input type="submit" value="<?php echo JText::_('WIKI_HISTORY_COMPARE'); ?>" /></p>
-				<table class="entries" id="revisionhistory" summary="<?php echo JText::_('WIKI_HISTORY_TBL_SUMMARY'); ?>">
-					<caption><?php echo JText::_('WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
+				<p><input type="submit" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+				<table class="entries" id="revisionhistory" summary="<?php echo JText::_('COM_WIKI_HISTORY_TBL_SUMMARY'); ?>">
+					<caption><?php echo JText::_('COM_WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
 					<thead>
 						<tr>
-							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_VERSION'); ?></th>
-							<th scope="col" colspan="2"><?php echo JText::_('WIKI_HISTORY_COL_COMPARE'); ?></th>
-							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_WHEN'); ?></th>
-							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_MADE_BY'); ?></th>
-							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_LENGTH'); ?></th>
-							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_STATUS'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_WIKI_HISTORY_COL_VERSION'); ?></th>
+							<th scope="col" colspan="2"><?php echo JText::_('COM_WIKI_HISTORY_COL_COMPARE'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_WIKI_HISTORY_COL_WHEN'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_WIKI_HISTORY_COL_MADE_BY'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_WIKI_HISTORY_COL_LENGTH'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_WIKI_HISTORY_COL_STATUS'); ?></th>
 <?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 							<th scope="col"></th>
 <?php } ?>
@@ -133,14 +133,14 @@ foreach ($this->revisions as $revision)
 	$cls = ($cls == 'odd') ? 'even' : 'odd';
 	$level = ($revision->minor_edit) ? 'minor' : 'major';
 
-	$xname = JText::_('WIKI_AUTHOR_UNKNOWN');
+	$xname = JText::_('COM_WIKI_AUTHOR_UNKNOWN');
 	$juser =& JUser::getInstance($revision->created_by);
 	if (is_object($juser)) 
 	{
 		$xname = $juser->get('name');
 	}
 
-	$summary = ($revision->summary) ? $this->escape($revision->summary) : JText::_('WIKI_REVISION_NO_SUMMARY');
+	$summary = ($revision->summary) ? $this->escape($revision->summary) : JText::_('COM_WIKI_REVISION_NO_SUMMARY');
 
 	switch ($revision->approved)
 	{
@@ -175,13 +175,13 @@ foreach ($this->revisions as $revision)
 								( cur )
 <?php } else { ?>
 								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare&oldid='.$revision->version.'&diff='.$cur); ?>">
-									<?php echo JText::_('WIKI_HISTORY_CURRENT'); ?>
+									<?php echo JText::_('COM_WIKI_HISTORY_CURRENT'); ?>
 								</a>)
 <?php } ?>
 								&nbsp;
 <?php if ($revision->version != 1) { ?>
 								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare&oldid='.($revision->version - 1).'&diff='.$revision->version); ?>">
-									<?php echo JText::_('WIKI_HISTORY_LAST'); ?>
+									<?php echo JText::_('COM_WIKI_HISTORY_LAST'); ?>
 								</a>)
 <?php } else { ?>
 								( last )
@@ -203,7 +203,7 @@ foreach ($this->revisions as $revision)
 							</td>
 <?php } ?>
 							<td>
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version); ?>" class="tooltips" title="<?php echo JText::_('WIKI_REVISION_SUMMARY').' :: '.$summary; ?>">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version); ?>" class="tooltips" title="<?php echo JText::_('COM_WIKI_REVISION_SUMMARY').' :: '.$summary; ?>">
 									<time datetime="<?php echo $revision->created; ?>"><?php echo $this->escape($revision->created); ?></time>
 								</a>
 								<a class="tooltips markup" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version.'&format=raw'); ?>" title="<?php echo JText::_('Markup').' :: '.JText::_('View the markup for this version'); ?>">
@@ -221,13 +221,13 @@ foreach ($this->revisions as $revision)
 					<?php if (!$revision->approved && $this->config->get('access-manage')) { ?>
 								<br />
 								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=approve&oldid='.$revision->id); ?>">
-									<?php echo JText::_('WIKI_ACTION_APPROVED'); ?>
+									<?php echo JText::_('COM_WIKI_ACTION_APPROVED'); ?>
 								</a>
 					<?php } ?>
 							</td>
 					<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 							<td>
-								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=deleterevision&oldid='.$revision->id); ?>" title="<?php echo JText::_('WIKI_REVISION_DELETE'); ?>">
+								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=deleterevision&oldid='.$revision->id); ?>" title="<?php echo JText::_('COM_WIKI_REVISION_DELETE'); ?>">
 									<?php echo JText::_('DELETE'); ?>
 								</a>
 							</td>
@@ -236,7 +236,7 @@ foreach ($this->revisions as $revision)
 <?php } ?>
 					</tbody>
 				</table>
-				<p><input type="submit" value="<?php echo JText::_('WIKI_HISTORY_COMPARE'); ?>" /></p>
+				<p><input type="submit" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 			</div><!-- / .container -->
 
 		<div class="clear"></div>

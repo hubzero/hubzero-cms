@@ -79,19 +79,19 @@ if ($this->page->id)
 
 <div class="main section">
 <?php if ($this->page->state == 1 && !$this->config->get('access-manage')) { ?>
-	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } else { ?>
 
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<p><?php echo JText::_('WIKI_PAGENAME_EXPLANATION'); ?></p>
+			<p><?php echo JText::_('COM_WIKI_PAGENAME_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('WIKI_CHANGE_PAGENAME'); ?></h3>
+			<h3><?php echo JText::_('COM_WIKI_CHANGE_PAGENAME'); ?></h3>
 			<label>
-				<?php echo JText::_('WIKI_FIELD_PAGENAME'); ?>:
+				<?php echo JText::_('COM_WIKI_FIELD_PAGENAME'); ?>:
 				<input type="text" name="newpagename" value="<?php echo $this->page->pagename; ?>" size="38" />
-				<span><?php echo JText::_('WIKI_FIELD_PAGENAME_HINT'); ?></span>
+				<span><?php echo JText::_('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
 			</label>
 
 			<input type="hidden" name="oldpagename" value="<?php echo $this->page->pagename; ?>" />

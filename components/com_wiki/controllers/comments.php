@@ -381,12 +381,12 @@ class WikiControllerComments extends Hubzero_Controller
 				$comment->status = 2;
 				if ($comment->store())
 				{
-					$msg = JText::_('WIKI_COMMENT_DELETED');
+					$msg = JText::_('COM_WIKI_COMMENT_DELETED');
 				}
 			} 
 			else 
 			{
-				$msg = JText::_('WIKI_ERROR_NOTAUTH');
+				$msg = JText::_('COM_WIKI_ERROR_NOTAUTH');
 				$cls = 'error';
 			}
 		}

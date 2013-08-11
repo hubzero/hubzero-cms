@@ -153,11 +153,11 @@ class WikiControllerMedia extends Hubzero_Controller
 		{
 			if ($this->_sub) 
 			{
-				echo WikiHtml::warning(JText::_('WIKI_WARNING_NOT_AUTH'));
+				echo WikiHtml::warning(JText::_('COM_WIKI_WARNING_NOT_AUTH'));
 			} 
 			else 
 			{
-				JError::raiseWarning(403, JText::_('WIKI_WARNING_NOT_AUTH'));
+				JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
 			}
 			return;
 		}
@@ -260,7 +260,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0);
 		if (!$listdir) 
 		{
-			echo json_encode(array('error' => JText::_('WIKI_NO_ID')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_NO_ID')));
 			return;
 		}
 		
@@ -407,7 +407,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0, 'post');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -416,7 +416,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('WIKI_NO_FILE'));
+			$this->setError(JText::_('COM_WIKI_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -489,7 +489,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -498,7 +498,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$folder = trim(JRequest::getVar('folder', '', 'get'));
 		if (!$folder) 
 		{
-			$this->setError(JText::_('WIKI_NO_DIRECTORY'));
+			$this->setError(JText::_('COM_WIKI_NO_DIRECTORY'));
 			$this->displayTask();
 			return;
 		}
@@ -518,7 +518,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		} 
 		else 
 		{
-			$this->setError(JText::_('WIKI_NO_DIRECTORY'));
+			$this->setError(JText::_('COM_WIKI_NO_DIRECTORY'));
 		}
 
 		// Push through to the media view
@@ -543,7 +543,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -552,7 +552,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$file = trim(JRequest::getVar('file', '', 'get'));
 		if (!$file) 
 		{
-			$this->setError(JText::_('WIKI_NO_FILE'));
+			$this->setError(JText::_('COM_WIKI_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -624,7 +624,7 @@ class WikiControllerMedia extends Hubzero_Controller
 
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_NO_ID'));
 		}
 
 		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $listdir;

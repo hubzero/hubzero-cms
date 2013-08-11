@@ -515,13 +515,13 @@ class WikiPage extends JTable
 
 		if (!$this->pagename) 
 		{
-			$this->setError(JText::_('WIKI_ERROR_NO_PAGE_TITLE'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_PAGE_TITLE'));
 			return false;
 		}
 
 		if (in_array(strtolower($this->getNamespace()), array('special', 'image', 'file'))) 
 		{
-			$this->setError(JText::_('WIKI_ERROR_INVALID_TITLE'));
+			$this->setError(JText::_('COM_WIKI_ERROR_INVALID_TITLE'));
 			return false;
 		}
 
@@ -543,7 +543,7 @@ class WikiPage extends JTable
 			$g = WikiPage::getInstance($this->pagename, $this->scope);
 			if ($g->exist()) 
 			{
-				$this->setError(JText::_('WIKI_ERROR_PAGE_EXIST'));
+				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
 			$juser =& JFactory::getUser();

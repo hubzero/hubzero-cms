@@ -76,20 +76,20 @@ if ($mode != 'static') {
 
 <div class="main section">
 <?php if ($this->page->state == 1 && !$this->config->get('access-manage')) { ?>
-	<p class="warning"><?php echo JText::_('WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } else { ?>
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<p><?php echo JText::_('WIKI_DELETE_PAGE_EXPLANATION'); ?></p>
+			<p><?php echo JText::_('COM_WIKI_DELETE_PAGE_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('WIKI_DELETE_PAGE'); ?></legend>
+			<legend><?php echo JText::_('COM_WIKI_DELETE_PAGE'); ?></legend>
 			<label>
 				<input class="option" type="checkbox" name="confirm" value="1" />
-				<?php echo JText::_('WIKI_FIELD_CONFIRM_DELETE'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_CONFIRM_DELETE'); ?>
 			</label>
 			<p class="warning">
-				<?php echo JText::_('WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
 			</p>
 
 			<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />

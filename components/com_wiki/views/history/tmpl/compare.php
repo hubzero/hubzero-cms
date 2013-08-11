@@ -91,10 +91,10 @@ if (!$mode || ($mode && $mode != 'static'))
 <div class="section">
 	<div class="two columns first">
 		<dl class="diff-versions">
-			<dt><?php echo JText::_('WIKI_VERSION') . ' ' . $this->or->version; ?><dt>
+			<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->version; ?><dt>
 			<dd><time datetime="<?php echo $this->or->created; ?>"><?php echo $this->or->created; ?></time> by <?php echo $this->escape($orauthor); ?><dd>
 			
-			<dt><?php echo JText::_('WIKI_VERSION') . ' ' . $this->dr->version; ?><dt>
+			<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->version; ?><dt>
 			<dd><time datetime="<?php echo $this->dr->created; ?>"><?php echo $this->dr->created; ?></time> by <?php echo $this->escape($drauthor); ?><dd>
 		</dl>
 	</div><!-- / .aside -->
