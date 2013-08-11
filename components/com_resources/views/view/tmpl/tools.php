@@ -117,7 +117,7 @@ if ($mode != 'preview')
 								if ($this->model->params->get('access-edit-resource')) 
 								{ 
 							?>
-								<a class="edit button" href="<?php echo JRoute::_('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->resource->alias); ?>"><?php echo JText::_('EDIT'); ?></a>
+								<a class="edit button" href="<?php echo JRoute::_('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->resource->alias); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
 							<?php 
 								} // if ($this->model->params->get('access-edit-resource')) 
 							?>

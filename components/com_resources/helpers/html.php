@@ -230,7 +230,7 @@ class ResourcesHtml
 				{
 					$link = JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $id);
 				}
-				$txt = JText::_('EDIT');
+				$txt = JText::_('COM_RESOURCES_EDIT');
 			break;
 
 			default:
