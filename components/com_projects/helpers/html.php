@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%b %d, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'M d, Y';
-	$tz = false;
-}
-
-
 if (!defined('n')) {
 
 /**
@@ -637,6 +627,15 @@ class ProjectsHtml
 	 */
 	public function writeMemberOptions ( $view ) 
 	{ 
+		$dateFormat = '%b %d, %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'M d, Y';
+			$tz = false;
+		}
+
 		$options = '';
 		$role    = JText::_('COM_PROJECTS_PROJECT') . ' <span>';
 		

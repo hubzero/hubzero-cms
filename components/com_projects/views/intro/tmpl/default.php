@@ -32,7 +32,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 </div><!-- / #content-header -->
 <div id="content-header-extra">
     <ul id="useroptions">
-    	<li><a class="browse" href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS'); ?></a></li>
+    	<li><a class="browse" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <div class="clear"></div>
@@ -55,7 +55,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		<div class="two columns first">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_MADE_EASY'); ?></h3>
 			<p><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_HOW'); ?></p>
-			<p class="emphasized"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>" id="projects-intro-start"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
+			<p class="emphasized"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=start'); ?>" id="projects-intro-start"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
 		</div>
 		<div class="two columns second">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_WHAT_YOU_GET'); ?></h3>
