@@ -55,7 +55,9 @@ class plgGroupsWishlist extends Hubzero_Plugin
 		// Get the component parameters
 		$wconfig = & JComponentHelper::getParams('com_wishlist');
 		$this->config = $wconfig;
-		JPlugin::loadLanguage('com_wishlist');
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_wishlist');
 	}
 
 	/**
