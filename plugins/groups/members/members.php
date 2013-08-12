@@ -218,6 +218,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 				$view->option = $option;
 				$view->group = $group;
 				$view->authorized = $authorized;
+				$this->database = JFactory::getDBO();
 
 				$view->q = JRequest::getVar('q', '');
 				$view->filter = JRequest::getVar('filter', '');
