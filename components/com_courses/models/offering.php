@@ -410,6 +410,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
+					if (!$result->section_id)
+					{
+						$result->section_id = (int) $this->section()->get('id');
+					}
 					$results[$key] = new CoursesModelUnit($result);
 				}
 			}
