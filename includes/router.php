@@ -69,6 +69,9 @@ class JRouterSite extends JRouter
 			}
 		}
 
+		//Remove prefix
+                $path = str_replace('index.php', '', $path);
+
 		//Set the route
 		$uri->setPath(trim($path , '/'));
 
@@ -439,6 +442,7 @@ class JRouterSite extends JRouter
 				if(isset($item->language)){
 					$item->language = trim($item->language);
 				}
+				$depth = substr_count(trim($item->route,'/'),'/') + 1; // HUBzero: keep searching for better matches with higher depth
 				$length = strlen($item->route); //get the length of the route
 				if ($length > 0 && JString::strpos($route_lowercase.'/', $item->route.'/') === 0 && $item->type != 'menulink' && (!$app->getLanguageFilter() || $item->language == '*' || $item->language == $lang_tag)) {
 					/* START: HUBzero Extension to handle external url menu items differently */
@@ -464,11 +468,13 @@ class JRouterSite extends JRouter
 					// We have exact item for this language
 					if ($item->language == $lang_tag) {
 						$found = $item;
+						$foundDepth = $depth; // HUBzero: track depth so we can replace with a better match later
 						break;
 					}
 					// Or let's remember an item for all languages
-					elseif (!$found) {
+					elseif (!$found || ($depth>=$foundDepth)) { // HUBzero: deeper or equal depth matches later on are prefered
 						$found = $item;
+						$foundDepth = $depth; // HUBzero: track depth so we can replace with a better match later
 					}
 				}
 			}
