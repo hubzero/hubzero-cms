@@ -168,7 +168,14 @@ class JDatabasePDO extends JDatabase
 
 	public function escape($text, $extra = false)
 	{
-		$result = $this->connection->quote($text);
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$result = $this->_resource->quote($text);
+		}
+		else
+		{
+			$result = $this->connection->quote($text);
+		}
 
 		if ($extra)
 		{
