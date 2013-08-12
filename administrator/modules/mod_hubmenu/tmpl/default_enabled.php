@@ -296,7 +296,7 @@ if ($components)
 
 	foreach ($components as &$component)
 	{
-		if (in_array($component->element, array('com_members', 'com_groups', 'com_system'))
+		if (in_array($component->element, array('com_members', 'com_groups', 'com_system')))
 		{
 			continue;
 		}
