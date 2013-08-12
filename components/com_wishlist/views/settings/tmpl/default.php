@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div id="content-header-extra">
 			<ul id="useroptions">
 				<li class="last">
-					<a class="nav_wishlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
+					<a class="icon-wish nav_wishlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
 						<?php echo JText::_('COM_WISHLIST_WISHES_ALL'); ?>
 					</a>
 				</li>

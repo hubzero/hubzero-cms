@@ -118,11 +118,11 @@ if ($this->wishlist && $this->wish) {
 		<ul id="useroptions">
 			<li>
 		<?php if ($this->wish->prev) { ?>
-				<a class="prev btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev . $filters); ?>">
+				<a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev . $filters); ?>">
 					<span><?php echo JText::_('COM_WISHLIST_PREV'); ?></span>
 				</a>
 		<?php } else { ?>
-				<span class="prev btn">
+				<span class="icon-prev prev btn">
 					<span><?php echo JText::_('COM_WISHLIST_PREV'); ?></span>
 				</span>
 		<?php } ?>
@@ -134,11 +134,11 @@ if ($this->wishlist && $this->wish) {
 			</li>
 			<li class="last">
 			<?php if ($this->wish->next) { ?>
-				<a class="next btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->next . $filters); ?>">
+				<a class="icon-next next opposite btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->next . $filters); ?>">
 					<span><?php echo JText::_('COM_WISHLIST_NEXT'); ?></span>
 				</a>
 			<?php } else { ?>
-				<span class="next btn">
+				<span class="icon-next next opposite btn">
 					<span><?php echo JText::_('COM_WISHLIST_NEXT'); ?></span>
 				</span>
 			<?php } ?>
@@ -738,7 +738,7 @@ if ($this->wishlist && $this->wish) {
 		</h3>
 		<div class="aside">
 			<p>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id.'#commentform');?>">
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id.'#commentform');?>">
 					<?php echo JText::_('COM_WISHLIST_ADD_A_COMMENT'); ?>
 				</a>
 			</p>
@@ -883,7 +883,7 @@ if ($this->wishlist && $this->wish) {
 			<div class="aside">
 			<?php if ($this->wish->action != 'editplan') { ?>
 				<p>
-					<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
+					<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
 						<?php echo JText::_('COM_WISHLIST_ADD_TO_THE_PLAN'); ?>
 					</a>
 				</p>
