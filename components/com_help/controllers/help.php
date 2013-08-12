@@ -136,9 +136,13 @@ class HelpControllerHelp extends Hubzero_Controller
 	{
 		//get component name from database
 		$sql = "SELECT `name` FROM #__components WHERE `option`=" . $this->database->quote( $component ) . " AND `enabled`=1 AND `parent`=0";
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$sql = "SELECT `name` FROM `#__extensions` WHERE `type`=" . $this->database->quote( 'component' ) . " AND `element`=" . $this->database->quote( $component ) . " AND `enabled`=1";
+		}
 		$this->database->setQuery( $sql );
 		$name = $this->database->loadResult();
-		
+	
 		//make sure we have a component
 		if ($name == '')
 		{
