@@ -46,6 +46,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$dayFormat   = "d";
 	$tz = true;
 }
+if (!$this->article->modified || $this->article->modified == '0000-00-00 00:00:00')
+{
+	$this->article->modified = $this->article->created;
+}
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
