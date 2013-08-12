@@ -1092,7 +1092,7 @@ class WikiPage extends JTable
 
 		if (!isset($RE)) 
 		{
-			$language = strtolower(JFactory::getLanguage()->getBackwardLang());
+			$language = strtolower(JFactory::getLanguage()->getName());
 
 			// This mess splits between a lower-case letter followed by
 			// either an upper-case or a numeral; except that it wont
@@ -1101,20 +1101,28 @@ class WikiPage extends JTable
 			{
 				case 'fr':
 				case 'french':
+				case 'fr-FR':
 					$RE[] = '/([[:lower:]])((?<!Mc|Di)[[:upper:]]|\d)/';
 				break;
 
 				case 'en':
 				case 'english':
+				case 'en-US':
+				case 'en-GB':
+				case 'en-AU':
 
 				case 'it':
 				case 'italian':
+				case 'it-IT':
 
 				case 'es':
 				case 'spanish':
+				case 'es-ES':
+				
 
 				case 'de':
 				case 'german':
+				case 'de-DE':
 					$RE[] = '/([[:lower:]])((?<!Mc|De|Di)[[:upper:]]|\d)/';
 				break;
 			}
