@@ -761,12 +761,14 @@ class WikiControllerPage extends Hubzero_Controller
 		
 		// Get parameters
 		$paramClass = 'JParameter';
+		$bindMethod = 'bind';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramClass = 'JRegistry';
+			$bindMethod = 'loadArray';
 		}
 		$params = new $paramClass($this->page->params);
-		$params->bind(JRequest::getVar('params', array(), 'post'));
+		$params->$bindMethod(JRequest::getVar('params', array(), 'post'));
 		$this->page->params = $params->toString();
 		
 		// Get the previous version to compare against
