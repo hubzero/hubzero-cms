@@ -31,15 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//debug on
-error_reporting(E_ALL);
-@ini_set('display_errors', '1');
+$option = 'com_support';
 
-//
-$jacl =& JFactory::getacl();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl =& JFactory::getacl();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+}
 
 //include models
 require_once( JPATH_COMPONENT . DS . 'tables' . DS . 'newsletter.php' );
