@@ -100,7 +100,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				return $arr;
 			}
 		}
 
