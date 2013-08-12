@@ -22,7 +22,7 @@ $v = $browser->getBrowserMajorVersion();
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-		<title><?php echo $config->getValue('config.sitename') . ' - ' . $this->error->getCode(); ?></title>
+		<title><?php echo $config->getValue('config.sitename') . ' - ' . (in_array($this->error->getCode(), array(404, 403, 500)) ? $this->error->getCode() : 500); ?></title>
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications')); /* reset MUST come before all others except fontcons */ ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
@@ -32,6 +32,10 @@ $v = $browser->getBrowserMajorVersion();
 <?php } ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
+<?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
+		<link rel="stylesheet" type="text/css" media="screen" href="/media/cms/css/debug.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/debug.css" />
+<?php } ?>
 <?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.ui.js"></script>
@@ -151,14 +155,17 @@ $v = $browser->getBrowserMajorVersion();
 						<div class="two columns first">
 							<div id="errormessage">
 								<h2 class="error-code">
-									<?php echo $this->error->getCode(); ?>
+									<?php echo (in_array($this->error->getCode(), array(404, 403, 500))) ? $this->error->getCode() : 500; ?>
 								</h2>
 							</div><!-- / #errormessage -->
 						</div><!-- / .two columns first -->
 						<div class="two columns second">
 							<div id="errorbox">
 								<div class="wrap">
-								<?php if ($this->error->getCode() == 404) { ?>
+								<?php 
+								switch ($this->error->getCode())
+								{
+									case 404: ?>
 									<h3><?php echo JText::_('RE: Your Missing Page'); ?></h3>
 									<blockquote>
 										<p><?php echo JText::_("We're sorry to report that we couldn't find your page. Search parties were unable to recover any remains. It is our current belief that Hubzilla ate it."); ?></p>
@@ -166,7 +173,9 @@ $v = $browser->getBrowserMajorVersion();
 										<p><?php echo JText::_('With our deepest sympathies and condolences,'); ?></p>
 									</blockquote>
 									<p class="signature">&mdash;Cpt. Mura, Science Special Search Party (SSSP)</p>
-								<?php } else if ($this->error->getCode() == 403) { ?>
+									<?php 
+									break;
+									case 403: ?>
 									<h3><?php echo JText::_('Access Denied!'); ?></h3>
 									<blockquote>
 										<p><?php echo JText::_('It appears you do not have access to this page. You may be detained for further questioning.'); ?></p>
@@ -174,7 +183,10 @@ $v = $browser->getBrowserMajorVersion();
 										<p><?php echo JText::_('Please stay calm,'); ?></p>
 									</blockquote>
 									<p class="signature">&mdash;Cpt. Showa, Security</p>
-								<?php } else if ($this->error->getCode() == 500) { ?>
+									<?php 
+									break;
+									case 500: 
+									default: ?>
 									<h3><?php echo JText::_('Will Hubzilla\'s reign of terror never cease?!'); ?></h3>
 									<blockquote>
 										<p><?php echo JText::_('It seems Hubzilla stomped on this page. Our disaster recovery teams are scouring the wreckage for survivors and our clean-up crews will take over shortly thereafter.'); ?></p>
@@ -182,7 +194,9 @@ $v = $browser->getBrowserMajorVersion();
 										<p><?php echo JText::_('With our sincere apologies,'); ?></p>
 									</blockquote>
 									<p class="signature">&mdash;Cpt. Hayata, Disaster Recovery Team (DRT)</p>
-								<?php } ?>
+									<?php 
+									break;
+								} ?>
 								</div><!-- / .wrap -->
 							</div><!-- / #errorbox -->
 						</div><!-- / .two columns second -->
