@@ -149,6 +149,11 @@ if (count($this->articles) > 0)
 		$link  = 'index.php?option=' . $this->option . '&section=' . $row->calias;
 		$link .= ($row->ccalias) ? '&category= '. $row->ccalias : '';
 		$link .= ($row->alias)   ? '&alias=' . $row->alias      : '&alias=' . $row->id;
+
+		if (!$row->modified || $row->modified == '0000-00-00 00:00:00')
+		{
+			$row->modified = $row->created;
+		}
 ?>
 						<tr>
 							<th>
