@@ -186,6 +186,9 @@ class CollectionsControllerCollections extends Hubzero_Controller
 			$this->view->filters['limit']
 		);
 
+		$this->_buildTitle();
+		$this->_buildPathway();
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -251,6 +254,9 @@ class CollectionsControllerCollections extends Hubzero_Controller
 			$this->view->filters['limit']
 		);
 
+		$this->_buildTitle();
+		$this->_buildPathway();
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -258,6 +264,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 				$this->view->setError($error);
 			}
 		}
+
 		$this->view->display();
 	}
 
@@ -294,6 +301,9 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$model = CollectionsModel::getInstance();
 
 		$this->view->collections = $model->collections(array('count' => true, 'access' => 0, 'state' => 1, 'is_default' => 0));
+
+		$this->_buildTitle();
+		$this->_buildPathway();
 
 		if ($this->getError()) 
 		{

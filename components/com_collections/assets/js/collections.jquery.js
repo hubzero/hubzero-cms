@@ -35,11 +35,16 @@ jQuery(document).ready(function(jq){
 					itemSelector : '#posts div.post',     // selector for all items you'll retrieve
 					loading: {
 						finishedMsg: 'No more pages to load.',
-						img: '/6RMhx.gif'
+						img: '/components/com_collections/assets/img/spinner.gif'
 					},
 					path: function(index) {
-						var path = $('.list-footer .next a').attr('href');
-						limit = path.match(/limit[-=]([0-9]*)/).slice(1);
+						var path = $('.list-footer .next a').attr('href'),
+							limit = $('#limit').val(),
+							start = 0;
+						if (path.match(/limit[-=]([0-9]*)/)) {
+							limit = path.match(/limit[-=]([0-9]*)/).slice(1);
+						}
+						limit = limit ? limit : 25;
 						start = path.match(/start[-=]([0-9]*)/).slice(1);
 						return path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
 					},

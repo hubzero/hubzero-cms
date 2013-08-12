@@ -27,6 +27,14 @@
 		list-style: none;
 	}
 	
+	#infscr-loading {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		text-align: center;
+		width: 100%;
+	}
+
 	.com_collections .tagline {
 		font-size: 2em;
 		margin: 30px 0 50px 0;
