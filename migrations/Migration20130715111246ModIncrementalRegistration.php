@@ -13,9 +13,9 @@ class Migration20130715111246ModIncrementalRegistration extends Hubzero_Migratio
 	 **/
 	protected static function up($db)
 	{
-		if (!$db->tableHasField('#__profile_completion_awards', 'mailpreferenceoption'))
+		if (!$db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption'))
 		{
-			$query = "ALTER TABLE `#__profile_completion_awards` ADD COLUMN mailpreferenceoption int not null default 0;";
+			$query = "ALTER TABLE `#__profile_completion_awards` ADD COLUMN mailPreferenceOption int not null default 0;";
 			$db->setQuery($query);
 			$db->query();
 		}
@@ -35,9 +35,9 @@ class Migration20130715111246ModIncrementalRegistration extends Hubzero_Migratio
 	 **/
 	protected static function down($db)
 	{
-		if ($db->tableHasField('#__profile_completion_awards', 'mailpreferenceoption'))
+		if ($db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption'))
 		{
-			$query = "ALTER TABLE `#__profile_completion_awards` DROP COLUMN mailpreferenceoption;";
+			$query = "ALTER TABLE `#__profile_completion_awards` DROP COLUMN mailPreferenceOption;";
 			$db->setQuery($query);
 			$db->query();
 		}
