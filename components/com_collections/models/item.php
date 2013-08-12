@@ -375,7 +375,7 @@ class CollectionsModelItem extends JObject
 
 			if (!isset($filters['item_id']))
 			{
-				$filters['item_id'] = $this->get('id');
+				$filters['item_id'] = $this->exists() ? $this->get('id') : 0;
 			}
 
 			if (($results = $tbl->getRecords($filters)))
