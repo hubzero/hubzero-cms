@@ -56,6 +56,9 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' .
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'tags.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'utfnormalutil.php');
 
+$lang = JFactory::getLanguage();
+$lang->load('com_wiki');
+
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'page'));
 if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
 {
