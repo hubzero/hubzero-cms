@@ -25,7 +25,15 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 
 	public static function instance() {
 		if (!self::$inst) {
-			$conf = Db::scalarQuery('SELECT params FROM jos_components WHERE `option` = \'com_hubgraph\'');
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$query = 'SELECT params FROM jos_components WHERE `option` = \'com_hubgraph\'';
+			}
+			else
+			{
+				$query = 'SELECT params FROM jos_extensions WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
+			}
+			$conf = Db::scalarQuery($query);
 			if ($conf) {
 				self::$inst = unserialize($conf);
 			}
@@ -40,8 +48,18 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 
 	public function save() {
 		$params = serialize($this);
-		if (!Db::update('UPDATE jos_components SET params = ? WHERE `option` = \'com_hubgraph\'', array($params))) {
-			Db::execute('INSERT INTO jos_components(name, `option`, params) VALUES (\'HubGraph\', \'com_hubgraph\', ?)', array($params));
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$updateQuery = 'UPDATE jos_components SET params = ? WHERE `option` = \'com_hubgraph\'';
+			$insertQuery = 'INSERT INTO jos_components(name, `option`, params) VALUES (\'HubGraph\', \'com_hubgraph\', ?)';
+		}
+		else
+		{
+			$updateQuery = 'UPDATE jos_extensions SET params = ? WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
+			$insertQuery = 'INSERT INTO jos_extensions(name, `type`, `element`, params) VALUES (\'HubGraph\', \'component\', \'com_hubgraph\', ?)';
+		}
+		if (!Db::update($updateQuery, array($params))) {
+			Db::execute($insertQuery, array($params));
 		}
 	}
 
