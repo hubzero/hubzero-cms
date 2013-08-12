@@ -296,6 +296,10 @@ if ($components)
 
 	foreach ($components as &$component)
 	{
+		if (in_array($component->element, array('com_members', 'com_groups', 'com_system'))
+		{
+			continue;
+		}
 		if (!empty($component->submenu))
 		{
 			// This component has a db driven submenu.
