@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$option = 'com_register';
+
 // Authorization check
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
@@ -45,6 +47,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 		$app = JFactory::getApplication();
 		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 	}
+	include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'component.php');
 }
 else 
 {
@@ -52,10 +55,10 @@ else
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
+	include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'extension.php');
 }
 
 // Include scripts
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'component.php');
 include_once(JPATH_ROOT . DS . 'components' . DS .  $option . DS . 'tables' . DS . 'organizationtype.php');
 include_once(JPATH_ROOT . DS . 'components' . DS .  $option . DS . 'tables' . DS . 'organization.php');
 

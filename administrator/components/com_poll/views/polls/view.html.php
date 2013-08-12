@@ -27,9 +27,10 @@ jimport( 'joomla.application.component.view');
  */
 class PollViewPolls extends JView
 {
-	function display( $tpl = null )
+	public function display( $tpl = null )
 	{
-		global $mainframe, $option;
+		$option = 'com_poll';
+		$mainframe = JFactory::getApplication();
 
 		$db					=& JFactory::getDBO();
 		$filter_order		= $mainframe->getUserStateFromRequest( "$option.filter_order",		'filter_order',		'm.id',	'cmd' );

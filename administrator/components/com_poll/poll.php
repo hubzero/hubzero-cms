@@ -15,6 +15,8 @@
 // no direct access
 defined( '_JEXEC' ) or die('Restricted access');
 
+$option = 'com_poll';
+
 // Authorization check
 if (version_compare(JVERSION, '1.6', 'lt'))
 {

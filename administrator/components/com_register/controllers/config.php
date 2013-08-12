@@ -34,62 +34,28 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'HubController'
- * 
- * Long description (if any) ...
+ * Controller class for registration configuration
  */
 class RegisterControllerConfig extends Hubzero_Controller
 {
 	/**
-	 * Short description for 'settings'
-	 * 
-	 * Long description (if any) ...
+	 * Display configurations for registration
 	 * 
 	 * @return     void
 	 */
 	public function displayTask()
 	{
-		$a = array();
-		//$params = $this->config->renderToArray();
-		//print_r($this->config);
-		$this->config->loadSetupFile(JPATH_COMPONENT . DS . 'config.xml');
-		$this->view->params = $this->config->renderToArray();
-		/*if ($params) 
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			
-			//$params = explode("\n", $params);
-			foreach ($params as $p)
-			{
-				$b = explode('=', $p);
-				$a[$b[0]] = trim(end($b));
-			}
-		} 
-		else 
-		{
-			$a = array();
-		    $a['registrationUsername'] = $this->config->get('registrationUsername', 'RRUU');
-		    $a['registrationPassword'] = 'RRUU';
-		    $a['registrationConfirmPassword'] = 'RRUU';
-		    $a['registrationFullname'] = 'RRUU';
-		    $a['registrationEmail'] = 'RRUU';
-		    $a['registrationConfirmEmail'] = 'RRUU';
-		    $a['registrationURL'] = 'OHHO';
-		    $a['registrationPhone'] = 'OHHO';
-		    $a['registrationEmployment'] = 'RORO';
-		    $a['registrationOrganization'] = 'OOOO';
-		    $a['registrationCitizenship'] = 'RHRH';
-		    $a['registrationResidency'] = 'RHRH';
-		    $a['registrationSex'] = 'RHRH';
-		    $a['registrationDisability'] = 'RHRH';
-		    $a['registrationHispanic'] = 'RHRH';
-		    $a['registrationRace'] = 'OHHH';
-		    $a['registrationInterests'] = 'OOOO';
-		    $a['registrationReason'] = 'OOOO';
-		    $a['registrationOptIn'] = 'OOUU';
-		    $a['registrationTOU'] = 'RHRH';
+			$config = new JParameter($this->config->toString());
+			$config->loadSetupFile(JPATH_COMPONENT . DS . 'config.xml');
+			$this->config = $config;
 		}
-
-		$this->view->a = $a;*/
+		else
+		{
+			$this->config->loadSetupFile(JPATH_COMPONENT . DS . 'config.xml');
+		}
+		$this->view->params = $this->config->renderToArray();
 
 		// Set any errors
 		if ($this->getError()) 
@@ -100,47 +66,6 @@ class RegisterControllerConfig extends Hubzero_Controller
 		// Output the HTML
 		$this->view->display();
 	}
-
-	/**
-	 * Short description for '_save'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $task Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	/*protected function _save($task='')
-	{
-		if ($task == 'registration') {
-			$this->saveReg();
-			return;
-		}
-
-		$settings = JRequest::getVar('settings', array(), 'post');
-
-		if (!is_array($settings) || empty($settings)) {
-			$this->_redirect = 'index.php?option='.$this->_option.'&task='.$task;
-			return;
-		}
-
-		$arr =& $this->loadConfiguration();
-
-		foreach ($settings as $name=>$value)
-		{
-			if ($task == 'registration') {
-				$r = $value['create'].$value['proxy'].$value['update'].$value['edit'];
-
-				$arr['registration'.$name] = $r;
-			} else {
-				$arr[$name] = $value;
-			}
-		}
-
-		$this->saveConfiguration($arr);
-
-		$this->_redirect = 'index.php?option='.$this->_option.'&task='.$task;
-		$this->_message = JText::_('Configuration saved');
-	}*/
 
 	/**
 	 * Save changes to the registration
