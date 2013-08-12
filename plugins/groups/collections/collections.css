@@ -793,6 +793,8 @@
 	}
 	#hubForm .item-asset .delete:before {
 		margin-right: 1em;
+		content: "\f014";
+		font-family: "Fontcons";
 	}
 	#hubForm .file-add {
 		margin: 1em 0 2em 0;
