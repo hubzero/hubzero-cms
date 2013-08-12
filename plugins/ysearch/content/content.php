@@ -92,8 +92,8 @@ class plgYSearchContent extends YSearchPlugin
 				$weight AS weight,
 				publish_up AS date,
 				ca.title AS section,
-				(SELECT group_concat(u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
-				(SELECT group_concat(ids.authorid separator '\\n') FROM jos_author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
+				(SELECT group_concat(u1.name separator '\\n') FROM #__author_assoc anames INNER JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
+				(SELECT group_concat(ids.authorid separator '\\n') FROM #__author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
 			FROM #__content c 
 			LEFT JOIN #__sections s 
 				ON s.id = c.sectionid
@@ -122,8 +122,8 @@ class plgYSearchContent extends YSearchPlugin
 				$weight AS weight,
 				publish_up AS date,
 				ca.title AS section,
-				(SELECT group_concat(u1.name separator '\\n') FROM jos_author_assoc anames INNER JOIN jos_xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
-				(SELECT group_concat(ids.authorid separator '\\n') FROM jos_author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
+				(SELECT group_concat(u1.name separator '\\n') FROM #__author_assoc anames INNER JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
+				(SELECT group_concat(ids.authorid separator '\\n') FROM #__author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
 			FROM #__content c 
 			LEFT JOIN #__categories ca
 				ON ca.id = c.catid
