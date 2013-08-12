@@ -137,12 +137,12 @@ function getMonthName($month)
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li>
-			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>">
+			<a class="icon-browse browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>">
 				<?php echo JText::_('Tickets'); ?>
 			</a>
 		</li>
 		<li class="last">
-			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
 				<?php echo JText::_('SUPPORT_NEW_TICKET'); ?>
 			</a>
 		</li>

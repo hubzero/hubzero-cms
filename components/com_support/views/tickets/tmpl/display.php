@@ -154,7 +154,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 	<?php } ?>
 			</ul>
 			<p>
-				<a class="modal add btn" id="new-query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=add'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+				<a class="modal icon-add add btn" id="new-query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=add'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
 					<?php echo JText::_('Add query'); ?>
 				</a>
 				<noscript>
