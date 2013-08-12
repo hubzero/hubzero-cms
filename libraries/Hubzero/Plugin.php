@@ -167,19 +167,21 @@ class Hubzero_Plugin extends JPlugin
 		//vars
 		$database =& JFactory::getDBO();
 		$table = "#__plugins";
-		
-		//load the params from databse
-		$sql = "SELECT params FROM {$table} WHERE folder='" . $folder . "' AND element='" . $name . "' AND published=1";
-		$database->setQuery( $sql );
-		$result = $database->loadResult();
-		
-		//params object
 		$paramsClass = 'JParameter';
+		$enabled = " published=1";
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
+			$table = "#__extensions";
 			$paramsClass = 'JRegistry';
+			$enabled = " enabled=1";
 		}
-		
+
+		//load the params from databse
+		$sql = "SELECT params FROM {$table} WHERE folder='" . $folder . "' AND element='" . $name . "' AND " . $enabled;
+		$database->setQuery( $sql );
+		$result = $database->loadResult();
+
+		//params object
 		//return params object
 		$params = new $paramsClass($result);
 		return $params;
