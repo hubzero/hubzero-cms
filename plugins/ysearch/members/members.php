@@ -215,8 +215,7 @@ class plgYSearchMembers extends YSearchPlugin
 		$resp = array();
 		foreach ($assoc as $row)
 		{
-			$work = new YSearchResultSQL(
-				"SELECT 
+			$query = "SELECT 
 					CASE WHEN aa.subtable = 'resources' THEN
 						r.title
 					ELSE 
@@ -241,9 +240,16 @@ class plgYSearchMembers extends YSearchPlugin
 					CASE 
 						WHEN aa.subtable = 'resources' THEN
 							rt.type
-						ELSE
-							s.name
-					END AS section,
+						ELSE";
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+						$query .= " s.name";
+			}
+			else
+			{
+						$query .= " s.alias";
+			}
+			$query .= " END AS section,
 					CASE
 						WHEN aa.subtable = 'resources' THEN
 							ra.ordering
@@ -256,15 +262,27 @@ class plgYSearchMembers extends YSearchPlugin
 					LEFT JOIN #__resource_assoc ra
 						ON ra.child_id = r.id
 					LEFT JOIN #__resource_types rt 
-						ON rt.id = r.type
-					LEFT JOIN #__content c
+						ON rt.id = r.type";
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					$query .= " LEFT JOIN #__content c
 						ON aa.subtable = 'content' AND c.id = aa.subid AND c.state = 1
 					LEFT JOIN #__sections s 
 						ON s.id = c.sectionid
 					LEFT JOIN #__categories ca
-						ON ca.id = c.catid
-					WHERE aa.authorid = " . $row->get('id')
-			);
+						ON ca.id = c.catid";
+				} 
+				else 
+				{
+					$query .= " LEFT JOIN #__content c
+						ON aa.subtable = 'content' AND c.id = aa.subid AND c.state = 1
+					LEFT JOIN #__categories s 
+						ON s.id = c.sectionid
+					LEFT JOIN #__categories ca
+						ON ca.id = c.catid";
+				}
+			$query .= " WHERE aa.authorid = " . $row->get('id');
+			$work = new YSearchResultSQL($query);
 			$work_assoc = $work->to_associative();
 
 			$added = array();
