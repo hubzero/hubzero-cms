@@ -832,6 +832,7 @@
 }
 .instructor .pagenav {
 	margin: 10px;
+	overflow: hidden;
 }
 .tooltip {
 	color: #FFF;
