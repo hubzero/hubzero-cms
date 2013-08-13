@@ -1792,22 +1792,14 @@ class plgGroupsCollections extends Hubzero_Plugin
 
 		// Get parameters
 		$prms = JRequest::getVar('params', array(), 'post');
-		/*if (is_array($params)) 
-		{
-			$txt = array();
-			foreach ($params as $k=>$v)
-			{
-				$txt[] = "$k=$v";
-			}
-			$row->params = implode("\n", $txt);
-		}*/
+
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
 		}
 		$params = new $paramsClass();
-		$params->bind($prms);
+		$params->loadArray($prms);
 		$row->params = $params->toString();
 
 		// Check content

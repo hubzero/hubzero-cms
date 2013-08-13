@@ -245,7 +245,7 @@ class WikiControllerPages extends Hubzero_Controller
 		$row->access = JRequest::getInt('access', 0, 'post');
 
 		// Get parameters
-		$params = JRequest::getVar('params', '', 'post');
+		$params = JRequest::getVar('params', array(), 'post');
 		if (is_array($params)) 
 		{
 			$paramsClass = 'JRegistry';
@@ -255,9 +255,9 @@ class WikiControllerPages extends Hubzero_Controller
 			}
 
 			$pparams = new $paramsClass($row->params);
-			$pparams->bind($params);
+			$pparams->loadArray($params);
 
-			$row->params = $pparams->toArray();
+			$row->params = $pparams->toString();
 		}
 
 		if (!$row->updateAuthors($page['authors'])) 
