@@ -4394,7 +4394,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			if (count($pubs) > 0)
 			{
 				// Get language file
-				JPlugin::loadLanguage( 'plg_projects_publications' );	
+				$lang = JFactory::getLanguage();
+				$lang->load('plg_projects_publications');
 			}
 					
 			// Publications side module

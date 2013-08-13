@@ -59,8 +59,9 @@ class plgPublicationsWishlist extends JPlugin
 		$this->config = $wconfig;
 
 		$this->loadLanguage();
-		JPlugin::loadLanguage( 'com_wishlist' );
-		
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_wishlist');
 	}
 
 	/**

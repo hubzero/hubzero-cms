@@ -153,7 +153,7 @@ class plgProjectsTodo extends JPlugin
 		if ($returnhtml) 
 		{				
 			// Load language file
-			JPlugin::loadLanguage( 'plg_projects_todo' );
+			$this->loadLanguage();
 			
 			$database =& JFactory::getDBO();
 			

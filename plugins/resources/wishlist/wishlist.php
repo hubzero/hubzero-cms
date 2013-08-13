@@ -53,7 +53,8 @@ class plgResourcesWishlist extends JPlugin
 
 		$this->config = JComponentHelper::getParams('com_wishlist');
 
-		JPlugin::loadLanguage('com_wishlist');
+		$lang = JFactory::getLanguage();
+		$lang->load('com_wishlist');
 	}
 
 	/**

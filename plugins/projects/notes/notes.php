@@ -166,8 +166,9 @@ class plgProjectsNotes extends JPlugin
 		if ($returnhtml) 
 		{				
 			// Load wiki language file
-			JPlugin::loadLanguage( 'plg_groups_wiki' );
-			JPlugin::loadLanguage( 'plg_projects_notes' );
+			$lang = JFactory::getLanguage();
+			$lang->load('plg_groups_wiki');
+			$this->loadLanguage();
 						
 			// Get database
 			$database =& JFactory::getDBO();
@@ -235,7 +236,8 @@ class plgProjectsNotes extends JPlugin
 				$this->_app = $objA->getFullRecord($app, $this->_project->id);
 				
 				Hubzero_Document::addPluginStylesheet('projects', 'apps');
-				JPlugin::loadLanguage( 'plg_projects_apps' );
+				$lang = JFactory::getLanguage();
+				$lang->load('plg_projects_apps');
 			}
 				
 			// What's the task?						
@@ -920,7 +922,7 @@ class plgProjectsNotes extends JPlugin
 		
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
-		JPlugin::loadLanguage( 'plg_projects_notes' );
+		$this->loadLanguage();
 		
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');

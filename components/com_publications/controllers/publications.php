@@ -2462,7 +2462,8 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
 			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
 		
-		JPlugin::loadLanguage( 'com_projects' );
+		$lang = JFactory::getLanguage();
+		$lang->load('com_projects');
 		
 		// Instantiate a new view
 		$view 			= new JView( array('name'=>'submit') );

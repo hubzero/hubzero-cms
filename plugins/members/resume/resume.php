@@ -50,7 +50,9 @@ class plgMembersResume extends JPlugin
 		parent::__construct($subject, $config);
 
 		$this->loadLanguage();
-		JPlugin::loadLanguage('com_jobs');
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_jobs');
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'admin.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'application.php');

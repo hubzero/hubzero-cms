@@ -183,7 +183,7 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		// Load language file
-		JPlugin::loadLanguage( 'plg_projects_publications' );
+		$this->loadLanguage();
 		
 		$database =& JFactory::getDBO();
 		

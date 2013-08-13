@@ -130,7 +130,7 @@ class plgProjectsBlog extends JPlugin
 		if ($returnhtml) 
 		{	
 			// Load language file
-			JPlugin::loadLanguage( 'plg_projects_blog' );
+			$this->loadLanguage();
 			
 			// Load component configs
 			$this->_config =& JComponentHelper::getParams( 'com_projects' );

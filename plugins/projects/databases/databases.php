@@ -159,7 +159,7 @@ class plgProjectsDatabases extends JPlugin
 		}
 
 		// Load language file
-		JPlugin::loadLanguage( 'plg_projects_databases' );
+		$this->loadLanguage();
 
 		$this->_project 	= $project;
 		$this->_option 		= $option;

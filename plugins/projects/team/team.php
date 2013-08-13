@@ -55,7 +55,7 @@ class plgProjectsTeam extends JPlugin
 				
 		// Output collectors
 		$this->_referer = '';
-		$this->_message = array();		
+		$this->_message = array();
 	}
 	
 	/**
@@ -135,8 +135,8 @@ class plgProjectsTeam extends JPlugin
 		if ($returnhtml) 
 		{
 			// Load language file
-			JPlugin::loadLanguage( 'plg_projects_team' );
-			
+			$this->loadLanguage();
+
 			// Load component configs
 			$this->_config =& JComponentHelper::getParams( 'com_projects' );
 			
@@ -1041,7 +1041,8 @@ class plgProjectsTeam extends JPlugin
 		$ajax 		= JRequest::getInt('ajax', 0);
 		
 		// Load language file
-		JPlugin::loadLanguage( 'plg_projects_publications' );
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_projects_publications');
 		
 		// Load publication & version classes
 		$objP = new Publication($this->_database);

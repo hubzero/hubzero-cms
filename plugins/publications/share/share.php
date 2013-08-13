@@ -32,7 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin' );
-JPlugin::loadLanguage( 'plg_publications_share' );
 
 /**
  * Short description for 'plgPublicationsShare'
@@ -58,6 +57,8 @@ class plgPublicationsShare extends JPlugin
 		// load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'share' );
 		$this->_params = new JParameter( $this->_plugin->params );
+
+		$this->loadLanguage();
 	}
 
 	/**

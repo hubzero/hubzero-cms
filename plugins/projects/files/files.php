@@ -166,7 +166,7 @@ class plgProjectsFiles extends JPlugin
 		if ($returnhtml) 
 		{
 			// Load language file
-			JPlugin::loadLanguage( 'plg_projects_files' );
+			$this->loadLanguage();
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');
@@ -191,7 +191,8 @@ class plgProjectsFiles extends JPlugin
 				$this->_app = $objA->getFullRecord($reponame, $this->_project->id);
 				
 				Hubzero_Document::addPluginStylesheet('projects', 'apps');
-				JPlugin::loadLanguage( 'plg_projects_apps' );
+				$lang = JFactory::getLanguage();
+				$lang->load('plg_projects_apps');
 			}
 
 			$this->_case = $case ? $case : 'files';
