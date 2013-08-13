@@ -464,6 +464,10 @@ a.refresh:before {
 }
 
 /* Event Import */
+form[name=importevent] fieldset {
+	float: none !important;
+	width: auto !important;
+}
 .upload {
 	position: relative;
 	clear: right;

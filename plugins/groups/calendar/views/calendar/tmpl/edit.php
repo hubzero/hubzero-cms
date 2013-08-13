@@ -71,7 +71,7 @@ if ($this->params->get('allow_import', 1) && (!isset($this->event->id) || $this-
 
 <div class="grid">
 	<div class="col <?php echo ($showImport) ? 'span9' : 'span12'; ?>">
-		<form name="editevent" action="index.php" method="post" id="hubForm">
+		<form name="editevent" action="index.php" method="post" id="hubForm" class="full">
 			<fieldset>
 				<legend><?php echo $formTitle; ?></legend>
 
