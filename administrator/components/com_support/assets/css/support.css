@@ -1061,6 +1061,20 @@
 	#ticketForm ul#custom-views li a {
 		padding-left: 4em;
 	}
+	#ticketForm ul.views .modal {
+		background: transparent;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		-ms-border-radius: 0;
+		-o-border-radius: 0;
+		border-radius: 0;
+		border: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+	}
 	#ticketForm ul.views li a.copy,
 	#ticketForm ul#custom-views li a.delete,
 	#ticketForm ul#custom-views li a.edit {
@@ -1092,6 +1106,11 @@
 	#ticketForm ul#custom-views li a.edit:hover {
 		color: #fff;
 		background: transparent;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
 	}
 	#ticketForm ul.views li small,
 	#ticketForm ul.views li a.copy:before,
@@ -1161,6 +1180,7 @@
 		border-bottom: 1px solid rgba(0, 0, 0, 0.9);
 		*border-bottom: 1px solid 060606;
 	}
+	#main a#new-query,
 	#new-query {
 		margin: 0.7em;
 		border: 1px solid #111;
@@ -1191,6 +1211,7 @@
 		cursor: pointer;
 		position: relative;
 	}
+	#main a#new-query:hover,
 	#new-query:hover {
 		color: #fff;
 		background: #973634;
