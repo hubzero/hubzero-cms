@@ -34,15 +34,15 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
 
 <?php if ($params->get('show_title')) : ?>
 	<div class="content-header">
-	<h2>
-	<?php if ($params->get('link_titles') && !empty($this->item->readmore_link)) : ?>
-		<a href="<?php echo $this->item->readmore_link; ?>">
-		<?php echo $this->escape($this->item->title); ?></a>
-	<?php else : ?>
-		<?php echo $this->escape($this->item->title); ?>
-	<?php endif; ?>
-	</h2>
-</div><!-- / .content-header -->
+		<h2>
+		<?php if ($params->get('link_titles') && !empty($this->item->readmore_link)) : ?>
+			<a href="<?php echo $this->item->readmore_link; ?>">
+			<?php echo $this->escape($this->item->title); ?></a>
+		<?php else : ?>
+			<?php echo $this->escape($this->item->title); ?>
+		<?php endif; ?>
+		</h2>
+	</div><!-- / .content-header -->
 <?php endif; ?>
 
 <?php if ($canEdit ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
@@ -71,7 +71,6 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
 		<?php echo JHtml::_('icon.print_screen',  $this->item, $params); ?>
 		</li>
 	<?php endif; ?>
-
 	</ul>
 <?php endif; ?>
 
@@ -80,7 +79,7 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
 endif; ?>
 
 <?php echo $this->item->event->beforeDisplayContent; ?>
-
+	<div class="contentpane">
 <?php $useDefList = (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_parent_category'))
 	or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date'))
 	or ($params->get('show_hits'))); ?>
@@ -216,6 +215,6 @@ if (!empty($this->item->pagination) AND $this->item->pagination AND $this->item-
 if (!empty($this->item->pagination) AND $this->item->pagination AND $this->item->paginationposition AND $this->item->paginationrelative):
 	 echo $this->item->pagination;?>
 <?php endif; ?>
-
+	</div>
 <?php echo $this->item->event->afterDisplayContent; ?>
 </div>
