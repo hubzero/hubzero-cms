@@ -41,12 +41,14 @@ jQuery(document).ready(function(jq){
 				var guide = $('div.guide-instructions');
 				if (guide.length > 0) {
 					var m = guide.css('margin-top');
-					console.log(m);
 					if (m != '0px') {
 						guide.css('margin-bottom', ($('#page_container').offset().top - 340) + 'px');
 					}
 				}
-				$('div.fancybox-wrap').css('position', 'absolute');
+				$('#guide-content').css('position', 'absolute');
+			},
+			onUpdate: function() {
+				$('#guide-content').css('position', 'absolute');
 			}
 	});
 
@@ -72,18 +74,20 @@ jQuery(document).ready(function(jq){
 					var guide = $('div.guide-instructions');
 					if (guide.length > 0) {
 						var m = guide.css('margin-top');
-						console.log(m);
 						if (m != '0px') {
 							guide.css('margin-bottom', ($('#page_container').offset().top - 340) + 'px');
 						}
 					}
-					$('div.fancybox-wrap').css('position', 'absolute');
+					$('#guide-content').css('position', 'absolute');
 				},
 				beforeClose: function() {
 					$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
 						// Nothing to see here
 						//console.log(response);
 					});
+				},
+				onUpdate: function() {
+					$('#guide-content').css('position', 'absolute');
 				}
 			}
 		);
