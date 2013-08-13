@@ -161,6 +161,19 @@ class Migration20130718000011ComModules extends Hubzero_Migration
 						{
 							$array['showHere'] = 0;
 						}
+						else if ($r->module == 'mod_newsflash')
+						{
+							$query = "UPDATE `#__modules` SET `module` = 'mod_articles_news' WHERE `id` = {$r->id};";
+							$db->setQuery($query);
+							$db->query();
+
+							// Update a few param names
+							$array['item_heading'] = 'h4';
+							$array['count']        = $array['items'];
+							$array['ordering']     = "a.publish_up";
+							$array['layout']       = "_:vertical";
+							$array['cachemode']    = "itemid";
+						}
 					}
 
 					$query = "UPDATE `#__modules` SET `params` = " . $db->Quote(json_encode($array)) . " WHERE `id` = {$r->id};";
