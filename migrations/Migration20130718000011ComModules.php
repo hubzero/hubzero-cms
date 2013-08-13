@@ -107,23 +107,22 @@ class Migration20130718000011ComModules extends Hubzero_Migration
 			$db->setQuery($query);
 			$db->query();
 
-			// Add modules_menu entry for hubmenu, submenu, title, and toolbar
-			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'menu';";
+			// Add modules_menu entry admin modules that previously didn't need an entry
+			$query = "SELECT `id` FROM `#__modules` WHERE `published` = '1' AND `client_id` = '1';";
 			$db->setQuery($query);
-			$ids[] = $db->loadResult();
-			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'submenu';";
-			$db->setQuery($query);
-			$ids[] = $db->loadResult();
-			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'title';";
-			$db->setQuery($query);
-			$ids[] = $db->loadResult();
-			$query = "SELECT `id` FROM `#__modules` WHERE `position` = 'toolbar';";
-			$db->setQuery($query);
-			$ids[] = $db->loadResult();
+			$results = $db->loadObjectList();
 
-			foreach ($ids as $id)
+			foreach ($results as $r)
 			{
-				$query = "INSERT INTO `#__modules_menu` VALUES ({$id}, 0);";
+				// First, make sure it isn't already there
+				$query = "SELECT * FROM `#__modules_menu` WHERE `moduleid` = '{$r->id}' AND `menuid` = '0';";
+				$db->setQuery($query);
+				if ($ret = $db->loadObject())
+				{
+					continue;
+				}
+
+				$query = "INSERT INTO `#__modules_menu` VALUES ('{$r->id}', '0');";
 				$db->setQuery($query);
 				$db->query();
 			}
