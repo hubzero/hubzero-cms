@@ -986,7 +986,7 @@
 		width: 100%;
 	}
 	.com_content .withleft {
-		padding-top: 120px;
+		padding-top: 100px;
 	}
 
 /* Footer */
@@ -1220,6 +1220,9 @@
 		background-color: #ddd;
 		right: 269px;
 		_display: none;
+	}
+	.com_content .aside:before {
+		top: 100px;
 	}
 	#page_content .aside:before {
 		top: 75px;
@@ -1495,6 +1498,9 @@
 		top: 120px;
 		right: auto;
 		left: 270px;
+	}
+	.com_content .withleft .aside:before {
+		top: 100px;
 	}
 	.withleft .aside ul {
 		border-top: 1px solid #ddd;
