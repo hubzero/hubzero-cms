@@ -48,9 +48,9 @@
 		overflow: visible;
 		position: relative;
 	}
-	.fancybox-overlay-fixed {
+	/*body.guide-fancybox .fancybox-overlay-fixed {
 		position: absolute;
-	}
+	}*/
 
 	#page_menu li .guide:before {
 		content: "\f059";
