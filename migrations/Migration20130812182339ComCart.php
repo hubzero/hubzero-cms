@@ -52,7 +52,7 @@ class Migration20130812182339ComCart extends Hubzero_Migration
 		  `uidNumber` int(16) DEFAULT NULL,
 		  PRIMARY KEY (`crtId`),
 		  UNIQUE KEY `uidNumber` (`uidNumber`)
-		) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
 		$db->setQuery($query);
 		$db->query();
@@ -76,7 +76,7 @@ class Migration20130812182339ComCart extends Hubzero_Migration
 		  `crtmExpires` datetime DEFAULT NULL,
 		  PRIMARY KEY (`crtmId`),
 		  UNIQUE KEY `pId` (`pId`,`crtId`)
-		) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
 		$db->setQuery($query);
 		$db->query();
@@ -93,7 +93,7 @@ class Migration20130812182339ComCart extends Hubzero_Migration
 		  `saZip` char(10) NOT NULL,
 		  PRIMARY KEY (`saId`),
 		  UNIQUE KEY `uidNumber` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`,`saCity`,`saState`,`saZip`)
-		) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
 		$db->setQuery($query);
 		$db->query();
@@ -143,7 +143,7 @@ class Migration20130812182339ComCart extends Hubzero_Migration
 		  `tsStatus` tinyint(1) DEFAULT '0',
 		  PRIMARY KEY (`tsId`),
 		  UNIQUE KEY `tId` (`tId`,`tsStep`)
-		) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
 		$db->setQuery($query);
 		$db->query();
@@ -156,7 +156,7 @@ class Migration20130812182339ComCart extends Hubzero_Migration
 		  `tLastUpdated` datetime DEFAULT NULL,
 		  `tStatus` char(32) DEFAULT NULL,
 		  PRIMARY KEY (`tId`)
-		) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
 		$db->setQuery($query);
 		$db->query();
