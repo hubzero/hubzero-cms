@@ -411,7 +411,7 @@ class Migration20130718000005Core extends Hubzero_Migration
 							continue;
 						}
 
-						$ar2     = explode("=", $a);
+						$ar2     = explode("=", $a, 2);
 						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
 					}
 

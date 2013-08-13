@@ -408,7 +408,7 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 							continue;
 						}
 
-						$ar2 = explode("=", $a);
+						$ar2 = explode("=", $a, 2);
 						if ($ar2[0] == 'menu_image' && $ar2[1] == "-1")
 						{
 							$ar2[1] = "0";

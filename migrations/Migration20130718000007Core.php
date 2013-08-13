@@ -162,7 +162,7 @@ class Migration20130718000007Core extends Hubzero_Migration
 							continue;
 						}
 
-						$ar2     = explode("=", $a);
+						$ar2     = explode("=", $a, 2);
 						if ($ar2[0] == 'timezone' && $ar2[1] == 0)
 						{
 							continue;
