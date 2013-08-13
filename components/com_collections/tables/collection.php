@@ -282,7 +282,7 @@ class CollectionsTableCollection extends JTable
 
 		$tbl = new CollectionsTableCollection($this->_db);
 		$tbl->load($this->alias, $this->object_id, $this->object_type);
-		if ($this->id && $tbl->id != $this->id)
+		if ($this->id && $tbl->id && $tbl->id != $this->id)
 		{
 			$this->setError(JText::_('A collection with this name already exists.'));
 			return false;
