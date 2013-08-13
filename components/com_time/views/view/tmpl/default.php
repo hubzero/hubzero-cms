@@ -84,7 +84,21 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div id="time_content" class="time_<?php echo $this->active_tab; ?>">
 			<?php
-				echo $this->sections[0]['html'];
+				if (count($this->sections) > 1)
+				{
+					for($i=0;$i < count($this->time_plugins); $i++)
+					{
+						if($this->active_tab == $this->time_plugins[$i]['name'])
+						{
+							echo $this->sections[$i]['html'];
+							break;
+						}
+					}
+				}
+				else
+				{
+					echo $this->sections[0]['html'];
+				}
 			?>
 		</div>
 	</div>
