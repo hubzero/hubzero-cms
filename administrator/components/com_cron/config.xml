@@ -31,4 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<params>
 		<param name="whitelist" type="textarea" rows="15" cols="40" default="120.0.0.1" description="A comma-separated list of white-listed IP addresses" />
 	</params>
+	<fieldset name="basic">
+		<field name="whitelist" type="textarea" rows="15" cols="40" default="120.0.0.1" description="A comma-separated list of white-listed IP addresses" />
+	</fieldset>
 </config>

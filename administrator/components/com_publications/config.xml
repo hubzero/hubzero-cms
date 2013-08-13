@@ -133,4 +133,118 @@
 		</param>
 		<param name="aip_path" type="text" menu="hide" default="/srv/AIP" label="AIP path" description="AIP path (for trusted digital repos)" />
 	</params>
+	<fieldset name="basic">
+		<field name="enabled" type="radio" default="0" label="Component ON/OFF" description="Enable Publications component, or redirect to Resources component">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="autoapprove" type="radio" default="1" label="Auto-approve" description="Automatically approve new submissions">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
+		<field name="email" type="radio" default="0" label="Email authors" description="Email contributors when administrator make changes to status of a publication">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="default_category" type="text" menu="hide" default="dataset" label="Default type (category)" description="Optionally set the type (category) of newly created publications to the specified value if exists" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
+		<field name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
+		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/images/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder image for video file gallery thumbnail" />
+		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/images/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder image for image file gallery thumbnail" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Matser path for storing published data" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
+		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for issuing DOIs (what goes after doi:)" />
+		<field name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
+		<field name="doi_service" type="text" menu="hide" default="" label="DOI service" description="Purdue Libraries DOI service" />
+		<field name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
+		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for Purdue Libraries DOI service" />
+		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
+		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate Org supported tools" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe Org supported tools" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_ranking" type="list" default="1" label="Ranking" description="Show/Hide the ranking">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_rating" type="list" default="1" label="Rating" description="Show/Hide the rating">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide the item creation date">
+			<option value="0">Hide</option>
+			<option value="1">Created</option>
+			<option value="2">Modified</option>
+			<option value="3">Published</option>
+		</field>
+		<field name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing this resource">
+			<option value="0">Hide All</option>
+			<option value="1">Manual And Auto</option>
+			<option value="2">Auto Generated</option>
+			<option value="3">Manually Inputed</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="panels" type="text" menu="hide" default="content, description, authors, audience, gallery, tags, access, license, notes" label="Panels" description="Publication editing panels, in order" />
+		<field name="suggest_licence" type="list" default="0" label="Suggest license" description="Allow users to suggest licenses">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
+		<field name="show_tags" type="list" default="1" label="Tags" description="Show/Hide publication tags (also enables/disables tag panel)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide publication metadata (also enables/disables metadata panel)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_notes" type="list" default="1" label="Release Notes" description="Show/Hide version release notes (also enables/disables release notes panel)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_license" type="list" default="1" label="License" description="Enable/disable license panel (license options will appear on review screen)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_access" type="radio" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel)">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="show_gallery" type="list" default="1" label="Gallery" description="Show publication image gallery (also enables/disables gallery panel)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level (also enables/disables audience panel)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="documentation" type="text" menu="hide" default="/kb/publications" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
+		<field name="deposit_terms" type="text" menu="hide" default="/legal/termsofdeposit" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="repository" type="list" default="0" label="Trusted Digital Repository" description="Trusted Digital Repository">
+			<option value="0">no</option>
+			<option value="1">yes</option>
+		</field>
+		<field name="aip_path" type="text" menu="hide" default="/srv/AIP" label="AIP path" description="AIP path (for trusted digital repos)" />
+	</fieldset>
 </config>

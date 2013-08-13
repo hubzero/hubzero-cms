@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>		
+	<params>
 		<param name="categories" type="text" menu="hide" label="Categories" default="general, resource, group, user" description="Comma-separated list of categories" />
 		<param name="group" type="text" menu="hide" label="Admin group" default="hubdev" description="Admin group for general wish lists" />
-		 <param name="banking" type="radio" default="0" label="Banking" description="Turn economy functions on/off">
+		<param name="banking" type="radio" default="0" label="Banking" description="Turn economy functions on/off">
 			<option value="1">enabled</option>
 			<option value="0">disabled</option>
 		</param>
-		 <param name="allow_advisory" type="radio" default="0" label="Allow advisory committee?" description="Allow/Disallow advisory committee">
+		<param name="allow_advisory" type="radio" default="0" label="Allow advisory committee?" description="Allow/Disallow advisory committee">
 			<option value="1">yes</option>
 			<option value="0">no</option>
 		</param>
@@ -53,4 +53,29 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">no</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="categories" type="text" menu="hide" label="Categories" default="general, resource, group, user" description="Comma-separated list of categories" />
+		<field name="group" type="text" menu="hide" label="Admin group" default="hubdev" description="Admin group for general wish lists" />
+		<field name="banking" type="radio" default="0" label="Banking" description="Turn economy functions on/off">
+			<option value="1">enabled</option>
+			<option value="0">disabled</option>
+		</field>
+		<field name="allow_advisory" type="radio" default="0" label="Allow advisory committee?" description="Allow/Disallow advisory committee">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</field>
+		<field name="votesplit" type="radio" default="0" label="Vote weight: advisory committee vs owners" description="You can choose to give more weight to votes from advisory commitee">
+			<option value="0">50/50</option>
+			<option value="1">80/20</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="webpath" type="text" menu="hide" default="/site/wishlist" label="Web path for storing attachments" description="Specify directory for attachment storage" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="show_percentage_granted" type="radio" default="0" label="Show percentage granted?" description="Allow/Disallow diplay of percentage of granted wishes in selection">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</field>
+	</fieldset>
 </config>

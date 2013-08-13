@@ -67,4 +67,43 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="uploadpath" type="text" menu="hide" default="/site/courses" label="Upload path" description="File path for pictures" size="50" />
+		<field name="tmpl" type="text" menu="hide" default="" label="Template" description="Template to use" size="50" />
+		<field name="default_asset_groups" type="text" menu="hide" default="Lectures, Homework, Exam" label="Default Asset Groups" description="Comma separated list of default asset groups to create when creating a new unit using the instructor builder." size="50" />
+		<field name="section_grade_policy" type="list" default="1" label="Can section owners edit grading policy?" description="Specify whether or not section owners are allowed to editing the grading policy for their section. If no, policy inteface only shows up for course instructors.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+
+		<field type="spacer" />
+		<field name="auto_approve" type="list" default="1" label="Auto Approve Courses:?" description="Courses are auto approved at creation. Otherwise Hub administrator must manually approve course.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+
+		<field type="spacer" />
+		<field name="email_comment_processing" type="list" default="0" label="Enable discussion comments via E-mail" description="Enable logic to send course discussion comments via email and process and add responses via email">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="email_member_coursesidcussionemail_autosignup" type="list" default="0" label="Enable courses to auto setup new members to receive discussion email by default" description="Automatically setup new course users to get email from the course discussions">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		
+		<field type="spacer" /> 
+		<field name="intro_mycourses" type="list" default="1" label="Show My Courses" description="Display list of my courses on course landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="intro_interestingcourses" type="list" default="1" label="Show Interesting Courses" description="Display list of courses having matching tags as the user on the course landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="intro_popularcourses" type="list" default="1" label="Show Popular Courses" description="Display list of popular courses on course landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
 </config>

@@ -48,5 +48,26 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-    </params>
+	</params>
+	<fieldset name="basic">
+		<field name="feed_summary" type="radio" default="0" label="For each feed item show" description="TIPSHOWFEEDITEM">
+			<option value="0">Intro Text</option>
+			<option value="1">Full Text</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="severities" type="text" menu="hide" default="critical,major,normal,minor,trivial" label="Severities" description="Ticket severity levels" />
+		<field name="webpath" type="text" menu="hide" default="/site/tickets" label="Upload path" description="File path for attachments" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<field name="group" type="text" menu="hide" label="Group" default="" description="Group ID to pull users from" />
+		<field name="emails" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="Notify when ticket created" description="Add a line for each email address a new ticket should be sent to." />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="blacklist" type="textarea" rows="15" cols="40" default="" description="A comma-separated list of IPs to be blacklisted" />
+		<field name="badwords" type="textarea" rows="15" cols="40" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="A comma-separated list of spam words" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="email_processing" type="list" default="0" label="Enable email interface" description="Allow for processing of responses via e-mail to ticketting system. Make sure /etc/hubmail_gw.conf exists.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
 </config>

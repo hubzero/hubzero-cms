@@ -38,4 +38,14 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="blacklist" type="textarea" rows="15" cols="40" default="" description="A comma-separated list of IPs to be blacklisted" />
 		<param name="badwords" type="textarea" rows="15" cols="40" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="A comma-separated list of spam words" />
 	</params>
+	<fieldset name="basic">
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_feedback/assets/img/contributor.gif" label="Default picture" description="Default placeholder image for user pictures" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="uploadpath" type="text" menu="hide" default="/site/quotes" label="Upload path" description="File path for pictures" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="blacklist" type="textarea" rows="15" cols="40" default="" description="A comma-separated list of IPs to be blacklisted" />
+		<field name="badwords" type="textarea" rows="15" cols="40" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="A comma-separated list of spam words" />
+	</fieldset>
 </config>

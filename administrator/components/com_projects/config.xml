@@ -115,4 +115,100 @@
 			<option value="1">ON</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="component_on" type="list" default="1" label="Component ON/OFF" description="Enable projects component">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="grantinfo" type="list" default="0" label="Collect grant info at setup?" description="Ask project creator for grant information, e.g. [NSF] grant id, title, PI">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</field>
+		<field name="confirm_step" type="list" default="0" label="Setup - 'Agree to Terms' screen" description="Enable 'Agree to Terms' step during setup">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="edit_settings" type="list" default="0" label="Allow project settings editing?" description="Enable a screen to edit project settings after project setup">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</field>
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="restricted_data" type="list" default="0" label="Ask about sensitive data?" description="Inlcude a question about sensitive data (HIPAA/FERPA/Export Control)">
+			<option value="0">NO</option>
+			<option value="2">YES, with one general question</option>
+			<option value="1">YES, with HIPAA/FERPA etc. options</option>
+		</field>
+		<field name="restricted_upfront" type="list" default="0" label="Warn about sensitive data upfront?" description="Inlcude a question about sensitive data upfront?">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</field>
+		<field name="approve_restricted" type="list" default="0" label="Must approve sensitive data projects?" description="Require approval for sensitive data projects?">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</field>
+		<field name="privacylink" type="text" menu="hide" default="/legal/privacy" label="URL to Privacy Terms" description="URL to Privacy Terms" />
+		<field name="HIPAAlink" type="text" menu="hide" default="/legal/privacy" label="URL to HIPPA information" description="URL to to HIPPA information" />
+		<field name="FERPAlink" type="text" menu="hide" default="/legal/privacy" label="URL to FERPA information" description="URL to to FERPA information" />
+		
+		<field name="@spacer" type="spacer" default="" label="Administrative groups" description="Administrative groups" />
+		<field name="creatorgroup" type="text" menu="hide" default="" label="Restrict project creation to group" description="Alias of a group that can create projects (optional, will restrict all others!)" />
+		<field name="admingroup" type="text" menu="hide" default="projectsadmin" label="Admin group" description="Alias of an administrative group that gets notified when a new project is created or over quota" />
+		<field name="sdata_group" type="text" menu="hide" default="hipaa_reviewers" label="Sensitive data reviewers group" description="Alias of an administrative group that can access a special project listing to review info on HIPPA/FERPA/export control" />
+		<field name="ginfo_group" type="text" menu="hide" default="sps_reviewers" label="Sponsored projects reviewers group" description="Alias of an administrative group that can access a special project listing to review and edit sponsored project information and bump up quota" />
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="min_name_length" type="text" menu="hide" default="6" label="Minimum characters in name" description="Number of minimum allowed characters in project names (aliases)" />
+		<field name="max_name_length" type="text" menu="hide" default="25" label="Maximum characters in name" description="Number of maximum allowed characters in project names (aliases)" />
+		<field name="reserved_names" type="text" menu="hide" default="clone, temp, test" label="Reserved project names" description="Words that cannot be used as project names" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="webpath" type="text" menu="hide" default="/site/projects" label="Files Git repo path" description="Path for storing project file repo" />
+		<field name="offroot" type="list" default="0" label="Files repo path is..." description="Did you specify files Git repo path relative to web root?">
+			<option value="0">relative to web root</option>
+			<option value="1">absolute</option>
+		</field>
+		<field name="gitpath" type="text" menu="hide" default="/opt/local/bin/git" label="Git path" description="Path to Git" />
+		<field name="gitclone" type="text" menu="hide" default="/site/projects/clone/.git" label="Git clone path" description="Path to empty Git directory to be cloned (needs to be under web root)" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="maxUpload" type="text" menu="hide" default="104857600" label="Max file upload (bytes)" description="Maximum upload file size for project files in bites (master default set to 100MB (104857600 bytes))" />
+		<field name="defaultQuota" type="text" menu="hide" default="1" label="Default quota (GB)" description="Default disk quota for project files in bites (master default set to 1GB)" />
+		<field name="premiumQuota" type="text" menu="hide" default="1" label="Premium quota (GB)" description="Premium disk quota for project files in bites (master default set to 30GB)" />
+		<field name="approachingQuota" type="text" menu="hide" default="90" label="Quota warning at (%)" description="Issue disk quota warning when disk space is used at a certain percentage amount of the given quota" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="pubQuota" type="text" menu="hide" default="1" label="Publication quota (GB)" description="Default disk quota for published files in bites (master default set to 1GB)" />
+		<field name="premiumPubQuota" type="text" menu="hide" default="1" label="Premium publication quota (GB)" description="Premium disk quota for published files in bites (master default set to 30GB)" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="imagepath" type="text" menu="hide" default="/site/projects" label="Image path" description="File path to project images (thumbnails)" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_projects/assets/img/project.png" label="Default picture" description="Default placeholder image for project pictures" />
+		<field name="img_maxAllowed" type="text" menu="hide" default="5242880" label="Max image upload (bytes)" description="Maximum upload file size for project images in bytes" />
+		<field name="img_file_ext" type="text" menu="hide" label="Image extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types for uploaded images" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="logging" type="list" default="0" label="Log activity" description="Enable detailed activity logging">
+			<option value="0">Do not log</option>
+			<option value="1">Log all activity except for AJAX calls</option>
+			<option value="2">Log all activity</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="messaging" type="list" default="0" label="Messaging" description="Enable hub messaging">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="privacy" type="list" default="1" label="Default privacy" description="Set the default privacy for new projects">
+			<option value="0">Public - discoverable</option>
+			<option value="1">Private - hidden</option>
+		</field>
+		<field name="limit" type="text" menu="hide" default="25" label="Browse paging limit" description="Number of projects per page on Browse." />
+		<field name="sidebox_limit" type="text" menu="hide" default="3" label="Side module item limit" description="Number of items per box in project page side modules" />
+		<field name="group_prefix" type="text" menu="hide" default="pr-" label="Project group prefix" description="Prefix for project group name (system group provisioned for each project to handle permissions)" />
+		<field name="use_alias" type="list" default="1" label="Project path construct" description="Use project ID or alias name when building project path?">
+			<option value="1">Project Alias</option>
+		</field>
+		<field name="documentation" type="text" menu="hide" default="/projects/features" label="URL to documentation" description="URL to a page with the user guide" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+	</fieldset>
 </config>

@@ -43,4 +43,19 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="plots_path" type="text" menu="hide" label="Plots" default="/site/usage/plots" description="Path to plots" />
 		<param name="charts_path" type="text" menu="hide" label="Charts" default="/site/usage/charts" description="Path to charts" />
 	</params>
+	<fieldset name="basic">
+		<field name="statsDBDriver" type="text" menu="hide" label="Stats DB Driver" default="mysql" description="Stats DB Driver" />
+		<field name="statsDBHost" type="text" menu="hide" label="Stats DB Host" default="localhost" description="Stats DB Host" />
+		<field name="statsDBPort" type="text" menu="hide" label="Stats DB Port" default="" description="Stats DB Port" />
+		<field name="statsDBUsername" type="text" menu="hide" label="Stats DB Username" default="" description="Stats DB Username" />
+		<field name="statsDBPassword" type="text" menu="hide" label="Stats DB Password" default="" description="Stats DB Password" />
+		<field name="statsDBDatabase" type="text" menu="hide" label="Stats Database" default="" description="Stats Database" />
+		<field name="statsDBPrefix" type="text" menu="hide" label="Stats DB Prefix" default="" description="Stats DB Prefix" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="mapsApiKey" type="text" menu="hide" label="Maps API Key" default="" description="Google Maps API Key for this site" />
+		<field name="stats_path" type="text" menu="hide" label="Path" default="/site/usage" description="General path for storing stats related files" />
+		<field name="maps_path" type="text" menu="hide" label="Maps" default="/site/usage/maps" description="Path to maps" />
+		<field name="plots_path" type="text" menu="hide" label="Plots" default="/site/usage/plots" description="Path to plots" />
+		<field name="charts_path" type="text" menu="hide" label="Charts" default="/site/usage/charts" description="Path to charts" />
+	</fieldset>
 </config>

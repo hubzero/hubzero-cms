@@ -112,4 +112,88 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="mw_on" type="list" default="0" label="Middleware" description="Indicate whether the component is active or not">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+			<option value="2">ON (admin only)</option>
+		</field>
+		<field name="mw_redirect" type="text" menu="hide" label="Redirect" default="/home" description="The URL to redirect to when middleware is OFF" />
+		<field name="stopRedirect" type="text" menu="hide" label="Session Stop Redirect" default="index.php?option=com_members&amp;task=myaccount" description="The URL to redirect to after stopping a session" />
+		<field name="mwDBDriver" type="text" menu="hide" label="Middleware DB Driver" default="" description="Middleware DB Driver" />
+		<field name="mwDBHost" type="text" menu="hide" label="Middleware DB Host" default="" description="Middleware DB Host" />
+		<field name="mwDBPort" type="text" menu="hide" label="Middleware DB Port" default="" description="Middleware DB Port" />
+		<field name="mwDBUsername" type="text" menu="hide" label="Middleware DB Username" default="" description="Middleware DB Username" />
+		<field name="mwDBPassword" type="password" menu="hide" label="Middleware DB Password" default="" description="Middleware DB Password" />
+		<field name="mwDBDatabase" type="text" menu="hide" label="Middleware Database" default="" description="Middleware Database" />
+		<field name="mwDBPrefix" type="text" menu="hide" label="Middleware DB Prefix" default="" description="Middleware DB Prefix" />
+		<field name="shareable" type="radio" default="1" label="Shareable" description="Allow tool sessions to be shared">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="warn_multiples" type="radio" default="0" label="Warn user of multiples" description="Warn the user when starting another instance of a tool.">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="storagehost" type="text" menu="hide" label="Storage host" default="" description="The host the storage indicator should use" />
+		<field name="show_storage" type="list" default="1" label="Show storage" description="Select wether to show the storage meter or not.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
+		<field name="fields_whitelist" type="text" menu="hide" label="Directory fieldeter whitelist" default="/home" description="White-list of directories acceptable to include in tool fieldeter passing feature" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="contribtool_on" type="radio" default="1" label="Contribtool" description="Indicate whether the component is active or not">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+			<option value="2">ON (admin only)</option>
+		</field>
+		<field name="contribtool_redirect" type="text" menu="hide" label="Redirect" default="/home" description="The URL to redirect to when the component is OFF" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="launch_ipad" type="list" default="0" label="Launch on iPad" description="Launch tool sessions on iPad?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="admingroup" type="text" menu="hide" default="apps" label="Admin group" description="Name of contribtool admin group" />
+		<field name="default_mw" type="text" menu="hide" default="narwhal" label="Default middleware" description="Name of default middleware" />
+		<field name="default_vnc" type="text" menu="hide" default="780x600" label="Default VNC size" description="Default VNC geometry values" />
+		<field name="developer_site" type="text" menu="hide" default="FORGE" label="Developer Site" description="Name of project development site" />
+		<field name="project_path" type="text" menu="hide" default="/tools/" label="Path to projects" description="Path to projects on development site (usually followed by the tool name)" />
+		<field name="invokescript_dir" type="text" menu="hide" default="/apps" label="Invoke script dir" description="Directory for invoke script" />
+		<field name="dev_suffix" type="text" menu="hide" default="_dev" label="Dev tool suffix" description="Suffix indicating the development instance of a tool (e.g. _dev for toolname_dev) " />
+		<field name="group_prefix" type="text" menu="hide" default="app-" label="Dev group prefix" description="Prefix to name of development group (e.g. app-) " />
+		<field name="sourcecodePath" type="text" menu="hide" default="site/protected/source" label="Source code path" description="Source code path. " />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="learn_url" type="text" menu="hide" default="http://rappture.org/wiki/FAQ_UpDownloadSrc" label="Learn More URL" description="URL to a uploading source tutorial" />
+        <field name="rappture_url" type="text" menu="hide" default="http://rappture.org" label="Rappture URL" description="URL to a rappture tutorial" />
+		<field name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="new_doi" type="radio" default="0" label="Enable DOI service?" description="Register DOI handle for new tool releases with Purdue Libraries DOI service">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL for Purdue Libraries DOI service" />
+		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for Purdue Libraries DOI service" />
+		<field name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for \Purdue Libraries DOI service" />
+		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
+		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="exec_pu" type="radio" default="1" label="Include PU" description="Include Purdue campus as a tool access restriction">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="screenshot_edit" type="radio" default="0" label="Edit Screenshots" description="Allow editing of screenshots via contribtool and display of screenshots for individual versions">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="downloadable_on" type="radio" default="0" label="Allow Downloadables" description="Include an option to create a downloadable tool">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
 </config>

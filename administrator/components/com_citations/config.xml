@@ -174,4 +174,159 @@
 			]]>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="citation_single_view" type="list" default="0" label="Citations Single View" description="Citations Link to single citation view page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field type="spacer" /> 
+		
+		<field name="citation_label" type="list" default="number" label="Label" description="Displayed to the left of each citation in citations browse mode.">
+			<option value="number">Number</option>
+			<option value="type">Type</option>
+			<option value="both">Number and Type</option>
+			<option value="none">None</option>
+		</field>
+		<field name="citation_rollover" type="list" default="no" label="Show Abstract" description="Display citation Abstract? Can be overridden per citation.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</field>
+		<field name="citation_sponsors" type="list" default="yes" label="Citations Sponsors" description="Display citation sponsors.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</field>
+		
+		<field type="spacer" /> 
+		
+		<field name="citation_import" type="list" default="1" label="Allow Single Submission" description="Allow single submission of citations.">
+			<option value="0">Not Allowed</option>
+			<option value="1">All Users</option>
+			<option value="2">Only Site Admins</option>
+		</field> 
+		
+		<field name="citation_bulk_import" type="list" default="1" label="Allow Bulk Import" description="Allow Bulk importing of citations">
+			<option value="0">Not Allowed</option>
+			<option value="1">All Users</option>
+			<option value="2">Only Site Admins</option>
+		</field>
+		
+		<field type="spacer" />
+		
+		<field name="citation_download" type="list" default="1" label="Allow Single Export" description="Allow downloading of single citation">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		
+		<field name="citation_batch_download" type="list" default="1" label="Allow Bulk Export" description="Allow bulk downloading of citations">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field> 
+		<field name="citation_download_exclude" type="textarea" rows="5" cols="50" default="" label="Exclude from Export" description="Fields to exclude from export." />
+		
+		<field type="spacer" />
+		
+		<field name="citation_coins" type="list" default="1" label="Include COinS" description="Include COinS data in citations.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		
+		<field name="citation_openurl" type="list" default="1" label="Use Open URL's" description="Display links to get citation sources through Open URL's.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<!--<field name="citation_openurl_ip" type="text" default="10.x.x.x" label="Open URL Lookup IP" description="Uses HUB's IP to lookup Resolver when users ip matches these formats" />-->
+		
+		<field type="spacer" />
+		
+		<field name="citation_url" type="list" default="url" label="Citation Link" description="The link for the title of the citation.">
+			<option value="url">URL</option>
+			<option value="custom">Custom URL</option>
+		</field>
+		
+		<field name="citation_custom_url" type="text" default="" label="Custom Citation URL" description="If custom URL is selected above, insert custom URL here." size="80" />
+		
+		<field type="spacer" />
+		
+		<field name="citation_cited" type="list" default="0" label="Internally Cited Image" description="Show Interally Cited Image.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="citation_cited_single" type="text" default="" label="Cited Single Image" description="Image path for internally cited resource - Single." size="80" />
+		<field name="citation_cited_multiple" type="text" default="" label="Cited Multiple Image" description="Image path for internally cited resource - Multiple." size="80" />
+		
+		<field type="spacer" />
+		
+		<field name="citation_show_tags" type="list" default="no" label="Show Tags?" description="Show tags related to citation?">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</field>
+		<field name="citation_allow_tags" type="list" default="no" label="Allow Tagging?" description="Allow tagging on citations?">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</field>
+		
+		<field name="citation_show_badges" type="list" default="no" label="Show Badges?" description="Show badges that are attached to citations? Badges are basically tags used for labeling purposes only.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</field>
+		<field name="citation_allow_badges" type="list" default="no" label="Allow Badges?" description="Allow attaching badges to citations? Badges are basically tags used for labeling purposes only.">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</field>
+		
+		<field type="spacer" />
+		<field name="citation_keys_premade" type="html" label="Citation Formats" description="Predefined Citation Formats">
+			<![CDATA[
+				<a href="#" class="format_type" rel="apa" id="apa_format">APA Format</a> |
+				<a href="#" class="format_type" rel="ieee" id="ieee_format">IEEE Format</a> |
+				<a href="#" class="format_type" rel="custom" id="custom_format">Custom Format</a>
+				
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+				<script>
+					var $jQ = jQuery.noConflict();
+					
+					$jQ(document).ready(function(e) { 
+						var current_format = $jQ("#fieldscitation_format").val();
+						
+						$jQ(".format_type").live("click", function(e) {
+							var content, format = this.rel;
+							
+							if(format == "custom") {
+								$jQ("#fieldscitation_format").val( current_format );
+							} else {
+								$jQ.post("index.php?option=com_citations&task=getformat&no_html=1", { format: format }, function(data) {
+									$jQ("#fieldscitation_format").val( data );
+								});
+							}
+							
+							//prevent default link action
+							e.preventDefault();
+						});
+					});
+				</script>
+			]]>
+		</field>	
+		
+		<field name="citation_format" type="textarea" rows="10" cols="85" default="" label="Citation Format" description="Format that citations are displayed in. Use placeholders displayed below to create order of citation parts." />
+		
+		<field name="citation_keys" type="html" label="Citation Formatting Placeholders">
+			<![CDATA[
+				<script>
+					$jQ(document).ready(function(e) { 
+						$jQ.get("index.php?option=com_citations&task=gettemplatekeys&no_html=1", function(data) {
+							$jQ(".adminlist-list tbody").append( data );
+						});
+					});
+				</script>
+				
+				<table class="adminlist-list">
+					<thead>
+						<th>Placeholder</th>
+						<th>Value</th>
+					</thead>
+					<tbody></tbody>
+				</table>
+			]]>
+		</field>
+	</fieldset>
 </config>

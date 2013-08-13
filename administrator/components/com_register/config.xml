@@ -58,5 +58,35 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="registrationTOU"  type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
 		<param name="registrationAddress"  type="text" menu="hide" default="OOOO" label="Address" description="" />
 	</params>
+	<fieldset name="basic">
+		<field name="LoginReturn" type="text" menu="hide" default="" label="Login Return URL" description="Redirect here after login..." />
+		<field name="ConfirmationReturn" type="text" menu="hide" default="" label="Confirmation Return URL" description="Redirect here after confirming email..." />
+		<field name="passwordMeter" type="radio" default="1" label="Password Strength Meter" description="Show a password strength indicator or not">
+			<option value="0">Off</option>
+			<option value="1">On</option>
+		</field>
+		<field name="registrationUsername"  type="text" menu="hide" default="RRUU" label="Username" description="" />
+		<field name="registrationPassword"  type="text" menu="hide" default="RRUU" label="Password" description="" />
+		<field name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />
+		<field name="registrationFullname"  type="text" menu="hide" default="RRUU" label="Full Name" description="" />
+		<field name="registrationEmail"  type="text" menu="hide" default="RRUU" label="Email" description="" />
+		<field name="registrationConfirmEmail"  type="text" menu="hide" default="RRUU" label="Email Confirmation" description="" />
+		<field name="registrationURL"  type="text" menu="hide" default="OHHO" label="URL" description="" />
+		<field name="registrationPhone"  type="text" menu="hide" default="OHHO" label="Phone" description="" />
+		<field name="registrationEmployment"  type="text" menu="hide" default="RORO" label="Employment" description="" />
+		<field name="registrationOrganization"  type="text" menu="hide" default="OOOO" label="Organization" description="" />
+		<field name="registrationCitizenship"  type="text" menu="hide" default="RHRH" label="Citizenship" description="" />
+		<field name="registrationResidency"  type="text" menu="hide" default="RHRH" label="Residency" description="" />
+		<field name="registrationSex"  type="text" menu="hide" default="RHRH" label="Sex" description="" />
+		<field name="registrationDisability"  type="text" menu="hide" default="RHRH" label="Disability" description="" />
+		<field name="registrationHispanic"  type="text" menu="hide" default="RHRH" label="Hispanic" description="" />
+		<field name="registrationRace"  type="text" menu="hide" default="OHHH" label="Race" description="" />
+		<field name="registrationInterests"  type="text" menu="hide" default="OOOO" label="Interests" description="" />
+		<field name="registrationReason"  type="text" menu="hide" default="OOOO" label="Reason" description=""/>
+		<field name="registrationOptIn"  type="text" menu="hide" default="OOUU" label="OptIn" description="" />
+		<field name="registrationCAPTCHA"  type="text" menu="hide" default="RHHH" label="CAPTCHA" description="CAPTCHA check" />
+		<field name="registrationTOU"  type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
+		<field name="registrationAddress"  type="text" menu="hide" default="OOOO" label="Address" description="" />
+	</fieldset>
 </config>
 

@@ -56,5 +56,33 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="partial">Partial</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="show_date" type="list" default="2" label="Date" description="Show/Hide the entry date">
+			<option value="0">Hide</option>
+			<option value="1">Created</option>
+			<option value="2">Modified</option>
+		</field>
+		<field name="allow_comments" type="list" default="1" label="Comments" description="Allow/Disallow comments on entries">
+			<option value="0">Disallow</option>
+			<option value="1">Allow</option>
+		</field>
+		<field name="close_comments" type="list" default="year" label="Close Comments" description="Auto-close comments on entries from the date">
+			<option value="never">Never</option>
+			<option value="now">Immediately</option>
+			<option value="day">After 1 day</option>
+			<option value="week">After 1 week</option>
+			<option value="month">After 1 month</option>
+			<option value="6months">After 6 months</option>
+			<option value="year">After 1 year</option>
+		</field>
+		<field name="feeds_enabled" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
+			<option value="0">Disabled</option>
+			<option value="1">Enabled</option>
+		</field>
+		<field name="feed_entries" type="list" default="partial" label="Feed Entries" description="The length of RSS feed entries">
+			<option value="full">Full</option>
+			<option value="partial">Partial</option>
+		</field>
+	</fieldset>
 </config>
 

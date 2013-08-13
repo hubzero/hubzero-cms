@@ -82,7 +82,63 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-        <param name="intro_featuredgroups_list" type="text" default="" label="Featured Group List" description="List of Featured Groups to Display" size="50" />
+		<param name="intro_featuredgroups_list" type="text" default="" label="Featured Group List" description="List of Featured Groups to Display" size="50" />
 	</params>
+	<fieldset name="basic">
+		<field name="uploadpath" type="text" menu="hide" default="/site/groups" label="Upload path" description="File path for pictures" size="50" />
+		<field name="scan_uploads" type="list" default="1" label="Scan Uploads" description="Scan uploads with ClamAV for virus checking.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="iconpath" type="text" menu="hide" default="/components/com_groups/assest/img/icons" label="Icons" description="File path for icons" size="50" />
+		
+		<field name="join_policy" type="list" default="0" label="Default Join Policy" description="The default default join policy for new groups.">
+			<option value="0">Public</option>
+			<option value="1">Restricted</option>
+			<option value="2">Invite Only</option>
+			<option value="3">Closed</option>
+		</field>
+		<field name="discoverability" type="list" default="0" label="Default Discoverability" description="The default discoverability setting for new groups.">
+			<option value="0">Visible</option>
+			<option value="1">Hidden</option>
+		</field>
+		<field type="spacer" />
+		<field name="auto_approve" type="list" default="1" label="Auto Approve Groups:?" description="Groups are auto approved at creation. Otherwise Hub administrator must manually approve group.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field type="spacer" />
+		<field name="display_system_users" type="list" default="no" label="Display System Users?" description="Display system users in group member lists?">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</field>
+		<field name="email_comment_processing" type="list" default="0" label="Enable discussion comments via E-mail" description="Enable logic to send group discussion comments via email and process and add responses via email">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="email_member_groupsidcussionemail_autosignup" type="list" default="0" label="Enable groups to auto setup new members to receive discussion email by default" description="Automatically setup new group users to get email from the group discussions">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		
+		<field type="spacer" /> 
+		<field name="intro_mygroups" type="list" default="1" label="Show My Groups" description="Display list of my groups on group landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="intro_interestinggroups" type="list" default="1" label="Show Interesting Groups" description="Display list of groups having matching tags as the user on the group landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="intro_populargroups" type="list" default="1" label="Show Popular Groups" description="Display list of popular groups on group landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="intro_featuredgroups" type="list" default="1" label="Show Featured Groups" description="Display list of featured groups on group landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="intro_featuredgroups_list" type="text" default="" label="Featured Group List" description="List of Featured Groups to Display" size="50" />
+	</fieldset>
 </config>
 

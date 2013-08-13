@@ -49,5 +49,26 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="geodb_driver" type="text" default="mysql" label="Geolocation Database type" description="TIPDTATABASETYPE" />
+		<field name="geodb_host" type="text" default="localhost" label="Geolocation DB Hostname" description="TIPDATABASEHOSTNAME" />
+		<field name="geodb_port" type="text" default="" label="Geolocation DB Port" description="TIPDATABASEPORT" />
+		<field name="geodb_user" type="text" default="" label="Geolocation DB Username" description="TIPDATABASEUSERNAME" />
+		<field name="geodb_password" type="password" default="" label="Geolocation DB Password" description="TIPDATABASEPASSWORD" />
+		<field name="geodb_database" type="text" default="" label="Geolocation DB Schema" description="TIPDATABASENAME" />
+		<field name="geodb_prefix" type="text" default="" label="Geolocation DB Table Prefix" description="TIPDATABASEPREFIX" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ldap_primary" type="text" default="ldap://localhost" label="LDAP Primary Host URI" description="TIPPRIMARYLDAP" />
+		<field name="ldap_secondary" type="text" default="" label="LDAP Secondary Host URI" description="TIPSECONDARYLDAP" />
+		<field name="ldap_basedn" type="text" default="" label="LDAP Base DN" description="TIPLDAPBASEDN" />
+		<field name="ldap_searchdn" type="text" default="" label="LDAP Search DN" description="TIPLDAPSEARCHDN" />
+		<field name="ldap_searchpw" type="password" default="" label="LDAP Search Password" description="TIPLDAPSEARCHPASSWORD" />
+		<field name="ldap_managerdn" type="text" default="" label="LDAP Manager DN" description="TIPLDAPMANAGERDN" />
+		<field name="ldap_managerpw" type="password" default="" label="LDAP Manager Password" description="TIPLDAPMANAGERPASSWORD" />
+		<field name="ldap_tls" type="radio" default="0" label="Use LDAP TLS" description="TIPLDAPTLS">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
 </config>
 

@@ -36,4 +36,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="both">Site Forum and Group Forums</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
+		<field name="forum" type="list" default="both" label="Feed Data From" description="Where the discussions are pulled from for feeds.">
+			<option value="site">Site Forum</option>
+			<option value="group">Group Forums</option>
+			<option value="both">Site Forum and Group Forums</option>
+		</field>
+	</fieldset>
 </config>

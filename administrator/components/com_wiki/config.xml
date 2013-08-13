@@ -37,4 +37,22 @@
 		</param>
 		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the wiki page is recached" />
 	</params>
+	<fieldset name="basic">
+		<field name="subpage_separator" type="text" menu="hide" default="/" label="Subpage Separator" description="Subpage Separator" />
+		<field name="homepage" type="text" menu="hide" default="MainPage" label="Default Main Page name" description="Default Main Page name" />
+		<field name="max_pagename_length" type="text" menu="hide" default="100" label="Maximum Pagename Length" description="Maximum Pagename Length" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="filepath" type="text" menu="hide" default="/site/wiki" label="Upload path" description="File path for attachments" />
+		<field name="mathpath" type="text" menu="hide" default="/site/wiki/math" label="Upload path" description="File path for math images" />
+		<field name="tmppath" type="text" menu="hide" default="/site/wiki/tmp" label="Upload path" description="File path for temp files" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<field name="img_ext" type="text" menu="hide" label="Image Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed image types" />
+		<field name="file_ext" type="text" menu="hide" label="File Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the contents of wiki pages">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the wiki page is recached" />
+	</fieldset>
 </config>

@@ -61,4 +61,38 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="infolink" type="text" menu="hide" label="URL to about page" default="" description="URL to page explaining the job search process" />
 		<param name="premium_infolink" type="text" menu="hide" label="URL to premium services page" default="" description="URL to page explaining the premium services" />
 	</params>
+	<fieldset name="basic">
+		<field name="component_enabled" type="radio" default="1" label="Enable this component?" description="Turn the whole component on/off">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</field>		
+		<field name="industry" type="text" menu="hide" label="Industry Name" default="" description="Name of industry where jobs are posted" />
+		<field name="admingroup" type="text" menu="hide" label="Admin Group" default="" description="Name of a HUB group to have unrestricted access to job postings and resumes, in addition to Joomla site administrators" />
+		<field name="specialgroup" type="text" menu="hide" label="Special Services Group " default="" description="Name of a HUB group to have access to restricted-level subscriptions (usually above Premium)" />
+		 <field name="autoapprove" type="radio" default="1" label="Auto approve job postings" description="Auto approve job postings from employer with a valid subscription">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</field>
+		 <field name="defaultsort" type="radio" default="category" label="By default sort jobs by..." description="Default sorting of jobs by either category or type">
+			<option value="category">category</option>
+			<option value="type">type</option>
+		</field>
+		<field name="jobslimit" type="text" menu="hide" label="Limit jobs per page" default="25" description="Specify how many jobs to show on one page by default" />
+		<field name="allowsubscriptions" type="radio" default="1" label="Allow user subscriptions?" description="Allow users to subscribe to employer services and post jobs and browse resumes.">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</field>
+		<field name="usonly" type="radio" default="1" label="US jobs only?" description="Allow to post only US-based jobs">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="banking" type="radio" default="0" label="Banking" description="Turn economy functions on/off">
+			<option value="1">enabled</option>
+			<option value="0">disabled</option>
+		</field>		
+		<field name="promoline" type="text" menu="hide" label="Promo for employers" default="" description="One-liner promotional offer for employers" />
+		<field name="infolink" type="text" menu="hide" label="URL to about page" default="" description="URL to page explaining the job search process" />
+		<field name="premium_infolink" type="text" menu="hide" label="URL to premium services page" default="" description="URL to page explaining the premium services" />
+	</fieldset>
 </config>

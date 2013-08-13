@@ -48,4 +48,24 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="receipt_title" type="text" menu="hide" default="Your Order at HUB Store" label="Title for receipt" description="Receipt title"  />
 		<param name="receipt_note" type="text" menu="hide" default="Thank You for contributing to our HUB!" label="Receipt thank-you note" description="Receipt thank-you note" />
 	</params>
+	<fieldset name="basic">
+		 <field name="store_enabled" type="radio" default="0" label="Store" description="TIPSHOWFEEDITEM">
+			<option value="1">enabled</option>
+			<option value="0">disabled</option>
+		</field>
+		<field name="webpath" type="text" menu="hide" default="/site/store" label="Path to product images" description="Path to merchandise images" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="hubaddress_ln1" type="text" menu="hide" default="" label="Receipt address line 1" description="Line 1 address for order receipt template" />
+		<field name="hubaddress_ln2" type="text" menu="hide" default="" label="Receipt address line 2" description="Line 2 address for order receipt template" />
+		<field name="hubaddress_ln3" type="text" menu="hide" default="" label="Receipt address line 3" description="Line 3 address for order receipt template" />
+		<field name="hubaddress_ln4" type="text" menu="hide" default="" label="Receipt address line 4" description="Line 4 address for order receipt template" />
+		<field name="hubaddress_ln5" type="text" menu="hide" default="" label="Receipt address line 5" description="Line 5 address for order receipt template" />
+		<field name="hubemail" type="text" menu="hide" default="" label="Receipt email" description="Email address for order receipt template" />
+		<field name="hubphone" type="text" menu="hide" default="" label="Receipt phone" description="Phone number for order receipt template" />
+		<field name="headertext_ln1" type="text" menu="hide" default="" label="Header line 1" description="Text to appear on line 1 of template header" />
+		<field name="headertext_ln2" type="text" menu="hide" default="" label="Header line 2" description="Text to appear on line 2 of template header" />
+		<field name="footertext" type="text" menu="hide" default="" label="Receipt footer" description="Text to appear in a footer of an order receipt" />
+		<field name="receipt_title" type="text" menu="hide" default="Your Order at HUB Store" label="Title for receipt" description="Receipt title"  />
+		<field name="receipt_note" type="text" menu="hide" default="Thank You for contributing to our HUB!" label="Receipt thank-you note" description="Receipt thank-you note" />
+	</fieldset>
 </config>

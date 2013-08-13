@@ -32,4 +32,8 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="infolink" type="text" menu="hide" default="/kb/points" label="About points" description="Link to page explaining the point system" />
 		<param name="notify_users" label="Users notified on every activity" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be notified whenever a new question/answer is posted." />
 	</params>
+	<fieldset name="basic">
+		<field name="infolink" type="text" menu="hide" default="/kb/points" label="About points" description="Link to page explaining the point system" />
+		<field name="notify_users" label="Users notified on every activity" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be notified whenever a new question/answer is posted." />
+	</fieldset>
 </config>

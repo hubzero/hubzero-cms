@@ -109,5 +109,86 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
 	</params>
+	<fieldset name="basic">
+		<field name="autoapprove" type="radio" default="0" label="Auto-approve" description="Automatically approve new submissions">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
+		<field name="cc_license" type="radio" default="1" label="Apply License" description="Show an option for marking new contributions with a specific license.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="cc_license_custom" type="radio" default="0" label="Allow Custom License" description="Show an option for allowing new contributions to have a custom license.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="email_when_approved" type="radio" default="0" label="Email When Published" description="Email contributors when a submitted resource is approved.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/images/resource_thumb.gif" label="Default picture" description="Default placeholder image for resource pictures" />
+		<field name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="Tool Tags" description="Content wrapper tags for tools" />
+		<field name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="Other Tags" description="Content wrapper tags for 'and more' resources" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="accesses" type="text" menu="hide" default="Public,Registered,Special,Protected,Private" label="Access Levels" description="Resource access levels" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="webpath" type="text" menu="hide" default="/site/resources" label="Resources path" description="File path for resources" />
+		<field name="toolpath" type="text" menu="hide" default="/site/resources/tools" label="Tool path" description="File path for tools" />
+		<field name="uploadpath" type="text" menu="hide" default="/site/resources" label="Upload path" description="File path for attachments" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<field name="doi" type="text" menu="hide" default="" label="DOI prefix" description="Digital Object Identifier prefix" />
+		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to display to indicate Org supported tools" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to display to describe Org supported tools" />
+		<field name="browsetags" type="list" default="on" label="Tag Browser" description="Use the three column tag browser to find resources.">
+			<option value="on">On</option>
+			<option value="off">Off</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_assocs" type="list" default="1" label="Tags" description="Show/Hide the item's tags">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_ranking" type="list" default="1" label="Ranking" description="Show/Hide the ranking">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_rating" type="list" default="1" label="Rating" description="Show/Hide the rating">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide the item creation date">
+			<option value="0">Hide</option>
+			<option value="1">Created</option>
+			<option value="2">Modified</option>
+			<option value="3">Published</option>
+		</field>
+		<field name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide the metadata for this resource">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing this resource">
+			<option value="0">Hide All</option>
+			<option value="1">Manual And Auto</option>
+			<option value="2">Auto Generated</option>
+			<option value="3">Manually Inputed</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level for this resource">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
+	</fieldset>
 </config>
 

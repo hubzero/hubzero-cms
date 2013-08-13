@@ -28,6 +28,38 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
+	<fieldset name="basic">
+		<field name="title" type="text" menu="hide" default="" label="Blog Title" description="A Title for your blog" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="uploadpath" type="text" menu="hide" default="/site/blog" label="Upload path" description="File path for uploads" />
+		<field name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="introlength" type="text" default="300" label="Intro Length" description="The length of text the intros should be in lists of entries." />
+		<field name="show_authors" type="list" default="1" label="Authors" description="Show/Hide the authors of posts">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="allow_comments" type="list" default="1" label="Comments" description="Allow/Disallow comments on entries">
+			<option value="0">Disallow</option>
+			<option value="1">Allow</option>
+		</field>
+		<field name="feeds_enabled" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
+			<option value="0">Disabled</option>
+			<option value="1">Enabled</option>
+		</field>
+		<field name="feed_entries" type="list" default="partial" label="Feed Entries" description="The length of RSS feed entries">
+			<option value="full">Full</option>
+			<option value="partial">Partial</option>
+		</field>
+		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide the entry date">
+			<option value="0">Hide</option>
+			<option value="1">Created</option>
+			<option value="2">Modified</option>
+			<option value="3">Published</option>
+		</field>
+	</fieldset>
 	<params>
 		<param name="title" type="text" menu="hide" default="" label="Blog Title" description="A Title for your blog" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
