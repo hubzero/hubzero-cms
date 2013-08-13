@@ -94,9 +94,15 @@ class GroupsControllerAbstract extends Hubzero_Controller
 			$return = $customReturn;
 		}
 		
+		$component = 'com_user';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$component = 'com_users';
+		}
+		
 		//redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_user&view=login&return=' . base64_encode($return) ),
+			JRoute::_('index.php?option='. $component.'&view=login&return=' . base64_encode($return) ),
 			$message,
 			'warning'
 		);

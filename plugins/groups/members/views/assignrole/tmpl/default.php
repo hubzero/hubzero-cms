@@ -66,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</select>
 		</label>
 	</fieldset>
-	<input type="hidden" name="option" value="<?php echo $option; ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="members" />
 	<input type="hidden" name="action" value="submitrole" />

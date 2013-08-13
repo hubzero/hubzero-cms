@@ -441,7 +441,7 @@ if ($this->role_filter)
 		
 		<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
 		<input type="hidden" name="active" value="members" />
-		<input type="hidden" name="option" value="<?php echo $option; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />
 	</form>
 </div><!--/ #group_members -->

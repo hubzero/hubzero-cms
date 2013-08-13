@@ -60,7 +60,7 @@ foreach ($this->users as $user)
 	</fieldset><div class="clear"></div>
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="members" />
-	<input type="hidden" name="option" value="<?php echo $option; ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="confirmremove" />
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
