@@ -76,10 +76,15 @@ HUB.Base = {
 
 					if ($(this).attr('class')) {
 						var sizeString = $(this).attr('class').split(' ').pop();
-						if (sizeString && sizeString.match('/\d+x\d+/')) {
+						if (sizeString && sizeString.match(/\d+x\d+/gi)) {
 							var sizeTokens = sizeString.split('x');
 							w = parseInt(sizeTokens[0]);
 							h = parseInt(sizeTokens[1]);
+						}
+						else if(sizeString && sizeString == 'fullxfull')
+						{
+							w = screen.width;
+							h = screen.height;
 						}
 					}
 
