@@ -119,7 +119,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		if ($category->id)
 		{
 			$category->state = $assetgroup->get('state');
-			$category->title = $assetgroup->get('title');
+			if ($assetgroup->get('title') == '--')
+			{
+				$category->title = $assetgroup->assets()->fetch('first')->get('title');
+			}
+			else
+			{
+				$category->title = $assetgroup->get('title');
+			}
 			$category->alias = $assetgroup->get('alias');
 			if ($category->check())
 			{
@@ -584,7 +591,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		if (!$category->get('id'))
 		{
 			$category->section_id  = $section->get('id');
-			$category->title       = $lecture->get('title');
+			if ($lecture->get('title') == '--')
+			{
+				$category->title       = $lecture->assets()->fetch('first')->get('title');
+			}
+			else
+			{
+				$category->title       = $lecture->get('title');
+			}
 			$category->alias       = $lecture->get('alias');
 			$category->description = JText::sprintf('Discussions for %s', $unit->get('alias'));
 			$category->state       = 1;
@@ -1422,7 +1436,14 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 								}
 								$cat = new ForumCategory($this->database);
 								$cat->section_id  = $section->id;
-								$cat->title       = $ag->get('title');
+								if ($ag->get('title') == '--')
+								{
+									$cat->title       = $af->assets()->fetch('first')->get('title');
+								}
+								else
+								{
+									$cat->title       = $ag->get('title');
+								}
 								$cat->alias       = $ag->get('alias');
 								$cat->description = JText::sprintf('Discussions for %s', $ag->get('title'));
 								$cat->state       = 1;
