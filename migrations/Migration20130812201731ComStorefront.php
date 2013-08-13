@@ -13,14 +13,6 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		$query = "";
-
-		if (!empty($query))
-		{
-			$db->setQuery($query);
-			$db->query();
-		}
-		
 		/*Table structure for table `#__storefront_collections` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_collections` (
 		  `cId` char(50) NOT NULL,
@@ -31,7 +23,7 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  PRIMARY KEY (`cId`),
 		  KEY `cActive` (`cActive`),
 		  KEY `cParent` (`cParent`)
-		) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$db->setQuery($query);
 		$db->query();
 		
@@ -75,7 +67,7 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  `cnActive` tinyint(1) DEFAULT '1',
 		  PRIMARY KEY (`cnId`),
 		  UNIQUE KEY `Unique code` (`cnCode`)
-		) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$db->setQuery($query);
 		$db->query();
 		
@@ -106,7 +98,7 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  `cId` char(50) NOT NULL,
 		  PRIMARY KEY (`cllId`,`pId`,`cId`),
 		  UNIQUE KEY `pId` (`pId`,`cId`)
-		) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$db->setQuery($query);
 		$db->query();
 		
@@ -125,7 +117,7 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  `ptName` char(128) DEFAULT NULL,
 		  `ptModel` char(25) DEFAULT 'normal',
 		  PRIMARY KEY (`ptId`)
-		) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$db->setQuery($query);
 		$db->query();
 		
@@ -140,7 +132,7 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  `pActive` tinyint(1) DEFAULT '1',
 		  PRIMARY KEY (`pId`),
 		  KEY `pActive` (`pActive`)
-		) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$db->setQuery($query);
 		$db->query();
 		
@@ -152,7 +144,7 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  `smValue` varchar(100) DEFAULT NULL,
 		  PRIMARY KEY (`smId`),
 		  UNIQUE KEY `sId` (`sId`,`smKey`)
-		) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$db->setQuery($query);
 		$db->query();
 		
@@ -180,7 +172,7 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  `sAllowMultiple` tinyint(1) DEFAULT '1',
 		  `sActive` tinyint(1) DEFAULT '1',
 		  PRIMARY KEY (`sId`)
-		) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 	}
 
