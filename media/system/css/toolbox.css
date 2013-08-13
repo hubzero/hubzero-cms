@@ -1,0 +1,86 @@
+/*
+  Overlay CSS
+*/
+.hub-overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+	z-index: 99998;
+}
+
+
+/*
+  Dialog CSS
+*/
+.dialog-box {
+	position: absolute;
+	top: -200px;
+	left: 0;
+	border-radius: 5px;
+	background: #FFF;
+	border: 1px solid #666;
+	box-shadow: 0 0 10px rgba(0,0,0,0.2);
+	z-index: 99999;
+}
+.dialog-box .title {
+	padding: 10px;
+	background: #FFF;
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+	font-size: 1.2em;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.dialog-box .content {
+	padding: 0 20px;
+	position: relative;
+	overflow: hidden;
+}
+.dialog-box p.title {
+	padding: 0;
+	margin: 1em 0 0 0;
+	font-weight: bold;
+	border: none;
+}
+.dialog-box .content input {
+	width: 100%;
+}
+.dialog-box .buttons {
+	background: #efefef;
+	padding: 5px 10px;
+	border-top: 1px solid #ccc;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	overflow:hidden;
+}
+.dialog-box .buttons button {
+	float:right;
+}
+.dialog-alert .content:after,
+.dialog-confirm .content:after,
+.dialog-prompt .content:after {
+	content: '';
+	position: absolute;
+	top: 10px;
+	right: 0px;
+	font-family: 'Fontcons';
+	font-size: 80px;
+	color: rgba(0,0,0,0.08);
+	-webkit-transform:rotate(15deg);
+}
+.dialog-alert .content:after {
+	content: '\2757';
+	color: rgba(255,0,0,0.08);
+}
+.dialog-confirm .content:after {
+	content: '\f059';
+	color: rgba(57,10,154,0.08);
+}
+.dialog-prompt .content:after {
+	content: '\f05a';
+	color: rgba(0,0,255,0.08);
+}
