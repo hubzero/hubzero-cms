@@ -582,7 +582,7 @@ function submitbutton(pressbutton)
 				altTimeField: '',
 				time24h: true,
 				dateFormat: 'yy-mm-dd',
-				timeFormat: 'hh:mm:00'
+				timeFormat: 'HH:mm:00'
 			});
 		/*$('#dates_<?php echo $i; ?>_publish_up').datetimepicker({  
 		        duration: '',  
