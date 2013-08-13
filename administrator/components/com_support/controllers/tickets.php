@@ -1059,7 +1059,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$query = "SELECT a.id AS value, a.name AS text, g.title AS groupname"
+			$query = "SELECT a.username AS value, a.name AS text, g.title AS groupname"
 			. "\n FROM #__users AS a"
 			. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
 			. "\n INNER JOIN #__usergroups AS g ON " . $group_id . " = gm.group_id"
@@ -1068,7 +1068,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 		else
 		{
-			$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
+			$query = "SELECT a.username AS value, a.name AS text, g.name AS groupname"
 			. "\n FROM #__users AS a"
 			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
 			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
