@@ -386,18 +386,21 @@
 		border: none;
 		display:block;
 		padding:0;
+		background-image: none;
 	}
 	#page_header #profile-privacy:before {
 		content: "\f023";
 		font-size: 30px;
 		color:#ccc;
 		font-family: 'Fontcons';
+		background-image: none;
 	}
 	#page_header #profile-privacy.private:before {
 		content: "\f023";
 		font-size: 30px;
 		color:#353535;
 		font-family: 'Fontcons';
+		background-image: none;
 	}
 
 /* Page options */
