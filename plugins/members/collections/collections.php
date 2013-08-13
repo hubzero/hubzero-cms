@@ -1195,6 +1195,7 @@ class plgMembersCollections extends JPlugin
 		$row->set('_assets', JRequest::getVar('assets', array(), 'post'));
 		$row->set('_tags', trim(JRequest::getVar('tags', '')));
 		$row->set('state', 1);
+		$row->set('access', 0);
 
 		// Store new content
 		if (!$row->store()) 
@@ -1320,6 +1321,18 @@ class plgMembersCollections extends JPlugin
 		}
 
 		$collection_id = JRequest::getInt('collection_id', 0);
+		if (!$collection_id)
+		{
+			$collection = new CollectionsModelCollection();
+			$collection->set('title', JRequest::getVar('collection_title', ''));
+			$collection->set('object_id', $this->juser->get('id'));
+			$collection->set('object_type', 'member');
+			if (!$collection->store())
+			{
+				$this->setError($collection->getError());
+			}
+			$collection_id = $collection->get('id');
+		}
 		$item_id       = JRequest::getInt('item_id', 0);
 
 		// Try loading the current board/bulletin to see
@@ -1753,6 +1766,10 @@ class plgMembersCollections extends JPlugin
 		{
 			$this->setError($row->getError());
 			return $this->_editcollection($row);
+		}
+		if ($row->get('access') != 0 && $row->get('access') != 4)
+		{
+			$row->set('access', 0);
 		}
 
 		// Store new content
