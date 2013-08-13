@@ -92,7 +92,7 @@ class Migration20130812182339ComCart extends Hubzero_Migration
 		  `saState` char(2) NOT NULL,
 		  `saZip` char(10) NOT NULL,
 		  PRIMARY KEY (`saId`),
-		  UNIQUE KEY `uidNumber` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`,`saCity`,`saState`,`saZip`)
+		  UNIQUE KEY `uidNumber` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`,`saZip`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		
 		$db->setQuery($query);
