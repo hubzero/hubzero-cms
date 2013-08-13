@@ -505,8 +505,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$view->params     = $this->params;
 		
 		//load com_events params file for registration fields
-		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
-		$view->registrationFields = new $paramsClass(
+		$view->registrationFields = new JParameter(
 			$view->event->params, 
 			JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
 		);

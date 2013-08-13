@@ -101,7 +101,7 @@ if($role_id) {
 				</p>
 			<div><!-- /.cont -->
 		</fieldset>
-		<input type="hidden" name="option" value="<?php echo $option; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="active" value="messages" />
 		<input type="hidden" name="action" value="send" />

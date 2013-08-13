@@ -55,7 +55,7 @@ $month = date("m", strtotime($this->event->publish_up));
 		<?php endif; ?>
 	</span>
 	<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
-		<?php if (!$this->calendar[0]->readonly) : ?>
+		<?php if (!isset($this->calendar[0]) || !$this->calendar[0]->readonly) : ?>
 			<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
 				Delete
 			</a> 

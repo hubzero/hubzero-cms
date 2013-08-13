@@ -122,14 +122,20 @@ for ($i=0; $i<count($images); $i++)
 	}
 ?>
 					<tr>
-						<td><img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" /></td>
-						<td width="100%"><?php echo $images[$image_name]; ?></td>
-						<td>
+						<td class="file-icon">
+							<img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" />
+						</td>
+						<td class="file-delete">
+							<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a>
+						</td>
+						<td class="file-name">
+							<?php echo $images[$image_name]; ?>
+						</td>
+						<td class="file-path">
 							<?php if(is_object($group)) : ?>
 							<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'groups'.DS.$group->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path"><img src="/components/com_groups/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" /></a>
 							<?php endif; ?>
 						</td>
-						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
 					</tr>
 <?php
 	next($images);
