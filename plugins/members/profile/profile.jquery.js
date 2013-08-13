@@ -421,7 +421,7 @@ HUB.Members.Profile = {
 			
 			$change
 				.css('width',  w)
-				.attr("href", window.location.href.replace("profile","ajaxupload"))
+				.attr("href", window.location.origin + window.location.pathname.replace("profile","ajaxupload"))
 				.appendTo($identity);
 					
 			//edit picture	
