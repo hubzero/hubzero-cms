@@ -35,7 +35,7 @@ if ($b = $this->instructor->get('bio'))
 {
 	$bio = stripslashes($b);
 
-	/*$wikiconfig = array(
+	$wikiconfig = array(
 		'option'   => 'com_members',
 		'scope'    => 'members' . DS . 'profile',
 		'pagename' => 'member',
@@ -46,15 +46,15 @@ if ($b = $this->instructor->get('bio'))
 	ximport('Hubzero_Wiki_Parser');
 	$p =& Hubzero_Wiki_Parser::getInstance();
 
-	$appendmore = false;
+	/*$appendmore = false;
 	if (strlen($b) > 200) 
 	{
 		$appendmore = true;
 		$b = Hubzero_View_Helper_Html::shortenText($b, 200, 0);
-	}
+	}*/
 
 	$bio = $p->parse($b, $wikiconfig, false);
-	if (strlen($b) > 200) 
+	/*if (strlen($b) > 200) 
 	{
 		$bio .= '<p><a class="more" href="' . JRoute::_('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')) . '">' . JText::_('More...') . '</a></p>';
 	}*/
@@ -78,11 +78,11 @@ if ($b = $this->instructor->get('bio'))
 		</p>
 	</div><!-- / .course-instructor-content cf -->
 
-	<p class="course-instructor-bio">
+	<div class="course-instructor-bio">
 		<?php if ($bio) { ?>
 			<?php echo $bio; ?>
 		<?php } else { ?>
 			<em><?php echo JText::_('This instructor has yet to write their bio.'); ?></em>
 		<?php } ?>
-	</p>
+	</div>
 </div><!-- / .course-instructor -->

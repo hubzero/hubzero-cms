@@ -300,7 +300,6 @@
 	
 	.course.below {
 		border-top: 1px solid #e1e1e1;
-		/*background: #f4f4f4;*/
 	}
 	.course.below .section {
 		padding: 30px;
@@ -311,9 +310,6 @@
 		margin: 0 0 4em 0;
 	}
 	.course-instructor {
-		/*margin: 2em 0 2em 0;
-		background: #EEE;
-		padding: 0 1em;*/
 		border-radius: 0.25em;
 		font-size: 1em;
 		margin: 0;
@@ -352,6 +348,9 @@
 	}
 	p.course-instructor-bio {
 		margin-top: 0;
+	}
+	div.course-instructor-bio {
+		margin: 0 0 1em 0;
 	}
 	.course-instructor-photo img {
 		margin: 0;
