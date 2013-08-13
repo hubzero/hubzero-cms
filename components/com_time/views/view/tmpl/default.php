@@ -43,13 +43,11 @@ defined('_JEXEC') or die('Restricted access');
 				{
 					if($plugin['return'] == 'html')
 					{
-						echo JHTML::_(
-							'html.displayMenu',
-							$plugin['title'],
-							$plugin['name'],
-							$this->active_tab,
-							$this->option
-						);
+						$cls = ($this->active_tab == $plugin['name']) ? 'active' : '';
+
+						$link = JRoute::_('index.php?option='.$this->option.'&active='.$plugin['name']);
+
+						echo "<li><a class=\"{$cls}\" href=\"{$link}\">{$plugin['title']}</a></li>";
 					}
 				}
 			?>
@@ -86,12 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<div id="time_content" class="time_<?php echo $this->active_tab; ?>">
 			<?php
-				echo JHTML::_(
-					'html.displayContent',
-					$this->active_tab,
-					$this->sections,
-					$this->time_plugins
-				);
+				echo $this->sections[0]['html'];
 			?>
 		</div>
 	</div>

@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $config = JFactory::getConfig();
+$option = JRequest::getCmd('option', 'com_time');
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.folder');
@@ -41,12 +42,13 @@ ximport('Hubzero_Plugin_Params');
 
 require_once(JPATH_ROOT.DS.'components'.DS.$option.DS.'controllers'.DS.'time.php');
 
-JHTML::addIncludePath(JPATH_COMPONENT.DS.'helpers');
-
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl =& JFactory::getACL();
+	$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
+	$jacl->addACL( $option, 'manage', 'users', 'administrator' );
+	$jacl->addACL( $option, 'manage', 'users', 'manager' );
+}
 
 // Instantiate controller
 $controller = new TimeController();
