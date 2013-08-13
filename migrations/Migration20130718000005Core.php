@@ -226,6 +226,28 @@ class Migration20130718000005Core extends Hubzero_Migration
 				$db->query();
 			}
 
+			// Look for any components we missed...(frontend?)
+			$components = array_diff(scandir(JPATH_ROOT . DS . 'components'), array(".", ".."));
+			foreach ($components as $c)
+			{
+				if (!is_dir(JPATH_ROOT . DS . 'components' . DS . $c))
+				{
+					continue;
+				}
+
+				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$c}';";
+				$db->setQuery($query);
+				if ($db->loadResult())
+				{
+					continue;
+				}
+
+				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
+				$query .= "('{$c}', 'component', '{$c}', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+				$db->setQuery($query);
+				$db->query();
+			}
+
 			// Look for any components we missed...(backend?)
 			$components = array_diff(scandir(JPATH_ROOT . DS . 'administrator' . DS . 'components'), array(".", ".."));
 			foreach ($components as $c)
