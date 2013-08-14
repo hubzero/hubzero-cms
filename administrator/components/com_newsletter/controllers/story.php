@@ -190,28 +190,30 @@ class NewsletterControllerStory extends Hubzero_Controller
 			}
 		}
 		
+		$database = JFactory::getDBO();
+		
 		//is there a nother story having the order we want?
-		$sql = "SELECT * FROM {$story->_tbl} WHERE `order`=" . $story->_db->quote( $newOrder ) . " AND nid=" . $story->_db->quote( $id );
-		$story->_db->setQuery( $sql );
-		$moveTo = $story->_db->loadResult();
+		$sql = "SELECT * FROM {$story->getTableName()} WHERE `order`=" . $database->quote( $newOrder ) . " AND nid=" . $database->quote( $id );
+		$database->setQuery( $sql );
+		$moveTo = $database->loadResult();
 		
 		//if there isnt just update story
 		if (!$moveTo)
 		{
-			$sql = "UPDATE {$story->_tbl} SET `order`=" . $story->_db->quote( $newOrder ) . " WHERE id=" . $story->_db->quote( $sid );
-			$story->_db->setQuery( $sql );
-			$story->_db->query();
+			$sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote( $newOrder ) . " WHERE id=" . $database->quote( $sid );
+			$database->setQuery( $sql );
+			$database->query();
 		}
 		else
 		{
 			//swith orders
-			$sql = "UPDATE {$story->_tbl} SET `order`=" . $story->_db->quote( $newOrder ) . " WHERE id=" . $story->_db->quote( $sid );
-			$story->_db->setQuery( $sql );
-			$story->_db->query();
+			$sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote( $newOrder ) . " WHERE id=" . $database->quote( $sid );
+			$database->setQuery( $sql );
+			$database->query();
 			
-			$sql = "UPDATE {$story->_tbl} SET `order`=" . $story->_db->quote( $currentOrder ) . " WHERE id=" . $story->_db->quote( $moveTo );
-			$story->_db->setQuery( $sql );
-			$story->_db->query();
+			$sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote( $currentOrder ) . " WHERE id=" . $database->quote( $moveTo );
+			$database->setQuery( $sql );
+			$database->query();
 		}
 		
 		//set success message

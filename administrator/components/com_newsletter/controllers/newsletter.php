@@ -209,13 +209,18 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		$this->view->display();
 	}
 	
+	public function applyTask()
+	{
+		$this->saveTask( $apply = true );
+	}
+	
 	
 	/**
 	 * Save campaign task
 	 *
 	 * @return 	void
 	 */
-	public function saveTask()
+	public function saveTask( $apply = false )
 	{
 		//get post
 		$newsletter = JRequest::getVar("newsletter", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
@@ -252,25 +257,25 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			$params = new JParameter( $newsletterNewsletter->params );
 			
 			//set from name
-			if ($newsletter['params']['from_name'] != '')
+			if (isset($newsletter['params']['from_name']))
 			{
 				$params->set('from_name', $newsletter['params']['from_name']);
 			}
 			
 			//set from address
-			if ($newsletter['params']['from_address'] != '')
+			if (isset($newsletter['params']['from_address']))
 			{
 				$params->set('from_address', $newsletter['params']['from_address']);
 			}
 			
 			//set reply-to name
-			if ($newsletter['params']['replyto_name'] != '')
+			if (isset($newsletter['params']['replyto_name']))
 			{
 				$params->set('replyto_name', $newsletter['params']['replyto_name']);
 			}
 			
 			//set reply-to address
-			if ($newsletter['params']['replyto_address'] != '')
+			if (isset($newsletter['params']['replyto_address']))
 			{
 				$params->set('replyto_address', $newsletter['params']['replyto_address']);
 			}
@@ -319,7 +324,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
 			
 			//if we just created campaign go back to edit form so we can add content
-			if (!$newsletter['id'])
+			if (!$newsletter['id'] || $apply)
 			{
 				$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]=' . $newsletterNewsletter->id;
 			}

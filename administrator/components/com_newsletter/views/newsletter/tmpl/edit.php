@@ -37,6 +37,10 @@ JToolBarHelper::title(JText::_('Newsletter') . ': <small><small>[ ' . $text . ' 
 
 //add buttons to toolbar
 JToolBarHelper::save();
+if ($this->newsletter->id)
+{
+	JToolBarHelper::apply();
+}
 JToolBarHelper::cancel();
 
 //primary and secondary stories
@@ -66,7 +70,7 @@ function submitbutton(pressbutton)
 ?>
 
 <form action="index.php" method="post" name="adminForm">
-	<div class="col width-50">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('Newsletter Details'); ?></legend>
 			<table class="admintable">
@@ -129,7 +133,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th width="150"><?php echo JText::_('Show Newsletter on HUB:'); ?></th>
 						<td>
-							<select name="newsletter[public]">
+							<select name="newsletter[published]">
 								<option value="1" <?php if($this->newsletter->published == '1') : ?>selected="selected"<?php endif; ?>>
 									<?php echo JText::_('Show'); ?>
 								</option>
@@ -170,7 +174,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	
-	<div class="col width-50">
+	<div class="col width-50 fltrt">
 		<?php if ($this->newsletter->id) : ?>
 			<table class="meta">
 				<tbody>
