@@ -122,7 +122,7 @@ $infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'.
 			</div>
 		</div>
 		<div class="two columns second" id="c-output">
-			<form action="<?php echo $this->route; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+			<form action="<?php echo JRoute::_($this->route); ?>" method="post" id="plg-form" enctype="multipart/form-data">
 			<fieldset>	
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 				<input type="hidden" name="sel" value="<?php echo count($this->attachments); ?>" id="sel" />
