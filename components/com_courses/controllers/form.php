@@ -387,7 +387,10 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(422);
 		}
 
-		$dep = PdfFormDeployment::fromCrumb($crumb);
+		// First, attempt to compute section
+		$section = FormHelper::getSection($crumb);
+
+		$dep = PdfFormDeployment::fromCrumb($crumb, $section);
 		$dbg = JRequest::getVar('dbg', false);
 
 		switch ($dep->getState())
@@ -639,7 +642,8 @@ class FormHelper {
 	 * 
 	 * @return     string
 	 */
-	public function timeDiff($secs) {
+	public function timeDiff($secs)
+	{
 		$seconds = array(1, 'second');
 		$minutes = array(60 * $seconds[0], 'minute');
 		$hours   = array(60 * $minutes[0], 'hour');
@@ -669,5 +673,27 @@ class FormHelper {
 		}
 
 		return join(', ', $rv);
+	}
+
+	/**
+	 * Get section for current student and form
+	 * 
+	 * @return     string
+	 */
+	public function getSection($crumb)
+	{
+		$db = JFactory::getDBO();
+		$query = "SELECT cm.section_id FROM `#__courses_form_deployments` cfd
+					JOIN `#__courses_assets` ca ON cfd.crumb = substring(ca.url, 30)
+					JOIN `#__courses_offering_section_dates` cosd ON ca.id = cosd.scope_id
+					JOIN `#__courses_members` cm ON cosd.section_id = cm.section_id 
+					WHERE cosd.scope = 'asset'
+					AND cm.user_id = " . $db->quote(JFactory::getUser()->get('id')) . "
+					AND cfd.crumb = " . $db->quote($crumb);
+
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		return ($result) ? $result : NULL;
 	}
 }

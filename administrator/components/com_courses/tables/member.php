@@ -130,7 +130,11 @@ class CoursesTableMember extends JTable
 			return false;
 		}
 
-		if ($cid === NULL)
+		if (is_null($cid) && is_null($oid) && !is_null($sid) && is_numeric($sid))
+		{
+			return $this->loadBySection($uid, $sid);
+		}
+		else if ($cid === NULL)
 		{
 			return parent::load($uid);
 		}

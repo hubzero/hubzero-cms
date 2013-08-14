@@ -448,7 +448,9 @@ class CoursesControllerOffering extends Hubzero_Controller
 			return;
 		}
 
+		$section_id = $this->course->offering()->section()->get('id');
 		$asset = new CoursesModelAsset(JRequest::getInt('asset_id', null));
+		$asset->set('section_id', $section_id);
 
 		if (!$this->course->offering()->access('manage') && !$asset->isAvailable())
 		{

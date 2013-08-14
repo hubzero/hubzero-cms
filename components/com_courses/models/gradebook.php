@@ -557,7 +557,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badge = CoursesModelMemberBadge::loadByMemberId($member_id);
 						if (!$badge->hasEarned())
 						{
-							$badge->set('member_id', $u);
+							$badge->set('member_id', $member_id);
 							$badge->set('earned', 1);
 							$badge->set('earned_on', date("Y-m-d H:i:s"));
 							$badge->store();

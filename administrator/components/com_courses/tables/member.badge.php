@@ -72,18 +72,18 @@ class CoursesTableMemberBadge extends JTable
 	var $claim_url = NULL;
 
 	/**
-	 * int(1)
+	 * varchar(255)
 	 * 
-	 * @var integer
+	 * @var string
 	 */
-	var $claimed = NULL;
+	var $action = NULL;
 
 	/**
 	 * datetime
 	 * 
 	 * @var string
 	 */
-	var $claimed_on = NULL;
+	var $action_on = NULL;
 
 	/**
 	 * Constructor
