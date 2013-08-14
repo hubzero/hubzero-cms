@@ -666,7 +666,7 @@ HUB.Plugins.CoursesProgress = {
 			$('.slider').slider('value', val);
 		}
 
-		s.animate({left:'-'+(loc)+'px'}, 'fast', function ( e ) {
+		s.stop(true).animate({left:'-'+(loc)+'px'}, 'fast', function ( e ) {
 			var l = Math.ceil(Math.abs(s.css('left').replace('px', ''))),
 				o = Math.ceil(HUB.Plugins.CoursesProgress.offset);
 
