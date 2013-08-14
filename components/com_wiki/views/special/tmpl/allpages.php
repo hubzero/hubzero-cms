@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway =& JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('New Pages'),
+	JText::_('All Pages'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages'
 );
 

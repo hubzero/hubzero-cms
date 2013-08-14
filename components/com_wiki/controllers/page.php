@@ -193,6 +193,7 @@ class WikiControllerPage extends Hubzero_Controller
 			$this->view->setLayout('special');
 			$this->view->layout = $this->page->stripNamespace();
 			$this->view->page->scope = trim(JRequest::getVar('scope', ''));
+			$this->view->page->group_cn = $this->_group;
 			$this->view->message = $this->_message;
 
 			// Ensure the special page exists
