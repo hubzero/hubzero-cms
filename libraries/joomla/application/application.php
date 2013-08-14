@@ -1079,11 +1079,14 @@ class JApplication extends JObject
 		if (!$exists)
 		{
 			$query->clear();
+
+			$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
 			if ($session->isNew())
 			{
 				$query->insert($query->qn('#__session'))
 					->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
-					->values($query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . $query->q((int) time()) . ', ' . $query->q($_SERVER['REMOTE_ADDR']));
+					->values($query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . $query->q((int) time()) . ', ' . $query->q($ip));
 				$db->setQuery($query);
 			}
 			else
@@ -1095,14 +1098,14 @@ class JApplication extends JObject
 					)
 					->values(
 						$query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . (int) $user->get('guest') . ', ' .
-						$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $user->get('id') . ', ' . $query->q($user->get('username')) .  ', ' . $query->q($_SERVER['REMOTE_ADDR'])
+						$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $user->get('id') . ', ' . $query->q($user->get('username')) .  ', ' . $query->q($ip)
 					);
 
 				$db->setQuery($query);
 			}
 
 			// If the insert failed, exit the application.
-			if (!$db->execute())
+			if ( ($this->getClientId() != 4) && !$db->execute())
 			{
 				jexit($db->getErrorMSG());
 			}
