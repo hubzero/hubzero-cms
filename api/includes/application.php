@@ -54,7 +54,8 @@ class Hubzero_API extends JApplication
 		$this->request = new Hubzero_Api_Request();
 		$this->response = new Hubzero_Api_Response();
 		$this->output = '';
-			
+		JFactory::getSession()->restart();
+		$this->checkSession();
 		return $this; // chaining
 	}
 	
@@ -119,11 +120,6 @@ class Hubzero_API extends JApplication
 	 */
 	function __construct($config = array())
 	{
-		define('JPATH_API', JPATH_ROOT . DS . 'api');
-		define('JPATH_PLUGINS', JPATH_ROOT . DS . 'plugins');
-		define('JPATH_CACHE', JPATH_BASE . DS . 'cache');
-		
-		JLoader::import('joomla.version');
 		JLoader::import('joomla.user.user');
 		JLoader::register('JText' , JPATH_LIBRARIES . DS . 'joomla' . DS . 'methods.php');
 		JLoader::import('joomla.filter.filterinput');
@@ -131,13 +127,15 @@ class Hubzero_API extends JApplication
 		JLoader::import('Hubzero.Api.Response');
 		JLoader::import('Hubzero.Api.Request');
 		
-		$version = new JVersion();
-
-		define('JVERSION', $version->getShortVersion());
-
 		$config['clientId'] = 4;
-        
-        $this->reset();
+
+		$this->unregister_long_arrays();
+		$this->unregister_globals();
+		$this->fix_http_headers();
+		
+		$this->request = new Hubzero_Api_Request();
+		$this->response = new Hubzero_Api_Response();
+		$this->output = '';
         
         parent::__construct($config);
 	}
@@ -695,7 +693,7 @@ class Hubzero_API extends JApplication
 	 * @param      unknown $handler Parameter description (if any) ...
 	 * @return     void
 	 */
-	function registerEvent($event, $handler)
+	static function registerEvent($event, $handler)
 	{
 		die('registerEvent() invalid in API application context');
 	}
@@ -751,7 +749,7 @@ class Hubzero_API extends JApplication
 	 * @param      array $options Parameter description (if any) ...
 	 * @return     void
 	 */
-	function &getRouter($name = null, $options = array())
+	static function &getRouter($name = null, $options = array())
 	{
 		//die('getRouter() invalid in API application context');
 		/*
@@ -814,7 +812,7 @@ class Hubzero_API extends JApplication
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @return     void
 	 */
-	function &_createSession( $name )
+	function _createSession( $name )
 	{
 		return parent::_createSession(JUtility::getHash('site'));
 	}
