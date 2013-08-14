@@ -689,6 +689,9 @@
 		margin: 0;
 		position: relative;
 	}
+	.file-list li a {
+		word-wrap: break-word;
+	}
 	.file-list li:before {
 		display: block;
 		position: absolute;
