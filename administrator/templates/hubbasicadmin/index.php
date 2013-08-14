@@ -53,7 +53,7 @@ if (JPluginHelper::isEnabled('system', 'debug')) {
 	$doc->addStyleSheet('templates/' . $this->template . '/css/common/debug.css');
 }
 
-$doc->addScript('templates/' . $this->template . '/js/index.js');
+//$doc->addScript('templates/' . $this->template . '/js/index.js');
 // Load debug CSS if enabled
 /*if (JPluginHelper::isEnabled('system', 'jquery')) {
 	$doc->addScript('templates/' . $this->template . '/js/jquery.uniform.min.js');
@@ -104,6 +104,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
 		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
 <?php } ?>
+		<script src="templates/<?php echo $this->template; ?>/js/index.js" type="text/javascript"></script>
 		<!--[if IE 7]>
 			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
 			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>

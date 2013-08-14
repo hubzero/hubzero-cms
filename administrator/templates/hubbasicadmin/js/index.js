@@ -1,3 +1,16 @@
+if (!Joomla)
+{
+	Joomla = {};
+}
+Joomla.submitbutton = function(pressbutton)
+{
+	return submitbutton(pressbutton);
+}
+Joomla.submitform = function(pressbutton)
+{
+	return submitform(pressbutton);
+}
+
 //-----------------------------------------------------------
 //  Create our namespace
 //-----------------------------------------------------------
