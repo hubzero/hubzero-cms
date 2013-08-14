@@ -282,7 +282,10 @@ class plgResourcesCollect extends JPlugin
 		{
 			$response->message = 'Resource collected! ' . $item_id;
 		}
+		ob_clean();
+		header('Content-type: text/plain');
 		echo json_encode($response);
+		exit();
 
 		// Display updated bulletin stats if called via AJAX
 		/*if ($no_html)
