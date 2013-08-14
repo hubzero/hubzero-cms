@@ -309,6 +309,21 @@ class Hubzero_Newsletter_Helper
 	
 	
 	/**
+	 * Get protocol for tracking
+	 *
+	 * @return   String
+	 */
+	public static function getNewsletterTrackingProtocol()
+	{
+		//get params for com newsletter
+		$params = JComponentHelper::getParams('com_newsletter');
+		
+		//return protocol
+		return $params->get('email_tracking_protocol', 'http');
+	}
+	
+	
+	/**
 	 * Add Click Tracking to Email Message
 	 *
 	 * @param    $emailMessage    Email Body
@@ -317,6 +332,9 @@ class Hubzero_Newsletter_Helper
 	 */
 	public static function addclickTrackingtoEmailMessage( $emailMessage, $emailToken )
 	{
+		//get protocol to track with
+		$protocol = self::getNewsletterTrackingProtocol();
+		
 		//get all links in email body
 		preg_match_all('/<a.*href="([^"]+)"[^>]*>/', $emailMessage, $urls);
 		
@@ -329,7 +347,7 @@ class Hubzero_Newsletter_Helper
 				if (substr($url, 0, 4) == 'http')
 				{
 					//build tracking url
-					$clickTracker = 'https://' . $_SERVER['SERVER_NAME'] . DS . 'newsletter' . DS . 'track' . DS . 'click' . DS . '?t=' . $emailToken . '&l=' . urlencode($url);
+					$clickTracker = $protocol.'://' . $_SERVER['SERVER_NAME'] . DS . 'newsletter' . DS . 'track' . DS . 'click' . DS . '?t=' . $emailToken . '&l=' . urlencode($url);
 
 					//replace normal links with tracking links
 					$emailMessage = str_replace( $url, $clickTracker, $emailMessage);
@@ -350,8 +368,11 @@ class Hubzero_Newsletter_Helper
 	 */
 	public static function addOpenTrackingToEmailMessage( $emailMessage, $emailToken )
 	{
+		//get protocol to track with
+		$protocol = self::getNewsletterTrackingProtocol();
+		
 		//create open tracker img
-		$openTracker = '<img src="https://' . $_SERVER['SERVER_NAME'] . '/newsletter/track/open?t='.$emailToken.'" width="1" height="1" />';
+		$openTracker = '<img src="'.$protocol.'://' . $_SERVER['SERVER_NAME'] . '/newsletter/track/open?t='.$emailToken.'" width="1" height="1" />';
 		
 		//add to the end of the message body
 		$emailMessage = str_replace('</body>', $openTracker . '</body>', $emailMessage);
@@ -370,6 +391,9 @@ class Hubzero_Newsletter_Helper
 	 */
 	public static function addPrintTrackingToEmailMessage( $emailMessage, $emailToken )
 	{
+		//get protocol to track with
+		$protocol = self::getNewsletterTrackingProtocol();
+		
 		//create print tracker
 		$printTracker = "<style>
 							@media print {
@@ -378,7 +402,7 @@ class Hubzero_Newsletter_Helper
 									height:1px;
 									border:none;
 									background-color: transparent;
-									background-image: url('https://" . $_SERVER['SERVER_NAME'] . "/newsletter/track/print?t=" . $emailToken . "');
+									background-image: url('".$protocol."://" . $_SERVER['SERVER_NAME'] . "/newsletter/track/print?t=" . $emailToken . "');
 								}
 							}
 						</style>";
@@ -401,6 +425,9 @@ class Hubzero_Newsletter_Helper
 	 */
 	public function addForwardingToEmailMessage( $emailMessage, $emailToken )
 	{
+		//get protocol to track with
+		$protocol = self::getNewsletterTrackingProtocol();
+		
 		//create forward tracker
 		$forwardTracker = "<style>
 							div.OutlookMessageHeader, 
@@ -411,7 +438,7 @@ class Hubzero_Newsletter_Helper
 								height:1px;
 								border:none;
 								background-color: transparent;
-								background-image: url('https://" . $_SERVER['SERVER_NAME'] . "/newsletter/track/forward?t=" . $emailToken . "');
+								background-image: url('".$protocol."://" . $_SERVER['SERVER_NAME'] . "/newsletter/track/forward?t=" . $emailToken . "');
 							}
 						</style>";
 		$forwardTracker .= "<div id=\"_forward\"></div>";

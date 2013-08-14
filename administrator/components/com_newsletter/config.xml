@@ -36,6 +36,10 @@ HUBzero is a registered trademark of Purdue University.
 		
 		<param type="spacer" />
 		
+		<param type="list" name="email_tracking_protocol" default="http" label="Email Tracking Protocol" description="Tracking links are sent through this protocol.">
+			<option value="http">HTTP</option>
+			<option value="https">HTTPS</option>
+		</param>
 		<param type="text" name="email_tracking_link" default="http://kb.mailchimp.com/article/how-open-tracking-works" label="Email Tracking Info" description="Link to how email tracking works." />
 		
 		<param type="spacer" />
