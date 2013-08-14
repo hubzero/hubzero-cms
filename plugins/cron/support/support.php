@@ -86,6 +86,9 @@ class plgCronSupport extends JPlugin
 	 */
 	public function sendTicketsReminder($params=null)
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_support');
+
 		$database = JFactory::getDBO();
 		$juri =& JURI::getInstance();
 
