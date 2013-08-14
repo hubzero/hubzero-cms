@@ -384,7 +384,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 **/
 	public function refresh($user_id=null)
 	{
-		$this->_tbl->syncGrades($this->course->get('id'), $user_id);
+		$this->_tbl->syncGrades($this->course, $user_id);
 
 		// Compute unit and course scores as well
 		$this->calculateScores($user_id);

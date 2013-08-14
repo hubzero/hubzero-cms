@@ -243,11 +243,11 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Query to sync exam scores with gradebook
 	 * 
-	 * @param      int $course_id
-	 * @param      int $user_id
+	 * @param      obj   $course
+	 * @param      array $user_id
 	 * @return     void
 	 */
-	public function syncGrades($course_id, $user_id=null)
+	public function syncGrades($course, $user_id=null)
 	{
 		if (!is_null($user_id) && !empty($user_id))
 		{
@@ -255,35 +255,108 @@ class CoursesTableGradeBook extends JTable
 			{
 				$user_id = (array) $user_id;
 			}
-
-			$user_id = implode(',', $user_id);
-			$user = "AND cfr.user_id IN ({$user_id})";
 		}
 		else
 		{
-			$user = '';
+			// Pull all section members
+			$members = $course->offering()->section()->members(array('student'=>1));
+			$user_id = array();
+
+			// Get member id's for refresh filter
+			foreach ($members as $member)
+			{
+				$user_id[] = $member->get('user_id');
+			}
 		}
 
-		$this->_db->execute("INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`)
+		// Get the assets
+		$asset  = new CoursesTableAsset($this->_db);
+		$assets = $asset->find(
+			array(
+				'w' => array(
+					'course_id'  => $course->get('id'),
+					'section_id' => $course->offering()->section()->get('id'),
+					'asset_type' => 'form',
+					'state'      => 1
+				)
+			)
+		);
 
-			SELECT u.id as user_id,
-				CASE 
-					WHEN count(cfa.id)*100/count(cfr2.id) IS NOT NULL THEN count(cfa.id)*100/count(cfr2.id)
-					WHEN count(cfa.id)*100/count(cfr2.id) IS NULL AND cfd.end_time < NOW() THEN 0.00
-				END AS score,
-				'asset' as scope,
-				ca.id as scope_id
-			FROM `#__courses_form_respondents` cfr
-			INNER JOIN `#__users` u ON u.id = cfr.user_id 
-			LEFT JOIN `#__courses_form_latest_responses_view` cfr2 ON cfr2.respondent_id = cfr.id
-			LEFT JOIN `#__courses_form_questions` cfq ON cfq.id = cfr2.question_id
-			LEFT JOIN `#__courses_form_answers` cfa ON cfa.id = cfr2.answer_id AND cfa.correct
-			LEFT JOIN `#__courses_form_deployments` cfd ON cfr.deployment_id = cfd.id
-			LEFT JOIN `#__courses_assets` ca ON SUBSTRING(ca.url, 30) = cfd.crumb
-			WHERE ca.course_id = {$course_id} {$user}
-			GROUP BY name, email, deployment_id, version
+		$values = array();
 
-		ON DUPLICATE KEY UPDATE score = VALUES(score);");
+		if (count($assets) > 0)
+		{
+			foreach($assets as $asset)
+			{
+				$crumb = false;
+
+				// Check for result for given student on form
+				preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->url, $matches);
+
+				if(isset($matches[1]))
+				{
+					$crumb = $matches[1];
+				}
+
+				if(!$crumb || $asset->state != 1)
+				{
+					// Break foreach, this is not a valid form!
+					continue;
+				}
+
+				$dep = PdfFormDeployment::fromCrumb($crumb, $course->offering()->section()->get('id'));
+
+				$results = $dep->getResults(false, 'user_id');
+
+				switch ($dep->getState())
+				{
+					// Form isn't available yet
+					case 'pending':
+						// Null value
+						$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
+					break;
+
+					// Form availability has expired - students either get a 0, or their score (no nulls)
+					case 'expired':
+						foreach ($user_id as $u)
+						{
+							$score = (isset($results[$u]['score'])) ? $results[$u]['score'] : '0.00';
+							$values[] = "('{$u}', '{$score}', 'asset', '{$asset->id}')";
+						}
+					break;
+
+					// Form is still active - students either get their score, or a null
+					case 'active':
+						foreach ($user_id as $u)
+						{
+							$resp = $dep->getRespondent($u);
+
+							// Form is active and they have completed it!
+							if($resp->getEndTime() && $resp->getEndTime() != '')
+							{
+								$score = (isset($results[$u]['score'])) ? '\''.$results[$u]['score'].'\'' : NULL;
+								$values[] = "('{$u}', {$score}, 'asset', '{$asset->id}')";
+							}
+							// Form is active and they haven't finished it yet!
+							else
+							{
+								$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
+							}
+						}
+					break;
+				}
+			}
+
+			// Build query and run
+			if (count($values) > 0)
+			{
+				$query  = "INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`) VALUES\n";
+				$query .= implode(",\n", $values);
+				$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
+
+				$this->_db->execute($query);
+			}
+		}
 	}
 
 	/**

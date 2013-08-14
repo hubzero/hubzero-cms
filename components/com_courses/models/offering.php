@@ -585,6 +585,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$course = new CoursesModelCourse($this->get('course_id'));
 			$course->offering($this->get('id'));
+			$course->offering()->section($this->section()->get('id'));
 			$this->_gradebook = new CoursesModelGradeBook($oid, $course);
 		}
 

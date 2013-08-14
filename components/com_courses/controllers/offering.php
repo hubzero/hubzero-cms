@@ -452,13 +452,17 @@ class CoursesControllerOffering extends Hubzero_Controller
 
 		if (!$this->course->offering()->access('manage') && !$asset->isAvailable())
 		{
-			// Redirect back to the course outline
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
-				'This asset is not currently available.',
-				'warning'
-			);
-			return;
+			// Allow expired forms to pass through (i.e. so students can see their results)
+			if (!$asset->get('type') == 'form' || !$asset->ended())
+			{
+				// Redirect back to the course outline
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
+					'This asset is not currently available.',
+					'warning'
+				);
+				return;
+			}
 		}
 
 		// If requesting a file from a wiki type asset, then serve that up directly

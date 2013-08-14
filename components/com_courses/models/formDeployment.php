@@ -207,7 +207,7 @@ class PdfFormDeployment
 	 *
 	 * @return array
 	 **/
-	public function getResults($include_incompletes=false)
+	public function getResults($include_incompletes=false, $key=null)
 	{
 		$dbh = self::getDBH();
 
@@ -224,7 +224,7 @@ class PdfFormDeployment
 			GROUP BY name, email, started, finished, version"
 		);
 
-		return $dbh->loadAssocList();
+		return $dbh->loadAssocList($key);
 	}
 
 	/**
@@ -266,9 +266,9 @@ class PdfFormDeployment
 	 *
 	 * @return object
 	 **/
-	public static function load($id)
+	public static function load($id, $section_id=null)
 	{
-		return self::find('id = '.((int)$id));
+		return self::find('id = '.((int)$id), $section_id);
 	}
 
 	/**
@@ -276,9 +276,9 @@ class PdfFormDeployment
 	 *
 	 * @return object
 	 **/
-	public static function fromCrumb($crumb)
+	public static function fromCrumb($crumb, $section_id=null)
 	{
-		return self::find('crumb = '.self::getDbh()->quote($crumb));
+		return self::find('crumb = '.self::getDbh()->quote($crumb), $section_id);
 	}
 
 	/**
@@ -286,7 +286,7 @@ class PdfFormDeployment
 	 *
 	 * @return object
 	 **/
-	private static function find($where)
+	private static function find($where, $section_id=null)
 	{
 		$dep = new PdfFormDeployment;
 		$dbh = self::getDbh();
@@ -301,6 +301,31 @@ class PdfFormDeployment
 		foreach ($res as $k=>$v)
 		{
 			$dep->$k = $v;
+		}
+
+		if (isset($section_id) && is_numeric($section_id))
+		{
+			// Now overload start and end times with section asset times if applicable
+			// @FIXME: assuming student is only in one section, and that asset is only part of one offering
+			$query = "SELECT cfd.id, cosd.publish_up, cosd.publish_down FROM `#__courses_form_deployments` cfd
+						JOIN `#__courses_assets` ca ON cfd.crumb = substring(ca.url, 30)
+						JOIN `#__courses_offering_section_dates` cosd ON ca.id = cosd.scope_id
+						WHERE cosd.scope = 'asset'
+						AND cosd.section_id = " . $dbh->quote($section_id) . "
+						AND cfd." . $where;
+
+			$dbh->setQuery($query);
+			if ($result = $dbh->loadObject())
+			{
+				if (isset($result->publish_up) && $result->publish_up != '0000-00-00 00:00:00')
+				{
+					$dep->startTime = $result->publish_up;
+				}
+				if (isset($result->publish_down) && $result->publish_down != '0000-00-00 00:00:00')
+				{
+					$dep->endTime = $result->publish_down;
+				}
+			}
 		}
 
 		return $dep;

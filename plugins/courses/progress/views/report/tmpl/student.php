@@ -86,7 +86,7 @@ foreach($assets as $asset)
 		continue;
 	}
 
-	$dep   = PdfFormDeployment::fromCrumb($crumb);
+	$dep   = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
 	$title = $asset->title;
 	$url   = JRoute::_($base . '&asset=' . $asset->id);
 	$unit  = $this->course->offering()->unit($asset->unit_id);
@@ -117,7 +117,14 @@ foreach($assets as $asset)
 			}
 
 			// Get the date of the completion
-			$date = date('r', strtotime($resp->getEndTime()));
+			if (!is_null($resp->getEndTime()))
+			{
+				$date = date('r', strtotime($resp->getEndTime()));
+			}
+			else
+			{
+				$date = "N/A";
+			}
 
 			// They have completed this form, therefore set increment_count_taken equal to true
 			$increment_count_taken = true;
