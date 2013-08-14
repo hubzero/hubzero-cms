@@ -161,7 +161,7 @@ function submitbutton(pressbutton)
 				<?php endforeach; ?>
 			<?php else : ?>
 				<tr>
-					<td colspan="5">
+					<td colspan="7">
 						<?php echo JText::_('Currently there are no newsletters.'); ?>
 						<a onclick="javascript:submitbutton('add');" href="#"><?php echo JText::_('Click here to create a new one!'); ?></a>
 					</td>

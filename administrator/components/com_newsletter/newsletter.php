@@ -64,9 +64,9 @@ $controllerName = 'NewsletterController' . ucfirst($controllerName);
 //menu items
 $menuItems = array(
 	'newsletter'  => 'Newsletters',
-	'template'    => 'Templates',
-	'mailinglist' => 'Lists',
 	'mailing'     => 'Mailings',
+	'mailinglist' => 'Lists',
+	'template'    => 'Templates',
 	'tools'       => 'Tools'
 );
 
