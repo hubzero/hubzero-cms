@@ -43,10 +43,32 @@ if (!$juser->get('guest')) { ?>
 		</li>
 	<?php }*/ ?>
 	<?php if ($this->config->get('access-create')) { ?>
-		<li>
+		<li class="page-new" data-title="<?php echo JText::_('New Page'); ?>">
 			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
 				<?php echo JText::_('COM_WIKI_NEW_PAGE'); ?>
 			</a>
+		</li>
+		<li class="page-index" data-title="<?php echo JText::_('Page Index'); ?>">
+			<a class="icon-index index btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:AllPages'); ?>">
+				<span><?php echo JText::_('Index'); ?></span>
+			</a>
+		</li>
+		<li class="page-search" data-title="<?php echo JText::_('Search'); ?>">
+			<a class="icon-search search btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:Search'); ?>">
+				<?php echo JText::_('Search'); ?>
+			</a>
+			<div class="page-search-form">
+				<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:Search'); ?>" method="post">
+					<fieldset>
+						<legend><?php echo JText::_('Search pages'); ?></legend>
+						<label for="page-search-q">
+							<span><?php echo JText::_('Search'); ?></span>
+							<input type="text" name="q" id="page-search-q" value="" placeholder="<?php echo JText::_('Search this wiki'); ?>" />
+						</label>
+						<input type="submit" class="page-search-submit" value="<?php echo JText::_('Go'); ?>" />
+					</fieldset>
+				</form>
+			</div>
 		</li>
 	<?php } ?>
 	</ul>
@@ -87,18 +109,11 @@ if (!$juser->get('guest')) { ?>
 		</li>
 	<?php } ?>
 <?php } ?>
-	<?php //if ($this->page->pagename != 'MainPage') { ?>
+	<?php /*if ($this->page->pagename != 'MainPage') { ?>
 		<li class="page-main">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:Search'); ?>">
 				<span><?php echo JText::_('Main Page'); ?></span>
 			</a>
 		</li>
-	<?php //} ?>
-	<?php //if ($this->page->pagename != 'Special:AllPages') { ?>
-		<li class="page-index">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:AllPages'); ?>">
-				<span><?php echo JText::_('Index'); ?></span>
-			</a>
-		</li>
-	<?php //} ?>
+	<?php }*/ ?>
 	</ul>
