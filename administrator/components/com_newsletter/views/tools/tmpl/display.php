@@ -51,7 +51,7 @@ function submitbutton(pressbutton)
 ?>
 
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data">
-	<div class="col width-50">
+	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend>Mozify Image</legend>
 				<table class="admintable">
@@ -105,7 +105,7 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-50">
+	<div class="col width-50 fltrt">
 		<?php if ($this->code != '') : ?>
 			<h3 style="padding-top: 0">Original</h3>
 			<img src="<?php echo str_replace(JPATH_ROOT, '', $this->original); ?>" />
