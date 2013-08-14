@@ -379,7 +379,7 @@ class OauthControllerApi extends Hubzero_Api_Controller
 				return;
 			}
 
-			$useraccount = JFactory::getUser($x_auth_username);
+			$useraccount = JFactory::getUser(JUserHelper::getUserId($x_auth_username));
 			
 			$db = JFactory::getDBO();
 
@@ -403,7 +403,7 @@ class OauthControllerApi extends Hubzero_Api_Controller
 					return;
 				}
 
-        		$token = sha1(OAuthProvider::generateToken(20,false));
+				$token = sha1(OAuthProvider::generateToken(20,false));
 				$token_secret = sha1(OAuthProvider::generateToken(20,false));
 
 				$db = JFactory::getDBO();
