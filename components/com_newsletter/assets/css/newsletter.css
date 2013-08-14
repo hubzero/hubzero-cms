@@ -50,9 +50,7 @@
 #content-header-extra {
 	width: auto;
 }
-#content-header-extra .pdf:before {
-	content: '\f016';
-}
+
 
 /* Newsletter iframe */
 #newsletter-iframe {

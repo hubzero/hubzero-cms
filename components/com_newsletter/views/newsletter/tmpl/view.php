@@ -40,11 +40,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<ul>
 		<?php if (isset($this->id) && $this->id != 0) : ?>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn feed pdf">Save as PDF</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn icon-file">Save as PDF</a>
 			</li>
 		<?php endif; ?>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn feed">Subscribe To Mailing Lists</a>
+			<a href="<?php echo JRoute::_('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn icon-feed">Subscribe To Mailing Lists</a>
 		</li>
 	</ul>
 </div>

@@ -40,7 +40,7 @@ $mylistIds = array();
 <div id="content-header-extra">
 	<ul>
 		<li>
-			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=com_newsletter'); ?>">
+			<a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=com_newsletter'); ?>">
 				<?php echo JText::_('COM_NEWSLETTER_BROWSE'); ?>
 			</a>
 		</li>
