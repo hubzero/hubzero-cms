@@ -318,7 +318,7 @@ class Hubzero_Newsletter_Helper
 	public static function addclickTrackingtoEmailMessage( $emailMessage, $emailToken )
 	{
 		//get all links in email body
-		preg_match_all('/<a href="([^">]+)">/', $emailMessage, $urls);
+		preg_match_all('/<a.*href="([^"]+)"[^>]*>/', $emailMessage, $urls);
 		
 		//add clicking to each link
 		if ($urls && count($urls[1]) > 0)
