@@ -669,7 +669,7 @@ class ProjectsHtml
 					 . $view->project->alias . a. 'active=team') . '?action=quit">' 
 					 . JText::_('COM_PROJECTS_LEAVE_PROJECT') . '</a></li>';
 		} 
-		
+				
 		$html = "\n" . t.t. '<ul id="member_options">' . "\n";
 		$html.= t.t.' <li>' . ucfirst($role) . "\n";
 		$html.= t.t.' 	<div id="options-dock">' . "\n";
