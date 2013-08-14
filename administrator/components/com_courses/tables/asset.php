@@ -233,7 +233,7 @@ class CoursesTableAsset extends JTable
 		{
 			$filters['w'] = array();
 		}
-		$query  = "SELECT COUNT(*)";
+		$query  = "SELECT COUNT(DISTINCT ca.id)";
 		$query .= $this->_buildQuery($filters['w']);
 
 		$this->_db->setQuery($query);
@@ -252,7 +252,7 @@ class CoursesTableAsset extends JTable
 		{
 			$filters['w'] = array();
 		}
-		$query  = "SELECT ca.*, caa.ordering, sd.publish_up, sd.publish_down, sd.section_id, cag.unit_id";
+		$query  = "SELECT DISTINCT ca.*, caa.ordering, sd.publish_up, sd.publish_down, sd.section_id, cag.unit_id";
 		$query .= $this->_buildQuery($filters['w']);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
