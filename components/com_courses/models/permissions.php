@@ -604,7 +604,12 @@ class CoursesModelPermissions extends JObject
 				{
 					// Allow them to view content
 					$this->config()->set('access-view-offering', true);
-					$this->config()->set('access-view-section', true);
+
+					// Give section view privileges if in identified section
+					if ($student->get('section_id') == $this->get('section_id'))
+					{
+						$this->config()->set('access-view-section', true);
+					}
 				}
 			}
 		}
