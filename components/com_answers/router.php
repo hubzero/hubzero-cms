@@ -64,6 +64,11 @@ function AnswersBuildRoute(&$query)
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
+	if (!empty($query['rid'])) 
+	{
+		$segments[] = $query['rid'];
+		unset($query['rid']);
+	}
 	if (!empty($query['controller'])) 
 	{
 		unset($query['controller']);

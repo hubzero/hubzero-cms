@@ -291,7 +291,8 @@ class AnswersModelResponse extends AnswersModelAbstract
 			break;
 
 			case 'accept':
-				$link .= '&task=accept&id' . $this->get('qid') . '&rid=' . $this->get('id');
+				$link  = 'index.php?option=com_answers&task=accept&id=' . $this->get('qid') . '&rid=' . $this->get('id');
+				//$link .= '&task=accept&id' . $this->get('qid') . '&rid=' . $this->get('id');
 			break;
 
 			case 'report':

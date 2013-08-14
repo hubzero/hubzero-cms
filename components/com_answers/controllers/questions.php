@@ -1464,7 +1464,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Call the plugin
-		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($user->get('id')), $this->_option, $rid))) 
+		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($this->juser->get('id')), $this->_option, $rid))) 
 		{
 			$this->setError(JText::_('COM_ANSWERS_ACTION_FAILED'));
 		}
