@@ -50,6 +50,15 @@ else
 	<fieldset>
 		<legend><?php echo JText::_($legend); ?></legend>
 
+		<label for="field-access">
+			<?php echo JText::_('Privacy'); ?>
+			<select name="fields[access]" id="field-access">
+				<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see this collection)'); ?></option>
+				<option value="1"<?php if ($this->entry->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Only registered users of the hub'); ?></option>
+				<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Only group members'); ?></option>
+			</select>
+		</label>
+
 		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 			<?php echo JText::_('Title'); ?>
 			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />

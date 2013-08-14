@@ -149,13 +149,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
-			
-			$this->params->set('access-plugin', 0);
-			if ($group_plugin_acl == 'members')
-			{
-				$this->params->set('access-plugin', 4);
-			}
-
 			//user vars
 			$this->authorized = $authorized;
 
@@ -174,6 +167,16 @@ class plgGroupsCollections extends Hubzero_Plugin
 
 			$this->_authorize('collection');
 			$this->_authorize('item');
+
+			$this->params->set('access-plugin', 0);
+			if ($group_plugin_acl == 'registered')
+			{
+				$this->params->set('access-plugin', 1);
+			}
+			if ($group_plugin_acl == 'members')
+			{
+				$this->params->set('access-plugin', 4);
+			}
 
 			//push the css to the doc
 			ximport('Hubzero_Document');
@@ -1055,6 +1058,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$row->set('_tags', trim(JRequest::getVar('tags', '')));
 		$row->set('state', 1);
 		$row->set('access', 0);
+		//$row->set('access', $this->params->get('access-plugin'));
 
 		// Store new content
 		if (!$row->store()) 
@@ -1080,6 +1084,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			$collection->set('title', $coltitle);
 			$collection->set('object_id', $this->group->get('gidNumber'));
 			$collection->set('object_type', 'group');
+			$collection->set('access', $this->params->get('access-plugin'));
 			$collection->store();
 
 			$p['collection_id'] = $collection->get('id');
@@ -1186,6 +1191,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			$collection->set('title', JRequest::getVar('collection_title', ''));
 			$collection->set('object_id', $this->group->get('gidNumber'));
 			$collection->set('object_type', 'group');
+			$collection->set('access', $this->params->get('access-plugin'));
 			if (!$collection->store())
 			{
 				$this->setError($collection->getError());
@@ -1575,6 +1581,10 @@ class plgGroupsCollections extends Hubzero_Plugin
 		{
 			$view->entry = $this->model->collection(JRequest::getVar('board', ''));
 		}
+		if (!$view->entry->exists())
+		{
+			$view->entry->set('access', $this->params->get('access-plugin'));
+		}
 
 		if ($this->getError()) 
 		{
@@ -1621,10 +1631,12 @@ class plgGroupsCollections extends Hubzero_Plugin
 			$this->setError($row->getError());
 			return $this->_editcollection($row);
 		}
+		/*
 		if ($row->get('access') != 0 && $row->get('access') != 4)
 		{
 			$row->set('access', 0);
 		}
+		*/
 
 		// Store new content
 		if (!$row->store()) 
@@ -1730,8 +1742,8 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$app->redirect($route);
 	}
 
-/**
-	 * Display blog settings
+	/**
+	 * Display settings
 	 * 
 	 * @return     string
 	 */
