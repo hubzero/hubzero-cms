@@ -1729,6 +1729,7 @@
 		border-radius: 0.25em;
 		outline: 0;
 		font-size: 1em;
+		line-height: 1;
 		white-space: nowrap;
 		word-wrap: normal;
 		vertical-align: middle;
@@ -1765,10 +1766,10 @@
 	.btn.message,
 	.btn.nav_wishlist,
 	.btn.archive {
-		padding: 0.4em 0.91em 0.4em 2.91em;
+		padding: 0.7em 0.91em 0.7em 2.91em;
 	}
 	#content-header-extra a.all {
-		padding: 0.4em 0.91em 0.4em 0.91em;
+		padding: 0.7em 0.91em 0.7em 0.91em;
 	}
 	span.btn {
 		color: #999;
