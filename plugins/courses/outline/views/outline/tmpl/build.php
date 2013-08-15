@@ -153,6 +153,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<option value="1"<?= ($agt->get('state') == '1') ? ' selected="selected"' : '' ?>>Yes</option>
 									</select>
 								</div>
+								<div class="label-input-pair">
+									<label for="description">Description:</label>
+									<textarea name="description" rows="4"><?= $agt->get('description') ?></textarea>
+								</div>
 								<input class="asset-group-title-save" type="submit" value="Save" />
 								<input class="asset-group-title-cancel" type="reset" value="Cancel" />
 								<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />

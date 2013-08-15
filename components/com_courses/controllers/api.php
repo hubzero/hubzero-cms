@@ -278,7 +278,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		$title = $assetGroup->get('title');
 		$title = (!empty($title)) ? $title : 'New asset group';
 
-		// Set or variables
+		// Set our variables
 		$assetGroup->set('title', JRequest::getString('title', $title));
 		$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
 
@@ -287,6 +287,8 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		{
 			$assetGroup->set('state', $state);
 		}
+
+		$assetGroup->set('description', JRequest::getVar('description', $assetGroup->get('description')));
 
 		// When creating a new asset group
 		if(!$id)

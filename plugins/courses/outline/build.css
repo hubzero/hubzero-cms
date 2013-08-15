@@ -635,6 +635,12 @@ ul {
 .asset-group-title-container {
 	border-bottom: 1px solid transparent;
 }
+.asset-group-title-container textarea,
+.asset-group-title-container input[type="text"],
+.asset-group-title-container select {
+	width: 100%;
+	margin-bottom: 10px;
+}
 .unit-edit form input[type="text"] {
 	display: block;
 }
