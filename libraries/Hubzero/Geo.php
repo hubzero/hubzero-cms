@@ -63,7 +63,14 @@ class Hubzero_Geo
 				return null;
 			}
 
-			$instance =& JDatabase::getInstance($options);
+			try
+			{
+				$instance =& JDatabase::getInstance($options);
+			}
+			catch (Exception $e)
+			{
+				$instance = false;
+			}
 		}
 
 		if (JError::isError($instance)) 
