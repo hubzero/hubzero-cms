@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="system">
+	<name>System - Mobile</name>
+	<creationDate>December 2012</creationDate>
+	<author>HUBzero</author>
+	<copyright>Copyright (c) Purdue University, 2013. All rights reserved</copyright>
+	<license>GNU GPL v2.0</license>
+	<version>1</version>
+	<description>PLG_SYSTEM_MOBILE_DESC</description>
+	<files>
+		<filename plugin="mobile">mobile.php</filename>
+	</files>
+	<languages>
+   	</languages>
+	<params>
+	</params>
+</install>
