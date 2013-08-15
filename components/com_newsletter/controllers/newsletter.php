@@ -202,11 +202,22 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		$newsletterPdfFolder = JPATH_ROOT . DS . 'site' . DS . 'newsletter' . DS . 'pdf';
 		$newsletterPdf = $newsletterPdfFolder . DS . $newsletter->alias . '.pdf';
 		
-		//
+		//run command to save newsletter as pdf
 		$cmd = './vendor/bin/phantomjs_64 ';
 		$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
 		$finalCommand = $cmd . ' ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
 		exec($finalCommand);
+		
+		//make sure we have a file to output
+		if (!file_exists($newsletterPdf))
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
+				JText::_('Unable to output newsletter as PDF. Please try again later.'),
+				'error'
+			);
+			return;
+		}
 		
 		//output as attachment
 		header("Content-type: application/pdf");
