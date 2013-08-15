@@ -913,17 +913,33 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		$id = JRequest::getInt('id', 0);
 
 		$user =& JFactory::getUser();
-		$this->database->setQuery(
-			'SELECT 1 FROM #__author_assoc WHERE authorid = ' . $this->juser->id . ' AND subtable = \'resources\' AND subid = ' . $id . '
-			UNION 
-			SELECT 1 FROM #__resources WHERE id = ' . $id . ' AND (created_by = ' . $this->juser->id . ' OR modified_by = ' . $this->juser->id . ')
-			UNION
-			SELECT 1 FROM #__users u 
-			INNER JOIN #__core_acl_aro caa ON caa.section_value = \'users\' AND caa.value = u.id 
-			INNER JOIN #__core_acl_groups_aro_map cagam ON cagam.aro_id = caa.id 
-			INNER JOIN #__core_acl_aro_groups caag ON caag.id = cagam.group_id AND (caag.name = \'Super Administrator\' OR caag.name = \'Administrator\')
-			WHERE u.id = ' . $this->juser->id
-		);
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$this->database->setQuery(
+				'SELECT 1 FROM #__author_assoc WHERE authorid = ' . $this->juser->id . ' AND subtable = \'resources\' AND subid = ' . $id . '
+				UNION 
+				SELECT 1 FROM #__resources WHERE id = ' . $id . ' AND (created_by = ' . $this->juser->id . ' OR modified_by = ' . $this->juser->id . ')
+				UNION
+				SELECT 1 FROM #__users u 
+				INNER JOIN #__core_acl_aro caa ON caa.section_value = \'users\' AND caa.value = u.id 
+				INNER JOIN #__core_acl_groups_aro_map cagam ON cagam.aro_id = caa.id 
+				INNER JOIN #__core_acl_aro_groups caag ON caag.id = cagam.group_id AND (caag.name = \'Super Administrator\' OR caag.name = \'Administrator\')
+				WHERE u.id = ' . $this->juser->id
+			);
+		}
+		else
+		{
+			$this->database->setQuery(
+				'SELECT 1 FROM #__author_assoc WHERE authorid = ' . $this->juser->id . ' AND subtable = \'resources\' AND subid = ' . $id . '
+				UNION 
+				SELECT 1 FROM #__resources WHERE id = ' . $id . ' AND (created_by = ' . $this->juser->id . ' OR modified_by = ' . $this->juser->id . ')
+				UNION
+				SELECT 1 FROM #__users u 
+				INNER JOIN #__user_usergroup_map cagam ON cagam.user_id = u.id 
+				INNER JOIN #__usergroups caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Administrator\')
+				WHERE u.id = ' . $this->juser->id
+			);
+		}
 		if (!$this->database->loadResult()) 
 		{
 			JError::raiseError(403, 'Forbidden');
