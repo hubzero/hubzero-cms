@@ -147,14 +147,14 @@ class plgUsageOverview extends JPlugin
 					case 4:
 					case 5:
 					case 6:
-						$val = ($row->value/$res_iden) * 100;
+						$val = (intval($res_iden) > 0) ? ($row->value/$res_iden) * 100 : 0;
 					break;
 
 					case 8:
 					case 9:
 					case 10:
 					case 11:
-						$val = ($row->value/$org_iden) * 100;
+						$val = (intval($org_iden) > 0) ? ($row->value/$org_iden) * 100 : 0;
 					break;
 
 					default:
