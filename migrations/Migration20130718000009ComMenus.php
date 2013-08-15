@@ -353,11 +353,11 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 			{
 				foreach ($results as $r)
 				{
-					$alias = str_replace(' ', '', strtolower($r->name));
+					$alias = substr($r->option, 4);
 					$link  = 'index.php?' . $r->admin_menu_link;
 					// Insert item
 					$query  = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `language`, `client_id`)\n";
-					$query .= "VALUES ('main', '{$r->name}', '{$alias}', '{$alias}', '{$link}', 'component', 1, 1, 1, {$r->id}, '*', 1);";
+					$query .= "VALUES ('main', '{$r->option}', '{$alias}', '{$alias}', '{$link}', 'component', 1, 1, 1, {$r->id}, '*', 1);";
 					$db->setQuery($query);
 					$db->query();
 				}
