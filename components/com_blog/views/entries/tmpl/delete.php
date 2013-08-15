@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
 		<div class="explaination">
 		<?php if ($this->config->get('access-create-entry')) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+			<p><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 		<?php } ?>
 		</div>
 		<fieldset>
