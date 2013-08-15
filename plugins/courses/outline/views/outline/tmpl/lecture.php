@@ -30,7 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+error_reporting(E_ALL);
+	@ini_set('display_errors', '1');
 $juser = JFactory::getUser();
 
 ximport('Hubzero_User_Profile');
@@ -43,6 +44,8 @@ if (!$unit)
 {
 	JError::raiseError(404, JText::_('uh-oh'));
 }
+
+$aggroups = $unit->assetgroups();
 
 $lecture = $unit->assetgroup($this->group);
 if (!$lecture)
@@ -149,11 +152,11 @@ if (!$this->course->offering()->access('view')) { ?>
 				{
 					$lecture->key($ky);
 					$prev = $lecture->sibling('prev');
-					if ($prev && $prev->isPublished()) 
+					if ($prev && $prev->isPublished() && $prev->assets()->total() > 0) 
 					{
 						$found = true;
 						?>
-						<a class="prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
+						<a class="icon-prev prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
 							<?php echo JText::_('Prev'); ?>
 						</a>
 						<?php
@@ -172,7 +175,7 @@ if (!$this->course->offering()->access('view')) { ?>
 						{
 							foreach ($punit->assetgroups() as $pag)
 							{
-								if ($pag->isPublished())
+								if ($pag->isPublished() && $pag->get('alias') == 'lectures')
 								{
 									// Get the alias of the next assetgroup
 									if (!$pag->children()->total())
@@ -183,11 +186,11 @@ if (!$this->course->offering()->access('view')) { ?>
 									$item = $pag->children()->fetch('last');
 									//foreach ($pag->children() as $item)
 									//{
-										if ($item->isPublished())
+										if ($item->isPublished() && $item->assets()->total() > 0)
 										{
 											$pgAlias = $item->get('alias'); //$next->assetgroups(0)->get('alias');
 											?>
-						<a class="prev btn" href="<?php echo JRoute::_($base . '&unit=' . $puAlias . '&b=' . $pgAlias); ?>">
+						<a class="icon-prev prev btn" href="<?php echo JRoute::_($base . '&unit=' . $puAlias . '&b=' . $pgAlias); ?>">
 							<?php echo JText::_('Prev'); ?>
 						</a>
 						<?php
@@ -208,18 +211,20 @@ if (!$this->course->offering()->access('view')) { ?>
 			$gAlias = '';
 
 			// If the last unit AND last asstegroup in the unit
-			if ($this->course->offering()->units()->isLast() && $unit->assetgroups()->isLast()) 
+			if ($this->course->offering()->units()->isLast() && $unit->assetgroups()->isLast()) //
 			{
 				$gAlias = '';
 			}
 			else
 			{
+				$key = $aggroups->key();//$unit->assetgroups()->key();
 				// If NOT the last assetgroup
-				if (!$unit->assetgroups()->isLast())
+				if (!$unit->assetgroups()->isLast()) //$unit->assetgroups()->isLast())
 				{
 					//$key = $unit->assetgroups()->key();
 					//echo $current;
 					foreach ($unit->assetgroups() as $k => $assetgroup)
+					//foreach ($aggroups as $k => $assetgroup)
 					{
 						//echo $k .' '. $assetgroup->get('alias').'<br />';
 						if ($k <= $current)
@@ -227,7 +232,7 @@ if (!$this->course->offering()->access('view')) { ?>
 							continue;
 						}
 						//echo $k . ' ' . $key.'<br />';
-						if ($assetgroup->isPublished())
+						if ($assetgroup->isPublished()) // && $assetgroup->get('alias') == 'lectures')
 						{
 							$gAlias = $assetgroup->get('alias');
 							break;
@@ -237,7 +242,10 @@ if (!$this->course->offering()->access('view')) { ?>
 				}
 
 				// If the last assetgroup AND NOT the last unit
-				if (!$gAlias && $unit->assetgroups()->isLast() && !$this->course->offering()->units()->isLast())
+				//$unit->assetgroups()->key($key);
+				$aggroups->key($key);
+				//if (!$gAlias && $unit->assetgroups()->isLast() && !$this->course->offering()->units()->isLast())
+				if (!$gAlias && $aggroups->isLast() && !$this->course->offering()->units()->isLast())
 				{
 					// Get the alias of the next unit
 					$next = $this->course->offering()->units()->fetch('next');
@@ -250,8 +258,9 @@ if (!$this->course->offering()->access('view')) { ?>
 						{
 							foreach ($next->assetgroups() as $nag)
 							{
-								if ($nag->isPublished())
+								if ($nag->isPublished() && $nag->get('alias') == 'lectures')
 								{
+
 									// Get the alias of the next assetgroup
 									if (!$nag->children()->total())
 									{
@@ -260,7 +269,7 @@ if (!$this->course->offering()->access('view')) { ?>
 									}
 									foreach ($nag->children() as $item)
 									{
-										if ($item->isPublished())
+										if ($item->isPublished() && $item->assets()->total() > 0)
 										{
 											$gAlias = $item->get('alias'); //$next->assetgroups(0)->get('alias');
 											break;
@@ -276,11 +285,11 @@ if (!$this->course->offering()->access('view')) { ?>
 			}
 
 			if (!$uAlias || !$gAlias) { ?>
-				<span class="next btn">
+				<span class="icon-next next opposite btn">
 					<?php echo JText::_('Next'); ?>
 				</span>
 			<?php } else { ?>
-				<a class="next btn" href="<?php echo JRoute::_($base . '&unit=' . $uAlias . '&b=' . $gAlias); ?>">
+				<a class="icon-next next opposite btn" href="<?php echo JRoute::_($base . '&unit=' . $uAlias . '&b=' . $gAlias); ?>">
 					<?php echo JText::_('Next'); ?>
 				</a>
 			<?php } ?>
