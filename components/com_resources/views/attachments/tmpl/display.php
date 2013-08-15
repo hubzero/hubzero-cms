@@ -100,7 +100,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 ?>			
 				<tr>
-					<td width="100%" class="<?php echo $liclass; ?>"><span class="ftitle item:name id:<?php echo $child->id; ?>"><?php echo $child->title; ?></span> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?></td>
+					<td width="100%" class="<?php echo $liclass; ?>"><span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>"><?php echo $child->title; ?></span> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?></td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
 					    echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';

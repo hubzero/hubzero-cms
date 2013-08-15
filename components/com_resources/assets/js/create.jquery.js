@@ -215,26 +215,16 @@ HUB.Contribute = {
 				}
 			});
 		}
-		
-		/*if ($('#authors').length > 0) {
-			console.log($('#authors').parent());
-			var container = $('#authors').parent();
-			var src = $('#authors').attr('src').replace('tmpl=component', 'no_html=1');
-			$.get(src, {}, function(data){
-				container.html(data);
-			});
-		}*/
-		
+
 		$('.ftitle').editable({
 			type:'text',
 			submit:'save',
 			cancel:'cancel',
 			editClass:'resultItem',
 			onSubmit: function() {
-				$.get('index.php?option=com_contribute&controller=attachments&task=rename&no_html=1&id='+$('#pid').val()+'&name='+content.current);
+				$.get('index.php?option=com_tools&controller=attachments&task=rename&no_html=1&id=' + this.attr('data-id') + '&name='+this.text());
 			}
 		});
-		//new eip($$('.ftitle'), 'index.php', {option: 'com_contribute', task: 'rename', no_html: 1});
 	}
 }
 
