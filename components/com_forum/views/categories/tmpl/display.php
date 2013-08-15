@@ -64,9 +64,9 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 			?>
 				<a href="<?php echo JRoute::_($base . '&thread=' . $last->get('thread')); ?>" class="entry-date">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> 
+					<span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> 
 					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-					<span class="date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
+					<span class="icon-date date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
 				</a>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
@@ -85,7 +85,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p>
-				<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+				<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
 		<?php } else { ?>
 			<p class="warning">
