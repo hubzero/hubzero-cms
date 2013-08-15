@@ -1447,7 +1447,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 								$cat->section_id  = $section->id;
 								if ($ag->get('title') == '--')
 								{
-									$cat->title       = $af->assets()->fetch('first')->get('title');
+									$cat->title       = $ag->assets()->fetch('first')->get('title');
 								}
 								else
 								{
