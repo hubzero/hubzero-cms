@@ -392,6 +392,12 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				$c = JRequest::getVar('asset', '');
 				switch ($c)
 				{
+					case 'orderdown':
+						$action = 'orderdown';
+					break;
+					case 'orderup':
+						$action = 'orderup';
+					break;
 					case 'edit':
 						$action = 'editsection';
 					break;
@@ -467,8 +473,11 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				case 'editthread':     $arr['html'] .= $this->editthread();     break;
 				case 'deletethread':   $arr['html'] .= $this->deletethread();   break;
 
+				case 'orderup':        $arr['html'] .= $this->orderup();        break;
+				case 'orderdown':      $arr['html'] .= $this->orderdown();      break;
+
 				case 'download':       $arr['html'] .= $this->download();       break;
-				case 'search':         $arr['html'] .= $this->panel();         break;
+				case 'search':         $arr['html'] .= $this->panel();          break;
 
 				default: $arr['html'] .= $this->panel(); break;
 			}
@@ -1644,7 +1653,9 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->sections = $this->section->getRecords(array(
 			'state'    => $view->filters['state'],
 			'scope'    => $view->filters['scope'], 
-			'scope_id' => $view->filters['scope_id']
+			'scope_id' => $view->filters['scope_id'],
+			'sort'     => 'ordering',
+			'sort_Dir' => 'ASC'
 		));
 
 		$model = new ForumCategory($this->database);
@@ -3049,6 +3060,57 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			exit;
 		}
 		return;
+	}
+
+	/**
+	 * Reorder a record up
+	 * 
+	 * @return     void
+	 */
+	public function orderup()
+	{
+		return $this->reorder(-1);
+	}
+
+	/**
+	 * Reorder a record up
+	 * 
+	 * @return     void
+	 */
+	public function orderdown()
+	{
+		return $this->reorder(1);
+	}
+
+	/**
+	 * Reorder a plugin
+	 * 
+	 * @param      integer $access Access level to set
+	 * @return     void
+	 */
+	public function reorder($inc=1)
+	{
+		if (!$this->course->access('manage', 'offering')) 
+		{
+			return $this->panel();
+		}
+
+		//$id = JRequest::getInt('section', 0, 'get');
+		$alias = JRequest::getVar('section', '');
+
+		//$inc = ($this->_task == 'orderup' ? -1 : 1);
+
+		$row = new ForumSection($this->database);
+		//$row->load($id);
+		if ($row->loadByAlias($alias, $this->offering->get('id'), 'course'))
+		{
+			$row->move($inc, 'scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
+			$row->reorder('scope=' . $this->database->Quote($row->scope) . ' AND scope_id=' . $this->database->Quote($row->scope_id));
+		}
+
+		$this->setRedirect(
+			JRoute::_($this->base . '&unit=manage')
+		);
 	}
 
 	/**

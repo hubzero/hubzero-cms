@@ -24,6 +24,8 @@ $wikiconfig = array(
 ximport('Hubzero_Wiki_Parser');
 $p =& Hubzero_Wiki_Parser::getInstance();
 
+$ct = count($this->sections);
+
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=discussions&unit=manage';
 ?>
 <div class="main section">
@@ -95,10 +97,11 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 	</div><!-- / .aside -->
 
 	<div class="subject">
-<?php if (count($this->sections) > 0) { ?>
+<?php if ($ct > 0) { ?>
 
 	<?php 
-	foreach ($this->sections as $section)
+	$ct--;
+	foreach ($this->sections as $i => $section)
 	{
 		if ($section->id == 0 && !$section->categories[0]->posts) 
 		{
@@ -106,6 +109,20 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		}
 	?>
 		<div class="container">
+			<span class="ordering-controls">
+			<?php if ($i != 0) { ?>
+				<a class="order-up reorder" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=orderup'); ?>" title="<?php echo JText::_('Move up'); ?>"><?php echo JText::_('Move up'); ?></a>
+			<?php } else { ?>
+				<span class="order-up reorder"><?php echo JText::_('Move up'); ?></span>
+			<?php } ?>
+
+			<?php if ($i < $ct) { ?>
+				<a class="order-down reorder" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=orderdown'); ?>" title="<?php echo JText::_('Move down'); ?>"><?php echo JText::_('Move down'); ?></a>
+			<?php } else { ?>
+				<span class="order-down reorder"><?php echo JText::_('Move down'); ?></span>
+			<?php } ?>
+			</span>
+
 			<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
 			<form action="<?php echo JRoute::_($base); ?>" method="post">
 			<?php } ?>
@@ -143,7 +160,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				<tfoot>
 					<tr>
 						<td<?php if ($section->categories) { echo ' colspan="5"'; } ?>>
-							<a class="add btn" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=new'); ?>">
+							<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=new'); ?>">
 								<span><?php echo JText::_('Add Category'); ?></span>
 							</a>
 						</td>

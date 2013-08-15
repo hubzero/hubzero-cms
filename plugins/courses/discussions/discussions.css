@@ -20,6 +20,49 @@
 		margin: 20px;
 	}
 
+	.ordering-controls {
+		display: block;
+		margin: 0 0 0.2em 0;
+	}
+	/*.ordering-controls:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: right;
+	}*/
+	.ordering-controls .reorder {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		line-height: 1;
+		font-size: 1.2em;
+	}
+	.ordering-controls a.reorder {
+		color: #999;
+		border: none;
+	}
+	.ordering-controls a.reorder:hover {
+		color: #333;
+		border: none;
+	}
+	.ordering-controls span.reorder {
+		color: #ddd;
+	}
+	.ordering-controls .order-up:before {
+		content: "\2191";
+		font-family: "Fontcons";
+		margin-right: 5em;
+	}
+	.ordering-controls .order-down {
+		float: right;
+	}
+	.ordering-controls .order-down:before {
+		content: "\2193";
+		font-family: "Fontcons";
+		margin-right: 5em;
+	}
+
 	.comments-notification {
 		min-width: 50px;
 		max-width: 400px;
