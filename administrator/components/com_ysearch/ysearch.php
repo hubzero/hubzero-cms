@@ -30,6 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$option = 'com_ysearch';
+
 // Authorization check
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
