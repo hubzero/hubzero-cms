@@ -428,7 +428,7 @@ function popratings()
 			echo $tabs->endPanel();
 
 			echo $tabs->startPanel('Parameters','params-page');
-			echo $this->params->render();
+			echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
 			echo $tabs->endPanel();
 		} else {
 			echo $tabs->startPanel('Parameters','params-page');

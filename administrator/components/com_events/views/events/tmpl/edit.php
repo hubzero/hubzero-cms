@@ -294,7 +294,7 @@ var HUB = {};
 				</tbody>
 			</table>
 		</fieldset>
-		<fieldset class="adminform">
+		<fieldset class="adminform paramlist">
 			<legend><span><?php echo JText::_('COM_EVENTS_REGISTRATION_FIELDS'); ?></span></legend>
 			<?php echo $params->render(); ?>
 		</fieldset>

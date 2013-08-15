@@ -3045,6 +3045,57 @@
 	.paramlist .element-container {
 		padding-bottom: 1em;
 	}
+	.j25 fieldset.paramlist > label {
+		margin: 0 1.61803399em 0 0;
+	}
+	.j25 .paramlist label.hasTip {
+		display: block;
+		margin: 0;
+		padding: 0.61803399em 1.61803399em 0.461803399em 1.61803399em;
+		font-weight: bold;
+		border-top: 1px solid #e9e9e9;
+	}
+	.j25 .paramlist label.hasTip + input[type=radio],
+	.j25 .paramlist label.hasTip + input[type=checkbox] {
+		margin-left: 1.61803399em;
+	}
+	.j25 .paramlist label.hasTip + input[type=text],
+	.j25 .paramlist label.hasTip + select,
+	.j25 .paramlist label.hasTip + textarea {
+		margin-left: 1.61803399em;
+		margin-right: 1.61803399em;
+		width: 90%;
+	}
+	.j25 .paramlist label.radiobtn + label.hasTip {
+		margin-top: 0.21803399em;
+	}
+	.panel fieldset.paramlist {
+		padding: 0;
+	}
+	.adminformlist fieldset.radio input,
+	.adminformlist fieldset.radio label {
+		display: block;
+		float: left;
+	}
+	.adminformlist fieldset.radio input {
+		width: 5%;
+		margin-top: 0.5em;
+		padding: 0.21803399em 0;
+	}
+	.adminformlist fieldset.radio label {
+		width: 85%;
+		padding: 0.21803399em 0;
+	}
+	.panel .panelform {
+		padding: 0;
+	}
+	.panelform .adminformlist li {
+		border-top: 1px solid #e1e1e1;
+		padding: 0.61803399em 1.61803399em 0.461803399em 1.61803399em;
+	}
+	.adminformlist label.hasTip {
+		font-weight: bold;
+	}
 
 /* [!] J2.5+ styles */
 	/* TAB STYLES */
