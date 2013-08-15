@@ -1,0 +1,225 @@
+/* jQueryUI auto complete width+overflow */
+.ui-menu .ui-menu-item a {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+
+/* Data viewer spreadsheet specific */
+.hand {
+	cursor: pointer;
+}
+
+.search_init {
+	cursor: text;
+}
+
+/* Content Fullscreen*/
+#content.fullscreen {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1000;
+	background: white;
+	overflow: auto;
+}
+
+
+/* Toolbar */
+#dv-spreadsheet-toolbar {
+	background: #DDD;
+	padding: 2px;
+	border-style: inset;
+	border: 1px solid #999;
+	border-bottom-width: 0px;
+	display: inline-block;
+}
+
+
+/* More Info link */
+a.more_info, a.more_info_multi {
+	color: blue;
+	margin-right: 20px;
+}
+
+#dv-spreadsheet-tbl_container {
+	margin-top: 10px;
+}
+
+#dv-spreadsheet-tbl_container input[type="text"] {
+	background: #FFF;
+}
+
+#dv-spreadsheet-tbl thead th .colum-label-text {
+	margin-right: 20px;
+	font-weight: bold;
+}
+
+#dv-spreadsheet-tbl thead th .colum-label-text:hover {
+	text-shadow: 0px 0px 1px #000;
+}
+
+table.dataTable thead th div.DataTables_sort_wrapper {
+	padding-right: 0px;
+}
+
+
+#dv-spreadsheet-tbl tbody td {
+	vertical-align: middle;
+}
+
+#dv-spreadsheet-tbl tbody td a {
+	vertical-align: middle;
+}
+
+#dv-spreadsheet-tbl tbody td p {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.more_info_table tbody td p {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.dv_map_info_window p {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#dv_preview_image {
+	max-height: 300px;
+	max-width: 500px;
+	border:1px solid #ccc;
+	text-align: center;
+}
+
+.shadow {
+	-moz-box-shadow: 3px 3px 4px #000;
+	-webkit-box-shadow: 3px 3px 4px #000;
+	box-shadow: 3px 3px 4px #000;
+}
+
+.dv_image {
+	cursor: pointer;
+	width: expression(this.width > 75 ? 75: true);
+	height: expression(this.height > 24 ? 24: true);
+	max-width:75px;
+	max-height: 24px;
+	margin-bottom: 0px;
+}
+
+
+.ui-autocomplete {
+	max-height: 100px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+	overflow-x: hidden;
+	/* add padding to account for vertical scrollbar */
+	padding-right: 20px;
+}
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+	height: 100px;
+}
+
+#dv-spreadsheet ul li { 
+	margin: 1em 0;
+	padding: 0 0 0 13px;
+	background: none;
+}
+
+
+.truncate {
+	float: left;
+	margin-right: 0px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow:ellipsis;
+	-ms-text-overflow:ellipsis;
+}
+
+/* Firefox 7 and above support this now
+@-moz-document url-prefix() {
+	.truncateafter:before {
+		content: "...";
+	}
+}
+*/
+
+.scrollcell:hover {
+	margin-right: -5px; 
+	overflow: auto;
+}
+
+.dv_cell_table {
+	font-size: 0.85em;
+	margin: 0px;
+}
+
+.dv_cell_table td {
+	padding: 0px;
+}
+
+.dv_cell_table thead {
+	font-weight:bold;
+	background-color: #DEDEDE;
+}
+
+.dataTables_filter {
+	white-space: nowrap;
+}
+
+#dv-spreadsheet-tbl thead hr {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	color: #000000;
+	background-color: #000000;
+	height: 2px;
+}
+
+
+/* dv dialog box updates */
+.ui-dialog {
+	padding: 0px;
+}
+
+.ui-dialog-titlebar {
+	margin: 1px;
+	-moz-border-radius-bottomleft: 0px; -webkit-border-bottom-left-radius: 0px; -khtml-border-bottom-left-radius: 0px; border-bottom-left-radius: 0px;
+	-moz-border-radius-bottomright: 0px; -webkit-border-bottom-right-radius: 0px; -khtml-border-bottom-right-radius: 0px; border-bottom-right-radius: 0px;
+}
+
+.ui-tabs-nav {
+	font-size: 0.8em;
+	-moz-border-radius-bottomleft: 0px; -webkit-border-bottom-left-radius: 0px; -khtml-border-bottom-left-radius: 0px; border-bottom-left-radius: 0px;
+	-moz-border-radius-bottomright: 0px; -webkit-border-bottom-right-radius: 0px; -khtml-border-bottom-right-radius: 0px; border-bottom-right-radius: 0px;
+}
+
+
+table.more_info_table {
+	border: none;
+	margin-top: 10px;
+}
+
+
+/*Dash shown for NULL*/
+.dv-null-dash {
+	cursor: help;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+
+/* Repository Files */
+a.dv-file-missing {
+	color: red;
+}
+
+img.dv-file-missing {
+	border: 1px solid red;
+}

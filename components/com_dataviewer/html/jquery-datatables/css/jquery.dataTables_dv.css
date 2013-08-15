@@ -1,0 +1,220 @@
+/* Dataviewer specific overrides */
+table.dataTable thead th div.DataTables_sort_wrapper span {
+	top: 10px;
+}
+
+
+.paging_full_numbers {
+	width: 350px !important;
+	white-space: nowrap;
+}
+
+.dv_highlight_search {
+	background-color: yellow;
+}
+
+.dv_highlight_filter {
+	font-weight: bold;
+}
+
+/* Processing message */
+
+.dataTables_processing {
+	position: fixed;
+	margin: 0px;
+	width: 200px;
+	height: 20px;
+	top: -3px;
+	right: 40%;
+	text-align: center;
+	font-size: 16px;
+	color: rgb(0, 0, 0);
+	border: 3px solid #000000;
+	background-color: yellow;
+	cursor: wait;
+	z-index: 9999;
+}
+
+
+/* Spreadsheet */
+
+table#dv-spreadsheet-tbl thead th {
+	padding: 3px 10px;
+	font-size: 1.1em;
+	cursor: pointer;
+	* cursor: hand;
+}
+
+table#dv-spreadsheet-tbl tfoot th {
+	padding: 3px 10px;
+	font-weight: bold;
+}
+
+table#dv-spreadsheet-tbl tbody td {
+	border-right: 1px solid #d3d3d3;
+	border-left: 1px solid #d3d3d3;
+	padding: 2px 10px;
+}
+
+table#dv-spreadsheet-tbl tr.heading2 {
+	border-bottom: 1px solid #d3d3d3;
+}
+
+table#dv-spreadsheet-tbl td.center {
+	text-align: center;
+}
+
+table#dv-spreadsheet-tbl td.right {
+	text-align: right;
+}
+
+table#dv-spreadsheet-tbl td.left {
+	text-align: left;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables row classes
+ */
+table#dv-spreadsheet-tbl tr.odd {
+	background-color: #E2E4FF;
+}
+
+table#dv-spreadsheet-tbl tr.even {
+	background-color: #FAFAFF;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Misc
+ */
+.top, .bottom {
+	padding: 15px;
+	background-color: #F5F5F5;
+	border: 1px solid #CCCCCC;
+}
+
+.clear {
+	clear: both;
+}
+
+.dataTables_empty {
+	text-align: center;
+}
+
+tfoot input {
+	margin: 0.5em 0;
+	width: 100%;
+	color: #444;
+}
+
+tfoot input.search_init {
+	color: #999;
+}
+
+.paging_full_numbers span.paginate_button,
+ 	.paging_full_numbers span.paginate_active {
+	border: 1px solid #aaa;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	padding: 2px 5px;
+	margin: 0 3px;
+	cursor: pointer;
+	*cursor: hand;
+}
+
+.paging_full_numbers span.paginate_button {
+	background-color: #ddd;
+}
+
+.paging_full_numbers span.paginate_button:hover {
+	background-color: #ccc;
+}
+
+.paging_full_numbers span.paginate_active {
+	background-color: #99B3FF;
+}
+
+table#dv-spreadsheet-tbl tr.even.row_selected td {
+	background-color: #B0BED9;
+}
+
+table#dv-spreadsheet-tbl tr.odd.row_selected td {
+	background-color: #9FAFD1;
+}
+
+
+/*
+ * Sorting classes for columns
+ */
+/* For the standard odd/even */
+tr.odd td.sorting_1 {
+	background-color: #D3D6FF;
+}
+
+tr.odd td.sorting_2 {
+	background-color: #DADCFF;
+}
+
+tr.odd td.sorting_3 {
+	background-color: #E0E2FF;
+}
+
+tr.even td.sorting_1 {
+	background-color: #EAEBFF;
+}
+
+tr.even td.sorting_2 {
+	background-color: #F2F3FF;
+}
+
+tr.even td.sorting_3 {
+	background-color: #F9F9FF;
+}
+
+
+/* For the Conditional-CSS grading rows */
+/*
+ 	Colour calculations (based off the main row colours)
+  Level 1:
+		dd > c4
+		ee > d5
+	Level 2:
+	  dd > d1
+	  ee > e2
+ */
+tr.odd td.sorting_1 {
+	background-color: #c4c4ff;
+}
+
+tr.odd td.sorting_2 {
+	background-color: #d1d1ff;
+}
+
+tr.odd td.sorting_3 {
+	background-color: #d1d1ff;
+}
+
+tr.even td.sorting_1 {
+	background-color: #d5d5ff;
+}
+
+tr.even td.sorting_2 {
+	background-color: #e2e2ff;
+}
+
+tr.even td.sorting_3 {
+	background-color: #e2e2ff;
+}
+
+
+/*
+ * Row highlighting example
+ */
+.ex_highlight #example tbody tr.even:hover, #example tbody tr.even td.highlighted {
+	background-color: #ECFFB3;
+}
+
+.ex_highlight #example tbody tr.odd:hover, #example tbody tr.odd td.highlighted {
+	background-color: #E6FF99;
+}

@@ -1,0 +1,7 @@
+#wrap .toolbar-box .icon-48-databases:before {
+	content: '\f001';
+}
+
+.ui-widget-header {
+	font-size: 0.75em;
+}

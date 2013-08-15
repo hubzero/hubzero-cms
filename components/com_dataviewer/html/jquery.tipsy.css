@@ -1,0 +1,13 @@
+.tipsy-qt { padding: 5px; font-size: 14px; position: absolute; z-index: 100000; }
+  .tipsy-qt-inner { border: 1px solid black; padding: 5px 8px 4px 8px; background-color: white; color: black; max-width: 420px; text-align: left; }
+  .tipsy-qt-inner { border-radius: 3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
+  .tipsy-qt-arrow { position: absolute; background: url('jquery.tipsy-qt.gif') no-repeat top left; width: 9px; height: 5px; }
+  .tipsy-qt-n .tipsy-qt-arrow { top: 0; left: 50%; margin-left: -4px; }
+    .tipsy-qt-nw .tipsy-qt-arrow { top: 0; left: 10px; }
+    .tipsy-qt-ne .tipsy-qt-arrow { top: 0; right: 10px; }
+  .tipsy-qt-s .tipsy-qt-arrow { bottom: 0; left: 50%; margin-left: -4px; background-position: bottom left; }
+    .tipsy-qt-sw .tipsy-qt-arrow { bottom: 0; left: 10px; background-position: bottom left; }
+    .tipsy-qt-se .tipsy-qt-arrow { bottom: 0; right: 10px; background-position: bottom left; }
+  .tipsy-qt-e .tipsy-qt-arrow { top: 50%; margin-top: -4px; right: 0; width: 5px; height: 9px; background-position: top right; }
+  .tipsy-qt-w .tipsy-qt-arrow { top: 50%; margin-top: -4px; left: 0; width: 5px; height: 9px; }
+
