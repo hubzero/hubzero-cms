@@ -31,11 +31,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Set access levels
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-$jacl->addACL($option, 'manage', 'users', 'manager');
+$option = 'com_billboards';
+
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	// Set access levels
+	$jacl =& JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
+
+	// Authorization check
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
+}
+else 
+{
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
+}
 
 // Authorization check
 $user = & JFactory::getUser();
