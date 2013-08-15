@@ -410,7 +410,7 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function clearGrades($user_id, $course)
 	{
-		if (!is_object($course))
+		if (!is_object($course) || empty($user_id))
 		{
 			return false;
 		}
