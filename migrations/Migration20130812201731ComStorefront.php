@@ -173,6 +173,8 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 		  `sActive` tinyint(1) DEFAULT '1',
 		  PRIMARY KEY (`sId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+		$db->setQuery($query);
+		$db->query();
 
 	}
 
@@ -182,72 +184,58 @@ class Migration20130812201731ComStorefront extends Hubzero_Migration
 	protected static function down($db)
 	{
 		$query = "DROP TABLE IF EXISTS `#__storefront_collections`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupon_actions`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupon_conditions`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupon_objects`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupons`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_option_groups`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_options`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_product_collections`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_product_option_groups`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_product_types`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_products`";
-
 		$db->setQuery($query);
 		$db->query();
 
 		$query = "DROP TABLE IF EXISTS `#__storefront_sku_meta`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_sku_options`";
-
 		$db->setQuery($query);
 		$db->query();
 		
 		$query = "DROP TABLE IF EXISTS `#__storefront_skus`";
-
 		$db->setQuery($query);
 		$db->query();
 	}
