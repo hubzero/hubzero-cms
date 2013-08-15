@@ -196,7 +196,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		$newsletter = $newsletterNewsletter->getNewsletters( $id );
 		
 		//build url to newsletter with no html
-		$newsletterUrl = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'newsletter' . DS . $newsletter->alias . '?no_html=1';
+		$newsletterUrl = 'http://' . $_SERVER['HTTP_HOST'] . DS . 'newsletter' . DS . $newsletter->alias . '?no_html=1';
 		
 		//path to newsletter file
 		$newsletterPdfFolder = JPATH_ROOT . DS . 'site' . DS . 'newsletter' . DS . 'pdf';
