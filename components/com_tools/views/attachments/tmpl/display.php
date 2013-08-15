@@ -119,7 +119,7 @@ if ($this->children) {
 		$out .= ' <tr>';
 		$out .= '  <td width="100%">';
 		if ($this->allowupload) {
-			$out .= '<span'.$liclass.' item:name id:'.$child->id.'">'.$this->escape($child->title).'</span><br /><span class="caption">(<a href="'.JRoute::_('index.php?option=com_resources&task=download&id='.$child->id).'" title="'.$child->title.'">'.ContribtoolHtml::getFileAttribs($url, $base).'</a>)</span>';
+			$out .= '<span'.$liclass.' item:name id:'.$child->id.'" data-id="' . $child->id . '">'.$this->escape($child->title).'</span><br /><span class="caption">(<a href="'.JRoute::_('index.php?option=com_resources&task=download&id='.$child->id).'" title="'.$child->title.'">'.ContribtoolHtml::getFileAttribs($url, $base).'</a>)</span>';
 		}
 		else {
 			$out .= '<span><a href="'.JRoute::_('index.php?option=com_resources&task=download&id='.$child->id).'">'.$this->escape($child->title).'</a></span>';

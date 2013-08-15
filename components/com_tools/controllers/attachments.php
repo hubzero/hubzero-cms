@@ -432,6 +432,9 @@ class ToolsControllerAttachments extends Hubzero_Controller
 
 		$this->_getStyles($this->_option, 'assets/css/component.css');
 
+		// Push some scripts to the template
+		$this->_getScripts('assets/js/create');
+
 		// Set errors to view
 		if ($this->getError())
 		{
