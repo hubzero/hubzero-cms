@@ -45,6 +45,7 @@ class EventsControllerApi extends Hubzero_Api_Controller
 					WHERE publish_down >= NOW()
 					AND state=1 
 					AND approved=1
+					AND scope='event'
 					LIMIT {$limit}";
 					
 		$database->setQuery($query);

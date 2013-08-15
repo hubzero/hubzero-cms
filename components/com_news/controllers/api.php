@@ -42,14 +42,27 @@ class NewsControllerApi extends Hubzero_Api_Controller
 		
 		//load up the news articles
 		$database =& JFactory::getDBO();
-		$query = "SELECT c.* FROM #__content as c, #__sections as s, #__categories as cat 
-					WHERE s.alias='{$section}' 
-					AND s.id=c.sectionid 
-					AND cat.alias='{$category}' 
-					AND cat.section=s.id 
-					AND state=1
-					ORDER BY c.ordering ASC
-					LIMIT {$limit}";
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$query = "SELECT c.* 
+						FROM jos_content as c, jos_categories as cat 
+						WHERE cat.alias='{$category}'
+						AND c.catid=cat.id
+						AND state=1 
+						ORDER BY c.ordering ASC 
+						LIMIT {$limit}";
+		}
+		else
+		{
+			$query = "SELECT c.* FROM #__content as c, #__sections as s, #__categories as cat 
+						WHERE s.alias='{$section}' 
+						AND s.id=c.sectionid 
+						AND cat.alias='{$category}' 
+						AND cat.section=s.id 
+						AND state=1
+						ORDER BY c.ordering ASC
+						LIMIT {$limit}";
+		}
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		

@@ -107,7 +107,7 @@ class plgWhatsnewEvents extends JPlugin
 					CONCAT('index.php?option=com_events&task=details&id=', e.id) AS href, 'events' AS section, NULL AS area, NULL AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking, e.access ";
 		$e_from = " FROM #__events AS e";
 
-		$e_where = "e.created > '$period->cStartDate' AND e.created < '$period->cEndDate'";
+		$e_where = "e.created > '$period->cStartDate' AND e.created < '$period->cEndDate' AND scope='events'";
 
 		$order_by  = " ORDER BY publish_up DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
