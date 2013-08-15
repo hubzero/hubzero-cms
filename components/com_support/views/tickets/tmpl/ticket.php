@@ -126,19 +126,19 @@ ximport('Hubzero_User_Profile_Helper');
 <?php if ($prev) { ?>
 		<li>
 			<a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-				<?php echo JText::_('PREV'); ?>
+				<?php echo JText::_('COM_SUPPORT_PREV'); ?>
 			</a>
 		</li>
 <?php } ?>
 		<li>
 			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-				<?php echo JText::_('TICKETS'); ?>
+				<?php echo JText::_('COM_SUPPORT_TICKETS'); ?>
 			</a>
 		</li>
 <?php if ($next) { ?>
 		<li>
 			<a class="icon-next next opposite btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-				<?php echo JText::_('NEXT'); ?>
+				<?php echo JText::_('COM_SUPPORT_NEXT'); ?>
 			</a>
 		</li>
 <?php } ?>
@@ -253,7 +253,7 @@ ximport('Hubzero_User_Profile_Helper');
 	<div class="aside">
 <?php if ($this->acl->check('create', 'comments')) { ?>
 		<p>
-			<a class="add btn" href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a>
+			<a class="icon-add add btn" href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a>
 		</p>
 <?php } ?>
 	</div><!-- / .aside -->
