@@ -90,7 +90,7 @@ $document =& JFactory::getDocument();
 		?>
 			<tr class="mini faded">
 				<td title="<?=htmlspecialchars($r['description']);?>" data-db-title="<?=htmlspecialchars($r['title']);?>"  data-db-id="<?=$r['id'];?>">
-					<a target="_blank" href="/<?=$this->dataviewer?>/spreadsheet/<?=$r['database_name']?>/"><?=$r['title']?></a>
+					<a target="_blank" href="/<?=$this->dataviewer?>/view/<?=$this->project->alias?>:dsl/<?=$r['database_name']?>/"><?=$r['title']?></a>
 					<span class="db-update" title="Click to edit the Title & Description"></span>
 				</td>
 				<td <?=$file_extra?>>

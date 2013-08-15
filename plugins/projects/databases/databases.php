@@ -60,7 +60,7 @@ class plgProjectsDatabases extends JPlugin
 		$this->_params = new JParameter($this->_plugin->params);
 
 		// Dataviewer
-		$this->dataviewer = 'prj_dv';
+		$this->dataviewer = 'dataviewer';
 
 		// Load component configs
 		$this->_config 		=& JComponentHelper::getParams('com_projects');
