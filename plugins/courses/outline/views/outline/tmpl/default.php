@@ -107,6 +107,11 @@ if (!$this->course->offering()->access('view')) { ?>
 												<h4>
 													<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
 												</h4>
+											<?php if ($agt->get('description')) { ?>
+												<p class="asset-group-description">
+													<?php echo $this->escape(stripslashes($agt->get('description'))); ?>
+												</p>
+											<?php } ?>
 											<?php foreach ($agt->children() as $ag) { ?>
 												<?php if ($ag->isAvailable() && $ag->isPublished()) : ?>
 													<div class="asset-group">
