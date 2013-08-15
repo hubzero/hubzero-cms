@@ -276,8 +276,7 @@ class CoursesTableGradeBook extends JTable
 				'w' => array(
 					'course_id'  => $course->get('id'),
 					'section_id' => $course->offering()->section()->get('id'),
-					'asset_type' => 'form',
-					'state'      => 1
+					'asset_type' => 'form'
 				)
 			)
 		);
@@ -288,6 +287,16 @@ class CoursesTableGradeBook extends JTable
 		{
 			foreach($assets as $asset)
 			{
+				// Add null values for unpublished forms that may have already been taken
+				if ($asset->state != 1)
+				{
+					foreach ($user_id as $u)
+					{
+						$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
+					}
+					continue;
+				}
+
 				$crumb = false;
 
 				// Check for result for given student on form
@@ -313,7 +322,10 @@ class CoursesTableGradeBook extends JTable
 					// Form isn't available yet
 					case 'pending':
 						// Null value
-						$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
+						foreach ($user_id as $u)
+						{
+							$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
+						}
 					break;
 
 					// Form availability has expired - students either get a 0, or their score (no nulls)
@@ -374,9 +386,9 @@ class CoursesTableGradeBook extends JTable
 		{
 			foreach ($user['units'] as $unit_id=>$unit)
 			{
-				$values[] = "('$user_id', '{$unit['unit_weighted']}', 'unit', '$unit_id')";
+				$values[] = "('$user_id', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '$unit_id')";
 			}
-			$values[] = "('$user_id', '{$user['course_weighted']}', 'course', '$course_id')";
+			$values[] = "('$user_id', " . $this->_db->quote($user['course_weighted']) . ", 'course', '$course_id')";
 		}
 
 		if (count($values) > 0)
@@ -385,6 +397,41 @@ class CoursesTableGradeBook extends JTable
 			$query .= implode(",\n", $values);
 			$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
 
+			$this->_db->execute($query);
+		}
+	}
+
+	/**
+	 * Clear grades for a given course/user combination
+	 * 
+	 * @param      array $user_id
+	 * @param      object $course
+	 * @return     void
+	 */
+	public function clearGrades($user_id, $course)
+	{
+		if (!is_object($course))
+		{
+			return false;
+		}
+
+		if (!is_array($user_id))
+		{
+			$user_id = (array) $user_id;
+		}
+
+		// Clear up course grades for given users
+		$query  = "UPDATE `#__courses_grade_book` SET score = NULL";
+		$query .= " WHERE scope = 'course' AND scope_id = " . $this->_db->quote($course->get('id'));
+		$query .= " AND user_id IN (" . implode(',', $user_id) . ")";
+		$this->_db->execute($query);
+
+		// Clean up units as well...
+		foreach ($course->offering()->units() as $unit)
+		{
+			$query  = "UPDATE `#__courses_grade_book` SET score = NULL";
+			$query .= " WHERE scope = 'unit' AND scope_id = " . $this->_db->quote($unit->get('id'));
+			$query .= " AND user_id IN (" . implode(',', $user_id) . ")";
 			$this->_db->execute($query);
 		}
 	}

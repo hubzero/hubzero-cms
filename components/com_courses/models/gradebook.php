@@ -249,125 +249,133 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			}
 		}
 
-		foreach ($grades as $user_id=>$values)
+		if (count($grades) > 0)
 		{
-			$scores[$user_id]['course_exam_count']     = 0;
-			$scores[$user_id]['course_quiz_count']     = 0;
-			$scores[$user_id]['course_homework_count'] = 0;
-			$scores[$user_id]['course_exam_sum']       = 0;
-			$scores[$user_id]['course_quiz_sum']       = 0;
-			$scores[$user_id]['course_homework_sum']   = 0;
-
-			// Loop through units and compute scores
-			foreach ($values as $unit_id=>$val)
+			foreach ($grades as $user_id=>$values)
 			{
-				$scores[$user_id]['units'][$unit_id]['exam_count']     = 0;
-				$scores[$user_id]['units'][$unit_id]['quiz_count']     = 0;
-				$scores[$user_id]['units'][$unit_id]['homework_count'] = 0;
-				$scores[$user_id]['units'][$unit_id]['exam_sum']       = 0;
-				$scores[$user_id]['units'][$unit_id]['quiz_sum']       = 0;
-				$scores[$user_id]['units'][$unit_id]['homework_sum']   = 0;
+				$scores[$user_id]['course_exam_count']     = 0;
+				$scores[$user_id]['course_quiz_count']     = 0;
+				$scores[$user_id]['course_homework_count'] = 0;
+				$scores[$user_id]['course_exam_sum']       = 0;
+				$scores[$user_id]['course_quiz_sum']       = 0;
+				$scores[$user_id]['course_homework_sum']   = 0;
 
-				foreach ($val as $grade)
+				// Loop through units and compute scores
+				foreach ($values as $unit_id=>$val)
 				{
-					switch ($grade['type'])
+					$scores[$user_id]['units'][$unit_id]['exam_count']     = 0;
+					$scores[$user_id]['units'][$unit_id]['quiz_count']     = 0;
+					$scores[$user_id]['units'][$unit_id]['homework_count'] = 0;
+					$scores[$user_id]['units'][$unit_id]['exam_sum']       = 0;
+					$scores[$user_id]['units'][$unit_id]['quiz_sum']       = 0;
+					$scores[$user_id]['units'][$unit_id]['homework_sum']   = 0;
+
+					foreach ($val as $grade)
 					{
-						case 'exam':
-							$scores[$user_id]['course_exam_count']++;
-							$scores[$user_id]['course_exam_sum'] += $grade['score'];
-							$scores[$user_id]['units'][$unit_id]['exam_count']++;
-							$scores[$user_id]['units'][$unit_id]['exam_sum'] += $grade['score'];
-						break;
-						case 'quiz':
-							$scores[$user_id]['course_quiz_count']++;
-							$scores[$user_id]['course_quiz_sum'] += $grade['score'];
-							$scores[$user_id]['units'][$unit_id]['quiz_count']++;
-							$scores[$user_id]['units'][$unit_id]['quiz_sum'] += $grade['score'];
-						break;
-						case 'homework':
-							$scores[$user_id]['course_homework_count']++;
-							$scores[$user_id]['course_homework_sum'] += $grade['score'];
-							$scores[$user_id]['units'][$unit_id]['homework_count']++;
-							$scores[$user_id]['units'][$unit_id]['homework_sum'] += $grade['score'];
-						break;
+						switch ($grade['type'])
+						{
+							case 'exam':
+								$scores[$user_id]['course_exam_count']++;
+								$scores[$user_id]['course_exam_sum'] += $grade['score'];
+								$scores[$user_id]['units'][$unit_id]['exam_count']++;
+								$scores[$user_id]['units'][$unit_id]['exam_sum'] += $grade['score'];
+							break;
+							case 'quiz':
+								$scores[$user_id]['course_quiz_count']++;
+								$scores[$user_id]['course_quiz_sum'] += $grade['score'];
+								$scores[$user_id]['units'][$unit_id]['quiz_count']++;
+								$scores[$user_id]['units'][$unit_id]['quiz_sum'] += $grade['score'];
+							break;
+							case 'homework':
+								$scores[$user_id]['course_homework_count']++;
+								$scores[$user_id]['course_homework_sum'] += $grade['score'];
+								$scores[$user_id]['units'][$unit_id]['homework_count']++;
+								$scores[$user_id]['units'][$unit_id]['homework_sum'] += $grade['score'];
+							break;
+						}
 					}
+
+					if ($scores[$user_id]['units'][$unit_id]['exam_count'] > 0)
+					{
+						$scores[$user_id]['units'][$unit_id]['exam_score']    = round(($scores[$user_id]['units'][$unit_id]['exam_sum'] / $scores[$user_id]['units'][$unit_id]['exam_count']), 2);
+						$scores[$user_id]['units'][$unit_id]['exam_weighted'] = round($scores[$user_id]['units'][$unit_id]['exam_score'] * $gradePolicy->get('exam_weight'), 2);
+					}
+					else
+					{
+						$scores[$user_id]['units'][$unit_id]['exam_score']    = null;
+						$scores[$user_id]['units'][$unit_id]['exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
+					}
+					if ($scores[$user_id]['units'][$unit_id]['quiz_count'] > 0)
+					{
+						$scores[$user_id]['units'][$unit_id]['quiz_score']    = round(($scores[$user_id]['units'][$unit_id]['quiz_sum'] / $scores[$user_id]['units'][$unit_id]['quiz_count']), 2);
+						$scores[$user_id]['units'][$unit_id]['quiz_weighted'] = round($scores[$user_id]['units'][$unit_id]['quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
+					}
+					else
+					{
+						$scores[$user_id]['units'][$unit_id]['quiz_score']    = null;
+						$scores[$user_id]['units'][$unit_id]['quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
+					}
+					if ($scores[$user_id]['units'][$unit_id]['homework_count'] > 0)
+					{
+						$scores[$user_id]['units'][$unit_id]['homework_score']    = round(($scores[$user_id]['units'][$unit_id]['homework_sum'] / $scores[$user_id]['units'][$unit_id]['homework_count']), 2);
+						$scores[$user_id]['units'][$unit_id]['homework_weighted'] = round($scores[$user_id]['units'][$unit_id]['homework_score'] * $gradePolicy->get('homework_weight'), 2);
+					}
+					else
+					{
+						$scores[$user_id]['units'][$unit_id]['homework_score']    = null;
+						$scores[$user_id]['units'][$unit_id]['homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
+					}
+
+					// Finally, compute unit weighted score
+					$scores[$user_id]['units'][$unit_id]['unit_weighted'] = 
+						$scores[$user_id]['units'][$unit_id]['exam_weighted'] + 
+						$scores[$user_id]['units'][$unit_id]['quiz_weighted'] + 
+						$scores[$user_id]['units'][$unit_id]['homework_weighted'];
 				}
 
-				if ($scores[$user_id]['units'][$unit_id]['exam_count'] > 0)
+				// Now calculate overall course scores
+				if ($scores[$user_id]['course_exam_count'] > 0)
 				{
-					$scores[$user_id]['units'][$unit_id]['exam_score']    = round(($scores[$user_id]['units'][$unit_id]['exam_sum'] / $scores[$user_id]['units'][$unit_id]['exam_count']), 2);
-					$scores[$user_id]['units'][$unit_id]['exam_weighted'] = round($scores[$user_id]['units'][$unit_id]['exam_score'] * $gradePolicy->get('exam_weight'), 2);
+					$scores[$user_id]['course_exam_score']    = round(($scores[$user_id]['course_exam_sum'] / $scores[$user_id]['course_exam_count']), 2);
+					$scores[$user_id]['course_exam_weighted'] = round($scores[$user_id]['course_exam_score'] * $gradePolicy->get('exam_weight'), 2);
 				}
 				else
 				{
-					$scores[$user_id]['units'][$unit_id]['exam_score']    = null;
-					$scores[$user_id]['units'][$unit_id]['exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
+					$scores[$user_id]['course_exam_score']    = null;
+					$scores[$user_id]['course_exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
 				}
-				if ($scores[$user_id]['units'][$unit_id]['quiz_count'] > 0)
+				if ($scores[$user_id]['course_quiz_count'] > 0)
 				{
-					$scores[$user_id]['units'][$unit_id]['quiz_score']    = round(($scores[$user_id]['units'][$unit_id]['quiz_sum'] / $scores[$user_id]['units'][$unit_id]['quiz_count']), 2);
-					$scores[$user_id]['units'][$unit_id]['quiz_weighted'] = round($scores[$user_id]['units'][$unit_id]['quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
+					$scores[$user_id]['course_quiz_score']    = round(($scores[$user_id]['course_quiz_sum'] / $scores[$user_id]['course_quiz_count']), 2);
+					$scores[$user_id]['course_quiz_weighted'] = round($scores[$user_id]['course_quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
 				}
 				else
 				{
-					$scores[$user_id]['units'][$unit_id]['quiz_score']    = null;
-					$scores[$user_id]['units'][$unit_id]['quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
+					$scores[$user_id]['course_quiz_score']    = null;
+					$scores[$user_id]['course_quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
 				}
-				if ($scores[$user_id]['units'][$unit_id]['homework_count'] > 0)
+				if ($scores[$user_id]['course_homework_count'] > 0)
 				{
-					$scores[$user_id]['units'][$unit_id]['homework_score']    = round(($scores[$user_id]['units'][$unit_id]['homework_sum'] / $scores[$user_id]['units'][$unit_id]['homework_count']), 2);
-					$scores[$user_id]['units'][$unit_id]['homework_weighted'] = round($scores[$user_id]['units'][$unit_id]['homework_score'] * $gradePolicy->get('homework_weight'), 2);
+					$scores[$user_id]['course_homework_score']    = round(($scores[$user_id]['course_homework_sum'] / $scores[$user_id]['course_homework_count']), 2);
+					$scores[$user_id]['course_homework_weighted'] = round($scores[$user_id]['course_homework_score'] * $gradePolicy->get('homework_weight'), 2);
 				}
 				else
 				{
-					$scores[$user_id]['units'][$unit_id]['homework_score']    = null;
-					$scores[$user_id]['units'][$unit_id]['homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
+					$scores[$user_id]['course_homework_score']    = null;
+					$scores[$user_id]['course_homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
 				}
 
-				// Finally, compute unit weighted score
-				$scores[$user_id]['units'][$unit_id]['unit_weighted'] = 
-					$scores[$user_id]['units'][$unit_id]['exam_weighted'] + 
-					$scores[$user_id]['units'][$unit_id]['quiz_weighted'] + 
-					$scores[$user_id]['units'][$unit_id]['homework_weighted'];
+				// Get course weighted average
+				$scores[$user_id]['course_weighted']          = 
+					$scores[$user_id]['course_exam_weighted'] + 
+					$scores[$user_id]['course_quiz_weighted'] + 
+					$scores[$user_id]['course_homework_weighted'];
 			}
-
-			// Now calculate overall course scores
-			if ($scores[$user_id]['course_exam_count'] > 0)
-			{
-				$scores[$user_id]['course_exam_score']    = round(($scores[$user_id]['course_exam_sum'] / $scores[$user_id]['course_exam_count']), 2);
-				$scores[$user_id]['course_exam_weighted'] = round($scores[$user_id]['course_exam_score'] * $gradePolicy->get('exam_weight'), 2);
-			}
-			else
-			{
-				$scores[$user_id]['course_exam_score']    = null;
-				$scores[$user_id]['course_exam_weighted'] = $gradePolicy->get('exam_weight') * 100;
-			}
-			if ($scores[$user_id]['course_quiz_count'] > 0)
-			{
-				$scores[$user_id]['course_quiz_score']    = round(($scores[$user_id]['course_quiz_sum'] / $scores[$user_id]['course_quiz_count']), 2);
-				$scores[$user_id]['course_quiz_weighted'] = round($scores[$user_id]['course_quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
-			}
-			else
-			{
-				$scores[$user_id]['course_quiz_score']    = null;
-				$scores[$user_id]['course_quiz_weighted'] = $gradePolicy->get('quiz_weight') * 100;
-			}
-			if ($scores[$user_id]['course_homework_count'] > 0)
-			{
-				$scores[$user_id]['course_homework_score']    = round(($scores[$user_id]['course_homework_sum'] / $scores[$user_id]['course_homework_count']), 2);
-				$scores[$user_id]['course_homework_weighted'] = round($scores[$user_id]['course_homework_score'] * $gradePolicy->get('homework_weight'), 2);
-			}
-			else
-			{
-				$scores[$user_id]['course_homework_score']    = null;
-				$scores[$user_id]['course_homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
-			}
-
-			// Get course weighted average
-			$scores[$user_id]['course_weighted']          = 
-				$scores[$user_id]['course_exam_weighted'] + 
-				$scores[$user_id]['course_quiz_weighted'] + 
-				$scores[$user_id]['course_homework_weighted'];
+		}
+		else
+		{
+			// Make sure nothing is lingering around...given that there shouldn't be any grades there
+			$this->_tbl->clearGrades($user_id, $course);
 		}
 
 		$this->_tbl->saveGrades($scores, $course_id);
