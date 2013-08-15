@@ -126,7 +126,7 @@ jQuery(document).ready(function(jq) {
 			self
 				.text(moretext)
 				.parent()
-					.appendTo($('.revealText'));
+					.appendTo(wrap.find('.revealText'));
 		}
 	});
 });
