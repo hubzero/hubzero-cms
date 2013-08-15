@@ -295,10 +295,17 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						}
 					}
 
+					$hasScores = false;
+
 					if ($scores[$user_id]['units'][$unit_id]['exam_count'] > 0)
 					{
 						$scores[$user_id]['units'][$unit_id]['exam_score']    = round(($scores[$user_id]['units'][$unit_id]['exam_sum'] / $scores[$user_id]['units'][$unit_id]['exam_count']), 2);
 						$scores[$user_id]['units'][$unit_id]['exam_weighted'] = round($scores[$user_id]['units'][$unit_id]['exam_score'] * $gradePolicy->get('exam_weight'), 2);
+
+						if ($gradePolicy->get('exam_weight') > 0)
+						{
+							$hasScores = true;
+						}
 					}
 					else
 					{
@@ -309,6 +316,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					{
 						$scores[$user_id]['units'][$unit_id]['quiz_score']    = round(($scores[$user_id]['units'][$unit_id]['quiz_sum'] / $scores[$user_id]['units'][$unit_id]['quiz_count']), 2);
 						$scores[$user_id]['units'][$unit_id]['quiz_weighted'] = round($scores[$user_id]['units'][$unit_id]['quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
+
+						if ($gradePolicy->get('quiz_weight') > 0)
+						{
+							$hasScores = true;
+						}
 					}
 					else
 					{
@@ -319,6 +331,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					{
 						$scores[$user_id]['units'][$unit_id]['homework_score']    = round(($scores[$user_id]['units'][$unit_id]['homework_sum'] / $scores[$user_id]['units'][$unit_id]['homework_count']), 2);
 						$scores[$user_id]['units'][$unit_id]['homework_weighted'] = round($scores[$user_id]['units'][$unit_id]['homework_score'] * $gradePolicy->get('homework_weight'), 2);
+
+						if ($gradePolicy->get('homework_weight') > 0)
+						{
+							$hasScores = true;
+						}
 					}
 					else
 					{
@@ -326,18 +343,32 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$scores[$user_id]['units'][$unit_id]['homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
 					}
 
-					// Finally, compute unit weighted score
-					$scores[$user_id]['units'][$unit_id]['unit_weighted'] = 
-						$scores[$user_id]['units'][$unit_id]['exam_weighted'] + 
-						$scores[$user_id]['units'][$unit_id]['quiz_weighted'] + 
-						$scores[$user_id]['units'][$unit_id]['homework_weighted'];
+					if ($hasScores)
+					{
+						// Finally, compute unit weighted score
+						$scores[$user_id]['units'][$unit_id]['unit_weighted']     =
+							$scores[$user_id]['units'][$unit_id]['exam_weighted'] +
+							$scores[$user_id]['units'][$unit_id]['quiz_weighted'] +
+							$scores[$user_id]['units'][$unit_id]['homework_weighted'];
+					}
+					else
+					{
+						$scores[$user_id]['units'][$unit_id]['unit_weighted'] = NULL;
+					}
 				}
+
+				$hasScores = false;
 
 				// Now calculate overall course scores
 				if ($scores[$user_id]['course_exam_count'] > 0)
 				{
 					$scores[$user_id]['course_exam_score']    = round(($scores[$user_id]['course_exam_sum'] / $scores[$user_id]['course_exam_count']), 2);
 					$scores[$user_id]['course_exam_weighted'] = round($scores[$user_id]['course_exam_score'] * $gradePolicy->get('exam_weight'), 2);
+
+					if ($gradePolicy->get('exam_weight') > 0)
+					{
+						$hasScores = true;
+					}
 				}
 				else
 				{
@@ -348,6 +379,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				{
 					$scores[$user_id]['course_quiz_score']    = round(($scores[$user_id]['course_quiz_sum'] / $scores[$user_id]['course_quiz_count']), 2);
 					$scores[$user_id]['course_quiz_weighted'] = round($scores[$user_id]['course_quiz_score'] * $gradePolicy->get('quiz_weight'), 2);
+
+					if ($gradePolicy->get('quiz_weight') > 0)
+					{
+						$hasScores = true;
+					}
 				}
 				else
 				{
@@ -358,6 +394,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				{
 					$scores[$user_id]['course_homework_score']    = round(($scores[$user_id]['course_homework_sum'] / $scores[$user_id]['course_homework_count']), 2);
 					$scores[$user_id]['course_homework_weighted'] = round($scores[$user_id]['course_homework_score'] * $gradePolicy->get('homework_weight'), 2);
+
+					if ($gradePolicy->get('homework_weight') > 0)
+					{
+						$hasScores = true;
+					}
 				}
 				else
 				{
@@ -365,11 +406,18 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					$scores[$user_id]['course_homework_weighted'] = $gradePolicy->get('homework_weight') * 100;
 				}
 
-				// Get course weighted average
-				$scores[$user_id]['course_weighted']          = 
-					$scores[$user_id]['course_exam_weighted'] + 
-					$scores[$user_id]['course_quiz_weighted'] + 
-					$scores[$user_id]['course_homework_weighted'];
+				if ($hasScores)
+				{
+					// Get course weighted average
+					$scores[$user_id]['course_weighted']          =
+						$scores[$user_id]['course_exam_weighted'] +
+						$scores[$user_id]['course_quiz_weighted'] +
+						$scores[$user_id]['course_homework_weighted'];
+				}
+				else
+				{
+					$scores[$user_id]['course_weighted'] = NULL;
+				}
 			}
 		}
 		else

@@ -386,9 +386,24 @@ class CoursesTableGradeBook extends JTable
 		{
 			foreach ($user['units'] as $unit_id=>$unit)
 			{
-				$values[] = "('$user_id', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '$unit_id')";
+				if (is_null($unit['unit_weighted']))
+				{
+					$values[] = "('$user_id', NULL, 'unit', '$unit_id')";
+				}
+				else
+				{
+					$values[] = "('$user_id', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '$unit_id')";
+				}
 			}
-			$values[] = "('$user_id', " . $this->_db->quote($user['course_weighted']) . ", 'course', '$course_id')";
+
+			if (is_null($user['course_weighted']))
+			{
+				$values[] = "('$user_id', NULL, 'course', '$course_id')";
+			}
+			else
+			{
+				$values[] = "('$user_id', " . $this->_db->quote($user['course_weighted']) . ", 'course', '$course_id')";
+			}
 		}
 
 		if (count($values) > 0)
