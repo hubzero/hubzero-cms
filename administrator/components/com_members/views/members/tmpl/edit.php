@@ -224,7 +224,7 @@ function submitbutton(pressbutton)
 						<td title="shadowLastChange" class="key"><?php echo JText::_('SHADOW_LAST_CHANGE'); ?>:</td>
 						<td>
 							<?php
-								if ($this->password->get('shadowLastChange'))
+								if (is_object($this->password) && $this->password->get('shadowLastChange'))
 								{
 									$shadowLastChange = $this->password->get('shadowLastChange')*86400;
 									echo date("Y-m-d", $shadowLastChange); 
