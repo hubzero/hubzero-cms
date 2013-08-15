@@ -50,6 +50,7 @@ jQuery(document).ready(function(jq) {
 
 		for (var i in theText) {									 // Iterate over the array of tags and words.
 			item = theText[i];									  // Store current iteration in a variable (for convenience)
+			item.replace(/[\n\r]/g, '');
 			lastTag = lastOpenTags[lastOpenTags.length - 1];		// Store last opening tag in a variable (for convenience)
 			if (!item.match(/<[^<>]+>/) ) {						 // If 'item' is not a tag, we have text
 				//if (lastTag && item.charAt(0) == ' ' && !lastTag[1].match(/span|SPAN/)) item = item.substr(1);   // Remove space from beginning of block elements (like IE does) to make results match cross browser
@@ -59,7 +60,7 @@ jQuery(document).ready(function(jq) {
 						var length = item.length - 1;				   // Store the current item's length (minus one).
 						var position = (length) - (counter - limit);	// Get the position in the text where the limit landed.
 						while (position != length) {					 // As long as we haven't reached the end of the text...
-							if ( !!item.charAt(position).match(/[\s\t\n]/) || position == length )   // Check if we have a space, or are at the end.
+							if (!!item.charAt(position).match(/[\s\t\n]/) || position == length)   // Check if we have a space, or are at the end.
 								break;								  // If so, break out of loop.
 							else position++;							// Otherwise, increment position.
 						}
@@ -87,7 +88,7 @@ jQuery(document).ready(function(jq) {
 					if (!item.match(/\//)) {						 // If it is not a closing tag...
 						lastOpenTags.push(item.match(/<(\w+)(\s*[^>]*)>/));	 // Store it as the most recent open tag we've found.
 					} else {													// If it is a closing tag.
-						if (item.match(/<\/(\w+)>/)[1] == lastOpenTags[lastOpenTags.length - 1][1]) {	// If the closing tag is a paired match with the last opening tag...
+						if (item.match(/<\/(\w+)>/) && item.match(/<\/(\w+)>/)[1] == lastOpenTags[lastOpenTags.length - 1][1]) {	// If the closing tag is a paired match with the last opening tag...
 							lastOpenTags.pop();														 // ...remove the last opening tag.
 						}
 						if (item.match(/<\/[pP]>/)) {			// Check if it is a closing </p> tag
