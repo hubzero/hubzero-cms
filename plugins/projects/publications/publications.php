@@ -3694,7 +3694,7 @@ class plgProjectsPublications extends JPlugin
 			$objPA->object_revision = $dbVersion;
 			
 			// Build link path
-			$objPA->path = 'prj_dv' . DS . 'spreadsheet' . DS . $database_name . DS . '?v=' . $dbVersion;
+			$objPA->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
 					
 			$objPA->ordering = $i;
 			$objPA->role = $primary;
@@ -4203,7 +4203,7 @@ class plgProjectsPublications extends JPlugin
 							
 							$objAtt = new PublicationAttachment( $this->_database );
 							$objAtt->load($att->id);
-							$objAtt->path = 'prj_dv' . DS . 'spreadsheet' . DS . $database_name . DS . '?v=' . $dbVersion;
+							$objAtt->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
 							$objAtt->object_revision = $dbVersion;
 							$objAtt->modified_by = $this->_uid;
 							$objAtt->modified = date( 'Y-m-d H:i:s' );
@@ -6378,19 +6378,21 @@ class plgProjectsPublications extends JPlugin
 		{
 			return false;
 		}
-		
+
 		mb_internal_encoding('UTF-8');
 
-		// component path for "com_prj_dv"
-		$dv_com_path = JPATH_ROOT . DS . 'components' . DS . 'com_prj_dv';
+		// component path for "com_dataviewer"
+		$dv_com_path = JPATH_ROOT . DS . 'components' . DS . 'com_dataviewer';
 
 		require_once($dv_com_path . DS . 'dv_config.php');
-		require_once($dv_com_path . DS . 'util' . DS . 'db.php');
+		require_once($dv_com_path . DS . 'lib' . DS . 'db.php');
+		require_once($dv_com_path . DS . 'modes' . DS . 'mode_dsl.php');
 		require_once($dv_com_path . DS . 'filter' . DS . 'csv.php');
 
-		$dd = get_dd($db_name, $version);
+		$dv_conf = get_conf(NULL);
+		$dd = get_dd(NULL, $db_name, $version);
 		$dd['serverside'] = false;
-		
+
 		$sql = query_gen($dd);
 		$result = get_results($sql, $dd);
 
@@ -6398,16 +6400,16 @@ class plgProjectsPublications extends JPlugin
 		filter($result, $dd, true);
 		$csv = ob_get_contents();
 		ob_end_clean();
-		
+
 		if ($csv && $tmpFile)
 		{
 			$handle = fopen($tmpFile, 'w');
 			fwrite($handle, $csv);
 			fclose($handle);
-			
+
 			return true;
 		}
-		
+
 		return $csv;
 	}
 	
