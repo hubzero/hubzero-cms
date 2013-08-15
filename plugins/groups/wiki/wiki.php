@@ -239,11 +239,11 @@ class plgGroupsWiki extends Hubzero_Plugin
 
 			JRequest::setVar('task', $action);
 
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
+			//if (version_compare(JVERSION, '1.6', 'ge'))
+			//{
 				$lang = JFactory::getLanguage();
 				$lang->load('com_wiki');
-			}
+			//}
 
 			//$controllerName = JRequest::getCmd('controller', 'page');
 			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
