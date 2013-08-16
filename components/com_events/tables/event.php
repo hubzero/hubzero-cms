@@ -348,8 +348,11 @@ class EventsEvent extends JTable
 		}
 		if (trim($this->catid) == '' || trim($this->catid) == 0) 
 		{
-			$this->setError(JText::_('EVENTS_MUST_HAVE_CATEGORY'));
-			return false;
+			if ($this->scope == 'event')
+			{
+				$this->setError(JText::_('EVENTS_MUST_HAVE_CATEGORY'));
+				return false;
+			}
 		}
 		return true;
 	}
