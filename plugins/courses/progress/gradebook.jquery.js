@@ -128,9 +128,45 @@ HUB.Plugins.CoursesProgress = {
 		//$('.form-type select').HUBfancyselect();
 
 		var s      = g.find('.slidable-inner'),
-			slider = $('.slider');
+			slider = $('.slider'),
+			origx  = 0,
+			curx   = 0,
+			diff   = 0,
+			left   = 0,
+			move   = 0,
+			cols   = 0,
+			num    = 0,
+			act    = false;
 
-		$('.nxt').unbind('click').click(function() {
+		s.unbind('mousedown').mousedown(function ( e ) {
+			origx = e.clientX;
+			act   = true;
+		});
+
+		s.unbind('mousemove').mousemove(function ( e ) {
+			if (act) {
+				left = s.css('left').replace('px', '');
+				curx = e.clientX;
+				diff = (curx - origx) / 10;
+				left = Number(left) + Number(diff);
+
+				if (left <= 0 && Math.ceil(Math.abs(left)) <= Math.ceil(HUB.Plugins.CoursesProgress.offset)) {
+					s.stop(true, true).animate({left:left}, 50);
+				}
+			}
+		});
+
+		s.unbind('mouseup').mouseup(function ( e ) {
+			act = false;
+
+			left = s.css('left').replace('px', '');
+			cols = Math.round(Math.abs(left / HUB.Plugins.CoursesProgress.colWidth));
+			num  = cols * HUB.Plugins.CoursesProgress.colWidth;
+
+			HUB.Plugins.CoursesProgress.move(num, function() {}, cols);
+		});
+
+		var nxt = function() {
 			if (Math.ceil(Math.abs(s.css('left').replace('px', ''))) < Math.ceil(HUB.Plugins.CoursesProgress.offset) && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv+=1);
@@ -143,9 +179,9 @@ HUB.Plugins.CoursesProgress = {
 			} else {
 				$('.nxt').addClass('disabled');
 			}
-		});
+		};
 
-		$('.prv').unbind('click').click(function() {
+		var prv = function() {
 			if (Math.ceil(s.css('left').replace('px', '')) < 0 && !s.is(':animated')) {
 				var sv = slider.slider('value');
 				slider.slider('value', sv-=1);
@@ -158,7 +194,11 @@ HUB.Plugins.CoursesProgress = {
 			} else {
 				$('.prv').addClass('disabled');
 			}
-		});
+		};
+
+		$('.nxt').unbind('click').click(nxt);
+
+		$('.prv').unbind('click').click(prv);
 
 		// Prevent form submission via "enter"
 		$('.gradebook-form').submit(function ( e ) {
