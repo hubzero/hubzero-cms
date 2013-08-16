@@ -82,6 +82,12 @@ foreach($assets as $asset)
 
 	if(!$crumb || $asset->state != 1)
 	{
+		// Try seeing if there's an override grade in the gradebook...
+		if (!is_null($grades[$this->juser->get('id')]['assets'][$asset->id]['score']))
+		{
+			$details['aux'][] = array('title'=>$asset->title, 'score'=>$grades[$this->juser->get('id')]['assets'][$asset->id]['score']);
+		}
+
 		// Break foreach, this is not a valid form!
 		continue;
 	}
@@ -431,6 +437,59 @@ $progress_timeline .= '</div>';
 		</div>
 
 	<? endforeach; ?>
+
+	<? if (!empty($details['aux'])) : ?>
+		<div class="unit-entry">
+			<div class="unit-overview">
+				<div class="unit-title">Other Grades</div>
+				<div class="unit-score">--</div>
+			</div>
+			<div class="unit-details">
+				<table>
+					<thead>
+						<tr>
+							<td class="grade-details-title"><?= JText::_('Assignment') ?></td>
+							<td class="grade-details-score"><?= JText::_('Score') ?></td>
+							<td class="grade-details-date"><?= JText::_('Date taken') ?></td>
+						</tr>
+					</thead>
+					<tbody>
+						<?
+							usort($details['aux'], function ($a, $b) {
+								return strcmp($a['title'], $b['title']);
+							});
+						?>
+						<? foreach ($details['aux'] as $aux) : ?>
+							<?
+								if (is_numeric($aux['score']) && $aux['score'] < 60)
+								{
+									$class = 'stop';
+								}
+								elseif (is_numeric($aux['score']) && $aux['score'] >= 60 && $aux['score'] < 70)
+								{
+									$class = 'yield';
+								}
+								elseif (is_numeric($aux['score']) && $aux['score'] >= 70)
+								{
+									$class = 'go';
+								}
+								else
+								{
+									$class = 'neutral';
+								}
+							?>
+							<tr class="<?= $class ?>">
+								<td class="grade-details-title"><?= $aux['title'] ?></td>
+								<td class="grade-details-score"><?= $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?></td>
+								<td class="grade-details-date">N/A</td>
+							</tr>
+						<? endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	<? endif; ?>
+
 	</div>
 
 <? if (!is_null($this->course->offering()->badge()->get('id')) && !$student->badge()->hasEarned()) : ?>
