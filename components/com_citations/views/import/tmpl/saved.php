@@ -37,7 +37,8 @@ ximport('Hubzero_View_Helper_Html');
 //citation params
 $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
-$template = $this->config->get("citation_format", "");
+$citationsFormat = new CitationsFormat( $this->database );
+$template = $citationsFormat->getDefaultFormat()->format;
 
 //batch downloads
 $batch_download = $this->config->get("citation_batch_download", 1);

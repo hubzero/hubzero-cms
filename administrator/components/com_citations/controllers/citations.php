@@ -489,59 +489,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$message
 		);
 	}
-
-	/**
-	 * Get the current citations format
-	 * 
-	 * @return     void
-	 */
-	public function getformatTask()
-	{
-		//get the format being sent via json
-		$format = JRequest::getVar('format', 'apa');
-
-		//include citations format class
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-
-		//new citations format object
-		$cf = new CitationFormat();
-
-		//get the default template for the format being passed in
-		$format_template = $cf->getDefaultFormat($format);
-
-		//return the template
-		echo $format_template;
-	}
-
-	/**
-	 * Get citation template keys
-	 * 
-	 * @return     void
-	 */
-	public function gettemplatekeysTask()
-	{
-		// include citations format class
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-
-		// new citations format object
-		$cf = new CitationFormat();
-
-		// get the keys
-		$keys = $cf->getTemplateKeys();
-
-		// var to hold html data
-		$html = '';
-
-		// create row for each key pair
-		foreach ($keys as $k => $v) 
-		{
-			$html .= "<tr><td>{$v}</td><td>{$k}</td></tr>";
-		}
-
-		//return html
-		echo $html;
-	}
-
+	
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

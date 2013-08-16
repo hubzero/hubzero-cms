@@ -1138,31 +1138,29 @@ class CitationsControllerCitations extends Hubzero_Controller
 	{
 		// get the image we want to serve
 		$image = JRequest::getVar('image', '');
-
+		
 		// if we dont have an image were done
 		if ($image == '') return;
-
-		// read in file
-		$image_file = readfile($image);
-
+		
 		// file details
 		$image_details = pathinfo($image);
-
+		
+		//ouput image based on type
 		switch ($image_details['extension'])
 		{
 			case 'gif':
-				$image_resource = imagecreatefromgif($image_file);
+				$image_resource = imagecreatefromgif($image);
 				header('Content-Type: image/gif');
 				imagegif($image_resource);
 				break;
 			case 'jpg':
 			case 'jpeg':
-				$image_resource = imagecreatefromjpeg($image_file);
+				$image_resource = imagecreatefromjpeg($image);
 				header('Content-Type: image/jpeg');
 				imagejpeg($image_resource);
 				break;
 			case 'png':
-				$image_resource = imagecreatefrompng($image_file);
+				$image_resource = imagecreatefrompng($image);
 				header('Content-Type: image/png');
 				imagepng($image_resource);
 				break;

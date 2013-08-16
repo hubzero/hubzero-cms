@@ -208,8 +208,11 @@ $area = JRequest::getVar('area', 'about');
 		
 		<div class="citation-citation">
 			<?php
+				$citationsFormat = new CitationsFormat( $this->database );
+				$template = $citationsFormat->getDefaultFormat()->format;
+				
 				$cf = new CitationFormat();
-				$cf->setTemplate($this->config->get("citation_format", ""));
+				$cf->setTemplate($template);
 				echo strip_tags($cf->formatCitation($citation, null, false, $config));
 			?>
 			<div class="download">

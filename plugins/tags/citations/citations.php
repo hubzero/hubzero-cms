@@ -214,6 +214,7 @@ class plgTagsCitations extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 		$config = JComponentHelper::getParams('com_citations');
 
@@ -224,9 +225,12 @@ class plgTagsCitations extends JPlugin
 			case 'type':   $citations_label_class = 'type-label';   break;
 			case 'both':   $citations_label_class = 'both-label';   break;
 		}
+		
+		$citationsFormat = new CitationsFormat( JFactory::getDBO() );
+		$template = $citationsFormat->getDefaultFormat()->format;
 
 		$formatter = new CitationFormat();
-		$formatter->setTemplate($config->get('citation_format', ''));
+		$formatter->setTemplate( $template );
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="citation-entry">' . "\n";

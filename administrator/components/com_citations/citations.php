@@ -63,6 +63,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'secondary.php
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'sponsor.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'format.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'citations.php');
 
 $controllerName = JRequest::getCmd('controller', 'citations');
@@ -90,6 +91,11 @@ JSubMenuHelper::addEntry(
 	JText::_('Sponsors'),
 	'index.php?option=com_citations&controller=sponsors',
 	$controllerName == 'sponsors'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Format'),
+	'index.php?option=com_citations&controller=format',
+	$controllerName == 'format'
 );
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');

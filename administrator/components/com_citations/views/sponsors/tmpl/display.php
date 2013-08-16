@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="4">There are currently no citation sponsors</td>
+					<td colspan="5">There are currently no citation sponsors</td>
 				</tr>
 			<?php endif; ?>
 		</tbody>

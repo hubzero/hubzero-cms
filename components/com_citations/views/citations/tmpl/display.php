@@ -34,7 +34,16 @@ defined('_JEXEC') or die( 'Restricted access');
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div>
-
+<div id="content-header-extra">
+	<ul>
+		<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
+			<li><a class="btn icon-add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">Submit a citation</a></li>
+		<?php endif; ?>
+		<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
+			<li><a class="btn icon-upload" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=import'); ?>">Import citations</a></li>
+		<?php endif; ?>	
+	</ul>
+</div>
 <?php
 	foreach($this->messages as $message) {
 		echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
@@ -44,14 +53,7 @@ defined('_JEXEC') or die( 'Restricted access');
 <div id="introduction" class="section">
 	<div class="aside">
 		<h3>Help</h3>
-		<ul>
-			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-				<li><a class="add-citation" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">Submit a citation</a></li>
-			<?php endif; ?>
-			<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
-				<li><a class="import-citation" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=import'); ?>">Import citations</a></li>
-			<?php endif; ?>	
-		</ul>
+		
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="two columns first">

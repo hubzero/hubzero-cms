@@ -38,7 +38,8 @@ ximport('Hubzero_View_Helper_Html');
 $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
 $rollover = ($rollover == "yes") ? 1 : 0;
-$template = $this->config->get("citation_format", "");
+$citationsFormat = new CitationsFormat( $this->database );
+$template = $citationsFormat->getDefaultFormat()->format;
 
 //batch downloads
 $batch_download = $this->config->get("citation_batch_download", 1);
@@ -65,8 +66,13 @@ if ($label == "none") {
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-			<li class="last">
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_citations&task=add'); ?>"><?php echo JText::_('Submit a Citation'); ?></a>
+			<li>
+				<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=com_citations&task=add'); ?>"><?php echo JText::_('Submit a Citation'); ?></a>
+			</li>
+		<?php endif; ?>
+		<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
+			<li>
+				<a class="btn icon-upload" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=import'); ?>">Import citations</a>
 			</li>
 		<?php endif; ?>
 	</ul>

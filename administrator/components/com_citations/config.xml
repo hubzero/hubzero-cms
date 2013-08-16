@@ -120,59 +120,6 @@
 		</param>
 		
 		<param type="spacer" />
-		<param name="citation_keys_premade" type="html" label="Citation Formats" description="Predefined Citation Formats">
-			<![CDATA[
-				<a href="#" class="format_type" rel="apa" id="apa_format">APA Format</a> |
-				<a href="#" class="format_type" rel="ieee" id="ieee_format">IEEE Format</a> |
-				<a href="#" class="format_type" rel="custom" id="custom_format">Custom Format</a>
-				
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-				<script>
-					var $jQ = jQuery.noConflict();
-					
-					$jQ(document).ready(function(e) { 
-						var current_format = $jQ("#paramscitation_format").val();
-						
-						$jQ(".format_type").live("click", function(e) {
-							var content, format = this.rel;
-							
-							if(format == "custom") {
-								$jQ("#paramscitation_format").val( current_format );
-							} else {
-								$jQ.post("index.php?option=com_citations&task=getformat&no_html=1", { format: format }, function(data) {
-									$jQ("#paramscitation_format").val( data );
-								});
-							}
-							
-							//prevent default link action
-							e.preventDefault();
-						});
-					});
-				</script>
-			]]>
-		</param>	
-		
-		<param name="citation_format" type="textarea" rows="10" cols="85" default="" label="Citation Format" description="Format that citations are displayed in. Use placeholders displayed below to create order of citation parts." />
-		
-		<param name="citation_keys" type="html" label="Citation Formatting Placeholders">
-			<![CDATA[
-				<script>
-					$jQ(document).ready(function(e) { 
-						$jQ.get("index.php?option=com_citations&task=gettemplatekeys&no_html=1", function(data) {
-							$jQ(".adminlist-list tbody").append( data );
-						});
-					});
-				</script>
-				
-				<table class="adminlist-list">
-					<thead>
-						<th>Placeholder</th>
-						<th>Value</th>
-					</thead>
-					<tbody></tbody>
-				</table>
-			]]>
-		</param>
 	</params>
 	<fieldset name="basic">
 		<field name="citation_single_view" type="list" default="0" label="Citations Single View" description="Citations Link to single citation view page?">
@@ -273,60 +220,6 @@
 			<option value="no">No</option>
 			<option value="yes">Yes</option>
 		</field>
-		
-		<field type="spacer" />
-		<field name="citation_keys_premade" type="html" label="Citation Formats" description="Predefined Citation Formats">
-			<![CDATA[
-				<a href="#" class="format_type" rel="apa" id="apa_format">APA Format</a> |
-				<a href="#" class="format_type" rel="ieee" id="ieee_format">IEEE Format</a> |
-				<a href="#" class="format_type" rel="custom" id="custom_format">Custom Format</a>
-				
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-				<script>
-					var $jQ = jQuery.noConflict();
-					
-					$jQ(document).ready(function(e) { 
-						var current_format = $jQ("#fieldscitation_format").val();
-						
-						$jQ(".format_type").live("click", function(e) {
-							var content, format = this.rel;
-							
-							if(format == "custom") {
-								$jQ("#fieldscitation_format").val( current_format );
-							} else {
-								$jQ.post("index.php?option=com_citations&task=getformat&no_html=1", { format: format }, function(data) {
-									$jQ("#fieldscitation_format").val( data );
-								});
-							}
-							
-							//prevent default link action
-							e.preventDefault();
-						});
-					});
-				</script>
-			]]>
-		</field>	
-		
-		<field name="citation_format" type="textarea" rows="10" cols="85" default="" label="Citation Format" description="Format that citations are displayed in. Use placeholders displayed below to create order of citation parts." />
-		
-		<field name="citation_keys" type="html" label="Citation Formatting Placeholders">
-			<![CDATA[
-				<script>
-					$jQ(document).ready(function(e) { 
-						$jQ.get("index.php?option=com_citations&task=gettemplatekeys&no_html=1", function(data) {
-							$jQ(".adminlist-list tbody").append( data );
-						});
-					});
-				</script>
-				
-				<table class="adminlist-list">
-					<thead>
-						<th>Placeholder</th>
-						<th>Value</th>
-					</thead>
-					<tbody></tbody>
-				</table>
-			]]>
-		</field>
+		<field type="spacer" /> 
 	</fieldset>
 </config>

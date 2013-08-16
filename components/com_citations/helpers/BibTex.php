@@ -55,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
    * @link      http://pear.php.net/package/Structures_BibTex
    */
 
-require_once( JPATH_ROOT.DS.'libraries'.DS.'pear'.DS.'PEAR.php' );
+require_once( JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'helpers'.DS.'PEAR.php' );
 /**
  * Structures_BibTex
  *
