@@ -8,7 +8,7 @@ Any member of this group can create a new article. When creating a new article, 
 
 === Getting started ===
 
- * [?task=new Create a new article]
+ * [?action=new Create a new article]
 
 === Finding Articles ===
 
