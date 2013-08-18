@@ -270,7 +270,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		);
 	
 		// Build the <select> of admin users
-		$this->view->lists['created_by'] = $this->userSelect('created_by', 0, 1);
+		//$this->view->lists['created_by'] = $this->userSelect('created_by', 0, 1);
 		
 		// Get attachments
 		$pContent = new PublicationAttachment( $this->database );

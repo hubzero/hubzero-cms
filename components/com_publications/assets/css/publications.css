@@ -253,7 +253,7 @@
 		left: 0;
 		}
 /* Tabbed view specifics */
-	.sep {
+	.com_publications .sep {
 		margin-top: 0;
 		margin-right: 250px;	
 		}
@@ -1149,7 +1149,7 @@
 	.cc { 
 		background: url("../img/logos/cc.gif") -0.5em 0.5em no-repeat;
 		}
-	.custom, .standard { 
+	.com_publications .custom, .standard { 
 		background: url("../img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
 	.gpl { 
