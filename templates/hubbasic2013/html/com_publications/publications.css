@@ -1,0 +1,100 @@
+@import url("/components/com_publications/assets/css/publications.css");
+
+	.mypubs {
+		background: #fff9f4;
+		background: #f7f2fe;
+		border: 4px solid #f7f2fe !important;
+	}
+/* Introduction */
+
+	#introbody {
+		padding: 25px 15px 25px 15px;
+		background: transparent url("images/intro.png") top right no-repeat;
+	}
+	body #introduction {
+		background: #f1fbe7 !important;
+		border-top: 4px solid #dfebd3;
+		border-bottom: 4px solid #dfebd3;
+		background: -moz-linear-gradient(left, #f1fbe7 0%, #f8fbe7 50%, #FFF 100%) !important;
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#f1fbe7), color-stop(50%,#f8fbe7), color-stop(100%,#FFF)) !important;
+	}
+	body #introduction h3 {
+		color: #52ad4b;
+	}
+	
+/* Icon */
+	body #introduction:after {
+		padding-left: 5px;
+	}
+	body #introduction:before {
+		border: 4px solid #dfebd3;
+	}
+	
+	.com_publications #content-header {
+		border-bottom: none;
+	}		
+	.com_publications .overviewcontainer #content-header h2 {
+		margin: 0;
+		padding: 1em 0;
+	}	
+	.com_publications .aside  {
+		border: none;
+	}
+	.com_publications .aside li {
+		border-top: none;
+	}
+	.com_publications .aside li:last-child {
+		border: none;
+	}
+	.com_publications .aside ul {
+		border: none;
+	}
+	.com_publications .aside li a {
+		display: inline;
+		padding-left: 0;
+	}	
+	.com_publications .aside li a:hover {
+		color: #000;
+	}
+	.com_publications .withleft .aside:before,
+	.com_publications .aside:before,
+	.com_publications .withleft .aside:after,
+	.com_publications .aside:after,
+	.com_publications .withleft .subject:before,
+	.com_publications #hubForm:after,
+	.com_publications #hubForm:before,
+	.com_publications .aside li a:before,
+	#hubForm fieldset:after,
+	#hubForm legend:after {
+		display: none;
+	}
+	#content-header, .status-msg {
+		background: white;
+	}
+
+	#introduction .subject {
+		width: 70%;
+	}
+	.com_publications th {
+		border: none;
+	}
+	.share a {
+		border: none;
+	}
+	.com_publications .aside .sharelinks li a {	
+		margin: 0;
+		padding: 0;	
+		padding-left: 10px;
+	}
+	#contrib-section {
+		margin-top: -2em;
+	}
+	#getstarted a {
+		font: 110% Helvetica, Arial, sans-serif;
+		font-weight: normal;
+		padding: .5em 3.2em .55em;
+		text-shadow: none;
+	}
+	.contrib-options {
+		margin-top: -5em;
+	}

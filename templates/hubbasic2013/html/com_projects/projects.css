@@ -1,0 +1,155 @@
+@import url("/components/com_projects/assets/css/projects.css");
+
+	.com_projects table {
+		clear: none;
+	}
+	.com_projects .aside  {
+		border: none;
+	}
+	.com_projects .aside li {
+		border-top: none;
+	}
+	.com_projects .aside li:last-child {
+		border: none;
+	}
+	.com_projects .aside ul {
+		border: none;
+	}
+	.com_projects .aside li a {
+		display: inline;
+		padding-left: 0;
+	}
+	.com_projects .aside li a:hover {
+		color: #000;
+		background: none;
+	}
+	.com_projects .aside li strong:before,
+		.aside li a:before {
+		border: none;	
+	}
+	.com_projects .aside .tdlists li a {
+		padding: 0.2em 1em;
+		padding-left: 20px;
+		width: 80%;
+		display: block;
+	}	
+	.com_projects .aside .tdlists li a:before {
+		position: absolute;
+		top: 0;
+		left: 1em;
+		margin-top: 0;
+		border: none;
+	}
+	.com_projects .aside .tdlists li a.dellist:before {
+		content: "";
+	}
+	.com_projects .aside .tdlists li .confirmaction a:before {
+		content: "";
+	}
+	.com_projects .withleft .aside:before,
+	.com_projects .aside:before,
+	.com_projects .withleft .aside:after,
+	.com_projects .aside:after,
+	.com_projects .withleft .subject:before,
+	.com_projects #hubForm:after,
+	.com_projects #hubForm:before,
+	#hubForm fieldset:after,
+	#hubForm legend:after {
+		display: none;
+	}
+	body#project-picture {
+		min-width: 400px;
+	}
+	.com_projects .aside li strong {
+		padding-left: 0;
+		font-weight: bold;
+	}
+	.com_projects #edit-project-content #hubForm p {
+		margin: 0.5em 0;
+	}
+	.com_projects #hubForm h5 {
+		color: #000000;
+	}
+	#edit-project-content.withleft .aside  {
+	 	padding-right: 0;
+	}
+	#hubForm .add-team ul input {
+		border: none;
+	}
+	.list-editing {
+		height: 25px;
+	}
+	
+	/* Blog */
+	.com_projects textarea {
+		background: white;
+		min-height: 30px;
+	}
+
+	/* Notes */
+	.com_projects .aside li a.note,
+	.com_projects .aside li a.wikitemplate  {
+		padding-left: 20px;
+	}
+	.com_projects .aside .wikilevel_2, 
+	.com_projects .aside .wikilevel_3, 
+	.com_projects .aside .wikilevel_4 {
+		margin-left: 2em;
+	}
+	.com_projects .aside .wikilevel_3 {
+		margin-left: 4em;
+	}
+	.com_projects .aside .wikilevel_4 {
+		margin-left: 6em;
+	}
+
+	#content {
+		margin: 0 30px -30px 30px;
+	}
+	.com_projects #content-header {
+		border-bottom: none;
+	}
+	.add:before,
+	.add:after,
+	.browse:before {
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 1em;
+		height: auto;
+	}
+	#content .browse:before,
+	.browse:before {
+		content: "\f00b";
+		top: 0;
+		height: auto;
+		width: 16px;
+		font-size: 16px;
+	}
+	#content .browse {
+		padding-left: 40px;
+	}
+	.useroptions a:before {
+		height: auto;
+	}
+	#setup.section {
+		padding-top: 0;
+	}
+	
+	#setup {
+		min-height: 300px;
+	}
+	#setup .or_separator {
+		margin: 2em -1em;
+	}
+	#setup #team-save {
+		margin-left: 0.5em !important;
+	}
+
+/* Introduction */
+	body #introduction div#introbody {
+		background: url("images/intro.png") top right no-repeat !important;
+	}
+	body #introduction {
+		padding: 0 0 0 140px;
+	}
