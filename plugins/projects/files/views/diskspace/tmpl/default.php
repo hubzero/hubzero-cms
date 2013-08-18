@@ -52,7 +52,7 @@ $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
 $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
 ?>
-<?php if($this->action != 'admin') { ?>
+<?php if($this->by != 'admin') { ?>
 	<?php if ($this->case == 'files') { ?>
 	<div id="plg-header">
 		<h3 class="<?php echo $class; ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('COM_PROJECTS_FILES_DISK_USAGE'); ?></span></h3>
@@ -105,18 +105,18 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 			<div id="usage-labels">
 					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').' ('.ProjectsHtml::formatSize($working).')'; ?>
 					<?php if ($versions > 0) { ?>
-					<span class="l-regular">&nbsp;</span><?php echo $this->action == 'admin' ? JText::_('Versions') : JText::_('Version History*') ; echo ' (' . $versions . ')'; ?>
+					<span class="l-regular">&nbsp;</span><?php echo $this->by == 'admin' ? JText::_('Versions') : JText::_('Version History*') ; echo ' (' . $versions . ')'; ?>
 					<?php } ?>
 					<?php if($warning) { ?><span class="approaching-quota"><?php echo ($inuse == 100) ? JText::_('COM_PROJECTS_FILES_OVER_QUOTA')  : JText::_('COM_PROJECTS_FILES_APPROACHING_QUOTA') ; ?></span><?php } ?>
 					<span class="l-unused">&nbsp;</span><?php echo JText::_('COM_PROJECTS_FILES_UNUSED_SPACE').' ('.$unused.')'; ?>
 			</div>
 		</div>
 	</div>
-	<?php if ($versions && $this->action != 'admin') { ?>
+	<?php if ($versions && $this->by != 'admin') { ?>
 	<p class="mini faded"><?php echo JText::_('COM_PROJECTS_FILES_ABOUT_HISTORY_SPACE'); ?></p>
 	<?php } ?>
 
-	<?php if ($this->action != 'admin' && $this->project->role == 1 
+	<?php if ($this->by != 'admin' && $this->project->role == 1 
 		&& $this->case == 'files' && $this->pparams->get('diskspace_options') && $versions > 0) { ?>
 	<div id="disk-manage">
 		<h4><?php echo JText::_('COM_PROJECTS_FILES_MANAGE_SPACE'); ?></h4>

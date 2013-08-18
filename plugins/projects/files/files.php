@@ -3111,9 +3111,10 @@ class plgProjectsFiles extends JPlugin
 		{									
 			if ($rename == 'dir')
 			{
-				$ret = exec('find "' . $newpath .'"');
+				//$ret = system('find ' . escapeshellarg($newpath));
 
-				if (!empty($ret))
+				//if (!empty($ret))
+				if (file_exists($newpath))
 				{
 					$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_DIR') . ' ' . $newpath);
 				}
@@ -3124,9 +3125,10 @@ class plgProjectsFiles extends JPlugin
 			}
 			else
 			{
-				$ret = exec('find "' . $newpath .'"');
+				//$ret = exec('find ' . escapeshellarg($newpath));
 
-				if (!empty($ret))
+				//if (!empty($ret))
+				if (file_exists($newpath))
 				{
 					$this->setError(JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
 				}
@@ -5364,7 +5366,7 @@ class plgProjectsFiles extends JPlugin
 	 *
 	 * @return     string
 	 */
-	protected function diskspace( $option, $project, $case, $by, $action, $config, $app )
+	public function diskspace( $option, $project, $case, $by, $action, $config, $app )
 	{
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
@@ -5375,9 +5377,12 @@ class plgProjectsFiles extends JPlugin
 			)
 		);
 		
-		$document =& JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
-		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
+		if ($by != 'admin')
+		{
+			$document =& JFactory::getDocument();
+			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
+			$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
+		}
 		
 		// Make sure Git helper is included
 		$this->getGitHelper();
@@ -5452,6 +5457,7 @@ class plgProjectsFiles extends JPlugin
 		$view->case 	= $case;
 		$view->app		= $app;
 		$view->action 	= $action;
+		$view->by 		= $by;
 		$view->project 	= $project;
 		$view->option 	= $option;
 		$view->config 	= $config;
@@ -6141,14 +6147,14 @@ class plgProjectsFiles extends JPlugin
 		$diskSpace = 0;
 		$commits = 0;
 		$usage = 0;
-		
+
 		// Publication space
 		if ($get == 'pubspace')
 		{
 			// Load publications component configs
 			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
-			
+
 			chdir(JPATH_ROOT . $base_path);
 			exec('du -sk ', $out);
 			$used = 0;
@@ -6158,14 +6164,20 @@ class plgProjectsFiles extends JPlugin
 				$kb = str_replace('.', '', trim($out[0]));
 				$used = $kb * 1024;
 			}
-			
+
 			return $used;
 		}
 
 		foreach ($aliases as $alias)
 		{
 			$path = $this->getProjectPath($alias, 'files');
-			
+
+			// Make sure there is .git directory
+			if (!is_dir($this->prefix . $path . DS . '.git'))
+			{
+				continue;
+			}
+
 			if ($get == 'diskspace')
 			{
 				$diskSpace = $diskSpace + $this->getDiskUsage($path, $this->prefix);
@@ -6174,14 +6186,23 @@ class plgProjectsFiles extends JPlugin
 			{
 				// Make sure Git helper is included
 				$this->getGitHelper();
-				
-				$out = $this->_git->callGit($path, 'log | grep "^commit" | wc -l' );
-				$c =  end($out);
-				$commits = $commits + $c;
+
+				$nf = $this->_git->callGit( $path, 'ls-files --full-name ');
+
+				if ($nf && substr($nf[0], 0, 5) != 'fatal')
+				{
+					$out = $this->_git->callGit($path, 'log | grep "^commit" | wc -l' );
+
+					if (is_array($out))
+					{
+						$c =  end($out);				
+						$commits = $commits + $c;
+					}
+				}					
 			}
 			else
 			{
-				$count = $this->getFiles($path, '', 0, 1);
+				$count = $this->getFiles($path, '', 0, true);
 				$files = $files + $count;
 
 				if ($count > 1)
@@ -6224,10 +6245,17 @@ class plgProjectsFiles extends JPlugin
 		if ($path && is_dir($prefix . $path))
 		{
 			chdir($prefix . $path);
-			
+
 			$where = $git == true ? ' .[!.]*' : '';
+
+			// Make sure there is .git directory
+			if ($git == true && !is_dir($prefix . $path . DS . '.git'))
+			{
+				return 0;
+			}
+
 			exec('du -sk ' . $where, $out);
-			
+
 			if ($out && isset($out[0]))
 			{
 				$dir = $git == true ? '.git' : '.';
@@ -6235,7 +6263,7 @@ class plgProjectsFiles extends JPlugin
 				$used = $kb * 1024;
 			}
 		}
-		
+
 		return $used;		
 	}
 	
