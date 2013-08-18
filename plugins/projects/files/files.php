@@ -1005,7 +1005,7 @@ class plgProjectsFiles extends JPlugin
 		$repoFile = $prefix . $path . DS . $fpath;
 		
 		// Are we updating?
-		if (is_file($repoFile))
+		if (file_exists($repoFile))
 		{
 			$exists = 1;
 		}
@@ -1042,7 +1042,7 @@ class plgProjectsFiles extends JPlugin
 		}
 				
 		// Do virus check
-		if (is_file($where) && ProjectsHelper::virusCheck($where))
+		if (file_exists($where) && ProjectsHelper::virusCheck($where))
 		{
 			if ($exists && !$expand) 
 			{ 
