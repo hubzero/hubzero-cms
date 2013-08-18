@@ -834,14 +834,14 @@ class ProjectsHelper extends JObject {
 	 */
 	public function virusCheck( $fpath = '' ) 
 	{
-		exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
-		
+		exec("clamscan -i --no-summary --block-encrypted " . escapeshellarg($fpath), $output, $status);
+
 		if ($status == 1)
 		{
 			unlink($fpath);
 			return true;
 		}
-		
+
 		return false;
 	}
 	

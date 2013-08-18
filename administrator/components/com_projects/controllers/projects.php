@@ -255,9 +255,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$dispatcher =& JDispatcher::getInstance();
 		$project = $obj->getProject($id, $this->juser->get('id'));	
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 
-			'files', $this->juser->get('id'), 'admin', $this->_config, NULL));
+			'files', 'admin', '', $this->_config, NULL));
 		$view->diskusage = isset($content[0])  ? $content[0]: '';
-		
+				
 		// Set any errors
 		if ($this->getError()) 
 		{

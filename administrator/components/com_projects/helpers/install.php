@@ -216,6 +216,20 @@ class ProjectsInstall extends JObject {
 	}
 	
 	/**
+	 * Install J1.6 extension
+	 * 
+	 * @return     void
+	 */	
+	public function installExtension( $name = '', $type = '', $element = '', $folder = '', $ordering = 0, $params = '', $enabled = 1, $client_id = 0) 
+	{
+		$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
+		SELECT $name, $type, $element, $folder, $client_id, $enabled, 1, 0, null, $params, null, null, 0, '0000-00-00 00:00:00', $ordering, 0
+		FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = '$name'";
+		
+		$this->runQuery($query);
+	}
+	
+	/**
 	 * Install project tables
 	 * 
 	 * @return     void
@@ -245,6 +259,28 @@ class ProjectsInstall extends JObject {
 			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Members - Projects','projects','members','0','17','0','0','0','0','0000-00-00 00:00:00','')";
 			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Groups - Projects','projects','groups','0','9','0','0','0','0','0000-00-00 00:00:00','')";
 			$queries[] = "INSERT INTO `#__modules` (`id`,`title`,`content`,`ordering`,`position`,`checked_out`,`checked_out_time`,`published`,`module`,`numnews`,`access`,`showtitle`,`params`,`iscore`,`client_id`,`control`) VALUES ('','My Projects','','0','myhub','0','0000-00-00 00:00:00','0','mod_myprojects','0','0','0','moduleclass=md-projects\nlimit=5\n\n','0','0','')";
+		}
+		else
+		{
+			// The following is for Joomla 1.6+
+			$params = '{"component_on":"0","grantinfo":"0","confirm_step":"0","edit_settings":"1","restricted_data":"0","restricted_upfront":"0","approve_restricted":"0","privacylink":"\/legal\/privacy","HIPAAlink":"\/legal\/privacy","FERPAlink":"\/legal\/privacy","creatorgroup":"","admingroup":"projectsadmin","sdata_group":"hipaa_reviewers","ginfo_group":"sps_reviewers","min_name_length":"6","max_name_length":"25","reserved_names":"clone, temp, test","webpath":"\/srv\/projects","offroot":"1","gitpath":"\/usr\/bin\/git","gitclone":"\/site\/projects\/clone\/.git","maxUpload":"104857600","defaultQuota":"1","premiumQuota":"1","approachingQuota":"90","pubQuota":"1","premiumPubQuota":"1","imagepath":"\/site\/projects","defaultpic":"\/components\/com_projects\/assets\/img\/project.png","img_maxAllowed":"5242880","img_file_ext":"jpg,jpeg,jpe,bmp,tif,tiff,png,gif","logging":"0","messaging":"1","privacy":"1","limit":"25","sidebox_limit":"3","group_prefix":"pr-","use_alias":"1","documentation":"\/projects\/features","dbcheck":"1"}';
+			
+			$this->installExtension('com_projects', 'component', 'com_projects', '', 0, $params, 1, 1);
+			
+			$this->installExtension('plg_projects_blog', 'plugin', 'blog', 'projects', 1, '', 1, 0);
+			$this->installExtension('plg_projects_team', 'plugin', 'team', 'projects', 2, '', 1, 0);
+			
+			$params = '{"display_limit":"50","maxUpload":"104857600","maxDownload":"1048576","tempPath":"\/site\/projects\/temp","reservedNames":"google , dropbox, shared, temp","connectedProjects":"","enable_google":"0","google_clientId":"","google_clientSecret":"","google_appKey":"","google_folder":"Google","sync_lock":"0","auto_sync":"1","latex":"1","texpath":"\/usr\/bin\/","gspath":"\/usr\/bin\/","diskspace_options":"0","enable_publinks":"0"}';
+			
+			$this->installExtension('plg_projects_files','plugin', 'files', 'projects', 3, $params, 1, 0);
+			
+			$this->installExtension('plg_projects_todo','plugin', 'todo', 'projects', 7, '', 1, 0);
+			$this->installExtension('plg_projects_notes','plugin', 'notes', 'projects', 8, '', 1, 0);
+			
+			// Make entries for Groups/Members plugins, My Projects module
+			$this->installExtension('plg_members_projects','plugin', 'projects', 'members', 17, '', 1, 0);
+			$this->installExtension('plg_groups_projects','plugin', 'projects', 'groups', 17, '', 1, 0);
+			$this->installExtension('mod_myprojects','module', 'mod_myprojects', '', 0, '', 1, 0);
 		}
 
 		// Make entries to enable HUB messaging
