@@ -328,6 +328,10 @@ class Hubzero_Content_Server
 				header('Content-Disposition: attachment; filename="' . $saveas . '"');
 			}
 		}
+		elseif (!$partial && ($disposition == 'inline'))
+		{
+			header('Content-Disposition: inline; filename="' . $saveas . '"');
+		}
 
 		if ($multipart)
 		{
