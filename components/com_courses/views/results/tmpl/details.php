@@ -1,7 +1,7 @@
 <?
 $pdf = $this->pdf;
 $dep = $this->dep;
-$resp = $dep->getRespondent();
+$resp = $this->resp;
 $record = $resp->getAnswers();
 $layout = $pdf->getPageLayout($record['summary']['version']);
 ?>
@@ -26,6 +26,16 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 <div class="main section">
 	<p>Completed <?= date('r', strtotime($resp->getEndTime())); ?></p>
 	<p>Score <strong><?= $record['summary']['score'] ?>%</strong></p>
+
+	<? if ($this->dep->getAllowedAttempts() > 1) : ?>
+		<? $attempt = $resp->getAttemptNumber(); ?>
+		You are allowed <strong><?= $this->dep->getAllowedAttempts() ?></strong> attempts.
+		This was your <strong><?= FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
+		<? if ($this->dep->getAllowedAttempts() > $attempt) : ?>
+			<a href="<?= JRoute::_('/courses/form/complete?crumb='.$this->dep->getCrumb().'&attempt='.((int)$attempt+1)) ?>">View your <?= FormHelper::toOrdinal((int)$attempt+1) ?> attempt</a>
+		<? endif; ?>
+	<? endif; ?>
+
 	<ol id="pages" class="complete">	
 	<? $pdf->eachPage(function($url, $idx) use($layout, $record) { ?>
 		<li>

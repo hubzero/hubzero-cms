@@ -63,11 +63,18 @@ class PdfFormRespondent
 	private $finished;
 
 	/**
+	 * Number of latest attempt
+	 *
+	 * @var int
+	 **/
+	private $attempt;
+
+	/**
 	 * Construtor
 	 *
 	 * @return void
 	 **/
-	public function __construct($depId, $uid=null)
+	public function __construct($depId, $uid=null, $attempt=1)
 	{
 		if (!$uid && !($uid = JFactory::getUser()->id))
 		{
@@ -75,20 +82,23 @@ class PdfFormRespondent
 		}
 
 		$dbh = JFactory::getDBO();
-		$dbh->setQuery('SELECT id, started, finished FROM #__courses_form_respondents WHERE deployment_id = '.(int)$depId.' AND user_id = '.(int)$uid);
+		$query  = 'SELECT id, started, finished, attempt FROM `#__courses_form_respondents`';
+		$query .= ' WHERE deployment_id = '.(int)$depId.' AND user_id = '.(int)$uid.' AND attempt='.(int)$attempt;
+		$dbh->setQuery($query);
 
 		// Set deployment id
 		$this->depId = (int)$depId;
 
 		if (($res = $dbh->loadAssoc()))
 		{
-			$this->id = $res['id'];
-			$this->started = $res['started'];
+			$this->id       = $res['id'];
+			$this->started  = $res['started'];
 			$this->finished = $res['finished'];
+			$this->attempt  = $res['attempt'];
 		}
 		else
 		{
-			$dbh->execute('INSERT INTO #__courses_form_respondents(deployment_id, user_id) VALUES ('.(int)$depId.', '.(int)$uid.')');
+			$dbh->execute('INSERT INTO #__courses_form_respondents(deployment_id, user_id, attempt) VALUES ('.(int)$depId.', '.(int)$uid.', '.(int)$attempt.')');
 			$this->id = $dbh->insertid();
 		}
 	}
@@ -201,6 +211,16 @@ class PdfFormRespondent
 	public function getEndTime()
 	{
 		return $this->finished;
+	}
+
+	/**
+	 * Get attempt #
+	 *
+	 * @return integer
+	 **/
+	public function getAttemptNumber()
+	{
+		return $this->attempt;
 	}
 
 	/**

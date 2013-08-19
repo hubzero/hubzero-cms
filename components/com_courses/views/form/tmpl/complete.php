@@ -1,7 +1,6 @@
 <?php
 $pdf = $this->pdf;
-$resp = $this->dep->getRespondent();
-$progress = $resp->getProgress();
+$progress = $this->resp->getProgress();
 $realLimit = $this->dep->getRealTimeLimit();
 $incomplete = $this->incomplete;
 ?>
@@ -12,13 +11,13 @@ $incomplete = $this->incomplete;
 
 <div class="main section">
 	<?php
-	if (($limit = $this->dep->getTimeLimit()) && is_null($resp->getStartTime())):
+	if (($limit = $this->dep->getTimeLimit()) && is_null($this->resp->getStartTime())):
 		require 'timed_landing.php';
 	else:
 		if ($this->dep->getTimeLimit()):
 	?>
 	<script type="text/javascript">
-		window.timeLeft = <? echo  max(($this->dep->getTimeLimit() * 60) - (time() - strtotime($resp->getStartTime())), 0); ?>;
+		window.timeLeft = <? echo  max(($this->dep->getTimeLimit() * 60) - (time() - strtotime($this->resp->getStartTime())), 0); ?>;
 	</script>
 	<?php
 		endif;
@@ -54,6 +53,7 @@ $incomplete = $this->incomplete;
 			<input type="hidden" name="controller" value="form" />
 			<input type="hidden" name="task" value="submit" />
 			<input type="hidden" name="crumb" value="<?= $this->dep->getCrumb() ?>" />
+			<input type="hidden" name="attempt" value="<?= $this->resp->getAttemptNumber() ?>" />
 			<button type="submit">Submit</button>
 		</p>
 	</fieldset>

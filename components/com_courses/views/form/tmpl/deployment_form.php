@@ -37,6 +37,18 @@
 			</ul>
 			<? endif; ?>
 		</p>
+		<p>
+			<label>
+				<span>Attempts:</span><input type="number" class="minutes" name="deployment[allowedAttempts]" value="<?= htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
+			</label>
+			<? if ($showErrors && $this->dep->hasErrors('allowedAttempts')): ?>
+			<ul class="error">
+				<? foreach ($this->dep->getErrors('allowedAttempts') as $err): ?>
+				<li><?= $err ?></li>
+				<? endforeach; ?>
+			</ul>
+			<? endif; ?>
+		</p>
 		<p class="info">If this deployment is timed, a landing page will be shown before the form to prevent users from triggering the countdown before they are ready.</p>
 	</fieldset>
 	<fieldset>

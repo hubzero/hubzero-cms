@@ -112,6 +112,13 @@ class PdfFormDeployment
 	private $userId;
 
 	/**
+	 * Number of attempts allowed
+	 *
+	 * @var int
+	 **/
+	private $allowedAttempts;
+
+	/**
 	 * Username
 	 *
 	 * @var string
@@ -221,7 +228,8 @@ class PdfFormDeployment
 			{$join_type} JOIN #__courses_form_questions pfq ON pfq.id = pfr2.question_id
 			LEFT JOIN #__courses_form_answers pfa ON pfa.id = pfr2.answer_id AND pfa.correct
 			WHERE deployment_id = {$this->id}
-			GROUP BY name, email, started, finished, version"
+			GROUP BY name, email, started, finished, version
+			ORDER BY user_id ASC, score ASC"
 		);
 
 		return $dbh->loadAssocList($key);
@@ -248,17 +256,22 @@ class PdfFormDeployment
 	 *
 	 * @return object
 	 **/
-	public function getRespondent($uid=NULL)
+	public function getRespondent($uid=NULL, $attempt=1)
 	{
 		// @FIXME: should this have a static instance?  this causes a problem when loading a grade book type scenario
 		static $resp;
 
-		if (!$resp && $this->id)
+		if ($attempt > $this->getAllowedAttempts())
 		{
-			$resp = new PdfFormRespondent($this->id, $uid);
+			return false;
 		}
 
-		return new PdfFormRespondent($this->id, $uid);
+		if (!$resp && $this->id)
+		{
+			$resp = new PdfFormRespondent($this->id, $uid, $attempt);
+		}
+
+		return new PdfFormRespondent($this->id, $uid, $attempt);
 	}
 
 	/**
@@ -290,7 +303,7 @@ class PdfFormDeployment
 	{
 		$dep = new PdfFormDeployment;
 		$dbh = self::getDbh();
-		$dbh->setQuery('SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, results_open AS resultsOpen, time_limit AS timeLimit, crumb, results_closed AS resultsClosed FROM #__courses_form_deployments WHERE '.$where);
+		$dbh->setQuery('SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, results_open AS resultsOpen, time_limit AS timeLimit, crumb, results_closed AS resultsClosed, allowed_attempts AS allowedAttempts FROM #__courses_form_deployments WHERE '.$where);
 
 		if (!($res = $dbh->loadAssoc()))
 		{
@@ -447,6 +460,16 @@ class PdfFormDeployment
 	}
 
 	/**
+	 * Get number of allowed attempts
+	 *
+	 * @return string
+	 **/
+	public function getAllowedAttempts()
+	{
+		return $this->allowedAttempts;
+	}
+
+	/**
 	 * Get crumb
 	 *
 	 * @return string
@@ -519,6 +542,10 @@ class PdfFormDeployment
 			{
 				$this->errors['resultsClosed'] = array('Invalid selection');
 			}
+			if ($this->allowedAttempts <= 0)
+			{
+				$this->errors['allowedAttempts'] = array('Number of attempts cannot be less than 1');
+			}
 		}
 
 		return is_null($col) ? (bool)$this->errors : isset($this->errors[$col]) && (bool)$this->errors[$col];
@@ -543,7 +570,7 @@ class PdfFormDeployment
 	{
 		$dep = new PdfFormDeployment;
 		$dep->formId = $fid;
-		foreach (array('startTime', 'endTime', 'resultsOpen', 'resultsClosed', 'timeLimit') as $key)
+		foreach (array('startTime', 'endTime', 'resultsOpen', 'resultsClosed', 'timeLimit', 'allowedAttempts') as $key)
 		{
 			if (!isset($data[$key]))
 			{
@@ -588,7 +615,7 @@ class PdfFormDeployment
 		if (is_null($id))
 		{
 			$dbh->execute(
-				'INSERT INTO #__courses_form_deployments(form_id, start_time, end_time, results_open, results_closed, time_limit, crumb, user_id) VALUES ('.
+				'INSERT INTO `#__courses_form_deployments`(form_id, start_time, end_time, results_open, results_closed, time_limit, crumb, user_id, allowed_attempts) VALUES ('.
 					(int)$this->formId.', '.
 					($this->startTime ? date('\'Y-m-d H:i:s\'', strtotime($this->startTime)) : 'NULL').', '.
 					($this->endTime   ? date('\'Y-m-d H:i:s\'', strtotime($this->endTime)) : 'NULL').', '.
@@ -596,7 +623,8 @@ class PdfFormDeployment
 					$dbh->quote($this->resultsClosed).', '.
 					(int)$this->timeLimit.', '.
 					$dbh->quote($this->crumb).', '.
-					(int)JFactory::getUser()->id.
+					(int)JFactory::getUser()->id.', '.
+					(int)$this->allowedAttempts.
 				')'
 			);
 
@@ -614,7 +642,8 @@ class PdfFormDeployment
 				'end_time = '.($this->endTime   ? date('\'Y-m-d H:i:s\'', strtotime($this->endTime)) : 'NULL').', '.
 				'results_open = '.$dbh->quote($this->resultsOpen).', '.
 				'results_closed = '.$dbh->quote($this->resultsClosed).', '.
-				'time_limit = '.(int)$this->timeLimit.
+				'time_limit = '.(int)$this->timeLimit.', '.
+				'allowed_attempts = '.(int)$this->allowedAttempts.
 			' WHERE id = '.(int)$id
 		);
 

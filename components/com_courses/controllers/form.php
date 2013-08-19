@@ -398,6 +398,14 @@ class CoursesControllerForm extends Hubzero_Controller {
 			case 'pending':
 				JError::raiseError(422, 'This deployment is not yet available');
 			case 'expired':
+				$attempt = JRequest::getInt('attempt', 1);
+
+				// Make sure they're not trying to take the form too many times
+				if($attempt > $dep->getAllowedAttempts())
+				{
+					JError::raiseError(403, "You're not allowed this many attempts!");
+				}
+
 				$this->setView('results', $dep->getResultsClosed());
 
 				// Set the title and pathway
@@ -408,6 +416,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 				$this->_getScripts('assets/js/' . $this->_task);
 
 				$this->view->dep   = $dep;
+				$this->view->resp  = $dep->getRespondent(NULL, $attempt);
 				$this->view->pdf   = $dep->getForm();
 				$this->view->title = $this->view->pdf->getTitle();
 				$this->view->dep   = $dep;
@@ -416,7 +425,16 @@ class CoursesControllerForm extends Hubzero_Controller {
 				$this->view->display();
 			break;
 			case 'active':
-				$resp = $dep->getRespondent();
+				$attempt = JRequest::getInt('attempt', 1);
+
+				// Make sure they're not trying to take the form too many times
+				if($attempt > $dep->getAllowedAttempts())
+				{
+					JError::raiseError(403, "You're not allowed this many attempts!");
+				}
+
+				$resp = $dep->getRespondent(NULL, $attempt);
+
 				if($resp->getEndTime())
 				{
 					$this->setView('results', $dep->getResultsOpen());
@@ -429,9 +447,10 @@ class CoursesControllerForm extends Hubzero_Controller {
 					$this->_getScripts('assets/js/' . $this->_task);
 
 					$this->view->incomplete = array();
-					$this->view->pdf = $dep->getForm();
-					$this->view->title = $this->view->pdf->getTitle();
-					$this->view->dep = $dep;
+					$this->view->pdf        = $dep->getForm();
+					$this->view->title      = $this->view->pdf->getTitle();
+					$this->view->dep        = $dep;
+					$this->view->resp       = $resp;
 					$this->view->display();
 					return;
 				}
@@ -444,9 +463,10 @@ class CoursesControllerForm extends Hubzero_Controller {
 					$this->_getStyles($this->_option, $this->_controller . '.css');
 					$this->_getScripts('assets/js/' . $this->_task);
 
-					$this->view->pdf   = $dep->getForm();
-					$this->view->title = $this->view->pdf->getTitle();
-					$this->view->dep   = $dep;
+					$this->view->pdf        = $dep->getForm();
+					$this->view->title      = $this->view->pdf->getTitle();
+					$this->view->dep        = $dep;
+					$this->view->resp       = $resp;
 					$this->view->incomplete = (isset($this->view->incomplete)) ? $this->view->incomplete : array();
 					$this->view->display();
 				}
@@ -465,12 +485,15 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(422);
 		}
 
-		PdfFormDeployment::fromCrumb($crumb)->getRespondent()->markStart();
+		$attempt = JRequest::getInt('attempt', 1);
+
+		PdfFormDeployment::fromCrumb($crumb)->getRespondent(NULL, $attempt)->markStart();
 
 		$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=' . JRequest::getWord('tmpl') : '';
+		$att  = ($attempt > 1) ? '&attempt='.$attempt : '';
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb=' . $_POST['crumb'] . $tmpl, false)
+			JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb=' . $_POST['crumb'] . $att . $tmpl, false)
 		);
 		return;
 	}
@@ -488,7 +511,9 @@ class CoursesControllerForm extends Hubzero_Controller {
 			exit();
 		}
 
-		PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent()->saveProgress($_POST['question'], $_POST['answer']);
+		$attempt = JRequest::getInt('attempt', 1);
+
+		PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent(NULL, $attempt)->saveProgress($_POST['question'], $_POST['answer']);
 
 		echo json_encode(array("result"=>"success"));
 		exit();
@@ -506,16 +531,19 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(422);
 		}
 
+		$attempt = JRequest::getInt('attempt', 1);
+		$att  = ($attempt > 1) ? '&attempt='.$attempt : '';
+
 		$dep = PdfFormDeployment::fromCrumb($crumb);
 
 		list($complete, $answers) = $dep->getForm()->getQuestionAnswerMap($_POST);
 
 		if ($complete)
 		{
-			$resp = $dep->getRespondent();
+			$resp = $dep->getRespondent(NULL, $attempt);
 			$resp->saveAnswers($_POST)->markEnd();
 
-			$this->setRedirect(JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb='.$crumb, false));
+			$this->setRedirect(JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb='.$crumb.$att, false));
 			return;
 		}
 		else
@@ -695,5 +723,26 @@ class FormHelper {
 		$result = $db->loadResult();
 
 		return ($result) ? $result : NULL;
+	}
+
+	/**
+	 * Convert integer to ordinal number
+	 * 
+	 * @return     string
+	 */
+	public function toOrdinal($int)
+	{
+		$ends = array('th','st','nd','rd','th','th','th','th','th','th');
+
+		if (($int %100) >= 11 && ($int%100) <= 13)
+		{
+			$abbreviation = $int. 'th';
+		}
+		else
+		{
+			$abbreviation = $int. $ends[$int % 10];
+		}
+
+		return $abbreviation;
 	}
 }
