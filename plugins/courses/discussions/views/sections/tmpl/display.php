@@ -133,8 +133,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
 						<input type="submit" value="<?php echo JText::_('Save'); ?>" />
 						<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
-						<input type="hidden" name="fields[scope]" value="group" />
-						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->course->get('id'); ?>" />
+						<input type="hidden" name="fields[scope]" value="course" />
+						<input type="hidden" name="fields[scope_id]" value="<?php echo $section->scope_id; ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 						<input type="hidden" name="action" value="savesection" />
