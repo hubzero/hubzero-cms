@@ -36,8 +36,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 ?>
 
 <div class="header">
-	<a href="#" class="trash btn">Deleted Assets</a>
-	<a href="<?php echo JRoute::_($base . '&active=outline'); ?>" class="done btn">Done</a>
+	<a href="#" class="trash btn icon-trash">Deleted Assets</a>
+	<a href="<?php echo JRoute::_($base . '&active=outline'); ?>" class="done btn icon-check">Done</a>
 	<h3><?php echo $this->title; ?></h2>
 </div>
 

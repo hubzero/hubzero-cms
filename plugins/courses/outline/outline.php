@@ -87,7 +87,7 @@ class plgCoursesOutline extends Hubzero_Plugin
 				. $offering->section()->get('alias') : '')
 				. '&active=outline&action=build';
 
-			$html = '<a class="btn edit" href="' . JRoute::_($url) . '">Build outline</a>';
+			$html = '<a class="btn edit icon-edit" href="' . JRoute::_($url) . '">Build outline</a>';
 		}
 
 		return $html;
