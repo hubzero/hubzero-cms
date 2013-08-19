@@ -99,6 +99,15 @@ class CoursesControllerStudents extends Hubzero_Controller
 
 		$this->view->filters['count'] = true;
 
+		if (!$this->view->filters['section_id'])
+		{
+			$this->view->filters['section_id'] = array();
+			foreach ($this->view->offering->sections() as $section)
+			{
+				$this->view->filters['section_id'][] = $section->get('id');
+			}
+		}
+
 		$this->view->total = $this->view->offering->students($this->view->filters);
 
 		$this->view->filters['count'] = false;
