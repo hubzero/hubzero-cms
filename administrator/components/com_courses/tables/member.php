@@ -323,7 +323,7 @@ class CoursesTableMember extends JTable
 		}
 		if (isset($filters['offering_id']))
 		{
-			if (is_array($filters['section_id']))
+			if (is_array($filters['offering_id']))
 			{
 				$filters['offering_id'] = array_map('intval', $filters['offering_id']);
 				$where[] = "m.`offering_id` IN (" . implode(",", $filters['offering_id']) . ")";
