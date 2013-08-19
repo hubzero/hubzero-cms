@@ -43,7 +43,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		?>
 <?php } else { ?>
 		<li>
-			<a class="active page" href="<?php echo $base; ?>"><?php echo JText::_('Notice!'); ?></a>
+			<a class="active page" href="<?php echo $base; ?>"><?php echo JText::_('[No Pages Found]'); ?></a>
 		</li>
 <?php } ?>
 	</ul>

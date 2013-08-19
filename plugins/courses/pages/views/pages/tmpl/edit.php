@@ -41,9 +41,9 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				</div>
 				<div class="two columns second">
 					<label for="field-url">
-						<?php echo JText::_('URL:'); ?> <span class="optional"><?php echo JText::_('optional'); ?></span>
+						<?php echo JText::_('Alias:'); ?> <span class="optional"><?php echo JText::_('optional'); ?></span>
 						<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->model->get('url'))); ?>" />
-						<span class="hint"><?php echo JText::_('URLs can only contain alphanumeric characters and underscores. Spaces will be removed.'); ?></span>
+						<span class="hint"><?php echo JText::_('An alias can only contain alphanumeric characters and underscores. Spaces will be removed.'); ?></span>
 					</label>
 				</div>
 				<div class="clear"></div>
