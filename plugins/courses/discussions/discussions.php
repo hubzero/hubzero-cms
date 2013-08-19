@@ -1401,6 +1401,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		// Collect all categories
 		$view->filters['section_id'] = -1;
 		$categories = array();
+		$view->filters['sort_Dir'] = 'DESC';
+		$view->filters['sort']     = 'ordering ASC, created ASC, title';
 		$results = $model->getRecords($view->filters);
 		if ($results)
 		{
