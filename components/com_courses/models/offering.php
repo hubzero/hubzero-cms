@@ -276,6 +276,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		 || ($id !== null && (int) $this->_section->get('id') != $id && (string) $this->_section->get('alias') != $id))
 		{
 			$this->_section = null;
+			$this->_link = null; // Clear any potential existing data that may have another (prevous) section's info
 
 			if (isset($this->_section))
 			{
