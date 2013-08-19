@@ -486,7 +486,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 		foreach ($results as $result)
 		{
-			$passing[$result->user_id] = ($result->score >= $gradePolicy->get('threshold') * 100) ? 1 : 0;
+			if (!is_null($result->score))
+			{
+				$passing[$result->user_id] = ($result->score >= $gradePolicy->get('threshold') * 100) ? 1 : 0;
+			}
 		}
 
 		return $passing;
