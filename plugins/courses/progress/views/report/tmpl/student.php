@@ -232,6 +232,7 @@ $units     = $this->course->offering()->units();
 $num_units = $units->total();
 $index     = 1;
 $current_i = 0;
+$finished  = $student->badge()->hasEarned() ? ' finished' : '';
 
 // Build the progress timeline bar
 $progress_timeline  = "<div class=\"progress-timeline length_{$num_units}\">";
@@ -245,12 +246,12 @@ if (count($units) > 0)
 		$complete = isset($progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'])
 					? $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete']
 					: 0;
-		$past     = ((!is_null($unit->get('publish_up')) && $unit->started()) || $complete > 0) ? ' past' : '';
+		$past     = ((!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00 00:00:00' && $unit->started()) || $complete > 0) ? ' past' : '';
 		$margin   = 100 - $complete;
 		$done     = ($complete == 100) ? ' complete' : '';
 		$current  = '';
 
-		if((!is_null($unit->get('publish_up')) && $unit->isAvailable()) || $complete > 0)
+		if((!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00 00:00:00' && $unit->isAvailable()) || $complete > 0)
 		{
 			$current   = ' current';
 			// Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
@@ -273,7 +274,7 @@ else
 {
 	$progress_timeline .= "<div class=\"unit unit-empty\"><div class=\"unit-empty-inner\"></div></div>";
 }
-$progress_timeline .= '<div class="end"><div class="person"></div><div class="end-inner"></div></div>';
+$progress_timeline .= '<div class="end'.$finished.'"><div class="person"></div><div class="end-inner"></div></div>';
 $progress_timeline .= '</div>';
 
 ?>
@@ -281,7 +282,7 @@ $progress_timeline .= '</div>';
 <div class="progress">
 	<? if($this->course->access('manage')) : ?>
 		<div class="extra">
-			<a href="<?= JRoute::_($base . '&active=progress') ?>" class="back btn"><?= JText::_('Back to all students') ?></a>
+			<a href="<?= JRoute::_($base . '&active=progress') ?>" class="back btn icon-back"><?= JText::_('Back to all students') ?></a>
 		</div>
 	<? endif; ?>
 

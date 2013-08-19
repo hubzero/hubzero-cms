@@ -26,9 +26,7 @@
 	border-bottom: 1px dotted #e1e1e1;
 }
 .progress .back {
-	display: block;
 	float: right;
-	padding: 0.4em 0.91em 0.4em 2.91em;
 }
 .progress .back:before {
 	background: #e3e3e3;
@@ -96,6 +94,9 @@
 }
 .progress-timeline .end .person {
 	background: url('/components/com_courses/assets/img/person.png') -92px -138px no-repeat;
+}
+.progress-timeline .end.finished .person {
+	background: url('/components/com_courses/assets/img/person.png') -92px -50px no-repeat;
 }
 .progress-timeline .current .person {
 	background: url('/components/com_courses/assets/img/person.png') -11px -50px no-repeat;

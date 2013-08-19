@@ -46,6 +46,11 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		var last = progress.find('.current:last').attr('class');
+		var finished = progress.find('.end.finished');
+
+		if (finished.length) {
+			finished.find('.person').css('background-position', '-92px -138px');
+		}
 
 		if (last) {
 			var marker = last.match(/unit_([0-9]+)/);
@@ -62,6 +67,13 @@ HUB.Plugins.CoursesProgress = {
 
 						element.parent('.unit').addClass('current');
 					}, (idx + 1) * 250);
+
+					if (unitId[1] == marker[1] && finished.length) {
+						setTimeout(function() {
+							progress.find('.unit').removeClass('current');
+							finished.find('.person').css('background-position', '-92px -50px');
+						}, (idx + 2) * 250);
+					}
 				}
 			});
 		}
