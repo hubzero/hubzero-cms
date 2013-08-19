@@ -22,6 +22,10 @@ jQuery(function($) {
 		iframeHack = 20;
 	}
 
+	$('.main.section.courses-form').submit(function ( e ) {
+		e.preventDefault();
+	});
+
 	// pagination
 	tabs.click(function(evt) {
 		pages.hide();
@@ -51,7 +55,8 @@ jQuery(function($) {
 	});
 	// modify the box to extend from the current cursor position to its origin point
 	pages.bind('mousemove', function(evt) {
-		x = evt.pageX - basePos.left, y = evt.pageY - basePos.top;
+		x = evt.pageX - basePos.left;
+		y = evt.pageY - basePos.top;
 		if (groupBox) {
 			groupBox.css({ 'left': Math.min(x, groupOrigin.x), 'top': Math.min(y, groupOrigin.y), 'width': Math.abs(x - groupOrigin.x), 'height': Math.abs(y - groupOrigin.y)});
 		}
@@ -197,6 +202,7 @@ jQuery(function($) {
 					return;
 				}
 				var off = $(group).offset();
+				var bor = $(this).css('border-top').match(/(\d+)px/)[1];
 				off.top -= basePos.top;
 				off.left -= basePos.left;
 				off.top = Math.round(off.top);
@@ -211,7 +217,7 @@ jQuery(function($) {
 					off = $(ans).children('.placeholder').offset();
 					off.top -= basePos.top;
 					off.left -= basePos.left;
-					off.top = Math.round(off.top);
+					off.top = Math.round(off.top - bor);
 					off.left = Math.round(off.left);
 					off.correct = $(ans).hasClass('selected');
 					foundCorrect = foundCorrect || off.correct;
