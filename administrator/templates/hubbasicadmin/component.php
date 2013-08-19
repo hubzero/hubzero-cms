@@ -45,6 +45,14 @@ if ($this->direction == 'rtl') {
 	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
 }
 
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$doc->addScript('/media/system/js/mootools-core-uncompressed.js');
+	$doc->addScript('/media/system/js/core-uncompressed.js');
+	$doc->addScript('/media/system/js/mootools-more-uncompressed.js');
+	$doc->addScript('templates/' . $this->template . '/js/component.js');
+}
+
 ximport('Hubzero_Browser');
 $browser = new Hubzero_Browser();
 $b = $browser->getBrowser();
@@ -60,6 +68,7 @@ $juser =& JFactory::getUser();
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
+
 	</head>
 	<body id="component-body" class="contentpane">
 		<jdoc:include type="message" />
