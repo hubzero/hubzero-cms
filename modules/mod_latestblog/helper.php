@@ -134,7 +134,8 @@ class modLatestBlog extends JObject
 				$group = Hubzero_Group::getInstance($gf->group_id);
 				if (is_object($group)) 
 				{
-					$blog_access = $group->getPluginAccess('blog');
+					ximport('Hubzero_Group_Helper');
+					$blog_access = Hubzero_Group_Helper::getPluginAccess($group, 'blog');
 
 					if ($blog_access == 'nobody' 
 					 || ($blog_access == 'registered' && $juser->get('guest')) 

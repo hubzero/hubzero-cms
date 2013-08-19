@@ -60,7 +60,7 @@ $c = 0;
 						'scope'    => 'blog',
 						'pagename' => $post->alias,
 						'pageid'   => 0,
-						'filepath' => '/site/groups/' . $post->roup_id . '/blog',
+						'filepath' => '/site/groups/' . $post->group_id . '/blog',
 						'domain'   => ''
 					);
 				}
@@ -99,12 +99,12 @@ $c = 0;
 									</span>
 								</dt>
 								<dd class="date">
-									<time datetime="<?php echo $row->publish_up; ?>">
+									<time datetime="<?php echo $post->publish_up; ?>">
 										<?php echo JHTML::_('date', $post->publish_up, $this->dateFormat, $this->tz); ?>
 									</time>
 								</dd>
 								<dd class="time">
-									<time datetime="<?php echo $row->publish_up; ?>">
+									<time datetime="<?php echo $post->publish_up; ?>">
 										<?php echo JHTML::_('date', $post->publish_up, $this->timeFormat, $this->tz); ?>
 									</time>
 								</dd>
