@@ -195,6 +195,13 @@ function popratings()
 					<th class="key"><label for="attrib[timeof]">Time:</label></th>
 					<td><input type="text" name="attrib[timeof]" id="attrib[timeof]" size="25" maxlength="250" value="<?php echo $this->attribs->get('timeof', ''); ?>" /></td>
 				</tr>
+				<tr>
+					<th class="key"><label for="attrib_canonical">Canonical:</label></th>
+					<td colspan="3">
+						<input type="text" name="attrib[canonical]" id="attrib_canonical" size="25" maxlength="250" value="<?php echo $this->attribs->get('canonical', ''); ?>" />
+						<span class="hint">URL to a canonical version of this resource. Tells search engiens to prefer the item entered here.</span>
+					</td>
+				</tr>
 <?php } else { ?>
 					<th class="key"><label>Logical Type:</label></th>
 					<td><?php echo $this->lists['logical_type']; ?><input type="hidden" name="alias" value="" /></td>

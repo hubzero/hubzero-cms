@@ -1523,6 +1523,16 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
 
+		if ($canonical = $this->model->attribs->get('canonical', '')) 
+		{
+			if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $canonical))
+			{
+				$juri =& JURI::getInstance();
+				$canonical = rtrim($juri->base(), DS) . DS . ltrim($canonical, DS);
+			}
+			$document->addHeadLink($canonical, 'canonical');
+		}
+
 		$pathway->addItem(
 			stripslashes($this->model->resource->title),
 			JRoute::_('index.php?option=' . $this->_option . '&id=' . $this->model->resource->id)
