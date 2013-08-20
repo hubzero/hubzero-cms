@@ -50,7 +50,11 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<h2><?php echo stripslashes($this->event->title); ?></h2>
+	<h2>
+		<a href="index.php?option=com_events&amp;task=edit&amp;id=<?php echo $this->event->id; ?>">
+			<?php echo stripslashes($this->event->title); ?>
+		</a>
+	</h2>
 	
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
@@ -85,7 +89,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editpage&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo $this->escape(stripslashes($row->title)).' ('.$this->escape(stripslashes($row->alias)).')'; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo $this->escape(stripslashes($row->title)).' ('.$this->escape(stripslashes($row->alias)).')'; ?></a></td>
 				<td><?php echo $this->pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
 				<td><?php echo $this->pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
 				<td><?php echo $row->ordering; ?></td>

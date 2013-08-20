@@ -31,8 +31,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('COM_EVENTS_MANAGER'), 'event.png');
-JToolBarHelper::addNew('addpage', 'Add Page');
-JToolBarHelper::custom('respondents', 'assign', JText::_('COM_EVENTS_VIEW_RESPONDENTS'), JText::_('COM_EVENTS_VIEW_RESPONDENTS'), true, false);
+JToolBarHelper::custom('addpage', 'new', 'Add Page', 'Add Page', true, false);
+JToolBarHelper::custom('respondents', 'user', JText::_('COM_EVENTS_VIEW_RESPONDENTS'), JText::_('COM_EVENTS_VIEW_RESPONDENTS'), true, false);
 JToolBarHelper::spacer();
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
@@ -45,6 +45,19 @@ $juser =& JFactory::getUser();
 
 JHTML::_('behavior.tooltip');
 ?>
+
+<script type="text/javascript">
+function submitbutton(pressbutton) 
+{
+	var form = document.getElementById('adminForm');
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
+		return;
+	}
+	// do field validation
+	submitform(pressbutton);
+}
+</script>
 
 <form action="index.php?option=<?php echo $this->option; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">

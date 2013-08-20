@@ -175,7 +175,7 @@ class EventsControllerRespondents extends Hubzero_Controller
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $workshop,
-			JText::_('EVENTS_RESPONDENT_REMOVED')
+			JText::_('COM_EVENTS_RESPONDENT_REMOVED')
 		);
 	}
 }

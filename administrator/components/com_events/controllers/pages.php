@@ -201,22 +201,17 @@ class EventsControllerPages extends Hubzero_Controller
 		$row->event_id = JRequest::getInt('event', 0);
 		$row->alias = preg_replace("/[^a-zA-Z0-9]/", '', $row->alias);
 		$row->alias = strtolower($row->alias);
-
-		// Get parameters
-		$params = JRequest::getVar('params', array(), 'post');
-		if (is_array($params)) 
+		
+		//set created date and user
+		if ($row->id == NULL || $row->id == '' || $row->id == 0)
 		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
-			$p = new $paramsClass();
-			$p->bind($params);
-
-			$row->params = $p->toString();
+			$row->created = date('Y-m-d H:i:s');
+			$row->created_by = JFactory::getUser()->get('id');
 		}
+		
+		//set modified date and user
+		$row->modified = date('Y-m-d H:i:s');
+		$row->modified_by = JFactory::getUser()->get('id');
 
 		// Check content for missing required data
 		if (!$row->check()) 
@@ -235,7 +230,7 @@ class EventsControllerPages extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $row->event_id,
-			JText::_('EVENTS_PAGE_SAVED')
+			JText::_('COM_EVENTS_PAGE_SAVED')
 		);
 	}
 

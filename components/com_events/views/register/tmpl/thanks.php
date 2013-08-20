@@ -47,7 +47,7 @@ $params = new $paramsClass( $this->event->params );
 <?php if ($this->authorized) { ?>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
+		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>

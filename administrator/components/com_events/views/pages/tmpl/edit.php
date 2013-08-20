@@ -53,7 +53,11 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-	<h2><?php echo $this->escape(stripslashes($this->event->title)); ?></h2>
+	<h2>
+		<a href="index.php?option=com_events&amp;task=edit&amp;id=<?php echo $this->event->id; ?>">
+			<?php echo $this->escape(stripslashes($this->event->title)); ?>
+		</a>
+	</h2>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_EVENTS_PAGE'); ?></span></legend>

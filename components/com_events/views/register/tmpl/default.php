@@ -46,7 +46,7 @@ $params = new $paramsClass( $this->event->params );
 <?php if ($this->authorized) { ?>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
+		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>
@@ -112,17 +112,25 @@ $params = new $paramsClass( $this->event->params );
 				<input type="text" name="register[lastname]" value="<?php echo (isset($this->register['lastname'])) ? $this->register['lastname'] : ''; ?>" /></label>
 			</div>
 			<div class="group">
-				<label>Affiliation <span class="required">required</span>
-				<input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->register['affiliation'] : ''; ?>" /></label>
-
-				<label>Title
-				<input type="text" name="register[title]" value="<?php echo (isset($this->register['title'])) ? $this->register['title'] : ''; ?>" /></label>
+				<?php if ($params->get('show_affiliation')) { ?>
+					<label>Affiliation <span class="required">required</span>
+					<input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->register['affiliation'] : ''; ?>" /></label>
+				<?php } ?>
+				<?php if ($params->get('show_title')) { ?>
+					<label>Title
+					<input type="text" name="register[title]" value="<?php echo (isset($this->register['title'])) ? $this->register['title'] : ''; ?>" /></label>
+				<?php } ?>
 			</div>
 
 			<input type="hidden" name="id" value="<?php echo $this->event->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $option; ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="process" />
 		</fieldset>
+	<?php if ($params->get('show_address')
+			|| $params->get('show_telephone')
+			|| $params->get('show_fax')
+			|| $params->get('show_email')
+			|| $params->get('show_website')) { ?>
 		<fieldset>
 			<legend>Contact Information</legend>
 			<?php if ($params->get('show_address')) { ?>
@@ -162,6 +170,7 @@ $params = new $paramsClass( $this->event->params );
 				<?php } ?>
 			</div>
 		</fieldset>
+	<?php } ?>
 	<?php if ($params->get('show_position')
 			|| $params->get('show_degree')
 			|| $params->get('show_gender')

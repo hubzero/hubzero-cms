@@ -1236,7 +1236,7 @@ class EventsControllerEvents extends Hubzero_Controller
 			$dietary = array_map(array('Hubzero_View_Helper_Html', 'purifyText'), $dietary);
 		}
 
-		if ($register['firstname'] && $register['lastname'] && $register['affiliation'] && ($validemail == 1)) 
+		if ($register['firstname'] && $register['lastname'] && ($validemail == 1)) 
 		{
 			$jconfig =& JFactory::getConfig();
 

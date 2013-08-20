@@ -121,12 +121,12 @@ if ($this->row) {
 		} else {
 			$name = JText::_('EVENTS_CAL_LANG_UNKOWN');
 		}
-
+		$category = (isset($this->categories[$this->row->catid])) ? $this->categories[$this->row->catid] : 'N/A';
 		$html .= '<table id="event-info" summary="'.JText::_('EVENTS_DETAILS_TABLE_SUMMARY').'">'."\n";
 		$html .= ' <tbody>'."\n";
 		$html .= '  <tr>'."\n";
 		$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY').':</th>'."\n";
-		$html .= '   <td>'. stripslashes($this->categories[$this->row->catid]) .'</td>'."\n";
+		$html .= '   <td>'. stripslashes($category) .'</td>'."\n";
 		$html .= '  </tr>'."\n";
 		$html .= '  <tr>'."\n";
 		$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION').':</th>'."\n";

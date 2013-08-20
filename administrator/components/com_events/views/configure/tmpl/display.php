@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title( JText::_( 'COM_EVENTS_MANAGER' ).': <small><small>[ '.JText::_( 'COM_EVENTS_CONFIGURATION' ).' ]</small></small>', 'event.png' );
-JToolBarHelper::save('saveconfig');
-JToolBarHelper::cancel('cancelconfig');
+JToolBarHelper::save();
+JToolBarHelper::cancel();
 ?>
 
 <form action="index.php" method="post" name="adminForm">

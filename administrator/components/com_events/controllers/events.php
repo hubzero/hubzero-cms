@@ -658,15 +658,10 @@ class EventsControllerEvents extends Hubzero_Controller
 		$params = JRequest::getVar('params', '', 'post');
 		if (is_array($params)) 
 		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
-			$p = new $paramsClass();
-			$p->bind($params);
-
+			//email is reaquired
+			$params['show_email'] = 1;
+			$p = new JParameter(null);
+			$p->loadArray($params);
 			$row->params = $p->toString();
 		}
 

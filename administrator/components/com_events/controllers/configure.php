@@ -158,7 +158,7 @@ class EventsControllerConfigure extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('EVENTS_CAL_LANG_CONFIG_SAVED')
+			JText::_('COM_EVENTS_CAL_LANG_CONFIG_SAVED')
 		);
 	}
 }
