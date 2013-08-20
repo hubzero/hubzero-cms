@@ -52,6 +52,39 @@ class JElementRadio extends JElement
 			$options[] = JHtml::_('select.option', $val, $text);
 		}
 
-		return JHtml::_('select.radiolist', $options, '' . $control_name . '[' . $name . ']', '', 'value', 'text', $value, $control_name . $name, true);
+		return JHtml::_('select.radiolist', $options, '' . $control_name . '[' . $name . ']', 'class="option"', 'value', 'text', $value, $control_name . $name, true) . '</fieldset>';
+	}
+
+	/**
+	 * Method to get a tool tip from an XML element
+	 *
+	 * @param   string       $label         Label attribute for the element
+	 * @param   string       $description   Description attribute for the element
+	 * @param   JXMLElement  &$xmlElement   The element object
+	 * @param   string       $control_name  Control name
+	 * @param   string       $name          Name attribut
+	 *
+	 * @return  string
+	 *
+	 * @deprecated  12.1
+	 * @since   11.1
+	 */
+	public function fetchTooltip($label, $description, &$xmlElement, $control_name = '', $name = '')
+	{
+		// Deprecation warning.
+		JLog::add('JElement::fetchTooltip is deprecated.', JLog::WARNING, 'deprecated');
+
+		$output = '<fieldset id="' . $control_name . $name . '-lbl" class="radio" data-for="' . $control_name . $name . '"><legend';
+		if ($description)
+		{
+			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
+		}
+		else
+		{
+			$output .= '>';
+		}
+		$output .= JText::_($label) . '</legend>';
+
+		return $output;
 	}
 }
