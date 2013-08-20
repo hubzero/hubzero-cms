@@ -324,7 +324,7 @@ class EventsHtml
 		else
 		{
 			$catsql = "SELECT id AS value, title AS text FROM #__categories "
-					. "WHERE extension='$option' AND access<='$gid' AND published='1' ORDER BY lft";
+					. "WHERE extension='$option' AND published='1' ORDER BY lft";
 		}
 
 		$categories[] = JHTML::_('select.option', '0', JText::_('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
