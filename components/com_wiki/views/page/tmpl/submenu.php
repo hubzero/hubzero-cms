@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
-if (!$juser->get('guest')) { ?>
+//if (!$juser->get('guest')) { ?>
 <div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 	<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
 	<?php /*if ($this->page->pagename != 'MainPage') { ?>
@@ -42,12 +42,13 @@ if (!$juser->get('guest')) { ?>
 			</a>
 		</li>
 	<?php }*/ ?>
-	<?php if ($this->config->get('access-create')) { ?>
+	<?php if (!$juser->get('guest') && $this->config->get('access-create')) { ?>
 		<li class="page-new" data-title="<?php echo JText::_('New Page'); ?>">
 			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
 				<?php echo JText::_('COM_WIKI_NEW_PAGE'); ?>
 			</a>
 		</li>
+	<?php } ?>
 		<li class="page-index" data-title="<?php echo JText::_('Page Index'); ?>">
 			<a class="icon-index index btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:AllPages'); ?>">
 				<span><?php echo JText::_('Index'); ?></span>
@@ -70,10 +71,10 @@ if (!$juser->get('guest')) { ?>
 				</form>
 			</div>
 		</li>
-	<?php } ?>
+
 	</ul>
 </div><!-- / #content-header-extra -->
-<?php } ?>
+<?php //} ?>
 
 	<ul class="sub-menu">
 		<li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
