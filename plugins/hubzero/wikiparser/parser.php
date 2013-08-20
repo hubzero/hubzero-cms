@@ -318,7 +318,7 @@ class WikiParser
 
 		// Do spans. ~~fast~~ => <del>fast</del>, ??me?? => <cite>me</cite>, etc.
 		$text = $this->spans($text);
-echo '<!-- ' . $text . ' -->';
+
 		// Do links. [MyLink]
 		$text = $this->links($text);
 
@@ -416,7 +416,7 @@ echo '<!-- ' . $text . ' -->';
 			')',
 
 			// URL pattern
-			'autourl'    => "[^=\"\'\[]" .  // Make sure it's not preceeded by quotes and brackets
+			'autourl'    => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
 				//"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
 				//"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\'\<]*[A-Za-z0-9\\/?=&~_])",  // link
 				"(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))",
