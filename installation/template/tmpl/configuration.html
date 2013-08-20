@@ -1,0 +1,75 @@
+<jtmpl:comment>
+@version	$Id: configuration.html 14401 2010-01-26 14:10:00Z louis $
+@package	Joomla
+@subpackage	Installation
+@copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
+@license	GNU/GPL
+</jtmpl:comment>
+
+<jtmpl:tmpl name="configuration"><?php
+class JConfig {
+	public $offline = '0';
+	public $offline_message = '{VAR_OFFLINE|addslashes}';
+	public $display_offline_message = '1';
+	public $offline_image = '';
+	public $sitename = '{VAR_SITENAME|addslashes}';
+	public $editor = 'none';
+	public $captcha = '0';
+	public $list_limit = '20';
+	public $access = '1';
+	public $debug = '0';
+	public $debug_lang = '0';
+	public $dbtype = '{VAR_DBTYPE|addslashes}';
+	public $host = '{VAR_DBHOSTNAME|addslashes}';
+	public $user = '{VAR_DBUSERNAME|addslashes}';
+	public $password = '{VAR_DBPASSWORD|addslashes}';
+	public $db = '{VAR_DBNAME|addslashes}';
+	public $dbprefix = '{VAR_DBPREFIX|addslashes}';
+	public $live_site = '';
+	public $secret = '{VAR_SECRET|addslashes}';
+	public $gzip = '0';
+	public $error_reporting = 'default';
+	public $helpurl = '{VAR_HELPURL|addslashes}';
+	public $ftp_host = '{VAR_FTPHOST|addslashes}';
+	public $ftp_port = '{VAR_FTPPORT|addslashes}';
+	public $ftp_user = '{VAR_FTPUSER|addslashes}';
+	public $ftp_pass = '{VAR_FTPPASSWORD|addslashes}';
+	public $ftp_root = '{VAR_FTPROOT|addslashes}';
+	public $ftp_enable = '{VAR_FTPENABLE|intval}';
+	public $force_ssl = '0';
+	public $offset = 'UTC';
+	public $mailer = 'mail';
+	public $mailfrom = '{VAR_ADMINEMAIL|addslashes}';
+	public $fromname = '{VAR_SITENAME|addslashes}';
+	public $sendmail = '/usr/sbin/sendmail';
+	public $smtpauth = '0';
+	public $smtpuser = '';
+	public $smtppass = '';
+	public $smtphost = 'localhost';
+	public $smtpsecure = 'none';
+	public $smtpport = '25';
+	public $caching = '0';
+	public $cache_handler = 'file';
+	public $cachetime = '15';
+	public $MetaDesc = '{VAR_METADESC|addslashes}';
+	public $MetaKeys = '{VAR_METAKEYS|addslashes}';
+	public $MetaTitle = '1';
+	public $MetaAuthor = '1';
+	public $MetaVersion = '0';
+	public $robots = '';
+	public $sef = '1';
+	public $sef_rewrite = '1';
+	public $sef_suffix  = '0';
+	public $unicodeslugs = '0';
+	public $feed_limit   = 10;
+	public $log_path = '{VAR_LOG_PATH|addslashes}';
+	public $tmp_path = '{VAR_TMP_PATH|addslashes}';
+	public $lifetime = '15';
+	public $session_handler = 'database';
+	public $cookie_domain = '';
+	public $cookie_path = '';
+	public $application_env = '{VAR_ENV|addslashes}';
+	public $api_server = '1';
+	public $sef_groups = '0';
+}
+?></jtmpl:tmpl>
