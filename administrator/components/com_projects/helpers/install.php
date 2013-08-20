@@ -251,7 +251,7 @@ class ProjectsInstall extends JObject {
 		
 			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Blog','blog','projects','0','1','1','0','0','0','0000-00-00 00:00:00','')";
 		
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Files','files','projects','0','3','1','0','0','0','0000-00-00 00:00:00','display_limit=50\nmaxUpload=104857600\nmaxDownload=1048576\ntempPath=/site/projects/temp\n\n')";
+			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Files','files','projects','0','3','1','0','0','0','0000-00-00 00:00:00','maxUpload=104857600\nmaxDownload=1048576\n\n')";
 		
 			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Team','team','projects','0','2','1','0','0','0','0000-00-00 00:00:00','')";
 		
@@ -270,7 +270,7 @@ class ProjectsInstall extends JObject {
 			$this->installExtension('plg_projects_blog', 'plugin', 'blog', 'projects', 1, '', 1, 0);
 			$this->installExtension('plg_projects_team', 'plugin', 'team', 'projects', 2, '', 1, 0);
 			
-			$params = '{"display_limit":"50","maxUpload":"104857600","maxDownload":"1048576","tempPath":"\/site\/projects\/temp","reservedNames":"google , dropbox, shared, temp","connectedProjects":"","enable_google":"0","google_clientId":"","google_clientSecret":"","google_appKey":"","google_folder":"Google","sync_lock":"0","auto_sync":"1","latex":"1","texpath":"\/usr\/bin\/","gspath":"\/usr\/bin\/","diskspace_options":"0","enable_publinks":"0"}';
+			$params = '{"maxUpload":"104857600","maxDownload":"1048576","reservedNames":"google , dropbox, shared, temp","connectedProjects":"","enable_google":"0","google_clientId":"","google_clientSecret":"","google_appKey":"","google_folder":"Google","sync_lock":"0","auto_sync":"1","latex":"1","texpath":"\/usr\/bin\/","gspath":"\/usr\/bin\/"}';
 			
 			$this->installExtension('plg_projects_files','plugin', 'files', 'projects', 3, $params, 1, 0);
 			
