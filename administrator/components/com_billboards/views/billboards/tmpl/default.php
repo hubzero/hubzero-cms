@@ -81,7 +81,7 @@ $juser =& JFactory::getUser();
 		// See if the billboard is being edited by someone else
 		if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 		{
-			$checked = JHTMLGrid::_checkedOut($row);
+			$checked = JHtml::_('jgrid.checkedout', $row, JFactory::getUser($row->checked_out)->get('name'), $row->checked_out_time);
 			$info = ($row->checked_out_time != '0000-00-00 00:00:00')
 					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, $dateFormat, $tz).'<br />'
 					 : '';

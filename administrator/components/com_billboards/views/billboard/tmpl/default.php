@@ -36,9 +36,25 @@ $text = ($this->task == 'edit' ? JText::_('BILLBOARDS_MANAGER_EDIT') : JText::_(
 
 // Menu items
 JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
-JToolBarHelper::media_manager($this->media_path, JText::_('BILLBOARD_IMAGES'));
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$bar = JToolBar::getInstance('toolbar');
+	// Add an upload button.
+	$bar->appendButton('Popup', 'upload', JText::_('BILLBOARD_IMAGES'), 'index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path, 640, 520);
+}
+else
+{
+	JToolBarHelper::media_manager($this->media_path, JText::_('BILLBOARD_IMAGES'));
+}
+
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	JHtml::script(Juri::root() . 'media/system/js/mootools-more.js', true);
+}
 
 ?>
 
@@ -74,7 +90,7 @@ window.addEvent('domready', function() {
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-	<div class="col width-60">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 		<legend><?php echo JText::_('BILLBOARD_CONTENT'); ?></legend>
 			<table class="admintable">
@@ -98,7 +114,11 @@ window.addEvent('domready', function() {
 					<tr>
 						<td class="key"><label for="billboardbackgroundimg"><?php echo JText::_('BILLBOARD_BACKGROUND_IMG'); ?>:</label></td>
 						<td><?php echo $this->image_location; ?><input type="text" name="billboard[background_img]" id="billboardbackgroundimg" value="<?php echo htmlentities(stripslashes($this->row->background_img), ENT_QUOTES); ?>" size="25" />
-						<a class="modal" href="index.php?option=com_media&tmpl=component&task=popupUpload&folder=<?php echo $this->media_path; ?>" rel="{handler: 'iframe', size: {x: 640, y: 520}}">Upload an image</a></td>
+						<?php if (version_compare(JVERSION, '1.6', 'ge')) : ?>
+							<a class="modal" href="<?php echo JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path); ?>" rel="{handler: 'iframe', size: {x: 640, y: 520}}">Upload an image</a></td>
+						<?php else : ?>
+							<a class="modal" href="<?php echo JRoute::_('index.php?option=com_media&tmpl=component&task=popupUpload&folder='.$this->media_path); ?>" rel="{handler: 'iframe', size: {x: 640, y: 520}}">Upload an image</a></td>
+						<?php endif; ?>
 					</tr>
 					<tr>
 						<td class="key" valign="top"><label for="billboard[text]"><?php echo JText::_('BILLBOARD_TEXT'); ?>:</label></td>
@@ -113,7 +133,7 @@ window.addEvent('domready', function() {
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-40">
+	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
 		<legend><?php echo JText::_('BILLBOARD_LEARN_MORE'); ?></legend>
 			<table class="admintable">
@@ -165,20 +185,6 @@ window.addEvent('domready', function() {
 				</table>
 			</div>
 		</fieldset>
-		<!-- Hints section @TODO: is this a good idea or not? -->
-		<!-- <fieldset class="adminform">
-		<legend><?php //echo JText::_('BILLBOARD_HINTS'); ?></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td><?php //echo JText::_('BILLBOARD_HINT_ONE'); ?></td>
-					</tr>
-					<tr>
-						<td><?php //echo JText::_('BILLBOARD_HINT_TWO'); ?></td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset> -->
 	</div>
 	<div class="clr"></div>
 	

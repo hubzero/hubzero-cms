@@ -188,7 +188,7 @@ class BillboardsController extends Hubzero_Controller
 
 		// Get the relative image location for building the links to the media manager
 		$mparams =& JComponentHelper::getParams('com_media');
-		$view->media_path = $mparams->get('file_path', 'site/media');
+		$view->media_path = $mparams->get('image_path', 'site/media/images');
 
 		// Make sure the image path is in the format that we need (i.e. remove any leading or trailing "/")
 		if (substr($view->media_path, 0, 1) != DS)
