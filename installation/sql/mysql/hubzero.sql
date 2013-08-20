@@ -105,7 +105,7 @@ CREATE TABLE `job` (
   `active` smallint(2) NOT NULL DEFAULT '1',
   UNIQUE KEY `uidx_jobid` (`jobid`),
   KEY `idx_start` (`start`),
-  KEY `idx_heartbeat` (`heartbeat`),
+  KEY `idx_heartbeat` (`heartbeat`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `joblog` (
@@ -810,7 +810,7 @@ CREATE TABLE `#__courses_form_questions` (
   `height` int(11) NOT NULL,
   `width` int(11) NOT NULL,
   `form_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_form_respondent_progress` (
@@ -1366,7 +1366,7 @@ CREATE TABLE `#__focus_area_resource_type_rel` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `focus_area_id` int(11) NOT NULL,
   `resource_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__focus_areas` (
@@ -1374,7 +1374,7 @@ CREATE TABLE `#__focus_areas` (
   `tag_id` int(11) NOT NULL,
   `mandatory_depth` int(11) DEFAULT NULL,
   `multiple_depth` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__forum_attachments` (
@@ -1478,20 +1478,20 @@ CREATE TABLE `#__incremental_registration_group_label_rel` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
   `label_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_groups` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `hours` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_labels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `field` varchar(50) NOT NULL,
   `label` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_options` (
@@ -2643,7 +2643,7 @@ CREATE TABLE `#__storefront_sku_meta` (
   UNIQUE KEY `uidx_sId_smKey` (`sId`,`smKey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-$query = "CREATE TABLE `#__storefront_sku_options` (
+CREATE TABLE `#__storefront_sku_options` (
   `sId` int(16) NOT NULL,
   `oId` int(16) NOT NULL,
   PRIMARY KEY (`sId`,`oId`)
@@ -4016,7 +4016,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1547,'YSearch - Increase relevance for tool results','plugin','weighttools','ysearch',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1548,'YSearch - Wishlists','plugin','wishlists','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0);
 
-INSERT INTO `jos_extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
+INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (1549, 'hubbasic2012', 'template', 'hubbasic2012', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (1550, 'hubbasicadmin', 'template', 'hubbasicadmin', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
