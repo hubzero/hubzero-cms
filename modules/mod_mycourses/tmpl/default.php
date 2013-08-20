@@ -33,9 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
 
+$total = count($this->courses);
+
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
-<?php if ($this->courses && count($this->courses) > 0) { ?>
+<?php if ($this->courses && $total > 0) { ?>
 	<ul class="compactlist">
 <?php
 	$i = 0;
@@ -71,8 +73,12 @@ $juser =& JFactory::getUser();
 	<p><?php echo JText::_('MOD_MYCOURSES_NO_RESULTS'); ?></p>
 <?php } ?>
 
+<?php if ($total > $this->limit) { ?>
+	<p><?php echo JText::sprintf('MOD_MYCOURSES_YOU_HAVE_MORE', $this->limit, ($total - $this->limit)); ?></p>
+<?php } ?>
+
 	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=courses'); ?>"><?php echo JText::_('MOD_MYCOURSES_ALL_MY_COURSES'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=courses'); ?>"><?php echo JText::_('MOD_MYCOURSES_ALL_MY_COURSES'); ?> (<?php echo $total; ?>)</a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_courses'); ?>"><?php echo JText::_('MOD_MYCOURSES_ALL_COURSES'); ?></a></li>
 	</ul>
 </div>
