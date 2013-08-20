@@ -30,11 +30,11 @@ class Migration20130816143341ComCitations extends Hubzero_Migration
 		//get citation params
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$sql = "SELECT params FROM `#__components` WHERE `option`='com_citations';";
+			$sql = "SELECT params FROM `#__extensions` WHERE `type`='component' AND `element`='com_citations';";
 		}
 		else
 		{
-			$sql = "SELECT params FROM `#__extensions` WHERE `type=`='component' AND `element`='com_citations';";
+			$sql = "SELECT params FROM `#__components` WHERE `option`='com_citations';";
 		}
 		
 		$db->setQuery($sql);
