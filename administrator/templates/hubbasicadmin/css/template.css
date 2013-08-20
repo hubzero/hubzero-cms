@@ -3096,6 +3096,26 @@
 	.adminformlist label.hasTip {
 		font-weight: bold;
 	}
+	.j25 .paramlist fieldset.radio {
+		border-top: 1px solid #e9e9e9;
+		clear: left;
+		margin: 0;
+		padding-top: 0.61803399em;
+		padding-bottom: 0.61803399em;
+	}
+	.j25 .paramlist fieldset.radio legend {
+		float: left;
+		width: 40%;
+		color: #666;
+		padding: 0;
+		margin: 0;
+	}
+	.j25 .paramlist fieldset.radio label {
+		width: auto;
+	}
+	.j25 .paramlist fieldset.radio input {
+		margin-right: 0.61803399em;
+	}
 
 /* [!] J2.5+ styles */
 	/* TAB STYLES */
