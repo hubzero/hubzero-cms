@@ -31,31 +31,20 @@
 		<language tag="en-GB">en-GB.plg_projects_files.ini</language>
 	</languages>
 	<params>
-		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-		<param name="maxUpload" type="text" menu="hide" default="104857600" label="Max file upload (bytes)" description="Maximum upload file size for project files in bites (master default set to 100MB (104857600 bytes))" />
-		<param name="maxDownload" type="text" menu="hide" default="104857600" label="Max size for batch download (bytes)" description="Maximum download file size for zipped project files in bites (master default set to 100MB (104857600 bytes))" />
-		<param name="tempPath" type="text" menu="hide" default="/site/projects/temp" label="Temp file directory" description="File path for storing temp files during batch download" />
-		<param name="reservedNames" type="text" menu="hide" default="google , dropbox, shared, temp" label="Reserved directory names" description="Reserved directory names" />
-		<param name="connectedProjects" type="text" menu="hide" default="" label="Connected projects" description="Comma-separated aliases of projects that may connect to outside services (empty means all projects may connect)" />
+		<param name="maxUpload" type="text" menu="hide" default="104857600" label="Max Upload Size (Bytes)" description="Maximum upload file size for project files in bites (master default set to 100MB (104857600 bytes))" />
+		<param name="maxDownload" type="text" menu="hide" default="104857600" label="Max Download Size (Bytes)" description="Maximum download file size for zipped project files in bites (master default set to 100MB (104857600 bytes))" />
+		<param name="reservedNames" type="text" menu="hide" default="google , dropbox, shared, temp" label="Reserved Directory Names" description="Reserved directory names" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="enable_google" type="radio" default="0" label="Google Connection Enabled" description="Allow projects to connect with Google docs">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="google_clientId" type="text" menu="hide" default="" label="Google client ID" description="Google client ID" />
-		<param name="google_clientSecret" type="text" menu="hide" default="" label="Google client Secret" description="Google client Secret" />
-		<param name="google_appKey" type="text" menu="hide" default="" label="Google app key" description="Google app key" />
-		<param name="google_folder" type="text" menu="hide" default="Google" label="Local Google folder" description="Name of local google folder" />
+		<param name="connectedProjects" type="text" menu="hide" default="" label="Connected Projects" description="Comma-separated aliases of projects that may connect to outside services (empty means all projects may connect)" />
+		<param name="google_clientId" type="text" menu="hide" default="" label="Google Client ID" description="Google client ID" />
+		<param name="google_clientSecret" type="text" menu="hide" default="" label="Google Client Secret" description="Google client Secret" />
+		<param name="google_appKey" type="text" menu="hide" default="" label="Google API Key" description="Google app key" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="sync_lock" type="list" default="0" label="Sync lock (in minutes)" description="Disallow repeated sync within specified period after last sync">
-			<option value="0">0</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="5">5</option>
-			<option value="10">10</option>
-		</param>
-		<param name="auto_sync" type="list" default="0" label="Auto sync" description="Initiate new sync automatically within specified time period after previous sync">
+		<param name="auto_sync" type="list" default="0" label="Auto Sync" description="Initiate new sync automatically within specified time period after previous sync">
 			<option value="0">No auto sync</option>
 			<option value="0.15">Every 10 minutes</option>
 			<option value="0.5">Every half hour</option>
@@ -63,21 +52,11 @@
 			<option value="2">Every 2 hours</option>
 			<option value="6">Every 6 hours</option>
 		</param>
-		<param name="latex" type="radio" default="0" label="Enable LaTeX" description="Enable LaTeX compile">
+		<param name="latex" type="radio" default="0" label="Enable LaTeX Compile" description="Enable LaTeX compile">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
 		<param name="texpath" type="text" menu="hide" default="" label="Path to LaTeX" description="Path to LaTeX" />
 		<param name="gspath" type="text" menu="hide" default="" label="Path to Ghostscript" description="Path to Ghostscript" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="diskspace_options" type="radio" default="0" label="Show disk space management options" description="Enable managers to optimize disk space via Git commands">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="enable_publinks" type="radio" default="0" label="Enable public links" description="Enable project team members to generate public links to files and list/unlist selected items on project public page">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
 	</params>
 </install>

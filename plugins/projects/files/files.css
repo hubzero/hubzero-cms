@@ -181,6 +181,10 @@
 	
 /* Revision table and versioning
 --------------------------------------------- */
+	#plg-form fieldset.diff-form td {
+		max-width: 300px;
+		word-break: break-all;
+	}
 	table.revisions thead tr,
 	table.diff thead tr {
 		background: #f3efe9;
@@ -344,9 +348,8 @@
 	table.revisions td.diffing {
 		white-space: nowrap;
 	}
-	#plg-form fieldset.diff-form td {
-		max-width: 300px;
-		word-break: break-all;
+	table.revisions th.diffing {
+		
 	}
 	.diffing label, .diffing input {
 		display: inline !important;

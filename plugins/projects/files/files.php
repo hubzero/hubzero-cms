@@ -166,7 +166,7 @@ class plgProjectsFiles extends JPlugin
 		if ($returnhtml) 
 		{
 			// Load language file
-			JPlugin::loadLanguage( 'plg_projects_files' );
+			$this->loadLanguage();
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');
@@ -191,7 +191,8 @@ class plgProjectsFiles extends JPlugin
 				$this->_app = $objA->getFullRecord($reponame, $this->_project->id);
 				
 				Hubzero_Document::addPluginStylesheet('projects', 'apps');
-				JPlugin::loadLanguage( 'plg_projects_apps' );
+				$lang = JFactory::getLanguage();
+				$lang->load('plg_projects_apps');
 			}
 
 			$this->_case = $case ? $case : 'files';
@@ -511,7 +512,7 @@ class plgProjectsFiles extends JPlugin
 							? $view->params->get('quota') 
 							: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 		$view->fileparams 	= $this->_params;	
-		$view->sizelimit 	= ProjectsHTML::formatSize($this->_config->get('maxUpload', '104857600'));	
+		$view->sizelimit 	= ProjectsHTML::formatSize($this->_params->get('maxUpload', '104857600'));	
 		
 		return $view->loadTemplate();		
 	}
@@ -865,7 +866,7 @@ class plgProjectsFiles extends JPlugin
 		$view->case 		= $this->_case;
 		$view->ajax			= $ajax;
 		$view->config 		= $this->_config;
-		$view->sizelimit 	= $this->_config->get('maxUpload', '104857600');
+		$view->sizelimit 	= $this->_params->get('maxUpload', '104857600');
 		$view->title		= $this->_area['title'];
 		
 		// Get messages	and errors	
@@ -887,7 +888,7 @@ class plgProjectsFiles extends JPlugin
 		// Incoming
 		$expand  	= JRequest::getInt('expand_zip');
 		$subdir  	= trim(urldecode(JRequest::getVar('subdir', '')), DS);
-		$sizeLimit 	= $this->_config->get('maxUpload', '104857600');
+		$sizeLimit 	= $this->_params->get('maxUpload', '104857600');
 		$pid 		= JRequest::getInt('pid', 0);
 	
 		$prov    	= 0;
@@ -1278,14 +1279,14 @@ class plgProjectsFiles extends JPlugin
 				$file = $subdir ? $subdir . DS . $file : $file;
 																
 				// Check file size
-				$sizelimit = ProjectsHtml::formatSize($this->_config->get('maxUpload', '104857600'));
+				$sizelimit = ProjectsHtml::formatSize($this->_params->get('maxUpload', '104857600'));
 				/*
 				if ($files['size'][$i] == 0)
 				{
 					$this->setError( JText::_('Cannot accept zero-byte files.'));
 				}
 				*/
-				if ( $files['size'][$i] > intval($this->_config->get('maxUpload', '104857600')))
+				if ( $files['size'][$i] > intval($this->_params->get('maxUpload', '104857600')))
 				{
 					$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
 						. $sizelimit . '. ' . JText::_('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
