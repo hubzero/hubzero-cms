@@ -344,8 +344,9 @@
 	table.revisions td.diffing {
 		white-space: nowrap;
 	}
-	table.revisions th.diffing {
-		
+	#plg-form fieldset.diff-form td {
+		max-width: 300px;
+		word-break: break-all;
 	}
 	.diffing label, .diffing input {
 		display: inline !important;

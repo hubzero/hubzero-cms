@@ -166,7 +166,7 @@ class plgProjectsFiles extends JPlugin
 		if ($returnhtml) 
 		{
 			// Load language file
-			$this->loadLanguage();
+			JPlugin::loadLanguage( 'plg_projects_files' );
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');
@@ -191,8 +191,7 @@ class plgProjectsFiles extends JPlugin
 				$this->_app = $objA->getFullRecord($reponame, $this->_project->id);
 				
 				Hubzero_Document::addPluginStylesheet('projects', 'apps');
-				$lang = JFactory::getLanguage();
-				$lang->load('plg_projects_apps');
+				JPlugin::loadLanguage( 'plg_projects_apps' );
 			}
 
 			$this->_case = $case ? $case : 'files';
@@ -4366,7 +4365,7 @@ class plgProjectsFiles extends JPlugin
 		$quota 	   = $pparams->get('quota')
 					? $pparams->get('quota')
 					: ProjectsHtml::convertSize( floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-		$avail 	   = $quota - $disUsage;
+		$avail 	   = $quota - $diskUsage;
 		
 		// Last synced remote/local change
 		$lastRemoteChange = $pparams->get($service . '_last_remote_change', NULL);

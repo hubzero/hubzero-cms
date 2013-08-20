@@ -97,7 +97,7 @@ if ($this->getError()) {
 		$view->ih 			= new ProjectsImgHandler();				
 		echo $view->loadTemplate();
 	 } ?>
-	<fieldset>
+	<fieldset class="diff-form">
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
 		<input type="hidden" name="<?php echo $this->do ?>" value="diff" />
