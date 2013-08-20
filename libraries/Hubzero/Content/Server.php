@@ -359,8 +359,12 @@ class Hubzero_Content_Server
 
 		header("Content-Length: $content_length");
 
-		// output the content
-		ob_end_clean();
+		$depth = ob_get_level();
+
+		for ($i=0; $i < $depth; $i++)
+		{
+			ob_end_clean();
+		}
 
 		foreach ($ranges as $range) 
 		{
