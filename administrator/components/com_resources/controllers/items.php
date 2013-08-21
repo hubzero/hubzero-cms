@@ -747,10 +747,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 		}
 
 		$paramsClass = 'JParameter';
-		//if (version_compare(JVERSION, '1.6', 'ge'))
-		//{
-		//	$paramsClass = 'JRegistry';
-		//}
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
 
 		// Get params definitions
 		$this->view->params  = new $paramsClass($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
@@ -801,8 +801,8 @@ class ResourcesControllerItems extends Hubzero_Controller
 			// Get all contributors linked to this resource
 			$ma = new MembersAssociation($this->database);
 			$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
-					FROM " . $ma->getTableName() . " AS a  
-					LEFT JOIN " . $mp->getTableName() . " AS n ON n.uidNumber=a.authorid 
+					FROM $ma->_tbl AS a  
+					LEFT JOIN $mp->_tbl AS n ON n.uidNumber=a.authorid 
 					WHERE a.subtable='resources'
 					AND a.subid=" . $this->view->row->id . " 
 					ORDER BY a.ordering";
@@ -1712,25 +1712,13 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$group_id = 'g.id';
 		$aro_id = 'aro.id';
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$query = "SELECT a.id AS value, a.name AS text, g.title AS groupname"
-			. "\n FROM #__users AS a"
-			. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
-			. "\n INNER JOIN #__usergroups AS g ON " . $group_id . " = gm.group_id"
-			. "\n WHERE a.block = '0' AND " . $group_id . "=8"
-			. "\n ORDER BY ". $order;
-		}
-		else
-		{
-			$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
+		$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
 			. "\n FROM #__users AS a"
 			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
 			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
 			. "\n INNER JOIN #__core_acl_aro_groups AS g ON " . $group_id . " = gm.group_id"
 			. "\n WHERE a.block = '0' AND " . $group_id . "=25"
 			. "\n ORDER BY ". $order;
-		}
 
 		$database->setQuery($query);
 		$result = $database->loadObjectList();
@@ -1738,7 +1726,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 		if ($nouser)
 		{
 			$users[] = JHTML::_('select.option', '0', 'Do not change', 'value', 'text');
-			$users = ($result && is_array($result)) ? array_merge($users, $result) : $users;
+			$users = array_merge($users, $result);
 		}
 		else
 		{
@@ -1759,13 +1747,13 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$this->view->role = JRequest::getVar('role', '');
 		$rid = JRequest::getInt('rid', 0);
 
-		if (is_numeric($this->view->id))
-		{
-			// Get the member's info
-			ximport('Hubzero_User_Profile');
-			$profile = new Hubzero_User_Profile();
-			$profile->load($this->view->id);
+		// Get the member's info
+		ximport('Hubzero_User_Profile');
+		$profile = new Hubzero_User_Profile();
+		$profile->load($this->view->id);
 
+		if (is_object($profile) && $profile->get('uidNumber'))
+		{
 			if (!$profile->get('name'))
 			{
 				$this->view->name  = $profile->get('givenName') . ' ';
@@ -1777,6 +1765,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 				$this->view->name  = $profile->get('name');
 			}
 			$this->view->org = $profile->get('organization');
+			$this->view->id  = $profile->get('uidNumber');
 		}
 		else 
 		{
@@ -1785,7 +1774,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$rcc = new ResourcesContributor($this->database);
 
 			$this->view->org  = '';
-			$this->view->name = str_Replace('_', ' ', $this->view->id);
+			$this->view->name = str_replace('_', ' ', $this->view->id);
 			$this->view->id   = $rcc->getUserId($this->view->name);
 		}
 

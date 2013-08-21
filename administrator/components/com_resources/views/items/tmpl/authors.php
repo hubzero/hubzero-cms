@@ -31,12 +31,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 $document =& JFactory::getDocument();
-$document->addScript('components/'.$this->option.'/assets/js/xsortables.js');
-$document->addScript('components/'.$this->option.'/assets/js/resources.js');
+//$document->addScript('components/'.$this->option.'/assets/js/xsortables.js');
+//$document->addScript('components/'.$this->option.'/assets/js/resources.js');
 
 $authIDs = array();
 ?>
-<label for="authid"><?php echo JText::_('User ID:'); ?></label> 
+<label for="authid"><?php echo JText::_('User ID or username:'); ?></label> 
 <input type="text" name="authid" id="authid" value="" />
 <select name="authrole" id="authrole">
 	<option value=""><?php echo JText::_('Author'); ?></option>
@@ -80,7 +80,8 @@ if ($this->authnames != NULL)
 ?>
 	<li id="author_<?php echo $authname->authorid; ?>">
 		<span class="handle"><?php echo JText::_('DRAG HERE'); ?></span> 
-		<?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->authorid; ?>) [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;"><?php echo JText::_('remove'); ?></a> ]
+		<a class="state trash" data-parent="author_<?php echo $authname->authorid; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $authname->authorid; ?>');return false;"><span><?php echo JText::_('remove'); ?></span></a>
+		<?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->authorid; ?>)
 		<br /><?php echo JText::_('Affiliation'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $org; ?>" />
 		
 		<select name="<?php echo $authname->id; ?>_role">
@@ -106,3 +107,8 @@ if ($this->authnames != NULL)
 </ul>
 <input type="hidden" name="old_authors" id="old_authors" value="<?php echo implode(',', $authIDs); ?>" />
 <input type="hidden" name="new_authors" id="new_authors" value="<?php echo implode(',', $authIDs); ?>" />
+
+<script src="/media/system/js/jquery.js"></script>
+<script src="/media/system/js/jquery.ui.js"></script>
+<script src="/media/system/js/jquery.noconflict.js"></script>
+<script src="components/com_resources/assets/js/authors.jquery.js"></script>

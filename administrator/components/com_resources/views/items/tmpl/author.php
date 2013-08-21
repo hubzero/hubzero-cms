@@ -30,8 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
+	<li id="author_<?php echo $this->id; ?>">
 		<span class="handle"><?php echo JText::_('DRAG HERE'); ?></span> 
-		<?php echo $this->escape(stripslashes($this->name)); ?> (<?php echo $this->id; ?>) [ <a href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $this->id; ?>');return false;"><?php echo JText::_('remove'); ?></a> ]
+		<a class="state trash" data-parent="author_<?php echo $this->id; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $this->id; ?>');return false;"><span><?php echo JText::_('remove'); ?></span></a>
+		<?php echo $this->escape(stripslashes($this->name)); ?> (<?php echo $this->id; ?>)
 		<br /><?php echo JText::_('Affiliation'); ?>: <input type="text" name="<?php echo $this->id; ?>_organization" value="<?php echo $this->escape(stripslashes($this->org)); ?>" />
 		
 		<select name="<?php echo $this->id; ?>_role">
@@ -50,3 +52,4 @@ defined('_JEXEC') or die('Restricted access');
 		</select>
 		<input type="hidden" class="authid" name="<?php echo $this->id; ?>authid" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="<?php echo $this->id; ?>_name" value="<?php echo $this->escape(stripslashes($this->name)); ?>" />
+	</li>
