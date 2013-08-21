@@ -228,7 +228,7 @@ class CartMessenger
 		
 		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart(NULL, true);
-		$to = array($cart->getCartUser($transactionInfo->crtId));		
+		$to = array($cart->getCartUser($transactionInfo->crtId));	
 		
 		$dispatcher->trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
 	}

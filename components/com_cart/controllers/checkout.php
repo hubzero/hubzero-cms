@@ -143,7 +143,6 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function shippingTask() 
 	{
-		ximport('Hubzero_Cart_Cart');
 		$cart = new Hubzero_Cart();
 		
 		// initialize address set var

@@ -55,7 +55,7 @@ class PaymentProvider
 	 */
 	public function getPaymentCode() 
 	{
-		$code  = '<form method="post" action="https://dev26.hubzero.org/cart/test/pay">';
+		$code  = '<form method="post" action="' . JURI::root() . 'cart/test/pay">';
 		$code .= '<input type="hidden" value="dodummypayment" name="cmd">';
 		
 		foreach ($this->buttonVars as $k => $v)
