@@ -39,7 +39,7 @@ $juser =& JFactory::getUser();
 		<h2><?php echo $this->page->stripNamespace($this->page->getTitle()); ?></h2>
 	</div><!-- /#content-header -->
 
-	<?php if (!$juser->get('guest') && $this->config->get('access-create')) { ?>
+	<?php /*if (!$juser->get('guest') && $this->config->get('access-create')) { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
 			<li>
@@ -49,7 +49,7 @@ $juser =& JFactory::getUser();
 			</li>
 		</ul>
 	</div><!-- / #content-header-extra -->
-	<?php } ?>
+	<?php }*/ ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
