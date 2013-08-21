@@ -188,8 +188,8 @@ function submitbutton(pressbutton)
 				$paramsClass = 'JParameter';
 				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
-					$pth = true;
-					$paramsClass = 'JRegistry';
+					//$pth = true;
+					//$paramsClass = 'JRegistry';
 				}
 
 				$data = $this->row->get('params');
