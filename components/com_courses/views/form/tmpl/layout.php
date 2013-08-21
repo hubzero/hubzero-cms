@@ -42,6 +42,7 @@
 					$qidx = 0;
 					foreach ($layout[$idx - 1] as $group) {
 						echo '<div class="group-marker" style="width: '.$group['width'].'px; height: '.$group['height'].'px; top: '.$group['top'].'px; left: '.$group['left'].'px;">';
+						echo '<div class="group-marker-header"></div>';
 						echo '<button class="remove">x</button>';
 						foreach ($group['answers'] as $aidx=>$ans) {
 							echo '<div class="radio-container'.($ans['correct'] ? ' selected' : '').'" style="top: '.($ans['top'] - $group['top'] - 5).'px; left: '.($ans['left'] - $group['left'] - 26).'px;">';

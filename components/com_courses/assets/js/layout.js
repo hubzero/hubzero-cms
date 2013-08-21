@@ -26,6 +26,12 @@ jQuery(function($) {
 		e.preventDefault();
 	});
 
+	// Make current group markers resizable and draggable
+	$('.group-marker').resizable();
+	$('.group-marker').draggable({
+		handle: ".group-marker-header"
+	});
+
 	// pagination
 	tabs.click(function(evt) {
 		pages.hide();
@@ -46,12 +52,14 @@ jQuery(function($) {
 	var groupBox = null, groupOrigin = {}, x, y;
 	// start drawing the box, and save one of its corners
 	pages.bind('dragstart', function(evt) {
-		groupOrigin.x = x;
-		groupOrigin.y = y;
-		groupBox = $('<div id="group-box"></div>');
-		groupBox.css({ 'left': x, 'top': y });
-		currentPage.append(groupBox);
-		evt.preventDefault();
+		if ($(evt.srcElement)[0].className != 'group-marker-header') {
+			groupOrigin.x = x;
+			groupOrigin.y = y;
+			groupBox = $('<div id="group-box"></div>');
+			groupBox.css({ 'left': x, 'top': y });
+			currentPage.append(groupBox);
+			evt.preventDefault();
+		}
 	});
 	// modify the box to extend from the current cursor position to its origin point
 	pages.bind('mousemove', function(evt) {
@@ -150,6 +158,13 @@ jQuery(function($) {
 			.css('height', groupBox.css('height'))
 			.css('width', groupBox.css('width'));
 
+		// add header as moveable target
+		var header = $('<div class="group-marker-header"></div>');
+		marker.draggable({
+			handle: ".group-marker-header"
+		});
+		marker.append(header);
+
 		// add remove button
 		var remove = $('<button class="remove">x</button>');
 		remove.click(remover);
@@ -171,6 +186,7 @@ jQuery(function($) {
 		}
 
 		marker.click(addGroup);
+		marker.resizable();
 	});
 
 	var saveButton = $('#save');

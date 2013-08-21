@@ -69,8 +69,17 @@ label {
 }
 .group-marker .remove {
 	position: absolute;
-	top: 2px;
-	right: 4px;
+	top: 5px;
+	right: 5px;
+}
+.group-marker-header {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 30px;
+	background: #EBE2C2;
+	cursor: move;
 }
 .radio-container .remove {
 	display: inline-block;
@@ -370,4 +379,7 @@ input[type=number] {
 }
 #pages.readonly .group-marker .remove {
 	visibility: hidden;
+}
+#pages.readonly .group-marker-header {
+	display: none;
 }
