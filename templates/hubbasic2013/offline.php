@@ -29,6 +29,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<jdoc:include type="head" />
 		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/offline.css" />
 	</head>
