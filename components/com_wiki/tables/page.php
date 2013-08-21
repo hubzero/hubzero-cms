@@ -684,6 +684,10 @@ class WikiPage extends JTable
 		{
 			$query .= " WHERE `group_cn`=" . $this->_db->Quote($group_cn);
 		}
+		else
+		{
+			$query .= " WHERE `group_cn`='' OR `group_cn` IS NULL ";
+		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
