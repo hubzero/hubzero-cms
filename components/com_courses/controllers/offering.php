@@ -64,13 +64,6 @@ class CoursesControllerOffering extends Hubzero_Controller
 			return;
 		}
 
-		// Ensure the course has been published or has been approved
-		if (!$this->course->access('manage') && !$this->course->isAvailable())
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_NOT_PUBLISHED'));
-			return;
-		}
-
 		// No offering provided
 		if (!($offering = JRequest::getVar('offering', '')))
 		{
@@ -84,6 +77,13 @@ class CoursesControllerOffering extends Hubzero_Controller
 		if (!$this->course->offering($offering)) 
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
+			return;
+		}
+
+		// Ensure the course has been published or has been approved
+		if (!$this->course->offering()->access('manage', 'section') && !$this->course->isAvailable())
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_NOT_PUBLISHED'));
 			return;
 		}
 

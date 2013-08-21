@@ -490,21 +490,30 @@ class CoursesModelPermissions extends JObject
 			if ($manager->exists())
 			{
 				// If no specific permissions set
-				if ($manager->get('course_id') == $this->get('course_id') && !$manager->get('offering_id') && !$manager->get('section_id'))
+				if ($manager->get('course_id') == $this->get('course_id'))
 				{
-					if (!$manager->get('permissions'))
+					if (!$manager->get('offering_id') && !$manager->get('section_id'))
 					{
-						foreach ($actions as $action)
+						if (!$manager->get('permissions'))
 						{
-							$this->config()->set('access-' . $action . '-section', true);
-							$this->config()->set('access-' . $action . '-offering', true);
-							$this->config()->set('access-' . $action . '-course', true);
+							foreach ($actions as $action)
+							{
+								$this->config()->set('access-' . $action . '-section', true);
+								$this->config()->set('access-' . $action . '-offering', true);
+								$this->config()->set('access-' . $action . '-course', true);
+							}
+						}
+						else
+						{
+							// Merge permissions
+							$this->config()->merge($permissions);
 						}
 					}
 					else
 					{
-						// Merge permissions
-						$this->config()->merge($permissions);
+						$this->config()->set('access-view-section', true);
+						$this->config()->set('access-view-offering', true);
+						$this->config()->set('access-view-course', true);
 					}
 
 					$this->config()->set('is-manager', true);
