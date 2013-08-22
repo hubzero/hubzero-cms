@@ -198,7 +198,22 @@ function submitbutton(pressbutton)
 			<tr>
 				<td class="key" valign="top"><?php echo JText::_('COL_CONTACT_ME'); ?>:</td>
 				<td>
-					<label><input type="checkbox" id="mailPreferenceOption" name="profile[mailPreferenceOption]" <?php echo ($this->profile->get('mailPreferenceOption')) ? ' checked="checked"' : ''; ?> value="1" /> Yes, I would like to receive newsletters and other updates by e-mail.</label>
+					<label>
+						Would you like to receive email updates (newsletters, etc.)?
+						<?php
+							$options = array(
+								'-1' => '- Select email option &mdash;',
+								'1'  => 'Yes, send me emails',
+								'0'  => 'No, don\'t send me emails'
+							);
+						?>
+						<select name="profile[mailPreferenceOption]">
+							<?php foreach ($options as $key => $value) : ?>
+								<?php $sel = ($key == $this->profile->get('mailPreferenceOption')) ? 'selected="selected"' : ''; ?>
+								<option <?php echo $sel; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</label>
 				</td>
 			</tr>
 			</tbody>
