@@ -70,15 +70,17 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'helpers'.DS.'html.php');
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'controller.php');
 
+$task = 'billboards';
+
 JSubMenuHelper::addEntry(
 	JText::_('Billboards'),
 	'index.php?option=com_billboards&task=billboards',
-	$controllerName == 'billboards'
+	$task == 'billboards'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Collections'),
 	'index.php?option=com_billboards&task=collections',
-	$controllerName == 'billboards'
+	$task == 'collections'
 );
 
 // Initiate controller
