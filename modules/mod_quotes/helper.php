@@ -138,6 +138,10 @@ class modQuotes extends JObject
 			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
 			return;
 		}
+		
+		// Push the module CSS to the template
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
 		$this->run();
 	}
