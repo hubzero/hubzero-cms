@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Use id or alias in urls?
-$goto  = $this->config->get('use_alias', 0) ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+$goto  = 'alias=' . $this->project->alias;
 ?>
 <div id="abox-content">
 <h3><?php echo JText::_('COM_PROJECTS_LEAVE_PROJECT'); ?></h3>

@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$use_alias = $this->config->get('use_alias', 0);
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $cn = $this->group->get('cn');
 $gid = $this->group->get('gidNumber');

@@ -261,11 +261,7 @@ class plgProjectsBlog extends JPlugin
 		// Text clean-up
 		$entry = Hubzero_View_Helper_Html::shortenText($entry, 250, 0);
 		$entry = Hubzero_View_Helper_Html::purifyText($entry);	
-		
-		// Use id or alias in urls?
-		$use_alias = $this->_config->get('use_alias', 0);
-		$goto  = $use_alias ? 'alias='.$this->_project->alias : 'id='.$this->_project->id;	
-		
+				
 		// Instantiate project microblog entry
 		$objM = new ProjectMicroblog( $this->_database );
 		if ($entry) 
@@ -323,7 +319,7 @@ class plgProjectsBlog extends JPlugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option='.$this->_option.a.$goto.a.'active=feed');
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a .'active=feed');
 		return;						
 	}
 	
@@ -338,11 +334,7 @@ class plgProjectsBlog extends JPlugin
 		// Incoming
 		$tbl = trim(JRequest::getVar( 'tbl', 'activity' ));
 		$eid = JRequest::getInt( 'eid', 0 );
-		
-		// Use id or alias in urls?
-		$use_alias = $this->_config->get('use_alias', 0);
-		$goto  = $use_alias ? 'alias='.$this->_project->alias : 'id='.$this->_project->id;	
-		
+				
 		// Are we deleting a blog entry?
 		if ($tbl == 'blog') 
 		{
@@ -419,7 +411,7 @@ class plgProjectsBlog extends JPlugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option='.$this->_option.a.$goto.a.'active=feed');
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a .'active=feed');
 		return;		
 		
 	}
@@ -451,9 +443,7 @@ class plgProjectsBlog extends JPlugin
 		$view->option 			= $this->_option;
 		$view->project 			= $this->_project;
 		$view->activities 		= $this->_prepActivities ( $view->filters, $view->limit );
-		$view->goto  			= $this->_config->get('use_alias', 0) 
-								? 'alias='.$this->_project->alias 
-								: 'id='.$this->_project->id;
+		$view->goto  			= 'alias=' . $this->_project->alias;
 		$view->uid 				= $this->_uid;
 		$view->database 		= $this->_database;
 		$view->title			= $this->_area['title'];
@@ -620,11 +610,7 @@ class plgProjectsBlog extends JPlugin
 		$tbl = trim(JRequest::getVar( 'tbl', 'activity', 'post' ));
 		$comment = trim(JRequest::getVar( 'comment', '', 'post' ));
 		$parent_activity = JRequest::getInt( 'parent_activity', 0, 'post' );
-		
-		// Use id or alias in urls?
-		$use_alias = $this->_config->get('use_alias', 0);
-		$goto  = $use_alias ? 'alias='.$this->_project->alias : 'id='.$this->_project->id;	
-		
+				
 		// Clean-up
 		$comment = Hubzero_View_Helper_Html::shortenText($comment, 250, 0);
 		$comment = Hubzero_View_Helper_Html::purifyText($comment);
@@ -633,12 +619,12 @@ class plgProjectsBlog extends JPlugin
 		$objC = new ProjectComment( $this->_database );
 		if ($comment) 
 		{
-			$objC->itemid = $itemid;
-			$objC->tbl = $tbl;
-			$objC->parent_activity = $parent_activity;
-			$objC->comment = $comment;
-			$objC->created = date( 'Y-m-d H:i:s' );
-			$objC->created_by = $this->_uid;
+			$objC->itemid 			= $itemid;
+			$objC->tbl 				= $tbl;
+			$objC->parent_activity 	= $parent_activity;
+			$objC->comment 			= $comment;
+			$objC->created 			= date( 'Y-m-d H:i:s' );
+			$objC->created_by 		= $this->_uid;
 			if (!$objC->store()) 
 			{
 				$this->setError( $objC->getError() );
@@ -680,13 +666,13 @@ class plgProjectsBlog extends JPlugin
 		{
 			$this->_message = array('message' => $this->getError(), 'type' => 'error');
 		}
-		else if (isset($this->_msg) && $this->_msg) 
+		elseif (isset($this->_msg) && $this->_msg) 
 		{
 			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option='.$this->_option.a.$goto.a.'active=feed');
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a .'active=feed');
 		return;
 	}
 
@@ -699,11 +685,7 @@ class plgProjectsBlog extends JPlugin
 	{
 		// Incoming
 		$cid  = JRequest::getInt( 'cid', 0 );
-		
-		// Use id or alias in urls?
-		$use_alias = $this->_config->get('use_alias', 0);
-		$goto  = $use_alias ? 'alias='.$this->_project->alias : 'id='.$this->_project->id;	
-			
+					
 		// Instantiate comment
 		$objC = new ProjectComment( $this->_database );	
 		
@@ -736,7 +718,7 @@ class plgProjectsBlog extends JPlugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option='.$this->_option.a.$goto.a.'active=feed');
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a .'active=feed');
 		return;		
 	}
 }

@@ -35,7 +35,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 $html  = '';
-$use_alias = $this->config->get('use_alias', 0);
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 ?>
 <div id="content-header">
@@ -136,7 +135,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			// Get project params
 			$params = new JParameter( $row->params );
 				
-			$goto  = $use_alias ? 'alias='.$row->alias : 'id='.$row->id;				
+			$goto  = 'alias=' . $row->alias;				
 			$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 			$html .= t.t.t.'<tr class="mline" id="tr_'.$row->id.'">'.n;
 			$html .= t.t.t.t.'<td class="th_privacy">';

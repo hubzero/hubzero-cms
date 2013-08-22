@@ -3365,7 +3365,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$useid = $id ? $id : $tempid;
 		
 		// Use if or alias?
-		if ($this->_config->get('use_alias', 1) && $id) 
+		if ($id) 
 		{
 			$obj = new Project( $this->database );
 			$dir = $obj->getAlias( $id );	
@@ -3405,7 +3405,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path.DS.$file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
 			$this->setError( JText::_('COM_PROJECTS_ERROR_UPLOADING') );
 			$file = $curfile;
@@ -3421,12 +3421,36 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			
 			$ih = new ProjectsImgHandler();
 
+			// Resize the image if necessary
+			$ih->set('image',$file['name']);
+			$ih->set('path',$path.DS);
+			$ih->set('maxWidth', 186);
+			$ih->set('maxHeight', 186);
+			if (!$ih->process()) 
+			{
+				JFile::delete($path . DS . $file['name']);
+				$this->setError( $ih->getError() );
+			}
+			
+			// Create a thumbnail image
+			$ih->set('maxWidth', 50);
+			$ih->set('maxHeight', 50);
+			$ih->set('cropratio', '1:1');
+			$ih->set('outputName', $ih->createThumbName());
+			if (!$ih->process()) 
+			{
+				JFile::delete($path . DS . $file['name']);
+				$this->setError( $ih->getError() );
+			}
+				
+			$file = $file['name'];
+			
 			// Instantiate a project, change some info and save
-			if ($id) 
+			if (!$this->getError() && $id) 
 			{
 				$obj = new Project( $this->database );
 				$obj->loadProject($id);
-				$obj->picture = $file['name'];
+				$obj->picture = $file;
 				if (!$obj->store()) 
 				{
 					$this->setError( $obj->getError() );
@@ -3440,31 +3464,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						'', 'project', 0 );
 				}
 			}
-			
-			// Resize the image if necessary
-			$ih->set('image',$file['name']);
-			$ih->set('path',$path.DS);
-			$ih->set('maxWidth', 186);
-			$ih->set('maxHeight', 186);
-			if (!$ih->process()) 
-			{
-				$this->setError( $ih->getError() );
-			}
-			
-			// Create a thumbnail image
-			$ih->set('maxWidth', 50);
-			$ih->set('maxHeight', 50);
-			$ih->set('cropratio', '1:1');
-			$ih->set('outputName', $ih->createThumbName());
-			if (!$ih->process()) 
-			{
-				$this->setError( $ih->getError() );
-			}
-				
-			$file = $file['name'];
 	
 			// Remove old images
-			if ($curfile != '' && $curfile != $file ) 
+			if (!$this->getError() && $curfile != '' && $curfile != $file ) 
 			{
 				if (file_exists($path . DS . $curfile)) 
 				{
@@ -3476,6 +3478,12 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					JFile::delete($path . DS . $curthumb);
 				}
 			}
+		}
+		
+		if ($this->getError())
+		{
+			$this->_img( $curfile, $id, $tempid );
+			return;
 		}
 		
 		// Push through to the image view
@@ -3497,16 +3505,18 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		
 		$from_dir =  Hubzero_View_Helper_Html::niceidformat( $temid );
-		// Use if or alias?
-		if ($this->_config->get('use_alias', 1)) 
+		
+		// Get alias
+		if (intval($pid))
 		{
 			$obj = new Project( $this->database );
-			$to_dir = $obj->getAlias( $pid );	
+			$to_dir = $obj->getAlias( $pid );
 		}
-		else 
+		else
 		{
-			$to_dir = Hubzero_View_Helper_Html::niceidformat( $pid );
+			$to_dir = $pid;
 		}
+		
 		$from_path 	= $prefix . $webdir . DS . 'temp' . DS . $from_dir . DS . 'images';
 		$to_path 	= $prefix . $webdir . DS . $to_dir . DS . 'images';
 		
@@ -3554,15 +3564,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$prefix = JPATH_ROOT;	
 		
 		// Build the file path
-		if ($this->_config->get( 'use_alias', 1 )) 
+		if (intval($id))
 		{
 			$obj = new Project( $this->database );
-			$dir = $obj->getAlias( $id );	
+			$dir = $obj->getAlias( $id );
 		}
-		else 
+		else
 		{
-			$dir = Hubzero_View_Helper_Html::niceidformat( $id );
+			$dir = $id;
 		}
+		
 		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$path   = $prefix . $webdir;
 		$path  .= $temp ? DS . 'temp' : '';

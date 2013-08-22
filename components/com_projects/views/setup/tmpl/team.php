@@ -29,9 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 $this->project->about = ProjectsHtml::cleanText($this->project->about);
 
-// Use id or alias in urls?
-$use_alias = $this->config->get('use_alias', 0);
-$goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+$goto  = 'alias=' . $this->project->alias;
 
 $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
 

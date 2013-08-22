@@ -29,7 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$use_alias = $this->config->get('use_alias', 0);
 $projects = $this->rows;
 $juser = $this->juser;
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -60,7 +59,7 @@ switch ($this->which)
 	foreach ($projects as $row)
 	{
 			$thumb = ProjectsHTML::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
-			$goto  = $use_alias ? 'alias='.$row->alias : 'id='.$row->id;
+			$goto  = 'alias=' . $row->alias;
 			$role = $row->role == 1 ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : JText::_('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR');
 			$setup = ($row->setup_stage < $setup_complete) ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_SETUP') : '';
 

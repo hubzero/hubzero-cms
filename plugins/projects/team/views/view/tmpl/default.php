@@ -49,8 +49,7 @@ $prev_start = $this->filters['start'] - $this->filters['limit'];
 $prev_start = $prev_start < 0 ? 0 : $prev_start;
 $next_start = $this->filters['start'] + $this->filters['limit'];
 
-$use_alias = $this->config->get('use_alias', 1);
-$goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+$goto  = 'alias=' . $this->project->alias;
 
 ?>
 <div id="plg-header">

@@ -32,7 +32,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_Group');
 ximport('Hubzero_User_Profile');
 
-$use_alias = $this->config->get('use_alias', 0);
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $juser = $this->juser;
 ?>

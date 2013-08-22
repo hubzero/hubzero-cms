@@ -29,10 +29,7 @@ $html  = '';
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 $privacy = $this->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
-
-// Use id or alias in urls?
-$use_alias = $this->config->get('use_alias', 0);
-$goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+$goto  = 'alias=' . $this->project->alias;
 
 ?>
 <div id="project-wrap">

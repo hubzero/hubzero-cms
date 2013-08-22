@@ -97,9 +97,6 @@
 		<param name="limit" type="text" menu="hide" default="25" label="Browse paging limit" description="Number of projects per page on Browse." />
 		<param name="sidebox_limit" type="text" menu="hide" default="3" label="Side module item limit" description="Number of items per box in project page side modules" />
 		<param name="group_prefix" type="text" menu="hide" default="pr-" label="Project group prefix" description="Prefix for project group name (system group provisioned for each project to handle permissions)" />
-		<param name="use_alias" type="list" default="1" label="Project path construct" description="Use project ID or alias name when building project path?">
-			<option value="1">Project Alias</option>
-		</param>
 		<param name="documentation" type="text" menu="hide" default="/projects/features" label="URL to documentation" description="URL to a page with the user guide" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
@@ -185,9 +182,6 @@
 		<field name="limit" type="text" menu="hide" default="25" label="Browse paging limit" description="Number of projects per page on Browse." />
 		<field name="sidebox_limit" type="text" menu="hide" default="3" label="Side module item limit" description="Number of items per box in project page side modules" />
 		<field name="group_prefix" type="text" menu="hide" default="pr-" label="Project group prefix" description="Prefix for project group name (system group provisioned for each project to handle permissions)" />
-		<field name="use_alias" type="list" default="1" label="Project path construct" description="Use project ID or alias name when building project path?">
-			<option value="1">Project Alias</option>
-		</field>
 		<field name="documentation" type="text" menu="hide" default="/projects/features" label="URL to documentation" description="URL to a page with the user guide" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">

@@ -25,15 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Use id or alias in urls?
-$goto  = $this->config->get('use_alias', 0) ? 'alias='.$this->project->alias : 'id='.$this->project->id;
-
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 ?>
 <div id="project-wrap">
 <div class="main section">
-	<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto); ?>">
+	<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias='.$this->project->alias); ?>">
 		<fieldset >
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 			<input type="hidden" name="task" value="reinstate" />

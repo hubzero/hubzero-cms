@@ -53,8 +53,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 $urlbit = $this->task == 'edit' ? 'edit=team' : 'step=1';
 
 // Use alias or id in urls?
-$use_alias = $this->config->get('use_alias', 0);
-$goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+$goto  = 'alias='.$this->project->alias;
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();

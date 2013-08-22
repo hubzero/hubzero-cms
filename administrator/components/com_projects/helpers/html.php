@@ -59,14 +59,8 @@ class ProjectsHtml
 	public function getThumbSrc( $id, $alias, $picname = '', $config ) {
 			
 		$src = '';
+		$dir = $alias;	
 		
-		// Use if or alias?
-		if($config->get('use_alias') && $alias) {
-			$dir = $alias;	
-		}
-		else {
-			$dir = Hubzero_View_Helper_Html::niceidformat( $useid );
-		}
 		$webdir = $config->get('imagepath', '/site/projects');
 		if (substr($webdir, 0, 1) != DS) {
 			$webdir = DS.$webdir;

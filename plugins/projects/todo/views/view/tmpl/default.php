@@ -43,8 +43,7 @@ $which = $this->filters['state'] == 1 ? strtolower(JText::_('COM_PROJECTS_COMPLE
 $where = $this->listname ? ' '.JText::_('COM_PROJECTS_TODO_ON_THIS_LIST') : '';
 $where.= $this->filters['mine'] == 1 ? ' '.JText::_('COM_PROJECTS_IN_MY_TODOS') : '';
 
-$use_alias = $this->config->get('use_alias', 0);
-$goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;	
+$goto  = 'alias=' . $this->project->alias;	
 ?>
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'); ?>" method="post" id="plg-form" >
   <div id="plg-header">	

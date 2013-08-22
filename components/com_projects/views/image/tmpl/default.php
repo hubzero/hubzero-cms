@@ -62,6 +62,8 @@ $src = $this->thumb && file_exists( $this->file_path.DS.$this->thumb ) ? $this->
 				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" />
 				<?php if ($this->getError()) { ?>
 							<p class="error_s"><?php echo JText::_('COM_PROJECTS_ERROR'); ?>: <?php echo $this->getError(); ?></p>
+				<?php } else { ?>
+					<p class="hint block ipadded"><?php echo JText::_('Accepted formats: .jpg, .gif and .png'); ?></p>
 				<?php } ?>
 			</div>
 	   </form>

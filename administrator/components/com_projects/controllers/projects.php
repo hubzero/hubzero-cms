@@ -470,7 +470,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			
 		// Store project info
 		$alias = $obj->alias;
-		$identifier = $this->_config->get('use_alias', 0) ? $alias : $id;
+		$identifier = $alias;
 		
 		// Delete project
 		$obj->delete();
@@ -543,7 +543,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$dispatcher->trigger( 'eraseRepo', array($identifier) );
 		
 		// Delete base dir for .git repos
-		$dir = $this->_config->get('use_alias', 1) ? $alias : Hubzero_View_Helper_Html::niceidformat( $id );
+		$dir = $alias;
 		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;		
 		
 		$repodir = $this->_config->get('webpath');

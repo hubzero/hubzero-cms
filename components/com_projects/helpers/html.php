@@ -31,6 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%b %d, %Y';
+$tz = null;
+
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'M d, Y';
+	$tz = false;
+}
+
+
 if (!defined('n')) {
 
 /**
@@ -702,8 +712,7 @@ class ProjectsHtml
 	public function writeProjectHeader ($view, $back = 0, $underline = 0, $show_privacy = 0, $show_pic = 1) 
 	{
 		// Use alias or id in urls?
-		$use_alias = $view->config->get('use_alias', 0);
-		$goto  = $use_alias ? 'alias='.$view->project->alias : 'id='.$view->project->id;
+		$goto  = 'alias=' . $view->project->alias;
 		$privacy_txt = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
 		
 		if($view->project->private) 

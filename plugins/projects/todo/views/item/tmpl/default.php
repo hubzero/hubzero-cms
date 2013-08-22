@@ -74,9 +74,7 @@ $due = ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' ) 
 $profile->load( $this->item->created_by );	
 $author = $profile->get('name');
 
-// Use alias or id in urls?
-$use_alias = $this->config->get('use_alias', 0);
-$goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+$goto  = 'alias=' . $this->project->alias;
 	
 ?>
 <div id="plg-header">
