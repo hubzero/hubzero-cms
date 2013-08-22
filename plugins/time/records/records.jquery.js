@@ -52,7 +52,13 @@ HUB.Plugins.TimeRecords = {
 				pageCount = $('.list-footer .page').length;
 
 				var path  = $('.list-footer .next a').attr('href');
-				var limit = path.match(/limit[\-=]([0-9]*)/).slice(1);
+				var limit = path.match(/limit[\-=]([0-9]*)/);
+				if (limit && limit[1]) {
+					limit = limit.slice(1);
+				} else {
+					limit = $('.list-footer #limit').val();
+				}
+
 				var start = path.match(/start[\-=]([0-9]*)/).slice(1);
 				return  path.replace(/start[\-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
 			}
