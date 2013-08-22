@@ -100,7 +100,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Starts'); ?></th>
 				<th scope="col"><?php echo JText::_('Ends'); ?></th>
-				<th scope="col"><?php echo JText::_('Managers'); ?></th>
+				<th scope="col"><?php echo JText::_('Published'); ?></th>
 				<th scope="col"><?php echo JText::_('Sections'); ?></th>
 				<th scope="col"><?php echo JText::_('Enrollment'); ?></th>
 				<th scope="col"><?php echo JText::_('Units'); ?></th>
@@ -121,7 +121,19 @@ foreach ($this->rows as $row)
 	$tip = '[coming soon]';
 	$managers = $row->members(array('count' => true, 'student' => 0));
 	$units    = $row->units(array('count' => true));
-	$students = $row->members(array('count' => true, 'student' => 1));
+
+	$s = $row->sections();
+	$sids = array();
+	foreach ($s as $section)
+	{
+		$sids[] = $section->get('id');
+	}
+
+	$students = $row->members(array(
+					'count' => true, 
+					'student' => 1,
+					'section_id' => $sids
+				));
 	$pages    = $row->pages(array('count' => true, 'active' => array(0, 1)));
 	$sections = $row->sections(array('count' => true));
 ?>
@@ -133,15 +145,15 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_up'), $dateFormat, $tz) : JText::_('(no date set)'); ?>
@@ -149,7 +161,7 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), $dateFormat, $tz) : JText::_('(never)'); ?>
 				</td>
-				<td>
+				<!-- <td>
 <?php if ($canDo->get('core.manage')) { ?>
 					<a class="glyph member" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $managers; ?>
@@ -159,6 +171,35 @@ foreach ($this->rows as $row)
 						<?php echo $managers; ?>
 					</span>
 <?php } ?>
+				</td> -->
+				<td>
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<?php if ($row->get('state') == 1) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Unpublish Offering'); ?>">
+						<span class="state publish">
+							<span class="text"><?php echo JText::_('Published'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($row->get('state') == 2) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Restore Offering'); ?>">
+						<span class="state trash">
+							<span class="text"><?php echo JText::_('Trashed'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($row->get('state') == 3) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Offering'); ?>">
+						<span class="state pending">
+							<span class="text"><?php echo JText::_('Draft'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($row->get('state') == 0) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Offering'); ?>">
+						<span class="state unpublish">
+							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
+						</span>
+					</a>
+					<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage') && $sections > 0) { ?>
