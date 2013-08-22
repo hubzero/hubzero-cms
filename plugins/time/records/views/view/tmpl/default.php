@@ -58,7 +58,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last">
-				<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=new'); ?>">
+				<a class="add icon-add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=new'); ?>">
 					<?php echo JText::_('PLG_TIME_RECORDS_NEW'); ?>
 				</a>
 			</li>

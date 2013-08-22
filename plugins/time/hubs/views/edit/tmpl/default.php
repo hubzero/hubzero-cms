@@ -46,7 +46,7 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last">
-				<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs'.$this->start); ?>">
+				<a class="back icon-back btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs'.$this->start); ?>">
 					<?php echo JText::_('PLG_TIME_HUBS_ALL_HUBS'); ?>
 				</a>
 			</li>

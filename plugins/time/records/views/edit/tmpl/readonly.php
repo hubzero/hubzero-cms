@@ -53,23 +53,23 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<ul id="useroptions">
 			<?php if($this->row->billed == 0 && ($this->juser->get('id') == $this->row->user_id || in_array($this->row->user_id, $this->subordinates))) { ?>
 				<li>
-					<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'.$this->start); ?>">
+					<a class="back icon-back btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'.$this->start); ?>">
 						<?php echo JText::_('PLG_TIME_RECORDS_ALL_RECORDS'); ?>
 					</a>
 				</li>
 				<li>
-					<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=edit&id='.$this->row->id); ?>">
+					<a class="edit icon-edit btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=edit&id='.$this->row->id); ?>">
 						<?php echo JText::_('PLG_TIME_RECORDS_EDIT'); ?>
 					</a>
 				</li>
 				<li class="last">
-					<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=delete&id='.$this->row->id); ?>">
+					<a class="delete icon-delete btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=delete&id='.$this->row->id); ?>">
 						<?php echo JText::_('PLG_TIME_RECORDS_DELETE'); ?>
 					</a>
 				</li>
 			<?php } else { ?>
 				<li class="last">
-					<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'.$this->start); ?>">
+					<a class="back icon-back btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'.$this->start); ?>">
 						<?php echo JText::_('PLG_TIME_RECORDS_ALL_RECORDS'); ?>
 					</a>
 				</li>

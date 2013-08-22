@@ -43,12 +43,12 @@ defined('_JEXEC') or die('Restricted access');
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li>
-				<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks'.$this->start); ?>">
+				<a class="back icon-back btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks'.$this->start); ?>">
 					<?php echo JText::_('PLG_TIME_TASKS_ALL_TASKS'); ?>
 				</a>
 			</li>
 			<li class="last">
-				<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=delete&id='.$this->row->id); ?>">
+				<a class="delete icon-delete btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=delete&id='.$this->row->id); ?>">
 					<?php echo JText::_('PLG_TIME_TASKS_DELETE'); ?>
 				</a>
 			</li>

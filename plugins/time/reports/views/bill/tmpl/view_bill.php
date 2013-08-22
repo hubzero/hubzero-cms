@@ -37,7 +37,7 @@ $tz = 0;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'F j, Y at g:i:s A';
+	$dateFormat = 'F j, Y \a\t g:i:s A';
 	$dateFormat2 = 'm-d-Y';
 	$tz = null;
 }
@@ -52,7 +52,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last">
-				<a class="download" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=reports&action=csvbill&id='.$this->report->id); ?>">
+				<a class="icon-file btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=reports&action=csvbill&id='.$this->report->id); ?>">
 					<?php echo JText::_('PLG_TIME_REPORTS_DOWNLOAD_CSV'); ?>
 				</a>
 			</li>
