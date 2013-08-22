@@ -181,7 +181,6 @@
 		font-size: 200%;
 		line-height: 1.2;
 		color: #ddd;
-		/*text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);*/
 	}
 	.rating:not(:checked) > label:before {
 		font-family: "Fontcons";
@@ -189,12 +188,10 @@
 	}
 	.rating > input:checked ~ label {
 		color: #f70;
-		/*text-shadow: 1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);*/
 	}
 	.rating:not(:checked) > label:hover,
 	.rating:not(:checked) > label:hover ~ label {
 		color: #e3cf7a;
-		/*text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);*/
 	}
 	.rating > input:checked + label:hover,
 	.rating > input:checked + label:hover ~ label,
@@ -202,7 +199,6 @@
 	.rating > input:checked ~ label:hover ~ label,
 	.rating > label:hover ~ input:checked ~ label {
 		color: #ea0;
-		/*text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);*/
 	}
 	.rating:not(:checked) > label:hover:before,
 	.rating > input:checked ~ label:before,
@@ -210,8 +206,3 @@
 	.rating label:hover ~ label:before {
 		content: "\2605";
 	}
-	/*.rating > label:active {
-		position:relative;
-		top:2px;
-		left:2px;
-	}*/

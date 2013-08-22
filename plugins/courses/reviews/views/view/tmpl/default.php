@@ -174,22 +174,10 @@ $edit = JRequest::getInt('editcomment', 0);
 					<fieldset class="rating">
 						<legend><?php echo JText::_('PLG_COURSES_REVIEWS_FORM_RATING'); ?>:</legend>
 
-						<input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->rating == 1) { echo ' checked="checked"'; } ?> /> 
-						<label for="review_rating_1">
-							&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_POOR'); ?>
-						</label>
-
-						<input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->rating == 2) { echo ' checked="checked"'; } ?> /> 
-						<label for="review_rating_2">
-							&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
-						</label>
-
-						<input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->rating == 3) { echo ' checked="checked"'; } ?> /> 
-						<label for="review_rating_3">
-							&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
+						<input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->rating == 5) { echo ' checked="checked"'; } ?> /> 
+						<label for="review_rating_5">
+							&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
+							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
 						</label>
 
 						<input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($comment->rating == 4) { echo ' checked="checked"'; } ?> /> 
@@ -198,10 +186,22 @@ $edit = JRequest::getInt('editcomment', 0);
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_VERY_GOOD'); ?>
 						</label>
 
-						<input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->rating == 5) { echo ' checked="checked"'; } ?> /> 
-						<label for="review_rating_5">
-							&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
+						<input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->rating == 3) { echo ' checked="checked"'; } ?> /> 
+						<label for="review_rating_3">
+							&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
+							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
+						</label>
+
+						<input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->rating == 2) { echo ' checked="checked"'; } ?> /> 
+						<label for="review_rating_2">
+							&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
+							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
+						</label>
+
+						<input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->rating == 1) { echo ' checked="checked"'; } ?> /> 
+						<label for="review_rating_1">
+							&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
+							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_POOR'); ?>
 						</label>
 					</fieldset>
 					<div class="clear"></div>
