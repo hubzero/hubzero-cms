@@ -147,9 +147,9 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), $dateFormat, $tz) : JText::_('(never)'); ?>
 				</td>
-<?php if ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') { ?>
+<?php if ($row->get('redeemed')) { ?>
 				<td>
-					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), $dateFormat, $tz) : JText::_('(unredeemed)'); ?>
+					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), $dateFormat, $tz) : JText::_('(unknown)'); ?>
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=students&amp;task=edit&amp;section=<?php echo $row->get('section_id'); ?>&amp;id[]=<?php echo $row->get('redeemed_by'); ?>">

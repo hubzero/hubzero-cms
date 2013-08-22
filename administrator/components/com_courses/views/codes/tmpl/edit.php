@@ -172,21 +172,28 @@ function submitbutton(pressbutton)
 			
 			<table class="admintable">
 				<tbody>
+				<?php if ($this->row->get('redeemed_by')) { ?>
 					<tr>
 						<th class="key"><label for="field-redeemed">Redeemed:</label></th>
 						<td>
-							<?php //echo JHTML::_('calendar', $this->row->get('expires'), 'fields[created]', 'created', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-							<input type="text" name="fields[redeemed]" id="field-redeemed" class="datetime-field" value="<?php echo $this->escape(stripslashes($this->row->get('redeemed'))); ?>" />
+							<?php echo $this->escape(stripslashes($this->row->get('redeemed'))); ?>
+							<input type="hidden" name="fields[redeemed]" id="field-redeemed" class="datetime-field" value="<?php echo $this->escape(stripslashes($this->row->get('redeemed'))); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-redeemed_by">Redeemed by:</label></th>
 						<td>
-							<?php //echo JHTML::_('calendar', $this->row->get('expires'), 'fields[expires]', 'expires', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-							<input type="text" name="fields[redeemed_by]" id="field-redeemed_by" value="<?php echo $this->escape(stripslashes($this->row->get('redeemed_by'))); ?>" />
-							<span class="hint">Enter user ID or username</span>
+							<?php echo $this->escape(stripslashes($this->row->redeemer()->get('name'))) . ' (' . $this->escape(stripslashes($this->row->redeemer()->get('username'))) . ')'; ?>
+							<input type="hidden" name="fields[redeemed_by]" id="field-redeemed_by" value="<?php echo $this->escape(stripslashes($this->row->get('redeemed_by'))); ?>" />
 						</td>
 					</tr>
+				<?php } else { ?>
+					<tr>
+						<td>
+							<?php echo JText::_('Code has not been redeemed.') ?>
+						</td>
+					</tr>
+				<?php } ?>
 				</tbody>
 			</table>
 		</fieldset>
