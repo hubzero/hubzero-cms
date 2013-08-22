@@ -37,7 +37,7 @@ UPDATE `#__extensions` SET params='{"allowUserRegistration":"1","new_usertype":"
 
 UPDATE `#__modules` SET position='user3' WHERE title='Main Menu';
 UPDATE `#__modules` SET showtitle='0' WHERE title='Main Menu';
-UPDATE `#__modules` SET params= '{"menutype":"mainmenu","menu_style":"list","startLevel":"0","endLevel":"0","showAllChildren":"1","window_open":"","show_whitespace":"0","cache":"1","tag_id":"","class_sfx":"","moduleclass_sfx":"_menu","maxdepth":"10","menu_images":"0","menu_images_align":"0","menu_images_link":"0","expand_menu":"0","activate_parent":"0","full_active_id":"0","indent_image":"0","indent_image1":"","indent_image2":"","indent_image3":"","indent_image4":"","indent_image5":"","indent_image6":"","spacer":"","end_spacer":""}',0,'');
+UPDATE `#__modules` SET params= '{"menutype":"mainmenu","menu_style":"list","startLevel":"0","endLevel":"0","showAllChildren":"1","window_open":"","show_whitespace":"0","cache":"1","tag_id":"","class_sfx":"","moduleclass_sfx":"_menu","maxdepth":"10","menu_images":"0","menu_images_align":"0","menu_images_link":"0","expand_menu":"0","activate_parent":"0","full_active_id":"0","indent_image":"0","indent_image1":"","indent_image2":"","indent_image3":"","indent_image4":"","indent_image5":"","indent_image6":"","spacer":"","end_spacer":""}';
 UPDATE `#__modules` SET published='0' WHERE title='Quick Icons';
 UPDATE `#__modules` SET module='mod_hubmenu' WHERE title='Admin Menu';
 
@@ -337,6 +337,10 @@ INSERT INTO `#__jobs_types` (`id`, `category`) VALUES (5,'Temporary');
 -- HUBzero sample data for table `#__menu`
 --
 
+TRUNCATE `#__menu`;
+ALTER TABLE `#__menu` DROP KEY  `idx_client_id_parent_id_alias_language`;
+ALTER TABLE `#__menu` ADD KEY `idx_client_id_parent_id_alias_language` (`client_id`,`parent_id`,`alias`, `language`);
+
 INSERT INTO `#__menu` VALUES (1,'','Menu_Item_Root','root','','','','',1,0,0,0,0,0,'0000-00-00 00:00:00',0,0,'',0,'',0,185,0,'*',0);
 INSERT INTO `#__menu` VALUES (4,'mainmenu','Resources','resources','','discover/resources','index.php?Itemid=88','menulink',1,41,2,0,1,0,'0000-00-00 00:00:00',0,1,'',0,'{\"menu_item\":\"88\"}',84,89,0,'*',0);
 INSERT INTO `#__menu` VALUES (5,'mainmenu','Members','members','','community/members','index.php?Itemid=83','menulink',1,76,2,0,1,0,'0000-00-00 00:00:00',0,1,'',0,'{\"menu_item\":\"83\"}',118,119,0,'*',0);
@@ -486,6 +490,7 @@ INSERT INTO `#__modules` VALUES (53,'Members','','',0,'cpanel',0,'0000-00-00 00:
 -- HUBzero sample data for table `#__modules_menu`
 --
 
+TRUNCATE `#__modules_menu`;
 INSERT INTO `#__modules_menu` VALUES (1,0);
 INSERT INTO `#__modules_menu` VALUES (2,0);
 INSERT INTO `#__modules_menu` VALUES (3,0);
