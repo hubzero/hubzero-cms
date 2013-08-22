@@ -726,8 +726,6 @@ class RegisterController extends Hubzero_Controller
 	{
 		ximport('Hubzero_Auth_Link');
 
-		global $mainframe;
-
 		// Add the CSS to the template
 		$this->_getStyles();
 
@@ -772,7 +770,7 @@ class RegisterController extends Hubzero_Controller
 			{
 				// Get required system objects
 				$user 		= clone(JFactory::getUser());
-				$pathway 	=& $mainframe->getPathway();
+				$pathway 	=& JFactory::getApplication()->getPathway();
 				$config		=& JFactory::getConfig();
 				$authorize	=& JFactory::getACL();
 				$document   =& JFactory::getDocument();
@@ -804,8 +802,24 @@ class RegisterController extends Hubzero_Controller
 
 				// Set some initial user values
 				$user->set('id', 0);
-				$user->set('usertype', $newUsertype);
-				$user->set('gid', $authorize->get_group_id('', $newUsertype, 'ARO'));
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					$user->set('usertype', $newUsertype);
+					$user->set('gid', $authorize->get_group_id('', $newUsertype, 'ARO'));
+				}
+				else
+				{
+					// There's got to be a better way to do this!
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true)
+						->select('id')
+						->from('#__usergroups')
+						->where('title = ' . $db->quote(trim($newUsertype)));
+					$db->setQuery($query);
+					$result = $db->loadResult();
+
+					$user->set('groups', array($result));
+				}
 
 				$date =& JFactory::getDate();
 				$user->set('registerDate', $date->toMySQL());
