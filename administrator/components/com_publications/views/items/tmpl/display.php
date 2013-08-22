@@ -30,14 +30,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b, %Y';
-$dateFormat = '%d %b %Y';
+$dateFormat = '%d %b. %Y';
 $tz = null;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat2 = 'd M, Y';
-	$dateFormat = 'd M Y';
+	$dateFormat = 'd M. Y';
 	$tz = false;
 }
 
@@ -128,13 +126,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
 		$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, $dateFormat2, $tz).'<br />'
+				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, $dateFormat, $tz).'<br />'
 				 : '';
 		$info .= ($row->checked_out)
 				 ? JText::_('Checked out by').': '.$row->checked_out.'<br />'
 				 : '';
 		$checked = ' ['.JText::_('checked out').']';
 	}
+		
 	// What's the publication status?
 	$status = PublicationsHtml::getPubStateProperty($row, 'status');
 	$class 	= PublicationsHtml::getPubStateProperty($row, 'class');
