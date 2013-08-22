@@ -114,7 +114,7 @@ $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 					</td>
 					<td class="paramlist_key">
 						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">
-							<?php echo $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')'; ?>
+							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : JText::_('unknown'); ?>
 						</a>
 					</td>
 					<td class="paramlist_value">
