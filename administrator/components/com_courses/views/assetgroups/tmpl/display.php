@@ -192,11 +192,11 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+					<a class="glyph assets" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $assets; ?>
 					</a>
 <?php } else { ?>
-					<span>
+					<span class="glyph assets">
 						<?php echo $assets; ?>
 					</span>
 <?php } ?>

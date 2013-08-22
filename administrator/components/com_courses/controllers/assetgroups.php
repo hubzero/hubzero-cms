@@ -154,6 +154,8 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 			$this->view->filters['limit']
 		);
 
+		$this->_getStyles();
+
 		// Set any errors
 		if ($this->getError())
 		{

@@ -157,6 +157,25 @@ function submitbutton(pressbutton)
 <?php } ?>
 			</tbody>
 		</table>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key" valign="top"><label for="field-state"><?php echo JText::_('State'); ?>:</label></td>
+						<td>
+							<select name="fields[state]" id="field-state">
+								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 
