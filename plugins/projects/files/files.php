@@ -631,8 +631,15 @@ class plgProjectsFiles extends JPlugin
 		}
 		else 
 		{
-			$view->image_ext = array('bmp', 'jpg', 'jpeg', 'gif', 'png', 'jpe', 'tif', 'tiff');
-			$view->video_ext = array('avi', 'mpeg', 'mov', 'mpg', 'wmv', 'rm', 'mp4');
+			// Common extensions (for gallery)
+			$pubPlugin 	= JPluginHelper::getPlugin( 'projects', 'publications' );
+			$pubparams  = new JParameter($pubPlugin->params);
+						
+			$view->image_ext = ProjectsHelper::getParamArray(
+				$pubparams->get('image_types', 'bmp, jpeg, jpg, png' ));			
+			$view->video_ext = ProjectsHelper::getParamArray(
+				$pubparams->get('video_types', 'avi, mpeg, mov, wmv' ));
+			
 			$other = 1;
 				
 			// Get current screenshots

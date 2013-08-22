@@ -69,7 +69,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Common extensions (for gallery)
 		$this->_image_ext = ProjectsHelper::getParamArray(
-			$this->_params->get('image_types', 'bmp, jpeg, jpg, png, tiff' ));			
+			$this->_params->get('image_types', 'bmp, jpeg, jpg, png' ));			
 		$this->_video_ext = ProjectsHelper::getParamArray(
 			$this->_params->get('video_types', 'avi, mpeg, mov, wmv' ));	
 			
