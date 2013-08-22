@@ -106,6 +106,7 @@ class plgTimeHubs extends Hubzero_Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'tasks.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'contacts.php');
+		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		// Add some styles to the view
 		ximport('Hubzero_Document');
@@ -296,7 +297,15 @@ class plgTimeHubs extends Hubzero_Plugin
 		$tFilters['start']  = 0;
 		$tFilters['hub']    = $view->row->id;
 		$tFilters['active'] = 1;
-		$view->activeTasks  = count($tasks->getTasks($tFilters));
+
+		$q['q'][0]['column'] = 'hub_id';
+		$q['q'][0]['o']      = '=';
+		$q['q'][0]['value']  = $view->row->id;
+		$q['q'][1]['column'] = 'active';
+		$q['q'][1]['o']      = '=';
+		$q['q'][1]['value']  = 1;
+
+		$view->activeTasks  = $tasks->getCount($q);
 
 		// Get the summary hours for the hub
 		$records          = new TimeRecords($this->db);
