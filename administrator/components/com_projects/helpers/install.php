@@ -99,7 +99,7 @@ class ProjectsInstall extends JObject {
 		  `request_uri` tinytext,
 		  PRIMARY KEY (`id`),
 		  KEY `projectid` (`projectid`)
-		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8";
+		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8";
 		
 		$this->runQuery($query);
 	}
