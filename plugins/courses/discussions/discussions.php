@@ -413,7 +413,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 							JRequest::setVar('category', $c);
 							$action = 'editcategory';
 						}
-						$d = JRequest::getVar('file', '');
+						$d = JRequest::getVar('d', '');
 						switch ($c)
 						{
 							case 'edit':
@@ -614,6 +614,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$category->scope       = $view->filters['scope'];
 			$category->scope_id    = $view->filters['scope_id'];
 			$category->object_id   = $lecture->get('id');
+			$category->ordering    = $lecture->get('ordering');
 			if ($category->check())
 			{
 				$category->store();
@@ -1461,6 +1462,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 								$cat->scope       = 'course';
 								$cat->scope_id    = $this->offering->get('id');
 								$cat->object_id   = $ag->get('id');
+								$cat->ordering    = $ag->get('ordering');
 								if ($cat->check())
 								{
 									$cat->store();
