@@ -141,11 +141,7 @@ function submitbutton(pressbutton)
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Group ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('group_id')); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('Course ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 <?php if ($this->row->get('created')) { ?>

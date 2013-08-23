@@ -86,6 +86,7 @@ function submitbutton(pressbutton)
 			
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->row->get('course_id'); ?>" />
+			<input type="hidden" name="course" value="<?php echo $this->row->get('course_id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
@@ -157,7 +158,7 @@ function submitbutton(pressbutton)
 					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('Offering ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 <?php if ($this->row->get('created')) { ?>

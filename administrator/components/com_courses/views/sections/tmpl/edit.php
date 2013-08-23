@@ -57,6 +57,7 @@ $gparams = new $paramsClass($this->offering->params);
 $membership_control = $gparams->get('membership_control', 1);
 
 $display_system_users = $gparams->get('display_system_users', 'global');*/
+$course_id = 0;
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -112,6 +113,10 @@ function submitbutton(pressbutton)
 								$j = 0;
 								foreach ($course->offerings() as $i => $offering)
 								{
+									if ($offering->get('id') == $this->row->get('offering_id')) 
+									{
+										$course_id = $offering->get('course_id');
+									}
 					?>
 									<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
 					<?php
@@ -188,32 +193,34 @@ function submitbutton(pressbutton)
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('Course ID'); ?></th>
+					<td colspan="3"><?php echo $this->escape($course_id); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Offering ID'); ?></th>
+					<td colspan="3"><?php echo $this->escape($this->row->get('offering_id')); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Section ID'); ?></th>
 					<td colspan="3"><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
-<?php if ($this->row->get('created')) { ?>
+			<?php if ($this->row->get('created')) { ?>
 				<tr>
 					<th><?php echo JText::_('Created'); ?></th>
 					<td>
 						<?php echo $this->escape($this->row->get('created')); ?>
 					</td>
-					<?php if ($this->row->get('created_by')) { ?>
-						<th><?php echo JText::_('Creator'); ?></th>
-						<td><?php 
-						$creator = JUser::getInstance($this->row->get('created_by'));
-						echo $this->escape(stripslashes($creator->get('name'))); ?></td>
-					<?php } ?>
-					
 				</tr>
-<?php } ?>
-<?php /*if ($this->row->get('created_by')) { ?>
+				<?php if ($this->row->get('created_by')) { ?>
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
 					<td><?php 
-					$creator = JUser::getInstance($this->row->get('created_by'));
-					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
+						$creator = JUser::getInstance($this->row->get('created_by'));
+						echo $this->escape(stripslashes($creator->get('name'))); ?>
+					</td>
 				</tr>
-<?php }*/ ?>
+				<?php } ?>
+			<?php } ?>
 			</tbody>
 		</table>
 
