@@ -1054,38 +1054,46 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	private function _userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$group_id = 'g.id';
-		$aro_id = 'aro.id';
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$query = "SELECT a.username AS value, a.name AS text, g.title AS groupname"
-			. "\n FROM #__users AS a"
-			. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
-			. "\n INNER JOIN #__usergroups AS g ON " . $group_id . " = gm.group_id"
-			. "\n WHERE a.block = '0' AND " . $group_id . "=8"
-			. "\n ORDER BY ". $order;
-		}
-		else
-		{
-			$query = "SELECT a.username AS value, a.name AS text, g.name AS groupname"
-			. "\n FROM #__users AS a"
-			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
-			. "\n INNER JOIN #__core_acl_aro_groups AS g ON " . $group_id . " = gm.group_id"
-			. "\n WHERE a.block = '0' AND " . $group_id . "=25"
-			. "\n ORDER BY ". $order;
-		}
+		$query = "SELECT a.username AS value, a.name AS text"
+			. " FROM #__users AS a"
+			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='user' AND aro.foreign_key = a.id"
+			. " WHERE a.block = '0'"
+			. " ORDER BY ". $order;
 
 		$this->database->setQuery($query);
-		if ($nouser)
+		if ($nouser) 
 		{
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 			$users = array_merge($users, $this->database->loadObjectList());
-		}
-		else
+		} 
+		else 
 		{
 			$users = $this->database->loadObjectList();
+		}
+
+		$query = "SELECT a.username AS value, a.name AS text, aro.alias"
+			. " FROM #__users AS a"
+			. " INNER JOIN #__xgroups_members AS m ON m.uidNumber = a.id"
+			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='group' AND aro.foreign_key = m.gidNumber"
+			. " WHERE a.block = '0'"
+			. " ORDER BY ". $order;
+		$this->database->setQuery($query);
+		if ($results = $this->database->loadObjectList())
+		{
+			$groups = array();
+			foreach ($results as $result)
+			{
+				if (!isset($groups[$result->alias]))
+				{
+					$groups[$result->alias] = array();
+				}
+				$groups[$result->alias][] = $result;
+			}
+			foreach ($groups as $name => $gusers)
+			{
+				$users[] = JHTML::_('select.optgroup', JText::_('group:') . ' ' . $name);
+				$users = array_merge($users, $gusers);
+			}
 		}
 
 		$users = JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
