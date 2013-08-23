@@ -24,7 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$use_alias = $this->config->get('use_alias', 0);
+
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 ?>
 <div id="content-header">
@@ -64,9 +64,10 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 				<li><?php echo JText::_('COM_PROJECTS_INTRO_GET_WIKI'); ?></li>
 				<li><?php echo JText::_('COM_PROJECTS_INTRO_GET_TODO'); ?></li>
 				<li><?php echo JText::_('COM_PROJECTS_INTRO_GET_BLOG'); ?></li>
+				<?php if ($this->publishing) { ?>
 				<li><?php echo JText::_('COM_PROJECTS_INTRO_GET_PUBLISHING'); ?></li>
+				<?php } ?>
 			</ul>
-			<p class="subnote">*<?php echo JText::_('COM_PROJECTS_INTRO_PUBLISHING_NOTE'); ?></p>
 			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=features'); ?>" id="projects-intro-features"><?php echo JText::_('COM_PROJECTS_LEARN_MORE'); ?></a></p>
 		</div>
 	</div>
@@ -84,7 +85,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if(count($this->rows) > 0) { 	?>		
 			<ul class="flow">
 				<?php foreach($this->rows as $row) { 
-				$goto  = $use_alias ? 'alias='.$row->alias : 'id='.$row->id;
+				$goto  = 'alias=' . $row->alias;
 				$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 				$setup = ($row->setup_stage < $setup_complete) ? JText::_('COM_PROJECTS_COMPLETE_SETUP') : '';
 				?>

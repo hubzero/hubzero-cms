@@ -553,6 +553,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->option 	= $this->_option;
 		$view->config 	= $this->_config;
 		$view->database = $this->database;
+		$view->publishing = $this->_publishing;
 		$view->uid 		= $this->juser->get('id');
 		$view->guest 	= $this->juser->get('guest');
 		$view->msg 		= isset($this->_msg) && $this->_msg ? $this->_msg : $this->getNotifications('success');
@@ -3398,6 +3399,17 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Do we have an old file we're replacing?
 		$curfile = JRequest::getVar( 'currentfile', '' );
 		
+		// Check it's an image in allowed format
+		$ext = explode('.', $file['name']);
+		$ext = end($ext);
+		
+		if (!in_array($ext, array('jpg', 'gif', 'png')))
+		{
+			$this->setError( JText::_('Format unsupported. Please upload a .jpg, .gif or .png') );
+			$this->_img( $curfile, $id, $tempid );
+			return false;
+		}
+				
 		// Delete older file with same name
 		if (file_exists($path . DS . $file['name'])) 
 		{

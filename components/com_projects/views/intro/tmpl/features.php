@@ -54,7 +54,7 @@ $html  = '';
 						<li class="todo"><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_LEARN_TODO'); ?></li>
 						<li class="notes"><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_LEARN_NOTES'); ?></li>
 						<li class="files"><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_LEARN_FILES'); ?></li>
-						<?php if($this->publishing) { ?>
+						<?php if ($this->publishing) { ?>
 						<li class="publications"><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_LEARN_PUB'); ?></li>
 						<?php } ?>
 					</ul>
@@ -65,7 +65,6 @@ $html  = '';
 						<li><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_PLANNED_ONE'); ?></li>
 						<li><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_PLANNED_TWO'); ?></li>
 						<li><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_PLANNED_THREE'); ?></li>
-						<li><?php echo JText::_('COM_PROJECTS_FEATURES_BLOG_PLANNED_FOUR'); ?></li>
 					</ul>
 					<p class="sub"><?php echo JText::_('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?> 
 						<span class="suggest"><a href="<?php echo JRoute::_('index.php?option=com_wishlist'.a.'task=add'.a.'category=general'.a.'id=1').'/?tag=projects,projects:microblog,com_projects'; ?>" ><?php echo JText::_('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a></span>
@@ -177,14 +176,8 @@ $html  = '';
 				<div class="two columns first">
 					<p class="f-about"><?php echo JText::_('COM_PROJECTS_FEATURES_FILES_ABOUT_START'); ?> <a href="http://git-scm.com/" rel="external"><?php echo JText::_('COM_PROJECTS_FEATURES_FILES_ABOUT_GIT'); ?></a> <?php echo JText::_('COM_PROJECTS_FEATURES_FILES_ABOUT_END'); ?></p>
 				</div>
-				<div class="two columns second">
-					<p class="sub"><?php echo JText::_('COM_PROJECTS_FEATURES_PLANNED'); ?></p>
-					<ul>
-						<li><?php echo JText::_('COM_PROJECTS_FEATURES_FILES_PLANNED_ONE'); ?></li>
-						<li><?php echo JText::_('COM_PROJECTS_FEATURES_FILES_PLANNED_TWO'); ?></li>
-						<li><?php echo JText::_('COM_PROJECTS_FEATURES_FILES_PLANNED_THREE'); ?></li>
-					</ul>
-					<p class="sub"><?php echo JText::_('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?> 
+				<div class="two columns second">					
+					<p class="sub"><?php echo JText::_('COM_PROJECTS_FEATURES_WANT_FEATURE_REQUEST'); ?> 
 						<span class="suggest"><a href="<?php echo JRoute::_('index.php?option=com_wishlist'.a.'task=add'.a.'category=general'.a.'id=1').'/?tag=projects,projects:files,com_projects'; ?>" ><?php echo JText::_('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a></span>
 					</p>
 					<p><a href="<?php echo JRoute::_('index.php?option=com_wishlist'.a.'category=general'.a.'id=1').'/?tags=projects,projects:files,com_projects'; ?>">&rarr; <?php echo JText::_('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS'); ?></a></p>
