@@ -99,6 +99,28 @@ if (!$this->question->get('anonymous'))
 					<span class="closed"><?php echo JText::_('COM_ANSWERS_STATUS_CLOSED'); ?></span></p>
 				<?php } ?>
 				</p>
+				<?php
+				$tags = $this->question->tags('array', 1);
+				$resource = null;
+				foreach ($tags as $tag)
+				{
+					if (preg_match('/^tool:/i', $tag['raw_tag']))
+					{
+						$resource = 'alias=' . substr($tag['raw_tag'], strlen('tool:'));
+					}
+					else if (preg_match('/^resource:/i', $tag['raw_tag']))
+					{
+						$resource = 'id=' . substr($tag['raw_tag'], strlen('resource:'));
+					}
+					if ($resource)
+					{
+						?>
+						<p>This question was asked on the <a href="<?php echo JRoute::_('index.php?option=com_resources&' . $resource); ?>">following resource</a>.</p>
+						<?php 
+						break;
+					}
+				}
+				?>
 
 			<?php if ($this->question->reward() && $this->question->isOpen() && $this->question->config('banking')) { ?>
 				<p class="intro">

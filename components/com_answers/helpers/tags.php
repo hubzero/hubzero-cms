@@ -50,5 +50,82 @@ class AnswersTags extends TagsHandler
 		$this->_db  = $db;
 		$this->_tbl = 'answers';
 	}
+
+	/**
+	 * Add a tag to an object
+	 * This will:
+	 * 1) First, check if the tag already exists
+	 *    a) if not, creates a database entry for the tag
+	 * 2) Adds a reference linking tag with object
+	 * 
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $object_id Object ID
+	 * @param      string  $tag       Tag
+	 * @param      integer $strength  Tag strength
+	 * @return     boolean True on success, false if errors
+	 */
+	public function safe_tag($tagger_id, $object_id, $tag, $strength=1, $label='', $admintag=0)
+	{
+		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) 
+		{
+			$this->setError('safe_tag argument missing');
+			return false;
+		}
+
+		if ($this->normalize_tag($tag) === '0') 
+		{
+			return true;
+		}
+
+		$to = new TagsObject($this->_db);
+		$to->objectid = $object_id;
+		$to->tbl = $this->_tbl;
+		$to->label = $label;
+
+		// First see if the tag exists.
+		$t = new TagsTag($this->_db);
+		$t->loadTag($t->normalize($tag));
+		if (!$t->id) 
+		{
+			// Add new tag! 
+			$t->tag     = $t->normalize($tag);
+			$t->raw_tag = addslashes($tag);
+			$t->admin   = $admintag;
+
+			if (!$t->store()) 
+			{
+				$this->setError($t->getError());
+				return false;
+			}
+			if (!$t->id) 
+			{
+				return false;
+			}
+			$to->tagid = $t->id;
+		} 
+		else 
+		{
+			$to->tagid = $t->id;
+
+			// Check if the object has already been tagged
+			if ($to->getCountForObject() > 0) 
+			{
+				return true;
+			}
+		}
+
+		// Add an entry linking the tag to the object it was used on
+		$to->strength = $strength;
+		$to->taggerid = $tagger_id;
+		$to->taggedon = date('Y-m-d H:i:s', time());
+
+		if (!$to->store()) 
+		{
+			$this->setError($to->getError());
+			return false;
+		}
+
+		return true;
+	}
 }
 

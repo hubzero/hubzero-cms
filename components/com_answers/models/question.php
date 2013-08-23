@@ -377,7 +377,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * 
 	 * @return     boolean
 	 */
-	public function tags($what='cloud')
+	public function tags($what='cloud', $admin=0)
 	{
 		$bt = new AnswersTags($this->_db);
 
@@ -387,7 +387,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		switch ($what)
 		{
 			case 'array':
-				$tags = $bt->get_tags_on_object($this->get('id'), 0, 0);
+				$tags = $bt->get_tags_on_object($this->get('id'), 0, 0, null, 0, $admin);
 			break;
 
 			case 'string':
