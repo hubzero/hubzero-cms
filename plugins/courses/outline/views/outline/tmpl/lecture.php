@@ -141,7 +141,7 @@ if (!$this->course->offering()->access('view')) { ?>
 			$lecture->key($current);
 
 			if ($unit->isFirst() && $lecture->isFirst()) { ?>
-				<span class="prev btn">
+				<span class="icon-prev prev btn">
 					<?php echo JText::_('Prev'); ?>
 				</span>
 			<?php } else {
