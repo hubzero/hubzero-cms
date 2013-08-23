@@ -16,6 +16,9 @@
 	.metadata p.answer:before { 
 		content: "\f086";
 	}
+	.subject #hubForm.full fieldset {
+		padding-left: 0;
+	}
 
 /* Entries */
 	.entry-state {

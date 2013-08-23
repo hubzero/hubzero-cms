@@ -40,8 +40,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$timeFormat = 'H:i p';
 	$tz = true;
 }
-
-$tag = ($this->resource->type == 7) ? 'tool:'.$this->resource->alias : 'resource:'.$this->resource->id;
+//'index.php?option=com_answers&task=new&tag=' . urlencode($tag)
+//$tag = ($this->resource->type == 7) ? 'tool:'.$this->resource->alias : 'resource:'.$this->resource->id;
 ?>
 <h3 class="section-header">
 	<a name="questions"></a>
@@ -49,7 +49,7 @@ $tag = ($this->resource->type == 7) ? 'tool:'.$this->resource->alias : 'resource
 </h3>
 <div class="container">
 	<p class="section-options">
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_answers&task=new&tag=' . urlencode($tag)); ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
+		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=questions&action=new'); ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
 	</p>
 	<table class="questions entries" summary="Questions submitted by the community">
 		<caption>

@@ -113,77 +113,49 @@ class plgResourcesQuestions extends JPlugin
 			return $arr;
 		}
 
-		$database =& JFactory::getDBO();
+		$this->database = JFactory::getDBO();
+		$this->model    = $model;
+		$this->option   = $option;
+		$this->juser     = JFactory::getUser();
 
 		// Get a needed library
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this tool
-		$a = new AnswersQuestion($database);
+		$this->a = new AnswersQuestion($this->database);
 
-		$filters = array();
-		$filters['limit']    = JRequest::getInt('limit', 0);
-		$filters['start']    = JRequest::getInt('limitstart', 0);
-		$filters['tag']      = $model->isTool() ? 'tool:' . $model->resource->alias : 'resource:' . $model->resource->id;
-		$filters['q']        = JRequest::getVar('q', '');
-		$filters['filterby'] = JRequest::getVar('filterby', '');
-		$filters['sortby']   = JRequest::getVar('sortby', 'withinplugin');
+		$this->filters = array();
+		$this->filters['limit']    = JRequest::getInt('limit', 0);
+		$this->filters['start']    = JRequest::getInt('limitstart', 0);
+		$this->filters['tag']      = $this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id;
+		$this->filters['q']        = JRequest::getVar('q', '');
+		$this->filters['filterby'] = JRequest::getVar('filterby', '');
+		$this->filters['sortby']   = JRequest::getVar('sortby', 'withinplugin');
 
-		$count = $a->getCount($filters);
+		$this->count = $this->a->getCount($this->filters);
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('resources', 'questions');
-
-			// Are we banking?
-			$upconfig =& JComponentHelper::getParams('com_members');
-			$banking = $upconfig->get('bankAccounts');
-
-			// Info aboit points link
-			$aconfig =& JComponentHelper::getParams('com_answers');
-			$infolink = $aconfig->get('infolink', '/kb/points/');
-
-			$limit = $this->params->get('display_limit', 10);
-
-			// Get results
-			$rows = $a->getResults($filters);
-
-			// Instantiate a view
-			ximport('Hubzero_View_Helper_Html');
-			ximport('Hubzero_Plugin_View');
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'resources',
-					'element' => $this->_name,
-					'name'    => 'browse'
-				)
-			);
-
-			// Pass the view some info
-			$view->option   = $option;
-			$view->resource = $model->resource;
-			$view->rows     = $rows;
-			$view->count    = $count;
-			$view->infolink = $infolink;
-			$view->banking  = $banking;
-			$view->limit    = $limit;
-			if ($this->getError()) 
+			switch (strtolower(JRequest::getWord('action', 'browse')))
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
-			}
+				case 'save':
+					$arr['html'] = $this->_save();
+				break;
 
-			// Return the output
-			$arr['html'] = $view->loadTemplate();
+				case 'new':
+					$arr['html'] = $this->_new();
+				break;
+
+				case 'browse':
+				default:
+					$arr['html'] = $this->_browse();
+				break;
+			}
 		}
 
 		// Are we returning metadata?
@@ -197,13 +169,316 @@ class plgResourcesQuestions extends JPlugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->resource = $model->resource;
-			$view->count    = $count;
+			$view->resource = $this->model->resource;
+			$view->count    = $this->count;
 			$arr['metadata'] = $view->loadTemplate();
 		}
 
 		// Return output
 		return $arr;
+	}
+
+	/**
+	 * Show a list of questions attached to this resource
+	 * 
+	 * @return     string
+	 */
+	private function _browse()
+	{
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+
+		// Instantiate a view
+		ximport('Hubzero_View_Helper_Html');
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'resources',
+				'element' => $this->_name,
+				'name'    => 'browse'
+			)
+		);
+
+		// Are we banking?
+		$upconfig =& JComponentHelper::getParams('com_members');
+		$view->banking = $upconfig->get('bankAccounts');
+
+		// Info aboit points link
+		$aconfig =& JComponentHelper::getParams('com_answers');
+		$view->infolink = $aconfig->get('infolink', '/kb/points/');
+
+		// Pass the view some info
+		$view->option   = $this->option;
+		$view->resource = $this->model->resource;
+
+		// Get results
+		$view->rows     = $this->a->getResults($this->filters);
+		$view->count    = $this->count;
+		$view->limit    = $this->params->get('display_limit', 10);
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display a form for adding a question
+	 * 
+	 * @param      object $row AnswersQuestion
+	 * @return     string
+	 */
+	private function _new($row=null)
+	{
+		// Login required
+		if ($this->juser->get('guest')) 
+		{
+			return $this->_browse();
+		}
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_answers');
+
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'resources',
+				'element' => $this->_name,
+				'name'    => 'question',
+				'layout'  => 'new'
+			)
+		);
+		$view->option   = $this->option;
+		$view->resource = $this->model->resource;
+		if (is_object($row))
+		{
+			$view->row  = $row;
+		}
+		else
+		{
+			$view->row  = $this->a;
+		}
+		$view->tag      = $this->filters['tag'];
+
+		// Are we banking?
+		$upconfig =& JComponentHelper::getParams('com_members');
+		$view->banking = $upconfig->get('bankAccounts');
+
+		$view->funds = 0;
+		if ($view->banking) 
+		{
+			$juser = JFactory::getUser();
+
+			$BTL = new Hubzero_Bank_Teller($this->database, $juser->get('id'));
+			$funds = $BTL->summary() - $BTL->credit_summary();
+			$view->funds = ($funds > 0) ? $funds : 0;
+		}
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Save a question and redirect to the main listing when done
+	 * 
+	 * @return     void
+	 */
+	private function _save()
+	{
+		// Login required
+		if ($this->juser->get('guest')) 
+		{
+			return $this->_browse();
+		}
+
+		// trim and addslashes all posted items
+		//$_POST = array_map('trim', $_POST);
+
+		// Incoming
+		$tags   = JRequest::getVar('tags', '');
+		$funds  = JRequest::getInt('funds', 0);
+		$reward = JRequest::getInt('reward', 0);
+
+		// If offering a reward, do some checks
+		if ($reward) 
+		{
+			// Is it an actual number?
+			if (!is_numeric($reward)) 
+			{
+				JError::raiseError(500, JText::_('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
+				return;
+			}
+			// Are they offering more than they can afford?
+			if ($reward > $funds) 
+			{
+				JError::raiseError(500, JText::_('COM_ANSWERS_INSUFFICIENT_FUNDS'));
+				return;
+			}
+		}
+
+		// Initiate class and bind posted items to database fields
+		$row = new AnswersQuestion($this->database);
+		if (!$row->bind(JRequest::getVar('question', array(), 'post', 'none', 2))) 
+		{
+			$this->setError($row->getError());
+			return $this->_new($row);
+		}
+
+		$row->subject    = Hubzero_Filter::cleanXss($row->subject);
+		$row->question   = Hubzero_Filter::cleanXss($row->question);
+		$row->question   = nl2br($row->question);
+		$row->created    = date('Y-m-d H:i:s', time());
+		$row->created_by = $this->juser->get('username');
+		$row->state      = 0;
+		$row->email      = 1; // force notification
+		if ($reward && $this->banking) 
+		{
+			$row->reward = 1;
+		}
+
+		// Ensure the user added a tag
+		if (!$tags) 
+		{
+			$this->setError(JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
+			return $this->_new($row);
+		}
+
+		// Check content
+		if (!$row->check()) 
+		{
+			$this->setError($row->getError());
+			$row->tags = $tags;
+			return $this->_new($row);
+		}
+
+		// Store new content
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			$row->tags = $tags;
+			return $this->_new($row);
+		}
+
+		// Checkin question
+		$row->checkin();
+
+		// Hold the reward for this question if we're banking
+		if ($reward && $this->banking) 
+		{
+			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->id);
+		}
+
+		// Add the tags
+		$tagging = new AnswersTags($this->database);
+		$tagging->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
+
+		// Add the tag to link to the resource
+		$tagging->safe_tag($this->juser->get('id'), $row->id, $this->filters['tag'], 1, '', ($this->model->isTool() ? 0 : 1));
+
+		// Get users who need to be notified on every question
+		$config = JComponentHelper::getParams('com_answers');
+		$apu = ($config->get('notify_users')) ? $config->get('notify_users') : '';
+		$apu = explode(',', $apu);
+		$apu = array_map('trim', $apu);
+
+		$receivers = array();
+
+		// Get tool contributors if question is about a tool
+		if ($tags) 
+		{
+			$tags = explode(',', $tags);
+			if (count($tags) > 0) 
+			{
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+
+				$TA = new ToolAuthor($this->database);
+				$objV = new ToolVersion($this->database);
+
+				if ($this->model->isTool())
+				{
+					$toolname = $this->model->resource->alias;
+
+					$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
+					$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
+					if (count($authors) > 0) 
+					{
+						foreach ($authors as $author) 
+						{
+							$receivers[] = $author->uidNumber;
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($apu)) 
+		{
+			foreach ($apu as $u)
+			{
+				$user =& JUser::getInstance($u);
+				if ($user) 
+				{
+					$receivers[] = $user->get('id');
+				}
+			}
+		}
+		$receivers = array_unique($receivers);
+
+		// Send the message
+		if (!empty($receivers)) 
+		{
+			// Send a message about the new question to authorized users (specified admins or related content authors)
+			$jconfig =& JFactory::getConfig();
+			$hub = array(
+				'email' => $jconfig->getValue('config.mailfrom'),
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS')
+			);
+
+			// Build the message subject
+			$subject = JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('new question about content you author or manage');
+
+			// Build the message	
+			$eview = new JView(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
+				'name'      => 'emails',
+				'layout'    => 'question'
+			));
+			$eview->option   = 'com_answers';
+			$eview->sitename = $jconfig->getValue('config.sitename');
+			$eview->juser    = $this->juser;
+			$eview->row      = $row;
+			$eview->id       = $row->id ? $row->id : 0;
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+
+			JPluginHelper::importPlugin('xmessage');
+			$dispatcher =& JDispatcher::getInstance();
+			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $hub, $receivers, $this->_option))) 
+			{
+				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
+			}
+		}
+
+		// Redirect to the question
+		JFactory::getApplication()->redirect(
+			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=questions')
+		);
 	}
 }
 
