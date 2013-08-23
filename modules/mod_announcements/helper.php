@@ -110,6 +110,22 @@ class modAnnouncementsHelper
 			' AND cc.published = 1' .
 			' AND s.published = 1' .
 			' ORDER BY ' . $orderby . ' ' . $limitby;
+		
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$query = 'SELECT a.*, cc.alias as catname, cc.path as catpath, ' .
+				' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.
+				' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug'.
+				' FROM #__content AS a' .
+				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
+				' WHERE a.state = 1 ' .
+				' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
+				' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
+				' AND cc.id = '. (int) $catid .
+				' AND cc.published = 1' .
+				' ORDER BY ' . $orderby . ' ' . $limitby;
+		}
+		
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 

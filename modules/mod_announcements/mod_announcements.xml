@@ -59,7 +59,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="catid" type="category" default="0" label="Category" description="A content category" />
+				<field name="catid" type="category" default="0" label="Category" description="A content category" extension="com_content" />
 				<field name="container" type="text" default="" label="Content Container" description="A CSS ID for a content container" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="numitems" type="text" default="5" label="Items" description="Enter number of news items to display" />

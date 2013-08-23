@@ -67,7 +67,12 @@ $html = '';
 			$url  = $item->secname;
 			$url .= $item->secname == $item->catname ? '' : DS . $item->catname;
 			$url .= DS . $item->alias;
-
+			
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$url = $item->catpath . DS . $item->alias;
+			}
+			
 			// get associated image
 			preg_match('/<img\s+.*?src="(.*?)"/is', $item->introtext , $match);
 			$img = count($match) > 1 ? trim(stripslashes($match[1])) : $this->params->get('default_image', 'modules/mod_announcements/default.gif');
