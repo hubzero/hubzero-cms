@@ -460,14 +460,15 @@ class CoursesModelSection extends CoursesModelAbstract
 		}
 		foreach ($data as $result)
 		{
-			$user_id = $this->_userId($result);
+			$user_id = (int) $this->_userId($result);
 
 			// Create the entry
-			$model = new CoursesModelMember($result, null, null, $this->get('id'));
-			$model->set('role_id', $role_id);
+			$model = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
+			$model->set('user_id', $user_id);
 			$model->set('course_id', $this->get('course_id'));
 			$model->set('offering_id', $this->get('offering_id'));
 			$model->set('section_id', $this->get('id'));
+			$model->set('role_id', $role_id);
 			if ($role->get('alias') == 'student')
 			{
 				$model->set('student', 1);
