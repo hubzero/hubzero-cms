@@ -315,7 +315,7 @@ HUB.Groups = {
 			}
 			else
 			{
-				console.log('Missing needed DOM elements to make assest browser scroll.');
+				if (window.console) console.log('Missing needed DOM elements to make assest browser scroll.');
 			}
 		}
 	},
