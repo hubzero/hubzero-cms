@@ -312,6 +312,10 @@ function CoursesParseRoute($segments)
 	{
 		$vars['asset'] = $segments[5];
 	}
+	if (isset($segments[6])) 
+	{
+		$vars['d'] = $segments[6];
+	}
 
 	return $vars;
 }

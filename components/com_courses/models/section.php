@@ -452,6 +452,12 @@ class CoursesModelSection extends CoursesModelAbstract
 		{
 			$role_id = $role->get('id');
 		}
+		if (!$this->get('course_id'))
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+			$this->set('course_id', $offering->get('course_id'));
+		}
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
@@ -459,6 +465,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			// Create the entry
 			$model = new CoursesModelMember($result, null, null, $this->get('id'));
 			$model->set('role_id', $role_id);
+			$model->set('course_id', $this->get('course_id'));
 			$model->set('offering_id', $this->get('offering_id'));
 			$model->set('section_id', $this->get('id'));
 			if ($role->get('alias') == 'student')
