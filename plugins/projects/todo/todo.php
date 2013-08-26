@@ -605,7 +605,7 @@ class plgProjectsTodo extends JPlugin
 							JText::_('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
 							JRoute::_('index.php?option=' . $this->_option . a . 
 							'alias=' . $this->_project->alias . a . 'active=todo'. a .
-							'action=view') . '/?todoid=' . $objTD->id, 'todo', 0 );
+							'action=view') . '/?todoid=' . $objTD->id, 'todo', 1 );
 					}
 				}
 			}
