@@ -232,7 +232,8 @@ class CoursesModelCourse extends CoursesModelAbstract
 					}
 				}
 			}
-			else
+
+			if (is_null($this->_offering))
 			{
 				// Get current offering
 				$this->_offering = CoursesModelOffering::getInstance($id, $this->get('id'));

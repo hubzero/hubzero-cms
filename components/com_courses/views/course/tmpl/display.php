@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateformat = '%d %b %Y';
+/*$dateformat = '%d %b %Y';
 $timeformat = '%I:%M %p';
 $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
@@ -39,11 +39,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$dateformat = 'd M Y';
 	$timeformat = 'H:i p';
 	$tz = true;
-}
+}*/
 
 //get objects
-$config   =& JFactory::getConfig();
-$database =& JFactory::getDBO();
+//$config   =& JFactory::getConfig();
+//$database =& JFactory::getDBO();
 
 $offerings = $this->course->offerings(array(
 	'available' => true, 
@@ -78,7 +78,6 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 
 <div class="course section intro">
 	<div class="aside">
-		<div class="offering-info">
 	<?php if ($offering->exists()) { ?>
 		<?php
 		$controls = '';
@@ -113,62 +112,133 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 					continue;
 				}
 				$last = $cur;
-			?>
-			<table>
-				<tbody>
-					<tr>
-						<th scope="row">Offering:</th>
-						<td>
-							<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">Section:</th>
-						<td>
-							<?php echo ($membership->get('section_id') ? $this->escape(stripslashes($offering->section($membership->get('section_id'))->get('title'))) : $this->escape(stripslashes($offering->section()->get('title')))); ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		<?php if ($offering->access('manage', 'section') || $this->course->isStudent()) { //$this->course->isManager() ?>
-			<p>
-				<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-					Enter course
-				</a>
-			</p>
-		<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
-			<p>
-				<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-					Enroll in course
-				</a>
-			</p>
-		<?php } ?>
-		<?php
+
+				// If they're a course level manager
+				if ($membership->get('course_id') && !$membership->get('section_id') && !$membership->get('student'))
+				{
+					// Get the default section
+					$dflt = $offering->section('__default');
+					if (!$dflt->exists())
+					{
+						// No default? Get the first in the list
+						$dflt = $offering->sections()->fetch('first');
+					}
+				?>
+			<div class="offering-info">
+				<table>
+					<tbody>
+						<tr>
+							<th scope="row"><?php echo JText::_('Offering:'); ?></th>
+							<td>
+								<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo JText::_('Section:'); ?></th>
+							<td>
+								<?php echo JText::_('--'); ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<?php if ($offering->sections()->total() > 1) { ?>
+				<div class="btn-group-wrap">
+					<div class="btn-group dropdown">
+						<a class="btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias'). '&offering=' . $offering->get('alias') . ($dflt->get('alias') != '__default' ? ':' . $dflt->get('alias') : '')); ?>"><?php echo $this->escape(stripslashes($dflt->get('title'))); ?></a>
+						<span class="btn dropdown-toggle"></span>
+						<ul class="dropdown-menu">
+						<?php 
+						foreach ($offering->sections() as $section) 
+						{
+							// Skip the default
+							if ($section->get('alias') == $dflt->get('alias'))
+							{
+								continue;
+							}
+							?>
+							<li>
+								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias'). '&offering=' . $offering->get('alias') . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '')); ?>">
+									<?php echo $this->escape(stripslashes($section->get('title'))); ?>
+								</a>
+							</li>
+							<?php
+						}
+						?>
+						</ul>
+						<div class="clear"></div>
+					</div><!-- /btn-group -->
+				</div>
+				<?php } else { ?>
+				<p>
+					<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias'). '&offering=' . $offering->get('alias') . ($dflt->get('alias') != '__default' ? ':' . $dflt->get('alias') : '')); ?>">
+						<?php echo JText::_('Enter course'); ?>
+					</a>
+				</p>
+				<?php } ?>
+			</div><!-- / .offering-info -->
+					<?php
+				}
+				else
+				{
+					?>
+			<div class="offering-info">
+				<table>
+					<tbody>
+						<tr>
+							<th scope="row"><?php echo JText::_('Offering:'); ?></th>
+							<td>
+								<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo JText::_('Section:'); ?></th>
+							<td>
+								<?php echo ($membership->get('section_id') ? $this->escape(stripslashes($offering->section($membership->get('section_id'))->get('title'))) : $this->escape(stripslashes($offering->section()->get('title')))); ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			<?php if ($offering->access('view', 'section') || $this->course->isStudent()) { //$this->course->isManager() ?>
+				<p>
+					<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+						<?php echo JText::_('Enter course'); ?>
+					</a>
+				</p>
+			<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
+				<p>
+					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
+						<?php echo JText::_('Enroll in course'); ?>
+					</a>
+				</p>
+			<?php } ?>
+			</div><!-- / .offering-info -->
+				<?php
+				}
 			}
 		} else {
-			echo $controls;
+			echo '<div class="offering-info">' . $controls . '</div><!-- / .offering-info -->';
 		}
 		?>
 	<?php } else { ?>
+		<div class="offering-info">
 			<p>
-				No offering available.
+				<?php echo JText::_('No offering available.'); ?>
 			</p>
+		</div><!-- / .offering-info -->
 	<?php } ?>
-		</div>
-	</div>
+	</div><!-- / .aside -->
 	<div class="subject">
 		<p>
 			<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
 		</p>
 
 		<?php echo $this->course->tags('cloud'); ?>
-	</div>
+	</div><!-- / .subject -->
 	<div class="clear"></div>
-</div>
+</div><!-- / .course section intro -->
 
 <div class="course section">
 	<div class="aside">
-
 		<?php
 		$instructors = $this->course->instructors();
 		if (count($instructors) > 0) 
@@ -207,48 +277,46 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 			}
 		}
 		?>
-	</div>
-	
+	</div><!-- / .aside -->
+
 	<div class="subject">
 
-			<ul class="sub-menu">
-	<?php
-	if ($this->cats)
-	{
-		$i = 1;
-		foreach ($this->cats as $cat)
-		{
-			$name = key($cat);
-			if ($name != '') 
+		<ul class="sub-menu">
+			<?php
+			if ($this->cats)
 			{
-				$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
-
-				if (strtolower($name) == $this->active) 
+				$i = 1;
+				foreach ($this->cats as $cat)
 				{
-					$app =& JFactory::getApplication();
-					$pathway =& $app->getPathway();
-					$pathway->addItem($cat[$name], $url);
-
-					if ($this->active != 'overview') 
+					$name = key($cat);
+					if ($name != '') 
 					{
-						$document =& JFactory::getDocument();
-						$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
+						$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
+
+						if (strtolower($name) == $this->active) 
+						{
+							$pathway =& JFactory::getApplication()->getPathway();
+							$pathway->addItem($cat[$name], $url);
+
+							if ($this->active != 'overview') 
+							{
+								$document =& JFactory::getDocument();
+								$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
+							}
+						}
+						?>
+						<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->active) ? ' class="active"' : ''; ?>>
+							<a class="tab" rel="<?php echo $name; ?>" href="<?php echo $url; ?>">
+								<span><?php echo $this->escape($cat[$name]); ?></span>
+							</a>
+						</li>
+						<?php
+						$i++;
 					}
 				}
-				?>
-				<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->active) ? ' class="active"' : ''; ?>>
-					<a class="tab" rel="<?php echo $name; ?>" href="<?php echo $url; ?>">
-						<span><?php echo $this->escape($cat[$name]); ?></span>
-					</a>
-				</li>
-				<?php
-				$i++;
 			}
-		}
-	}
-	?>
-			</ul>
-
+			?>
+		</ul>
 
 		<?php
 		foreach ($this->notifications as $notification) 
@@ -265,11 +333,11 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 			{
 				if ($section['html'] != '') 
 				{
-				?>
-		<div class="inner-section" id="<?php echo $section['name']; ?>-section">
-			<?php echo $section['html']; ?>
-		</div><!-- / .inner-section -->
-				<?php 
+					?>
+					<div class="inner-section" id="<?php echo $section['name']; ?>-section">
+						<?php echo $section['html']; ?>
+					</div><!-- / .inner-section -->
+					<?php 
 				}
 				$k++;
 			}
@@ -281,9 +349,8 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 
 <?php
 JPluginHelper::importPlugin('courses');
-$dispatcher =& JDispatcher::getInstance();
 
-$after = $dispatcher->trigger('onCourseViewAfter', array($this->course));
+$after = JDispatcher::getInstance()->trigger('onCourseViewAfter', array($this->course));
 if ($after && count($after) > 0) { ?>
 <div class="below course section">
 	<?php echo implode("\n", $after); ?>

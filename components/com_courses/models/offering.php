@@ -727,6 +727,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function membership($user_id=0)
 	{
+		$filters = array();
 		if (!isset($filters['course_id']))
 		{
 			$filters['course_id'] = (int) $this->get('course_id');
@@ -740,6 +741,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 			$user_id = JFactory::getUser()->get('id');
 		}
 		$filters['user_id'] = (int) $user_id;
+		$filters['sort'] = 'offering_id ASC, student';
+		$filters['sort_Dir'] = 'ASC';
 
 		if (isset($filters['count']) && $filters['count'])
 		{

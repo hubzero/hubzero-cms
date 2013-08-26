@@ -147,7 +147,7 @@
 		-ms-border-radius: 0.27em;
 		-o-border-radius: 0.27em;
 		border-radius: 0.27em;
-		overflow: hidden;
+		/*overflow: hidden;*/
 		zoom: 1;
 		text-shadow: 0 1px 0 #1d1212;
 		-webkit-transition: all ease-in-out 0.2s;
@@ -188,9 +188,13 @@
 		margin: 1em;
 		text-align: center;
 	}
-	.offering-info .btn {
+	.offering-info .btn-group-wrap {
+		margin: 1em;
+	}
+	.offering-info .btn-group {
 		display: block;
-		width: 100%;
+	}
+	.offering-info .btn {
 		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
 		color: #996633;
 		text-shadow: 0px 1px 0px #fedd9b;
@@ -209,6 +213,34 @@
 		    -ms-box-sizing: border-box;
 		     -o-box-sizing: border-box;
 		        box-sizing: border-box;
+	}
+	.offering-info .btn.enroll,
+	.offering-info .btn.outline {
+		display: block;
+		width: 100%;
+	}
+	/*.offering-info .btn-group .btn {
+		display: inline-block;
+	}*/
+	.offering-info .btn-group .btn {
+		width: 80%;
+		float: left;
+	}
+	.offering-info .btn-group .btn.dropdown-toggle {
+		width: 20%;
+		border-left-color: #996633;
+	}
+	.btn-group .dropdown-menu {
+		right: 0;
+	}
+	.btn-group .dropdown-menu li {
+		border: none;
+	}
+	.btn-group .dropdown-menu li a {
+		text-shadow: none;
+	}
+	.btn-group .dropdown-menu li a:before {
+		display: none;
 	}
 	.offering-info .btn:hover {
 		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
