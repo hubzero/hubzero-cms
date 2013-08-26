@@ -53,6 +53,9 @@ $ih = new ProjectsImgHandler();
 					$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($owner->userid).DS.$curthumb;
 				}
 				if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
+					$thumb = $path . DS . Hubzero_View_Helper_Html::niceidformat($owner->userid) . DS . 'thumb.png';
+				}
+				if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
 					$thumb = $mconfig->get('defaultpic');
 					if (substr($thumb, 0, 1) != DS) {
 						$thumb = DS.$thumb;

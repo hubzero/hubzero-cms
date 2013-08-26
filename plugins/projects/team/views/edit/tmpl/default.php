@@ -133,9 +133,12 @@ $dispatcher =& JDispatcher::getInstance();
 	{
 					$thumb = '';
 					
-					if($owner->picture) {
+					if ($owner->picture) {
 						$curthumb = $ih->createThumbName($owner->picture);
 						$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($owner->userid).DS.$curthumb;
+					}
+					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
+						$thumb = $path . DS . Hubzero_View_Helper_Html::niceidformat($owner->userid) . DS . 'thumb.png';
 					}
 					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
 						$thumb = $mconfig->get('defaultpic');
