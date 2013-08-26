@@ -58,7 +58,7 @@ if ($this->getError()) { ?>
 				<?php echo stripslashes($this->title); ?>
 			</a>: 
 		<?php if ($this->txt) { ?>
-			<?php echo Hubzero_View_Helper_Html::shortenText($this->encode_html(strip_tags($this->txt)), $this->txt_length, 0); ?>
+			<?php echo Hubzero_View_Helper_Html::shortenText(strip_tags($this->txt), $this->txt_length, 0); ?>
 		<?php } ?>
 		</p>
 	</div>

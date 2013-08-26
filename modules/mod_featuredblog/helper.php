@@ -173,8 +173,8 @@ class modFeaturedblog extends JObject
 			if ($fh->id && $fh->tbl == 'blogs') 
 			{
 				// Yes - load the member profile
-				$row = new BlogEntry($database);
-				$row->load($fh->objectid);
+				$this->row = new BlogEntry($database);
+				$this->row->load($fh->objectid);
 			} 
 			else 
 			{

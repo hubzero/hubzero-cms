@@ -43,8 +43,10 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/default.php</filename>
 	</files>
 	<params>
+		<!--
 		<param name="catid" type="text" default="" label="Category ID" description="PARAMCATEGORYID" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		-->
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 		<param name="txt_length" type="text" default="200" label="Text Length" description="Length of the text to show" />
 	</params>
@@ -58,8 +60,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<!--
 				<field name="catid" type="text" default="" label="Category ID" description="PARAMCATEGORYID" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
+				-->
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 				<field name="txt_length" type="text" default="200" label="Text Length" description="Length of the text to show" />
 			</fieldset>
