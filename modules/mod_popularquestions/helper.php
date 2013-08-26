@@ -136,7 +136,7 @@ class modPopularQuestions extends JObject
 		{
 			$query .= " AND ".$st;
 		}
-		$query .= " GROUP BY id ORDER BY helpful DESC";
+		$query .= " GROUP BY id ORDER BY a.helpful DESC";
 		$query .= ($limit) ? " LIMIT " . $limit : "";
 
 		$this->database->setQuery($query);
