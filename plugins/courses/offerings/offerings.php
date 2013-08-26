@@ -62,7 +62,43 @@ class plgCoursesOfferings extends JPlugin
 		$area = array();
 		if ($course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true)->total() > 0)
 		{
-			$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
+			switch ($this->params->get('plugin_access', 'anyone'))
+			{
+				case 'managers':
+					$memberships = $course->offering()->membership();
+
+					if (count($memberships) > 0)
+					{
+						foreach ($memberships as $membership)
+						{
+							if ($membership->get('student') == 0)
+							{
+								$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
+								break;
+							}
+						}
+					}
+				break;
+
+				case 'members':
+					if (count($course->offering()->membership()) > 0)
+					{
+						$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
+					}
+				break;
+
+				case 'registered':
+					if (!JFactory::getUser()->get('guest'))
+					{
+						$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
+					}
+				break;
+
+				case 'anyone':
+				default:
+					$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
+				break;
+			}
 			return $area;
 		}
 		return $area;

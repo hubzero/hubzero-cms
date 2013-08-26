@@ -68,16 +68,17 @@ if ($offerings->total() > 0)
 					<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
 				</span>
 			</th>
+		<?php if ($offering->sections()->total() <= 1) { ?>
 			<td>
 				<?php if ($this->course->isManager()) { ?>
-				&nbsp;
+				--
 				<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
-				<a class="enter btn" href="<?php echo JRoute::_($url); ?>">
+				<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 					Enter course
 				</a>
 				<?php } else { ?>
 					<?php if ($offering->isAvailable()) { ?>
-					<a class="enroll btn" href="<?php echo JRoute::_($url); ?>">
+					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
 						Enroll in course
 					</a>
 					<?php } else { ?>
@@ -96,12 +97,26 @@ if ($offerings->total() > 0)
 				</span>
 				<?php } ?>
 			</td>
+		<?php } else { ?>
+			<td>
+				&nbsp;
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		<?php } ?>
 		</tr>
 		<?php
-		if ($this->course->isManager()) // || ($this->course->isStudent() && $nonDefault))
+		//if ($this->course->isManager()) // || ($this->course->isStudent() && $nonDefault))
+		if ($offering->sections()->total() > 1)
 		{
 			foreach ($offering->sections() as $section) 
 			{
+				if (!$this->course->isManager() && $section->get('enrollment') == 2)
+				{
+					continue;
+				}
+				$offering->section($section->get('id'));
 				/*if ($this->course->isStudent())
 				{
 					if ($section->get('id') != $nonDefault && $section->get('alias') != '__default')
@@ -118,9 +133,26 @@ if ($offerings->total() > 0)
 				</span>
 			</th>
 			<td>
-				<a class="enter btn" href="<?php echo JRoute::_($surl); ?>">
-					Enter section
+				<?php if ($this->course->isManager()) { ?>
+				<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+					Enter course
 				</a>
+				<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
+				<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+					Enter course
+				</a>
+				<?php } else { ?>
+					<?php if ($offering->isAvailable()) { ?>
+					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
+						Enroll in course
+					</a>
+					<?php } else { ?>
+					--
+					<?php } ?>
+				<?php } ?>
+				<!-- <a class="enter btn" href="<?php echo JRoute::_($surl); ?>">
+					Enter section
+				</a> -->
 			</td>
 			<td>
 				<?php 
@@ -129,7 +161,7 @@ if ($offerings->total() > 0)
 					case 0: 
 						?>
 						<span class="accepting enrollment">
-							Open
+							Accepting
 						</a>
 						<?php 
 					break;
