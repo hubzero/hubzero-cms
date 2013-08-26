@@ -26,6 +26,7 @@ HUB.Video = {
 		browser = navigator.userAgent;
 		canSendTracking = true;
 		sendingTracking = false;
+		detailedTrackingId = null;
 		doneLoading = false;
 		
 		//show loading graphic
@@ -689,7 +690,7 @@ HUB.Video = {
 			//start tracking again
 			canSendTracking = true;
 			sendingTracking = false;
-			HUB.Video.startMediaTracking(); 
+			HUB.Video.replayMediaTracking(); 
 			
 			//get player and play
 			player = HUB.Video.getPlayer();
@@ -709,6 +710,11 @@ HUB.Video = {
 		var timer = setInterval(function() {
 			canSendTracking = true;
 		}, 5000);
+	},
+	
+	replayMediaTracking: function()
+	{
+		HUB.Video.mediaTrackingEvent('replay');
 	},
 	
 	updateMediaTracking: function()
@@ -756,7 +762,7 @@ HUB.Video = {
 			}
 
 			var url = '/index.php?option=com_'+component+'&controller=media&task=tracking&no_html=1';
-
+			
 			//make ajax call
 			$jQ.ajax({
 				type: 'POST',
@@ -766,14 +772,17 @@ HUB.Video = {
 					event: eventType,
 					resourceid: resourceId,
 					time: playerTime,
-					duration: playerDuration
+					duration: playerDuration,
+					detailedTrackingId: detailedTrackingId
 				},
 				error: function( jqXHR, status, error )
 				{
 					console.log(error);
 				},
 				success: function( data, status, jqXHR )
-				{},
+				{
+					detailedTrackingId = data.detailedId;
+				},
 				complete: function( jqXHR, status )
 				{
 					//we have to wait another 5 seconds to update

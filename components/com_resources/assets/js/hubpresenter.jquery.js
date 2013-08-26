@@ -21,6 +21,7 @@ HUB.Presenter = {
 		transcriptBoxScrolling = false;
 		canSendTracking = true;
 		sendingTracking = false;
+		detailedTrackingId = null;
 		doneLoading = false;
 		
 		//add class presenter to body
@@ -888,7 +889,7 @@ HUB.Presenter = {
 			//start tracking again
 			canSendTracking = true;
 			sendingTracking = false;
-			HUB.Presenter.startMediaTracking();
+			HUB.Presenter.replayMediaTracking();
 			
 			//get player and play
 			player = HUB.Presenter.getPlayer();
@@ -1256,6 +1257,11 @@ HUB.Presenter = {
 		}, 5000);
 	},
 	
+	replayMediaTracking: function()
+	{
+		HUB.Presenter.mediaTrackingEvent('replay');
+	},
+	
 	updateMediaTracking: function()
 	{
 		HUB.Presenter.mediaTrackingEvent('update');
@@ -1305,14 +1311,23 @@ HUB.Presenter = {
 			//make ajax call
 			jQ.ajax({
 				type: 'POST',
-				data: { event: eventType, resourceid: resourceId, time: playerTime, duration: playerDuration },
+				dataType: 'json',
 				url: url,
+				data: { 
+					event: eventType,
+					resourceid: resourceId,
+					time: playerTime,
+					duration: playerDuration,
+					detailedTrackingId: detailedTrackingId
+				},
 				error: function( jqXHR, status, error )
 				{
 					console.log(error);
 				},
 				success: function( data, status, jqXHR )
-				{},
+				{
+					detailedTrackingId = data.detailedId;
+				},
 				complete: function( jqXHR, status )
 				{
 					//we have to wait another 5 seconds to update
