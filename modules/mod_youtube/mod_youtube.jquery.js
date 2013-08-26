@@ -109,9 +109,9 @@ var youtube_feed = 0;
 					var title = item['title']['$t'];
 					var id = item.media$group.yt$videoid.$t; //item['id']['$t'];
 					var thumb = item.media$group.media$thumbnail[0].url;
-
+					
 					html += "<li>";
-					html += "<a class=\"entry-thumb\" rel=\"external\" title=\"" + title + "\" href=\"http://youtube.com/watch?v=" + id + "\"><img src=\"" + thumb.replace('http','https') + "\" alt=\"" + title + "\" width=\"80\" /></a>";
+					html += "<a class=\"entry-thumb\" rel=\"external\" title=\"" + title + "\" href=\"http://youtube.com/watch?v=" + id + "\"><img src=\"" + thumb.replace('http://','https://') + "\" alt=\"" + title + "\" width=\"80\" /></a>";
 					html += "<a class=\"entry-title\" rel=\"external\" title=\"" + title + "\" href=\"http://youtube.com/watch?v=" + id + "\">" + title + "</a>";
 					html += "<br /><span class=\"entry-duration\">" + Duration(item.media$group.yt$duration.seconds) + "</span>";
 					html += "</li>";
@@ -145,7 +145,7 @@ var youtube_feed = 0;
 			if(details.altDesc && details.altDesc != "") {
 				description = details.altDesc;
 			} else {
-				description = feed.media$group.media$description.$t;
+				description = (feed.media$group && feed.media$group.media$description) ? feed.media$group.media$description.$t : '';
 			}
 
 			//set the logo based on if we have an alternative image

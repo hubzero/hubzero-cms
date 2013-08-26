@@ -137,7 +137,10 @@ class modYoutubeHelper extends JObject
 				$youtube_url .= 'videos?q=' . $content . '&v=2';
 			break;
 		}
-
+		
+		//append the the return type and the callback function
+		$youtube_url .= '&alt=json';
+		
 		//get title,desc,logo and link params
 		$show_title = $this->params->get('title');
 		$alt_title  = $this->params->get('alttitle');
@@ -216,9 +219,6 @@ class modYoutubeHelper extends JObject
 		} 
 		else 
 		{
-			//append the the return type and the callback function
-			$youtube_url .= '&alt=json';
-
 			//get the youtube url's headers
 			$headers = get_headers($youtube_url);
 
@@ -362,11 +362,11 @@ class modYoutubeHelper extends JObject
 				$full_feed = json_encode($full_feed);
 				JFile::write($data, $full_feed);
 			}
-
+			
 			$this->html = $html;
-
-			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
+		
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
 	/**
