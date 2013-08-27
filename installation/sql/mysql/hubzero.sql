@@ -4017,8 +4017,10 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1548,'YSearch - Wishlists','plugin','wishlists','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0);
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
-(1549, 'hubbasic2012', 'template', 'hubbasic2012', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(1550, 'hubbasicadmin', 'template', 'hubbasicadmin', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(1549, 'hubbasic', 'template', 'hubbasic', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1550, 'hubbasic2012', 'template', 'hubbasic2012', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1551, 'hubbasic2013', 'template', 'hubbasic2013', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1552, 'hubbasicadmin', 'template', 'hubbasicadmin', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
 --
 -- HUBzero sample data for table `#__template_styles`
@@ -4026,8 +4028,8 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 
 UPDATE `#__template_styles` SET home=0;
 INSERT INTO `#__template_styles` VALUES (7,'hubbasic',0,'0','HUBzero Standard Site Template - 2011','{}');
-INSERT INTO `#__template_styles` VALUES (8,'hubbasic2012',0,'1','HUBzero Standard Site Template - 2012','{}');
-INSERT INTO `#__template_styles` VALUES (9,'hubbasic2013',0,'0','HUBzero Standard Site Template - 2013','{}');
+INSERT INTO `#__template_styles` VALUES (8,'hubbasic2012',0,'0','HUBzero Standard Site Template - 2012','{}');
+INSERT INTO `#__template_styles` VALUES (9,'hubbasic2013',0,'1','HUBzero Standard Site Template - 2013','{}');
 INSERT INTO `#__template_styles` VALUES (10,'hubbasicadmin',1,'1','HUBzero Standard Admin Template','{}');
 
 INSERT INTO `#__stats_tops` VALUES (1,'Top Tools by Ranking',1,5);
