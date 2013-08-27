@@ -58,6 +58,9 @@ $total = count($this->courses);
 ?>
 		<li class="course">
 			<a href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>"><?php echo stripslashes($course->title); ?></a>
+			<?php if ($course->section_title) { ?>
+			<small><strong>Section:</strong> <?php echo $course->section_title; ?></small>
+			<?php } ?>
 			<?php if ($course->state == 3) { ?>
 			<small><?php echo JText::_('Draft'); ?></small>
 			<?php } ?>
