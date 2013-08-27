@@ -5191,9 +5191,9 @@ class plgProjectsFiles extends JPlugin
 		{
 			// Check remotely generated thumbnail
 			$image = $to_path . DS . $rthumb;
-			
-			// Copy this over as local thum
-			if (JFile::copy(JPATH_ROOT. $to_path . DS . $rthumb, JPATH_ROOT . $to_path . DS . $hashed))
+						
+			// Copy this over as local thumb
+			if ($hashed && JFile::copy(JPATH_ROOT. $to_path . DS . $rthumb, JPATH_ROOT . $to_path . DS . $hashed))
 			{
 				JFile::delete(JPATH_ROOT. $to_path . DS . $rthumb);
 			}
