@@ -49,14 +49,14 @@ $offerings = $this->course->offerings(array(
 	'available' => true, 
 	'sort'      => 'publish_up'
 ));
-if ($offerings->total())
+/*if (!$offerings->total())
 {
 	$offering = $offerings->fetch('first');
 }
 else
 {
 	$offering = new CoursesModelOffering(0, $this->course->get('id'));
-}
+}*/
 
 Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview');
 ?>
@@ -78,8 +78,18 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 
 <div class="course section intro">
 	<div class="aside">
-	<?php if ($offering->exists()) { ?>
-		<?php
+	<?php
+$c = 0;
+if ($offerings->total())
+{
+	foreach ($offerings as $offering) 
+	{
+		if (!$offering->isAvailable())
+		{
+			continue;
+		}
+		$c++;
+
 		$controls = '';
 
 		if ($this->sections)
@@ -101,13 +111,14 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 				$memberships[] = new CoursesModelMember(JFactory::getUser()->get('id'), $this->course->get('id'), $offering->get('id'));
 			}
 
+			$mng  = -1;
 			$last = '';
 			foreach ($memberships as $membership)
 			{
 				$cur  = ($membership->get('offering_id') ? $membership->get('offering_id') : $offering->get('id')) . '-';
 				$cur .= ($membership->get('section_id') ? $offering->section($membership->get('section_id'))->get('alias') : $offering->section()->get('alias'));
 
-				if ($cur == $last)
+				if ($cur == $last || $mng == $offering->get('id'))
 				{
 					continue;
 				}
@@ -116,6 +127,8 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 				// If they're a course level manager
 				if ($membership->get('course_id') && !$membership->get('section_id') && !$membership->get('student'))
 				{
+					$mng = $offering->get('id');
+
 					// Get the default section
 					$dflt = $offering->section('__default');
 					if (!$dflt->exists())
@@ -136,7 +149,7 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 						<tr>
 							<th scope="row"><?php echo JText::_('Section:'); ?></th>
 							<td>
-								<?php echo JText::_('--'); ?>
+								<?php echo $offering->sections()->total() > 1 ? JText::_('--') : $this->escape(stripslashes($dflt->get('title'))); ?>
 							</td>
 						</tr>
 					</tbody>
@@ -218,14 +231,19 @@ Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview'
 		} else {
 			echo '<div class="offering-info">' . $controls . '</div><!-- / .offering-info -->';
 		}
-		?>
-	<?php } else { ?>
+	}
+}
+if (!$c)
+{
+	?>
 		<div class="offering-info">
 			<p>
-				<?php echo JText::_('No offering available.'); ?>
+				<?php echo JText::_('No offerings available.'); ?>
 			</p>
 		</div><!-- / .offering-info -->
-	<?php } ?>
+	<?php
+}
+?>
 	</div><!-- / .aside -->
 	<div class="subject">
 		<p>

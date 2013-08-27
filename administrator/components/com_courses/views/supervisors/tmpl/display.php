@@ -115,11 +115,12 @@ foreach ($roles as $key => $role)
 ?>
 				<tr>
 					<td>
+						<input type="hidden" name="entries[<?php echo $i; ?>][id]" value="<?php echo $manager->get('id'); ?>" />
 						<input type="hidden" name="entries[<?php echo $i; ?>][course_id]" value="<?php echo $this->model->get('course_id'); ?>" />
 						<input type="hidden" name="entries[<?php echo $i; ?>][offering_id]" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden" name="entries[<?php echo $i; ?>][section_id]" value="<?php echo $this->model->section()->get('id'); ?>" />
 						<input type="hidden" name="entries[<?php echo $i; ?>][user_id]" value="<?php echo $u->get('id'); ?>" />
-						<input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $u->get('id'); ?>" />
+						<input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $manager->get('id'); ?>" />
 					</td>
 					<td class="paramlist_key">
 						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">

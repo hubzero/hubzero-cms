@@ -423,12 +423,41 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		$user_ids = $this->_userIds($data);
 
+		$tbl = new CoursesTableMember($this->_db);
+
+		$filters = array(
+			'course_id' => (int) $this->get('id')
+		);
+
 		foreach ($user_ids as $user_id)
 		{
-			$this->_managers[$user_id] = new CoursesModelManager($user_id, $this->get('id'));
+			$filters['user_id'] = $user_id;
+
+			if (($data = $tbl->find($filters)))
+			{
+				$this->_managers[$user_id] = new CoursesModelManager(array_shift($data), $this->get('id'));
+
+				if (count($data) > 0)
+				{
+					foreach ($data as $key => $result)
+					{
+						$tbl->delete($result->id);
+						//$data[$key] = new CoursesModelManager($result, $this->get('id'));
+						//$data[$key]->delete();
+					}
+				}
+			}
+
+			if (!isset($this->_managers[$user_id]))
+			{
+				$this->_managers[$user_id] = new CoursesModelManager($user_id, $this->get('id'));
+			}
 			$this->_managers[$user_id]->set('user_id', $user_id);
 			$this->_managers[$user_id]->set('course_id', $this->get('id'));
 			$this->_managers[$user_id]->set('role_id', $role_id);
+			$this->_managers[$user_id]->set('section_id', 0);
+			$this->_managers[$user_id]->set('student', 0);
+			$this->_managers[$user_id]->set('offering_id', 0);
 			$this->_managers[$user_id]->store();
 		}
 	}

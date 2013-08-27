@@ -53,7 +53,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete')) 
 {
-	JToolBarHelper::deleteList('delete', 'delete');
+	JToolBarHelper::deleteList();
 }
 
 JHTML::_('behavior.tooltip');
@@ -74,13 +74,13 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-30">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		</div>
 		<div class="col width-70">
-		<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label> 
-		<select name="offering" id="filter_offering">
-			<option value="0"><?php echo JText::_('(none)'); ?></option>
+			<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label> 
+			<select name="offering" id="filter_offering">
+				<option value="0"><?php echo JText::_('(none)'); ?></option>
 <?php
 	$offerings = array();
 	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
@@ -90,48 +90,50 @@ function submitbutton(pressbutton)
 		foreach ($model->courses() as $course)
 		{
 ?>
-			<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+				<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
 <?php
 			foreach ($course->offerings() as $offering)
 			{
 				$offerings[$offering->get('id')] = $course->get('alias') . ' : ' . $offering->get('alias');
 ?>
-				<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+					<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
 <?php
 			}
 ?>
-			</optgroup>
+				</optgroup>
 <?php 
 		}
 	}
 ?>
-		</select>
+			</select>
 
 <?php if ($this->filters['offering']) { ?>
-		<label for="filter_section"><?php echo JText::_('Section'); ?>:</label> 
-		<select name="section" id="filter_section">
-			<option value="0"><?php echo JText::_('(none)'); ?></option>
+			<label for="filter_section"><?php echo JText::_('Section'); ?>:</label> 
+			<select name="section" id="filter_section">
+				<option value="0"><?php echo JText::_('(none)'); ?></option>
 		<?php
 		if ($this->offering->sections()->total() > 0)
 		{
 			foreach ($this->offering->sections() as $section)
 			{
 		?>
-			<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+				<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
 		<?php
 			}
 		}
 		?>
-		</select>
+			</select>
+<?php } else { ?>
+			<input type="hidden" name="section" id="filter_section" value="0" />
 <?php } ?>
-		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 		</div>
 	</fieldset>
 	<div class="clr"></div>
 
 	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
 		<thead>
-<?php if ($this->filters['offering']) { ?>
+		<?php if ($this->filters['offering']) { ?>
 			<tr>
 				<th colspan="<?php echo (!$this->filters['offering']) ? '7' : '6'; ?>">
 					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses">
@@ -145,15 +147,15 @@ function submitbutton(pressbutton)
 					</a>
 				</th>
 			</tr>
-<?php } ?>
+		<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Name'); ?></th>
 				<th scope="col"><?php echo JText::_('Email'); ?></th>
-<?php if (!$this->filters['offering']) { ?>
+			<?php if (!$this->filters['offering']) { ?>
 				<th scope="col"><?php echo JText::_('Course : Offering'); ?></th>
-<?php } ?>
+			<?php } ?>
 				<th scope="col"><?php echo JText::_('Section'); ?></th>
 				<th scope="col"><?php echo JText::_('Enrolled'); ?></th>
 			</tr>
@@ -180,38 +182,38 @@ foreach ($this->rows as $row)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('user_id'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($row->get('user_id')); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('user_id'); ?>">
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($u->get('name'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($u->get('name'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('user_id'); ?>">
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($u->get('email'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($u->get('email'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
-<?php if (!$this->filters['offering']) { ?>
+			<?php if (!$this->filters['offering']) { ?>
 				<td>
 					<?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : JText::_('(unknown)'); ?>
 				</td>
-<?php } ?>
+			<?php } ?>
 				<td>
 					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('(none)'); ?>
 				</td>
@@ -231,7 +233,6 @@ foreach ($this->rows as $row)
 		</tbody>
 	</table>
 
-	<!-- <input type="hidden" name="offering" value="<?php //echo $this->offering->get('id'); ?>" /> -->
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />

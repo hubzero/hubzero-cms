@@ -561,9 +561,20 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$this->_student = null;
 
-			if (isset($this->_members) && isset($this->_members[$user_id]))
+			/*if (isset($this->_members) && isset($this->_members[$user_id]))
 			{
 				$this->_student = $this->_members[$user_id];
+			}*/
+			if (isset($this->_members)) // && isset($this->_members[$user_id]))
+			{
+				foreach ($this->_members as $member)
+				{
+					if ($member->get('user_id') == $user_id && $member->get('section_id') == $this->section()->get('id') && $member->get('student') )
+					{
+						$this->_student = $member;
+						break;
+					}
+				}
 			}
 		}
 
@@ -632,9 +643,16 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$this->_member = null;
 
-			if (isset($this->_members) && isset($this->_members[$user_id]))
+			if (isset($this->_members)) // && isset($this->_members[$user_id]))
 			{
-				$this->_member = $this->_members[$user_id];
+				foreach ($this->_members as $member)
+				{
+					if ($member->get('user_id') == $user_id && $member->get('section_id') == $this->section()->get('id'))
+					{
+						$this->_member = $member;
+						break;
+					}
+				}
 			}
 		}
 
@@ -708,7 +726,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				{
 					if (!isset($results[$result->user_id]))
 					{
-						$results[$result->user_id] = new $mdl($result);
+						$results[$key] = new $mdl($result);
 					}
 				}
 			}

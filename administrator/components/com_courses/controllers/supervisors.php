@@ -36,12 +36,12 @@ ximport('Hubzero_Controller');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 
 /**
- * Manage a course's manager entries
+ * Manage a course section's manager entries
  */
 class CoursesControllerSupervisors extends Hubzero_Controller
 {
 	/**
-	 * Short description for 'addmanager'
+	 * Add a user to the manager list
 	 * 
 	 * @return     void
 	 */
@@ -69,7 +69,11 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 			$model->section($section);
 		}
 
-		$managers = $model->managers(array('student' => 0));
+		$managers = $model->managers(array(
+			'student'     => 0, 
+			'section_id'  => array(0, $section),
+			'offering_id' => array(0, $id)
+		));
 
 		// Incoming host
 		$m = JRequest::getVar('usernames', '', 'post');
@@ -77,6 +81,7 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 
 		jimport('joomla.user.helper');
 
+		$users = array();
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
@@ -87,9 +92,9 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 			if ($uid)
 			{
 				// Loop through existing members and make sure the user isn't already a member
-				if (in_array($uid, $managers))
+				if (isset($managers[$uid]))
 				{
-					$this->setError(JText::sprintf('ALREADY_A_MEMBER_OF_TABLE', $mbr));
+					$this->setError(JText::sprintf('The user "%s" is already a manager of this section or course.', $mbr));
 					continue;
 				}
 
@@ -102,7 +107,10 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 			}
 		}
 
-		$model->add($users, $role_id);
+		if (count($users) > 0)
+		{
+			$model->add($users, $role_id);
+		}
 
 		// Push through to the hosts view
 		$this->displayTask($model);
@@ -134,44 +142,21 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 			$model->section($section);
 		}
 
-		$managers = $model->members(array('role' => '!student'));
-
 		$mbrs = JRequest::getVar('entries', array(0), 'post');
 
-		$users = array();
 		foreach ($mbrs as $mbr)
 		{
 			if (!isset($mbr['select']))
 			{
 				continue;
 			}
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr['user_id']);
 
-			// Ensure we found an account
-			if (is_object($targetuser))
+			$member = CoursesModelMember::getInstance($mbr['select'], null, null, null);
+			if (!$member->delete())
 			{
-				$uid = $targetuser->get('id');
-
-				if (isset($managers[$uid]))
-				{
-					$users[] = $uid;
-				}
-			}
-			else
-			{
-				$this->setError(JText::_('COM_COURSES_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError($member->getError());
 			}
 		}
-
-		// Remove users from managers list
-		$model->remove($users);
-
-		// Save changes
-		/*if (!$model->store())
-		{
-			$this->setError($model->getError());
-		}*/
 
 		// Push through to the hosts view
 		$this->displayTask($model);
@@ -205,21 +190,18 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 
 		$entries = JRequest::getVar('entries', array(0), 'post');
 
-		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'member.php');
-
 		foreach ($entries as $key => $data)
 		{
 			// Retrieve user's account info
-			$tbl = new CoursesTableMember($this->database);
-			$tbl->load($data['user_id'], $data['course_id'], $data['offering_id'], $data['section_id'], 0);
-			if ($tbl->role_id == $data['role_id'])
+			$member = CoursesModelMember::getInstance($data['id'], null, null, null);
+			if ($member->get('role_id') == $data['role_id'])
 			{
 				continue;
 			}
-			$tbl->role_id = $data['role_id'];
-			if (!$tbl->store())
+			$member->set('role_id', $data['role_id']);
+			if (!$member->store())
 			{
-				$this->setError($tbl->getError());
+				$this->setError($member->getError());
 			}
 		}
 
@@ -228,9 +210,9 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 	}
 
 	/**
-	 * Display a list of 'manager' for a specific course
+	 * Display a list of 'manager' for a specific section
 	 * 
-	 * @param      object $profile Hubzero_User_Profile
+	 * @param      object $model CoursesModelOffering
 	 * @return     void
 	 */
 	public function displayTask($model=null)
@@ -238,13 +220,10 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		$this->view->setLayout('display');
 
 		// Incoming
-		if (!$model) 
+		if (!is_a($model, 'CoursesModelOffering')) 
 		{
-			$id = JRequest::getInt('offering', 0, 'get');
-			$section = JRequest::getInt('section', 0);
-
-			$model = CoursesModelOffering::getInstance($id);
-			if ($section)
+			$model = CoursesModelOffering::getInstance(JRequest::getInt('offering', 0, 'get'));
+			if (($section = JRequest::getInt('section', 0)))
 			{
 				$model->section($section);
 			}

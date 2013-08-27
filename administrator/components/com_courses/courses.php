@@ -78,7 +78,7 @@ JSubMenuHelper::addEntry(
 );
 JSubMenuHelper::addEntry(
 	JText::_('Students'), 
-	'index.php?option=' .  $option . '&controller=students', 
+	'index.php?option=' .  $option . '&controller=students&offering=0&section=0', 
 	$controllerName == 'students'
 );
 JSubMenuHelper::addEntry(
