@@ -292,7 +292,7 @@ class plgMembersUsage extends JPlugin
 		$cluster['users']   = 0;
 		$cluster['schools'] = 0;
 
-		$sql = 'SELECT classes FROM metrics_author_cluster WHERE authorid = "' . $authorid . '"';
+		$sql = 'SELECT classes FROM `#__metrics_author_cluster` WHERE authorid = "' . $authorid . '"';
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 		if ($result) 
@@ -300,7 +300,7 @@ class plgMembersUsage extends JPlugin
 			$cluster['classes'] = $result;
 		}
 
-		$sql = 'SELECT users FROM metrics_author_cluster WHERE authorid = "' . $authorid . '"';
+		$sql = 'SELECT users FROM `#__metrics_author_cluster` WHERE authorid = "' . $authorid . '"';
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 		if ($result) 
@@ -308,7 +308,7 @@ class plgMembersUsage extends JPlugin
 			$cluster['users'] = $result;
 		}
 
-		$sql = 'SELECT schools FROM metrics_author_cluster WHERE authorid = "' . $authorid . '"';
+		$sql = 'SELECT schools FROM `#__metrics_author_cluster` WHERE authorid = "' . $authorid . '"';
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 		if ($result) 
