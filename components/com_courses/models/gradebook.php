@@ -620,6 +620,12 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 							$badge->set('earned', 1);
 							$badge->set('earned_on', date("Y-m-d H:i:s"));
 							$badge->store();
+
+							// Tell passport
+							/*ximport('Hubzero_Badges_Passport_BadgesProvider');
+							$badgeInfo->id = $this->course->offering()->badge()->get('id');
+							$badgeInfo->evidenceUrl = '';
+							Hubzero_Badges_Passport_BadgesProvider::grantBadge($badgeInfo, JFactory::getUser($u)->get('email'));*/
 						}
 					}
 				}

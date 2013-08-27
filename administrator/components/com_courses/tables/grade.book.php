@@ -466,7 +466,7 @@ class CoursesTableGradeBook extends JTable
 					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
 					WHERE scope='asset'
 					AND ca.course_id = '{$course_id}'
-					AND score IS NOT NULL
+					AND (score IS NOT NULL OR override IS NOT NULL)
 					{$user}
 					GROUP BY user_id, subtype";
 
