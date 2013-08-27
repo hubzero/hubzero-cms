@@ -192,8 +192,13 @@ if ($this->roles)
 							</a><br />
 							<span class="entry-details">
 								<?php echo $dateText; ?> 
-								<span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, $timeFormat, $tz); ?></time></span> 
+								<!-- <span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, $timeFormat, $tz); ?></time></span>  -->
 								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, $dateFormat, $tz); ?></time></span>
+								<?php if ($row->section_title) { ?>
+								<span class="entry-section">
+									 &mdash; <strong>Section:</strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
+								</span>
+								<?php } ?>
 							</span>
 						</td>
 						<td>
