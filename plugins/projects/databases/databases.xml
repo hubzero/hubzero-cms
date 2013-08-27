@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/projects/databases/databases.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+<extension version="1.7" type="plugin" group="projects">
+	<name>Projects - Databases</name>
+	<author>Sudheera R. Fernando</author>
+	<copyright>Copyright (C) 2013 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Databases for Projects environment</description>
+	<files>
+		<filename plugin="databases">databases/databases.php</filename>
+		<filename plugin="databases">databases.php</filename>
+		<filename plugin="databases">databases/res/chosen/chosen.css</filename>
+		<filename plugin="databases">databases/res/chosen/chosen.jquery.js</filename>
+		<filename plugin="databases">databases/res/chosen/chosen.jquery.min.js</filename>
+		<filename plugin="databases">databases/res/chosen/chosen-sprite.png</filename>
+		<filename plugin="databases">databases/res/dataTables/images/back_disabled.jpg</filename>
+		<filename plugin="databases">databases/res/dataTables/images/back_enabled.jpg</filename>
+		<filename plugin="databases">databases/res/dataTables/images/forward_disabled.jpg</filename>
+		<filename plugin="databases">databases/res/dataTables/images/forward_enabled.jpg</filename>
+		<filename plugin="databases">databases/res/dataTables/images/sort_asc_disabled.png</filename>
+		<filename plugin="databases">databases/res/dataTables/images/sort_asc.png</filename>
+		<filename plugin="databases">databases/res/dataTables/images/sort_both.png</filename>
+		<filename plugin="databases">databases/res/dataTables/images/sort_desc_disabled.png</filename>
+		<filename plugin="databases">databases/res/dataTables/images/sort_desc.png</filename>
+		<filename plugin="databases">databases/res/dataTables/jquery.dataTables.css</filename>
+		<filename plugin="databases">databases/res/dataTables/jquery.dataTables.js</filename>
+		<filename plugin="databases">databases/res/dataTables/jquery.dataTables.min.js</filename>
+		<filename plugin="databases">databases/res/ds.create.css</filename>
+		<filename plugin="databases">databases/res/ds.create.js</filename>
+		<filename plugin="databases">databases/res/ds.list.css</filename>
+		<filename plugin="databases">databases/res/ds.list.js</filename>
+		<filename plugin="databases">databases/res/ds.test_clone.js</filename>
+		<filename plugin="databases">databases/res/main.css</filename>
+		<filename plugin="databases">databases/res/main.js</filename>
+		<filename plugin="databases">databases/views/create/tmpl/default.php</filename>
+		<filename plugin="databases">databases/views/create/tmpl/default.xml</filename>
+		<filename plugin="databases">databases/views/list/tmpl/default.php</filename>
+		<filename plugin="databases">databases/views/list/tmpl/default.xml</filename>
+		<filename plugin="databases">databases/views/test_clone/tmpl/default.php</filename>
+		<filename plugin="databases">databases/views/test_clone/tmpl/default.xml</filename>
+		<filename plugin="databases">databases.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_projects_databases.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="db_host" type="text" default="localhost" label="Database Host" description="The hostname of the database server"/>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+
+				<field name="@spacer" type="spacer" default="Read/Write MySQL Account" label="" description="" />
+				<field name="db_user" type="text" menu="hide" default="datawriter" label="Database User [rw]" description="User name for the MySQL account" />
+				<field name="db_password" type="password" menu="hide" default="datawriter_pw" label="Database Password [rw]" description="Password for the MySQL account" />
+
+				<field name="@spacer" type="spacer" default="Read only MySQL Account" label="" description="" />
+				<field name="db_ro_user" type="text" menu="hide" default="dataviewer" label="Database User [ro]" description="User name for the MySQL account [used by the dataviewer]" />
+				<field name="db_ro_password" type="password" menu="hide" default="dataviewer_pw" label="Database Password [ro]" description="Password for the MySQL account [used by the dataviewer]" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
