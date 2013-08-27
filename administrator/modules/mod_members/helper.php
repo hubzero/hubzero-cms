@@ -102,10 +102,10 @@ class modMembers
 	{
 		$this->database = JFactory::getDBO();
 
-		$this->database->setQuery("SELECT count(u.id) FROM #__users AS u, #__xprofiles AS m WHERE m.uidNumber=u.id AND m.emailConfirmed > 1");
+		$this->database->setQuery("SELECT count(u.id) FROM #__users AS u, #__xprofiles AS m WHERE m.uidNumber=u.id AND m.emailConfirmed < -1");
 		$this->unconfirmed = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(u.id) FROM #__users AS u, #__xprofiles AS m WHERE m.uidNumber=u.id AND m.emailConfirmed = 1");
+		$this->database->setQuery("SELECT count(u.id) FROM #__users AS u, #__xprofiles AS m WHERE m.uidNumber=u.id AND m.emailConfirmed >= 1");
 		$this->confirmed = $this->database->loadResult();
 
 		$lastDay = date('Y-m-d', (mktime() - 24*3600)) . ' 00:00:00';
