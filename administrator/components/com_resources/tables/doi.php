@@ -134,7 +134,9 @@ class ResourcesDoi extends JTable
 
 		$query  = $get_full_doi ? "SELECT doi " : "SELECT d.doi_label as doi ";
 		$query .= "FROM $this->_tbl as d WHERE d.rid=" . $this->_db->Quote($id) . " ";
-		$query .= $revision ? "AND d.local_revision=" . $this->_db->Quote($revision) . " LIMIT 1" : "AND d.versionid=" . $this->_db->Quote($versionid) . " LIMIT 1" ;
+		$query .= $revision 
+				? "AND d.local_revision=" . $this->_db->Quote($revision) . " LIMIT 1" 
+				: "AND d.versionid=" . $this->_db->Quote($versionid) . " LIMIT 1" ;
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -241,12 +243,20 @@ class ResourcesDoi extends JTable
 
 		// Get configs
 		$jconfig 	=& JFactory::getConfig();
-		$shoulder   = $config->get('doi_shoulder', '10.4231');
-		$service    = $config->get('doi_newservice', 'https://n2t.net/ezid');
-		$prefix     = $config->get('doi_newprefix', '');
+		$shoulder   = $config->get('doi_shoulder');
+		$service    = $config->get('doi_newservice');
+		$prefix     = $config->get('doi_newprefix');
+		$userpw   	= $config->get('doi_userpw');
+		$xmlschema 	= trim($config->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 		$handle     = '';
 		$doi 		= '';
-
+		
+		if (!$shoulder || !$service) 
+		{
+			$doierr .= 'Missing DOI configuration';
+			return false;
+		}
+		
 		// Collect metadata
 		$metadata['publisher'] = htmlspecialchars($config->get('doi_publisher', $jconfig->getValue('config.sitename')));
 		$metadata['pubYear']   = isset($metadata['pubYear']) ? $metadata['pubYear'] : date('Y');
@@ -342,7 +352,6 @@ class ResourcesDoi extends JTable
 		{
 			$xdoc = new DomDocument;
 			$xmlfile = $this->getXml($authors, $metadata, $doi);	
-			$xmlschema = 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd';
 
 			//Load the xml document in the DOMDocument object
 			$xdoc->loadXML($xmlfile);
@@ -369,7 +378,7 @@ class ResourcesDoi extends JTable
 				curl_setopt($ch, CURLOPT_URL, $call);
 
 				/* Purdue Hubzero Username/Password */
-				curl_setopt($ch, CURLOPT_USERPWD, '');
+				curl_setopt($ch, CURLOPT_USERPWD, $userpw);
 				curl_setopt($ch, CURLOPT_POST, true);
 
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($input)));
@@ -450,107 +459,6 @@ class ResourcesDoi extends JTable
 
 		$xmlfile .= '</resource>';
 		return $xmlfile;
-	}
-
-	/**
-	 * Create a DOI handle
-	 * 
-	 * @param      string $url        URL for DOI to delete
-	 * @param      string $handle     Handle to delete
-	 * @param      string $doiservice URL to call for deletion
-	 * @param      string &$err       Container for error messages
-	 * @return     mixed False if error, array on success
-	 */
-	public function createDOIHandle($url, $handle, $doiservice, &$err='')
-	{
-		jimport('nusoap.lib.nusoap');
-
-		$client = new nusoap_client($doiservice, 'wsdl', '', '', '', '');
-		$err = $client->getError();
-		if ($err) 
-		{
-			$this->_error = 'Constructor error: '. $err;
-			return false;
-		}
-
-		$param = array(
-			'in0' => $url, 
-			'in1' => $handle
-		);
-
-		$result = $client->call('create', $param, '', '', false, true);
-
-		// Check for a fault
-		if ($client->fault) 
-		{
-			$err = 'Fault: ' . $result['faultstring'];
-			return false;
-		} 
-		else 
-		{
-			// Check for errors
-			$err = $client->getError();
-			if ($err) 
-			{
-				return false;
-			} 
-			else 
-			{
-				return $result;
-			}
-		}
-	}
-
-	/**
-	 * Delete a DOI handle
-	 * 
-	 * @param      string $url        URL for DOI to delete
-	 * @param      string $handle     Handle to delete
-	 * @param      string $doiservice URL to call for deletion
-	 * @return     boolean False if error
-	 */
-	public function deleteDOIHandle($url, $handle, $doiservice)
-	{
-		jimport('nusoap.lib.nusoap');
-
-		$client = new nusoap_client($doiservice, 'wsdl', '', '', '', '');
-		$err = $client->getError();
-		if ($err) 
-		{
-			$this->_error = 'Constructor error: '. $err;
-			return false;
-		}
-
-		$param = array(
-			'in0' => $url, 
-			'in1' => $handle
-		);
-
-		$result = $client->call('delete', $param, '', '', false, true);
-
-		// Check for a fault
-		if ($client->fault) 
-		{
-			print_r($result);
-			$this->setError('Fault: ' . $result['faultstring']);
-			return false;
-		} 
-		else 
-		{
-			// Check for errors
-			$err = $client->getError();
-			if ($err) 
-			{
-				// Return the error
-				print_r($err);
-				$this->setError('Error: '. $err);
-				return false;
-			} 
-			else 
-			{
-				return $result;
-			}
-		}
 	}
 }
 

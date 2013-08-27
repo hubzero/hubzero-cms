@@ -85,15 +85,16 @@ HUBzero is a registered trademark of Purdue University.
         <param name="rappture_url" type="text" menu="hide" default="http://rappture.org" label="Rappture URL" description="URL to a rappture tutorial" />
 		<param name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="new_doi" type="radio" default="0" label="Enable DOI service?" description="Register DOI handle for new tool releases with Purdue Libraries DOI service">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL for Purdue Libraries DOI service" />
-		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for Purdue Libraries DOI service" />
+		<param name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL DOI service" />
+		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder DOI service" />
+		<param name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
+		<param name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />		
 		<param name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
-		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for \Purdue Libraries DOI service" />
+		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
 		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<param name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
@@ -169,15 +170,16 @@ HUBzero is a registered trademark of Purdue University.
         <field name="rappture_url" type="text" menu="hide" default="http://rappture.org" label="Rappture URL" description="URL to a rappture tutorial" />
 		<field name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="new_doi" type="radio" default="0" label="Enable DOI service?" description="Register DOI handle for new tool releases with Purdue Libraries DOI service">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL for Purdue Libraries DOI service" />
-		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for Purdue Libraries DOI service" />
+		<field name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL DOI service" />
+		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder DOI service" />
+		<field name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
+		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />    
 		<field name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
-		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for \Purdue Libraries DOI service" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
