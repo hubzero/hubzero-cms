@@ -256,6 +256,10 @@ class plgMembersDashboard extends Hubzero_Plugin
 		$this->view->columns = array();
 		for ($c = 0; $c < $cols; $c++)
 		{
+			if (!isset($mymods[$c]))
+			{
+				$mymods[$c] = array();
+			}
 			$this->view->columns[$c] = $this->output_modules($mymods[$c], $this->member->get('uidNumber'), $this->_act);
 		}
 	}
