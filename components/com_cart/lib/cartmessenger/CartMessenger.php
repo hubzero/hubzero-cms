@@ -58,7 +58,7 @@ class CartMessenger
 	{		
 		setlocale(LC_MONETARY, 'en_US.UTF-8');
 		
-		$this->logFile = JPATH_COMPONENT .DS . 'cart.log';
+		$this->logFile = JPATH_ROOT . DS . 'site' . DS . 'com_cart' . DS . 'cart.log';
 		$this->caller = $caller;
 	}
 	
