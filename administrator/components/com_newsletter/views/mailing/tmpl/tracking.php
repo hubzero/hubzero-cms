@@ -71,14 +71,24 @@ function submitbutton(pressbutton)
 			<tr>
 				<th>Open Rate:</th>
 				<td>
-					<?php echo number_format((count($this->opens) / count($this->recipients)) * 100) . '% '; ?>
-					<?php echo '(' . count($this->opens) . ' of ' . count($this->recipients) . ' opened the newsletter!)'; ?>
+					<?php
+						if (count($this->recipients) > 0)
+						{
+							echo number_format((count($this->opens) / count($this->recipients)) * 100) . '% ';
+							echo '(' . count($this->opens) . ' of ' . count($this->recipients) . ' opened the newsletter!)';
+						}
+					?>
 				</td>
 			</tr>
 			<tr>
 				<th>Bounce Rate:</th>
 				<td>
-					<?php echo (count($this->bounces) / count($this->recipients)) * 100 . '% '; ?>
+					<?php 
+						if (count($this->recipients) > 0)
+						{
+							echo (count($this->bounces) / count($this->recipients)) * 100 . '% '; 
+						}
+					?>
 				</td>
 			</tr>
 			<tr>

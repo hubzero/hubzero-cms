@@ -235,6 +235,9 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			$newsletter['alias'] = str_replace(" ", "", strtolower($newsletter['name']));
 		}
 		
+		//get unique newsletter name
+		$newsletter['alias'] = $this->_getUniqueNewsletterAlias($newsletter['alias'], $newsletter['id']);
+		
 		//instantiate campaign object
 		$newsletterNewsletter = new NewsletterNewsletter( $this->database );
 		
@@ -854,5 +857,29 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		}
 		
 		return true;
+	}
+	
+	
+	/**
+	 * Get Unique newsletter alias
+	 * 
+	 * @param     $alias    Newsletter Alias
+	 * @param     $id       Newsletter Id
+	 * 
+	 * @return    string
+	 */
+	private function _getUniqueNewsletterAlias( $alias, $id )
+	{
+		$sql = "SELECT `alias` FROM `#__newsletters` WHERE `id` NOT IN (".$this->database->quote($id).")";
+		$this->database->setQuery( $sql );
+		$aliases = $this->database->loadResultArray();
+		
+		//if we have another newsletter with this alias lets add random #
+		if (in_array($alias, $aliases))
+		{
+			$alias .= rand(0, 100);
+		}
+		
+		return $alias;
 	}
 }
