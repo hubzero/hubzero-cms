@@ -47,6 +47,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 	{
 		// Include need media tracking library
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
 
 		// Instantiate objects
 		$juser    =& JFactory::getUser();
@@ -58,6 +59,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 		$duration   = JRequest::getVar('duration', 0);
 		$event      = JRequest::getVar('event', 'update');
 		$resourceid = JRequest::getVar('resourceid', 0);
+		$detailedId = JRequest::getVar('detailedTrackingId', 0);
 		$ipAddress  = $_SERVER['REMOTE_ADDR'];
 
 		// Check for asset id
@@ -68,10 +70,12 @@ class CoursesControllerMedia extends Hubzero_Controller
 		}
 
 		// Instantiate new media tracking object
-		$mediaTracking = new ResourceMediaTracking($database);
+		$mediaTracking         = new ResourceMediaTracking($database);
+		$mediaTrackingDetailed = new ResourceMediaTrackingDetailed($database);
 
 		// Load tracking information for user for this resource
-		$trackingInformation = $mediaTracking->getTrackingInformationForUserAndResource($juser->get('id'), $resourceid, 'course');
+		$trackingInformation         = $mediaTracking->getTrackingInformationForUserAndResource($juser->get('id'), $resourceid, 'course');
+		$trackingInformationDetailed = $mediaTrackingDetailed->loadByDetailId($detailedId);
 
 		// Are we creating a new tracking record
 		if (!is_object($trackingInformation))
@@ -81,7 +85,8 @@ class CoursesControllerMedia extends Hubzero_Controller
 			$trackingInformation->session_id                  = $session->getId();
 			$trackingInformation->ip_address                  = $ipAddress; 
 			$trackingInformation->object_id                   = $resourceid;
-			$trackingInformation->object_type                 = 'course';
+			$trackingInformation->object_type                 = 'resource';
+			$trackingInformation->object_duration             = $duration;
 			$trackingInformation->current_position            = $time;
 			$trackingInformation->farthest_position           = $time;
 			$trackingInformation->current_position_timestamp  = date('Y-m-d H:i:s');
@@ -120,17 +125,62 @@ class CoursesControllerMedia extends Hubzero_Controller
 			}
 
 			// If event type is start, means we need to increment view count
-			if ($event == 'start')
+			if ($event == 'start' || $event == 'replay')
 			{
 				$trackingInformation->total_views++;
 			}
-
+			
 			// If event type is end, we need to increment completed count
 			if ($event == 'ended')
 			{
 				$trackingInformation->completed++;
 			}
 		}
+
+		// Save detailed tracking info
+		if ($event == 'start')
+		{
+			$trackingInformationDetailed                              = new stdClass;
+			$trackingInformationDetailed->user_id                     = $juser->get('id');
+			$trackingInformationDetailed->session_id                  = $session->getId();
+			$trackingInformationDetailed->ip_address                  = $ipAddress; 
+			$trackingInformationDetailed->object_id                   = $resourceid;
+			$trackingInformationDetailed->object_type                 = 'resource';
+			$trackingInformationDetailed->object_duration             = $duration;
+			$trackingInformationDetailed->current_position            = $time;
+			$trackingInformationDetailed->farthest_position           = $time;
+			$trackingInformationDetailed->current_position_timestamp  = date('Y-m-d H:i:s');
+			$trackingInformationDetailed->farthest_position_timestamp = date('Y-m-d H:i:s');
+			$trackingInformationDetailed->completed                   = 0;
+		}
+		else
+		{
+			// Set the new current position
+			$trackingInformationDetailed->current_position           = $time;
+			$trackingInformationDetailed->current_position_timestamp = date('Y-m-d H:i:s');
+
+			// Set the object duration
+			if ($duration > 0)
+			{
+				$trackingInformationDetailed->object_duration = $duration;
+			}
+
+			// Check to see if we need to set a new farthest position
+			if ($trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
+			{
+				$trackingInformationDetailed->farthest_position           = $time;
+				$trackingInformationDetailed->farthest_position_timestamp = date('Y-m-d H:i:s');
+			}
+
+			// If event type is end, we need to increment completed count
+			if ($event == 'ended')
+			{
+				$trackingInformationDetailed->completed++;
+			}
+		}
+
+		// Save detailed
+		$mediaTrackingDetailed->save($trackingInformationDetailed);
 
 		// Save tracking information
 		if ($mediaTracking->save($trackingInformation))
@@ -139,6 +189,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 			{
 				$trackingInformation->id = $mediaTracking->id;
 			}
+			$trackingInformation->detailedId = $mediaTrackingDetailed->id;
 			echo json_encode($trackingInformation);
 		}
 	}
