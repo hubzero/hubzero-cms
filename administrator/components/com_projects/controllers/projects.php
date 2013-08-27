@@ -587,4 +587,46 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_redirect = 'index.php?option='.$this->_option;
 		$this->_message = JText::_('COM_PROJECTS_PROJECT').' #'.$id.' ('.$alias.') '.JText::_('COM_PROJECTS_PROJECT_ERASED');		
 	}
+	
+	/**
+	 * View sync log for project and remove sync lock
+	 * 
+	 * @return     void
+	 */
+	public function fixsyncTask() 
+	{
+		$id = JRequest::getVar( 'id', 0 );
+		$service = 'google';
+		
+		// Initiate extended database class
+		$obj = new Project( $this->database );
+		if (!$id or !$obj->loadProject($id)) 
+		{
+			$this->setError( JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND') );
+			return false;
+		}
+		
+		// Unlock sync
+		$obj->saveParam($id, $service . '_sync_lock', '');
+		
+		// Clean up queue
+		$obj->saveParam($id, $service . '_sync_queue', 0);
+		
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+		
+		// Get log file
+		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;				
+		$repodir = trim($this->_config->get('webpath'), DS);		
+		$sfile 	 = $prefix . DS . $repodir . DS . $obj->alias . DS . 'logs' . DS . 'sync.' . date('Y-m') . '.log';
+		
+		// Serve up file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($sfile);
+		$xserver->disposition('attachment');
+		$xserver->acceptranges(false);
+		$xserver->saveas('sync.' . date('Y-m') . '.log');
+		$result = $xserver->serve_attachment($sfile, 'sync.' . date('Y-m') . '.log', false);
+		exit;
+	}
 }
