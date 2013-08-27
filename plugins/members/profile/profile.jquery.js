@@ -304,6 +304,12 @@ HUB.Members.Profile = {
 		//check to see if we are edit our profile or we were forced to fill in fields due to registration update
 		if(window.location.pathname.match(/\/members\/\d+\/profile/g) || !$('.member-update-missing').length)
 		{
+			if (window.location.protocol + '//' + window.location.host + '/' == window.location.href)
+			{
+				HUB.Members.Profile.editRedirect(window.location.href);
+				return;
+			}
+			
 			//show updating overlay
 			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
 			
@@ -550,9 +556,10 @@ HUB.Members.Profile = {
 			
 			$.fancybox({
 				type:'inline',
-				autoSize:false, 
+				autoSize: false, 
 				modal: true,
 				width: 600,
+				height: 'auto',
 				content:$("#usage-agreement-popup"),
 				beforeLoad: function() 
 				{
