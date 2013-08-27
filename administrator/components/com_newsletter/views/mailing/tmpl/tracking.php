@@ -167,10 +167,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<?php
-								$urlWithoutDomain = str_replace('http://nanohub.org', '', $url);
-								$urlWithoutDomain = str_replace('https://nanohub.org', '', $urlWithoutDomain);
-								
-								echo '<a target="_blank" href="' . $url . '">' . $urlWithoutDomain . '</a>';
+								echo '<a target="_blank" href="' . $url . '">' . $url . '</a>';
 							?>
 						</td>
 						<td><?php echo number_format($count); ?></td>
