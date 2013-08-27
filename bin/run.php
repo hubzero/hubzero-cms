@@ -32,7 +32,6 @@
 
 /*
  * @TODO: add flag to accept date or date range
- * @TODO: add flag to target specific file
  */
 
 // Ensure we're running from the command line
@@ -56,6 +55,7 @@ $shortopts .= "h";   // short code for help menu
 $longopts   = array();
 $longopts[] = "force";   // force update (irrelevent of whether or not the database thinks it's already been run)
 $longopts[] = "email::"; // provide an email address to email log info to
+$longopts[] = "file::";  // specify a single migration to run
 $longopts[] = "print";   // long option for print
 $longopts[] = "help";    // long option for help menu
 
@@ -104,9 +104,9 @@ if(isset($options['r']) && $options['r'] !== false)
 $force = false;
 if(isset($options['force']))
 {
-	if(!isset($options['e']))
+	if(!isset($options['e']) && !isset($options['file']))
 	{
-		echo 'Error: You cannot specify the "force" option without specifying a specific extention.' . "\n\n";
+		echo 'Error: You cannot specify the "force" option without specifying a specific extention or file.' . "\n\n";
 		exit();
 	}
 	else
@@ -119,9 +119,9 @@ if(isset($options['force']))
 $logOnly = false;
 if(isset($options['m']))
 {
-	if(!isset($options['e']))
+	if(!isset($options['e']) && !isset($options['file']))
 	{
-		echo 'Error: You cannot specify the "Log only (-m)" option without specifying a specific extention.' . "\n\n";
+		echo 'Error: You cannot specify the "Log only (-m)" option without specifying a specific extention or file.' . "\n\n";
 		exit();
 	}
 	else
@@ -156,6 +156,24 @@ if (isset($options['e']) && $options['e'] !== false)
 	else
 	{
 		$extension = $options['e'];
+	}
+}
+
+// Specific file
+$file = null;
+if (isset($options['file']) && $options['file'] !== false)
+{
+	if (!preg_match('/^Migration[0-9]{14}[[:alnum:]]+\.php$/', $options['file']))
+	{
+		echo 'Error: Provided filename does not appear to be valid.' . "\n\n";
+		exit();
+	}
+	else
+	{
+		$file = $options['file'];
+
+		// Also force "ignore dates mode", as that's somewhat implied by giving a specific filename
+		$ignoreDates = true;
 	}
 }
 
@@ -263,7 +281,7 @@ if($migration === false)
 
 // Find migration files
 echo "Running migration...";
-if($migration->find($extension) === false)
+if($migration->find($extension, $file) === false)
 {
 	// Find failed, do nothing
 	$migration->log("Migration find failed! See log messages for details.");
@@ -381,6 +399,14 @@ function showHelp()
 	$help .= "       when running this program from the command line, and internal log\n";
 	$help .= "       will also be included when you specify an email address.\n";
 	$help .= "       Example: -l=error_log\n";
+	$help .= "       \n";
+	$help .= "   --file: run a provided filed\n";
+	$help .= "       Provide the filename to be run.  This and only this file will be run.\n";
+	$help .= "       This will automatically place the migration in (-i) mode, ignoring dates.\n";
+	$help .= "       It will not, however, force it to be run, if a log entry for this file\n";
+	$help .= "       and direction already exists. Use the (--force) option to override this\n";
+	$help .= "       behavior or run the opposite direction first.\n";
+	$help .= "       Example: --file=Migration20130101000000ComMigrations.php\n";
 	$help .= "       \n";
 	$help .= "   --force: force mode\n";
 	$help .= "       This option should be used carefully. It will run a migration,\n";

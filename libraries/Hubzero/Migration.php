@@ -367,15 +367,30 @@ class Hubzero_Migration
 	 * Find all migration scripts
 	 *
 	 * @param $extension - only look for migrations for this extension
+	 * @param $file      - specific file to run
 	 * @return array of file paths
 	 **/
-	public function find($extension=null)
+	public function find($extension=null, $file=null)
 	{
 		// Exclude certain thiings from our search
 		$exclude = array(".", "..", "__migration_template.php");
 
 		$files = array_diff(scandir($this->docroot . DS . 'migrations'), $exclude);
 		$ext   = '';
+
+		if (!is_null($file))
+		{
+			if (in_array($file, $files))
+			{
+				$this->files[] = $file;
+				return true;
+			}
+			else
+			{
+				$this->log("Provided file ({$file}) could not be found.");
+				return false;
+			}
+		}
 
 		if (!is_null($extension))
 		{
