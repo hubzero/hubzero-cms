@@ -593,7 +593,10 @@ class JPagination extends JObject
 		}
 		for (; $list['i'] <= $list['stoploop'] && $list['i'] <= $list['total']; $list['i']++) 
 		{
-			$html .= '<li class="page">' . $list['pages'][$list['i']]['data'] . '</li>' . "\n";
+			if (isset($list['pages'][$list['i']]))
+			{
+				$html .= '<li class="page">' . $list['pages'][$list['i']]['data'] . '</li>' . "\n";
+			}
 		}
 		if (($list['i'] - 1) < $list['total']) 
 		{
