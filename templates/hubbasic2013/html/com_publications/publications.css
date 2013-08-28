@@ -71,7 +71,9 @@
 	#content-header, .status-msg {
 		background: white;
 	}
-
+	.overviewcontainer #content-header {
+		background: none;
+	}
 	#introduction .subject {
 		width: 70%;
 	}
