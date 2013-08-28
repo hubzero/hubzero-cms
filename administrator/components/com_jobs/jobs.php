@@ -31,6 +31,8 @@
 // No direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+$option = 'com_jobs';
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
