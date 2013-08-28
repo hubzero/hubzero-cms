@@ -20,22 +20,19 @@ class Migration20130329000000ComCourses extends Hubzero_Migration
 			`height` int(11) NOT NULL DEFAULT '0',
 			`state` tinyint(2) NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-		
-		INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-		SELECT 'Courses - Notes','notes','courses',0,11,1,0,0,0,'0000-00-00 00:00:00',''
-		FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Notes');";
-
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		$db->setQuery($query);
 		$db->query();
+
+		self::addPluginEntry('courses', 'notes');
 	}
 
 	protected static function down($db)
 	{
-		$query = "DROP TABLE IF EXISTS `#__courses_member_notes`;
-			DELETE FROM `#__plugins` WHERE `element` = 'notes' AND `folder`='courses';";
-
+		$query = "DROP TABLE IF EXISTS `#__courses_member_notes`;";
 		$db->setQuery($query);
 		$db->query();
+
+		self::deletePluginEntry('courses', 'notes');
 	}
 }

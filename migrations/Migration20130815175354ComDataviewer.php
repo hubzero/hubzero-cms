@@ -44,17 +44,6 @@ class Migration20130815175354ComDataviewer extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query  = "DELETE FROM `#__components` WHERE `name` = 'Dataviewer';";
-			$db->setQuery($query);
-			$db->query();
-		}
-		else
-		{
-			$query  = "DELETE FROM `#__extensions` WHERE `name` = 'com_dataviewer';";
-			$db->setQuery($query);
-			$db->query();
-		}
+		self::deleteComponentEntry('Dataviewer');
 	}
 }

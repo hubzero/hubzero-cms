@@ -51,21 +51,7 @@ class Migration20130813210535PlgProjectsDatabases extends Hubzero_Migration
 			$db->query();
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = "INSERT INTO `jos_plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-					SELECT 'Projects - Databases', 'databases', 'projects', 0, 5, 0, 0, 0, 0, NULL, ''
-					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE name = 'Projects - Databases');";
-		}
-		else
-		{
-			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
-					SELECT 'plg_projects_databases', 'plugin', 'databases', 'projects', 0, 1, 1, 0, null, null, null, null, 0, '0000-00-00 00:00:00', 0, 0
-					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = 'plg_projects_databases');";
-		}
-
-		$db->setQuery($query);
-		$db->query();
+		self::addPluginEntry('projects', 'databases');
 	}
 
 	/**
@@ -89,16 +75,6 @@ class Migration20130813210535PlgProjectsDatabases extends Hubzero_Migration
 			$db->query();
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = "DELETE FROM `#__plugins` WHERE folder='projects' AND element='databases';";
-		}
-		else
-		{
-			$query = "DELETE FROM `#__extensions` WHERE type='plugin' AND folder='projects' AND element='databases';";
-		}
-
-		$db->setQuery($query);
-		$db->query();
+		self::deletePluginEntry('projects', 'databases');
 	}
 }

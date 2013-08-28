@@ -13,7 +13,14 @@ class Migration20130516175532ComFeedback extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		$query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/images/contributor.gif','/components/com_feedback/assets/img/contributor.gif') WHERE `option` = 'com_feedback';";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/images/contributor.gif','/components/com_feedback/assets/img/contributor.gif') WHERE `option` = 'com_feedback';";
+		}
+		else
+		{
+			$query = "UPDATE `#__extensions` SET `params` = REPLACE(`params`,'/components/com_feedback/images/contributor.gif','/components/com_feedback/assets/img/contributor.gif') WHERE `element` = 'com_feedback';";
+		}
 
 		if (!empty($query))
 		{
@@ -27,7 +34,14 @@ class Migration20130516175532ComFeedback extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		$query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/assets/img/contributor.gif','/components/com_feedback/images/contributor.gif') WHERE `option` = 'com_feedback';";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/assets/img/contributor.gif','/components/com_feedback/images/contributor.gif') WHERE `option` = 'com_feedback';";
+		}
+		else
+		{
+			$query = "UPDATE `#__extensions` SET `params` = REPLACE(`params`,'/components/com_feedback/assets/img/contributor.gif','/components/com_feedback/images/contributor.gif') WHERE `element` = 'com_feedback';";
+		}
 
 		if (!empty($query))
 		{

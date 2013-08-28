@@ -106,20 +106,7 @@ class Migration20130812132139ComCollections extends Hubzero_Migration
 		$db->setQuery($query);
 		$db->query();
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-					SELECT 'Collections', 'option=com_collections', 0, 0, 'option=com_collections', 'Collections', 'com_collections', 0, 'js/ThemeOffice/component.png', 0, '', 1
-					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Collections');";
-		}
-		else
-		{
-			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
-					SELECT 'Collections', 'component', 'com_collections', '', 0, 1, 1, 0, null, null, null, null, 0, '0000-00-00 00:00:00', 0, 0
-					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = 'Collections');";
-		}
-		$db->setQuery($query);
-		$db->query();
+		self::addComponentEntry('Collections');
 	}
 
 	/**
@@ -136,15 +123,6 @@ class Migration20130812132139ComCollections extends Hubzero_Migration
 		$db->setQuery($query);
 		$db->query();
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = "DELETE FROM `#__components` WHERE `option`='com_collections';";
-		}
-		else
-		{
-			$query = "DELETE FROM `#__extensions` WHERE `type`='component' AND `element`='com_collections';";
-		}
-		$db->setQuery($query);
-		$db->query();
+		self::deleteComponentEntry('Collections');
 	}
 }

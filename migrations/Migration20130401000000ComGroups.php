@@ -7,9 +7,6 @@ class Migration20130401000000ComGroups extends Hubzero_Migration
 {
 	protected static function up($db)
 	{
-		$query = "DELETE FROM `#__plugins` WHERE folder='groups' AND element='userenrollment';";
-
-		$db->setQuery($query);
-		$db->query();
+		self::deletePluginEntry('groups', 'userenrollment');
 	}
 }

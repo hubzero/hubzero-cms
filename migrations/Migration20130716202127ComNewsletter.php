@@ -13,11 +13,11 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
+		self::addComponentEntry('Newsletters', 'com_newsletter');
+
 		// create component entry
-		$query  = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-					SELECT 'Newsletters', 'option=com_newsletter', 0, 0, 'option=com_newsletter', 'Newsletters', 'com_newsletter', 0, 'js/ThemeOffice/component.png', 0, '', 1
-					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Newsletters');";
-		
+		$query = "";
+
 		//add newsletter table
 		$query .= "CREATE TABLE IF NOT EXISTS `#__newsletters` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -153,12 +153,7 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 			$query .= "INSERT INTO `#__newsletter_templates` (`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, `secondary_title_color`, `secondary_text_color`, `deleted`)
 				       VALUES
 					(0, 'Default Plain Text Email Template', 'View In Browser - {{LINK}}\n=====================================\n{{TITLE}} - {{ISSUE}}\n=====================================\n\n{{PRIMARY_STORIES}}\n\n--------------------------------------------------\n\n{{SECONDARY_STORIES}}\n\n--------------------------------------------------\n\nUnsubscribe - {{UNSUBSCRIBE_LINK}}\nCopyright - {{COPYRIGHT}}', NULL, NULL, NULL, NULL, 0);";
-			
-			// add newsletter cron plugin
-			$query .= "INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-						SELECT 'Cron - Newsletter', 'newsletter', 'cron', 0, 1, 1, 0, 0, 0, '0000-00-00 00:00:00', ''
-						FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Cron - Newsletter');";
-			
+
 			//add newsletter cron jobs
 			$query .= "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
 						SELECT 'Process Newsletter Mailings', 0, 'newsletter', 'processMailings', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, 'newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n'
@@ -174,6 +169,8 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 			$db->setQuery($query);
 			$db->query();
 		}
+
+		self::addPluginEntry('cron', 'newsletter');
 	}
 
 	/**
@@ -181,8 +178,7 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		//remove component entry
-		$query  = "DELETE FROM `#__components` WHERE `option`='com_newsletter';";
+		self::deleteComponentEntry('Newsletters');
 		
 		// remove all newsletter tables
 		$query .= "
@@ -197,9 +193,6 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 			DROP TABLE IF EXISTS `#__newsletter_mailing_recipients`;
 			DROP TABLE IF EXISTS `#__newsletter_mailing_recipient_actions`;";
 		
-		//remove newsletter cron plugin entry
-		$query .= "DELETE FROM `#__plugins` WHERE `name`='Cron - Newsletter';";
-		
 		//remove newsletter cron jobs 
 		$query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Mailings';";
 		$query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Opens & Click IP Addresses';";
@@ -209,5 +202,7 @@ class Migration20130716202127ComNewsletter extends Hubzero_Migration
 			$db->setQuery($query);
 			$db->query();
 		}
+
+		self::deletePluginEntry('cron', 'newsletter');
 	}
 }

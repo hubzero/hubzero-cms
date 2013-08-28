@@ -13,13 +13,17 @@ class Migration20130512175301PlgCoursesDiscussions extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		$query = "UPDATE `#__plugins` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
-
-		if (!empty($query))
+		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$query = "UPDATE `#__plugins` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
 		}
+		else
+		{
+			$query = "UPDATE `#__extensions` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
+		}
+
+		$db->setQuery($query);
+		$db->query();
 	}
 
 	/**
@@ -27,12 +31,16 @@ class Migration20130512175301PlgCoursesDiscussions extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		$query = "UPDATE `#__plugins` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
-
-		if (!empty($query))
+		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$db->setQuery($query);
-			$db->query();
+			$query = "UPDATE `#__plugins` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
 		}
+		else
+		{
+			$query = "UPDATE `#__extensions` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
+		}
+
+		$db->setQuery($query);
+		$db->query();
 	}
 }

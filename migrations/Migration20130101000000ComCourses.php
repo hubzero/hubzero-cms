@@ -340,46 +340,20 @@ class Migration20130101000000ComCourses extends Hubzero_Migration
 				 `fre`.`respondent_id` AS `respondent_id`,
 				 `fre`.`question_id` AS `question_id`,
 				 `fre`.`answer_id` AS `answer_id`
-			FROM `#__courses_form_responses` `fre` where ((select count(0) from `#__courses_form_responses` `frei` where ((`frei`.`respondent_id` = `fre`.`respondent_id`) and (`frei`.`id` > `fre`.`id`))) < (select count(distinct `frei`.`question_id`) from `#__courses_form_responses` `frei` where (`frei`.`respondent_id` = `fre`.`respondent_id`)));
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Members - Courses','courses','members',0,16,0,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Members - Courses');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Syllabus','syllabus','courses',0,1,0,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Syllabus');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Disucssions','forum','courses',0,2,1,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Disucssions');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - My Progress','progress','courses',0,3,1,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - My Progress');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Announcements','announcements','courses',0,4,1,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Announcements');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Dashboard','dashboard','courses',0,5,1,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Dashboard');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Course Overview','overview','courses',0,6,1,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Course Overview');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Course Reviews','reviews','courses',0,7,1,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Course Reviews');
-
-			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Course Offerings','offerings','courses',0,8,1,0,0,0,'0000-00-00 00:00:00',''
-			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Course Offerings');";
+			FROM `#__courses_form_responses` `fre` where ((select count(0) from `#__courses_form_responses` `frei` where ((`frei`.`respondent_id` = `fre`.`respondent_id`) and (`frei`.`id` > `fre`.`id`))) < (select count(distinct `frei`.`question_id`) from `#__courses_form_responses` `frei` where (`frei`.`respondent_id` = `fre`.`respondent_id`)));";
 
 		$db->setQuery($query);
 		$db->query();
+
+		self::addPluginEntry('members', 'courses');
+		self::addPluginEntry('courses', 'syllabus');
+		self::addPluginEntry('courses', 'forum');
+		self::addPluginEntry('courses', 'progress');
+		self::addPluginEntry('courses', 'announcements');
+		self::addPluginEntry('courses', 'dashboard');
+		self::addPluginEntry('courses', 'overview');
+		self::addPluginEntry('courses', 'reviews');
+		self::addPluginEntry('courses', 'offerings');
 	}
 
 	protected static function down($db)
@@ -408,19 +382,12 @@ class Migration20130101000000ComCourses extends Hubzero_Migration
 			DROP TABLE IF EXISTS `#__courses_roles`;
 			DROP TABLE IF EXISTS `#__courses_units`;
 			DROP TABLE IF EXISTS `#__courses_offering_section_codes`;
-			DROP VIEW IF EXISTS `#__courses_form_latest_responses_view`;
-
-			DELETE FROM `#__plugins` WHERE `name` = 'Members - Courses';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - Syllabus';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - Disucssions';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - My Progress';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - Announcements';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - Dashboard';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - Course Overview';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - Course Reviews';
-			DELETE FROM `#__plugins` WHERE `name` = 'Courses - Course Offerings';";
+			DROP VIEW IF EXISTS `#__courses_form_latest_responses_view`;";
 
 		$db->setQuery($query);
 		$db->query();
+
+		self::deletePluginEntry('members', 'courses');
+		self::deletePluginEntry('courses');
 	}
 }
