@@ -270,7 +270,7 @@ $view->display();
  					?></p>
 				</li>
 				<?php } ?>
-				<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_READY');  ?></p>
+				<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_READY');  ?> <?php if ($this->config->get('doi_service')) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_DOI');  } ?></p>
 					<p class="centeralign"><span class="<?php echo $this->publication_allowed ? 'btn' : 'btncancel'; ?>"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url.'/?action=publish'. a . 'version='.$this->version; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?><?php if($this->publication_allowed) {  ?></a><?php } ?></span></p>
 				</li>
 				<?php if($this->row->state != 4 && $this->publication_allowed) { ?>
