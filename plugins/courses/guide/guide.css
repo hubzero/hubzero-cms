@@ -8,21 +8,11 @@
 /*
 
 	-- -- -- -- -- -- --
-	plg_courses_pages CSS
+	plg_courses_guide CSS
 	-- -- -- -- -- -- --
 
 */
 
-	/*@font-face {
-		font-family: 'BloklettersPotlood';
-		src: url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.eot');
-		src: url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.eot?#iefix') format('embedded-opentype'),
-		     url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.woff') format('woff'),
-		     url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.ttf') format('truetype'),
-		     url('/plugins/courses/guide/fonts/Blokletters-Potlood-webfont.svg#BloklettersPotlood') format('svg');
-		font-weight: normal;
-		font-style: normal;
-	}*/
 	@font-face {
 		font-family: 'BloklettersBalpen';
 		src: url('/plugins/courses/guide/fonts/Blokletters-Balpen-webfont.eot');
@@ -33,31 +23,16 @@
 		font-weight: normal;
 		font-style: normal;
 	}
-	/*@font-face {
-		font-family: 'BloklettersViltstift';
-		src: url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.eot');
-		src: url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.eot?#iefix') format('embedded-opentype'),
-		     url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.woff') format('woff'),
-		     url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.ttf') format('truetype'),
-		     url('/plugins/courses/guide/fonts/Blokletters-Viltstift-webfont.svg#BloklettersViltstift') format('svg');
-		font-weight: normal;
-		font-style: normal;
-	}*/
+
 	/* Disable fancybox lock to allow overlay to scroll with page */
 	body.fancybox-lock {
 		overflow: visible;
 		position: relative;
 	}
-	/*body.guide-fancybox .fancybox-overlay-fixed {
-		position: absolute;
-	}*/
 
 	#page_menu li .guide:before {
 		content: "\f059";
 	}
-	/*#page_content.course_guide {
-		margin: 0;
-	}*/
 
 /* Overlay content */
 	#guide-overlay {
@@ -367,6 +342,45 @@
 		top: 50%;
 		display: block;
 		position: relative;
+	}
+
+	.guide-about {
+		border: 1px solid #fff;
+		margin: 19px 0 0 0;
+		padding: 1em 2em;
+		position: relative;
+	}
+	.guide-about a {
+		color: #ffc;
+	}
+	.guide-dismiss {
+		border-top: 1px solid #fff;
+		border-top: 1px solid rgba(255, 255, 255, 0.4);
+		margin-top: 2em;
+		padding-top: 2em;
+	}
+	.guide-about:before,
+	.guide-about:after {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+	}
+	.guide-about:before {
+		width: 1px;
+		height: 25px;
+		background-color: #fff;
+		bottom: -25px;
+	}
+	.guide-about:after {
+		border: 7.5px solid #fff;
+		border-color: #fff transparent transparent transparent;
+		bottom: -39px;
+		margin-left: -7.5px;
+	}
+	.guide-nav ul {
+		margin-top: 0;
 	}
 
 /* Instructions */
