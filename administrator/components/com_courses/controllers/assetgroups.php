@@ -534,6 +534,18 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 		$row->move($inc, 'unit_id=' . $this->database->Quote($row->unit_id) . ' AND parent=' . $this->database->Quote($row->parent));
 		$row->reorder('unit_id=' . $this->database->Quote($row->unit_id) . ' AND parent=' . $this->database->Quote($row->parent));
 
+		//$unit = CoursesModelUnit::getInstance(JRequest::getInt('unit', 0));
+		//$ags = $unit->assetgroups(null, array('parent' => $row->parent));
+
+		if (($ags = $row->find(array('w' => array('parent' => $row->parent)))))
+		{
+			foreach ($ags as $ag)
+			{
+				$a = new CoursesModelAssetgroup($ag);
+				$a->store();
+			}
+		}
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0)
 		);

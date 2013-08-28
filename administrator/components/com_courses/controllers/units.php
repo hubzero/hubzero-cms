@@ -443,6 +443,12 @@ class CoursesControllerUnits extends Hubzero_Controller
 		$row->load($uid);
 		$row->move($inc, 'offering_id=' . $this->database->Quote($row->offering_id));
 
+		$offering = CoursesModelOffering::getInstance(JRequest::getInt('offering', 0));
+		foreach ($offering->units() as $unit)
+		{
+			$unit->store();
+		}
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0)
 		);

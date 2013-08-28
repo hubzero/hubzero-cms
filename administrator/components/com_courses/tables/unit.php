@@ -202,6 +202,7 @@ class CoursesTableUnit extends JTable
 			if (!$this->ordering)
 			{
 				$this->ordering = $this->getHighestOrdering($this->offering_id);
+				$this->ordering = (!$this->ordering) ? 1 : $this->ordering;
 			}
 		}
 
