@@ -749,6 +749,17 @@ class Hubzero_Migration
 
 			$ordering = 0;
 
+			if (!empty($params) && is_array($params))
+			{
+				$p = '';
+				foreach ($params as $k => $v)
+				{
+					$p .= "{$k}={$v}\n";
+				}
+
+				$params = $p;
+			}
+
 			$query = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)";
 			$query .= " VALUES ('{$name}', 'option={$option}', 0, 0, 'option={$option}', '{$name}', '{$option}', {$ordering}, '', 0, ".$db->quote($params).", {$enabled})";
 			$db->setQuery($query);
@@ -771,6 +782,11 @@ class Hubzero_Migration
 			}
 
 			$ordering = 0;
+
+			if (!empty($params) && is_array($params))
+			{
+				$params = json_encode($params);
+			}
 
 			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
 			$query .= " VALUES ('{$name}', 'component', '{$option}', '', 1, {$enabled}, 1, 0, '', ".$db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
