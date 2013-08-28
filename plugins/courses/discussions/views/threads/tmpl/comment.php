@@ -112,12 +112,12 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="delete" href="<?php echo JRoute::_($this->base . '&action=delete&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!-- 
 					--></a>
 				<?php } ?>
 				<?php /*if ($this->config->get('access-edit-thread')) { ?>
-					<a class="edit" href="<?php echo JRoute::_($this->base . '&action=edit&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!-- 
 					--></a>
 				<?php }*/ ?>
@@ -125,16 +125,16 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if (!$this->comment->reports) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->id) { ?>
-					<a class="reply active" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->base); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->base); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
 					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?><!-- 
 				--></a>
 					<?php } else { ?>
-					<a class="reply" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->base . '&reply=' . $this->comment->id); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->base . '&reply=' . $this->comment->id); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
 					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?><!-- 
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->comment->id . '&parent=' . $this->comment->parent); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
+				<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->comment->id . '&parent=' . $this->comment->parent); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
 					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPORT_ABUSE'); ?><!-- 
 				--></a>
 			<?php } ?>
