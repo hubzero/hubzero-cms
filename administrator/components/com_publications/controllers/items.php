@@ -158,7 +158,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 
 		// Incoming publication ID
 		$id = JRequest::getVar('id', array(0));
-		if (is_array($id)) {
+		if (is_array($id)) 
+		{
 			$id = $id[0];
 		}
 		
@@ -199,7 +200,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$this->view->objP = $objP;
 		
 		// If publication not found, raise error
-		if(!$this->view->pub) {
+		if (!$this->view->pub) 
+		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
@@ -461,9 +463,11 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$output = JText::_('Item successfully saved.');			
 		
 		// Admin actions
-		if ($action) {
+		if ($action) 
+		{
 			$output = '';
-			require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_projects'.DS.'tables'.DS.'project.activity.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+				. DS . 'com_projects'. DS . 'tables' . DS . 'project.activity.php');
 			$objAA = new ProjectActivity ( $this->database );
 			switch ($action) 
 			{
@@ -526,13 +530,16 @@ class PublicationsControllerItems extends Hubzero_Controller
 						{					
 							$doi = PublicationUtilities::registerDoi($row, $authors, $this->config, $metadata, $doierr);
 
-							if($doi) {
+							if ($doi) 
+							{
 								$row->doi = $doi;
-								if($doierr) {
+								if ($doierr) 
+								{
 									$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
 								}
 							}
-							else {
+							else 
+							{
 								$this->setRedirect(
 									$url, JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr, 'error'
 								);
@@ -550,13 +557,15 @@ class PublicationsControllerItems extends Hubzero_Controller
 					}					
 					
 					// Save date accepted
-					if ($action == 'publish') {
+					if ($action == 'publish') 
+					{
 						$row->accepted = date("Y-m-d H:i:s");
 					}
 					$row->modified = date( 'Y-m-d H:i:s' );
 					$row->modified_by = $this->juser->get('id');
 					
-					if(!$this->getError()) {
+					if (!$this->getError()) 
+					{
 						$output .= ' '.JText::_('COM_PUBLICATIONS_ITEM').' ';
 						$output .= $action == 'publish'  
 							? JText::_('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
@@ -634,14 +643,16 @@ class PublicationsControllerItems extends Hubzero_Controller
 		}
 		
 		// Do we have a message to send?
-		if ($message) {
+		if ($message) 
+		{
 			$subject .= ' - '.JText::_('COM_PUBLICATIONS_MSG_ADMIN_NEW_MESSAGE');
 			$sendmail = 1;  
 			$output .= ' '.JText::_('COM_PUBLICATIONS_MESSAGE_SENT');
 		}	
 		
 		// Updating entry if anything changed
-		if($row != $old && !$this->getError()) {
+		if ($row != $old && !$this->getError()) 
+		{
 			$row->modified    = date("Y-m-d H:i:s");
 			$row->modified_by = $this->juser->get('id');
 			
@@ -668,7 +679,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$notify = array_unique($notify);
 	
 		// Send email
-		if ($sendmail && !$this->getError()) {
+		if ($sendmail && !$this->getError()) 
+		{
 			$this->_emailContributors($row, $subject, $message, $notify, $action);	
 		}
 		
@@ -695,13 +707,15 @@ class PublicationsControllerItems extends Hubzero_Controller
 	private function _emailContributors($row, $subject = '', $message = '', $authors = array(), $action = 'publish')
 	{
 		// Get pub authors' ids
-		if(empty($authors)) {
+		if (empty($authors)) 
+		{
 			$pa = new PublicationAuthor( $this->database );
 			$authors = $pa->getAuthors($row->id, 1, 1, 1);
 		}
 		
 		// No authors – send to publication creator
-		if(count($authors) == 0) {
+		if (count($authors) == 0) 
+		{
 			$authors = array($row->created_by);
 		}
 		
@@ -738,7 +752,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$eview->url = $livesite.DS.'publications'.DS.$row->publication_id.DS.'?v='.$row->version_number;
 
 			$body = $eview->loadTemplate();
-			if($message) {
+			if ($message) 
+			{
 				$body.=  JText::_('COM_PUBLICATION_MSG_MESSAGE_FROM_ADMIN').': '."\n".$message;
 			}	
 			$body = str_replace("\n\n", "\n", $body);
@@ -839,19 +854,20 @@ class PublicationsControllerItems extends Hubzero_Controller
 		
 		// Load publication
 		$objP = new Publication( $this->database );
-		if(!$objP->load($id)) {
+		if (!$objP->load($id)) 
+		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 
-		if($version != 'all') 
+		if ($version != 'all') 
 		{			
 			// Check that version exists
 			$version = $row->checkVersion($id, $version) ? $version : 'default';
 			
 			// Load version	
 			$row = new PublicationVersion($this->database);		
-			if(!$row->loadVersion($pid, $version)) 
+			if (!$row->loadVersion($pid, $version)) 
 			{
 				JError::raiseError( 404, JText::_('COM_PUBLICATIONS_VERSION_NOT_FOUND') );
 				return;
@@ -860,7 +876,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 			// Save version ID
 			$vid = $row->id;						
 		}
-		else {
+		else 
+		{
 			// Delete all versions
 		}
 		

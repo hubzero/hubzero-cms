@@ -273,11 +273,6 @@ $view->display();
 				<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_READY');  ?></p>
 					<p class="centeralign"><span class="<?php echo $this->publication_allowed ? 'btn' : 'btncancel'; ?>"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url.'/?action=publish'. a . 'version='.$this->version; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?><?php if($this->publication_allowed) {  ?></a><?php } ?></span></p>
 				</li>
-				<?php if($this->pubconfig->get('issue_arch')) { ?>
-				<li id="next-archive"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_ARCHIVE');  ?></p>
-					<p class="centeralign"><span class="<?php echo $this->publication_allowed ? 'btn' : 'btncancel'; ?>"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url . '/?action=archive'. a . 'version='.$this->version; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_ARCHIVE_REVIEW'); ?><?php if($this->publication_allowed) {  ?></a><?php } ?></span></p>
-				</li>
-				<?php } ?>
 				<?php if($this->row->state != 4 && $this->publication_allowed) { ?>
 				<li id="next-ready"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_SAVE');  ?></p>
 					<p class="centeralign"><span class="<?php echo $this->publication_allowed ? 'btn' : 'btncancel'; ?>"><?php if($this->publication_allowed) {  ?><a href="<?php echo $this->url . '/?action=post'. a . 'version='.$this->version; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SAVE_REVIEW'); ?><?php if($this->publication_allowed) {  ?></a><?php } ?></span></p>

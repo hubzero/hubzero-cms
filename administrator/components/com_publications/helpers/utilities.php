@@ -44,18 +44,23 @@ class PublicationUtilities
 	 * @param      array 	$config 	Publications component config
 	 * @param      array 	$metadata 	Array of metadata
 	 * @param      string 	&$doierr 	Collector for errors
-	 * @param      string 	$do 		'doi' or 'ark'
 	 * @param      int 		$reserve 	Reserving DOI? (no extended XML metadata)
 	 * @return     true on success or false on error
 	 */
-	public function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $do = 'doi', $reserve = 0 )
+	public function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $reserve = 0 )
 	{
 		// Get configs
 		$jconfig 	=& JFactory::getConfig();
-		$shoulder   = $do == 'doi' ? $config->get('doi_shoulder', '10.5072' ) : $config->get('ark_shoulder', '/99999' );
-		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
-		$prefix     = $do == 'doi' ? $config->get('doi_prefix', '' ) : $config->get('ark_prefix', '' );
-		$userpw		= $config->get('doi_userpw', '' );
+		$shoulder   = $config->get('doi_shoulder');
+		$service    = trim($config->get('doi_service'), DS);
+		$prefix     = $config->get('doi_prefix', '' );
+		$userpw		= $config->get('doi_userpw');
+		
+		if (!$service || !$userpw || !$shoulder)
+		{
+			$doierr .= 'Oups! Can\'t publish! DOI service is not available, please contact Support.';
+			return false;
+		}
 		
 		$handle     = '';
 		$doi 		= '';
@@ -65,8 +70,7 @@ class PublicationUtilities
 		$metadata['pubYear'] 	= date( 'Y' );
 				
 		// Make service path
-		$which = $do == 'doi' ? 'doi:' : 'ark:';
-		$call  = $service . DS . 'shoulder' . DS . $which . $shoulder;
+		$call  = $service . DS . 'shoulder' . DS . 'doi:' . $shoulder;
 		$call .= $prefix ? DS . $prefix : DS;		
 		
 		// Get publisher name
@@ -143,7 +147,7 @@ class PublicationUtilities
 			$handle = 0;
 		}
 		
-		$handle = $do == 'doi' ? strtoupper($handle) : $handle;
+		$handle = strtoupper($handle);
 		$doi = $shoulder . DS . $handle;
 		curl_close($ch);
 		
@@ -151,14 +155,14 @@ class PublicationUtilities
 		if ($handle && $reserve == 0) 
 		{
 			$xdoc 		= new DomDocument;
-			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi, $do);	
+			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi);	
 			$xmlschema 	= trim($config->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 			
 			//Load the xml document in the DOMDocument object
 			$xdoc->loadXML($xmlfile);
 
 			//Validate the XML file against the schema
-			if ($xdoc->schemaValidate($xmlschema) || $do == 'ark') 
+			if ($xdoc->schemaValidate($xmlschema)) 
 			{
 			    /*EZID parses text received based on new lines. */
 				$input  = "_target: " . $metadata['url'] ."\n";
@@ -172,20 +176,13 @@ class PublicationUtilities
 			    $input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
 			
 				// Make service path
-				if ($do == 'ark')
-				{
-					$call  = $service . DS . 'id' . DS . 'ark:' . $doi;
-				}
-				else 
-				{
-					$call  = $service . DS . 'id' . DS . 'doi:' . $doi;	
-				}	
+				$call  = $service . DS . 'id' . DS . 'doi:' . $doi;		
 
 			    $ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $call);
 
 			    /* Purdue Hubzero Username/Password */
-			    curl_setopt($ch, CURLOPT_USERPWD, '');
+			    curl_setopt($ch, CURLOPT_USERPWD, $userpw);
 			    curl_setopt($ch, CURLOPT_POST, true);
 
 			    curl_setopt($ch, CURLOPT_HTTPHEADER,
@@ -231,8 +228,8 @@ class PublicationUtilities
 		$juri =& JURI::getInstance();
 		
 		$jconfig 	=& JFactory::getConfig();
-		$service    = trim($config->get('doi_service', 'https://n2t.net/ezid' ), DS);
-		$userpw		= $config->get('doi_userpw', '' );
+		$service    = trim($config->get('doi_service'), DS);
+		$userpw		= $config->get('doi_userpw');
 		
 		// Collect metadata
 		$metadata['publisher']  = $config->get('doi_publisher', $jconfig->getValue('config.sitename') );
@@ -248,8 +245,15 @@ class PublicationUtilities
 			$doierr .= 'Missing live site configuration';
 			return false;
 		}
+		
+		if (!$service || !$userpw)
+		{
+			$doierr .= 'Oups! Can\'t publish! DOI service is not available, please contact Support.';
+			return false;
+		}
 
-		$metadata['url'] = $livesite . DS . 'publications' . DS . $row->publication_id . DS . '?v=' . $row->version_number;
+		$metadata['url'] = $livesite . DS . 'publications' . DS 
+			. $row->publication_id . DS . '?v=' . $row->version_number;
 		$metadata['title'] = stripslashes(htmlspecialchars($row->title));
 		
 		// Get first author / creator name
@@ -272,7 +276,7 @@ class PublicationUtilities
 		if ($sendXML == true)
 		{
 			$xdoc 		= new DomDocument;
-			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi, $do = 'doi');	
+			$xmlfile 	= PublicationUtilities::getXml($row, $authors, $metadata, $doi);	
 			$xmlschema 	= trim($config->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 
 			// Load the xml document in the DOMDocument object
@@ -327,10 +331,9 @@ class PublicationUtilities
 	 * @param      array 	$authors 	Publication version authors
 	 * @param      array 	$metadata 	Array of metadata
 	 * @param      string 	$doi 		DOI handle, e.g. 10.4231/D3F47GT6N
-	 * @param      string 	$do 		'doi' or 'ark'
 	 * @return     xml output
 	 */
-	public function getXml( $row, $authors, $metadata, $doi = 0, $do = 'doi')
+	public function getXml( $row, $authors, $metadata, $doi = 0)
 	{
 		$dateFormat = '%Y-%m-%d';
 		$tz = null;
@@ -345,18 +348,7 @@ class PublicationUtilities
 		$dateAccepted  = date( 'Y-m-d' );
 		
 		$xmlfile = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns="http://datacite.org/schema/kernel-2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-2.1 http://schema.datacite.org/meta/kernel-2.1/metadata.xsd">';
-		if ($do == 'doi')
-		{
-			$xmlfile.='<identifier identifierType="DOI">'.$doi.'</identifier>';	
-		}
-		else
-		{
-			if (substr($doi,0,1) == '/') 
-			{
-				$doi = substr($doi,1,strlen($doi));
-			}
-			$xmlfile.='<identifier identifierType="ARK">'.$doi.'</identifier>';
-		}		
+		$xmlfile.='<identifier identifierType="DOI">'.$doi.'</identifier>';		
 	 	$xmlfile.='<creators>';
 		if (count($authors) > 0) 
 		{

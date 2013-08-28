@@ -2458,10 +2458,6 @@ class plgProjectsPublications extends JPlugin
 		{
 			$state = 4; // No approval needed
 		}
-		elseif ($this->_task == 'archive' && $this->_pubconfig->get('issue_arch', 0))
-		{
-			$state = 6; // No approval needed
-		}
 		elseif ($republish)
 		{
 			$state = 1; // No approval needed
@@ -2621,11 +2617,13 @@ class plgProjectsPublications extends JPlugin
 			$authors = $pa->getAuthors($row->id);
 						
 			// Get DOI
-			if (($state == 1 || $state == 5) && !$row->doi && $this->_pubconfig->get('doi_shoulder') && $this->_pubconfig->get('doi_service')) 
+			if (($state == 1 || $state == 5) && !$row->doi 
+				&& $this->_pubconfig->get('doi_shoulder') && $this->_pubconfig->get('doi_service')) 
 			{		
 				// Issue a new DOI
 				$reserve = $state == 5 ? 1 : 0;
-				$doi = PublicationUtilities::registerDoi($row, $authors, $this->_pubconfig, $metadata, $doierr, 'doi', $reserve);
+				$doi = PublicationUtilities::registerDoi($row, $authors, $this->_pubconfig, 
+					$metadata, $doierr, $reserve);
 				
 				if ($doi) 
 				{
@@ -2636,23 +2634,6 @@ class plgProjectsPublications extends JPlugin
 				if (!$doi || $doierr) 
 				{
 					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI').' '.$doierr);
-				}
-			}
-			
-			// Get ARK
-			if ($state == 6 && !$row->ark && $this->_pubconfig->get('issue_arch'))
-			{
-				$ark = PublicationUtilities::registerDoi($row, $authors, $this->_pubconfig, $metadata, $doierr, 'ark');
-				
-				if ($ark) 
-				{
-					$row->ark = $ark;
-				}
-				
-				// Can't proceed without a valid ARK
-				if (!$ark || $doierr) 
-				{
-					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_ARK').' '.$doierr);
 				}
 			}
 			
@@ -2701,11 +2682,6 @@ class plgProjectsPublications extends JPlugin
 					case 5:       
 						$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING'); 
 						$action 	= JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');            
-						break;
-						
-					case 6:       
-						$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_ARCHIVED'); 
-						$action 	= JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_ARCHIVED');            
 						break;
 				}
 				$this->_msg .= ' <a href="'.JRoute::_('index.php?option=com_publications' . a . 
