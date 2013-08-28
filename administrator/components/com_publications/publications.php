@@ -88,6 +88,33 @@ require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'. DS . 'helper
 require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'. DS . 'helpers' . DS . 'helper.php');
 
 $controllerName = JRequest::getCmd('controller', 'items');
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'items';
+}
+
+JSubMenuHelper::addEntry(
+	JText::_('Publications'), 
+	'index.php?option=' .  $option . '&controller=items', 
+	$controllerName == 'items'
+);
+
+JSubMenuHelper::addEntry(
+	JText::_('Licenses'), 
+	'index.php?option=' .  $option . '&controller=licenses', 
+	$controllerName == 'licenses'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Categories'), 
+	'index.php?option=' .  $option . '&controller=categories', 
+	$controllerName == 'categories'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Master Types'), 
+	'index.php?option=' .  $option . '&controller=types', 
+	$controllerName == 'types'
+);
+
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'PublicationsController' . ucfirst($controllerName);
 

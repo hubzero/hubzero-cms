@@ -87,7 +87,7 @@ class PubInstall extends JObject {
 	{
 		$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
 		SELECT $name, $type, $element, $folder, $client_id, $enabled, 1, 0, null, $params, null, null, 0, '0000-00-00 00:00:00', $ordering, 0
-		FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = '$name'";
+		FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = '$name')";
 		
 		$this->runQuery($query);
 	}
@@ -450,26 +450,6 @@ class PubInstall extends JObject {
 				SELECT 'Publications', 'option=com_publications', 0, 0, 'option=com_publications', 'Publications', 'com_publications', 0, 'js/ThemeOffice/component.png', 0, 'enabled=1\nautoapprove=0\nautoapproved_users=\nemail=0\ndefault_category=dataset\ndefaultpic=/components/com_publications/assets/img/resource_thumb.gif\nvideo_thumb=/components/com_publications/assets/img/video_thumb.gif\ngallery_thumb=/components/com_publications/assets/img/gallery_thumb.gif\nwebpath=/site/publications/\naboutdoi=\ndoi_shoulder=\ndoi_prefix=\ndoi_service=\ndoi_publisher=hub\ndoi_resolve=http://dx.doi.org/\ndoi_verify=http://n2t.net/ezid/id/\nissue_arch=0\nark_shoulder=\nark_prefix=\nsupportedtag=\nsupportedlink=\ngoogle_id=\nshow_authors=1\nshow_ranking=0\nshow_rating=0\nshow_date=3\nshow_citation=1\npanels=content, description, authors, audience, gallery, tags, access, license, notes\nsuggest_licence=1\nshow_tags=1\nshow_metadata=0\nshow_notes=1\nshow_license=1\nshow_access=0\nshow_gallery=1\nshow_audience=0\naudiencelink=audiencelevels\ndocumentation=\ndeposit_terms=\n\n', 1
 				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Publications')";
 
-				// Pub list
-				$queries[] = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-				SELECT 'Publication List', '', 0, 0, 'option=com_publications', 'Publications', 'com_publications', 1, 'js/ThemeOffice/component.png', 0, '', 1
-				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Publication List')";
-
-				// Pub licenses
-				$queries[] = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-				SELECT 'Publication Licenses', '', 0, 0, 'option=com_publications&controller=licenses', 'Publications Licenses', 'com_publications', 2, 'js/ThemeOffice/component.png', 0, '', 1
-				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Publication Licenses')";
-
-				// Pub categories
-				$queries[] = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-				SELECT 'Publication Categories', '', 0, 0, 'option=com_publications&controller=categories', 'Publication Categories', 'com_publications', 3, 'js/ThemeOffice/component.png', 0, '', 1
-				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Publication Categories')";
-
-				// Pub master types
-				$queries[] = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-				SELECT 'Master Types', '', 0, 0, 'option=com_publications&controller=types', 'Publication Master Types', 'com_publications', 4, 'js/ThemeOffice/component.png', 0, '', 1
-				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Master Types')";
-
 				// Enable plugins					
 				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Related', 'related', 'publications', 0, 0, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Related')";
 
@@ -495,30 +475,6 @@ class PubInstall extends JObject {
 					$this->_db->setQuery( $query );
 					$this->_db->query();
 				}
-
-				// Get Publication component ID
-				$query = "SELECT id FROM #__components WHERE name='Publications' ORDER BY ordering ASC LIMIT 1";
-				$this->_db->setQuery( $query );
-				$cid = $this->_db->loadResult();
-
-				if ($cid)
-				{
-					$query = "UPDATE `#__components` SET parent = $cid, name = 'List' WHERE name = 'Publication List'";
-					$this->_db->setQuery( $query );
-					$this->_db->query();
-
-					$query = "UPDATE `#__components` SET parent = $cid, name = 'Licenses' WHERE name = 'Publication Licenses'";	
-					$this->_db->setQuery( $query );
-					$this->_db->query();
-
-					$query = "UPDATE `#__components` SET parent = $cid WHERE name = 'Master Types'";	
-					$this->_db->setQuery( $query );
-					$this->_db->query();
-
-					$query = "UPDATE `#__components` SET parent = $cid, name = 'Categories' WHERE name = 'Publication Categories'";	
-					$this->_db->setQuery( $query );
-					$this->_db->query();
-				}
 			}
 			else
 			{
@@ -534,6 +490,22 @@ class PubInstall extends JObject {
 				$this->installExtension('plg_publications_citations', 'plugin', 'citations', 'publications', 7, '', 1, 0);
 				$this->installExtension('plg_publications_usage', 'plugin', 'usage', 'publications', 8, '', 1, 0);
 				$this->installExtension('plg_publications_share', 'plugin', 'share', 'publications', 9, '', 1, 0);
+				
+				// Get Publication component ID
+				$query = "SELECT extension_id FROM `#__extensions` WHERE name='com_publications' ORDER BY ordering ASC LIMIT 1";
+				$this->_db->setQuery( $query );
+				$cid = $this->_db->loadResult();
+				
+				// Add menu item
+				if ($cid)
+				{
+					$query = "INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)
+					SELECT 0,'main','Publications','publications','','publications','index.php?option=com_publications','component',1,1,1,$cid,0,0,'0000-00-00 00:00:00',0,0,'',0,'',47,48,0,'*',1 FROM DUAL WHERE NOT EXISTS (SELECT `component_id` FROM `#__extensions` WHERE component_id = '$cid')";
+				 
+					$this->_db->setQuery( $query );
+					$this->_db->query();
+				}
+				
 			}
 		}		
 	}
