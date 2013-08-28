@@ -2754,7 +2754,7 @@ class plgProjectsPublications extends JPlugin
 						JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
 						'projects_admin_message', 
 						'publication',
-						$profile->get('name') . ' ' . $action . ' - ' . $juri->base() 
+						$profile->get('name') . ' ' . html_entity_decode($action) . ' - ' . $juri->base() 
 							. $sef . '/?version=' . $row->version_number
 					);
 				}
