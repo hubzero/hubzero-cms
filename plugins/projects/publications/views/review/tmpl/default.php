@@ -166,7 +166,7 @@ $append .= '</span>';
 					: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NEEDED'); ?>
 			</li>
 			<?php } ?>
-			<?php if(!$this->row->doi && !$republish && !$post && $doi_txt && $this->config->get('doi_service')) { ?>
+			<?php if(!$this->row->doi && !$republish && !$post && $doi_txt && $this->pubconfig->get('doi_service')) { ?>
 			<li><?php echo $doi_txt; ?></li>
 			<?php } ?>
 			<li>
