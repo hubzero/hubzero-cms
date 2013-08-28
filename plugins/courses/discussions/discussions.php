@@ -127,7 +127,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			{
 				$category->title = $assetgroup->get('title');
 			}
-			$category->alias = $assetgroup->get('alias');
+			$category->alias    = $assetgroup->get('alias');
+			$category->ordering = $assetgroup->get('ordering');
 			if ($category->check())
 			{
 				$category->store();
@@ -196,7 +197,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 
 		$section = new ForumSection(JFactory::getDBO());
-		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
+		$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
 		if ($section->id)
 		{
 			$section->state    = $unit->get('state');
@@ -1447,26 +1448,30 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 									continue;
 								}
 								$cat = new ForumCategory($this->database);
-								$cat->section_id  = $section->id;
-								if ($ag->get('title') == '--')
+								$cat->loadByObject($ag->get('id'), $section->id, $this->offering->get('id'), 'course');
+								if (!$cat->get('id'))
 								{
-									$cat->title       = $ag->assets()->fetch('first')->get('title');
-								}
-								else
-								{
-									$cat->title       = $ag->get('title');
-								}
-								$cat->alias       = $ag->get('alias');
-								$cat->description = JText::sprintf('Discussions for %s', $ag->get('title'));
-								$cat->state       = 1;
-								$cat->scope       = 'course';
-								$cat->scope_id    = $this->offering->get('id');
-								$cat->object_id   = $ag->get('id');
-								$cat->ordering    = $ag->get('ordering');
-								if ($cat->check())
-								{
-									$cat->store();
-									$view->sections[$key]->categories[] = $cat;
+									$cat->section_id  = $section->id;
+									if ($ag->get('title') == '--')
+									{
+										$cat->title       = $ag->assets()->fetch('first')->get('title');
+									}
+									else
+									{
+										$cat->title       = $ag->get('title');
+									}
+									$cat->alias       = $ag->get('alias');
+									$cat->description = JText::sprintf('Discussions for %s', $ag->get('title'));
+									$cat->state       = 1;
+									$cat->scope       = 'course';
+									$cat->scope_id    = $this->offering->get('id');
+									$cat->object_id   = $ag->get('id');
+									$cat->ordering    = $ag->get('ordering');
+									if ($cat->check())
+									{
+										$cat->store();
+										$view->sections[$key]->categories[] = $cat;
+									}
 								}
 								$cat->threads = 0;
 								$cat->posts = 0;
