@@ -461,8 +461,8 @@ class Migration20130829211856ComPublications extends Hubzero_Migration
 			}
 		}
 
-		self::addComponentEntry('Publications');
+		self::deleteComponentEntry('Publications');
 
-		self::addPluginEntry('publications');
+		self::deletePluginEntry('publications');
 	}
 }
