@@ -916,6 +916,48 @@ class Hubzero_Migration
 	}
 
 	/**
+	 * Add, as needed, the module entry to the appropriate table, depending on the Joomla version
+	 *
+	 * @param $element - (string) plugin element
+	 * @param $enabled - (int)    whether or not the plugin should be enabled
+	 * @param $params  - (array)  plugin params (if already known)
+	 * @return bool
+	 **/
+	public static function addModuleEntry($element, $enabled=1, $params='')
+	{
+		$db = self::$db;
+
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			// Nothing to do here
+		}
+		else
+		{
+			$name = $element;
+
+			// First, make sure it isn't already there
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = " . $db->quote($name);
+			$db->setQuery($query);
+			if ($db->loadResult())
+			{
+				return true;
+			}
+
+			$ordering = 0;
+
+			if (!empty($params) && is_array($params))
+			{
+				$params = json_encode($params);
+			}
+
+			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
+			$query .= " VALUES ('{$name}', 'module', '{$element}', '', 0, {$enabled}, 1, 0, '', ".$db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
+			$db->setQuery($query);
+			$db->query();
+		}
+	}
+
+	/**
 	 * Remove component entries from the appropriate table, depending on the Joomla version
 	 *
 	 * @param $name - (string) component name
@@ -987,6 +1029,29 @@ class Hubzero_Migration
 		{
 			// Delete plugin(s) entry
 			$query = "DELETE FROM `#__extensions` WHERE `folder` = " . $db->quote($folder) . ((!is_null($element)) ? " AND `element` = '{$element}'" : "");
+			$db->setQuery($query);
+			$db->query();
+		}
+	}
+
+	/**
+	 * Remove module entries from the appropriate table, depending on the Joomla version
+	 *
+	 * @param $name - (string) plugin name
+	 * @return bool
+	 **/
+	public static function deleteModuleEntry($element)
+	{
+		$db = self::$db;
+
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			// Do nothing
+		}
+		else
+		{
+			// Delete module entry
+			$query = "DELETE FROM `#__extensions` WHERE `element` = '{$element}'";
 			$db->setQuery($query);
 			$db->query();
 		}
