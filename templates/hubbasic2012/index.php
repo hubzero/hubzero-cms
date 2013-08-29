@@ -35,6 +35,9 @@ ximport('Hubzero_Document');
 $config =& JFactory::getConfig();
 $juser =& JFactory::getUser();
 
+// Set the generator statement
+$this->setGenerator('HUBzero - The open source platform for scientific and educational collaboration');
+
 //do we want to include jQuery
 if (JPluginHelper::isEnabled('system', 'jquery')) 
 {
