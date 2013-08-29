@@ -3983,6 +3983,10 @@ class plgProjectsFiles extends JPlugin
 				{
 					$this->setError($this->_connect->getError());
 				}
+				
+				// Redirect to connect screen
+				$this->_referer = $url . '?action=connect';
+				return;
 			}			
 			elseif (!$this->_connect->makeConnection($service, $reauth, $return))
 			{
