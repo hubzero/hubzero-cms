@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_whatsnew/whatsnew.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_whatsnew/assets/css/whatsnew.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -13,29 +13,10 @@
 
 */
 
-/* Item listing 
-	.com_whatsnew .section h3 {
-		display: none;
-		}*/
+/* Item listing */
 	.entries .resource .title {
 		margin-right: 220px;
 	}
-	/*.results .stats { 
-		margin: -1.5em 0 0 0;
-		float: right;
-		width: 190px;
-		background: none;
-		}
-	.search {
-		border: none;
-		}
-	.results .resource .stats p,
-	.stats p { 
-		color: #999; 
-		font-size: 90%;
-		margin: 0 0 0.5em 0;
-		padding: 0;
-	}*/
 	.com_whatsnew .container-block h3 {
 		margin-bottom: 0;
 		border: 2px solid #e9e9e9;
@@ -44,16 +25,11 @@
 	.com_whatsnew .container-block h3 a.feed {
 		float: right;
 	}
-	/*.com_whatsnew .container-block {
-		border: 2px solid #e9e9e9;
-		background-color: #fff;
-		margin: 0;
-		padding: 0 15px;
-	}*/
+
 	ol.entries {
 		list-style-type: none !important;
 		border: 2px solid #e9e9e9;
-		border-top: none;
+		border-bottom: 1px solid #e9e9e9;
 		background-color: #fff;
 		margin: 0;
 		padding: 0;
@@ -65,7 +41,7 @@
 	ol.entries > li {
 		clear: left;
 		margin: 0 !important;
-		padding: 0 1em;
-		border-top: 1px solid #efefef;
+		padding: 0 1em 0 2em;
+		border-bottom: 1px solid #efefef;
 		position: relative;
 	}

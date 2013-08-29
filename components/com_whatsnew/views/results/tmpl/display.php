@@ -240,7 +240,7 @@ foreach ($this->results as $category)
 
 		// Build the category HTML
 		$html .= '<div class="container-block" id="' . $divid . '">' . "\n";
-		$html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="feed" href="' . $feed . '">' . JText::_('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
+		$html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="' . $feed . '">' . JText::_('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
 
 		// Does this category have custom output?
 		// Check if a function exist (using old style plugins)
