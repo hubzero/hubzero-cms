@@ -921,6 +921,16 @@ HUB.ProjectFiles = {
 				'Yes, delete', 'No, do not delete');
 			});
 		}
+		
+		// Confirm directory deletion
+		if ($('#disconnect') && HUB.Projects) {
+			$('#disconnect').on('click', function(e) {
+				e.preventDefault();			
+				HUB.Projects.addConfirm($('#disconnect'), 
+				'Are you sure you want to disconnect project from this service?', 
+				'Yes, disconnect and remove remote data', 'No, do not disconnect');
+			});
+		}
 	},
 
 	previewFiles: function ()

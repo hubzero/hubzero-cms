@@ -2287,11 +2287,12 @@ class ProjectsConnectHelper extends JObject {
 	/**
 	 * Disconnect user from service
 	 * 
-	 * @param      string	$service	Service name (google or dropbox)	
+	 * @param      string	$service	Service name (google or dropbox)
+	 * @param      boolean	$removeData	Remove remote data (when project creator)	
 	 *
 	 * @return     JSON string or false
 	 */	
-	public function disconnect($service)
+	public function disconnect($service, $removeData = false)
 	{
 	    if (!$service || !in_array($service, $this->_services))
 		{
@@ -2309,9 +2310,7 @@ class ProjectsConnectHelper extends JObject {
 		}
 		
 		$paramname = $service . '_token';
-		
-		// TBD - revoke token
-		
+				
 		// Clean up stored values
 		$objO = new ProjectOwner( $this->_db );
 		$objO->loadOwner ($this->_project->id, $this->_uid);
@@ -2332,7 +2331,42 @@ class ProjectsConnectHelper extends JObject {
 			$param = $paramname . '_created', 
 			''
 		);
-						
+		
+		// Project creator?
+		$creator = ($this->_project->owned_by_user == $this->_uid) ? 1 : 0;
+				
+		// Disconnect service if user is project creator
+		if ($creator)
+		{
+			$obj = new Project( $this->_db );
+			if (!$obj->loadProject($this->_project->id)) 
+			{
+				$this->setError( JText::_('Oups! There was a problem loading project data.') );
+				return false;
+			}
+			
+			// Get project params
+			$pparams = new JParameter( $this->_project->params );
+			
+			// Remove all connection info and remote data
+			$remoteid = $pparams->get('google_dir_id');
+			if ($removeData == true && $remoteid)
+			{
+				$this->deleteRemoteItem($this->_project->id, $service, $this->_uid, $remoteid, $permanent = true);
+				
+				$obj->saveParam($this->_project->id, $service . '_sync', '');
+				$obj->saveParam($this->_project->id, $service . '_last_remote_change', '');
+				$obj->saveParam($this->_project->id, $service . '_last_local_change', '');
+				$obj->saveParam($this->_project->id, $service . '_sync_id', '');
+				$obj->saveParam($this->_project->id, $service . '_prev_sync_id', '');
+				$obj->saveParam($this->_project->id, $service . '_sync_lock', '');
+				$obj->saveParam($this->_project->id, $service . '_sync_queue', '');
+			}
+			
+			// Clean up token
+			$obj->saveParam($this->_project->id, $service . '_token', 0);
+		}
+								
 		return true;
 	}
 }

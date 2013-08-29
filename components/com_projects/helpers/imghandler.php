@@ -148,7 +148,7 @@ class ProjectsImgHandler extends JObject
 			$this->setError( JText::_('No image path set.') );
 			return false;
 		}
-		
+				
 		// Strip the possible trailing slash off the document root
 		//$docRoot = preg_replace('/\/$/', '', $docRoot);
 		

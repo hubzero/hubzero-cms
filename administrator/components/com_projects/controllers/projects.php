@@ -589,6 +589,38 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	}
 	
 	/**
+	 * Disconnect project from remote service and clear out all connection data
+	 * 
+	 * @return     void
+	 */
+	public function disconnectTask() 
+	{		
+		$id = JRequest::getVar( 'id', 0 );
+		$service = 'google';
+		
+		// Initiate extended database class
+		$obj = new Project( $this->database );
+		if (!$id or !$obj->loadProject($id)) 
+		{
+			$this->setError( JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND') );
+			return false;
+		}
+		
+		$objO = new ProjectOwner( $this->database );
+		$connected = $objO->getConnected($id, $service);
+		
+		// Clean up token
+		$obj->saveParam($id, $service . '_token', 0);
+		
+		// Clean up connection for each user
+		// TBD
+		
+		// Redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&id='.$id;
+		$this->_message = JText::_('Project disconnected from Google');
+	}
+	
+	/**
 	 * View sync log for project and remove sync lock
 	 * 
 	 * @return     void

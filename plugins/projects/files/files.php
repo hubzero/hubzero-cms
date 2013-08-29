@@ -3959,6 +3959,7 @@ class plgProjectsFiles extends JPlugin
 		// Incoming
 		$service 	= $service ? $service : JRequest::getVar('service', '');
 		$reauth 	= JRequest::getInt('reauth', 0);
+		$removeData = JRequest::getInt('removedata', 0);
 		
 		// Build pub url
 		$route = 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias;							
@@ -3974,7 +3975,7 @@ class plgProjectsFiles extends JPlugin
 			
 			if ($this->_task == 'disconnect')
 			{
-				if ($this->_connect->disconnect($service))
+				if ($this->_connect->disconnect($service, $removeData))
 				{
 					$this->_msg = JText::_('You got disconnected from ') . $configs['servicename'];
 				}
@@ -3998,10 +3999,10 @@ class plgProjectsFiles extends JPlugin
 				{
 					$this->_msg = JText::_('Successfully connected');
 				}
-				
-				// Refresh info
-				$this->_connect->setConfigs();
 			}
+			
+			// Refresh info
+			$this->_connect->setConfigs();
 		}
 			
 		// Output HTML

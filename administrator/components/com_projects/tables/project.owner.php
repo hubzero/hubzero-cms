@@ -495,7 +495,7 @@ class ProjectOwner extends JTable
 		$query  .= " JOIN #__projects as p ON o.projectid=p.id";
 		$query  .= " WHERE o.userid > 0";
 		$query  .= " AND p.id=" . $projectid;
-		$query  .= " AND o.params LIKE '%google_token=%'";
+		$query  .= " AND o.params LIKE '%google_token=%' AND o.params NOT LIKE '%google_token=\n%'";
 		if (!empty($exclude))
 		{
 			$query  .= " AND o.userid NOT IN (";

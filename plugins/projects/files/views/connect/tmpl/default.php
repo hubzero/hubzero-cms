@@ -60,9 +60,9 @@ $i = 0;
 	<div class="connect-service <?php echo !$service['on'] ? 'inactive' : ''; ?> <?php echo $servicename; ?>">
 		<?php if ($service['on'] && $allowed) { ?>
 		<div class="connect-info">
-			<?php if ($connected) { ?>
+			<?php if ($connected && $service['active']) { ?>
 				<p><span class="connected"><?php echo ucfirst(JText::_('COM_PROJECTS_FILES_CONNECT_CONNECTED')); ?></span></p>
-				<p><?php echo $this->oparams->get($servicename . '_email'); ?></p>		
+				<p><?php echo $this->oparams->get($servicename . '_email'); ?></p>	
 			<?php } else { ?>
 				<p class="connect-action"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a. 'alias=' . $this->project->alias . a . 'active=files') . '?action=connect' . a . 'service=' . $servicename; ?>"><?php echo JText::_('COM_PROJECTS_FILES_CONNECT'); ?></a></p>
 			<?php } ?>
@@ -79,6 +79,12 @@ $i = 0;
 			<p>
 				<span><?php echo JText::_('COM_PROJECTS_FILES_CONNECT_REMOTE_DIR'); ?>:</span> <span class="prominent darker"><?php echo $service['remote_dir']; ?></span> <?php if ($connected && $openUrl) { ?><span><a href="<?php echo $openUrl; ?>" rel="external">[open]</a></span><?php } ?>
 			</p>
+			
+			<?php if ($creator) { ?>
+				<span class="disconnect">
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a. 'alias=' . $this->project->alias . a . 'active=files') . '?action=disconnect' . a . 'service=' . $servicename . a . 'removedata=1'; ?>" id="disconnect"><?php echo JText::_('COM_PROJECTS_FILES_CONNECT_DISCONNECT'); ?> &raquo;</a>	
+				</span>
+			<?php } ?>
 			<?php } 
 			 else { ?>
 			<p><?php echo $creator ? JText::_('COM_PROJECTS_FILES_CONNECT_SERVICE_INACTIVE_CREATOR') 
