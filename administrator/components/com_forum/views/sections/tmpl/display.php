@@ -68,8 +68,8 @@ function submitbutton(pressbutton)
 			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ None ]'); ?></option>
 			<?php
 			$html = '';
-			if ($this->results) 
-			{
+			//if ($this->results) 
+			//{
 				ximport('Hubzero_Group');
 				ximport('Hubzero_View_Helper_Html');
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
@@ -78,22 +78,39 @@ function submitbutton(pressbutton)
 					'group'  => array(),
 					'course' => array()
 				);
-				foreach ($this->results as $result)
+
+				$database = JFactory::getDBO();
+
+				$database->setQuery("
+					SELECT s.scope, s.scope_id, 
+						CASE 
+							WHEN scope='course' THEN c.alias
+							WHEN scope='group' THEN g.cn
+							ELSE s.scope
+						END AS caption
+					FROM #__forum_sections AS s
+					LEFT JOIN #__xgroups AS g ON g.gidNumber=s.scope_id AND s.scope='group' 
+					LEFT JOIN #__courses_offerings AS c ON c.id=s.scope_id AND s.scope='course'
+				");
+				$results = $database->loadObjectList();
+
+				//foreach ($this->results as $result)
+				foreach ($results as $result)
 				{
-					$result->caption = '';
+					//$result->caption = '';
 					if ($result->scope == 'site')
 					{
 						continue;
 					}
-					if (isset($list[$result->scope][$result->scope_id]))
+					/*if (isset($list[$result->scope][$result->scope_id]))
 					{
 						$result->caption = $list[$result->scope][$result->scope_id]->caption;
 						continue;
-					}
+					}*/
 					switch ($result->scope)
 					{
 						case 'group':
-							$group = Hubzero_Group::getInstance($result->scope_id);
+							/*$group = Hubzero_Group::getInstance($result->scope_id);
 							if ($group)
 							{
 								$result->caption = Hubzero_View_Helper_Html::shortenText($group->get('cn'), 50, 0);
@@ -101,7 +118,8 @@ function submitbutton(pressbutton)
 							else
 							{
 								$result->caption = $result->scope_id;
-							}
+							}*/
+							$result->caption = $result->caption ? $result->caption : $result->scope . ' (' . $result->scope_id . ')';
 						break;
 						case 'course':
 							$offering = CoursesModelOffering::getInstance($result->scope_id);
@@ -114,6 +132,7 @@ function submitbutton(pressbutton)
 					}
 					$list[$result->scope][$result->scope_id] = $result;
 				}
+
 				foreach ($list as $label => $optgroup)
 				{
 					$html .= ' <optgroup label="' . $label . '">';
@@ -129,7 +148,7 @@ function submitbutton(pressbutton)
 					}
 					$html .= '</optgroup>'."\n";
 				}
-			}
+			//}
 			echo $html;
 			?>
 		</select>
@@ -141,7 +160,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Access', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Scope', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -251,7 +270,7 @@ if ($this->results)
 				<td>
 <?php //if ($this->escape($row->scope)) { ?>
 					<span class="scope">
-						<span><?php echo isset($list[$row->scope]) ? $row->scope . ' (' . $this->escape($row->caption) . ')' : '[ site ]'; /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
+						<span><?php echo isset($list[$row->scope]) ? $row->scope . ' (' . $this->escape($list[$row->scope][$row->scope_id]->caption) . ')' : '[ site ]'; /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
 					</span>
 <?php //} ?>
 				</td>

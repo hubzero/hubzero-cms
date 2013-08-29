@@ -83,6 +83,18 @@ class ForumControllerCategories extends Hubzero_Controller
 			'filter_order_Dir', 
 			'DESC'
 		));
+		$this->view->filters['scopeinfo']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.scopeinfo', 
+			'scopeinfo', 
+			''
+		));
+		if (strstr($this->view->filters['scopeinfo'], ':'))
+		{
+			$bits = explode(':', $this->view->filters['scopeinfo']);
+			$this->view->filters['scope'] = $bits[0];
+			$this->view->filters['scope_id'] = intval(end($bits));
+		}
+
 		$this->view->filters['admin'] = true;
 
 		// Load the current section
@@ -98,17 +110,27 @@ class ForumControllerCategories extends Hubzero_Controller
 		}
 
 		// Set the group ID from the secton, if a section is selected
-		if ($this->view->filters['section_id'] && $this->view->section->id)
+		/*if ($this->view->filters['section_id'] && $this->view->section->id)
 		{
 			$this->view->filters['scope'] = $this->view->section->scope;
 			$this->view->filters['scope_id'] = $this->view->section->scope_id;
-		}
+		}*/
 
 		// Get the sections for this group
 		$this->view->sections = array();
 
-		$sections = $this->view->section->getRecords();
-		if ($sections)
+		if ($this->view->filters['scopeinfo'])
+		{
+			$this->view->sections = $this->view->section->getRecords(array(
+				'scope' => $this->view->filters['scope'],
+				'scope_id' => $this->view->filters['scope_id'],
+				'sort' => 'title',
+				'sort_Dir' => 'ASC'
+			));
+		}
+
+		
+		/*if ($sections)
 		{
 			ximport('Hubzero_Group');
 			ximport('Hubzero_View_Helper_Html');
@@ -156,7 +178,7 @@ class ForumControllerCategories extends Hubzero_Controller
 
 			$this->view->sections[] = $default;
 		}
-		asort($this->view->sections);
+		asort($this->view->sections);*/
 
 		$model = new ForumCategory($this->database);
 

@@ -62,39 +62,117 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
+		<label for="scopeinfo"><?php echo JText::_('Scope:'); ?></label> 
+		<select name="scopeinfo" id="scopeinfo" style="max-width: 20em;" onchange="document.adminForm.submit();">
+			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('Select...'); ?></option>
+			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ None ]'); ?></option>
+			<?php
+			$html = '';
+			//if ($this->results) 
+			//{
+				ximport('Hubzero_Group');
+				ximport('Hubzero_View_Helper_Html');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+
+				$list = array(
+					'group'  => array(),
+					'course' => array()
+				);
+
+				$database = JFactory::getDBO();
+
+				$database->setQuery("
+					SELECT s.scope, s.scope_id, 
+						CASE 
+							WHEN scope='course' THEN c.alias
+							WHEN scope='group' THEN g.cn
+							ELSE s.scope
+						END AS caption
+					FROM #__forum_sections AS s
+					LEFT JOIN #__xgroups AS g ON g.gidNumber=s.scope_id AND s.scope='group' 
+					LEFT JOIN #__courses_offerings AS c ON c.id=s.scope_id AND s.scope='course'
+				");
+				$results = $database->loadObjectList();
+
+				foreach ($results as $result)
+				{
+					if ($result->scope == 'site')
+					{
+						continue;
+					}
+					switch ($result->scope)
+					{
+						case 'group':
+							$result->caption = $result->caption ? $result->caption : $result->scope . ' (' . $result->scope_id . ')';
+						break;
+						case 'course':
+							$offering = CoursesModelOffering::getInstance($result->scope_id);
+							$course = CoursesModelCourse::getInstance($offering->get('course_id'));
+							$result->caption = Hubzero_View_Helper_Html::shortenText($course->get('alias'), 50, 0) . ': ' . Hubzero_View_Helper_Html::shortenText($offering->get('alias'), 50, 0);
+						break;
+						default:
+							$result->caption = $result->scope . ($result->scope_id ? ' (' . $this->escape(stripslashes($result->scope_id)) . ')' : '');
+						break;
+					}
+					$list[$result->scope][$result->scope_id] = $result;
+				}
+
+				foreach ($list as $label => $optgroup)
+				{
+					$html .= ' <optgroup label="' . $label . '">';
+					foreach ($optgroup as $result)
+					{
+						$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
+						if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id) 
+						{
+							$html .= ' selected="selected"';
+						}
+						$html .= '>' . $this->escape(stripslashes($result->caption));
+						$html .= '</option>'."\n";
+					}
+					$html .= '</optgroup>'."\n";
+				}
+			//}
+			echo $html;
+			?>
+		</select>
+
+<?php if ($this->filters['scopeinfo']) { ?>
 		<label for="field-section_id"><?php echo JText::_('Section:'); ?></label> 
 		<select name="section_id" id="field-section_id" onchange="document.adminForm.submit( );">
 			<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_SECTION_SELECT'); ?></option>
-<?php
-	$list = array();
+	<?php
+	/*$list = array();
 	foreach ($this->sections as $scope => $sections)
 	{
-		//if ($sections) 
-		//{
-?>
+		if ($scope == $this->filters['scope'])
+		{
+	?>
 			<optgroup label="<?php echo $this->escape(stripslashes($scope)); ?>">
-<?php
-			foreach ($sections as $section)
+			<?php*/
+			foreach ($this->sections as $section)
 			{
-?>
-			<option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
-<?php
-				if (!isset($list[$section->scope]))
+				?>
+				<option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+				<?php
+				/*if (!isset($list[$section->scope]))
 				{
 					$list[$section->scope] = array();
 				}
 				if (!isset($list[$section->scope][$section->scope_id]))
 				{
 					$list[$section->scope][$section->scope_id] = $scope;
-				}
+				}*/
 			}
-?>
+			/*
+			?>
 			</optgroup>
-<?php
-		//}
-	}
-?>
+	<?php
+		}
+	}*/
+	?>
 		</select>
+<?php } ?>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -213,7 +291,7 @@ if ($this->results)
 				<td>
 <?php //if ($this->escape($row->group_alias)) { ?>
 					<span class="scope">
-						<span><?php echo $this->escape($list[$row->scope][$row->scope_id]); /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
+						<span><?php echo isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope) . ' (' . $this->escape($row->scope_id) . ')'; ?></span>
 					</span>
 <?php //} ?>
 				</td>
