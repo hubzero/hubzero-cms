@@ -1741,7 +1741,7 @@
 		color: #000;
 		text-decoration: none;
 	}
-	.toolbar-box li.divider,
+	.toolbar-box li.spacer,
 	.toolbar-box table td.spacer {
 		width: 22px;
 		border: 1px solid #fff;
