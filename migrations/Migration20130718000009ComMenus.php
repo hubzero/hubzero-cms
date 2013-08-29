@@ -508,16 +508,15 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 			$db->query();
 		}
 
-		// @FIXME: this index effectively prevents one from having two menu items with the same alias, even in different menus?
-		/*if (!$db->tableHasKey('#__menu', 'idx_client_id_parent_id_alias_language')
+		if (!$db->tableHasKey('#__menu', 'idx_client_id_parent_id_alias_language')
 				&& $db->tableHasField('#__menu', 'client_id')
 				&& $db->tableHasField('#__menu', 'parent_id')
 				&& $db->tableHasField('#__menu', 'alias')
 				&& $db->tableHasField('#__menu', 'language'))
 		{
-			$query = "ALTER TABLE `#__menu` ADD UNIQUE INDEX `idx_client_id_parent_id_alias_language` (`client_id` ASC, `parent_id` ASC, `alias` ASC, `language` ASC);";
+			$query = "ALTER TABLE `#__menu` ADD INDEX `idx_client_id_parent_id_alias_language` (`client_id` ASC, `parent_id` ASC, `alias` ASC, `language` ASC);";
 			$db->setQuery($query);
 			$db->query();
-		}*/
+		}
 	}
 }
