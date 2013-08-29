@@ -722,13 +722,14 @@ class Hubzero_Migration
 	/**
 	 * Add, as needed, the component to the appropriate table, depending on the Joomla version
 	 *
-	 * @param $name    - (string) component name
-	 * @param $option  - (string) com_xyz
-	 * @param $enabled - (int)    whether or not the component should be enabled
-	 * @param $params  - (string) component params (if already known)
+	 * @param $name           - (string) component name
+	 * @param $option         - (string) com_xyz
+	 * @param $enabled        - (int)    whether or not the component should be enabled
+	 * @param $params         - (string) component params (if already known)
+	 * @param $createMenuItem - (bool)   create an admin menu item for this component
 	 * @return bool
 	 **/
-	public static function addComponentEntry($name, $option=NULL, $enabled=1, $params='')
+	public static function addComponentEntry($name, $option=NULL, $enabled=1, $params='', $createMenuItem=true)
 	{
 		$db = self::$db;
 
@@ -778,20 +779,60 @@ class Hubzero_Migration
 			$db->setQuery($query);
 			if ($db->loadResult())
 			{
-				return true;
+				$component_id = $db->loadResult();
 			}
-
-			$ordering = 0;
-
-			if (!empty($params) && is_array($params))
+			else
 			{
-				$params = json_encode($params);
+				$ordering = 0;
+
+				if (!empty($params) && is_array($params))
+				{
+					$params = json_encode($params);
+				}
+
+				$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
+				$query .= " VALUES ('{$name}', 'component', '{$option}', '', 1, {$enabled}, 1, 0, '', ".$db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
+				$db->setQuery($query);
+				$db->query();
+				$component_id = $db->insertId();
 			}
 
-			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-			$query .= " VALUES ('{$name}', 'component', '{$option}', '', 1, {$enabled}, 1, 0, '', ".$db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
-			$db->setQuery($query);
-			$db->query();
+			if ($createMenuItem)
+			{
+				// Check for an admin menu entry...if it's not there, create it
+				$query = "SELECT `id` FROM `#__menu` WHERE `menutype` = 'main' AND `title` = " . $db->quote($option);
+				$db->setQuery($query);
+				if ($db->loadResult())
+				{
+					return true;
+				}
+
+				$alias = substr($option, 4);
+
+				$query = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)";
+				$query .= " VALUES ('main', '{$option}', '{$alias}', '', '{$alias}', 'index.php?option={$option}', 'component', {$enabled}, 1, 1, {$component_id}, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 0, 0, '*', 1)";
+				$db->setQuery($query);
+				$db->query();
+
+				// If we have the nested set class available, use it to rebuild lft/rgt
+				if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
+				{
+					// Use the MySQL driver for this
+					$config = JFactory::getConfig();
+					$database = JDatabase::getInstance(
+						array(
+							'driver'   => 'mysql',
+							'host'     => $config->getValue('host'),
+							'user'     => $config->getValue('user'),
+							'password' => $config->getValue('password'),
+							'database' => $config->getValue('db')
+						) 
+					);
+
+					$table = new JTableMenu($database);
+					$table->rebuild();
+				}
+			}
 		}
 	}
 
@@ -898,6 +939,30 @@ class Hubzero_Migration
 			$query = "DELETE FROM `#__extensions` WHERE `name` = " . $db->quote($name);
 			$db->setQuery($query);
 			$db->query();
+
+			// Check for an admin menu entry...if it's not there, create it
+			$query = "DELETE FROM `#__menu` WHERE `menutype` = 'main' AND `title` = " . $db->quote($name);
+			$db->setQuery($query);
+			$db->query();
+
+			// If we have the nested set class available, use it to rebuild lft/rgt
+			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
+			{
+				// Use the MySQL driver for this
+				$config = JFactory::getConfig();
+				$database = JDatabase::getInstance(
+					array(
+						'driver'   => 'mysql',
+						'host'     => $config->getValue('host'),
+						'user'     => $config->getValue('user'),
+						'password' => $config->getValue('password'),
+						'database' => $config->getValue('db')
+					) 
+				);
+
+				$table = new JTableMenu($database);
+				$table->rebuild();
+			}
 		}
 	}
 
