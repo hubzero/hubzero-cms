@@ -19,7 +19,7 @@ $canEdit	= $this->item->params->get('access-edit');
 $user		= JFactory::getUser();
 
 ?>
-<div class="contentpaneopen item-page<?php echo $this->pageclass_sfx?>">
+
 <?php if ($this->params->get('show_page_heading')) : ?>
 	<h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -31,7 +31,7 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
  echo $this->item->pagination;
 }
  ?>
-
+<div class="contentpane item-page<?php echo $this->pageclass_sfx?>">
 <?php if ($params->get('show_title')) : ?>
 	<div class="content-header">
 		<h2>
@@ -79,7 +79,7 @@ if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item-
 endif; ?>
 
 <?php echo $this->item->event->beforeDisplayContent; ?>
-	<div class="contentpane">
+	<div class="contentpaneopen">
 <?php $useDefList = (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_parent_category'))
 	or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date'))
 	or ($params->get('show_hits'))); ?>
