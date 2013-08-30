@@ -72,12 +72,46 @@ class CoursesControllerForm extends Hubzero_Controller {
 			);
 		}
 
-		$pathway->addItem(
-			JText::_('Forms'),
-			'index.php?option=' . $this->_option . '&controller=form'
-		);
+		$dbh = JFactory::getDBO();
 
-		if($this->_task != 'index')
+		// First, check for a form id
+		if ($fid = JRequest::getInt('formId', false))
+		{
+			$dbh->setQuery(
+				'SELECT ca.course_id
+				FROM `#__courses_assets` AS ca
+				LEFT JOIN `#__courses_forms` AS cf ON cf.asset_id = ca.id
+				WHERE cf.id = ' . $dbh->Quote($fid)
+			);
+
+			if($result = $dbh->loadResult())
+			{
+				// Get course model
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+				$course = CoursesModelCourse::getInstance((int) $result);
+			}
+		}
+		elseif ($crumb = JRequest::getVar('crumb', false))
+		{
+			$dbh->setQuery('SELECT course_id FROM `#__courses_assets` WHERE SUBSTRING(url, 30, 50) = ' . $dbh->Quote($crumb));
+
+			if($result = $dbh->loadResult())
+			{
+				// Get course model
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+				$course = CoursesModelCourse::getInstance((int) $result);
+			}
+		}
+
+		if (isset($course) && is_object($course))
+		{
+			$pathway->addItem(
+				JText::_($course->get('title')),
+				'index.php?option=' . $this->_option . '&controller=courses&gid=' . $course->get('alias')
+			);
+		}
+
+		if ($this->_task != 'index')
 		{
 			$pathway->addItem(
 				JText::_(ucfirst($this->_task)),
