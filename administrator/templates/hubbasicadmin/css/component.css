@@ -528,8 +528,13 @@
 	div.current {
 		clear: both;
 		border: 1px solid #ccc;
+		border-bottom: none;
 		padding: 10px 10px;
 		background: #fefefe url("../images/layout/noise.png");
+	}
+	div.current + div.current {
+		border-top: none;
+		border-bottom: 1px solid #ccc;
 	}
 
 	div.current dd {
@@ -545,7 +550,7 @@
 		list-style: none;
 	}
 	div.current li {
-		padding: 0.2em 0 0.4em 0;
+		padding: 0.4em 0 0.4em 0;
 		border-bottom: 1px solid #eee;
 	}
 	div.current li:after {
@@ -560,13 +565,37 @@
 	div.current li:last-child {
 		border: none;
 	}
+	div.current label {
+		font-weight: bold;
+	}
 	div.current label,
 	div.current span.faux-label {
 		display: block;
-		min-width: 150px;
-		width: 11em;
+		min-width: 5%;
+		width: 20em;
+		max-width: 50%;
 		float: left;
 		clear: left;
+	}
+	div.current label + textarea,
+	div.current span.faux-label + textarea,
+	div.current label + input,
+	div.current span.faux-label + input,
+	div.current label + fieldset,
+	div.current span.faux-label + fieldset {
+		width: 50%;
+	}
+	div.current fieldset input, 
+	div.current fieldset label + input,
+	div.current fieldset label {
+		min-width: 1em;
+		width: auto;
+	}
+	div.current fieldset label {
+		font-weight: normal;
+	}
+	div.current textarea {
+		min-height: 150px;
 	}
 
 	div.current fieldset {
