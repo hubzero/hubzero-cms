@@ -1540,7 +1540,11 @@ class ResourcesHtml
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
 		$html  = '<p>' . JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
+		$html .= '<ul class="citations results">' . "\n";
+		$html .= "\t" . '<li>' . "\n";
 		$html .= $citations;
+		$html .= "\t" . '</li>' . "\n";
+		$html .= '</ul>' . "\n";
 		if ($cite) 
 		{
 			$html .= '<ul class="citations results">' . "\n";
@@ -1555,7 +1559,9 @@ class ResourcesHtml
 			}
 			$html .= "\t" . '</li>' . "\n";
 			$html .= '</ul>' . "\n";
+			
 		}
+		
 		/*if ($type == 7) 
 		{
 			$html .= '<p>'.JText::_('In addition, we would appreciate it if you would add the following acknowledgment to your publication:').'</p>' . "\n";

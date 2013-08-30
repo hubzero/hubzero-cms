@@ -38,6 +38,10 @@
 		padding: 0 1em;
 		margin: 0;
 		list-style: none;
+		text-indent: -1em;
+	}
+	.resource .citations + .citations {
+		margin-top: 1em;
 	}
 	.resource .citations li {
 		border: none;
