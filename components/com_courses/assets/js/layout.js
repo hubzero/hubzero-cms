@@ -32,6 +32,14 @@ jQuery(function($) {
 		handle: ".group-marker-header"
 	});
 
+	var preventNewBox = false;
+	pages.on('mousedown', '.group-marker-header', function ( e ) {
+		preventNewBox = true;
+	});
+	pages.on('mouseup', '.group-marker-header', function ( e ) {
+		preventNewBox = false;
+	});
+
 	// pagination
 	tabs.click(function(evt) {
 		pages.hide();
@@ -52,7 +60,7 @@ jQuery(function($) {
 	var groupBox = null, groupOrigin = {}, x, y;
 	// start drawing the box, and save one of its corners
 	pages.bind('dragstart', function(evt) {
-		if ($(evt.srcElement)[0].className != 'group-marker-header') {
+		if (!preventNewBox) {
 			groupOrigin.x = x;
 			groupOrigin.y = y;
 			groupBox = $('<div id="group-box"></div>');
