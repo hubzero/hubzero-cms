@@ -2,10 +2,10 @@
 # @package      hubzero-cms
 # @file         installation/sql/mysql/hubzero.sql
 # @author       Nicholas J. Kisseberth <nkissebe@purdue.edu>
-# @copyright    Copyright (c) 2010-2012 Purdue University. All rights reserved.
+# @copyright    Copyright (c) 2010-2013 Purdue University. All rights reserved.
 # @license      http://www.gnu.org/licenses/gpl2.html GPLv2
 #
-# Copyright (c) 2010-2012 Purdue University
+# Copyright (c) 2010-2013 Purdue University
 # All rights reserved.
 #
 # This file is free software: you can redistribute it and/or modify it
@@ -25,7 +25,7 @@
 #
 
 #
-# Last Migration Applied: Migration20130816143341ComCitations.php
+# Last Migration Applied: Migration20130829211856ComPublications.php
 #
 
 CREATE TABLE `app` (
@@ -797,6 +797,7 @@ CREATE TABLE `#__courses_form_deployments` (
   `crumb` varchar(20) NOT NULL,
   `results_closed` varchar(50) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
+  `allowed_attempts` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -829,6 +830,7 @@ CREATE TABLE `#__courses_form_respondents` (
   `user_id` int(11) NOT NULL,
   `started` timestamp NULL DEFAULT NULL,
   `finished` timestamp NULL DEFAULT NULL,
+  `attempts` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1721,6 +1723,30 @@ CREATE TABLE `#__media_tracking` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__media_tracking_detailed` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `session_id` varchar(200) DEFAULT NULL,
+  `ip_address` varchar(100) DEFAULT NULL,
+  `object_id` int(11) DEFAULT NULL,
+  `object_type` varchar(100) DEFAULT NULL,
+  `object_duration` int(11) DEFAULT NULL,
+  `current_position` int(11) DEFAULT NULL,
+  `farthest_position` int(11) DEFAULT NULL,
+  `current_position_timestamp` datetime DEFAULT NULL,
+  `farthest_position_timestamp` datetime DEFAULT NULL,
+  `completed` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__metrics_author_cluster` (
+  `authorid` varchar(60) NOT NULL DEFAULT '0',
+  `classes` int(11) DEFAULT '0',
+  `users` int(11) DEFAULT '0',
+  `schools` int(11) DEFAULT '0',
+  PRIMARY KEY (`authorid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `#__metrics_ipgeo_cache` (
   `ip` int(10) NOT NULL DEFAULT '0000000000',
   `countrySHORT` char(2) NOT NULL DEFAULT '',
@@ -2097,6 +2123,22 @@ CREATE TABLE `#__project_database_versions` (
   PRIMARY KEY (`id`,`database_name`,`version`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__project_logs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `projectid` int(11) unsigned NOT NULL DEFAULT '0',
+  `userid` int(11) NOT NULL DEFAULT '0',
+  `ajax` tinyint(1) DEFAULT '0',
+  `owner` int(11) unsigned DEFAULT '0',
+  `ip` varchar(15) DEFAULT '0',
+  `section` varchar(100) DEFAULT 'general',
+  `layout` varchar(100) DEFAULT '',
+  `action` varchar(100) DEFAULT '',
+  `time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `request_uri` tinytext,
+  PRIMARY KEY (`id`),
+  KEY `idx_projectid` (`projectid`)
+) ENGINE=MyISAM DEFAULT CHARSET=UTF8;
+
 CREATE TABLE `#__project_microblog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `blogentry` varchar(255) DEFAULT NULL,
@@ -2127,6 +2169,60 @@ CREATE TABLE `#__project_owners` (
   `role` int(11) NOT NULL DEFAULT '0',
   `native` int(11) NOT NULL DEFAULT '0',
   `params` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__project_public_stamps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stamp` varchar(30) NOT NULL DEFAULT '0',
+  `projectid` int(11) NOT NULL DEFAULT '0',
+  `listed` tinyint(1) NOT NULL DEFAULT '0',
+  `type` varchar(50) NOT NULL DEFAULT 'files',
+  `reference` text NOT NULL,
+  `expires` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_stamp` (`stamp`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `#__project_remote_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectid` int(11) NOT NULL DEFAULT '0',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_by` int(11) DEFAULT '0',
+  `paired` int(11) DEFAULT '0',
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `synced` datetime DEFAULT NULL,
+  `local_path` varchar(255) NOT NULL,
+  `original_path` varchar(255) NOT NULL,
+  `original_format` varchar(200) NOT NULL,
+  `local_dirpath` varchar(255) NOT NULL DEFAULT '',
+  `local_format` varchar(200) DEFAULT NULL,
+  `local_md5` varchar(32) DEFAULT NULL,
+  `service` varchar(50) NOT NULL,
+  `type` varchar(25) NOT NULL DEFAULT 'file',
+  `remote_editing` tinyint(1) NOT NULL DEFAULT '0',
+  `remote_id` varchar(100) NOT NULL,
+  `original_id` varchar(100) NOT NULL,
+  `remote_parent` varchar(100) DEFAULT NULL,
+  `remote_title` varchar(140) DEFAULT NULL,
+  `remote_md5` varchar(32) DEFAULT NULL,
+  `remote_format` varchar(200) DEFAULT NULL,
+  `remote_author` varchar(100) DEFAULT NULL,
+  `remote_modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__project_stats` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `month` int(2) DEFAULT NULL,
+  `year` int(2) DEFAULT NULL,
+  `week` int(2) DEFAULT NULL,
+  `processed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `stats` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -2180,6 +2276,219 @@ CREATE TABLE `#__projects` (
   `admin_notes` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_alias` (`alias`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` int(11) NOT NULL DEFAULT '0',
+  `master_type` int(11) NOT NULL DEFAULT '1',
+  `project_id` int(11) NOT NULL DEFAULT '0',
+  `access` int(11) NOT NULL DEFAULT '0',
+  `checked_out` int(11) NOT NULL DEFAULT '0',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
+  `times_rated` int(11) NOT NULL DEFAULT '0',
+  `alias` varchar(100) NOT NULL DEFAULT '',
+  `ranking` float NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_access` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_version_id` int(11) NOT NULL DEFAULT '0',
+  `group_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_attachments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_version_id` int(11) NOT NULL DEFAULT '0',
+  `publication_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime DEFAULT NULL,
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_by` int(11) DEFAULT '0',
+  `object_id` int(11) DEFAULT '0',
+  `object_name` varchar(64) DEFAULT '0',
+  `object_instance` int(11) DEFAULT '0',
+  `object_revision` int(11) DEFAULT '0',
+  `role` tinyint(1) DEFAULT '0',
+  `path` varchar(255) NOT NULL,
+  `vcs_hash` varchar(255) DEFAULT NULL,
+  `vcs_revision` varchar(255) DEFAULT NULL,
+  `type` varchar(30) NOT NULL DEFAULT 'file',
+  `params` text,
+  `attribs` text,
+  `ordering` int(11) DEFAULT '0',
+  `content_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_audience` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_id` int(11) NOT NULL DEFAULT '0',
+  `publication_version_id` int(11) DEFAULT '0',
+  `level0` tinyint(2) NOT NULL DEFAULT '0',
+  `level1` tinyint(2) NOT NULL DEFAULT '0',
+  `level2` tinyint(2) NOT NULL DEFAULT '0',
+  `level3` tinyint(2) NOT NULL DEFAULT '0',
+  `level4` tinyint(2) NOT NULL DEFAULT '0',
+  `level5` tinyint(2) NOT NULL DEFAULT '0',
+  `comments` varchar(255) DEFAULT '',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_audience_levels` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(11) NOT NULL DEFAULT '0',
+  `title` varchar(100) DEFAULT '',
+  `description` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_authors` (
+  `publication_version_id` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `project_owner_id` int(11) NOT NULL DEFAULT '0',
+  `ordering` int(11) DEFAULT NULL,
+  `role` varchar(50) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `firstName` varchar(255) DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
+  `organization` varchar(255) DEFAULT NULL,
+  `credit` varchar(255) DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime DEFAULT NULL,
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_by` int(11) DEFAULT '0',
+  `status` tinyint(2) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL DEFAULT '',
+  `dc_type` varchar(200) NOT NULL DEFAULT 'Dataset',
+  `alias` varchar(200) NOT NULL DEFAULT '',
+  `url_alias` varchar(200) NOT NULL DEFAULT '',
+  `description` tinytext,
+  `contributable` int(2) DEFAULT '1',
+  `state` tinyint(1) DEFAULT '1',
+  `customFields` text,
+  `params` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_name` (`name`),
+  UNIQUE KEY `uidx_alias` (`alias`),
+  UNIQUE KEY `uidx_url_alias` (`url_alias`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_master_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(200) NOT NULL DEFAULT '',
+  `alias` varchar(200) NOT NULL DEFAULT '',
+  `description` tinytext,
+  `contributable` int(2) DEFAULT '0',
+  `supporting` int(2) DEFAULT '0',
+  `ordering` int(2) DEFAULT '0',
+  `params` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_alias` (`alias`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_ratings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_id` int(11) NOT NULL DEFAULT '0',
+  `publication_version_id` int(11) NOT NULL DEFAULT '0',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
+  `comment` text NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `anonymous` tinyint(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_screenshots` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `publication_version_id` int(11) NOT NULL DEFAULT '0',
+  `publication_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(127) DEFAULT '',
+  `ordering` int(11) DEFAULT '0',
+  `filename` varchar(100) NOT NULL,
+  `srcfile` varchar(100) NOT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `created_by` varchar(127) DEFAULT NULL,
+  `modified_by` varchar(127) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_stats` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `publication_id` bigint(20) NOT NULL,
+  `publication_version` tinyint(4) DEFAULT NULL,
+  `users` bigint(20) DEFAULT NULL,
+  `downloads` bigint(20) DEFAULT NULL,
+  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `period` tinyint(4) NOT NULL DEFAULT '-1',
+  `processed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_publication_id_datetime_period` (`publication_id`,`datetime`,`period`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_versions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_id` int(11) NOT NULL DEFAULT '0',
+  `main` int(1) NOT NULL DEFAULT '0',
+  `doi` varchar(255) DEFAULT '',
+  `ark` varchar(255) DEFAULT '',
+  `state` int(1) NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `abstract` text NOT NULL,
+  `metadata` text,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `published_up` datetime DEFAULT '0000-00-00 00:00:00',
+  `published_down` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT '0000-00-00 00:00:00',
+  `accepted` datetime DEFAULT '0000-00-00 00:00:00',
+  `submitted` datetime DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) DEFAULT '0',
+  `version_label` varchar(100) NOT NULL DEFAULT '1.0',
+  `secret` varchar(10) NOT NULL DEFAULT '',
+  `version_number` int(11) NOT NULL DEFAULT '0',
+  `params` text,
+  `release_notes` text,
+  `license_text` text,
+  `license_type` int(11) DEFAULT NULL,
+  `access` int(11) NOT NULL DEFAULT '0',
+  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
+  `times_rated` int(11) NOT NULL DEFAULT '0',
+  `ranking` float NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__publication_licenses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `text` text,
+  `title` varchar(100) DEFAULT NULL,
+  `url` varchar(250) DEFAULT NULL,
+  `info` text,
+  `ordering` int(11) DEFAULT NULL,
+  `active` int(11) NOT NULL DEFAULT '0',
+  `apps_only` int(11) NOT NULL DEFAULT '0',
+  `main` int(11) NOT NULL DEFAULT '0',
+  `agreement` int(11) DEFAULT '0',
+  `customizable` int(11) DEFAULT '0',
+  `icon` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__recent_tools` (
@@ -3848,9 +4157,9 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1015,'com_newsletter','component','com_newsletter','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1016,'com_oaipmh','component','com_oaipmh','',1,1,1,1,'{}','{}','','',0,'0000-00-00 00:00:00',0,0),
 (1017,'com_poll','component','com_poll','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
-(1018,'com_prj_dv','component','com_prj_dv','',1,1,1,1,'{}','{}','','',0,'0000-00-00 00:00:00',0,0),
-(1019,'com_projects','component','com_projects','',1,1,1,1,'{}','{}','','',0,'0000-00-00 00:00:00',0,0),
-(1020,'com_publications','component','com_publications','',1,1,1,1,'{}','{}','','',0,'0000-00-00 00:00:00',0,0),
+(1018,'com_dataviewer', 'component', 'com_dataviewer', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Dataviewer\",\"type\":\"component\",\"creationDate\":\"2013-08-07\",\"author\":\"Sudheera R. Fernando\",\"copyright\":\"Copyright 2010-2012,2013 by Purdue University, West Lafayette, IN 47906\",\"authorEmail\":\"srf@xconsole.org\",\"authorUrl\":\"\",\"version\":\"2.0.2\",\"description\":\"Dataviewer for HUB Databases\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1019,'com_projects','component','com_projects','',1,1,1,1,'{}','component_on=0\ngrantinfo=0\nconfirm_step=0\nedit_settings=1\nrestricted_data=0\nrestricted_upfront=0\napprove_restricted=0\nprivacylink=/legal/privacy\nHIPAAlink=/legal/privacy\nFERPAlink=/legal/privacy\ncreatorgroup=\nadmingroup=projectsadmin\nsdata_group=hipaa_reviewers\nginfo_group=sps_reviewers\nmin_name_length=6\nmax_name_length=25\nreserved_names=clone, temp, test\nwebpath=/srv/projects\noffroot=1\ngitpath=/usr/bin/git\ngitclone=/site/projects/clone/.git\nmaxUpload=104857600\ndefaultQuota=1\npremiumQuota=1\napproachingQuota=90\npubQuota=1\npremiumPubQuota=1\nimagepath=/site/projects\ndefaultpic=/components/com_projects/assets/img/project.png\nimg_maxAllowed=5242880\nimg_file_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif\nlogging=0\nmessaging=1\nprivacy=1\nlimit=25\nsidebox_limit=3\ngroup_prefix=pr-\nuse_alias=1\ndocumentation=/projects/features\ndbcheck=1','','',0,'0000-00-00 00:00:00',0,0),
+(1020,'com_publications','component','com_publications','',1,1,1,1,'{}','enabled=1\nautoapprove=1\nautoapproved_users=\nemail=0\ndefault_category=dataset\ndefaultpic=/components/com_publications/assets/img/resource_thumb.gif\ntoolpic=/components/com_publications/assets/img/tool_thumb.gif\nvideo_thumb=/components/com_publications/images/video_thumb.gif\ngallery_thumb=/components/com_publications/images/gallery_thumb.gif\nwebpath=/site/publications\naboutdoi=\ndoi_shoulder=\ndoi_prefix=\ndoi_service=\ndoi_userpw=\ndoi_xmlschema=\ndoi_publisher=\ndoi_resolve=http://dx.doi.org/\ndoi_verify=http://n2t.net/ezid/id/\nsupportedtag=\nsupportedlink=\ngoogle_id=\nshow_authors=1\nshow_ranking=1\nshow_rating=1\nshow_date=3\nshow_citation=1\npanels=content, description, authors, audience, gallery, tags, access, license, notes\nsuggest_licence=0\nshow_tags=1\nshow_metadata=1\nshow_notes=1\nshow_license=1\nshow_access=0\nshow_gallery=1\nshow_audience=0\naudiencelink=\ndocumentation=/kb/publications\ndeposit_terms=/legal/termsofdeposit\ndbcheck=0\nrepository=0\naip_path=/srv/AIP','','',0,'0000-00-00 00:00:00',0,0),
 (1021,'com_register','component','com_register','',1,1,1,0,'','{\"LoginReturn\":\"\\/members\\/myaccount\",\"ConfirmationReturn\":\"\\/members\\/myaccount\",\"passwordMeter\":\"0\",\"registrationUsername\":\"RRUU\",\"registrationPassword\":\"RRUU\",\"registrationConfirmPassword\":\"RRUU\",\"registrationFullname\":\"RRUU\",\"registrationEmail\":\"RRUU\",\"registrationConfirmEmail\":\"RRUU\",\"registrationURL\":\"HOHO\",\"registrationPhone\":\"HOHO\",\"registrationEmployment\":\"HOHO\",\"registrationOrganization\":\"HOHO\",\"registrationCitizenship\":\"RHHR\",\"registrationResidency\":\"RHHR\",\"registrationSex\":\"HHHH\",\"registrationDisability\":\"HHHH\",\"registrationHispanic\":\"HHHH\",\"registrationRace\":\"RHHR\",\"registrationInterests\":\"HOHO\",\"registrationReason\":\"HOHO\",\"registrationOptIn\":\"HOHO\",\"registrationCAPTCHA\":\"HHHH\",\"registrationTOU\":\"RHRH\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1022,'com_resources','component','com_resources','',1,1,1,0,'','{\"autoapprove\":\"0\",\"autoapproved_users\":\"\",\"cc_license\":\"1\",\"email_when_approved\":\"0\",\"defaultpic\":\"\\/components\\/com_resources\\/images\\/resource_thumb.gif\",\"tagstool\":\"screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications\",\"tagsothr\":\"bio,credits,citations,sponsoredby,references,publications\",\"accesses\":\"Public,Registered,Special,Protected,Private\",\"webpath\":\"\\/site\\/resources\",\"toolpath\":\"\\/site\\/resources\\/tools\",\"uploadpath\":\"\\/site\\/resources\",\"maxAllowed\":\"40000000\",\"file_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\",\"doi\":\"\",\"aboutdoi\":\"\",\"supportedtag\":\"\",\"supportedlink\":\"\",\"browsetags\":\"on\",\"google_id\":\"\",\"show_authors\":\"1\",\"show_assocs\":\"1\",\"show_ranking\":\"0\",\"show_rating\":\"1\",\"show_date\":\"3\",\"show_metadata\":\"1\",\"show_citation\":\"1\",\"show_audience\":\"0\",\"audiencelink\":\"\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1023,'com_services','component','com_services','',1,1,1,0,'','{\"autoapprove\":\"1\"}','','',0,'0000-00-00 00:00:00',0,0),
@@ -3864,7 +4173,10 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1031,'com_whatsnew','component','com_whatsnew','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1032,'com_wiki','component','com_wiki','',1,1,1,0,'','{\"subpage_separator\":\"\\/\",\"homepage\":\"MainPage\",\"max_pagename_length\":\"100\",\"filepath\":\"\\/site\\/wiki\",\"mathpath\":\"\\/site\\/wiki\\/math\",\"tmppath\":\"\\/site\\/wiki\\/tmp\",\"maxAllowed\":\"40000000\",\"img_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif\",\"file_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\",\"cache\":\"0\",\"cache_time\":\"15\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1033,'com_wishlist','component','com_wishlist','',1,1,1,0,'','{\"categories\":\"general, resource, group, user\",\"group\":\"hubdev\",\"banking\":\"0\",\"allow_advisory\":\"0\",\"votesplit\":\"0\",\"webpath\":\"\\/site\\/wishlist\",\"show_percentage_granted\":\"0\"}','','',0,'0000-00-00 00:00:00',0,0),
-(1034,'com_ysearch','component','com_ysearch','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0);
+(1034,'com_ysearch','component','com_ysearch','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
+(1035, 'com_cart', 'component', 'com_cart', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Cart\",\"type\":\"component\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Configure cart\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1036, 'com_storefront', 'component', 'com_storefornt', '', '1', '1', '1', '0', '', '', '', '', '0', '0000-00-00 00:00:00', '0', '0');
+
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (1400,'Authentication - Facebook','plugin','facebook','authentication',0,0,1,0,'','app_id=\napp_secret=\n','','',0,'0000-00-00 00:00:00',2,0),
@@ -3933,7 +4245,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1464,'Members - Resume','plugin','resume','members',0,1,1,0,'','limit=50','','',0,'0000-00-00 00:00:00',11,0),
 (1465,'Members - Usage','plugin','usage','members',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',8,0),
 (1466,'Projects - Blog','plugin','blog','projects',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
-(1467,'Projects - Files','plugin','files','projects',0,1,1,0,'','display_limit=50\nmaxUpload=104857600\nmaxDownload=1048576\ntempPath=/site/projects/temp\n\n','','',0,'0000-00-00 00:00:00',3,0),
+(1467,'Projects - Files','plugin','files','projects',0,1,1,0,'','maxUpload=104857600\nmaxDownload=1048576\nreservedNames=google , dropbox, shared, temp\nconnectedProjects=\nenable_google=0\ngoogle_clientId=\ngoogle_clientSecret=\ngoogle_appKey=\ngoogle_folder=Google\nsync_lock=0\nauto_sync=1\nlatex=1\ntexpath=/usr/bin/\ngspath=/usr/bin/','','',0,'0000-00-00 00:00:00',3,0),
 (1468,'Projects - Notes','plugin','notes','projects',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
 (1469,'Projects - Publications','plugin','publications','projects',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',6,0),
 (1470,'Projects - Team','plugin','team','projects',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
@@ -4014,13 +4326,120 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1545,'YSearch - Topics','plugin','wiki','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1546,'YSearch - Increase weight of items with contributors matching terms','plugin','weightcontributor','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1547,'YSearch - Increase relevance for tool results','plugin','weighttools','ysearch',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
-(1548,'YSearch - Wishlists','plugin','wishlists','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0);
+(1548,'YSearch - Wishlists','plugin','wishlists','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
+(1549, 'collect', 'plugin', 'collect', 'content', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Content - Collect\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a link allowing a resource to be favorited\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1550, 'collect', 'plugin', 'collect', 'resources', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Resource - Collect\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a link allowing a resource to be favorited\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1551, 'collect', 'plugin', 'collect', 'wiki', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Wiki - Collect\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a link allowing a wiki page to be favorited\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1552, 'calendar', 'plugin', 'calendar', 'courses', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Courses - Calendar\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Christopher Smoak\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays a Course Calendar\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1553, 'forum', 'plugin', 'forum', 'courses', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Courses - Forum\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display and manage a forum for a specific course\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1554, 'forum', 'plugin', 'forum', 'support', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Support - Forum Abuse reports\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Various functions for the Report Abuse Component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1555, 'memberoptions', 'plugin', 'memberoptions', 'courses', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Courses - Member options\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2012 by Purdue Research Foundation, West Lafayette, IN 47906\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a course\'s member options\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1556, 'members', 'plugin', 'members', 'courses', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Courses - Members\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a course\'s members\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1557, 'messages', 'plugin', 'messages', 'courses', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Courses - Messages\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Chris Smoak\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a course\'s messages\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1558, 'users', 'plugin', 'users', 'cron', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Cron - Users\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Cron events for users\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1559, 'collections', 'plugin', 'collections', 'groups', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Groups - Collections\",\"type\":\"plugin\",\"creationDate\":\"December 2012\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5\",\"description\":\"Display collections\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1560, 'collections', 'plugin', 'collections', 'members', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Members - Collections\",\"type\":\"plugin\",\"creationDate\":\"December 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"support@hubzero.org\",\"authorUrl\":\"\",\"version\":\"1.5\",\"description\":\"Display collections\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1561, 'databases', 'plugin', 'databases', 'projects', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Projects - Databases\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sudheera R. Fernando\",\"copyright\":\"Copyright (C) 2013 by Purdue Research Foundation, West Lafayette, IN 47906.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Databases for Projects environment\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1562, 'citations', 'plugin', 'citations', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Citations\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays citations for a publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1563, 'favorite', 'plugin', 'favorite', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Favorite\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays a link allowing to add publications as favorites\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1564, 'questions', 'plugin', 'questions', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Questions\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays questions related to a publication (by tag)\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1565, 'recommendations', 'plugin', 'recommendations', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Recommendations\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays recommendations for a publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1566, 'related', 'plugin', 'related', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Related\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays related publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1567, 'reviews', 'plugin', 'reviews', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Reviews\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays reviews for a publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1568, 'share', 'plugin', 'share', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Share\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display options to post publication link on Facebbok, Twitter etc.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1569, 'supportingdocs', 'plugin', 'supportingdocs', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - supportingdocs\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays supporting docs for a publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1570, 'usage', 'plugin', 'usage', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Usage\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays usage info for a publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1571, 'versions', 'plugin', 'versions', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - versions\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays all versions of a publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1572, 'wishlist', 'plugin', 'wishlist', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Wishlist\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays publication wishlist\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1573, 'groups', 'plugin', 'groups', 'resources', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Resource - Group\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display group ownership for a resource\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1574, 'indent', 'plugin', 'indent', 'system', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"System - Indent\",\"type\":\"plugin\",\"creationDate\":\"March 2012\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5\",\"description\":\"Indent HTML correctly\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1575, 'mobile', 'plugin', 'mobile', 'system', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"System - Mobile\",\"type\":\"plugin\",\"creationDate\":\"December 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright (c) Purdue University, 2013. All rights reserved\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"1\",\"description\":\"PLG_SYSTEM_MOBILE_DESC\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1576, 'ajax', 'plugin', 'ajax', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Ajax\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Perform ajax requests for the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1577, 'hubs', 'plugin', 'hubs', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Hubs\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage hubs in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1578, 'overview', 'plugin', 'overview', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Overview\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Overview tab for time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1579, 'records', 'plugin', 'records', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Records\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage records in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1580, 'reports', 'plugin', 'reports', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Reports\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage reports in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1581, 'tasks', 'plugin', 'tasks', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Tasks\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage hubs in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0');
+
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
-(1549, 'hubbasic', 'template', 'hubbasic', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(1550, 'hubbasic2012', 'template', 'hubbasic2012', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(1551, 'hubbasic2013', 'template', 'hubbasic2013', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(1552, 'hubbasicadmin', 'template', 'hubbasicadmin', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(1700, 'hubbasic', 'template', 'hubbasic', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1701, 'hubbasic2012', 'template', 'hubbasic2012', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1702, 'hubbasic2013', 'template', 'hubbasic2013', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1703, 'hubbasicadmin', 'template', 'hubbasicadmin', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+
+
+INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
+(1200, 'mod_announcements', 'module', 'mod_announcements', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Announcements Display\",\"type\":\"module\",\"creationDate\":\"May 2010\",\"author\":\"HUBzero\",\"copyright\":\"\",\"authorEmail\":\"alisa@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.0.0\",\"description\":\"This module allows the display of announcements\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1201, 'mod_application_env', 'module', 'mod_application_env', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Application Environment\",\"type\":\"module\",\"creationDate\":\"April 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"This module displays the current application environment (production, stage, testing, development)\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1202, 'mod_billboards', 'module', 'mod_billboards', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Billboards\",\"type\":\"module\",\"creationDate\":\"November 2011\",\"author\":\"HUBzero\",\"copyright\":\"\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"1.0\",\"description\":\"Rotate through billboards of content\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1203, 'mod_events_cal', 'module', 'mod_events_cal', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Events Calendar\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays a calendar with days that have events linked. Requires events component.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1204, 'mod_events_latest', 'module', 'mod_events_latest', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Latest Events\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays a list of upcoming events.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1205, 'mod_featuredblog', 'module', 'mod_featuredblog', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Featured Blog\",\"type\":\"module\",\"creationDate\":\"November 2010\",\"author\":\"HUBzero\",\"copyright\":\"(C) 2000 - 2004 Miro International Pty Ltd\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"4.5.1\",\"description\":\"This module randomly displays a featured blog entry.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1206, 'mod_featuredmember', 'module', 'mod_featuredmember', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Featured Member\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module randomly displays a featured member or contributor.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1207, 'mod_featuredquestion', 'module', 'mod_featuredquestion', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Featured Question\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module randomly displays a featured question.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1208, 'mod_featuredresource', 'module', 'mod_featuredresource', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Featured Resource\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module randomly displays a featured resource.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1209, 'mod_feed_youtube', 'module', 'mod_feed_youtube', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"YouTube Feed Display\",\"type\":\"module\",\"creationDate\":\"April 2010\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"admin@joomla.org\",\"authorUrl\":\"www.joomla.org\",\"version\":\"1.5.0\",\"description\":\"This module allows to display a youtube playlist feed\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1210, 'mod_findresources', 'module', 'mod_findresources', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Find Resources\",\"type\":\"module\",\"creationDate\":\"Sep 2009\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"alisa@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"Module to display resources search, popular tags and categories.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1211, 'mod_googleanalytics', 'module', 'mod_googleanalytics', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Google Analytics\",\"type\":\"module\",\"creationDate\":\"April 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"This module adds some Javascript to the page for Google Analytics reporting\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1212, 'mod_hubzilla', 'module', 'mod_hubzilla', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Hubzilla\",\"type\":\"module\",\"creationDate\":\"August 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"Hubzilla attack!\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1213, 'mod_incremental_registration', 'module', 'mod_incremental_registration', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Incremental Registration\",\"type\":\"module\",\"creationDate\":\"April 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"This module displays a page curl for enticing users to incrementally register demographics.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1214, 'mod_latestblog', 'module', 'mod_latestblog', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Latest Blog posts\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows the latest blog posts in the site blog as well as group blogs.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1215, 'mod_latestdiscussions', 'module', 'mod_latestdiscussions', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Latest Discussions\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows the latest discussions in the site forum as well as the group forum.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1216, 'mod_latestgroups', 'module', 'mod_latestgroups', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Latest Groups\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows the latest discussions in the site forum as well as the group forum.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1217, 'mod_latestusage', 'module', 'mod_latestusage', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Latest Usage\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module displays the latest usage numbers.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1218, 'mod_logjserrors', 'module', 'mod_logjserrors', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Log JS Errors\",\"type\":\"module\",\"creationDate\":\"July 2006\",\"author\":\"Joomla! Project\",\"copyright\":\"Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.\",\"authorEmail\":\"admin@joomla.org\",\"authorUrl\":\"www.joomla.org\",\"version\":\"1.5.0\",\"description\":\"Logs js errors\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1219, 'mod_megamenu', 'module', 'mod_megamenu', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Mega Menu\",\"type\":\"module\",\"creationDate\":\"Feb 2012\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"hubzero.org\",\"version\":\"1.5.0\",\"description\":\"Displays a menu with mega menu option.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1220, 'mod_mycontributions', 'module', 'mod_mycontributions', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Contributions\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of contributions\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1221, 'mod_mycourses', 'module', 'mod_mycourses', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Courses\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of courses the user belongs to and their status in it\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1222, 'mod_myfavorites', 'module', 'mod_myfavorites', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Favorites\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of favorites chosen by the user\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1223, 'mod_mygroups', 'module', 'mod_mygroups', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Groups\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of groups the user belongs to and their status in it\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1224, 'mod_mymessages', 'module', 'mod_mymessages', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Messages\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of unread messages sent by the site.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1225, 'mod_mypoints', 'module', 'mod_mypoints', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Points\",\"type\":\"module\",\"creationDate\":\"October 2009\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1\",\"description\":\"This module will display a point total and list of most recent point transactions.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1226, 'mod_myprojects', 'module', 'mod_myprojects', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Projects\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module displays a list of projects the user belongs, their role in the project and the number of updates since last visit.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1227, 'mod_myquestions', 'module', 'mod_myquestions', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Questions\",\"type\":\"module\",\"creationDate\":\"Jan 2009\",\"author\":\"snowwitje\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"alisa@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1\",\"description\":\"This module will display a list of questions submitted by the user, as well as those user can answer.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1228, 'mod_myresources', 'module', 'mod_myresources', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Resources\",\"type\":\"module\",\"creationDate\":\"January 2011\",\"author\":\"HUBzero\",\"copyright\":\"(C) 2011 HUBzero\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"1\",\"description\":\"This module will display a list of publications (resources, wiki pages, etc.)\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1229, 'mod_mysessions', 'module', 'mod_mysessions', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Sessions\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Christopher Smoak\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows a list of the user\'s active tool sessions.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1230, 'mod_mysubmissions', 'module', 'mod_mysubmissions', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Submissions\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Shows a list of submissions (resources) in progress.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1231, 'mod_mytickets', 'module', 'mod_mytickets', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Tickets\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of active support tickets submitted by the user\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1232, 'mod_mytools', 'module', 'mod_mytools', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Tools\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows a list of the user\'s favorite tools, recently used tools, and all available tools.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1233, 'mod_mywishes', 'module', 'mod_mywishes', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"My Wishes\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of open wishes submitted by\\/ assigned to the user\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1234, 'mod_newsletter', 'module', 'mod_newsletter', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Newsletter\",\"type\":\"module\",\"creationDate\":\"August 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.\",\"authorEmail\":\"csmoak@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.0.0\",\"description\":\"Newsletter Mailing List Sign up\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1235, 'mod_notices', 'module', 'mod_notices', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Notices Module\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows a notice (when site will be down, etc.) box for site visitors.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1236, 'mod_poll', 'module', 'mod_poll', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Poll\",\"type\":\"module\",\"creationDate\":\"July 2006\",\"author\":\"Joomla! Project\",\"copyright\":\"Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.\",\"authorEmail\":\"admin@joomla.org\",\"authorUrl\":\"www.joomla.org\",\"version\":\"1.5.0\",\"description\":\"DESCPOLL\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1237, 'mod_polltitle', 'module', 'mod_polltitle', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"XPoll Title\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows the most popular FAQs.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1238, 'mod_popularfaq', 'module', 'mod_popularfaq', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Popular FAQs\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows the most popular FAQs.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1239, 'mod_popularquestions', 'module', 'mod_popularquestions', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Popular Questions\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows questions with the most popular (helpful) responses added to the Answers component.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1240, 'mod_quicktips', 'module', 'mod_quicktips', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Quick Tips\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows a quick \\\"tip of the day\\\" or \\\"did you know...\\\" feature.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1241, 'mod_quotes', 'module', 'mod_quotes', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Quotes\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module compliments the Feedback component. It is used to display selected quotes on Notable Quotes page.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1242, 'mod_randomquote', 'module', 'mod_randomquote', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Random Quote\",\"type\":\"module\",\"creationDate\":\"Mar 2010\",\"author\":\"HUBzero\",\"copyright\":\"(C) 2010 HUBzero\",\"authorEmail\":\"alisa@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"Module to display random featured quote\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1243, 'mod_rapid_contact', 'module', 'mod_rapid_contact', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Rapid Contact\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows a notice (when site will be down, etc.) box for site visitors.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1244, 'mod_recentquestions', 'module', 'mod_recentquestions', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Latest Questions\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows the latest questions added to the Answers component.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1245, 'mod_reportproblems', 'module', 'mod_reportproblems', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Trouble Report\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a trouble report form\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1246, 'mod_resourcemenu', 'module', 'mod_resourcemenu', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"HUB Resource Menu\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows any extra navigation or content in a pop-up style menu. Supports {xhub:module position=\\\"\\\" style=\\\"\\\"} tags.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1247, 'mod_slideshow', 'module', 'mod_slideshow', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Slideshow\",\"type\":\"module\",\"creationDate\":\"June 2009\",\"author\":\"HUBzero\",\"copyright\":\"(C) 2000 - 2004 Miro International Pty Ltd\",\"authorEmail\":\"alisa@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.1.0\",\"description\":\"Displays HUB flash image slideshow.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1248, 'mod_sliding_panes', 'module', 'mod_sliding_panes', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Sliding Panes\",\"type\":\"module\",\"creationDate\":\"Jan 2010\",\"author\":\"HUBzero\",\"copyright\":\"(C) 2000 - 2004 Miro International Pty Ltd\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"Rotate through panes of content\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1249, 'mod_spotlight', 'module', 'mod_spotlight', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Spotlight\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module randomly displays featured items.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1250, 'mod_tagcloud', 'module', 'mod_tagcloud', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Tag Cloud\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a tag cloud\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1251, 'mod_toptags', 'module', 'mod_toptags', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Top Tags\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows a a list of the top used tags.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1252, 'mod_twitterfeed', 'module', 'mod_twitterfeed', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Twitter Feed\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"csmoak@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.0.0\",\"description\":\"Loads the Twitter feed of the specified Twitter ID\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1253, 'mod_whatsnew', 'module', 'mod_whatsnew', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"What\'s New\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Lists the newest resources and events on the site.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1254, 'mod_wishvoters', 'module', 'mod_wishvoters', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Wish Voters\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of most active wish voters\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1255, 'mod_xwhosonline', 'module', 'mod_xwhosonline', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Extended Who is Online\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"The Who\'s Online module displays the number of anonymous (that is, Guest) users and Registered users, (those that are logged in) that are currently accessing the web site.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1256, 'mod_youtube', 'module', 'mod_youtube', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"YouTube\",\"type\":\"module\",\"creationDate\":\"March 2011\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"csmoak@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.0.0\",\"description\":\"This module allows to display a youtube feed\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0');
+
+INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
+(1300, 'mod_hubmenu', 'module', 'mod_hubmenu', '', '1', '1', '1', '1', '{}', '{}', '', '', '0', '0000-00-00 00:00:00', '0', '0'
+(1301, 'mod_answers', 'module', 'mod_answers', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Answers\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1302, 'mod_application_env', 'module', 'mod_application_env', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Application Environment\",\"type\":\"module\",\"creationDate\":\"April 2012\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5.0\",\"description\":\"This module displays the current application environment (production, stage, testing, development)\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1303, 'mod_dashboard', 'module', 'mod_dashboard', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Dashboard\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1304, 'mod_groups', 'module', 'mod_groups', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Groups\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1305, 'mod_members', 'module', 'mod_members', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Members\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1306, 'mod_resources', 'module', 'mod_resources', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Resources\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1307, 'mod_supporttickets', 'module', 'mod_supporttickets', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Support Tickets\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1308, 'mod_tools', 'module', 'mod_tools', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Tools\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1309, 'mod_whosonline', 'module', 'mod_whosonline', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Show Online Users\",\"type\":\"module\",\"creationDate\":\"January 2005\",\"author\":\"Christopher Smoak\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"csmoak@purdue.edu\",\"authorUrl\":\"https:\\/\\/hubzero.org\",\"version\":\"1.0.0\",\"description\":\"This module shows a list of the currently logged in users\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
+(1310, 'mod_wishlist', 'module', 'mod_wishlist', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Wishlist\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0');
 
 --
 -- HUBzero sample data for table `#__template_styles`
@@ -4123,4 +4542,40 @@ INSERT INTO `#__oaipmh_dcspecs` (`id`, `name`, `query`, `display`) VALUES
 						(15, 'coverage', '', 1),
 						(16, 'language', '', 1),
 						(17, 'source', '', 1);
+
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('1','Datasets','Dataset','dataset','datasets','A collection of research data','1','1','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('2','Workshops','Event','workshop','workshops','A collection of lectures, seminars, and materials that were presented at a workshop.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('3','Publications','Dataset','publication','publications','A publication is a paper relevant to the community that has been published in some manner.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('4','Learning Modules','InteractiveResource','learning module','learningmodules','A combination of presentations, tools, assignments, etc. geared toward teaching a specific concept.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('5','Animations','MovingImage','animation','animations','An animation is a Flash-based demo or short movie that illustrates some concept.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('6','Courses','Collection','course','courses','University courses that make videos of lectures and associated teaching materials available.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('7','Tools','Software','tool','tools','A simulation tool is software that allows users to run a specific type of calculation.','0','1','poweredby=Powered by=textarea=0\nbio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('9','Downloads','PhysicalObject','download','downloads','A download is a type of resource that users can download and use on their own computer.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('10','Notes','Text','note','notes','Notes are typically a category for any resource that might not fit any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('11','Series','Collection','series','series','Series are collections of other resources, typically online presentations, that cover a specific topic.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('12','Teaching Materials','Text','teaching material','teachingmaterials','Supplementary materials (study notes, guides, etc.) that don\'t quite fit into any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
+
+INSERT INTO `#__project_types` (`type`,`description`,`params`) VALUES ('General','Individual or collaborative projects of general nature','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0');
+INSERT INTO `#__project_types` (`type`,`description`,`params`) VALUES ('Content publication','Projects created with the purpose to publish data as a resource or a collection of related resources','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0');
+INSERT INTO `#__project_types` (`type`,`description`,`params`) VALUES ('Application development','Projects created with the purpose to develop and publish a simulation tool or a code library','apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0');
+
+INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) VALUES ('level0','K12','Middle/High School');
+INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) VALUES ('level1','Easy','Freshmen/Sophomores');
+INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) VALUES ('level2','Intermediate','Juniors/Seniors');
+INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) VALUES ('level3','Advanced','Graduate Students');
+INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) VALUES ('level4','Expert','PhD Experts');
+INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) VALUES ('level5','Professional','Beyond PhD');
+
+INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) VALUES ('File(s)','files','uploaded material','1','1','1','peer_review=1');
+INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) VALUES ('Link','links','external content','0','0','3','');
+INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) VALUES ('Wiki','notes','from project notes','0','0','5','');
+INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) VALUES ('Application','apps','simulation tool','0','0','4','');
+INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) VALUES ('Series','series','publication collection','0','0','6','');
+INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) VALUES ('Gallery','gallery','image/photo gallery','0','0','7','');
+INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) VALUES ('Databases','databases','project database','0','0','2','');
+
+INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('custom','[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]','Custom','http://creativecommons.org/about/cc0','Custom license','3','1','0','0','0','1','/components/com_publications/assets/img/logos/license.gif');
+INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('cc','','CC0 - Creative Commons','http://creativecommons.org/about/cc0','CC0 enables scientists, educators, artists and other creators and owners of copyright- or database-protected content to waive those interests in their works and thereby place them as completely as possible in the public domain, so that others may freely build upon, enhance and reuse the works for any purposes without restriction under copyright or database law.','2','1','0','1','1','0','/components/com_publications/assets/img/logos/cc.gif');
+INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('standard','All rights reserved.','Standard HUB License','http://nanohub.org','Standard HUB license.','1','0','0','0','0','0','/components/com_publications/images/logos/license.gif');
+
 
