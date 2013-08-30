@@ -121,12 +121,17 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$category->state = $assetgroup->get('state');
 			if ($assetgroup->get('title') == '--')
 			{
-				$category->title = $assetgroup->assets()->fetch('first')->get('title');
+				$ag = ($assetgroup->assets() ? $assetgroup->assets()->fetch('first') : null);
+				if ($ag)
+				{
+					$category->title = $ag->get('title');
+				}
 			}
 			else
 			{
 				$category->title = $assetgroup->get('title');
 			}
+			$category->title    = ($category->title ? $category->title : $assetgroup->get('title'));
 			$category->alias    = $assetgroup->get('alias');
 			$category->ordering = $assetgroup->get('ordering');
 			if ($category->check())
