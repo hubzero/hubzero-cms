@@ -197,7 +197,7 @@ class CoursesTableAssetGroup extends JTable
 		{
 			$where[] = "cag.unit_id=" . $this->_db->Quote($filters['unit_id']);
 		}
-		if (isset($filters['parent']) && $filters['parent']) 
+		if (isset($filters['parent'])) 
 		{
 			$where[] = "cag.parent=" . $this->_db->Quote($filters['parent']);
 		}

@@ -537,7 +537,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 		//$unit = CoursesModelUnit::getInstance(JRequest::getInt('unit', 0));
 		//$ags = $unit->assetgroups(null, array('parent' => $row->parent));
 
-		if (($ags = $row->find(array('w' => array('parent' => $row->parent)))))
+		if (($ags = $row->find(array('w' => array('parent' => $row->parent, 'unit_id' => $row->unit_id)))))
 		{
 			foreach ($ags as $ag)
 			{
