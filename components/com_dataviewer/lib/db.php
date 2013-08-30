@@ -620,6 +620,23 @@ function query_gen_total($dd) {
 		}
 	}
 
+	if (isset($dd['join'])) {
+		foreach ($dd['join'] as $j) {
+			$type = isset($j['type'])? $j['type']: 'LEFT JOIN';
+			$con = array();
+			foreach ($j['fields'] as $f1=>$f2) {
+				if ($f1 == 'raw') {
+					$con[] = $f2;
+				} else {
+					$con[] = "$f1=$f2";
+				}
+			}
+			$con = implode(' AND ', $con);
+			$sql .= "$type " . $j['table'] . ' ON (' . $con .  ') ';
+		}
+	}
+
+
 	$where_str = '';
 
 	if (isset($dd['where'])) {
@@ -636,6 +653,14 @@ function query_gen_total($dd) {
 	}
 
 	$sql .= $where_str;
+
+	$group_by = '';
+
+	if (isset($dd['group_by'])) {
+		$group_by .= ' GROUP BY ' . $dd['group_by'] . '';
+	}
+
+	$sql .= $group_by;
 
 	$having_str = '';
 	if (isset($dd['having'])) {
