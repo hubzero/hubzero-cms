@@ -271,13 +271,12 @@ function query_gen(&$dd)
 		}
 	}
 
-
 	$where_str = '';
 	$having_str = '';
 
 	if (count($where_filter) > 0) {
 		$where_filter_arr = array();
-		foreach ($where_filter as $key=>$val) {
+		foreach ($where_filter as $key => $val) {
 			if ($val['fieldtype'] == 'number' || $val['fieldtype'] == 'datetime') {
 				$val['val'] = strtolower($val['val']);
 				if (strstr($val['val'], 'to')) {
@@ -297,12 +296,12 @@ function query_gen(&$dd)
 						$val['val'] = str_replace('<', "< '", $val['val']);
 					}
 					$where_filter_arr[] = $val['col'] . " " . $val['val'] . "'";
-				} elseif (strstr($val['val'], '=')) {
-					$val['val'] = trim(str_replace('=', '', $val['val']));
-					$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!=')) {
 					$val['val'] = trim(str_replace('!=', '', $val['val']));
 					$where_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
+				} elseif (strstr($val['val'], '=')) {
+					$val['val'] = trim(str_replace('=', '', $val['val']));
+					$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!')) {
 					$val['val'] = trim(str_replace('!', '', $val['val']));
 					$where_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
@@ -329,12 +328,12 @@ function query_gen(&$dd)
 					$where_filter_arr[] = $max_col . " " . $val['val'];
 				} elseif (strstr($val['val'], '>')) {
 					$where_filter_arr[] = $min_col . " " . $val['val'];
-				} elseif (strstr($val['val'], '=')) {
-					$val['val'] = trim(str_replace('=', '', $val['val']));
-					$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!=')) {
 					$val['val'] = trim(str_replace('!=', '', $val['val']));
 					$where_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
+				} elseif (strstr($val['val'], '=')) {
+					$val['val'] = trim(str_replace('=', '', $val['val']));
+					$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!')) {
 					$val['val'] = trim(str_replace('!', '', $val['val']));
 					$where_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
@@ -343,12 +342,12 @@ function query_gen(&$dd)
 				}
 			} elseif (isset($val['filtered_view'])) {
 				$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
-			} elseif (strpos($val['val'], '=') === 0) {
-				$val['val'] = trim(str_replace('=', '', $val['val']));
-				$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 			} elseif (strpos($val['val'], '!=') === 0) {
 				$val['val'] = trim(str_replace('!=', '', $val['val']));
 				$where_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
+			} elseif (strpos($val['val'], '=') === 0) {
+				$val['val'] = trim(str_replace('=', '', $val['val']));
+				$where_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 			} elseif (strpos($val['val'], '!') === 0) {
 				$val['val'] = trim(str_replace('!', '', $val['val']));
 				$where_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
@@ -388,12 +387,12 @@ function query_gen(&$dd)
 						$val['val'] = str_replace('<', "< '", $val['val']);
 					}
 					$having_filter_arr[] = $val['col'] . " " . $val['val'] . "'";
-				} elseif (strstr($val['val'], '=')) {
-					$val['val'] = trim(str_replace('=', '', $val['val']));
-					$having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!=')) {
 					$val['val'] = trim(str_replace('!=', '', $val['val']));
 					$having_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
+				} elseif (strstr($val['val'], '=')) {
+					$val['val'] = trim(str_replace('=', '', $val['val']));
+					$having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!')) {
 					$val['val'] = trim(str_replace('!', '', $val['val']));
 					$having_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
@@ -418,12 +417,12 @@ function query_gen(&$dd)
 					$having_filter_arr[] = $max_col . " " . $val['val'];
 				} elseif (strstr($val['val'], '>')) {
 					$having_filter_arr[] = $min_col . " " . $val['val'];
-				} elseif (strstr($val['val'], '=')) {
-					$val['val'] = trim(str_replace('=', '', $val['val']));
-					$having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!=')) {
 					$val['val'] = trim(str_replace('!=', '', $val['val']));
 					$having_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
+				} elseif (strstr($val['val'], '=')) {
+					$val['val'] = trim(str_replace('=', '', $val['val']));
+					$having_filter_arr[] = $val['col'] . " = '" . $val['val'] . "'";
 				} elseif (strstr($val['val'], '!')) {
 					$val['val'] = trim(str_replace('!', '', $val['val']));
 					$having_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
@@ -560,7 +559,7 @@ function query_gen(&$dd)
 
 	$order = array();
 
-	$sorting = JRequest::getString('iSortCol_0', false);
+	$sorting = JRequest::getVar('iSortCol_0', false);
 	if ($sorting !== false && count($cols_vis) > 0) {
 		$sort_col_count = JRequest::getInt('iSortingCols', 0);
 		for ($i = 0 ; $i < $sort_col_count; $i++) {

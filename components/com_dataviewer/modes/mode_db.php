@@ -98,7 +98,10 @@ function get_dd($db_id)
 			$total = isset($total['total']) ? $total['total'] : 0;
 			$dd['total_records'] = $total;
 
-			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+			$vis_col_count = 0;
+			if(isset($dd['cols'])) {
+				$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+			}
 
 			if ($dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
 				$dd['serverside'] = true;

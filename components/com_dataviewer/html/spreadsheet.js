@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
 		"bInfo": true,
 		"bJQueryUI": true,
 		"bAutoWidth": true,
-		"aaSorting": [[ 0, "asc" ]],
+		"aaSorting": dv_data.aaSorting || [[0, 'asc']],
 		"aaData": dv_data.aaData,
 		"aoColumns": dv_data.aoColumns,
 		"bProcessing": true,

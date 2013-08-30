@@ -172,11 +172,11 @@ function view($dd = false) {
 	<?php if(!JRequest::getVar('show_table_only', false)): ?>
 
 		<div id="dv_title" style="margin: 0;">
-			<h2 class="ui-corner-all" style="display: inline;">
+			<h2 class="ui-corner-all" style="display: inline-block;">
 				<i class="icon-table"></i>
 				<?=$dd['title']?>
 			</h2>
-			&nbsp;<h4 id="dv_return_link_container" style="display: inline;"><?=$return?></h4>
+			&nbsp;<h4 id="dv_return_link_container" style="display: inline-block; margin: 0;"><?=$return?></h4>
 		</div>
 		<div id="dv-spreadsheet-toolbar" class="ui-corner-top">
 			<button class="btn btn-mini dv-btn-download" data-format="csv" title="Download Data as a spreadsheet">
@@ -413,18 +413,21 @@ function view($dd = false) {
 	?>
 		</table>
 		</div>
-	<?php		
+	<?php
+
 		// Filter dialog show/hide parameter
 		$dv_show_filters = 'false';
 		$u =& JFactory::getURI();
-		$path = explode('/', $u->_path);
-		if (isset($path[4]) && $path[4] == 'filter_dialog') {
+		$path = explode('/', $u->getPath());
+		if (isset($path[5]) && $path[5] == 'filter_dialog') {
 			$dv_show_filters = 'true';
 		}
+
 		//Legacy support
 		if (JRequest::getVar('show_filters', 'false') === 'true') {
 			$dv_show_filters = 'true';
 		}
+
 	?>
 		<!-- Start: Dialog boxes -->
 		<div id="truncated_text_dialog" style="display: none; overflow: auto;" title="Full Text"></div>

@@ -15,11 +15,16 @@ function controller_exec()
 	global $conf;
 
 	if (!authorized()) {
-		$params = &JComponentHelper::getParams('com_databases');
-		$group = $params->get('access_limit_to_group');
-		JToolBarHelper::title('Databases', 'databases');
-		JToolBarHelper::preferences('com_databases', '200');
-		print "<p class=\"error\">Not authorized, access is limited to \"<em>$group</em>\"</p>. <h3>Use the Databases component parameters to change this</h3>";
+		$err_str = 'Access restricted.';
+
+		if ($conf['modes']['db']['enabled']) {
+			$group = $conf['access_limit_to_group'];
+			JToolBarHelper::title('Databases', 'databases');
+			JToolBarHelper::preferences('com_databases', '200');
+			$err_str =  "<p class=\"error\">Not authorized, access is limited to \"<em>$group</em>\"</p>. <h3>Use the Databases component parameters to change this</h3>";
+		}
+
+		print $err_str;
 		return;
 	}
 

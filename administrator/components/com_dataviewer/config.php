@@ -39,11 +39,16 @@ $conf['app_title'] = 'Dataviewer';
 
 $conf['dir_base'] = '/data/db';
 
+$mode_db_enabled = &JComponentHelper::getParams('com_dataviewer')->get('mode_db') == '1' ? true : false;
+$conf['modes']['db'] = array('enabled' => $mode_db_enabled);
 
 // ACL
-$db_params = &JComponentHelper::getParams('com_databases');
 $conf['access_limit_to_group'] = false;
-if ($db_params->get('access_limit_to_group') != '') {
-	$conf['access_limit_to_group'] = $db_params->get('access_limit_to_group');
+if ($conf['modes']['db']['enabled']) {
+	$db_params = &JComponentHelper::getParams('com_databases');
+
+	if ($db_params->get('access_limit_to_group') != '') {
+		$conf['access_limit_to_group'] = $db_params->get('access_limit_to_group');
+	}
 }
 ?>

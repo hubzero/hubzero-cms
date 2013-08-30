@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+
+	<!-- Joomla! 1.5 params -->
 	<params>
 		<param name="record_display_limit" type="list" default="10" label="Record Display Limit" description="Number of records to display">
 			<option value="5">5</option>
@@ -17,8 +19,41 @@
 		<param name="proc_switch_threshold" type="text"	label="Client-side threshold" description="Maximum number of cells to allow before switching to server-side processing" default="25000" />
 
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="acl_users" type="text"	label="ACL Users" description="" default="" />
-		<param name="acl_groups" type="text"	label="ACL Groups" description="" default="" />
-	</params>
-<config>
+		<param name="mode_db" type="list" label="DB Mode enabled" description="Only enable this when com_databases is installed" default="0">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="acl_users" type="text" label="ACL Users" description="" default="" />
+		<param name="acl_groups" type="text" label="ACL Groups" description="" default="" />
+
+		
+	</params>
+
+	<!-- Joomla! 2.5 fieldset -->
+	<fieldset name="basic">
+		<field name="record_display_limit" type="list" default="10" label="Record Display Limit" description="Number of records to display">
+			<option value="5">5</option>
+			<option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+			<option value="100">100</option>
+		</field>
+
+		<field name="processing_mode_switch" type="list" default="0" label="Dynamic Processing mode" description="Dynamically switch between server-side and client-side processing modes">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+
+		<field name="proc_switch_threshold" type="text" label="Client-side threshold" description="Maximum number of cells to allow before switching to server-side processing" default="25000" />
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="mode_db" type="checkbox" label="DB Mode enabled" description="Only enable this when com_databases is installed" value="1" default="0" />
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="acl_users" type="text"     label="ACL Users" description="" default="" />
+		<field name="acl_groups" type="text"    label="ACL Groups" description="" default="" />
+	</fieldset>
+
+</config>
