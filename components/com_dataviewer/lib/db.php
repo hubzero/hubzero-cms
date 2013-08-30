@@ -591,12 +591,12 @@ function query_gen(&$dd)
 
 	// Limit
 	$limit = '';
-	$no_limit = JRequest::getString('nolimit', false);
-	$limit_start = JRequest::getInt('iDisplayStart', false);
-	$limit_length = JRequest::getInt('iDisplayLength', $dv_conf['settings']['limit']);
-	if ($no_limit === false && $limit_start !== false && $limit_length !== -1) {
+	$no_limit = JRequest::getVar('nolimit', false);
+	$limit_start = JRequest::getVar('iDisplayStart', false);
+	$limit_length = JRequest::getVar('iDisplayLength', $dv_conf['settings']['limit']);
+	if ($no_limit === false && $limit_start !== false && $limit_length != '-1') {
 		$limit = " LIMIT $limit_start, $limit_length";
-	} elseif (!$no_limit && isset($dd['serverside']) && $dd['serverside']) {
+	} elseif ($no_limit === false && isset($dd['serverside']) && $dd['serverside']) {
 		$limit = " LIMIT 0, " . $dv_conf['settings']['limit'];
 	}
 
