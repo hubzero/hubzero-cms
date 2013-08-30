@@ -87,6 +87,10 @@ function get_dd($db_id)
 			$dv_conf['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
 		}
 
+		// Database override form dd
+		if(isset($dd['db']) && is_array($dd['db'])) {
+			$dv_conf['db'] = array_merge($dv_conf['db'], $dd['db']);
+		}
 
 		$dd = _dd_post($dd);
 

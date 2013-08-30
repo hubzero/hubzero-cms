@@ -611,8 +611,12 @@ function query_gen_total($dd) {
 		$col = 'DISTINCT ' . $dd['group_by'];
 	}
 
-	$sql = "SELECT COUNT($col) AS `total` FROM `";
-	$sql .= $dd['table'] . '` ';
+	if (substr($dd['table'], 0, 1) == '(') {
+		$sql = "SELECT COUNT($col) AS `total` FROM " . $dd['table'] . ' ';
+	} else {
+		$sql = "SELECT COUNT($col) AS `total` FROM `";
+		$sql .= $dd['table'] . '` ';
+	}
 
 	if (isset($dd['joins'])) {
 		foreach ($dd['joins'] as $j) {
