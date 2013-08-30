@@ -69,15 +69,15 @@
 		font-family: 'Fontcons';
 	}
 	.com_courses .no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
-	.com_courses .half-stars:before      { content: "\f089\00a0\2606\2606\2606\2606"; }
+	.com_courses .half-stars:before      { content: "\f0f3\2606\2606\2606\2606"; }
 	.com_courses .one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
-	.com_courses .onehalf-stars:before   { content: "\2605\f089\00a0\2606\2606\2606"; }
+	.com_courses .onehalf-stars:before   { content: "\2605\f0f3\2606\2606\2606"; }
 	.com_courses .two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
-	.com_courses .twohalf-stars:before   { content: "\2605\2605\f089\00a0\2606\2606"; }
+	.com_courses .twohalf-stars:before   { content: "\2605\2605\f0f3\2606\2606"; }
 	.com_courses .three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
-	.com_courses .threehalf-stars:before { content: "\2605\2605\2605\f089\00a0\2606"; }
+	.com_courses .threehalf-stars:before { content: "\2605\2605\2605\f0f3\2606"; }
 	.com_courses .four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
-	.com_courses .fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
+	.com_courses .fourhalf-stars:before  { content: "\2605\2605\2605\2605\f0f3"; }
 	.com_courses .five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
 	.reviews-summary .avgrating:before {
 		font-size: 2em;
