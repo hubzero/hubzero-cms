@@ -498,6 +498,11 @@ class Migration20130718000009ComMenus extends Hubzero_Migration
 					$db->query();
 				}
 			}
+
+			// Fix menu link type menu items to be alias type
+			$query = "UPDATE `#__menu` SET `type` = 'alias', `link` = 'index.php?Itemid=', `params` = REPLACE(`params`, 'menu_item', 'aliasoptions') WHERE `type` = 'menulink'";
+			$db->setQuery($query);
+			$db->query();
 		}
 
 		// Now we can get rid of the components table as well
