@@ -209,19 +209,6 @@ class Migration20130829203107ComProjects extends Hubzero_Migration
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
 
-		if (!$db->tableExists('#__project_stats'))
-		{
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_stats` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`month` int(2) DEFAULT NULL,
-				`year` int(2) DEFAULT NULL,
-				`week` int(2) DEFAULT NULL,
-				`processed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`stats` text,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
-
 		if (!$db->tableExists('#__project_public_stamps'))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_public_stamps` (
