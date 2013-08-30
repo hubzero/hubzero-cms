@@ -314,6 +314,7 @@ class CoursesTableMember extends JTable
 	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS m 
+				JOIN #__users AS u ON u.id=m.user_id
 				LEFT JOIN #__courses_roles AS r ON r.id=m.role_id";
 
 		$where = array();
@@ -364,6 +365,10 @@ class CoursesTableMember extends JTable
 				$where[] = "r.`alias`=" . $this->_db->Quote($filters['role']);
 			}
 		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$where[] = "(LOWER(u.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
 		if (isset($filters['student']))
 		{
 			$where[] = "m.`student`=" . $this->_db->Quote(intval($filters['student']));
@@ -400,7 +405,7 @@ class CoursesTableMember extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT m.*, r.alias AS role_alias, r.title AS role_title, r.permissions AS role_permissions ";
+		$query  = "SELECT m.*, u.name, u.email, u.username, r.alias AS role_alias, r.title AS role_title, r.permissions AS role_permissions ";
 		/*if (isset($filters['offering_id']))
 		{
 			$query .= "(SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co ON cm.course_id=co.course_id WHERE cm.user_id=m.user_id AND co.id=" . $this->_db->Quote(intval($filters['offering_id'])) . ")";
