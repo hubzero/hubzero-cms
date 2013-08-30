@@ -142,9 +142,9 @@ function submitbutton(pressbutton)
 						<th class="key"><label for="field-enrollment"><?php echo JText::_('Enrollment'); ?>:</label></th>
 						<td>
 							<select name="fields[enrollment]" id="field-enrollment">
-								<option value="0"<?php if ($this->row->get('enrollment') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Open (anyone can join)'); ?></option>
-								<option value="1"<?php if ($this->row->get('enrollment') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Restricted (coupon code is required)'); ?></option>
-								<option value="2"<?php if ($this->row->get('enrollment') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed (no new enrollment)'); ?></option>
+								<option value="0"<?php if ($this->row->get('enrollment', 2) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Open (anyone can join)'); ?></option>
+								<option value="1"<?php if ($this->row->get('enrollment', 2) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Restricted (coupon code is required)'); ?></option>
+								<option value="2"<?php if ($this->row->get('enrollment', 2) == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed (no new enrollment)'); ?></option>
 							</select>
 						</td>
 					</tr>
