@@ -172,11 +172,11 @@ $k = 0;
 $n = count($this->rows);
 foreach ($this->rows as $row)
 {
-	$u =& JUser::getInstance($row->get('user_id'));
+	/*$u =& JUser::getInstance($row->get('user_id'));
 	if (!is_object($u)) 
 	{
 		continue;
-	}
+	}*/
 
 	$section = CoursesModelSection::getInstance($row->get('section_id'));
 ?>
@@ -190,22 +190,22 @@ foreach ($this->rows as $row)
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($u->get('name'))); ?>
+						<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 					</a>
 				<?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($u->get('name'))); ?>
+						<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 					</span>
 				<?php } ?>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($u->get('email'))); ?>
+						<?php echo $this->escape(stripslashes($row->get('email'))); ?>
 					</a>
 				<?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($u->get('email'))); ?>
+						<?php echo $this->escape(stripslashes($row->get('email'))); ?>
 					</span>
 				<?php } ?>
 				</td>
