@@ -444,7 +444,7 @@ class JRouterSite extends JRouter
 				}
 				$depth = substr_count(trim($item->route,'/'),'/') + 1; // HUBzero: keep searching for better matches with higher depth
 				$length = strlen($item->route); //get the length of the route
-				if ($length > 0 && JString::strpos($route_lowercase.'/', $item->route.'/') === 0 && $item->type != 'menulink' && (!$app->getLanguageFilter() || $item->language == '*' || $item->language == $lang_tag)) {
+				if ($length > 0 && JString::strpos($route_lowercase.'/', $item->route.'/') === 0 && $item->type != 'alias' && (!$app->getLanguageFilter() || $item->language == '*' || $item->language == $lang_tag)) {
 					/* START: HUBzero Extension to handle external url menu items differently */
 					if ($item->type == 'url') {
 
