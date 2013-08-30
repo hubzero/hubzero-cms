@@ -2,7 +2,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$this->template = 'hubbasic2012';
+$this->template = 'hubbasic2013';
 
 $browser = new Hubzero_Browser();
 $b = $browser->getBrowser();
