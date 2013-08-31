@@ -290,8 +290,8 @@ $juser = JFactory::getUser();
 						</label>
 					</div>
 					<input type="hidden" name="action" value="uploadresume" />
-					<input type="hidden" name="path" value="<?php echo $path; ?>" />
-					<input type="hidden" name="emp" value="<?php echo $emp; ?>" />
+					<input type="hidden" name="path" value="<?php echo $this->path; ?>" />
+					<input type="hidden" name="emp" value="<?php echo $this->emp; ?>" />
 					<input type="submit" value="<?php echo JText::_('PLG_RESUME_ACTION_UPLOAD'); ?>" />
 				</fieldset>
 			</form>
