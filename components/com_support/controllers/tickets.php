@@ -138,7 +138,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return)
+				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -560,7 +560,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return)
+				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -1744,7 +1744,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&id=' . $id, false, true));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return)
+				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -2037,7 +2037,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return)
+				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -2863,7 +2863,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return)
+				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
 			);
 			return;
 		}
