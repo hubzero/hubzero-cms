@@ -200,7 +200,7 @@ class UsersControllerUser extends UsersController
 		if (!($error instanceof Exception)) {
 			// If the authenticator is empty, but they have an active third party session,
 			// redirect to a page indicating this and offering complete signout
-			if($juser->auth_link_id && empty($authenticator))
+			if(isset($juser->auth_link_id) && $juser->auth_link_id && empty($authenticator))
 			{
 				ximport('Hubzero_Auth_Link');
 				ximport('Hubzero_Auth_Domain');
