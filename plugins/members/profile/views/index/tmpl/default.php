@@ -66,7 +66,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<div id="profile-page-content">
+<div id="profile-page-content" data-url="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&active=profile'); ?>">
 	<h3 class="section-header">
 		<?php echo JText::_('PROFILE'); ?>
 	</h3>
