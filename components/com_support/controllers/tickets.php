@@ -36,6 +36,7 @@ ximport('Hubzero_Controller');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'EmailToken.php');
 
+
 /**
  * Manage support tickets
  */
@@ -133,12 +134,21 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function statsTask()
 	{
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$c_user = 'user';
+		}
+		else
+		{
+			$c_user = 'users';
+		}
+
 		// Check authorization
 		if ($this->juser->get('guest')) 
 		{
 			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com_'.$c_user.'&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -556,11 +566,20 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$c_user = 'user';
+		}
+		else
+		{
+			$c_user = 'users';
+		}
+
 		if ($this->juser->get('guest')) 
 		{
 			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com_'.$c_user.'&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -1727,6 +1746,15 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function ticketTask()
 	{
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$c_user = 'user';
+		}
+		else
+		{
+			$c_user = 'users';
+		}
+
 		// Get the ticket ID
 		$id = JRequest::getInt('id', 0);
 		if (!$id) 
@@ -1744,7 +1772,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&id=' . $id, false, true));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com_'.$c_user.'&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -2030,6 +2058,15 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function updateTask()
 	{
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$c_user = 'user';
+		}
+		else
+		{
+			$c_user = 'users';
+		}
+
 		$live_site = rtrim(JURI::base(), '/');
 
 		// Make sure we are still logged in
@@ -2037,7 +2074,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com'.$c_user.'&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -2858,12 +2895,21 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function downloadTask()
 	{
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$c_user = 'user';
+		}
+		else
+		{
+			$c_user = 'users';
+		}
+
 		// Check logged in status
 		if ($this->juser->get('guest')) 
 		{
 			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user&view=login&return=' . $return, false)
+				JRoute::_('index.php?option=com_'.$c_user.'&view=login&return=' . $return, false)
 			);
 			return;
 		}

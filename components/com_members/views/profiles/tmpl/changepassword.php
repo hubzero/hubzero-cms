@@ -32,6 +32,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_User_Password');
+
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$c_user = 'user';
+}
+else
+{
+	$c_user = 'users';
+}
+
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -53,7 +63,7 @@ ximport('Hubzero_User_Password');
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword', true, true); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
-			<p>If you don't remember your current password, you'll have to <a href="<?php echo JRoute::_('index.php?option=com_user&task=logout&return='.base64_encode('/user/reset')); ?>">reset your password</a></p>
+			<p>If you don't remember your current password, you'll have to <a href="<?php echo JRoute::_('index.php?option=com_'.$c_user.'&task=logout&return='.base64_encode('/'.$c_user.'/reset')); ?>">reset your password</a></p>
 		</div>
 		<fieldset>
 			<label<?php echo ($this->change && $this->oldpass && !Hubzero_User_Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass, true)) ? ' class="fieldWithErrors"' : ''; ?>>
