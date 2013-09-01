@@ -72,6 +72,7 @@
 	p {
 		margin: 1em 0;
 	}
+	b,
 	strong {
 		font-weight: bold;
 	}
@@ -83,6 +84,7 @@
 	abbr {
 		border-bottom: 1px dotted #333;
 	}
+	i,
 	em {
 		font-style: italic;
 	}
@@ -164,7 +166,8 @@
 		display: none;
 	}
 /* Columns */
-	.contentpaneopen {
+	.contentpaneopen,
+	.content-header {
 		padding: 0 30px;
 	}
 	.section {
