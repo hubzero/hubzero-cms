@@ -91,32 +91,51 @@ class RegisterControllerConfig extends Hubzero_Controller
 
 		$arr = array();
 
-		$component = new JTableComponent($this->database);
-		$component->loadByOption($this->_option);
-
-		$params = trim($component->params);
-		if ($params) 
+		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$params = explode("\n", $params);
-			foreach ($params as $p)
+			$component = new JTableComponent($this->database);
+			$component->loadByOption($this->_option);
+
+			$params = trim($component->params);
+			if ($params) 
 			{
-				$b = explode('=', $p);
-				$arr[$b[0]] = trim(end($b));
+				$params = explode("\n", $params);
+				foreach ($params as $p)
+				{
+					$b = explode('=', $p);
+					$arr[$b[0]] = trim(end($b));
+				}
 			}
-		}
-		foreach ($settings as $name => $value)
-		{
-			$r = $value['create'] . $value['proxy'] . $value['update'] . $value['edit'];
+			foreach ($settings as $name => $value)
+			{
+				$r = $value['create'] . $value['proxy'] . $value['update'] . $value['edit'];
 
-			$arr['registration' . trim($name)] = trim($r);
+				$arr['registration' . trim($name)] = trim($r);
+			}
+			$a = array();
+			foreach ($arr as $k => $v)
+			{
+				$a[] = $k . '=' . $v;
+			}
+			$component->params = implode("\n", $a);
+			$component->store();
 		}
-		$a = array();
-		foreach ($arr as $k => $v)
+		else
 		{
-			$a[] = $k . '=' . $v;
+			$component = new JTableExtension($this->database);
+			$component->load($component->find(array('element' => $this->_option, 'type' => 'component')));
+			$params = new JRegistry($component->params);
+
+			foreach ($settings as $name => $value)
+			{
+				$r = $value['create'] . $value['proxy'] . $value['update'] . $value['edit'];
+
+				$params->set('registration' . trim($name), trim($r));
+			}
+
+			$component->params = $params->__toString();
+			$component->store();
 		}
-		$component->params = implode("\n", $a);
-		$component->store();
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
