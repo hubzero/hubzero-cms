@@ -753,7 +753,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 		}
 
 		// Get params definitions
-		$this->view->params  = new $paramsClass($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
+		$this->view->params  = new JParameter($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
 		$this->view->attribs = new $paramsClass($this->view->row->attribs);
 
 		// Build selects of various types
@@ -801,8 +801,8 @@ class ResourcesControllerItems extends Hubzero_Controller
 			// Get all contributors linked to this resource
 			$ma = new MembersAssociation($this->database);
 			$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
-					FROM $ma->_tbl AS a  
-					LEFT JOIN $mp->_tbl AS n ON n.uidNumber=a.authorid 
+					FROM " . $ma->getTableName() . " AS a  
+					LEFT JOIN " . $mp->getTableName() . " AS n ON n.uidNumber=a.authorid 
 					WHERE a.subtable='resources'
 					AND a.subid=" . $this->view->row->id . " 
 					ORDER BY a.ordering";
@@ -893,28 +893,34 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$row->publish_down = '0000-00-00 00:00:00';
 		}
 
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
 		// Get parameters
-		$params = JRequest::getVar('params', '', 'post');
+		$params = JRequest::getVar('params', array(), 'post');
 		if (is_array($params))
 		{
-			$txt = array();
+			$txt = new $paramsClass('');
 			foreach ($params as $k => $v)
 			{
-				$txt[] = "$k=$v";
+				$txt->set($k, $v);
 			}
-			$row->params = implode("\n", $txt);
+			$row->params = $txt->toString();
 		}
 
 		// Get attributes
-		$attribs = JRequest::getVar('attrib', '', 'post');
+		$attribs = JRequest::getVar('attrib', array(), 'post');
 		if (is_array($attribs))
 		{
-			$txta = array();
+			$txta = new $paramsClass('');
 			foreach ($attribs as $k => $v)
 			{
-				$txta[] = "$k=$v";
+				$txta->set($k, $v);
 			}
-			$row->attribs = implode("\n", $txta);
+			$row->attribs = $txta->toString();
 		}
 
 		// Get custom areas, add wrappers, and compile into fulltxt
@@ -1712,16 +1718,33 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$group_id = 'g.id';
 		$aro_id = 'aro.id';
 
-		$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
-			. "\n FROM #__users AS a"
-			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
-			. "\n INNER JOIN #__core_acl_aro_groups AS g ON " . $group_id . " = gm.group_id"
-			. "\n WHERE a.block = '0' AND " . $group_id . "=25"
-			. "\n ORDER BY ". $order;
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
+				. "\n FROM #__users AS a"
+				. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
+				. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
+				. "\n INNER JOIN #__core_acl_aro_groups AS g ON " . $group_id . " = gm.group_id"
+				. "\n WHERE a.block = '0' AND " . $group_id . "=25"
+				. "\n ORDER BY ". $order;
+		}
+		else
+		{
+			$query = "SELECT a.id AS value, a.name AS text, g.title AS groupname"
+				. "\n FROM #__users AS a"
+				. "\n INNER JOIN #__user_usergroup_map AS gm ON gm.user_id = a.id"	// map aro to group
+				. "\n INNER JOIN #__usergroups AS g ON g.id = gm.group_id"
+				. "\n WHERE a.block = '0' AND g.title='Super Users'"
+				. "\n ORDER BY ". $order;
+		}
 
 		$database->setQuery($query);
 		$result = $database->loadObjectList();
+
+		if (!$result)
+		{
+			$result = array();
+		}
 
 		if ($nouser)
 		{

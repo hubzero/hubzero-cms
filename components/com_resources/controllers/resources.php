@@ -1276,8 +1276,15 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 			if ($group)
 			{
-				$pathway->_pathway = array();
-				$pathway->_count = 0;
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$pathway->setPathway(array());
+				}
+				else
+				{
+					$pathway->_pathway = array();
+					$pathway->_count = 0;
+				}
 
 				$pathway->addItem(
 					'Groups',
