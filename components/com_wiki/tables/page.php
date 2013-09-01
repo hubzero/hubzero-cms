@@ -540,7 +540,9 @@ class WikiPage extends JTable
 
 		if (!$this->id)
 		{
-			$g = WikiPage::getInstance($this->pagename, $this->scope);
+			$g = new WikiPage($this->_db);
+			$g->loadByTitle($this->pagename, $this->scope);
+			//$g = WikiPage::getInstance($this->pagename, $this->scope);
 			if ($g->exist()) 
 			{
 				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));

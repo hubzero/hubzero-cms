@@ -1140,11 +1140,16 @@ class WikiParser
 					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
 					$txt = trim($txt, "\n\r\t");
 
-					$geshi = new GeSHi('', $t);
-					$geshi->set_header_type(GESHI_HEADER_DIV);
-					$geshi->set_source($txt);
+					if (class_exists('GeSHi'))
+					{
+						$geshi = new GeSHi('', $t);
+						$geshi->set_header_type(GESHI_HEADER_DIV);
+						$geshi->set_source($txt);
 
-					return '<div class="pre ' . $t . '">' . $geshi->parse_code() . '</div>';
+						return '<div class="pre ' . $t . '">' . $geshi->parse_code() . '</div>';
+					}
+
+					return '<div class="pre ' . $t . '">' . $txt . '</div>';
 				break;
 
 				case 'default':
