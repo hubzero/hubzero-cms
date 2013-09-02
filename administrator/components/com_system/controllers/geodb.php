@@ -65,22 +65,40 @@ class SystemControllerGeodb extends Hubzero_Controller
 	 */
 	public function importHubconfigTask()
 	{
-		require_once(JPATH_ROOT . DS . 'hubconfiguration.php');
+		if (file_exists(JPATH_ROOT . DS . 'hubconfiguration.php'))
+		{
+			include_once(JPATH_ROOT . DS . 'hubconfiguration.php');
+		}
 
-		$table =& JTable::getInstance('component');
-		$table->loadByOption($this->_option);
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$table =& JTable::getInstance('component');
+			$table->loadByOption($this->_option);
+		}
+		else
+		{
+			$table = new JTableExtension($this->database);
+			$table->load($table->find(array('element' => $this->_option, 'type' => 'component')));
+		}
 
-		$hub_config = new HubConfig();
+		if (class_exists('HubConfig'))
+		{
+			$hub_config = new HubConfig();
 
-		$this->config->set('geodb_driver', $hub_config->ipDBDriver);
-		$this->config->set('geodb_host', $hub_config->ipDBHost);
-		$this->config->set('geodb_port', $hub_config->ipDBPort);
-		$this->config->set('geodb_user', $hub_config->ipDBUsername);
-		$this->config->set('geodb_password', $hub_config->ipDBPassword);
-		$this->config->set('geodb_database', $hub_config->ipDBDatabase);
-		$this->config->set('geodb_prefix', $hub_config->ipDBPrefix);
+			$this->config->set('geodb_driver', $hub_config->ipDBDriver);
+			$this->config->set('geodb_host', $hub_config->ipDBHost);
+			$this->config->set('geodb_port', $hub_config->ipDBPort);
+			$this->config->set('geodb_user', $hub_config->ipDBUsername);
+			$this->config->set('geodb_password', $hub_config->ipDBPassword);
+			$this->config->set('geodb_database', $hub_config->ipDBDatabase);
+			$this->config->set('geodb_prefix', $hub_config->ipDBPrefix);
 
-		$table->params = $this->config->toString();
+			$table->params = $this->config->toString();
+		}
+		else
+		{
+			$table->params = (version_compare(JVERSION, '1.6', 'lt')) ? '' : '{}';
+		}
 
 		$table->store();
 

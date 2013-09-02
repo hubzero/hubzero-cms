@@ -65,7 +65,10 @@ class SystemControllerLdap extends Hubzero_Controller
 	 */
 	public function importHubconfigTask()
 	{
-		require_once(JPATH_ROOT . DS . 'hubconfiguration.php');
+		if (file_exists(JPATH_ROOT . DS . 'hubconfiguration.php'))
+		{
+			include_once(JPATH_ROOT . DS . 'hubconfiguration.php');
+		}
 
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
@@ -75,21 +78,28 @@ class SystemControllerLdap extends Hubzero_Controller
 		else
 		{
 			$table = new JTableExtension($this->database);
-			$table->load($component->find(array('element' => $this->_option, 'type' => 'component')));
+			$table->load($table->find(array('element' => $this->_option, 'type' => 'component')));
 		}
 
-		$hub_config = new HubConfig();
+		if (class_exists('HubConfig'))
+		{
+			$hub_config = new HubConfig();
+	
+			$this->config->set('ldap_basedn', $hub_config->hubLDAPBaseDN);
+			$this->config->set('ldap_primary', $hub_config->hubLDAPMasterHost);
+			$this->config->set('ldap_secondary', $hub_config->hubLDAPSlaveHosts);
+			$this->config->set('ldap_tls', $hub_config->hubLDAPNegotiateTLS);
+			$this->config->set('ldap_searchdn', $hub_config->hubLDAPSearchUserDN);
+			$this->config->set('ldap_searchpw', $hub_config->hubLDAPSearchUserPW);
+			$this->config->set('ldap_managerdn', $hub_config->hubLDAPAcctMgrDN);
+			$this->config->set('ldap_managerpw', $hub_config->hubLDAPAcctMgrPW);
 
-		$this->config->set('ldap_basedn', $hub_config->hubLDAPBaseDN);
-		$this->config->set('ldap_primary', $hub_config->hubLDAPMasterHost);
-		$this->config->set('ldap_secondary', $hub_config->hubLDAPSlaveHosts);
-		$this->config->set('ldap_tls', $hub_config->hubLDAPNegotiateTLS);
-		$this->config->set('ldap_searchdn', $hub_config->hubLDAPSearchUserDN);
-		$this->config->set('ldap_searchpw', $hub_config->hubLDAPSearchUserPW);
-		$this->config->set('ldap_managerdn', $hub_config->hubLDAPAcctMgrDN);
-		$this->config->set('ldap_managerpw', $hub_config->hubLDAPAcctMgrPW);
-
-		$table->params = $this->config->toString();
+			$table->params = $this->config->toString();
+		}
+		else
+		{
+			$table->params = (version_compare(JVERSION, '1.6', 'lt')) ? '' : '{}';
+		}
 
 		$table->store();
 
