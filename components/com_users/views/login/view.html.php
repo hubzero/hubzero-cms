@@ -78,9 +78,8 @@ class UsersViewLogin extends JViewLegacy
 		$auth = '';
 		if($return = JRequest::getVar('return', null))
 		{
-			$this->return = $return;
-			$return = base64_decode($return);
-			$query  = parse_url($return);
+			$decoded_return = base64_decode($return);
+			$query  = parse_url($decoded_return);
 			if (is_array($query) && isset($query['query']))
 			{
 				$query  = $query['query'];
