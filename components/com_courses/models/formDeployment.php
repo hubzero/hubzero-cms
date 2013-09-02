@@ -321,7 +321,7 @@ class PdfFormDeployment
 			// Now overload start and end times with section asset times if applicable
 			// @FIXME: assuming student is only in one section, and that asset is only part of one offering
 			$query = "SELECT cfd.id, cosd.publish_up, cosd.publish_down FROM `#__courses_form_deployments` cfd
-						JOIN `#__courses_assets` ca ON cfd.crumb = substring(ca.url, 30)
+						JOIN `#__courses_assets` ca ON cfd.crumb = ca.url
 						JOIN `#__courses_offering_section_dates` cosd ON ca.id = cosd.scope_id
 						WHERE cosd.scope = 'asset'
 						AND cosd.section_id = " . $dbh->quote($section_id) . "
@@ -372,16 +372,6 @@ class PdfFormDeployment
 	public function setId($id)
 	{
 		$this->id = $id;
-	}
-
-	/**
-	 * Get link to form
-	 *
-	 * @return string
-	 **/
-	public function getLink($internal=false)
-	{
-		return ($internal) ? '/courses/form/complete?crumb='.$this->crumb : 'https://'.$_SERVER['HTTP_HOST'].'/courses/form/complete?crumb='.$this->crumb;
 	}
 
 	/**
@@ -672,44 +662,8 @@ class PdfFormDeployment
 			// Get our asset object
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 			$asset = new CoursesModelAsset($result);
-			$asset->set('url', $this->getLink(true));
+			$asset->set('url', $this->crumb);
 			$asset->store();
-		}
-	}
-
-	/**
-	 * Get course info for form
-	 *
-	 * @return course object
-	 **/
-	public function getCourseInfo()
-	{
-		$dbh = self::getDBH();
-		$fid = $this->formId;
-
-		$dbh->setQuery(
-			'SELECT ca.course_id, o.id
-			FROM #__courses_assets as ca
-			INNER JOIN #__courses_asset_associations as caa ON caa.asset_id = ca.id
-			INNER JOIN #__courses_asset_groups as cag ON cag.id = caa.scope_id
-			INNER JOIN #__courses_units as u ON u.id = cag.unit_id
-			INNER JOIN #__courses_offerings as o ON o.id = u.offering_id
-			INNER JOIN #__courses_forms as cf ON ca.id = cf.asset_id
-			WHERE cf.id = ' . $dbh->Quote($fid)
-		);
-
-		if($result = $dbh->loadAssoc())
-		{
-			// Get course model
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-			$course = CoursesModelCourse::getInstance($result['course_id']);
-			$course->offering($result['id']);
-
-			return $course;
-		}
-		else
-		{
-			return false;
 		}
 	}
 }

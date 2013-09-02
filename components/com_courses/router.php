@@ -42,16 +42,6 @@ function CoursesBuildRoute(&$query)
 
 	if (!empty($query['controller'])) 
 	{
-		if($query['controller'] == 'form')
-		{
-			$segments[] = $query['controller'];
-
-			if(!empty($query['task']))
-			{
-				$segments[] = $query['task'];
-				unset($query['task']);
-			}
-		}
 		unset($query['controller']);
 	}
 
@@ -129,11 +119,6 @@ function CoursesParseRoute($segments)
 		{
 			$vars['controller'] = 'courses';
 			$vars['task'] = $segments[0];
-		}
-		elseif ($segments[0] == 'form')
-		{
-			$vars['task'] = 'index';
-			$vars['controller'] = $segments[0];
 		}
 		else
 		{
@@ -225,16 +210,6 @@ function CoursesParseRoute($segments)
 				$vars['controller'] = 'media';
 			break;
 
-			// Forms routes
-			case 'index':
-			case 'layout':
-			case 'upload':
-			case 'showDeployment':
-			case 'complete':
-				$vars['controller'] = 'form';
-				$vars['task']       = $segments[1];
-			break;
-
 			// Defaults
 			default:
 				$pagefound = false;
@@ -266,10 +241,15 @@ function CoursesParseRoute($segments)
 
 	if (isset($segments[2])) 
 	{
-		if ($segments[0] == 'form')
+		if ($segments[2] == 'form.index'
+			|| $segments[2] == 'form.layout'
+			|| $segments[2] == 'form.upload'
+			|| $segments[2] == 'form.deploy'
+			|| $segments[2] == 'form.showDeployment'
+			|| $segments[2] == 'form.complete')
 		{
-			$vars['formId'] = $segments[2];
 			$vars['controller'] = 'form';
+			$vars['task']       = substr($segments[2], 5);
 		}
 		elseif ($segments[2] == 'asset' && isset($segments[3]) && is_numeric($segments[3]))
 		{

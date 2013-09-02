@@ -3,7 +3,7 @@
 </div>
 
 <div class="main section courses-form">
-	<form action="/courses" method="post" id="deployment">
+	<form action="<?php echo JRoute::_($this->base); ?>" method="post" id="deployment">
 		<? require 'deployment_form.php'; ?>
 		<fieldset>
 			<input type="hidden" name="controller" value="form" />

@@ -202,13 +202,14 @@ jQuery(function($) {
 		evt.preventDefault();
 		saveButton.text('Saving...').attr('disabled', true);
 		var serialized = {
-			'formId': window.location.search.toString().match(/formId=(\d+)/)[1],
-			'task'  : 'saveLayout',
-			'pages' : [],
-			'title' : $('#title').val().replace(/^\s+|\s+$/g, ''),
-			'type'  : $('#asset-type').val()
+			'formId'     : window.location.search.toString().match(/formId=(\d+)/)[1],
+			'controller' : 'form',
+			'task'       : 'saveLayout',
+			'pages'      : [],
+			'title'      : $('#title').val().replace(/^\s+|\s+$/g, ''),
+			'type'       : $('#asset-type').val()
 		};
-		if (serialized.title == '') {
+		if (serialized.title === '') {
 			$('#title-error').text('Please enter a title for this document').show();
 			$('#title').addClass('fieldWithErrors').focus();
 			location.hash = '#title';
@@ -263,7 +264,8 @@ jQuery(function($) {
 
 		if (!errors) {
 			$('.error').hide();
-			$.post('/courses/form', serialized, function(response) {
+			var url = window.location.href.toString().match(/(.*)form\.layout.*/)[1];
+			$.post(url, serialized, function(response) {
 				saveButton.text('Save and Close').attr('disabled', false);
 				$('#saved-notification').slideDown('slow');
 				if (response && response.result && response.result == 'success') {

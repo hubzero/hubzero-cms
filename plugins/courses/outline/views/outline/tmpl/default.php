@@ -126,13 +126,17 @@ if (!$this->course->offering()->access('view')) { ?>
 															// Loop through the assets
 															foreach ($ag->assets() as $a)
 															{
-																if ($a->isAvailable() && $a->isPublished())
+																if (($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished())
 																{
 																	$href = JRoute::_($base . '&asset=' . $a->get('id'));
 																	$target = ' target="_blank"';
 																	if ($a->get('type') == 'video')
 																	{
 																		$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+																		$target = '';
+																	}
+																	else if ($a->get('type') == 'form')
+																	{
 																		$target = '';
 																	}
 																	echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
@@ -161,6 +165,10 @@ if (!$this->course->offering()->access('view')) { ?>
 															if ($a->get('type') == 'video')
 															{
 																$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+																$target = '';
+															}
+															else if ($a->get('type') == 'form')
+															{
 																$target = '';
 															}
 															echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
@@ -200,6 +208,10 @@ if (!$this->course->offering()->access('view')) { ?>
 								if ($a->get('type') == 'video')
 								{
 									$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+									$target = '';
+								}
+								else if ($a->get('type') == 'form')
+								{
 									$target = '';
 								}
 								echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';

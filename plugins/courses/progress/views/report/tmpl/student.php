@@ -73,14 +73,9 @@ foreach($assets as $asset)
 	$crumb                 = false;
 
 	// Check for result for given student on form
-	preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->url, $matches);
+	$crumb = $asset->url;
 
-	if(isset($matches[1]))
-	{
-		$crumb = $matches[1];
-	}
-
-	if(!$crumb || $asset->state != 1)
+	if(!$crumb || strlen($crumb) != 20 || $asset->state != 1)
 	{
 		// Try seeing if there's an override grade in the gradebook...
 		if (!is_null($grades[$this->juser->get('id')]['assets'][$asset->id]['score']))
@@ -173,6 +168,14 @@ foreach($assets as $asset)
 
 				// For sanities sake - they have NOT completed the form yet!
 				$increment_count_taken = false;
+
+				// If there's an override in the gradebook, go ahead and use that, whether or not they've even taken the form yet
+				if ($grades[$this->juser->get('id')]['assets'][$asset->id]['override']
+					&& !is_null($grades[$this->juser->get('id')]['assets'][$asset->id]['score']))
+				{
+					$score = $grades[$this->juser->get('id')]['assets'][$asset->id]['score'];
+					$increment_count_taken = true;
+				}
 			}
 
 			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>$date, 'url'=>$url);

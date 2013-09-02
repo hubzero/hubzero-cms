@@ -49,8 +49,14 @@ class CoursesControllerForm extends Hubzero_Controller {
 	 */
 	public function execute()
 	{
+		$this->getCourseInfo();
+
+		$section = $this->course->offering()->section()->get('alias');
+		$section = ($section != '__default' && !empty($section)) ? ":{$section}" : '';
+
 		// Get the user
 		$this->juser = JFactory::getUser();
+		$this->base  = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}&offering={$this->course->offering()->get('alias')}{$section}";
 
 		parent::execute();
 	}
@@ -72,44 +78,15 @@ class CoursesControllerForm extends Hubzero_Controller {
 			);
 		}
 
-		$dbh = JFactory::getDBO();
+		$pathway->addItem(
+			JText::_(ucfirst($this->course->get('title'))),
+			"index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}"
+		);
 
-		// First, check for a form id
-		if ($fid = JRequest::getInt('formId', false))
-		{
-			$dbh->setQuery(
-				'SELECT ca.course_id
-				FROM `#__courses_assets` AS ca
-				LEFT JOIN `#__courses_forms` AS cf ON cf.asset_id = ca.id
-				WHERE cf.id = ' . $dbh->Quote($fid)
-			);
-
-			if($result = $dbh->loadResult())
-			{
-				// Get course model
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-				$course = CoursesModelCourse::getInstance((int) $result);
-			}
-		}
-		elseif ($crumb = JRequest::getVar('crumb', false))
-		{
-			$dbh->setQuery('SELECT course_id FROM `#__courses_assets` WHERE SUBSTRING(url, 30, 50) = ' . $dbh->Quote($crumb));
-
-			if($result = $dbh->loadResult())
-			{
-				// Get course model
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-				$course = CoursesModelCourse::getInstance((int) $result);
-			}
-		}
-
-		if (isset($course) && is_object($course))
-		{
-			$pathway->addItem(
-				JText::_($course->get('title')),
-				'index.php?option=' . $this->_option . '&controller=courses&gid=' . $course->get('alias')
-			);
-		}
+		$pathway->addItem(
+			JText::_(ucfirst($this->course->offering()->get('title'))),
+			$this->base
+		);
 
 		if ($this->_task != 'index')
 		{
@@ -169,6 +146,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 
 		$this->view->title = $this->_title;
+		$this->view->base  = $this->base;
 
 		// Display
 		$this->view->display();
@@ -290,6 +268,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$this->view->pdf   = $this->assertExistentForm();
 		$this->view->dep   = ($dep) ? $dep : new PdfFormDeployment;
 		$this->view->title = $this->view->pdf->getTitle();
+		$this->view->base  = $this->base;
 
 		$this->view->display();
 	}
@@ -327,7 +306,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 			{
 				$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
 				$this->setRedirect(
-					JRoute::_('index.php?option=com_courses&controller=form&task=showDeployment&id='.$dep->save().'&formId='.$pdf->getId().$tmpl, false),
+					JRoute::_($this->base . '&task=form.showDeployment&id='.$dep->save().'&formId='.$pdf->getId().$tmpl, false),
 					JText::_('Deployment successfully created'),
 					'passed'
 				);
@@ -367,7 +346,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		{
 			$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_courses&controller=form&task=showDeployment&id='.$dep->save($deploymentId).'&formId='.$pdf->getId().$tmpl, false),
+				JRoute::_($this->base . '&task=form.showDeployment&id='.$dep->save($deploymentId).'&formId='.$pdf->getId().$tmpl, false),
 				JText::_('Deployment successfully updated'),
 				'passed'
 			);
@@ -404,6 +383,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$this->view->pdf   = $this->assertExistentForm();
 		$this->view->title = $this->view->pdf->getTitle();
 		$this->view->dep   = ($dep) ? $dep : PdfFormDeployment::load($id);
+		$this->view->base  = $this->base;
 
 		// Display
 		$this->view->display();
@@ -421,10 +401,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(422);
 		}
 
-		// First, attempt to compute section
-		$section = FormHelper::getSection($crumb);
-
-		$dep = PdfFormDeployment::fromCrumb($crumb, $section);
+		$dep = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
 		$dbg = JRequest::getVar('dbg', false);
 
 		switch ($dep->getState())
@@ -453,6 +430,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 				$this->view->resp  = $dep->getRespondent(NULL, $attempt);
 				$this->view->pdf   = $dep->getForm();
 				$this->view->title = $this->view->pdf->getTitle();
+				$this->view->base  = $this->base;
 				$this->view->dep   = $dep;
 
 				// Display
@@ -483,6 +461,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 					$this->view->incomplete = array();
 					$this->view->pdf        = $dep->getForm();
 					$this->view->title      = $this->view->pdf->getTitle();
+					$this->view->base       = $this->base;
 					$this->view->dep        = $dep;
 					$this->view->resp       = $resp;
 					$this->view->display();
@@ -499,6 +478,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 					$this->view->pdf        = $dep->getForm();
 					$this->view->title      = $this->view->pdf->getTitle();
+					$this->view->base       = $this->base;
 					$this->view->dep        = $dep;
 					$this->view->resp       = $resp;
 					$this->view->incomplete = (isset($this->view->incomplete)) ? $this->view->incomplete : array();
@@ -527,7 +507,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$att  = ($attempt > 1) ? '&attempt='.$attempt : '';
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb=' . $_POST['crumb'] . $att . $tmpl, false)
+			JRoute::_($this->base . '&task=form.complete&crumb=' . $crumb . $att . $tmpl, false)
 		);
 		return;
 	}
@@ -577,7 +557,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 			$resp = $dep->getRespondent(NULL, $attempt);
 			$resp->saveAnswers($_POST)->markEnd();
 
-			$this->setRedirect(JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb='.$crumb.$att, false));
+			$this->setRedirect(JRoute::_($this->base . '&task=form.complete&crumb='.$crumb.$att, false));
 			return;
 		}
 		else
@@ -660,38 +640,29 @@ class CoursesControllerForm extends Hubzero_Controller {
 	}
 
 	/**
+	 * Get course info from route
+	 * 
+	 * @return bool
+	 */
+	public function getCourseInfo()
+	{
+		$gid      = JRequest::getVar('gid');
+		$offering = JRequest::getVar('offering');
+		$section  = JRequest::getVar('section');
+
+		$this->course = new CoursesModelCourse($gid);
+		$this->course->offering($offering);
+		$this->course->offering()->section($section);
+	}
+
+	/**
 	 * Check if form is part of a course
 	 * 
 	 * @return bool
 	 */
-	public function authorizeCourse() {
-		// First, check for a form id
-		if(!$fid = JRequest::getInt('formId', false))
-		{
-			return false;
-		}
-
-		$dbh = JFactory::getDBO();
-
-		$dbh->setQuery(
-			'SELECT ca.course_id
-			FROM `#__courses_assets` AS ca
-			LEFT JOIN `#__courses_forms` AS cf ON cf.asset_id = ca.id
-			WHERE cf.id = ' . $dbh->Quote($fid)
-		);
-
-		if($result = $dbh->loadResult())
-		{
-			// Get course model
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-			$course = CoursesModelCourse::getInstance((int) $result);
-
-			return $course->access('manage');
-		}
-		else
-		{
-			return false;
-		}
+	public function authorizeCourse()
+	{
+		return $this->course->access('manage');
 	}
 }
 
@@ -735,28 +706,6 @@ class FormHelper {
 		}
 
 		return join(', ', $rv);
-	}
-
-	/**
-	 * Get section for current student and form
-	 * 
-	 * @return     string
-	 */
-	public function getSection($crumb)
-	{
-		$db = JFactory::getDBO();
-		$query = "SELECT cm.section_id FROM `#__courses_form_deployments` cfd
-					JOIN `#__courses_assets` ca ON cfd.crumb = substring(ca.url, 30)
-					JOIN `#__courses_offering_section_dates` cosd ON ca.id = cosd.scope_id
-					JOIN `#__courses_members` cm ON cosd.section_id = cm.section_id 
-					WHERE cosd.scope = 'asset'
-					AND cm.user_id = " . $db->quote(JFactory::getUser()->get('id')) . "
-					AND cfd.crumb = " . $db->quote($crumb);
-
-		$db->setQuery($query);
-		$result = $db->loadResult();
-
-		return ($result) ? $result : NULL;
 	}
 
 	/**

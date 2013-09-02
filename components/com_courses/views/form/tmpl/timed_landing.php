@@ -11,7 +11,7 @@
 <? else: ?>
 	<p><em>Time is already running because the form is close to expiring!</em></p>
 <? endif; ?>
-<form action="/courses" method="post">
+<form action="<?php echo JRoute::_($this->base); ?>" method="post">
 	<fieldset>
 		<input type="hidden" name="task" value="startWork" />
 		<input type="hidden" name="crumb" value="<?= $this->dep->getCrumb() ?>" />

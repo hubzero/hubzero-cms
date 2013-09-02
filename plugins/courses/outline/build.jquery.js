@@ -376,7 +376,7 @@ HUB.CoursesOutline = {
 								modal: true,
 								height: ($(window).height())*2/3,
 								type: 'iframe',
-								href: '/courses/form?task=deploy&formId='+formId+'&tmpl=component',
+								href: window.location.href.match(/(.*)\/outline/)[1]+'/form.deploy?formId='+formId+'&tmpl=component',
 								afterShow: function() {
 									var contents = $('.fancybox-iframe').contents();
 

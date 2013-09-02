@@ -38,12 +38,13 @@ jQuery(function($) {
         }
 	$('.placeholder').change(function(evt) {
 		var inp = $(evt.target);
-		$.post('/courses/form', {
-                        'task'     : 'saveProgress',
-                        'crumb'    : window.location.search.toString().match(/crumb=([^&]+)/)[1],
-			'question' : inp.attr('name').match(/\d+/)[0],
-                        'answer'   : inp.val(),
-                        'attempt'  : $('form input[name="attempt"]').val()
+		$.post(window.location.href.match(/(.*)form.complete/)[1], {
+                        'task'       : 'saveProgress',
+                        'controller' : 'form',
+                        'crumb'      : window.location.search.toString().match(/crumb=([^&]+)/)[1],
+			'question'   : inp.attr('name').match(/\d+/)[0],
+                        'answer'     : inp.val(),
+                        'attempt'    : $('form input[name="attempt"]').val()
 		});
 	});
 });

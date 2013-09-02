@@ -2,9 +2,11 @@
 	<h2>Deployment: <?= htmlentities($this->title) ?></h2>
 </div>
 
+<?php $link = JRoute::_($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb()); ?>
+
 <div class="main section courses-form">
-	<p class="distribution-link">Link to distribute: <a href="<?= $this->dep->getLink() ?>"><?= $this->dep->getLink() ?></a><span class="state <?= $this->dep->getState() ?>"><?= $this->dep->getState() ?></span></p>
-	<form action="/courses" method="post" id="deployment">	
+	<p class="distribution-link">Link to distribute: <a href="<?= $link ?>"><?= $link ?></a><span class="state <?= $this->dep->getState() ?>"><?= $this->dep->getState() ?></span></p>
+	<form action="<?php echo JRoute::_($this->base); ?>" method="post" id="deployment">
 		<? require 'deployment_form.php'; ?>
 		<fieldset>
 			<input type="hidden" name="controller" value="form" />

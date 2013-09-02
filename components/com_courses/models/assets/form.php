@@ -105,7 +105,7 @@ class FormAssetHandler extends ContentAssetHandler
 		$this->asset['title']   = $filename;
 		$this->asset['type']    = 'form';
 		$this->asset['subtype'] = $subtype;
-		$this->asset['url']     = '/courses/form/layout/' . $id;
+		$this->asset['url']     = $id;
 
 		// Call the primary create method on the file asset handler
 		$return = parent::create();
@@ -120,6 +120,9 @@ class FormAssetHandler extends ContentAssetHandler
 			// Set the asset id on the form
 			$pdf->setAssetId($return['assets']['asset_id']);
 
+			$gid = JRequest::getVar('course_id');
+			$oid = JRequest::getVar('offering');
+
 			// Build our JavaScript to return to the view to be executed
 			$js = 
 				"// Open up forms in a lightbox
@@ -131,7 +134,7 @@ class FormAssetHandler extends ContentAssetHandler
 					closeBtn: false,
 					modal: true,
 					type: 'iframe',
-					href: '/courses/form?task=layout&formId=" . $id . "&tmpl=component',
+					href: '/courses/".$gid."/".$oid."/form.layout?formId=".$id."&tmpl=component',
 					afterShow: function() {
 						// Highjack the 'done' button to close the iframe
 						$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
@@ -193,6 +196,9 @@ class FormAssetHandler extends ContentAssetHandler
 			return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
 		}
 
+		$gid = JRequest::getVar('course_id');
+		$oid = JRequest::getVar('offering');
+
 		// Compile our return var
 		$js =
 			"// Open up forms in a lightbox
@@ -204,7 +210,7 @@ class FormAssetHandler extends ContentAssetHandler
 				closeBtn: false,
 				modal: true,
 				type: 'iframe',
-				href: '/courses/form?task=layout&formId=" . $form->getId() . "&tmpl=component',
+				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&tmpl=component',
 				afterShow: function() {
 					// Highjack the 'done' button to close the iframe
 					$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
@@ -241,6 +247,9 @@ class FormAssetHandler extends ContentAssetHandler
 			return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
 		}
 
+		$gid = JRequest::getVar('course_id');
+		$oid = JRequest::getVar('offering');
+
 		// Compile our return var
 		$js =
 			"// Open up forms in a lightbox
@@ -252,7 +261,7 @@ class FormAssetHandler extends ContentAssetHandler
 				closeBtn: false,
 				modal: true,
 				type: 'iframe',
-				href: '/courses/form?task=layout&formId=" . $form->getId() . "&readonly=1&tmpl=component',
+				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&readonly=1&tmpl=component',
 				afterShow: function() {
 					// Highjack the 'done' button to close the iframe
 					$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {

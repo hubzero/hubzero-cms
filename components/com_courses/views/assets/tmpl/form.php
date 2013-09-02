@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JFactory::getApplication()->redirect($this->model->path($this->course->get('id')));
+$base = 'index.php?option=' . $this->option . '&controller=form&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
+
+$route = $base . '&task=form.complete&crumb=' . $this->model->get('url');
+
+JFactory::getApplication()->redirect(JRoute::_($route, false, false));
 
 ?>

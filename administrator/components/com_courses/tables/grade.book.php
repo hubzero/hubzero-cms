@@ -300,14 +300,9 @@ class CoursesTableGradeBook extends JTable
 				$crumb = false;
 
 				// Check for result for given student on form
-				preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->url, $matches);
+				$crumb = $asset->url;
 
-				if(isset($matches[1]))
-				{
-					$crumb = $matches[1];
-				}
-
-				if(!$crumb || $asset->state != 1)
+				if(!$crumb || strlen($crumb) != 20 || $asset->state != 1)
 				{
 					// Break foreach, this is not a valid form!
 					continue;

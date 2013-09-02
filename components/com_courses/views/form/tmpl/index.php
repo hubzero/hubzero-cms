@@ -47,7 +47,7 @@
 							<tr>
 								<td>
 									<span class="state"><?= $dep->getState() ?></span>
-									<a href="<?php echo JRoute::_('index.php?option=com_courses&controller=form&task=showDeployment&id='.$dep->getId().'&formId='.$form['id']); ?>">
+									<a href="<?php echo JRoute::_($this->base . '&task=showDeployment&id='.$dep->getId().'&formId='.$form['id']); ?>">
 										<?= $dep->getLink() ?>
 									</a>
 								</td>

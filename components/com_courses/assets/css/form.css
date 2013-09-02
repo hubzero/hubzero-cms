@@ -330,31 +330,7 @@ input[type=number] {
 	top: 10px;
 	font-size: 20px;
 }
-.btn.back {
-	display: block;
-	float: right;
-	padding: 0.4em 0.91em 0.4em 2.91em;
-}
 .btn.back:before {
-	background: #e3e3e3;
-	background: rgba(0, 0, 0, 0.08);
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 1em;
-	text-align: center;
-	font-size: 1.2em;
-	font-weight: normal;
-	font-family: 'Fontcons';
-	line-height: 2.1;
-	padding: 0 0.5em;
-	margin-right: 0.2em;
-	-webkit-border-radius: 0.25em 0 0 0.25em;
-	-moz-border-radius: 0.25em 0 0 0.25em;
-	-ms-border-radius: 0.25em 0 0 0.25em;
-	-o-border-radius: 0.25em 0 0 0.25em;
-	border-radius: 0.25em 0 0 0.25em;
 	content: "\2190";
 }
 /* css for timepicker https://github.com/trentrichardson/jQuery-Timepicker-Addon */
