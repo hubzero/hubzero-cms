@@ -77,11 +77,11 @@ HUBzero is a registered trademark of Purdue University.
 
 				<field name="@spacer" type="spacer" default="Read/Write MySQL Account" label="" description="" />
 				<field name="db_user" type="text" menu="hide" default="datawriter" label="Database User [rw]" description="User name for the MySQL account" />
-				<field name="db_password" type="password" menu="hide" default="datawriter_pw" label="Database Password [rw]" description="Password for the MySQL account" />
+				<field name="db_password" type="password" menu="hide" default="" label="Database Password [rw]" description="Password for the MySQL account" />
 
 				<field name="@spacer" type="spacer" default="Read only MySQL Account" label="" description="" />
 				<field name="db_ro_user" type="text" menu="hide" default="dataviewer" label="Database User [ro]" description="User name for the MySQL account [used by the dataviewer]" />
-				<field name="db_ro_password" type="password" menu="hide" default="dataviewer_pw" label="Database Password [ro]" description="Password for the MySQL account [used by the dataviewer]" />
+				<field name="db_ro_password" type="password" menu="hide" default="" label="Database Password [ro]" description="Password for the MySQL account [used by the dataviewer]" />
 			</fieldset>
 		</fields>
 	</config>
