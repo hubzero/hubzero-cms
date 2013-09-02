@@ -92,13 +92,9 @@ class SystemControllerGeodb extends Hubzero_Controller
 			$this->config->set('geodb_password', $hub_config->ipDBPassword);
 			$this->config->set('geodb_database', $hub_config->ipDBDatabase);
 			$this->config->set('geodb_prefix', $hub_config->ipDBPrefix);
+		}
 
-			$table->params = $this->config->toString();
-		}
-		else
-		{
-			$table->params = (version_compare(JVERSION, '1.6', 'lt')) ? '' : '{}';
-		}
+		$table->params = $this->config->toString();
 
 		$table->store();
 

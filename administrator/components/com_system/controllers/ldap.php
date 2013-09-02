@@ -93,13 +93,9 @@ class SystemControllerLdap extends Hubzero_Controller
 			$this->config->set('ldap_searchpw', $hub_config->hubLDAPSearchUserPW);
 			$this->config->set('ldap_managerdn', $hub_config->hubLDAPAcctMgrDN);
 			$this->config->set('ldap_managerpw', $hub_config->hubLDAPAcctMgrPW);
+		}
 
-			$table->params = $this->config->toString();
-		}
-		else
-		{
-			$table->params = (version_compare(JVERSION, '1.6', 'lt')) ? '' : '{}';
-		}
+		$table->params = $this->config->toString();
 
 		$table->store();
 
