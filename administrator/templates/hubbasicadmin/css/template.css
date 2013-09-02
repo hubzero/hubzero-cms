@@ -3078,13 +3078,21 @@
 		float: left;
 	}
 	.adminformlist fieldset.radio input {
-		width: 5%;
-		margin-top: 0.5em;
+		width: 3%;
+		margin: 0.5em 0 0 0;
 		padding: 0.21803399em 0;
 	}
 	.adminformlist fieldset.radio label {
-		width: 85%;
+		width: 92%;
 		padding: 0.21803399em 0;
+		margin-left: 5%;
+		margin-right: 0%;
+	}
+	.panelform .adminformlist fieldset.radio input {
+		width: 5%;
+	}
+	.panelform .adminformlist fieldset.radio label {
+		width: 90%;
 	}
 	.panel .panelform {
 		padding: 0;
