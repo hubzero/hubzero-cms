@@ -60,14 +60,14 @@ function UsersBuildRoute(&$query)
 			}
 
 			// Check to see if we have found the registration menu item.
-			if (empty($registration) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'registration')) {
-				$registration = $items[$i]->id;
-			}
+			//if (empty($registration) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'registration')) {
+			//	$registration = $items[$i]->id;
+			//}
 
 			// Check to see if we have found the profile menu item.
-			if (empty($profile) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'profile')) {
-			$profile = $items[$i]->id;
-			}
+			//if (empty($profile) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'profile')) {
+			//$profile = $items[$i]->id;
+			//}
 		}
 
 		// Set the default menu item to use for com_users if possible.
@@ -106,6 +106,7 @@ function UsersBuildRoute(&$query)
 				}
 				break;
 
+			default:
 			case 'login':
 				if ($query['Itemid'] = $login) {
 					unset ($query['view']);
@@ -114,34 +115,34 @@ function UsersBuildRoute(&$query)
 				}
 				break;
 
-			case 'registration':
-				if ($query['Itemid'] = $registration) {
-					unset ($query['view']);
-				} else {
-					$query['Itemid'] = $default;
-				}
-				break;
+			//case 'registration':
+			//	if ($query['Itemid'] = $registration) {
+			//		unset ($query['view']);
+			//	} else {
+			//		$query['Itemid'] = $default;
+			//	}
+			//	break;
 
-			default:
-			case 'profile':
-				if (!empty($query['view'])) {
-					$segments[] = $query['view'];
-				}
-				unset ($query['view']);
-				if ($query['Itemid'] = $profile) {
-					unset ($query['view']);
-				} else {
-					$query['Itemid'] = $default;
-				}
+			//default:
+			//case 'profile':
+			//	if (!empty($query['view'])) {
+			//		$segments[] = $query['view'];
+			//	}
+			//	unset ($query['view']);
+			//	if ($query['Itemid'] = $profile) {
+			//		unset ($query['view']);
+			//	} else {
+			//		$query['Itemid'] = $default;
+			//	}
 
 				// Only append the user id if not "me".
-				$user = JFactory::getUser();
-				if (!empty($query['user_id']) && ($query['user_id'] != $user->id)) {
-					$segments[] = $query['user_id'];
-				}
-				unset ($query['user_id']);
+			//	$user = JFactory::getUser();
+			//	if (!empty($query['user_id']) && ($query['user_id'] != $user->id)) {
+			//		$segments[] = $query['user_id'];
+			//	}
+			//	unset ($query['user_id']);
 
-				break;
+			//	break;
 		}
 	}
 
@@ -169,7 +170,7 @@ function UsersParseRoute($segments)
 	$userId = array_pop($segments);
 
 	if (!is_numeric($userId)) {
-		$vars['view'] = 'profile';
+		$vars['view'] = 'login';
 		return $vars;
 	}
 
@@ -191,7 +192,7 @@ function UsersParseRoute($segments)
 
 		// Set the view to package if not already set.
 		if (empty($vars['view'])) {
-			$vars['view'] = 'profile';
+			$vars['view'] = 'login';
 		}
 	} else {
 		JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));

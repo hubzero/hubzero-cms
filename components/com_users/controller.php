@@ -87,7 +87,7 @@ class UsersController extends JControllerLegacy
 					$user = JFactory::getUser();
 					if ($user->get('guest') != 1) {
 						// Redirect to profile page.
-						$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile', false));
+						$this->setRedirect(JRoute::_('index.php?option=com_members&task=myaccount', false));
 						return;
 					}
 
@@ -99,7 +99,7 @@ class UsersController extends JControllerLegacy
 					$user = JFactory::getUser();
 					if ($user->get('guest') != 1) {
 						// Redirect to profile page.
-						$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile', false));
+						$this->setRedirect(JRoute::_('index.php?option=com_members&task=myaccount', false));
 						return;
 					}
 
