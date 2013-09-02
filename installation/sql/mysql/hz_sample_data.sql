@@ -38,7 +38,7 @@ UPDATE `#__extensions` SET params='{"allowUserRegistration":"1","new_usertype":"
 UPDATE `#__modules` SET position='user3' WHERE title='Main Menu';
 UPDATE `#__modules` SET showtitle='0' WHERE title='Main Menu';
 UPDATE `#__modules` SET params= '{"menutype":"mainmenu","menu_style":"list","startLevel":"0","endLevel":"0","showAllChildren":"1","window_open":"","show_whitespace":"0","cache":"1","tag_id":"","class_sfx":"","moduleclass_sfx":"_menu","maxdepth":"10","menu_images":"0","menu_images_align":"0","menu_images_link":"0","expand_menu":"0","activate_parent":"0","full_active_id":"0","indent_image":"0","indent_image1":"","indent_image2":"","indent_image3":"","indent_image4":"","indent_image5":"","indent_image6":"","spacer":"","end_spacer":""}';
-UPDATE `#__modules` SET published='0' WHERE title='Quick Icons';
+UPDATE `#__modules` SET published='0' WHERE title IN ('Quick Icons','Popular Articles','Recently Added Articles','Logged-in Users');
 UPDATE `#__modules` SET module='mod_hubmenu' WHERE title='Admin Menu';
 
 --
@@ -455,7 +455,7 @@ INSERT INTO `#__menu_types` (`id`, `menutype`, `title`, `description`) VALUES (4
 
 
 
-INSERT INTO `#__modules` VALUES (18,'Groups','','',1,'cpanel',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_groups',1,1,'{\"type\":\"1\",\"cache\":\"1\"}',1,'');
+INSERT INTO `#__modules` VALUES (18,'Groups','','',7,'cpanel',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_groups',1,1,'{\"type\":\"1\",\"cache\":\"1\"}',1,'');
 INSERT INTO `#__modules` VALUES (19,'Events Calendar','','',0,'eventsLeft',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_events_cal',1,0,'{\"moduleclass_sfx\":\"\",\"show_nav_prev_month\":\"1\",\"start_day\":\"0\",\"display_last_month\":\"NO\",\"display_last_month_days\":\"0\",\"show_nav_next_month\":\"1\",\"display_next_month\":\"NO\",\"display_next_month_days\":\"0\",\"cache\":\"0\",\"cache_time\":\"900\"}',0,'');
 INSERT INTO `#__modules` VALUES (20,'Latest Events','','',0,'eventsRight',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_events_latest',1,1,'{\"moduleclass_sfx\":\"\",\"startday\":\"0\",\"max_events\":\"10\",\"mode\":\"2\",\"announcements\":\"0\",\"days\":\"365\",\"display_links\":\"0\",\"display_year\":\"0\",\"display_date_style\":\"0\",\"display_title_style\":\"0\",\"no_repeat\":\"1\",\"char_limit\":\"150\",\"cache\":\"0\",\"cache_time\":\"900\"}',0,'');
 INSERT INTO `#__modules` VALUES (21,'Featured Resource','','',0,'featureLeft',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_featuredresource',1,1,'{\"catid\":\"\",\"moduleclass_sfx\":\"featured-resource\",\"txt_length\":\"200\",\"minranking\":\"0\",\"tag\":\"\",\"cache\":\"1\",\"cache_time\":\"900\"}',0,'');
@@ -489,8 +489,9 @@ INSERT INTO `#__modules` VALUES (48,'My Submissions','','',7,'submissions',0,'00
 INSERT INTO `#__modules` VALUES (49,'Browse Content by Tags','','',0,'toptags',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_toptags',1,1,'{\"numtags\":\"25\",\"exclude\":\"\",\"message\":\"\",\"sortby\":\"alphabeta\",\"morelnk\":\"0\",\"cache\":\"0\",\"cache_time\":\"900\"}',0,'');
 INSERT INTO `#__modules` VALUES (50,'Congratulations','','<div id=\"congrats\">\r\n<h2>Welcome to HUBzero!</h2>\r\n<p>Congratulations! Your new hub is up and running. This is a skeleton site and basic template to serve as a starting point for you to begin building your hub.</p>\r\n</div>',0,'welcome',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_custom',1,1,'{\"moduleclass_sfx\":\"\"}',0,'');
 INSERT INTO `#__modules` VALUES (51,'Welcome','','<div id=\"welcome\">\r\n<h2>Welcome to our site!</h2>\r\n<p>\r\nThis project has an <a href=\"/about\">important mission</a> of revolutionizing scientific research and educational activities.\r\n</p>\r\n</div>',1,'welcome',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_custom',1,1,'{\"moduleclass_sfx\":\"\"}',0,'');
-INSERT INTO `#__modules` VALUES (52,'Accessibility Contact','','',1,'accessibilitycontact',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_rapid_contact',1,1,'{\"name_label\":\"Name:\",\"email_label\":\"Email:\",\"subject_label\":\"Subject:\",\"message_label\":\"Message:\",\"email_recipient\":\"\",\"button_text\":\"Send Message\",\"page_text\":\"Thank you for your contact.\",\"error_text\":\"Your message could not be sent. Please try again.\",\"no_email\":\"Please write your email\",\"invalid_email\":\"Please write a valid email\",\"from_name\":\"\",\"from_email\":\"\",\"exact_url\":\"1\",\"disable_https\":\"0\",\"pre_text\":\"We welcome your feedback and invite you to let us know if you have trouble accessing this site. Please send us an email using this form and describe the problem in as much detail as possible, including the URL of the page you were on, the type of problem, and any other information that you would deem necessary for us to better diagnose and resolve the issue.\",\"fixed_url\":\"0\",\"fixed_url_address\":\"\",\"enable_anti_spam\":\"1\",\"anti_spam_q\":\"How many eyes has a typical person?\",\"anti_spam_a\":\"2\",\"moduleclass_sfx\":\"\"}',0,'');
-INSERT INTO `#__modules` VALUES (53,'Members','','',0,'cpanel',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_members',1,1,'{\"cache\":\"1\"}',1,'');
+INSERT INTO `#__modules` VALUES (52,'Accessibility Contact','','',1,'accessibilitycontact',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_rapid_contact',1,1,'{\"name_label\":\"Name:\",\"email_label\":\"Email:\",\"subject_label\":\"Subject:\",\"message_label\":\"Message:\",\"email_recipient\":\"\",\"button_text\":\"Send Message\",\"page_text\":\"Thank you for your contact.\",\"error_text\":\"Your message could not be sent. Please try again.\",\"no_email\":\"Please write your email\",\"invalid_email\":\"Please write a valid email\",\"from_name\":\"\",\"from_email\":\"\",\"exact_url\":\"1\",\"disable_https\":\"0\",\"pre_text\":\"We welcome your feedback and invite you to let us know if you have trouble accessing this site. Please send us an email using this form and describe the problem in as much detail as possible, including the URL of the page you were on, the type of problem, and any other information that you would deem necessary for us to better diagnose and resolve the issue.\",\"fixed_url\":\"0\",\"fixed_url_address\":\"\",\"enable_anti_spam\":\"1\",\"anti_spam_q\":\"How many eyes has a typical person?\",\"anti_spam_a\":\"2\",\"moduleclass_sfx\":\"\"}',0,'*');
+INSERT INTO `#__modules` VALUES (53,'Members','','',6,'cpanel',0,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',1,'mod_members',1,1,'{\"cache\":\"1\"}',1,'*');
+INSERT INTO `#__modules` VALUES (54, 'Who\'s Online', '', '', '5', 'cpanel', '0', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '1', 'mod_whosonline', '1', '1', '{\"display_limit\":\"25\"}', '1', '*');
 
 --
 -- HUBzero sample data for table `#__modules_menu`
@@ -553,6 +554,8 @@ INSERT INTO `#__modules_menu` VALUES (49,100);
 INSERT INTO `#__modules_menu` VALUES (50,95);
 INSERT INTO `#__modules_menu` VALUES (51,100);
 INSERT INTO `#__modules_menu` VALUES (52,75);
+INSERT INTO `#__modules_menu` VALUES (53,0);
+INSERT INTO `#__modules_menu` VALUES (54,0);
 
 --
 -- HUBzero sample data for table `#__password_blacklist`
