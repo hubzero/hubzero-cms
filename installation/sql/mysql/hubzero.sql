@@ -4295,7 +4295,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1514,'Usage - Partners','plugin','partners','usage',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
 (1515,'Usage - Tools','plugin','tools','usage',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',4,0),
 (1516,'User - xHUB','plugin','xusers','user',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',4,0),
-(1517,'User - LDAP','plugin','ldap','user',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
+(1517,'User - LDAP','plugin','ldap','user',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
 (1518,'User - Constant Contact','plugin','constantcontact','user',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',6,0),
 (1519,'Whatsnew - Content','plugin','content','whatsnew',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
 (1520,'Whatsnew - Events','plugin','events','whatsnew',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
