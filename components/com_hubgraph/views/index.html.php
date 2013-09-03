@@ -146,7 +146,7 @@ window.searchBase = '<?= $base ?>';
 		$terms = h($req->getTerms());
 		$rawTerms = $terms;
 		foreach ($results['terms']['suggested'] as $k=>$v):
-			$terms = str_replace($k, '<strong>'.$v.'</strong>', $terms);
+			$terms = str_replace($k, '<strong>'.$v.'</strong>', strtolower($terms));
 			$rawTerms = str_replace($k, $v, $rawTerms);
 		endforeach; 
 		$link = preg_replace('/terms=[^&]*/', 'terms='.$rawTerms, $_SERVER['QUERY_STRING']);
