@@ -236,7 +236,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<input type="hidden" name="fields[scope]" value="<?php echo $this->model->get('scope'); ?>" />
 					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->model->get('scope_id'); ?>" />
 					<input type="hidden" name="active" value="forum" />
-					<input type="hidden" name="task" value="savesection" />
+					<input type="hidden" name="action" value="savesection" />
 
 					<?php echo JHTML::_('form.token'); ?>
 				</fieldset>
