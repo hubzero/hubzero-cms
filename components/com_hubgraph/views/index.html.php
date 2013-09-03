@@ -283,7 +283,7 @@ window.searchBase = '<?= $base ?>';
 							foreach ($res['contributor_ids'] as $cid): 
 								if (!isset($results['contributor_map'][$cid])) continue;
 						?>
-							<li><?= $results['contributor_map'][$cid]['name'] ?></li>
+							<li><?= h($results['contributor_map'][$cid]['name']) ?></li>
 						<? endforeach; ?>
 						</ul>
 					<? elseif ($res['domain'] === 'questions'): ?>
