@@ -97,7 +97,7 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
-		<param name="show_access" type="radio" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
+		<param name="show_access" type="list" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
@@ -208,7 +208,7 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</field>
-		<field name="show_access" type="radio" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
+		<field name="show_access" type="list" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</field>
