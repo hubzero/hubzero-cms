@@ -48,6 +48,7 @@ class plgUserXusers extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
+		$this->database = JFactory::getDBO();
 	}
 
 	public function onUserLogin($user, $options = array())
@@ -291,6 +292,7 @@ class plgUserXusers extends JPlugin
 					}
 					else
 					{
+						
 						$component = new JTableExtension($this->database);
 						$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
 						$params = new JRegistry($component->params);
