@@ -182,6 +182,7 @@ class plgResourcesCollect extends JPlugin
 				$b->object_id   = $this->resource->id;
 				$b->title       = $this->resource->title;
 				$b->description = $this->resource->introtext;
+				$b->url         = JRoute::_('index.php?option=com_resources&id=' . $this->resource->id);
 				if (!$b->check()) 
 				{
 					$this->setError($b->getError());
