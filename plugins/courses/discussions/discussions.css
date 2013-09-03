@@ -307,6 +307,11 @@
 	}
 
 	/* Comments */
+	ol.comments .comment-body {
+		margin: 0;
+		padding: 0;
+		overflow-x: auto;
+	}
 	ol.comments .start > .comment-content, 
 	ol.comments .author > .comment-content {
 		border-color: #d9d9d9;

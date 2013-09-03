@@ -370,7 +370,7 @@ if (count($inst) > 0)
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 

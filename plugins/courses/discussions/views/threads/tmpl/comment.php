@@ -107,7 +107,9 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 			<?php } ?>
 			</p>
-			<?php echo $comment; ?>
+			<div class="comment-body">
+				<?php echo $comment; ?>
+			</div>
 
 			<p class="comment-options">
 			<?php if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>

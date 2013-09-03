@@ -240,6 +240,8 @@ HUB.Plugins.CoursesForum = {
 						return false;
 					}
 
+					$(this).find('p.error').remove();
+
 					if ($(this).find('textarea').val() == '') {
 						if (typeof(wykiwygs) != 'undefined' && wykiwygs.length > 0) {
 							for (var i = 0; i < wykiwygs.length; i++) 
