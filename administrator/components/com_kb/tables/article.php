@@ -545,6 +545,7 @@ class KbArticle extends JTable
 		if (isset($filters['state'])) 
 		{
 			$w[] = "m.state=" . $this->_db->Quote($filters['state']);
+			$w[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
