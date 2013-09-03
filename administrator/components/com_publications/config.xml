@@ -39,25 +39,25 @@
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
 		<param name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
-		<param name="video_thumb" type="text" menu="hide" default="/components/com_publications/images/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder image for video file gallery thumbnail" />
-		<param name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/images/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder image for image file gallery thumbnail" />
+		<param name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder thumbnail image for video-type files in publication gallery" />
+		<param name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder thumbnail image for image-type files in publication gallery" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Matser path for storing published data" />
+		<param name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
+		<param name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what Digital Object Identifiers (DOI) are [optional]" />
 		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for issuing DOIs (what goes after doi:)" />
-		<param name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
-		<param name="doi_service" type="text" menu="hide" default="" label="DOI service" description="Purdue Libraries DOI service" />
+		<param name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles if required" />
+		<param name="doi_service" type="text" menu="hide" default="" label="DOI service" description="DOI service address" />
 		<param name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
 		<param name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
-		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for Purdue Libraries DOI service" />
+		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for DOI service" />
 		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<param name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate Org supported tools" />
-		<param name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe Org supported tools" />
+		<param name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate organization-supported tools" />
+		<param name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe organization-supported tools" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
+		<param name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of authors on publication page">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
@@ -69,13 +69,11 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</param>
-		<param name="show_date" type="list" default="3" label="Date" description="Show/Hide the item creation date">
+		<param name="show_date" type="list" default="3" label="Date" description="Show/Hide publication date on publication page">
 			<option value="0">Hide</option>
-			<option value="1">Created</option>
-			<option value="2">Modified</option>
 			<option value="3">Published</option>
 		</param>
-		<param name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing this resource">
+		<param name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing publication">
 			<option value="0">Hide All</option>
 			<option value="1">Manual And Auto</option>
 			<option value="2">Auto Generated</option>
@@ -83,42 +81,43 @@
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="panels" type="text" menu="hide" default="content, description, authors, audience, gallery, tags, access, license, notes" label="Panels" description="Publication editing panels, in order" />
+		<param name="show_tags" type="list" default="1" label="Tags" description="Show/Hide publication tags on publication page  (also enables/disables tag panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide publication metadata on publication page (also enables/disables metadata panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_notes" type="list" default="1" label="Release Notes" description="Show/Hide version release notes in draft editing">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_license" type="list" default="1" label="License" description="Enable/disable license panel in draft editing">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_access" type="radio" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_gallery" type="list" default="1" label="Gallery" description="Show publication image gallery on publication page (also enables/disables gallery panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level on publication page (also enables/disables audience panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="suggest_licence" type="list" default="0" label="Suggest license" description="Allow users to suggest licenses">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="show_tags" type="list" default="1" label="Tags" description="Show/Hide publication tags (also enables/disables tag panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide publication metadata (also enables/disables metadata panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_notes" type="list" default="1" label="Release Notes" description="Show/Hide version release notes (also enables/disables release notes panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_license" type="list" default="1" label="License" description="Enable/disable license panel (license options will appear on review screen)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_access" type="radio" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel)">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="show_gallery" type="list" default="1" label="Gallery" description="Show publication image gallery (also enables/disables gallery panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level (also enables/disables audience panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
 		<param name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="documentation" type="text" menu="hide" default="/kb/publications" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
-		<param name="deposit_terms" type="text" menu="hide" default="/legal/termsofdeposit" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
+		<param name="documentation" type="text" menu="hide" default="" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
+		<param name="deposit_terms" type="text" menu="hide" default="" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
 			<option value="0">OFF</option>
@@ -151,27 +150,25 @@
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
 		<field name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
-		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/images/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder image for video file gallery thumbnail" />
-		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/images/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder image for image file gallery thumbnail" />
+		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder thumbnail image for video-type files in publication gallery" />
+		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder thumbnail image for image-type files in publication gallery" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Matser path for storing published data" />
+		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
+		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what Digital Object Identifiers (DOI) are [optional]" />
 		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for issuing DOIs (what goes after doi:)" />
-		<field name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
-		<field name="doi_service" type="text" menu="hide" default="" label="DOI service" description="Purdue Libraries DOI service" />
+		<field name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles if required" />
+		<field name="doi_service" type="text" menu="hide" default="" label="DOI service" description="DOI service address" />
 		<field name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
 		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
-		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for Purdue Libraries DOI service" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate Org supported tools" />
-		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe Org supported tools" />
+		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate organization-supported tools" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe organization-supported tools" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
+		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of authors on publication page">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</field>
@@ -183,13 +180,11 @@
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
 		</field>
-		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide the item creation date">
+		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide publication date on publication page">
 			<option value="0">Hide</option>
-			<option value="1">Created</option>
-			<option value="2">Modified</option>
 			<option value="3">Published</option>
 		</field>
-		<field name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing this resource">
+		<field name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing publication">
 			<option value="0">Hide All</option>
 			<option value="1">Manual And Auto</option>
 			<option value="2">Auto Generated</option>
@@ -197,42 +192,43 @@
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="panels" type="text" menu="hide" default="content, description, authors, audience, gallery, tags, access, license, notes" label="Panels" description="Publication editing panels, in order" />
+		<field name="show_tags" type="list" default="1" label="Tags" description="Show/Hide publication tags on publication page  (also enables/disables tag panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide publication metadata on publication page (also enables/disables metadata panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_notes" type="list" default="1" label="Release Notes" description="Show/Hide version release notes in draft editing">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_license" type="list" default="1" label="License" description="Enable/disable license panel in draft editing">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_access" type="radio" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_gallery" type="list" default="1" label="Gallery" description="Show publication image gallery on publication page (also enables/disables gallery panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level on publication page (also enables/disables audience panel in draft editing)">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="suggest_licence" type="list" default="0" label="Suggest license" description="Allow users to suggest licenses">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</field>
-		<field name="show_tags" type="list" default="1" label="Tags" description="Show/Hide publication tags (also enables/disables tag panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide publication metadata (also enables/disables metadata panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_notes" type="list" default="1" label="Release Notes" description="Show/Hide version release notes (also enables/disables release notes panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_license" type="list" default="1" label="License" description="Enable/disable license panel (license options will appear on review screen)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_access" type="radio" default="0" label="Access" description="Allow contributors to set extra access options on publication content (enables/disables access panel)">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
-		<field name="show_gallery" type="list" default="1" label="Gallery" description="Show publication image gallery (also enables/disables gallery panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
-		<field name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level (also enables/disables audience panel)">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</field>
 		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="documentation" type="text" menu="hide" default="/kb/publications" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
-		<field name="deposit_terms" type="text" menu="hide" default="/legal/termsofdeposit" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
+		<field name="documentation" type="text" menu="hide" default="" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
+		<field name="deposit_terms" type="text" menu="hide" default="" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
 			<option value="0">OFF</option>
