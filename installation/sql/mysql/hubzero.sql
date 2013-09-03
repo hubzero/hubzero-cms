@@ -4232,6 +4232,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1452,'Members - Contributions','plugin','contributions','members',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
 (1453,'Members - Contributions - Resources','plugin','resources','members',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',6,0),
 (1454,'Members - Contributions - Topics','plugin','wiki','members',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',7,0),
+(1455,'Members - Courses','plugin','courses','members',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',16,0),
 (1456,'Members - Dashboard','plugin','dashboard','members',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
 (1457,'Members - Favorites','plugin','favorites','members',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',10,0),
 (1458,'Members - Groups','plugin','groups','members',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
