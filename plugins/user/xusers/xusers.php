@@ -242,9 +242,12 @@ class plgUserXusers extends JPlugin
 			$hubHomeDir = rtrim($params->get('homedir'),'/');
 		
 			if (empty($hubHomeDir)) {
-				// @FIXME: this is legacy joomla, should be replaced with correct solution
-				JLoader::register('JTableComponent', JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'component.php');
-				
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					// @FIXME: this is legacy joomla, should be replaced with correct solution
+					JLoader::register('JTableComponent', JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'component.php');
+				}
+
 				// try to deduce a viable home directory based on sitename or live_site
 				$jconfig = JFactory::getConfig();
 				$sitename = strtolower($jconfig->getValue('config.sitename'));
@@ -278,11 +281,23 @@ class plgUserXusers extends JPlugin
 
 				if (!empty($hubHomeDir)) {
 					$db = JFactory::getDBO();
-					$component = new JTableComponent($db);
-					$component->loadByOption('com_members');
-					$params->set('homedir',$hubHomeDir);
-					$component->params = $params->toString();
-					$component->store();
+					if (version_compare(JVERSION, '1.6', 'lt'))
+					{
+						$component = new JTableComponent($db);
+						$component->loadByOption('com_members');
+						$params->set('homedir',$hubHomeDir);
+						$component->params = $params->toString();
+						$component->store();
+					}
+					else
+					{
+						$component = new JTableExtension($this->database);
+						$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
+						$params = new JRegistry($component->params);
+						$params->set('homedir',$hubHomeDir);
+						$component->params = $params->__toString();
+						$component->store();
+					}
 				}
 			}
 			
