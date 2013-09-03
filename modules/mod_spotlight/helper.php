@@ -456,7 +456,7 @@ class modSpotlight extends JObject
 							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
 							$ih = new MembersImgHandler();
 							$ih->set('image', $row->picture);
-							$ih->set('path', JPATH_ROOT . $config->get('webpath') . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS);
+							$ih->set('path', JPATH_ROOT . $mconfig->get('webpath') . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS);
 							$ih->set('maxWidth', 50);
 							$ih->set('maxHeight', 50);
 							$ih->set('cropratio', '1:1');
