@@ -411,7 +411,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		$this->view->edit = JRequest::getVar('section', '');
 
-		$this->view->sections = $this->model->sections();
+		$this->view->sections = $this->model->sections('list', array('state' => 1));
 
 		$this->view->model = $this->model;
 
@@ -421,7 +421,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			{
 				$this->setError($this->model->getError());
 			}
-			$this->view->sections = $this->model->sections();
+			$this->view->sections = $this->model->sections('list', array('state' => 1));
 		}
 
 		//get authorization
