@@ -125,7 +125,7 @@ if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'htm
 // Initiate a new content server and serve up the file
 $xserver = new Hubzero_Content_Server();
 $xserver->filename($filename);
-$xserver->saveas($this->model->get('title') . '.' . $ext);
+//$xserver->saveas($this->model->get('title') . '.' . $ext);
 $xserver->disposition($d);
 $xserver->acceptranges(false); // @TODO fix byte range support
 
