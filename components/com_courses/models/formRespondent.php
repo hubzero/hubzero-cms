@@ -98,7 +98,8 @@ class PdfFormRespondent
 		}
 		else
 		{
-			$dbh->execute('INSERT INTO #__courses_form_respondents(deployment_id, user_id, attempt) VALUES ('.(int)$depId.', '.(int)$uid.', '.(int)$attempt.')');
+			$dbh->setQuery('INSERT INTO #__courses_form_respondents(deployment_id, user_id, attempt) VALUES ('.(int)$depId.', '.(int)$uid.', '.(int)$attempt.')');
+			$dbh->query();
 			$this->id = $dbh->insertid();
 		}
 	}
@@ -129,7 +130,8 @@ class PdfFormRespondent
 				continue;
 			}
 
-			$dbh->execute('INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) VALUES ('.$this->id.', '.$qid[1].', '.(int)$val.')');
+			$dbh->setQuery('INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) VALUES ('.$this->id.', '.$qid[1].', '.(int)$val.')');
+			$dbh->query();
 		}
 
 		return $this;
@@ -175,8 +177,10 @@ class PdfFormRespondent
 	public function saveProgress($qid, $aid)
 	{
 		$dbh = JFactory::getDBO();
-		$dbh->execute('DELETE FROM #__courses_form_respondent_progress WHERE respondent_id = '.(int)$this->id.' AND question_id = '.(int)$qid);
-		$dbh->execute('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(date("Y-m-d H:i:s")).')');
+		$dbh->setQuery('DELETE FROM #__courses_form_respondent_progress WHERE respondent_id = '.(int)$this->id.' AND question_id = '.(int)$qid);
+		$dbh->query();
+		$dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(date("Y-m-d H:i:s")).')');
+		$dbh->query();
 
 		return $this;
 	}
@@ -231,7 +235,9 @@ class PdfFormRespondent
 	public function markStart()
 	{
 		$this->started = date('Y-m-d H:i:s');
-		JFactory::getDBO()->execute('UPDATE #__courses_form_respondents SET started = \''.$this->started.'\' WHERE started IS NULL AND id = '.(int)$this->id);
+		$dbh = JFactory::getDBO();
+		$dbh->setQuery('UPDATE #__courses_form_respondents SET started = \''.$this->started.'\' WHERE started IS NULL AND id = '.(int)$this->id);
+		$dbh->query();
 
 		return $this;
 	}
@@ -244,7 +250,9 @@ class PdfFormRespondent
 	public function markEnd()
 	{
 		$this->started = date('Y-m-d H:i:s');
-		JFactory::getDBO()->execute('UPDATE #__courses_form_respondents SET finished = \''.$this->started.'\' WHERE id = '.(int)$this->id);
+		$dbh = JFactory::getDBO();
+		$dbh->setQuery('UPDATE #__courses_form_respondents SET finished = \''.$this->started.'\' WHERE id = '.(int)$this->id);
+		$dbh->query();
 
 		return $this;
 	}

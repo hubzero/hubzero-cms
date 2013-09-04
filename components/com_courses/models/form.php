@@ -267,7 +267,8 @@ class PdfForm
 		}
 
 		$dbh = self::getDbh();
-		$dbh->execute('INSERT INTO jos_courses_forms() VALUES ()');
+		$dbh->setQuery('INSERT INTO jos_courses_forms() VALUES ()');
+		$dbh->query();
 
 		return ($this->id = $dbh->insertid());
 	}
@@ -374,11 +375,13 @@ class PdfForm
 	public function setTitle($title)
 	{
 		$dbh = self::getDbh();
-		$dbh->execute('UPDATE #__courses_forms SET title = '.$dbh->quote(stripslashes($title)).' WHERE id = '.$this->getId());
+		$dbh->setQuery('UPDATE #__courses_forms SET title = '.$dbh->quote(stripslashes($title)).' WHERE id = '.$this->getId());
+		$dbh->query();
 
 		if ($id = $this->getAssetId())
 		{
-			$dbh->execute('UPDATE #__courses_assets SET title = '.$dbh->Quote(stripslashes($title)).' WHERE id = '.$id);
+			$dbh->setQuery('UPDATE #__courses_assets SET title = '.$dbh->Quote(stripslashes($title)).' WHERE id = '.$id);
+			$dbh->query();
 		}
 
 		return $this;
@@ -392,7 +395,8 @@ class PdfForm
 	public function setAssetId($asset_id)
 	{
 		$dbh = self::getDbh();
-		$dbh->execute('UPDATE `#__courses_forms` SET `asset_id` = ' . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId());
+		$dbh->setQuery('UPDATE `#__courses_forms` SET `asset_id` = ' . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId());
+		$dbh->query();
 
 		return $this;
 	}
@@ -459,11 +463,13 @@ class PdfForm
 		{
 			foreach ($page as $groupNum=>$group)
 			{
-				$dbh->execute('INSERT INTO #__courses_form_questions(form_id, page, top_dist, left_dist, height, width, version) VALUES ('.$fid.', '.((int)$pageNum).', '.((int)$group['top']).', '.((int)$group['left']).', '.((int)$group['height']).', '.((int)$group['width']).', '.$version.')');
+				$dbh->setQuery('INSERT INTO #__courses_form_questions(form_id, page, top_dist, left_dist, height, width, version) VALUES ('.$fid.', '.((int)$pageNum).', '.((int)$group['top']).', '.((int)$group['left']).', '.((int)$group['height']).', '.((int)$group['width']).', '.$version.')');
+				$dbh->query();
 				$groupId = $dbh->insertid();
 				foreach ($group['answers'] as $answer)
 				{
-					$dbh->execute('INSERT INTO #__courses_form_answers(question_id, top_dist, left_dist, correct) VALUES ('.$groupId.', '.((int)$answer['top']).', '.((int)$answer['left']).', '.($answer['correct'] == 'true' ? 1 : 0).')');
+					$dbh->setQuery('INSERT INTO #__courses_form_answers(question_id, top_dist, left_dist, correct) VALUES ('.$groupId.', '.((int)$answer['top']).', '.((int)$answer['left']).', '.($answer['correct'] == 'true' ? 1 : 0).')');
+					$dbh->query();
 				}
 			}
 		}
