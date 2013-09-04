@@ -797,6 +797,21 @@ class Hubzero_Migration
 				$component_id = $db->insertId();
 			}
 
+			// Secondly, add asset entry if not yet created
+			$query = "SELECT `id` FROM `#__assets` WHERE `name` = " . $db->quote($option);
+			$db->setQuery($query);
+			if (!$db->loadResult())
+			{
+				// Register the component container just under root in the assets table
+				$asset = JTable::getInstance('Asset');
+				$asset->name = $option;
+				$asset->parent_id = 1;
+				$asset->rules = '{}';
+				$asset->title = $option;
+				$asset->setLocation(1, 'last-child');
+				$asset->store();
+			}
+
 			if ($createMenuItem)
 			{
 				// Check for an admin menu entry...if it's not there, create it
@@ -981,6 +996,13 @@ class Hubzero_Migration
 			$query = "DELETE FROM `#__extensions` WHERE `name` = " . $db->quote($name);
 			$db->setQuery($query);
 			$db->query();
+
+			// Remove the component container in the assets table
+			$asset = JTable::getInstance('Asset');
+			if ($asset->loadByName($name))
+			{
+				$asset->delete();
+			}
 
 			// Check for an admin menu entry...if it's not there, create it
 			$query = "DELETE FROM `#__menu` WHERE `menutype` = 'main' AND `title` = " . $db->quote($name);
