@@ -115,6 +115,7 @@ class CoursesTableAssetViews extends JTable
 	public function __construct(&$db)
 	{
 		parent::__construct('#__courses_asset_views', 'id', $db);
+		$this->_trackAssets = false;
 	}
 
 	/**

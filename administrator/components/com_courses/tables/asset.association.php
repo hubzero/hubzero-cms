@@ -82,6 +82,7 @@ class CoursesTableAssetAssociation extends JTable
 	public function __construct(&$db)
 	{
 		parent::__construct('#__courses_asset_associations', 'id', $db);
+		$this->_trackAssets = false;
 	}
 
 	/**
