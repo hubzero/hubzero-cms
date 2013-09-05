@@ -160,7 +160,11 @@ class CoursesTableAssetViews extends JTable
 		}
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
-			$where[] = "cm.user_id = " . $this->_db->Quote($filters['user_id']);
+			if (!is_array($filters['user_id']))
+			{
+				$filters['user_id'] = (array) $filters['user_id'];
+			}
+			$where[] = "cm.user_id IN (" . implode(",", $filters['user_id']) . ")";
 		}
 
 		$query = "SELECT ";

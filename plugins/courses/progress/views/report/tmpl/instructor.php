@@ -64,7 +64,7 @@ $pagination = new JPagination(
 
 // Get the grades
 $grades    = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
-$progress  = $this->course->offering()->gradebook()->progress();
+$progress  = $this->course->offering()->gradebook()->progress($m);
 $passing   = $this->course->offering()->gradebook()->passing();
 
 // Get the grading policy
