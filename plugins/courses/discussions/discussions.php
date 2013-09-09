@@ -307,18 +307,17 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
-		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html') 
-		{
-			$this->_active = $this->_name;
-
-			$paramsClass = 'JParameter';
+		$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
 				$paramsClass = 'JRegistry';
 			}
-
 			$this->params->merge(new $paramsClass($offering->section()->get('params')));
+
+		// Determine if we need to return any HTML (meaning this is the active plugin)
+		if ($return == 'html') 
+		{
+			$this->_active = $this->_name;
 
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
@@ -495,7 +494,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			'scope'    => 'course',
 			'scope_id' => $offering->get('id'),
 			'state'    => 1,
-			'parent'   => 0
+			'parent'   => 0,
+			'scope_sub_id' => ($this->params->get('discussions_threads', 'all') != 'all' ? $course->offering()->section()->get('id') : null)
 		));
 
 		// Return the output
