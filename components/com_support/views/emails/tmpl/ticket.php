@@ -70,6 +70,22 @@ switch ($this->ticket->severity)
 	break;
 }
 
+$usertype = JText::_('Unknown');
+
+$submitter = JUser::getInstance($this->ticket->login);
+if ($submitter && is_object($submitter))
+{
+	if (version_compare(JVERSION, '1.6', 'lt'))
+	{
+		$usertype = $submitter->get('usertype');
+	} 
+	else
+	{
+		jimport( 'joomla.user.helper' );
+		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
+	}
+}
+
 $comment = $this->ticket->report;
 ?>
 
@@ -89,6 +105,7 @@ $message .= strtoupper(JText::_('TICKET')).': '.$this->ticket->id."\n";
 $message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.$this->ticket->summary."\n";
 $message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$this->ticket->created."\n";
 $message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->name . ($this->ticket->login ? ' ('.$this->ticket->login.')' : '') . "\n";
+$message .= strtoupper(JText::_('TICKET_DETAILS_USERTYPE')).': '.$usertype."\n";
 $message .= strtoupper(JText::_('COM_SUPPORT_EMAIL')).': '. $this->ticket->email ."\n";
 $message .= strtoupper(JText::_('COM_SUPPORT_IP_HOSTNAME')).': '. $this->ticket->ip .' ('.$this->ticket->hostname.')' ."\n";
 $message .= strtoupper(JText::_('COM_SUPPORT_OS')).': '. $this->ticket->os . "\n";
@@ -311,6 +328,10 @@ Content-type: text/html;charset=utf-8";
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Creator:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->name ? $this->escape($this->ticket->name) : 'Unknown'; ?> <?php echo $this->ticket->login ? '(' . $this->escape($this->ticket->login) . ')' : ''; ?></td>
+																</tr>
+																<tr>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('TICKET_DETAILS_USERTYPE'); ?>:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $usertype; ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_EMAIL'); ?>:</th>

@@ -51,6 +51,7 @@ $status = SupportHtml::getStatus($this->row->open, $this->row->status);
 
 $unknown = 1;
 $name = JText::_('Unknown');
+$usertype = JText::_('Unknown');
 
 $submitter = new Hubzero_User_Profile();
 if ($this->row->login) 
@@ -59,6 +60,16 @@ if ($this->row->login)
 	$submitter->load($this->row->login);
 	if (is_object($submitter) && $submitter->get('name')) 
 	{
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$usertype = JUser::getInstance($submitter->get('uidNumber'))->get('usertype');
+		} 
+		else
+		{
+			jimport( 'joomla.user.helper' );
+			$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
+		}
+
 		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&id=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($submitter->get('name'))) . ' (' . $this->escape(stripslashes($this->row->login)) . ')</a>';
 		$unknown = 0;
 	} 
@@ -164,7 +175,7 @@ ximport('Hubzero_User_Profile_Helper');
 	</div>
 	<?php
 	}*/
-	?>
+?>
 
 <div class="main section">
 
@@ -216,6 +227,10 @@ ximport('Hubzero_User_Profile_Helper');
 							<tr>
 								<th scope="row"><?php echo JText::_('TICKET_DETAILS_EMAIL'); ?>:</th>
 								<td><a href="mailto:<?php echo $this->row->email; ?>"><?php echo $this->escape($this->row->email); ?></a></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo JText::_('TICKET_DETAILS_USERTYPE'); ?>:</th>
+								<td><?php echo $this->escape($usertype); ?></td>
 							</tr>
 							<tr>
 								<th scope="row"><?php echo JText::_('TICKET_DETAILS_OS'); ?>:</th>
