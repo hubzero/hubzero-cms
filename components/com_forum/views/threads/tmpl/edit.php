@@ -102,7 +102,7 @@ if ($this->post->get('id')) {
 				<?php
 				ximport('Hubzero_User_Profile_Helper');
 				$jxuser = new Hubzero_User_Profile();
-				$jxuser->load($juser->get('id'));
+				$jxuser->load($this->post->get('created_by', $juser->get('id')));
 				$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 				?>
 				<img src="<?php echo $thumb; ?>" alt="" />

@@ -196,14 +196,14 @@ ximport('Hubzero_User_Profile_Helper');
 								) { ?>
 						<p class="comment-options">
 							<?php if ($row->get('parent') && $this->config->get('access-delete-post')) { ?>
-							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=delete'); ?>">
-								<?php echo JText::_('COM_FORUM_DELETE'); ?>
-							</a>
+							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=delete'); ?>"><!-- 
+								--><?php echo JText::_('COM_FORUM_DELETE'); ?><!-- 
+							--></a>
 							<?php } ?>
 							<?php if ((!$row->get('parent') && $this->config->get('access-edit-thread')) || ($row->get('parent') && $this->config->get('access-edit-post'))) { ?>
-							<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=edit'); ?>">
-								<?php echo JText::_('COM_FORUM_EDIT'); ?>
-							</a>
+							<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=edit'); ?>"><!-- 
+								--><?php echo JText::_('COM_FORUM_EDIT'); ?><!-- 
+							--></a>
 							<?php } ?>
 						</p>
 						<?php } ?>
