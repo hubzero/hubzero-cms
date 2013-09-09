@@ -131,6 +131,8 @@ class plgCronSupport extends JPlugin
 
 		ximport('Hubzero_Plugin_View');
 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
+
 		if (is_object($params) && $params->get('support_ticketreminder_severity', 'all') != 'all')
 		{
 			$severities = explode(',', $params->get('support_ticketreminder_severity', 'all'));
@@ -195,11 +197,18 @@ class plgCronSupport extends JPlugin
 
 		$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_OPEN_TICKETS');
 
+		$mailed = array();
+
 		foreach ($tickets as $owner => $usertickets)
 		{
 			// Get the user's account
 			$juser = JUser::getInstance($owner);
 			if (!$juser->get('id'))
+			{
+				continue;
+			}
+			// Try to ensure no duplicates
+			if (in_array($juser->get('username'), $mailed))
 			{
 				continue;
 			}
@@ -234,6 +243,7 @@ class plgCronSupport extends JPlugin
 			{
 				$this->setError('Failed to mail %s', $fullEmailAddress);
 			}
+			$mailed[] = $juser->get('username');
 			//echo $message;
 		}
 
