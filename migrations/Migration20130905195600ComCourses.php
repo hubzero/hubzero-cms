@@ -70,7 +70,7 @@ class Migration20130905195600ComCourses extends Hubzero_Migration
 
 		if ($results && count($results) > 0)
 		{
-			foreach ($res as $r)
+			foreach ($results as $r)
 			{
 				$query  = "SELECT `course_id` FROM `#__courses_assets` WHERE `id` = '{$r->asset_id}'";
 				$db->setQuery($query);
