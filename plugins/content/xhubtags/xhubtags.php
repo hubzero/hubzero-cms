@@ -178,8 +178,7 @@ class plgContentXhubtags extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
-		$template = $app->getTemplate();
-		return "/templates/$template";
+		return '/templates/' . $app->getTemplate();
 	}
 
 	/**
@@ -187,7 +186,7 @@ class plgContentXhubtags extends JPlugin
 	 * {xhub:include type="stylesheet" component="component" filename="filename"}
 	 * 
 	 * @param  string $options Tag options (e.g. 'component="support"')
-	 * @return string  Return description (if any) ...
+	 * @return string
 	 */
 	private function _include($options)
 	{
@@ -226,13 +225,11 @@ class plgContentXhubtags extends JPlugin
 		}
 		else
 		{
-			// Removed JURI::base() because it would add http:// to files even 
-			// when the site is https:// thus causing warnings in browsers
 			$filename = "/templates/$template/";
 			if ($type[2] == 'script')
 			{
 				$filename .= 'js/';
-			}	
+			}
 			else
 			{
 				$filename .= 'css/';
@@ -242,13 +239,18 @@ class plgContentXhubtags extends JPlugin
 
 		$document = JFactory::getDocument();
 
+		if (!file_exists(JPATH_SITE . $filename))
+		{
+			return '';
+		}
+
 		if ($type[2] == 'script')
 		{
-			$document->addScript($filename);
+			$document->addScript(JURI::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename));
 		}
 		else if ($type[2] == 'stylesheet')
 		{
-			$document->addStyleSheet($filename, 'text/css', 'screen');
+			$document->addStyleSheet(JURI::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename), 'text/css', 'screen');
 		}
 
 		return '';
@@ -301,25 +303,27 @@ class plgContentXhubtags extends JPlugin
 	/**
 	 * {xhub:getcfg variable}
 	 * 
-	 * @param  unknown $options Parameter description (if any) ...
-	 * @return object  Return description (if any) ...
+	 * @param  string $options Variable name
+	 * @return string
 	 */
 	private function _getCfg($options)
 	{
 		$jconfig = JFactory::getConfig();
-		
+
 		$options = trim($options, " \n\t\r}");
 
 		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
-		
-		if ($options == 'hubShortName') {
-				return $sitename;
+
+		if ($options == 'hubShortName') 
+		{
+			return $sitename;
 		}
-		else if ($options == 'hubShortURL') {
-				return $live_site;
+		else if ($options == 'hubShortURL') 
+		{
+			return $live_site;
 		}
-		
+
 		return '';
 	}
 }
