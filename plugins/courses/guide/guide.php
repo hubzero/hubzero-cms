@@ -93,9 +93,14 @@ class plgCoursesGuide extends Hubzero_Plugin
 	 */
 	public function &onCourseAreas()
 	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
+		$tmpl = JRequest::getWord('tmpl', NULL);
+
+		if (!isset($tmpl) || $tmpl != 'component')
+		{
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+			Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
+		}
 
 		$area = array(
 			'name' => $this->_name,

@@ -19,83 +19,87 @@ String.prototype.nohtml = function () {
 
 jQuery(document).ready(function(jq){
 	var $ = jq,
-		top = $('#page_container').offset().top;
-	
-	$('#page_menu a.guide').fancybox({
-		type: 'ajax',
-		width: '100%',
-		height: 'auto',
-		autoSize: false,
-		fitToView: false,
-		titleShow: false,
-		closeBtn: false,
-		closeClick: true,
-		topRatio: 0,
-		tpl: {
-			wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
-		},
-		beforeLoad: function() {
-			this.href = this.element.attr('href').nohtml();
-		},
-		beforeShow: function() {
-			var guide = $('div.guide-content');
-			if (guide.length > 0) {
-				guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
-			}
-			$('#guide-content').css('position', 'absolute');
-		},
-		onUpdate: function() {
-			$('#guide-content').css('position', 'absolute');
-		},
-		helpers: {
-			overlay: {
-				css: {position: 'absolute' }
-			}
-		}
-	});
+		pc = $('#page_container');
 
-	if ($('#guide-overlay').length > 0) {
-		$.fancybox.open(
-			[{
-				href: '#guide-overlay'
-			}],
-			{
-				type: 'inline',
-				width: '100%',
-				height: 'auto',
-				autoSize: false,
-				fitToView: false,
-				titleShow: false,
-				closeBtn: false,
-				closeClick: true,
-				topRatio: 0,
-				tpl: {
-					wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
-				},
-				beforeShow: function() {
-					var guide = $('div.guide-content');
-					if (guide.length > 0) {
-						guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
-					}
-					$('#guide-content').css('position', 'absolute');
-				},
-				beforeClose: function() {
-					$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
-						// Nothing to see here
-						//console.log(response);
-					});
-				},
-				onUpdate: function() {
-					$('#guide-content').css('position', 'absolute');
+	if (pc.length) {
+		var top = $('#page_container').offset().top;
+		
+		$('#page_menu a.guide').fancybox({
+			type: 'ajax',
+			width: '100%',
+			height: 'auto',
+			autoSize: false,
+			fitToView: false,
+			titleShow: false,
+			closeBtn: false,
+			closeClick: true,
+			topRatio: 0,
+			tpl: {
+				wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
+			},
+			beforeLoad: function() {
+				this.href = this.element.attr('href').nohtml();
+			},
+			beforeShow: function() {
+				var guide = $('div.guide-content');
+				if (guide.length > 0) {
+					guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
+				}
+				$('#guide-content').css('position', 'absolute');
+			},
+			onUpdate: function() {
+				$('#guide-content').css('position', 'absolute');
+			},
+			helpers: {
+				overlay: {
+					css: {position: 'absolute' }
 				}
 			}
-		);
-	}
+		});
 
-	$(window).resize(function() {
-		var guide = $('div.guide-content');
-		if (guide.length > 0) {
-			guide.css('margin-top', ($('#page_container').offset().top - 86) + 'px');
+		if ($('#guide-overlay').length > 0) {
+			$.fancybox.open(
+				[{
+					href: '#guide-overlay'
+				}],
+				{
+					type: 'inline',
+					width: '100%',
+					height: 'auto',
+					autoSize: false,
+					fitToView: false,
+					titleShow: false,
+					closeBtn: false,
+					closeClick: true,
+					topRatio: 0,
+					tpl: {
+						wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
+					},
+					beforeShow: function() {
+						var guide = $('div.guide-content');
+						if (guide.length > 0) {
+							guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
+						}
+						$('#guide-content').css('position', 'absolute');
+					},
+					beforeClose: function() {
+						$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
+							// Nothing to see here
+							//console.log(response);
+						});
+					},
+					onUpdate: function() {
+						$('#guide-content').css('position', 'absolute');
+					}
+				}
+			);
 		}
-	});
+
+		$(window).resize(function() {
+			var guide = $('div.guide-content');
+			if (guide.length > 0) {
+				guide.css('margin-top', ($('#page_container').offset().top - 86) + 'px');
+			}
+		});
+	}
 });
