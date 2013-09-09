@@ -273,4 +273,22 @@ class CoursesTableSectionDate extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Get a count of course offerings
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function deleteBySection($section_id)
+	{
+		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->Quote($section_id);
+
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
 }
