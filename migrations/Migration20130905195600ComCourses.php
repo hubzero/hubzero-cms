@@ -63,6 +63,28 @@ class Migration20130905195600ComCourses extends Hubzero_Migration
 			$db->query();
 		}
 
+		// Fix old asset views data that doesn't have course_id filled in...
+		$query = "SELECT DISTINCT(asset_id) FROM `#__courses_asset_views` WHERE `course_id` IS NULL";
+		$db->setQuery($query);
+		$results = $db->loadObjectList();
+
+		if ($results && count($results) > 0)
+		{
+			foreach ($res as $r)
+			{
+				$query  = "SELECT `course_id` FROM `#__courses_assets` WHERE `id` = '{$r->asset_id}'";
+				$db->setQuery($query);
+				$id = $db->loadResult();
+
+				if ($id)
+				{
+					$query = "UPDATE `#__courses_asset_views` SET `course_id` = '{$id}' WHERE `asset_id` = '{$r->asset_id}'";
+					$db->setQuery($query);
+					$db->query();
+				}
+			}
+		}
+
 		// Fix asset views
 		$query = "SELECT * FROM `#__courses_asset_views`";
 		$db->setQuery($query);
