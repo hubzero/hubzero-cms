@@ -497,6 +497,11 @@ class Hubzero_Document
 			{
 				$lesspath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'less';
 
+				if (!class_exists('lessc'))
+				{
+					throw new Exception('LESS parser not found.');
+				}
+
 				// Try to compile LESS files
 				$less = new lessc;
 				$less->setFormatter('compressed');
@@ -547,9 +552,10 @@ class Hubzero_Document
 				if (!is_array($cache) || $newCache['updated'] > $cache['updated']) 
 				{
 					file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
+					$newCache['compiled'] = str_replace("'/media/system/", "'" . rtrim(JURI::getInstance()->base(true), DS) . '/media/system/', $newCache['compiled']);
 					file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
 				}
-				$output =  DS . 'cache' . DS . $primary . '.css?v=' . $newCache['updated'];
+				$output =  rtrim(JURI::root(true), '/') . DS . 'cache' . DS . $primary . '.css?v=' . $newCache['updated'];
 			}
 		} 
 		catch (exception $e) 
