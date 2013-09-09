@@ -168,12 +168,19 @@ class plgSystemJquery extends JPlugin
 
 		if (!$this->params->get('noconflict' . $client) && !$no_html && $format != 'xml') 
 		{
+			$base = rtrim(JURI::base(true), '/');
+
 			$data = $document->getHeadData();
 			$nd = array();
 			$mootools = array(
-				'/media/system/js/mootools-uncompressed.js',
-				'/media/system/js/mootools.js',
-				'/media/system/js/caption.js'
+				$base . '/media/system/js/mootools-uncompressed.js',
+				$base . '/media/system/js/mootools.js',
+				$base . '/media/system/js/mootools-core-uncompressed.js',
+				$base . '/media/system/js/mootools-core.js',
+				$base . '/media/system/js/caption-uncompressed.js',
+				$base . '/media/system/js/caption.js',
+				$base . '/media/system/js/core-uncompressed.js',
+				$base . '/media/system/js/core.js'
 			);
 			foreach ($data['scripts'] as $key => $val)
 			{
@@ -186,6 +193,7 @@ class plgSystemJquery extends JPlugin
 
 			$nds = array();
 			$data['script'] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\{(.*)\}\)\;/', '', $data['script']);
+			$data['script'] = preg_replace('/window\.addEvent\(\'load\', function\(\)\{(.*)\}\)\;/', '', $data['script']);
 
 			$document->setHeadData($data);
 		}
