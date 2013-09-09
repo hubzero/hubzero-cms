@@ -48,7 +48,7 @@ $m = array();
 // Get member id's for refresh filter
 foreach ($members as $member)
 {
-	$m[] = $member->get('user_id');
+	$m[] = $member->get('id');
 }
 
 // Refresh the grades
@@ -144,8 +144,8 @@ $policy = $gradePolicy->get('description');
 						<div class="student-progress-timeline">
 							<div class="student-progress-timeline-inner length_<?= count($this->course->offering()->units()) ?>">
 								<? foreach($this->course->offering()->units() as $unit) : ?>
-									<? $height = (isset($progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']))
-													? $progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']
+									<? $height = (isset($progress[$m->get('id')][$unit->get('id')]['percentage_complete']))
+													? $progress[$m->get('id')][$unit->get('id')]['percentage_complete']
 													: 0; ?>
 									<? $margin = 100 - $height; ?>
 									<? $cls    = ($height == 100) ? ' complete' : ''; ?>
@@ -162,21 +162,21 @@ $policy = $gradePolicy->get('description');
 						</div>
 						<div class="progress-bar-container">
 							<div class="progress-bar-inner">
-								<? if (isset($grades[$m->get('user_id')]) && isset($grades[$m->get('user_id')]['course'][$this->course->get('id')])) : ?>
+								<? if (isset($grades[$m->get('id')]) && isset($grades[$m->get('id')]['course'][$this->course->get('id')])) : ?>
 									<?
 										$cls = '';
 
-										if(isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')] === 1)
+										if(isset($passing[$m->get('id')]) && $passing[$m->get('id')] === 1)
 										{
 											$cls = ' go';
 										}
-										elseif (isset($passing[$m->get('user_id')]) && $passing[$m->get('user_id')] === 0)
+										elseif (isset($passing[$m->get('id')]) && $passing[$m->get('id')] === 0)
 										{
 											$cls = ' stop';
 										}
 									?>
-									<div class="student-progress-bar <?= $cls ?>" style="width:<?= $grades[$m->get('user_id')]['course'][$this->course->get('id')] ?>%;">
-										<div class="score-text"><?= $grades[$m->get('user_id')]['course'][$this->course->get('id')] ?></div>
+									<div class="student-progress-bar <?= $cls ?>" style="width:<?= $grades[$m->get('id')]['course'][$this->course->get('id')] ?>%;">
+										<div class="score-text"><?= $grades[$m->get('id')]['course'][$this->course->get('id')] ?></div>
 									</div>
 								<? endif; ?>
 							</div>
@@ -211,8 +211,8 @@ $policy = $gradePolicy->get('description');
 									<div class="unit-title"><?= $unit->get('title') ?></div>
 									<div class="unit-score">
 										<?= 
-											(isset($grades[$m->get('user_id')]['units'][$unit->get('id')]))
-												? $grades[$m->get('user_id')]['units'][$unit->get('id')] . '%'
+											(isset($grades[$m->get('id')]['units'][$unit->get('id')]))
+												? $grades[$m->get('id')]['units'][$unit->get('id')] . '%'
 												: '--'
 										?>
 									</div>
@@ -224,8 +224,8 @@ $policy = $gradePolicy->get('description');
 									<div class="unit-title">Course Average</div>
 									<div class="unit-score">
 										<?= 
-											(isset($grades[$m->get('user_id')]['course'][$this->course->get('id')]))
-												? $grades[$m->get('user_id')]['course'][$this->course->get('id')] . '%'
+											(isset($grades[$m->get('id')]['course'][$this->course->get('id')]))
+												? $grades[$m->get('id')]['course'][$this->course->get('id')] . '%'
 												: '--'
 										?>
 									</div>

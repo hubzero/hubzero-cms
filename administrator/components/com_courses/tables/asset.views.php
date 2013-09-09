@@ -136,7 +136,7 @@ class CoursesTableAssetViews extends JTable
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
 			$select[] = "ca.id as asset_id";
-			$select[] = "cm.user_id as user_id";
+			$select[] = "cm.id as member_id";
 			$select[] = "cu.id as unit_id";
 			$select[] = "IF(cav.viewed IS NULL, 0, 1) as viewed";
 
@@ -148,23 +148,22 @@ class CoursesTableAssetViews extends JTable
 			$from[] = "LEFT JOIN #__courses_offerings AS co ON cu.offering_id = co.id";
 			$from[] = "LEFT JOIN #__courses_offering_sections AS cos ON co.id = cos.offering_id";
 			$from[] = "LEFT JOIN #__courses_members AS cm ON cos.id = cm.section_id";
-			$from[] = "LEFT JOIN #__courses_asset_views AS cav ON ca.id = cav.asset_id AND cm.user_id = cav.viewed_by";
+			$from[] = "LEFT JOIN #__courses_asset_views AS cav ON ca.id = cav.asset_id AND cm.id = cav.viewed_by";
 
 			$where[] = "cos.id = " . $this->_db->Quote($filters['section_id']);
 			$where[] = "cm.student = 1";
 			$where[] = "ca.state = 1";
 
 			$group[] = "ca.id";
-			$group[] = "user_id";
-			$group[] = "cm.user_id";
+			$group[] = "cm.id";
 		}
-		if (isset($filters['user_id']) && $filters['user_id'])
+		if (isset($filters['member_id']) && $filters['member_id'])
 		{
-			if (!is_array($filters['user_id']))
+			if (!is_array($filters['member_id']))
 			{
-				$filters['user_id'] = (array) $filters['user_id'];
+				$filters['member_id'] = (array) $filters['member_id'];
 			}
-			$where[] = "cm.user_id IN (" . implode(",", $filters['user_id']) . ")";
+			$where[] = "cm.id IN (" . implode(",", $filters['member_id']) . ")";
 		}
 
 		$query = "SELECT ";

@@ -31,17 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
-
-$this->course->offering()->gradebook()->refresh($this->juser->get('id'));
-$grades   = $this->course->offering()->gradebook()->grades(null, $this->juser->get('id'));
-$progress = $this->course->offering()->gradebook()->progress($this->juser->get('id'));
-$passing  = $this->course->offering()->gradebook()->passing(true, $this->juser->get('id'));
-$passing  = (isset($passing[$this->juser->get('id')])) ? $passing[$this->juser->get('id')] : null;
+$this->course->offering()->gradebook()->refresh($this->member->get('id'));
+$grades   = $this->course->offering()->gradebook()->grades(null, $this->member->get('id'));
+$progress = $this->course->offering()->gradebook()->progress($this->member->get('id'));
+$passing  = $this->course->offering()->gradebook()->passing(true, $this->member->get('id'));
+$passing  = (isset($passing[$this->member->get('id')])) ? $passing[$this->member->get('id')] : null;
 
 // See if the student has qualified for the badge
-$this->course->offering()->gradebook()->hasEarnedBadge($this->juser->get('id'));
-$student  = $this->course->offering()->section()->member($this->juser->get('id'));
+$this->course->offering()->gradebook()->hasEarnedBadge($this->member->get('id'));
+$student = $this->member;
 
 $gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
 
@@ -78,9 +76,9 @@ foreach($assets as $asset)
 	if(!$crumb || strlen($crumb) != 20 || $asset->state != 1)
 	{
 		// Try seeing if there's an override grade in the gradebook...
-		if (!is_null($grades[$this->juser->get('id')]['assets'][$asset->id]['score']))
+		if (!is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
 		{
-			$details['aux'][] = array('title'=>$asset->title, 'score'=>$grades[$this->juser->get('id')]['assets'][$asset->id]['score']);
+			$details['aux'][] = array('title'=>$asset->title, 'score'=>$grades[$this->member->get('id')]['assets'][$asset->id]['score']);
 		}
 
 		// Break foreach, this is not a valid form!
@@ -89,7 +87,7 @@ foreach($assets as $asset)
 
 	$dep   = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
 	$title = $asset->title;
-	$url   = JRoute::_($base . '&asset=' . $asset->id);
+	$url   = JRoute::_($this->base . '&asset=' . $asset->id);
 	$unit  = $this->course->offering()->unit($asset->unit_id);
 
 	switch ($dep->getState())
@@ -104,12 +102,12 @@ foreach($assets as $asset)
 			// Get whether or not we should show scores at this point
 			$results_closed = $dep->getResultsClosed();
 
-			$resp = $dep->getRespondent($this->juser->get('id'));
+			$resp = $dep->getRespondent($this->member->get('id'));
 
 			// Form is still active and they are allowed to see their score
 			if($results_closed == 'score' || $results_closed == 'details')
 			{
-				$score = $grades[$this->juser->get('id')]['assets'][$asset->id]['score'];
+				$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
 			}
 			else
 			{
@@ -135,7 +133,7 @@ foreach($assets as $asset)
 
 		// Form is still active
 		case 'active':
-			$resp = $dep->getRespondent($this->juser->get('id'));
+			$resp = $dep->getRespondent($this->member->get('id'));
 
 			// Form is active and they have completed it!
 			if($resp->getEndTime() && $resp->getEndTime() != '')
@@ -146,7 +144,7 @@ foreach($assets as $asset)
 				// Form is still active and they are allowed to see their score
 				if($results_open == 'score' || $results_open == 'details')
 				{
-					$score = $grades[$this->juser->get('id')]['assets'][$asset->id]['score'];
+					$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
 				}
 				else
 				{
@@ -170,10 +168,10 @@ foreach($assets as $asset)
 				$increment_count_taken = false;
 
 				// If there's an override in the gradebook, go ahead and use that, whether or not they've even taken the form yet
-				if ($grades[$this->juser->get('id')]['assets'][$asset->id]['override']
-					&& !is_null($grades[$this->juser->get('id')]['assets'][$asset->id]['score']))
+				if ($grades[$this->member->get('id')]['assets'][$asset->id]['override']
+					&& !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
 				{
-					$score = $grades[$this->juser->get('id')]['assets'][$asset->id]['score'];
+					$score = $grades[$this->member->get('id')]['assets'][$asset->id]['score'];
 					$increment_count_taken = true;
 				}
 			}
@@ -246,8 +244,8 @@ if (count($units) > 0)
 	{
 		$first    = ($index == 1) ? ' first' : '';
 		$last     = ($index == $num_units) ? ' last' : '';
-		$complete = isset($progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'])
-					? $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete']
+		$complete = isset($progress[$this->member->get('id')][$unit->get('id')]['percentage_complete'])
+					? $progress[$this->member->get('id')][$unit->get('id')]['percentage_complete']
 					: 0;
 		$past     = ((!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00 00:00:00' && $unit->started()) || $complete > 0) ? ' past' : '';
 		$margin   = 100 - $complete;
@@ -285,12 +283,12 @@ $progress_timeline .= '</div>';
 <div class="progress">
 	<? if($this->course->access('manage')) : ?>
 		<div class="extra">
-			<a href="<?= JRoute::_($base . '&active=progress') ?>" class="back btn icon-back"><?= JText::_('Back to all students') ?></a>
+			<a href="<?= JRoute::_($this->base . '&active=progress') ?>" class="back btn icon-back"><?= JText::_('Back to all students') ?></a>
 		</div>
 	<? endif; ?>
 
 	<h3>
-		<?= ($this->juser->get('id') != JFactory::getUser()->get('id')) ? $this->juser->get('name') . ':' : '' ?>
+		<?= (JRequest::getInt('id', false)) ? JFactory::getUser($this->member->get('user_id'))->get('name') . ':' : '' ?>
 		<?= $h3 ?>
 	</h3>
 	<h4><?= JText::sprintf('Unit %d of %d', $current_i, $num_units) ?></h4>
@@ -337,8 +335,8 @@ $progress_timeline .= '</div>';
 				?>
 				<p class="score<?= $cls ?>">
 					<?=
-						(isset($grades[$this->juser->get('id')]['course'][$this->course->get('id')]))
-							? $grades[$this->juser->get('id')]['course'][$this->course->get('id')] . '%'
+						(isset($grades[$this->member->get('id')]['course'][$this->course->get('id')]))
+							? $grades[$this->member->get('id')]['course'][$this->course->get('id')] . '%'
 							: '--'
 					?>
 				</p>
@@ -384,8 +382,8 @@ $progress_timeline .= '</div>';
 				<div class="unit-title"><?= $unit->get('title') ?></div>
 				<div class="unit-score">
 					<?= 
-						(isset($grades[$this->juser->get('id')]['units'][$unit->get('id')]))
-							? $grades[$this->juser->get('id')]['units'][$unit->get('id')] . '%'
+						(isset($grades[$this->member->get('id')]['units'][$unit->get('id')]))
+							? $grades[$this->member->get('id')]['units'][$unit->get('id')] . '%'
 							: '--'
 					?>
 				</div>

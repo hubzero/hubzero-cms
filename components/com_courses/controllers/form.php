@@ -54,9 +54,21 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$section = $this->course->offering()->section()->get('alias');
 		$section = ($section != '__default' && !empty($section)) ? ":{$section}" : '';
 
-		// Get the user
-		$this->juser = JFactory::getUser();
-		$this->base  = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}&offering={$this->course->offering()->get('alias')}{$section}";
+		// Get the courses member
+		$this->juser  = JFactory::getUser();
+		$this->member = $this->course->offering()->section()->member($this->juser->get('id'))->get('id');
+		if (!$this->member || !is_numeric($this->member))
+		{
+			$this->member = $this->course->offering()->member($this->juser->get('id'))->get('id');
+			if (!$this->member || !is_numeric($this->member))
+			{
+				JError::raiseError(422, 'No user found');
+				return false;
+			}
+		}
+
+		// Set the base path
+		$this->base = "index.php?option=com_courses&controller=form&gid={$this->course->get('alias')}&offering={$this->course->offering()->get('alias')}{$section}";
 
 		parent::execute();
 	}
@@ -427,7 +439,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 				$this->_getScripts('assets/js/' . $this->_task);
 
 				$this->view->dep   = $dep;
-				$this->view->resp  = $dep->getRespondent(NULL, $attempt);
+				$this->view->resp  = $dep->getRespondent($this->member, $attempt);
 				$this->view->pdf   = $dep->getForm();
 				$this->view->title = $this->view->pdf->getTitle();
 				$this->view->base  = $this->base;
@@ -445,7 +457,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 					JError::raiseError(403, "You're not allowed this many attempts!");
 				}
 
-				$resp = $dep->getRespondent(NULL, $attempt);
+				$resp = $dep->getRespondent($this->member, $attempt);
 
 				if($resp->getEndTime())
 				{
@@ -501,7 +513,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		$attempt = JRequest::getInt('attempt', 1);
 
-		PdfFormDeployment::fromCrumb($crumb)->getRespondent(NULL, $attempt)->markStart();
+		PdfFormDeployment::fromCrumb($crumb)->getRespondent($this->member, $attempt)->markStart();
 
 		$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=' . JRequest::getWord('tmpl') : '';
 		$att  = ($attempt > 1) ? '&attempt='.$attempt : '';
@@ -527,7 +539,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		$attempt = JRequest::getInt('attempt', 1);
 
-		PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent(NULL, $attempt)->saveProgress($_POST['question'], $_POST['answer']);
+		PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent($this->member, $attempt)->saveProgress($_POST['question'], $_POST['answer']);
 
 		echo json_encode(array("result"=>"success"));
 		exit();
@@ -554,7 +566,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		if ($complete)
 		{
-			$resp = $dep->getRespondent(NULL, $attempt);
+			$resp = $dep->getRespondent($this->member, $attempt);
 			$resp->saveAnswers($_POST)->markEnd();
 
 			$this->setRedirect(JRoute::_($this->base . '&task=form.complete&crumb='.$crumb.$att, false));

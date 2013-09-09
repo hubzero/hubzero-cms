@@ -221,15 +221,16 @@ class PdfFormDeployment
 		$join_type = ($include_incompletes) ? "LEFT" : "INNER";
 
 		$dbh->setQuery(
-			"SELECT name, email, started, finished, version, u.id as user_id, count(pfa.id)*100/count(pfr2.id) AS score
+			"SELECT name, email, started, finished, version, cm.id AS member_id, count(pfa.id)*100/count(pfr2.id) AS score
 			FROM #__courses_form_respondents pfr 
-			INNER JOIN #__users u ON u.id = pfr.user_id 
+			INNER JOIN #__courses_members cm ON cm.id = pfr.member_id
+			INNER JOIN #__users u ON cm.user_id = u.id
 			LEFT JOIN #__courses_form_latest_responses_view pfr2 ON pfr2.respondent_id = pfr.id
 			{$join_type} JOIN #__courses_form_questions pfq ON pfq.id = pfr2.question_id
 			LEFT JOIN #__courses_form_answers pfa ON pfa.id = pfr2.answer_id AND pfa.correct
 			WHERE deployment_id = {$this->id}
 			GROUP BY name, email, started, finished, version
-			ORDER BY user_id ASC, score ASC"
+			ORDER BY member_id ASC, score ASC"
 		);
 
 		return $dbh->loadAssocList($key);
@@ -256,7 +257,7 @@ class PdfFormDeployment
 	 *
 	 * @return object
 	 **/
-	public function getRespondent($uid=NULL, $attempt=1)
+	public function getRespondent($member_id, $attempt=1)
 	{
 		// @FIXME: should this have a static instance?  this causes a problem when loading a grade book type scenario
 		static $resp;
@@ -268,10 +269,10 @@ class PdfFormDeployment
 
 		if (!$resp && $this->id)
 		{
-			$resp = new PdfFormRespondent($this->id, $uid, $attempt);
+			$resp = new PdfFormRespondent($this->id, $member_id, $attempt);
 		}
 
-		return new PdfFormRespondent($this->id, $uid, $attempt);
+		return new PdfFormRespondent($this->id, $member_id, $attempt);
 	}
 
 	/**

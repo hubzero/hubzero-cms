@@ -48,7 +48,7 @@ class CoursesTableGradeBook extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $user_id = NULL;
+	var $member_id = NULL;
 
 	/**
 	 * decimal(5,2)
@@ -92,16 +92,16 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Load gradebook entry by user and asset id
 	 * 
-	 * @param      string $user_id
+	 * @param      string $member_id
 	 * @param      string $asset_id
 	 * @return     array
 	 */
-	public function loadByUserAndAssetId($user_id, $asset_id)
+	public function loadByUserAndAssetId($member_id, $asset_id)
 	{
 		$db = $this->_db;
 		$query  = 'SELECT *';
 		$query .= ' FROM '.$this->_tbl;
-		$query .= ' WHERE `scope` = "asset" AND `user_id` = ' . $db->quote($user_id) . ' AND `scope_id` = ' . $db->quote($asset_id);
+		$query .= ' WHERE `scope` = "asset" AND `member_id` = ' . $db->quote($member_id) . ' AND `scope_id` = ' . $db->quote($asset_id);
 		$db->setQuery( $query );
 
 		if ($result = $db->loadAssoc())
@@ -130,13 +130,13 @@ class CoursesTableGradeBook extends JTable
 
 		$where = array();
 
-		if (isset($filters['user_id']) && $filters['user_id'])
+		if (isset($filters['member_id']) && $filters['member_id'])
 		{
-			if(!is_array($filters['user_id']))
+			if(!is_array($filters['member_id']))
 			{
-				$filters['user_id'] = array($filters['user_id']);
+				$filters['member_id'] = array($filters['member_id']);
 			}
-			$where[] = "user_id IN (" . implode(',', $filters['user_id']) . ")";
+			$where[] = "member_id IN (" . implode(',', $filters['member_id']) . ")";
 		}
 		if (isset($filters['scope']) && $filters['scope'])
 		{
@@ -190,19 +190,19 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function passing($filters=array(), $key=null)
 	{
-		$query = "SELECT gb.user_id, score";
+		$query = "SELECT gb.member_id, score";
 		$query .= " FROM $this->_tbl AS gb";
-		$query .= " LEFT JOIN `#__courses_members` cm ON cm.user_id = gb.user_id";
+		$query .= " LEFT JOIN `#__courses_members` cm ON cm.id = gb.member_id";
 
 		$where = array();
 
-		if (isset($filters['user_id']) && $filters['user_id'])
+		if (isset($filters['member_id']) && $filters['member_id'])
 		{
-			if(!is_array($filters['user_id']))
+			if(!is_array($filters['member_id']))
 			{
-				$filters['user_id'] = array($filters['user_id']);
+				$filters['member_id'] = array($filters['member_id']);
 			}
-			$where[] = "gb.user_id IN (" . implode(',', $filters['user_id']) . ")";
+			$where[] = "gb.member_id IN (" . implode(',', $filters['member_id']) . ")";
 		}
 		if (isset($filters['scope']) && $filters['scope'])
 		{
@@ -244,28 +244,28 @@ class CoursesTableGradeBook extends JTable
 	 * Query to sync exam scores with gradebook
 	 * 
 	 * @param      obj   $course
-	 * @param      array $user_id
+	 * @param      array $member_id
 	 * @return     void
 	 */
-	public function syncGrades($course, $user_id=null)
+	public function syncGrades($course, $member_id=null)
 	{
-		if (!is_null($user_id) && !empty($user_id))
+		if (!is_null($member_id) && !empty($member_id))
 		{
-			if (!is_array($user_id))
+			if (!is_array($member_id))
 			{
-				$user_id = (array) $user_id;
+				$member_id = (array) $member_id;
 			}
 		}
 		else
 		{
 			// Pull all section members
 			$members = $course->offering()->section()->members(array('student'=>1));
-			$user_id = array();
+			$member_id = array();
 
 			// Get member id's for refresh filter
 			foreach ($members as $member)
 			{
-				$user_id[] = $member->get('user_id');
+				$member_id[] = $member->get('id');
 			}
 		}
 
@@ -290,7 +290,7 @@ class CoursesTableGradeBook extends JTable
 				// Add null values for unpublished forms that may have already been taken
 				if ($asset->state != 1)
 				{
-					foreach ($user_id as $u)
+					foreach ($member_id as $u)
 					{
 						$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
 					}
@@ -310,14 +310,14 @@ class CoursesTableGradeBook extends JTable
 
 				$dep = PdfFormDeployment::fromCrumb($crumb, $course->offering()->section()->get('id'));
 
-				$results = $dep->getResults(false, 'user_id');
+				$results = $dep->getResults(false, 'member_id');
 
 				switch ($dep->getState())
 				{
 					// Form isn't available yet
 					case 'pending':
 						// Null value
-						foreach ($user_id as $u)
+						foreach ($member_id as $u)
 						{
 							$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
 						}
@@ -325,7 +325,7 @@ class CoursesTableGradeBook extends JTable
 
 					// Form availability has expired - students either get a 0, or their score (no nulls)
 					case 'expired':
-						foreach ($user_id as $u)
+						foreach ($member_id as $u)
 						{
 							$score = (isset($results[$u]['score'])) ? $results[$u]['score'] : '0.00';
 							$values[] = "('{$u}', '{$score}', 'asset', '{$asset->id}')";
@@ -334,7 +334,7 @@ class CoursesTableGradeBook extends JTable
 
 					// Form is still active - students either get their score, or a null
 					case 'active':
-						foreach ($user_id as $u)
+						foreach ($member_id as $u)
 						{
 							$resp = $dep->getRespondent($u);
 
@@ -357,7 +357,7 @@ class CoursesTableGradeBook extends JTable
 			// Build query and run
 			if (count($values) > 0)
 			{
-				$query  = "INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`) VALUES\n";
+				$query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`) VALUES\n";
 				$query .= implode(",\n", $values);
 				$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
 
@@ -377,33 +377,33 @@ class CoursesTableGradeBook extends JTable
 	{
 		$values = array();
 
-		foreach ($data as $user_id=>$user)
+		foreach ($data as $member_id=>$member)
 		{
-			foreach ($user['units'] as $unit_id=>$unit)
+			foreach ($member['units'] as $unit_id=>$unit)
 			{
 				if (is_null($unit['unit_weighted']))
 				{
-					$values[] = "('$user_id', NULL, 'unit', '$unit_id')";
+					$values[] = "('$member_id', NULL, 'unit', '$unit_id')";
 				}
 				else
 				{
-					$values[] = "('$user_id', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '$unit_id')";
+					$values[] = "('$member_id', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '$unit_id')";
 				}
 			}
 
-			if (is_null($user['course_weighted']))
+			if (is_null($member['course_weighted']))
 			{
-				$values[] = "('$user_id', NULL, 'course', '$course_id')";
+				$values[] = "('$member_id', NULL, 'course', '$course_id')";
 			}
 			else
 			{
-				$values[] = "('$user_id', " . $this->_db->quote($user['course_weighted']) . ", 'course', '$course_id')";
+				$values[] = "('$member_id', " . $this->_db->quote($member['course_weighted']) . ", 'course', '$course_id')";
 			}
 		}
 
 		if (count($values) > 0)
 		{
-			$query  = "INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`) VALUES\n";
+			$query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`) VALUES\n";
 			$query .= implode(",\n", $values);
 			$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
 
@@ -414,26 +414,26 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Clear grades for a given course/user combination
 	 * 
-	 * @param      array $user_id
+	 * @param      array $member_id
 	 * @param      object $course
 	 * @return     void
 	 */
-	public function clearGrades($user_id, $course)
+	public function clearGrades($member_id, $course)
 	{
-		if (!is_object($course) || empty($user_id))
+		if (!is_object($course) || empty($member_id))
 		{
 			return false;
 		}
 
-		if (!is_array($user_id))
+		if (!is_array($member_id))
 		{
-			$user_id = (array) $user_id;
+			$member_id = (array) $member_id;
 		}
 
 		// Clear up course grades for given users
 		$query  = "UPDATE `#__courses_grade_book` SET score = NULL";
 		$query .= " WHERE scope = 'course' AND scope_id = " . $this->_db->quote($course->get('id'));
-		$query .= " AND user_id IN (" . implode(',', $user_id) . ")";
+		$query .= " AND member_id IN (" . implode(',', $member_id) . ")";
 		$this->_db->execute($query);
 
 		// Clean up units as well...
@@ -441,7 +441,7 @@ class CoursesTableGradeBook extends JTable
 		{
 			$query  = "UPDATE `#__courses_grade_book` SET score = NULL";
 			$query .= " WHERE scope = 'unit' AND scope_id = " . $this->_db->quote($unit->get('id'));
-			$query .= " AND user_id IN (" . implode(',', $user_id) . ")";
+			$query .= " AND member_id IN (" . implode(',', $member_id) . ")";
 			$this->_db->execute($query);
 		}
 	}
@@ -450,20 +450,20 @@ class CoursesTableGradeBook extends JTable
 	 * Get asset completion count
 	 * 
 	 * @param      int $course_id
-	 * @param      int $user_id
+	 * @param      int $member_id
 	 * @return     void
 	 */
-	public function getFormCompletionCount($course_id, $user_id=null)
+	public function getFormCompletionCount($course_id, $member_id=null)
 	{
-		$user = (!is_null($user_id)) ? "AND gb.user_id = {$user_id}" : '';
-		$query   = "SELECT gb.user_id, ca.subtype, count(*) as count
+		$user = (!is_null($member_id)) ? "AND gb.member_id = {$member_id}" : '';
+		$query   = "SELECT gb.member_id, ca.subtype, count(*) as count
 					FROM $this->_tbl AS gb
 					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
 					WHERE scope='asset'
 					AND ca.course_id = '{$course_id}'
 					AND (score IS NOT NULL OR override IS NOT NULL)
 					{$user}
-					GROUP BY user_id, subtype";
+					GROUP BY member_id, subtype";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -472,7 +472,6 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Get asset count
 	 * 
-	 * @param      int $user_id
 	 * @return     void
 	 */
 	public function getFormCount()

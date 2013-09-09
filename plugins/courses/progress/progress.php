@@ -117,7 +117,7 @@ class plgCoursesProgress extends JPlugin
 			return $arr;
 		}
 
-		$this->juser  = JFactory::getUser();
+		$this->member = $course->offering()->section()->member(JFactory::getUser()->get('id'));
 		$this->course = $course;
 		$this->base   = 'index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 		$this->base  .= ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
@@ -132,8 +132,9 @@ class plgCoursesProgress extends JPlugin
 			)
 		);
 		$this->view->course  = $course;
-		$this->view->juser   = $this->juser;
+		$this->view->member  = $this->member;
 		$this->view->option  = 'com_courses';
+		$this->view->base    = $this->base;
 
 		switch (JRequest::getWord('action'))
 		{
@@ -169,7 +170,8 @@ class plgCoursesProgress extends JPlugin
 			if($student_id = JRequest::getInt('id', false))
 			{
 				$layout = 'student';
-				$this->view->juser  = JFactory::getUser($student_id);
+
+				$this->view->member = $this->course->offering()->section()->member($student_id);
 			}
 		}
 

@@ -207,15 +207,38 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 *
 	 * @return    void
 	 */
-	public function logView()
+	public function logView($course=null)
 	{
 		require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
+
+		if (!$course || !is_object($course))
+		{
+			$gid      = JRequest::getVar('gid');
+			$offering = JRequest::getVar('offering');
+			$section  = JRequest::getVar('section');
+
+			$course = new CoursesModelCourse($gid);
+			$course->offering($offering);
+			$course->offering()->section($section);
+		}
+
+		$member = $course->offering()->section()->member(JFactory::getUser()->get('id'));
+
+		if (!$member->get('id'))
+		{
+			$member = $course->offering()->member(JFactory::getUser()->get('id'));
+		}
+
+		if (!$member || !is_object($member) || !$member->get('id'))
+		{
+			return false;
+		}
 
 		$view = new CoursesTableAssetViews($this->_db);
 		$view->asset_id          = $this->_tbl->id;
 		$view->course_id         = $this->get('course_id');
 		$view->viewed            = date('Y-m-d H:i:s', time());
-		$view->viewed_by         = JFactory::getUser()->get('id');
+		$view->viewed_by         = $member->get('id');
 		$view->ip                = $_SERVER['REMOTE_ADDR'];
 		$view->url               = $_SERVER['REQUEST_URI'];
 		$view->referrer          = $_SERVER['HTTP_REFERER'];
@@ -239,7 +262,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$subtype = strtolower($this->get('subtype'));
 		$layout = 'default';
 
-		$this->logView();
+		$this->logView($course);
 
 		// Check to see that the view template exists, otherwise, use the default
 		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '_' . $subtype . '.php'))

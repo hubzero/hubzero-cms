@@ -74,16 +74,16 @@ class PdfFormRespondent
 	 *
 	 * @return void
 	 **/
-	public function __construct($depId, $uid=null, $attempt=1)
+	public function __construct($depId, $member_id, $attempt=1)
 	{
-		if (!$uid && !($uid = JFactory::getUser()->id))
+		if (!$member_id)
 		{
 			JError::raiseError(403, 'This area requires authentication');
 		}
 
 		$dbh = JFactory::getDBO();
 		$query  = 'SELECT id, started, finished, attempt FROM `#__courses_form_respondents`';
-		$query .= ' WHERE deployment_id = '.(int)$depId.' AND user_id = '.(int)$uid.' AND attempt='.(int)$attempt;
+		$query .= ' WHERE deployment_id = '.(int)$depId.' AND member_id = '.(int)$member_id.' AND attempt='.(int)$attempt;
 		$dbh->setQuery($query);
 
 		// Set deployment id
@@ -98,7 +98,7 @@ class PdfFormRespondent
 		}
 		else
 		{
-			$dbh->setQuery('INSERT INTO #__courses_form_respondents(deployment_id, user_id, attempt) VALUES ('.(int)$depId.', '.(int)$uid.', '.(int)$attempt.')');
+			$dbh->setQuery('INSERT INTO #__courses_form_respondents(deployment_id, member_id, attempt) VALUES ('.(int)$depId.', '.(int)$member_id.', '.(int)$attempt.')');
 			$dbh->query();
 			$this->id = $dbh->insertid();
 		}
