@@ -105,7 +105,7 @@ class plgTagsGroups extends JPlugin
 		$ids = array();
 		foreach ($tags as $tag)
 		{
-			$ids[] = $tag->id;
+			$ids[] = $tag->get('id');
 		}
 		$ids = implode(',', $ids);
 		

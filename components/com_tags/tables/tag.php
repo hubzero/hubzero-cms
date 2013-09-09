@@ -371,14 +371,25 @@ class TagsTag extends JTable
 		} 
 		else 
 		{
-			$query = "SELECT t.id, t.tag, t.raw_tag, t.admin, (SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total, (SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
+			$query = "SELECT " . (isset($filters['search']) && $filters['search'] != '' ? "DISTINCT " : "") . "t.id, t.tag, t.raw_tag, t.admin, 
+						(SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total, 
+						(SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
+		$tj = new TagsObject($this->_db);
+
 		$query .= " FROM $this->_tbl AS t";
-		if ($filters['search']) 
+		if (isset($filters['by']) && $filters['by'] == 'user') 
 		{
+			$query .= " JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%'";
+		}
+
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$query .= " LEFT JOIN #__tags_substitute AS sb ON sb.tag_id=t.id";
 			// Used to also query using unfiltered search text agains the rawtag and the tag.
 			// Figured this was safer
-			$query .= " WHERE (LOWER(t.tag) LIKE '%" . $this->_db->getEscaped($this->normalize($filters['search'])) . "%')";
+			//$query .= " WHERE (LOWER(t.tag) LIKE '%" . $this->_db->getEscaped($this->normalize($filters['search'])) . "%')";
+			$query .= " WHERE (LOWER(t.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(sb.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%')";
 			if ($filter) 
 			{
 				$query .= " AND $filter";
@@ -391,6 +402,7 @@ class TagsTag extends JTable
 				$query .= " WHERE $filter";
 			}
 		}
+
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 
 		{
 			if ($filters['sortby'] == 'total') 
@@ -414,8 +426,13 @@ class TagsTag extends JTable
 				$query .= " ORDER BY t.raw_tag ASC";
 			}
 		}
+
 		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
 		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 

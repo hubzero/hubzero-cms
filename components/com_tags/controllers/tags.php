@@ -68,51 +68,9 @@ class TagsControllerTags extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		// Instantiate a new view
-		$this->view->showsizes = 0;
+		$this->view->cloud = new TagsModelCloud();
+
 		$this->view->config = $this->config;
-
-		// Set some variables
-		$this->view->min_font_size = 1;
-		$this->view->max_font_size = 1.8;
-
-		// Find all tags
-		$t = new TagsTag($this->database);
-
-		$this->view->tags = $t->getTopTags(100);
-
-		$this->view->newtags = $t->getRecentTags(25);
-
-		// Trigger the functions that return the areas we'll be using
-		$this->view->categories = array();
-		$this->view->tagpile = array();
-
-		if ($this->view->tags) 
-		{
-			$retarr = array();
-			foreach ($this->view->tags as $tag)
-			{
-				$retarr[$tag->raw_tag] = $tag->tcount;
-			}
-			ksort($retarr);
-
-			$this->view->max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
-			$this->view->min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
-		} 
-		else 
-		{
-			$this->view->max_qty = 0;
-			$this->view->min_qty = 0;
-		}
-
-		// For ever additional tagged object from min to max, we add $step to the font size.
-		$spread = $this->view->max_qty - $this->view->min_qty;
-		if (0 == $spread) 
-		{
-			// Divide by zero
-			$spread = 1;
-		}
-		$this->view->step = ($this->view->max_font_size - $this->view->min_font_size)/($spread);
 
 		// Set the page title
 		$this->_buildTitle(null);
@@ -172,31 +130,28 @@ class TagsControllerTags extends Hubzero_Controller
 		}
 
 		// Sanitize the tag
-		$t = new TagsHandler($this->database);
+		//$t = new TagsHandler($this->database);
 
 		$tags  = array();
 		$added = array();
 		$rt    = array();
 		foreach ($tgs as $tag)
 		{
-			$tag = $t->normalize_tag($tag);
+			// Load the tag
+			$tagobj = TagsModelTag::getInstance($tag);
 
-			if (in_array($tag, $added)) 
+			if (in_array($tagobj->get('tag'), $added)) 
 			{
 				continue;
 			}
 
-			$added[] = $tag;
-
-			// Load the tag
-			$tagobj = new TagsTag($this->database);
-			$tagobj->loadTag($tag);
+			$added[] = $tagobj->get('tag');
 
 			// Ensure we loaded the tag's info from the database
-			if ($tagobj->id) 
+			if ($tagobj->exists()) 
 			{
 				$tags[] = $tagobj;
-				$rt[]   = $tagobj->raw_tag;
+				$rt[]   = $tagobj->get('raw_tag');
 			}
 		}
 
@@ -205,21 +160,6 @@ class TagsControllerTags extends Hubzero_Controller
 		{
 			JError::raiseError(404, JText::_('COM_TAGS_NOT_FOUND'));
 			return;
-		}
-
-		// Set the page title
-		//$title .= ': ';
-		$tagname = array();
-		$tagstring = array();
-		for ($i=0, $n=count($tags); $i < $n; $i++)
-		{
-			if ($i > 0) 
-			{
-				//$title .= '+ ';
-			}
-			$tagname[] = $tags[$i]->raw_tag;
-			$tagstring[] = $tags[$i]->tag;
-			//$title .= $tags[$i]->raw_tag . ' ';
 		}
 
 		// Load plugins
@@ -327,7 +267,7 @@ class TagsControllerTags extends Hubzero_Controller
 				$cats[$i]['_sub']  = array();
 				$z = 0;
 				// Loop through each sub-category
-				foreach ($t as $s=>$st)
+				foreach ($t as $s => $st)
 				{
 					// Ensure a matching array of totals exist
 					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) 
@@ -369,14 +309,14 @@ class TagsControllerTags extends Hubzero_Controller
 		$related = null;
 		if (count($tags) == 1) 
 		{
-			$this->view->tagstring = $tags[0]->tag;
+			$this->view->tagstring = $tags[0]->get('tag');
 		} 
 		else 
 		{
 			$tagstring = array();
 			foreach ($tags as $tag)
 			{
-				$tagstring[] = $tag->tag;
+				$tagstring[] = $tag->get('tag');
 			}
 			$this->view->tagstring = implode('+', $tagstring);
 		}
@@ -422,13 +362,16 @@ class TagsControllerTags extends Hubzero_Controller
 		$filters = array();
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
+		$filters['admin']  = 0;
 		$filters['search'] = trim(JRequest::getString('value', ''));
 
 		// Create a Tag object
-		$obj = new TagsTag($this->database);
+		//$obj = new TagsTag($this->database);
+		$cloud = new TagsModelCloud();
 
 		// Fetch results
-		$rows = $obj->getAutocomplete($filters);
+		//$rows = $obj->getAutocomplete($filters);
+		$rows = $cloud->tags('list', $filters);
 
 		// Output search results in JSON format
 		$json = array();
@@ -436,11 +379,11 @@ class TagsControllerTags extends Hubzero_Controller
 		{
 			foreach ($rows as $row)
 			{
-				$name = str_replace("\n", '', stripslashes(trim($row->raw_tag)));
+				$name = str_replace("\n", '', stripslashes(trim($row->get('raw_tag'))));
 				$name = str_replace("\r", '', $name);
-	
+
 				$json[] = array(
-					'id'   => $row->tag,
+					'id'   => $row->get('tag'),
 					'name' => $name
 				);
 			}
@@ -682,8 +625,6 @@ class TagsControllerTags extends Hubzero_Controller
 
 		// Incoming
 		$this->view->filters = array();
-		//$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		//$this->view->filters['search'] = urldecode(JRequest::getString('search'));
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
@@ -700,7 +641,7 @@ class TagsControllerTags extends Hubzero_Controller
 			'sortby',
 			''
 		);
-		//$this->view->filters['sortby'] = JRequest::getVar('sortby', '');
+
 		if (!in_array($this->view->filters['sortby'], array('raw_tag', 'total')))
 		{
 			$this->view->filters['sortby'] = '';
@@ -708,12 +649,11 @@ class TagsControllerTags extends Hubzero_Controller
 
 		$this->view->total = 0;
 
-		$t = new TagsTag($this->database);
+		$t = new TagsModelCloud();
 
 		$order = JRequest::getVar('order', '');
 		if ($order == 'usage') 
 		{
-			//$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 			$limit = $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
@@ -721,12 +661,19 @@ class TagsControllerTags extends Hubzero_Controller
 				'int'
 			);
 
-			$this->view->rows = $t->getTopTags($limit);
+			//$this->view->rows = $t->getTopTags($limit);
+			$this->view->rows = $t->tags('list', array(
+				'limit'    => $limit,
+				'admin'    => 0,
+				'sort'     => 'total',
+				'sort_Dir' => 'DESC',
+				'by'       => 'user'
+			));
 		} 
 		else 
 		{
 			// Record count
-			$this->view->total = $t->getCount($this->view->filters);
+			$this->view->total = $t->tags('count', $this->view->filters);
 
 			$this->view->filters['limit'] = $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
@@ -734,10 +681,9 @@ class TagsControllerTags extends Hubzero_Controller
 				$jconfig->getValue('config.list_limit'),
 				'int'
 			);
-			//$this->view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 
 			// Get records
-			$this->view->rows = $t->getRecords($this->view->filters);
+			$this->view->rows = $t->tags('list', $this->view->filters);
 
 			// Initiate paging
 			jimport('joomla.html.pagination');
@@ -808,10 +754,7 @@ class TagsControllerTags extends Hubzero_Controller
 		else 
 		{
 			// Incoming
-			$id = JRequest::getInt('id', 0, 'request');
-
-			$this->view->tag = new TagsTag($this->database);
-			$this->view->tag->load($id);
+			$this->view->tag = new TagsModelTag(JRequest::getInt('id', 0, 'request'));
 		}
 
 		$this->view->filters = array();
@@ -874,7 +817,8 @@ class TagsControllerTags extends Hubzero_Controller
 
 		$tag = JRequest::getVar('fields', array(), 'post');
 
-		$row = new TagsTag($this->database);
+		// Bind incoming data
+		$row = new TagsModelTag(0);
 		if (!$row->bind($tag)) 
 		{
 			$this->setError($row->getError());
@@ -882,35 +826,13 @@ class TagsControllerTags extends Hubzero_Controller
 			return;
 		}
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
-		}
-
-		// Make sure the tag doesn't already exist
-		if (!$row->id) 
-		{
-			if ($row->checkExistence()) 
-			{
-				$this->setError(JText::_('COM_TAGS_TAG_EXIST'));
-				$this->editTask($row);
-				return;
-			}
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
-
-		// Save substitutions
-		$row->saveSubstitutions($tag['substitutions']);
 
 		$limit  = JRequest::getInt('limit', 0);
 		$start  = JRequest::getInt('limitstart', 0);
@@ -963,8 +885,8 @@ class TagsControllerTags extends Hubzero_Controller
 			$dispatcher->trigger('onTagDelete', array($id));
 
 			// Remove the tag
-			$tag = new TagsTag($this->database);
-			$tag->delete($id);
+			$tag = new TagsModelTag($id);
+			$tag->delete();
 		}
 
 		//get the browse filters so we can go back to previous view
@@ -1010,8 +932,8 @@ class TagsControllerTags extends Hubzero_Controller
 			$l = array();
 			foreach ($tags as $tag)
 			{
-				$t[] = stripslashes($tag->raw_tag);
-				$l[] = $tag->tag;
+				$t[] = stripslashes($tag->get('raw_tag'));
+				$l[] = $tag->get('tag');
 			}
 
 			$pathway->addItem(
@@ -1039,7 +961,7 @@ class TagsControllerTags extends Hubzero_Controller
 			$t = array();
 			foreach ($tags as $tag)
 			{
-				$t[] = stripslashes($tag->raw_tag);
+				$t[] = stripslashes($tag->get('raw_tag'));
 			}
 			$this->view->title .= ': ' . implode(' + ', $t);
 		}

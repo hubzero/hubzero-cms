@@ -51,17 +51,17 @@ $this->filters['sort'] = '';
 	<div class="main section">
 		<div class="aside">
 			<div class="container">
-<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+			<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 				<p class="help">
 					<strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong>
 					<br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?>
 				</p>
-<?php } else { ?>
+			<?php } else { ?>
 				<p>
 					Here you will find a list of all tags currently in use. Click a tag to see the items tagged with it.
 				</p>
-<?php } ?>
-				<p>
+			<?php } ?>
+				<p class="info">
 					<strong>Note:</strong> <?php echo JText::_('# tagged includes all usage (pending, unpublished, and private items).'); ?>
 				</p>
 			</div><!-- / .container -->
@@ -74,10 +74,10 @@ $this->filters['sort'] = '';
 					<label for="entry-search-text">
 						<?php echo JText::_('COM_TAGS_SEARCH_TAGS'); ?>
 					</label>
-					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter tag'); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
-			
+
 			<div class="container">
 				<ul class="entries-menu">
 					<li>
@@ -99,9 +99,9 @@ $this->filters['sort'] = '';
 						</a>
 					</li>
 				</ul>
-				
+
 				<table class="entries" id="taglist" summary="<?php echo JText::_('COM_TAGS_TABLE_SUMMARY'); ?>">
-<?php
+					<?php
 					if (!$this->filters['limit'])
 					{
 						$this->filters['limit'] = $this->total;
@@ -109,13 +109,12 @@ $this->filters['sort'] = '';
 					$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
 					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 					//$e = ($this->filters['limit'] > $this->total) ? $this->filters['start'] + $this->filters['limit'] : $this->filters['start'] + $this->filters['limit'];
-?>
-
+					?>
 					<thead>
 						<tr>
-<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+						<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<th colspan="2"><?php echo JText::_('COM_TAGS_COL_ACTION'); ?></th>
-<?php } ?>
+						<?php } ?>
 							<th>
 								<?php
 								if ($this->filters['search'] != '') {
@@ -125,62 +124,57 @@ $this->filters['sort'] = '';
 								<?php echo JText::_('COM_TAGS'); ?>
 								<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
 							</th>
-<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+						<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<th><?php echo JText::_('COM_TAGS_COL_ALIAS'); ?></th>
-<?php } ?>
+						<?php } ?>
 							<th><?php echo JText::_('COM_TAGS_COL_NUMBER_TAGGED'); ?></th>
 						</tr>
 					</thead>
 					
 					<tbody>
-<?php
-if ($this->rows) {
-	$database =& JFactory::getDBO();
-	$to = new TagsObject($database);
-
-	$k = 0;
-	$cls = 'even';
-	for ($i=0, $n=count($this->rows); $i < $n; $i++)
-	{
-		$row = &$this->rows[$i];
-		$now = date("Y-m-d H:i:s");
-?>
-						<tr<?php if ($row->admin) { echo ' class="admin"'; } ?>>
-<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+				<?php
+				if ($this->rows->total()) 
+				{
+					$cls = 'even';
+					foreach ($this->rows as $row)
+					{
+						$cls = ($cls == 'even' ? 'odd' : 'even');
+				?>
+						<tr class="<?php echo $cls . ($row->get('admin') ? ' admin' : ''); ?>">
+					<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
-	<?php if ($this->config->get('access-delete-tag')) { ?>
-								<a class="icon-delete delete delete-tag" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id[]='.$row->id.'&search='.urlencode($this->filters['search']).'&sortby='.$this->filters['sortby'].'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>">
+						<?php if ($this->config->get('access-delete-tag')) { ?>
+								<a class="icon-delete delete delete-tag" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sortby=' . $this->filters['sortby'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 									<?php echo JText::_('COM_TAGS_DELETE_TAG'); ?>
 								</a>
-	<?php } ?>
+						<?php } ?>
 							</td>
 							<td>
-	<?php if ($this->config->get('access-edit-tag')) { ?>
-								<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$row->id.'&search='.urlencode($this->filters['search']).'&sortby='.$this->filters['sortby'].'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo stripslashes($row->raw_tag); ?>&quot;">
+						<?php if ($this->config->get('access-edit-tag')) { ?>
+								<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sortby=' . $this->filters['sortby'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>&quot;">
 									<?php echo JText::_('COM_TAGS_EDIT'); ?>
 								</a>
-	<?php } ?>
+						<?php } ?>
 							</td>
-<?php } ?>
+					<?php } ?>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$row->tag); ?>">
-									<?php echo $this->escape(stripslashes($row->raw_tag)); ?>
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+									<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 								</a>
 							</td>
-<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+					<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
-								<?php echo $this->escape($row->substitutes); ?>
+								<?php echo $this->escape($row->get('substitutes')); ?>
 							</td>
-<?php } ?>
+					<?php } ?>
 							<td>
-								<?php echo $this->escape($row->total); ?>
+								<?php echo $this->escape($row->get('total')); ?>
 							</td>
 						</tr>
-<?php
-		$k = 1 - $k;
-	}
-}
-?>
+				<?php
+					}
+				}
+				?>
 					</tbody>
 				</table>
 				<?php

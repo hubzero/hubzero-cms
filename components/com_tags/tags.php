@@ -40,9 +40,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 ximport('Hubzero_View_Helper_Html');
-
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'select.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'handler.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cloud.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'tags'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

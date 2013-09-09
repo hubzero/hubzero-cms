@@ -99,19 +99,41 @@ defined('_JEXEC') or die('Restricted access');
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="block">
+		<?php
+		$cloud = $this->cloud->render('html', array(
+			'limit'    => 25,
+			'admin'    => 0,
+			'sort'     => 'taggedon',
+			'sort_Dir' => 'DESC',
+			'by'       => 'user'
+		), true);
+		if ($cloud)
+		{
+			echo $cloud;
+		}
+		else 
+		{
+			echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
+		}
+		?>
 <?php
+/*$t = new TagsTag(JFactory::getDBO());
+
 $html = '';
-if ($this->newtags) {
+
+$newtags = $t->getRecentTags(25);
+
+if ($newtags) {
 	$html .= '<ol class="tags">'."\n";
 	$tl = array();
-	foreach ($this->newtags as $newtag)
+	foreach ($newtags as $newtag)
 	{
 		$class = ($newtag->admin == 1) ? ' class="admin"' : '';
 
 		$newtag->raw_tag = str_replace('&amp;', '&', $newtag->raw_tag);
 		$newtag->raw_tag = str_replace('&', '&amp;', $newtag->raw_tag);
 
-		if ($this->showsizes == 1) {
+		if ($this->config->get('showsizes') == 1) {
 			$size = $this->min_font_size + ($newtag->tcount - $this->min_qty) * $this->step;
 			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
 			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=' . $this->option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></span></li>' . "\n";
@@ -125,7 +147,7 @@ if ($this->newtags) {
 } else {
 	$html .= '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 }
-echo $html;
+echo $html;*/
 ?>
 		</div><!-- / .block -->
 	</div><!-- / .four columns second third fourth -->
@@ -136,35 +158,23 @@ echo $html;
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="block">
-<?php
-$tags = $this->tags;
-$html = '';
-if ($tags) {
-	$html .= '<ol class="tags">'."\n";
-	$tll = array();
-	foreach ($tags as $tag)
-	{
-		$class = ($tag->admin == 1) ? ' class="admin"' : '';
-
-		$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
-		$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
-
-		if ($this->showsizes == 1) {
-			$size = $this->min_font_size + ($tag->tcount - $this->min_qty) * $this->step;
-			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
-			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size, 1) .'em"><a href="' . JRoute::_('index.php?option=' . $this->option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></span></li>' . "\n";
-		} else {
-			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $this->option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></li>'."\n";
+		<?php
+		$cloud = $this->cloud->render('html', array(
+			'limit'    => 100,
+			'admin'    => 0,
+			'sort'     => 'total',
+			'sort_Dir' => 'DESC',
+			'by'       => 'user'
+		), true);
+		if ($cloud)
+		{
+			echo $cloud;
 		}
-	}
-	ksort($tll);
-	$html .= implode('',$tll);
-	$html .= '</ol>'."\n";
-} else {
-	$html .= '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
-}
-echo $html;
-?>
+		else 
+		{
+			echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
+		}
+		?>
 		</div><!-- / .block -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>

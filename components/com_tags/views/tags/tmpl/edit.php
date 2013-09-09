@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<label for="field-raw_tag">
 				<?php echo JText::_('COM_TAGS_TAG'); ?>
-				<input type="text" name="fields[raw_tag]" id="field-raw_tag" value="<?php echo $this->escape(stripslashes($this->tag->raw_tag)); ?>" size="38" />
+				<input type="text" name="fields[raw_tag]" id="field-raw_tag" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" size="38" />
 			</label>
 
 			<label for="field-admin">
@@ -70,17 +70,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<label for="field-description">
 				<?php echo JText::_('COM_TAGS_DESCRIPTION'); ?>
-				<textarea name="fields[description]" id="field-description" rows="7" cols="35"><?php echo $this->escape(stripslashes($this->tag->description)); ?></textarea>
+				<textarea name="fields[description]" id="field-description" rows="7" cols="35"><?php echo $this->escape(stripslashes($this->tag->get('description'))); ?></textarea>
 			</label>
 
 			<label for="field-substitutions">
 				<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
-				<textarea name="fields[substitutions]" id="field-substitutions" rows="5" cols="35"><?php echo stripslashes($this->tag->getSubstitutions($this->tag->id, true)); ?></textarea>
+				<textarea name="fields[substitutions]" id="field-substitutions" rows="5" cols="35"><?php echo $this->escape(stripslashes($this->tag->substitutes('string'))); ?></textarea>
 				<span class="hint"><?php echo JText::_('Enter a comma-separated list of tags you wish this tag to be substituted for. For example: If you enter "h20, aqua" for the tag "water", any time someone enters "h20" or "aqua" it will result in a tag of "water".'); ?></span>
 			</label>
 
-			<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->tag; ?>" />
-			<input type="hidden" name="fields[id]" value="<?php echo $this->tag->id; ?>" />
+			<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->get('tag'); ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->tag->get('id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />

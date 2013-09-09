@@ -152,7 +152,7 @@ class plgTagsResources extends JPlugin
 		$ids = array();
 		foreach ($tags as $tag)
 		{
-			$ids[] = $tag->id;
+			$ids[] = $tag->get('id');
 		}
 
 		// Instantiate some needed objects

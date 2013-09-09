@@ -105,7 +105,7 @@ class plgTagsWiki extends JPlugin
 		$ids = array();
 		foreach ($tags as $tag)
 		{
-			$ids[] = $tag->id;
+			$ids[] = $tag->get('id');
 		}
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');

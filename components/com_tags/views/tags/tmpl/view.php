@@ -155,7 +155,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		echo $html;
 		?>
-			<p>
+			<p class="info">
 				<strong>Note:</strong>  <?php echo JText::_('Results do not include pending, unpublished, and some private items.'); ?>
 			</p>
 		</div>
@@ -176,7 +176,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if (count($tf) > 0) {
 						echo $tf[0];
 } else { ?>
-				<input type="text" name="tag" id="actags" value="<?php echo $this->search; ?>" />
+				<input type="text" name="tag" id="actags" value="<?php echo $this->escape($this->search); ?>" />
 <?php } ?>
 			</fieldset>
 		</div><!-- / .container -->
@@ -184,14 +184,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php
 		if (count($this->tags) == 1) {
 			$tagobj = $this->tags[0];
-			if ($tagobj->description != '') {
+			if ($tagobj->get('description') != '') {
 				//$tagobj->description = Hubzero_View_Helper_Html::xhtml($tagobj->description);
 		?>
 		<div class="container">
 			<div class="container-block">
 				<h4><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h4>
 				<div class="tag-description">
-					<?php echo stripslashes($tagobj->description); ?>
+					<?php echo stripslashes($tagobj->get('description')); ?>
 					<div class="clearfix"></div>
 				</div>
 			</div>

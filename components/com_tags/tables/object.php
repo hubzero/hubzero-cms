@@ -104,6 +104,36 @@ class TagsObject extends JTable
 	}
 
 	/**
+	 * Load a database row and populate this object with results
+	 * Uses unique tag string as identifier
+	 * 
+	 * @param      string $oid Tag
+	 * @return     boolean True if tag found and loaded
+	 */
+	public function loadByObjectTag($tbl=null, $objectid=null, $tagid=null)
+	{
+		if ($tbl === null || $objectid === null || $tagid === null) 
+		{
+			return false;
+		}
+		$this->_db->setQuery(
+			"SELECT * FROM $this->_tbl 
+				WHERE tagid=" . $this->_db->Quote((int) $tagid) . " 
+				AND objectid=" . $this->_db->Quote((int) $objectid) . " 
+				AND tbl=" . $this->_db->Quote((string) $tbl) . " LIMIT 1"
+		);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
 	 * Delete attachments to a tag
 	 * 
 	 * @param      integer $tagid    Tag ID
@@ -413,6 +443,99 @@ class TagsObject extends JTable
 			$log->log($newtagid, 'objects_copied', json_encode($data));
 		}
 		return true;
+	}
+
+	/**
+	 * Build a query from filters
+	 * 
+	 * @param      array $filters Filters to determien hwo to build query
+	 * @return     string SQL
+	 */
+	public function _buildQuery($filters)
+	{
+		$query  = " FROM $this->_tbl AS o 
+					INNER JOIN #__tags AS t ON (o.tagid = t.id)";
+
+		$where = array();
+
+		if (isset($filters['objectid']) && (int) $filters['objectid'] > 0) 
+		{
+			$where[] = "o.objectid=" . $this->_db->Quote(intval($filters['objectid']));
+		}
+		if (isset($filters['tbl']) && (string) $filters['tbl'] != '') 
+		{
+			$where[] = "o.tbl=" . $this->_db->Quote($filters['tbl']);
+		}
+		if (isset($filters['tagid']) && (int) $filters['tagid'] > 0) 
+		{
+			$where[] = "o.tagid=" . $this->_db->Quote(intval($filters['tagid']));
+		}
+		if (isset($filters['strength']) && (int) $filters['strength'] >= 0) 
+		{
+			$where[] = "o.strength=" . $this->_db->Quote(intval($filters['strength']));
+		}
+		if (isset($filters['taggerid']) && (int) $filters['taggerid'] > 0) 
+		{
+			$where[] = "o.taggerid=" . $this->_db->Quote(intval($filters['taggerid']));
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		if (isset($filters['sort']) && $filters['sort'] != '') 
+		{
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+			{
+				$filters['sort_Dir'] = 'ASC';
+			}
+			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
+
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      array $filters Filters to determien hwo to build query
+	 * @return     integer
+	 */
+	public function count($filters=array())
+	{
+		$filters['limit'] = 0;
+		$filters['count'] = true;
+		$filters['sort']  = '';
+
+		$this->_db->setQuery($this->_buildQuery($filters));
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to determien hwo to build query
+	 * @return     array
+	 */
+	public function find($filters=array())
+	{
+		if (!isset($filters['sort']) || $filters['sort'] == '') 
+		{
+			$filters['sort'] = 'taggedon';
+		}
+		$this->_db->setQuery($this->_buildQuery($filters));
+		return $this->_db->loadObjectList();
 	}
 }
 
