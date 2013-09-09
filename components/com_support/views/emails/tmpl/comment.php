@@ -34,6 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 $juri =& JURI::getInstance();
 $jconfig =& JFactory::getConfig();
 
+$st = new SupportTags(JFactory::getDBO());
+
 $dateFormat = '%d %b %Y';
 $timeFormat = '%I:%M %p';
 $tz = 0;
@@ -92,6 +94,7 @@ $message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.$this->ticket->s
 $message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$this->ticket->created."\n";
 $message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->name . ($this->ticket->login ? ' ('.$this->ticket->login.')' : '') . "\n";
 $message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($this->ticket->status)."\n";
+$message .= strtoupper(JText::_('Tags')).': '.$st->get_tag_string($this->ticket->id, 0, 0, NULL, 0, 1)."\n";
 $message .= '----------------------------'."\n\n";
 $message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$this->ticket->id).': '.$this->comment->created_by."\n";
 $message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$this->comment->created."\n\n";
@@ -338,6 +341,10 @@ Content-type: text/html;charset=utf-8";
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo SupportHtml::getStatus($this->ticket->open, $this->ticket->status); ?></td>
+																</tr>
+																<tr>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Tags:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $st->get_tag_string($this->ticket->id, 0, 0, NULL, 0, 1); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
