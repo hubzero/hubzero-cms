@@ -944,6 +944,14 @@
 		border-radius: 0.25em;
 		white-space: nowrap;
 		color: #fff;
+
+		width: 0.7em;
+	}
+	.comments-feed .instructor-commented:before {
+		content: "i";
+		font-family: Courier, "Courier New", Georgia, "Times New Roman", Times, serif;
+		margin-right: 2em;
+		font-weight: bold;
 	}
 	.comments-feed .sticky-thread {
 		width: 1em;
@@ -951,7 +959,7 @@
 		line-height: 1;
 		position: absolute;
 		margin: 0;
-		padding: 0.2em 0.2em;
+		padding: 0.3em 0.2em;
 		top: 0.2em;
 		right: 0;
 		font-size: 85%;

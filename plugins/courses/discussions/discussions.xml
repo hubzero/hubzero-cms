@@ -1,49 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- All rights reserved.
+@package        hubzero-cms
+@file           plugins/courses/forum.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License,
- Version 2 as published by the Free Software Foundation.
+Copyright 2005-2011 Purdue University. All rights reserved.
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
 -->
 
-<install version="1.5" type="plugin" course="courses">
+<extension version="1.7" type="plugin" course="courses">
 	<name>Courses - Discussions</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2013 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
-	<description>Display and manage discussions for a specific course</description>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Display and manage a forum for a specific course</description>
 	<files>
-		<filename plugin="discussions">discussions.php</filename>
+		<filename plugin="discussion">discussions.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.plg_courses_discussions.ini</language>
 	</languages>
-	<params>
-		<param name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the blog plugin.">
-			<option value="anyone">Any HUB Visitor</option>
-			<option value="registered">Only Registered HUB Users</option>
-			<option value="members">Only Course Members</option>
-			<option value="nobody">Disabled/Off</option>
-		</param>
-		<param name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
-		<param name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
-	</params>
-	<params group="onSectionEdit">
-		<param name="discussions_threads" type="list" default="all" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
-			<option value="all">All sections</option>
-			<option value="section">This section only</option>
-		</param>
-	</params>
-</install>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the blog plugin.">
+					<option value="anyone">Any HUB Visitor</option>
+					<option value="registered">Only Registered HUB Users</option>
+					<option value="members">Only Course Members</option>
+					<option value="nobody">Disabled/Off</option>
+				</field>
+				<field type="spacer" />
+				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="The number of records to display at a time."/>
+				<field name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
+			</fieldset>
+			<fieldset group="onSectionEdit">
+				<field name="discussions_threads" type="list" default="all" label="Show threads from" description="Determine what threads to show to students in this section. NOTE: Sticky threads show across all sections regardless of this setting.">
+					<option value="all">All sections</option>
+					<option value="section">This section only</option>
+				</field>
+			</fieldset>
+			<fieldset group="onAssetgroupEdit">
+				<field name="discussions_category" type="list" default="0" label="Discussion threads" description="Allow discussion threads on this or not?">
+					<option value="0">Off</option>
+					<option value="1">On</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

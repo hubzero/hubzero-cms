@@ -46,4 +46,10 @@
 			<option value="section">This section only</option>
 		</param>
 	</params>
+	<params group="onAssetgroupEdit">
+		<param name="discussions_category" type="list" default="0" label="Discussion threads" description="Allow discussion threads on this or not?">
+			<option value="0">Off</option>
+			<option value="1">On</option>
+		</param>
+	</params>
 </install>
