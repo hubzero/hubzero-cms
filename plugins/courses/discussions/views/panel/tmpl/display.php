@@ -40,7 +40,7 @@ if (count($inst) > 0)
 ?>
 <?php if ($this->course->access('manage', 'offering')) { ?>
 	<div id="manager-options">
-		<p><a class="btn" href="<?php echo JRoute::_($base . '&unit=manage'); ?>"><?php echo JText::_('Manage categories'); ?></a></p>
+		<p><a class="btn" href="<?php echo JRoute::_($base . '&unit=manage'); ?>"><?php echo JText::_('Manage'); ?></a></p>
 	</div>
 <?php } ?>
 <div id="comments-container">

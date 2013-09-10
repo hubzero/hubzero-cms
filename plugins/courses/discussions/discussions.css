@@ -12,6 +12,7 @@
 	-- -- -- -- -- -- --
 
 */
+
 	#page_content.course_discussions {
 		padding: 0;
 		margin: 0;
@@ -798,6 +799,9 @@
 	}
 	.comments-panel #commentform {
 		padding-top: 1.618em;
+	}
+	.comments-panel .comment-content #commentform {
+		padding-top: 0;
 	}
 	.comments-toolbar span {
 		margin-left: 1.5em;

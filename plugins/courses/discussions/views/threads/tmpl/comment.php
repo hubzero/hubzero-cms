@@ -86,6 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 					<span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateFormat, $tz); ?></time></span>
 					<?php if ($this->comment->modified && $this->comment->modified != '0000-00-00 00:00:00') { ?>
 						&mdash; <?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDITED'); ?>
+						<span class="comment-date-at">@</span> 
 						<span class="time"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
 						<span class="date"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $dateFormat, $tz); ?></time></span>
 					<?php } ?>
@@ -114,15 +115,15 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
+					<a class="icon-delete delete" data-id="c<?php echo $this->comment->id; ?>" href="<?php echo JRoute::_($this->base . '&action=delete&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!-- 
 					--></a>
 				<?php } ?>
-				<?php /*if ($this->config->get('access-edit-thread')) { ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
+				<?php if ($this->config->get('access-edit-thread')) { ?>
+					<a class="icon-edit edit" data-id="c<?php echo $this->comment->id; ?>" href="<?php echo JRoute::_($this->base . '&action=edit&post=' . $this->comment->id . '&thread=' . $this->comment->thread); ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!-- 
 					--></a>
-				<?php }*/ ?>
+				<?php } ?>
 			<?php } ?>
 			<?php if (!$this->comment->reports) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>

@@ -485,6 +485,10 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			{
 				$action = JRequest::getVar('action', $action, 'get');
 			}
+			if ($action == 'edit' && JRequest::getInt('post', 0))
+			{
+				$action = 'editthread';
+			}
 
 			//push the stylesheet to the view
 			ximport('Hubzero_Document');
@@ -2545,8 +2549,9 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				'layout'  => 'edit'
 			)
 		);
+		$this->view->name = $this->_name;
 
-		$id = JRequest::getInt('thread', 0);
+		$id = JRequest::getInt('post', 0);
 		$category = JRequest::getVar('category', '');
 		$sectionAlias = JRequest::getVar('section', '');
 
