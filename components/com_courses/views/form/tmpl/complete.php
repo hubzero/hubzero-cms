@@ -27,11 +27,11 @@ $incomplete = $this->incomplete;
 		endif;
 	?>
 	<form action="" method="post">
-	<ol id="pages" class="complete">	
+	<ol id="pages" class="complete">
 	<? $pdf->eachPage(function($url, $idx) use($layout, $progress, $incomplete) { ?>
 		<li>
 			<img src="<?= $url ?>" />
-			<?	
+			<?
 			if (isset($layout[$idx - 1])):
 				$qidx = 0;
 				foreach ($layout[$idx - 1] as $qid=>$group):

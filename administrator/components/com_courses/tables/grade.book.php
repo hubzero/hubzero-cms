@@ -310,7 +310,7 @@ class CoursesTableGradeBook extends JTable
 
 				$dep = PdfFormDeployment::fromCrumb($crumb, $course->offering()->section()->get('id'));
 
-				$results = $dep->getResults(false, 'member_id');
+				$results = $dep->getResults('member_id');
 
 				switch ($dep->getState())
 				{
@@ -341,7 +341,7 @@ class CoursesTableGradeBook extends JTable
 							// Form is active and they have completed it!
 							if($resp->getEndTime() && $resp->getEndTime() != '')
 							{
-								$score = (isset($results[$u]['score'])) ? '\''.$results[$u]['score'].'\'' : NULL;
+								$score = (isset($results[$u]['score'])) ? '\''.$results[$u]['score'].'\'' : 'NULL';
 								$values[] = "('{$u}', {$score}, 'asset', '{$asset->id}')";
 							}
 							// Form is active and they haven't finished it yet!
@@ -361,7 +361,8 @@ class CoursesTableGradeBook extends JTable
 				$query .= implode(",\n", $values);
 				$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
 
-				$this->_db->execute($query);
+				$this->_db->setQuery($query);
+				$this->_db->query();
 			}
 		}
 	}

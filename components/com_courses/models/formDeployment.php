@@ -140,7 +140,7 @@ class PdfFormDeployment
 	public static function forForm($formId)
 	{
 		$rv = array();
-		
+
 		$dbh = self::getDbh();
 		$dbh->setQuery('SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, results_open AS resultsOpen, time_limit AS timeLimit, crumb, results_closed AS resultsClosed, (SELECT name FROM #__users WHERE id = user_id) AS userName FROM #__courses_form_deployments WHERE form_id = '.(int)$formId);
 
@@ -214,22 +214,18 @@ class PdfFormDeployment
 	 *
 	 * @return array
 	 **/
-	public function getResults($include_incompletes=false, $key=null)
+	public function getResults($key=null)
 	{
 		$dbh = self::getDBH();
 
-		$join_type = ($include_incompletes) ? "LEFT" : "INNER";
-
 		$dbh->setQuery(
-			"SELECT name, email, started, finished, version, cm.id AS member_id, count(pfa.id)*100/count(pfr2.id) AS score
-			FROM #__courses_form_respondents pfr 
-			INNER JOIN #__courses_members cm ON cm.id = pfr.member_id
-			INNER JOIN #__users u ON cm.user_id = u.id
-			LEFT JOIN #__courses_form_latest_responses_view pfr2 ON pfr2.respondent_id = pfr.id
-			{$join_type} JOIN #__courses_form_questions pfq ON pfq.id = pfr2.question_id
-			LEFT JOIN #__courses_form_answers pfa ON pfa.id = pfr2.answer_id AND pfa.correct
+			"SELECT member_id, started, finished, count(pfa.id)*100/count(pfr2.id) AS score
+			FROM `#__courses_form_respondents` pfr
+			LEFT JOIN `#__courses_form_latest_responses_view` pfr2 ON pfr2.respondent_id = pfr.id
+			LEFT JOIN `#__courses_form_questions` pfq ON pfq.id = pfr2.question_id
+			LEFT JOIN `#__courses_form_answers` pfa ON pfa.id = pfr2.answer_id AND pfa.correct
 			WHERE deployment_id = {$this->id}
-			GROUP BY name, email, started, finished, version
+			GROUP BY member_id, started, finished, version
 			ORDER BY member_id ASC, score ASC"
 		);
 
@@ -259,20 +255,19 @@ class PdfFormDeployment
 	 **/
 	public function getRespondent($member_id, $attempt=1)
 	{
-		// @FIXME: should this have a static instance?  this causes a problem when loading a grade book type scenario
-		static $resp;
+		static $resp = array();
 
 		if ($attempt > $this->getAllowedAttempts())
 		{
 			return false;
 		}
 
-		if (!$resp && $this->id)
+		if ($this->id && !$resp[$this->id.'.'.$member_id.'.'.$attempt])
 		{
-			$resp = new PdfFormRespondent($this->id, $member_id, $attempt);
+			$resp[$this->id.'.'.$member_id.'.'.$attempt] = new PdfFormRespondent($this->id, $member_id, $attempt);
 		}
 
-		return new PdfFormRespondent($this->id, $member_id, $attempt);
+		return $resp[$this->id.'.'.$member_id.'.'.$attempt];
 	}
 
 	/**
@@ -320,7 +315,6 @@ class PdfFormDeployment
 		if (isset($section_id) && is_numeric($section_id))
 		{
 			// Now overload start and end times with section asset times if applicable
-			// @FIXME: assuming student is only in one section, and that asset is only part of one offering
 			$query = "SELECT cfd.id, cosd.publish_up, cosd.publish_down FROM `#__courses_form_deployments` cfd
 						JOIN `#__courses_assets` ca ON cfd.crumb = ca.url
 						JOIN `#__courses_offering_section_dates` cosd ON ca.id = cosd.scope_id
@@ -605,7 +599,7 @@ class PdfFormDeployment
 
 		if (is_null($id))
 		{
-			$dbh->execute(
+			$dbh->setQuery(
 				'INSERT INTO `#__courses_form_deployments`(form_id, start_time, end_time, results_open, results_closed, time_limit, crumb, user_id, allowed_attempts) VALUES ('.
 					(int)$this->formId.', '.
 					($this->startTime ? date('\'Y-m-d H:i:s\'', strtotime($this->startTime)) : 'NULL').', '.
@@ -618,6 +612,7 @@ class PdfFormDeployment
 					(int)$this->allowedAttempts.
 				')'
 			);
+			$dbh->query();
 
 			$this->id = $dbh->insertid();
 
@@ -627,7 +622,7 @@ class PdfFormDeployment
 			return $this->id;
 		}
 
-		$dbh->execute(
+		$dbh->setQuery(
 			'UPDATE #__courses_form_deployments SET '.
 				'start_time = '.($this->startTime ? date('\'Y-m-d H:i:s\'', strtotime($this->startTime)) : 'NULL').', '.
 				'end_time = '.($this->endTime   ? date('\'Y-m-d H:i:s\'', strtotime($this->endTime)) : 'NULL').', '.
@@ -637,6 +632,7 @@ class PdfFormDeployment
 				'allowed_attempts = '.(int)$this->allowedAttempts.
 			' WHERE id = '.(int)$id
 		);
+		$dbh->query();
 
 		// Update related asset, if applicable
 		$this->updateAsset();

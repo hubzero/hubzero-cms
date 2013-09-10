@@ -101,6 +101,7 @@ class PdfFormRespondent
 			$dbh->setQuery('INSERT INTO #__courses_form_respondents(deployment_id, member_id, attempt) VALUES ('.(int)$depId.', '.(int)$member_id.', '.(int)$attempt.')');
 			$dbh->query();
 			$this->id = $dbh->insertid();
+			$this->attempt = (int) $attempt;
 		}
 	}
 
