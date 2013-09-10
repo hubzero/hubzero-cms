@@ -109,6 +109,13 @@ class CoursesTableAssetGroup extends JTable
 	var $state = NULL;
 
 	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $params = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object

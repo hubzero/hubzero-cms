@@ -348,7 +348,18 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 			return;
 		}
 
-		if (!$model->store())
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$p = new $paramsClass('');
+		$p->bind(JRequest::getVar('params', array(), 'post'));
+
+		$model->set('params', $p->toString());
+
+		if (!$model->store(true))
 		{
 			$this->setError('failed store' . $model->getError());
 			$this->addComponentMessage($model->getError(), 'error');

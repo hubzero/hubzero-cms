@@ -107,6 +107,28 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	}
 
 	/**
+	 * Returns a property of the params
+	 *
+	 * @param	string $property The name of the property
+	 * @param	mixed  $default The default value
+	 * @return	mixed The value of the property
+ 	 */
+	public function params($key, $default=null)
+	{
+		if (!isset($this->_params))
+		{
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+
+			$this->_params = new $paramsClass($this->get('params'));
+		}
+		return $this->_params->get($key, $default);
+	}
+
+	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param	string $property The name of the property
