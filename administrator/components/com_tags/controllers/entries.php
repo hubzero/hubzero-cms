@@ -86,15 +86,15 @@ class TagsControllerEntries extends Hubzero_Controller
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$t = new TagsTag($this->database);
+		$t = new TagsModelCloud();
 
 		// Record count
-		$this->view->total = $t->getCount($this->view->filters);
+		$this->view->total = $t->tags('count', $this->view->filters);
 
 		$this->view->filters['limit'] = ($this->view->filters['limit'] == 0) ? 'all' : $this->view->filters['limit'];
 
 		// Get records
-		$this->view->rows = $t->getRecords($this->view->filters);
+		$this->view->rows = $t->tags('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -149,8 +149,7 @@ class TagsControllerEntries extends Hubzero_Controller
 			// Incoming
 			$id = JRequest::getInt('id', 0, 'request');
 
-			$this->view->tag = new TagsTag($this->database);
-			$this->view->tag->load($id);
+			$this->view->tag = new TagsModelTag($id);
 		}
 
 		// Set any errors
@@ -190,45 +189,32 @@ class TagsControllerEntries extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		$row = new TagsTag($this->database);
-		if (!$row->bind($_POST)) 
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		$row = new TagsModelTag($fields['id']);
+		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		$row->admin = JRequest::getInt('admin', 0);
-
-		// Check content
-		if (!$row->check()) 
+		if ($fields['admin'])
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			$row->set('admin', 1);
 		}
-
-		// Make sure the tag doesn't already exist
-		if (!$row->id) 
+		else
 		{
-			if ($row->checkExistence()) 
-			{
-				$this->addComponentMessage(JText::_('TAG_EXIST'), 'error');
-				$this->editTask($row);
-				return;
-			}
+			$row->set('admin', 0);
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
-
-		// Save substitutions
-		$row->saveSubstitutions(JRequest::getVar('substitutions', ''));
 
 		// Redirect to main listing
 		if ($redirect)
@@ -277,8 +263,8 @@ class TagsControllerEntries extends Hubzero_Controller
 			$dispatcher->trigger('onTagDelete', array($id));
 
 			// Remove the tag
-			$tag = new TagsTag($this->database);
-			$tag->delete($id);
+			$tag = new TagsModelTag($id);
+			$tag->delete();
 		}
 
 		$this->setRedirect(
@@ -323,25 +309,17 @@ class TagsControllerEntries extends Hubzero_Controller
 				$this->view->step = 2;
 				$this->view->idstr = $idstr;
 				$this->view->tags = array();
-				$to = new TagsObject($this->database);
 
 				// Loop through the IDs of the tags we want to merge
 				foreach ($ids as $id)
 				{
-					// Load the tag's info
-					$tag = new TagsTag($this->database);
-					$tag->load($id);
-
-					// Get the total number of items associated with this tag
-					$tag->total = $to->getCount($id);
-
 					// Add the tag object to an array
-					$this->view->tags[] = $tag;
+					$this->view->tags[] = new TagsModelTag($id);
 				}
 
 				// Get all tags
-				$t = new TagsTag($this->database);
-				$this->view->rows = $t->getAllTags(true);
+				$cloud = new TagsModelCloud();
+				$this->view->rows = $cloud->tags('list');
 
 				// Set any errors
 				if ($this->getError()) 
@@ -361,7 +339,7 @@ class TagsControllerEntries extends Hubzero_Controller
 				$ind = JRequest::getVar('ids', '', 'post');
 				if ($ind) 
 				{
-					$ids = explode(',',$ind);
+					$ids = explode(',', $ind);
 				} 
 				else 
 				{
@@ -376,13 +354,12 @@ class TagsControllerEntries extends Hubzero_Controller
 				if ($tag_new) 
 				{
 					// Yes, we are
-					$_POST['raw_tag'] = $tag_new;
-					$_POST['description'] = '';
-
-					$this->saveTask(0);
-
-					$tagging = new TagsHandler($this->database);
-					$mtag = $tagging->get_raw_tag_id($tag_new);
+					$newtag = new TagsModelTag($tag_new);
+					if (!$newtag->store(true))
+					{
+						$this->setError($newtag->getError());
+					}
+					$mtag = $newtag->get('id');
 				} 
 				else 
 				{
@@ -390,37 +367,17 @@ class TagsControllerEntries extends Hubzero_Controller
 					$mtag = $tag_exist;
 				}
 
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
-				$to = new TagsObject($this->database);
-				$ts = new TagsSubstitute($this->database);
-
 				foreach ($ids as $id)
 				{
-					if ($mtag != $id) 
+					if ($mtag == $id) 
 					{
-						// Get all the associations to this tag
-						// Loop through the associations and link them to a different tag
-						$to->moveObjects($id, $mtag);
+						continue;
+					}
 
-						// Get all the substitutions to this tag
-						// Loop through the records and link them to a different tag
-						$tag = new TagsTag($this->database);
-						$tag->load($id);
-
-						$sub = new TagsSubstitute($this->database);
-						$sub->raw_tag = trim($tag->raw_tag);
-						$sub->tag_id  = $mtag;
-						if ($sub->check())
-						{
-							if (!$sub->store())
-							{
-								$this->setError($sub->getError());
-							}
-						}
-						$ts->moveSubstitutes($id, $mtag);
-
-						// Delete the tag
-						$tag->delete($id);
+					$oldtag = new TagsModelTag($id);
+					if (!$oldtag->mergeWith($mtag))
+					{
+						$this->setError($oldtag->getError());
 					}
 				}
 
@@ -459,7 +416,7 @@ class TagsControllerEntries extends Hubzero_Controller
 			return;
 		}
 
-		$idstr = implode(',',$ids);
+		$idstr = implode(',', $ids);
 
 		switch ($step)
 		{
@@ -467,24 +424,17 @@ class TagsControllerEntries extends Hubzero_Controller
 				$this->view->step = 2;
 				$this->view->idstr = $idstr;
 				$this->view->tags = array();
-				$to = new TagsObject($this->database);
+
 				// Loop through the IDs of the tags we want to merge
 				foreach ($ids as $id)
 				{
 					// Load the tag's info
-					$tag = new TagsTag($this->database);
-					$tag->load($id);
-
-					// Get the total number of items associated with this tag
-					$tag->total = $to->getCount($id);
-
-					// Add the tag object to an array
-					$this->view->tags[] = $tag;
+					$this->view->tags[] = new TagsModelTag($id);
 				}
 
 				// Get all tags
-				$t = new TagsTag($this->database);
-				$this->view->rows = $t->getAllTags(true);
+				$cloud = new TagsModelCloud();
+				$this->view->rows = $cloud->tags('list');
 
 				// Set any errors
 				if ($this->getError()) 
@@ -519,13 +469,12 @@ class TagsControllerEntries extends Hubzero_Controller
 				if ($tag_new) 
 				{
 					// Yes, we are
-					$_POST['raw_tag'] = $tag_new;
-					$_POST['description'] = '';
-
-					$this->saveTask(0);
-
-					$tagging = new TagsHandler($this->database);
-					$mtag = $tagging->get_raw_tag_id($tag_new);
+					$newtag = new TagsModelTag($tag_new);
+					if (!$newtag->store(true))
+					{
+						$this->setError($newtag->getError());
+					}
+					$mtag = $newtag->get('id');
 				} 
 				else 
 				{
@@ -533,15 +482,17 @@ class TagsControllerEntries extends Hubzero_Controller
 					$mtag = $tag_exist;
 				}
 
-				$to = new TagsObject($this->database);
-
 				foreach ($ids as $id)
 				{
-					if ($mtag != $id) 
+					if ($mtag == $id) 
 					{
-						// Get all the associations to this tag
-						// Loop through the associations and link them to a different tag
-						$to->copyObjects($id, $mtag);
+						continue;
+					}
+
+					$oldtag = new TagsModelTag($id);
+					if (!$oldtag->copyTo($mtag))
+					{
+						$this->setError($oldtag->getError());
 					}
 				}
 

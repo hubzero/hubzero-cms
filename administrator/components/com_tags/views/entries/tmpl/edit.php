@@ -82,87 +82,88 @@ if ($this->getError())
 				<tbody>
 					<tr>
 						<th class="key"><label for="admin"><?php echo JText::_('ADMIN'); ?>:</label></th>
-						<td><input type="checkbox" name="admin" id="admin" value="1" <?php if ($this->tag->admin == 1) { echo 'checked="checked"'; } ?> /></td>
+						<td><input type="checkbox" name="fields[admin]" id="admin" value="1" <?php if ($this->tag->get('admin') == 1) { echo 'checked="checked"'; } ?> /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="raw_tag"><?php echo JText::_('TAG'); ?>:</label></th>
-						<td><input type="text" name="raw_tag" id="raw_tag" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->raw_tag)); ?>" /></td>
+						<td><input type="text" name="fields[raw_tag]" id="raw_tag" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></th>
-						<td><?php echo $editor->display('description', stripslashes($this->tag->description), '100%', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('fields[description]', stripslashes($this->tag->get('description')), '100%', '200px', '50', '10'); ?></td>
 					</tr>
 					<tr>
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('ALIAS'); ?>:</label></th>
-						<td><?php echo $editor->display('substitutions', stripslashes($this->tag->getSubstitutions($this->tag->id, true)), '100%', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('fields[substitutions]', stripslashes($this->tag->substitutes('string')), '100%', '200px', '50', '10'); ?></td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 <?php
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
-		$logger = new TagsLog(JFactory::getDBO());
-		$logs = $logger->getLogs($this->tag->id);
+		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+		//$logger = new TagsLog(JFactory::getDBO());
+		$logs = $this->tag->logs('list'); //$logger->getLogs($this->tag->get('id'));
 		if ($logs)
 		{
 ?>
 		<h4><?php echo JText::_('Activity log'); ?></h4>
 		<ul class="entry-log">
-<?php
+			<?php
 			foreach ($logs as $log)
 			{
-				$user = JUser::getInstance($log->actorid);
-?>
+				//$user = JUser::getInstance($log->actorid);
+				$actor = $this->escape(stripslashes($log->actor('name'))); //$this->escape(stripslashes($user->get('name')))
+			?>
 			<li>
 				<?php
-				$data = json_decode($log->comments);
+				$data = json_decode($log->get('comments'));
 				if (!isset($data->entries))
 				{
 					$data->entries = 0;
 				}
-				switch ($log->action)
+				switch ($log->get('action'))
 				{
 					case 'substitute_created':
-						$s = JText::sprintf('%s alias created on %s by %s', $data->raw_tag, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s alias created on %s by %s', $data->raw_tag, $log->get('timestamp'), $actor);
 					break;
 
 					case 'substitute_edited':
-						$s = JText::sprintf('%s alias edited on %s by %s', $data->raw_tag, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s alias edited on %s by %s', $data->raw_tag, $log->get('timestamp'), $actor);
 					break;
 
 					case 'substitute_deleted':
-						$s = JText::sprintf('%s aliases removed on %s by %s', implode(', ', $data->tags), $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s aliases removed on %s by %s', implode(', ', $data->tags), $log->get('timestamp'), $actor);
 					break;
 					
 					case 'substitute_moved':
-						$s = JText::sprintf('%s aliases moved from %s on %s by %s', count($data->entries), $data->old_id, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s aliases moved from %s on %s by %s', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
 					break;
 
 					case 'tags_removed':
-						$s = JText::sprintf('%s associations removed from %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s associations removed from %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
 					break;
 
 					case 'objects_copied':
-						$s = JText::sprintf('%s associations copied from %s on %s by %s', count($data->entries), $data->old_id, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s associations copied from %s on %s by %s', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
 					break;
 
 					case 'objects_moved':
-						$s = JText::sprintf('%s associations moved from %s on %s by %s', count($data->entries), $data->old_id, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s associations moved from %s on %s by %s', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
 					break;
 
 					case 'objects_removed':
 						if ($data->objectid || $data->tbl)
 						{
-							$s = JText::sprintf('%s associations removed for %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+							$s = JText::sprintf('%s associations removed for %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
 						}
 						else 
 						{
-							$s = JText::sprintf('%s associations removed on %s by %s', count($data->entries), $data->tagid, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+							$s = JText::sprintf('%s associations removed on %s by %s', count($data->entries), $data->tagid, $log->get('timestamp'), $actor);
 						}
 					break;
 
 					default:
-						$s = JText::sprintf('%s on %s by %s', str_replace('_', ' ', $log->action), $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						$s = JText::sprintf('%s on %s by %s', str_replace('_', ' ', $log->get('action')), $log->get('timestamp'), $actor);
 					break;
 				}
 				if ($s)
@@ -171,9 +172,9 @@ if ($this->getError())
 				}
 				?>
 			</li>
-<?php 
+			<?php 
 			}
-?>
+			?>
 		</ul>
 <?php 
 		}
@@ -187,8 +188,8 @@ if ($this->getError())
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="id" value="<?php echo $this->tag->id; ?>" />
-	<input type="hidden" name="tag" value="<?php echo $this->tag->tag; ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->tag->get('id'); ?>" />
+	<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->get('tag'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

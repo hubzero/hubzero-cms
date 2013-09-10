@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 			<?php
 			foreach ($this->tags as $tag)
 			{
-				echo '<li>' . $this->escape(stripslashes($tag->raw_tag)) . ' (' . $this->escape($tag->tag) . ' - ' . $tag->total . ')</li>' . "\n";
+				echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects('count') . ')</li>' . "\n";
 			}
 			?>
 			</ul>
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 								<?php
 								foreach ($this->rows as $row)
 								{
-									echo '<option value="' . $row->id . '">' . $this->escape(stripslashes($row->raw_tag)) . '</option>' . "\n";
+									echo '<option value="' . $row->get('id') . '">' . $this->escape(stripslashes($row->get('raw_tag'))) . '</option>' . "\n";
 								}
 								?>
 							</select>

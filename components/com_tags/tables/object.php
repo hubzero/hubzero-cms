@@ -518,7 +518,7 @@ class TagsObject extends JTable
 		$filters['count'] = true;
 		$filters['sort']  = '';
 
-		$this->_db->setQuery($this->_buildQuery($filters));
+		$this->_db->setQuery("SELECT COUNT(*) " . $this->_buildQuery($filters));
 		return $this->_db->loadResult();
 	}
 
@@ -534,7 +534,7 @@ class TagsObject extends JTable
 		{
 			$filters['sort'] = 'taggedon';
 		}
-		$this->_db->setQuery($this->_buildQuery($filters));
+		$this->_db->setQuery("SELECT * " . $this->_buildQuery($filters));
 		return $this->_db->loadObjectList();
 	}
 }

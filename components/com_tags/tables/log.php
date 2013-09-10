@@ -180,8 +180,7 @@ class TagsLog extends JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `tag_id`=" . $this->_db->Quote($tag_id) . " ORDER BY `timestamp` DESC, id DESC");
-		return $this->_db->loadObjectList();
+		return $this->find(array('tag_id' => $tag_id));
 	}
 
 	/**
@@ -221,13 +220,98 @@ class TagsLog extends JTable
 		{
 			return '';
 		}
+	}
 
-		/*$data = $this->escape(stripslashes($log->action)); ?> on <?php echo $log->timestamp; ?> by ' . $this->escape(stripslashes($user->get('name')));
-		switch ($log->action)
+	/**
+	 * Build a query from filters
+	 * 
+	 * @param      array $filters Filters to determien hwo to build query
+	 * @return     string SQL
+	 */
+	protected function _buildQuery($filters)
+	{
+		$query  = " FROM $this->_tbl AS o";
+
+		$where = array();
+
+		if (isset($filters['timestamp']) && (string) $filters['timestamp'] != '') 
 		{
-			case 'substitute_created':
-			break;
-		}*/
+			$where[] = "o.timestamp >= " . $this->_db->Quote($filters['timestamp']);
+		}
+		if (isset($filters['action']) && (string) $filters['action'] != '') 
+		{
+			$where[] = "o.action=" . $this->_db->Quote($filters['action']);
+		}
+		if (isset($filters['tag_id']) && (int) $filters['tag_id'] > 0) 
+		{
+			$where[] = "o.tag_id=" . $this->_db->Quote(intval($filters['tag_id']));
+		}
+		if (isset($filters['user_id']) && (int) $filters['user_id'] >= 0) 
+		{
+			$where[] = "o.user_id=" . $this->_db->Quote(intval($filters['user_id']));
+		}
+		if (isset($filters['actorid']) && (int) $filters['actorid'] > 0) 
+		{
+			$where[] = "o.actorid=" . $this->_db->Quote(intval($filters['actorid']));
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		if (!isset($filters['count']) || !$filters['count'])
+		{
+			if (!isset($filters['sort']) || $filters['sort'] == '')
+			{
+				$filters['sort'] = 'timestamp';
+			}
+
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+			{
+				$filters['sort_Dir'] = 'DESC';
+			}
+			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
+
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      array $filters Filters to determien hwo to build query
+	 * @return     integer
+	 */
+	public function count($filters=array())
+	{
+		$filters['limit'] = 0;
+		$filters['count'] = true;
+
+		$this->_db->setQuery("SELECT COUNT(*)" . $this->_buildQuery($filters));
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to determien hwo to build query
+	 * @return     array
+	 */
+	public function find($filters=array())
+	{
+		$this->_db->setQuery("SELECT o.*" . $this->_buildQuery($filters));
+		return $this->_db->loadObjectList();
 	}
 }
 

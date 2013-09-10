@@ -69,17 +69,19 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-  		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-
-		<label for="filter-filterby"><?php echo JText::_('FILTER'); ?>:</label>
-		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
-			<option value="all"<?php if ($this->filters['by'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_ALL_TAGS'); ?></option>
-			<option value="user"<?php if ($this->filters['by'] == 'user') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_USER_TAGS'); ?></option>
-			<option value="admin"<?php if ($this->filters['by'] == 'admin') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_ADMIN_TAGS'); ?></option>
-		</select>
-
-		<input type="submit" name="filter_submit" value="<?php echo JText::_('GO'); ?>" />
+		<div class="col width-50 fltlft">
+			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+			<input type="submit" name="filter_submit" value="<?php echo JText::_('GO'); ?>" />
+		</div>
+		<div class="col width-50 fltrt" style="text-align: right;">
+			<label for="filter-filterby"><?php echo JText::_('FILTER'); ?>:</label>
+			<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
+				<option value="all"<?php if ($this->filters['by'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_ALL_TAGS'); ?></option>
+				<option value="user"<?php if ($this->filters['by'] == 'user') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_USER_TAGS'); ?></option>
+				<option value="admin"<?php if ($this->filters['by'] == 'admin') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_ADMIN_TAGS'); ?></option>
+			</select>
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -101,57 +103,50 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
-$database =& JFactory::getDBO();
-$to = new TagsObject($database);
-
 $k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
+foreach ($this->rows as $row)
 {
-	$row = &$this->rows[$i];
-	$now = date("Y-m-d H:i:s");
 	$check = '';
-	if ($row->admin == 1) {
+	if ($row->get('admin') == 1) {
 		$check = '<span class="check">' . strToLower(JText::_('ADMIN')) . '</span>';
 	}
-
-	//$total = $to->getCount($row->id);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
-<?php } ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->raw_tag)); ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->raw_tag)); ?>
+						<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->tag)); ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('tag'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->tag)); ?>
+						<?php echo $this->escape(stripslashes($row->get('tag'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $check; ?>
 				</td>
 				<td>
-					<?php echo $row->total; ?>
+					<?php echo $row->get('total'); ?>
 				</td>
 				<td>
-					<?php echo $row->substitutes; ?>
+					<?php echo $row->get('substitutes'); ?>
 				</td>
 			</tr>
 <?php
@@ -167,6 +162,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

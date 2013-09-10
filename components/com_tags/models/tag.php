@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'log.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'object.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'substitute.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'iterator.php');
@@ -605,6 +606,60 @@ class TagsModelTag extends JObject
 	}
 
 	/**
+	 * Return a list or count of objects associated with this tag
+	 * 
+	 * @param      string  $rtrn    What data to return (ex: 'list', 'count')
+	 * @param      array   $filters Filters to apply for data retrieval
+	 * @param      boolean $clear   Clear cached data?
+	 * @return     mixed
+	 */
+	public function logs($rtrn='list', $filters=array(), $clear=false)
+	{
+		if (!isset($filters['tag_id']))
+		{
+			$filters['tag_id'] = (int) $this->get('id');
+		}
+		if (!isset($filters['start']))
+		{
+			$filters['start'] = 0;
+		}
+
+		switch (strtolower($rtrn))
+		{
+			case 'count':
+				if (!isset($this->_cache['logs_count']) || $clear)
+				{
+					$tbl = new TagsLog($this->_db);
+					$this->_cache['logs_count'] = (int) $tbl->count($filters);
+				}
+				return $this->_cache['logs_count'];
+			break;
+
+			case 'list':
+			case 'results':
+			default:
+				if (!isset($this->_cache['logs']) || !is_a($this->_cache['logs'], 'TagsModelIterator') || $clear)
+				{
+					$tbl = new TagsLog($this->_db);
+					if ($results = $tbl->find($filters))
+					{
+						foreach ($results as $key => $result)
+						{
+							$results[$key] = new TagsModelLog($result);
+						}
+					}
+					else
+					{
+						$results = array();
+					}
+					$this->_cache['logs'] = new TagsModelIterator($results);
+				}
+				return $this->_cache['logs'];
+			break;
+		}
+	}
+
+	/**
 	 * Remove this tag from an object
 	 *
 	 * If $taggerid is provided, it will only remove the tags added to an object by 
@@ -662,6 +717,70 @@ class TagsModelTag extends JObject
 
 		// Attempt to store the new record
 		if (!$to->store(true))
+		{
+			$this->setError($to->getError());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Move all data from this tag to another, including the tag itself
+	 * 
+	 * @param      integer $tag_id ID of tag to merge with
+	 * @return     boolean
+	 */
+	public function mergeWith($tag_id)
+	{
+		// Get all the associations to this tag
+		// Loop through the associations and link them to a different tag
+		$to = new TagsObject($this->_db);
+		if (!$to->moveObjects($this->get('id'), $tag_id))
+		{
+			$this->setError($to->getError());
+			return false;
+		}
+
+		// Get all the substitutions to this tag
+		// Loop through the records and link them to a different tag
+		$ts = new TagsSubstitute($this->_db);
+		if (!$ts->moveSubstitutes($this->get('id'), $tag_id))
+		{
+			$this->setError($ts->getError());
+			return false;
+		}
+
+		// Make the current tag a substitute for the new tag
+		$sub = new TagsModelSubstitute(0);
+		$sub->set('raw_tag', $this->get('raw_tag'));
+		$sub->set('tag_id', $tag_id);
+		if (!$sub->store(true))
+		{
+			$this->setError($sub->getError());
+			return false;
+		}
+
+		if (!$this->delete())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Copy associations from this tag to another
+	 * 
+	 * @param      integer $tag_id ID of tag to copy associations to
+	 * @return     boolean
+	 */
+	public function copyTo($tag_id)
+	{
+		// Get all the associations to this tag
+		// Loop through the associations and link them to a different tag
+		$to = new TagsObject($this->_db);
+		if (!$to->copyObjects($this->get('id'), $tag_id))
 		{
 			$this->setError($to->getError());
 			return false;
