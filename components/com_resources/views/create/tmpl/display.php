@@ -127,7 +127,7 @@ if (!$juser->get('guest')) {
 						<br /><a class="retract" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=retract&id='.$submission->id); ?>"><?php echo JText::_('&lsaquo; Retract'); ?></a>
 						<?php } ?>
 					</td>
-					<td><a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=discard&id='.$submission->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a></td>
+					<td><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=discard&id='.$submission->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a></td>
 				</tr>
 <?php
 			}
