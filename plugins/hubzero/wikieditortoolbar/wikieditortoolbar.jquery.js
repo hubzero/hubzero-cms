@@ -238,19 +238,18 @@ if (!jq) {
 var wyktoolbar = [];
 
 function initWikitoolbar() {
-	//console.log('init wiki toolbar');
-
 	jQuery('.wiki-toolbar').each(function(i, toolbar) {
-		var id = jQuery(toolbar).attr('id').split('-').pop();
+		var tbar = jQuery(toolbar),
+			id = tbar.attr('id').split('-').pop();
 
 		for (var i = 0; i < wyktoolbar.length; i++) 
 		{
-			if (wyktoolbar[i] == id) {
+			if (wyktoolbar[i] == id && tbar.children().length) {
 				return;
 			}
 		}
 
-		jQuery(toolbar).wikitoolbar();
+		jQuery(tbar).wikitoolbar();
 
 		wyktoolbar.push(id);
 	});
