@@ -402,7 +402,7 @@ class CollectionsTableCollection extends JTable
 	{
 		$filters['limit'] = 0;
 
-		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
+		$query = "SELECT COUNT(DISTINCT b.id) " . $this->buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

@@ -113,6 +113,10 @@ function CollectionsParseRoute($segments)
 				{
 					$vars['post'] = $segments[1];
 					$vars['controller'] = 'posts';
+					if (isset($segments[2])) 
+					{
+						$vars['task'] = $segments[2];
+					}
 				}
 				else if ($segments[1] == 'asset')
 				{
@@ -122,10 +126,6 @@ function CollectionsParseRoute($segments)
 					}
 					$vars['controller'] = 'media';
 				}
-				/*if (isset($segments[2])) 
-				{
-					$vars['task'] = $segments[2];
-				}*/
 			}
 		}
 	}
