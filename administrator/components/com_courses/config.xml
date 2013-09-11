@@ -36,6 +36,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="progress_calculation" type="list" default="0" label="Progress calculation based on:" description="Specify how progress fill calculation is performed.">
+			<option value="all">All published assets</option>
+			<option value="forms">All published form type assets</option>
+		</param>
 
 		<param type="spacer" />
 		<param name="auto_approve" type="list" default="1" label="Auto Approve Courses:?" description="Courses are auto approved at creation. Otherwise Hub administrator must manually approve course.">

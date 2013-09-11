@@ -214,9 +214,21 @@ class PdfFormDeployment
 	 *
 	 * @return array
 	 **/
-	public function getResults($key=null)
+	public function getResults($key=null, $members=null)
 	{
 		$dbh = self::getDBH();
+
+		$where = '';
+
+		if (isset($members))
+		{
+			if (!is_array($members))
+			{
+				$members = (array) $members;
+			}
+
+			$where = ' AND member_id IN (' . implode(',', $members) . ')';
+		}
 
 		$dbh->setQuery(
 			"SELECT member_id, started, finished, count(pfa.id)*100/count(pfr2.id) AS score
@@ -224,7 +236,7 @@ class PdfFormDeployment
 			LEFT JOIN `#__courses_form_latest_responses_view` pfr2 ON pfr2.respondent_id = pfr.id
 			LEFT JOIN `#__courses_form_questions` pfq ON pfq.id = pfr2.question_id
 			LEFT JOIN `#__courses_form_answers` pfa ON pfa.id = pfr2.answer_id AND pfa.correct
-			WHERE deployment_id = {$this->id}
+			WHERE deployment_id = {$this->id} {$where}
 			GROUP BY member_id, started, finished, version
 			ORDER BY member_id ASC, score ASC"
 		);

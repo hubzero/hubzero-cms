@@ -310,7 +310,7 @@ class CoursesTableGradeBook extends JTable
 
 				$dep = PdfFormDeployment::fromCrumb($crumb, $course->offering()->section()->get('id'));
 
-				$results = $dep->getResults('member_id');
+				$results = $dep->getResults('member_id', $member_id);
 
 				switch ($dep->getState())
 				{

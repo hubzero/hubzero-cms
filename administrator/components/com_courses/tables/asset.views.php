@@ -131,32 +131,25 @@ class CoursesTableAssetViews extends JTable
 		$where  = array();
 		$group  = array();
 
-		$from[] = "\nFROM $this->_tbl AS cav";
+		$select[] = "ca.id as asset_id";
+		$select[] = "cm.id as member_id";
+		$select[] = "cu.id as unit_id";
 
-		if (isset($filters['section_id']) && $filters['section_id'])
-		{
-			$select[] = "ca.id as asset_id";
-			$select[] = "cm.id as member_id";
-			$select[] = "cu.id as unit_id";
-			$select[] = "IF(cav.viewed IS NULL, 0, 1) as viewed";
+		$from = array();
+		$from[] = "#__courses_assets AS ca";
+		$from[] = "INNER JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id";
+		$from[] = "INNER JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
+		$from[] = "INNER JOIN #__courses_asset_views AS cav ON ca.id = cav.asset_id";
+		$from[] = "INNER JOIN #__courses_members AS cm ON cav.viewed_by = cm.id";
+		$from[] = "INNER JOIN #__courses_units AS cu ON cag.unit_id = cu.id AND cm.offering_id = cu.offering_id";
 
-			$from = array();
-			$from[] = "\nFROM #__courses_assets AS ca";
-			$from[] = "LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id";
-			$from[] = "LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
-			$from[] = "LEFT JOIN #__courses_units AS cu ON cag.unit_id = cu.id";
-			$from[] = "LEFT JOIN #__courses_offerings AS co ON cu.offering_id = co.id";
-			$from[] = "LEFT JOIN #__courses_offering_sections AS cos ON co.id = cos.offering_id";
-			$from[] = "LEFT JOIN #__courses_members AS cm ON cos.id = cm.section_id";
-			$from[] = "LEFT JOIN #__courses_asset_views AS cav ON ca.id = cav.asset_id AND cm.id = cav.viewed_by";
 
-			$where[] = "cos.id = " . $this->_db->Quote($filters['section_id']);
-			$where[] = "cm.student = 1";
-			$where[] = "ca.state = 1";
+		$where[] = "cm.student = 1";
+		$where[] = "ca.state = 1";
 
-			$group[] = "ca.id";
-			$group[] = "cm.id";
-		}
+		$group[] = "ca.id";
+		$group[] = "cm.id";
+
 		if (isset($filters['member_id']) && $filters['member_id'])
 		{
 			if (!is_array($filters['member_id']))
@@ -164,6 +157,16 @@ class CoursesTableAssetViews extends JTable
 				$filters['member_id'] = (array) $filters['member_id'];
 			}
 			$where[] = "cm.id IN (" . implode(",", $filters['member_id']) . ")";
+		}
+
+		if (isset($filters['section_id']) && $filters['section_id'])
+		{
+			$where[] = "cm.section_id = " . $this->_db->quote($filters['section_id']);
+		}
+
+		if (isset($filters['asset_type']) && $filters['asset_type'])
+		{
+			$where[] = "ca.type = " . $this->_db->quote($filters['asset_type']);
 		}
 
 		$query = "SELECT ";
@@ -177,7 +180,15 @@ class CoursesTableAssetViews extends JTable
 			$query .= "*";
 		}
 
-		$query .= implode("\n", $from);
+		if (count($from) > 0)
+		{
+			$query .= "\nFROM ";
+			$query .= implode("\n", $from);
+		}
+		else
+		{
+			$query .= "\nFROM $this->_tbl AS cav";
+		}
 
 		if (count($where) > 0)
 		{

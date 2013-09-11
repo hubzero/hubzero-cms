@@ -155,22 +155,30 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 */
 	public function progress($member_id=null)
 	{
+		$progress_calculation = $this->course->config()->get('progress_calculation', 'all');
 		// Get the asset views
-		$assetViews  = new CoursesTableAssetViews(JFactory::getDBO());
-		$views = $assetViews->find(
-			array(
-				'section_id' => $this->course->offering()->section()->get('id'),
-				'member_id'  => $member_id
-			)
+		$assetViews = new CoursesTableAssetViews(JFactory::getDBO());
+		$filters    = array(
+			'section_id' => $this->course->offering()->section()->get('id'),
+			'member_id'  => $member_id
 		);
+
+		if ($progress_calculation == 'forms')
+		{
+			$filters['asset_type'] = 'form';
+		}
+
+		$views = $assetViews->find($filters);
 
 		$progress = array();
 
 		// Restructure array
 		foreach ($views as $v)
 		{
-			$progress[$v->member_id][$v->unit_id][$v->asset_id] = $v->viewed;
+			$progress[$v->member_id][$v->unit_id][$v->asset_id] = 1;
 		}
+
+		$counts = array();
 
 		// Calculate unit completion percentage for each student
 		// Note: this is not their score, but rather, simply how many items within the unit they have viewed
@@ -178,7 +186,25 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		{
 			foreach ($m as $unit_id=>$unit)
 			{
-				$progress[$member_id][$unit_id]['percentage_complete'] = round((array_sum($unit) / count($unit)) * 100, 2);
+				if (!isset($counts[$unit_id]))
+				{
+					// Get the assets
+					$asset = new CoursesTableAsset(JFactory::getDBO());
+					$filters = array(
+						'w' => array(
+							'course_id'  => $this->course->get('id'),
+							'unit_id'    => $unit_id,
+							'state'      => 1
+						)
+					);
+					if ($progress_calculation == 'forms')
+					{
+						$filters['w']['asset_type'] = 'form';
+					}
+					$counts[$unit_id] = $asset->count($filters);
+				}
+
+				$progress[$member_id][$unit_id]['percentage_complete'] = round((array_sum($unit) / $counts[$unit_id]) * 100, 2);
 			}
 		}
 
