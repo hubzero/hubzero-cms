@@ -184,7 +184,7 @@ if ($offerings->total())
 				<?php } else { ?>
 				<p>
 					<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias'). '&offering=' . $offering->get('alias') . ($dflt->get('alias') != '__default' ? ':' . $dflt->get('alias') : '')); ?>">
-						<?php echo JText::_('Enter course'); ?>
+						<?php echo JText::_('Access Course'); ?>
 					</a>
 				</p>
 				<?php } ?>
@@ -214,13 +214,13 @@ if ($offerings->total())
 			<?php if ($offering->access('view', 'section') || $this->course->isStudent()) { //$this->course->isManager() ?>
 				<p>
 					<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-						<?php echo JText::_('Enter course'); ?>
+						<?php echo JText::_('Access Course'); ?>
 					</a>
 				</p>
 			<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
 				<p>
 					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-						<?php echo JText::_('Enroll in course'); ?>
+						<?php echo JText::_('Enroll in Course'); ?>
 					</a>
 				</p>
 			<?php } ?>
