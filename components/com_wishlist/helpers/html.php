@@ -178,26 +178,26 @@ class WishlistHtml
 		{
 			switch ($rawnum)
 			{
-				case 0: $output = JText::_('RUBBISH');     break;
-				case 1: $output = JText::_('MAYBE');       break;
-				case 2: $output = JText::_('INTERESTING'); break;
-				case 3: $output = JText::_('GOODIDEA');    break;
-				case 4: $output = JText::_('IMPORTANT');   break;
-				case 5: $output = JText::_('CRITICAL');    break;
+				case 0: $output = JText::_('COM_WISHLIST_RUBBISH');     break;
+				case 1: $output = JText::_('COM_WISHLIST_MAYBE');       break;
+				case 2: $output = JText::_('COM_WISHLIST_INTERESTING'); break;
+				case 3: $output = JText::_('COM_WISHLIST_GOODIDEA');    break;
+				case 4: $output = JText::_('COM_WISHLIST_IMPORTANT');   break;
+				case 5: $output = JText::_('COM_WISHLIST_CRITICAL');    break;
 			}
 		} 
 		else if ($category == 'effort') 
 		{
 			switch ($rawnum)
 			{
-				case 0: $output = JText::_('TWOMONTHS');   break;
-				case 1: $output = JText::_('TWOWEEKS');    break;
-				case 2: $output = JText::_('ONEWEEK');     break;
-				case 3: $output = JText::_('TWODAYS');     break;
-				case 4: $output = JText::_('ONEDAY');      break;
-				case 5: $output = JText::_('FOURHOURS');   break;
-				case 6: $output = JText::_('don\'t know'); break;
-				case 7: $output = JText::_('N/A');         break;
+				case 0: $output = JText::_('COM_WISHLIST_TWOMONTHS');   break;
+				case 1: $output = JText::_('COM_WISHLIST_TWOWEEKS');    break;
+				case 2: $output = JText::_('COM_WISHLIST_ONEWEEK');     break;
+				case 3: $output = JText::_('COM_WISHLIST_TWODAYS');     break;
+				case 4: $output = JText::_('COM_WISHLIST_ONEDAY');      break;
+				case 5: $output = JText::_('COM_WISHLIST_FOURHOURS');   break;
+				case 6: $output = JText::_('COM_WISHLIST_DONT_KNOW'); 	break;
+				case 7: $output = JText::_('COM_WISHLIST_NA');         	break;
 			}
 		}
 

@@ -174,13 +174,27 @@
 		font-size: 85%;
 	}
 	.entry-reward a {
-		background: url("/components/com_wishlist/assets/img/coins.png") top right no-repeat;
+		/*background: url("/components/com_wishlist/assets/img/coins.png") top right no-repeat;
 		padding: 0 20px 0 0;
-		display: inline-block;
+		display: inline-block;*/
 		color: #999;
 	}
 	.entry-reward a span {
 		display: none;
+	}
+	.entry-reward a.no-bonus:after,
+	.entry-reward a.bonus:after {
+		width: 20px;
+		height: 30px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		margin-left: 0.2em;
+		content: "\f006";
+		position: absolute;
+		color: #dbb349;
+	}
+	.entry-reward span.bonus-inactive:before {
+		color: #CCC;
 	}
 /* Wish */
 	/* Options */

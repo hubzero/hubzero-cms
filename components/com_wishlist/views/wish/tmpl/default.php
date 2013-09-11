@@ -414,7 +414,7 @@ if ($this->wishlist && $this->wish) {
 												<?php
 											}
 											?>
-												<td>
+												<td class="voting">
 													<?php
 													$view = new JView(array('name'=>'rateitem'));
 													$view->option  = $this->option;
@@ -477,17 +477,17 @@ if ($this->wishlist && $this->wish) {
 <?php
 											}
 ?>
-												<td>
+												<td class="reward">
 												<?php if ($this->wishlist->banking) { ?>
-													<div class="assign_bonus">
+													<span class="entry-reward">
 														<?php if(isset($this->wish->bonus) && $this->wish->bonus > 0 && ($this->wish->status==0 or $this->wish->status==6)) { ?>
-														<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('COM_WISHLIST_MULTIPLE_USERS').' '.JText::_('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('COM_WISHLIST_POINTS').' '.JText::_('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>">+ <?php echo $this->wish->bonus; ?></a>
+														<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS'); ?>">+ <?php echo $this->wish->bonus; ?></a>
 														<?php } else if($this->wish->status==0 or $this->wish->status==6) { ?>
-														<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' :: '.JText::_('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>">&nbsp;</a>
+														<a class="no-bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS'); ?>">0</a>
 														<?php } else { ?>
-														<span class="bonus_inactive" title="<?php echo JText::_('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
+														<span class="bonus-inactive" title="<?php echo JText::_('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
 														<?php } ?>
-													</div>
+													</span>
 												<?php } ?>
 												</td>
 											</tr>
