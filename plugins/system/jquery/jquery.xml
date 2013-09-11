@@ -49,7 +49,6 @@
 					<option value="4">PLG_SYSTEM_JQUERY_YES_FROM_AJAX_GOOGLEAPIS_COM</option>
 					<option value="5">PLG_SYSTEM_JQUERY_YES_FROM_AJAX_MICROSOFT_COM</option>
 				</field>
-				<field name="jqueryVersion" size="30" type="text" default="1.7.2" label="PLG_SYSTEM_JQUERY_VERSION" description="PLG_SYSTEM_JQUERY_VERSION_DESC"  />
 				<field name="jquerycdnpath" size="30" type="text" default="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" label="PLG_SYSTEM_JQUERY_CUSTOM" description="PLG_SYSTEM_JQUERY_CUSTOM_DESC"  />
 			</fieldset>
 			<fieldset name="jquery_ui">
@@ -58,9 +57,8 @@
 					<option value="1">PLG_SYSTEM_JQUERY_FROM_LOCAL</option>
 					<option value="2">PLG_SYSTEM_JQUERY_FROM_CDN</option>
 				</field>
-				<field name="jqueryuiVersion" size="30" type="text" default="1.8.6" label="PLG_SYSTEM_JQUERY_UI_VERSION" description="PLG_SYSTEM_JQUERY_UI_VERSION_DESC"  />
 				<field name="jqueryuicdnpath" size="30" type="text" default="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js" label="PLG_SYSTEM_JQUERY_UI_CUSTOM" description="PLG_SYSTEM_JQUERY_UI_CUSTOM_DESC"  />
-				<field name="jqueryuicss" type="list" default="0" label="PLG_SYSTEM_JQUERY_UI_CSS" description="PLG_SYSTEM_JQUERY_UI_CSS_DESC">
+				<field name="jqueryuicss" type="radio" default="0" label="PLG_SYSTEM_JQUERY_UI_CSS" description="PLG_SYSTEM_JQUERY_UI_CSS_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -72,7 +70,6 @@
 					<option value="1">PLG_SYSTEM_JQUERY_FROM_LOCAL</option>
 					<option value="2">PLG_SYSTEM_JQUERY_FROM_CDN</option>
 				</field>
-				<field name="jquerytoolsVersion" size="30" type="text" default="1.2.5" label="PLG_SYSTEM_JQUERY_TOOLS_VERSION" description="PLG_SYSTEM_JQUERY_TOOLS_VERSION_DESC"  />
 				<field name="jquerytoolscdnpath" size="30" type="text" default="http://cdn.jquerytools.org/1.2.5/all/jquery.tools.min.js" label="PLG_SYSTEM_JQUERY_JQUERY_TOOLS_PATH" description="PLG_SYSTEM_JQUERY_JQUERY_TOOLS_PATH_DESC"  />
 			</fieldset>
 			<fieldset name="jquery_fb">
@@ -81,9 +78,8 @@
 					<option value="1">PLG_SYSTEM_JQUERY_FROM_LOCAL</option>
 					<option value="2">PLG_SYSTEM_JQUERY_FROM_CDN</option>
 				</field>
-				<field name="jqueryfbVersion" size="30" type="text" default="2.0.4" label="PLG_SYSTEM_JQUERY_FB_VERSION" description="PLG_SYSTEM_JQUERY_FB_VERSION_DESC"  />
 				<field name="jqueryfbcdnpath" size="30" type="text" default="//fancyapps.com/fancybox/" label="PLG_SYSTEM_JQUERY_FB_CUSTOM" description="PLG_SYSTEM_JQUERY_FB_CUSTOM_DESC"  />
-				<field name="jqueryfbcss" type="list" default="0" label="PLG_SYSTEM_JQUERY_FB_CSS" description="PLG_SYSTEM_JQUERY_FB_CSS_DESC">
+				<field name="jqueryfbcss" type="radio" default="0" label="PLG_SYSTEM_JQUERY_FB_CSS" description="PLG_SYSTEM_JQUERY_FB_CSS_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>

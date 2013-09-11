@@ -44,16 +44,14 @@
 			<option value="4">Yes - from ajax.googleapis.com</option>
 			<option value="5">Yes - from ajax.microsoft.com</option>
 		</param>
-		<param name="jqueryVersion" size="30" type="text" default="1.7.2" label="jQuery Version" description="Specify the version of jQuery to be used."  />
 		<param name="jquerycdnpath" size="30" type="text" default="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" label="jQuery custom CDN" description="An address for grabbing jQuery from the web."  />
 		<param name="jqueryui" type="list" default="0" label="Embed jQuery UI" description="Selects, whether the plugin should attach jQuery UI to page, and what source is to be used.">
 			<option value="0">No</option>
 			<option value="1">Yes - local copy</option>
 			<option value="2">Yes - from custom CDN</option>
 		</param>
-		<param name="jqueryuiVersion" size="30" type="text" default="1.8.6" label="jQuery UI Version" description="jQuery UI Version"  />
 		<param name="jqueryuicdnpath" size="30" type="text" default="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js" label="jQuery UI CDN path" description="An address for grabbing jQuery UI from the web."  />
-		<param name="jqueryuicss" type="list" default="0" label="Embed jQuery UI CSS" description="Selects, whether the plugin should attach jQuery UI CSS to page, and what source is to be used.">
+		<param name="jqueryuicss" type="radio" default="0" label="Embed jQuery UI CSS" description="Selects, whether the plugin should attach jQuery UI CSS to page, and what source is to be used.">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
@@ -63,16 +61,14 @@
 			<option value="1">Yes - local copy</option>
 			<option value="2">Yes - from custom CDN</option>
 		</param>
-		<param name="jquerytoolsVersion" size="30" type="text" default="1.2.5" label="jQuery Tools Version" description="jQuery Tools Version"  />
 		<param name="jquerytoolscdnpath" size="30" type="text" default="http://cdn.jquerytools.org/1.2.5/all/jquery.tools.min.js" label="jQuery Tools CDN path" description="An address for grabbing jQuery Tools from the web."  />
 		<param name="jqueryfb" type="list" default="0" label="Embed fancyBox" description="Selects, whether the plugin should attach fancyBox to page, and what source is to be used.">
 			<option value="0">No</option>
 			<option value="1">Yes - local copy</option>
 			<option value="2">Yes - from custom CDN</option>
 		</param>
-		<param name="jqueryfbVersion" size="30" type="text" default="2.0.4" label="fancyBox Version" description="fancyBox Version"  />
 		<param name="jqueryfbcdnpath" size="30" type="text" default="//fancyapps.com/fancybox/" label="fancyBox CDN path" description="An address for grabbing fancyBox from the web."  />
-		<param name="jqueryfbcss" type="list" default="0" label="Embed fancyBox CSS" description="Selects, whether the plugin should attach fancyBox CSS to page, and what source is to be used.">
+		<param name="jqueryfbcss" type="radio" default="0" label="Embed fancyBox CSS" description="Selects, whether the plugin should attach fancyBox CSS to page, and what source is to be used.">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
