@@ -35,7 +35,7 @@
 	}
 
 /* Splash area */
-	#splash .wrap {
+	#splash .inner-wrap .inner .wrap {
 		padding: 30px;
 	}
 	#splash .inner-wrap .inner .wrap:before,
