@@ -84,20 +84,35 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search_field"><?php echo JText::_('SEARCH'); ?></label>
-		<select name="search_field" id="filter_search_field">
-			<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID'); ?></option>
-			<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo JText::_('EMAIL'); ?></option>
-			<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('USERNAME'); ?></option>
-			<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_NAME'); ?></option>
-			<option value="givenName"<?php if ($this->filters['search_field'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo JText::_('FIRST_NAME'); ?></option>
-			<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('FULL_NAME'); ?></option>
-		</select>
-		
-		<label for="filter_search"><?php echo JText::_('for'); ?></label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-		
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<div class="col width-40 fltlft">
+			<label for="filter_search_field"><?php echo JText::_('SEARCH'); ?></label>
+			<select name="search_field" id="filter_search_field">
+				<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID'); ?></option>
+				<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo JText::_('EMAIL'); ?></option>
+				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('USERNAME'); ?></option>
+				<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_NAME'); ?></option>
+				<option value="givenName"<?php if ($this->filters['search_field'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo JText::_('FIRST_NAME'); ?></option>
+				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('FULL_NAME'); ?></option>
+			</select>
+			
+			<label for="filter_search"><?php echo JText::_('for'); ?></label> 
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+			
+			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		</div>
+		<div class="col width-60 fltrt" style="text-align: right;">
+			<select name="emailConfirmed" id="filter_emailConfirmed" onchange="document.adminForm.submit( );">
+				<option value="0"<?php if ($this->filters['emailConfirmed'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Select email confirmed -'); ?></option>
+				<option value="1"<?php if ($this->filters['emailConfirmed'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Confirmed'); ?></option>
+				<option value="-1"<?php if ($this->filters['emailConfirmed'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unconfirmed'); ?></option>
+			</select>
+			<select name="public" id="filter_public" onchange="document.adminForm.submit( );">
+				<option value="-1"<?php if ($this->filters['public'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Select profile access -'); ?></option>
+				<option value="1"<?php if ($this->filters['public'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
+				<option value="0"<?php if ($this->filters['public'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
+			</select>
+		</div>
+		<div class="clr"></div>
 	</fieldset>
 
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">

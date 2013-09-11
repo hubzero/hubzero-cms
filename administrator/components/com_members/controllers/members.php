@@ -71,9 +71,27 @@ class MembersControllerMembers extends Hubzero_Controller
 			'filter_order_Dir', 
 			'DESC'
 		));
-		$this->view->filters['show']         = '';
-		$this->view->filters['scope']        = '';
-		$this->view->filters['authorized']   = true;
+		$this->view->filters['registerDate']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.registerDate', 
+			'registerDate', 
+			''
+		));
+		$this->view->filters['emailConfirmed']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.emailConfirmed', 
+			'emailConfirmed', 
+			0,
+			'int'
+		));
+		$this->view->filters['public']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.public', 
+			'public', 
+			-1,
+			'int'
+		));
+
+		//$this->view->filters['show']         = '';
+		//$this->view->filters['scope']        = '';
+		//$this->view->filters['authorized']   = true;
 
 		$this->view->filters['sortby']       = $this->view->filters['sort'].' '.$this->view->filters['sort_Dir'];
 

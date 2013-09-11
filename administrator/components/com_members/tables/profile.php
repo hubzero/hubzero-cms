@@ -600,6 +600,26 @@ class MembersProfile extends JTable
 			$where[] = "(" . implode(" OR ", $search) . ")";
 		}
 
+		if (isset($filters['public']) && $filters['public'] >= 0) 
+		{
+			$where[] = "m.`public`=" . $this->_db->Quote($filters['public']);
+		}
+		if (isset($filters['emailConfirmed']) && $filters['emailConfirmed'] != 0) 
+		{
+			if ($filters['emailConfirmed'] == 1)
+			{
+				$where[] = "m.`emailConfirmed`=" . $this->_db->Quote($filters['emailConfirmed']);
+			}
+			else
+			{
+				$where[] = "m.`emailConfirmed` < 0";
+			}
+		}
+		if (isset($filters['registerDate']) && $filters['registerDate'] != '') 
+		{
+			$where[] = "m.`registerDate`>=" . $this->_db->Quote($filters['registerDate']);
+		}
+
 		$query  = "FROM $this->_tbl AS m 
 					LEFT JOIN #__users AS u ON u.id=m.uidNumber ";
 		if (count($where) > 0) 
