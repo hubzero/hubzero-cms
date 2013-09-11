@@ -384,9 +384,13 @@
 		border-right: 1px solid rgba(255, 255, 255, 0.05);
 	}
 	#splash .inner-wrap .inner .wrap {
-		min-height: 90px;
+		min-height: 80px;
 		background: transparent url("../images/layout/noise-white.png") 0 0;
 		position: relative;
+		padding: 10px 10px 0 10px;
+	}
+	#splash #system-message {
+		margin: 0;
 	}
 
 /* Search */
