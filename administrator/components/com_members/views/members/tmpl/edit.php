@@ -58,8 +58,10 @@ if (!$surname) {
 	}
 }
 
-jimport('joomla.html.pane');
-$tabs =& JPane::getInstance('sliders');
+//jimport('joomla.html.pane');
+//$tabs =& JPane::getInstance('sliders');
+
+JHtml::_('behavior.switcher');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -76,36 +78,38 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm">
+	
+
 	<div class="col width-60 fltlft">
+		<nav role="navigation" class="sub-navigation">
+		<div id="submenu-box">
+			<div class="submenu-box">
+				<div class="submenu-pad">
+					<ul id="submenu" class="configuration">
+						<li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
+						<li><a href="#" onclick="return false;" id="demographics">Demographics</a></li>
+						<li><a href="#" onclick="return false;" id="password">Password</a></li>
+						<li><a href="#" onclick="return false;" id="groups">Groups</a></li>
+						<li><a href="#" onclick="return false;" id="hosts">Hosts</a></li>
+						<li><a href="#" onclick="return false;" id="managers">Managers</a></li>
+					</ul>
+					<div class="clr"></div>
+				</div>
+			</div>
+			<div class="clr"></div>
+		</div>
+	</nav><!-- / .sub-navigation -->
+		<div id="config-document">
+		<div id="page-profile" class="tab">
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MEMBERS_PROFILE'); ?></span></legend>
-			
+
 			<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
-			
-			<!-- <div class="col width-50 fltlft">
-				<input type="checkbox" name="profile[public]" id="public" value="1"<?php if ($this->profile->get('public') == 1) { echo ' checked="checked"'; } ?> />
-				<label for="public"><?php echo JText::_('PUBLIC_PROFILE'); ?></label>
-			</div>
-			<div class="col width-50 fltrt">
-				<input type="checkbox" name="profile[vip]" id="vip" value="1"<?php if ($this->profile->get('vip') == 1) { echo ' checked="checked"'; } ?> />
-				<label for="vip"><?php echo JText::_('VIP'); ?>
-			</div>
-			<div class="clr"></div>
-			
-			<div class="col width-50 fltlft">
-				<label for="currentpassword"><?php echo JText::_('CURRENT_PASSWORD'); ?></label>
-				<input type="text" name="profile[currentpassword]" id="currentpassword" disabled="disabled" value="<?php echo $this->profile->get('userPassword'); ?>" />
-			</div>
-			<div class="col width-50 fltrt">
-				<label for="newpass"><?php echo JText::_('NEW_PASSWORD'); ?>:</label>
-				<input type="password" name="newpass" id="newpass" value="" />
-				<span class="hint"><strong>NOTE:</strong> Entering anything here will reset the user's password.</span>
-			</div>
-			<div class="clr"></div> -->
-			
+
 			<table class="admintable">
 			 <tbody>
 			  <tr>
@@ -118,15 +122,15 @@ function submitbutton(pressbutton)
 			  </tr>
 			  <tr>
 			   <td class="key"><label for="givenName"><?php echo JText::_('FIRST_NAME'); ?>:</label></td>
-			   <td><input type="text" name="profile[givenName]" id="givenName" value="<?php echo htmlentities($givenName,ENT_COMPAT,'UTF-8'); ?>" size="50" /></td>
+			   <td><input type="text" name="profile[givenName]" id="givenName" value="<?php echo $this->escape($givenName); ?>" size="50" /></td>
 			  </tr>
 			  <tr>
 			   <td class="key"><label for="middleName"><?php echo JText::_('MIDDLE_NAME'); ?>:</label></td>
-			   <td><input type="text" name="profile[middleName]" id="middleName" value="<?php echo htmlentities($middleName,ENT_COMPAT,'UTF-8'); ?>" size="50" /></td>
+			   <td><input type="text" name="profile[middleName]" id="middleName" value="<?php echo $this->escape($middleName); ?>" size="50" /></td>
 			  </tr>
 			  <tr>
 			   <td class="key"><label for="surname"><?php echo JText::_('LAST_NAME'); ?>:</label></td>
-			   <td><input type="text" name="profile[surname]" id="surname" value="<?php echo htmlentities($surname,ENT_COMPAT,'UTF-8'); ?>" size="50" /></td>
+			   <td><input type="text" name="profile[surname]" id="surname" value="<?php echo $this->escape($surname); ?>" size="50" /></td>
 			  </tr>
 			<tr>
 			   <td class="key"><label for="orgtype"><?php echo JText::_('COL_EMPLOYMENT_STATUS'); ?>:</label></td>
@@ -171,19 +175,19 @@ function submitbutton(pressbutton)
 			  </tr>  
 			<tr>
 			   <td class="key"><label for="organization"><?php echo JText::_('ORGANIZATION'); ?>:</label></td>
-			   <td><input type="text" name="profile[organization]" id="organization" value="<?php echo htmlentities(stripslashes($this->profile->get('organization')),ENT_COMPAT,'UTF-8'); ?>" size="50" /></td>
+			   <td><input type="text" name="profile[organization]" id="organization" value="<?php echo $this->escape(stripslashes($this->profile->get('organization'))); ?>" size="50" /></td>
 			  </tr>
 			  <tr>
 		 	   <td class="key"><label for="url"><?php echo JText::_('WEBSITE'); ?>:</label></td>
-		 	   <td><input type="text" name="profile[url]" id="url" value="<?php echo htmlentities(stripslashes($this->profile->get('url')),ENT_COMPAT,'UTF-8'); ?>" size="50" /></td>
+		 	   <td><input type="text" name="profile[url]" id="url" value="<?php echo $this->escape(stripslashes($this->profile->get('url'))); ?>" size="50" /></td>
 		 	  </tr>
 			  <tr>
 			   <td class="key"><?php echo JText::_('COL_TELEPHONE'); ?>:</td>
-			   <td><input type="text" name="profile[phone]" id="phone" value="<?php echo htmlentities($this->profile->get('phone'),ENT_COMPAT,'UTF-8'); ?>" size="50" /></td>
+			   <td><input type="text" name="profile[phone]" id="phone" value="<?php echo $this->escape($this->profile->get('phone')); ?>" size="50" /></td>
 			  </tr>
 			  <tr>
 		 	   <td class="key"><label for="tags"><?php echo JText::_('INTERESTS'); ?>:</label></td>
-		 	   <td><input type="text" name="tags" id="tags" value="<?php echo $this->tags; ?>" size="50" /></td>
+		 	   <td><input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->tags); ?>" size="50" /></td>
 		 	  </tr>
 		 	  <tr>
 			   <td class="key" valign="top"><label for="bio"><?php echo JText::_('BIO'); ?>:</label></td>
@@ -219,6 +223,116 @@ function submitbutton(pressbutton)
 			</tbody>
 			</table>
 		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
+			
+			<?php
+			if ($this->profile->get('uidNumber') != '') {
+				$pics = stripslashes($this->profile->get('picture'));
+				$pics = explode(DS, $pics);
+				$file = end($pics);
+			?>
+			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+			<?php
+			} else {
+				echo '<p class="warning">'.JText::_('MEMBER_PICTURE_ADDED_LATER').'</p>';
+			}
+			?>
+		</fieldset>
+
+		</div>
+		<div id="page-demographics" class="tab">
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('MEMBERS_DEMOGRAPHICS'); ?></span></legend>
+			<table class="admintable">
+				<tbody>
+			<tr>
+			   <td class="key" valign="top"><?php echo JText::_('COL_GENDER'); ?>:</td>
+			   <td>
+				<input type="radio" name="profile[gender]" id="gender_male" value="male" <?php echo ($this->profile->get('gender') == 'male') ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_GENDER_MALE'); ?><br />
+				<input type="radio" name="profile[gender]" id="gender_female" value="female" <?php echo ($this->profile->get('gender') == 'female') ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_GENDER_FEMALE'); ?><br />
+				<input type="radio" name="profile[gender]" id="gender_refused" value="refused" <?php echo ($this->profile->get('gender') == 'refused') ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_GENDER_REFUSED'); ?>
+			   </td>
+			  </tr>
+			<tr>
+			   <td class="key" valign="top"><?php echo JText::_('COL_DISABILITY'); ?>:</td>
+			   <td>
+				<?php
+				$dises = array('no','yes','refused','vocal','blind','deaf','physical','learning');
+				$dis = $this->profile->get('disability');
+				$disother = '';
+				foreach ($dis as $d)
+				{
+					if (!in_array($d, $dises)) {
+						$disother = $d;
+					}
+				}
+				$dis_noanswer = (is_array($dis) && count($dis) <= 1 && empty($dis[0]));
+
+				?>
+					<fieldset>
+						<legend><label><input type="radio" class="option" name="profile[disability]" id="disabilityyes" value="yes" <?php echo (!$dis_noanswer && !in_array('no',$this->profile->get('disability')) && !in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('YES'); ?></label></legend><br />
+						<label><input type="checkbox" class="option" name="profile[disabilities][blind]" id="disabilityblind" value="blind" <?php echo (in_array('blind',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_BLIND'); ?></label><br />
+						<label><input type="checkbox" class="option" name="profile[disabilities][deaf]" id="disabilitydeaf" value="deaf" <?php echo (in_array('deaf',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_DEAF'); ?></label><br />
+						<label><input type="checkbox" class="option" name="profile[disabilities][physical]" id="disabilityphysical" value="physical" <?php echo (in_array('physical',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_PHYSICAL'); ?></label><br />
+						<label><input type="checkbox" class="option" name="profile[disabilities][learning]" id="disabilitylearning" value="learning" <?php echo (in_array('learning',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_LEARNING'); ?></label><br />
+						<label><input type="checkbox" class="option" name="profile[disabilities][vocal]" id="disabilityvocal" value="vocal" <?php echo (in_array('vocal',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_VOCAL'); ?></label><br />
+						<label>Other (please specify):
+						<input name="profile[disabilities][other]" id="disabilityother" type="text" value="<?php echo $this->escape($disother); ?>" /></label>
+					</fieldset>
+					<label><input type="radio" class="option" name="profile[disability]" id="disabilityno" value="no" <?php echo (in_array('no',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('NO_NONE'); ?></label><br />
+					<label><input type="radio" class="option" name="profile[disability]" id="disabilityrefused" value="refused" <?php echo (in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('REFUSED'); ?></label>
+			   </td>
+			  </tr>
+			<tr>
+			   <td class="key" valign="top"><?php echo JText::_('COL_RACE'); ?>:</td>
+			   <td>
+				<label><input type="checkbox" class="option" name="profile[race][nativeamerican]" id="racenativeamerican" value="nativeamerican" <?php echo (in_array('nativeamerican',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_NATIVE_AMERICAN'); ?></label><br />
+				<label style="margin-left: 3em;"><?php echo JText::_('COL_RACE_TRIBE'); ?>: <input name="racenativetribe" id="profile[nativeTribe]" type="text" value="<?php echo $this->escape($this->profile->get('nativeTribe')); ?>" /></label><br />
+				<label><input type="checkbox" class="option" name="profile[race][asian]" id="raceasian" valu="asian" <?php echo (in_array('asian',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_ASIAN'); ?></label><br />
+				<label><input type="checkbox" class="option" name="profile[race][black]" id="raceblack" value="black" <?php echo (in_array('black',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_BLACK'); ?></label><br />
+				<label><input type="checkbox" class="option" name="profile[race][hawaiian]" id="racehawaiian" value="hawaiian" <?php echo (in_array('hawaiian',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_PACIFIC_ISLANDER'); ?></label><br />
+				<label><input type="checkbox" class="option" name="profile[race][white]" id="racewhite" value="white" <?php echo (in_array('white',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_WHITE'); ?></label><br />
+				<label><input type="checkbox" class="option" name="profile[race][refused]" id="racerefused" value="refused" <?php echo (in_array('refused',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('REFUSED'); ?></label>
+			   </td>
+			  </tr>
+			<tr>
+				<td class="key" valign="top"><?php echo JText::_('COL_HISPANIC'); ?>:</td>
+				<td>
+					<?php
+					$hises = array('no','yes','refused','cuban','mexican','deaf','puertorican');
+					$his = $this->profile->get('disability');
+					$hisother = '';
+					foreach ($his as $h)
+					{
+						if (!in_array($h, $hises)) {
+							$hisother = $h;
+						}
+					}
+					$his_noanswer = (is_array($his) && count($his) <= 1 && empty($his[0]));
+					$hispanic = false;
+					if (!empty($his) && !$his_noanswer && !in_array('no',$this->profile->get('hispanic')) && !in_array('refused',$this->profile->get('hispanic'))) {
+						$hispanic = true;
+					}
+					?>
+					<fieldset>
+						<legend><label><input type="radio" class="option" name="profile[hispanic]" id="hispanicyes" value="yes"  <?php echo ($hispanic) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_YES'); ?></label></legend>
+						<label><input type="checkbox" class="option" name="profile[hispanics][cuban]" id="hispaniccuban" value="cuban" <?php echo (in_array('cuban',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_CUBAN'); ?></label><br />
+						<label><input type="checkbox" class="option" name="profile[hispanics][mexican]" id="hispanicmexican" value="mexican" <?php echo (in_array('mexican',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_CHICANO'); ?></label><br />
+						<label><input type="checkbox" class="option" name="profile[hispanics][puertorican]" id="hispanicpuertorican" value="puertorican" <?php echo (in_array('puertorican',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_PUERTORICAN'); ?></label><br />
+						<label><?php echo JText::_('COL_HISPANIC_OTHER'); ?>: <input name="profile[hispanics][other]" id="hispanicother" type="text" value="<?php echo $this->escape($hisother); ?>" /></label>
+					</fieldset>
+					<label><input type="radio" class="option" name="profile[hispanic]" id="hispanicno" value="no" <?php echo (in_array('no',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_NO'); ?></label><br />
+					<label><input type="radio" class="option" name="profile[hispanic]" id="hispanicrefused" value="refused" <?php echo (in_array('refused',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('REFUSED'); ?></label>
+				</td>
+			</tr>
+			 </tbody>
+			</table>
+		</fieldset>
+			</div>
+			<div id="page-password" class="tab">
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('PASSWORD'); ?></span></legend>
 
@@ -268,93 +382,31 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('MEMBERS_DEMOGRAPHICS'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-			<tr>
-			   <td class="key" valign="top"><?php echo JText::_('COL_GENDER'); ?>:</td>
-			   <td>
-				<input type="radio" name="profile[gender]" id="gender_male" value="male" <?php echo ($this->profile->get('gender') == 'male') ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_GENDER_MALE'); ?><br />
-				<input type="radio" name="profile[gender]" id="gender_female" value="female" <?php echo ($this->profile->get('gender') == 'female') ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_GENDER_FEMALE'); ?><br />
-				<input type="radio" name="profile[gender]" id="gender_refused" value="refused" <?php echo ($this->profile->get('gender') == 'refused') ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_GENDER_REFUSED'); ?>
-			   </td>
-			  </tr>
-			<tr>
-			   <td class="key" valign="top"><?php echo JText::_('COL_DISABILITY'); ?>:</td>
-			   <td>
-				<?php
-				$dises = array('no','yes','refused','vocal','blind','deaf','physical','learning');
-				$dis = $this->profile->get('disability');
-				$disother = '';
-				foreach ($dis as $d)
-				{
-					if (!in_array($d, $dises)) {
-						$disother = $d;
-					}
-				}
-				$dis_noanswer = (is_array($dis) && count($dis) <= 1 && empty($dis[0]));
 
-				?>
-					<fieldset>
-						<legend><label><input type="radio" class="option" name="profile[disability]" id="disabilityyes" value="yes" <?php echo (!$dis_noanswer && !in_array('no',$this->profile->get('disability')) && !in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('YES'); ?></label></legend><br />
-						<label><input type="checkbox" class="option" name="profile[disabilities][blind]" id="disabilityblind" value="blind" <?php echo (in_array('blind',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_BLIND'); ?></label><br />
-						<label><input type="checkbox" class="option" name="profile[disabilities][deaf]" id="disabilitydeaf" value="deaf" <?php echo (in_array('deaf',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_DEAF'); ?></label><br />
-						<label><input type="checkbox" class="option" name="profile[disabilities][physical]" id="disabilityphysical" value="physical" <?php echo (in_array('physical',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_PHYSICAL'); ?></label><br />
-						<label><input type="checkbox" class="option" name="profile[disabilities][learning]" id="disabilitylearning" value="learning" <?php echo (in_array('learning',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_LEARNING'); ?></label><br />
-						<label><input type="checkbox" class="option" name="profile[disabilities][vocal]" id="disabilityvocal" value="vocal" <?php echo (in_array('vocal',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_DISABILITY_VOCAL'); ?></label><br />
-						<label>Other (please specify):
-						<input name="profile[disabilities][other]" id="disabilityother" type="text" value="<?php echo htmlentities($disother,ENT_COMPAT,'UTF-8'); ?>" /></label>
-					</fieldset>
-					<label><input type="radio" class="option" name="profile[disability]" id="disabilityno" value="no" <?php echo (in_array('no',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('NO_NONE'); ?></label><br />
-					<label><input type="radio" class="option" name="profile[disability]" id="disabilityrefused" value="refused" <?php echo (in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('REFUSED'); ?></label>
-			   </td>
-			  </tr>
-			<tr>
-			   <td class="key" valign="top"><?php echo JText::_('COL_RACE'); ?>:</td>
-			   <td>
-				<label><input type="checkbox" class="option" name="profile[race][nativeamerican]" id="racenativeamerican" value="nativeamerican" <?php echo (in_array('nativeamerican',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_NATIVE_AMERICAN'); ?></label><br />
-				<label style="margin-left: 3em;"><?php echo JText::_('COL_RACE_TRIBE'); ?>: <input name="racenativetribe" id="profile[nativeTribe]" type="text" value="<?php echo htmlentities($this->profile->get('nativeTribe'),ENT_COMPAT,'UTF-8'); ?>" /></label><br />
-				<label><input type="checkbox" class="option" name="profile[race][asian]" id="raceasian" valu="asian" <?php echo (in_array('asian',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_ASIAN'); ?></label><br />
-				<label><input type="checkbox" class="option" name="profile[race][black]" id="raceblack" value="black" <?php echo (in_array('black',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_BLACK'); ?></label><br />
-				<label><input type="checkbox" class="option" name="profile[race][hawaiian]" id="racehawaiian" value="hawaiian" <?php echo (in_array('hawaiian',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_PACIFIC_ISLANDER'); ?></label><br />
-				<label><input type="checkbox" class="option" name="profile[race][white]" id="racewhite" value="white" <?php echo (in_array('white',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_WHITE'); ?></label><br />
-				<label><input type="checkbox" class="option" name="profile[race][refused]" id="racerefused" value="refused" <?php echo (in_array('refused',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('REFUSED'); ?></label>
-			   </td>
-			  </tr>
-			<tr>
-				<td class="key" valign="top"><?php echo JText::_('COL_HISPANIC'); ?>:</td>
-				<td>
-					<?php
-					$hises = array('no','yes','refused','cuban','mexican','deaf','puertorican');
-					$his = $this->profile->get('disability');
-					$hisother = '';
-					foreach ($his as $h)
-					{
-						if (!in_array($h, $hises)) {
-							$hisother = $h;
-						}
-					}
-					$his_noanswer = (is_array($his) && count($his) <= 1 && empty($his[0]));
-					$hispanic = false;
-					if (!empty($his) && !$his_noanswer && !in_array('no',$this->profile->get('hispanic')) && !in_array('refused',$this->profile->get('hispanic'))) {
-						$hispanic = true;
-					}
-					?>
-					<fieldset>
-						<legend><label><input type="radio" class="option" name="profile[hispanic]" id="hispanicyes" value="yes"  <?php echo ($hispanic) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_YES'); ?></label></legend>
-						<label><input type="checkbox" class="option" name="profile[hispanics][cuban]" id="hispaniccuban" value="cuban" <?php echo (in_array('cuban',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_CUBAN'); ?></label><br />
-						<label><input type="checkbox" class="option" name="profile[hispanics][mexican]" id="hispanicmexican" value="mexican" <?php echo (in_array('mexican',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_CHICANO'); ?></label><br />
-						<label><input type="checkbox" class="option" name="profile[hispanics][puertorican]" id="hispanicpuertorican" value="puertorican" <?php echo (in_array('puertorican',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_PUERTORICAN'); ?></label><br />
-						<label><?php echo JText::_('COL_HISPANIC_OTHER'); ?>: <input name="profile[hispanics][other]" id="hispanicother" type="text" value="<?php echo htmlentities($hisother,ENT_COMPAT,'UTF-8'); ?>" /></label>
-					</fieldset>
-					<label><input type="radio" class="option" name="profile[hispanic]" id="hispanicno" value="no" <?php echo (in_array('no',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_HISPANIC_NO'); ?></label><br />
-					<label><input type="radio" class="option" name="profile[hispanic]" id="hispanicrefused" value="refused" <?php echo (in_array('refused',$this->profile->get('hispanic'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('REFUSED'); ?></label>
-				</td>
-			</tr>
-			 </tbody>
-			</table>
-		</fieldset>
+			</div>
+			<div id="page-groups" class="tab">
+				<fieldset class="adminform">
+					<legend><span><?php echo JText::_('GROUPS'); ?></span></legend>
+					
+					<iframe width="100%" height="500" name="grouper" id="grouper" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=groups&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+				</fieldset>
+			</div>
+			<div id="page-hosts" class="tab">
+				<fieldset class="adminform">
+					<legend><span><?php echo JText::_('HOSTS'); ?></span></legend>
+
+					<iframe width="100%" height="500" name="hosts" id="hosts" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+				</fieldset>
+			</div>
+			<div id="page-managers" class="tab">
+				<fieldset class="adminform">
+					<legend><span><?php echo JText::_('Managers'); ?></span></legend>
+
+					<iframe width="100%" height="500" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=managers&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+				</fieldset>
+			</div>
+		</div>
+		<div class="clr"></div>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta" summary="Metadata">
@@ -459,52 +511,11 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr class="even">
 						<td class="key"><?php echo JText::_('COL_ADMINISTRATOR'); ?></td>
-						<td><?php echo implode(', ', $this->profile->get('admin')); ?></td>
+						<td><?php echo ($this->profile->get('admin') ? implode(', ', $this->profile->get('admin')) : '--'); ?></td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
-<?php //echo $tabs->startPane("member-pane"); ?>
-<?php //echo $tabs->startPanel(JText::_('IMAGE'),'image-page'); ?>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
-			
-			<?php
-			if ($this->profile->get('uidNumber') != '') {
-				$pics = stripslashes($this->profile->get('picture'));
-				$pics = explode(DS, $pics);
-				$file = end($pics);
-			?>
-			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
-			<?php
-			} else {
-				echo '<p class="warning">'.JText::_('MEMBER_PICTURE_ADDED_LATER').'</p>';
-			}
-			?>
-		</fieldset>
-<?php //echo $tabs->endPanel(); ?>
-<?php //echo $tabs->startPanel(JText::_('GROUPS'),'groups-page'); ?>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('GROUPS'); ?></span></legend>
-			
-			<iframe width="100%" height="200" name="grouper" id="grouper" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=groups&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
-		</fieldset>
-<?php //echo $tabs->endPanel(); ?>
-<?php //echo $tabs->startPanel(JText::_('HOSTS'),'hosts-page'); ?>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('HOSTS'); ?></span></legend>
-
-			<iframe width="100%" height="200" name="hosts" id="hosts" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
-		</fieldset>
-<?php //echo $tabs->endPanel(); ?>
-<?php //echo $tabs->startPanel(JText::_('Managers'),'managers-page'); ?>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
-
-			<iframe width="100%" height="200" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=managers&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
-		</fieldset>
-<?php //echo $tabs->endPanel(); ?>
-<?php //echo $tabs->endPane(); ?>
 	</div>
 	<div class="clr"></div>
 	<?php echo JHTML::_('form.token'); ?>
