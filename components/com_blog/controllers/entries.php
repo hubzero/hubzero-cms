@@ -686,7 +686,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		/*
 		if ($row->get('created_by') != $this->member->get('uidNumber)) 
 		{
-			$this->entry = new BlogEntry($this->database);
+			$this->entry = new BlogTableEntry($this->database);
 			$this->entry->load($row->entry_id);
 			
 			// Get the site configuration
@@ -746,7 +746,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 
 		// Initiate a blog comment object
-		$comment = new BlogComment($this->database);
+		$comment = new BlogTableComment($this->database);
 		$comment->load($id);
 
 		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-manage-entry')) 

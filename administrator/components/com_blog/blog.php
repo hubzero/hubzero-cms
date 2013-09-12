@@ -58,8 +58,8 @@ else
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'blog.entry.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'blog.comment.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'entry.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'comment.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'blog.tags.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'blog.php');
 

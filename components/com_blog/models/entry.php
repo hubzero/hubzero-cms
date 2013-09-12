@@ -50,8 +50,8 @@ else
 	define('BLOG_TIME_FORMAT', '%I:%M %p');
 }
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.tags.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'iterator.php');
 
@@ -61,7 +61,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . 
 class BlogModelEntry extends JObject
 {
 	/**
-	 * ForumTableSection
+	 * BlogTableEntry
 	 * 
 	 * @var object
 	 */
@@ -119,7 +119,7 @@ class BlogModelEntry extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new BlogEntry($this->_db);
+		$this->_tbl = new BlogTableEntry($this->_db);
 
 		if (is_numeric($oid))
 		{
@@ -437,7 +437,7 @@ class BlogModelEntry extends JObject
 	 */
 	public function comments($rtrn='list', $filters=array())
 	{
-		$tbl = new BlogComment($this->_db);
+		$tbl = new BlogTableComment($this->_db);
 
 		if (!isset($filters['entry_id']))
 		{
@@ -506,29 +506,11 @@ class BlogModelEntry extends JObject
 	 * 
 	 * @return     boolean
 	 */
-	public function tags($what='cloud')
+	public function tags($what='cloud', $admin=0)
 	{
-		$bt = new BlogTags($this->_db);
+		$cloud = new BlogModelTags($this->get('id'));
 
-		$tags = null;
-
-		$what = strtolower(trim($what));
-		switch ($what)
-		{
-			case 'array':
-				$tags = $bt->get_tags_on_object($this->get('id'), 0, 0);
-			break;
-
-			case 'string':
-				$tags = $bt->get_tag_string($this->get('id'));
-			break;
-
-			case 'cloud':
-				$tags = $bt->get_tag_cloud(0, 0, $this->get('id'));
-			break;
-		}
-
-		return $tags; 
+		return $cloud->render($what, array('admin' => $admin));
 	}
 
 	/**
@@ -536,23 +518,11 @@ class BlogModelEntry extends JObject
 	 * 
 	 * @return     boolean
 	 */
-	public function tag($tags=null, $user_id=0)
+	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$bt = new BlogTags($this->_db);
+		$cloud = new BlogModelTags($this->get('id'));
 
-		if (!$user_id)
-		{
-			$juser = JFactory::getUser();
-			$user_id = $juser->get('id');
-		}
-
-		return $bt->tag_object(
-			$user_id, 
-			$this->get('id'), 
-			trim($tags), 
-			1, 
-			1
-		);
+		return $cloud->setTags($tags, $user_id, $admin);
 	}
 
 	/**

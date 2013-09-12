@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . 
 class BlogModel extends JObject
 {
 	/**
-	 * ForumTableSection
+	 * BlogTableEntry
 	 * 
 	 * @var object
 	 */
@@ -97,7 +97,7 @@ class BlogModel extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new BlogEntry($this->_db);
+		$this->_tbl = new BlogTableEntry($this->_db);
 
 		$this->set('scope', $scope);
 		switch ($scope)

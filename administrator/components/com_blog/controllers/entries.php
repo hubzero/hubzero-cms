@@ -97,7 +97,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		);
 
 		// Instantiate our HelloEntry object
-		$obj = new BlogEntry($this->database);
+		$obj = new BlogTableEntry($this->database);
 
 		// Get record count
 		$this->view->total = $obj->getEntriesCount($this->view->filters);
@@ -162,7 +162,7 @@ class BlogControllerEntries extends Hubzero_Controller
 			}
 
 			// Load the article
-			$this->view->row = new BlogEntry($this->database);
+			$this->view->row = new BlogTableEntry($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -175,8 +175,10 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 		else 
 		{
-			$bt = new BlogTags($this->database);
-			$this->view->tags = $bt->get_tag_string($this->view->row->id);
+			/*$bt = new BlogTags($this->database);
+			$this->view->tags = $bt->get_tag_string($this->view->row->id);*/
+			$bt = new BlogModelTags($this->database);
+			$this->view->tags = $bt->tags('string');
 		}
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -224,7 +226,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		//$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new BlogEntry($this->database);
+		$row = new BlogTableEntry($this->database);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -287,7 +289,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		if (count($ids) > 0) 
 		{
 			// Create a category object
-			$entry = new BlogEntry($this->database);
+			$entry = new BlogTableEntry($this->database);
 
 			// Loop through all the IDs
 			foreach ($ids as $id)
@@ -357,7 +359,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new BlogEntry($this->database);
+			$row = new BlogTableEntry($this->database);
 			$row->load(intval($id));
 			$row->state = $state;
 
@@ -419,7 +421,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new BlogEntry($this->database);
+			$row = new BlogTableEntry($this->database);
 			$row->load($id);
 			$row->allow_comments = $state;
 

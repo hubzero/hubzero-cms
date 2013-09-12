@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
 if (!defined('BLOG_DATE_FORMAT'))
 {
@@ -91,7 +91,7 @@ class BlogModelComment extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new BlogComment($this->_db);
+		$this->_tbl = new BlogTableComment($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -372,7 +372,7 @@ class BlogModelComment extends JObject
 				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count))
 				{
 					$this->_comments_count = 0;
-					//$this->_comments_count = (int) $tbl->count($filters);
+
 					if (!$this->_comments) 
 					{
 						$c = $this->comments('list', $filters);

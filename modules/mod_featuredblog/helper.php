@@ -32,57 +32,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Module');
+
 /**
  * Module class for displaying a random, featured blog entry
  */
-class modFeaturedblog extends JObject
+class modFeaturedblog extends Hubzero_Module
 {
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object $this->params JParameter
-	 * @param      object $module Database row
-	 * @return     void
-	 */
-	public function __construct($params, $module)
-	{
-		$this->params = $params;
-		$this->module = $module;
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) 
-		{
-			return $this->attributes[$property];
-		}
-	}
-
 	/**
 	 * Display module contents
 	 * 
@@ -163,8 +119,8 @@ class modFeaturedblog extends JObject
 		{
 			// No - so we need to display a member
 			// Load some needed libraries
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 
 			// Check the feature history for today's feature
 			$fh->loadActive($start, 'blogs');
@@ -173,7 +129,7 @@ class modFeaturedblog extends JObject
 			if ($fh->id && $fh->tbl == 'blogs') 
 			{
 				// Yes - load the member profile
-				$this->row = new BlogEntry($database);
+				$this->row = new BlogTableEntry($database);
 				$this->row->load($fh->objectid);
 			} 
 			else 
@@ -203,7 +159,7 @@ class modFeaturedblog extends JObject
 				$filters['group_id']   = 0;
 				$filters['authorized'] = false;
 
-				$mp = new BlogEntry($database);
+				$mp = new BlogTableEntry($database);
 				$rows = $mp->getRecords($filters);
 				if ($rows && count($rows) > 0) 
 				{

@@ -686,7 +686,7 @@ class plgMembersBlog extends JPlugin
 
 		/*
 		if ($row->created_by != $this->member->get('uidNumber)) {
-			$this->entry = new BlogEntry($this->database);
+			$this->entry = new BlogTableEntry($this->database);
 			$this->entry->load($row->entry_id);
 			
 			// Get the site configuration

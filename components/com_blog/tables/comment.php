@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Blog Comment database class
  */
-class BlogComment extends JTable
+class BlogTableComment extends JTable
 {
 
 	/**

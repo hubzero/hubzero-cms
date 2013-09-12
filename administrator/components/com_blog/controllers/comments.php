@@ -87,11 +87,11 @@ class BlogControllerComments extends Hubzero_Controller
 			'int'
 		);
 
-		$this->view->entry = new BlogEntry($this->database);
+		$this->view->entry = new BlogTableEntry($this->database);
 		$this->view->entry->load($this->view->filters['entry_id']);
 
 		// Instantiate our HelloEntry object
-		$obj = new BlogComment($this->database);
+		$obj = new BlogTableComment($this->database);
 
 		// Get records
 		$rows = $obj->getEntries($this->view->filters);
@@ -226,7 +226,7 @@ class BlogControllerComments extends Hubzero_Controller
 	/**
 	 * Show a form for editing an entry
 	 * 
-	 * @param      object $row BlogComment
+	 * @param      object $row BlogTableComment
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -249,7 +249,7 @@ class BlogControllerComments extends Hubzero_Controller
 			}
 
 			// Load the article
-			$this->view->row = new BlogComment($this->database);
+			$this->view->row = new BlogTableComment($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -288,7 +288,7 @@ class BlogControllerComments extends Hubzero_Controller
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new BlogComment($this->database);
+		$row = new BlogTableComment($this->database);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -336,7 +336,7 @@ class BlogControllerComments extends Hubzero_Controller
 		if (count($ids) > 0) 
 		{
 			// Create a category object
-			$entry = new BlogComment($this->database);
+			$entry = new BlogTableComment($this->database);
 
 			// Loop through all the IDs
 			foreach ($ids as $id)

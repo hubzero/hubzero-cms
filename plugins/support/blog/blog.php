@@ -53,7 +53,7 @@ class plgSupportBlog extends JPlugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 
 		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category 
 					FROM #__blog_comments AS rc 
@@ -78,7 +78,7 @@ class plgSupportBlog extends JPlugin
 			ximport('xblog');
 			foreach ($rows as $key => $row)
 			{
-				$entry = new BlogEntry($database);
+				$entry = new BlogTableEntry($database);
 				$entry->load($rows[$key]->entry_id);
 
 				$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $entry->created_by . '&active=blog&task=' . JHTML::_('date', $entry->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $entry->publish_up, $monthFormat, $tz) . '/' . $entry->alias . '#c' . $rows[$key]->id);
@@ -103,11 +103,11 @@ class plgSupportBlog extends JPlugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
 		$database =& JFactory::getDBO();
 
-		$comment = new BlogComment($database);
+		$comment = new BlogTableComment($database);
 		$comment->load($refid);
 		$comment->anonymous = 1;
 		$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';

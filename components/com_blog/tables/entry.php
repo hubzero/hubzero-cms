@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Blog Entry database class
  */
-class BlogEntry extends JTable
+class BlogTableEntry extends JTable
 {
 
 	/**
@@ -313,7 +313,7 @@ class BlogEntry extends JTable
 	 */
 	public function getEntries($filters=array())
 	{
-		$bc = new BlogComment($this->_db);
+		$bc = new BlogTableComment($this->_db);
 
 		$query = "SELECT m.*, (SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildAdminQuery($filters);
 
@@ -413,7 +413,7 @@ class BlogEntry extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$bc = new BlogComment($this->_db);
+		$bc = new BlogTableComment($this->_db);
 
 		$query = "SELECT m.*, (SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
 
@@ -544,7 +544,7 @@ class BlogEntry extends JTable
 			return false;
 		}
 
-		$bc = new BlogComment($this->_db);
+		$bc = new BlogTableComment($this->_db);
 
 		$this->_db->setQuery("DELETE FROM " . $bc->getTableName() . " WHERE entry_id=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
@@ -606,8 +606,8 @@ class BlogEntry extends JTable
 			return false;
 		}
 
-		$bt = new BlogTags($this->_db);
-		if (!$bt->remove_all_tags($id)) 
+		$bt = new BlogModelTags($id);
+		if (!$bt->removeAll()) 
 		{
 			$this->setError(JText::_('UNABLE_TO_DELETE_TAGS'));
 			return false;
@@ -625,7 +625,7 @@ class BlogEntry extends JTable
 	{
 		$filters['order'] = 'hits DESC';
 
-		$bc = new BlogComment($this->_db);
+		$bc = new BlogTableComment($this->_db);
 
 		$query = "SELECT m.*, 
 				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
@@ -644,7 +644,7 @@ class BlogEntry extends JTable
 	{
 		$filters['order'] = 'publish_up DESC';
 
-		$bc = new BlogComment($this->_db);
+		$bc = new BlogTableComment($this->_db);
 
 		$query = "SELECT m.*, 
 				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);

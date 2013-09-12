@@ -509,13 +509,13 @@ class plgGroupsUsage extends Hubzero_Plugin
 
 		$database =& JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 
 		$filters = array();
 		$filters['scope'] = 'group';
 		$filters['group_id'] = $gid;
 
-		$gb = new BlogEntry($database);
+		$gb = new BlogTableEntry($database);
 
 		$total = $gb->getCount($filters);
 
