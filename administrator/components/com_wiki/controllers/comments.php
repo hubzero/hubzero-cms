@@ -352,7 +352,7 @@ class WikiControllerComments extends Hubzero_Controller
 		if (count($ids) > 0) 
 		{
 			// Create a category object
-			$entry = new BlogComment($this->database);
+			$entry = new WikiPageComment($this->database);
 
 			// Loop through all the IDs
 			foreach ($ids as $id)
