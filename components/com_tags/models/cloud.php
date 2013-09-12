@@ -67,11 +67,18 @@ class TagsModelCloud extends JObject
 	protected $_db = NULL;
 
 	/**
-	 * Container for properties
+	 * JRegistry
 	 * 
 	 * @var array
 	 */
 	protected $_config = null;
+
+	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	protected $_cache = array();
 
 	/**
 	 * Constructor
