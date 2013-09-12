@@ -646,9 +646,6 @@ class PdfFormDeployment
 		);
 		$dbh->query();
 
-		// Update related asset, if applicable
-		$this->updateAsset();
-
 		return ($this->id = $id);
 	}
 
