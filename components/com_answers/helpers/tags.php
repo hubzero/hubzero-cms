@@ -77,13 +77,13 @@ class AnswersTags extends TagsHandler
 			return true;
 		}
 
-		$to = new TagsObject($this->_db);
+		$to = new TagsTableObject($this->_db);
 		$to->objectid = $object_id;
 		$to->tbl = $this->_tbl;
 		$to->label = $label;
 
 		// First see if the tag exists.
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 		$t->loadTag($t->normalize($tag));
 		if (!$t->id) 
 		{

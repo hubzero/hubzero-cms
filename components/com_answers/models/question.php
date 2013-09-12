@@ -36,9 +36,9 @@ define('ANSWERS_STATE_CLOSED',  1);
 define('ANSWERS_STATE_DELETED', 2);
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'response.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'iterator.php');
@@ -379,7 +379,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
-		$bt = new AnswersTags($this->_db);
+		/*$bt = new AnswersTags($this->_db);
 
 		$tags = null;
 
@@ -397,9 +397,10 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'cloud':
 				$tags = $bt->get_tag_cloud(0, 0, $this->get('id'));
 			break;
-		}
+		}*/
+		$cloud = new AnswersModelTags($this->get('id'));
 
-		return $tags; 
+		return $cloud->render($what, array('admin' => $admin));
 	}
 
 	/**
@@ -407,9 +408,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * 
 	 * @return     boolean
 	 */
-	public function tag($tags=null, $user_id=0)
+	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$bt = new AnswersTags($this->_db);
+		/*$bt = new AnswersTags($this->_db);
 
 		if (!$user_id)
 		{
@@ -423,7 +424,10 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			trim($tags), 
 			1, 
 			1
-		);
+		);*/
+		$cloud = new AnswersModelTags($this->get('id'));
+
+		return $cloud->setTags($tags, $user_id, $admin);
 	}
 
 	/**

@@ -695,8 +695,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				$this->view->results[$i]->reports = $this->_getReports($this->view->results[$i]->id, 'question');
 
 				// Get tags on this question
-				$tagging = new AnswersTags($this->database);
-				$this->view->results[$i]->tags = $tagging->get_tags_on_object($this->view->results[$i]->id, 0, 0, 0);
+				//$tagging = new AnswersTags($this->database);
+				//$cloud = new AnswersModelTags($this->view->results[$i]->id);
+				//$this->view->results[$i]->tags = $cloud->render('array'); //$tagging->get_tags_on_object($this->view->results[$i]->id, 0, 0, 0);
 			}
 		}
 

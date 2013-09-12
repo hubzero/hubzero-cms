@@ -104,13 +104,13 @@ if (!$this->question->get('anonymous'))
 				$resource = null;
 				foreach ($tags as $tag)
 				{
-					if (preg_match('/^tool:/i', $tag['raw_tag']))
+					if (preg_match('/^tool:/i', $tag->get('raw_tag')))
 					{
-						$resource = 'alias=' . substr($tag['raw_tag'], strlen('tool:'));
+						$resource = 'alias=' . substr($tag->get('raw_tag'), strlen('tool:'));
 					}
-					else if (preg_match('/^resource:/i', $tag['raw_tag']))
+					else if (preg_match('/^resource:/i', $tag->get('raw_tag')))
 					{
-						$resource = 'id=' . substr($tag['raw_tag'], strlen('resource:'));
+						$resource = 'id=' . substr($tag->get('raw_tag'), strlen('resource:'));
 					}
 					if ($resource)
 					{
@@ -186,7 +186,7 @@ if (!$this->question->get('anonymous'))
 			<?php } ?>
 
 				<div class="entry-tags">
-					<?php echo $this->question->tags('cloud'); ?>
+					<?php echo $this->question->tags('cloud', 0); ?>
 				</div><!-- / .question-tags -->
 		<?php } ?>
 			</div><!-- / .question-content -->
