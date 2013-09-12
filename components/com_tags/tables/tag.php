@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for tags
  */
-class TagsTag extends JTable
+class TagsTableTag extends JTable
 {
 	/**
 	 * int(11)
@@ -132,7 +132,7 @@ class TagsTag extends JTable
 			$this->$k = intval($oid);
 		}
 
-		$data = new TagsTag($this->_db);
+		$data = new TagsTableTag($this->_db);
 		$data->load($this->$k);
 		$comment = '';
 		if ($data->tag)
@@ -173,7 +173,7 @@ class TagsTag extends JTable
 		if ($result)
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($oid, 'tag_deleted', $comment);
 		}
 
@@ -202,7 +202,7 @@ class TagsTag extends JTable
 		if ($result)
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($this->$k, $action);
 		}
 		return $result;
@@ -244,7 +244,7 @@ class TagsTag extends JTable
 			return null;
 		}
 
-		$to = new TagsObject($this->_db);
+		$to = new TagsTableObject($this->_db);
 		return $to->getCount($tagid);
 	}
 
@@ -258,7 +258,7 @@ class TagsTag extends JTable
 	 */
 	public function getUsageForObject($tagid=null, $objectid=null, $tbl=null)
 	{
-		$to = new TagsObject($this->_db);
+		$to = new TagsTableObject($this->_db);
 		return $to->getCountForObject($tagid, $objectid, $tbl);
 	}
 
@@ -353,18 +353,6 @@ class TagsTag extends JTable
 	 */
 	public function buildQuery($filters)
 	{
-		$filter = '';
-		if (isset($filters['by'])) 
-		{
-			switch ($filters['by'])
-			{
-				case 'user':  $filter = "admin=0"; break;
-				case 'admin': $filter = "admin=1"; break;
-				case 'all':
-				default:      $filter = "";        break;
-			}
-		}
-
 		if (isset($filters['count']) && $filters['count']) 
 		{
 			$query = "SELECT count(*)";
@@ -375,32 +363,57 @@ class TagsTag extends JTable
 						(SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total, 
 						(SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
-		$tj = new TagsObject($this->_db);
+		$tj = new TagsTableObject($this->_db);
 
 		$query .= " FROM $this->_tbl AS t";
 		if (isset($filters['by']) && $filters['by'] == 'user') 
 		{
 			$query .= " JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%'";
 		}
+		else if (isset($filters['scope']) || isset($filters['scope_id'])) 
+		{
+			$query .= " JOIN " . $tj->getTableName() . " AS tj ON t.`id`=tj.`tagid`";
+		}
+
+		$where = array();
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$query .= " LEFT JOIN #__tags_substitute AS sb ON sb.tag_id=t.id";
 			// Used to also query using unfiltered search text agains the rawtag and the tag.
 			// Figured this was safer
-			//$query .= " WHERE (LOWER(t.tag) LIKE '%" . $this->_db->getEscaped($this->normalize($filters['search'])) . "%')";
-			$query .= " WHERE (LOWER(t.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(sb.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%')";
-			if ($filter) 
-			{
-				$query .= " AND $filter";
-			}
+			$where[] = "(LOWER(t.`raw_tag`) LIKE '" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(sb.`raw_tag`) LIKE '" . $this->_db->getEscaped($filters['search']) . "%')";
 		} 
-		else 
+		if (isset($filters['by'])) 
 		{
-			if ($filter) 
+			switch ($filters['by'])
 			{
-				$query .= " WHERE $filter";
+				case 'user':  $where[] = "`admin`=0"; break;
+				case 'admin': $where[] = "`admin`=1"; break;
+				case 'all':
+				default:  break;
 			}
+		}
+		if (isset($filters['tagger_id']) && $filters['tagger_id']) 
+		{
+			$where[] = "tj.`taggerid`=" . $this->_db->Quote((int) $filters['tagger_id']);
+		}
+		if (isset($filters['scope']) && $filters['scope']) 
+		{
+			$where[] = "tj.`tbl`=" . $this->_db->Quote((string) $filters['scope']);
+		}
+		if (isset($filters['scope_id']) && $filters['scope_id']) 
+		{
+			$where[] = "tj.`objectid`=" . $this->_db->Quote((int) $filters['scope_id']);
+		}
+		if (isset($filters['admin']) && $filters['admin'] !== null) 
+		{
+			$where[] = "t.`admin`=" . $this->_db->Quote((int) $filters['admin']);
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 
@@ -477,7 +490,7 @@ class TagsTag extends JTable
 	 */
 	public function getCloud($tbl='', $state=0, $objectid=0)
 	{
-		$tj = new TagsObject($this->_db);
+		$tj = new TagsTableObject($this->_db);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, COUNT(*) as count
 				FROM $this->_tbl AS t 
@@ -569,7 +582,7 @@ class TagsTag extends JTable
 	 */
 	public function getTopTags($limit=25, $tbl='', $order='tcount DESC', $exclude_private=1)
 	{
-		$tj = new TagsObject($this->_db);
+		$tj = new TagsTableObject($this->_db);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM $this->_tbl AS t  ";
@@ -606,7 +619,7 @@ class TagsTag extends JTable
 	 */
 	public function getRecentTags($limit=25, $order='taggedon DESC', $exclude_private=1)
 	{
-		$tj = new TagsObject($this->_db);
+		$tj = new TagsTableObject($this->_db);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM $this->_tbl AS t  ";
@@ -693,7 +706,7 @@ class TagsTag extends JTable
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
 
-		$subs = new TagsSubstitute($this->_db);
+		$subs = new TagsTableSubstitute($this->_db);
 		if ($asString)
 		{
 			return $subs->getRecordString($tag_id, $offset, $limit);
@@ -724,7 +737,7 @@ class TagsTag extends JTable
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
 
-		$ts = new TagsSubstitute($this->_db);
+		$ts = new TagsTableSubstitute($this->_db);
 		$subs = $ts->getRecords($tag_id);
 		if (!$subs)
 		{
@@ -744,7 +757,7 @@ class TagsTag extends JTable
 				continue; // Substitution already exists
 			}
 
-			$sub = new TagsSubstitute($this->_db);
+			$sub = new TagsTableSubstitute($this->_db);
 			$sub->raw_tag = trim($raw_tag);
 			$sub->tag_id  = $tag_id;
 			if ($sub->check())
@@ -765,7 +778,7 @@ class TagsTag extends JTable
 				$remove[] = $key;
 			}
 		}
-		$ts = new TagsSubstitute($this->_db);
+		$ts = new TagsTableSubstitute($this->_db);
 		if (count($remove) > 0)
 		{
 			if (!$ts->removeForTag($tag_id, $remove)) 
@@ -783,7 +796,7 @@ class TagsTag extends JTable
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'object.php');
 
-			$to = new TagsObject($this->_db);
+			$to = new TagsTableObject($this->_db);
 
 			// Move associations on tag and delete tag
 			foreach ($ids as $id)
@@ -799,7 +812,7 @@ class TagsTag extends JTable
 					$ts->moveSubstitutes($id->id, $tag_id);
 
 					// Delete the tag
-					$tag = new TagsTag($this->_db);
+					$tag = new TagsTableTag($this->_db);
 					$tag->delete($id->id);
 				}
 			}

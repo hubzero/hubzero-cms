@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
 class TagsModelSubstitute extends JObject
 {
 	/**
-	 * ForumTablePost
+	 * TagsTableSubstitute
 	 * 
 	 * @var object
 	 */
@@ -69,7 +69,7 @@ class TagsModelSubstitute extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new TagsSubstitute($this->_db);
+		$this->_tbl = new TagsTableSubstitute($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{

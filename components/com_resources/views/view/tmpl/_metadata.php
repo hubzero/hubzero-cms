@@ -84,7 +84,7 @@ if ($this->model->params->get('supportedtag'))
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
-		$tag = new TagsTag($database);
+		$tag = new TagsTableTag($database);
 		$tag->loadTag($this->model->params->get('supportedtag'));
 ?>
 	<p class="supported">

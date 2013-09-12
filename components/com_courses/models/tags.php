@@ -61,7 +61,7 @@ class CoursesTags extends TagsHandler
 	 */
 	public function getTagCloud($limit, $tagstring='')
 	{
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 		//$tags = $t->getCloud($this->_tbl, $admin, null);
 		$tags = $t->getTopTags($limit, 'courses', 'tcount DESC', 0);
 
@@ -78,7 +78,7 @@ class CoursesTags extends TagsHandler
 	 */
 	public function getTags($limit)
 	{
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 		//$tags = $t->getCloud($this->_tbl, $admin, null);
 		return $t->getTopTags($limit, 'courses', 'tcount DESC', 0);
 	}
@@ -93,7 +93,7 @@ class CoursesTags extends TagsHandler
 	 */
 	public function getTagString($limit)
 	{
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 		/*$query = "SELECT t.id, t.tag, t.raw_tag
 					FROM $this->_tag_tbl AS t 
 					JOIN $this->_obj_tbl AS ta ON ta.tagid=t.id

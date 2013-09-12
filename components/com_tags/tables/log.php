@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
  * Tags class for log table
  * This is used to track events on tags (adding, editing, merging, deleting)
  */
-class TagsLog extends JTable
+class TagsTableLog extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -211,7 +211,7 @@ class TagsLog extends JTable
 	/**
 	 * Format a log
 	 * 
-	 * @param      object $log Database row (TagsLog)
+	 * @param      object $log Database row (TagsTableLog)
 	 * @return     string
 	 */
 	public function formatLog($log=null)

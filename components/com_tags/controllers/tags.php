@@ -366,7 +366,7 @@ class TagsControllerTags extends Hubzero_Controller
 		$filters['search'] = trim(JRequest::getString('value', ''));
 
 		// Create a Tag object
-		//$obj = new TagsTag($this->database);
+		//$obj = new TagsTableTag($this->database);
 		$cloud = new TagsModelCloud();
 
 		// Fetch results
@@ -434,7 +434,7 @@ class TagsControllerTags extends Hubzero_Controller
 			$tag = $t->normalize_tag($tag);
 
 			// Load the tag
-			$tagobj = new TagsTag($this->database);
+			$tagobj = new TagsTableTag($this->database);
 			$tagobj->loadTag($tag);
 
 			// Ensure we loaded the tag's info from the database
@@ -732,7 +732,7 @@ class TagsControllerTags extends Hubzero_Controller
 	/**
 	 * Show a form for editing a task
 	 * 
-	 * @param      object $tag TagsTag
+	 * @param      object $tag TagsTableTag
 	 * @return     void
 	 */
 	public function editTask($tag=NULL)
@@ -818,7 +818,7 @@ class TagsControllerTags extends Hubzero_Controller
 		$tag = JRequest::getVar('fields', array(), 'post');
 
 		// Bind incoming data
-		$row = new TagsModelTag(0);
+		$row = new TagsModelTag($tag['id']);
 		if (!$row->bind($tag)) 
 		{
 			$this->setError($row->getError());

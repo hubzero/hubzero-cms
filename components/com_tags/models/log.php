@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
 class TagsModelLog extends JObject
 {
 	/**
-	 * TagsTag
+	 * TagsTableLog
 	 * 
 	 * @var object
 	 */
@@ -78,7 +78,7 @@ class TagsModelLog extends JObject
 		$this->_db = JFactory::getDBO();
 
 		// Set the table object
-		$this->_tbl = new TagsLog($this->_db);
+		$this->_tbl = new TagsTableLog($this->_db);
 
 		// Load record
 		if (is_numeric($oid))

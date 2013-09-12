@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for attaching tags to objects
  */
-class TagsObject extends JTable
+class TagsTableObject extends JTable
 {
 	/**
 	 * int(11)
@@ -110,18 +110,23 @@ class TagsObject extends JTable
 	 * @param      string $oid Tag
 	 * @return     boolean True if tag found and loaded
 	 */
-	public function loadByObjectTag($tbl=null, $objectid=null, $tagid=null)
+	public function loadByObjectTag($tbl=null, $objectid=null, $tagid=null, $taggerid=null)
 	{
 		if ($tbl === null || $objectid === null || $tagid === null) 
 		{
 			return false;
 		}
-		$this->_db->setQuery(
-			"SELECT * FROM $this->_tbl 
-				WHERE tagid=" . $this->_db->Quote((int) $tagid) . " 
-				AND objectid=" . $this->_db->Quote((int) $objectid) . " 
-				AND tbl=" . $this->_db->Quote((string) $tbl) . " LIMIT 1"
-		);
+		$query = "SELECT * FROM $this->_tbl 
+				WHERE `tagid`=" . $this->_db->Quote((int) $tagid) . " 
+				AND `objectid`=" . $this->_db->Quote((int) $objectid) . " 
+				AND `tbl`=" . $this->_db->Quote((string) $tbl);
+		if ($taggerid > 0)
+		{
+			$query .= " AND `taggerid`=" . $this->_db->Quote((int) $taggerid);
+		}
+		$query .= " LIMIT 1";
+
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -190,7 +195,7 @@ class TagsObject extends JTable
 			$data->tagid = $tagid;
 			$data->entres = $items;
 
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($tagid, 'objects_removed', json_encode($data));
 		}
 		return true;
@@ -203,7 +208,7 @@ class TagsObject extends JTable
 	 * @param      integer $objectid Object ID
 	 * @return     boolean True if records removed
 	 */
-	public function removeAllTags($tbl=null, $objectid=null)
+	public function removeAllTags($tbl=null, $objectid=null, $tagger_id=null)
 	{
 		if (!$tbl) 
 		{
@@ -219,10 +224,20 @@ class TagsObject extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE objectid=" . $this->_db->Quote($objectid) . " AND tbl=" . $this->_db->Quote($tbl));
+		$query = "SELECT id FROM $this->_tbl WHERE `objectid`=" . $this->_db->Quote((int) $objectid) . " AND `tbl`=" . $this->_db->Quote($tbl);
+		if ($tagger_id)
+		{
+			$query .= " AND `taggerid`=" . $this->_db->Quote((int) $taggerid);
+		}
+
+		$this->_db->setQuery($query);
 		$items = $this->_db->loadResultArray();
 
-		$sql = "DELETE FROM $this->_tbl WHERE tbl=" . $this->_db->Quote($tbl) . " AND objectid=" . $this->_db->Quote($objectid);
+		$sql = "DELETE FROM $this->_tbl WHERE `tbl`=" . $this->_db->Quote($tbl) . " AND `objectid`=" . $this->_db->Quote((int) $objectid);
+		if ($tagger_id)
+		{
+			$query .= " AND `taggerid`=" . $this->_db->Quote((int) $taggerid);
+		}
 
 		$this->_db->setQuery($sql);
 		if (!$this->_db->query()) 
@@ -239,7 +254,7 @@ class TagsObject extends JTable
 			$data->objectid = $objectid;
 			$data->entries = $items;
 
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($objectid, 'tags_removed', json_encode($data));
 		}
 		return true;
@@ -387,7 +402,7 @@ class TagsObject extends JTable
 			$data->new_id = $newtagid;
 			$data->entries = $items;
 
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($newtagid, 'objects_moved', json_encode($data));
 		}
 		return true;
@@ -422,7 +437,7 @@ class TagsObject extends JTable
 			$entries = array();
 			foreach ($rows as $row)
 			{
-				$to = new TagsObject($this->_db);
+				$to = new TagsTableObject($this->_db);
 				$to->objectid = $row->objectid;
 				$to->tagid    = $newtagid;
 				$to->strength = $row->strength;
@@ -439,7 +454,7 @@ class TagsObject extends JTable
 			$data->new_id = $newtagid;
 			$data->entries = $entries;
 
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($newtagid, 'objects_copied', json_encode($data));
 		}
 		return true;

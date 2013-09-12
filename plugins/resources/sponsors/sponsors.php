@@ -349,7 +349,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
 
-		$t = new TagsTag($this->database);
+		$t = new TagsTableTag($this->database);
 		$t->loadTag($row->alias);
 		if (!$t->id) 
 		{

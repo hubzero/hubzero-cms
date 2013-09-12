@@ -43,35 +43,35 @@ class TagsModelCloud extends JObject
 	 * 
 	 * @var string
 	 */
-	public $_scope = 'tags';
+	protected $_scope = 'site';
 
 	/**
 	 * The object to be tagged
 	 * 
 	 * @var unknown
 	 */
-	public $_scope_id = NULL;
+	protected $_scope_id = null;
 
 	/**
-	 * TagsTag
+	 * TagsTableTag
 	 * 
 	 * @var object
 	 */
-	private $_tbl = null;
+	protected $_tbl = null;
 
 	/**
 	 * JDatabase
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
+	protected $_db = NULL;
 
 	/**
 	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_config = null;
+	protected $_config = null;
 
 	/**
 	 * Constructor
@@ -79,28 +79,32 @@ class TagsModelCloud extends JObject
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
-	public function __construct($scope='site', $scope_id=0)
+	public function __construct($scope_id=0)
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new TagsTag($this->_db);
+		$this->_tbl = new TagsTableTag($this->_db);
 
-		$this->_scope    = $scope;
-		$this->_scope_id = $scope_id;
+		/*if ($scope)
+		{
+			$this->_scope    = $scope;
+		}*/
+		if ($scope_id)
+		{
+			$this->_scope_id = $scope_id;
+		}
 
 		$this->_config = JComponentHelper::getParams('com_tags');
 	}
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to a tag cloud model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param      string  $scope
+	 * @param      integer $scope_id
+	 * @return     object TagsModelCloud
 	 */
-	static function &getInstance($scope='site', $scope_id=0)
+	static function &getInstance($scope_id=0, $scope='site')
 	{
 		static $instances;
 
@@ -113,7 +117,7 @@ class TagsModelCloud extends JObject
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new TagsModelCloud($scope, $scope_id);
+			$instances[$key] = new TagsModelCloud($scope_id);
 		}
 
 		return $instances[$key];
@@ -123,7 +127,7 @@ class TagsModelCloud extends JObject
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
+	 * @param	mixed  $default  The default value
 	 * @return	mixed The value of the property
  	 */
 	public function get($property, $default=null)
@@ -152,7 +156,7 @@ class TagsModelCloud extends JObject
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
 	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
+	 * @param	mixed  $value    The value of the property to set
 	 * @return	mixed Previous value of the property
 	 */
 	public function set($property, $value = null)
@@ -182,7 +186,8 @@ class TagsModelCloud extends JObject
 	/**
 	 * Set and get a specific offering
 	 * 
-	 * @return     void
+	 * @param      mixed $id Integer or string of tag to look up
+	 * @return     object TagsModelTag
 	 */
 	public function tag($id=null)
 	{
@@ -216,21 +221,20 @@ class TagsModelCloud extends JObject
 	}
 
 	/**
-	 * Get a list of categories for a forum
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of tags
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      string  $rtrn    Format of data to return
+	 * @param      array   $filters Filters to apply
+	 * @param      boolean $clear   Clear cached data?
+	 * @return     mixed
 	 */
 	public function tags($rtrn='', $filters=array(), $clear=false)
 	{
-		if (!isset($filters['scope']))
+		if (!isset($filters['scope']) && $this->get('scope') != 'site')
 		{
 			$filters['scope'] = (string) $this->get('scope');
 		}
-		if (!isset($filters['scope_id']))
+		if (!isset($filters['scope_id']) && $this->get('scope_id') != 0)
 		{
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
@@ -238,7 +242,7 @@ class TagsModelCloud extends JObject
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_cache['tags_count']) || $clear) // || $this->_cache['filters'] != serialize($filters))
+				if (!isset($this->_cache['tags_count']) || $clear)
 				{
 					$this->_cache['tags_count'] = (int) $this->_tbl->getCount($filters);
 				}
@@ -271,44 +275,139 @@ class TagsModelCloud extends JObject
 		}
 	}
 
-	public function add()
+	/**
+	 * Add tags to an item
+	 * 
+	 * @param      string $tag Normalized tag
+	 * @return     mixed False if errors, integer on success
+	 */
+	public function add($tags, $tagger=0, $admin=0, $strength=1, $label='')
 	{
-
-	}
-
-	public function remove($tags, $tagger=0, $admin=0)
-	{
-		if (!$tags) 
+		if (!$this->_scope_id)
 		{
-			$this->setError('No tag(s) provided.');
+			$this->setError('Unable to add tags: No objct ID provided.');
 			return false;
 		}
 
+		if (!$tags) 
+		{
+			$this->setError('Unable to add tags: No tag(s) provided.');
+			return false;
+		}
+
+		// Is it a comma-separated string?
+		if (strstr($tags, ','))
+		{
+			// Turn into an array
+			$tags = explode(',', $tags);
+			$tags = array_map('trim', $tags);
+		}
+
+		// Force data to an array
 		if (!is_array($tag))
 		{
 			$tags = array($tags);
 		}
 
-		/*$tag_id = $this->_getTagId($tag);
-		if (!$tag_id) 
-		{
-			return false;
-		}
-		$to = new \Components\Tags\Object($this->_db);*/
 		foreach ($tags as $tg)
 		{
-			$tag = new TagsModelTag($tg);
-			/*if (!$to->deleteObjects($tag->get('id'), $this->_scope, $this->_scope_id, $tagger, $admin)) 
+			$tag = TagsModelTag::getInstance($tg);
+
+			// Does the tag already exist?
+			if (!$tag->exists())
 			{
-				$this->setError($to->getError());
+				// Create it
+				$tag->set('admin', $admin);
+				$tag->set('raw_tag', $tg);
+				$tag->store();
+			}
+
+			// Add the tag to the object
+			if (!$tag->addTo($this->_scope, $this->_scope_id, $tagger, $strength, $label))
+			{
+				$this->setError($tag->getError());
 				return false;
-			}*/
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Remove tags from an item
+	 * 
+	 * @param      string $tag Normalized tag
+	 * @return     mixed False if errors, integer on success
+	 */
+	public function remove($tags, $tagger=0)
+	{
+		if (!$this->_scope_id)
+		{
+			$this->setError('Unable to remove tags: No objct ID provided.');
+			return false;
+		}
+
+		if (!$tags) 
+		{
+			$this->setError('Unable to remove tags: No tag(s) provided.');
+			return false;
+		}
+
+		// Is it a comma-separated string?
+		if (strstr($tags, ','))
+		{
+			// Turn into an array
+			$tags = explode(',', $tags);
+			$tags = array_map('trim', $tags);
+		}
+
+		// Force data to an array
+		if (!is_array($tag))
+		{
+			$tags = array($tags);
+		}
+
+		foreach ($tags as $tg)
+		{
+			$tag = TagsModelTag::getInstance($tg);
+
+			// Does the tag exist?
+			if (!$tag->exists())
+			{
+				// Tag doesn't exist, no point in going any further
+				continue;
+			}
+
+			// Remove tag from object
 			if (!$tag->removeFrom($this->_scope, $this->_scope_id, $tagger))
 			{
 				$this->setError($tag->getError());
 			}
 		}
 
+		return true;
+	}
+
+	/**
+	 * Remove tags from an item
+	 * 
+	 * @param      string $tag Normalized tag
+	 * @return     mixed False if errors, integer on success
+	 */
+	public function removeAll($tagger=0)
+	{
+		if (!$this->_scope_id)
+		{
+			$this->setError('Unable to remove tags: No objct ID provided.');
+			return false;
+		}
+
+		$to = new TagsTableObject($this->_db);
+		if (!$to->removeAllTags($this->_scope, $this->_scope_id, $tagger)) 
+		{
+			$this->setError($to->getError());
+			return false;
+		}
 		return true;
 	}
 
@@ -322,12 +421,13 @@ class TagsModelCloud extends JObject
 	{
 		if (!isset($tag)) 
 		{
-			$this->setError('get_tag_id argument missing');
+			$this->setError(__CLASS__ . '::' . __METHOD__ . ' - Tag argument missing.');
 			return false;
 		}
 
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 		$t->loadTag($t->normalize($tag));
+
 		return $t->id;
 	}
 
@@ -378,6 +478,113 @@ class TagsModelCloud extends JObject
 				return $this->_cache['tags_cloud'];
 			break;
 		}
+	}
+
+	/**
+	 * Tag an object
+	 * This will get a list of old tags on object and will 
+	 * 1) add any new tags not in the old list 
+	 * 2) remove any tags in the old list not found in the new list
+	 * 
+	 * @param      integer $tagger_id  Tagger ID
+	 * @param      integer $object_id  Object ID
+	 * @param      string  $tag_string String of comma-separated tags
+	 * @param      integer $strength   Tag strength
+	 * @param      boolean $admin      Has admin access?
+	 * @return     boolean True on success, false if errors
+	 */
+	public function setTags($tag_string, $tagger_id=0, $admin=0, $strength=1, $label='')
+	{
+		if (!$tagger_id)
+		{
+			$tagger_id = JFactory::getUser()->get('id');
+		}
+
+		$tagArray  = $this->_parse($tag_string);   // array of normalized tags
+		$tagArray2 = $this->_parse($tag_string, 1); // array of normalized => raw tags
+
+		$filters = array();
+		if (!$admin) 
+		{
+			$filters['by']        = 'user';
+			$filters['admin']     = 0;
+			$filters['tagger_id'] = $tagger_id;
+		}
+		$oldTags = $this->tags('list', $filters, true);
+
+		$preserveTags = array();
+
+		if (count($oldTags) > 0) 
+		{
+			foreach ($oldTags as $tagItem)
+			{
+				if (!in_array($tagItem->get('tag'), $tagArray)) 
+				{
+					// We need to delete old tags that don't appear in the new parsed string.
+					$this->remove($tagItem->get('tag'), $tagger_id);
+				} 
+				else 
+				{
+					// We need to preserve old tags that appear (to save timestamps)
+					$preserveTags[] = $tagItem->get('tag');
+				}
+			}
+		}
+		$newTags = array_diff($tagArray, $preserveTags);
+
+		foreach ($newTags as $tag)
+		{
+			$tag = trim($tag);
+			if ($tag != '') 
+			{
+				if (get_magic_quotes_gpc()) 
+				{
+					$tag = addslashes($tag);
+				}
+				$thistag = $tagArray2[$tag];
+
+				$this->add($thistag, $tagger_id, $admin, $strength, $label);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Turn a comma-separated string of tags into an array of normalized tags
+	 * 
+	 * @param      string  $tag_string Comma-separated string of tags
+	 * @param      integer $keep       Use normalized tag as array key
+	 * @return     array
+	 */
+	protected function _parse($tag_string, $keep=0)
+	{
+		$tag_string = trim($tag_string);
+
+		$newwords = array();
+
+		// If the tag string is empty, return the empty set.
+		if ($tag_string == '') 
+		{
+			return $newwords;
+		}
+
+		// Perform tag parsing
+		$raw_tags = explode(',', $tag_string);
+
+		foreach ($raw_tags as $raw_tag)
+		{
+			$raw_tag = trim($raw_tag);
+			$nrm_tag = $this->_tbl->normalize($raw_tag);
+			if ($keep != 0) 
+			{
+				$newwords[$nrm_tag] = $raw_tag;
+			} 
+			else 
+			{
+				$newwords[] = $nrm_tag;
+			}
+		}
+		return $newwords;
 	}
 }
 

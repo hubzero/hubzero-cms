@@ -67,7 +67,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		);
 		$this->view->filters['sortby'] = JRequest::getVar('sortby', 'priority ASC');
 
-		$model = new TagsGroup($this->database);
+		$model = new TagsTableGroup($this->database);
 
 		// Get record count
 		$this->view->total = $model->getCount();
@@ -125,11 +125,11 @@ class SupportControllerTaggroups extends Hubzero_Controller
 			$id = JRequest::getInt('id', 0);
 
 			// Initiate database class and load info
-			$this->view->row = new TagsGroup($this->database);
+			$this->view->row = new TagsTableGroup($this->database);
 			$this->view->row->load($id);
 		}
 
-		$this->view->tag = new TagsTag($this->database);
+		$this->view->tag = new TagsTableTag($this->database);
 		$this->view->tag->load($this->view->row->tagid);
 
 		$this->view->group = Hubzero_Group::getInstance($this->view->row->groupid);
@@ -159,7 +159,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$taggroup = JRequest::getVar('taggroup', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
-		$row = new TagsGroup($this->database);
+		$row = new TagsTableGroup($this->database);
 		if (!$row->bind($taggroup))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -171,7 +171,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		$tag = trim(JRequest::getVar('tag', '', 'post'));
 
 		// Attempt to load the tag
-		$ttag = new TagsTag($this->database);
+		$ttag = new TagsTableTag($this->database);
 		$ttag->loadTag($tag);
 
 		// Set the group ID
@@ -239,7 +239,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 			return;
 		}
 
-		$tg = new TagsGroup($this->database);
+		$tg = new TagsTableGroup($this->database);
 		foreach ($ids as $id)
 		{
 			// Delete entry
@@ -291,7 +291,7 @@ class SupportControllerTaggroups extends Hubzero_Controller
 		}
 
 		// Get the element moving down - item 1
-		$tg1 = new TagsGroup($this->database);
+		$tg1 = new TagsTableGroup($this->database);
 		$tg1->load($id);
 
 		// Get the element directly after it in ordering - item 2

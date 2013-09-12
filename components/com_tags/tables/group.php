@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  * 
  * Long description (if any) ...
  */
-class TagsGroup extends JTable
+class TagsTableGroup extends JTable
 {
 
 	/**

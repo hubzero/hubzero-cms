@@ -474,7 +474,7 @@ class ResourcesTags extends TagsHandler
 	 */
 	public function getTopTagCloud($limit, $tagstring='')
 	{
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 		//$tags = $t->getCloud($this->_tbl, $admin, null);
 		$tags = $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
 
@@ -491,7 +491,7 @@ class ResourcesTags extends TagsHandler
 	 */
 	public function getTopTags($limit)
 	{
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 		return $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
 	}
 
@@ -505,7 +505,7 @@ class ResourcesTags extends TagsHandler
 	 */
 	public function getTopTagString($limit)
 	{
-		$t = new TagsTag($this->_db);
+		$t = new TagsTableTag($this->_db);
 
 		$tags = $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
 

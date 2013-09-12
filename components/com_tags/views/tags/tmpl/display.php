@@ -116,39 +116,6 @@ defined('_JEXEC') or die('Restricted access');
 			echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 		}
 		?>
-<?php
-/*$t = new TagsTag(JFactory::getDBO());
-
-$html = '';
-
-$newtags = $t->getRecentTags(25);
-
-if ($newtags) {
-	$html .= '<ol class="tags">'."\n";
-	$tl = array();
-	foreach ($newtags as $newtag)
-	{
-		$class = ($newtag->admin == 1) ? ' class="admin"' : '';
-
-		$newtag->raw_tag = str_replace('&amp;', '&', $newtag->raw_tag);
-		$newtag->raw_tag = str_replace('&', '&amp;', $newtag->raw_tag);
-
-		if ($this->config->get('showsizes') == 1) {
-			$size = $this->min_font_size + ($newtag->tcount - $this->min_qty) * $this->step;
-			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=' . $this->option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></span></li>' . "\n";
-		} else {
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $this->option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></li>'."\n";
-		}
-	}
-	ksort($tl);
-	$html .= implode('',$tl);
-	$html .= '</ol>'."\n";
-} else {
-	$html .= '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
-}
-echo $html;*/
-?>
 		</div><!-- / .block -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>

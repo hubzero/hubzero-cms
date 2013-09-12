@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
 class TagsModelObject extends JObject
 {
 	/**
-	 * TagsObject
+	 * TagsTableObject
 	 * 
 	 * @var object
 	 */
@@ -65,13 +65,13 @@ class TagsModelObject extends JObject
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
-	public function __construct($oid, $scope_id=null, $tag_id=null)
+	public function __construct($oid, $scope_id=null, $tag_id=null, $tagger_id=null)
 	{
 		// Set the database object
 		$this->_db = JFactory::getDBO();
 
 		// Set the table object
-		$this->_tbl = new TagsObject($this->_db);
+		$this->_tbl = new TagsTableObject($this->_db);
 
 		// Load record
 		if (is_numeric($oid))
@@ -80,7 +80,7 @@ class TagsModelObject extends JObject
 		}
 		if (is_string($oid))
 		{
-			$this->_tbl->loadByObjectTag($oid, $scope_id, $tag_id);
+			$this->_tbl->loadByObjectTag($oid, $scope_id, $tag_id, $tagger_id);
 		}
 		else if (is_object($oid))
 		{
@@ -116,7 +116,7 @@ class TagsModelObject extends JObject
 	 * @param      integer $tag_id   Tag ID
 	 * @return     object TagsModelObject
 	 */
-	static function &getInstance($oid=0, $scope_id=null, $tag_id=null)
+	static function &getInstance($oid=0, $scope_id=null, $tag_id=null, $tagger_id=null)
 	{
 		static $instances;
 
@@ -127,20 +127,20 @@ class TagsModelObject extends JObject
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$key = $oid . $scope_id . $tag_id;
+			$key = $oid . $scope_id . $tag_id . $tagger_id;
 		}
 		else if (is_object($oid))
 		{
-			$key = $oid->id . $scope_id . $tag_id;
+			$key = $oid->id . $scope_id . $tag_id . $tagger_id;
 		}
 		else if (is_array($oid))
 		{
-			$key = $oid['id'] . $scope_id . $tag_id;
+			$key = $oid['id'] . $scope_id . $tag_id . $tagger_id;
 		}
 
 		if (!isset($instances[$oid])) 
 		{
-			$instances[$oid] = new TagsModelObject($oid, $scope_id, $tag_id);
+			$instances[$oid] = new TagsModelObject($oid, $scope_id, $tag_id, $tagger_id);
 		}
 
 		return $instances[$oid];

@@ -1138,7 +1138,7 @@ class ResourcesHtml
 				$xtra = '';
 				if ($supported) {
 					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-					$tag = new TagsTag($database);
+					$tag = new TagsTableTag($database);
 					$tag->loadTag($config->get('supportedtag'));
 
 					$sl = $config->get('supportedlink');

@@ -111,7 +111,7 @@ if ($this->admin && !$this->getError()) {
 <?php 
 	// Popular tags
 	if ($this->wishlist->category == 'general') {
-		$obj = new TagsTag($this->database);
+		$obj = new TagsTableTag($this->database);
 		$tags = $obj->getTopTags(5, 'wishlist', 'tcount DESC', 0);
 
 		if ($tags) { ?>

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for substituting tags for another tag
  */
-class TagsSubstitute extends JTable
+class TagsTableSubstitute extends JTable
 {
 	/**
 	 * int(11)
@@ -154,7 +154,7 @@ class TagsSubstitute extends JTable
 			$data->raw_tag = $this->raw_tag;
 			$data->id = $this->$k;
 
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($this->tag_id, $action, json_encode($data));
 		}
 		return $result;
@@ -172,7 +172,7 @@ class TagsSubstitute extends JTable
 		if ($result)
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($oid, 'substitute_deleted');
 		}
 		return $result;
@@ -227,7 +227,7 @@ class TagsSubstitute extends JTable
 		$d = new stdClass;
 		$d->tags = $data;
 
-		$log = new TagsLog($this->_db);
+		$log = new TagsTableLog($this->_db);
 		$log->log($tag_id, 'substitute_deleted', json_encode($d));
 
 		return true;
@@ -348,7 +348,7 @@ class TagsSubstitute extends JTable
 			$data->new_id = $newtagid;
 			$data->entries = $items;
 
-			$log = new TagsLog($this->_db);
+			$log = new TagsTableLog($this->_db);
 			$log->log($newtagid, 'substitutes_moved', json_encode($data));
 		}
 		return $this->cleanUp($newtagid);

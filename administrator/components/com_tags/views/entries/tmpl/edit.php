@@ -101,7 +101,7 @@ if ($this->getError())
 		</fieldset>
 <?php
 		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
-		//$logger = new TagsLog(JFactory::getDBO());
+		//$logger = new TagsTableLog(JFactory::getDBO());
 		$logs = $this->tag->logs('list'); //$logger->getLogs($this->tag->get('id'));
 		if ($logs)
 		{

@@ -61,7 +61,7 @@ class MoveTagAlias extends SystemHelperScript
 		{
 			foreach ($tags as $tag)
 			{
-				$sub = new TagsSubstitute($this->_db);
+				$sub = new TagsTableSubstitute($this->_db);
 				$sub->raw_tag = trim($tag->alias);
 				$sub->tag_id  = $tag->id;
 				if ($sub->check())

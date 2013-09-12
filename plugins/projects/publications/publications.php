@@ -5582,7 +5582,7 @@ class plgProjectsPublications extends JPlugin
 		$tagarray = array();
 		$newTags = $this->_parseTags($newtag);
 		$rawTags = $this->_parseTags($newtag, 1);
-		$tagObj = new TagsTag( $this->_database );
+		$tagObj = new TagsTableTag( $this->_database );
 		
 		foreach ($newTags as $tag) 
 		{
@@ -5594,7 +5594,7 @@ class plgProjectsPublications extends JPlugin
 				}
 				else {
 					// Create tag
-					$tagObj = new TagsTag( $this->_database );
+					$tagObj = new TagsTableTag( $this->_database );
 					if (get_magic_quotes_gpc()) 
 					{
 						$tag = addslashes($tag);

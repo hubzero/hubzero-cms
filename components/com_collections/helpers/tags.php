@@ -60,8 +60,8 @@ class CollectionsTags extends TagsHandler
 	 */
 	public function getTagsForIds($ids=array(), $admin=0)
 	{
-		$tt = new TagsTag($this->_db);
-		$tj = new TagsObject($this->_db);
+		$tt = new TagsTableTag($this->_db);
+		$tj = new TagsTableObject($this->_db);
 
 		if (!is_array($ids) || empty($ids))
 		{

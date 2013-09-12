@@ -76,7 +76,7 @@ class TagsModelTag extends JObject
 	protected $_cache = array();
 
 	/**
-	 * TagsTag
+	 * TagsTableTag
 	 * 
 	 * @var object
 	 */
@@ -115,7 +115,7 @@ class TagsModelTag extends JObject
 		$this->_db = JFactory::getDBO();
 
 		// Set the table object
-		$this->_tbl = new TagsTag($this->_db);
+		$this->_tbl = new TagsTableTag($this->_db);
 
 		// Load record
 		if (is_numeric($oid))
@@ -513,7 +513,7 @@ class TagsModelTag extends JObject
 			case 'count':
 				if (!isset($this->_cache['sub_count']) || $clear)
 				{
-					$tbl = new TagsSubstitute($this->_db);
+					$tbl = new TagsTableSubstitute($this->_db);
 					$this->_cache['sub_count'] = (int) $tbl->getCount($filters);
 				}
 				return $this->_cache['sub_count'];
@@ -535,7 +535,7 @@ class TagsModelTag extends JObject
 				{
 					$results = array();
 
-					$tbl = new TagsSubstitute($this->_db);
+					$tbl = new TagsTableSubstitute($this->_db);
 					if ($res = $tbl->getRecords($filters['tag_id'], $filters['start'], $filters['limit']))
 					{
 						foreach ($res as $key => $result)
@@ -575,7 +575,7 @@ class TagsModelTag extends JObject
 			case 'count':
 				if (!isset($this->_cache['objects_count']) || $clear)
 				{
-					$tbl = new TagsObject($this->_db);
+					$tbl = new TagsTableObject($this->_db);
 					$this->_cache['objects_count'] = (int) $tbl->count($filters);
 				}
 				return $this->_cache['objects_count'];
@@ -586,7 +586,7 @@ class TagsModelTag extends JObject
 			default:
 				if (!isset($this->_cache['objects']) || !is_a($this->_cache['objects'], 'TagsModelIterator') || $clear)
 				{
-					$tbl = new TagsObject($this->_db);
+					$tbl = new TagsTableObject($this->_db);
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
@@ -629,7 +629,7 @@ class TagsModelTag extends JObject
 			case 'count':
 				if (!isset($this->_cache['logs_count']) || $clear)
 				{
-					$tbl = new TagsLog($this->_db);
+					$tbl = new TagsTableLog($this->_db);
 					$this->_cache['logs_count'] = (int) $tbl->count($filters);
 				}
 				return $this->_cache['logs_count'];
@@ -640,7 +640,7 @@ class TagsModelTag extends JObject
 			default:
 				if (!isset($this->_cache['logs']) || !is_a($this->_cache['logs'], 'TagsModelIterator') || $clear)
 				{
-					$tbl = new TagsLog($this->_db);
+					$tbl = new TagsTableLog($this->_db);
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
@@ -697,23 +697,28 @@ class TagsModelTag extends JObject
 	 * @param      integer $taggerid User ID of person adding tag
 	 * @return     boolean
 	 */
-	public function addTo($scope, $scope_id, $taggerid=0)
+	public function addTo($scope, $scope_id, $taggerid=0, $strength=1, $label='')
 	{
 		// Check if the relationship already exists
-		$to = new TagsModelObject($scope, $scope_id, $this->get('id'));
+		$to = new TagsModelObject($scope, $scope_id, $this->get('id'), $taggerid);
 		if ($to->exists())
 		{
 			return true;
 		}
 
 		// Set some data
+		$to->set('tbl', (string) $scope);
 		$to->set('objectid', (int) $scope_id);
 		$to->set('tagid', (int) $this->get('id'));
+		$to->set('strength', (int) $strength);
+		if ($label)
+		{
+			$to->set('label', (string) $label);
+		}
 		if ($taggerid)
 		{
 			$to->set('taggerid', $taggerid);
 		}
-		$to->set('tbl', (string) $scope);
 
 		// Attempt to store the new record
 		if (!$to->store(true))
@@ -735,7 +740,7 @@ class TagsModelTag extends JObject
 	{
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		$to = new TagsObject($this->_db);
+		$to = new TagsTableObject($this->_db);
 		if (!$to->moveObjects($this->get('id'), $tag_id))
 		{
 			$this->setError($to->getError());
@@ -744,7 +749,7 @@ class TagsModelTag extends JObject
 
 		// Get all the substitutions to this tag
 		// Loop through the records and link them to a different tag
-		$ts = new TagsSubstitute($this->_db);
+		$ts = new TagsTableSubstitute($this->_db);
 		if (!$ts->moveSubstitutes($this->get('id'), $tag_id))
 		{
 			$this->setError($ts->getError());
@@ -779,7 +784,7 @@ class TagsModelTag extends JObject
 	{
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		$to = new TagsObject($this->_db);
+		$to = new TagsTableObject($this->_db);
 		if (!$to->copyObjects($this->get('id'), $tag_id))
 		{
 			$this->setError($to->getError());
