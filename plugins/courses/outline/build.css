@@ -390,7 +390,8 @@
 }
 a.asset-preview,
 a.asset-delete,
-a.asset-edit {
+a.asset-edit,
+a.asset-edit-deployment {
 	display: inline-block;
 	position: relative;
 	width: 15px;
@@ -403,7 +404,8 @@ a.asset-edit {
 }
 .asset-preview:before,
 .asset-delete:before,
-.asset-edit:before {
+.asset-edit:before,
+.asset-edit-deployment:before {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -419,6 +421,9 @@ a.asset-edit {
 }
 .asset-delete:before {
 	content: "\f014";
+}
+.asset-edit-deployment:before {
+	content: "\f017";
 }
 ul {
 	list-style: none;

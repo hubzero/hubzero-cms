@@ -89,6 +89,7 @@ HUB.CoursesOutline = {
 			$('.unit')
 				.on('click', '.asset-delete', this.remove)
 				.on('click', '.asset-edit', this.edit)
+				.on('click', '.asset-edit-deployment', this.editDeployment)
 				.on('click', '.published-checkbox', this.state)
 				.on('click', '.asset-preview', this.preview)
 				.on('click', '.aux-attachments a:not(.browse-files, .attach-wiki, .help-info)', this.auxAttachmentShow)
@@ -346,6 +347,66 @@ HUB.CoursesOutline = {
 		},
 
 		/*
+		 * Edit a form type asset deployment
+		 * @FIXME: code specific to the form type assets shouldn't be here...
+		 *         need to figure out a better way to handle this, and where it should go
+		 */
+		editDeployment: function ( e ) {
+			var $       = HUB.CoursesOutline.jQuery,
+			t           = $(this),
+			form        = t.siblings('.next-step-publish'),
+			item        = form.parent('.asset-item');
+
+			e.preventDefault();
+
+			// If this is an Exam, we also want to set deployment info
+			if(item.hasClass('form')){
+				var assetA    = item.find('a.asset-preview');
+				var assetHref = assetA.attr('href');
+
+				// Create ajax call to get the form id
+				$.ajax({
+					url: '/api/courses/asset/getformanddepid',
+					data: [{'name':'id', 'value':form.find('.asset_id').val()}],
+					statusCode: {
+						200: function ( data ) {
+							formId = data.form_id;
+							depId  = data.deployment_id;
+
+							$.fancybox({
+								fitToView: false,
+								autoResize: false,
+								autoSize: false,
+								closeBtn: false,
+								modal: true,
+								height: ($(window).height())*2/3,
+								type: 'iframe',
+								href: window.location.href.match(/(.*)\/outline/)[1]+'/form.showDeployment?id='+depId+'&formId='+formId+'&tmpl=component',
+								afterShow: function() {
+									var contents = $('.fancybox-iframe').contents();
+
+									// Highjack the 'cancel' button to close the iframe
+									contents.find('#done').bind('click', function ( e ) {
+										e.preventDefault();
+
+										// Close fancybox
+										$.fancybox.close();
+									});
+
+									// Listen for deployment create call from iframe
+									$('body').on('deploymentsave', function () {
+										// Close fancybox
+										$.fancybox.close();
+									});
+								}
+							});
+						}
+					}
+				});
+			}
+		},
+
+		/*
 		 * Edit an asset's state (i.e. published, unpublished)
 		 * @FIXME: clean up
 		 */
@@ -404,6 +465,9 @@ HUB.CoursesOutline = {
 											statusCode: {
 												200: function ( data ) {
 													$('.outline-main').trigger('assetUpdate', [item, data.files[0]]);
+
+													// Show edit deployment icon
+													item.find('.asset-edit-deployment').show();
 												}
 											}
 										});
@@ -422,6 +486,9 @@ HUB.CoursesOutline = {
 												statusCode: {
 													200: function ( data ) {
 														$('.outline-main').trigger('assetUpdate', [item, data.files[0]]);
+
+														// Show edit deployment icon
+														item.find('.asset-edit-deployment').show();
 													}
 												}
 											});
@@ -437,6 +504,9 @@ HUB.CoursesOutline = {
 								statusCode: {
 									200: function ( data ) {
 										$('.outline-main').trigger('assetUpdate', [item, data.files[0]]);
+
+										// Show edit deployment icon
+										item.find('.asset-edit-deployment').show();
 									}
 								}
 							});
@@ -1064,6 +1134,7 @@ HUB.CoursesOutline = {
 					'</div>',
 					'<a class="asset-preview" href="<%= asset_url %>" title="preview"></a>',
 					'<a class="asset-edit" href="#" title="edit"></a>',
+					'<a class="asset-edit-deployment" href="#" title="edit deployment" style="display:none;"></a>',
 					'<a class="asset-delete" href="#" title="delete"></a>',
 					'<form action="/api/courses/asset/togglepublished" class="next-step-publish">',
 						'<span class="next-step-publish">',
@@ -1216,7 +1287,7 @@ HUB.CoursesOutline = {
 					$(this).not('.add-new').animate({"padding-left":60}, 250);
 					$(this).find('.sortable-assets-handle').show('slide', 250);
 					$(this).find('.asset:not(.nofiles)').animate({"margin-left":30}, 250);
-					$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0.8}, 250);
+					$(this).find('.asset-delete, .asset-preview, .asset-edit, .asset-edit-deployment').animate({"opacity":0.8}, 250);
 				},
 				out: function () {
 					$(this).find('.sortable-handle').hide('slide', 250);
@@ -1224,7 +1295,7 @@ HUB.CoursesOutline = {
 					$(this).not('.add-new').animate({"padding-left":10}, 250);
 					$(this).find('.sortable-assets-handle').hide('slide', 250);
 					$(this).find('.asset:not(.nofiles)').animate({"margin-left":10}, 250);
-					$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0}, 250);
+					$(this).find('.asset-delete, .asset-preview, .asset-edit, .asset-edit-deployment').animate({"opacity":0}, 250);
 				},
 				timeout: 150,
 				interval: 150

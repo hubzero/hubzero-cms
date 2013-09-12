@@ -90,6 +90,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 					case 'reorder':         $this->assetReorder();         break;
 					case 'togglepublished': $this->assetTogglePublished(); break;
 					case 'getformid':       $this->assetGetFormId();       break;
+					case 'getformanddepid': $this->assetGetFormAndDepId(); break;
 					default:                $this->method_not_found();     break;
 				}
 			break;
@@ -1010,6 +1011,53 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		// Return message
 		$this->setMessage(array('form_id' => $formId), 200, 'OK');
+	}
+
+	/**
+	 * Look up the form id and deployment id based on the asset id
+	 * @FIXME: combine this with method above
+	 * 
+	 * @return 200 OK on success
+	 */
+	private function assetGetFormAndDepId()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Get the asset id
+		if(!$id = JRequest::getInt('id', false))
+		{
+			$this->setMessage("No ID provided", 422, 'Unprocessable entity');
+			return;
+		}
+
+		$this->db->setQuery("SELECT `id` FROM `#__courses_forms` WHERE `asset_id` = " . $this->db->Quote($id));
+
+		// Get the form ID from the content
+		$formId = $this->db->loadResult();
+
+		// Check
+		if (!is_numeric($formId))
+		{
+			$this->setMessage("Failed to retrieve the form ID", 500, 'Internal server error');
+			return;
+		}
+
+		// Now check to see if this exam has already been deployed
+		$this->db->setQuery("SELECT `id` FROM `#__courses_form_deployments` WHERE `form_id` = " . $this->db->Quote($formId));
+
+		// Get the form ID from the content
+		$depId = $this->db->loadResult();
+
+		// Check
+		if (!is_numeric($depId))
+		{
+			$this->setMessage("Failed to retrieve the deployment ID", 500, 'Internal server error');
+			return;
+		}
+
+		// Return message
+		$this->setMessage(array('form_id' => $formId, 'deployment_id' => $depId), 200, 'OK');
 	}
 
 	//--------------------------

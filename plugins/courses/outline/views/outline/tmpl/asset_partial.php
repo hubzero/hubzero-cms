@@ -55,6 +55,9 @@ if ($this->a->get('type') == 'video')
 	</div>
 	<a class="asset-preview" href="<?= $href ?>" title="preview"></a>
 	<a class="asset-edit" href="#" title="edit"></a>
+	<?php if ($this->a->get('type') == 'form') : ?>
+		<a class="asset-edit-deployment" href="#" title="edit deployment"<?php echo ($this->a->get('state') != 1) ? ' style="display:none;"': ''; ?>></a>
+	<?php endif; ?>
 	<a class="asset-delete" href="#" title="delete"></a>
 	<form action="/api/courses/asset/togglepublished" class="next-step-publish">
 		<span class="next-step-publish">
