@@ -449,7 +449,7 @@ class TagsModelCloud extends JObject
 					$tags = array();
 					foreach ($this->tags('list', $filters, $clear) as $tag)
 					{
-						$tags[] = $tag->raw_tag;
+						$tags[] = $tag->get('raw_tag');
 					}
 					$this->_cache['tags_string'] = implode(', ', $tags);
 				}
