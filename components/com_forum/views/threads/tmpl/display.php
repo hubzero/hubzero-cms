@@ -29,6 +29,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 $juser = JFactory::getUser();
 
 $dateFormat = '%d %b, %Y';
@@ -41,9 +42,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$base = 'index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $this->thread->get('id');
-
 ximport('Hubzero_User_Profile_Helper');
+
+$base = 'index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $this->thread->get('id');
 ?>
 <div id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
@@ -136,87 +137,42 @@ ximport('Hubzero_User_Profile_Helper');
 			<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
 		</h3>
 		<form action="<?php echo JRoute::_($base); ?>" method="get">
-			<ol class="comments">
 			<?php
-			if ($this->thread->posts('list', $this->filters)->total() > 0) {
-				ximport('Hubzero_User_Profile');
+			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
+			{
+				$view = new JView(
+					array(
+						'name'    => 'threads',
+						'layout'  => '_list'
+					)
+				);
+				$view->option     = $this->option;
+				$view->controller = $this->controller;
 
-				foreach ($this->thread->posts() as $row)
-				{
-					$row->set('section', $this->filters['section']);
-					$row->set('category', $this->category->get('alias'));
+				$view->comments   = $this->thread->posts($this->config->get('threading', 'list'));
+				$view->post       = $this->thread;
+				$view->parent     = 0;
 
-					$name = JText::_('COM_FORUM_ANONYMOUS');
-					$huser = '';
-					if (!$row->get('anonymous')) 
-					{
-						$huser = new Hubzero_User_Profile();
-						$huser->load($row->get('created_by'));
-						if (is_object($huser) && $huser->get('name')) 
-						{
-							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
-						}
-					}
-			?>
-				<li class="comment<?php if (!$row->get('parent')) { echo ' start'; } ?>" id="c<?php echo $row->get('id'); ?>">
-					<p class="comment-member-photo">
-						<a class="comment-anchor" name="c<?php echo $row->get('id'); ?>"></a>
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $row->get('anonymous')); ?>" alt="" />
-					</p>
-					<div class="comment-content">
-						<p class="comment-title">
-							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_($base. '#c' . $row->get('id')); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span>
-								<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-								<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
-								<?php if ($row->wasModified()) { ?>
-									&mdash; <?php echo JText::_('COM_FORUM_EDITED'); ?><span class="comment-date-at">@</span> 
-									<span class="time"><time datetime="<?php echo $row->modified(); ?>"><?php echo $row->modified('time'); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-									<span class="date"><time datetime="<?php echo $row->modified(); ?>"><?php echo $row->modified('date'); ?></time></span>
-								<?php } ?>
-							</a>
-						</p>
-						<?php echo $row->content('parsed'); ?>
-						<?php if (
-									$this->config->get('access-manage-thread')
-									||
-									(!$row->get('parent') && $row->get('created_by') == $juser->get('id') && 
-										(
-											$this->config->get('access-delete-thread') ||
-											$this->config->get('access-edit-thread')
-										) 
-									)
-									|| 
-									($row->get('parent') && $row->get('created_by') == $juser->get('id') && 
-										(
-											$this->config->get('access-delete-post') ||
-											$this->config->get('access-edit-post')
-										)
-									)
-								) { ?>
-						<p class="comment-options">
-							<?php if ($row->get('parent') && $this->config->get('access-delete-post')) { ?>
-							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=delete'); ?>"><!-- 
-								--><?php echo JText::_('COM_FORUM_DELETE'); ?><!-- 
-							--></a>
-							<?php } ?>
-							<?php if ((!$row->get('parent') && $this->config->get('access-edit-thread')) || ($row->get('parent') && $this->config->get('access-edit-post'))) { ?>
-							<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $row->get('id') . '&task=edit'); ?>"><!-- 
-								--><?php echo JText::_('COM_FORUM_EDIT'); ?><!-- 
-							--></a>
-							<?php } ?>
-						</p>
-						<?php } ?>
-					</div>
-				</li>
-			<?php } ?>
-		<?php } else { ?>
+				$view->config     = $this->config;
+				$view->depth      = 0;
+				$view->cls        = 'odd';
+				$view->base       = $base;
+				$view->filters    = $this->filters;
+				$view->category   = $this->category;
+
+				$view->display();
+			}
+			else
+			{
+				?>
+			<ol class="comments">
 				<li>
 					<p><?php echo JText::_('COM_FORUM_NO_REPLIES_FOUND'); ?></p>
 				</li>
-		<?php } ?>
 			</ol>
-			<?php 
+				<?php
+			}
+
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
 				$this->thread->posts('count', $this->filters), 
@@ -381,6 +337,9 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="fields[id]" value="" />
 			<input type="hidden" name="fields[scope]" value="site" />
 			<input type="hidden" name="fields[scope_id]" value="0" />
+			<input type="hidden" name="fields[thread]" value="<?php echo $this->thread->get('id'); ?>" />
+			<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
+			<input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="threads" />

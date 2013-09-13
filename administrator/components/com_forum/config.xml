@@ -29,19 +29,29 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<params>
-		<param name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
+		<param name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to." />
 		<param name="forum" type="list" default="both" label="Feed Data From" description="Where the discussions are pulled from for feeds.">
 			<option value="site">Site Forum</option>
 			<option value="group">Group Forums</option>
 			<option value="both">Site Forum and Group Forums</option>
 		</param>
+		<param name="threading" type="list" default="both" label="Threading" description="Determines what type of comment nesting threads have.">
+			<option value="list">Flat, one level threads (traditional)</option>
+			<option value="tree">Nested threads</option>
+		</param>
+		<param name="threading_level" type="text" default="3" label="Threading level" description="How many levels deep a nested thread can go." />
 	</params>
 	<fieldset name="basic">
-		<field name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to."/>
+		<field name="filepath" type="text" default="/site/forum" label="File path" description="The path to store uploaded files to." />
 		<field name="forum" type="list" default="both" label="Feed Data From" description="Where the discussions are pulled from for feeds.">
 			<option value="site">Site Forum</option>
 			<option value="group">Group Forums</option>
 			<option value="both">Site Forum and Group Forums</option>
 		</field>
+		<field name="threading" type="list" default="both" label="Threading" description="Determines what type of comment nesting threads have.">
+			<option value="list">Flat, one level threads (traditional)</option>
+			<option value="tree">Nested threads</option>
+		</field>
+		<field name="threading_depth" type="text" default="3" label="Threading level" description="How many levels deep a nested thread can go." />
 	</fieldset>
 </config>

@@ -103,23 +103,28 @@ class ForumModelThread extends ForumModelPost
 			case 'tree':
 				if (!isset($this->_cache['tree']) || !is_a($this->_cache['tree'], 'ForumModelIterator'))
 				{
-					$children = array(
-						0 => array()
-					);
-
-					$levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
-
-					foreach ($rows as $row)
+					if ($rows = $this->_tbl->getTree($filters['thread'])) //getTree
 					{
-						$v = new ForumModelPost($row);
+						$children = array(
+							0 => array()
+						);
 
-						$pt      = $v->get('parent');
-						$list    = @$children[$pt] ? $children[$pt] : array();
-						array_push($list, $v);
-						$children[$pt] = $list;
+						$levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
+
+						foreach ($rows as $row)
+						{
+							$v = new ForumModelPost($row);
+
+							$pt      = $v->get('parent');
+							$list    = @$children[$pt] ? $children[$pt] : array();
+							array_push($list, $v);
+							$children[$pt] = $list;
+						}
+
+						$results = $this->_treeRecurse($children[$this->get('parent')], $children);
 					}
 
-					$this->_cache['tree'] = $this->_treeRecurse($children[$this->get('parent')], $children);
+					$this->_cache['tree'] = new ForumModelIterator($results);
 				}
 				return $this->_cache['tree'];
 			break;
@@ -167,7 +172,11 @@ class ForumModelThread extends ForumModelPost
 			{
 				if (isset($list[$child->get('id')]))
 				{
-					$children[$v]->set('replies', $this->_treeRecurse($list[$child->get('id')], $list, $maxlevel, $level+1));
+					$children[$v]->set('replies', new ForumModelIterator($this->_treeRecurse($list[$child->get('id')], $list, $maxlevel, $level+1)));
+				}
+				else
+				{
+					$children[$v]->set('replies', new ForumModelIterator(array()));
 				}
 			}
 		}

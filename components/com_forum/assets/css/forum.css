@@ -44,8 +44,58 @@
 		content: "";
 		display: none;
 	}
+	ol.comments .comment-options a.active:before {
+		content: "\2716";
+	}
+	ol.comments li .edit,
+	ol.comments li .delete {
+		float: right;
+	}
 	.section h3:first-child {
 		margin-top: 0;
+	}
+	/* Add comment */
+	.comment-add {
+		margin: 0 -1.61803399em -0.61803399em -1.61803399em;
+		padding: 1.61803399em;
+		border: 1px solid #ddd;
+		background-color: #f1f1f1;
+		border: none;
+		border-top: 1px solid #ddd;
+	}
+	.comment-add legend {
+		display: none;
+	}
+	.comment-add label {
+		display: block;
+	}
+	.comment-add label span {
+		display: none;
+	}
+	.comment-add .cancelreply {
+		margin-left: 2em;
+	}
+	.comment-add .submit {
+		clear: both;
+		margin: -1.5em 0 0 0;
+		padding: 0;
+		text-align: right;
+	}
+	.comment-add input, 
+	.comment-add select, 
+	.comment-add textarea {
+		margin: 0.25em 0 0.5em 0;
+		width: 100%;
+	}	
+	.comment-add .submit input,
+	.comment-add .option {
+		width: auto;
+	}
+	.comment-add .upload-label {
+		margin-bottom: 0.5em;
+	}
+	.comment-add .reply-anonymous-label {
+		width: 50%;
 	}
 
 /* Entries Table */

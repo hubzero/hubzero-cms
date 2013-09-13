@@ -480,6 +480,10 @@ class ForumModelPost extends JObject
 
 					case 'site':
 					default:
+						$link  = $this->_base;
+						$link .= '&section=' . $this->get('section');
+						$link .= '&category=' . $this->get('category');
+						$link .= '&thread=' . $this->get('id');
 						$link .= '&task=edit';
 					break;
 				}
@@ -498,6 +502,10 @@ class ForumModelPost extends JObject
 
 					case 'site':
 					default:
+						$link  = $this->_base;
+						$link .= '&section=' . $this->get('section');
+						$link .= '&category=' . $this->get('category');
+						$link .= '&thread=' . $this->get('id');
 						$link .= '&task=delete';
 					break;
 				}

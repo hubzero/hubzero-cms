@@ -525,7 +525,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
-		$parent = $model->get('parent', $model->get('id'));
+		$parent = $model->get('thread', $model->get('id'));
 
 		// Upload files
 		$this->uploadTask($parent, $model->get('id'));

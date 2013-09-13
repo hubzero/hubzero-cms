@@ -399,9 +399,11 @@ class ForumPost extends JTable
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 		}
-		if (isset($filters['parent']) && $filters['parent'] != 0) 
+		//if (isset($filters['parent']) && $filters['parent'] != 0) 
+		if (isset($filters['thread']) && $filters['thread'] != 0) 
 		{
-			$query .= " WHERE (c.parent=" . $this->_db->Quote(intval($filters['parent'])) . " OR c.id=" . $this->_db->Quote(intval($filters['parent'])) . ")";
+			//$query .= " WHERE (c.parent=" . $this->_db->Quote(intval($filters['parent'])) . " OR c.id=" . $this->_db->Quote(intval($filters['parent'])) . ")";
+			$query .= " WHERE c.thread=" . $this->_db->Quote(intval($filters['thread']));
 			if (isset($filters['state'])) 
 			{
 				$query .= " AND c.state=" . $this->_db->Quote(intval($filters['state']));
@@ -540,7 +542,8 @@ class ForumPost extends JTable
 		{
 			$query .= ", g.cn AS group_alias";
 		}
-		if (!isset($filters['parent']) || $filters['parent'] == 0) 
+		//if (!isset($filters['parent']) || $filters['parent'] == 0) 
+		if (!isset($filters['thread']) || $filters['thread'] == 0) 
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
@@ -1471,6 +1474,15 @@ class ForumPost extends JTable
 			$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 		$query .= " ORDER BY n.created ASC";
+
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
+			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+		}
 
 		$this->_db->setQuery($query);
 		$tree = $this->_db->loadObjectList();
