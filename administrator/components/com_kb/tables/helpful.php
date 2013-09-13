@@ -48,7 +48,7 @@ class KbHelpful extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $fid     = NULL;
+	var $object_id     = NULL;
 
 	/**
 	 * varchar(15)
@@ -62,7 +62,21 @@ class KbHelpful extends JTable
 	 * 
 	 * @var string
 	 */
-	var $helpful = NULL;
+	var $vote = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var string
+	 */
+	var $user_id = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $type = NULL;
 
 	/**
 	 * Constructor
@@ -107,7 +121,7 @@ class KbHelpful extends JTable
 		{
 			$ip = $this->ip;
 		}
-		$this->_db->setQuery("SELECT helpful FROM $this->_tbl WHERE fid =" . $this->_db->Quote($fid) . " AND ip=" . $this->_db->Quote($ip));
+		$this->_db->setQuery("SELECT vote FROM $this->_tbl WHERE object_id =" . $this->_db->Quote($fid) . " AND ip=" . $this->_db->Quote($ip));
 		return $this->_db->loadResult();
 	}
 
@@ -123,7 +137,7 @@ class KbHelpful extends JTable
 		{
 			$fid = $this->fid;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE fid=" . $this->_db->Quote($fid));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($fid));
 		if ($this->_db->query()) 
 		{
 			return true;
