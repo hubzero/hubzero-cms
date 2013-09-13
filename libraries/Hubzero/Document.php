@@ -530,6 +530,32 @@ class Hubzero_Document
 					$cache = unserialize(file_get_contents($cacheFile));
 				}
 
+				if ($cache && is_array($cache['files']))
+				{
+					foreach ($cache['files'] as $fname => $ftime) 
+					{
+						$path = explode('/', $fname);
+						$file = array_pop($path);
+
+						if (file_exists($template . '/' . $file))
+						{
+							$fname = $template . '/' . $file;
+						}
+						else
+						{
+							$fname = $lesspath . '/' . $file;
+						}
+
+						if (!file_exists($fname) or filemtime($fname) > $ftime) 
+						{
+							// One of the files we knew about previously has changed
+							// so we should look at our incoming root again.
+							$cache = $input;
+							break;
+						}
+					}
+				}
+
 				// If no cache file or the root build file is different
 				if (!$cache || ($cache['root'] != $input))
 				{
@@ -546,7 +572,14 @@ class Hubzero_Document
 				)
 				*/
 
-				$newCache = $less->cachedCompile($cache);
+				if (is_string($cache)) 
+				{
+					$newCache = $less->cachedCompile($cache);
+				}
+				else
+				{
+					$newCache = $cache;
+				}
 
 				// Did the cache change?
 				if (!is_array($cache) || $newCache['updated'] > $cache['updated']) 
