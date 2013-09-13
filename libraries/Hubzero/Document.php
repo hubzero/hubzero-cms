@@ -539,14 +539,14 @@ class Hubzero_Document
 
 						if (file_exists($template . '/' . $file))
 						{
-							$fname = $template . '/' . $file;
+							$nname = $template . '/' . $file;
 						}
 						else
 						{
-							$fname = $lesspath . '/' . $file;
+							$nname = $lesspath . '/' . $file;
 						}
 
-						if (!file_exists($fname) or filemtime($fname) > $ftime) 
+						if ($fname != $nname or !file_exists($nname) or filemtime($nname) > $ftime) 
 						{
 							// One of the files we knew about previously has changed
 							// so we should look at our incoming root again.
