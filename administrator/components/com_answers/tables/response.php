@@ -117,11 +117,34 @@ class AnswersTableResponse extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->answer) == '') 
+		$this->qid = intval($this->qid);
+		if (!$this->qid) 
+		{
+			$this->setError(JText::_('Missing question ID.'));
+			return false;
+		}
+
+		$this->answer = trim($this->answer);
+		if ($this->answer == '') 
 		{
 			$this->setError(JText::_('Your response must contain text.'));
 			return false;
 		}
+		$this->answer = nl2br($this->answer);
+
+		$this->helpful    = intval($this->helpful);
+		$this->nothelpful = intval($this->nothelpful);
+		$this->state      = intval($this->state);
+
+		$this->anonymous  = intval($this->anonymous);
+		if ($this->anonymous > 1)
+		{
+			$this->anonymous = 1;
+		}
+
+		$this->created    = $this->created    ? $this->created    : date("Y-m-d H:i:s");
+		$this->created_by = $this->created_by ? $this->created_by : JFactory::getUser()->get('username');
+
 		return true;
 	}
 

@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'iterator.php');
@@ -314,6 +315,112 @@ class AnswersModelResponse extends AnswersModelAbstract
 	}
 
 	/**
+	 * Reset the vote count and log
+	 *
+	 * @return    boolean False if error, True on success
+	 */
+	public function reset()
+	{
+		// Can't manipulate what doesn't exist
+		if (!$this->exists()) 
+		{
+			return true;
+		}
+
+		// Reset the vote counts
+		$this->set('helpful', 0);
+		$this->set('nothelpful', 0);
+
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		// Clear the history of "helpful" clicks
+		$al = new AnswersTableLog($this->_db);
+		if (!$al->deleteLog($this->get('id')))
+		{
+			$this->setError($al->getError());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function accept()
+	{
+		$this->set('state', 1);
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		$res = parent::store($check);
+
+		// If marked as chosen answer
+		if ($res && $this->get('state') == 1)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+
+			$aq = new AnswersModelQuestion($this->get('qid'));
+			if ($aq->exists() && $aq->get('state') != 1)
+			{
+				$aq->set('state', 1);
+				$aq->set('reward', 0);
+
+				if ($aq->config('banking'))
+				{
+					// Calculate and distribute earned points
+					$AE = new AnswersEconomy($this->_db);
+					$AE->distribute_points($this->get('qid'), $aq->get('created_by'), $this->get('created_by'), 'closure');
+
+					// Load the plugins
+					JPluginHelper::importPlugin('xmessage');
+					$dispatcher =& JDispatcher::getInstance();
+
+					// Call the plugin
+					if (
+						!$dispatcher->trigger('onTakeAction', array(
+							'answers_reply_submitted', 
+							array($aq->creator('id')), 
+							'com_answers', 
+							$this->get('qid')
+						))
+					)
+					{
+						$this->setError(JText::_('Failed to remove alert.'));
+					}
+				}
+
+				if (!$aq->store())
+				{
+					$this->setError($aq->getError());
+					return false;
+				}
+			}
+		}
+
+		return $res;
+	}
+
+	/**
 	 * Delete the record and all associated data
 	 *
 	 * @return    boolean False if error, True on success
@@ -341,6 +448,14 @@ class AnswersModelResponse extends AnswersModelAbstract
 				$this->setError($comment->getError());
 				return false;
 			}
+		}
+
+		// Clear the history of "helpful" clicks
+		$al = new AnswersTableLog($this->_db);
+		if (!$al->deleteLog($this->get('id')))
+		{
+			$this->setError($al->getError());
+			return false;
 		}
 
 		return parent::delete();

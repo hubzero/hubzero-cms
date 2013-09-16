@@ -211,10 +211,9 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		// Incoming
 		$answer = JRequest::getVar('answer', array(), 'post');
-		$answer = array_map('trim', $answer);
 
 		// Initiate extended database class
-		$row = new AnswersTableResponse($this->database);
+		$row = new AnswersModelResponse(intval($answer['id']));
 		if (!$row->bind($answer))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -223,40 +222,15 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 
 		// Code cleaner
-		$row->answer = nl2br($row->answer);
-		$row->created = $row->created ? $row->created : date("Y-m-d H:i:s");
-		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');
-		$row->state = (isset($answer['state'])) ? 1 : 0;
-		$row->anonymous = (isset($answer['anonymous'])) ? 1 : 0;
-
-		// Check content
-		if (!$row->check())
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+		$row->set('state', (isset($answer['state']) ? 1 : 0));
+		$row->set('anonymous', (isset($answer['anonymous']) ? 1 : 0));
 
 		// Store content
-		if (!$row->store())
+		if (!$row->store(true))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
-		}
-
-		// Close the question if the answer is accepted
-		if ($row->state == 1)
-		{
-			$aq = new AnswersTableQuestion($this->database);
-			$aq->load($answer['qid']);
-			$aq->state = 1;
-			if (!$aq->store())
-			{
-				$this->addComponentMessage($aq->getError(), 'error');
-				$this->editTask($row);
-				return;
-			}
 		}
 
 		// Redirect
@@ -277,28 +251,18 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$qid = JRequest::getInt('qid', 0);
 		$ids = JRequest::getVar('id', array());
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
 		{
-			// Instantiate some objects
-			$ar = new AnswersTableResponse($this->database);
-			$al = new AnswersTableLog($this->database);
-
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
-				if (!$ar->delete($id))
+				$ar = new AnswersModelResponse(intval($id));
+				if (!$ar->delete())
 				{
 					JError::raiseError(500, $ar->getError());
-					return;
-				}
-
-				if (!$al->deleteLog($id))
-				{
-					JError::raiseError(500, $al->getError());
 					return;
 				}
 			}
@@ -306,7 +270,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&qid=' . JRequest::getInt('qid', 0)
 		);
 	}
 
@@ -353,9 +317,8 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			return;
 		}
 
-		$ar = new AnswersTableResponse($this->database);
-		$ar->load($id[0]);
-		$ar->state = $publish;
+		$ar = new AnswersModelResponse($id[0]);
+		$ar->set('state', $publish);
 		if (!$ar->store())
 		{
 			$this->setRedirect(
@@ -364,50 +327,6 @@ class AnswersControllerAnswers extends Hubzero_Controller
 				'error'
 			);
 			return;
-		}
-
-		// Close the question if the answer is accepted
-		$aq = new AnswersTableQuestion($this->database);
-		$aq->load($qid);
-
-		if ($publish == 1)
-		{
-			$aq->state = 1;
-			$aq->reward = 0;
-
-			if (!$aq->store())
-			{
-				JError::raiseError(500, $aq->getError());
-				return;
-			}
-
-			if ($this->banking)
-			{
-				// Calculate and distribute earned points
-				$AE = new AnswersEconomy($this->database);
-				$AE->distribute_points($qid, $aq->created_by, $ar->created_by, 'closure');
-			}
-
-			$zuser =& JUser::getInstance($aq->created_by);
-
-			// Load the plugins
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher =& JDispatcher::getInstance();
-
-			// Call the plugin
-			if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($zuser->get('id')), $this->_option, $qid)))
-			{
-				$this->setError(JText::_('Failed to remove alert.'));
-			}
-		}
-		else
-		{
-			$aq->state = 0;
-			if (!$aq->store())
-			{
-				JError::raiseError(500, $aq->getError());
-				return;
-			}
 		}
 
 		// Set message
@@ -452,21 +371,11 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$answer = JRequest::getVar('answer', array());
 
 		// Reset some values
-		$ar = new AnswersTableResponse($this->database);
-		$ar->load(intval($answer['id']));
-		$ar->helpful = 0;
-		$ar->nothelpful = 0;
-		if (!$ar->store())
+		$model = new AnswersModelResponse(intval($answer['id']));
+
+		if (!$model->reset())
 		{
 			JError::raiseError(500, $ar->getError());
-			return;
-		}
-
-		// Clear the history of "helpful" clicks
-		$al = new AnswersTableLog($this->database);
-		if (!$al->deleteLog(intval($answer['id'])))
-		{
-			JError::raiseError(500, $al->getError());
 			return;
 		}
 

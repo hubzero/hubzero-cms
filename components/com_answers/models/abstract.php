@@ -333,6 +333,10 @@ abstract class AnswersModelAbstract extends JObject
 		}
 		if ($key)
 		{
+			if ($key == 'banking')
+			{
+				$this->_config->set('banking', JComponentHelper::getParams('com_members')->get('bankAccounts'));
+			}
 			return $this->_config->get($key);
 		}
 		return $this->_config;
