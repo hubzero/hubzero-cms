@@ -53,7 +53,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * 
 	 * @var string
 	 */
-	protected $_tbl_name = 'AnswersQuestion';
+	protected $_tbl_name = 'AnswersTableQuestion';
 
 	/**
 	 * Class scope
@@ -250,7 +250,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function comments($rtrn='list', $filters=array())
 	{
-		$tbl = new AnswersResponse($this->_db);
+		$tbl = new AnswersTableResponse($this->_db);
 
 		if (!isset($filters['qid']))
 		{
@@ -330,7 +330,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function chosen($rtrn='list', $filters=array())
 	{
-		$tbl = new AnswersResponse($this->_db);
+		$tbl = new AnswersTableResponse($this->_db);
 
 		if (!isset($filters['qid']))
 		{

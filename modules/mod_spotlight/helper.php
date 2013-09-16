@@ -177,10 +177,10 @@ class modSpotlight extends Hubzero_Module
 
 					case 'answers':
 						// Yes - load the question
-						$row = new AnswersQuestion($this->database);
+						$row = new AnswersTableQuestion($this->database);
 						$row->load($fh->objectid);
 
-						$ar = new AnswersResponse($this->database);
+						$ar = new AnswersTableResponse($this->database);
 						$row->rcount = count($ar->getIds($row->id));
 					break;
 

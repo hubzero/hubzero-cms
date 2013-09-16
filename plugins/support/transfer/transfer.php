@@ -148,7 +148,7 @@ class plgSupportTransfer extends JPlugin
 
 			// Transfer from a Question
 			case 'question':
-				$row = new AnswersQuestion($database);
+				$row = new AnswersTableQuestion($database);
 				$row->load($from_id);
 
 				if ($row->id) 
@@ -253,7 +253,7 @@ class plgSupportTransfer extends JPlugin
 			break;
 
 			case 'question':
-				$newrow = new AnswersQuestion($database);
+				$newrow = new AnswersTableQuestion($database);
 				$newrow->subject    = $subject;
 				$newrow->question   = $body;
 				$newrow->created    = $today;

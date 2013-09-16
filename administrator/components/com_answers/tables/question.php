@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for a question
  */
-class AnswersQuestion extends JTable
+class AnswersTableQuestion extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -277,7 +277,7 @@ class AnswersQuestion extends JTable
 	 */
 	public function getResults($filters=array())
 	{
-		$ar = new AnswersResponse($this->_db);
+		$ar = new AnswersTableResponse($this->_db);
 
 		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful, U.name, U.id AS userid";
 		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.qid=C.id) AS rcount";

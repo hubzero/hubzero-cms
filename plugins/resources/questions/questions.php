@@ -122,7 +122,7 @@ class plgResourcesQuestions extends JPlugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this tool
-		$this->a = new AnswersQuestion($this->database);
+		$this->a = new AnswersTableQuestion($this->database);
 
 		$this->filters = array();
 		$this->filters['limit']    = JRequest::getInt('limit', 0);
@@ -229,7 +229,7 @@ class plgResourcesQuestions extends JPlugin
 	/**
 	 * Display a form for adding a question
 	 * 
-	 * @param      object $row AnswersQuestion
+	 * @param      object $row AnswersTableQuestion
 	 * @return     string
 	 */
 	private function _new($row=null)
@@ -331,7 +331,7 @@ class plgResourcesQuestions extends JPlugin
 		}
 
 		// Initiate class and bind posted items to database fields
-		$row = new AnswersQuestion($this->database);
+		$row = new AnswersTableQuestion($this->database);
 		if (!$row->bind(JRequest::getVar('question', array(), 'post', 'none', 2))) 
 		{
 			$this->setError($row->getError());

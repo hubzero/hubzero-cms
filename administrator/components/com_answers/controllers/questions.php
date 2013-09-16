@@ -111,7 +111,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			'DESC'
 		));
 
-		$aq = new AnswersQuestion($this->database);
+		$aq = new AnswersTableQuestion($this->database);
 
 		// Get a record count
 		$this->view->total = $aq->getCount($this->view->filters);

@@ -107,7 +107,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		$this->view->question = new AnswersModelQuestion($this->view->filters['qid']);
 
-		$ar = new AnswersResponse($this->database);
+		$ar = new AnswersTableResponse($this->database);
 
 		// Get a record count
 		$this->view->total = $ar->getCount($this->view->filters);
@@ -214,7 +214,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$answer = array_map('trim', $answer);
 
 		// Initiate extended database class
-		$row = new AnswersResponse($this->database);
+		$row = new AnswersTableResponse($this->database);
 		if (!$row->bind($answer))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -248,7 +248,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// Close the question if the answer is accepted
 		if ($row->state == 1)
 		{
-			$aq = new AnswersQuestion($this->database);
+			$aq = new AnswersTableQuestion($this->database);
 			$aq->load($answer['qid']);
 			$aq->state = 1;
 			if (!$aq->store())
@@ -284,8 +284,8 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		if (count($ids) > 0)
 		{
 			// Instantiate some objects
-			$ar = new AnswersResponse($this->database);
-			$al = new AnswersLog($this->database);
+			$ar = new AnswersTableResponse($this->database);
+			$al = new AnswersTableLog($this->database);
 
 			// Loop through each ID
 			foreach ($ids as $id)
@@ -353,7 +353,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			return;
 		}
 
-		$ar = new AnswersResponse($this->database);
+		$ar = new AnswersTableResponse($this->database);
 		$ar->load($id[0]);
 		$ar->state = $publish;
 		if (!$ar->store())
@@ -367,7 +367,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 
 		// Close the question if the answer is accepted
-		$aq = new AnswersQuestion($this->database);
+		$aq = new AnswersTableQuestion($this->database);
 		$aq->load($qid);
 
 		if ($publish == 1)
@@ -452,7 +452,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$answer = JRequest::getVar('answer', array());
 
 		// Reset some values
-		$ar = new AnswersResponse($this->database);
+		$ar = new AnswersTableResponse($this->database);
 		$ar->load(intval($answer['id']));
 		$ar->helpful = 0;
 		$ar->nothelpful = 0;
@@ -463,7 +463,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 
 		// Clear the history of "helpful" clicks
-		$al = new AnswersLog($this->database);
+		$al = new AnswersTableLog($this->database);
 		if (!$al->deleteLog(intval($answer['id'])))
 		{
 			JError::raiseError(500, $al->getError());

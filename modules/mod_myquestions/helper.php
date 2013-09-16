@@ -32,58 +32,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Module');
+
 /**
  * Module class for displaying a user's questions
  * Requires com_answers component
  */
-class modMyQuestions
+class modMyQuestions extends Hubzero_Module
 {
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object $params JParameter
-	 * @param      object $module Database row
-	 * @return     void
-	 */
-	public function __construct($params, $module)
-	{
-		$this->params = $params;
-		$this->module = $module;
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) 
-		{
-			return $this->attributes[$property];
-		}
-	}
-
 	/**
 	 * Format the tags
 	 * 
@@ -173,7 +129,7 @@ class modMyQuestions
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
-		$aq = new AnswersQuestion($database);
+		$aq = new AnswersTableQuestion($database);
 		if ($this->banking) 
 		{
 			$AE = new AnswersEconomy($database);

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for answers response
  */
-class AnswersResponse extends JTable
+class AnswersTableResponse extends JTable
 {
 	/**
 	 * int(11) Primary key

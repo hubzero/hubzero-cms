@@ -253,10 +253,10 @@ if (count($this->rows) > 0)
 
 				case 'questions':
 				case 'answers':
-					$row = new AnswersQuestion($database);
+					$row = new AnswersTableQuestion($database);
 					$row->load($fh->objectid);
 
-					$ar = new AnswersResponse($database);
+					$ar = new AnswersTableResponse($database);
 					$row->rcount = count($ar->getIds($row->id));
 
 					$thumb = '/modules/mod_featuredquestion/question_thumb.gif'; //trim($params->get('defaultpic'));

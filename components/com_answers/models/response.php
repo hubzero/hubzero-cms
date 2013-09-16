@@ -46,7 +46,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 * 
 	 * @var object
 	 */
-	protected $_tbl_name = 'AnswersResponse';
+	protected $_tbl_name = 'AnswersTableResponse';
 
 	/**
 	 * BlogModelComment

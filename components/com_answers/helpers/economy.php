@@ -106,7 +106,7 @@ class AnswersEconomy extends JObject
 		$calc = 0;
 
 		// Get actons and sum up
-		$ar = new AnswersResponse($this->_db);
+		$ar = new AnswersTableResponse($this->_db);
 		$result = $ar->getActions($id);
 
 		if ($type != 'royalty') 
@@ -137,7 +137,7 @@ class AnswersEconomy extends JObject
 		}
 
 		// Add question votes
-		$aq = new AnswersQuestion($this->_db);
+		$aq = new AnswersTableQuestion($this->_db);
 		$aq->load($id);
 		if ($aq->state != 2) 
 		{
@@ -183,7 +183,7 @@ class AnswersEconomy extends JObject
 		$A_owner_share  = 0;
 
 		// Calculate commissions for other answers
-		$ar = new AnswersResponse($this->_db);
+		$ar = new AnswersTableResponse($this->_db);
 		$result = $ar->getActions($qid);
 
 		$n = count($result);

@@ -119,7 +119,7 @@ class plgPublicationsQuestions extends JPlugin
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php' );
 
 		// Get all the questions for this tool
-		$a = new AnswersQuestion( $database );
+		$a = new AnswersTableQuestion( $database );
 
 		$filters = array();
 		$filters['limit']    = JRequest::getInt( 'limit', 0 );

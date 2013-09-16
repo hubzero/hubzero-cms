@@ -70,7 +70,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	/**
 	 * Build the document pathway (breadcrumbs)
 	 * 
-	 * @param      object $question AnswersQuestion
+	 * @param      object $question AnswersTableQuestion
 	 * @return     void
 	 */
 	protected function _buildPathway($question=null)
@@ -103,7 +103,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	/**
 	 * Build the document title
 	 * 
-	 * @param      object $question AnswersQuestion
+	 * @param      object $question AnswersTableQuestion
 	 * @return     void
 	 */
 	protected function _buildTitle($question=null)
@@ -195,7 +195,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Instantiate a Questions object
-		$aq = new AnswersQuestion($this->database);
+		$aq = new AnswersTableQuestion($this->database);
 
 		if (($this->view->filters['area'] == 'interest' || $this->view->filters['area'] == 'assigned') && !$this->view->filters['tag']) 
 		{
@@ -427,7 +427,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// load answer
-		$row = new AnswersResponse($this->database);
+		$row = new AnswersTableResponse($this->database);
 		$row->load($id);
 		$qid = $row->qid;
 
@@ -460,7 +460,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Get vote log
-		$al = new AnswersLog($this->database);
+		$al = new AnswersTableLog($this->database);
 		$al->loadByIp($id, $ip);
 
 		if (!$al->id) 
@@ -664,7 +664,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Instantiate a Questions object
-		$aq = new AnswersQuestion($this->database);
+		$aq = new AnswersTableQuestion($this->database);
 
 		if (($this->view->filters['area'] == 'interest' || $this->view->filters['area'] == 'assigned') && !$this->view->filters['tag']) 
 		{
@@ -890,7 +890,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$ip = Hubzero_Environment::ipAddress();
 
 		// See if a person from this IP has already voted in the last week
-		$aql = new AnswersQuestionsLog($this->database);
+		$aql = new AnswersTableQuestionsLog($this->database);
 		$voted = $aql->checkVote($id, $ip, $this->juser->get('id'));
 
 		return $voted;
@@ -994,7 +994,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Initiate class and bind posted items to database fields
-		$row = new AnswersQuestion($this->database);
+		$row = new AnswersTableQuestion($this->database);
 		if (!$row->bind($_POST)) 
 		{
 			JError::raiseError(500, $row->getError());
@@ -1173,7 +1173,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 		$email = 0;
 
-		$question = new AnswersQuestion($this->database);
+		$question = new AnswersTableQuestion($this->database);
 		$question->load($id);
 
 		// Check if user is authorized to delete
@@ -1203,7 +1203,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Get all the answers for this question
-		$ar = new AnswersResponse($this->database);
+		$ar = new AnswersTableResponse($this->database);
 		$responses = $ar->getRecords(array(
 			'ip'  => $ip,
 			'qid' => $id
@@ -1271,7 +1271,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Get all the answers for this question
 		if ($responses) 
 		{
-			$al = new AnswersLog($this->database);
+			$al = new AnswersTableLog($this->database);
 			foreach ($responses as $answer)
 			{
 				// Delete votes
@@ -1310,7 +1310,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$response = JRequest::getVar('response', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
-		$row = new AnswersResponse($this->database);
+		$row = new AnswersTableResponse($this->database);
 		if (!$row->bind($response)) 
 		{
 			JError::raiseError(500, $row->getError());
@@ -1351,7 +1351,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Load the question
-		$question = new AnswersQuestion($this->database);
+		$question = new AnswersTableQuestion($this->database);
 		$question->load($response['qid']);
 
 		// Is user allowed to answer this question, i.e. are they the asker of the question? Only a user hack
@@ -1501,7 +1501,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// See if a person from this IP has already voted
-		$al = new AnswersQuestionsLog($this->database);
+		$al = new AnswersTableQuestionsLog($this->database);
 		$voted = $al->checkVote($id, $ip, $this->juser->get('id'));
 
 		if ($voted) 
@@ -1517,7 +1517,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// load the resource
-		$row = new AnswersQuestion($this->database);
+		$row = new AnswersTableQuestion($this->database);
 		$row->load($id);
 
 		$this->qid = $id;
