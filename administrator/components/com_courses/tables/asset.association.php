@@ -198,6 +198,21 @@ class CoursesTableAssetAssociation extends JTable
 	}
 
 	/**
+	 * Get a count of records
+	 * 
+	 * @param  array $filters
+	 * @return integer
+	 */
+	public function count($filters=array())
+	{
+		$query  = "SELECT COUNT(*)";
+		$query .= $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
 	 * Get an object list of course units
 	 * 
 	 * @param  array $filters
