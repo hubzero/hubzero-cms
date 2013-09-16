@@ -32,25 +32,22 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = AnswersHelper::getActions('question');
 
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Answers Manager' ) . '</a>', 'answers.png');
-if ($canDo->get('core.admin')) {
+JToolBarHelper::title(JText::_('Answers Manager'), 'answers.png');
+if ($canDo->get('core.admin')) 
+{
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) {
+if ($canDo->get('core.create')) 
+{
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) {
+if ($canDo->get('core.delete')) 
+{
 	JToolBarHelper::deleteList();
 }
-
-$dateFormat = '%d %b %Y';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = true;
-}
+JToolBarHelper::spacer();
+JToolBarHelper::help('questions.html', true);
 
 ?>
 <script type="text/javascript">
@@ -100,78 +97,79 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->results ); $i < $n; $i++)
+for ($i=0, $n=count($this->results); $i < $n; $i++)
 {
 	$row =& $this->results[$i];
-	switch ($row->state)
+
+	switch ($row->get('state'))
 	{
 		case '1':
 			$task = 'open';
 			$img = 'publish_x.png';
 			$alt = JText::_( 'Closed' );
 			$cls = 'unpublished';
-			break;
+		break;
 		case '0':
 			$task = 'close';
 			$img = 'publish_g.png';
 			$alt = JText::_( 'Open' );
 			$cls = 'published';
-			break;
+		break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<?php echo $row->id; ?>
+					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<span><?php echo $this->escape(stripslashes($row->subject)); ?></span>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+						<span><?php echo $this->escape(stripslashes($row->get('subject'))); ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
-						<span><?php echo $this->escape(stripslashes($row->subject)); ?></span>
+						<span><?php echo $this->escape(stripslashes($row->get('subject'))); ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task; ?>">
 						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $cls; ?>">
 						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td style="white-space: nowrap;">
-					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?></time>
+					<time datetime="<?php echo $row->published(); ?>"><?php echo $row->published('date'); ?></time>
 				</td>
 				<td>
-					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->created_by; ?>">
-						<?php echo $this->escape(stripslashes($row->created_by)); ?>
+					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->creator('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 					</a>
-<?php if ($row->anonymous) { ?>
+				<?php if ($row->get('anonymous')) { ?>
 					<br /><span>(anonymous)</span>
-<?php } ?>
+				<?php } ?>
 				</td>
-<?php if ($row->answers > 0) { ?>
+			<?php if ($row->comments('count', array('filterby' => 'all')) > 0) { ?>
 				<td style="white-space: nowrap;">
-					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=answers&amp;qid=<?php echo $row->id; ?>" title="<?php echo JText::_('View the answers for this Question'); ?>">
-						<span><?php echo JText::sprintf('%s response(s)', $row->answers); ?></span>
+					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=answers&amp;qid=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('View the answers for this Question'); ?>">
+						<span><?php echo JText::sprintf('%s response(s)', $row->comments('count')); ?></span>
 					</a>
 				</td>
-<?php } else { ?>
+			<?php } else { ?>
 				<td>
 					<span class="glyph comment">
-						<span><?php echo $row->answers; ?></span>
+						<span>0</span>
 					</span>
 				</td>
-<?php } ?>
+			<?php } ?>
 			</tr>
 <?php
 	$k = 1 - $k;

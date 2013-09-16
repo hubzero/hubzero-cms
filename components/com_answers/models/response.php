@@ -255,7 +255,12 @@ class AnswersModelResponse extends AnswersModelAbstract
 
 			case 'raw':
 			default:
-				return $this->get('answer');
+				$content = $this->get('answer');
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+				}
+				return $content;
 			break;
 		}
 	}
@@ -306,6 +311,39 @@ class AnswersModelResponse extends AnswersModelAbstract
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return    boolean False if error, True on success
+	 */
+	public function delete()
+	{
+		// Ensure we have a database to work with
+		if (empty($this->_db))
+		{
+			$this->setError(JText::_('Database not found.'));
+			return false;
+		}
+
+		// Can't delete what doesn't exist
+		if (!$this->exists()) 
+		{
+			return true;
+		}
+
+		// Remove comments
+		foreach ($this->replies('list') as $comment)
+		{
+			if (!$comment->delete())
+			{
+				$this->setError($comment->getError());
+				return false;
+			}
+		}
+
+		return parent::delete();
 	}
 }
 

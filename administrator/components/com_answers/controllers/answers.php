@@ -105,8 +105,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			'DESC'
 		));
 
-		$this->view->question = new AnswersQuestion($this->database);
-		$this->view->question->load($this->view->filters['qid']);
+		$this->view->question = new AnswersModelQuestion($this->view->filters['qid']);
 
 		$ar = new AnswersResponse($this->database);
 
@@ -115,6 +114,15 @@ class AnswersControllerAnswers extends Hubzero_Controller
 
 		// Get records
 		$this->view->results = $ar->getResults($this->view->filters);
+
+		// Did we get any results?
+		if ($this->view->results)
+		{
+			foreach ($this->view->results as $key => $result)
+			{
+				$this->view->results[$key] = new AnswersModelResponse($result);
+			}
+		}
 
 		// initiate paging
 		jimport('joomla.html.pagination');
@@ -129,8 +137,6 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		{
 			$this->view->setError($this->getError());
 		}
-
-		$this->view->qid = $this->view->filters['qid'];
 
 		// Output the HTML
 		$this->view->display();
@@ -178,27 +184,10 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		else 
 		{
 			// load infor from database
-			$this->view->row = new AnswersResponse($this->database);
-			$this->view->row->load($id);
+			$this->view->row = new AnswersModelResponse($id);
 		}
 
-		if ($this->_task == 'add')
-		{
-			$this->view->row->answer     = '';
-			$this->view->row->created    = date('Y-m-d H:i:s', time());
-			$this->view->row->created_by = $this->juser->get('username');
-			$this->view->row->qid        = $qid;
-			$this->view->row->helpful    = 0;
-			$this->view->row->nothelpful = 0;
-		}
-		else
-		{
-			$this->view->row->answer = AnswersHtml::unpee($this->view->row->answer);
-		}
-
-		$this->view->question = new AnswersQuestion($this->database);
-		$this->view->question->load($qid);
-		$this->view->qid = $qid;
+		$this->view->question = new AnswersModelQuestion($qid);
 
 		// Set any errors
 		if ($this->getError())

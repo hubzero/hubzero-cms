@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = AnswersHelper::getActions('answer');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Answers Manager') . '</a>', 'answers.png');
+JToolBarHelper::title(JText::_('Answers Manager') . ': ' . JText::_('Responses'), 'answers.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
@@ -45,17 +45,11 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
-ximport('Hubzero_View_Helper_Html');
-
-$dateFormat = '%d %b %Y';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = 0;
-}
+JToolBarHelper::spacer();
+JToolBarHelper::help('responses.html', true);
 
 ?>
+
 <script type="text/javascript">
 function submitbutton(pressbutton) {
 	var form = document.adminForm;
@@ -82,7 +76,7 @@ function submitbutton(pressbutton) {
 	<table class="adminlist">
 		<caption>
 			<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->filters['qid']; ?>" title="Edit this question">
-				<?php echo $this->escape(stripslashes($this->question->subject)); ?>
+				<?php echo $this->escape(stripslashes($this->question->get('subject'))); ?>
 			</a>
 		</caption>
 		<thead>
@@ -103,58 +97,54 @@ function submitbutton(pressbutton) {
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->results ); $i < $n; $i++)
+for ($i=0, $n=count($this->results); $i < $n; $i++)
 {
 	$row =& $this->results[$i];
 
-	switch ($row->state)
+	switch ($row->get('state'))
 	{
 		case '1':
 			$task = 'reject';
 			$img = 'publish_g.png';
 			$alt = JText::_( 'Accepted' );
 			$cls = 'published';
-			break;
+		break;
 		case '0':
 			$task = 'accept';
 			$img = 'publish_x.png';
 			$alt = JText::_( 'Unaccepted' );
 			$cls = 'unpublished';
-			break;
-
+		break;
 	}
-
-	$row->answer = stripslashes($row->answer);
-	$row->answer = Hubzero_View_Helper_Html::shortenText($row->answer, 75, 0);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;qid=<?php echo $this->question->id; ?>" title="Edit this Answer">
-						<span><?php echo $row->answer; ?></span>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>" title="Edit this Answer">
+						<span><?php echo $row->content('raw', 75); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;qid=<?php echo $this->question->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<span><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
 					</a>
 				</td>
 				<td style="white-space: nowrap;">
-					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?></time>
+					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td>
-					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->created_by; ?>">
-						<span><?php echo $this->escape(stripslashes($row->name)).' ('.$row->created_by.')'; ?></span>
+					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->creator('id'); ?>">
+						<span><?php echo $this->escape(stripslashes($row->creator('name'))).' ('.$row->creator('id').')'; ?></span>
 					</a>
-<?php if ($row->anonymous) { ?>
+<?php if ($row->get('anonymous')) { ?>
 					<br /><span>(anonymous)</span>
 <?php } ?>
 				</td>
 				<td>
-					<span class="vote like">+<?php echo $row->helpful; ?></span> 
-					<span class="vote dislike">-<?php echo $row->nothelpful; ?></span>
+					<span class="vote like">+<?php echo $row->get('helpful', 0); ?></span> 
+					<span class="vote dislike">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
 <?php
@@ -164,7 +154,7 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="qid" value="<?php echo $this->question->id ?>" />
+	<input type="hidden" name="qid" value="<?php echo $this->question->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />

@@ -31,26 +31,13 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Question') . ': <small><small>[ ' . $text . ' ]</small></small>', 'answers.png');
+
+JToolBarHelper::title(JText::_('Answers Manager') . ': ' . JText::_('Question') . ': ' . $text, 'answers.png');
 JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
-
-$dateFormat = '%Y-%m-%d';
-$timeFormat = '%H:%M:s';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'Y-m-d';
-	$timeFormat = 'H:i:s';
-	$tz = true;
-}
-
-$create_date = NULL;
-if (intval($this->row->created) <> 0)
-{
-	$create_date = JHTML::_('date', $this->row->created);
-}
+JToolBarHelper::spacer();
+JToolBarHelper::help('question.html', true);
 
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
@@ -84,23 +71,23 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="anonymous">Anonymous:</label></td>
-						<td><input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->anonymous) ? 'checked="checked"' : ''; ?> /> Hide your name</td>
+						<td><input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /> Hide your name</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="email">Notify:</label></td>
-						<td><input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->email) ? 'checked="checked"' : ''; ?> /> Send e-mail when someone posts a response</td>
+						<td><input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> /> Send e-mail when someone posts a response</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="q_subject">Subject: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->subject)); ?>" /></td>
+						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key" style="vertical-align:top;"><label for="question[question]">Question:</label></td>
-						<td><?php echo $editor->display('question[question]', stripslashes($this->row->question), '360px', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('question[question]', stripslashes($this->row->get('question')), '360px', '200px', '50', '10'); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="q_tags">Tags: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->escape(stripslashes($this->tags)); ?>" /></td>
+						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->escape(stripslashes($this->row->tags('string'))); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -111,16 +98,19 @@ function submitbutton(pressbutton)
 			<tbody>
 				<tr>
 					<th>ID:</th>
-					<td><?php echo $this->row->id; ?></td>
+					<td>
+						<?php echo $this->row->get('id', 0); ?>
+						<input type="hidden" name="question[id]" value="<?php echo $this->row->get('id'); ?>" />
+					</td>
 				</tr>
-<?php if ($this->row->id) { ?>
+<?php if ($this->row->get('id')) { ?>
 				<tr>
 					<th>Created:</th>
-					<td><?php echo $this->row->created; ?></td>
+					<td><?php echo $this->row->get('created'); ?></td>
 				</tr>
 				<tr>
 					<th>Created by:</th>
-					<td><?php echo $this->row->created_by; ?></td>
+					<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
 				</tr>
 <?php } ?>
 			</tbody>
@@ -132,18 +122,18 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="created_by">Change Creator:</label></td>
-						<td><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" /></td>
+						<td><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', JFactory::getUser()->get('id')); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>
-						<td><?php echo JHTML::_('calendar', $this->row->created, 'question[created]', 'created', $dateFormat . ' ' . $timeFormat, array('class' => 'calendar-field')); ?></td>
+						<td><?php echo JHTML::_('calendar', $this->row->get('created', date('Y-m-d H:i:s', time())), 'question[created]', 'created', ANSWERS_DATE_FORMAT . ' ' . ANSWERS_TIME_FORMAT, array('class' => 'calendar-field')); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="state">State:</label></td>
 						<td>
 							<select name="question[state]" id="state">
-								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>>Open</option>
-								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>>Closed</option>
+								<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>>Open</option>
+								<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>>Closed</option>
 							</select>
 						</td>
 					</tr>
@@ -152,11 +142,10 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
-	<input type="hidden" name="question[id]" value="<?php echo $this->row->id; ?>" />
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -145,7 +145,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Is the question open?
+	 * Was the question deleted?
 	 * 
 	 * @return     boolean
 	 */
@@ -212,7 +212,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific comment
 	 * 
 	 * @return     void
 	 */
@@ -242,13 +242,11 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get a list of categories for a forum
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of responses
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      string $rtrn    Data type to return [count, list]
+	 * @param      array  $filters Filters to apply to query
+	 * @return     mixed Returns an integer or array depending upon format chosen
 	 */
 	public function comments($rtrn='list', $filters=array())
 	{
@@ -258,8 +256,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		{
 			$filters['qid'] = $this->get('id');
 		}
-		$filters['state']    = 1;
-		$filters['filterby'] = 'rejected';
+		if (!isset($filters['state']))
+		{
+			$filters['state']    = 1;
+		}
+		if (!isset($filters['filterby']))
+		{
+			$filters['filterby'] = 'rejected';
+		}
 		$filters['sort']     = 'created';
 		$filters['sort_Dir'] = 'DESC';
 
@@ -318,13 +322,11 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get a list of categories for a forum
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of chosen responses
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      string $rtrn    Data type to return [count, list]
+	 * @param      array  $filters Filters to apply to query
+	 * @return     mixed Returns an integer or array depending upon format chosen
 	 */
 	public function chosen($rtrn='list', $filters=array())
 	{
@@ -373,34 +375,18 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Check if the current user is enrolled
+	 * Get tags on the entry
+	 * Optinal first agument to determine format of tags
 	 * 
+	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param      integer $admin Include amdin tags? (defaults to no)
 	 * @return     boolean
 	 */
-	public function tags($what='cloud', $admin=0)
+	public function tags($as='cloud', $admin=0)
 	{
-		/*$bt = new AnswersTags($this->_db);
-
-		$tags = null;
-
-		$what = strtolower(trim($what));
-		switch ($what)
-		{
-			case 'array':
-				$tags = $bt->get_tags_on_object($this->get('id'), 0, 0, null, 0, $admin);
-			break;
-
-			case 'string':
-				$tags = $bt->get_tag_string($this->get('id'));
-			break;
-
-			case 'cloud':
-				$tags = $bt->get_tag_cloud(0, 0, $this->get('id'));
-			break;
-		}*/
 		$cloud = new AnswersModelTags($this->get('id'));
 
-		return $cloud->render($what, array('admin' => $admin));
+		return $cloud->render($as, array('admin' => $admin));
 	}
 
 	/**
@@ -410,21 +396,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		/*$bt = new AnswersTags($this->_db);
-
-		if (!$user_id)
-		{
-			$juser = JFactory::getUser();
-			$user_id = $juser->get('id');
-		}
-
-		return $bt->tag_object(
-			$user_id, 
-			$this->get('id'), 
-			trim($tags), 
-			1, 
-			1
-		);*/
 		$cloud = new AnswersModelTags($this->get('id'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
@@ -535,9 +506,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the content of the record. 
+	 * Optional argument to determine how content should be handled
+	 *
+	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
+	 * clean  - parses content and then strips tags
+	 * raw    - as is, no parsing
 	 * 
-	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
 	 */
@@ -673,9 +649,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Store changes to this offering
+	 * Accept a response as the chosen answer
 	 *
-	 * @param     boolean $check Perform data validation check?
+	 * @param     integer $answer_id ID of response to be chosen
 	 * @return    boolean False if error, True on success
 	 */
 	public function accept($answer_id=0)
@@ -833,6 +809,74 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			}
 		}
 		return $this->params->get('access-' . strtolower($action) . '-entry');
+	}
+
+	/**
+	 * Distribute points
+	 *
+	 * @return    void
+	 */
+	public function adjustCredits()
+	{
+		if ($this->get('reward'))
+		{
+			// Adjust credits
+			// Remove hold
+			$BT = new Hubzero_Bank_Transaction($this->_db);
+			$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
+			$BT->deleteRecords('answers', 'hold', $this->get('id'));
+
+			// Make credit adjustment
+			if (is_object($this->creator()))
+			{
+				$BTL = new Hubzero_Bank_Teller($this->_db, $this->creator('id'));
+				$credit = $BTL->credit_summary();
+				$adjusted = $credit - $reward;
+				$BTL->credit_adjustment($adjusted);
+			}
+
+			$this->set('reward', 0);
+		}
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return    boolean False if error, True on success
+	 */
+	public function delete()
+	{
+		// Ensure we have a database to work with
+		if (empty($this->_db))
+		{
+			$this->setError(JText::_('Database not found.'));
+			return false;
+		}
+
+		// Can't delete what doesn't exist
+		if (!$this->exists()) 
+		{
+			return true;
+		}
+
+		// Adjust credits
+		$this->adjustCredits();
+
+		// Remove comments
+		foreach ($this->comments('list', array('filterby' => 'all')) as $comment)
+		{
+			if (!$comment->delete())
+			{
+				$this->setError($comment->getError());
+				return false;
+			}
+		}
+
+		// Remove all tags
+		$this->tag('');
+
+		// Attempt to delete the record
+		return parent::delete();
 	}
 }
 

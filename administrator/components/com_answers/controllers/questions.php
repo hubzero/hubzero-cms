@@ -120,33 +120,11 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->results = $aq->getResults($this->view->filters);
 
 		// Did we get any results?
-		if (count($this->view->results) > 0)
+		if ($this->view->results)
 		{
-			$ip = Hubzero_Environment::ipAddress();
-			$ar = new AnswersResponse($this->database);
-			$at = new AnswersTags($this->database);
-
-			// Do some processing on the results
-			for ($i=0; $i < count($this->view->results); $i++)
+			foreach ($this->view->results as $key => $result)
 			{
-				$row =& $this->view->results[$i];
-
-				if ($this->banking)
-				{
-					$row->points = $this->_getPointReward($row->id);
-				}
-				else
-				{
-					$row->points = 0;
-				}
-
-				$row->reports = $this->_getAbuseReports($row->id, 'question');
-
-				// Get tags on this question
-				$row->tags = $at->get_tags_on_object($row->id, 0, 0, 0);
-
-				// Get responses
-				$row->answers = count($ar->getRecords(array('ip' => $ip, 'qid' => $row->id)));
+				$this->view->results[$key] = new AnswersModelQuestion($result);
 			}
 		}
 
@@ -161,7 +139,10 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -203,41 +184,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 		else 
 		{
-			$this->view->row = new AnswersQuestion($this->database);
-			$this->view->row->load($id);
+			$this->view->row = new AnswersModelQuestion($id);
 		}
-
-		if ($id)
-		{
-			// Remove some tags so edit box only displays text (no HTML)
-			$this->view->row->question = AnswersHtml::unpee($this->view->row->question);
-
-			$tags_men = $this->_getTags($id, 0);
-			$mytagarray = array();
-			foreach ($tags_men as $tag_men)
-			{
-				$mytagarray[] = $tag_men->raw_tag;
-			}
-		}
-		else
-		{
-			// Creating new
-			$this->view->row->subject     = '';
-			$this->view->row->question    = '';
-			$this->view->row->created     = date('Y-m-d H:i:s', time());
-			$this->view->row->created_by  = '';
-			$this->view->row->state       = 0;
-
-			$mytagarray = array();
-		}
-
-		// Get tags
-		$this->view->tags = implode(', ', $mytagarray);
 
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -255,38 +211,31 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming data
-		$question = JRequest::getVar('question', array(), 'post');
-		$question = array_map('trim', $question);
+		$fields = JRequest::getVar('question', array(), 'post');
+
+		// Initiate model
+		$row = new AnswersModelQuestion($fields['id']);
+
+		if (!$row->bind($fields))
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
 
 		// Ensure we have at least one tag
-		if (!$question['tags'])
+		if (!isset($fields['tags']) || !$fields['tags'])
 		{
 			$this->addComponentMessage(JText::_('Question must have at least 1 tag'), 'error');
-			$this->editTask();
-			return;
-		}
-
-		// Initiate extended database class
-		$row = new AnswersQuestion($this->database);
-		if (!$row->bind($question))
-		{
-			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
-		$row->email = (isset($question['email'])) ? 1 : 0;
-		$row->anonymous = (isset($question['anonymous'])) ? 1 : 0;
 
-		// Check content
-		if (!$row->check())
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+		$row->set('email', (isset($fields['email']) ? 1 : 0));
+		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
 		// Store content
-		if (!$row->store())
+		if (!$row->store(true))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -294,8 +243,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Add the tag(s)
-		$at = new AnswersTags($this->database);
-		$at->tag_object($this->juser->get('id'), $row->id, $question['tags'], 1, 1);
+		$row->tag($fields['tags'], $this->juser->get('id'), 1);
 
 		// Redirect back to the full questions list
 		$this->setRedirect(
@@ -325,72 +273,29 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			return;
 		}
 
-		$aq = new AnswersQuestion($this->database);
-		$ar = new AnswersResponse($this->database);
-		$al = new AnswersLog($this->database);
-
 		foreach ($ids as $id)
 		{
+			// Load the record
+			$aq = new AnswersModelQuestion(intval($id));
+
 			// Delete the question
-			$aq->load(intval($id));
-			$aq->state = 2;  // Deleted by user
-			$aq->reward = 0;
-
-			// Store new content
-			if (!$aq->store())
+			if (!$aq->delete())
 			{
-				JError::raiseError(500, $aq->getError());
-				return;
+				$this->setError($aq->getError());
 			}
-
-			if ($this->banking) {
-				// Remove hold
-				$BT = new Hubzero_Bank_Transaction($this->database);
-				$reward = $BT->getAmount('answers', 'hold', $id);
-				$BT->deleteRecords('answers', 'hold', $id);
-
-				$creator =& JUser::getInstance($aq->created_by);
-
-				// Make credit adjustment
-				if (is_object($creator))
-				{
-					$BTL = new Hubzero_Bank_Teller($this->database, $creator->get('id'));
-					$credit = $BTL->credit_summary();
-					$adjusted = $credit - $reward;
-					$BTL->credit_adjustment($adjusted);
-				}
-			}
-
-			// Get all the answers for this question
-			$ip = Hubzero_Environment::ipAddress();
-			$answers = $ar->getRecords(array('ip' => $ip, 'qid' => $id));
-
-			if ($answers)
-			{
-				foreach ($answers as $answer)
-				{
-					// Delete response's log entry
-					if (!$al->deleteLog($answer->id))
-					{
-						JError::raiseError(500, $al->getError());
-						return;
-					}
-
-					// Delete response
-					if (!$ar->deleteResponse($answer->id))
-					{
-						JError::raiseError(500, $ar->getError());
-						return;
-					}
-				}
-			}
-
-			// Delete all tag associations	
-			$tagging = new AnswersTags($this->database);
-			$tags = $tagging->remove_all_tags($id);
 		}
 
 		// Redirect
+		if ($this->getError())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				implode('<br />', $this->getErrors()),
+				'error'
+			);
+			return;
+		}
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('Question deleted')
@@ -446,51 +351,34 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Load the plugins
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
+		//JPluginHelper::importPlugin('xmessage');
+		//$dispatcher =& JDispatcher::getInstance();
 
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$aq = new AnswersQuestion($this->database);
-			$aq->load(intval($id));
-			$aq->state = $publish;
+			$aq = new AnswersModelQuestion(intval($id));
+			if (!$aq->exists())
+			{
+				continue;
+			}
+			$aq->set('state', $publish);
+
 			if ($publish == 1)
 			{
-				$aq->reward = 0;
+				$aq->adjustCredits();
+				/*// Call the plugin
+				if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($aq->creator('id')), $this->_option, $id)))
+				{
+					$this->setError(JText::_('Failed to remove alert.'));
+				}
+				$aq->set('reward', 0);*/
 			}
+
 			if (!$aq->store())
 			{
 				JError::raiseError(500, $aq->getError());
 				return;
-			}
-
-			if ($publish == 1)
-			{
-				$creator =& JUser::getInstance($aq->created_by);
-
-				if ($this->banking)
-				{
-					// Remove hold
-					$BT = new Hubzero_Bank_Transaction($this->database);
-					$reward = $BT->getAmount('answers', 'hold', $id);
-					$BT->deleteRecords('answers', 'hold', $id);
-
-					// Make credit adjustment
-					if (is_object($creator))
-					{
-						$BTL = new Hubzero_Bank_Teller($this->database, $creator->get('id'));
-						$credit = $BTL->credit_summary();
-						$adjusted = $credit - $reward;
-						$BTL->credit_adjustment($adjusted);
-					}
-				}
-
-				// Call the plugin
-				if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($creator->get('id')), $this->_option, $id)))
-				{
-					$this->setError(JText::_('Failed to remove alert.'));
-				}
 			}
 		}
 
@@ -520,72 +408,5 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
-	}
-
-	/**
-	 * Get the amount of point rewards for a question
-	 * 
-	 * @param      integer $id ID of question
-	 * @return     integer
-	 */
-	private function _getPointReward($id)
-	{
-		// Check if question owner assigned a reward for answering his Q
-		$BT = new Hubzero_Bank_Transaction($this->database);
-		return $BT->getAmount('answers', 'hold', $id);
-	}
-
-	/**
-	 * Get the count of abuse reports on a question
-	 * 
-	 * @param      integer $id  Question ID
-	 * @param      string  $cat Abuse entry category (question)
-	 * @return     integer
-	 */
-	private function _getAbuseReports($id, $cat)
-	{
-		// Incoming
-		$filters = array(
-			'id'       => $id,
-			'category' => $cat,
-			'state'    => 0
-		);
-
-		// Check for abuse reports on an item
-		$ra = new ReportAbuse($this->database);
-
-		return $ra->getCount($filters);
-	}
-
-	/**
-	 * Get the tags on a question
-	 * 
-	 * @param      string  $id        Question ID
-	 * @param      integer $tagger_id Restrict tags to a specific user
-	 * @param      integer $strength  Tag strength
-	 * @return     mixed array
-	 */
-	private function _getTags($id, $tagger_id=0, $strength=0)
-	{
-		$sql = "SELECT DISTINCT t.* FROM #__tags AS t, #__tags_object AS rt WHERE rt.objectid=" . $id . " AND rt.tbl='answers' AND rt.tagid=t.id";
-		if ($tagger_id != 0)
-		{
-			$sql .= " AND rt.taggerid=" . $tagger_id;
-		}
-		if ($strength)
-		{
-			$sql .= " AND rt.strength=" . $strength;
-		}
-		$this->database->setQuery($sql);
-		if ($this->database->query())
-		{
-			$tags = $this->database->loadObjectList();
-		}
-		else
-		{
-			$tags = NULL;
-		}
-
-		return $tags;
 	}
 }

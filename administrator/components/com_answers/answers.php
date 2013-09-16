@@ -58,13 +58,14 @@ else
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'economy.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+//require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'answers.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'question.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'response.php');
+//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'question.php');
+//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'response.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'questionslog.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'question.php');
 
 ximport('Hubzero_Environment');
 
