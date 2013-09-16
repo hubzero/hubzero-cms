@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html dir="ltr" lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="ltr" lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="ltr" lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="ltr" lang="en" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="ltr" lang="en"> <!--<![endif]-->
+	<head>
+		<title>Support Documentation: Ticket</title>
+		<link rel="stylesheet" href="/media/system/css/documentation.css" type="text/css" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	</head>
+	<body id="documentation-body">
+		<div class="article">
+			<h1><span>Ticket</span></h1>
+			<div class="section">
+				<h2><span>Overview</span></h2>
+
+				<p>Here you will find a submitted ticket and all associated data, including comments, change and notification logs, and attachments.</p>
+
+				<p>Default queries are generally divided into three groups:</p>
+
+				<dl>
+					<dt>Common (in ACL)</dt>
+					<dd>Commonly run queries, such as 'Open tickets' or 'New tickets'. Query is built and filtered based on user's ACL entry.</dd>
+
+					<dt>Common (<em>not</em> in ACL)</dt>
+					<dd>Commonly run queries, such as 'Open tickets' or 'New tickets'. Query is built and filtered to exclude data the user does nto have access to. Typically, this means the user will only see tickets they submitted, are assigned to, or tickets assigned to a group they belong to.</dd>
+
+					<dt>Mine</dt>
+					<dd>Commonly run queries, such as 'My open tickets' or 'My submitted tickets'. Queries are filtered to display only tickets associated to the logged in user.</dd>
+				</dl>
+
+				<p>Stats shown may also be filtered by group.</p>
+			</div>
+			<div class="section">
+				<h2><span>Changes</span></h2>
+
+				<p>The original ticket data may not be modified in any way. Only associated or non-destructive changes may occur, such as changing status, severity, adding/removing tags, and assigning owner. All changes are tracked in a log.</p>
+
+				<h3>Status</h3>
+				<dl>
+					<dt>Open</dt>
+					<dd>An open issue. The ticket needs to be addressed in some fashion.</dd>
+
+					<dt>Awaiting user action</dt>
+					<dd>This is for when you need more information from or the ticket submitter to perform a specific task (such as test that a fix is working for them). In short, further progress on the ticket is dependant upon the some course of action from the ticket submitter.</dd>
+
+					<dt>Closed</dt>
+					<dd>The ticket is considered recolved. Here, a list of resolutions can be specified to better filter and generate stats by.</dd>
+				</dl>
+
+				<h3>Owner</h3>
+
+				<p>The owner of a ticket is the <i>current</i> user assigned to perform some action or address the the issue presented by the ticket in some way. Ownership may change several times during the life of the ticket and is tracked in the change log. When assigned to a ticket as an owner, the ticket will appear in the user's "My assigned tickets" list.</p>
+
+				<h3>Group</h3>
+
+				<p>Sometimes, a ticket may belong to a group of users rather than a specific person.</p>
+
+				<h3>Severity</h3>
+
+				<p>This sets the priority of the ticket.</p>
+			</div>
+			<div class="section">
+				<h2><span>Commenting</span></h2>
+
+				<p>Comments are visible to anyone who has access to read this ticket, including the ticket submitter, unless the comment is marked <strong>private</strong>.</p>
+
+				<h3>Notifying others</h3>
+
+				<p>You may send the comment to others by filling in username, user ID, or email addresses in the "Send message to" field. Any value entered here is <em>sticky</em>--that is, the value will be retained and the field pre-filled for the next comment. This makes it easy to keep the same set of people notified. All notifications are tracked in a log.</p>
+			</div>
+			<div class="section">
+				<h2><span>Watching</span></h2>
+
+				<p>When watching a ticket, you will be notified of any comments added or changes made. You may stop watching at any time.</p>
+			</div>
+		</div>
+	</body>
+</html>

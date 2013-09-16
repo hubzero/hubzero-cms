@@ -35,6 +35,8 @@ JToolBarHelper::title( JText::_( 'Ticket' ).': <small><small>[ '. $text.' ]</sma
 JToolBarHelper::save();
 JToolBarHelper::apply();
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('ticket.html', true);
 
 $juser =& JFactory::getUser();
 

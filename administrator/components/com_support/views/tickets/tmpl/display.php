@@ -36,6 +36,8 @@ JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 //JToolBarHelper::editList();
 JToolBarHelper::deleteList();
+JToolBarHelper::spacer();
+JToolBarHelper::help('tickets.html', true);
 
 ximport('Hubzero_User_Profile');
 
