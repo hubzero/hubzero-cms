@@ -104,6 +104,50 @@ class TagsTableObject extends JTable
 	}
 
 	/**
+	 * Validate data
+	 * 
+	 * @return     True if data is valid
+	 */
+	public function check()
+	{
+		$this->objectid = intval($this->objectid);
+		if (!$this->objectid) 
+		{
+			$this->setError(JText::_('Missing scope ID.'));
+			return false;
+		}
+
+		$this->tbl = trim($this->tbl);
+		if (!$this->tbl) 
+		{
+			$this->setError(JText::_('Missing scope.'));
+			return false;
+		}
+
+		$this->tagid = intval($this->tagid);
+		if (!$this->tagid) 
+		{
+			$this->setError(JText::_('Missing tag ID.'));
+			return false;
+		}
+
+		$this->label = trim($this->label);
+
+		$this->taggerid = intval($this->taggerid);
+		if (!$this->taggerid)
+		{
+			$this->taggerid = JFactory::getUser()->get('id');
+		}
+
+		if (!$this->id)
+		{
+			$this->taggedon = date('Y-m-d H:i:s', time());
+		}
+
+		return true;
+	}
+
+	/**
 	 * Load a database row and populate this object with results
 	 * Uses unique tag string as identifier
 	 * 

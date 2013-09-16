@@ -1,6 +1,6 @@
 <?php
 /**
- * Test class for the tags API component controller
+ * Test class for the answers API component controller
  * 
  * @author Shawn Rice <zooley@purdue.edu>
  */
@@ -11,7 +11,7 @@ require_once JPATH_BASE . DS . 'components' . DS . 'com_tags' . DS . 'controller
 /**
  * Test class for time component api controller
  */
-class TagsControllerApiTest extends PHPUnit_Framework_TestCase
+class AnswersControllerApiTest extends PHPUnit_Framework_TestCase
 {
 	var $instance = null;
 
@@ -20,7 +20,7 @@ class TagsControllerApiTest extends PHPUnit_Framework_TestCase
 	 */
 	function setUp()
 	{
-		$this->instance = new TagsControllerApi();
+		$this->instance = new AnswersApiController();
 	}
 
 	/**
@@ -34,27 +34,27 @@ class TagsControllerApiTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test if $this->instance is an object
 	 *
-	 * @group com_tags
+	 * @group com_answers
 	 */
 	function testInstanceIsObject()
 	{
-		$this->assertTrue(is_object($this->instance));
+		$this->assertType('object', $this->instance);
 	}
 
 	/**
-	 * Test that instance is an instance of TimeController
+	 * Test that instance is an instance of AnswersController
 	 *
-	 * @group com_tags
+	 * @group com_answers
 	 */
 	function testIsInstanceOfTagsControllerApi()
 	{
-		$this->assertTrue($this->instance instanceof TagsControllerApi);
+		$this->assertTrue($this->instance instanceof AnswersControllerApi);
 	}
 
 	/**
 	 * Test that instance extends Hubzero_Controller
 	 *
-	 * @group com_tags
+	 * @group com_answers
 	 */
 	function testExtendsHubzeroApiController()
 	{

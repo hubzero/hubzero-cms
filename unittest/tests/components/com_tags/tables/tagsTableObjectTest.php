@@ -2,8 +2,8 @@
 /**
  * Test class for the time records table class
  * 
- * @author Sam Wilson <samwilson@purdue.edu>
- * @runTestsInSeparateProcesses
+ * @author Shawn Rice <zooley@purdue.edu>
+ * @runInSeparateProcesses
  */
 
 // Include time records table
@@ -42,7 +42,7 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	{
 		PHPUnitTestHelper::siteSetup();
 		$db = PHPUnitTestHelper::getDBO();
-		$this->instance = new TagsTableOption($db);
+		$this->instance = new TagsTableObject($db);
 	}
 
 	/**
@@ -56,17 +56,17 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test if $this->instance is an object
 	 *
-	 * @group com_time
+	 * @group com_tags
 	 */
 	function testInstanceIsObject()
 	{
-		$this->assertType('object', $this->instance);
+		$this->assertTrue(is_object($this->instance));
 	}
 
 	/**
-	 * Test that instance is an instance of TagsTableTag
+	 * Test that instance is an instance of TagsTableObject
 	 *
-	 * @group com_time
+	 * @group com_tags
 	 */
 	function testIsInstanceOfTagsTableObject()
 	{
@@ -76,7 +76,7 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test that instance extends JTable
 	 *
-	 * @group com_time
+	 * @group com_tags
 	 */
 	function testExtendsJTable()
 	{
@@ -86,20 +86,20 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test that getCount returns number
 	 *
-	 * @group com_time
-	 * @covers TagsTableTag::getCount
+	 * @group com_tags
+	 * @covers TagsTableObject::getCount
 	 */
 	function testCountIsNumeric()
 	{
 		$result = $this->instance->count();
-		$this->assertType('numeric', $result, "Tags Object Count: $result");
+		$this->assertTrue(is_numeric($result), "Tags Object Count: $result");
 	}
 
 	/**
 	 * Test that getCount with filters returns number
 	 * 
-	 * @group com_time
-	 * @covers TagsTableTag::getCount
+	 * @group com_tags
+	 * @covers TagsTableObject::count
 	 */
 	function testCountWithFiltersIsNumeric()
 	{
@@ -108,14 +108,14 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 		);
 
 		$result = $this->instance->count($filters);
-		$this->assertType('numeric', $result, "Tags Object Count: $result");
+		$this->assertTrue(is_numeric($result), "Tags Object Count: $result");
 	}
 
 	/**
 	 * Test that getRecords
 	 * 
-	 * @group com_time
-	 * @covers TagsTableTag::getRecords
+	 * @group com_tags
+	 * @covers TagsTableObject::find
 	 */
 	function testFindIsArray()
 	{
@@ -129,7 +129,7 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test that record has specified attributes
 	 *
-	 * @group com_time
+	 * @group com_tags
 	 */
 	function testObjectHasAttributes()
 	{
@@ -142,8 +142,8 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test record save
 	 *
-	 * @group com_time
-	 * @covers TagsTableTag::save
+	 * @group com_tags
+	 * @covers TagsTableObject::save
 	 */
 	function testRecordSave()
 	{
@@ -156,44 +156,64 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that getCount returns number
+	 * Test record save
 	 *
-	 * @group com_time
-	 * @covers TagsTableTag::getCount
+	 * @group com_tags
+	 * @covers TagsTableObject::check
 	 */
-	function testScopeIdIsNumeric()
+	function testRecordCheck()
 	{
-		$this->assertType('numeric', $this->instance->objectid, "Scope ID is numeric");
+		$this->instance->bind($this->mock);
+		$result = $this->instance->check();
+
+		$this->assertTrue($result);
+
+		// Save the object id for deletion later
+		return $this->instance;
 	}
 
 	/**
 	 * Test that getCount returns number
 	 *
-	 * @group com_time
-	 * @covers TagsTableTag::getCount
+	 * @group com_tags
+	 * @depends testRecordCheck
+	 * @covers TagsTableObject::check
 	 */
-	function testScopeIsString()
+	function testScopeIdIsNumeric($instance)
 	{
-		$this->assertType('string', $this->instance->tbl, "Scope is string");
+		$this->assertTrue(is_numeric($instance->objectid), "Scope ID is numeric");
 	}
 
 	/**
 	 * Test that getCount returns number
 	 *
-	 * @group com_time
-	 * @covers TagsTableTag::getCount
+	 * @group com_tags
+	 * @depends testRecordCheck
+	 * @covers TagsTableObject::check
 	 */
-	function testTagIdIsNumeric()
+	function testScopeIsString($instance)
 	{
-		$this->assertType('numeric', $this->instance->tagid, "Tag ID is numeric");
+		$this->assertTrue(is_string($instance->tbl), "Scope is string");
+	}
+
+	/**
+	 * Test that getCount returns number
+	 *
+	 * @group com_tags
+	 * @depends testRecordCheck
+	 * @covers TagsTableObject::check
+	 */
+	function testTagIdIsNumeric($instance)
+	{
+		$this->assertTrue(is_numeric($instance->tagid), "Tag ID is numeric");
 	}
 
 	/**
 	 * Test record read
 	 *
-	 * @group com_time
+	 * @group com_tags
 	 * @depends testRecordSave
-	 * @covers TagsTableTag::getRecord
+	 * @covers TagsTableTag::load
 	 */
 	function testRecordLoad($id)
 	{
@@ -204,7 +224,7 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test record delete
 	 *
-	 * @group com_time
+	 * @group com_tags
 	 * @depends testRecordSave
 	 */
 	function testRecordDelete($id)
@@ -216,13 +236,16 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test record save fails when no time is provided
 	 *
-	 * @group com_time
+	 * @group com_tags
+	 * @covers TagsTableObject::check
 	 */
-	function testRecordSaveFailsWithNoScope()
+	function testRecordCheckFailsWithNoScope()
 	{
 		$mock = $this->mock;
 		$mock['tbl'] = '';
-		$result = $this->instance->save($mock);
+
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
 
 		$this->assertFalse($result);
 	}
@@ -230,13 +253,16 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test record save fails when no time is provided
 	 *
-	 * @group com_time
+	 * @group com_tags
+	 * @covers TagsTableObject::check
 	 */
-	function testRecordSaveFailsWithNoScopeId()
+	function testRecordCheckFailsWithNoScopeId()
 	{
 		$mock = $this->mock;
 		$mock['objectid'] = 0;
-		$result = $this->instance->save($mock);
+
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
 
 		$this->assertFalse($result);
 	}
@@ -244,13 +270,16 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test record save fails when no time is provided
 	 *
-	 * @group com_time
+	 * @group com_tags
+	 * @covers TagsTableObject::check
 	 */
-	function testRecordSaveFailsWithNoTagId()
+	function testRecordCheckFailsWithNoTagId()
 	{
 		$mock = $this->mock;
 		$mock['tagid'] = 0;
-		$result = $this->instance->save($mock);
+
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
 
 		$this->assertFalse($result);
 	}

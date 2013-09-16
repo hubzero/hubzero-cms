@@ -1,17 +1,17 @@
 <?php
 /**
- * Test class for the tags component controller
+ * Test class for the answers component controller
  * 
  * @author Shawn Rice <zooley@purdue.edu>
  */
 
 // Include time component controller
-require_once JPATH_BASE . DS . 'components' . DS . 'com_tags' . DS . 'controllers' . DS . 'tags.php';
+require_once JPATH_BASE . DS . 'components' . DS . 'com_answers' . DS . 'controllers' . DS . 'questions.php';
 
 /**
- * Test class for time component primary controller
+ * Test class for answers component primary controller
  */
-class TagsControllerTagsTest extends PHPUnit_Framework_TestCase
+class AnswersControllerTagsTest extends PHPUnit_Framework_TestCase
 {
 	var $instance = null;
 
@@ -21,7 +21,7 @@ class TagsControllerTagsTest extends PHPUnit_Framework_TestCase
 	function setUp()
 	{
 		$app =& JFactory::getApplication('site');
-		$this->instance = new TagsControllerTags();
+		$this->instance = new AnswersControllerQuestions();
 	}
 
 	/**
@@ -35,29 +35,29 @@ class TagsControllerTagsTest extends PHPUnit_Framework_TestCase
 	/**
 	 * Test if $this->instance is an object
 	 *
-	 * @group com_tags
+	 * @group com_answers
  	 * @runInSeparateProcess
 	 */
 	function testInstanceIsObject()
 	{
-		$this->assertTrue(is_object($this->instance));
+		$this->assertType('object', $this->instance, 'Controller isn\'t an object');
 	}
 
 	/**
-	 * Test that instance is an instance of TagsControllerTags
+	 * Test that instance is an instance of AnswersControllerQuestions
 	 *
-	 * @group com_tags
+	 * @group com_answers
 	 * @runInSeparateProcess
 	 */
 	function testIsInstanceOfTimeController()
 	{
-		$this->assertTrue($this->instance instanceof TagsControllerTags);
+		$this->assertTrue($this->instance instanceof AnswersControllerQuestions);
 	}
 
 	/**
 	 * Test that instance extends Hubzero_Controller
 	 *
-	 * @group com_tags
+	 * @group com_answers
 	 * @runInSeparateProcess
 	 */
 	function testExtendsHubzeroController()

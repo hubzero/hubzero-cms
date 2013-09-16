@@ -2,8 +2,8 @@
 /**
  * Test class for the time records table class
  * 
- * @author Sam Wilson <samwilson@purdue.edu>
- * @runTestsInSeparateProcesses
+ * @author Shawn Rice <zooley@purdue.edu>
+ * @runInSeparateProcesses
  */
 
 // Include time records table
@@ -54,7 +54,7 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	 */
 	function testInstanceIsObject()
 	{
-		$this->assertType('object', $this->instance);
+		$this->assertTrue(is_object($this->instance));
 	}
 
 	/**
@@ -86,7 +86,7 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	function testGetCountIsNumeric()
 	{
 		$result = $this->instance->getCount();
-		$this->assertType('numeric', $result, "Tags Count: $result");
+		$this->assertTrue(is_numeric($result), "Tags Count: $result");
 	}
 
 	/**
@@ -103,7 +103,7 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 		);
 
 		$result = $this->instance->getCount($filters);
-		$this->assertType('numeric', $result, "Tags Count: $result");
+		$this->assertTrue(is_numeric($result), "Tags Count: $result");
 	}
 
 	/**
@@ -193,13 +193,16 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	 * Test record check passes
 	 *
 	 * @group com_tags
+	 * @covers TagsTableTag::check
 	 */
-	function testRecordCheckReturnsTrue()
+	function testRecordCheck()
 	{
-		$this->instance->tag    = 'Evil!';
+		$this->instance->raw_tag = 'Evil!';
 		$result = $this->instance->check();
 
 		$this->assertTrue($result);
+
+		return $this->instance;
 	}
 
 	/**
@@ -209,9 +212,9 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	 * @depends testRecordCheck
 	 * @covers TagsTableTag::check
 	 */
-	function testTagIsString()
+	function testTagIsString($instance)
 	{
-		$this->assertType('string', $this->instance->tag, "Tag is string");
+		$this->assertTrue(is_string($instance->tag), "Tag is string");
 	}
 
 	/**
@@ -221,10 +224,10 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	 * @depends testRecordCheck
 	 * @covers TagsTableTag::check
 	 */
-	function testTagIsLowercase()
+	function testTagIsLowercase($instance)
 	{
 		$result = $this->instance->tag;
-		$this->assertTrue((strtolower($this->instance->tag) == $this->instance->tag), "Tag is lowercase");
+		$this->assertTrue((strtolower($instance->tag) == $instance->tag), "Tag is lowercase");
 	}
 
 	/**
@@ -234,9 +237,13 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	 * @depends testRecordCheck
 	 * @covers TagsTableTag::check
 	 */
-	function testTagHasNoPunctuation()
+	function testTagHasNoPunctuation($instance)
 	{
-		$result = $this->instance->tag;
-		$this->assertFalse(preg_match('/[^a-zA-Z0-9]/', $this->instance->tag), "Tag is lowercase");
+		$res = true;
+		if (preg_match('/[^a-zA-Z0-9]/', $instance->tag))
+		{
+			$res = false;
+		}
+		$this->assertFalse($res, "Tag does not contain punctuation");
 	}
 }
