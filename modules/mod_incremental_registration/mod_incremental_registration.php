@@ -32,6 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if (!class_exists('ModIncrementalRegistrationMediaPath')): 
 /**
  * Incremental Registration Module class for media paths
  */
@@ -145,11 +146,11 @@ class ModIncrementalRegistrationController
 					$orgtype      = null;
 					$organization = null;
 					$reason       = null;
-					$mail         = -1;
+					$mailPreferenceOption = -1;
 
 					if (isset($_POST['mailPreferenceOption'])) 
 					{
-						$mail = (int)$_POST['mailPreferenceOption'];
+						$mailPreferenceOption = (int)$_POST['mailPreferenceOption'];
 					}
 					if (isset($_POST['orgtype']) && trim($_POST['orgtype'])) 
 					{
@@ -279,7 +280,7 @@ class ModIncrementalRegistrationController
 					{
 						$errors['reason'] = true;
 					}
-					if (isset($row['mailPreferenceOption']) && $mail == -1) {
+					if (isset($row['mailPreferenceOption']) && $mailPreferenceOption == -1) {
 						$errors['mailPreferenceOption'] = true;
 					}
 
@@ -354,6 +355,7 @@ class ModIncrementalRegistrationController
 								{
 									$dbh->execute('INSERT INTO #__xprofiles_disability(uidNumber, disability) VALUES ('.$uid.', '.$dbh->quote($disability).')');
 								}
+								continue;
 							}
 							if ($k == 'name') 
 							{
@@ -390,3 +392,5 @@ class ModIncrementalRegistrationController
 }
 
 new ModIncrementalRegistrationController;
+
+endif;

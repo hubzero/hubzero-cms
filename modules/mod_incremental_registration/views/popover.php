@@ -507,7 +507,7 @@ $defaultCountries = array(
 								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'refused') echo 'checked="checked" '; ?>type="radio" value="refused" id="disabilityrefused" name="disability" class="option"> Do not wish to reveal</label>
 							</div>
 						</fieldset>
-					<li>
+					</li>
 				<?php endif; ?>
 				<?php if (isset($row['mailPreferenceOption'])): ?>
 					<li>
