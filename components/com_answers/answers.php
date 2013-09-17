@@ -42,11 +42,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'question.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'questionslog.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'economy.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'member.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'questions'));
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))

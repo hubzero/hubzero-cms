@@ -63,11 +63,11 @@ if (!$this->filters['filterby'] == 'none')
 				<?php echo JText::sprintf('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . JRoute::_('index.php?option=com_kb') . '">' . JText::_('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', $jconfig->getValue('config.sitename')); ?>
 			</p>
 		</div><!-- / .container -->
-	<?php if ($this->banking) { ?>
+	<?php if ($this->config->get('banking')) { ?>
 		<div class="container">
 			<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
 			<p>
-				<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
+				<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
 			</p>
 		</div><!-- / .container -->
 	<?php } ?>
@@ -116,7 +116,7 @@ if (!$this->filters['filterby'] == 'none')
 
 			<div class="container">
 				<ul class="entries-menu order-options">
-				<?php if ($this->banking) { ?>
+				<?php if ($this->config->get('banking')) { ?>
 					<li>
 						<a<?php echo ($this->filters['sortby'] == 'rewards') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search&area=' . urlencode($this->filters['area']).'&filterby=' . urlencode($this->filters['filterby']).'&sortby=rewards'); ?>" title="<?php echo JText::_('COM_ANSWERS_SORT_REWARDS_TITLE'); ?>">
 							<?php echo JText::_('COM_ANSWERS_SORT_REWARDS'); ?>
@@ -175,28 +175,25 @@ if (!$this->filters['filterby'] == 'none')
 				<?php
 				foreach ($this->results as $row)
 				{
-					$row->reports = (isset($row->reports)) ? $row->reports : 0;
-					$row->points  = $row->points           ? $row->points  : 0;
-
 					// author name
 					$name = JText::_('COM_ANSWERS_ANONYMOUS');
-					if (!$row->anonymous) 
+					if (!$row->get('anonymous')) 
 					{
-						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->userid) . '">' . $this->escape(stripslashes($row->name)) . '</a>';
+						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->get('name'))) . '</a>';
 					}
 
-					$cls  = ($row->state == 1) ? 'answered' : '';
-					$cls  = ($row->reports) ? 'flagged' : $cls;
-					$cls .= ($row->created_by == $juser->get('username')) ? ' mine' : '';
+					$cls  = ($row->isclosed())   ? 'answered' : '';
+					$cls  = ($row->isReported()) ? 'flagged'  : $cls;
+					$cls .= ($row->get('created_by') == $juser->get('username')) ? ' mine' : '';
 				?>
 						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 							<th>
-								<span class="entry-id"><?php echo $row->id; ?></span>
+								<span class="entry-id"><?php echo $row->get('id'); ?></span>
 							</th>
 							<td>
-							<?php if (!$row->reports) { ?>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id); ?>">
-									<?php echo $this->escape(stripslashes($row->subject)); ?>
+							<?php if (!$row->isReported()) { ?>
+								<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>">
+									<?php echo $this->escape(stripslashes($row->get('subject'))); ?>
 								</a><br />
 							<?php } else { ?>
 								<span class="entry-title">
@@ -205,26 +202,26 @@ if (!$this->filters['filterby'] == 'none')
 							<?php } ?>
 								<span class="entry-details">
 									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> <span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
-									<span class="entry-time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
-									<span class="entry-date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE); ?></time></span>
+									<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
+									<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-state">
-										<?php echo ($row->state==1) ? JText::_('COM_ANSWERS_STATE_CLOSED') : JText::_('COM_ANSWERS_STATE_OPEN'); ?>
+										<?php echo ($row->get('state')==1) ? JText::_('COM_ANSWERS_STATE_CLOSED') : JText::_('COM_ANSWERS_STATE_OPEN'); ?>
 									</span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-comments">
-										<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id . '#answers'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_RESPONSES_TO_THIS_QUESTION', $row->rcount); ?>">
-											<?php echo $row->rcount; ?>
+										<a href="<?php echo JRoute::_($row->link() . '#answers'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_RESPONSES_TO_THIS_QUESTION', $row->get('rcount')); ?>">
+											<?php echo $row->get('rcount'); ?>
 										</a>
 									</span>
 								</span>
 							</td>
-						<?php if ($this->banking) { ?>
+						<?php if ($this->config->get('banking')) { ?>
 							<td class="reward">
-							<?php if (isset($row->reward) && $row->reward == 1 && $this->banking) { ?>
+							<?php if ($row->get('reward') == 1) { ?>
 								<span class="entry-reward">
-									<?php echo $row->points; ?> 
-									<a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->points); ?>">
+									<?php echo $row->get('points'); ?> 
+									<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
 										<?php echo JText::_('COM_ANSWERS_POINTS'); ?>
 									</a>
 								</span>
@@ -234,12 +231,12 @@ if (!$this->filters['filterby'] == 'none')
 							<td class="voting">
 								<span class="vote-like">
 								<?php if ($juser->get('guest')) { ?>
-									<span class="vote-button <?php echo ($row->helpful > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo JText::_('COM_ANSWERS_VOTE_LIKE_LOGIN'); ?>">
-										<?php echo $row->helpful; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
+									<span class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo JText::_('COM_ANSWERS_VOTE_LIKE_LOGIN'); ?>">
+										<?php echo $row->get('helpful', 0); ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 									</span>
 								<?php } else { ?>
-									<a class="vote-button <?php echo ($row->helpful > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=com_answers&task=vote&id=' . $row->id . '&vote=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $row->helpful); ?>">
-										<?php echo $row->helpful; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
+									<a class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $row->get('helpful')); ?>">
+										<?php echo $row->get('helpful', 0); ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 									</a>
 								<?php } ?>
 								</span>

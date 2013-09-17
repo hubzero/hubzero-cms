@@ -39,6 +39,8 @@ if ($this->comments && is_a($this->comments, 'AnswersModelIterator'))
 
 	foreach ($this->comments as $comment) 
 	{
+		$comment->set('qid', $this->question->get('id'));
+
 		$view = new JView(
 			array(
 				'name'    => 'questions',

@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -33,20 +33,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->id);
-if (!strstr($sef,'http')) {
-	if (substr($sef,0,1) == '/') {
-		$sef = substr($sef,1,strlen($sef));
-	}
-}
-$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_GENERATED')."\n";
-$message .= '----------------------------'."\n";
+$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_GENERATED') . "\n";
+$message .= '----------------------------' . "\n";
 $message  = JText::_('COM_ANSWERS_EMAIL_Q_REMOVED');
-$message .= JText::_('COM_ANSWERS_EMAIL_Q_REMOVED_NO_POINTS')."\n";
-$message .= '----------------------------'."\n\n";
-$message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')).': '.$this->id."\n";
-$message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')).': '.$this->question->subject."\n";
-$message .= '----------------------------'."\n\n";
+$message .= JText::_('COM_ANSWERS_EMAIL_Q_REMOVED_NO_POINTS') . "\n";
+$message .= '----------------------------' . "\n\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')) . ': ' . $this->question->get('id') . "\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')) . ': ' . $this->question->get('subject') . "\n";
+$message .= '----------------------------' . "\n\n";
+$message .= rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link()), '/') . "\n";
 
 echo $message;
-?>

@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+define('ANSWERS_STATE_OPEN',    0);
+define('ANSWERS_STATE_CLOSED',  1);
+define('ANSWERS_STATE_DELETED', 2);
+
 if (!defined('ANSWERS_DATE_FORMAT'))
 {
 	if (version_compare(JVERSION, '1.6', 'ge'))
@@ -103,8 +107,7 @@ abstract class AnswersModelAbstract extends JObject
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      mixed $oid Integer (ID), string (alias), object or array
 	 * @return     void
 	 */
 	public function __construct($oid)
@@ -154,7 +157,7 @@ abstract class AnswersModelAbstract extends JObject
 	 *
 	 * @param	string $property The name of the property
 	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
+	 * @return	mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -174,7 +177,7 @@ abstract class AnswersModelAbstract extends JObject
 	 *
 	 * @param	string $property The name of the property
 	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
+	 * @return	mixed  Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
@@ -188,10 +191,9 @@ abstract class AnswersModelAbstract extends JObject
 	}
 
 	/**
-	 * Check if the resource exists
+	 * Check if the entry exists (i.e., has a database record)
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return     boolean True if record exists, False if not
 	 */
 	public function exists()
 	{
@@ -200,6 +202,30 @@ abstract class AnswersModelAbstract extends JObject
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 * 
+	 * @param      string $as What data to return
+	 * @return     boolean
+	 */
+	public function created($as='')
+	{
+		switch (strtolower($as))
+		{
+			case 'date':
+				return JHTML::_('date', $this->get('created'), ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE);
+			break;
+
+			case 'time':
+				return JHTML::_('date', $this->get('created'), ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE);
+			break;
+
+			default:
+				return $this->get('created');
+			break;
+		}
 	}
 
 	/**
@@ -225,9 +251,9 @@ abstract class AnswersModelAbstract extends JObject
 	}
 
 	/**
-	 * Has the offering started?
+	 * Was the entry reported?
 	 * 
-	 * @return     boolean
+	 * @return     boolean True if reported, False if not
 	 */
 	public function isReported()
 	{
@@ -244,7 +270,8 @@ abstract class AnswersModelAbstract extends JObject
 				$ra = new ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
 					'id'       => $this->get('id'), 
-					'category' => 'answer'
+					'category' => $this->_scope,
+					'state'    => 0
 				));
 				$this->set('reports', $val);
 				if ($this->get('reports') > 0)
@@ -257,18 +284,60 @@ abstract class AnswersModelAbstract extends JObject
 	}
 
 	/**
-	 * Check if the course exists
+	 * Was the entry deleted?
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return     boolean
 	 */
-	public function bind($data=null)
+	public function isDeleted()
 	{
-		return $this->_tbl->bind($data);
+		if ($this->get('state') == ANSWERS_STATE_DELETED) 
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
-	 * Store changes to this offering
+	 * Bind data to the model
+	 * 
+	 * @param      mixed $data Object or array
+	 * @return     boolean True on success, False on error
+	 */
+	public function bind($data=null)
+	{
+		$res = $this->_tbl->bind($data);
+
+		if ($res)
+		{
+			if (is_object($data))
+			{
+				$properties = $this->_tbl->getProperties();
+				foreach (get_object_vars($data) as $key => $property)
+				{
+					if (!array_key_exists($key, $properties))
+					{
+						$this->_tbl->set('__' . $key, $property);
+					}
+				}
+			}
+			else if (is_array($data))
+			{
+				$properties = $this->_tbl->getProperties();
+				foreach (array_keys($data) as $key)
+				{
+					if (!array_key_exists($key, $properties))
+					{
+						$this->_tbl->set('__' . $key, $data[$key]);
+					}
+				}
+			}
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Store changes to this database entry
 	 *
 	 * @param     boolean $check Perform data validation check?
 	 * @return    boolean False if error, True on success
@@ -321,9 +390,11 @@ abstract class AnswersModelAbstract extends JObject
 	}
 
 	/**
-	 * Check a user's authorization
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
 	 * 
-	 * @return     boolean True if authorized, false if not
+	 * @param      string $key Config property to retrieve
+	 * @return     mixed
 	 */
 	public function config($key=null)
 	{
@@ -333,7 +404,7 @@ abstract class AnswersModelAbstract extends JObject
 		}
 		if ($key)
 		{
-			if ($key == 'banking')
+			if ($key == 'banking' && $this->_config->set('banking', -1) == -1)
 			{
 				$this->_config->set('banking', JComponentHelper::getParams('com_members')->get('bankAccounts'));
 			}
@@ -350,7 +421,7 @@ abstract class AnswersModelAbstract extends JObject
 	 */
 	public function access($action='view', $item='entry')
 	{
-		return $this->config()->get('access-' . strtolower($action) . '-' . $item);
+		return $this->config('access-' . strtolower($action) . '-' . $item);
 	}
 }
 

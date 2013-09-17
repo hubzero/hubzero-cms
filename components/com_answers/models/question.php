@@ -31,11 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-define('ANSWERS_STATE_OPEN',    0);
-define('ANSWERS_STATE_CLOSED',  1);
-define('ANSWERS_STATE_DELETED', 2);
-
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'tags.php');
@@ -91,6 +89,13 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	private $_authorized = false;
 
 	/**
+	 * URL for this entry
+	 * 
+	 * @var string
+	 */
+	private $_base = 'index.php?option=com_answers';
+
+	/**
 	 * Returns a reference to a question model
 	 *
 	 * This method must be invoked as:
@@ -138,20 +143,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	public function isOpen()
 	{
 		if ($this->get('state') == ANSWERS_STATE_OPEN) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Was the question deleted?
-	 * 
-	 * @return     boolean
-	 */
-	public function isDeleted()
-	{
-		if ($this->get('state') == ANSWERS_STATE_DELETED) 
 		{
 			return true;
 		}
@@ -222,6 +213,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		 || ($id !== null && (int) $this->_comment->get('id') != $id))
 		{
 			$this->_comment = null;
+
+			// See if we already have a list of comments that we can look through
 			if (isset($this->_comments) && is_a($this->_comments, 'AnswersModelIterator'))
 			{
 				foreach ($this->_comments as $key => $comment)
@@ -233,8 +226,11 @@ class AnswersModelQuestion extends AnswersModelAbstract
 					}
 				}
 			}
+
+			// Nothing found so far?
 			if (!$this->_comment)
 			{
+				// Load the record
 				$this->_comment = AnswersModelComment::getInstance($id);
 			}
 		}
@@ -248,7 +244,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * @param      array  $filters Filters to apply to query
 	 * @return     mixed Returns an integer or array depending upon format chosen
 	 */
-	public function comments($rtrn='list', $filters=array())
+	public function comments($rtrn='list', $filters=array(), $clear=false)
 	{
 		$tbl = new AnswersTableResponse($this->_db);
 
@@ -270,7 +266,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if ($this->get('comments_count', null) === null)
+				if (!isset($this->_comments_count) || $clear)
 				{
 					$total = 0;
 
@@ -293,15 +289,16 @@ class AnswersModelQuestion extends AnswersModelAbstract
 							}
 						}
 					}
-					$this->set('comments_count', $total);
+
+					$this->_comments_count = $total;
 				}
-				return $this->get('comments_count', 0);
+				return $this->_comments_count;
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if ($this->get('comments', null) === null || !is_a($this->get('comments'), 'AnswersModelIterator'))
+				if (!is_a($this->_comments, 'AnswersModelIterator') || $clear)  //!isset($this->_comments) || 
 				{
 					if ($results = $tbl->getResults($filters))
 					{
@@ -314,9 +311,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->set('comments', new AnswersModelIterator($results));
+					$this->_comments = new AnswersModelIterator($results);
 				}
-				return $this->get('comments');
+				return $this->_comments;
 			break;
 		}
 	}
@@ -439,10 +436,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function link($type='')
 	{
-		if (!isset($this->_base))
-		{
-			$this->_base = 'index.php?option=com_answers';
-		}
 		$link = $this->_base;
 
 		// If it doesn't exist or isn't published
@@ -487,7 +480,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
-	public function published($as='')
+	/*public function published($as='')
 	{
 		switch (strtolower($as))
 		{
@@ -503,7 +496,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				return $this->get('created');
 			break;
 		}
-	}
+	}*/
 
 	/**
 	 * Get the content of the record. 
@@ -646,6 +639,92 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				return $this->get('subject');
 			break;
 		}
+	}
+
+	/**
+	 * Check if a user has voted for this entry
+	 *
+	 * @param      integer $user_id Optinal user ID to set as voter
+	 * @return     integer
+	 */
+	public function voted($user_id=0)
+	{
+		if ($this->get('voted', -1) == -1)
+		{
+			$juser = ($user_id) ? JUser::getInstance($user_id) : JFactory::getUser();
+
+			// See if a person from this IP has already voted in the last week
+			$aql = new AnswersTableQuestionsLog($this->_db);
+			$this->set(
+				'voted', 
+				$aql->checkVote($this->get('id'), Hubzero_Environment::ipAddress(), $juser->get('id'))
+			);
+		}
+
+		return $this->get('voted', 0);
+	}
+
+	/**
+	 * Vote for the entry
+	 *
+	 * @param      integer $vote    The vote [0, 1]
+	 * @param      integer $user_id Optinal user ID to set as voter
+	 * @return     boolean False if error, True on success
+	 */
+	public function vote($vote=0, $user_id=0)
+	{
+		if (!$this->exists())
+		{
+			$this->setError(JText::_('No record found'));
+			return false;
+		}
+
+		if (!$vote)
+		{
+			$this->setError(JText::_('No vote provided'));
+			return false;
+		}
+
+		$juser = ($user_id) ? JUser::getInstance($user_id) : JFactory::getUser();
+
+		$al = new AnswersTableQuestionsLog($this->_db);
+		$al->qid   = $this->get('id');
+		$al->ip    = Hubzero_Environment::ipAddress();
+		$al->voter = $juser->get('id');
+
+		if ($al->checkVote($al->qid, $al->ip, $al->voter))
+		{
+			$this->setError(JText::_('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'));
+			return false;
+		}
+
+		if ($this->get('created_by') == $juser->get('username')) 
+		{
+			$this->setError(JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
+			return false;
+		}
+
+		$this->set('helpful', (int) $this->get('helpful') + 1);
+
+		if (!$this->store()) 
+		{
+			return false;
+		}
+
+		$al->expires = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)); // in a week
+
+		if (!$al->check()) 
+		{
+			$this->setError($al->getError());
+			return false;
+		}
+		if (!$al->store()) 
+		{
+			$this->setError($al->getError());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

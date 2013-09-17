@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -33,26 +33,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&task=question&id='.$this->id);
-if (!strstr($sef,'http')) {
-	if (substr($sef,0,1) == '/') {
-		$sef = substr($sef,1,strlen($sef));
-	}
-}
-
-$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_GENERATED')."\n";
-$message .= '----------------------------'."\n";
-$message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')).' #'.$this->question->id."\n";
-$message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')).': '.$this->question->subject."\n";
-$message .= strtoupper(JText::_('COM_ANSWERS_CREATED')).': '.$this->question->created."\n";
-$message .= '----------------------------'."\n\n";
-$message .= 'A response has been posted to Question #'.$this->question->id.' by: ';
-$message .= ($this->row->anonymous) ? 'Anonymous'."\n" : $this->juser->get('name')."\n";
-$message .= 'Response created: '.$this->row->created."\n";
-$message .= 'Response: '."\n\n";
-$message .= '"'.$this->row->answer.'"'."\n\n";
-$message .= 'To view the full question and responses, go to: '."\n";
-$message .= $juri->base().$sef."\n";
+$message  = JText::_('COM_ANSWERS_EMAIL_AUTO_GENERATED') . "\n";
+$message .= '----------------------------' . "\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_QUESTION')) . ' #' . $this->question->get('id') . "\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_SUMMARY')) . ': ' . $this->question->get('subject') . "\n";
+$message .= strtoupper(JText::_('COM_ANSWERS_CREATED')) . ': ' . $this->question->get('created') ."\n";
+$message .= '----------------------------' . "\n\n";
+$message .= 'A response has been posted to Question #' . $this->question->get('id') . ' by: ';
+$message .= ($this->row->get('anonymous')) ? 'Anonymous' . "\n" : $this->juser->get('name') . "\n";
+$message .= 'Response created: ' . $this->row->get('created') . "\n";
+$message .= 'Response: ' . "\n\n";
+$message .= '"' . $this->row->get('answer') . '"' . "\n\n";
+$message .= 'To view the full question and responses, go to: ' . "\n";
+$message .= rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link()), '/') . "\n";
 
 echo $message;
-?>

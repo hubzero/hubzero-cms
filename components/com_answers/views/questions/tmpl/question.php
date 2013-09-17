@@ -128,7 +128,7 @@ if (!$this->question->get('anonymous'))
 				</p>
 			<?php } ?>
 
-			<?php if ($this->question->get('maxaward') && $this->question->isOpen() && $this->banking) { ?>
+			<?php if ($this->question->get('maxaward') && $this->question->isOpen() && $this->question->config('banking')) { ?>
 				<p class="youcanearn">
 					<?php echo JText::sprintf('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->get('maxaward')); ?> <a href="<?php echo JRoute::_($this->question->link('math')); ?>"><?php echo JText::_('COM_ANSWERS_DETAILS'); ?></a>
 				</p>
@@ -141,7 +141,7 @@ if (!$this->question->get('anonymous'))
 		<div class="entry question" id="q<?php echo $this->question->get('id'); ?>">
 			<p class="entry-member-photo">
 				<span class="question-anchor"><a name="q<?php echo $this->question->get('id'); ?>"></a></span>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($user, $this->question->get('anonymous')); ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->question->creator(), $this->question->get('anonymous')); ?>" alt="" />
 			</p><!-- / .question-member-photo -->
 			<div class="entry-content">
 			<?php if (!$this->question->isReported()) { ?>
@@ -164,9 +164,9 @@ if (!$this->question->get('anonymous'))
 					<strong><?php echo $name; ?></strong> 
 					<a class="permalink" href="<?php echo JRoute::_($this->question->link()); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
 						<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
-						<span class="icon-time time"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('time'); ?></time></span> 
+						<span class="icon-time time"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('time'); ?></time></span> 
 						<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
-						<span class="icon-date date"><time datetime="<?php echo $this->question->published(); ?>"><?php echo $this->question->published('date'); ?></time></span>
+						<span class="icon-date date"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('date'); ?></time></span>
 					</a>
 				</p><!-- / .question-title -->
 
@@ -374,6 +374,7 @@ if (!$this->question->get('anonymous'))
 				<fieldset>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savea" />
+					<input type="hidden" name="response[id]" value="0" />
 					<input type="hidden" name="response[qid]" value="<?php echo $this->question->get('id'); ?>" />
 
 					<label for="responseanswer">

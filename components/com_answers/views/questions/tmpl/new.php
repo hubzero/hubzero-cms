@@ -53,10 +53,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="explaination">
 			<p><?php echo JText::_('COM_ANSWERS_BE_POLITE'); ?></p>
 			<p><?php echo JText::_('COM_ANSWERS_NO_HTML'); ?></p>
-		<?php if ($this->banking) { ?>
+		<?php if ($this->config->get('banking')) { ?>
 			<p class="help">
 				<strong><?php echo JText::_('COM_ANSWERS_WHAT_IS_REWARD'); ?></strong><br />
-				<?php echo JText::_('COM_ANSWERS_EXPLAINED_MARKET_VALUE'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_ANSWERS_ABOUT_POINTS'); ?>
+				<?php echo JText::_('COM_ANSWERS_EXPLAINED_MARKET_VALUE'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_ANSWERS_ABOUT_POINTS'); ?>
 			</p>
 		<?php } ?>
 		</div><!-- / .explaination -->
@@ -66,43 +66,49 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="saveq" />
-			<input type="hidden" name="funds" value="<?php echo $this->funds; ?>" />
+
+			<input type="hidden" name="fields[id]" value="<?php echo $this->question->get('id', 0); ?>" />
+			<input type="hidden" name="fields[funds]" value="<?php echo $this->funds; ?>" />
+			<input type="hidden" name="fields[email]" value="1" />
+			<input type="hidden" name="fields[state]" value="0" />
 
 			<label for="field-anonymous">
-				<input class="option" type="checkbox" name="anonymous" id="field-anonymous" value="1" /> 
+				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
 				<?php echo JText::_('COM_ANSWERS_POST_QUESTION_ANON'); ?>
 			</label>
+
 			<label>
 				<?php echo JText::_('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
 				<?php
 				JPluginHelper::importPlugin( 'hubzero' );
 				$dispatcher =& JDispatcher::getInstance();
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tag)) );
+				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tag)) );
 
 				if (count($tf) > 0) {
 								echo $tf[0];
 				} else { ?>
-				<textarea name="tags" id="tags-men" rows="6" cols="35"><?php echo $this->tag; ?></textarea>
+				<textarea name="tags" id="actags" rows="6" cols="35"><?php echo $this->tag; ?></textarea>
 				<?php } ?>
 			</label>
+
 			<label for="field-subject">
 				<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
-				<input type="text" name="subject" id="field-subject" value="<?php echo @$this->subject; ?>" />
+				<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->question->get('subject', '')); ?>" />
 			</label>
+
 			<label for="field-question">
 				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
-				<textarea name="question" id="field-question" rows="10" cols="50"><?php echo @$this->question; ?></textarea>
+				<textarea name="fields[question]" id="field-question" rows="10" cols="50"><?php echo $this->escape($this->question->get('question', '')); ?></textarea>
 			</label>
-		<?php if ($this->banking) { ?>
+		<?php if ($this->config->get('banking')) { ?>
 			<label for="field-reward">
 				<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-				<input type="text" name="reward" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/> 
+				<input type="text" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/> 
 				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->funds; ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
 			</label>
 		<?php } else { ?>
-			<input type="hidden" name="reward" value="0" />
+			<input type="hidden" name="fields[reward]" value="0" />
 		<?php } ?>
-			<input class="option" type="hidden" name="email" value="1" checked="checked" />
 		</fieldset>
 		<div class="clear"></div>
 

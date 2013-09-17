@@ -40,13 +40,6 @@ ximport('Hubzero_Environment');
 class AnswersControllerQuestions extends Hubzero_Controller
 {
 	/**
-	 * Description for 'note'
-	 * 
-	 * @var unknown
-	 */
-	private $note = NULL;
-
-	/**
 	 * Execute a task
 	 * 
 	 * @return     void
@@ -54,7 +47,6 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	public function execute()
 	{
 		$this->config->set('banking', JComponentHelper::getParams('com_members')->get('bankAccounts'));
-		$this->banking = $this->config->get('banking');
 
 		if ($this->config->get('banking')) 
 		{
@@ -84,7 +76,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task && ($this->_task == 'new' or $this->_task == 'myquestions' or $this->_task == 'search')) 
+		if ($this->_task && in_array($this->_task, array('new', 'myquestions', 'search'))) 
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
@@ -128,139 +120,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		$this->view->infolink = $this->infolink;
-		$this->view->banking = $this->banking;
-
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-
-		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->view->filters['tag']      = JRequest::getVar('tags', '');
-		$this->view->filters['tag']      = ($this->view->filters['tag']) ? $this->view->filters['tag'] : JRequest::getVar('tag', '');
-		$this->view->filters['q']        = JRequest::getVar('q', '');
-		$this->view->filters['filterby'] = JRequest::getWord('filterby', '');
-		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'rewards');
-		$this->view->filters['area']     = JRequest::getVar('area', '');
-
-		// Get questions of interest
-		if ($this->view->filters['area'] == 'interest') 
-		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
-
-			// Get tags of interest
-			$mt = new MembersTags($this->database);
-			$mytags  = $mt->get_tag_string($this->juser->get('id'));
-
-			$this->view->filters['tag'] = ($this->view->filters['tag']) ? $this->view->filters['tag'] : $mytags;
-			/*if (!$this->view->filters['tag']) 
-			{
-				$this->view->filters['filterby']   = 'none';
-			}*/
-			
-			$this->view->filters['mine'] = 0;
-		}
-
-		// Get assigned questions
-		if ($this->view->filters['area'] == 'assigned') 
-		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-
-			// What tools did this user contribute?
-			$TA = new ToolAuthor($this->database);
-			$tools = $TA->getToolContributions($this->juser->get('id'));
-			$mytooltags = '';
-			if ($tools) 
-			{
-				foreach ($tools as $tool)
-				{
-					$mytooltags .= 'tool' . $tool->toolname . ',';
-				}
-			}
-
-			$this->view->filters['tag'] = ($this->view->filters['tag']) ? $this->view->filters['tag'] : $mytooltags;
-			/*if (!$this->view->filters['tag']) 
-			{
-				$this->view->filters['filterby'] = 'none';
-			}*/
-
-			$this->view->filters['mine'] = 0;
-		}
-
-		if ($this->view->filters['area'] == 'mine') 
-		{
-			$this->view->filters['mine'] = 1;
-		}
-
-		// Instantiate a Questions object
-		$aq = new AnswersTableQuestion($this->database);
-
-		if (($this->view->filters['area'] == 'interest' || $this->view->filters['area'] == 'assigned') && !$this->view->filters['tag']) 
-		{
-			// Get a record count
-			$this->view->total = 0;
-
-			// Get records
-			$this->view->results = array();
-		}
-		else 
-		{
-			// Get a record count
-			$this->view->total = $aq->getCount($this->view->filters);
-
-			// Get records
-			$this->view->results = $aq->getResults($this->view->filters);
-		}
-
-		// Did we get any results?
-		if (count($this->view->results) > 0) 
-		{
-			// Do some processing on the results
-			for ($i=0; $i < count($this->view->results); $i++)
-			{
-				$this->view->results[$i]->created = Hubzero_View_Helper_Html::mkt($this->view->results[$i]->created);
-				$this->view->results[$i]->when    = Hubzero_View_Helper_Html::timeAgo($this->view->results[$i]->created);
-				$this->view->results[$i]->points  = ($this->view->results[$i]->points) ? $this->view->results[$i]->points : 0;
-				$this->view->results[$i]->reports = $this->_getReports($this->view->results[$i]->id, 'question');
-
-				// Get tags on this question
-				$tagging = new AnswersTags($this->database);
-				$this->view->results[$i]->tags = $tagging->get_tags_on_object($this->view->results[$i]->id, 0, 0, 0);
-			}
-		}
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
-			$this->view->filters['limit']
-		);
-
-		// Add the CSS to the template
-		$this->_getStyles($this->_option, 'assets/css/answers.css');
-
-		// Add the Javascript to the template
-		$this->_getScripts('assets/js/vote');
-
-		// Set the page title
-		$this->_buildTitle();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Output HTML
-		if ($this->getError()) 
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		$this->view->display();
+		$this->view->setLayout('search');
+		return $this->searchTask();
 	}
 
 	/**
@@ -270,7 +131,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 */
 	public function loginTask()
 	{
-		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller), 'server');
+		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
 
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
@@ -293,18 +154,17 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Incoming
-		$rid     = JRequest::getInt('rid', 0);
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
-		if (!$comment['referenceid'] && !$ajax) 
+		if (!$comment['referenceid']) 
 		{
 			JError::raiseError(500, JText::_('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
 			return;
 		}
 
-		if ($comment['referenceid'] && $comment['category']) 
+		if ($comment['category']) 
 		{
-			$row = new Hubzero_Comment($this->database);
+			$row = new AnswersModelComment(0);
 			if (!$row->bind($comment)) 
 			{
 				JError::raiseError(500, $row->getError());
@@ -312,21 +172,15 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			}
 
 			// Perform some text cleaning, etc.
-			$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
-			$row->comment   = nl2br($row->comment);
-			$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-			$row->added     = date('Y-m-d H:i:s');
-			$row->state     = 0;
-			$row->added_by  = $this->juser->get('id');
+			//$row->set('comment', Hubzero_View_Helper_Html::purifyText($row->get('comment')));
+			$row->set('comment', nl2br($row->get('comment')));
+			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
+			$row->set('added', date('Y-m-d H:i:s'));
+			$row->set('state', 0);
+			$row->set('added_by', $this->juser->get('id'));
 
-			// Check for missing (required) fields
-			if (!$row->check()) 
-			{
-				JError::raiseError(500, $row->getError());
-				return;
-			}
 			// Save the data
-			if (!$row->store()) 
+			if (!$row->store(true)) 
 			{
 				JError::raiseError(500, $row->getError());
 				return;
@@ -334,7 +188,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $rid)
+			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . JRequest::getInt('rid', 0))
 		);
 	}
 
@@ -427,12 +281,12 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// load answer
-		$row = new AnswersTableResponse($this->database);
-		$row->load($id);
-		$qid = $row->qid;
+		$row = new AnswersModelResponse($id);
+
+		$qid = $row->get('qid');
 
 		// Can't vote for your own comment
-		if ($row->created_by == $this->juser->get('username'))
+		if ($row->get('created_by') == $this->juser->get('username'))
 		{
 			if (!$no_html)
 			{
@@ -473,14 +327,14 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				case 'like':
 				case 'up':
 				case 1:
-					$row->helpful++;
+					$row->set('helpful', $row->get('helpful') + 1);
 				break;
 
 				case 'no':
 				case 'dislike':
 				case 'down':
 				case -1:
-					$row->nothelpful++;
+					$row->set('nothelpful', $row->get('nothelpful') + 1);
 				break;
 			} 
 		}
@@ -494,16 +348,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				case 'like':
 				case 'up':
 				case 1:
-					$row->helpful++;
-					$row->nothelpful--;
+					$row->set('helpful', $row->get('helpful') + 1);
+					$row->set('nothelpful', $row->get('nothelpful') - 1);
 				break;
 
 				case 'no':
 				case 'dislike':
 				case 'down':
 				case -1:
-					$row->helpful--;
-					$row->nothelpful++;
+					$row->set('helpful', $row->get('helpful') - 1);
+					$row->set('nothelpful', $row->get('nothelpful') + 1);
 				break;
 			} 
 		}
@@ -519,7 +373,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Record user's vote (old way)
-		$al->rid     = $row->id;
+		$al->rid     = $row->get('id');
 		$al->ip      = $ip;
 		$al->helpful = $vote;
 		if (!$al->check()) 
@@ -539,12 +393,12 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'vote.class.php');
 
 			$v = new Vote($this->database);
-			$v->referenceid = $row->id;
-			$v->category = $cat;
-			$v->voter = $this->juser->get('id');
-			$v->ip = $ip;
-			$v->voted = date('Y-m-d H:i:s', time());
-			$v->helpful = $vote;
+			$v->referenceid = $row->get('id');
+			$v->category    = $cat;
+			$v->voter       = $this->juser->get('id');
+			$v->ip          = $ip;
+			$v->voted       = date('Y-m-d H:i:s', time());
+			$v->helpful     = $vote;
 			if (!$v->check()) 
 			{
 				$this->setError($v->getError());
@@ -560,10 +414,11 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// update display
 		if ($no_html) 
 		{
-			$response = $row->getResponse($id, $ip);
+			//$response = $row->getResponse($id, $ip);
+			$row->set('vote', $vote);
 
 			$this->view->option = $this->_option;
-			$this->view->item   = new AnswersModelResponse($response[0]);
+			$this->view->item   = $row; //new AnswersModelResponse($response[0]);
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -588,9 +443,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 */
 	public function searchTask()
 	{
-		$this->view->infolink = $this->infolink;
-		$this->view->banking = $this->banking;
-		$this->view->task = $this->_task;
+		$this->view->config = $this->config;
+		$this->view->task   = $this->_task;
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
@@ -687,17 +541,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		if (count($this->view->results) > 0) 
 		{
 			// Do some processing on the results
-			for ($i=0; $i < count($this->view->results); $i++)
+			foreach ($this->view->results as $i => $result)
 			{
-				$this->view->results[$i]->created = Hubzero_View_Helper_Html::mkt($this->view->results[$i]->created);
-				$this->view->results[$i]->when    = Hubzero_View_Helper_Html::timeAgo($this->view->results[$i]->created);
-				$this->view->results[$i]->points  = ($this->view->results[$i]->points) ? $this->view->results[$i]->points : 0;
-				$this->view->results[$i]->reports = $this->_getReports($this->view->results[$i]->id, 'question');
-
-				// Get tags on this question
-				//$tagging = new AnswersTags($this->database);
-				//$cloud = new AnswersModelTags($this->view->results[$i]->id);
-				//$this->view->results[$i]->tags = $cloud->render('array'); //$tagging->get_tags_on_object($this->view->results[$i]->id, 0, 0, 0);
+				$this->view->results[$i] = new AnswersModelQuestion($result);
 			}
 		}
 
@@ -741,8 +587,6 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	{
 		$this->view->setLayout('question');
 
-		$this->view->infolink = $this->infolink;
-
 		// Incoming
 		$this->view->id   = JRequest::getInt('id', 0);
 		$this->view->note = $this->_note(JRequest::getInt('note', 0));
@@ -758,11 +602,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Check if person voted
 		$this->view->voted = 0;
-		$ip = '';
 		if (!$this->juser->get('guest')) 
 		{
-			$this->view->voted = $this->_getVote($this->view->id);
-			$ip = Hubzero_Environment::ipAddress();
+			$this->view->voted = $this->view->question->voted();
 		}
 
 		// Add the CSS to the template
@@ -780,7 +622,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->_buildPathway($this->view->question);
 
 		// Output HTML
-		$this->view->juser = $this->juser;
+		$this->view->config = $this->config;
+		$this->view->juser  = $this->juser;
 
 		if (!isset($this->view->responding))
 		{
@@ -832,6 +675,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
+			$this->addComponentMessage(JText::_('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
 			return;
 		}
@@ -839,28 +683,27 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->setLayout('new');
 
 		// Instantiate a new view
-		$this->view->infolink = $this->infolink;
-		$this->view->banking = $this->banking;
-		$this->view->task = $this->_task;
+		$this->view->config = $this->config;
+		$this->view->task   = $this->_task;
 
 		// Incoming
 		$this->view->tag = JRequest::getVar('tag', '');
 
-		if ($question != null)
+		if (is_object($question))
 		{
-			$this->view->tag = @$question->tags;
-			$this->view->subject = $question->subject;
-			$this->view->question = $question->question;
+			$this->view->question = $question;
+		}
+		else
+		{
+			$this->view->question = new AnswersModelQuestion(0);
 		}
 
 		// Is banking turned on?
 		$this->view->funds = 0;
-		if ($this->banking) 
+		if ($this->config->get('banking')) 
 		{
 			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
-			$balance = $BTL->summary();
-			$credit  = $BTL->credit_summary();
-			$funds   = $balance - $credit;
+			$funds = $BTL->summary() - $BTL->credit_summary();
 			$this->view->funds = ($funds > 0) ? $funds : 0;
 		}
 
@@ -879,82 +722,6 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
-	 * See if a person from this IP has already voted in the last week
-	 * 
-	 * @param      integer $id Item ID
-	 * @return     integer
-	 */
-	private function _getVote($id)
-	{
-		// Get the user's IP address
-		$ip = Hubzero_Environment::ipAddress();
-
-		// See if a person from this IP has already voted in the last week
-		$aql = new AnswersTableQuestionsLog($this->database);
-		$voted = $aql->checkVote($id, $ip, $this->juser->get('id'));
-
-		return $voted;
-	}
-
-	/**
-	 * Get abuse reports for an item
-	 * 
-	 * @param      integer $id  Item ID
-	 * @param      string  $cat Item type (question, comment, etc.)
-	 * @return     integer
-	 */
-	private function _getReports($id, $cat)
-	{
-		$database =& JFactory::getDBO();
-
-		// Incoming
-		$filters = array();
-		$filters['id']  = $id;
-		$filters['category']  = $cat;
-		$filters['state']  = 0;
-
-		// Check for abuse reports on an item
-		$ra = new ReportAbuse($database);
-
-		return $ra->getCount($filters);
-	}
-
-	/**
-	 * Recursively get replies and abuse reports on an item
-	 * 
-	 * @param      object  $item     Parent item
-	 * @param      string  $category Child type
-	 * @param      integer $level    Depth
-	 * @param      boolean $abuse    Get abuse reports?
-	 * @return     array 
-	 */
-	private function _getComments($item, $category, $level, $abuse=true)
-	{
-		$database =& JFactory::getDBO();
-
-		$level++;
-
-		$hc = new Hubzero_Comment($database);
-		$comments = $hc->getResults(array(
-			'id'       => $item->id, 
-			'category' => $category
-		));
-
-		if ($comments) 
-		{
-			foreach ($comments as $comment)
-			{
-				$comment->replies = $this->_getComments($comment, 'answercomment', $level, $abuse);
-				if ($abuse) 
-				{
-					$comment->reports = $this->_getReports($comment->id, 'answercomment');
-				}
-			}
-		}
-		return $comments;
-	}
-
-	/**
 	 * Save a question
 	 * 
 	 * @return     void
@@ -964,29 +731,26 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
+			$this->addComponentMessage(JText::_('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
 			return;
 		}
 
-		// trim and addslashes all posted items
-		$_POST = array_map('trim', $_POST);
-
 		// Incoming
+		$fields = JRequest::getVar('fields', array(), 'post');
 		$tags   = JRequest::getVar('tags', '');
-		$funds  = JRequest::getVar('funds', '0');
-		$reward = JRequest::getVar('reward', '0');
 
 		// If offering a reward, do some checks
-		if ($reward) 
+		if ($fields['reward']) 
 		{
 			// Is it an actual number?
-			if (!is_numeric($reward)) 
+			if (!is_numeric($fields['reward'])) 
 			{
 				JError::raiseError(500, JText::_('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
 				return;
 			}
 			// Are they offering more than they can afford?
-			if ($reward > $funds) 
+			if ($fields['reward'] > $fields['funds']) 
 			{
 				JError::raiseError(500, JText::_('COM_ANSWERS_INSUFFICIENT_FUNDS'));
 				return;
@@ -994,23 +758,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Initiate class and bind posted items to database fields
-		$row = new AnswersTableQuestion($this->database);
-		if (!$row->bind($_POST)) 
+		$row = new AnswersModelQuestion($fields['id']);
+		if (!$row->bind($fields)) 
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
-		$row->subject    = Hubzero_Filter::cleanXss($row->subject);
-		$row->question   = Hubzero_Filter::cleanXss($row->question);
-		$row->question   = nl2br($row->question);
-		$row->created    = date('Y-m-d H:i:s', time());
-		$row->created_by = $this->juser->get('username');
-		$row->state      = 0;
-		$row->email      = 1; // force notification
-		if ($reward && $this->banking) 
+		if ($fields['reward'] && $this->config->get('banking')) 
 		{
-			$row->reward = 1;
+			$row->set('reward', 1);
 		}
 
 		// Ensure the user added a tag
@@ -1021,39 +778,36 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			return;
 		}
 
-		// Check content
-		if (!$row->check()) 
+		// Store new content
+		if (!$row->store(true)) 
 		{
-			$this->addComponentMessage($row->getError(), 'error'); 
-			$row->tags = $tags;
+			JRequest::setVar('tag', $tags);
+
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->newTask($row);
 			return;
 		}
 
-		// Store new content
-		if (!$row->store()) 
-		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
-		// Checkin question
-		$row->checkin();
-
 		// Hold the reward for this question if we're banking
-		if ($reward && $this->banking) 
+		if ($fields['reward'] && $this->config->get('banking')) 
 		{
 			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
-			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->id);
+			$BTL->hold(
+				$fields['reward'], 
+				JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 
+				'answers', 
+				$row->get('id')
+			);
 		}
 
 		// Add the tags
-		$tagging = new AnswersTags($this->database);
-		$tagging->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
+		$row->tag($tags);
 
 		// Get users who need to be notified on every question
-		$apu = ($this->config->get('notify_users')) ? $this->config->get('notify_users') : '';
+		$apu = $this->config->get('notify_users', '');
 		$apu = explode(',', $apu);
 		$apu = array_map('trim',$apu);
+
 		$receivers = array();
 
 		// Get tool contributors if question is about a tool
@@ -1125,11 +879,12 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				'name'   => 'emails',
 				'layout' => 'question'
 			));
-			$eview->option       = $this->_option;
+			$eview->option   = $this->_option;
 			$eview->sitename = $jconfig->getValue('config.sitename');
-			$eview->juser        = $this->juser;
-			$eview->row          = $row;
-			$eview->id          = $row->id ? $row->id : 0;
+			$eview->juser    = $this->juser;
+			$eview->row      = $row;
+			$eview->id       = $row->get('id', 0);
+
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
@@ -1143,7 +898,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Redirect to the question
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $row->id . '&note=5')
+			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $row->get('id')),
+			JText::_('COM_ANSWERS_NOTICE_QUESTION_POSTED_THANKS')
 		);
 	}
 
@@ -1157,6 +913,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
+			$this->addComponentMessage(JText::_('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
 			return;
 		}
@@ -1166,7 +923,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$ip = (!$this->juser->get('guest')) ? Hubzero_Environment::ipAddress() : '';
 
 		$reward = 0;
-		if ($this->banking) 
+		if ($this->config->get('banking')) 
 		{
 			$BT = new Hubzero_Bank_Transaction($this->database);
 			$reward = $BT->getAmount('answers', 'hold', $id);
@@ -1209,7 +966,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			'qid' => $id
 		));
 
-		if ($reward && $this->banking) 
+		if ($reward && $this->config->get('banking')) 
 		{
 			if ($responses) 
 			{
@@ -1236,12 +993,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS').', '.JText::_('COM_ANSWERS_QUESTION').' #'.$id.' '.JText::_('COM_ANSWERS_WAS_REMOVED');
 
 				// Build the message	
-				$eview = new JView(array('name'=>'emails','layout'=>'removed'));
-				$eview->option = $this->_option;
+				$eview = new JView(array(
+					'name'   => 'emails',
+					'layout' => 'removed'
+				));
+				$eview->option   = $this->_option;
 				$eview->sitename = $jconfig->getValue('config.sitename');
-				$eview->juser = $this->juser;
+				$eview->juser    = $this->juser;
 				$eview->question = $question;
-				$eview->id = $id;
+				$eview->id       = $id;
+
 				$message = $eview->loadTemplate();
 				$message = str_replace("\n", "\r\n", $message);
 
@@ -1259,8 +1020,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 			// Make credit adjustment
 			$BTL_Q = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
-			$credit = $BTL_Q->credit_summary();
-			$adjusted = $credit - $reward;
+			$adjusted = $BTL_Q->credit_summary() - $reward;
 			$BTL_Q->credit_adjustment($adjusted);
 		}
 
@@ -1298,68 +1058,31 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
+			$this->addComponentMessage(JText::_('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
 			return;
 		}
 
 		// Incoming
-		//$id = JRequest::getInt('qid', 0);
-
-		// Trim and addslashes all posted items
-		//$_POST = array_map('trim',$_POST);
 		$response = JRequest::getVar('response', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
-		$row = new AnswersTableResponse($this->database);
+		$row = new AnswersModelResponse($response['id']);
 		if (!$row->bind($response)) 
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
-		//$row->answer     = Hubzero_Filter::cleanXss($row->answer);
-		//$row->answer     = nl2br($row->answer);
-		// Wiki markup should be saved *as* wiki markup, not parsed HTML
-		/*$wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => 'comment',
-			'pagename' => $row->qid,
-			'pageid'   => $row->qid,
-			'filepath' => '',
-			'domain'   => ''
-		);
-		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
-		$row->answer = $p->parse($row->answer, $wikiconfig);*/
-
-		$row->created_by = $this->juser->get('username');
-		$row->created    = date('Y-m-d H:i:s', time());
-		$row->state      = 0;
-
-		// Check content
-		if (!$row->check()) 
-		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
 		// Load the question
-		$question = new AnswersTableQuestion($this->database);
-		$question->load($response['qid']);
-
-		// Is user allowed to answer this question, i.e. are they the asker of the question? Only a user hack
-		// will allow this code to be reached, so the error is a bit harsh
-		/*if ($question->created_by == $this->juser->get('username'))
-		{
-			JError::raiseError(500, 'You cannot answer your own qustion');
-		}*/
+		$question = new AnswersModelQuestion($row->get('qid'));
 
 		$jconfig =& JFactory::getConfig();
 
@@ -1370,28 +1093,29 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		);
 
 		// Build the message subject
-		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('COM_ANSWERS_QUESTION') . ' #' . $question->id . ' ' . JText::_('COM_ANSWERS_RESPONSE');
+		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . JText::_('COM_ANSWERS_RESPONSE');
 
 		// Build the message	
 		$eview = new JView(array(
 			'name'   => 'emails',
 			'layout' => 'response'
 		));
-		$eview->option = $this->_option;
+		$eview->option   = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
-		$eview->juser = $this->juser;
+		$eview->juser    = $this->juser;
 		$eview->question = $question;
-		$eview->row = $row;
-		$eview->id = $response['qid'];
+		$eview->row      = $row;
+		$eview->id       = $response['qid'];
+
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
-		$user =& JUser::getInstance($question->created_by);
-		$authorid = (is_object($user)) ? $user->get('id') : 0;
+		$authorid = $question->creator('id');
 
-		$apu = ($this->config->get('notify_users')) ? $this->config->get('notify_users') : '';
+		$apu = $this->config->get('notify_users', '');
 		$apu = explode(',', $apu);
-		$apu = array_map('trim',$apu);
+		$apu = array_map('trim', $apu);
+
 		$receivers = array();
 
 		if (!empty($apu)) 
@@ -1428,9 +1152,10 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Redirect to the question
-		$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_POSTED_THANKS'), 'success');
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $response['qid'] . '&note=4')
+			JRoute::_($question->link()),
+			JText::_('COM_ANSWERS_NOTICE_POSTED_THANKS'), 
+			'success'
 		);
 	}
 
@@ -1444,6 +1169,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
+			$this->addComponentMessage(JText::_('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
 			return;
 		}
@@ -1471,9 +1197,10 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Redirect to the question
-		$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_QUESTION_CLOSED'), 'success');
 		$this->setRedirect(
-			JRoute::_($question->link() . '&note=10')
+			JRoute::_($question->link() . '&note=10'),
+			JText::_('COM_ANSWERS_NOTICE_QUESTION_CLOSED'),
+			'success'
 		);
 	}
 
@@ -1486,8 +1213,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	{
 		$no_html = JRequest::getInt('no_html', 0);
 		$id   = JRequest::getInt('id', 0);
-		$vote = JRequest::getVar('vote', 0);
-		$ip   = Hubzero_Environment::ipAddress();
+		$vote = JRequest::getInt('vote', 0);
 
 		// Login required
 		if ($this->juser->get('guest')) 
@@ -1500,77 +1226,36 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			return;
 		}
 
-		// See if a person from this IP has already voted
-		$al = new AnswersTableQuestionsLog($this->database);
-		$voted = $al->checkVote($id, $ip, $this->juser->get('id'));
+		// Load the question
+		$row = new AnswersModelQuestion($id);
 
-		if ($voted) 
-		{
-			if (!$no_html)
-			{
-				$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'), 'warning');
-				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=8')
-				);
-			}
-			return;
-		}
-
-		// load the resource
-		$row = new AnswersTableQuestion($this->database);
-		$row->load($id);
-
-		$this->qid = $id;
-
-		// check if user is rating his own question
-		if ($row->created_by == $this->juser->get('username')) 
+		// Record the vote
+		if (!$row->vote($vote))
 		{
 			if ($no_html)
 			{
+				$response = new stdClass;
+				$response->success = false;
+				$response->message = $row->getError();
+				echo json_encode($response);
 				return;
 			}
 			else
 			{
-				$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'), 'warning');
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=9')
+					JRoute::_($row->link()),
+					$row->getError(),
+					'warning'
 				);
 				return;
 			}
-
 		}
 
-		// record vote
-		$row->helpful++;
-
-		if (!$row->store()) 
-		{
-			$this->setError($row->getError());
-			return;
-		}
-
-		$expires = time() + (7 * 24 * 60 * 60); // in a week
-		$expires = date('Y-m-d H:i:s', $expires);
-
-		// Record user's vote
-		$al->qid     = $id;
-		$al->ip      = $ip;
-		$al->voter   = $this->juser->get('id');
-		$al->expires = $expires;
-		if (!$al->check()) 
-		{
-			$this->setError($al->getError());
-			return;
-		}
-		if (!$al->store()) 
-		{
-			$this->setError($al->getError());
-			return;
-		}
-
-		// update display
+		// Update display
 		if ($no_html) 
 		{
+			$this->qid = $id;
+
 			$this->view->question = $row;
 			$this->view->voted    = $vote;
 			if ($this->getError()) 
@@ -1585,7 +1270,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		else 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id)
+				JRoute::_($row->link())
 			);
 		}
 	}

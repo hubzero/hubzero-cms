@@ -47,6 +47,13 @@ class AnswersModelComment extends AnswersModelAbstract
 	protected $_tbl_name = 'Hubzero_Comment';
 
 	/**
+	 * Class scope
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'answercomment';
+
+	/**
 	 * BlogModelComment
 	 * 
 	 * @var object
@@ -68,6 +75,13 @@ class AnswersModelComment extends AnswersModelAbstract
 	private $_comments_count = null;
 
 	/**
+	 * URL for this entry
+	 * 
+	 * @var string
+	 */
+	private $_base = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -79,76 +93,6 @@ class AnswersModelComment extends AnswersModelAbstract
 
 		$this->set('created', $this->get('added'));
 		$this->set('created_by', $this->get('added_by'));
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isDeleted()
-	{
-		if ($this->get('state') == ANSWERS_STATE_DELETED) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isReported()
-	{
-		if ($this->get('reports', -1) > 0)
-		{
-			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1) 
-		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'), 
-					'category' => 'answer'
-				));
-				$this->set('reports', $val);
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Return a formatted timestamp
-	 * 
-	 * @param      string $as What data to return
-	 * @return     boolean
-	 */
-	public function created($as='')
-	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return JHTML::_('date', $this->get('added'), ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE);
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('added'), ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE);
-			break;
-
-			default:
-				return $this->get('added');
-			break;
-		}
 	}
 
 	/**

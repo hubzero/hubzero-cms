@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Question Posted Message Layout">
+	<layout title="Question Posted email">
 		<message>
-			<![CDATA[STANDARD QUESTION ANSWERED MESSAGE LAYOUT DESC]]>
+			<![CDATA[Question Posted email]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Question Posted Message Layout</name>
-		<description>STANDARD QUESTION POSTED MESSAGE LAYOUT DESC</description>
+		<name>Question Posted email</name>
+		<description>Question Posted email</description>
 		<params>
 		</params>
 	</state>

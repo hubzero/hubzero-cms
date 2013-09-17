@@ -50,6 +50,13 @@ class AnswersModelResponse extends AnswersModelAbstract
 	protected $_tbl_name = 'AnswersTableResponse';
 
 	/**
+	 * Class scope
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'answer';
+
+	/**
 	 * BlogModelComment
 	 * 
 	 * @var object
@@ -71,42 +78,11 @@ class AnswersModelResponse extends AnswersModelAbstract
 	private $_comments_count = null;
 
 	/**
-	 * Has the offering started?
+	 * URL to this entry
 	 * 
-	 * @return     boolean
+	 * @var string
 	 */
-	public function isDeleted()
-	{
-		if ($this->get('state') == ANSWERS_STATE_DELETED) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Return a formatted timestamp
-	 * 
-	 * @param      string $as What data to return
-	 * @return     boolean
-	 */
-	public function created($as='')
-	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return JHTML::_('date', $this->get('created'), ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE);
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('created'), ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE);
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
-	}
+	private $_base = null;
 
 	/**
 	 * Get the creator of this entry
