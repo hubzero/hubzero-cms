@@ -20,6 +20,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+	<!-- 
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('SEARCH'); ?></label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
@@ -27,6 +28,7 @@ function submitbutton(pressbutton)
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
+	-->
 
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>

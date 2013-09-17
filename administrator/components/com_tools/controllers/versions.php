@@ -67,25 +67,25 @@ class ToolsControllerVersions extends Hubzero_Controller
 		);
 
 		// Get filters
-		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.search', 
+		/*$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'search', 
 			'search', 
 			''
 		));
 		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.search_field', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'search_field', 
 			'search_field', 
 			'all'
-		));
+		));*/
 		
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.sort', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sort', 
 			'filter_order', 
 			'toolname'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.sortdir', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sortdir', 
 			'filter_order_Dir', 
 			'ASC'
 		));
@@ -93,13 +93,13 @@ class ToolsControllerVersions extends Hubzero_Controller
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.limit', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limit', 
 			'limit', 
 			$config->getValue('config.list_limit'), 
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.limitstart', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limitstart', 
 			'limitstart', 
 			0, 
 			'int'
@@ -224,7 +224,7 @@ class ToolsControllerVersions extends Hubzero_Controller
 			return;
 		}
 
-		$row->hostreq = explode(',', $row->hostreq[0]);
+		$row->hostreq = explode(',', $row->hostreq);
 
 		$hostreq = array();
 		foreach ($row->hostreq as $req)
