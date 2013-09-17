@@ -147,7 +147,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				<?php } ?>
 				</td>
 				<td style="white-space: nowrap;">
-					<time datetime="<?php echo $row->published(); ?>"><?php echo $row->published('date'); ?></time>
+					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td>
 					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->creator('id'); ?>">

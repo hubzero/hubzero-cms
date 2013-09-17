@@ -475,30 +475,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Return a formatted timestamp
-	 * 
-	 * @param      string $as What data to return
-	 * @return     boolean
-	 */
-	/*public function published($as='')
-	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return JHTML::_('date', $this->get('created'), ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE);
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('created'), ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE);
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
-	}*/
-
-	/**
 	 * Get the content of the record. 
 	 * Optional argument to determine how content should be handled
 	 *

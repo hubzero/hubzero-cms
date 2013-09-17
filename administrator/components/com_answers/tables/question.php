@@ -137,7 +137,7 @@ class AnswersTableQuestion extends JTable
 		$this->created_by = $this->created_by ? $this->created_by : $juser->get('username');
 
 		// Code cleaner
-		$this->question = nl2br($this->question);
+		//$this->question = nl2br($this->question);
 
 		return true;
 	}
