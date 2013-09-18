@@ -1155,7 +1155,43 @@ ul {
 .edit-form input[type="button"] {
 	width: auto;
 }
+.edit-form select,
+.edit-form input[type="text"] {
+	width: 100%;
+}
 .edit-form label {
 	font-size: 14px;
 	font-weight: bolder;
+}
+.edit-form .eventparams {
+	border: 1px solid #CCCCCC;
+	margin-bottom: 20px;
+}
+.edit-form .eventparams legend {
+	display: block;
+	float: right;
+	width: 100%;
+	border-bottom: 1px solid #e5e5e5;
+	margin: 0 0 1em 0;
+	padding: 0.8em 1em;
+	*padding: 0.8em 0;
+	*text-indent: 2em;
+	font-weight: bold;
+	background: #777;
+	text-shadow: 0 -1px 1px #000;
+	color: #ececec;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	     -o-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.edit-form legend:before,
+.edit-form legend:after {
+	content: "";
+	display: table;
+	line-height: 0;
+}
+.edit-form legend:after {
+	clear: both;
 }

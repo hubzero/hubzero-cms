@@ -300,6 +300,20 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$assetGroup->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
+		if ($params = JRequest::getVar('params', false, 'post'))
+		{
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+
+			$p = new $paramsClass('');
+			$p->bind($params);
+
+			$assetGroup->set('params', $p->toString());
+		}
+
 		// Save the asset group
 		if (!$assetGroup->store())
 		{

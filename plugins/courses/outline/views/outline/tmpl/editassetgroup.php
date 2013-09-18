@@ -50,6 +50,44 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 			</select>
 		</p>
 
+<?php
+
+	JPluginHelper::importPlugin('courses');
+	$dispatcher =& JDispatcher::getInstance();
+
+	if ($plugins = $dispatcher->trigger('onAssetgroupEdit'))
+	{
+		$pth = false;
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$pth = true;
+			$paramsClass = 'JRegistry';
+		}
+
+		$data = $ag->get('params');
+
+		foreach ($plugins as $plugin)
+		{
+			$param = new $paramsClass(
+				(is_object($data) ? $data->toString() : $data),
+				JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . ($pth ? DS . $plugin['name'] : '') . '.xml'
+			);
+			$out = $param->render('params', 'onAssetgroupEdit');
+			if (!$out) 
+			{
+				continue;
+			}
+			?>
+			<fieldset class="eventparams" id="params-<?php echo $plugin['name']; ?>">
+				<legend><?php echo JText::sprintf('%s Parameters', $plugin['title']); ?></legend>
+				<?php echo $out; ?>
+			</fieldset>
+			<?php
+		}
+	}
+?>
+
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 		<input type="hidden" name="id" value="<?= $ag->get('id') ?>" />
