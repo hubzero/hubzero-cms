@@ -156,19 +156,24 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	public function progress($member_id=null)
 	{
 		$progress_calculation = $this->course->config()->get('progress_calculation', 'all');
-		// Get the asset views
-		$assetViews = new CoursesTableAssetViews(JFactory::getDBO());
-		$filters    = array(
-			'section_id' => $this->course->offering()->section()->get('id'),
-			'member_id'  => $member_id
-		);
 
-		if ($progress_calculation == 'forms')
+		switch ($progress_calculation)
 		{
-			$filters['asset_type'] = 'form';
-		}
+			case 'forms':
+				$views = $this->_tbl->getFormCompletions($this->course->get('id'), $member_id);
+			break;
 
-		$views = $assetViews->find($filters);
+			default:
+				// Get the asset views
+				$assetViews = new CoursesTableAssetViews(JFactory::getDBO());
+				$filters    = array(
+					'section_id' => $this->course->offering()->section()->get('id'),
+					'member_id'  => $member_id
+				);
+
+				$views = $assetViews->find($filters);
+			break;
+		}
 
 		$progress = array();
 

@@ -471,6 +471,40 @@ class CoursesTableGradeBook extends JTable
 	}
 
 	/**
+	 * Get asset completion count
+	 * 
+	 * @param      int $course_id
+	 * @param      int $member_id
+	 * @return     void
+	 */
+	public function getFormCompletions($course_id, $member_id=null)
+	{
+		$user = '';
+		if (!is_null($member_id))
+		{
+			if (!is_array($member_id))
+			{
+				$member_id = (array) $member_id;
+			}
+
+			$user = "AND gb.member_id IN (" . implode(",", $member_id) . ")";
+		}
+
+		$query   = "SELECT gb.member_id, ca.subtype, cag.unit_id, ca.id as asset_id
+					FROM $this->_tbl AS gb
+					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
+					LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id
+					LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id
+					WHERE gb.scope='asset'
+					AND ca.course_id = '{$course_id}'
+					AND (score IS NOT NULL OR override IS NOT NULL)
+					{$user}";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
 	 * Get asset count
 	 * 
 	 * @return     void
