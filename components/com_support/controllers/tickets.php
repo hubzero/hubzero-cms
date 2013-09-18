@@ -2584,12 +2584,45 @@ class SupportControllerTickets extends Hubzero_Controller
 						}
 					}
 
-					// Message people watching this ticket
-					$watch = array_diff($watcher_ids, $watcher_found);
-					if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, $watch, $this->_option))) 
+					// Message people watching this ticket, but ONLY if the ticket was NOT marked private
+	
+					if ($rowc->access != 1)
 					{
-						$this->setError(JText::_('Failed to message watchers.'));
+						$watch = array_diff($watcher_ids, $watcher_found);
+
+						// Only build tokens if component is configured to allow email responses
+						if ($allowEmailResponses)
+						{
+							// when allowing email responses to tickets, we have to loop through recipients individually, each
+							// reply-to address contains encrypted information that is user specific
+			                	        foreach ($watch as $uid)
+        				                {
+								$user = Hubzero_User_Profile::getInstance($uid);
+								$uidNumber = $user->get('uidNumber');
+								
+								// The reply-to address contains the reply token
+								$token = $encryptor->buildEmailToken(1, 1, $uidNumber , $id);
+								$from['replytoemail'] = 'htc-' . $token;
+
+								// send email
+								if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($uid), $this->_option))) 
+								{
+									$this->setError(JText::_('Failed to message watchers.'));
+								}
+							}
+	
+						}
+						else
+						{
+							if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, $watch, $this->_option))) 
+							{
+								$this->setError(JText::_('Failed to message watchers.'));
+							}
+						}
 					}
+
+
+
 				}
 			}
 		}
@@ -2607,6 +2640,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id)
 		);
+
 	}
 
 	/**
