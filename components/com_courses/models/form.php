@@ -293,8 +293,11 @@ class PdfForm
 			// First we need to loop through the images and see what trim is going to do (i.e. figure out the margins)
 			for ($this->pages = 0; $this->pages < $num; ++$this->pages)
 			{
-				$im = new imagick($this->fname.'['.($this->pages).']');
+				$im = new imagick();
+				$im->setResolution(300, 300);
+				$im->readImage($this->fname.'['.($this->pages).']');
 				$im->setImageFormat('png');
+				$im->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
 				$im->trimImage(0);
 
 				// Get the image dimensions and x,y trim points
@@ -311,11 +314,14 @@ class PdfForm
 			// Now actually do the image creation and cropping based on min margin
 			for ($this->pages = 0; $this->pages < $num; ++$this->pages)
 			{
-				$im = new imagick($this->fname.'['.($this->pages).']');
+				$im = new imagick();
+				$im->setResolution(300, 300);
+				$im->readImage($this->fname.'['.($this->pages).']');
 				$im->setImageFormat('png');
+				$im->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
 				$im->cropImage(max($widths), $crop[$this->pages]['height'], $crop[$this->pages]['x'], $crop[$this->pages]['y']);
-				$im->resizeImage(582,0, Imagick::FILTER_CATROM, 1);
-				$im->sharpenImage(2,1);
+				$im->resizeImage(582,0, Imagick::FILTER_MITCHELL, 1);
+				$im->sharpenImage(5, 0.5);
 				$im->borderImage('white', 15, 15);
 				$im->writeImage($this->base . $fid . DS . ($this->pages + 1) . '.png');
 			}
