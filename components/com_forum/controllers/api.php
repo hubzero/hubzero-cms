@@ -32,10 +32,7 @@
 
 JLoader::import('Hubzero.Api.Controller');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'forum.php');
 
 /**
  * API controller class for forum posts
@@ -57,11 +54,244 @@ class ForumControllerApi extends Hubzero_Api_Controller
 
 		switch ($this->segments[0]) 
 		{
+			case 'threads':    $this->threads();   break;
 			case 'sections':   $this->sections();   break;
 			case 'thread':     $this->thread();     break;
 			case 'categories': $this->categories(); break;
-			default:           $this->error();      break;
+			default:
+				$this->errorMessage(
+					500, 
+					JText::_('Invalid task.'), 
+					JRequest::getWord('format', 'json')
+				);
+			break;
 		}
+	}
+
+	/**
+	 * Displays ticket stats
+	 *
+	 * @return    void
+	 */
+	private function sections()
+	{
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+
+		$model = new ForumModel('site', 0);
+
+		$response = new stdClass;
+		$response->sections = array();
+
+		$response->total = $model->sections('count', array('state' => 1));
+
+		if ($response->total)
+		{
+			$juri =& JURI::getInstance();
+			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+
+			foreach ($model->sections('list', array('state' => 1)) as $section)
+			{
+				$obj = new stdClass;
+				$obj->id         = $section->get('id');
+				$obj->title      = $section->get('title');
+				$obj->alias      = $section->get('alias');
+				$obj->created    = $section->get('created');
+				$obj->scope      = $section->get('scope');
+				$obj->scope_id   = $section->get('scope_id');
+
+				$obj->categories = $section->count('categories');
+				$obj->threads    = $section->count('threads');
+				$obj->posts      = $section->count('posts');
+
+				$obj->url        = $base . DS . ltrim(JRoute::_('index.php?option=com_forum&section=' . $section->get('alias')), DS);
+
+				$response->sections[] = $obj;
+			}
+		}
+
+		$response->success = true;
+
+		$this->setMessage($response);
+	}
+
+	/**
+	 * Displays ticket stats
+	 *
+	 * @return    void
+	 */
+	private function categories()
+	{
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+
+		$filters = array(
+			'authorized' => 1,
+			'limit'      => JRequest::getInt('limit', 25),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'section'    => JRequest::getVar('section', ''),
+			'search'     => JRequest::getVar('search', ''),
+			'scope'      => JRequest::getWord('scope', 'site'),
+			'scope_id'   => JRequest::getInt('scope_id', 0),
+			'state'      => 1,
+			'parent'     => 0
+		);
+
+		$model = new ForumModel($filters['scope'], $filters['scope_id']);
+
+		$section = $model->section($filters['section'], $model->get('scope'), $model->get('scope_id'));
+		if (!$section->exists())
+		{
+			$this->errorMessage(
+				500, 
+				JText::_('Section not found.'), 
+				JRequest::getWord('format', 'json')
+			);
+			return;
+		}
+
+		$response = new stdClass;
+
+		$response->section = new stdClass;
+		$response->section->id         = $section->get('id');
+		$response->section->title      = $section->get('title');
+		$response->section->alias      = $section->get('alias');
+		$response->section->created    = $section->get('created');
+		$response->section->scope      = $section->get('scope');
+		$response->section->scope_id   = $section->get('scope_id');
+
+		$response->categories = array();
+		$response->total = $section->categories('count', array('state' => 1));
+
+		if ($response->total)
+		{
+			$juri =& JURI::getInstance();
+			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+
+			foreach ($section->categories('list', array('state' => 1)) as $category)
+			{
+				$obj = new stdClass;
+				$obj->id          = $category->get('id');
+				$obj->title       = $category->get('title');
+				$obj->alias       = $category->get('alias');
+				$obj->description = $category->get('description');
+				$obj->created     = $category->get('created');
+				$obj->scope       = $category->get('scope');
+				$obj->scope_id    = $category->get('scope_id');
+
+				$obj->threads     = $category->count('threads');
+				$obj->posts       = $category->count('posts');
+
+				$obj->url         = $base . DS . ltrim(JRoute::_('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias')), DS);
+
+				$response->categories[] = $obj;
+			}
+		}
+
+		$response->success = true;
+
+		$this->setMessage($response);
+	}
+
+	/**
+	 * Displays ticket stats
+	 *
+	 * @return    void
+	 */
+	private function threads()
+	{
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+
+		$filters = array(
+			'authorized' => 1,
+			'limit'      => JRequest::getInt('limit', 25),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'section'    => JRequest::getVar('section', ''),
+			'category'   => JRequest::getVar('category', ''),
+			'search'     => JRequest::getVar('search', ''),
+			'scope'      => JRequest::getWord('scope', 'site'),
+			'scope_id'   => JRequest::getInt('scope_id', 0),
+			'state'      => 1,
+			'parent'     => 0
+		);
+
+		$model = new ForumModel($filters['scope'], $filters['scope_id']);
+
+		$section = $model->section($filters['section'], $model->get('scope'), $model->get('scope_id'));
+		if (!$section->exists())
+		{
+			$this->errorMessage(
+				500, 
+				JText::_('Section not found.'), 
+				JRequest::getWord('format', 'json')
+			);
+			return;
+		}
+
+		$category = $section->category($filters['category']);
+		if (!$category->exists())
+		{
+			$this->errorMessage(
+				500, 
+				JText::_('Category not found.'), 
+				JRequest::getWord('format', 'json')
+			);
+			return;
+		}
+
+		$response = new stdClass;
+
+		$response->section = new stdClass;
+		$response->section->id         = $section->get('id');
+		$response->section->title      = $section->get('title');
+		$response->section->alias      = $section->get('alias');
+		$response->section->created    = $section->get('created');
+		$response->section->scope      = $section->get('scope');
+		$response->section->scope_id   = $section->get('scope_id');
+
+		$response->category = new stdClass;
+		$response->category->id          = $category->get('id');
+		$response->category->title       = $category->get('title');
+		$response->category->alias       = $category->get('alias');
+		$response->category->description = $category->get('description');
+		$response->category->created     = $category->get('created');
+		$response->category->scope       = $category->get('scope');
+		$response->category->scope_id    = $category->get('scope_id');
+
+		$response->threads = array();
+		$response->total = $category->threads('count', array('state' => 1));
+
+		if ($response->total)
+		{
+			$juri =& JURI::getInstance();
+			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+
+			foreach ($category->threads('list', array('state' => 1)) as $thread)
+			{
+				$obj = new stdClass;
+				$obj->id          = $thread->get('id');
+				$obj->title       = $thread->get('title');
+				//$obj->description = $category->get('description');
+				$obj->created     = $thread->get('created');
+				$obj->modified    = $thread->get('modified');
+				$obj->anonymous   = ($thread->get('anonymous') ? true : false);
+				$obj->closed      = ($thread->get('closed') ? true : false);
+				$obj->scope       = $thread->get('scope');
+				$obj->scope_id    = $thread->get('scope_id');
+
+				$obj->creator = new stdClass;
+				$obj->creator->id = $thread->get('created_by');
+				$obj->creator->name = $thread->creator('name');
+
+				$obj->posts       = $thread->posts('count');
+
+				$obj->url         = $base . DS . ltrim(JRoute::_('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')), DS);
+
+				$response->threads[] = $obj;
+			}
+		}
+
+		$response->success = true;
+
+		$this->setMessage($response);
 	}
 
 	/**
@@ -203,17 +433,6 @@ class ForumControllerApi extends Hubzero_Api_Controller
 		$this->setMessage($data);
 	}
 
-	public function error()
-	{
-		$format = JRequest::getVar('format', 'json');
-
-		$data = new stdClass();
-		$data->code = 1;
-		//encode results and return response
-		$this->setMessageType($format);
-		$this->setMessage($data);
-	}
-
 	/**
 	 * Recursive function to build tree
 	 * 
@@ -226,7 +445,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 	 * @param      integer $type     Indention type
 	 * @return     void
 	 */
-	public function _treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
+	private function _treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
 	{
 		if (@$children[$id] && $level <= $maxlevel)
 		{
