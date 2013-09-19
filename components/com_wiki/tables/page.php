@@ -58,6 +58,13 @@ class WikiPage extends JTable
 	public $hits = NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 *
+	 * @var	string
+	 */
+	public $created  = NULL;
+
+	/**
 	 * Creator of the page int(11)
 	 *
 	 * @var	integer
@@ -549,6 +556,7 @@ class WikiPage extends JTable
 				return false;
 			}
 			$juser =& JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());
 			$this->modified = date('Y-m-d H:i:s', time());
 			$this->created_by = $juser->get('id');
 		}
