@@ -31,6 +31,13 @@ HUBzero is a registered trademark of Purdue University.
 	<fieldset name="basic">
 		<field name="title" type="text" menu="hide" default="" label="Blog Title" description="A Title for your blog" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="show_from" type="list" default="site" label="Included Posts From" description="Where the posts are pulled from.">
+			<option value="site">Site Blog</option>
+			<option value="member">Member Blog</option>
+			<option value="group">Group Blog</option>
+			<option value="both">Site, Member, and Group Blogs</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="uploadpath" type="text" menu="hide" default="/site/blog" label="Upload path" description="File path for uploads" />
 		<field name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
 			<option value="0">No</option>
@@ -62,6 +69,13 @@ HUBzero is a registered trademark of Purdue University.
 	</fieldset>
 	<params>
 		<param name="title" type="text" menu="hide" default="" label="Blog Title" description="A Title for your blog" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="show_from" type="list" default="site" label="Included Posts From" description="Where the posts are pulled from.">
+			<option value="site">Site Blog</option>
+			<option value="member">Member Blog</option>
+			<option value="group">Group Blog</option>
+			<option value="both">Site, Member, and Group Blogs</option>
+		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="uploadpath" type="text" menu="hide" default="/site/blog" label="Upload path" description="File path for uploads" />
 		<param name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">

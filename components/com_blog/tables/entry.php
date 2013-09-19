@@ -435,8 +435,12 @@ class BlogTableEntry extends JTable
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
-					WHERE m.scope='" . $this->_db->getEscaped($filters['scope']) . "' AND m.created_by=u.uidNumber ";
+					WHERE m.created_by=u.uidNumber ";
 
+		if (isset($filters['scope']) && $filters['scope'] != '')
+		{
+			$query .= " AND m.scope=" . $this->_db->Quote($filters['scope']);
+		}
 		if (isset($filters['year']) && $filters['year'] != 0) 
 		{
 			if (isset($filters['month']) && $filters['month'] != 0) 

@@ -165,7 +165,11 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
 		$this->view->filters['year']     = JRequest::getInt('year', 0);
 		$this->view->filters['month']    = JRequest::getInt('month', 0);
-		$this->view->filters['scope']    = 'site';
+		$this->view->filters['scope']    = $this->config->get('show_from', 'site');
+		if ($this->view->filters['scope'] == 'both')
+		{
+			$this->view->filters['scope'] = '';
+		}
 		$this->view->filters['group_id'] = 0;
 		$this->view->filters['search']   = JRequest::getVar('search', '');
 		$this->view->filters['authorized'] = false;
