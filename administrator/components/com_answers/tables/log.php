@@ -112,11 +112,33 @@ class AnswersTableLog extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->rid) == '') 
+		$this->rid = intval($this->rid);
+		if (!$this->rid) 
 		{
 			$this->setError(JText::_('Missing response ID'));
 			return false;
 		}
+
+		$this->helpful = strtolower(trim($this->helpful));
+		if (!$this->helpful) 
+		{
+			$this->setError(JText::_('Missing vote'));
+			return false;
+		}
+
+		if (!in_array($this->helpful, array(1, 'yes', 'like', 'up', -1, 'no', 'dislike', 'down')))
+		{
+			$this->setError(JText::_('Invalid vote'));
+			return false;
+		}
+
+		ximport('Hubzero_Environment');
+		if (!Hubzero_Environment::validIp($this->ip))
+		{
+			$this->setError(JText::_('Invalid IP address'));
+			return false;
+		}
+
 		return true;
 	}
 

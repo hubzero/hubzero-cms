@@ -95,6 +95,25 @@ class AnswersTableQuestionsLog extends JTable
 			$this->setError(JText::_('Missing question ID'));
 			return false;
 		}
+
+		$this->voter = intval($this->voter);
+		if (!$this->voter) 
+		{
+			$this->voter = JFactory::getUser()->get('id');
+		}
+
+		if (!$this->expires)
+		{
+			$this->expires = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)); // in a week
+		}
+
+		ximport('Hubzero_Environment');
+		if (!Hubzero_Environment::validIp($this->ip))
+		{
+			$this->setError(JText::_('Invalid IP address'));
+			return false;
+		}
+
 		return true;
 	}
 
