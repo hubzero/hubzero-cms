@@ -176,15 +176,18 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test record save fails when no time is provided
+	 * Test record check fails when no time is provided
 	 *
 	 * @group com_tags
+	 * @covers TagsTableTag::check
 	 */
-	function testRecordSaveFailsWithNoRawTag()
+	function testRecordCheckFailsWithNoRawTag()
 	{
 		$mock = $this->mock;
 		$mock['raw_tag'] = '';
-		$result = $this->instance->save($mock);
+
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
 
 		$this->assertFalse($result);
 	}

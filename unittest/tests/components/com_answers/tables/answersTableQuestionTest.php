@@ -31,7 +31,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 		'subject'    => 'What is the meaning of life?',
 		'question'   => 'What is the meaning of life?',
 		'created'    => '2013-05-06 12:13:04',
-		'created_by' => 1000,
+		'created_by' => 'admin',
 		'state'      => 0,
 		'anonymous'  => 0,
 		'email'      => 0,
@@ -64,7 +64,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	 */
 	function testInstanceIsObject()
 	{
-		$this->assertType('object', $this->instance);
+		$this->assertTrue(is_object($this->instance));
 	}
 
 	/**
@@ -96,7 +96,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	function testCountIsNumeric()
 	{
 		$result = $this->instance->count();
-		$this->assertType('numeric', $result, "Question Count: $result");
+		$this->assertTrue(is_numeric($result), "Question Count: $result");
 	}
 
 	/**
@@ -112,7 +112,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 		);
 
 		$result = $this->instance->getCount($filters);
-		$this->assertType('numeric', $result, "Question Count: $result");
+		$this->assertTrue(is_numeric($result), "Question Count: $result");
 	}
 
 	/**
@@ -128,7 +128,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 		);
 
 		$result = $this->instance->getCount($filters);
-		$this->assertType('numeric', $result, "Question Count: $result");
+		$this->assertTrue(is_numeric($result), "Question Count: $result");
 	}
 
 	/**
@@ -144,7 +144,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 		);
 
 		$result = $this->instance->getCount($filters);
-		$this->assertType('numeric', $result, "Question Count: $result");
+		$this->assertTrue(is_numeric($result), "Question Count: $result");
 	}
 
 	/**
@@ -160,7 +160,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 		);
 
 		$result = $this->instance->getCount($filters);
-		$this->assertType('numeric', $result, "Question Count: $result");
+		$this->assertTrue(is_numeric($result), "Question Count: $result");
 	}
 
 	/**
@@ -273,7 +273,8 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	 */
 	function testRecordSave()
 	{
-		$result = $this->instance->save($this->mock);
+		$this->instance->bind($this->mock);
+		$result = $this->instance->save();
 
 		$this->assertTrue($result);
 
@@ -289,7 +290,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	 */
 	function testQuestionIsString()
 	{
-		$this->assertType('string', $this->instance->question, "Question is string");
+		$this->assertTrue(is_string($this->instance->question), "Question is string");
 	}
 
 	/**
@@ -300,7 +301,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	 */
 	function testStateIsNumeric()
 	{
-		$this->assertType('numeric', $this->instance->state, "State is numeric");
+		$this->assertTrue(is_numeric($this->instance->state), "State is numeric");
 	}
 
 	/**
@@ -311,7 +312,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	 */
 	function testAnonymousIsNumeric()
 	{
-		$this->assertType('numeric', $this->instance->anonymous, "Anonymous is numeric");
+		$this->assertTrue(is_numeric($this->instance->anonymous), "Anonymous is numeric");
 	}
 
 	/**
@@ -322,7 +323,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	 */
 	function testHelpfulIsNumeric()
 	{
-		$this->assertType('numeric', $this->instance->helpful, "Helpful is numeric");
+		$this->assertTrue(is_numeric($this->instance->helpful), "Helpful is numeric");
 	}
 
 	/**
@@ -351,30 +352,67 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test record save fails when no time is provided
+	 * Test record check
 	 *
 	 * @group com_answers
+	 * @covers AnswersTableQuestion::check
 	 */
-	function testRecordSaveFailsWithNoQuestion()
+	function testRecordCheck()
+	{
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
+
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Test record check fails when no subject
+	 *
+	 * @group com_answers
+	 * @covers AnswersTableQuestion::check
+	 */
+	function testRecordCheckFailsWithNoSubject()
 	{
 		$mock = $this->mock;
-		$mock['question'] = '';
-		$result = $this->instance->save($mock);
+		$mock['subject'] = '';
+
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
 
 		$this->assertFalse($result);
 	}
 
 	/**
-	 * Test record save fails when no time is provided
+	 * Test record check sets created_by
 	 *
 	 * @group com_answers
+	 * @covers AnswersTableQuestion::check
 	 */
-	function testRecordSaveFailsWithNoCreatedby()
+	function testRecordCheckSetsCreatedby()
 	{
 		$mock = $this->mock;
-		$mock['created_by'] = 0;
-		$result = $this->instance->save($mock);
+		$mock['created_by'] = '';
 
-		$this->assertFalse($result);
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
+
+		$this->assertTrue(($this->instance->created_by != ''));
+	}
+
+	/**
+	 * Test record check sets created
+	 *
+	 * @group com_answers
+	 * @covers AnswersTableQuestion::check
+	 */
+	function testRecordCheckSetsCreated()
+	{
+		$mock = $this->mock;
+		$mock['created'] = '';
+
+		$this->instance->bind($mock);
+		$result = $this->instance->check();
+
+		$this->assertTrue(($this->instance->created != ''));
 	}
 }

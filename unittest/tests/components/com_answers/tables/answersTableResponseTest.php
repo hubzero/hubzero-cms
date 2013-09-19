@@ -30,7 +30,7 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 		'qid'        => 1, 
 		'answer'     => 'The anser is 42', 
 		'created'    => '2013-09-21 12:56:41', 
-		'created_by' => 1001,
+		'created_by' => 'admin',
 		'helpful'    => 0,
 		'nothelpful' => 0,
 		'state'      => 0,
@@ -94,7 +94,7 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 	function testGetCountIsNumeric()
 	{
 		$result = $this->instance->getCount();
-		$this->assertType('numeric', $result, "Response Count: $result");
+		$this->assertTrue(is_numeric($result), "Response Count: $result");
 	}
 
 	/**
@@ -110,7 +110,7 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 		);
 
 		$result = $this->instance->getCount($filters);
-		$this->assertType('numeric', $result, "Response Count: $result");
+		$this->assertTrue(is_numeric($result), "Response Count: $result");
 	}
 
 	/**
@@ -186,8 +186,9 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 	 * Test record check passes
 	 *
 	 * @group com_answers
+	 * @covers AnswersTableResponse::check
 	 */
-	function testRecordCheckReturnsTrue()
+	function testRecordCheck()
 	{
 		$this->instance->answer = 'The answer is 53';
 
@@ -203,6 +204,78 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 	 */
 	function testAnswerIsString()
 	{
-		$this->assertType('string', $this->instance->answer, "Answer is string");
+		$this->assertTrue(is_string($this->instance->answer), "Answer is string");
+	}
+
+	/**
+	 * Test that the tag is a string
+	 *
+	 * @group com_answers
+	 * @depends testRecordCheck
+	 * @covers AnswersTableResponse::check
+	 */
+	function testQidIsNumeric()
+	{
+		$this->assertTrue(is_numeric($this->instance->qid), "QID is numeric");
+	}
+
+	/**
+	 * Test that helpful is numeric
+	 *
+	 * @group com_answers
+	 * @depends testRecordCheck
+	 * @covers AnswersTableResponse::check
+	 */
+	function testHelpfulIsNumeric()
+	{
+		$this->assertTrue(is_numeric($this->instance->helpful), "Helpful is numeric");
+	}
+
+	/**
+	 * Test that nothelpful is numeric
+	 *
+	 * @group com_answers
+	 * @depends testRecordCheck
+	 * @covers AnswersTableResponse::check
+	 */
+	function testNothelpfulIsNumeric()
+	{
+		$this->assertTrue(is_numeric($this->instance->helpful), "Helpful is numeric");
+	}
+
+	/**
+	 * Test that anonymous is numeric
+	 *
+	 * @group com_answers
+	 * @depends testRecordCheck
+	 * @covers AnswersTableResponse::check
+	 */
+	function testAnonymousIsNumeric()
+	{
+		$this->assertTrue(is_numeric($this->instance->anonymous), "Anonymous is numeric");
+	}
+
+	/**
+	 * Test that created is set
+	 *
+	 * @group com_answers
+	 * @depends testRecordCheck
+	 * @covers AnswersTableResponse::check
+	 */
+	function testCreatedIsSet()
+	{
+		$this->assertTrue(($this->instance->created != ''), "Created is set");
+	}
+
+	/**
+	 * Test that created_by is set
+	 *
+	 * @group com_answers
+	 * @depends testRecordCheck
+	 * @covers AnswersTableResponse::check
+	 */
+	function testCreatedbyIsSet()
+	{
+		$this->assertTrue(($this->instance->created_by != 0), "Created_by is set");
 	}
 }
