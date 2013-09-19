@@ -53,8 +53,9 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="charlimit" type="text" default="100" label="Length of Post Preview" description="Number of characters to display in post." />
 		<param name="blog" type="list" default="site" label="Included Discussions From" description="Where the discussions are pulled from.">
 			<option value="site">Site Blog</option>
+			<option value="member">Member Blog</option>
 			<option value="group">Group Blog</option>
-			<option value="both">Site and Group Blogs</option>
+			<option value="both">Site, Member, and Group Blogs</option>
 		</param>
 		<param type="spacer" />
 		<param name="morelink" type="text" default="" label="More Link" description="More link address."  size="100" />
@@ -85,8 +86,9 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="charlimit" type="text" default="100" label="Length of Post Preview" description="Number of characters to display in post." />
 				<field name="blog" type="list" default="site" label="Included Discussions From" description="Where the discussions are pulled from.">
 					<option value="site">Site Blog</option>
+					<option value="member">Member Blog</option>
 					<option value="group">Group Blog</option>
-					<option value="both">Site and Group Blogs</option>
+					<option value="both">Site, Member, and Group Blogs</option>
 				</field>
 				<field type="spacer" />
 				<field name="morelink" type="text" default="" label="More Link" description="More link address."  size="100" />

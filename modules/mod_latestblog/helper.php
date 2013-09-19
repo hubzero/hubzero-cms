@@ -77,6 +77,14 @@ class modLatestBlog extends Hubzero_Module
 			$site_blog = $database->loadObjectList();
 		}
 
+		$member_blog = array();
+		if ($include == 'member' || $include == 'both')
+		{
+			//get all blog posts on site blog
+			$database->setQuery("SELECT f.*, u.name FROM #__blog_entries f LEFT JOIN #__users AS u ON u.id=f.created_by WHERE f.group_id='0' AND f.state='1' AND scope='member' $query ORDER BY publish_up DESC LIMIT " . $this->limit);
+			$member_blog = $database->loadObjectList();
+		}
+
 		$group_blog = array();
 		if ($include == 'group' || $include == 'both')
 		{
@@ -106,15 +114,17 @@ class modLatestBlog extends Hubzero_Module
 				}
 			}
 		}
-		
+
 		//based on param decide what to include
 		switch ($include) 
 		{
-			case 'site':  $posts = $site_blog;  break;
-			case 'group': $posts = $group_blog; break;
+			case 'site':   $posts = $site_blog;   break;
+			case 'member': $posts = $member_blog; break;
+			case 'group':  $posts = $group_blog;  break;
 			case 'both':  
 			default:
-				$posts = array_merge($site_blog, $group_blog);
+				$posts = array_merge($site_blog, $member_blog);
+				$posts = array_merge($posts, $group_blog);
 			break;
 		}
 
@@ -139,7 +149,7 @@ class modLatestBlog extends Hubzero_Module
 		{
 			$d1 = date("Y-m-d H:i:s", strtotime($a->created));
 			$d2 = date("Y-m-d H:i:s", strtotime($b->created));
-			
+
 			return ($d1 > $d2) ? -1 : 1;
 		}
 

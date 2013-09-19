@@ -42,42 +42,53 @@ $c = 0;
 			<?php 
 			foreach ($this->posts as $post) 
 			{ 
-				if ($post->group_id == 0) 
+				if ($c < $this->limit) 
 				{
-					$wikiconfig = array(
-						'option'   => 'com_blog',
-						'scope'    => 'blog',
-						'pagename' => $post->alias,
-						'pageid'   => 0,
-						'filepath' => '/site/blog',
-						'domain'   => ''
-					);
-				}
-				else 
+				switch ($post->scope) 
 				{
-					$wikiconfig = array(
-						'option'   => 'com_groups',
-						'scope'    => 'blog',
-						'pagename' => $post->alias,
-						'pageid'   => 0,
-						'filepath' => '/site/groups/' . $post->group_id . '/blog',
-						'domain'   => ''
-					);
+					case 'site':
+						$wikiconfig = array(
+							'option'   => 'com_blog',
+							'scope'    => 'blog',
+							'pagename' => $post->alias,
+							'pageid'   => 0,
+							'filepath' => '/site/blog',
+							'domain'   => ''
+						);
+						$url = 'index.php?option=com_blog&task=' . JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
+						$location = '<a href="' . JRoute::_('index.php?option=com_blog') . '">' . JText::_('Site-Wide Blog') . '</a>';
+					break;
+
+					case 'member':
+						$wikiconfig = array(
+							'option'   => 'com_members',
+							'scope'    => 'blog',
+							'pagename' => $post->alias,
+							'pageid'   => 0,
+							'filepath' => '/site/members' . $post->created_by . '/blog',
+							'domain'   => ''
+						);
+						$url = 'index.php?option=com_members&id=' . $post->created_by . '&active=blog&task=' . JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
+						$location = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->created_by . '&active=blog') . '">' . JText::_('Member Blog') . '</a>';
+					break;
+
+					case 'group':
+						$wikiconfig = array(
+							'option'   => 'com_groups',
+							'scope'    => 'blog',
+							'pagename' => $post->alias,
+							'pageid'   => 0,
+							'filepath' => '/site/groups/' . $post->group_id . '/blog',
+							'domain'   => ''
+						);
+						ximport('Hubzero_Group');
+						$group = Hubzero_Group::getInstance($post->group_id);
+						$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog&scope=' .  JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
+						$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
+					break;
 				}
 				$post->content = $p->parse(stripslashes($post->content), $wikiconfig);
 				?>
-				<?php if ($c < $this->limit) : ?>
-					<?php
-						if ($post->group_id == 0) {
-							$url = 'index.php?option=com_blog&task=' . JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
-							$location = '<a href="' . JRoute::_('index.php?option=com_blog') . '">' . JText::_('Site-Wide Blog') . '</a>';
-						} else {
-							ximport('Hubzero_Group');
-							$group = Hubzero_Group::getInstance($post->group_id);
-							$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog&scope=' .  JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
-							$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
-						}
-					?>
 					<li>
 						<?php
 						$author = Hubzero_User_Profile::getInstance($post->created_by);
@@ -90,7 +101,7 @@ $c = 0;
 						?>
 						<div class="entry-content">
 							<h4>
-								<a href="<?php echo JRoute::_($url); ?>"><?php echo stripslashes($post->title); ?></a>
+								<a href="<?php echo JRoute::_($url); ?>"><?php echo $this->escape(stripslashes($post->title)); ?></a>
 							</h4>
 							<dl class="entry-meta">
 								<dt>
@@ -110,7 +121,7 @@ $c = 0;
 								</dd>
 								<dd class="author">
 									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $post->created_by); ?>">
-										<?php echo stripslashes($post->name); ?>
+										<?php echo $this->escape(stripslashes($post->name)); ?>
 									</a>
 								</dd>
 								<dd class="location">
@@ -135,7 +146,7 @@ $c = 0;
 							</div>
 						</div>
 					</li>
-				<?php endif; ?>
+				<?php } ?>
 				<?php $c++; ?>
 			<?php } ?>
 		</ul>
