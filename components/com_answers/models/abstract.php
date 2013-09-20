@@ -123,31 +123,9 @@ abstract class AnswersModelAbstract extends JObject
 			{
 				$this->_tbl->load($oid);
 			}
-			else if (is_object($oid))
+			else if (is_object($oid) || is_array($oid))
 			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (get_object_vars($oid) as $key => $property)
-				{
-					if (!array_key_exists($key, $properties))
-					{
-						$this->_tbl->set('__' . $key, $property);
-					}
-				}
-			}
-			else if (is_array($oid))
-			{
-				$this->_tbl->bind($oid);
-
-				$properties = $this->_tbl->getProperties();
-				foreach (array_keys($oid) as $key)
-				{
-					if (!array_key_exists($key, $properties))
-					{
-						$this->_tbl->set('__' . $key, $oid[$key]);
-					}
-				}
+				$this->bind($oid);
 			}
 		}
 	}
@@ -305,11 +283,11 @@ abstract class AnswersModelAbstract extends JObject
 	 */
 	public function bind($data=null)
 	{
-		$res = $this->_tbl->bind($data);
-
-		if ($res)
+		if (is_object($data))
 		{
-			if (is_object($data))
+			$res = $this->_tbl->bind($data);
+
+			if ($res)
 			{
 				$properties = $this->_tbl->getProperties();
 				foreach (get_object_vars($data) as $key => $property)
@@ -320,7 +298,12 @@ abstract class AnswersModelAbstract extends JObject
 					}
 				}
 			}
-			else if (is_array($data))
+		}
+		else if (is_array($data))
+		{
+			$res = $this->_tbl->bind($data);
+
+			if ($res)
 			{
 				$properties = $this->_tbl->getProperties();
 				foreach (array_keys($data) as $key)
@@ -331,6 +314,10 @@ abstract class AnswersModelAbstract extends JObject
 					}
 				}
 			}
+		}
+		else
+		{
+			throw new InvalidArgumentException(JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data)));
 		}
 
 		return $res;

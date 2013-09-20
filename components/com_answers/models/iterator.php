@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Courses model class for a course
  */
-class AnswersModelIterator implements Iterator
+class AnswersModelIterator implements Iterator, Countable
 {
 	/**
 	 * Container for properties

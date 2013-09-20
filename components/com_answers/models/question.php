@@ -181,28 +181,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
-	}
-
-	/**
 	 * Set and get a specific comment
 	 * 
 	 * @return     void
