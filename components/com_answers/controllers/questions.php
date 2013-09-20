@@ -872,31 +872,52 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		{
 			// Send a message about the new question to authorized users (specified admins or related content authors)
 			$jconfig =& JFactory::getConfig();
-			$hub = array(
-				'email' => $jconfig->getValue('config.mailfrom'),
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS')
+			$from = array(
+				'email'     => $jconfig->getValue('config.mailfrom'),
+				'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
+				'multipart' => md5(date('U'))
 			);
 
 			// Build the message subject
 			$subject = JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('new question about content you author or manage');
+
+			$message = array();
+
+			$eview = new JView(array(
+				'name'   => 'emails',
+				'layout' => 'question_plaintext'
+			));
+			$eview->option   = $this->_option;
+			$eview->jconfig  = $jconfig;
+			$eview->sitename = $jconfig->getValue('config.sitename');
+			$eview->juser    = $this->juser;
+			$eview->question = $row;
+			$eview->id       = $row->get('id', 0);
+			$eview->boundary = $from['multipart'];
+
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 			// Build the message	
 			$eview = new JView(array(
 				'name'   => 'emails',
 				'layout' => 'question'
 			));
-			$eview->option   = $this->_option;
-			$eview->sitename = $jconfig->getValue('config.sitename');
-			$eview->juser    = $this->juser;
-			$eview->row      = $row;
-			$eview->id       = $row->get('id', 0);
+			$eview->option    = $this->_option;
+			$eview->jconfig  = $jconfig;
+			$eview->sitename  = $jconfig->getValue('config.sitename');
+			$eview->juser     = $this->juser;
+			$eview->row       = $row;
+			$eview->id        = $row->get('id', 0);
+			$eview->boundary  = $from['multipart'];
+			$eview->plaintext = $message['plaintext'];
 
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $hub, $receivers, $this->_option))) 
+			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, $this->_option))) 
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
 			}
@@ -990,32 +1011,53 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				}
 
 				// Build the "from" info
-				$hub = array(
-					'email' => $jconfig->getValue('config.mailfrom'),
-					'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS')
+				$from = array(
+					'email'     => $jconfig->getValue('config.mailfrom'),
+					'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
+					'multipart' => md5(date('U'))
 				);
 
 				// Build the message subject
-				$subject = $jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_ANSWERS').', '.JText::_('COM_ANSWERS_QUESTION').' #'.$id.' '.JText::_('COM_ANSWERS_WAS_REMOVED');
+				$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('COM_ANSWERS_QUESTION') . ' #' . $id . ' ' . JText::_('COM_ANSWERS_WAS_REMOVED');
+
+				$message = array();
+
+				$eview = new JView(array(
+					'name'   => 'emails',
+					'layout' => 'removed_plaintext'
+				));
+				$eview->option   = $this->_option;
+				$eview->jconfig  = $jconfig;
+				$eview->sitename = $jconfig->getValue('config.sitename');
+				$eview->juser    = $this->juser;
+				$eview->question = $question;
+				$eview->id       = $question->get('id');
+				$eview->boundary = $from['multipart'];
+
+				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// Build the message	
 				$eview = new JView(array(
 					'name'   => 'emails',
 					'layout' => 'removed'
 				));
-				$eview->option   = $this->_option;
-				$eview->sitename = $jconfig->getValue('config.sitename');
-				$eview->juser    = $this->juser;
-				$eview->question = $question;
-				$eview->id       = $id;
+				$eview->option    = $this->_option;
+				$eview->jconfig  = $jconfig;
+				$eview->sitename  = $jconfig->getValue('config.sitename');
+				$eview->juser     = $this->juser;
+				$eview->question  = $question;
+				$eview->id        = $id;
+				$eview->boundary  = $from['multipart'];
+				$eview->plaintext = $message['plaintext'];
 
-				$message = $eview->loadTemplate();
-				$message = str_replace("\n", "\r\n", $message);
+				$message['multipart'] = $eview->loadTemplate();
+				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 				// Send the message
 				JPluginHelper::importPlugin('xmessage');
 				$dispatcher =& JDispatcher::getInstance();
-				if (!$dispatcher->trigger('onSendMessage', array('answers_question_deleted', $subject, $message, $hub, $users, $this->_option))) 
+				if (!$dispatcher->trigger('onSendMessage', array('answers_question_deleted', $subject, $message, $from, $users, $this->_option))) 
 				{
 					$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
 				}
@@ -1095,29 +1137,56 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		$jconfig =& JFactory::getConfig();
 
+		// ---
+
 		// Build the "from" info
-		$hub = array(
-			'email' => $jconfig->getValue('config.mailfrom'),
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS')
+		$from = array(
+			'email'     => $jconfig->getValue('config.mailfrom'),
+			'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
+			'multipart' => md5(date('U'))
 		);
 
 		// Build the message subject
 		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . JText::_('COM_ANSWERS_RESPONSE');
 
+		$message = array();
+
 		// Build the message	
 		$eview = new JView(array(
 			'name'   => 'emails',
-			'layout' => 'response'
+			'layout' => 'response_plaintext'
 		));
 		$eview->option   = $this->_option;
+		$eview->jconfig  = $jconfig;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser    = $this->juser;
 		$eview->question = $question;
 		$eview->row      = $row;
 		$eview->id       = $response['qid'];
+		$eview->boundary = $from['multipart'];
 
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
+		$message['plaintext'] = $eview->loadTemplate();
+		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+		// Build the message
+		$eview = new JView(array(
+			'name'   => 'emails',
+			'layout' => 'response'
+		));
+		$eview->option    = $this->_option;
+		$eview->jconfig  = $jconfig;
+		$eview->sitename  = $jconfig->getValue('config.sitename');
+		$eview->juser     = $this->juser;
+		$eview->question  = $question;
+		$eview->row       = $row;
+		$eview->id        = $response['qid'];
+		$eview->boundary  = $from['multipart'];
+		$eview->plaintext = $message['plaintext'];
+
+		$message['multipart'] = $eview->loadTemplate();
+		$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+		// ---
 
 		$authorid = $question->creator('id');
 
@@ -1146,7 +1215,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		if (!in_array($authorid, $receivers)) 
 		{
-			if (!$dispatcher->trigger('onSendMessage', array('answers_reply_submitted', $subject, $message, $hub, array($authorid), $this->_option))) 
+			if (!$dispatcher->trigger('onSendMessage', array('answers_reply_submitted', $subject, $message, $from, array($authorid), $this->_option))) 
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
 			}
@@ -1154,7 +1223,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		if (!empty($receivers)) 
 		{
-			if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $hub, $receivers, $this->_option))) 
+			if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option))) 
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
 			}
