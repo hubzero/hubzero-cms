@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<ul class="poll">
 	<?php for ($i = 0, $n = count($options); $i < $n; $i ++) : ?>
 			<li class="<?php echo $tabclass_arr[$tabcnt]; ?><?php echo $params->get('moduleclass_sfx'); ?>">
-				<input type="radio" name="voteid" id="voteid<?php echo $options[$i]->id;?>" value="<?php echo $options[$i]->id;?>" alt="<?php echo $options[$i]->id;?>" />
+				<input type="radio" name="voteid" id="voteid<?php echo $options[$i]->id;?>" value="<?php echo $options[$i]->id;?>" />
 				<label for="voteid<?php echo $options[$i]->id; ?>" class="<?php echo $tabclass_arr[$tabcnt]; ?><?php echo $params->get('moduleclass_sfx'); ?>">
 					<?php echo stripslashes($options[$i]->text); ?>
 				</label>
