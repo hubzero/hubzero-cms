@@ -31,14 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//----------------------------------------------------------
-// Comment database class
-//----------------------------------------------------------
-
 /**
- * Short description for 'ResourcesRecommendation'
- * 
- * Long description (if any) ...
+ * Resource recommendation database class
  */
 class ResourcesRecommendation extends JTable
 {
@@ -85,55 +79,48 @@ class ResourcesRecommendation extends JTable
 	 */
 	var $timestamp    = NULL;  // @var datetime (0000-00-00 00:00:00)
 
-	//-----------
-
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__recommendation', 'fromID', $db );
+		parent::__construct('#__recommendation', 'fromID', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if invalid
 	 */
 	public function check()
 	{
-		if (trim( $this->comment ) == '' or trim( $this->comment ) == JText::_('Enter your comments...')) {
-			$this->setError( JText::_('Please provide a comment') );
+		if (!$this->toID) 
+		{
+			$this->setError(JText::_('Please provide an ID'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getResults'
+	 * Get a list of recommendations
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to apply to query
+	 * @return     array
 	 */
-	public function getResults( $filters=array() )
+	public function getResults($filters=array())
 	{
 		$query = "SELECT *, (10*titleScore + 5*contentScore+2*tagScore)/(10+5+2) AS rec_score 
 		FROM #__recommendation AS rec, #__resources AS r 
 		WHERE (rec.fromID ='".$filters['id']."' AND r.id = rec.toID AND r.standalone=1) 
-		OR (rec.toID ='".$filters['id']."' AND r.id = rec.fromID AND r.standalone=1) having rec_score > ".$filters['threshold']." 
+		OR (rec.toID ='".$filters['id']."' AND r.id = rec.fromID AND r.standalone=1 AND r.published=1) having rec_score > ".$filters['threshold']." 
 		ORDER BY rec_score DESC LIMIT ".$filters['limit'];
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }
-?>
+
