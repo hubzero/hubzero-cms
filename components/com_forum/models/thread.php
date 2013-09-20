@@ -49,6 +49,34 @@ class ForumModelThread extends ForumModelPost
 	private $_cache = array();
 
 	/**
+	 * Is the thread closed?
+	 * 
+	 * @return     boolean
+	 */
+	public function isClosed()
+	{
+		if ($this->get('closed') == 1) 
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is the thread sticky?
+	 * 
+	 * @return     boolean
+	 */
+	public function isSticky()
+	{
+		if ($this->get('sticky') == 1) 
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Set and get a specific offering
 	 * 
 	 * @return     void
@@ -84,7 +112,7 @@ class ForumModelThread extends ForumModelPost
 	 * @param      array $filters Filters to build query from
 	 * @return     object ForumModelIterator
 	 */
-	public function posts($rtrn='list', $filters=array())
+	public function posts($rtrn='list', $filters=array(), $clear=false)
 	{
 		$filters['thread']      = isset($filters['thread'])      ? $filters['thread']      : $this->get('thread');
 		//$filters['category_id'] = isset($filters['category_id']) ? $filters['category_id'] : $this->get('category_id');
@@ -101,7 +129,7 @@ class ForumModelThread extends ForumModelPost
 			break;
 
 			case 'tree':
-				if (!isset($this->_cache['tree']) || !is_a($this->_cache['tree'], 'ForumModelIterator'))
+				if (!isset($this->_cache['tree']) || !is_a($this->_cache['tree'], 'ForumModelIterator') || $clear)
 				{
 					if ($rows = $this->_tbl->getTree($filters['thread'])) //getTree
 					{
@@ -132,7 +160,7 @@ class ForumModelThread extends ForumModelPost
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['posts']) || !is_a($this->_cache['posts'], 'ForumModelIterator'))
+				if (!isset($this->_cache['posts']) || !is_a($this->_cache['posts'], 'ForumModelIterator') || $clear)
 				{
 					if (($results = $this->_tbl->getRecords($filters)))
 					{
@@ -189,14 +217,14 @@ class ForumModelThread extends ForumModelPost
 	 * @param      array $filters Filters to build query from
 	 * @return     object ForumModelIterator
 	 */
-	public function participants($filters=array())
+	public function participants($filters=array(), $clear=false)
 	{
-		$filters['thread']      = isset($filters['thread'])      ? $filters['thread']      : $this->get('thread');
-		$filters['parent']      = isset($filters['parent'])      ? $filters['parent']      : $this->get('id');
+		$filters['thread'] = isset($filters['thread'])      ? $filters['thread']      : $this->get('thread');
+		$filters['parent'] = isset($filters['parent'])      ? $filters['parent']      : $this->get('id');
 		//$filters['category_id'] = isset($filters['category_id']) ? $filters['category_id'] : $this->get('category_id');
-		$filters['state']       = isset($filters['state'])       ? $filters['state']       : 1;
+		$filters['state']  = isset($filters['state'])       ? $filters['state']       : 1;
 
-		if (!isset($this->_participants) || !is_a($this->_participants, 'ForumModelIterator'))
+		if (!isset($this->_participants) || !is_a($this->_participants, 'ForumModelIterator') || $clear)
 		{
 			if (!($results = $this->_tbl->getParticipants($filters)))
 			{
@@ -214,7 +242,7 @@ class ForumModelThread extends ForumModelPost
 	 * @param      array $filters Filters to build query from
 	 * @return     object ForumModelIterator
 	 */
-	public function attachments($rtrn='list')
+	public function attachments($rtrn='list', $clear=false)
 	{
 		switch (strtolower($rtrn))
 		{
@@ -229,7 +257,7 @@ class ForumModelThread extends ForumModelPost
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['attachments']) || !is_a($this->_cache['attachments'], 'ForumModelIterator'))
+				if (!isset($this->_cache['attachments']) || !is_a($this->_cache['attachments'], 'ForumModelIterator') || $clear)
 				{
 					$tbl = new ForumAttachment($this->_db);
 
@@ -271,35 +299,18 @@ class ForumModelThread extends ForumModelPost
 	}
 
 	/**
-	 * Get a list of tags in this thread
+	 * Get tags on the entry
+	 * Optinal first agument to determine format of tags
 	 * 
-	 * @param      string $what What format to return data in
-	 * @return     mixed
+	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param      integer $admin Include amdin tags? (defaults to no)
+	 * @return     boolean
 	 */
-	public function tags($rtrn='cloud')
+	public function tags($as='cloud', $admin=0)
 	{
-		$bt = new ForumTags($this->_db);
+		$cloud = new ForumModelTags($this->get('id'));
 
-		$tags = null;
-
-		$rtrn = strtolower(trim($rtrn));
-		switch ($rtrn)
-		{
-			case 'array':
-				$tags = $bt->get_tags_on_object($this->get('id'), 0, 0);
-			break;
-
-			case 'string':
-				$tags = $bt->get_tag_string($this->get('id'));
-			break;
-
-			case 'cloud':
-			default:
-				$tags = $bt->get_tag_cloud(0, 0, $this->get('id'));
-			break;
-		}
-
-		return $tags; 
+		return $cloud->render($as, array('admin' => $admin));
 	}
 }
 

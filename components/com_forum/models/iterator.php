@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Courses model class for a course
  */
-class ForumModelIterator implements Iterator
+class ForumModelIterator implements Iterator, Countable
 {
 	/**
 	 * Container for properties
@@ -81,7 +81,6 @@ class ForumModelIterator implements Iterator
 	public function add($value) 
 	{
 		$this->_data[$this->_total++] = $value;
-		//reset($this->_data);
 	}
 
 	/**
@@ -92,7 +91,6 @@ class ForumModelIterator implements Iterator
 	public function rewind() 
 	{
 		$this->_pos = 0;
-		//reset($this->_data);
 	}
 
 	/**
@@ -159,17 +157,6 @@ class ForumModelIterator implements Iterator
 	 */
 	public function isFirst() 
 	{
-		//$hasPrevious = isset($this->_data[$this->_pos - 1]);
-		// now undo 
-		//echo ++$this->_pos; die();
-		/*if ($hasPrevious) 
-		{
-			$this->_data[++$this->_pos];
-		}
-		else 
-		{
-			$this->first();
-		}*/
 		return !isset($this->_data[$this->_pos - 1]);
 	} 
 
@@ -180,16 +167,6 @@ class ForumModelIterator implements Iterator
 	 */
 	public function isLast() 
 	{ 
-		//$hasNext = isset($this->_data[$this->_pos + 1]);
-		// now undo 
-		/*if ($hasNext) 
-		{
-			$this->_data[--$this->_pos];
-		} 
-		else 
-		{
-			$this->last();
-		} */
 		return !isset($this->_data[$this->_pos + 1]); 
 	}
 
@@ -206,7 +183,6 @@ class ForumModelIterator implements Iterator
 			return $this->_data[$this->_pos];
 		}
 		return null;
-		//return current($this->_data);
 	}
 
 	/**
@@ -220,6 +196,16 @@ class ForumModelIterator implements Iterator
 	}
 
 	/**
+	 * Return the array count
+	 *
+	 * @return     integer
+	 */
+	public function count() 
+	{
+		return $this->_total;
+	}
+
+	/**
 	 * Return the first array value
 	 *
 	 * @return     mixed
@@ -227,7 +213,6 @@ class ForumModelIterator implements Iterator
 	public function first() 
 	{
 		$this->rewind();
-		//return $this->current();
 	}
 
 	/**
@@ -238,7 +223,6 @@ class ForumModelIterator implements Iterator
 	public function last() 
 	{
 		$this->_pos = ($this->_total - 1);
-		//return $this->current();
 	}
 
 	/**
@@ -246,10 +230,18 @@ class ForumModelIterator implements Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function key() 
+	public function key($idx=null) 
 	{
+		if ($idx !== null)
+		{
+			$old = $this->_pos;
+			$this->_pos = (int) $idx;
+			if (!$this->valid())
+			{
+				$this->_pos = $old;
+			}
+		}
 		return $this->_pos;
-		//return key($this->_data);
 	}
 
 	/**
@@ -260,8 +252,6 @@ class ForumModelIterator implements Iterator
 	public function prev() 
 	{
 		--$this->_pos;
-		//return $this->current();
-		//return prev($this->_data);
 	}
 
 	/**
@@ -272,8 +262,6 @@ class ForumModelIterator implements Iterator
 	public function next() 
 	{
 		++$this->_pos;
-		//return $this->current();
-		//return next($this->_data);
 	}
 
 	/**
@@ -284,9 +272,6 @@ class ForumModelIterator implements Iterator
 	public function valid() 
 	{
 		return isset($this->_data[$this->_pos]);
-		//$key = key($this->_data);
-		//return ($key !== NULL && $key !== FALSE);
-		//return !is_null(key($this->_data));
 	}
 }
 

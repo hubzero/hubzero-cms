@@ -105,17 +105,17 @@ ximport('Hubzero_User_Profile_Helper');
 					<?php echo JText::_('COM_FORUM_FIELD_SECTION'); ?>
 					<select name="fields[section_id]" id="field-section_id">
 						<option value="0"><?php echo JText::_('COM_FORUM_FIELD_SECTION_SELECT'); ?></option>
-					<?php foreach ($this->model->sections() as $section) { ?>
+					<?php foreach ($this->model->sections('list', array('state' => 1)) as $section) { ?>
 						<option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
 					<?php } ?>
 					</select>
 				</label>
-				
+
 				<label for="field-title">
 					<?php echo JText::_('COM_FORUM_FIELD_TITLE'); ?>
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->category->get('title'))); ?>" />
 				</label>
-				
+
 				<label for="field-description">
 					<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>
 					<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description'))); ?></textarea>

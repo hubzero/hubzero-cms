@@ -115,7 +115,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 			foreach ($this->thread->attachments() as $attachment) 
 			{
 				$cls = 'file';
-				$title = $attachment->get('description', $attachment->get('filename'));
+				$title = trim($attachment->get('description')) ? $attachment->get('description') : $attachment->get('filename');
 				if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
 				{
 					$cls = 'img';

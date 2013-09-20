@@ -32,65 +32,19 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
 
 /**
  * Courses model class for a forum
  */
-class ForumModelAttachment extends JObject
+class ForumModelAttachment extends ForumModelAbstract
 {
 	/**
-	 * JUser
+	 * Table class name
 	 * 
 	 * @var object
 	 */
-	private $_creator = null;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = null;
-
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $_tbl = null;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      integer $id Course ID or alias
-	 * @return     void
-	 */
-	public function __construct($oid, $pid=null)
-	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new ForumAttachment($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			if ($pid)
-			{
-				$this->_tbl->loadByPost($pid);
-			}
-			else
-			{
-				$this->_tbl->load($oid);
-			}
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-	}
+	protected $_tbl_name = 'ForumAttachment';
 
 	/**
 	 * Returns a reference to a forum model
@@ -116,81 +70,6 @@ class ForumModelAttachment extends JObject
 		}
 
 		return $instances[$oid];
-	}
-
-	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the forum exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->forum->created_by);
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
 	}
 }
 

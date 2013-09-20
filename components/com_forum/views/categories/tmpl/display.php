@@ -80,7 +80,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 	<?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
 			<h3><?php echo JText::_('Start Your Own'); ?></h3>
-		<?php if (!$this->category->get('closed')) { ?>
+		<?php if (!$this->category->isClosed()) { ?>
 			<p>
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
@@ -161,11 +161,11 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 						}
 						$cls = array();
-						if ($row->get('closed')) 
+						if ($row->isClosed()) 
 						{
 							$cls[] = 'closed';
 						}
-						if ($row->get('sticky')) 
+						if ($row->isSticky()) 
 						{
 							$cls[] = 'sticky';
 						}

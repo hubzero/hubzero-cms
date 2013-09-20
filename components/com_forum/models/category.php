@@ -32,14 +32,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'thread.php');
 
 /**
  * Courses model class for a forum
  */
-class ForumModelCategory extends JObject
+class ForumModelCategory extends ForumModelAbstract
 {
+	/**
+	 * Table class name
+	 * 
+	 * @var object
+	 */
+	protected $_tbl_name = 'ForumCategory';
+
 	/**
 	 * ForumTableSection
 	 * 
@@ -55,47 +63,10 @@ class ForumModelCategory extends JObject
 	private $_threads = null;
 
 	/**
-	 * ForumModelCategory
-	 * 
-	 * @var object
-	 */
-	private $_tbl = null;
-
-	/**
-	 * Flag for if authorization checks have been run
-	 * 
-	 * @var mixed
-	 */
-	private $_authorized = false;
-
-	/**
-	 * JUser
-	 * 
-	 * @var object
-	 */
-	private $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
-
-	/**
 	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	//private $_data = array();
-
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $_config = null;
-
 	private $_stats = array();
 
 	/**
@@ -108,7 +79,8 @@ class ForumModelCategory extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new ForumCategory($this->_db);
+		$cls = $this->_tbl_name;
+		$this->_tbl = new $cls($this->_db);
 
 		if (is_numeric($oid))
 		{
@@ -118,29 +90,9 @@ class ForumModelCategory extends JObject
 		{
 			$this->_tbl->loadByAlias($oid, $section_id);
 		}
-		else if (is_object($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (get_object_vars($oid) as $key => $property)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $property);
-				}
-			}
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (array_keys($oid) as $key)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $oid[$key]);
-				}
-			}
+			$this->bind($oid);
 		}
 
 		switch (strtolower($this->get('scope')))
@@ -161,8 +113,6 @@ class ForumModelCategory extends JObject
 				$this->_base = 'index.php?option=com_courses';
 			break;
 		}
-
-		$this->_config = JComponentHelper::getParams('com_forum');
 	}
 
 	/**
@@ -205,78 +155,17 @@ class ForumModelCategory extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the forum exists
+	 * Is the category closed?
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return     boolean
 	 */
-	public function exists()
+	public function isClosed()
 	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
+		if ($this->get('closed') == 1) 
 		{
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
 	}
 
 	/**
@@ -318,7 +207,7 @@ class ForumModelCategory extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function threads($rtrn='list', $filters=array())
+	public function threads($rtrn='list', $filters=array(), $clear=false)
 	{
 		$filters['category_id'] = isset($filters['category_id']) ? $filters['category_id'] : $this->get('id');
 		$filters['state']       = isset($filters['state'])       ? $filters['state']       : 1;
@@ -338,7 +227,7 @@ class ForumModelCategory extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['threads']) || !is_a($this->_cache['threads'], 'ForumModelIterator'))
+				if (!isset($this->_cache['threads']) || !is_a($this->_cache['threads'], 'ForumModelIterator') || $clear)
 				{
 					$tbl = new ForumPost($this->_db);
 
@@ -363,92 +252,6 @@ class ForumModelCategory extends JObject
 	}
 
 	/**
-	 * Check a user's authorization
-	 * 
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
-	 */
-	public function access($action='view')
-	{
-		if (!$this->_authorized)
-		{
-			// Set NOT viewable by default
-			// We need to ensure the forum is published first
-			$this->params->set('access-view-forum', false);
-
-			if ($this->exists() && $this->get('state') == 1)
-			{
-				$this->params->set('access-view-forum', true);
-			}
-
-			$juser = JFactory::getUser();
-			if ($juser->get('guest'))
-			{
-				$this->_authorized = true;
-			}
-			else
-			{
-				// Anyone logged in can create a forum
-				$this->params->set('access-create-forum', true);
-
-				// Check if they're a site admin
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					if ($juser->authorize('com_forums', 'manage')) 
-					{
-						$this->params->set('access-admin-forum', true);
-						$this->params->set('access-manage-forum', true);
-						$this->params->set('access-delete-forum', true);
-						$this->params->set('access-edit-forum', true);
-						$this->params->set('access-edit-state-forum', true);
-						$this->params->set('access-edit-own-forum', true);
-					}
-				}
-				else 
-				{
-					$this->params->set('access-admin-forum', $juser->authorise('core.admin', $this->get('id')));
-					$this->params->set('access-manage-forum', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-delete-forum', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-forum', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-state-forum', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-own-forum', $juser->authorise('core.manage', $this->get('id')));
-				}
-
-				// If they're not an admin
-				if (!$this->params->get('access-admin-forum') 
-				 && !$this->params->get('access-manage-forum'))
-				{
-					// Does the forum exist?
-					if (!$this->exists())
-					{
-						// Give editing access if the forum doesn't exist
-						// i.e., it's a new forum
-						$this->params->set('access-view-forum', true);
-						$this->params->set('access-delete-forum', true);
-						$this->params->set('access-edit-forum', true);
-						$this->params->set('access-edit-state-forum', true);
-						$this->params->set('access-edit-own-forum', true);
-					}
-					// Check if they're the forum creator or forum manager
-					else if ($this->get('created_by') == $juser->get('id') 
-						  || in_array($juser->get('id'), $this->get('managers'))) 
-					{
-						// Give full access
-						$this->params->set('access-manage-forum', true);
-						$this->params->set('access-delete-forum', true);
-						$this->params->set('access-edit-forum', true);
-						$this->params->set('access-edit-state-forum', true);
-						$this->params->set('access-edit-own-forum', true);
-					}
-				}
-
-				$this->_authorized = true;
-			}
-		}
-		return $this->params->get('access-' . strtolower($action) . '-forum');
-	}
-
-	/**
 	 * Return a count for the type of data specified
 	 * 
 	 * @param      string $what What to count
@@ -467,24 +270,24 @@ class ForumModelCategory extends JObject
 				case 'threads':
 					if ($this->get('threads', null) !== null)
 					{
-						$this->_stats[$what] += $this->get('threads');
+						$this->_stats[$what] += (int) $this->get('threads');
 					}
 					else
 					{
-						$this->_stats[$what] += $this->threads('count');
+						$this->_stats[$what] += (int) $this->threads('count');
 					}
 				break;
 
 				case 'posts':
 					if ($this->get('posts', null) !== null)
 					{
-						$this->_stats[$what] += $this->get('posts');
+						$this->_stats[$what] += (int) $this->get('posts');
 					}
 					else
 					{
 						foreach ($this->threads() as $thread)
 						{
-							$this->_stats[$what] += $thread->posts('count');
+							$this->_stats[$what] += (int) $thread->posts('count');
 						}
 					}
 				break;
@@ -575,52 +378,6 @@ class ForumModelCategory extends JObject
 		}
 
 		return $link;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Store changes to this offering
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
 	}
 
 	/**

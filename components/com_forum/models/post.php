@@ -31,75 +31,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	define('FORUM_DATE_YEAR', "Y");
-	define('FORUM_DATE_MONTH', "m");
-	define('FORUM_DATE_DAY', "d");
-	define('FORUM_DATE_TIMEZONE', true);
-	define('FORUM_DATE_FORMAT', 'd M Y');
-	define('FORUM_TIME_FORMAT', 'H:i p');
-}
-else
-{
-	define('FORUM_DATE_YEAR', "%Y");
-	define('FORUM_DATE_MONTH', "%m");
-	define('FORUM_DATE_DAY', "%d");
-	define('FORUM_DATE_TIMEZONE', 0);
-	define('FORUM_DATE_FORMAT', '%d %b %Y');
-	define('FORUM_TIME_FORMAT', '%I:%M %p');
-}
-
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'attachment.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a forum
  */
-class ForumModelPost extends JObject
+class ForumModelPost extends ForumModelAbstract
 {
+	/**
+	 * Table class name
+	 * 
+	 * @var object
+	 */
+	protected $_tbl_name = 'ForumPost';
+
 	/**
 	 * ForumTablePost
 	 * 
 	 * @var object
 	 */
 	protected $_base = null;
-
-	/**
-	 * ForumTablePost
-	 * 
-	 * @var object
-	 */
-	protected $_tbl = null;
-
-	/**
-	 * Flag for if authorization checks have been run
-	 * 
-	 * @var mixed
-	 */
-	protected $_authorized = false;
-
-	/**
-	 * JUser
-	 * 
-	 * @var object
-	 */
-	protected $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	protected $_db = NULL;
-
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	protected $_config;
 
 	/**
 	 * Constructor
@@ -109,22 +63,7 @@ class ForumModelPost extends JObject
 	 */
 	public function __construct($oid)
 	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new ForumPost($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
+		parent::__construct($oid);
 
 		switch (strtolower($this->get('scope')))
 		{
@@ -144,8 +83,6 @@ class ForumModelPost extends JObject
 				$this->_base = 'index.php?option=com_forum';
 			break;
 		}
-
-		$this->_config =& JComponentHelper::getParams('com_forum');
 	}
 
 	/**
@@ -188,81 +125,6 @@ class ForumModelPost extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the forum exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
-	}
-
-	/**
 	 * Set and get a specific offering
 	 * 
 	 * @return     void
@@ -274,30 +136,6 @@ class ForumModelPost extends JObject
 			$this->_attachment = ForumModelAttachment::getInstance(0, $this->get('id'));
 		}
 		return $this->_attachment;
-	}
-
-	/**
-	 * Return a formatted timestamp
-	 * 
-	 * @param      string $as What data to return
-	 * @return     boolean
-	 */
-	public function created($rtrn='')
-	{
-		switch (strtolower($rtrn))
-		{
-			case 'date':
-				return JHTML::_('date', $this->get('created'), FORUM_DATE_FORMAT, FORUM_DATE_TIMEZONE);
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('created'), FORUM_TIME_FORMAT, FORUM_DATE_TIMEZONE);
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
 	}
 
 	/**
@@ -338,17 +176,6 @@ class ForumModelPost extends JObject
 		return false;
 	}
 
-/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
 	/**
 	 * Store changes to this offering
 	 *
@@ -357,12 +184,6 @@ class ForumModelPost extends JObject
 	 */
 	public function store($check=true)
 	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
 		$new = true;
 		if ($this->get('id'))
 		{
@@ -375,21 +196,10 @@ class ForumModelPost extends JObject
 			$this->set('anonymous', 0);
 		}
 
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
+		$res = parent::store($check);
 
-		// Attempt to store data
-		if (!$this->_tbl->store())
+		if (!$res)
 		{
-			$this->setError($this->_tbl->getError());
 			return false;
 		}
 
@@ -412,23 +222,11 @@ class ForumModelPost extends JObject
 	 * 
 	 * @return     boolean
 	 */
-	public function tag($tags=null, $user_id=0)
+	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$bt = new ForumTags($this->_db);
+		$cloud = new ForumModelTags($this->get('id'));
 
-		if (!$user_id)
-		{
-			$juser = JFactory::getUser();
-			$user_id = $juser->get('id');
-		}
-
-		return $bt->tag_object(
-			$user_id, 
-			$this->get('id'), 
-			trim($tags), 
-			1, 
-			1
-		);
+		return $cloud->setTags($tags, $user_id, $admin);
 	}
 
 	/**

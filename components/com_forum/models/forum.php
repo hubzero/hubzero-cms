@@ -32,20 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a forum
  */
-class ForumModel extends JObject
+class ForumModel extends ForumModelAbstract
 {
-	/**
-	 * ForumTableSection
-	 * 
-	 * @var object
-	 */
-	private $_tbl = null;
-
 	/**
 	 * ForumModelCategory
 	 * 
@@ -54,26 +46,10 @@ class ForumModel extends JObject
 	private $_cache = array();
 
 	/**
-	 * Flag for if authorization checks have been run
-	 * 
-	 * @var mixed
-	 */
-	private $_authorized = false;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
-
-	/**
 	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_config = null;
-
 	private $_stats = array();
 
 	/**
@@ -90,8 +66,6 @@ class ForumModel extends JObject
 
 		$this->set('scope', $scope);
 		$this->set('scope_id', $scope_id);
-
-		$this->_config = JComponentHelper::getParams('com_forum');
 	}
 
 	/**
@@ -156,21 +130,6 @@ class ForumModel extends JObject
 		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
 		$this->_tbl->$property = $value;
 		return $previous;
-	}
-
-	/**
-	 * Check if the forum exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -369,7 +328,7 @@ class ForumModel extends JObject
 	{
 		$assetType = 'section';
 
-		$this->_config->set('access-view-' . $assetType, true);
+		$this->config()->set('access-view-' . $assetType, true);
 
 		if (!$juser->get('guest')) 
 		{
@@ -389,30 +348,30 @@ class ForumModel extends JObject
 				}
 
 				// Admin
-				$this->_config->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
-				$this->_config->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
+				$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
+				$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
 				// Permissions
-				$this->_config->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
-				$this->_config->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
-				$this->_config->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
-				$this->_config->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
-				$this->_config->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
+				$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
+				$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
+				$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
+				$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
+				$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
 			}
 			else 
 			{
 				if ($assetType == 'post' || $assetType == 'thread')
 				{
-					$this->_config->set('access-create-' . $assetType, true);
-					$this->_config->set('access-edit-' . $assetType, true);
-					$this->_config->set('access-delete-' . $assetType, true);
+					$this->config()->set('access-create-' . $assetType, true);
+					$this->config()->set('access-edit-' . $assetType, true);
+					$this->config()->set('access-delete-' . $assetType, true);
 				}
 				if ($juser->authorize($this->_option, 'manage'))
 				{
-					$this->_config->set('access-manage-' . $assetType, true);
-					$this->_config->set('access-admin-' . $assetType, true);
-					$this->_config->set('access-create-' . $assetType, true);
-					$this->_config->set('access-delete-' . $assetType, true);
-					$this->_config->set('access-edit-' . $assetType, true);
+					$this->config()->set('access-manage-' . $assetType, true);
+					$this->config()->set('access-admin-' . $assetType, true);
+					$this->config()->set('access-create-' . $assetType, true);
+					$this->config()->set('access-delete-' . $assetType, true);
+					$this->config()->set('access-edit-' . $assetType, true);
 				}
 			}
 		}
