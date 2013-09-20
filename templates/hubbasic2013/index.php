@@ -64,7 +64,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> Doesn't validate... -->
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'tooltip', 'comments', 'voting', 'icons', 'buttons', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
@@ -140,8 +140,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					<?php } ?>
 					</div><!-- / #account -->
 
-					<div id="nav" role="main navigation">
-						<a name="nav"></a>
+					<div id="nav" role="menu">
 						<jdoc:include type="modules" name="user3" />
 					</div><!-- / #nav -->
 				</div><!-- / .inner -->
@@ -184,7 +183,6 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<div id="wrap">
 			<div id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
 				<div class="inner">
-					<a name="content" id="content-anchor"></a>
 				<?php if ($this->countModules('left')) : ?>
 					<div class="main section withleft">
 						<div class="aside">
@@ -211,7 +209,6 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			</div><!-- / #content -->
 
 			<div id="footer">
-				<a name="footer" id="footer-anchor"></a>
 				<jdoc:include type="modules" name="footer" />
 			</div><!-- / #footer -->
 		</div><!-- / #wrap -->

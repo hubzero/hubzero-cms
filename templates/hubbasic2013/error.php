@@ -20,7 +20,8 @@ $v = $browser->getBrowserMajorVersion();
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> Doesn't validate... -->
+
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 		<title><?php echo $config->getValue('config.sitename') . ' - ' . (in_array($this->error->getCode(), array(404, 403, 500)) ? $this->error->getCode() : 500); ?></title>
@@ -115,8 +116,7 @@ $v = $browser->getBrowserMajorVersion();
 					<?php } ?>
 					</div><!-- / #account -->
 
-					<div id="nav" role="main navigation">
-						<a name="nav"></a>
+					<div id="nav" role="menu">
 						<?php Hubzero_Module_Helper::displayModules('user3'); ?>
 					</div><!-- / #nav -->
 				</div><!-- / .inner -->
@@ -151,7 +151,6 @@ $v = $browser->getBrowserMajorVersion();
 		<div id="wrap">
 			<div id="content" class="<?php echo JRequest::getCmd('option', ''); ?> <?php echo 'code' . $this->error->getCode(); ?>" role="main">
 				<div class="inner">
-					<a name="content" id="content-anchor"></a>
 
 					<div class="main section">
 						<div class="two columns first">
@@ -219,7 +218,6 @@ $v = $browser->getBrowserMajorVersion();
 			</div><!-- / #content -->
 
 			<div id="footer">
-				<a name="footer" id="footer-anchor"></a>
 				<?php Hubzero_Module_Helper::displayModules('footer'); ?>
 			</div><!-- / #footer -->
 		</div><!-- / #wrap -->
