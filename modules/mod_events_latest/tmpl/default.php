@@ -31,16 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->error)
+if ($this->setError())
 {
 ?>
-	<p class="error"><?php echo $this->error; ?></p>
+	<p class="error"><?php echo $this->getError(); ?></p>
 <?php 
 }
 else
 {
 ?>
-<table class="latest_events_tbl" summary="<?php echo JText::_('MOD_EVENTS_LATEST_TABLE_SUMMARY'); ?>">
+<table class="latest_events_tbl">
 	<tbody>
 <?php
 if ($this->eventsByRelDay)

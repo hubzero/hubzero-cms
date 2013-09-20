@@ -32,6 +32,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Module');
+
 // Parameters:
 // ===========
 //
@@ -62,80 +64,12 @@ defined('_JEXEC') or die('Restricted access');
  * 
  * Long description (if any) ...
  */
-class modEventsLatest
+class modEventsLatest extends Hubzero_Module
 {
-
 	/**
-	 * Description for '_attributes'
+	 * Display module output
 	 * 
-	 * @var array
-	 */
-	private $_attributes = array();
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @param      unknown $module Parameter description (if any) ...
 	 * @return     void
-	 */
-	public function __construct($params, $module)
-	{
-		$this->params = $params;
-		$this->module = $module;
-	}
-
-	/**
-	 * Short description for '__set'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_attributes[$property] = $value;
-	}
-
-	/**
-	 * Short description for '__get'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_attributes[$property]))
-		{
-			return $this->_attributes[$property];
-		}
-	}
-
-	/**
-	 * Short description for '__isset'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_attributes[$property]);
-	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
 	 */
 	public function display()
 	{
@@ -158,11 +92,9 @@ class modEventsLatest
 	}
 
 	/**
-	 * Short description for 'run'
+	 * Generate module output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     voif
 	 */
 	public function run()
 	{
@@ -182,13 +114,8 @@ class modEventsLatest
 		$this->_displayLatestEvents();
 	}
 
-	//-----------
-	// This custom sort compare function compares the start times of events that are refernced by the a & b vars
-
 	/**
-	 * Short description for 'cmpByStartTime'
-	 * 
-	 * Long description (if any) ...
+	 * This custom sort compare function compares the start times of events that are refernced by the a & b vars
 	 * 
 	 * @param      object &$a Parameter description (if any) ...
 	 * @param      object &$b Parameter description (if any) ...
@@ -205,16 +132,11 @@ class modEventsLatest
 		return ($aStrtTime > $bStrtTime) ? -1 : 1;
 	}
 
-	//-----------
-	// The function below is essentially the 'ShowEventsByDate' function in the com_events module,
-	// except no actual output is performed.  Rather this function returns an array of references to
-	// $rows within the $rows (ie events) input array which occur on the input '$date'.  This
-	// is determined by the complicated com_event algorithm according to the event's repeatting type.
-
 	/**
-	 * Short description for '_getEventsByDate'
-	 * 
-	 * Long description (if any) ...
+	 * The function below is essentially the 'ShowEventsByDate' function in the com_events module,
+	 * except no actual output is performed.  Rather this function returns an array of references to
+	 * $rows within the $rows (ie events) input array which occur on the input '$date'.  This
+	 * is determined by the complicated com_event algorithm according to the event's repeatting type.
 	 * 
 	 * @param      array &$rows Parameter description (if any) ...
 	 * @param      unknown $date Parameter description (if any) ...
@@ -224,16 +146,16 @@ class modEventsLatest
 	 */
 	private function _getEventsByDate(&$rows, $date, &$seenThisEvent, $noRepeats)
 	{
-    	$num_events = count($rows);
-    	$new_rows_events = array();
+		$num_events = count($rows);
+		$new_rows_events = array();
 
 		$eventCheck = new EventsRepeat;
 
 		if ($num_events > 0)
 		{
 			$year  = date('Y', $date);
-	    	$month = date('m', $date);
-	    	$day   = date('d', $date);
+			$month = date('m', $date);
+			$day   = date('d', $date);
 
 			for ($r = 0; $r < count($rows); $r++)
 			{
@@ -306,9 +228,6 @@ class modEventsLatest
 		$startday = $this->params->get('start_day');
 		if (!defined('_CAL_CONF_STARDAY'))
 		{
-	/**
-	 * Description for ''_CAL_CONF_STARDAY''
-	 */
 			define('_CAL_CONF_STARDAY',$startday);
 		}
 
