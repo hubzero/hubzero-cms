@@ -361,7 +361,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'pagination.php');
+			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'pagination.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
 
 			//Create user object
@@ -2449,8 +2449,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->attachments = $view->attach->getAttachments($view->post->id);
 		
 		// Get tags on this article
-		$view->tModel = new ForumTags($this->database);
-		$view->tags = $view->tModel->get_tag_cloud(0, 0, $view->post->id);
+		$view->tModel = new ForumModelTags($view->post->id);
+		$view->tags = $view->tModel->tags('cloud');
 
 		// Get authorization
 		$this->_authorize('category', $view->category->id);
@@ -2626,8 +2626,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Get tags on this article
-		$this->view->tModel = new ForumTags($this->database);
-		$this->view->tags = $this->view->tModel->get_tag_string($this->view->post->id, 0, 0, $this->view->post->created_by);
+		$this->view->tModel = new ForumModelTags($this->view->post->id);
+		$this->view->tags = $this->view->tModel->tags('string'); //$this->view->post->created_by
 
 		$this->view->option = $this->option;
 		$this->view->config = $this->params;
@@ -2756,8 +2756,8 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		// Save tags
 		$tags = JRequest::getVar('tags', '', 'post');
-		$tagger = new ForumTags($this->database);
-		$tagger->tag_object($this->juser->get('id'), $model->id, $tags, 1);
+		$tagger = new ForumModelTags($model->id);
+		$tagger->setTags($tags, $this->juser->get('id'), 1);
 
 		// Being called through AJAX?
 		if ($no_html)

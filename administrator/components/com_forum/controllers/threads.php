@@ -502,8 +502,11 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		// Get tags on this article
-		$this->view->tModel = new ForumTags($this->database);
-		$this->view->tags = $this->view->tModel->get_tag_string($this->view->row->id, 0, 0, $this->view->row->created_by);
+		$this->view->tModel = new ForumModelTags($this->view->row->id);
+		$this->view->tags = $this->view->tModel->render('string');
+
+		//$this->view->tModel = new ForumTags($this->database);
+		//$this->view->tags = $this->view->tModel->get_tag_string($this->view->row->id, 0, 0, $this->view->row->created_by);
 
 		// Set any errors
 		if ($this->getError()) 
