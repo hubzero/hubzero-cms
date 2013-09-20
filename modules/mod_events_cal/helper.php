@@ -32,81 +32,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Module');
+
 /**
- * Short description for 'modEventsCalendar'
- * 
- * Long description (if any) ...
+ * Class for events calendar module
  */
-class modEventsCalendar
+class modEventsCalendar extends Hubzero_Module
 {
-
 	/**
-	 * Description for '_attributes'
+	 * Display module utput
 	 * 
-	 * @var array
-	 */
-	private $_attributes = array();
-	/**
-	 * Description for 'attributes'
-	 * 
-	 * @var array
-	 */
-
-	public function __construct($params, $module)
-	{
-		$this->params = $params;
-		$this->module = $module;
-	}
-
-	/**
-	 * Short description for '__set'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_attributes[$property] = $value;
-	}
-
-	/**
-	 * Short description for '__get'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_attributes[$property]))
-		{
-			return $this->_attributes[$property];
-		}
-	}
-
-	/**
-	 * Short description for '__isset'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_attributes[$property]);
-	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
 	 */
 	public function display()
 	{
@@ -129,11 +65,9 @@ class modEventsCalendar
 	}
 
 	/**
-	 * Short description for 'run'
+	 * Gnerate events calendar
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function run()
 	{
@@ -146,7 +80,7 @@ class modEventsCalendar
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
 		} else {
-			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
+			$this->setError(JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED'));
 			return;
 		}
 
@@ -212,10 +146,6 @@ class modEventsCalendar
 		$startday = $this->params->get('start_day');
 		if (!defined('_CAL_CONF_STARDAY'))
 		{
-
-	/**
-	 * Description for ''_CAL_CONF_STARDAY''
-	 */
 			define('_CAL_CONF_STARDAY', $startday);
 		}
 		//define('_CAL_CONF_DATEFORMAT',1);
@@ -289,16 +219,16 @@ class modEventsCalendar
 		$to_day    = date("Y-m-d", $timeWithOffset);
 
 		// Start building the table
-		$content  = '<table class="mod_events_calendar" summary="'.JText::_('TABLE_SUMMARY').'">'."\n";
+		$content  = '<table class="mod_events_calendar">'."\n";
 		$content .= ' <caption>'."\n";
 		if ($this->params->get('show_nav_prev_month'))
 		{
-			$content .= ' <a class="prev month" href="'.JRoute::_('index.php?option=com_events&amp;year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&amp;month='.($cal_month == 1 ? 12 : $cal_month - 1)).'">'.EventsHtml::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
+			$content .= ' <a class="prev month" href="'.JRoute::_('index.php?option=com_events&year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&month='.($cal_month == 1 ? 12 : $cal_month - 1)).'">'.EventsHtml::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
 		}
-		$content .= ' <a class="current month" href="'.JRoute::_('index.php?option=com_events&amp;year='.$cal_year.'&amp;month='.$cal_month).'">'.EventsHtml::getMonthName($cal_month).'</a>'."\n";
+		$content .= ' <a class="current month" href="'.JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month).'">'.EventsHtml::getMonthName($cal_month).'</a>'."\n";
 		if ($this->params->get('show_nav_next_month'))
 		{
-			$content .= ' <a class="next month" href="'.JRoute::_('index.php?option=com_events&amp;year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&amp;month='.($cal_month == 12 ? 1 : $cal_month + 1)).'">'.EventsHtml::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
+			$content .= ' <a class="next month" href="'.JRoute::_('index.php?option=com_events&year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&month='.($cal_month == 12 ? 1 : $cal_month + 1)).'">'.EventsHtml::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
 		}
 		$content .= ' </caption>'."\n";
 		$content .= ' <thead>'."\n";
@@ -370,7 +300,7 @@ class modEventsCalendar
 			{
 				$content .= "$d";
 			}
-	        $content .= '</td>'."\n";
+			$content .= '</td>'."\n";
 			$rd++;
 
 			// Check if Next week row
