@@ -137,10 +137,6 @@ class plgResourcesQuestions extends JPlugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-
 			switch (strtolower(JRequest::getWord('action', 'browse')))
 			{
 				case 'save':
@@ -257,13 +253,14 @@ class plgResourcesQuestions extends JPlugin
 		);
 		$view->option   = $this->option;
 		$view->resource = $this->model->resource;
+		$view->juser    = $this->juser;
 		if (is_object($row))
 		{
 			$view->row  = $row;
 		}
 		else
 		{
-			$view->row  = $this->a;
+			$view->row  = new AnswersModelQuestion(0);
 		}
 		$view->tag      = $this->filters['tag'];
 
@@ -305,8 +302,8 @@ class plgResourcesQuestions extends JPlugin
 			return $this->_browse();
 		}
 
-		// trim and addslashes all posted items
-		//$_POST = array_map('trim', $_POST);
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$tags   = JRequest::getVar('tags', '');
@@ -331,23 +328,18 @@ class plgResourcesQuestions extends JPlugin
 		}
 
 		// Initiate class and bind posted items to database fields
-		$row = new AnswersTableQuestion($this->database);
-		if (!$row->bind(JRequest::getVar('question', array(), 'post', 'none', 2))) 
+		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
+
+		$row = new AnswersModelQuestion($fields['id']);
+		if (!$row->bind($fields)) 
 		{
 			$this->setError($row->getError());
 			return $this->_new($row);
 		}
 
-		$row->subject    = Hubzero_Filter::cleanXss($row->subject);
-		$row->question   = Hubzero_Filter::cleanXss($row->question);
-		$row->question   = nl2br($row->question);
-		$row->created    = date('Y-m-d H:i:s', time());
-		$row->created_by = $this->juser->get('username');
-		$row->state      = 0;
-		$row->email      = 1; // force notification
 		if ($reward && $this->banking) 
 		{
-			$row->reward = 1;
+			$row->set('reward', 1);
 		}
 
 		// Ensure the user added a tag
@@ -357,42 +349,31 @@ class plgResourcesQuestions extends JPlugin
 			return $this->_new($row);
 		}
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			$row->tags = $tags;
-			return $this->_new($row);
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
+			$row->set('tags', $tags);
+
 			$this->setError($row->getError());
-			$row->tags = $tags;
 			return $this->_new($row);
 		}
-
-		// Checkin question
-		$row->checkin();
 
 		// Hold the reward for this question if we're banking
 		if ($reward && $this->banking) 
 		{
 			$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
-			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->id);
+			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
 		}
 
 		// Add the tags
-		$tagging = new AnswersTags($this->database);
-		$tagging->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
+		$row->tag($tags);
 
 		// Add the tag to link to the resource
-		$tagging->safe_tag($this->juser->get('id'), $row->id, $this->filters['tag'], 1, '', ($this->model->isTool() ? 0 : 1));
+		$row->addTag($tag, $this->juser->get('id'), ($this->model->isTool() ? 0 : 1));
 
 		// Get users who need to be notified on every question
 		$config = JComponentHelper::getParams('com_answers');
-		$apu = ($config->get('notify_users')) ? $config->get('notify_users') : '';
+		$apu = $config->get('notify_users', '');
 		$apu = explode(',', $apu);
 		$apu = array_map('trim', $apu);
 
@@ -463,7 +444,7 @@ class plgResourcesQuestions extends JPlugin
 			$eview->sitename = $jconfig->getValue('config.sitename');
 			$eview->juser    = $this->juser;
 			$eview->row      = $row;
-			$eview->id       = $row->id ? $row->id : 0;
+			$eview->id       = $row->get('id') ? $row->ge('id') : 0;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
