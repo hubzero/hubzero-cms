@@ -206,7 +206,7 @@ if ($this->wishlist && $this->wish) {
 		<?php } else { ?>
 			<div class="entry wish" id="w<?php echo $this->wish->id; ?>">
 				<p class="entry-member-photo">
-					<span class="entry-anchor"><a name="w<?php echo $this->wish->id; ?>"></a></span>
+					<span class="entry-anchor"><!-- <a name="w<?php echo $this->wish->id; ?>"></a> --></span>
 					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($user, $this->wish->anonymous); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p><!-- / .wish-member-photo -->
 
@@ -340,9 +340,9 @@ if ($this->wishlist && $this->wish) {
 		<?php if ($this->admin && !in_array($this->wish->status, array(4, 2))) { ?>
 							<div class="container">
 								<form method="post" action="index.php?option=<?php echo $this->option; ?>" class="rankingform" id="rankForm">
-									<table class="wish-priority" summary="<?php echo JText::_('COM_WISHLIST_WISH_PRIORITY'); ?>">
+									<table class="wish-priority" id="priority">
 										<caption>
-											<a name="priority"></a>
+											<!-- <a name="priority"></a> -->
 											<?php echo JText::_('COM_WISHLIST_PRIORITY'); ?>: <strong><?php echo $this->wish->ranking; ?></strong> 
 											<span>(<?php echo $this->wish->num_votes.' '.JText::_('COM_WISHLIST_NOTICE_OUT_OF').' '.$voters.' '.JText::_('COM_WISHLIST_VOTES'); ?>)</span>
 										</caption>
@@ -503,8 +503,8 @@ if ($this->wishlist && $this->wish) {
 		<?php } //if ($this->admin) { ?>
 
 		<?php if ($this->wish->action == 'delete') { ?>
-			<div class="error">
-				<a name="action"></a>
+			<div class="error" id="action">
+				<!-- <a name="action"></a> -->
 				<h4><?php echo JText::_('COM_WISHLIST_ARE_YOU_SURE_DELETE_WISH'); ?></h4>
 				<p>
 					<span class="say_yes">
@@ -522,8 +522,8 @@ if ($this->wishlist && $this->wish) {
 		<?php } ?>
 
 		<?php if ($this->wish->action == 'changestatus') { ?>
-			<div class="takeaction">
-				<a name="action"></a>
+			<div class="takeaction" id="action">
+				<!-- <a name="action"></a> -->
 				<form class="edit-form" id="changeStatus" method="post" action="index.php?option=<?php echo $this->option; ?>">
 					<h4><?php echo JText::_('COM_WISHLIST_ACTION_CHANGE_STATUS_TO'); ?></h4>
 					<fieldset>
@@ -590,8 +590,8 @@ if ($this->wishlist && $this->wish) {
 
 	<?php if (!in_array($this->wish->status, array(4, 2))) { ?>
 		<?php if ($this->wish->action == 'addbonus' && $this->wish->status!=1 && $this->wishlist->banking) { ?>
-			<div class="addbonus">
-				<a name="action"></a>
+			<div class="addbonus" id="action">
+				<!-- <a name="action"></a> -->
 				<form class="edit-form" id="addBonus" method="post" action="index.php?option=<?php echo $this->option; ?>">
 					<h4><?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS'); ?></h4>
 					<fieldset>
@@ -640,8 +640,8 @@ if ($this->wishlist && $this->wish) {
 		<?php } ?>
 
 		<?php if ($this->wish->action=='move') { ?>
-			<div class="moveitem">
-				<a name="action"></a>
+			<div class="moveitem" id="action">
+				<!-- <a name="action"></a> -->
 				<form class="edit-form" id="moveWish" method="post" action="index.php?option=<?php echo $this->option; ?>">
 				<?php if ($error) {
 					echo Hubzero_View_Helper_Html::error($error);
@@ -733,7 +733,7 @@ if ($this->wishlist && $this->wish) {
 <?php if (!in_array($this->wish->status, array(4, 2))) { ?>
 	<div class="below section" id="section-comments">
 		<h3>
-			<a name="comments"></a>
+			<!-- <a name="comments"></a> -->
 			<?php echo JText::_('COM_WISHLIST_COMMENTS');?> (<?php echo $this->wish->numreplies; ?>)
 		</h3>
 		<div class="aside">
@@ -871,7 +871,7 @@ if ($this->wishlist && $this->wish) {
 <?php if ($this->admin) {  // let advisory committee view this too ?>
 	<div class="below section" id="section-plan">
 		<h3>
-			<a name="plan"></a>
+			<!-- <a name="plan"></a> -->
 			<?php echo JText::_('COM_WISHLIST_IMPLEMENTATION_PLAN'); ?>
 			<?php if ($this->wish->plan) { ?>
 				(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>"><?php echo JText::_('COM_WISHLIST_ACTION_EDIT'); ?></a>)
@@ -889,7 +889,7 @@ if ($this->wishlist && $this->wish) {
 				</p>
 			<?php } else { ?>
 				<p><?php echo JText::_('COM_WISHLIST_PLAN_DEADLINE_EXPLANATION'); ?></p>
-				<table class="wiki-reference" summary="Wiki Syntax Reference">
+				<table class="wiki-reference">
 					<caption>Wiki Syntax Reference</caption>
 					<tbody>
 						<tr>
@@ -926,7 +926,7 @@ if ($this->wishlist && $this->wish) {
 			</div><!-- / .aside -->
 			<div class="subject" id="full_plan">
 				<p class="plan-member-photo">
-					<span class="plan-anchor"><a name="planform"></a></span>
+					<span class="plan-anchor"><!-- <a name="planform"></a> --></span>
 					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, 0); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p>
 				<fieldset>

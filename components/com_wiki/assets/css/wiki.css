@@ -136,17 +136,22 @@
 	.sub-menu li.page-index a span:before {
 		content: "\f03a";
 	}
+	.sub-menu li.page-delete.active a,
+	.sub-menu li.page-delete.active a:hover,
 	.sub-menu li.page-delete span {
 		background: transparent;
+	}
+	.sub-menu li.page-delete.active a {
+		color: #222;
 	}
 
 @media all and (max-width: 1200px) {
 	#content-header-extra .add.btn,
 	#content-header-extra .index.btn,
 	#content-header-extra .search.btn,
-	.add.btn,
-	.index.btn,
-	.search.btn {
+	li .add.btn,
+	li .index.btn,
+	li .search.btn {
 		width: 1px;
 		padding-right: 0;
 		overflow: hidden;
@@ -155,9 +160,9 @@
 	#content-header-extra .add.btn:before,
 	#content-header-extra .index.btn:before,
 	#content-header-extra .search.btn:before,
-	.add.btn:before,
-	.index.btn:before,
-	.search.btn:before {
+	li .add.btn:before,
+	li .index.btn:before,
+	li .search.btn:before {
 		border-right: none;
 	}
 

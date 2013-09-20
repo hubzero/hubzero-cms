@@ -190,6 +190,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 		<input type="hidden" name="entry[scope]" value="site" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
+
+		<?php echo JHTML::_('form.token'); ?>
 		
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('COM_BLOG_SAVE'); ?>" />

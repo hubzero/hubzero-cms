@@ -153,7 +153,7 @@ if (!$this->filters['filterby'] == 'none')
 					</li>
 				</ul>
 
-				<table class="questions entries" summary="<?php echo JText::_('COM_ANSWERS_RESULTS_SUMMARY'); ?>">
+				<table class="questions entries">
 					<caption>
 						<?php
 							$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];

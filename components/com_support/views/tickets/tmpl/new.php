@@ -182,17 +182,16 @@ $group = JRequest::getVar("group", "");
 			<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_DESCRIPTION'); ?></p>
 			<?php } ?>
 			
-			<label>
+			<label for="problem-upload">
 				<?php echo JText::_('Attach a screenshot'); ?>:
 				<small>(.<?php echo str_replace(',', ', .', $this->file_types); ?>)</small>
-				<input type="file" name="upload" id="trUpload" />
-				
+				<input type="file" name="upload" id="problem-upload" />
 			</label>
 		</fieldset><div class="clear"></div>
 <?php if ($this->verified && $this->acl->check('update', 'tickets') > 0) { ?>
 		<fieldset>
 			<legend><?php echo JText::_('Details'); ?></legend>
-	
+
 			<label>
 				<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
 				<?php 
@@ -206,7 +205,7 @@ $group = JRequest::getVar("group", "");
 				<input type="text" name="tags" id="tags" value="" size="35" />
 			<?php } ?>
 			</label>
-	
+
 			<div class="group">
 				<label>
 					<?php echo JText::_('COMMENT_GROUP'); ?>:

@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a>
+			<!-- <a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a> -->
 			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 			<div class="comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
-					<a name="commentform<?php echo $this->comment->get('id'); ?>"></a>
+					<!-- <a name="commentform<?php echo $this->comment->get('id'); ?>"></a> -->
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('COM_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_BLOG_ANONYMOUS'))); ?></span></legend>
 
@@ -102,6 +102,8 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="task" value="savecomment" />
+
+						<?php echo JHTML::_('form.token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_BLOG_FIELD_COMMENTS'); ?></span>

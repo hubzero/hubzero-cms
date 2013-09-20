@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?><?php if (!$this->comment->get('parent')) { echo ' start'; } ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a>
+			<!-- <a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a> -->
 			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if (!$this->post->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
 			<div class="comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
-					<a name="commentform<?php echo $this->comment->get('id'); ?>"></a>
+					<!-- <a name="commentform<?php echo $this->comment->get('id'); ?>"></a> -->
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('COM_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_FORUM_ANONYMOUS'))); ?></span></legend>
 

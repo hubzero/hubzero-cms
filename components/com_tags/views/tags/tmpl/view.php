@@ -381,7 +381,8 @@ foreach ($this->results as $category)
 		}
 		$html .= '</ol>'."\n";
 		// Initiate paging if we we're displaying an active category
-		if (!$dopaging) {
+		if (!$dopaging) 
+		{
 			$html .= '<p class="moreresults">'.JText::sprintf('COM_TAGS_TOTAL_RESULTS_FOUND',$amt);
 			// Add a "more" link if necessary
 			$ttl = 0;
@@ -397,8 +398,8 @@ foreach ($this->results as $category)
 				$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. urlencode(stripslashes($cats[$k]['category'])));
 				$html .= ' <span>|</span> <a href="'.$sef.'">'.JText::_('COM_TAGS_SEE_MORE_RESULTS').' &rarr;</a>';
 			}
+			$html .= '</p>'."\n\n";
 		}
-		$html .= '</p>'."\n\n";
 		$html .= '</div><!-- / #'.$divid.' -->'."\n";
 	}
 	$k++;

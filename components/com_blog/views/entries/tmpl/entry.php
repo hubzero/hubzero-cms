@@ -252,7 +252,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 <?php if ($this->row->get('allow_comments')) { ?>
 <div class="below section">
 	<h3>
-		<a name="comments"></a>
+		<!-- <a name="comments"></a> -->
 		<?php echo JText::_('COM_BLOG_COMMENTS_HEADER'); ?>
 	</h3>
 	<div class="aside">
@@ -313,7 +313,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<div class="clear"></div>
 
 	<h3>
-		<a name="post-comment"></a>
+		<!-- <a name="post-comment"></a> -->
 		<?php echo JText::_('Post a comment'); ?>
 	</h3>
 
@@ -365,19 +365,21 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				}
 			}
 			?>
+				<?php if (!$juser->get('guest')) { ?>
 				<label for="commentcontent">
 					Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
-				<?php if (!$juser->get('guest')) { ?>
 					<?php
 						//ximport('Hubzero_Wiki_Editor');
 						echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
 					?>
-				<?php } else { ?>
-					<p class="warning">
-						<?php echo JText::sprintf('COM_BLOG_MUST_LOG_IN', '<a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true))) . '">' . JText::_('COM_BLOG_LOG_IN') . '</a>'); ?>
-					</p>
-				<?php } ?>
 				</label>
+				<?php } else { ?>
+				<input type="hidden" name="comment[content]" id="commentcontent" value="" />
+
+				<p class="warning">
+					<?php echo JText::sprintf('COM_BLOG_MUST_LOG_IN', '<a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true))) . '">' . JText::_('COM_BLOG_LOG_IN') . '</a>'); ?>
+				</p>
+				<?php } ?>
 
 			<?php if (!$juser->get('guest')) { ?>
 				<label id="comment-anonymous-label">

@@ -725,6 +725,9 @@ class BlogModelEntry extends JObject
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
+				$scope  = JHTML::_('date', $this->get('publish_up'), BLOG_DATE_YEAR, BLOG_DATE_TIMEZONE) . '/';
+				$scope .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_MONTH, BLOG_DATE_TIMEZONE);
+
 				$wikiconfig = array(
 					'option'   => $option,
 					'scope'    => $scope, //$this->get('scope')

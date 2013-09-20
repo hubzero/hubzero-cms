@@ -214,7 +214,7 @@ class FileMacro extends WikiMacro
 			if ($matches[0] && in_array($key, array('width', 'height')))
 			{
 				$this->attr['style'][$key] = $val;
-				$this->attr[$key] = $val;
+				//$this->attr[$key] = $val;
 				return;
 			}
 		}
@@ -331,7 +331,7 @@ class FileMacro extends WikiMacro
 			if ($matches[0])
 			{
 				$this->attr['style'][$ky] = $key;
-				$this->attr[$ky] = $key;
+				//$this->attr[$ky] = $key;
 				return;
 			}
 		}
@@ -566,6 +566,10 @@ class FileMacro extends WikiMacro
 
 			default:
 				$attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
+				if (!$attr['alt'])
+				{
+					$attr['alt'] = $file;
+				}
 
 				if (in_array($ext, $this->imgs)) 
 				{

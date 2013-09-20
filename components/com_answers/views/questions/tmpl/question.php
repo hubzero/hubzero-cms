@@ -140,7 +140,7 @@ if (!$this->question->get('anonymous'))
 	<div class="subject">
 		<div class="entry question" id="q<?php echo $this->question->get('id'); ?>">
 			<p class="entry-member-photo">
-				<span class="question-anchor"><a name="q<?php echo $this->question->get('id'); ?>"></a></span>
+				<span class="question-anchor"><!-- <a name="q<?php echo $this->question->get('id'); ?>"></a> --></span>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->question->creator(), $this->question->get('anonymous')); ?>" alt="" />
 			</p><!-- / .question-member-photo -->
 			<div class="entry-content">
@@ -259,7 +259,7 @@ if (!$this->question->get('anonymous'))
 
 		<div class="subject">
 			<div class="subject-wrap">
-			<table id="pointbreakdown" summary="<?php echo JText::_('COM_ANSWERS_POINTS'); ?>">
+			<table id="pointbreakdown">
 				<thead>
 					<tr>
 						<th> </th>
@@ -321,7 +321,7 @@ if (!$this->question->get('anonymous'))
 		</h3>
 		<div class="aside">
 			<div class="container">
-				<table class="wiki-reference" summary="Wiki Syntax Reference">
+				<table class="wiki-reference">
 					<caption>Wiki Syntax Reference</caption>
 					<tbody>
 						<tr>
@@ -360,7 +360,7 @@ if (!$this->question->get('anonymous'))
 			<?php if (!$this->juser->get('guest')) { ?>
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="commentform">
 				<p class="comment-member-photo">
-					<span class="comment-anchor"><a name="answerform"></a></span>
+					<span class="comment-anchor"><!-- <a name="answerform"></a> --></span>
 					<?php
 						$jxuser = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 						if (!$this->juser->get('guest')) {
@@ -422,9 +422,9 @@ if (!$this->question->get('anonymous'))
 
 	<!-- list of chosen answers -->
 	<?php if ($this->question->chosen('count')) { ?>
-	<div class="below section">
+	<div class="below section" id="bestanswer">
 		<h3>
-			<a name="bestanswer"></a>
+			<!-- <a name="bestanswer"></a> -->
 			<?php echo JText::_('COM_ANSWERS_CHOSEN_ANSWER'); ?>
 		</h3>
 
@@ -457,9 +457,9 @@ if (!$this->question->get('anonymous'))
 <!-- end answer block -->
 
 <!-- start comment block -->
-	<div class="below section">
+	<div class="below section" id="answers">
 		<h3>
-			<a name="answers"></a>
+			<!-- <a name="answers"></a> -->
 			<span class="comment-count"><?php echo $this->question->comments('count'); ?></span> <?php echo JText::_('COM_ANSWERS_RESPONSES'); ?>
 		</h3>
 

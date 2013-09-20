@@ -90,13 +90,13 @@ if (!$no_html) {
 			<div id="page_identity">
 				<?php $title = ($this->profile->get('uidNumber') == $juser->get("id")) ? "Go to my Dashboard" : "Go to " . $this->profile->get('name') . "'s Profile"; ?>
 				<a href="<?php echo $link; ?>" id="page_identity_link" title="<?php echo $title; ?>">
-					<img src="<?php echo $src; ?>" />
+					<img src="<?php echo $src; ?>" alt="<?php echo JText::sprintf('The profile picture for %s', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
 				</a>
 			</div><!-- /#page_identity --> 
 			<?php if ($messaging): ?>
 			<ul id="member_options">
 				<li>
-					<a class="message tooltips" title="Message :: Send a message to <?php echo stripslashes($this->profile->get('name')); ?>" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
+					<a class="message tooltips" title="Message :: Send a message to <?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
 						<?php echo JText::_('Message'); ?>
 					</a>
 				</li>
@@ -213,8 +213,8 @@ if (!$no_html) {
 			</div>
 			<div id="page_content" class="member_<?php echo $this->tab; ?>">
 				<?php
-		 			} 
-		            if ($this->overwrite_content)
+					} 
+					if ($this->overwrite_content)
 					{
 						echo $this->overwrite_content;
 					}

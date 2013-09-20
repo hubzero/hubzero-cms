@@ -63,9 +63,7 @@ if ($this->comments && $this->comments->total() > 0)
 		$view->base       = $this->base;
 		$view->filters    = $this->filters;
 		$view->category   = $this->category;
-		//$view->parser     = $this->parser;
-		//$view->wikiconfig = $this->wikiconfig;
-		//$view->attach     = $this->attach;
+
 		$view->display();
 	}
 }

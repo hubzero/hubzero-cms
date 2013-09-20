@@ -107,7 +107,7 @@ $first = end($this->revisions);
 		</p>
 			<div class="container">
 				<p><input type="submit" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
-				<table class="entries" id="revisionhistory" summary="<?php echo JText::_('COM_WIKI_HISTORY_TBL_SUMMARY'); ?>">
+				<table class="entries" id="revisionhistory">
 					<caption><?php echo JText::_('COM_WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
 					<thead>
 						<tr>

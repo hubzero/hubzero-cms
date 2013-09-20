@@ -18,7 +18,7 @@ jQuery(document).ready(function(jq){
 	$('a.reply').on('click', function (e) {
 		e.preventDefault();
 
-		var frm = $('#' + $(this).attr('rel'));
+		var frm = $('#' + $(this).attr('data-rel'));
 
 		if (frm.hasClass('hide')) {
 			frm.removeClass('hide');

@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a>
+			<!-- <a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a> -->
 			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
@@ -96,16 +96,16 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_ANSWERS_CANCEL'); ?><!-- 
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_ANSWERS_REPLY'); ?><!-- 
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?><!-- 
 				--></a>
 				<?php if ($juser->get('username') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid')) { ?>
@@ -122,7 +122,7 @@ defined('_JEXEC') or die('Restricted access');
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
-					<a name="commentform<?php echo $this->comment->get('id'); ?>"></a>
+					<!-- <a name="commentform<?php echo $this->comment->get('id'); ?>"></a> -->
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
 

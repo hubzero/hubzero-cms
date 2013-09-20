@@ -80,7 +80,7 @@ if (!$this->article->modified || $this->article->modified == '0000-00-00 00:00:0
 			{
 				$html .= "\t" . '<li><a ';
 				if ($this->catid == $row->id) {
-					$html .= ' class="active"';
+					$html .= 'class="active" ';
 				}
 				$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias) . '">' . $this->escape(stripslashes($row->title)) . ' <span class="item-count">' . $row->numitems . '</span></a>';
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
@@ -91,7 +91,7 @@ if (!$this->article->modified || $this->article->modified == '0000-00-00 00:00:0
 						$html .= "\t\t" . '<li><a ';
 						if ($this->article->category == $cat->id) 
 						{
-							$html .= ' class="active"';
+							$html .= 'class="active" ';
 						}
 						$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias . '&category=' . $cat->alias) . '">' . $this->escape(stripslashes($cat->title)) . ' <span class="item-count">' . $cat->numitems . '</span></a></li>' . "\n";
 					}
@@ -189,7 +189,7 @@ if ($this->config->get('allow_comments')) {
 ?>		
 <div class="below section">
 	<h3 class="comments-title">
-		<a name="comments"></a>
+		<!-- <a name="comments"></a> -->
 		Comments on this entry
 		<?php
 		if ($this->config->get('feeds_enabled')) {
@@ -266,7 +266,7 @@ if ($this->comments) {
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
 			<p class="comment-member-photo">
-				<span class="comment-anchor"><a name="#c<?php echo $comment->id; ?>"></a></span>
+				<span class="comment-anchor"><!-- <a name="#c<?php echo $comment->id; ?>"></a> --></span>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $comment->anonymous); ?>" alt="" />
 			</p>
 			<div class="comment-content">
@@ -343,7 +343,7 @@ if ($this->comments) {
 				?>
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
 					<p class="comment-member-photo">
-						<span class="comment-anchor"><a name="#c<?php echo $reply->id; ?>"></a></span>
+						<span class="comment-anchor"><!-- <a name="#c<?php echo $reply->id; ?>"></a> --></span>
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $reply->anonymous); ?>" alt="" />
 					</p>
 					<div class="comment-content">
@@ -410,7 +410,7 @@ if ($this->comments) {
 ?>
 						<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">
 							<p class="comment-member-photo">
-								<span class="comment-anchor"><a name="#c<?php echo $response->id; ?>"></a></span>
+								<span class="comment-anchor"><!-- <a name="#c<?php echo $response->id; ?>"></a> --></span>
 								<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $response->anonymous); ?>" alt="" />
 							</p>
 							<div class="comment-content">
@@ -516,7 +516,7 @@ if ($this->comments) {
 	<div class="subject">
 		<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias); ?>" id="commentform">
 			<p class="comment-member-photo">
-				<span class="comment-anchor"><a name="post-comment"></a></span>
+				<span class="comment-anchor"><!-- <a name="post-comment"></a> --></span>
 			<?php
 				if (!$this->juser->get('guest')) {
 					$anon = 0;

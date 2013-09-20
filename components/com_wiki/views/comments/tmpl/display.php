@@ -82,7 +82,7 @@ if (!$mode || ($mode && $mode != 'static'))
 <?php if (!$this->sub) { ?>
 <div class="section">
 	<div class="aside">
-		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a></p>
+		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 <?php } ?>
@@ -96,7 +96,7 @@ if (!$mode || ($mode && $mode != 'static'))
 <div class="main section">
 	<?php if ($this->sub) { ?>
 	<p class="comment-add-btn">
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
 	</p>
 	<?php } ?>
 	<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
@@ -167,7 +167,7 @@ if ($this->comments) {
 			<?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?>
 		</h3>
 		<div class="aside">
-			<table class="wiki-reference" summary="Wiki Syntax Reference">
+			<table class="wiki-reference">
 				<caption>Wiki Syntax Reference</caption>
 				<tbody>
 					<tr>

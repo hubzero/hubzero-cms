@@ -1043,6 +1043,10 @@ class WikiParser
 		{
 			return $this->{'_restore' . ucfirst($tag)}($this->_tokens[$tag][$key]);
 		}
+		if ($tag == 'macro')
+		{
+			return '';
+		}
 		return $matches[0];
 	}
 

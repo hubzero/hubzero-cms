@@ -100,7 +100,7 @@ $this->filters['sort'] = '';
 					</li>
 				</ul>
 
-				<table class="entries" id="taglist" summary="<?php echo JText::_('COM_TAGS_TABLE_SUMMARY'); ?>">
+				<table class="entries" id="taglist">
 					<?php
 					if (!$this->filters['limit'])
 					{
@@ -130,7 +130,6 @@ $this->filters['sort'] = '';
 							<th><?php echo JText::_('COM_TAGS_COL_NUMBER_TAGGED'); ?></th>
 						</tr>
 					</thead>
-					
 					<tbody>
 				<?php
 				if ($this->rows->total()) 

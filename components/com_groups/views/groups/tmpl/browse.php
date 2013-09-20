@@ -58,20 +58,14 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="aside">
 			<div class="container">
 				<h3><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_TITLE'); ?></h3>
-				<p class="starter">
-					<span class="starter-point"></span>
-					<?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_ONE'); ?>
-				</p>
+				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_ONE'); ?></p>
 				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_TWO'); ?></p>
 				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_THREE'); ?></p>
 			</div><!-- / .container -->
 			
 			<div class="container">
 				<h3><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
-				<p class="starter">
-					<span class="starter-point"></span>
-					<?php echo JText::sprintf('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', JRoute::_('index.php?option=com_members')); ?>
-				</p>
+				<p><?php echo JText::sprintf('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', JRoute::_('index.php?option=com_members')); ?></p>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
@@ -145,7 +139,7 @@ foreach ($letters as $letter)
 ?>
 				<div class="clearfix"></div>
 
-				<table class="groups entries" summary="<?php echo JText::_('GROUPS_BROWSE_TBL_SUMMARY'); ?>">
+				<table class="groups entries">
 					<caption>
 <?php
 						$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];

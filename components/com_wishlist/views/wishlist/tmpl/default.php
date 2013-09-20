@@ -225,15 +225,15 @@ if ($this->admin && !$this->getError()) {
 				</fieldset>
 				<?php } ?>
 			</div><!-- / .container data-entry -->
-	
+
 			<div class="container">
 				<ul class="entries-menu order-options">
-<?php 			if ($this->admin) { ?>
+				<?php if ($this->admin) { ?>
 					<li><a class="sort-ranking<?php if ($this->filters['sortby'] == 'ranking') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby='.$this->filters['filterby'].'&sortby=ranking&tags='.$this->filters['tag']); ?>" title="<?php echo JText::_('COM_WISHLIST_SORT_RANKING_TITLE'); ?>">&darr; <?php echo JText::_('COM_WISHLIST_SORT_RANKING'); ?></a></li>
-<?php 			} ?>
-<?php 			if ($this->wishlist->banking) { ?>
+				<?php } ?>
+				<?php if ($this->wishlist->banking) { ?>
 					<li><a class="sort-bonus<?php if ($this->filters['sortby'] == 'bonus') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby='.$this->filters['filterby'].'&sortby=bonus&tags='.$this->filters['tag']); ?>" title="<?php echo JText::_('COM_WISHLIST_SORT_BONUS_TITLE'); ?>">&darr; <?php echo JText::_('COM_WISHLIST_SORT_BONUS'); ?></a></li>
-<?php 			} ?>
+				<?php } ?>
 					<li><a class="sort-feedback<?php if ($this->filters['sortby'] == 'feedback') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby='.$this->filters['filterby'].'&sortby=feedback&tags='.$this->filters['tag']); ?>" title="<?php echo JText::_('COM_WISHLIST_SORT_FEEDBACK_TITLE'); ?>">&darr; <?php echo JText::_('COM_WISHLIST_SORT_FEEDBACK'); ?></a></li>
 					<li><a class="sort-submitter<?php if ($this->filters['sortby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby='.$this->filters['filterby'].'&sortby=submitter&tags='.$this->filters['tag']); ?>" title="<?php echo JText::_('COM_WISHLIST_SORT_SUBMITTER_TITLE'); ?>">&darr; <?php echo JText::_('COM_WISHLIST_SORT_SUBMITTER'); ?></a></li>
 					<li><a class="sort-date<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby='.$this->filters['filterby'].'&sortby=date&tags='.$this->filters['tag']); ?>" title="<?php echo JText::_('COM_WISHLIST_SORT_DATE'); ?>">&darr; <?php echo JText::_('COM_WISHLIST_SORT_DATE'); ?></a></li>
@@ -245,19 +245,19 @@ if ($this->admin && !$this->getError()) {
 					<li><a class="filter-accepted<?php if ($this->filters['filterby'] == 'accepted') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby=accepted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo JText::_('COM_WISHLIST_FILTER_ACCEPTED'); ?></a></li>
 					<li><a class="filter-rejected<?php if ($this->filters['filterby'] == 'rejected') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby=rejected&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo JText::_('COM_WISHLIST_FILTER_REJECTED'); ?></a></li>
 					<li><a class="filter-granted<?php if ($this->filters['filterby'] == 'granted') { echo ' active'; } ?>" href="<?php echo JRoute::_($base .'&filterby=granted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo JText::_('COM_WISHLIST_FILTER_GRANTED'); ?></a></li>
-<?php 			if (!$this->juser->get('guest')) { ?>
+				<?php if (!$this->juser->get('guest')) { ?>
 					<li><a class="filter-submitter<?php if ($this->filters['filterby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&filterby=submitter&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo JText::_('COM_WISHLIST_FILTER_SUBMITTER'); ?></a></li>
-<?php 			} ?>
-<?php 			if ($this->admin == 1 || $this->admin == 2) { ?>
+				<?php } ?>
+				<?php if ($this->admin == 1 || $this->admin == 2) { ?>
 					<li><a class="filter-public<?php if ($this->filters['filterby'] == 'public') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&filterby=public&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo JText::_('COM_WISHLIST_FILTER_PUBLIC'); ?></a></li>
 					<li><a class="filter-private<?php if ($this->filters['filterby'] == 'private') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&filterby=private&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo JText::_('COM_WISHLIST_FILTER_PRIVATE'); ?></a></li>
-<?php 				if ($this->admin == 2) { ?>
+					<?php if ($this->admin == 2) { ?>
 					<li><a class="filter-mine<?php if ($this->filters['filterby'] == 'mine') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&filterby=mine&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo JText::_('COM_WISHLIST_FILTER_MINE'); ?></a></li>
-<?php 				} ?>
-<?php 			} ?>
+					<?php } ?>
+				<?php } ?>
 				</ul>
 
-				<table class="ideas entries" summary="<?php echo JText::_('Ideas submitted by the community'); ?>">
+				<table class="ideas entries">
 					<caption>
 						<?php echo JText::_('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?> 
 						<?php echo ($this->filters['tag'] != '') ? JText::sprintf('COM_WISHLIST_WISHES_TAGGED_WITH', $this->filters['tag']) : ''; ?>
@@ -322,8 +322,8 @@ if ($this->admin && !$this->getError()) {
 							<th class="<?php echo $status; ?>">
 								<span class="entry-id"><?php echo $item->id; ?></span>
 							</th>
-							<td<?php if (!$item->reports) { echo ' colspan="' . ($this->wishlist->banking ? '4' : '3') . '"'; } ?>>
-<?php 					if (!$item->reports) { ?>
+							<td>
+						<?php if (!$item->reports) { ?>
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid .'&wishid='.$item->id . $filters); ?>"><?php echo $item->subject; ?></a><br />
 								<span class="entry-details">
 									<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo ($item->anonymous == 1) ? JText::_('COM_WISHLIST_ANONYMOUS') : $item->authorname; ?> @
@@ -332,26 +332,26 @@ if ($this->admin && !$this->getError()) {
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid .'&wishid='.$item->id.'&com=1' . $filters . '#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 								</span>
-<?php 					} else { ?>
+						<?php } else { ?>
 								<span class="warning adjust"><?php echo JText::_('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?></span>
-<?php 					} ?>
+						<?php } ?>
 							</td>
-<?php 					if (!$item->reports && $this->wishlist->banking) { ?>
+						<?php if (!$item->reports && $this->wishlist->banking) { ?>
 							<td class="reward">
 								<span class="entry-reward">
-<?php 							if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
+								<?php if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
 									<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid .'&wishid='.$item->id.'&action=addbonus' . $filters . '#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('COM_WISHLIST_MULTIPLE_USERS').' '.JText::_('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('COM_WISHLIST_POINTS').' '.JText::_('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
-<?php 							} else if ($item->status == 0 || $item->status == 6) { ?>
+								<?php } else if ($item->status == 0 || $item->status == 6) { ?>
 									<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid .'&wishid='.$item->id.'&action=addbonus' . $filters . '#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' :: '.JText::_('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
-<?php 							} else { ?>
+								<?php } else { ?>
 									<span class="inactive" title="<?php echo JText::_('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
-<?php 							} ?>
+								<?php } ?>
 								</span>
 							</td>
-<?php 					} ?>
-<?php 					if (!$item->reports) { ?>
+						<?php } ?>
+						<?php if (!$item->reports) { ?>
 							<td class="voting">
-<?php
+								<?php
 								$view = new JView( array('name'=>'rateitem') );
 								$view->option = $this->option;
 								$view->item = $item;
@@ -361,10 +361,10 @@ if ($this->admin && !$this->getError()) {
 								$view->page = 'wishlist';
 								$view->filters = $this->filters;
 								$view->display();
-?>
+								?>
 							</td>
 							<td class="ranking">
-<?php 						/*if ($this->admin 
+						<?php /*if ($this->admin 
 								|| $item->status == 1 
 								|| ($item->status == 0 && $item->accepted == 1) 
 								|| $item->status == 3 
@@ -404,7 +404,7 @@ if ($this->admin && !$this->getError()) {
 								echo $html;
  							//} ?>
 							</td>
-<?php 					} // end if (!$item->reports) ?>
+						<?php } // end if (!$item->reports) ?>
 						</tr>
 <?php
 					} // end foreach wish
@@ -412,12 +412,12 @@ if ($this->admin && !$this->getError()) {
 ?>
 						<tr>
 							<td>
-<?php 				if ($this->filters['filterby'] == 'all' && !$this->filters['tag']) { ?>
+							<?php if ($this->filters['filterby'] == 'all' && !$this->filters['tag']) { ?>
 								<p><?php echo JText::_('COM_WISHLIST_NO_WISHES_BE_FIRST'); ?></p>
-<?php 				} else { ?>
+							<?php } else { ?>
 								<p class="noresults"><?php echo JText::_('COM_WISHLIST_NO_WISHES_SELECTION'); ?></p>
 								<p class="nav_wishlist"><a href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('COM_WISHLIST_VIEW_ALL_WISHES'); ?></a></p>
-<?php 				} ?>
+							<?php } ?>
 							</td>
 						</tr>
 
@@ -426,14 +426,14 @@ if ($this->admin && !$this->getError()) {
 ?>
 					</tbody>
 				</table>
-<?php
+				<?php
 				// Page navigation
 				$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 				$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
 				$this->pageNav->setAdditionalUrlParam('newsearch', 0);
 				echo $this->pageNav->getListFooter();
-?>
+				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->

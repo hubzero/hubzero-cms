@@ -75,50 +75,51 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="container">
 				<div class="container-block">
 					<h3>Articles</h3>
-					<div class="two columns first">
-						<h4><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>"><?php echo JText::_('Most Popular Articles'); ?> <span class="more">&raquo;</span></a></h4>
-						<?php
-						if (count($this->articles['top']) > 0) {
-							$html  = "\t".'<ul class="articles">'."\n";
-							foreach ($this->articles['top'] as $row)
-							{
-								if (!empty($row->alias)) {
-									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
-								} else {
-									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
+					<div class="grid">
+						<div class="col span-half omega">
+							<h4><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>"><?php echo JText::_('Most Popular Articles'); ?> <span class="more">&raquo;</span></a></h4>
+							<?php
+							if (count($this->articles['top']) > 0) {
+								$html  = "\t".'<ul class="articles">'."\n";
+								foreach ($this->articles['top'] as $row)
+								{
+									if (!empty($row->alias)) {
+										$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
+									} else {
+										$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
+									}
+									$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('COM_KB_READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
 								}
-								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('COM_KB_READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
+								$html .= "\t".'</ul>'."\n";
+							} else {
+								$html  = "\t".'<p>'.JText::_('No articles found.').'</p>'."\n";
 							}
-							$html .= "\t".'</ul>'."\n";
-						} else {
-							$html  = "\t".'<p>'.JText::_('No articles found.').'</p>'."\n";
-						}
-						echo $html;
-						?>
-					</div><!-- / .two columns first -->
-					<div class="two columns second">
-						<h4><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>"><?php echo JText::_('Most Recent Articles'); ?> <span class="more">&raquo;</span></a></h4>
-						<?php
-						if (count($this->articles['new']) > 0) {
-							$html  = "\t".'<ul class="articles">'."\n";
-							foreach ($this->articles['new'] as $row)
-							{
-								if (!empty($row->alias)) {
-									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
-								} else {
-									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
+							echo $html;
+							?>
+						</div><!-- / .col span-half -->
+						<div class="col span-half omega">
+							<h4><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>"><?php echo JText::_('Most Recent Articles'); ?> <span class="more">&raquo;</span></a></h4>
+							<?php
+							if (count($this->articles['new']) > 0) {
+								$html  = "\t".'<ul class="articles">'."\n";
+								foreach ($this->articles['new'] as $row)
+								{
+									if (!empty($row->alias)) {
+										$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&alias='.$row->alias);
+									} else {
+										$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
+									}
+									$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('COM_KB_READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
 								}
-								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('COM_KB_READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
+								$html .= "\t".'</ul>'."\n";
+							} else {
+								$html  = "\t".'<p>'.JText::_('No articles found.').'</p>'."\n";
 							}
-							$html .= "\t".'</ul>'."\n";
-						} else {
-							$html  = "\t".'<p>'.JText::_('No articles found.').'</p>'."\n";
-						}
-						echo $html;
-						?>
-					</div><!-- / .two columns second -->
-					<div class="clearfix"></div>
-					
+							echo $html;
+							?>
+						</div><!-- / .col span-half -->
+					</div><!-- / .grid -->
+
 					<h3>Categories</h3>
 <?php 
 		$i = 0;
@@ -183,9 +184,10 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		echo $html;
 ?>
-				<div class="clear"></div>
-			</div><!-- / .container-block -->
-		</div><!-- / .container -->
+					<div class="clear"></div>
+				</div><!-- / .container-block -->
+			</div><!-- / .container -->
+		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->

@@ -432,6 +432,9 @@ class BlogControllerEntries extends Hubzero_Controller
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
 
 		$row = $this->model->entry(0);
@@ -646,17 +649,6 @@ class BlogControllerEntries extends Hubzero_Controller
 	 */
 	public function savecommentTask()
 	{
-		$yearFormat = '%Y';
-		$monthFormat = '%m';
-		$tz = 0;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-		       $yearFormat = 'Y';
-		       $monthFormat = 'm';
-		       $tz = null;
-		}
-
 		// Ensure the user is logged in
 		if ($this->juser->get('guest')) 
 		{
@@ -668,6 +660,9 @@ class BlogControllerEntries extends Hubzero_Controller
 			);
 			return;
 		}
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$comment = JRequest::getVar('comment', array(), 'post');

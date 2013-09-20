@@ -324,7 +324,7 @@ if (!$c)
 						}
 						?>
 						<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->active) ? ' class="active"' : ''; ?>>
-							<a class="tab" rel="<?php echo $name; ?>" href="<?php echo $url; ?>">
+							<a class="tab" data-rel="<?php echo $name; ?>" href="<?php echo $url; ?>">
 								<span><?php echo $this->escape($cat[$name]); ?></span>
 							</a>
 						</li>

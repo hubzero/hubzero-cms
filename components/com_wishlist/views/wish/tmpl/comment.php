@@ -76,7 +76,7 @@ if ($this->reply->comment)
 
 ?>
 <p class="comment-member-photo">
-	<span class="comment-anchor"><a name="#c<?php echo $this->reply->id; ?>"></a></span>
+	<span class="comment-anchor"><!-- <a name="#c<?php echo $this->reply->id; ?>"></a> --></span>
 	<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($ruser, $this->reply->anonymous); ?>" alt="" />
 </p>
 <div class="comment-content">

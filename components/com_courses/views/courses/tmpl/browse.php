@@ -149,7 +149,7 @@ $juser =& JFactory::getUser();
 				?>
 				<div class="clearfix"></div>
 
-				<table class="courses entries" summary="<?php echo JText::_('COM_COURSES_BROWSE_TBL_SUMMARY'); ?>">
+				<table class="courses entries">
 					<caption>
 					<?php
 						$s = $this->filters['start']+1;
@@ -174,7 +174,7 @@ $juser =& JFactory::getUser();
 					</caption>
 					<thead>
 						<tr>
-							<th colspan="<?php echo ($this->config->get('access-admin-component')) ? '4' : '3'; ?>">
+							<th colspan="2<?php //echo ($this->config->get('access-admin-component')) ? '4' : '3'; ?>">
 								<span class="index-wrap">
 									<span class="index">
 										<?php echo $html; ?>

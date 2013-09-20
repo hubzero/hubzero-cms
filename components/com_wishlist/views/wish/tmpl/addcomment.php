@@ -41,12 +41,12 @@ if (!$this->juser->get('guest')) {
 	if ($this->level == 0) { ?>
 		<div class="below section<?php echo $class; ?>">
 			<h3>
-				<a name="commentform"></a>
+				<!-- <a name="commentform"></a> -->
 				<?php echo JText::_('COM_WISHLIST_ACTION_ADD_COMMENT'); ?>
 			</h3>
 			<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
 				<div class="aside">
-					<table class="wiki-reference" summary="Wiki Syntax Reference">
+					<table class="wiki-reference">
 						<caption>Wiki Syntax Reference</caption>
 						<tbody>
 							<tr>
@@ -164,26 +164,26 @@ if (!$this->juser->get('guest')) {
 								<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
 								<input type="hidden" name="cat" value="<?php echo $category; ?>" />
 								
-								<label>
+								<label for="comment<?php echo $this->refid; ?>">
 									<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
-									<textarea name="comment" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?></textarea>
+									<textarea name="comment" id="comment<?php echo $this->refid; ?>" rows="4" cols="50" class="commentarea"><?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?></textarea>
 								</label>
 								
 								<fieldset>
 									<div class="grouping">
-										<label>
+										<label for="upload<?php echo $this->refid; ?>">
 											<?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
-											<input type="file" name="upload"  />
+											<input type="file" name="upload" id="upload<?php echo $this->refid; ?>" />
 										</label>
-										<label>
+										<label for="description<?php echo $this->refid; ?>">
 											<?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
-											<input type="text" name="description" value="" />
+											<input type="text" name="description" value="" id="description<?php echo $this->refid; ?>" />
 										</label>
 									</div>
 								</fieldset>
 								
-								<label class="reply-anonymous-label">
-									<input class="option" type="checkbox" name="anonymous" value="1" /> 
+								<label for="anonymous<?php echo $this->refid; ?>" class="reply-anonymous-label">
+									<input class="option" type="checkbox" name="anonymous" id="anonymous<?php echo $this->refid; ?>" value="1" /> 
 									<?php echo JText::_('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 								</label>
 							

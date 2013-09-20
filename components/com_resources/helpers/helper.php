@@ -274,7 +274,7 @@ class ResourcesHelper extends JObject
 				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
+					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else 
 				{
@@ -411,7 +411,7 @@ class ResourcesHelper extends JObject
 				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
+					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="submitter" class="resource-submitter" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else 
 				{

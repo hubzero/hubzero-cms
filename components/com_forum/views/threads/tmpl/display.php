@@ -109,7 +109,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 
 	<?php if ($this->thread->attachments()->total() > 0) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('COM_FORUM_ATTACHMENTS'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('COM_FORUM_ATTACHMENTS'); ?></h3>
 			<ul class="attachments">
 			<?php 
 			foreach ($this->thread->attachments() as $attachment) 
@@ -195,7 +195,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 		<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
 	</h3>
 	<div class="aside">
-		<table class="wiki-reference" summary="Wiki Syntax Reference">
+		<table class="wiki-reference">
 			<caption>Wiki Syntax Reference</caption>
 			<tbody>
 				<tr>
@@ -232,7 +232,6 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 	<div class="subject">
 		<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
-				<a class="comment-anchor" name="commentform"></a>
 				<?php
 				if (!$juser->get('guest')) 
 				{
@@ -349,5 +348,5 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-<?php } ?>
 </div><!-- / .below section -->
+<?php } ?>

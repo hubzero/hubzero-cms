@@ -54,7 +54,7 @@ $juser = JFactory::getUser();
 	<div class="aside">
 		<div class="container">
 			<h3><?php echo JText::_('Statistics'); ?></h3>
-			<table summary="<?php echo JText::_('Statistics'); ?>">
+			<table>
 				<tbody>
 					<tr>
 						<th><?php echo JText::_('Categories'); ?></th>

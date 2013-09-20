@@ -257,7 +257,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			if ($matches[0])
 			{
 				$this->attr['style']['width'] = $val;
-				$this->attr['width'] = $val;
+				//$this->attr['width'] = $val;
 				return;
 			}
 		}
@@ -368,7 +368,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			if ($matches[0])
 			{
 				$this->attr['style']['width'] = $key;
-				$this->attr['width'] = $key;
+				//$this->attr['width'] = $key;
 				return;
 			}
 		}
@@ -500,6 +500,10 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	private function _embed($file, $attr=array())
 	{
 		$attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
+		if (!$attr['alt'])
+		{
+			$attr['alt'] = $file;
+		}
 
 		$styles = '';
 		if (count($attr['style']) > 0) 
