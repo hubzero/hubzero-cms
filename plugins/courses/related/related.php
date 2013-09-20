@@ -82,6 +82,7 @@ class plgCoursesRelated extends JPlugin
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 					WHERE r.alias='instructor' 
 					AND m.user_id IN (" . implode(",", $ids) . ")
+					AND m.student=0
 					AND c.state=1
 					AND c.id !=" . $database->Quote($course->get('id'));
 	/*				AND (c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $database->Quote($now) . ")

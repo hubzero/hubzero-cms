@@ -48,7 +48,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 ?>
 <div id="related-courses" class="after section">
 	<?php if (count($this->ids) > 1) { ?>
-	<h3>Other courses by these instructor</h3>
+	<h3>Other courses by these instructors</h3>
 	<?php } else { ?>
 	<h3>Other courses by this instructor</h3>
 	<?php } ?>
