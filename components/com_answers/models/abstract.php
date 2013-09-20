@@ -121,7 +121,10 @@ abstract class AnswersModelAbstract extends JObject
 
 			if (is_numeric($oid) || is_string($oid))
 			{
-				$this->_tbl->load($oid);
+				if ($oid)
+				{
+					$this->_tbl->load($oid);
+				}
 			}
 			else if (is_object($oid) || is_array($oid))
 			{

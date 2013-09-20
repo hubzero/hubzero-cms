@@ -377,6 +377,18 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
+	 * Add a single tag to the entry
+	 * 
+	 * @return     boolean
+	 */
+	public function addTag($tag=null, $user_id=0, $admin=0)
+	{
+		$cloud = new AnswersModelTags($this->get('id'));
+
+		return $cloud->add($tag, $user_id, $admin);
+	}
+
+	/**
 	 * Get the state of the entry as either text or numerical value
 	 * 
 	 * @param      string $as Format to return state in [text, number]
@@ -747,101 +759,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		// Save changes
 		return $this->store(true);
-	}
-
-	/**
-	 * Check a user's authorization
-	 * 
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
-	 */
-	public function access($action='view')
-	{
-		if (!$this->_authorized)
-		{
-			// Set NOT viewable by default
-			// We need to ensure the forum is published first
-			$this->params->set('access-view-entry', false);
-
-			if ($this->exists() && $this->isAvailable())
-			{
-				$this->params->set('access-view-entry', true);
-			}
-
-			$juser = JFactory::getUser();
-			if ($juser->get('guest'))
-			{
-				$this->_authorized = true;
-			}
-			else
-			{
-				// Anyone logged in can create a forum
-				//$this->params->set('access-create-entry', true);
-
-				// Check if they're a site admin
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					if ($juser->authorize('com_blog', 'manage')) 
-					{
-						$this->params->set('access-admin-entry', true);
-						$this->params->set('access-manage-entry', true);
-						$this->params->set('access-delete-entry', true);
-						$this->params->set('access-edit-entry', true);
-						$this->params->set('access-edit-state-entry', true);
-						$this->params->set('access-edit-own-entry', true);
-					}
-				}
-				else 
-				{
-					$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
-					$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
-				}
-
-				// If they're not an admin
-				if (!$this->params->get('access-admin-entry') 
-				 && !$this->params->get('access-manage-entry'))
-				{
-					// Does the forum exist?
-					/*if (!$this->exists())
-					{
-						// Give editing access if the blog doesn't exist
-						// i.e., it's a new forum
-						switch ($this->get('scope'))
-						{
-							case 'site':
-							break;
-							
-							case 'member':
-							break;
-						}
-						$this->params->set('access-view-entry', true);
-						$this->params->set('access-delete-entry', true);
-						$this->params->set('access-edit-entry', true);
-						$this->params->set('access-edit-state-entry', true);
-						$this->params->set('access-edit-own-entry', true);
-					}
-					// Check if they're the forum creator or forum manager
-					else*/
-					if ($this->get('created_by') == $juser->get('id')) 
-					{
-						// Give full access
-						$this->params->set('access-view-entry', true);
-						$this->params->set('access-manage-entry', true);
-						$this->params->set('access-delete-entry', true);
-						$this->params->set('access-edit-entry', true);
-						$this->params->set('access-edit-state-entry', true);
-						$this->params->set('access-edit-own-entry', true);
-					}
-				}
-
-				$this->_authorized = true;
-			}
-		}
-		return $this->params->get('access-' . strtolower($action) . '-entry');
 	}
 
 	/**

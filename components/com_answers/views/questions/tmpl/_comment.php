@@ -136,6 +136,8 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="rid" value="<?php echo $this->question->get('id'); ?>" />
 						<input type="hidden" name="task" value="savereply" />
 
+						<?php echo JHTML::_('form.token'); ?>
+
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
 							<?php

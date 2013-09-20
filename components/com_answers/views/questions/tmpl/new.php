@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section">
 	<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
+	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } ?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
@@ -67,8 +67,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="saveq" />
 
-			<input type="hidden" name="fields[id]" value="<?php echo $this->question->get('id', 0); ?>" />
-			<input type="hidden" name="fields[funds]" value="<?php echo $this->funds; ?>" />
+			<?php echo JHTML::_('form.token'); ?>
+
+			<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->question->get('id', 0)); ?>" />
+			<input type="hidden" name="fields[funds]" value="<?php echo $this->escape($this->funds); ?>" />
 			<input type="hidden" name="fields[email]" value="1" />
 			<input type="hidden" name="fields[state]" value="0" />
 
@@ -80,31 +82,39 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label>
 				<?php echo JText::_('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
 				<?php
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher =& JDispatcher::getInstance();
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tag)) );
+				JPluginHelper::importPlugin('hubzero');
 
-				if (count($tf) > 0) {
-								echo $tf[0];
-				} else { ?>
-				<textarea name="tags" id="actags" rows="6" cols="35"><?php echo $this->tag; ?></textarea>
-				<?php } ?>
+				$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tag)));
+				$tf = implode("\n", $tf);
+
+				echo $tf ? $tf : '<textarea name="tags" id="actags" rows="6" cols="35">' .  $this->escape($this->tag) . '</textarea>';
+				?>
 			</label>
 
 			<label for="field-subject">
 				<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
-				<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->question->get('subject', '')); ?>" />
+				<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape(stripslashes($this->question->get('subject', ''))); ?>" />
 			</label>
 
 			<label for="field-question">
 				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
-				<textarea name="fields[question]" id="field-question" rows="10" cols="50"><?php echo $this->escape($this->question->get('question', '')); ?></textarea>
+				<?php
+					ximport('Hubzero_Wiki_Editor');
+					echo Hubzero_Wiki_Editor::getInstance()->display(
+						'fields[question]', // name
+						'field-question',   // id 
+						stripslashes($this->question->get('question', '')), // content
+						'',    // classname
+						'35',  // cols
+						'10'   // rows
+					);
+				?>
 			</label>
 		<?php if ($this->config->get('banking')) { ?>
 			<label for="field-reward">
 				<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
 				<input type="text" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/> 
-				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->funds; ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
+				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
 			</label>
 		<?php } else { ?>
 			<input type="hidden" name="fields[reward]" value="0" />

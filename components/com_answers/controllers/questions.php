@@ -145,6 +145,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 */
 	public function savereplyTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Is the user logged in?
 		if ($this->juser->get('guest')) 
 		{
@@ -728,6 +731,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 */
 	public function saveqTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
@@ -1055,6 +1061,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 */
 	public function saveaTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
