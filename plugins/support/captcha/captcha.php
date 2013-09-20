@@ -355,9 +355,9 @@ class plgSupportCaptcha extends JPlugin
 			break;
 		}
 
+		$html .= '</label>' . "\n";
 		$html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
 		//$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
-		$html .= '</label>' . "\n";
 
 		$currentSession =& JFactory::getSession();
 		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
