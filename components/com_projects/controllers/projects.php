@@ -2718,8 +2718,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
 			// Add stylesheet
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('members', 'impact');
+			$document =& JFactory::getDocument();
+			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
 			
 			$objStats = new ProjectStats($this->database);
 			

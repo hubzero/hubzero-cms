@@ -440,7 +440,8 @@
 		content: "\f085";
 		color: #55c64c;
 	}
-	.infofeed .apps:before {
+	.infofeed .apps:before,
+	.infofeed .tools:before {
 		content: "\2692";
 	}
 	.infofeed .databases:before {
