@@ -62,7 +62,7 @@ class plgProjectsNotes extends JPlugin
 		$this->_task 	= '';
 		$this->_msg 	= '';
 		$this->_group 	= ''; // project group
-		$this->_app		= NULL;
+		$this->_tool	= NULL;
 		
 		$this->_controllerName = '';
 		
@@ -121,11 +121,11 @@ class plgProjectsNotes extends JPlugin
 	 * @param      integer $error 			Error
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
-	 * @param      string  $app				Name of app wiki belongs to
+	 * @param      string  $tool			Name of tool wiki belongs to
 	 * @return     array   Return array of html
 	 */
 	public function onProject ( $project, $option, $authorized, 
-		$uid, $msg = '', $error = '', $action = '', $areas = null, $app = NULL )
+		$uid, $msg = '', $error = '', $action = '', $areas = null, $tool = NULL )
 	{
 		$returnhtml = true;
 	
@@ -216,28 +216,30 @@ class plgProjectsNotes extends JPlugin
 			
 			$startScope = trim(str_replace('projects' . DS . $this->_project->alias . DS . 'notes', '', $scope), DS);
 			
-			// Does this page belong to an app?
-			if ($pagename && (preg_match("/^app:/", $pagename) || preg_match("/app:/", $startScope) ))
+			// Does this page belong to a tool?
+			if ($pagename && (preg_match("/^tool:/", $pagename) || preg_match("/tool:/", $startScope) ))
 			{
-				$appname = preg_match("/^app:/", $pagename) ? preg_replace('/^app:/', "", $pagename) : preg_replace('/^app:/', "", $startScope);
-				$parts 	 = explode(':', $appname);
-				$app 	 = $parts[0];
+				$toolname = preg_match("/^tool:/", $pagename) 
+							? preg_replace('/^tool:/', "", $pagename) 
+							: preg_replace('/^tool:/', "", $startScope);
+				$parts 	 = explode(':', $toolname);
+				$tool 	 = $parts[0];
 			}
 			
-			// Enable app wiki
-			if ($app && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_apps' . DS . 'tables' . DS . 'app.php'))
+			// Enable tool wiki
+			if ($tool && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+				. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php'))
 			{
-				// Get app library
+				// Get tool library
 				require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-					. DS . 'com_apps' . DS . 'tables' . DS . 'app.php');
+					. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php');
 
-				$objA = new App( $database );
-				$this->_app = $objA->getFullRecord($app, $this->_project->id);
+				$objProjectTool = new ProjectTool( $database );
+				$this->_tool = $objProjectTool->getFullRecord($tool, $this->_project->id);
 				
-				Hubzero_Document::addPluginStylesheet('projects', 'apps');
+				Hubzero_Document::addPluginStylesheet('projects', 'tools');
 				$lang = JFactory::getLanguage();
-				$lang->load('plg_projects_apps');
+				$lang->load('plg_projects_tools');
 			}
 				
 			// What's the task?						
@@ -368,10 +370,10 @@ class plgProjectsNotes extends JPlugin
 		$pagename = trim(JRequest::getVar( 'pagename', ''));
 		$exists = 0;
 				
-		// App wiki?
-		if ($this->_app && $this->_app->id)
+		// Tool wiki?
+		if ($this->_tool && $this->_tool->id)
 		{
-			$pagePrefix  = 'app:' . $this->_app->name . ':';
+			$pagePrefix  = 'tool:' . $this->_tool->name . ':';
 			$defaultName =  'WikiStart';
 		}
 		
@@ -419,8 +421,8 @@ class plgProjectsNotes extends JPlugin
 			}
 		}
 		
-		// No default app wiki - create one
-		if ($this->_app && $this->_app->id && !$firstnote)
+		// No default tool wiki - create one
+		if ($this->_tool && $this->_tool->id && !$firstnote)
 		{
 			$this->_createDefaultPage($pagename, $scope, $pagePrefix);
 		}
@@ -428,20 +430,20 @@ class plgProjectsNotes extends JPlugin
 		// Set some variables for the wiki
 		$pagename = $this->_task == 'new' ? 'New Note' : $pagename;
 		
-		// Add app prefix to name
+		// Add tool prefix to name
 		if ($pagePrefix && !preg_match('/' . $pagePrefix . '/', $pagename) && $this->_task != 'new' && !$firstnote)
 		{
 			$pagename = $pagePrefix . $pagename;
 		}
 		
 		// Can delete page?
-		$canDelete = ($this->_app && $this->_app->id && $scope == $masterscope) ? 0 : 1;
+		$canDelete = ($this->_tool && $this->_tool->id && $scope == $masterscope) ? 0 : 1;
 		
 		JRequest::setVar('pagename', $pagename);
 		JRequest::setVar('task', $this->_task);
 		JRequest::setVar('scope', $scope);
 		
-		JRequest::setVar('app', $this->_app);
+		JRequest::setVar('tool', $this->_tool);
 		JRequest::setVar('project', $this->_project);
 		JRequest::setVar('candelete', $canDelete);
 		
@@ -522,7 +524,7 @@ class plgProjectsNotes extends JPlugin
 		$view->firstnote 	= $firstnote;
 		$view->page 		= $exists ? $page : '';
 		$view->title		= $this->_area['title'];
-		$view->app			= $this->_app;
+		$view->tool			= $this->_tool;
 		$view->config		= $this->_config;
 		$view->pparams		= $this->_params;
 		
@@ -685,18 +687,18 @@ class plgProjectsNotes extends JPlugin
 		ximport('Hubzero_Plugin_View');
 		$juser =& JFactory::getUser();
 		
-		// Compose default app page
+		// Compose default tool page
 		$eview = new Hubzero_Plugin_View(
 			array(
 				'folder'	=>'projects',
-				'element'	=>'apps',
+				'element'	=>'tools',
 				'name'		=>'wiki'
 			)
 		);
 		$eview->option 	= $this->_option;
 		$eview->project = $this->_project;
 		$eview->config 	= $this->_config;
-		$eview->app 	= $this->_app;
+		$eview->tool 	= $this->_tool;
 
 		$body = $eview->loadTemplate();
 		$body = str_replace("\n", "\r\n", $body);
@@ -719,7 +721,7 @@ class plgProjectsNotes extends JPlugin
 		$page->access   		= 0;
 		$page->group_cn  		= $this->_group;
 		$page->state    		= 0;
-		$page->params 			= 'mode=wiki' . "\n" . 'app=' . $this->_app->name;
+		$page->params 			= 'mode=wiki' . "\n" . 'tool=' . $this->_tool->name;
 		$page->created_by 		= $juser->get('id');
 		$page->times_rated		= $order;
 		$page->store();
@@ -809,24 +811,24 @@ class plgProjectsNotes extends JPlugin
 			JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias)
 		);
 		
-		if ($this->_app && $this->_app->id)
+		if ($this->_tool && $this->_tool->id)
 		{
 			$pathway->addItem(
-				ucfirst(JText::_('COM_PROJECTS_PANEL_APPS')),
+				ucfirst(JText::_('COM_PROJECTS_PANEL_TOOLS')),
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
-				. $this->_project->alias . a . 'active=apps')
+				. $this->_project->alias . a . 'active=tools')
 			);
 			
 			$pathway->addItem(
-				Hubzero_View_Helper_Html::shortenText($this->_app->title, 50, 0),
+				Hubzero_View_Helper_Html::shortenText($this->_tool->title, 50, 0),
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
-				. $this->_project->alias . a . 'active=apps' . a . 'app=' . $this->_app->id)
+				. $this->_project->alias . a . 'active=tools' . a . 'tool=' . $this->_tool->id)
 			);	
 			
 			$pathway->addItem(
-				ucfirst(JText::_('COM_PROJECTS_APPS_TAB_WIKI')),
+				ucfirst(JText::_('COM_PROJECTS_TOOLS_TAB_WIKI')),
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
-				. $this->_project->alias . a . 'active=apps' . a . 'app=' . $this->_app->id . a . 'action=wiki')
+				. $this->_project->alias . a . 'active=tools' . a . 'tool=' . $this->_tool->id . a . 'action=wiki')
 			);		
 		}
 		else

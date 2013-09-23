@@ -30,12 +30,12 @@ $content = str_replace('projects/projects/',
 						'projects/', 
 						$content);
 
-$app = JRequest::getVar( 'app', '', 'request', 'object' );	
+$tool = JRequest::getVar( 'tool', '', 'request', 'object' );	
 						
 //$side = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') ? 1 : 0;
-//$side = ($this->task == 'view' or $this->task == 'page') && !$app && $this->page ? 1 : 0;
+//$side = ($this->task == 'view' or $this->task == 'page') && !$tool && $this->page ? 1 : 0;
 $side = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') && $this->page ? 1 : 0;
-$appOpt = $app && $app->id && ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') ? 1 : 0;
+$toolOpt = $tool && $tool->id && ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') ? 1 : 0;
 
 // Breadcrumbs
 $bcrumb = '';
@@ -47,7 +47,7 @@ if ($this->parent_notes && count($this->parent_notes) > 0) {
 if ($this->task == 'new') {
 	$bcrumb .= ' &raquo; <span class="subheader">'.JText::_('COM_PROJECTS_NOTES_TASK_NEW').'</span>';
 }
-else if($this->page && (($this->task != 'view' && !$this->app) || ($this->firstnote && $this->pagename != $this->firstnote))) {
+else if($this->page && (($this->task != 'view' && !$this->tool) || ($this->firstnote && $this->pagename != $this->firstnote))) {
 	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=notes'.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'">'. $this->page->title.'</a></span>';
 	$tasks = array( 'edit', 'history', 'comments', 'delete', 'compare', 'addcomment', 'renamepage' );
 	
@@ -93,14 +93,14 @@ if ($this->notes)
 	{ 
 		$show = 1;
 		
-		// For app wiki, only show app pages
-		if ($app && $app->id)
+		// For tool wiki, only show tool pages
+		if ($tool && $tool->id)
 		{
 			$show = 0;
 			$startScope = trim(str_replace('projects' . DS . $this->project->alias . DS . 'notes', '', $note->scope), DS);
 
-			// Does this page belong to an app?
-			if ((preg_match("/^app:" . $app->name . "/", $note->pagename) || preg_match("/^app:" . $app->name . "/", $startScope) ))
+			// Does this page belong to an tool?
+			if ((preg_match("/^tool:" . $tool->name . "/", $note->pagename) || preg_match("/^tool:" . $tool->name . "/", $startScope) ))
 			{
 				$show = 1;
 			}
@@ -134,37 +134,9 @@ if ($this->notes)
 $parentScope = $this->scope . DS . $this->pagename;
 
 ?>
-<?php if (isset($this->app) && $this->app->name) { 
+<?php if (isset($this->tool) && $this->tool->name) { 
 	
-	// App-only tab menu 
-	$view = new Hubzero_Plugin_View(
-		array(
-			'folder'=>'projects',
-			'element'=>'apps',
-			'name'=>'view'
-		)
-	);
-	
-	// Load plugin parameters
-	$app_plugin 	= JPluginHelper::getPlugin( 'projects', 'apps' );
-	$view->plgparams = new JParameter($app_plugin->params);
-	
-	$view->route 	= 'index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps';
-	$view->url 		= JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps');
-	$view->app 		= $this->app;
-	$view->active 	= 'wiki';
-	$view->title 	= 'Apps';
-	
-	// Get path for app thumb image
-	$projectsHelper = new ProjectsHelper( $this->database );
-	
-	$p_path 			= ProjectsHelper::getProjectPath($this->project->alias, 
-							$this->config->get('imagepath'), 1, 'images');			
-	$imagePath 			=  $p_path . DS . 'apps';
-	$view->projectPath 	= $imagePath;
-	$view->path_bc 		= $bcrumb;
-	$view->ih 			= new ProjectsImgHandler();				
-	echo $view->loadTemplate();
+	echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'wiki', $bcrumb);
 	
  } else { ?>
 <div id="plg-header">
@@ -174,15 +146,15 @@ $parentScope = $this->scope . DS . $this->pagename;
 <div id="notes-wrap" <?php if ($side) { echo 'class="withside"'; } ?>>
 	<?php if ($side) { ?>
 	<div class="aside">
-		<?php if ($appOpt && count($this->parent_notes) < 2) { ?>	
+		<?php if ($toolOpt && count($this->parent_notes) < 2) { ?>	
 			<div class="addanote"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a></div>
 		<?php } ?>
-		<?php if (!$appOpt) { ?>	
+		<?php if (!$toolOpt) { ?>	
 		<div class="addanote"><?php if (count($this->parent_notes) < 2) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a> &nbsp; <?php } ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new'; ?>" class=" addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?></a></div>
 		<?php } ?>
 		<div class="sidebox">
-			<h4><?php echo $appOpt ? ucfirst(JText::_('COM_PROJECTS_NOTES_APP_WIKI_PAGES')) : ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
-			<ul <?php echo $appOpt ? 'class="appindex"' : ''; ?>>
+			<h4><?php echo $toolOpt ? ucfirst(JText::_('COM_PROJECTS_NOTES_TOOL_WIKI_PAGES')) : ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
+			<ul <?php echo $toolOpt ? 'class="appindex"' : ''; ?>>
 			<?php if ($notes) { ?>
 				<?php foreach ($notes as $note) { 
 					    foreach ($note as $level => $parent) {
@@ -212,7 +184,7 @@ $parentScope = $this->scope . DS . $this->pagename;
 		<p class="rightfloat reorder"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=reorder'; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_NOTES_REORDER'); ?></a></p>
 		<?php } */ ?>
 		<?php 
-		if ($this->templates && !$appOpt) { ?>
+		if ($this->templates && !$toolOpt) { ?>
 		 <div class="sidebox">
 			<h4><?php echo ucfirst(JText::_('COM_PROJECTS_NOTES_TEMPLATES')); ?></h4>
 			<ul>	

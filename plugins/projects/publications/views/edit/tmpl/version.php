@@ -287,9 +287,9 @@ $view->display();
 				<?php if($this->pub->dev_version_label && $this->pub->dev_version_label != $this->pub->version_label) { ?>
 				<li id="next-draft"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_VERSION_STARTED')
 				.' (<strong>v.'
-				.$this->pub->dev_version_label.'</strong>)  <a href="'
+				.$this->pub->dev_version_label.'</strong>)  <span class="block"><a href="'
 				. $this->url .'/?version=dev">' 
-				. JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION_CONTINUE').'</a>';  ?></p></li>
+				. JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION_CONTINUE').'</a></span>';  ?></p></li>
 				<?php } else if(!$this->pub->dev_version_label) { ?>
 				<li id="next-newversion"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CHANGES_NEEDED')
 				.' <a href="' . $this->url .'/?action=newversion" class="showinbox">'
@@ -306,7 +306,7 @@ $view->display();
 				<li id="next-usage"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_STATS') 
 				.' <strong>'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_USAGE_STATS').'</strong> '
 				.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_FOLLOW_FEEDBACK');  ?>
-					<span class="block italic"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_FEATURE_IN_DEVELOPMENT'); ?></span></p></li>
+					<span class="block italic"><a href="<?php echo $this->url . '/?action=stats' . a . 'version='.$this->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE'); ?> &raquo;</a></span></p></li>
 			<?php } ?>
 			
 			<?php if ($this->row->state == 5) { // pending approval ?>

@@ -554,12 +554,13 @@ class plgProjectsBlog extends JPlugin
 					}
 					
 					// Get app log
-					if ($class == 'apps')
+					if ($class == 'tools' && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+						. DS . 'com_tools' . DS . 'tables' . DS . 'project.log.php'))
 					{
 						require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-							. DS . 'com_apps' . DS . 'tables' . DS . 'app.log.php');
+							. DS . 'com_tools' . DS . 'tables' . DS . 'project.log.php');
 							
-						$objLog = new AppLog( $this->_database );
+						$objLog = new ProjectToolLog( $this->_database );
 						$aLog = $objLog->getLog($a->referenceid, $a->id);
 						
 						if ($aLog)

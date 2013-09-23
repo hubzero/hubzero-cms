@@ -51,12 +51,11 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 		<div class="disk-usage-wrapper">
 			<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA').': '.$quota; ?></h3>
 				<div id="indicator-wrapper">
-					<span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED').' ('.$used.' '.JText::_('PLG_PROJECTS_PUBLICATIONS_OUT_OF').' '.$quota.')'; ?></span></span>
+					<span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED').' ('.$used.' '.JText::_('PLG_PROJECTS_PUBLICATIONS_OUT_OF').' '.$quota.')'; ?></span> <?php if($warning) { ?><span class="approaching-quota"> - <?php echo ($inuse == 100) ? JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_OVER_QUOTA')  : JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_APPROACHING_QUOTA') ; ?></span><?php } ?></span>
 				</div>
 
 				<div id="usage-labels">
 						<span class="l-regular">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_CONTENT').' ('.$used.')'; ?>
-						<?php if($warning) { ?><span class="approaching-quota"><?php echo ($inuse == 100) ? JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_OVER_QUOTA')  : JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_APPROACHING_QUOTA') ; ?></span><?php } ?>
 						<span class="l-unused">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_UNUSED_SPACE').' ('.$unused.')'; ?>
 				</div>
 		</div>

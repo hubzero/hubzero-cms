@@ -51,6 +51,8 @@ $approachingQuota = $this->config->get('approachingQuota', 85);
 $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
 $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
+$showStats = false;
+
 ?>
 <form action="<?php echo $url; ?>" method="post" id="plg-form" >	
 	<div id="plg-header">
@@ -86,6 +88,11 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 				$cat_name = PublicationHelper::writePubCategory($row->cat_alias, $row->cat_name);
 				
 				$abstract = $row->abstract ? stripslashes($row->abstract) : '';
+				
+				if ($row->state == 1)
+				{
+					$showStats = true;
+				}
 				
 			?>
 			<tr class="mline" id="tr_<?php echo $row->id; ?>">
@@ -132,6 +139,9 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					 <span class="show-quota"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . ProjectsHtml::formatSize($this->quota); ?></span>
 				</span>
 			</p>
+			<?php if ($showStats) { ?>	
+			<p class="viewallstats"><a href="<?php echo $url . '?action=stats'; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'); ?> &raquo;</a></p>
+			<?php } ?>
 	<?php 
 	}
 	else {

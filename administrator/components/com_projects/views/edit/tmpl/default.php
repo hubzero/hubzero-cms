@@ -11,6 +11,14 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
+// Connections enabled?
+$plugin = JPluginHelper::getPlugin( 'projects', 'files' );
+$p_params = new JParameter($plugin->params);
+
+$service = 'google';
+$cEnabled = $p_params->get('enable_' . $service, 0);
+$connected = $this->params->get($service . '_token');
+
 JToolBarHelper::title( '<a href="index.php?option=com_projects">'.JText::_( 'Projects' ).'</a>: '.stripslashes($this->obj->title).' <small><small>('.$this->obj->alias.', #'.$this->obj->id.')</small></small>', 'addedit.png' );
 JToolBarHelper::spacer();
 JToolBarHelper::save();
@@ -48,6 +56,9 @@ else if($row->state == 5) {
 $sysgroup = $this->config->get('group_prefix', 'pr-').$this->obj->alias;
 $quota = $this->params->get('quota');
 $quota = $quota ? $quota : ProjectsHtml::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+
+$pubQuota = $this->params->get('pubQuota');
+$pubQuota = $pubQuota ? $pubQuota : ProjectsHtml::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
@@ -160,6 +171,10 @@ function submitbutton(pressbutton)
 						} echo $ownedby; ?>
 						</td>
 				</tr>
+				<tr>
+					<td class="key"><label><?php echo JText::_('COM_PROJECTS_SYS_GROUP'); ?>:</label></td>
+					<td><?php echo $sysgroup; ?></td>
+				</tr>
 				<tr class="division">
 					<td colspan="2" class="centeralign"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_EDITS'); ?>" class="btn"  /></td>
 				</tr>
@@ -216,7 +231,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr class="division">
 					<td class="key"><label><?php echo JText::_('COM_PROJECTS_TERMS_GRANT_APPROVAL_CODE'); ?>:</label></td>
-					<td colspan="2"><?php echo htmlentities(html_entity_decode($this->params->get( 'grant_bapproval'))); ?></td>
+					<td colspan="2"><?php echo htmlentities(html_entity_decode($this->params->get( 'grant_approval'))); ?></td>
 				</tr>
 				<?php } ?>
 				<tr class="division">
@@ -226,22 +241,33 @@ function submitbutton(pressbutton)
 		</table>
 		
 		<table class="statustable">
-			<caption><?php echo JText::_('COM_PROJECTS_FILES_QUOTA'); ?></caption>
+			<caption><?php echo JText::_('COM_PROJECTS_FILES'); ?></caption>
 			<tbody>
 				<tr>
-					<td class="key"><label><?php echo JText::_('COM_PROJECTS_SYS_GROUP'); ?>:</label></td>
-					<td><?php echo $sysgroup; ?></td>
+					<td class="key"><label><?php echo JText::_('Files Quota'); ?>:</label></td>
+					<td><input name="params[quota]" maxlength="100" type="text" value="<?php echo ProjectsHtml::convertSize($quota, 'b', 'GB', 2); ?>" class="short" /> <?php echo ' ('.JText::_('COM_PROJECTS_FILES_GBYTES').')'; ?></td>
+					<td></td>
 				</tr>
 				<tr>
-					<td class="key"><label><?php echo JText::_('COM_PROJECTS_FILES_QUOTA'); ?>:</label></td>
-					<td><input name="params[quota]" maxlength="100" type="text" value="<?php echo ProjectsHtml::convertSize($quota, 'b', 'GB', 2); ?>" class="short" /> <?php echo ' ('.JText::_('COM_PROJECTS_FILES_GBYTES').')'; ?></td>
+					<td class="key"><label><?php echo JText::_('Publications Quota'); ?>:</label></td>
+					<td><input name="params[pubQuota]" maxlength="100" type="text" value="<?php echo ProjectsHtml::convertSize($pubQuota, 'b', 'GB', 2); ?>" class="short" /> <?php echo ' ('.JText::_('COM_PROJECTS_FILES_GBYTES').')'; ?></td>
+					<td></td>
 				</tr>
 				<?php if($this->diskusage) { ?>
-					<tr><td colspan="2"><?php echo $this->diskusage; ?></td></tr>
+					<tr><td colspan="3" style="width:100%;"><?php echo $this->diskusage; ?></td></tr>
 				<?php } ?>
 				<tr class="division">
-					<td colspan="3" class="centeralign"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_CHANGE_QUOTA'); ?>" class="btn"  /></td>
+					<td colspan="3" class="centeralign"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_CHANGE_QUOTA'); ?>" class="btn"  />
+				</td>
 				</tr>
+				<tr>
+					<td colspan="3"><?php echo JText::_('Maintenance options:'); ?> &nbsp; <a href="index.php?option=com_projects&amp;task=gitgc&amp;id=<?php echo $this->obj->id; ?>"><?php echo JText::_('git gc --aggressive'); ?></a> [<?php echo JText::_('Takes minutes to run'); ?>]</td>
+				</tr>
+				<?php if($cEnabled) { ?>
+				<tr>
+					<td colspan="3"><?php echo JText::_('Connections'); ?>: <span style="font-weight:bold;"><?php echo $connected ? $service : 'not connected'; ?></span> &nbsp; <?php if ($connected) { ?><a href="index.php?option=com_projects&amp;task=fixsync&amp;id=<?php echo $this->obj->id; ?>"><?php echo JText::_('download sync log'); ?></a> &nbsp; [<?php echo JText::_('Also fixes stalled sync'); ?>] <?php } ?></td>
+				</tr>
+				<?php } ?>
 			</tbody>
 		</table>
 	  </td>

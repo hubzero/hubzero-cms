@@ -46,7 +46,7 @@ $templates = $this->page->getTemplates();
 
 // Incoming
 $scope   = JRequest::getVar('scope', '');
-$app 	 = JRequest::getVar( 'app', '', 'request', 'object' );	
+$tool 	 = JRequest::getVar( 'tool', '', 'request', 'object' );	
 $project = JRequest::getVar( 'project', '', 'request', 'object' );
 $canDelete = JRequest::getVar('candelete', 0);	
 
@@ -104,7 +104,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 		</div><!-- / .section -->
 	</div><div class="clear"></div>
 <?php } ?>
-<?php if ($app && $app->id) { ?>
+<?php if ($tool && $tool->id) { ?>
 
 <?php } ?>
 

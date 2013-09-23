@@ -1519,41 +1519,41 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				$case = JRequest::getVar( 'case', '' );	
 				$pagename = JRequest::getVar( 'pagename', '' );			
 				
-				// Are we trying to load app source code or wiki?
-				if ((($this->active == 'apps' && $action == 'source') 
-					|| ($this->active == 'files' && preg_match("/apps:/", $case))
-					|| ($this->active == 'notes' && preg_match("/app:/", $pagename))
-					|| ($this->active == 'apps' && $action == 'wiki'))
+				// Are we trying to load tool source code or wiki?
+				if ((($this->active == 'tools' && $action == 'source') 
+					|| ($this->active == 'files' && preg_match("/tools:/", $case))
+					|| ($this->active == 'notes' && preg_match("/tool:/", $pagename))
+					|| ($this->active == 'tools' && $action == 'wiki'))
 					&& 	is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-					. DS . 'com_apps' . DS . 'tables' . DS . 'app.php') 
-					&& JPluginHelper::isEnabled('projects', 'apps'))
+					. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php') 
+					&& JPluginHelper::isEnabled('projects', 'tools'))
 				{			
-					$appname = JRequest::getVar( 'app', '' );
-					$reponame = preg_replace( "/apps:/", "", $case);
+					$toolname = JRequest::getVar( 'tool', '' );
+					$reponame = preg_replace( "/tools:/", "", $case);
 					
-					$appname = $appname ? $appname : $reponame;
+					$toolname = $toolname ? $toolname : $reponame;
 					
-					// Get app library
+					// Get project tool library
 					require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-						. DS . 'com_apps' . DS . 'tables' . DS . 'app.php');
+						. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php');
 					
-					// Check that app belongs to this project
-					$app = new App( $this->database );
-					$app->loadApp($appname, $project->id);
+					// Check that tool belongs to this project
+					$tool = new ProjectTool( $this->database );
+					$tool->loadTool($toolname, $project->id);
 					
 					// Direct to relevant plugin
-					if (($action == 'source' || $this->active == 'files') && $app && $app->status > 1)
+					if (($action == 'source' || $this->active == 'files') && $tool && $tool->status > 1)
 					{
 						$plugin = 'files';
-						$extraParam = 'apps:' . $app->name;
+						$extraParam = 'tools:' . $tool->name;
 						$action = JRequest::getVar( 'do', '' );
-						$this->active = 'apps';
+						$this->active = 'tools';
 					}
-					if ($app && ($action == 'wiki' || $this->active == 'notes'))
+					if ($tool && ($action == 'wiki' || $this->active == 'notes'))
 					{
 						$plugin = 'notes';
-						$extraParam = $app->name;
-						$this->active = 'apps';
+						$extraParam = $tool->name;
+						$this->active = 'tools';
 					}
 				}				
 				
@@ -2709,8 +2709,28 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->title = $this->title;
 		
 		// Log activity
-		$this->_logActivity();		
+		$this->_logActivity();
+		
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.stats.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
+			// Add stylesheet
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('members', 'impact');
+			
+			$objStats = new ProjectStats($this->database);
+			
+			$monthly = $objStats->monthlyStats(2, true);
+			$view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
+		}
+		else
+		{
+			$view->monthly = NULL;
+		}
+					
 		// Output HTML
 		$view->task 		= $this->_task;
 		$view->admin 		= $admin;
@@ -3183,7 +3203,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	//----------------------------------------------------------
 	
 	/**
-	 * Verify project/app name (AJAX)
+	 * Verify project/tool name (AJAX)
 	 * 
 	 * @param  int $ajax
 	 * @param  string $name
@@ -3197,7 +3217,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$pid 	= $pid ? $pid : JRequest::getInt( 'pid', 0 );
 		$ajax 	= $ajax == 1 ? 1 : JRequest::getInt( 'ajax', 0 );
 		$tool 	= JRequest::getInt( 'tool', 0 );
-		$app 	= JRequest::getInt( 'app', 0 );
 		$class 	= 'verify_failed';
 		
 		// Set name length
@@ -3253,14 +3272,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			if (!$ajax) { return false; }
 			$result = JText::_('COM_PROJECTS_ERROR_NAME_TOO_LONG');
 		}
-		// Verify app name uniqueness
+		// Verify tool name uniqueness
 		elseif ($tool) 
 		{
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_apps' . DS . 'tables' . DS . 'app.php');
+				. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php');
 				
-			$objA = new App( $this->database );
-			if ($objA->checkUniqueName($name, $app))
+			$objA = new ProjectTool( $this->database );
+			if ($objA->checkUniqueName($name, $tool))
 			{
 				if (!$ajax) { return false; }
 				$result = JText::_('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE');
@@ -4342,6 +4361,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			return false;
 		}
 		
+		$juri =& JURI::getInstance();
+		
 		// Log activity
 		$objLog  				= new ProjectLog( $this->database );
 		$objLog->projectid 		= $pid;
@@ -4352,7 +4373,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
 		$objLog->time 			= date('Y-m-d H:i:s');
-		$objLog->request_uri 	= $_SERVER['REQUEST_URI'];
+		$objLog->request_uri 	= JRequest::getVar('REQUEST_URI', $juri->base(), 'server');
 		$objLog->ajax 			= $ajax;
 		$objLog->store();
 	}

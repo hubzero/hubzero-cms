@@ -802,6 +802,41 @@ class ProjectsHtml
 	//----------------------------------------------------------
 	
 	/**
+	 * Tool development header
+	 * 
+	 * @return     string HTML
+	 */
+	public function toolDevHeader( $option, $config, $project, $tool, $active, $bcrumb = '')
+	{
+		// tool-only tab menu 
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'tools',
+				'name'=>'view'
+			)
+		);
+
+		// Load plugin parameters
+		$tool_plugin 	= JPluginHelper::getPlugin( 'projects', 'tools' );
+		$view->plgparams = new JParameter($tool_plugin->params);
+
+		$view->route 	= 'index.php?option=' . $option . a . 'alias=' . $project->alias . a . 'active=tools';
+		$view->url 		= JRoute::_('index.php?option=' . $option . a . 'alias=' . $project->alias . a . 'active=tools');
+		$view->tool 	= $tool;
+		$view->active 	= $active;
+		$view->title 	= 'Tools';
+
+		// Get path for tool thumb image
+		$p_path 			= ProjectsHelper::getProjectPath($project->alias, $config->get('imagepath'), 1, 'images');			
+		$imagePath 			= $p_path . DS . 'tools';
+		$view->projectPath 	= $imagePath;
+		$view->path_bc 		= $bcrumb;
+		$view->ih 			= new ProjectsImgHandler();				
+		return $view->loadTemplate();
+	}
+	
+	/**
 	 * Show 'no preview' message
 	 * 
 	 * @param      string $msg

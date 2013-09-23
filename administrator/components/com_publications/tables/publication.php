@@ -647,7 +647,7 @@ class Publication extends JTable
 	 * @param      string 	$get
 	 * @return     mixed
 	 */	
-	public function getPubStats ( $validProjects = array(), $get = 'total') 
+	public function getPubStats ( $validProjects = array(), $get = 'total', $when = NULL) 
 	{	
 		if (empty($validProjects))
 		{
@@ -704,6 +704,11 @@ class Publication extends JTable
 		if ($get == 'advanced' || $get == 'released')
 		{
 			$query .= $get == 'advanced' ? " AND (V.state = 4 OR V.state = 6 OR V.state = 5)  " : " AND V.state = 1 AND V.main = 1";
+			
+			if ($when)
+			{
+				$query .= " AND V.published_up LIKE '" . $when . "%' ";
+			}
 		}
 				
 		if ($get == 'average')

@@ -1,0 +1,109 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/members/impact/impact.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Members Impact plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+	#page_menu li .impact:before {
+		content: "\f012";
+	}
+
+/* Publication stats
+-------------------------------------------- */
+
+	table.pubstats-wrap {
+		margin: 1em 0 2em 0;
+		border: 5px solid #f1f7f7;
+	}	
+
+	table.pubstats-wrap td {
+		border-bottom: 1px solid #f1f7f7;
+	}	
+	table.pubstats-wrap td.pubstats-h {
+		background: #f1f7f7;
+		color: #6b7676;
+		padding: 0 0 0.3em 0;
+	}
+	table.pubstats-wrap .h-title {
+		font-weight: bold;	
+	}
+	.pubstats-note {
+		display: block;
+		margin-top: 0.1em;
+		color: #aaa;
+	}
+	.stats-num {
+		margin: 0.5em 0 0.5em 0;
+	}
+	.pubstats-label {
+		display: block;
+		margin-top: 0.5em;
+		color: #666;
+	}
+	.pubstats-thumb {
+		padding: 1em;
+		width: 50px;
+		background: #f1f7f7;
+	}
+	.pubstats-thumb img {
+		width: 50px;
+		border: 4px solid #FFF;
+	}
+	.pubstats-h img {
+		width: 30px;
+		float: left;
+		margin-right: 1em;
+		border: 4px solid #FFF;
+	}
+	table.pubstats-wrap td.pubstats-sh {
+		padding: 1em;
+		color: black;
+		font-weight: bold;
+		width: 100px;
+	}
+	table.pubstats-wrap td.pubstats-graph {
+		width: 200px;
+		height: 50px;
+	}
+	.ph {
+		width: 200px !important;
+		height: 60px;
+		overflow: visible;	
+	}
+	.stats-num  {
+		font-size: 2.5em;
+		font-weight: bold;
+		display: block;
+	}
+	.prominent {
+		font-weight: bold;
+	}
+	.pubstats-overall {
+		padding: 0.5em 1em;
+		margin: 1em 0 2em 0;
+		border: 5px solid #fcf5de;
+		background: #fdfcf9;
+	}
+	.pubstats .info-pop {
+		float: right;
+		padding-right: 1.5em;
+	}
+	.pubstats .info-pop:before {
+		font-weight: normal;
+		position: absolute;
+		content: "\f059";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #4ab454; 
+		margin-right: 0.2em;
+	}

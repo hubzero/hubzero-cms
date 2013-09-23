@@ -92,7 +92,6 @@ class ProjectStats extends JTable
 	/**
 	 * Load item
 	 * 
-	 * @param      integer 	$projectid		Project ID
 	 * @return     mixed False if error, Object on success
 	 */	
 	public function loadLog ( $year = NULL, $month = NULL, $week = '' ) 
@@ -119,4 +118,74 @@ class ProjectStats extends JTable
 			return false;
 		}		
 	}	
+	
+	/**
+	 * Get item
+	 * 
+	 * @return     mixed False if error, Object on success
+	 */	
+	public function getLog ( $year = NULL, $month = NULL, $week = '' ) 
+	{
+		if (!$year && !$month)
+		{
+			return false;
+		}
+		
+		$query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
+		$query .= $year ? " AND year='". $year ."' " : '';
+		$query .= $month ? " AND month='". $month ."' " : '';
+		$query .= $week ? " AND week='". $week ."' " : '';
+		$query .= " ORDER BY processed DESC LIMIT 1";
+		
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
+	}
+	
+	/**
+	 * Collect monthly stats
+	 * 
+	 * @param      integer 	$numMonths	
+	 * @return     mixed False if error, Object on success
+	 */	
+	public function monthlyStats ( $numMonths = 3, $includeCurrent = false ) 
+	{
+		$stats = array();
+		
+		$obj  = new Project( $this->_db );
+		$objO = new ProjectOwner( $this->_db );
+		$objP = new Publication( $this->_db );
+		
+		$testProjects    = $obj->getTestProjects();
+		$validProjectIds = $obj->getValidProjects($testProjects, array(), NULL, false, 'id' );
+		
+		$n = ($includeCurrent) ? 0 : 1;
+		
+		for ($a = $numMonths; $a >= $n; $a--) 
+		{
+			$yearNum  = intval(date('y', strtotime("-" . $a . " month")));
+			$monthNum = intval(date('m', strtotime("-" . $a . " month")));
+			
+			$log = $this->getLog($yearNum, $monthNum);
+			
+			if ($log)
+			{
+				$stats[date('M', strtotime("-" . $a . " month"))] = json_decode($log[0]->stats, true);
+				
+				// Get new users by month
+				if (!isset($stats[date('M', strtotime("-" . $a . " month"))]['team']['new']))
+				{
+					$new = $objO->getTeamStats($testProjects, 'new', date('Y-m', strtotime("-" . $a . " month") ));
+					$stats[date('M', strtotime("-" . $a . " month"))]['team']['new'] = $new ? $new : 0;
+				}
+				
+				// Get publication release count by month
+				if (!isset($stats[date('M', strtotime("-" . $a . " month"))]['pub']['new']))
+				{
+					$new = $objP->getPubStats($validProjectIds, 'released', date('Y-m', strtotime("-" . $a . " month") ) );
+					$stats[date('M', strtotime("-" . $a . " month"))]['pub']['new'] = $new ? $new : 0;
+				}
+			}						
+		}
+		return $stats;
+	}
 }

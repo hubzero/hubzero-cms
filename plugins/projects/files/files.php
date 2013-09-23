@@ -60,6 +60,8 @@ class plgProjectsFiles extends JPlugin
 		$this->gitpath 	  	= $this->_config->get('gitpath', '/opt/local/bin/git');	
 		$this->prefix     	= $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
 		
+		$this->_usageGit	= $this->_params->get('disk_usage');
+		
 		// Remote connections
 		$this->_connect		= NULL;
 		$this->_rServices	= array();
@@ -120,7 +122,7 @@ class plgProjectsFiles extends JPlugin
 	 * @param      integer $error 			Error
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
-	 * @param      string  $case			Directory where .git sits ('files' or 'app:appname')
+	 * @param      string  $case			Directory where .git sits ('files' or 'tool:toolname')
 	 * @return     array   Return array of html
 	 */
 	public function onProject ( $project, $option, $authorized, 
@@ -160,7 +162,7 @@ class plgProjectsFiles extends JPlugin
 		}
 				
 		$this->_project = $project;	
-		$this->_app		= NULL;
+		$this->_tool	= NULL;
 		
 		// Are we returning HTML?
 		if ($returnhtml) 
@@ -178,21 +180,21 @@ class plgProjectsFiles extends JPlugin
 			jimport('joomla.filesystem.folder');
 			jimport('joomla.filesystem.file');
 			
-			// App repo ? Load app
-			if (preg_match("/apps:/", $case))
+			// Tool repo ? Load tool
+			if (preg_match("/tools:/", $case))
 			{
-				$reponame = preg_replace( "/apps:/", "", $case);
+				$reponame = preg_replace( "/tools:/", "", $case);
 				
-				// Get app library
+				// Get tool library
 				require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-					. DS . 'com_apps' . DS . 'tables' . DS . 'app.php');
+					. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php');
 
-				$objA = new App( $database );
-				$this->_app = $objA->getFullRecord($reponame, $this->_project->id);
+				$objA = new ProjectTool( $database );
+				$this->_tool = $objA->getFullRecord($reponame, $this->_project->id);
 				
-				Hubzero_Document::addPluginStylesheet('projects', 'apps');
+				Hubzero_Document::addPluginStylesheet('projects', 'tools');
 				$lang = JFactory::getLanguage();
-				$lang->load('plg_projects_apps');
+				$lang->load('plg_projects_tools');
 			}
 
 			$this->_case = $case ? $case : 'files';
@@ -312,7 +314,7 @@ class plgProjectsFiles extends JPlugin
 				case 'advoptimize':
 					$arr['html'] 	= $this->diskspace( 
 						$option, $project, $this->_case, 
-						$this->_uid, $this->_task, $this->_config, $this->_app); 
+						$this->_uid, $this->_task, $this->_config, $this->_tool); 
 					break;				
 				
 				case 'blank': 
@@ -388,8 +390,8 @@ class plgProjectsFiles extends JPlugin
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
-		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');		
-					
+		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');	
+							
 		// Something is wrong
 		if (!$path)
 		{
@@ -422,10 +424,10 @@ class plgProjectsFiles extends JPlugin
 		
 		// Build URL
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;		
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
-		$do  	= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';	
+		$do  	= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';	
 								
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
@@ -438,8 +440,8 @@ class plgProjectsFiles extends JPlugin
 		);
 				
 		// Get used space in project directory
-		$view->dirsize = $this->getDiskUsage($path, $this->prefix);
-						
+		$view->dirsize = $this->getDiskUsage($path, $this->prefix, $this->_usageGit);
+								
 		// Get connection details for user
 		$objO = new ProjectOwner( $this->_database );
 		$objO->loadOwner ($this->_project->id, $this->_uid);
@@ -503,7 +505,7 @@ class plgProjectsFiles extends JPlugin
 		$view->subdir 		= $subdir;
 		$view->task			= $this->_task;
 		$view->case 		= $this->_case;
-		$view->app			= $this->_app;
+		$view->tool			= $this->_tool;
 		$view->do 			= $do;
 		$view->config 		= $this->_config;
 		$view->publishing	= $this->_publishing;
@@ -846,7 +848,7 @@ class plgProjectsFiles extends JPlugin
 		}
 		else
 		{
-			$dirsize = $this->getDiskUsage($path, $prefix, true);
+			$dirsize = $this->getDiskUsage($path, $prefix, $this->_usageGit);
 			
 			// Get quota
 			$params = new JParameter($this->_project->params);
@@ -856,12 +858,12 @@ class plgProjectsFiles extends JPlugin
 					: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 					
 			$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;		
-			$view->url 	= ($this->_case != 'files' && $this->_app->name) 
-				? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+			$view->url 	= ($this->_case != 'files' && $this->_tool->name) 
+				? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 				: JRoute::_($route . a . 'active=files');			
 		}
 				
-		$view->do  			= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
+		$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 		$view->unused 		= $view->quota - $dirsize;		
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
@@ -970,7 +972,7 @@ class plgProjectsFiles extends JPlugin
 			$quota 		= $quota 
 						  ? $quota 
 						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($path, $prefix, true);							
+			$dirsize 	= $this->getDiskUsage($path, $prefix, $this->_usageGit);							
 		}
 		
 		// Some checks
@@ -1254,7 +1256,7 @@ class plgProjectsFiles extends JPlugin
 			$quota 		= $quota 
 						  ? $quota 
 						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($path, $prefix, true);								
+			$dirsize 	= $this->getDiskUsage($path, $prefix, $this->_usageGit);								
 		}
 		
 		// Compute used space
@@ -1489,8 +1491,8 @@ class plgProjectsFiles extends JPlugin
 				? 'index.php?option=com_publications' . a . 'task=submit' . a . $pid
 				: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias;
 									
-			$url 	= ($this->_case != 'files' && $this->_app->name) 
-				? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+			$url 	= ($this->_case != 'files' && $this->_tool->name) 
+				? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 				: JRoute::_($route . a . 'active=files');
 			
 			// Redirect to file list		
@@ -1841,8 +1843,8 @@ class plgProjectsFiles extends JPlugin
 		$this->_git->iniGit($path);
 		
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 		
 		// Output HTML
@@ -1862,9 +1864,9 @@ class plgProjectsFiles extends JPlugin
 		$view->ajax 		= 1;		
 		$view->subdir 		= $subdir;
 		$view->case 		= $this->_case;
-		$view->app			= $this->_app;
+		$view->tool			= $this->_tool;
 		$view->url			= $url;
-		$view->do  			= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
+		$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 		$view->path 		= $this->prefix . $path;
 		$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 		if ($this->getError()) 
@@ -1899,8 +1901,8 @@ class plgProjectsFiles extends JPlugin
 			$this->_params->get('reservedNames', '' ));
 			
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 				
 		// Checks
@@ -1987,8 +1989,8 @@ class plgProjectsFiles extends JPlugin
 		$sync = 0;
 		
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 
 		// Check that we have directory to delete
@@ -2066,8 +2068,8 @@ class plgProjectsFiles extends JPlugin
 		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 										
 		// Confirm or process request
@@ -2094,9 +2096,9 @@ class plgProjectsFiles extends JPlugin
 			$view->ajax 		= JRequest::getInt('ajax', 0);		
 			$view->subdir 		= $subdir;
 			$view->case 		= $this->_case;
-			$view->app			= $this->_app;
+			$view->tool			= $this->_tool;
 			$view->url			= $url;
-			$view->do  			= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
+			$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 			$view->path 		= $this->prefix . $path;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 			if ($this->getError()) 
@@ -2226,8 +2228,8 @@ class plgProjectsFiles extends JPlugin
 		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 				
 		// Confirmation screen		
@@ -2255,10 +2257,10 @@ class plgProjectsFiles extends JPlugin
 			$view->uid 			= $this->_uid;		
 			$view->case 		= $this->_case;
 			$view->ajax 		= JRequest::getInt('ajax', 0);
-			$view->app			= $this->_app;
+			$view->tool			= $this->_tool;
 			$view->subdir 		= $subdir;
 			$view->url			= $url;
-			$view->do  			= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
+			$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 			if ($this->getError()) 
 			{
@@ -2494,7 +2496,7 @@ class plgProjectsFiles extends JPlugin
 			$view->uid 			= $this->_uid;		
 			$view->subdir 		= $subdir;
 			$view->case 		= $this->_case;
-			$view->app			= $this->_app;
+			$view->tool			= $this->_tool;
 			$view->path 		= $this->prefix . $path;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 
@@ -2865,18 +2867,18 @@ class plgProjectsFiles extends JPlugin
 		// Redirect to file list
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 			
-		$view->url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$view->url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');		
 		
-		$view->do  			= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
+		$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 		$view->config		= $this->_config;
 		$view->file 		= $file;
 		$view->fpath 		= $fpath;
 		$view->option 		= $this->_option;
 		$view->project 		= $this->_project;
 		$view->case 		= $this->_case;
-		$view->app			= $this->_app;
+		$view->tool			= $this->_tool;
 		$view->uid 			= $this->_uid;
 		$view->title		= $this->_area['title'];		
 		$view->subdir 		= $subdir;
@@ -3027,8 +3029,8 @@ class plgProjectsFiles extends JPlugin
 		// Redirect to file list
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 			
-		$view->url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$view->url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 			
 		// Binary file?
@@ -3036,13 +3038,13 @@ class plgProjectsFiles extends JPlugin
 
 		$view->versions 	= $versions;
 		$view->path 		= $this->prefix. $path;
-		$view->do  			= ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
+		$view->do  			= ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 		$view->file 		= $file;
 		$view->fpath 		= $fpath;
 		$view->option 		= $this->_option;
 		$view->project 		= $this->_project;
 		$view->case 		= $this->_case;
-		$view->app			= $this->_app;
+		$view->tool			= $this->_tool;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->title		= $this->_area['title'];		
@@ -3175,8 +3177,8 @@ class plgProjectsFiles extends JPlugin
 		// Redirect to file list
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 			
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 	
 		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
@@ -3264,7 +3266,7 @@ class plgProjectsFiles extends JPlugin
 	 * @return     void, redirect
 	 */
 	public function download()  
-	{
+	{				
 		// Incoming
 		$render 	= JRequest::getVar('render', 'download');
 		$checked 	= JRequest::getVar( 'asset', '', 'request', 'array' );
@@ -3274,7 +3276,7 @@ class plgProjectsFiles extends JPlugin
 		$deleteTemp = 0; 
 		$remote 	= NULL;
 		$revision 	= JRequest::getVar('revision', '');
-				
+							
 		// Get path and initialize Git
 		$path = $this->getProjectPath();
 		$this->_git->iniGit($path);
@@ -3332,7 +3334,8 @@ class plgProjectsFiles extends JPlugin
 		ximport('Hubzero_Content_Server');
 		
 		// Are we previewing or downloading?
-		if (($render == 'thumb' || $render == 'inline' || $render == 'medium') && $file && file_exists($this->prefix. $path . DS . $fpath)) 
+		if (($render == 'thumb' || $render == 'inline' || $render == 'medium') && $file 
+			&& file_exists($this->prefix. $path . DS . $fpath)) 
 		{
 			$hash   = ($remote && $remote['converted'] == 1) ? '' : $this->_git->gitLog($path, $fpath, '' , 'hash');
 			$medium = $render == 'medium' ? true : false;
@@ -3582,8 +3585,8 @@ class plgProjectsFiles extends JPlugin
 		// Redirect to file list
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 			
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 	
 		$url .= $subdir ? '?subdir=' . urlencode($subdir) : '';
@@ -3665,8 +3668,8 @@ class plgProjectsFiles extends JPlugin
 		// Build URL
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 			
-		$url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 				
 		// Required
@@ -3934,7 +3937,7 @@ class plgProjectsFiles extends JPlugin
 							? $this->_git->isBinary(JPATH_ROOT . $outputDir . DS . $content)
 							: $binary;
 		
-		$view->do   = ($this->_case != 'files' && $this->_app->name) ? 'do' : 'action';
+		$view->do   = ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 		
 		if ($this->getError()) 
 		{
@@ -4374,7 +4377,7 @@ class plgProjectsFiles extends JPlugin
 		$synced = $pparams->get($service . '_sync', 1);
 		
 		// Get disk usage
-		$diskUsage = $this->getDiskUsage($path, $this->prefix, true);
+		$diskUsage = $this->getDiskUsage($path, $this->prefix, $this->_usageGit);
 		$quota 	   = $pparams->get('quota')
 					? $pparams->get('quota')
 					: ProjectsHtml::convertSize( floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
@@ -5374,11 +5377,11 @@ class plgProjectsFiles extends JPlugin
 	 * @param      integer  $by
 	 * @param      string  	$action
 	 * @param      object 	$config
-	 * @param      string  	$app
+	 * @param      string  	$tool
 	 *
 	 * @return     string
 	 */
-	public function diskspace( $option, $project, $case, $by, $action, $config, $app )
+	public function diskspace( $option, $project, $case, $by, $action, $config, $tool )
 	{
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
@@ -5405,69 +5408,70 @@ class plgProjectsFiles extends JPlugin
 		
 		$route  = 'index.php?option=' . $option . a . 'alias=' . $project->alias;
 
-		$url 	= ($case != 'files' && $app && $app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $app->name) 
+		$url 	= ($case != 'files' && $tool && $tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $tool->name) 
 			: JRoute::_($route . a . 'active=files' . a . 'action=diskspace');
-		
-		// Get used space (Git dir)
-		if (is_dir($this->prefix . $path)) 
-		{
-			chdir($this->prefix. $path);
 			
-			// Run git-gc
-			if ($action == 'optimize' || $action == 'advoptimize')
+		// Run git-gc
+		if ($action == 'optimize' || $action == 'advoptimize')
+		{
+			$command = $action == 'advoptimize' ? 'gc --aggressive' : 'gc';
+			$this->_git->callGit($path, $command);
+			
+			if ($by != 'admin')
 			{
-				$command = $action == 'advoptimize' ? 'gc --aggressive' : 'gc';
-				$this->_git->callGit($path, $command);
-				
-				// Save last run
-				
 				$this->_message = array('message' => 'Disk space optimized', 'type' => 'success');
 				$this->_referer = $url;
 				return;
 			}
-			
-			exec('du -sk .git', $out);
 
-			if (!empty($out)) 
-			{
-				$kb = str_replace('.git', '', trim($out[0]));
-				$view->dirsize = $kb*1024;
-			}
-			else 
-			{
-				$view->dirsize = 0;
-			}			
+			return true;
 		}
-		else 
+		
+		// Report .git usage?	
+		if ($this->_usageGit == true || $by == 'admin')
 		{
-			$view->dirsize = 0;
-		}
-						
-		// Get total space in files dir
-		$dpath = str_replace('/files', '', $path);		
-		chdir($this->prefix. $dpath);
-		exec('du -sk files', $out);
-
-		if (!empty($out) && isset($out[1])) 
-		{
-			$tSize = str_replace('files', '', trim($out[1]));
-			$view->totalspace = $tSize*1024;
+			$view->dirsize = $this->getDiskUsage($path, $this->prefix, true);
+			$view->totalspace = $this->getDiskUsage($path, $this->prefix, false, false);
 		}
 		else
 		{
-			$view->totalspace = 0;
+			$view->totalspace = $this->getDiskUsage($path, $this->prefix, false);
+			$view->dirsize = $view->totalspace;
 		}
-				
-		$view->total  = $this->getFiles($path, '', 0, 1);		
+		
+		// Project params
 		$view->params = new JParameter( $project->params );
+		
+		// Get publication usage
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			.'com_publications' . DS . 'tables' . DS . 'publication.php') 
+			&& JPluginHelper::isEnabled('projects', 'publications') && $by == 'admin')
+		{
+			$filters 					= array();
+			$filters['project']  		= $project->id;
+			$filters['ignore_access']   = 1;
+			$filters['dev']   	 		= 1;
+			
+			$database =& JFactory::getDBO();
+			
+			$objP 				= new Publication( $database );
+			$pubs 				= $objP->getRecords($filters);
+			$helper 	        = new PublicationHelper($database);
+			$view->pubDiskUsage = $helper->getDiskUsage($project->id, $pubs);
+			$view->pubQuota 	= $view->params->get('pubQuota') 
+								? $view->params->get('pubQuota') 
+								: ProjectsHtml::convertSize( floatval($config->get('pubQuota', '1')), 'GB', 'b');
+		}					
+										
+		$view->total  = $this->getFiles($path, '', 0, 1);		
 		$quota 		  = $view->params->get('quota');
-		$view->quota = $quota 
+		$view->quota  = $quota 
 			? $quota 
 			: ProjectsHtml::convertSize( floatval($config->get('defaultQuota', '1')), 'GB', 'b');
 		
 		$view->case 	= $case;
-		$view->app		= $app;
+		$view->tool		= $tool;
 		$view->action 	= $action;
 		$view->by 		= $by;
 		$view->project 	= $project;
@@ -5475,6 +5479,7 @@ class plgProjectsFiles extends JPlugin
 		$view->config 	= $config;
 		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
 		$view->pparams 	= $this->_params;
+		$view->usageGit = $this->_usageGit;
 		
 		return $view->loadTemplate();		
 	}
@@ -5511,8 +5516,8 @@ class plgProjectsFiles extends JPlugin
 		
 		// Build URL
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;		
-		$view->url 	= ($this->_case != 'files' && $this->_app->name) 
-			? JRoute::_($route . a . 'active=apps' . a . 'action=source' . a . 'app=' . $this->_app->name) 
+		$view->url 	= ($this->_case != 'files' && $this->_tool->name) 
+			? JRoute::_($route . a . 'active=tools' . a . 'action=source' . a . 'tool=' . $this->_tool->name) 
 			: JRoute::_($route . a . 'active=files');
 		$view->subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);		
 		
@@ -6019,15 +6024,17 @@ class plgProjectsFiles extends JPlugin
 			return false;
 		}
 		
-		// Do we have an app repo?		
-		if (preg_match("/apps:/", $case))
+		// Do we have an tool repo?		
+		if (preg_match("/tools:/", $case))
 		{			
-			// Get apps params
-			$aPlugin = JPluginHelper::getPlugin( 'projects', 'apps' );
+			// Get tools params
+			$aPlugin = JPluginHelper::getPlugin( 'projects', 'tools' );
 			$aParams = new JParameter($aPlugin->params);
 			
-			$reponame = isset($this->_app->name) && $this->_app->name ? $this->_app->name : preg_replace("/apps:/", "", $case);
-			$path     = ($aParams->get('repo_location') == 1) ? str_replace('/projects', '/apps', $webdir) : $webdir . DS . $dir. DS . 'apps';
+			$reponame = isset($this->_tool->name) && $this->_tool->name ? $this->_tool->name : preg_replace("/tools:/", "", $case);
+			$path     = ($aParams->get('repo_location') == 1) 
+						? str_replace('/projects', '/tools', $webdir) 
+						: $webdir . DS . $dir. DS . 'tools';
 			$path    .= DS . strtolower($reponame);
 		}
 		else 
@@ -6037,8 +6044,8 @@ class plgProjectsFiles extends JPlugin
 		
 		if (!is_dir( $this->prefix. $path )) 
 		{
-			// Do not create if app repo
-			if (preg_match("/apps:/", $case) && (!isset($this->_app->name) || !$this->_app->name))
+			// Do not create if tool repo
+			if (preg_match("/tools:/", $case) && (!isset($this->_tool->name) || !$this->_tool->name))
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_GET_APP_REPO_PATH') );
 				return false;
@@ -6192,7 +6199,7 @@ class plgProjectsFiles extends JPlugin
 
 			if ($get == 'diskspace')
 			{
-				$diskSpace = $diskSpace + $this->getDiskUsage($path, $this->prefix);
+				$diskSpace = $diskSpace + $this->getDiskUsage($path, $this->prefix, $this->_usageGit);
 			}
 			elseif ($get == 'commitCount')
 			{
@@ -6248,12 +6255,14 @@ class plgProjectsFiles extends JPlugin
 	 * @param      string 	$path
 	 * @param      string 	$prefix
 	 * @param      boolean 	$git
+	 * @param      boolean 	$working
 	 *
 	 * @return     integer
 	 */
-	public function getDiskUsage($path = '', $prefix = '', $git = true) 
+	public function getDiskUsage($path = '', $prefix = '', $git = true, $working = true) 
 	{
 		$used = 0;
+				
 		if ($path && is_dir($prefix . $path))
 		{
 			chdir($prefix . $path);
@@ -6275,7 +6284,13 @@ class plgProjectsFiles extends JPlugin
 				$used = $kb * 1024;
 			}
 		}
-
+		
+		if ($git == false && $working == true)
+		{
+			$gitUsage = $this->getDiskUsage($path, $prefix, true);
+			$used = $used - $gitUsage;
+		}
+		
 		return $used;		
 	}
 	

@@ -45,6 +45,10 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="maxUpload" type="text" menu="hide" label="Max Upload Size (Bytes)" default="104857600" description="Maximum upload file size for project files in bytes (master default set to 100MB (104857600 bytes))" />
 				<field name="maxDownload" type="text" menu="hide" label="Max Download Size (Bytes)" default="104857600" description="Maximum download file size for project files in bytes (master default set to 100MB (104857600 bytes))" />
 				<field name="reservedNames" type="text" menu="hide" default="google , dropbox, shared, temp" label="Reserved Directory Names" description="Reserved directory names" />
+				<field name="disk_usage" type="radio" default="0" label="Report Disk Usage" description="Specify how to report disk usage.">
+					<option value="0">Size of .git (includes versions and deleted files)</option>
+					<option value="1">Size of files currently in project</option>
+				</field>
 				<field name="enable_google" type="list" default="0" label="Google Connection Enabled" description="Allow projects to connect with Google docs">
 					<option value="0">No</option>
 					<option value="1">Yes</option>

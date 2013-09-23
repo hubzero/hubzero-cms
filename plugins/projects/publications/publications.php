@@ -650,6 +650,90 @@ class plgProjectsPublications extends JPlugin
 	}
 	
 	/**
+	 *  Publication stats
+	 * 
+	 * @return     string
+	 */
+	protected function _stats() 
+	{
+		// Incoming
+		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
+		$version 	= JRequest::getVar( 'version', '' );	
+		
+		// Load publication & version classes
+		$objP = new Publication( $this->_database );
+		$row  = new PublicationVersion( $this->_database );
+		
+		// Check that version exists
+		$version = $row->checkVersion($pid, $version) ? $version : 'default';
+		
+		// Add stylesheet
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
+		
+		// Is logging enabled?
+		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+				.'com_publications' . DS . 'tables' . DS . 'logs.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+					.'com_publications' . DS . 'tables' . DS . 'logs.php');
+		}
+		else
+		{
+			$this->setError('Publication logs not present on this hub, cannot generate stats');
+			return false;
+		}
+				
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'publications',
+				'name'=>'stats'
+			)
+		);
+		
+		// Start url
+		$route = $this->_project->provisioned 
+					? 'index.php?option=com_publications' . a . 'task=submit'
+					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
+					
+		// Get pub stats for each publication		
+		$pubLog = new PublicationLog($this->_database);
+		$view->pubstats = $pubLog->getPubStats($this->_project->id, $pid);
+
+		// Get date of first log
+		$view->firstlog = $pubLog->getFirstLogDate();
+		
+		// Test
+		$view->totals = $pubLog->getTotals($this->_project->id, 'project');
+		
+		// Output HTML
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		$view->pid 			= $pid;
+		$view->pub			= $objP->getPublication($pid, $version, $this->_project->id);		
+		$view->task 		= $this->_task;
+		$view->config 		= $this->_config;	
+		$view->pubconfig 	= $this->_pubconfig;
+		$view->version 		= $version;
+		$view->route 		= $route;
+		$view->url 			= $pid ? JRoute::_($view->route . a . 'pid=' . $pid) : JRoute::_($view->route);
+		$view->title		= $this->_area['title'];
+		$view->helper		= new PublicationHelper($this->_database);
+
+		// Get messages	and errors	
+		$view->msg = $this->_msg;
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();		
+	}
+	
+	/**
 	 * Edit a publication
 	 * 
 	 * @return     string
@@ -1046,24 +1130,6 @@ class plgProjectsPublications extends JPlugin
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
-	}
-	
-	/**
-	 *  Publication stats
-	 * 
-	 * @return     string
-	 */
-	protected function _stats() 
-	{
-		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar( 'version', '' );	
-		
-		// Load publication & version classes
-		$objP = new Publication( $this->_database );
-		$row  = new PublicationVersion( $this->_database );
-		
-		return 'test';		
 	}
 	
 	/**
@@ -2375,6 +2441,35 @@ class plgProjectsPublications extends JPlugin
 	}
 	
 	/**
+	 * Check if there is available space for publishing
+	 * 
+	 * @return     string
+	 */
+	protected function _overQuota()
+	{
+		// Instantiate project publication
+		$objP = new Publication( $this->_database );
+		
+		// Get all publications
+		$rows = $objP->getRecords(array('project' => $this->_project->id, 'dev' => 1, 'ignore_access' => 1));		
+		
+		// Get used space
+		$helper 	   = new PublicationHelper($this->_database);
+		$dirsize 	   = $helper->getDiskUsage($this->_project->id, $rows);
+		$params  	   = new JParameter( $this->_project->params );
+		$quota   	   = $params->get('pubQuota') 
+						? $params->get('pubQuota') 
+						: ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
+						
+		if (($quota - $dirsize) <= 0)
+		{
+			return true;
+		}	
+		
+		return false;
+	}
+	
+	/**
 	 * Change publication status
 	 * 
 	 * @return     string
@@ -2415,13 +2510,27 @@ class plgProjectsPublications extends JPlugin
 			return;
 		}
 		
-		// Import pub utilities
-		require_once(JPATH_ROOT . DS. 'administrator' . DS . 'components' . DS 
-		. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');		
-					
 		// Instantiate project publication
 		$objP = new Publication( $this->_database );
 		
+		// Get all publications
+		$rows = $objP->getRecords(array('project' => $this->_project->id, 'dev' => 1, 'ignore_access' => 1));		
+		
+		if ($this->_overQuota())
+		{
+			$url .= '/?action= ' . $this->_task . '&version=' . $version;
+			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE') );	
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			
+			// Redirect 
+			$this->_referer = $url;
+			return;
+		}
+		
+		// Import pub utilities
+		require_once(JPATH_ROOT . DS. 'administrator' . DS . 'components' . DS 
+		. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');		
+							
 		// If publication not found, raise error
 		$pub = $objP->getPublication($pid, $version, $this->_project->id);
 		if (!$pub) 
@@ -5582,7 +5691,7 @@ class plgProjectsPublications extends JPlugin
 		$tagarray = array();
 		$newTags = $this->_parseTags($newtag);
 		$rawTags = $this->_parseTags($newtag, 1);
-		$tagObj = new TagsTableTag( $this->_database );
+		$tagObj = new TagsTag( $this->_database );
 		
 		foreach ($newTags as $tag) 
 		{
@@ -5594,7 +5703,7 @@ class plgProjectsPublications extends JPlugin
 				}
 				else {
 					// Create tag
-					$tagObj = new TagsTableTag( $this->_database );
+					$tagObj = new TagsTag( $this->_database );
 					if (get_magic_quotes_gpc()) 
 					{
 						$tag = addslashes($tag);

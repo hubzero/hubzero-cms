@@ -41,6 +41,7 @@
 		<param name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
 		<param name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder thumbnail image for video-type files in publication gallery" />
 		<param name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder thumbnail image for image-type files in publication gallery" />
+		<param name="email_image" type="text" menu="hide" default="" label="Email header image" description="Default image for HTML email header" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
@@ -152,6 +153,7 @@
 		<field name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
 		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder thumbnail image for video-type files in publication gallery" />
 		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder thumbnail image for image-type files in publication gallery" />
+		<field name="email_image" type="text" menu="hide" default="" label="Email header image (http://)" description="Default image for HTML email header - use full address starting with http://" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />

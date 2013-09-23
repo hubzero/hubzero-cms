@@ -47,7 +47,7 @@ if ($this->subdir && count($desect_path) > 0)
 	}
 }
 
-$class = $this->case == 'apps' ? 'apps' : 'files';
+$class = $this->case == 'tools' ? 'tools' : 'files';
 $publishing = $this->publishing && $this->case == 'files' ? 1 : 0;
 $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 
@@ -107,40 +107,11 @@ $lastsync = '';
 	<?php 
 	} ?>
 	
-	<?php if ($this->app && $this->app->name ) 
+	<?php if ($this->tool && $this->tool->name ) 
 	{ 
-		// App-only tab menu 
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'projects',
-				'element'=>'apps',
-				'name'=>'view'
-			)
-		);
-		
-		// Load plugin parameters
-		$app_plugin 	= JPluginHelper::getPlugin( 'projects', 'apps' );
-		$view->plgparams = new JParameter($app_plugin->params);
-		
-		$view->route 	= 'index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps';
-		$view->url 		= JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps');
-		$view->app 		= $this->app;
-		$view->active 	= 'source';
-		$view->title 	= 'Apps';
-		
-		// Get path for app thumb image
-		$projectsHelper = new ProjectsHelper( $this->database );
-		
-		$p_path 			= ProjectsHelper::getProjectPath($this->project->alias, 
-			$this->config->get('imagepath'), 1, 'images');			
-		$imagePath 			=  $p_path . DS . 'apps';
-		$view->projectPath 	= $imagePath;
-		$view->path_bc 		= $path_bc;
-		$view->ih 			= new ProjectsImgHandler();				
-		echo $view->loadTemplate();
-		
-	 } ?>
-	<?php if (!$this->app) { ?>
+		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);		
+	} ?>
+	<?php if (!$this->tool) { ?>
 		<?php 
 			// NEW: connections to external services
 			$view = new Hubzero_Plugin_View(
@@ -222,7 +193,7 @@ $lastsync = '';
 					<td></td>
 					<td colspan="<?php echo $publishing ? 7 : 6; ?>">
 							<fieldset>
-								<input type="hidden" name="<?php echo ($this->app && $this->app->name ) ? 'do' : 'action'; ?>" value="savedir" />
+								<input type="hidden" name="<?php echo ($this->tool && $this->tool->name ) ? 'do' : 'action'; ?>" value="savedir" />
 								<label>
 									<span class="mini block prominent ipadded"><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?>:</span>
 									<img src="/plugins/projects/files/images/folder.gif" alt="" />
@@ -355,10 +326,10 @@ $lastsync = '';
 			if (count($this->items) == 0 || $empty == true) { ?>
 				<tr>
 					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini faded">
-						<?php if ($this->subdir || $this->app) 
+						<?php if ($this->subdir || $this->tool) 
 							{ 
 								echo JText::_('COM_PROJECTS_THIS_DIRECTORY_IS_EMPTY'); 
-								if (!$this->app)
+								if (!$this->tool)
 								{
 									echo ' <a href="' . $this->url . '/?' . $this->do . '=deletedir' . a 
 									. 'dir='.urlencode($this->subdir) . '" class="delete" id="delete-dir">' 

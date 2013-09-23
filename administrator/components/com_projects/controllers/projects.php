@@ -55,7 +55,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				.'com_publications' . DS . 'tables' . DS . 'publication.php')
 			&& JPluginHelper::isEnabled('projects', 'publications')
 			? 1 : 0;
-		
+					
 		// Enable publication management
 		if ($this->_publishing)
 		{
@@ -390,11 +390,12 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			foreach($incoming as $key=>$value) 
 			{
-				if ($key == 'quota') 
+				if ($key == 'quota' || $key == 'pubQuota') 
 				{
 					// convert GB to bytes
 					$value = ProjectsHtml::convertSize( floatval($value), 'GB', 'b');
-				}				
+				}	
+						
 				$obj->saveParam($id, $key, htmlentities($value));
 			}
 		}
@@ -589,14 +590,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	}
 	
 	/**
-	 * Disconnect project from remote service and clear out all connection data
+	 * Optimize git repo
 	 * 
 	 * @return     void
 	 */
-	public function disconnectTask() 
-	{		
+	public function gitgcTask() 
+	{
 		$id = JRequest::getVar( 'id', 0 );
-		$service = 'google';
 		
 		// Initiate extended database class
 		$obj = new Project( $this->database );
@@ -606,22 +606,21 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			return false;
 		}
 		
-		$objO = new ProjectOwner( $this->database );
-		$connected = $objO->getConnected($id, $service);
+		// Get Disk Usage
+		JPluginHelper::importPlugin( 'projects', 'files' );
+		$dispatcher =& JDispatcher::getInstance();
+		$project = $obj->getProject($id, $this->juser->get('id'));	
 		
-		// Clean up token
-		$obj->saveParam($id, $service . '_token', 0);
-		
-		// Clean up connection for each user
-		// TBD
-		
+		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 
+			'files', 'admin', 'advoptimize', $this->_config, NULL));
+				
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&id='.$id;
-		$this->_message = JText::_('Project disconnected from Google');
+		$this->_message = JText::_('Git repo optimized');
 	}
 	
 	/**
-	 * View sync log for project and remove sync lock
+	 * Unlock sync and view sync log for project
 	 * 
 	 * @return     void
 	 */
@@ -640,10 +639,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Unlock sync
 		$obj->saveParam($id, $service . '_sync_lock', '');
-		
-		// Clean up queue
-		$obj->saveParam($id, $service . '_sync_queue', 0);
-		
+				
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
 		
@@ -652,13 +648,20 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$repodir = trim($this->_config->get('webpath'), DS);		
 		$sfile 	 = $prefix . DS . $repodir . DS . $obj->alias . DS . 'logs' . DS . 'sync.' . date('Y-m') . '.log';
 		
-		// Serve up file
-		$xserver = new Hubzero_Content_Server();
-		$xserver->filename($sfile);
-		$xserver->disposition('attachment');
-		$xserver->acceptranges(false);
-		$xserver->saveas('sync.' . date('Y-m') . '.log');
-		$result = $xserver->serve_attachment($sfile, 'sync.' . date('Y-m') . '.log', false);
-		exit;
+		if (file_exists($sfile))
+		{
+			// Serve up file
+			$xserver = new Hubzero_Content_Server();
+			$xserver->filename($sfile);
+			$xserver->disposition('attachment');
+			$xserver->acceptranges(false);
+			$xserver->saveas('sync.' . date('Y-m') . '.txt');
+			$result = $xserver->serve_attachment($sfile, 'sync.' . date('Y-m') . '.txt', false);
+			exit;
+		}
+		
+		// Redirect
+		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&id='.$id;
+		$this->_message = JText::_('Sync log unavailable');
 	}
 }

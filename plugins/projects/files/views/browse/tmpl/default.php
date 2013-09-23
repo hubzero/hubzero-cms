@@ -55,7 +55,7 @@ if ($this->remotedir)
 	$path_bc .= ' &raquo; <span><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=files').'/?subdir='.urlencode($this->subdir). a . 'remotedir=' . $this->remotedir . a. 'remoteid=' . $this->remoteid.'" class="remotedir"><span class="s-google"> '.$this->remotedir.' [' . JText::_('COM_PROJECTS_FILES_REMOTE_FOLDER') . ']</span></a></span> ';
 }
 
-$class = $this->case == 'apps' ? 'apps' : 'files';
+$class = $this->case == 'tools' ? 'tools' : 'files';
 $publishing = $this->publishing && $this->case == 'files' ? 1 : 0;
 
 $goto  = 'alias='.$this->project->alias;
@@ -80,7 +80,7 @@ $google 	= $this->connect->getConfigs('google');
 $dropbox 	= $this->connect->getConfigs('dropbox');
 $gConnected = $google && $google['active'] && $this->oparams->get('google_token') ? 1 : 0;
 $dConnected = $dropbox && $dropbox['active'] && $this->oparams->get('dropbox_token') ? 1 : 0;
-$sharing	= !$this->app ? $this->remote_active : 0;
+$sharing	= !$this->tool ? $this->remote_active : 0;
 
 $services = $this->connect->getActive();
 
@@ -99,42 +99,12 @@ $services = $this->connect->getActive();
 		<h3 class="<?php echo $class; ?>"><?php if($this->subdir || $this->sdir) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active='.$this->case); ?>"><?php } ?><?php echo $this->title; ?><?php if($this->subdir || $this->sdir) { ?></a> <?php echo $path_bc; ?><?php } ?><?php if($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?></h3>
 	</div>
 	<?php } ?>
-	<?php if($this->app && $this->app->name ) { 
-		// App-only tab menu 
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'projects',
-				'element'=>'apps',
-				'name'=>'view'
-			)
-		);
-		
-		// Load plugin parameters
-		$app_plugin 		= JPluginHelper::getPlugin( 'projects', 'apps' );
-		$view->plgparams 	= new JParameter($app_plugin->params);
-		
-		$view->route = 'index.php?option=' . $this->option . a . $goto . '&active=apps';
-		$view->url = JRoute::_('index.php?option=' . $this->option . a . $goto . '&active=apps');
-		$view->app = $this->app;
-		$view->active = 'source';
-		$view->title = 'Apps';
-		
-		// Get path for app thumb image
-		$projectsHelper = new ProjectsHelper( $this->database );
-		
-		$p_path = ProjectsHelper::getProjectPath($this->project->alias, 
-			$this->config->get('imagepath'), 1, 'images');
-			
-		$imagePath =  $p_path . DS . 'apps';
-		$view->projectPath = $imagePath;
-
-		$view->ih = new ProjectsImgHandler();
-				
-		echo $view->loadTemplate();
+	<?php if($this->tool && $this->tool->name ) { 
+		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
 	?>
 
 	<?php } ?>
-	<?php if (!$this->app) { ?>
+	<?php if (!$this->tool) { ?>
 		<?php 
 			// NEW: connections to external services
 			$view = new Hubzero_Plugin_View(
@@ -305,10 +275,10 @@ $services = $this->connect->getActive();
 			if(count($this->combined) == 0 || $empty) { ?>
 				<tr>
 					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini faded">
-						<?php if ($this->subdir || $this->app || $this->remotedir) 
+						<?php if ($this->subdir || $this->tool || $this->remotedir) 
 							{ 
 								echo JText::_('COM_PROJECTS_THIS_DIRECTORY_IS_EMPTY'); 
-								if (!$this->app && !$this->remotedir)
+								if (!$this->tool && !$this->remotedir)
 								{
 									echo ' <a href="' . JRoute::_('index.php?option=' . $this->option . a . 'active=files' 
 									. a . $goto) . '/?action=deletedir' . a . 'case='.$this->case . a 

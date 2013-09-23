@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Project Notes Public List Layout">
+	<layout title="Standard Project Publications Start Layout">
 		<message>
-			<![CDATA[PROJECT NOTES PUBLIC LIST LAYOUT DESC]]>
+			<![CDATA[STANDARD PROJECT PUBLICATIONS START DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Project Notes Public List Layout</name>
-		<description>PROJECT NOTES PUBLIC LIST LAYOUT DESC</description>
+		<name>Standard Project Publications Start Layout</name>
+		<description>STANDARD PROJECT PUBLICATIONS START DESC</description>
 		<params>
 		</params>
 	</state>

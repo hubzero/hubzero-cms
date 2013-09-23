@@ -356,17 +356,18 @@
 		border-bottom: none;
 		padding: 5px 10px;
 		padding-bottom: 0;
-		width: 20%;
+		width: 15%;
 	}
 	.stats-wrap  td {
 		padding: 5px 10px;
 		padding-top: 0;
+		padding-bottom: 2em;
 		border-left: 1px solid #eee;
 		border-right: 1px solid #eee;
 		color: #777;
 		text-align: center;
 	}
-	.stats-wrap td span.stats-num {
+	.stats-wrap td span.stats-num, .stats-num  {
 		font-size: 2.5em;
 		font-weight: bold;
 		display: block;
@@ -392,18 +393,13 @@
 		width: 20px;
 		height: 20px;
 	}
-	.stats-wrap td span.stats-label {
+	.stats-label {
 		font-weight: normal;
 		display: block;
 		margin-top: 1em;
 		font-size: 85%;
 		color: #aaa;
 		line-height: 1em;
-	}
-	.stats-wrap  th.stats-more,
-	.stats-wrap  td.stats-more
-	{
-		width: 30%;
 	}
 	.stats-wrap th.stats-h:before
 	{
@@ -460,12 +456,26 @@
 	}
 	.stats-wrap th.stats-h
 	{
-		width: 100px !important;
+		width: 70px !important;
 		background: #F7F7F7;
 		border-bottom: 1px solid #eee;
 	}
 	#project-stats {
 		margin-bottom: 2em;
+	}
+	.stats-wrap td.stats-graph {
+		width: 200px;
+		height: 50px;
+	}
+	.stats-wrap th.stats-graph {
+		width: 200px !important;
+	}
+	.stats-wrap  td.stats-more,
+	.stats-wrap  th.stats-more {
+		width: 300px !important;
+	}
+	.stats-graph .ph {
+		margin-top: 2em;
 	}
 
 /* Browse Projects - project thumbnail 
@@ -673,7 +683,7 @@
 	.feature #feature-files {
 		background: url("../img/screenshots/files.jpg") right top no-repeat;
 	}
-	.feature #feature-app {
+	.feature #feature-app, .feature #feature-tool {
 		background: url("../img/screenshots/apps.jpg") right top no-repeat;
 	}
 	.feature #feature-publications {
@@ -3134,6 +3144,7 @@
 		font-family: 'Fontcons';
 		color: #4ab454; 
 		margin-right: 0.2em;
+		font-weight: normal;
 	}
 	
 /* 	Fixes for smaller screens
@@ -3212,6 +3223,8 @@
 	.publications:before,
 	.apps:before,
 	.apps:after,
+	.tools:before,
+	.tools:after,
 	.databases:before,
 	.databases:after,
 	#plg-content .comments li:before,
@@ -3257,7 +3270,7 @@
 		content: "\f085";
 		color: #55c64c;
 	}
-	.apps:before {
+	.apps:before, .tools:before {
 		content: "\2692";
 		color: #c6874e;
 	}
@@ -3320,7 +3333,9 @@
 	}
 	
 	#suggestions .s-apps a:before, .suggestions .s-apps a:before,
-	.feature #feature-app .ima:before {
+	.feature #feature-app .ima:before,
+	#suggestions .s-tools a:before, .suggestions .s-tools a:before,
+	.feature #feature-tool .ima:before {
 		content: "\2692";
 		color: #c6874e;
 	}
@@ -3479,7 +3494,7 @@
 		*background: url("../img/icons/quotes.gif") 0 center no-repeat;
 		*padding-left: 20px;
 	}
-	.apps {
+	.apps, .tools {
 		*background: url("../img/icons/app.gif") 0 0 no-repeat;
 		*padding-left: 20px;
 	}

@@ -75,11 +75,11 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 						. '">v.' . $row->dev_version_label . '</a> '
 						. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
 						<span class="restype"><span class="<?php echo $cls; ?>"></span></span>
-						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 40, 0); ?>
+						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 80, 0); ?>
 						<?php if($row->project_provisioned == 0) { echo '<span class="mypub-project">' 
 						. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' 
 						. JRoute::_('index.php?option=com_projects' . a . 'alias=' . $row->project_alias) . '">'
-						. Hubzero_View_Helper_Html::shortenText(stripslashes($row->project_title), 40, 0) . '</a>' . '</span>'; } ?>
+						. Hubzero_View_Helper_Html::shortenText(stripslashes($row->project_title), 80, 0) . '</a>' . '</span>'; } ?>
 					</li>	
 					<?php }?>
 				</ul>
@@ -120,11 +120,11 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 							. '">v.' . $row->dev_version_label . '</a> '
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
 							<span class="restype"><span class="<?php echo $cls; ?>"></span></span>
-							<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 40, 0); ?>
+							<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->title), 80, 0); ?>
 							<?php if($row->project_provisioned == 0) { echo '<span class="mypub-project">' 
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' 
 							. JRoute::_('index.php?option=com_projects' . a . 'alias=' . $row->project_alias) . '">'
-							. Hubzero_View_Helper_Html::shortenText(stripslashes($row->project_title), 40, 0) . '</a>' . '</span>'; } ?>
+							. Hubzero_View_Helper_Html::shortenText(stripslashes($row->project_title), 80, 0) . '</a>' . '</span>'; } ?>
 						</li>	
 						<?php }?>
 					</ul>

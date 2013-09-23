@@ -35,6 +35,11 @@
 		<param name="maxDownload" type="text" menu="hide" default="104857600" label="Max Download Size (Bytes)" description="Maximum download file size for zipped project files in bites (master default set to 100MB (104857600 bytes))" />
 		<param name="reservedNames" type="text" menu="hide" default="google , dropbox, shared, temp" label="Reserved Directory Names" description="Reserved directory names" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="disk_usage" type="radio" default="1" label="Report Disk Usage" description="Specify how to report disk usage.">
+			<option value="1">Size of .git (includes versions and deleted files)</option>
+			<option value="0">Size of files currently in project</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="enable_google" type="radio" default="0" label="Google Connection Enabled" description="Allow projects to connect with Google docs">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

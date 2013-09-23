@@ -70,10 +70,10 @@ function ProjectsBuildRoute(&$query)
 		$segments[] = $query['pid'];
 		unset($query['pid']);
 	}
-	if (!empty($query['app'])) 
+	if (!empty($query['tool'])) 
 	{
-		$segments[] = $query['app'];
-		unset($query['app']);
+		$segments[] = $query['tool'];
+		unset($query['tool']);
 	}
 	if (!empty($query['scope'])) 
 	{
@@ -133,7 +133,7 @@ function ProjectsParseRoute($segments)
 	
 	// Views (plugins or view panels)
 	$views = array('feed', 'info', 'team', 
-		'files', 'apps', 'publications', 
+		'files', 'tools', 'publications', 
 		'notes', 'todo', 'activity', 'databases'
 	);
 	
@@ -211,7 +211,7 @@ function ProjectsParseRoute($segments)
 			}
 			
 			// Apps
-			if (!empty($segments[2]) && $vars['active'] == 'apps') 
+			if (!empty($segments[2]) && $vars['active'] == 'tools') 
 			{
 				if (in_array( $segments[2], $app_actions )) 
 				{
@@ -219,7 +219,7 @@ function ProjectsParseRoute($segments)
 				}
 				else 
 				{
-					$vars['app'] = $segments[2];	
+					$vars['tool'] = $segments[2];	
 				}
 				if (!empty($segments[3]) && in_array( $segments[3], $app_actions )) 
 				{

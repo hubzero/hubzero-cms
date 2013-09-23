@@ -65,38 +65,10 @@ if ($this->getError()) {
 			</h3>
 		</div>
 	<?php } ?>
-	<?php if ($this->app && $this->app->name && !$this->ajax) 
+	<?php if ($this->tool && $this->tool->name && !$this->ajax) 
 	{ 
-		// App-only tab menu 
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'projects',
-				'element'=>'apps',
-				'name'=>'view'
-			)
-		);
-		
-		// Load plugin parameters
-		$app_plugin 	= JPluginHelper::getPlugin( 'projects', 'apps' );
-		$view->plgparams = new JParameter($app_plugin->params);
-		
-		$view->route 	= 'index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps';
-		$view->url 		= JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps');
-		$view->app 		= $this->app;
-		$view->active 	= 'source';
-		$view->title 	= 'Apps';
-		
-		// Get path for app thumb image
-		$projectsHelper = new ProjectsHelper( $this->database );
-		
-		$p_path 			= ProjectsHelper::getProjectPath($this->project->alias, 
-							$this->config->get('imagepath'), 1, 'images');			
-		$imagePath 			=  $p_path . DS . 'apps';
-		$view->projectPath 	= $imagePath;
-		$view->path_bc 		= $path_bc . $endPath;
-		$view->ih 			= new ProjectsImgHandler();				
-		echo $view->loadTemplate();
-	 } ?>
+		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
+	} ?>
 	<fieldset class="diff-form">
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="file" value="<?php echo $this->file; ?>" />

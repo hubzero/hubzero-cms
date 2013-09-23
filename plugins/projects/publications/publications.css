@@ -1790,7 +1790,39 @@
 	.citeit p {
 		margin: 0;
 		padding: 0;
-	}		
+	}
+
+/* Publication stats
+-------------------------------------------- */
+	
+	.pubstats-overall {
+		padding: 0.5em 1em;
+		margin: 1em 0 2em 0;
+		border: 5px solid #fcf5de;
+		background: #fdfcf9;
+	}
+	.viewallstats {
+		float: right;
+		margin-top: -2.5em;
+	}
+	.viewallstats a:before {
+		content: "\f012";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #f2d271;	
+		margin-right: 0.3em;
+	}
+	.pubstats .info-pop {
+		float: right;
+		padding-right: 1.5em;
+		padding-left: 0;
+	}
+	.pubstats .info-pop:before {
+		font-weight: normal;
+		position: absolute;
+	}
 		
 /* Display messages
 --------------------------------------------- */

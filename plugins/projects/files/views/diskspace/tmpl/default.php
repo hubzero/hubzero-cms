@@ -25,27 +25,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$class = $this->case == 'apps' ? 'apps' : 'files';
+$class = $this->case == 'tools' ? 'tools' : 'files';
 
 $minGitSize = 61440;
 
 // Check used space against quota (percentage)
 $inuse = round((($this->dirsize * 100 )/ $this->quota), 1);
-if($this->total > 0 && $inuse < 1) {
+if ($this->total > 0 && $inuse < 1) {
 	$inuse = round((($this->dirsize * 100 )/ $this->quota), 2);
-	if($inuse < 0.1) {
+	if ($inuse < 0.1) {
 		$inuse = 0.01;
 	}
 }
-$working = $this->totalspace - $this->dirsize;
+$working = ($this->usageGit || $this->by == 'admin') ? $this->totalspace - $this->dirsize : $this->totalspace;
+//$working = $working > $this->quota ? $this->quota : $working;
 $actual  = $working > 0 ? round((($working * 100 )/ $this->quota), 1) : NULL; 
-$versions = $this->dirsize - $working;
-$versions = $versions > $minGitSize ? ProjectsHtml::formatSize($versions) : 0;
+$actual  = $actual > 100 ? 100 : $actual;
 
-$inuse = ($inuse > 100) ? 100 : $inuse;
+$versions = $this->dirsize - $working;
+$versions = ($versions > $minGitSize && ($this->usageGit || $this->by == 'admin')) ? ProjectsHtml::formatSize($versions) : 0;
+
+$inuse = ($inuse > 100) ? '> 100' : $inuse;
+
 $quota = ProjectsHtml::formatSize($this->quota);
-$used  = ProjectsHtml::formatSize($this->dirsize);
-$unused = ProjectsHtml::formatSize($this->quota - $this->dirsize);
+
+$used  = ($this->usageGit) 
+		? ProjectsHtml::formatSize($this->dirsize) 
+		: ProjectsHtml::formatSize($working);
+
+$unused = $this->usageGit 
+		? ProjectsHtml::formatSize($this->quota - $this->dirsize)
+		: ProjectsHtml::formatSize($this->quota - $working);
 $unused = $unused <= 0 ? 'none' : $unused;
 $approachingQuota = $this->config->get('approachingQuota', 85);
 $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
@@ -58,58 +68,53 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 		<h3 class="<?php echo $class; ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('COM_PROJECTS_FILES_DISK_USAGE'); ?></span></h3>
 	</div>
 	<?php } ?>
-	<?php if ($this->app && $this->app->name) 
+	<?php if ($this->tool && $this->tool->name) 
 	{ 
-		// App-only tab menu 
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'projects',
-				'element'=>'apps',
-				'name'=>'view'
-			)
-		);
-		
-		// Load plugin parameters
-		$app_plugin 	= JPluginHelper::getPlugin( 'projects', 'apps' );
-		$view->plgparams = new JParameter($app_plugin->params);
-		
-		$view->route 	= 'index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps';
-		$view->url 		= JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps');
-		$view->app 		= $this->app;
-		$view->active 	= 'source';
-		$view->title 	= 'Apps';
-		
-		// Get path for app thumb image
-		$projectsHelper = new ProjectsHelper( $this->database );
-		
-		$p_path 			= ProjectsHelper::getProjectPath($this->project->alias, 
-							$this->config->get('imagepath'), 1, 'images');			
-		$imagePath 			=  $p_path . DS . 'apps';
-		$view->projectPath 	= $imagePath;
-		$view->path_bc 		= '&raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_DISK_USAGE') . '</span>';
-		$view->ih 			= new ProjectsImgHandler();				
-		echo $view->loadTemplate();
-		
-	 } ?>
+		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, 
+				$this->project, $this->tool, 'source', '&raquo; <span class="subheader">' 
+				. JText::_('COM_PROJECTS_FILES_DISK_USAGE') . '</span>');		
+	} ?>
 <?php } ?>
 	<div id="disk-usage" <?php if($warning) { echo 'class="quota-warning"'; } ?>>
 		<div class="disk-usage-wrapper">
-			<h3><?php echo ($this->action != 'admin') ? JText::_('COM_PROJECTS_FILES_QUOTA').': '.$quota : JText::_('COM_PROJECTS_FILES_DISK_USAGE') ; ?></h3>
-				<span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED').' ('.$used.' '.JText::_('COM_PROJECTS_OUT_OF').' '.$quota.')'; ?></span></span>
+			<h3><?php echo ($this->by != 'admin') ? JText::_('COM_PROJECTS_FILES_QUOTA').': '.$quota : JText::_('COM_PROJECTS_FILES_DISK_USAGE') ; ?></h3>
+			<?php if ($this->by != 'admin') { ?>
+				<span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED').' ('.$used.' '.JText::_('COM_PROJECTS_OUT_OF').' '.$quota.')'; ?></span> <?php if($warning) { ?><span class="approaching-quota"> - <?php echo ($inuse == '> 100') ? JText::_('COM_PROJECTS_FILES_OVER_QUOTA')  : JText::_('COM_PROJECTS_FILES_APPROACHING_QUOTA') ; ?></span><?php } ?></span>
+			<?php } else { 
+				
+				
+			 } ?>
+			<?php if ($this->by != 'admin') { ?>
 			<div id="indicator-wrapper">
 				<span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span>	<?php if ($actual > 0) { ?>
 					<span id="actual-area" class="actual:<?php echo $actual; ?>">&nbsp;</span>
 					<?php } ?>
 			</div>
-			
 			<div id="usage-labels">
 					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').' ('.ProjectsHtml::formatSize($working).')'; ?>
 					<?php if ($versions > 0) { ?>
 					<span class="l-regular">&nbsp;</span><?php echo $this->by == 'admin' ? JText::_('Versions') : JText::_('Version History*') ; echo ' (' . $versions . ')'; ?>
 					<?php } ?>
-					<?php if($warning) { ?><span class="approaching-quota"><?php echo ($inuse == 100) ? JText::_('COM_PROJECTS_FILES_OVER_QUOTA')  : JText::_('COM_PROJECTS_FILES_APPROACHING_QUOTA') ; ?></span><?php } ?>
 					<span class="l-unused">&nbsp;</span><?php echo JText::_('COM_PROJECTS_FILES_UNUSED_SPACE').' ('.$unused.')'; ?>
 			</div>
+			<?php } else { ?>
+			<div id="usage-labels" class="usage-admin">
+				<span class="l-h"><?php echo JText::_('Project Files'); ?>
+					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').': '.ProjectsHtml::formatSize($working); ?>
+					<span class="l-regular">&nbsp;</span><?php echo JText::_('History') . ': ' . $versions; ?>
+					<span class="l-unused">&nbsp;</span><?php echo JText::_('Available') .': ' . $unused; ?>
+				<span>
+				<?php if (isset($this->pubDiskUsage)) { 
+					$unusedPub = $this->pubQuota - $this->pubDiskUsage;
+					$unusedPub = $unusedPub <= 0 ? 'none' : ProjectsHtml::formatSize($unusedPub);					
+				?>
+				<span class="l-h"><?php echo JText::_('Publications'); ?>
+					<span class="l-pub">&nbsp;</span><?php echo JText::_('Published') .': ' . ProjectsHtml::formatSize($this->pubDiskUsage); ?>
+					<span class="l-unused">&nbsp;</span><?php echo JText::_('Available') .': ' . $unusedPub; ?>
+				<span>
+				<?php } ?>
+			</div>
+			<?php } ?>
 		</div>
 	</div>
 	<?php if ($versions && $this->by != 'admin') { ?>

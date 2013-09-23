@@ -50,9 +50,12 @@
 		margin-top: -0.3em;
 		font-size: 85%;
 	}
-	#indicator-value {
-		
+	#disk-usage.quota-warning .l-actual {
+		background: #ec9881;
 	} 
+	#disk-usage.quota-warning #actual-area {
+		background: #ec9881;
+	}
 	.quota-warning #indicator-area, #disk-usage.quota-warning #indicator-area, #disk-usage.quota-warning .l-regular {
 		background: #fedad0;
 	}
@@ -98,12 +101,24 @@
 		margin-top: 1em;
 		font-size: 85%;
 	}
-	.l-regular, .l-unused, .l-actual {
+	#usage-labels.usage-admin {
+		width: 100%;
+		min-width: 450px;
+	}
+	#usage-labels .l-h {
+		display: block;
+		text-align: left;
+		margin-top: 0.5em;
+	}
+	.l-regular, .l-unused, .l-actual, .l-pub {
 		border: 1px solid #CCC;
 		background: #FFFFFF;
 		margin-right: 0.5em;
 		margin-left: 1em;
 		padding: 0 0.5em;
+	}
+	.l-pub {
+		background: #dafce3;
 	}
 	.l-regular {
 		background: #d0e4fe;

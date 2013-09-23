@@ -1302,7 +1302,7 @@ class ProjectOwner extends JTable
 	 * @param      string 	$get
 	 * @return     mixed
 	 */	
-	public function getTeamStats ( $exclude = array(), $get = 'total') 
+	public function getTeamStats ( $exclude = array(), $get = 'total', $when = NULL) 
 	{	
 		if ($get == 'multiusers')
 		{
@@ -1373,6 +1373,11 @@ class ProjectOwner extends JTable
 		elseif ($get == 'invited')
 		{
 			$query .= " AND userid = 0 ";
+		}
+		
+		if ($get == 'new' && $when)
+		{
+			$query .= "AND added LIKE '" . $when . "%' AND status=1 ";
 		}
 				
 		$this->_db->setQuery( $query );
