@@ -89,8 +89,6 @@ class Migration20130924000002Core extends Hubzero_Migration
 					"core.edit.state" => array()
 					);
 
-				// Craft query
-				$componentsInsert = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES ";
 				foreach ($components as $com)
 				{
 					// Make sure it isn't already in there
@@ -101,21 +99,21 @@ class Migration20130924000002Core extends Hubzero_Migration
 						continue;
 					}
 
-					$values = "(";
-					$values .= '1,';                                  // parent_id 1 is the root asset
-					$values .= $db->Quote('') . ',';                  // lft
-					$values .= $db->Quote('') . ',';                  // rgt
-					$values .= '1,';                                  // level
-					$values .= $db->Quote($com->option) . ',';        // name
-					$values .= $db->Quote($com->option) . ',';        // title
-					$values .= $db->Quote(json_encode($defaulRules)); // rules
-					$values .= ")";
-					$q[]     = $values;
+					// Craft query
+					$query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES ";
+					$query .= "(";
+					$query .= '1,';                                  // parent_id 1 is the root asset
+					$query .= $db->Quote('') . ',';                  // lft
+					$query .= $db->Quote('') . ',';                  // rgt
+					$query .= '1,';                                  // level
+					$query .= $db->Quote($com->option) . ',';        // name
+					$query .= $db->Quote($com->option) . ',';        // title
+					$query .= $db->Quote(json_encode($defaulRules)); // rules
+					$query .= ");";
+
+					$db->setQuery($query);
+					$db->query();
 				}
-				$componentsInsert .= implode(',', $q) . ";";
-				$db->setQuery($componentsInsert);
-				$db->query();
-				$q = array();
 			}
 
 			// Insert existing categories as assets (ignore root item)
