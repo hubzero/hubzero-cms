@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for new joomla search/finder tables
  **/
-class Migration20130718000006ComFinder extends Hubzero_Migration
+class Migration20130924000006ComFinder extends Hubzero_Migration
 {
 	/**
 	 * Up

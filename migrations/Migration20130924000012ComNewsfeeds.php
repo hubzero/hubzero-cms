@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for newsfeeds table changes
  **/
-class Migration20130718000012ComNewsfeeds extends Hubzero_Migration
+class Migration20130924000012ComNewsfeeds extends Hubzero_Migration
 {
 	/**
 	 * Up

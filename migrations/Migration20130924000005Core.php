@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for creating and populating new joomla extensions table
  **/
-class Migration20130718000005Core extends Hubzero_Migration
+class Migration20130924000005Core extends Hubzero_Migration
 {
 	/**
 	 * Up

@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for migrating joomla content
  **/
-class Migration20130718000002Core extends Hubzero_Migration
+class Migration20130924000002Core extends Hubzero_Migration
 {
 	/**
 	 * Up

@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for languages table addition
  **/
-class Migration20130718000008Core extends Hubzero_Migration
+class Migration20130924000008Core extends Hubzero_Migration
 {
 	/**
 	 * Up

@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for joomla banner tables
  **/
-class Migration20130718000003ComBanners extends Hubzero_Migration
+class Migration20130924000003ComBanners extends Hubzero_Migration
 {
 	/**
 	 * Up

@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for contact details
  **/
-class Migration20130718000004ComContacts extends Hubzero_Migration
+class Migration20130924000004ComContacts extends Hubzero_Migration
 {
 	/**
 	 * Up

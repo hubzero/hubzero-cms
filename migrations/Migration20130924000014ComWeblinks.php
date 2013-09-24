@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for weblinks table changes
  **/
-class Migration20130718000014ComWeblinks extends Hubzero_Migration
+class Migration20130924000014ComWeblinks extends Hubzero_Migration
 {
 	/**
 	 * Up

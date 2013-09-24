@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for menu table migrations
  **/
-class Migration20130718000009ComMenus extends Hubzero_Migration
+class Migration20130924000009ComMenus extends Hubzero_Migration
 {
 	/**
 	 * Up

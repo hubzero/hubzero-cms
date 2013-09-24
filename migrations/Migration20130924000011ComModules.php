@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for modules table changes
  **/
-class Migration20130718000011ComModules extends Hubzero_Migration
+class Migration20130924000011ComModules extends Hubzero_Migration
 {
 	/**
 	 * Up
