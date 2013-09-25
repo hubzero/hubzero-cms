@@ -288,7 +288,7 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$m = new ForumModelCategory();
+			$m = new ForumModelAdminCategory();
 			$this->view->form = $m->getForm();
 		}
 

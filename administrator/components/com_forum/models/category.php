@@ -17,7 +17,7 @@ jimport('joomla.application.component.modeladmin');
  * @subpackage	com_banners
  * @since		1.6
  */
-class ForumModelCategory extends JModelAdmin
+class ForumModelAdminCategory extends JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
@@ -34,7 +34,8 @@ class ForumModelCategory extends JModelAdmin
 
 		// Get the pk of the record from the request.
 		$pk = JRequest::getVar($key, array());
-		if (!empty($pk)) {
+		if (!empty($pk)) 
+		{
 			$pk = intval($pk[0]);
 		}
 		$this->setState($this->getName().'.id', $pk);
@@ -56,7 +57,8 @@ class ForumModelCategory extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_forum.category', 'category', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form)) 
+		{
 			return false;
 		}
 

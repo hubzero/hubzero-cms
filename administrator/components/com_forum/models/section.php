@@ -17,7 +17,7 @@ jimport('joomla.application.component.modeladmin');
  * @subpackage	com_banners
  * @since		1.6
  */
-class ForumModelSection extends JModelAdmin
+class ForumModelAdminSection extends JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
@@ -56,7 +56,8 @@ class ForumModelSection extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_forum.section', 'section', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form)) 
+		{
 			return false;
 		}
 

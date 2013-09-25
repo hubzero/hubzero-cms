@@ -260,9 +260,9 @@ class ForumControllerThreads extends Hubzero_Controller
 			-1,
 			'int'
 		));
-		$this->view->filters['parent'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.thread.parent', 
-			'parent', 
+		$this->view->filters['thread'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.thread.thread', 
+			'thread', 
 			0,
 			'int'
 		));
@@ -349,7 +349,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Get records
 		$this->view->results = $model->getRecords($this->view->filters);
 		
-		$model->load($this->view->filters['parent']);
+		$model->load($this->view->filters['thread']);
 		$this->view->thread = $model;
 
 		// Initiate paging
@@ -497,7 +497,7 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$m = new ForumModelThread();
+			$m = new ForumModelAdminThread();
 			$this->view->form = $m->getForm();
 		}
 

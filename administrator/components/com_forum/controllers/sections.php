@@ -172,7 +172,7 @@ class ForumControllerSections extends Hubzero_Controller
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$m = new ForumModelSection();
+			$m = new ForumModelAdminSection();
 			$this->view->form = $m->getForm();
 		}
 
