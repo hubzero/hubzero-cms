@@ -97,7 +97,7 @@ if (count($this->activities) > 0 ) {
 <?php 
 if($this->total > $this->filters['limit']) { 
 	$limit = $this->filters['limit'] + $this->limit; ?>	
-	<p><a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'cn='.$this->gid.a.'active=projects').'?action=updates'.a.'limit='.$limit.a.'prev='.$this->filters['limit'].'#more';  ?>"><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
+	<p><a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'cn='.$this->gid.a.'active=projects').'?action=updates'.a.'limit='.$limit.a.'prev='.$this->filters['limit'];  ?>"><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
 <?php } else if($this->filters['limit'] != $this->limit) { ?>
 	<p><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 <?php } ?>
