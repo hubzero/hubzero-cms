@@ -308,6 +308,13 @@ class Wish extends JTable
 					$sql .= ' AND ws.status!=2';
 				break;
 		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$tagging = new WishTags($this->_db);
+			$tags = $tagging->_parse_tags($filters['tag']);
+
+			$sql .= " AND (LOWER(ws.subject) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(ws.about) LIKE '%" . strtolower($filters['search']) . "%')";
+		}
 
 		// do not show private wishes
 		if (!$admin) 
