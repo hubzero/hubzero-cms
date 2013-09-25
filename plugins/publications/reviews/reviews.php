@@ -57,7 +57,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 		$this->loadLanguage();
 		
 		$this->infolink = '/kb/points/';
-		$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+		$upconfig =& JComponentHelper::getParams( 'com_members' );
 		$this->banking = $upconfig->get('bankAccounts');
 	}
 	

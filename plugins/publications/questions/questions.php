@@ -139,7 +139,7 @@ class plgPublicationsQuestions extends JPlugin
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 			
 			// Are we banking?
-			$upconfig =& JComponentHelper::getParams( 'com_userpoints' );
+			$upconfig =& JComponentHelper::getParams( 'com_members' );
 			$banking = $upconfig->get('bankAccounts');		
 
 			// Info aboit points link
