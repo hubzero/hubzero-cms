@@ -190,11 +190,11 @@ class WishlistControllerWishes extends Hubzero_Controller
 			$this->view->wishlist = $this->view->row->wishlist;
 		}
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		/*if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$m = new WishlistModelWish();
 			$this->view->form = $m->getForm();
-		}
+		}*/
 
 		$obj = new Wishlist($this->database);
 		$filters = array();
