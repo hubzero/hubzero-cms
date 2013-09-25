@@ -539,7 +539,12 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		$attempt = JRequest::getInt('attempt', 1);
 
-		PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent($this->member, $attempt)->saveProgress($_POST['question'], $_POST['answer']);
+		$resp = PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent($this->member, $attempt);
+
+		if (!$resp->getEndTime())
+		{
+			$resp->saveProgress($_POST['question'], $_POST['answer']);
+		}
 
 		echo json_encode(array("result"=>"success"));
 		exit();
@@ -562,12 +567,21 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		$dep = PdfFormDeployment::fromCrumb($crumb);
 
+		// Make sure they're not trying to take the form too many times
+		if($attempt > $dep->getAllowedAttempts())
+		{
+			JError::raiseError(403, "You're not allowed this many attempts!");
+		}
+
 		list($complete, $answers) = $dep->getForm()->getQuestionAnswerMap($_POST);
 
 		if ($complete)
 		{
 			$resp = $dep->getRespondent($this->member, $attempt);
-			$resp->saveAnswers($_POST)->markEnd();
+			if (!$resp->getEndTime())
+			{
+				$resp->saveAnswers($_POST)->markEnd();
+			}
 
 			$this->setRedirect(JRoute::_($this->base . '&task=form.complete&crumb='.$crumb.$att, false));
 			return;
