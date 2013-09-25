@@ -1775,7 +1775,7 @@
 	.cc { 
 		background: url("/components/com_publications/assets/img/logos/cc.gif") -0.5em 0.5em no-repeat;
 		}
-	.custom { 
+	.com_publications .custom, .content-publications .custom { 
 		background: url("/components/com_publications/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
 	.standard { 
