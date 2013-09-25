@@ -84,7 +84,7 @@ if ($this->params->get('show_citation') && $this->publication->state == 1)
 		$cite = null;
 	}
 
-	$citeinstruct  = PublicationsHtml::citation( $option, $cite, $this->publication, $citations, $this->version );
+	$citeinstruct  = PublicationsHtml::citation( $this->option, $cite, $this->publication, $citations, $this->version );
 	//$citeinstruct .= PublicationsHtml::citationCOins($cite, $this->publication, $this->config, $this->helper);
 	$html .= PublicationsHtml::tableRow( '<a name="citethis"></a>'.JText::_('COM_PUBLICATIONS_CITE_THIS'), $citeinstruct );
 }
@@ -92,6 +92,7 @@ if ($this->params->get('show_citation') && $this->publication->state == 1)
 // Show tags
 if ($this->params->get('show_tags')) {
 	$this->helper->getTagCloud( $this->authorized );
+	
 	if ($this->helper->tagCloud) {
 		$html .= PublicationsHtml::tableRow( JText::_('COM_PUBLICATIONS_TAGS'),$this->helper->tagCloud);
 	}
