@@ -47,7 +47,7 @@ class modSpotlight extends Hubzero_Module
 	{
 		$juser =& JFactory::getUser();
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		if (intval($this->params->get('cache', 0))) // !$juser->get('guest') && 
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);
