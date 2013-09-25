@@ -108,6 +108,8 @@ class Hubzero_User_Profile_Helper
 	 */
 	public static function getMemberPhoto($member, $anonymous=0, $thumbit=true)
 	{
+		static $dfthumb;
+
 		$config =& JComponentHelper::getParams('com_members');
 
 		if (is_a($member, 'JUser'))
@@ -142,23 +144,26 @@ class Hubzero_User_Profile_Helper
 			}
 		}
 
-		$dfthumb = DS . trim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
-		if ($thumbit)
+		if (!isset($dfthumb))
 		{
-			$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
+			$dfthumb = DS . ltrim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
+			if ($thumbit)
+			{
+				$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
+			}
 		}
 
 		if ($thumbAlt && file_exists(JPATH_ROOT . $thumbAlt)) 
 		{
-			return $thumbAlt;
+			return rtrim(JURI::getInstance()->base(true), DS) . $thumbAlt;
 		} 
 		else if ($thumb && file_exists(JPATH_ROOT . $thumb)) 
 		{
-			return $thumb;
+			return rtrim(JURI::getInstance()->base(true), DS) . $thumb;
 		} 
 		else if (file_exists(JPATH_ROOT . $dfthumb)) 
 		{
-			return $dfthumb;
+			return rtrim(JURI::getInstance()->base(true), DS) . $dfthumb;
 		}
 	}
 
