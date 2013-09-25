@@ -193,7 +193,7 @@ if ($this->row->id && $this->row->modified != '0000-00-00 00:00:00') {
 				</tbody>
 			</table>
 		</fieldset>
-		<fieldset class="adminform">
+		<fieldset class="adminform paramlist">
 			<legend><span><?php echo JText::_('COM_KB_PARAMETERS'); ?></span></legend>
 			<?php echo $this->params->render(); ?>
 		</fieldset>
@@ -204,7 +204,6 @@ if ($this->row->id && $this->row->modified != '0000-00-00 00:00:00') {
 		<?php if ($canDo->get('core.admin')): ?>
 			<div class="col width-100 fltlft">
 				<fieldset class="panelform">
-					<legend><span><?php echo JText::_('COM_KB_FIELDSET_RULES'); ?></span></legend>
 					<?php echo $this->form->getLabel('rules'); ?>
 					<?php echo $this->form->getInput('rules'); ?>
 				</fieldset>
