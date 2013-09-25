@@ -291,7 +291,7 @@ window.addEvent('domready', Fields.initialise);
 								$out = '<table><tbody><tr><td><i>There are no Parameters for this item</i></td></tr></tbody></table>';
 							}
 							?>
-							<fieldset class="adminform eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
+							<fieldset class="adminform paramlist" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
 								<legend><?php echo JText::_('Parameters'); ?></legend>
 								<?php echo $out; ?>
 							</fieldset>
