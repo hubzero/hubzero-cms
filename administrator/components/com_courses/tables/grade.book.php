@@ -408,7 +408,8 @@ class CoursesTableGradeBook extends JTable
 			$query .= implode(",\n", $values);
 			$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
 
-			$this->_db->execute($query);
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 	}
 
@@ -435,7 +436,8 @@ class CoursesTableGradeBook extends JTable
 		$query  = "UPDATE `#__courses_grade_book` SET score = NULL";
 		$query .= " WHERE scope = 'course' AND scope_id = " . $this->_db->quote($course->get('id'));
 		$query .= " AND member_id IN (" . implode(',', $member_id) . ")";
-		$this->_db->execute($query);
+		$this->_db->setQuery($query);
+		$this->_db->query();
 
 		// Clean up units as well...
 		foreach ($course->offering()->units() as $unit)
@@ -443,7 +445,8 @@ class CoursesTableGradeBook extends JTable
 			$query  = "UPDATE `#__courses_grade_book` SET score = NULL";
 			$query .= " WHERE scope = 'unit' AND scope_id = " . $this->_db->quote($unit->get('id'));
 			$query .= " AND member_id IN (" . implode(',', $member_id) . ")";
-			$this->_db->execute($query);
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 	}
 
