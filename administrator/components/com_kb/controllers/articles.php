@@ -193,10 +193,10 @@ class KbControllerArticles extends Hubzero_Controller
 		$this->view->creator = JUser::getInstance($this->view->row->created_by);
 
 		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		/*if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
-		}
+		}*/
 
 		$this->view->params = new $paramsClass(
 			$this->view->row->params, 
