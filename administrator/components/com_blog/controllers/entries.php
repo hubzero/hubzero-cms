@@ -177,8 +177,8 @@ class BlogControllerEntries extends Hubzero_Controller
 		{
 			/*$bt = new BlogTags($this->database);
 			$this->view->tags = $bt->get_tag_string($this->view->row->id);*/
-			$bt = new BlogModelTags($this->database);
-			$this->view->tags = $bt->tags('string');
+			$bt = new BlogModelTags($this->view->row->id);
+			$this->view->tags = $bt->render('string');
 		}
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -251,13 +251,10 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 
 		// Process tags
-		$bt = new BlogTags($this->database);
-		$bt->tag_object(
-			$this->juser->get('id'), 
-			$row->id, 
+		$bt = new BlogModelTags($row->id);
+		$bt->setTags(
 			trim(JRequest::getVar('tags', '')), 
-			1, 
-			1
+			$this->juser->get('id')
 		);
 
 		if ($redirect)
