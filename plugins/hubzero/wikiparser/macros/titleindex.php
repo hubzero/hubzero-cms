@@ -147,6 +147,11 @@ class TitleIndexMacro extends WikiMacro
 				}
 				$title = ($row->title) ? $row->title : $row->pagename;
 
+				if (substr($row->pagename, 0, strlen('Help:')) == 'Help:')
+				{
+					$row->scope = $this->scope;
+				}
+
 				$url  = substr($this->option, 4, strlen($this->option)) . DS;
 				$url .= ($row->scope) ? $row->scope . DS : '';
 				$url .= $row->pagename;
