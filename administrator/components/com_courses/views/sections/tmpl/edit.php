@@ -132,7 +132,10 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></th>
-						<td><input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" /></td>
+						<td>
+							<input type="text" name="fields[alias]" id="field-alias"<?php if ($this->row->get('alias') == '__default') { echo ' disabled="disabled"'; } ?> value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
+							<?php if ($this->row->get('alias') == '__default') { ?><span class="hint">Offerings must have a "__default" section.</span><?php } ?>
+						</td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></th>
