@@ -53,6 +53,7 @@ class plgSystemJquery extends JPlugin
 		}
 
 		$document = JFactory::getDocument();
+		$root = JURI::root(true);
 
 		if ($value = $this->params->get('jquery')) 
 		{
@@ -74,7 +75,7 @@ class plgSystemJquery extends JPlugin
 				break;
 				case 1:
 				default:
-					$document->addScript(JURI::root(true) . '/media/system/js/jquery.js');
+					$document->addScript($root . '/media/system/js/jquery.js');
 				break;
 			}
 		}
@@ -84,7 +85,7 @@ class plgSystemJquery extends JPlugin
 			{
 				$version = $this->params->get('jqueryuiVersion', '1.8.6');
 				
-				$document->addScript(JURI::root(true) . '/media/system/js/jquery.ui.js');
+				$document->addScript($root . '/media/system/js/jquery.ui.js');
 			}
 			elseif ($value == 2) 
 			{
@@ -95,7 +96,12 @@ class plgSystemJquery extends JPlugin
 			{
 				if ($value == 1) 
 				{
-					$document->addStyleSheet($this->params->get('jqueryuicsspath', JURI::root(true) . '/media/system/css/jquery.ui.css'));
+					$path = $this->params->get('jqueryuicsspath', $root . '/media/system/css/jquery.ui.css');
+					if (substr($path, 0, strlen($root)) != $root && substr($path, 0, strlen('http')) != 'http')
+					{
+						$path = $root . '/' . ltrim($path, '/');
+					}
+					$document->addStyleSheet($path);
 				}
 			}
 		}
@@ -105,7 +111,7 @@ class plgSystemJquery extends JPlugin
 			{
 				$version = $this->params->get('jqueryfbVersion', '2.0.4');
 				
-				$document->addScript(JURI::root(true) . '/media/system/js/jquery.fancybox.js');
+				$document->addScript($root . '/media/system/js/jquery.fancybox.js');
 			}
 			elseif ($value == 2) 
 			{
@@ -116,7 +122,12 @@ class plgSystemJquery extends JPlugin
 			{
 				if ($value == 1) 
 				{
-					$document->addStyleSheet($this->params->get('jqueryfbcsspath', JURI::root(true) . '/media/system/css/jquery.fancybox.css'));
+					$path = $this->params->get('jqueryfbcsspath', $root . '/media/system/css/jquery.fancybox.css');
+					if (substr($path, 0, strlen($root)) != $root && substr($path, 0, strlen('http')) != 'http')
+					{
+						$path = $root . '/' . ltrim($path, '/');
+					}
+					$document->addStyleSheet($path);
 				}
 			}
 		}
@@ -126,7 +137,7 @@ class plgSystemJquery extends JPlugin
 			{
 				$version = $this->params->get('jquerytoolsVersion', '1.2.5');
 				
-				$document->addScript(JURI::root(true) . '/media/system/js/jquery.tools.js');
+				$document->addScript($root . '/media/system/js/jquery.tools.js');
 			}
 			elseif ($value == 2) 
 			{
@@ -135,7 +146,7 @@ class plgSystemJquery extends JPlugin
 		}
 		if ($this->params->get('noconflict' . $client)) 
 		{
-			$document->addScript(JURI::root(true) . '/media/system/js/jquery.noconflict.js');
+			$document->addScript($root . '/media/system/js/jquery.noconflict.js');
 			JHTML::_('behavior.mootools');
 		}
 	}
