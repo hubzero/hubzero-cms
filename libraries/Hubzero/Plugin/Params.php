@@ -138,7 +138,7 @@ class Hubzero_Plugin_Params extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE object_id='$oid' AND folder='$folder' AND element='$element' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -177,7 +177,7 @@ class Hubzero_Plugin_Params extends JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=$oid AND folder='$folder' AND element='$element' LIMIT 1");
+		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
 		$result = $this->_db->loadResult();
 
 		$paramsClass = 'JParameter';
