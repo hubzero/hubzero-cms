@@ -3114,7 +3114,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$description = JRequest::getVar('description', '');
 
 		// Construct our file path
-		$path = JPATH_ROOT . $this->config->get('webpath') . DS . $listdir;
+		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
 
 		// Build the path if it doesn't exist
 		if (!is_dir($path)) 
@@ -3140,8 +3140,16 @@ class SupportControllerTickets extends Hubzero_Controller
 			return JText::_('ATTACHMENT: Incorrect file type.');
 		}
 
+		$filename = JFile::stripExt($file['name']);
+		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		{
+			$filename .= rand(10, 99);
+		}
+
+		$finalfile = $path . DS . $filename . '.' . $ext;
+
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $finalfile)) 
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
 			return '';
@@ -3149,11 +3157,11 @@ class SupportControllerTickets extends Hubzero_Controller
 		else 
 		{
 			// Scan for viruses
-			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
-			exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+			//$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			exec("clamscan -i --no-summary --block-encrypted $finalfile", $output, $status);
 			if ($status == 1)
 			{
-				if (JFile::delete($path)) 
+				if (JFile::delete($finalfile)) 
 				{
 					$this->setError(JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.'));
 					return JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.');
@@ -3166,9 +3174,9 @@ class SupportControllerTickets extends Hubzero_Controller
 
 			$row = new SupportAttachment($this->database);
 			$row->bind(array(
-				'id' => 0,
-				'ticket' => $listdir,
-				'filename' => $file['name'],
+				'id'          => 0,
+				'ticket'      => $listdir,
+				'filename'    => $filename . '.' . $ext,
 				'description' => $description
 			));
 			if (!$row->check()) 

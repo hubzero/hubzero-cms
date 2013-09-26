@@ -1327,7 +1327,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Construct our file path
-		$file_path = JPATH_ROOT . $this->config->get('webpath') . DS . $listdir;
+		$file_path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
 
 		if (!is_dir($file_path))
 		{
@@ -1343,9 +1343,18 @@ class SupportControllerTickets extends Hubzero_Controller
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = strtolower(JFile::getExt($file['name']));
+
+		$filename = JFile::stripExt($file['name']);
+		while (file_exists($file_path . DS . $filename . '.' . $ext)) 
+		{
+			$filename .= rand(10, 99);
+		}
+
+		$finalfile = $file_path . DS . $filename . '.' . $ext;
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $file_path . DS . $file['name']))
+		if (!JFile::upload($file['tmp_name'], $finalfile))
 		{
 			$this->setError(JText::_('COM_SUPPORT_ERROR_UPLOADING'));
 			return '';
@@ -1353,11 +1362,11 @@ class SupportControllerTickets extends Hubzero_Controller
 		else
 		{
 			// Scan for viruses
-			$path = $file_path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
-			exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+			//$path = $file_path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			exec("clamscan -i --no-summary --block-encrypted $finalfile", $output, $status);
 			if ($status == 1)
 			{
-				if (JFile::delete($path)) 
+				if (JFile::delete($finalfile)) 
 				{
 					$this->setError(JText::_('File rejected due to possible security risk.'));
 					return '';
@@ -1370,9 +1379,9 @@ class SupportControllerTickets extends Hubzero_Controller
 
 			$row = new SupportAttachment($this->database);
 			$row->bind(array(
-				'id' => 0,
-				'ticket' => $listdir,
-				'filename' => $file['name'],
+				'id'          => 0,
+				'ticket'      => $listdir,
+				'filename'    => $filename . '.' . $ext,
 				'description' => $description
 			));
 			if (!$row->check())
