@@ -218,13 +218,15 @@ class CoursesControllerSections extends Hubzero_Controller
 		}
 
 		$paramsClass = 'JParameter';
+		$mthd = 'bind';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
+			$mthd = 'loadArray';
 		}
 
 		$p = new $paramsClass('');
-		$p->bind(JRequest::getVar('params', '', 'post'));
+		$p->$mthd(JRequest::getVar('params', '', 'post'));
 
 		$model->set('params', $p->toString());
 
