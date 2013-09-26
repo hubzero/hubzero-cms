@@ -277,6 +277,9 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
 		{
+			$path = str_replace($juri->base(true), '', $path);
+			$path = str_replace('index.php', '', $path);
+			$path = DS . trim($path, DS);
 			$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
 			$path = ltrim($path, DS);
 			$bits = explode('/', $path);
@@ -369,6 +372,9 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$path = JURI::getInstance()->getPath();
 		if (strstr($path, '/')) 
 		{
+			$path = str_replace(JURI::getInstance()->base(true), '', $path);
+			$path = str_replace('index.php', '', $path);
+			$path = DS . trim($path, DS);
 			$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
 			$path = trim($path, DS);
 			$bits = explode('/', $path);
@@ -479,6 +485,9 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$path = JURI::getInstance()->getPath();
 			if (strstr($path, '/')) 
 			{
+				$path = str_replace(JURI::getInstance()->base(true), '', $path);
+				$path = str_replace('index.php', '', $path);
+				$path = DS . trim($path, DS);
 				$path = str_replace('/groups/' . $this->group->get('cn') . '/blog/', '', $path);
 				$bits = explode('/', $path);
 				$alias = end($bits);

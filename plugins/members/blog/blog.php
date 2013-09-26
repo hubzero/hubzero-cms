@@ -223,6 +223,9 @@ class plgMembersBlog extends JPlugin
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
 		{
+			$path = str_replace($juri->base(true), '', $path);
+			$path = str_replace('index.php', '', $path);
+			$path = DS . trim($path, DS);
 			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
 			$path = ltrim($path, DS);
 			$bits = explode('/', $path);
@@ -306,6 +309,9 @@ class plgMembersBlog extends JPlugin
 		$path = JURI::getInstance()->getPath();
 		if (strstr($path, '/')) 
 		{
+			$path = str_replace(JURI::getInstance()->base(true), '', $path);
+			$path = str_replace('index.php', '', $path);
+			$path = DS . trim($path, DS);
 			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/blog', '', $path);
 			$path = ltrim($path, DS);
 			$bits = explode('/', $path);
@@ -385,6 +391,9 @@ class plgMembersBlog extends JPlugin
 			$alias = '';
 			if (strstr($path, '/')) 
 			{
+				$path = str_replace(JURI::getInstance()->base(true), '', $path);
+				$path = str_replace('index.php', '', $path);
+				$path = DS . trim($path, DS);
 				$path = str_replace('/members/' . $this->member->get('uidNumber') . '/blog/', '', $path);
 				$bits = explode('/', $path);
 				$alias = end($bits);
