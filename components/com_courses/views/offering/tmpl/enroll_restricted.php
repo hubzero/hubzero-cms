@@ -64,9 +64,6 @@ $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this-
 			<div class="explaination">
 				<h3>Code not working?</h3>
 				<p>It may be possible that the code has already been redeemed.</p>
-
-				<h3>What if something?</h3>
-				<p>Then something else. Duh.</p>
 			</div>
 			<fieldset>
 				<legend><?php echo JText::_('Redeem Coupon Code'); ?></legend>
