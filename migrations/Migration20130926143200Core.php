@@ -13,7 +13,8 @@ class Migration20130926143200Core extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		$templates = array('atomic', 'bluestork', 'beez_20', 'hathor', 'beez5');
+		$joomlas = array('atomic', 'bluestork', 'beez_20', 'hathor', 'beez5');
+		$templates = array();
 
 		if ($db->tableExists('#__extensions'))
 		{
@@ -37,6 +38,10 @@ class Migration20130926143200Core extends Hubzero_Migration
 
 		if ($db->tableExists('#__template_styles'))
 		{
+			if (empty($templates))
+			{
+				$templates = $joomlas;
+			}
 			$query = "DELETE FROM #__template_styles WHERE `template` IN ('" . implode("','", $templates) . "') AND `home`=0";
 			$db->setQuery($query);
 			$db->query();
