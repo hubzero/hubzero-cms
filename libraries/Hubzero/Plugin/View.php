@@ -539,7 +539,7 @@ class Hubzero_Plugin_View extends JObject
 	*/
 	protected function _setPath($type, $path)
 	{
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 
 		// clear out the prior search dirs
 		$this->_path[$type] = array();
