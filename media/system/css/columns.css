@@ -225,4 +225,13 @@
 		margin-left: 8.602150537634408%;
 		*margin-left: 8.494623655913976%;
 	}
-	
+
+@media (max-width: 760px) {
+	.columns,
+	.grid [class*="span"] {
+		float: none;
+		width: auto;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
