@@ -74,12 +74,12 @@ if ($offerings->total() > 0)
 				--
 				<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
 				<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-					Enter course
+					Access Course
 				</a>
 				<?php } else { ?>
 					<?php if ($offering->isAvailable()) { ?>
 					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-						Enroll in course
+						Enroll in Course
 					</a>
 					<?php } else { ?>
 					--
@@ -135,16 +135,16 @@ if ($offerings->total() > 0)
 			<td>
 				<?php if ($this->course->isManager()) { ?>
 				<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-					Enter course
+					Access Course
 				</a>
 				<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
 				<a class="enter btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-					Enter course
+					Access Course
 				</a>
 				<?php } else { ?>
 					<?php if ($offering->isAvailable()) { ?>
 					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-						Enroll in course
+						Enroll in Course
 					</a>
 					<?php } else { ?>
 					--
