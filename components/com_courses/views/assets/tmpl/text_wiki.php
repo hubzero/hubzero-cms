@@ -31,9 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$section = ($this->course->offering()->section()->get('alias') != '__default') ? ':'.$this->course->offering()->section()->get('alias') : '';
+
 $wikiconfig = array(
 	'option'   => 'com_courses',
-	'scope'    => $this->course->get('alias') . DS . $this->course->offering()->get('alias') . DS . 'asset',
+	'scope'    => $this->course->get('alias') . DS . $this->course->offering()->get('alias').$section . DS . 'asset',
 	'pagename' => $this->asset->id,
 	'pageid'   => '',
 	'filepath' => DS . 'site' . DS . 'courses' . DS . $this->course->get('id') . DS . $this->asset->id,
