@@ -170,3 +170,13 @@
 	.grid .offset1 {
 		#grid > .offset(1);
 	}
+
+@media (max-width: 760px) {
+	.columns,
+	.grid [class*="span"] {
+		float: none;
+		width: auto;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
