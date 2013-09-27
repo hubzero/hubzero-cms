@@ -203,8 +203,19 @@ class plgSystemJquery extends JPlugin
 			$data['scripts'] = $nd;
 
 			$nds = array();
-			$data['script'] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\{(.*)\}\)\;/', '', $data['script']);
-			$data['script'] = preg_replace('/window\.addEvent\(\'load\', function\(\)\{(.*)\}\)\;/', '', $data['script']);
+			if (is_array($data['script']))
+			{
+				foreach ($data['script'] as $key => $script)
+				{
+					$data['script'][$key] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*)\}\)\;/is', '', $script);
+					$data['script'][$key] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*)\}\)\;/is', '', $data['script'][$key]);
+				}
+			}
+			else
+			{
+				$data['script'] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*)\}\)\;/is', '', $data['script']);
+				$data['script'] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*)\}\)\;/is', '', $data['script']);
+			}
 
 			$document->setHeadData($data);
 		}
