@@ -42,47 +42,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=courses';
-
-//section links
-/*$sections = array(
-	array(
-		'name'  => 'enrolled',
-		'title' => JText::_('PLG_MEMBERS_COURSES_ENROLLED'),
-		'link'  => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=courses&task=enrolled&limit=' . $this->filters['limit'] . '&limitstart=0')
-	),
-	array(
-		'name'  => 'manager',
-		'title' => JText::_('PLG_MEMBERS_COURSES_MANAGER'),
-		'link'  => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=courses&task=manager&limit=' . $this->filters['limit'] . '&limitstart=0')
-	),
-	array(
-		'name'  => 'instructor',
-		'title' => JText::_('PLG_MEMBERS_COURSES_INSTRUCTOR'),
-		'link'  => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=courses&task=instructor&limit=' . $this->filters['limit'] . '&limitstart=0')
-	),
-	array(
-		'name'  => 'ta',
-		'title' => JText::_('PLG_MEMBERS_COURSES_TA'),
-		'link'  => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=courses&task=ta&limit=' . $this->filters['limit'] . '&limitstart=0')
-	)
-);
-$active = null;
-
-$has = 0;
-if ($this->roles)
-{
-	foreach ($this->roles as $role)
-	{
-		if ($role->total > 0)
-		{
-			$has++;
-		}
-		if ($this->filters['task'] == $role->alias)
-		{
-			$active = $role;
-		}
-	}
-}*/
 ?>
 <h3 class="section-header">
 	<a name="courses"></a>
@@ -94,14 +53,6 @@ if ($this->roles)
 
 <?php if ($this->roles && $this->hasRoles > 1) { ?>
 	<ul class="entries-menu user-options">
-		<?php /*foreach ($sections as $s) { ?>
-			<?php $sel = ($this->filters['task'] == $s['name']) ? 'active' : ''; ?>
-			<li>
-				<a class="<?php echo $s['name'] . ' ' . $sel; ?>" title="<?php echo $this->escape($s['title']); ?>" href="<?php echo $s['link']; ?>">
-					<?php echo $this->escape($s['title']); ?>
-				</a>
-			</li>
-		<?php }*/ ?>
 		<?php foreach ($this->roles as $s) { ?>
 			<?php 
 			if ($s->total <= 0)
@@ -116,7 +67,7 @@ if ($this->roles)
 			}
 			?>
 			<li>
-				<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo JRoute::_($base . '&task=' . $s->alias . '&sort=title'); ?>">
+				<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo JRoute::_($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
 					<?php echo $this->escape(stripslashes($s->title)); ?> (<?php echo $this->escape($s->total); ?>)
 				</a>
 			</li>
@@ -253,6 +204,7 @@ if ($this->roles)
 			$this->pageNav->setAdditionalUrlParam('active', 'courses');
 			$this->pageNav->setAdditionalUrlParam('task', $this->filters['task']);
 			$this->pageNav->setAdditionalUrlParam('action', '');
+			$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
 			
 			echo $this->pageNav->getListFooter();
 			?>
