@@ -3,9 +3,9 @@
 DROP TABLE IF EXISTS `jos_billboard_collection`;
 
 CREATE TABLE `jos_billboard_collection` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `name` varchar(255) character set latin1 default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `jos_billboards`;
