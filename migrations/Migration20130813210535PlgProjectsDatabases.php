@@ -51,7 +51,7 @@ class Migration20130813210535PlgProjectsDatabases extends Hubzero_Migration
 			$db->query();
 		}
 
-		self::addPluginEntry('projects', 'databases');
+		self::addPluginEntry('projects', 'databases', 0);
 	}
 
 	/**
