@@ -508,6 +508,23 @@ class BlogModelEntry extends JObject
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
+		if (!$this->exists())
+		{
+			switch (strtolower($what))
+			{
+				case 'array':
+					return array();
+				break;
+
+				case 'string':
+				case 'cloud':
+				case 'html':
+				default:
+					return '';
+				break;
+			}
+		}
+
 		$cloud = new BlogModelTags($this->get('id'));
 
 		return $cloud->render($what, array('admin' => $admin));
