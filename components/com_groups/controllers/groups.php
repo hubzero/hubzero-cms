@@ -1321,7 +1321,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		$query = "SELECT t.gidNumber, t.cn, t.description 
 					FROM #__xgroups AS t 
-					WHERE (t.type=1 OR t.type=2) AND (LOWER(t.cn) LIKE '%" . $filters['search'] . "%' OR LOWER(t.description) LIKE '%" . $filters['search'] . "%')
+					WHERE (t.type=1) AND (LOWER(t.cn) LIKE '%" . $filters['search'] . "%' OR LOWER(t.description) LIKE '%" . $filters['search'] . "%')
 					ORDER BY t.description ASC";
 
 		$this->database->setQuery($query);
