@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 define('COURSES_STATE_UNPUBLISHED', 0);
 define('COURSES_STATE_PUBLISHED',   1);
 define('COURSES_STATE_DELETED',     2);
+define('COURSES_STATE_DRAFT',       3);
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 
@@ -246,6 +247,24 @@ abstract class CoursesModelAbstract extends JObject
 			return false;
 		}
 		if ($this->get('state') == COURSES_STATE_DELETED) 
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Has the offering started?
+	 * 
+	 * @return     boolean
+	 */
+	public function isDraft()
+	{
+		if (!in_array('state', array_keys($this->_tbl->getProperties())))
+		{
+			return false;
+		}
+		if ($this->get('state') == COURSES_STATE_DRAFT) 
 		{
 			return true;
 		}
