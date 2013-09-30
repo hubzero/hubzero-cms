@@ -286,7 +286,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			// For example, /resources/learningmodules => Learning Modules
 			for ($i = 0; $i < count($view->types); $i++)
 			{
-				$normalized = ($t->alias ? $t->alias : $t->normalize($view->types[$i]->type));
+				$normalized = ($view->types[$i]->alias ? $view->types[$i]->alias : $t->normalize($view->types[$i]->type));
 
 				if (trim($view->filters['type']) == $normalized) 
 				{
