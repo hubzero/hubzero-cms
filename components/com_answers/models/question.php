@@ -359,6 +359,23 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function tags($as='cloud', $admin=0)
 	{
+		if (!$this->exists())
+		{
+			switch (strtolower($as))
+			{
+				case 'array':
+					return array();
+				break;
+
+				case 'string':
+				case 'cloud':
+				case 'html':
+				default:
+					return '';
+				break;
+			}
+		}
+
 		$cloud = new AnswersModelTags($this->get('id'));
 
 		return $cloud->render($as, array('admin' => $admin));
