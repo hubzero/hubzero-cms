@@ -103,7 +103,7 @@ if (count($this->notifications) > 0)
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>"><?php echo JText::_('Browse the list of available courses'); ?></a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('Browse the list of available courses'); ?></a></p>
 				<p><?php echo JText::_('A list of all available courses.'); ?></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
