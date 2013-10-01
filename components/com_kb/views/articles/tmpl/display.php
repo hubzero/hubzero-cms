@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access');
 				<div class="container-block">
 					<h3>Articles</h3>
 					<div class="grid">
-						<div class="col span-half omega">
+						<div class="col span-half">
 							<h4><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>"><?php echo JText::_('Most Popular Articles'); ?> <span class="more">&raquo;</span></a></h4>
 							<?php
 							if (count($this->articles['top']) > 0) {
@@ -121,6 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 					</div><!-- / .grid -->
 
 					<h3>Categories</h3>
+					<div class="grid">
 <?php 
 		$i = 0;
 		$html = '';
@@ -142,12 +143,11 @@ defined('_JEXEC') or die('Restricted access');
 
 				switch ($i)
 				{
-					case 1: $cls = 'first';  break;
-					case 2: $cls = 'second'; break;
-					case 3: $cls = 'third';  break;
+					case 1: $cls = '';  break;
+					case 2: $cls = ' omega'; break;
 				}
 
-				$html .= "\t\t".'<div class="two columns '.$cls.'">'."\n";
+				$html .= "\t\t".'<div class="col span-half '.$cls.'">'."\n";
 				$html .= "\t\t\t".'<h4><a href="'.JRoute::_('index.php?option=' . $this->option . '&section='. $row->alias) .'">'. $this->escape(stripslashes($row->title)) .' <span>('.$row->numitems.')</span> <span class="more">&raquo;</span></a></h4>'."\n";
 				/*if ($row->description) {
 					$html .= '<p>'.Hubzero_View_Helper_Html::shortenText($row->description, 100, 0).'</p>'."\n";
@@ -174,8 +174,8 @@ defined('_JEXEC') or die('Restricted access');
 				} else {
 					$html .= "\t".'<p>'.JText::_('No articles found.').'</p>'."\n";
 				}
-				$html .= "\t\t".'</div><!-- / .two columns '.$cls.' -->'."\n";
-				$html .= ($i >= 2) ? '<div class="clearfix"></div>' : '';
+				$html .= "\t\t".'</div><!-- / .col span-half '.$cls.' -->'."\n";
+				//$html .= ($i >= 2) ? '<div class="clearfix"></div>' : '';
 
 				if ($i >= 2) {
 					$i = 0;
@@ -184,7 +184,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		echo $html;
 ?>
-					<div class="clear"></div>
+					</div><!-- / .grid -->
 				</div><!-- / .container-block -->
 			</div><!-- / .container -->
 		</form>
