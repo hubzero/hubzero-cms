@@ -239,7 +239,7 @@ function submitbutton(pressbutton)
 				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
 					$pth = true;
-					$paramsClass = 'JRegistry';
+					//$paramsClass = 'JRegistry';
 				}
 
 				$data = $this->row->get('params');
