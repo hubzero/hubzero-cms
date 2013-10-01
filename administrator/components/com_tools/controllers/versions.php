@@ -224,7 +224,7 @@ class ToolsControllerVersions extends Hubzero_Controller
 			return;
 		}
 
-		$row->hostreq = explode(',', $row->hostreq);
+		$row->hostreq = (is_array($row->hostreq) ? explode(',', $row->hostreq[0]) : explode(',', $row->hostreq));
 
 		$hostreq = array();
 		foreach ($row->hostreq as $req)
