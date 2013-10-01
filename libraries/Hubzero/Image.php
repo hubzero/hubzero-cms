@@ -34,49 +34,42 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Helper class for image manipulation
  */
-class Hubzero_Image
+class Hubzero_Image extends JObject
 {
 	/**
 	 * Path to image
 	 *
 	 * @var string
 	 */
-	private $source 		= NULL;
+	private $source = NULL;
 	
 	/**
 	 * Manipulated image data
 	 *
 	 * @var string
 	 */
-	private $resource 		= NULL;
+	private $resource = NULL;
 	
 	/**
 	 * Image type (png, gif, jpg)
 	 *
 	 * @var string
 	 */
-	private $image_type 	= IMAGETYPE_PNG;
+	private $image_type = IMAGETYPE_PNG;
 	
 	/**
 	 * EXIF image data
 	 *
 	 * @var string
 	 */
-	private $exif_data 		= NULL;
+	private $exif_data = NULL;
 	
 	/**
 	 * Configuration options
 	 *
 	 * @var array
 	 */
-	private $config			= array();
-	
-	/**
-	 * Container for error messages
-	 *
-	 * @var array
-	 */
-	private $errors 		= array();
+	private $config = array();
 
 	/**
 	 * Constructor
@@ -94,49 +87,25 @@ class Hubzero_Image
 		{
 			return;
 		}
-		
+
 		//check to see if we have an image to work with
 		if (is_null($this->source))//&& is_file($this->source))
 		{
-			$this->setError( JText::_('[ERROR] Image Source not set.') );
+			$this->setError(JText::_('[ERROR] Image Source not set.'));
 			return;
 		}
-		
+
 		//check to make sure its a file if not remote
 		if (!$isRemoteImage && !is_file($this->source))
 		{
-			$this->setError( JText::_('[ERROR] Image doesn\'t exist on the server.') );
+			$this->setError(JText::_('[ERROR] Image doesn\'t exist on the server.'));
 			return;
 		}
-		
+
 		//open image
-		if(!$this->openImage())
+		if (!$this->openImage())
 		{
 			throw new Exception('Invalid/corrupted image file.');
-		}
-		
-	}
-
-	/**
-	 * Get an array of error messages
-	 * 
-	 * @return     array
-	 */
-	public function getError()
-	{
-		return $this->errors;
-	}
-	
-	/**
-	 * Set error messages
-	 * 
-	 * @param    String    $errorMessage
-	 */
-	public function setError( $errorMessage = '' )
-	{
-		if ($errorMessage != '')
-		{
-			$this->errors[] = $errorMessage;
 		}
 	}
 
@@ -176,7 +145,7 @@ class Hubzero_Image
 		$installed_exts = get_loaded_extensions();
 		if (!in_array($package, $installed_exts))
 		{
-			$this->setError("[ERROR] You are missing the required PHP package {$package}.");
+			$this->setError(JText::sprintf('[ERROR] You are missing the required PHP package %s.', $package));
 			return false;
 		}
 
@@ -191,10 +160,11 @@ class Hubzero_Image
 	private function openImage()
 	{
 		$image_atts = getimagesize($this->source);
-		if(empty($image_atts)) {
-			return false;	
+		if (empty($image_atts)) 
+		{
+			return false;
 		}
-		
+
 		switch ($image_atts['mime'])
 		{
 			case 'image/jpeg':
@@ -209,6 +179,9 @@ class Hubzero_Image
 				$this->image_type = IMAGETYPE_PNG;
 				$this->resource   = imagecreatefrompng($this->source);
 			break;
+			default:
+				return false;
+			break;
 		}
 
 		if ($this->image_type == IMAGETYPE_PNG)
@@ -221,9 +194,10 @@ class Hubzero_Image
 		{
 			$this->autoRotate();
 		}
-		
-		if(!empty($this->resource)) {
-			return true;	
+
+		if (!empty($this->resource)) 
+		{
+			return true;
 		}
 	}
 
@@ -236,7 +210,7 @@ class Hubzero_Image
 	{
 		if (!$this->checkPackageRequirements('exif'))
 		{
-			$this->errors[] = 'You need the PHP exif library installed to rotate image based on Exif Orientation value.';
+			$this->setError(JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
 			return false;
 		}
 
@@ -406,7 +380,7 @@ class Hubzero_Image
 			if (!$use_height)
 			{
 				$new_w = $new_dimension;
-				$new_h = floor($height * ($new_w / $width));				
+				$new_h = floor($height * ($new_w / $width));
 			}
 			else
 			{
@@ -445,10 +419,9 @@ class Hubzero_Image
 	 */
 	public function getGeoLocation()
 	{
-		
 		if (!$this->checkPackageRequirements('exif'))
-		{                
-			$this->errors[] = "You need the PHP exif library installed to rotate image based on Exif Orientation value.";
+		{
+			$this->setError(JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
 			return false;
 		}
 
@@ -517,7 +490,7 @@ class Hubzero_Image
 	 */
 	private function geo_pretty_fracs2dec($fracs) 
 	{
-		return	$this->geo_frac2dec($fracs[0]) . '&deg; ' . $this->geo_frac2dec($fracs[1]) . '&prime; ' . $this->geo_frac2dec($fracs[2]) . '&Prime; ';
+		return $this->geo_frac2dec($fracs[0]) . '&deg; ' . $this->geo_frac2dec($fracs[1]) . '&prime; ' . $this->geo_frac2dec($fracs[2]) . '&Prime; ';
 	}
 
 	/**
@@ -528,7 +501,7 @@ class Hubzero_Image
 	 */
 	private function geo_single_fracs2dec($fracs) 
 	{
-		return	$this->geo_frac2dec($fracs[0]) + $this->geo_frac2dec($fracs[1]) / 60 + $this->geo_frac2dec($fracs[2]) / 3600;
+		return $this->geo_frac2dec($fracs[0]) + $this->geo_frac2dec($fracs[1]) / 60 + $this->geo_frac2dec($fracs[2]) / 3600;
 	}
 
 	/**
@@ -565,7 +538,7 @@ class Hubzero_Image
 
 			if (!is_dir($info['dirname']) && $make_paths == false)
 			{
-				$this->errors[] = 'You must supply a valid path or allow save function to create recursive path';
+				$this->setError(JText::_('You must supply a valid path or allow save function to create recursive path'));
 				return;
 			}
 
@@ -593,4 +566,4 @@ class Hubzero_Image
 			}
 		}
 	}
-}	
+}

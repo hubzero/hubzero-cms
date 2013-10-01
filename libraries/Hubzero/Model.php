@@ -95,6 +95,11 @@ abstract class Model extends Object
 			$cls = $this->_tbl_name;
 			$this->_tbl = new $cls($this->_db);
 
+			if (!($this->_tbl instanceof \JTable))
+			{
+				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+			}
+
 			if (is_numeric($oid) || is_string($oid))
 			{
 				// Make sure $oid isn't empty
@@ -150,13 +155,43 @@ abstract class Model extends Object
 	}
 
 	/**
+	 * Method to get the Database connector object.
+	 *
+	 * @return  object The internal database connector object.
+	 */
+	public function getDbo()
+	{
+		return $this->_db;
+	}
+
+	/**
+	 * Method to set the database connector object.
+	 *
+	 * @param   object  &$db  A database connector object to be used by the table object.
+	 * @return  boolean  True on success.
+	 */
+	public function setDbo(&$db)
+	{
+		// Make sure the new database object is a JDatabase.
+		if (!($db instanceof \JDatabase))
+		{
+			return false;
+		}
+
+		$this->_db =& $db;
+		$this->_tbl->setDBO($this->_db);
+
+		return true;
+	}
+
+	/**
 	 * Check if the entry exists (i.e., has a database record)
 	 * 
 	 * @return     boolean True if record exists, False if not
 	 */
 	public function exists()
 	{
-		if (!in_array('id', array_keys($this->_tbl->getProperties())))
+		if (!array_key_exists('id', $this->_tbl->getFields())) //getProperties
 		{
 			return true;
 		}
@@ -174,7 +209,7 @@ abstract class Model extends Object
 	 */
 	public function isPublished()
 	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
+		if (!array_key_exists('state', $this->_tbl->getFields())) //getProperties
 		{
 			return true;
 		}
@@ -192,7 +227,7 @@ abstract class Model extends Object
 	 */
 	public function isUnpublished()
 	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
+		if (!array_key_exists('state', $this->_tbl->getFields())) //getProperties
 		{
 			return false;
 		}
@@ -210,7 +245,7 @@ abstract class Model extends Object
 	 */
 	public function isDeleted()
 	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
+		if (!array_key_exists('state', $this->_tbl->getFields())) //getProperties
 		{
 			return false;
 		}
@@ -293,12 +328,6 @@ abstract class Model extends Object
 	 */
 	public function store($check=true)
 	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
 		// Validate data?
 		if ($check)
 		{

@@ -33,7 +33,6 @@ namespace Hubzero;
 use SeekableIterator;
 use Countable;
 use ArrayAccess;
-use Hubzero\Exception\OutOfBoundsException;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -151,7 +150,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 
 		if (!$this->valid()) 
 		{
-			throw new OutOfBoundsException('Invalid seek position');
+			throw new \OutOfBoundsException(JText::_('Invalid seek position'));
 		}
 	}
 
