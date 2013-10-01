@@ -41,6 +41,7 @@ else
 {
 	$legend = 'Edit collection';
 }
+$default = $this->params->get('access-plugin');
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -53,9 +54,9 @@ else
 		<label for="field-access">
 			<?php echo JText::_('Privacy'); ?>
 			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see this collection)'); ?></option>
-				<option value="1"<?php if ($this->entry->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Only registered users of the hub'); ?></option>
-				<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Only group members'); ?></option>
+				<option value="0"<?php if ($this->entry->get('access', $default) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see this collection)'); ?></option>
+				<option value="1"<?php if ($this->entry->get('access', $default) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Only registered users of the hub'); ?></option>
+				<option value="4"<?php if ($this->entry->get('access', $default) == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Only group members'); ?></option>
 			</select>
 		</label>
 
@@ -82,7 +83,7 @@ else
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="action" value="savecollection" />
-		
+
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 	</p>

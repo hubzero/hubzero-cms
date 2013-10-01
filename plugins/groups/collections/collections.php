@@ -482,11 +482,11 @@ class plgGroupsCollections extends Hubzero_Plugin
 			'count'  => true
 		);
 
-		if (!$this->params->get('access-manage-collection')) 
+		/*if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
 			$count['access'] = 0;
-		}
+		}*/
 
 		$filters['count'] = true;
 		$view->total = $this->model->collections($filters);
@@ -1632,7 +1632,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 			return $this->_editcollection($row);
 		}
 		/*
-		if ($row->get('access') != 0 && $row->get('access') != 4)
+		if (!in_array($row->get('access'), array(1, 4)))
 		{
 			$row->set('access', 0);
 		}
