@@ -426,7 +426,7 @@ class KbControllerCategories extends Hubzero_Controller
 		}
 
 		// Load the article
-		$row = new KbArticle($this->database);
+		$row = new KbCategory($this->database);
 		$row->load($id);
 		$row->access = $access;
 
