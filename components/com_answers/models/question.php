@@ -39,10 +39,9 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'response.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'iterator.php');
 
 /**
- * Courses model class for a forum
+ * Answers mdoel class for a question
  */
 class AnswersModelQuestion extends AnswersModelAbstract
 {
@@ -68,7 +67,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	private $_comment = null;
 
 	/**
-	 * AnswersModelIterator
+	 * \Hubzero\ItemList
 	 * 
 	 * @var object
 	 */
@@ -84,7 +83,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Flag for if authorization checks have been run
 	 * 
-	 * @var mixed
+	 * @var boolean
 	 */
 	private $_authorized = false;
 
@@ -102,7 +101,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 *     $offering = AnswersModelQuestion::getInstance($id);
 	 *
 	 * @param      integer $oid Question ID
-	 * @return     object ForumModelCourse
+	 * @return     object AnswersModelQuestion
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -218,8 +217,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Get a list of responses
 	 * 
-	 * @param      string $rtrn    Data type to return [count, list]
-	 * @param      array  $filters Filters to apply to query
+	 * @param      string  $rtrn    Data type to return [count, list]
+	 * @param      array   $filters Filters to apply to query
+	 * @param      boolean $clear   Clear cached data?
 	 * @return     mixed Returns an integer or array depending upon format chosen
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear=false)
@@ -276,7 +276,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!is_a($this->_comments, 'AnswersModelIterator') || $clear)  //!isset($this->_comments) || 
+				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear) 
 				{
 					if ($results = $tbl->getResults($filters))
 					{
@@ -289,7 +289,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->_comments = new AnswersModelIterator($results);
+					$this->_comments = new \Hubzero\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -329,7 +329,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if ($this->get('chosen', null) === null || !is_a($this->get('chosen'), 'AnswersModelIterator'))
+				if ($this->get('chosen', null) === null || !($this->get('chosen') instanceof \Hubzero\ItemList))
 				{
 					if ($results = $tbl->getResults($filters))
 					{
@@ -342,7 +342,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->set('chosen', new AnswersModelIterator($results));
+					$this->set('chosen', new \Hubzero\ItemList($results));
 				}
 				return $this->get('chosen');
 			break;
@@ -355,7 +355,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * 
 	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
 	 * @param      integer $admin Include amdin tags? (defaults to no)
-	 * @return     boolean
+	 * @return     mixed
 	 */
 	public function tags($as='cloud', $admin=0)
 	{
@@ -439,7 +439,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 
 	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @return     string
 	 */
 	public function link($type='')
 	{
@@ -491,7 +491,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * 
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -504,14 +504,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				{
 					return $this->get('question_parsed');
 				}
-
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				//$config = JComponentHelper::getParams($option);
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
@@ -556,11 +548,11 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the subject in various formats
 	 * 
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     string
 	 */
 	public function subject($as='parsed', $shorten=0)
 	{
@@ -573,14 +565,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				{
 					return $this->get('subject_parsed');
 				}
-
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				//$config = JComponentHelper::getParams($option);
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
 

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,17 +32,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'iterator.php');
 
 /**
- * Courses model class for a forum
+ * Answers model for a comment
  */
 class AnswersModelComment extends AnswersModelAbstract
 {
 	/**
-	 * ForumTablePost
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
 	protected $_tbl_name = 'Hubzero_Comment';
 
@@ -54,14 +53,7 @@ class AnswersModelComment extends AnswersModelAbstract
 	protected $_scope = 'answercomment';
 
 	/**
-	 * BlogModelComment
-	 * 
-	 * @var object
-	 */
-	private $_comment = null;
-
-	/**
-	 * BlogModelIterator
+	 * \Hubzero\ItemList
 	 * 
 	 * @var object
 	 */
@@ -84,7 +76,7 @@ class AnswersModelComment extends AnswersModelAbstract
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
+	 * @param      integer $id ID or alias
 	 * @return     void
 	 */
 	public function __construct($oid)
@@ -96,15 +88,14 @@ class AnswersModelComment extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get a list or count of comments
 	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
+	 * @param      string  $rtrn    Data format to return
+	 * @param      array   $filters Filters to apply to data fetch
+	 * @param      boolean $clear   Clear cached data?
 	 * @return     mixed
 	 */
-	public function replies($rtrn='list', $filters=array())
+	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
 		if (!isset($filters['referenceid']))
 		{
@@ -118,10 +109,10 @@ class AnswersModelComment extends AnswersModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count))
+				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear)
 				{
 					$this->_comments_count = 0;
-					//$this->_comments_count = (int) $tbl->count($filters);
+
 					if (!$this->_comments) 
 					{
 						$c = $this->comments('list', $filters);
@@ -148,7 +139,7 @@ class AnswersModelComment extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_comments) || !is_a($this->_comments, 'AnswersModelIterator'))
+				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear)
 				{
 					if ($this->get('replies', null) !== null)
 					{
@@ -170,7 +161,7 @@ class AnswersModelComment extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->_comments = new AnswersModelIterator($results);
+					$this->_comments = new \Hubzero\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -178,11 +169,11 @@ class AnswersModelComment extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the contents of this entry in various formats
 	 * 
-	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      string  $as      Format to return state in [raw, parsed]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -195,14 +186,6 @@ class AnswersModelComment extends AnswersModelAbstract
 				{
 					return $this->get('comment_parsed');
 				}
-
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				//$config = JComponentHelper::getParams($option);
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
@@ -241,7 +224,12 @@ class AnswersModelComment extends AnswersModelAbstract
 
 			case 'raw':
 			default:
-				return $this->get('comment');
+				$content = $this->get('comment');
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+				}
+				return $content;
 			break;
 		}
 	}
@@ -251,7 +239,7 @@ class AnswersModelComment extends AnswersModelAbstract
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 
 	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @return     string
 	 */
 	public function link($type='')
 	{

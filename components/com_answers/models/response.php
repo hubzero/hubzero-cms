@@ -34,18 +34,17 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'comment.php');
 
 /**
- * Courses model class for a forum
+ * Answers model for a question response
  */
 class AnswersModelResponse extends AnswersModelAbstract
 {
 	/**
-	 * ForumTablePost
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
 	protected $_tbl_name = 'AnswersTableResponse';
 
@@ -57,14 +56,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	protected $_scope = 'answer';
 
 	/**
-	 * BlogModelComment
-	 * 
-	 * @var object
-	 */
-	private $_comment = null;
-
-	/**
-	 * BlogModelIterator
+	 * \Hubzero\ItemList
 	 * 
 	 * @var object
 	 */
@@ -85,15 +77,14 @@ class AnswersModelResponse extends AnswersModelAbstract
 	private $_base = null;
 
 	/**
-	 * Get the creator of this entry
+	 * Get a list or count of comments
 	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
+	 * @param      string  $rtrn    Data format to return
+	 * @param      array   $filters Filters to apply to data fetch
+	 * @param      boolean $clear   Clear cached data?
 	 * @return     mixed
 	 */
-	public function replies($rtrn='list', $filters=array())
+	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
 		if (!isset($filters['referenceid']))
 		{
@@ -107,10 +98,10 @@ class AnswersModelResponse extends AnswersModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count))
+				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear)
 				{
 					$this->_comments_count = 0;
-					//$this->_comments_count = (int) $tbl->count($filters);
+
 					if (!$this->_comments) 
 					{
 						$c = $this->comments('list', $filters);
@@ -137,7 +128,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_comments) || !is_a($this->_comments, 'AnswersModelIterator'))
+				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear)
 				{
 					$tbl = new Hubzero_Comment($this->_db);
 
@@ -161,7 +152,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->_comments = new AnswersModelIterator($results);
+					$this->_comments = new \Hubzero\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -169,11 +160,11 @@ class AnswersModelResponse extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the contents of this entry in various formats
 	 * 
-	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      string  $as      Format to return state in [raw, parsed]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -186,14 +177,6 @@ class AnswersModelResponse extends AnswersModelAbstract
 				{
 					return $this->get('answer_parsed');
 				}
-
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				//$config = JComponentHelper::getParams($option);
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
@@ -324,9 +307,8 @@ class AnswersModelResponse extends AnswersModelAbstract
 	}
 
 	/**
-	 * Store changes to this offering
+	 * Mark a response as "Accepted"
 	 *
-	 * @param     boolean $check Perform data validation check?
 	 * @return    boolean False if error, True on success
 	 */
 	public function accept()

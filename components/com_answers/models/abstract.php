@@ -35,172 +35,48 @@ define('ANSWERS_STATE_OPEN',    0);
 define('ANSWERS_STATE_CLOSED',  1);
 define('ANSWERS_STATE_DELETED', 2);
 
-if (!defined('ANSWERS_DATE_FORMAT'))
-{
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		define('ANSWERS_DATE_YEAR', "Y");
-		define('ANSWERS_DATE_MONTH', "m");
-		define('ANSWERS_DATE_DAY', "d");
-		define('ANSWERS_DATE_TIMEZONE', false);
-		define('ANSWERS_DATE_FORMAT', 'd M Y');
-		define('ANSWERS_TIME_FORMAT', 'h:i A');
-	}
-	else
-	{
-		define('ANSWERS_DATE_YEAR', "%Y");
-		define('ANSWERS_DATE_MONTH', "%m");
-		define('ANSWERS_DATE_DAY', "%d");
-		define('ANSWERS_DATE_TIMEZONE', 0);
-		define('ANSWERS_DATE_FORMAT', '%d %b %Y');
-		define('ANSWERS_TIME_FORMAT', '%I:%M %p');
-	}
-}
-
 /**
- * Courses model class for a course
+ * Base class for Answers models to extend
  */
-abstract class AnswersModelAbstract extends JObject
+class AnswersModelAbstract extends \Hubzero\Model
 {
 	/**
-	 * CoursesTableAsset
+	 * Item scope
 	 * 
-	 * @var object
-	 */
-	protected $_tbl_name = null;
-
-	/**
-	 * CoursesTableAsset
-	 * 
-	 * @var object
+	 * @var string
 	 */
 	protected $_scope = NULL;
 
 	/**
-	 * CoursesTableAsset
-	 * 
-	 * @var object
-	 */
-	protected $_tbl = NULL;
-
-	/**
-	 * CoursesTableInstance
+	 * JUser
 	 * 
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
 	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	protected $_db = NULL;
-
-	/**
-	 * JParameter
+	 * JRegistry
 	 * 
 	 * @var object
 	 */
 	protected $_config = NULL;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
-	 */
-	public function __construct($oid)
-	{
-		$this->_db = JFactory::getDBO();
-
-		if ($this->_tbl_name)
-		{
-			$cls = $this->_tbl_name;
-			$this->_tbl = new $cls($this->_db);
-
-			if (is_numeric($oid) || is_string($oid))
-			{
-				if ($oid)
-				{
-					$this->_tbl->load($oid);
-				}
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
-			}
-		}
-	}
-
-	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed  The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed  Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the entry exists (i.e., has a database record)
-	 * 
-	 * @return     boolean True if record exists, False if not
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Return a formatted timestamp
 	 * 
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param      string $as What format to return
+	 * @return     string
 	 */
 	public function created($as='')
 	{
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), ANSWERS_DATE_FORMAT, ANSWERS_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), ANSWERS_TIME_FORMAT, ANSWERS_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -262,121 +138,6 @@ abstract class AnswersModelAbstract extends JObject
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Was the entry deleted?
-	 * 
-	 * @return     boolean
-	 */
-	public function isDeleted()
-	{
-		if ($this->get('state') == ANSWERS_STATE_DELETED) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Bind data to the model
-	 * 
-	 * @param      mixed $data Object or array
-	 * @return     boolean True on success, False on error
-	 */
-	public function bind($data=null)
-	{
-		if (is_object($data))
-		{
-			$res = $this->_tbl->bind($data);
-
-			if ($res)
-			{
-				$properties = $this->_tbl->getProperties();
-				foreach (get_object_vars($data) as $key => $property)
-				{
-					if (!array_key_exists($key, $properties))
-					{
-						$this->_tbl->set('__' . $key, $property);
-					}
-				}
-			}
-		}
-		else if (is_array($data))
-		{
-			$res = $this->_tbl->bind($data);
-
-			if ($res)
-			{
-				$properties = $this->_tbl->getProperties();
-				foreach (array_keys($data) as $key)
-				{
-					if (!array_key_exists($key, $properties))
-					{
-						$this->_tbl->set('__' . $key, $data[$key]);
-					}
-				}
-			}
-		}
-		else
-		{
-			throw new InvalidArgumentException(JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data)));
-		}
-
-		return $res;
-	}
-
-	/**
-	 * Store changes to this database entry
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Delete a record
-	 * 
-	 * @return     boolean True on success, false on error
-	 */
-	public function delete()
-	{
-		// Remove record from the database
-		if (!$this->_tbl->delete())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		// Hey, no errors!
-		return true;
 	}
 
 	/**

@@ -41,22 +41,6 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-/*$dateFormat = '%Y-%m-%d';
-$timeFormat = '%H:%M:s';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'Y-m-d';
-	$timeFormat = 'H:i:s';
-	$tz = true;
-}
-
-$create_date = NULL;
-if (intval( $this->row->created ) <> 0)
-{
-	$create_date = JHTML::_('date', $this->row->created);
-}*/
-
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
 ?>
@@ -143,7 +127,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>
-						<td><?php echo JHTML::_('calendar', $this->row->get('created', date('Y-m-d H:i:s', time())), 'answer[created]', 'created', ANSWERS_DATE_FORMAT . ' ' . ANSWERS_TIME_FORMAT, array('class' => 'calendar-field')); ?></td>
+						<td><?php echo JHTML::_('calendar', $this->row->get('created', date('Y-m-d H:i:s', time())), 'answer[created]', 'created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
 					</tr>
 					<tr>
 						<td class="key">Helpful:</td>
