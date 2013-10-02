@@ -87,8 +87,7 @@ class BlogControllerComments extends Hubzero_Controller
 			'int'
 		);
 
-		$this->view->entry = new BlogTableEntry($this->database);
-		$this->view->entry->load($this->view->filters['entry_id']);
+		$this->view->entry = new BlogModelEntry($this->view->filters['entry_id']);
 
 		// Instantiate our HelloEntry object
 		$obj = new BlogTableComment($this->database);
@@ -106,9 +105,11 @@ class BlogControllerComments extends Hubzero_Controller
 			foreach ($rows as $v)
 			{
 				//$v->name = '';
-				$pt = $v->parent;
+				$k = new BlogModelComment($v);
+
+				$pt = $k->get('parent');
 				$list = @$children[$pt] ? $children[$pt] : array();
-				array_push($list, $v);
+				array_push($list, $k);
 				$children[$pt] = $list;
 			}
 
@@ -160,7 +161,7 @@ class BlogControllerComments extends Hubzero_Controller
 		{
 			foreach ($children[$id] as $v)
 			{
-				$id = $v->id;
+				$id = $v->get('id');
 
 				if ($type) 
 				{
@@ -173,28 +174,7 @@ class BlogControllerComments extends Hubzero_Controller
 					$spacer = '&nbsp;&nbsp;';
 				}
 
-				if (!is_a($v, 'stdClass'))
-				{
-					$data = $v->toArray();
-				}
-				else 
-				{
-					foreach (get_object_vars($v) as $key => $val) 
-					{
-						if (substr($key, 0, 1) != '_') 
-						{
-							$data[$key] = $val;
-						}
-					}
-				}
-
-				$k = new stdClass;
-				foreach ($data as $key => $val)
-				{
-					$k->$key = $val;
-				}
-
-				if ($v->parent == 0) 
+				if ($v->get('parent') == 0) 
 				{
 					$txt = '';
 				} 
@@ -202,11 +182,11 @@ class BlogControllerComments extends Hubzero_Controller
 				{
 					$txt = $pre;
 				}
-				$pt = $v->parent;
+				$pt = $v->get('parent');
 
-				$list[$id] = $k;
-				$list[$id]->treename = "$indent$txt";
-				$list[$id]->children = count(@$children[$id]);
+				$list[$id] = $v;
+				$list[$id]->set('treename', "$indent$txt");
+				$list[$id]->set('children', count(@$children[$id]));
 				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
 			}
 		}
@@ -249,15 +229,14 @@ class BlogControllerComments extends Hubzero_Controller
 			}
 
 			// Load the article
-			$this->view->row = new BlogTableComment($this->database);
-			$this->view->row->load($id);
+			$this->view->row = new BlogModelComment($id);
 		}
 
-		if (!$this->view->row->id)
+		if (!$this->view->row->exists())
 		{
-			$this->view->row->entry_id   = JRequest::getInt('entry_id', 0);
-			$this->view->row->created_by = $this->juser->get('id');
-			$this->view->row->created    = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->view->row->set('entry_id', JRequest::getInt('entry_id', 0));
+			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created', date('Y-m-d H:i:s', time()));  // use gmdate() ?
 		}
 
 		// Set any errors
@@ -285,10 +264,9 @@ class BlogControllerComments extends Hubzero_Controller
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
-		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new BlogTableComment($this->database);
+		$row = new BlogModelComment($fields['id']);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -296,16 +274,8 @@ class BlogControllerComments extends Hubzero_Controller
 			return;
 		}
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -330,19 +300,16 @@ class BlogControllerComments extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids      = JRequest::getVar('id', array());
-		$entry_id = JRequest::getInt('entry_id', 0);
+		$ids = JRequest::getVar('id', array());
 
 		if (count($ids) > 0) 
 		{
-			// Create a category object
-			$entry = new BlogTableComment($this->database);
-
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
+				$entry = new BlogModelComment(intval($id));
 				// Delete the entry
-				if (!$entry->delete(intval($id)))
+				if (!$entry->delete())
 				{
 					$this->addComponentMessage($entry->getError(), 'error');
 				}
@@ -351,7 +318,7 @@ class BlogControllerComments extends Hubzero_Controller
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $entry_id,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . JRequest::getInt('entry_id', 0),
 			JText::_('Comments deleted!')
 		);
 	}
@@ -363,11 +330,9 @@ class BlogControllerComments extends Hubzero_Controller
 	 */
 	public function cancel()
 	{
-		$entry_id = JRequest::getInt('entry_id', 0);
-
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $entry_id
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . JRequest::getInt('entry_id', 0)
 		);
 	}
 }

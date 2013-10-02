@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -46,25 +46,18 @@ class BlogModel extends JObject
 	private $_tbl = null;
 
 	/**
-	 * ForumModelCategory
+	 * BlogModelEntry
 	 * 
 	 * @var object
 	 */
 	private $_entry = null;
 
 	/**
-	 * ForumModelCategory
+	 * \Hubzero\ItemList
 	 * 
 	 * @var object
 	 */
 	private $_entries = null;
-
-	/**
-	 * Flag for if authorization checks have been run
-	 * 
-	 * @var mixed
-	 */
-	private $_authorized = false;
 
 	/**
 	 * JDatabase
@@ -74,23 +67,17 @@ class BlogModel extends JObject
 	private $_db = NULL;
 
 	/**
-	 * Container for properties
+	 * JRegistry
 	 * 
 	 * @var array
 	 */
 	private $_config;
 
 	/**
-	 * Serialized string of filters
-	 * 
-	 * @var string
-	 */
-	private $_filters;
-
-	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id Course ID or alias
+	 * @param      string  $scope    Blog scope [site, group, member]
+	 * @param      integer $scope_id Scope ID if scope is member or group
 	 * @return     void
 	 */
 	public function __construct($scope='site', $scope_id=0)
@@ -119,13 +106,11 @@ class BlogModel extends JObject
 	}
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to a blog model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param      string  $scope    Blog scope [site, group, member]
+	 * @param      integer $scope_id Scope ID if scope is member or group
+	 * @return     object BlogModel
 	 */
 	static function &getInstance($scope='site', $scope_id=0)
 	{
@@ -149,12 +134,9 @@ class BlogModel extends JObject
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @access	public
 	 * @param	string $property The name of the property
 	 * @param	mixed  $default The default value
 	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
  	 */
 	public function get($property, $default=null)
 	{
@@ -168,12 +150,9 @@ class BlogModel extends JObject
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @access	public
 	 * @param	string $property The name of the property
 	 * @param	mixed  $value The value of the property to set
 	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
 	 */
 	public function set($property, $value = null)
 	{
@@ -265,7 +244,7 @@ class BlogModel extends JObject
 				{
 					$results = array();
 				}
-				return new BlogModelIterator($results);
+				return new \Hubzero\ItemList($results);
 			break;
 
 			case 'recent':
@@ -280,14 +259,14 @@ class BlogModel extends JObject
 				{
 					$results = array();
 				}
-				return new BlogModelIterator($results);
+				return new \Hubzero\ItemList($results);
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_entries) || !is_a($this->_entries, 'BlogModelIterator'))
-				{
+				//if (!($this->_entries instanceof \Hubzero\ItemList))
+				//{
 					if ($results = $this->_tbl->getRecords($filters))
 					{
 						foreach ($results as $key => $result)
@@ -300,8 +279,8 @@ class BlogModel extends JObject
 						$results = array();
 					}
 					//$this->_entries = new BlogModelIterator($results);
-				}
-				return new BlogModelIterator($results);
+				//}
+				return new \Hubzero\ItemList($results);
 			break;
 		}
 		return null;
@@ -315,18 +294,15 @@ class BlogModel extends JObject
 	 */
 	public function access($action='view')
 	{
-		if (!$this->_authorized)
+		if (!$this->params->get('access-check-done', false))
 		{
 			$juser = JFactory::getUser();
 			if ($juser->get('guest'))
 			{
-				$this->_authorized = true;
+				$this->params->set('access-check-done', true);
 			}
 			else
 			{
-				// Anyone logged in can create a forum
-				//$this->params->set('access-create-entry', true);
-
 				// Check if they're a site admin
 				if (version_compare(JVERSION, '1.6', 'lt'))
 				{
@@ -350,7 +326,7 @@ class BlogModel extends JObject
 					$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
 				}
 
-				$this->_authorized = true;
+				$this->params->set('access-check-done', true);
 			}
 		}
 		return $this->params->get('access-' . strtolower($action) . '-entry');

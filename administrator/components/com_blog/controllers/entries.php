@@ -95,15 +95,16 @@ class BlogControllerEntries extends Hubzero_Controller
 			0, 
 			'int'
 		);
+		$this->view->filters['state'] = 'all';
 
 		// Instantiate our HelloEntry object
-		$obj = new BlogTableEntry($this->database);
+		$obj = new BlogModel();
 
 		// Get record count
-		$this->view->total = $obj->getEntriesCount($this->view->filters);
+		$this->view->total = $obj->entries('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $obj->getEntries($this->view->filters);
+		$this->view->rows = $obj->entries('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -162,29 +163,14 @@ class BlogControllerEntries extends Hubzero_Controller
 			}
 
 			// Load the article
-			$this->view->row = new BlogTableEntry($this->database);
-			$this->view->row->load($id);
+			$this->view->row = new BlogModelEntry($id);
 		}
 
-		if (!$this->view->row->id)
+		if (!$this->view->row->exists())
 		{
-			$this->view->row->created_by = $this->juser->get('id');
-			$this->view->row->created    = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$this->view->row->publish_up = date('Y-m-d H:i:s', time());
-			$this->view->tags = '';
-		}
-		else 
-		{
-			/*$bt = new BlogTags($this->database);
-			$this->view->tags = $bt->get_tag_string($this->view->row->id);*/
-			$bt = new BlogModelTags($this->view->row->id);
-			$this->view->tags = $bt->render('string');
-		}
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$m = new BlogModelEntry();
-			$this->view->form = $m->getForm();
+			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created', date('Y-m-d H:i:s', time()));  // use gmdate() ?
+			$this->view->row->set('publish_up', date('Y-m-d H:i:s', time()));
 		}
 
 		// Set any errors
@@ -223,10 +209,9 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
-		//$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new BlogTableEntry($this->database);
+		$row = new BlogModelEntry($fields['id']);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -234,16 +219,8 @@ class BlogControllerEntries extends Hubzero_Controller
 			return;
 		}
 
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -251,11 +228,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 
 		// Process tags
-		$bt = new BlogModelTags($row->id);
-		$bt->setTags(
-			trim(JRequest::getVar('tags', '')), 
-			$this->juser->get('id')
-		);
+		$row->tag(trim(JRequest::getVar('tags', '')));
 
 		if ($redirect)
 		{
@@ -285,14 +258,12 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		if (count($ids) > 0) 
 		{
-			// Create a category object
-			$entry = new BlogTableEntry($this->database);
-
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
+				$entry = new BlogModelEntry(intval($id));
 				// Delete the entry
-				if (!$entry->delete(intval($id)))
+				if (!$entry->delete())
 				{
 					$this->addComponentMessage($entry->getError(), 'error');
 				}
@@ -356,9 +327,8 @@ class BlogControllerEntries extends Hubzero_Controller
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new BlogTableEntry($this->database);
-			$row->load(intval($id));
-			$row->state = $state;
+			$row = new BlogModelEntry(intval($id));
+			$row->set('state', $state);
 
 			// Store new content
 			if (!$row->store()) 
@@ -418,9 +388,8 @@ class BlogControllerEntries extends Hubzero_Controller
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new BlogTableEntry($this->database);
-			$row->load($id);
-			$row->allow_comments = $state;
+			$row = new BlogModelEntry(intval($id));
+			$row->set('allow_comments', $state);
 
 			// Store new content
 			if (!$row->store()) 

@@ -31,41 +31,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	define('BLOG_DATE_YEAR', "Y");
-	define('BLOG_DATE_MONTH', "m");
-	define('BLOG_DATE_DAY', "d");
-	define('BLOG_DATE_TIMEZONE', true);
-	define('BLOG_DATE_FORMAT', 'd M Y');
-	define('BLOG_TIME_FORMAT', 'H:i p');
-}
-else
-{
-	define('BLOG_DATE_YEAR', "%Y");
-	define('BLOG_DATE_MONTH', "%m");
-	define('BLOG_DATE_DAY', "%d");
-	define('BLOG_DATE_TIMEZONE', 0);
-	define('BLOG_DATE_FORMAT', '%d %b %Y');
-	define('BLOG_TIME_FORMAT', '%I:%M %p');
-}
-
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a forum
  */
-class BlogModelEntry extends JObject
+class BlogModelEntry extends \Hubzero\Model
 {
 	/**
-	 * BlogTableEntry
+	 * Table name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_tbl = null;
+	protected $_tbl_name = 'BlogTableEntry';
 
 	/**
 	 * BlogModelComment
@@ -75,7 +55,7 @@ class BlogModelEntry extends JObject
 	private $_comment = null;
 
 	/**
-	 * BlogModelIterator
+	 * \Hubzero\ItemList
 	 * 
 	 * @var object
 	 */
@@ -89,13 +69,6 @@ class BlogModelEntry extends JObject
 	private $_comments_count = null;
 
 	/**
-	 * Flag for if authorization checks have been run
-	 * 
-	 * @var mixed
-	 */
-	private $_authorized = false;
-
-	/**
 	 * JUser
 	 * 
 	 * @var object
@@ -103,16 +76,18 @@ class BlogModelEntry extends JObject
 	private $_creator = NULL;
 
 	/**
-	 * JDatabase
+	 * JRegistry
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
+	public $params = NULL;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id Course ID or alias
+	 * @param      mixed   $oid      ID (int) or alias (string)
+	 * @param      string  $scope    site|member|group
+	 * @param      integer $group_id Group ID if scope is 'group'
 	 * @return     void
 	 */
 	public function __construct($oid, $scope=null, $group_id=null)
@@ -136,29 +111,9 @@ class BlogModelEntry extends JObject
 				$this->_tbl->loadAlias($oid, $scope, null, $group_id);
 			}
 		}
-		else if (is_object($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (get_object_vars($oid) as $key => $property)
-			{
-				if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-				{
-					$this->_tbl->set('__' . $key, $property);
-				}
-			}
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (array_keys($oid) as $key)
-			{
-				if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
-				{
-					$this->_tbl->set('__' . $key, $oid[$key]);
-				}
-			}
+			$this->bind($oid);
 		}
 
 		$paramsClass = 'JParameter';
@@ -170,13 +125,15 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to a blog entry model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
+	 *     $offering = BlogModelentry::getInstance($alias, $scope, $group_id);
 	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param      mixed   $oid      ID (int) or alias (string)
+	 * @param      string  $scope    site|member|group
+	 * @param      integer $group_id Group ID if scope is 'group'
+	 * @return     object BlogModelentry
 	 */
 	static function &getInstance($oid=null, $scope=null, $group_id=null)
 	{
@@ -196,121 +153,14 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the forum exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isPublished()
-	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
-		{
-			return true;
-		}
-		if ($this->get('state') == 1) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isUnpublished()
-	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
-		{
-			return false;
-		}
-		if ($this->get('state') == 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function isDeleted()
-	{
-		if (!in_array('state', array_keys($this->_tbl->getProperties())))
-		{
-			return false;
-		}
-		if ($this->get('state') == 2 || $this->get('state') == -1) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Has the offering started?
+	 * Has the publish window started?
 	 * 
 	 * @return     boolean
 	 */
 	public function started()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists()) // || !$this->isPublished()) 
+		if (!$this->exists())
 		{
 			return false;
 		}
@@ -328,14 +178,14 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Has the offering ended?
+	 * Has the publish window ended?
 	 * 
 	 * @return     boolean
 	 */
 	public function ended()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists()) // || !$this->isPublished()) 
+		if (!$this->exists())
 		{
 			return true;
 		}
@@ -353,7 +203,7 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Check if the offering is available
+	 * Check if the entry is available
 	 * 
 	 * @return     boolean
 	 */
@@ -389,7 +239,7 @@ class BlogModelEntry extends JObject
 		{
 			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
-		if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && $this->_creator instanceof JUser)
 		{
 			return $this->_creator->get($property);
 		}
@@ -397,9 +247,10 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific comment
 	 * 
-	 * @return     void
+	 * @param      integer $id ID of specific comment to fetch
+	 * @return     object BlogModelComment
 	 */
 	public function comment($id=null)
 	{
@@ -427,15 +278,14 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Get a list of categories for a forum
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list or count of comments
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      string  $rtrn    Data format to return
+	 * @param      array   $filters Filters to apply to data fetch
+	 * @param      boolean $clear   Clear cached data?
+	 * @return     mixed
 	 */
-	public function comments($rtrn='list', $filters=array())
+	public function comments($rtrn='list', $filters=array(), $clear = false)
 	{
 		$tbl = new BlogTableComment($this->_db);
 
@@ -451,37 +301,37 @@ class BlogModelEntry extends JObject
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count))
+				if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear)
 				{
 					$this->_comments_count = 0;
-					//$this->_comments_count = (int) $tbl->count($filters);
+
 					if (!$this->_comments) 
 					{
 						$c = $this->comments('list', $filters);
 					}
-						foreach ($this->_comments as $com)
+					foreach ($this->_comments as $com)
+					{
+						$this->_comments_count++;
+						if ($com->replies()) 
 						{
-							$this->_comments_count++;
-							if ($com->replies()) 
+							foreach ($com->replies() as $rep)
 							{
-								foreach ($com->replies() as $rep)
+								$this->_comments_count++;
+								if ($rep->replies()) 
 								{
-									$this->_comments_count++;
-									if ($rep->replies()) 
-									{
-										$this->_comments_count += $rep->replies()->total();
-									}
+									$this->_comments_count += $rep->replies()->total();
 								}
 							}
 						}
 					}
+				}
 				return $this->_comments_count;
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_comments) || !is_a($this->_comments, 'BlogModelIterator'))
+				if (!($this->_comments instanceof \Hubzero\ItemList) || $clear)
 				{
 					if ($results = $tbl->getAllComments($this->get('id')))
 					{
@@ -494,7 +344,7 @@ class BlogModelEntry extends JObject
 					{
 						$results = array();
 					}
-					$this->_comments = new BlogModelIterator($results);
+					$this->_comments = new \Hubzero\ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -502,9 +352,11 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Check if the current user is enrolled
+	 * Get tags on an entry
 	 * 
-	 * @return     boolean
+	 * @param      string  $what  Data format to return (string, array, cloud)
+	 * @param      integer $admin Get admin tags? 0=no, 1=yes
+	 * @return     mixed
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
@@ -533,6 +385,9 @@ class BlogModelEntry extends JObject
 	/**
 	 * Tag the entry
 	 * 
+	 * @param      string  $tags    Tags to apply
+	 * @param      integer $user_id ID of tagger
+	 * @param      integer $admin   Tag as admin? 0=no, 1=yes
 	 * @return     boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -579,7 +434,7 @@ class BlogModelEntry extends JObject
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 
 	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @return     string
 	 */
 	public function link($type='')
 	{
@@ -638,8 +493,8 @@ class BlogModelEntry extends JObject
 				{
 					$link .= '&task=';
 				}
-				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_YEAR, BLOG_DATE_TIMEZONE) . '/';
-				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_MONTH, BLOG_DATE_TIMEZONE) . '/';
+				$link .= JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$link .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$link .= $this->get('alias');
 				$link .= '#comments';
 			break;
@@ -654,8 +509,8 @@ class BlogModelEntry extends JObject
 				{
 					$link .= '&task=';
 				}
-				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_YEAR, BLOG_DATE_TIMEZONE) . '/';
-				$link .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_MONTH, BLOG_DATE_TIMEZONE) . '/';
+				$link .= JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$link .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$link .= $this->get('alias');
 			break;
 		}
@@ -666,19 +521,19 @@ class BlogModelEntry extends JObject
 	/**
 	 * Return a formatted timestamp
 	 * 
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param      string $as What format to return
+	 * @return     string
 	 */
 	public function published($as='')
 	{
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('publish_up'), BLOG_DATE_FORMAT, BLOG_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('publish_up'), JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('publish_up'), BLOG_TIME_FORMAT, BLOG_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('publish_up'), JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -688,11 +543,11 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the content of the entry
 	 * 
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -742,8 +597,8 @@ class BlogModelEntry extends JObject
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
-				$scope  = JHTML::_('date', $this->get('publish_up'), BLOG_DATE_YEAR, BLOG_DATE_TIMEZONE) . '/';
-				$scope .= JHTML::_('date', $this->get('publish_up'), BLOG_DATE_MONTH, BLOG_DATE_TIMEZONE);
+				$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
 
 				$wikiconfig = array(
 					'option'   => $option,
@@ -786,52 +641,6 @@ class BlogModelEntry extends JObject
 	}
 
 	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Store changes to this offering
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Check a user's authorization
 	 * 
 	 * @param      string $action Action to check
@@ -839,7 +648,7 @@ class BlogModelEntry extends JObject
 	 */
 	public function access($action='view')
 	{
-		if (!$this->_authorized)
+		if (!$this->params->get('access-check-done', false))
 		{
 			// Set NOT viewable by default
 			// We need to ensure the forum is published first
@@ -853,13 +662,10 @@ class BlogModelEntry extends JObject
 			$juser = JFactory::getUser();
 			if ($juser->get('guest'))
 			{
-				$this->_authorized = true;
+				$this->params->set('access-check-done', true);
 			}
 			else
 			{
-				// Anyone logged in can create a forum
-				//$this->params->set('access-create-entry', true);
-
 				// Check if they're a site admin
 				if (version_compare(JVERSION, '1.6', 'lt'))
 				{
@@ -887,27 +693,7 @@ class BlogModelEntry extends JObject
 				if (!$this->params->get('access-admin-entry') 
 				 && !$this->params->get('access-manage-entry'))
 				{
-					// Does the forum exist?
-					/*if (!$this->exists())
-					{
-						// Give editing access if the blog doesn't exist
-						// i.e., it's a new forum
-						switch ($this->get('scope'))
-						{
-							case 'site':
-							break;
-							
-							case 'member':
-							break;
-						}
-						$this->params->set('access-view-entry', true);
-						$this->params->set('access-delete-entry', true);
-						$this->params->set('access-edit-entry', true);
-						$this->params->set('access-edit-state-entry', true);
-						$this->params->set('access-edit-own-entry', true);
-					}
-					// Check if they're the forum creator or forum manager
-					else*/
+					// Was the entry created by the current user?
 					if ($this->get('created_by') == $juser->get('id')) 
 					{
 						// Give full access
@@ -920,7 +706,7 @@ class BlogModelEntry extends JObject
 					}
 				}
 
-				$this->_authorized = true;
+				$this->params->set('access-check-done', true);
 			}
 		}
 		return $this->params->get('access-' . strtolower($action) . '-entry');

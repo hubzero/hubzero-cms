@@ -57,15 +57,8 @@ if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-JHTML::_('behavior.tooltip');
 
-$dateFormat = '%d %b %Y';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = true;
-}
+JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -82,8 +75,8 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
 <?php if ($this->filters['scope'] == 'group') { ?>
 		<?php
@@ -133,79 +126,84 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'Comments', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-<?php if ($this->filters['scope'] == 'group') { ?>
+			<?php if ($this->filters['scope'] == 'group') { ?>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Group', 'group_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-<?php } ?>
+			<?php } ?>
 			</tr>
 		</thead>
 		<tfoot>
- 			<tr>
- 				<td colspan="<?php echo ($this->filters['scope'] == 'group') ? '9' : '8'; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
- 			</tr>
+			<tr>
+				<td colspan="<?php echo ($this->filters['scope'] == 'group') ? '9' : '8'; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
+			</tr>
 		</tfoot>
 		<tbody>
 <?php
 $k = 0;
+$i = 0;
 $config	=& JFactory::getConfig();
 $now	=& JFactory::getDate();
 $db		=& JFactory::getDBO();
 
 $nullDate = $db->getNullDate();
-$rows = $this->rows;
-for ($i=0, $n=count($rows); $i < $n; $i++)
-{
-	$row =& $rows[$i];
 
-	$publish_up =& JFactory::getDate($row->publish_up);
-	$publish_down =& JFactory::getDate($row->publish_down);
+foreach ($this->rows as $row)
+{
+	$publish_up =& JFactory::getDate($row->get('publish_up'));
+	$publish_down =& JFactory::getDate($row->get('publish_down'));
 	$publish_up->setOffset($config->getValue('config.offset'));
 	$publish_down->setOffset($config->getValue('config.offset'));
-	if ($now->toUnix() <= $publish_up->toUnix() && $row->state == 1) 
+
+	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1) 
 	{
-		$img = 'publish_y.png';
-		$alt = JText::_('Published');
-		$cls = 'publish';
+		$img  = 'publish_y.png';
+		$alt  = JText::_('Published');
+		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
-	else if (($now->toUnix() <= $publish_down->toUnix() || $row->publish_down == $nullDate) && $row->state == 1) 
+	else if (($now->toUnix() <= $publish_down->toUnix() || $row->get('publish_down') == $nullDate) && $row->get('state') == 1) 
 	{
-		$img = 'publish_g.png';
-		$alt = JText::_('Published');
-		$cls = 'publish';
+		$img  = 'publish_g.png';
+		$alt  = JText::_('Published');
+		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
-	else if ($now->toUnix() > $publish_down->toUnix() && $row->state == 1) 
+	else if ($now->toUnix() > $publish_down->toUnix() && $row->get('state') == 1) 
 	{
-		$img = 'publish_r.png';
-		$alt = JText::_('Expired');
-		$cls = 'publish';
+		$img  = 'publish_r.png';
+		$alt  = JText::_('Expired');
+		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
-	else if ($row->state == 0) 
+	else if ($row->get('state') == 0) 
 	{
-		$img = 'publish_x.png';
-		$alt = JText::_('Unpublished');
+		$img  = 'publish_x.png';
+		$alt  = JText::_('Unpublished');
 		$task = 'publish';
-		$cls = 'unpublish';
+		$cls  = 'unpublish';
 	} 
-	else if ($row->state == -1) 
+	else if ($row->get('state') == -1) 
 	{
-		$img = 'disabled.png';
-		$alt = JText::_('Archived');
+		$img  = 'disabled.png';
+		$alt  = JText::_('Archived');
 		$task = 'publish';
-		$cls = 'archive';
+		$cls  = 'trash';
 	}
+
 	$times = '';
-	if (isset($row->publish_up)) {
-		if ($row->publish_up == $nullDate) {
+	if ($row->get('publish_up')) 
+	{
+		if ($row->get('publish_up') == $nullDate) 
+		{
 			$times .= JText::_('Start: Always');
-		} else {
+		} 
+		else 
+		{
 			$times .= JText::_('Start') . ': '. $publish_up->toFormat();
 		}
 	}
-	if (isset($row->publish_down)) 
+	if ($row->get('publish_down')) 
 	{
-		if ($row->publish_down == $nullDate) 
+		if ($row->get('publish_down') == $nullDate) 
 		{
 			$times .= '<br />' . JText::_('Finish: No Expiry');
 		} 
@@ -215,7 +213,7 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 		}
 	}
 
-	if ($row->allow_comments == 0) 
+	if ($row->get('allow_comments') == 0) 
 	{
 		$cimg = 'publish_x.png';
 		$calt = JText::_('Off');
@@ -232,68 +230,69 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id') ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<?php echo $row->id; ?>
+					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($row->name)); ?>
+					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
 					<span class="editlinktip hasTip" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
-<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 							<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 						</a>
-<?php } else { ?>
+					<?php } else { ?>
 						<span class="state <?php echo $cls; ?>">
 							<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 						</span>
-<?php } ?>
+					<?php } ?>
 					</span>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->created; ?>">
-						<?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?>
+					<time datetime="<?php echo $row->get('created'); ?>">
+						<?php echo $row->published('date'); ?>
 					</time>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=setcomments&amp;state=<?php echo $state; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=setcomments&amp;state=<?php echo $state; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /><?php } else { echo $calt; } ?></span>
 					</a>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;entry_id=<?php echo $row->id; ?>">
-						<?php echo $row->comments . ' ' . JText::_('comment(s)'); ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;entry_id=<?php echo $row->get('id'); ?>">
+						<?php echo $row->get('comments') . ' ' . JText::_('comment(s)'); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="comment">
-						<?php echo $row->comments . ' ' . JText::_('comment(s)'); ?>
+						<?php echo $row->get('comments') . ' ' . JText::_('comment(s)'); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
-<?php if ($this->filters['scope'] == 'group') { ?>
+			<?php if ($this->filters['scope'] == 'group') { ?>
 				<td>
 					<span>
-						<?php echo $this->escape($row->group_id); ?>
+						<?php echo $this->escape($row->get('group_id')); ?>
 					</span>
 				</td>
-<?php } ?>
+			<?php } ?>
 			</tr>
 <?php
+	$i++;
 	$k = 1 - $k;
 }
 ?>

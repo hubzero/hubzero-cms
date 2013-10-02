@@ -2,20 +2,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 	ximport('Hubzero_User_Profile');
-	
-	$juser = JFactory::getUser();
-	
 	ximport('Hubzero_User_Profile_Helper');
 
-	$dateFormat = '%d %b %Y';
-	$timeFormat = '%I:%M %p';
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = 'd M Y';
-		$timeFormat = 'H:i p';
-		$tz = true;
-	}
+	$juser = JFactory::getUser();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
@@ -41,7 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<!-- <a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a> -->
 			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
@@ -49,9 +37,9 @@ defined('_JEXEC') or die('Restricted access');
 				<strong><?php echo $name; ?></strong> 
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">
 					<span class="comment-date-at">@</span> 
-					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), $timeFormat, $tz); ?></time></span> 
+					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo $this->comment->created('time'); ?></time></span> 
 					<span class="comment-date-on"><?php echo JText::_('COM_BLOG_ON'); ?></span> 
-					<span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), $dateFormat, $tz); ?></time></span>
+					<span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 				</a>
 			</p>
 
@@ -91,7 +79,6 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 			<div class="comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
-					<!-- <a name="commentform<?php echo $this->comment->get('id'); ?>"></a> -->
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('COM_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_BLOG_ANONYMOUS'))); ?></span></legend>
 
@@ -109,8 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 							<span class="label-text"><?php echo JText::_('COM_BLOG_FIELD_COMMENTS'); ?></span>
 							<?php
 							ximport('Hubzero_Wiki_Editor');
-							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('comment[content]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
+							echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
 							?>
 						</label>
 

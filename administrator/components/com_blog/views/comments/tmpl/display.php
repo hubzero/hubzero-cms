@@ -74,8 +74,8 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="6">
-					(<?php echo $this->escape(stripslashes($this->entry->scope)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->entry->title)); ?>
+					(<?php echo $this->escape(stripslashes($this->entry->get('scope'))); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>
 				</th>
 			</tr>
 			<tr>
@@ -110,12 +110,12 @@ $now	=& JFactory::getDate();
 $db		=& JFactory::getDBO();
 
 $nullDate = $db->getNullDate();
-$rows = $this->rows;
-for ($i=0, $n=count($rows); $i < $n; $i++)
-{
-	$row =& $rows[$i];
 
-	if (!$row->anonymous) 
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
+{
+	$row =& $this->rows[$i];
+
+	if (!$row->get('anonymous')) 
 	{
 		$cimg = 'publish_x.png';
 		$calt = JText::_('Off');
@@ -132,34 +132,34 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<?php echo $row->id; ?>
+					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-					<?php echo $row->treename; ?>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->content)), 90, 0); ?>
+					<?php echo $row->get('treename'); ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->get('content'))), 90, 0); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
-						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->content)), 90, 0); ?>
+						<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->get('content'))), 90, 0); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($row->name)); ?>
+					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $cimg;?>" width="16" height="16" border="0" alt="<?php echo $calt; ?>" /><?php } else { echo $calt; } ?></span>
 					</a>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->created; ?>">
-						<?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?>
+					<time datetime="<?php echo $row->get('created'); ?>">
+						<?php echo $row->created('date'); //JHTML::_('date', $row->created, $dateFormat, $tz) ?>
 					</time>
 				</td>
 			</tr>

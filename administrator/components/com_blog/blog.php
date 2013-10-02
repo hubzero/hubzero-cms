@@ -53,14 +53,10 @@ else
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
-	
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'entry.php');
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'entry.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'comment.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'blog.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'blog.php');
 
 $scope = JRequest::getCmd('scope', 'site');
