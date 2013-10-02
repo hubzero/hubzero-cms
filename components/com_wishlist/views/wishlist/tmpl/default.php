@@ -112,7 +112,7 @@ if ($this->admin && !$this->getError()) {
 	// Popular tags
 	if ($this->wishlist->category == 'general') {
 		$obj = new TagsTableTag($this->database);
-		$tags = $obj->getTopTags(5, 'wishlist', 'tcount DESC', 0);
+		$tags = $obj->getTopTags($this->config->get('maxtags', 10), 'wishlist', 'tcount DESC', 0);
 
 		if ($tags) { ?>
 			<div class="container">
@@ -136,8 +136,12 @@ if ($this->admin && !$this->getError()) {
 						}
 
 						$class = ($tag->admin == 1) ? ' class="admin"' : '';
+						
+						$append = '&tags=';
+						//$append.= $this->filters['tag'] ? $this->filters['tag'] . ',' : '';
+						$append.= $tag->tag;
 
-						$tll[$tag->tag] = '<li'.$class.'><a href="'.JRoute::_($base . '&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='. implode(',', $lst)).'">'.$this->escape(stripslashes($tag->raw_tag)).'</a></li>';
+						$tll[$tag->tag] = '<li'.$class.'><a href="'.JRoute::_($base . '&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].$append).'">'.$this->escape(stripslashes($tag->raw_tag)).'</a></li>';
 					}
 					ksort($tll);
 					echo implode('',$tll);
