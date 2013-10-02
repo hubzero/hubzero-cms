@@ -159,27 +159,33 @@ HUB.ProjectTodo = {
 	styleCommentForm: function ()
 	{
 		var $ = this.jQuery;
-		var default_comment = 'Write your comment';
+
 		$('.commentarea').each(function(i, item) {
 			$(item).on('keyup', function(e) {
 				HUB.Projects.setCounter(this);
 			});
 
 			if ($(item).val()=='') {
-				$(item).val(default_comment)
-					.css('color', '#999')
+				$(item).css('color', '#999')
 					.css('height', '20px');
 			}
 			$(item).on('focus', function(e) 
 			{
-				// Clear default value
-				if ($(item).val() == default_comment) {
-					$(item).val('')
-						.css('color', '#000')
-						.css('height', '100px');
-				}
+				$(item).css('color', '#000')
+					.css('height', '100px');
 			});	
 		});
+		
+		// Do not allow to post default values
+		if ($('#c-submit')) {
+			$('#c-submit').on('click', function(e){
+				if ($('#td-comment').val() == '') {
+					e.preventDefault();
+					$('#td-comment').css('color', '#999')
+						.css('height', '20px');
+				}
+			});	
+		}
 	},
 	
 	sortList: function ()

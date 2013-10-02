@@ -161,7 +161,7 @@ $goto  = 'alias=' . $this->project->alias;
 			<form action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'); ?>" method="post" >
 				<div class="addcomment td-comment">
 					<label><?php echo ucfirst(JText::_('COM_PROJECTS_NEW_COMMENT')); ?>:
-						<textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment"></textarea>
+						<textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment" placeholder="Write your comment..."></textarea>
 					</label>
 						<span class="hint"><?php echo JText::_('COM_PROJECTS_COMMENT_HINT'); ?></span>					
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -171,7 +171,7 @@ $goto  = 'alias=' . $this->project->alias;
 						<input type="hidden" name="active" value="todo" />
 						<input type="hidden" name="itemid" value="<?php echo $this->item->id; ?>" />
 						<input type="hidden" name="parent_activity" value="<?php echo $this->item->activityid; ?>" />
-						<p class="blog-submit"><input type="submit" class="c-submit" id="c-submit" value="<?php echo JText::_('COM_PROJECTS_COMMENT'); ?>" /></p>
+						<p class="blog-submit"><input type="submit" class="c-submit" id="c-submit" value="<?php echo JText::_('COM_PROJECTS_ADD_COMMENT'); ?>" /></p>
 				</div>
 			</form>
 		</div>

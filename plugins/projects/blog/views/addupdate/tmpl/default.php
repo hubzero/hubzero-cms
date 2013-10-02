@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="blab" class="miniblog">
 	<form id="blogForm" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.$this->goto).'/?active=feed'; ?>">
 		<fieldset>
-			<textarea name="blogentry" cols="5" rows="5" id="blogentry"></textarea>
+			<textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="Got an update?"></textarea>
 			<p id="blog-submitarea">
 			 <span id="counter_number_blog" class="leftfloat mini"></span>
 			 <input type="hidden" name="task" value="view" />

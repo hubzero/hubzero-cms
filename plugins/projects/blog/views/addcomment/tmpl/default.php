@@ -38,9 +38,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="tbl" value="<?php echo $this->tbl; ?>" />
 			<input type="hidden" name="parent_activity" value="<?php echo $this->activityid; ?>" />
 			<label>
-				<textarea name="comment" rows="4" cols="50" class="commentarea" id="ca_<?php echo $this->activityid; ?>"></textarea>
+				<textarea name="comment" rows="4" cols="50" class="commentarea" id="ca_<?php echo $this->activityid; ?>" placeholder="Write your comment"></textarea>
 			</label>
-			<p class="blog-submit"><input type="submit" class="c-submit" id="cs_<?php echo $this->activityid; ?>" value="<?php echo JText::_('COM_PROJECTS_COMMENT'); ?>" /></p>
+			<p class="blog-submit"><input type="submit" class="c-submit" id="cs_<?php echo $this->activityid; ?>" value="<?php echo JText::_('COM_PROJECTS_ADD_COMMENT'); ?>" /></p>
 		</fieldset>
 	</form>
 </div>
