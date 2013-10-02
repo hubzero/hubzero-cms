@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,32 +35,19 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'log.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'object.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'substitute.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'iterator.php');
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	define('TAGS_DATE_YEAR', "Y");
-	define('TAGS_DATE_MONTH', "m");
-	define('TAGS_DATE_DAY', "d");
-	define('TAGS_DATE_TIMEZONE', true);
-	define('TAGS_DATE_FORMAT', 'd M Y');
-	define('TAGS_TIME_FORMAT', 'H:i p');
-}
-else
-{
-	define('TAGS_DATE_YEAR', "%Y");
-	define('TAGS_DATE_MONTH', "%m");
-	define('TAGS_DATE_DAY', "%d");
-	define('TAGS_DATE_TIMEZONE', 0);
-	define('TAGS_DATE_FORMAT', '%d %b %Y');
-	define('TAGS_TIME_FORMAT', '%I:%M %p');
-}
 
 /**
  * Model class for a tag
  */
-class TagsModelTag extends JObject
+class TagsModelTag extends \Hubzero\Model
 {
+	/**
+	 * Table class name
+	 * 
+	 * @var string
+	 */
+	protected $_tbl_name = 'TagsTableTag';
+
 	/**
 	 * Base URL to this tag
 	 * 
@@ -76,32 +63,11 @@ class TagsModelTag extends JObject
 	protected $_cache = array();
 
 	/**
-	 * TagsTableTag
-	 * 
-	 * @var object
-	 */
-	protected $_tbl = null;
-
-	/**
 	 * JUser
 	 * 
 	 * @var object
 	 */
 	protected $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	protected $_db = NULL;
-
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	//protected $_config;
 
 	/**
 	 * Constructor
@@ -126,36 +92,13 @@ class TagsModelTag extends JObject
 		{
 			$this->_tbl->loadTag($oid);
 		}
-		else if (is_object($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (get_object_vars($oid) as $key => $property)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $property);
-				}
-			}
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (array_keys($oid) as $key)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $oid[$key]);
-				}
-			}
+			$this->bind($oid);
 		}
 
 		// Set the base path to this tag
 		$this->_base = 'index.php?option=com_tags&tag=' . $this->get('tag');
-
-		// Get the component config
-		//$this->_config = JComponentHelper::getParams('com_tags');
 	}
 
 	/**
@@ -195,58 +138,6 @@ class TagsModelTag extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the data exists
-	 * 
-	 * @return     boolean
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
@@ -261,7 +152,7 @@ class TagsModelTag extends JObject
 		{
 			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
-		if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && $this->_creator instanceof JUser)
 		{
 			return $this->_creator->get($property);
 		}
@@ -274,22 +165,9 @@ class TagsModelTag extends JObject
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
-	public function created($rtrn='')
+	public function created($as='')
 	{
-		switch (strtolower($rtrn))
-		{
-			case 'date':
-				return JHTML::_('date', $this->get('created'), TAGS_DATE_FORMAT, TAGS_DATE_TIMEZONE);
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('created'), TAGS_TIME_FORMAT, TAGS_DATE_TIMEZONE);
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
+		return $this->_datetime($as, 'created');
 	}
 
 	/**
@@ -298,60 +176,37 @@ class TagsModelTag extends JObject
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
-	public function modified($rtrn='')
+	public function modified($as='')
 	{
-		switch (strtolower($rtrn))
+		if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00')
 		{
-			case 'date':
-				return JHTML::_('date', $this->get('modified'), TAGS_DATE_FORMAT, TAGS_DATE_TIMEZONE);
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('modified'), TAGS_TIME_FORMAT, TAGS_DATE_TIMEZONE);
-			break;
-
-			default:
-				return $this->get('modified');
-			break;
+			$this->set('modified', $this->get('created'));
 		}
+		return $this->_datetime($as, 'modified');
 	}
 
 	/**
-	 * Bind data to this model
-	 * Accepts an array or object
+	 * Return a formatted timestamp
 	 * 
-	 * @param      mixed $data Data to bind to this model
-	 * @return     boolean
+	 * @param      string $as What data to return
+	 * @return     string
 	 */
-	public function bind($data=null)
+	private function _datetime($as='', $key='created')
 	{
-		if (is_object($data))
+		switch (strtolower($as))
 		{
-			$res = $this->_tbl->bind($data);
+			case 'date':
+				return JHTML::_('date', $this->get($key), JText::_('DATE_FORMAT_HZ1'));
+			break;
 
-			$properties = $this->_tbl->getProperties();
-			foreach (get_object_vars($data) as $key => $property)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $property);
-				}
-			}
-		}
-		else if (is_array($data))
-		{
-			$res = $this->_tbl->bind($data);
+			case 'time':
+				return JHTML::_('date', $this->get($key), JText::_('TIME_FORMAT_HZ1'));
+			break;
 
-			$properties = $this->_tbl->getProperties();
-			foreach (array_keys($data) as $key)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $data[$key]);
-				}
-			}
+			default:
+				return $this->get($key);
+			break;
 		}
-		return $res;
 	}
 
 	/**
@@ -362,36 +217,8 @@ class TagsModelTag extends JObject
 	 */
 	public function store($check=true)
 	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
+		if (!parent::store($check))
 		{
-			return false;
-		}
-
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->exists())
-		{
-			if ($this->_tbl->checkExistence()) 
-			{
-				$this->setError(JText::_('COM_TAGS_TAG_EXIST'));
-				return false;
-			}
-		}
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
 			return false;
 		}
 
@@ -405,20 +232,12 @@ class TagsModelTag extends JObject
 	}
 
 	/**
-	 * Store changes to this offering
+	 * Store changes to this record
 	 *
-	 * @param     boolean $check Perform data validation check?
 	 * @return    boolean False if error, True on success
 	 */
 	public function delete()
 	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			$this->setError(JText::_('Database not found.'));
-			return false;
-		}
-
 		// Can't delete what doesn't exist
 		if (!$this->exists()) 
 		{
@@ -445,14 +264,7 @@ class TagsModelTag extends JObject
 			}
 		}
 
-		// Attempt to delete the record
-		if (!$this->_tbl->delete())
-		{
-			$this->setError($this->_tbl->getErrorMsg());
-			return false;
-		}
-
-		return true;
+		return parent::delete();
 	}
 
 	/**
@@ -460,7 +272,7 @@ class TagsModelTag extends JObject
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 
 	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @return     string
 	 */
 	public function link($type='')
 	{
@@ -531,7 +343,7 @@ class TagsModelTag extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['subs']) || !is_a($this->_cache['subs'], 'TagsModelIterator') || $clear)
+				if (!isset($this->_cache['subs']) || !($this->_cache['subs'] instanceof \Hubzero\ItemList) || $clear)
 				{
 					$results = array();
 
@@ -544,7 +356,7 @@ class TagsModelTag extends JObject
 						}
 					}
 
-					$this->_cache['subs'] = new TagsModelIterator($results);
+					$this->_cache['subs'] = new \Hubzero\ItemList($results);
 				}
 				return $this->_cache['subs'];
 			break;
@@ -584,7 +396,7 @@ class TagsModelTag extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['objects']) || !is_a($this->_cache['objects'], 'TagsModelIterator') || $clear)
+				if (!isset($this->_cache['objects']) || !($this->_cache['objects'] instanceof \Hubzero\ItemList) || $clear)
 				{
 					$tbl = new TagsTableObject($this->_db);
 					if ($results = $tbl->find($filters))
@@ -598,7 +410,7 @@ class TagsModelTag extends JObject
 					{
 						$results = array();
 					}
-					$this->_cache['objects'] = new TagsModelIterator($results);
+					$this->_cache['objects'] = new \Hubzero\ItemList($results);
 				}
 				return $this->_cache['objects'];
 			break;
@@ -638,7 +450,7 @@ class TagsModelTag extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['logs']) || !is_a($this->_cache['logs'], 'TagsModelIterator') || $clear)
+				if (!isset($this->_cache['logs']) || !($this->_cache['logs'] instanceof \Hubzero\ItemList) || $clear)
 				{
 					$tbl = new TagsTableLog($this->_db);
 					if ($results = $tbl->find($filters))
@@ -652,7 +464,7 @@ class TagsModelTag extends JObject
 					{
 						$results = array();
 					}
-					$this->_cache['logs'] = new TagsModelIterator($results);
+					$this->_cache['logs'] = new \Hubzero\ItemList($results);
 				}
 				return $this->_cache['logs'];
 			break;
@@ -667,13 +479,13 @@ class TagsModelTag extends JObject
 	 * 
 	 * @param      string  $scope    Object type (ex: resource, ticket)
 	 * @param      integer $scope_id Object ID (e.g., resource ID, ticket ID)
-	 * @param      integer $taggerid User ID of person to filter tag by
+	 * @param      integer $tagger   User ID of person to filter tag by
 	 * @return     boolean
 	 */
 	public function removeFrom($scope, $scope_id, $tagger=0)
 	{
 		// Check if the relationship exists
-		$to = new TagsModelObject($scope, $scope_id, $this->get('id'));
+		$to = new TagsModelObject($scope, $scope_id, $this->get('id'), $tagger);
 		if (!$to->exists())
 		{
 			return true;
@@ -694,13 +506,15 @@ class TagsModelTag extends JObject
 	 * 
 	 * @param      string  $scope    Object type (ex: resource, ticket)
 	 * @param      integer $scope_id Object ID (e.g., resource ID, ticket ID)
-	 * @param      integer $taggerid User ID of person adding tag
+	 * @param      integer $tagger   User ID of person adding tag
+	 * @param      integer $strength Tag strength
+	 * @param      string  $label    Label to apply
 	 * @return     boolean
 	 */
-	public function addTo($scope, $scope_id, $taggerid=0, $strength=1, $label='')
+	public function addTo($scope, $scope_id, $tagger=0, $strength=1, $label='')
 	{
 		// Check if the relationship already exists
-		$to = new TagsModelObject($scope, $scope_id, $this->get('id'), $taggerid);
+		$to = new TagsModelObject($scope, $scope_id, $this->get('id'), $tagger);
 		if ($to->exists())
 		{
 			return true;
@@ -715,9 +529,9 @@ class TagsModelTag extends JObject
 		{
 			$to->set('label', (string) $label);
 		}
-		if ($taggerid)
+		if ($tagger)
 		{
-			$to->set('taggerid', $taggerid);
+			$to->set('taggerid', $tagger);
 		}
 
 		// Attempt to store the new record
@@ -738,6 +552,12 @@ class TagsModelTag extends JObject
 	 */
 	public function mergeWith($tag_id)
 	{
+		if (!$tag_id)
+		{
+			$this->setError(JText::_('Missing tag ID.'));
+			return false;
+		}
+
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
 		$to = new TagsTableObject($this->_db);
@@ -782,6 +602,12 @@ class TagsModelTag extends JObject
 	 */
 	public function copyTo($tag_id)
 	{
+		if (!$tag_id)
+		{
+			$this->setError(JText::_('Missing tag ID.'));
+			return false;
+		}
+
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
 		$to = new TagsTableObject($this->_db);

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -207,7 +207,7 @@ class TagsModelCloud extends JObject
 		 )
 		{
 			$this->_cache['tag'] = null;
-			if (isset($this->_cache['tags']) && is_a($this->_cache['tags'], 'TagsModelIterator'))
+			if (isset($this->_cache['tags']) && $this->_cache['tags'] instanceof \Hubzero\ItemList)
 			{
 				foreach ($this->_cache['tags'] as $key => $tag)
 				{
@@ -262,7 +262,7 @@ class TagsModelCloud extends JObject
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['tags']) || !is_a($this->_cache['tags'], 'TagsModelIterator') || $clear)
+				if (!isset($this->_cache['tags']) || !($this->_cache['tags'] instanceof \Hubzero\ItemList) || $clear)
 				{
 					if ($results = $this->_tbl->getRecords($filters))
 					{
@@ -275,7 +275,7 @@ class TagsModelCloud extends JObject
 					{
 						$results = array();
 					}
-					$this->_cache['tags'] = new TagsModelIterator($results);
+					$this->_cache['tags'] = new \Hubzero\ItemList($results);
 				}
 				return $this->_cache['tags'];
 			break;

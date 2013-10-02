@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,14 +36,14 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
 /**
  * Model class for a tag/object association
  */
-class TagsModelObject extends JObject
+class TagsModelObject extends \Hubzero\Model
 {
 	/**
-	 * TagsTableObject
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	protected $_tbl = null;
+	protected $_tbl_name = 'TagsTableObject';
 
 	/**
 	 * JUser
@@ -53,16 +53,12 @@ class TagsModelObject extends JObject
 	protected $_creator = NULL;
 
 	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	protected $_db = NULL;
-
-	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id Course ID or alias
+	 * @param      mixed   $oid       Redord ID or object or array
+	 * @param      integer $scope_id  ID of tagged object
+	 * @param      integer $tag_id    Tag ID
+	 * @param      integer $tagger_id User ID of tagger
 	 * @return     void
 	 */
 	public function __construct($oid, $scope_id=null, $tag_id=null, $tagger_id=null)
@@ -82,38 +78,19 @@ class TagsModelObject extends JObject
 		{
 			$this->_tbl->loadByObjectTag($oid, $scope_id, $tag_id, $tagger_id);
 		}
-		else if (is_object($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (get_object_vars($oid) as $key => $property)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $property);
-				}
-			}
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-			$properties = $this->_tbl->getProperties();
-			foreach (array_keys($oid) as $key)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $oid[$key]);
-				}
-			}
+			$this->bind($oid);
 		}
 	}
 
 	/**
 	 * Returns a reference to a tags object model
 	 *
-	 * @param      mixed   $oid      ID, string (scope) or object
-	 * @param      integer $scope_id Object ID
-	 * @param      integer $tag_id   Tag ID
+	 * @param      mixed   $oid       Redord ID or object or array
+	 * @param      integer $scope_id  ID of tagged object
+	 * @param      integer $tag_id    Tag ID
+	 * @param      integer $tagger_id User ID of tagger
 	 * @return     object TagsModelObject
 	 */
 	static function &getInstance($oid=0, $scope_id=null, $tag_id=null, $tagger_id=null)
@@ -147,58 +124,6 @@ class TagsModelObject extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property})) 
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		if (!array_key_exists($property, $this->_tbl->getProperties()))
-		{
-			$property = '__' . $property;
-		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the record exists
-	 * 
-	 * @return     boolean
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
@@ -213,7 +138,7 @@ class TagsModelObject extends JObject
 		{
 			$this->_creator = JUser::getInstance($this->get('taggerid'));
 		}
-		if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && $this->_creator instanceof JUser)
 		{
 			return $this->_creator->get($property);
 		}
@@ -231,94 +156,17 @@ class TagsModelObject extends JObject
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('taggedon'), TAGS_DATE_FORMAT, TAGS_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('taggedon'), JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('taggedon'), TAGS_TIME_FORMAT, TAGS_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('taggedon'), JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
 				return $this->get('taggedon');
 			break;
 		}
-	}
-
-	/**
-	 * Bind data to this model
-	 * 
-	 * @param      mixed $idx Data to bind
-	 * @return     boolean
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Store changes to this offering
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		// Validate data?
-		if ($check)
-		{
-			// Is data valid?
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		// Attempt to store data
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Store changes to this offering
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
-	 */
-	public function delete()
-	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			$this->setError(JText::_('Database not found.'));
-			return false;
-		}
-
-		// Can't delete what doesn't exist
-		if (!$this->exists()) 
-		{
-			return true;
-		}
-
-		// Attempt to delete the record
-		if (!$this->_tbl->delete())
-		{
-			$this->setError($this->_tbl->getErrorMsg());
-			return false;
-		}
-
-		return true;
 	}
 }
 
