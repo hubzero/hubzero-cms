@@ -32,17 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
-//$database =& JFactory::getDBO();
-
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
 
 JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
@@ -212,8 +201,8 @@ ximport('Hubzero_User_Profile_Helper');
 				<p class="entry-title">
 					<strong><?php echo $name; ?></strong> 
 					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
-						<span class="time"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
-						<span class="date"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $dateFormat, $tz); ?></time></span>
+						<span class="time"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
+						<span class="date"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</a>
 				</p><!-- / .entry-title -->
 				<div class="entry-body" cite="<?php echo ($this->row->login) ? $this->escape(stripslashes($this->row->login)) : $this->escape(stripslashes($this->row->name)); ?>">
@@ -331,9 +320,9 @@ ximport('Hubzero_User_Profile_Helper');
 						<strong>
 							<?php echo $name; ?>
 						</strong>
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '#c' . $comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
-							<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
-							<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $dateFormat, $tz); ?></time></span>
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '#c' . $comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
+							<span class="time"><time datetime="<?php echo $this->escape($comment->created); ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('on'); ?></span> 
+							<span class="date"><time datetime="<?php echo $this->escape($comment->created); ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 						</a>
 					</p><!-- / .comment-head -->
 <?php 		if ($comment->comment) { ?>

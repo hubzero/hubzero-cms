@@ -753,6 +753,18 @@
 		padding: .61803399em 2em;
 		white-space: pre-wrap;
 	}
+	.ticket .time:before, 
+	.ticket .date:before {
+		content: "";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	.ticket .time:before {
+		content: "\f017";
+	}
+	.ticket .date:before {
+		content: "\f073";
+	}
 	/* Status */
 	.ticket-status {
 		margin: 0;
@@ -1072,9 +1084,9 @@
 		padding: 0;
 		color: #666;
 	}
-	.entry-title {
+	/*.entry-title {
 		margin-top: 0;
-	}
+	}*/
 	.entry-member-photo {
 		float: left;
 		margin: 0 1em 1em 0;
