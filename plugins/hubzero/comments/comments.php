@@ -573,17 +573,17 @@ class plgHubzeroComments extends JPlugin
 		$doc->link = JRoute::_($this->url);
 
 		// Load the category object
-		$section = new KbCategory($this->database);
+		$section = new KbTableCategory($this->database);
 		$section->load($entry->section);
 		
 		// Load the category object
-		$category = new KbCategory($this->database);
+		$category = new KbTableCategory($this->database);
 		if ($entry->category) {
 			$category->load($entry->category);
 		}
 		
 		// Load the comments
-		$bc = new KbComment($this->database);
+		$bc = new KbTableComment($this->database);
 		$rows = $bc->getAllComments($entry->id);
 		
 		//$year = JRequest::getInt('year', date("Y"));

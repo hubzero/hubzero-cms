@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for knowledge base article comments
  */
-class KbComment extends JTable
+class KbTableComment extends JTable
 {
 	/**
 	 * int(11) primary key

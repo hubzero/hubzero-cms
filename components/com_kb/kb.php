@@ -40,13 +40,8 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 jimport('joomla.application.component.helper');
-ximport('Hubzero_View_Helper_Html');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'comment.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'article.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'vote.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'articles'));
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -60,4 +55,3 @@ $controllerName = 'KbController' . ucfirst(strtolower($controllerName));
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

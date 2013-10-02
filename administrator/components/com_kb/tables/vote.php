@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for knowledge base votes
  */
-class KbVote extends JTable
+class KbTableVote extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -96,11 +96,20 @@ class KbVote extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->object_id) == '') 
+		$this->object_id = intval($this->object_id);
+		if (!$this->object_id) 
 		{
 			$this->setError(JText::_('COM_KB_ERROR_MISSING_ARTICLE_ID'));
 			return false;
 		}
+
+		$this->type = strtolower(trim($this->type));
+		if (!in_array($this->type, array('entry', 'comment'))) 
+		{
+			$this->setError(JText::_('COM_KB_ERROR_UNKNOWN_TYPE'));
+			return false;
+		}
+
 		return true;
 	}
 

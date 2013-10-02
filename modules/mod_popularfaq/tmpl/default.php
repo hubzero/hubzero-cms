@@ -32,26 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : ''; echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
-<?php if ($this->rows) { ?>
+<?php if ($this->rows->total() > 0) { ?>
 	<ul class="articles">
-<?php
-	$juser =& JFactory::getUser();
-	foreach ($this->rows as $row)
-	{
-		if ($row->access <= $juser->get('aid')) {
-			$link = 'index.php?option=com_kb&amp;section=' . $row->section;
-			$link .= ($row->category) ? '&amp;category=' . $row->category : '';
-			$link .= ($row->alias) ? '&amp;alias=' . $row->alias : '&amp;alias=' . $row->id;
-
-			$link_on = JRoute::_($link);
-		} else {
-			$link_on = JRoute::_('index.php?option=com_register&task=register');
-		}
-?>
-		<li><a href="<?php echo $link_on; ?>"><?php echo stripslashes($row->title); ?></a></li>
-<?php
-	}
-?>
+	<?php foreach ($this->rows as $row) { ?>
+		<li><a href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a></li>
+	<?php } ?>
 	</ul>
 <?php } else { ?>
 	<p><?php echo JText::_('MOD_POPULARFAQ_NO_ARTICLES_FOUND'); ?></p>

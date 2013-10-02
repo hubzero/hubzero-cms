@@ -50,7 +50,10 @@ class KbControllerCategories extends Hubzero_Controller
 		$app =& JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
+		$this->view->filters = array(
+			'state'  => -1,
+			'access' => -1
+		);
 		$this->view->filters['id']        = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.id', 
 			'id', 
@@ -69,14 +72,14 @@ class KbControllerCategories extends Hubzero_Controller
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
 			'filter_order', 
-			'title'
+			'a.title'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir', 
 			'filter_order_Dir', 
 			'ASC'
 		));
-		$this->view->filters['filterby']       = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+		//$this->view->filters['filterby']       = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 		
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
@@ -92,13 +95,13 @@ class KbControllerCategories extends Hubzero_Controller
 			'int'
 		);
 
-		$obj = new KbCategory($this->database);
+		$obj = new KbModelArchive();
 
 		// Get record count
-		$this->view->total = $obj->getCategoriesCount($this->view->filters);
+		$this->view->total = $obj->categories('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $obj->getCategoriesAll($this->view->filters);
+		$this->view->rows  = $obj->categories('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -120,7 +123,7 @@ class KbControllerCategories extends Hubzero_Controller
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Create a new category
 	 * 
@@ -158,25 +161,19 @@ class KbControllerCategories extends Hubzero_Controller
 			}
 			
 			// Load category
-			$this->view->row = new KbCategory($this->database);
-			$this->view->row->load($id);
+			$this->view->row = new KbModelCategory($id);
 		}
 
-		/*if (!$this->view->row->id) 
-		{
-			$this->view->row->created_by = $this->juser->get('id');
-			$this->view->row->created = date('Y-m-d H:i:s', time());
-		}
-		$this->view->creator = JUser::getInstance($this->view->row->created_by);*/
+		$archive = new KbModelArchive();
 
 		// Get the sections
-		$this->view->sections = $this->view->row->getAllSections();
+		$this->view->sections = $archive->categories('list', array('parent' => 0));
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		/*if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$m = new KbModelCategory();
+			$m = new KbModelAdminCategory();
 			$this->view->form = $m->getForm();
-		}
+		}*/
 
 		// Set any errors
 		if ($this->getError()) 
@@ -214,10 +211,9 @@ class KbControllerCategories extends Hubzero_Controller
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new KbCategory($this->database);
+		$row = new KbModelCategory($fields['id']);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -227,19 +223,11 @@ class KbControllerCategories extends Hubzero_Controller
 
 		if (!isset($fields['access']))
 		{
-			$row->access = JRequest::getInt('access', 0, 'post');
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			$row->set('access', JRequest::getInt('access', 0, 'post'));
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -250,7 +238,7 @@ class KbControllerCategories extends Hubzero_Controller
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''),
+				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
 				JText::_('COM_KB_CATEGORY_SAVED')
 			);
 			return;
@@ -311,14 +299,17 @@ class KbControllerCategories extends Hubzero_Controller
 					return;
 				}
 
+				$msg = null;
+				$typ = null;
+
 				// Check if we're deleting collection and all FAQs or just the collection page
 				$action = JRequest::getVar('action', 'removefaqs');
 
 				// Create an article object
-				$article = new KbArticle($this->database);
+				/*$article = new KbTableArticle($this->database);
 
 				// Get all the articles in this collection
-				$faqs = $article->getCollection($id);
+				$faqs = $category->getCollection($id);
 
 				if ($faqs) 
 				{
@@ -332,7 +323,7 @@ class KbControllerCategories extends Hubzero_Controller
 						else 
 						{
 							// Load the article
-							$a = new KbArticle($this->database);
+							$a = new KbTableArticle($this->database);
 							$a->load($faq->id);
 							// Make some changes
 							if ($faq->category == $id) 
@@ -354,20 +345,21 @@ class KbControllerCategories extends Hubzero_Controller
 							}
 						}
 					}
-				}
-
-				// Create a category object
-				$category = new KbCategory($this->database);
-
-				// Delete the SEF
-				$category->deleteSef($id);
+				}*/
 
 				// Delete the category
-				$category->delete($id);
+				$category = new KbModelCategory($id);
+				if (!$category->delete())
+				{
+					$msg = $category->getError();
+					$typ = 'error';
+				}
 
 				// Set the redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					$msg,
+					$typ
 				);
 			break;
 		}
@@ -426,21 +418,11 @@ class KbControllerCategories extends Hubzero_Controller
 		}
 
 		// Load the article
-		$row = new KbCategory($this->database);
-		$row->load($id);
-		$row->access = $access;
+		$row = new KbModelCategory($id);
+		$row->set('access', $access);
 
 		// Check and store the changes
-		if (!$row->check()) 
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -507,9 +489,8 @@ class KbControllerCategories extends Hubzero_Controller
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new KbCategory($this->database);
-			$row->load($id);
-			$row->state = $state;
+			$row = new KbModelCategory(intval($id));
+			$row->set('state', $state);
 			$row->store();
 		}
 

@@ -42,7 +42,7 @@ class KbTableCategoryTest extends PHPUnit_Framework_TestCase
 	{
 		PHPUnitTestHelper::siteSetup();
 		$db = PHPUnitTestHelper::getDBO();
-		$this->instance = new KbCategory($db);
+		$this->instance = new KbTableCategory($db);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class KbTableCategoryTest extends PHPUnit_Framework_TestCase
 	 */
 	function testIsInstanceOfKbTableCategory()
 	{
-		$this->assertTrue($this->instance instanceof KbCategory);
+		$this->assertTrue($this->instance instanceof KbTableCategory);
 	}
 
 	/**
@@ -136,7 +136,7 @@ class KbTableCategoryTest extends PHPUnit_Framework_TestCase
 	{
 		foreach ($this->attributes as $a)
 		{
-			$this->assertClassHasAttribute($a, 'KbCategory');
+			$this->assertClassHasAttribute($a, 'KbTableCategory');
 		}
 	}
 

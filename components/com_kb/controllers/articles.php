@@ -39,6 +39,18 @@ ximport('Hubzero_Controller');
 class KbControllerArticles extends Hubzero_Controller
 {
 	/**
+	 * Execute a task
+	 * 
+	 * @return     void
+	 */
+	public function execute()
+	{
+		$this->archive = new KbModelArchive();
+
+		parent::execute();
+	}
+
+	/**
 	 * Displays an overview of categories and articles in the knowledge base
 	 * 
 	 * @return     void
@@ -46,27 +58,6 @@ class KbControllerArticles extends Hubzero_Controller
 	public function displayTask()
 	{
 		$this->view->setLayout('display');
-
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-
-		$this->view->filters = array();
-		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->view->filters['order']    = JRequest::getWord('order', 'recent');
-		$this->view->filters['section']  = 'all';
-		$this->view->filters['category'] = 0;
-		$this->view->filters['search']   = JRequest::getVar('search','');
-
-		// Get all main categories for menu
-		$c = new KbCategory($this->database);
-		$this->view->categories = $c->getCategories(1, 1);
-
-		// Get the lists of popular and most recent articles
-		$a = new KbArticle($this->database);
-		$this->view->articles = array();
-		$this->view->articles['top'] = $a->getArticles(5, 'a.hits DESC');
-		$this->view->articles['new'] = $a->getArticles(5, 'a.created DESC');
 
 		// Add the CSS to the template
 		$this->_getStyles();
@@ -85,10 +76,7 @@ class KbControllerArticles extends Hubzero_Controller
 		$this->view->title    = JText::_('COM_KB');
 		$this->view->catid    = 0;
 		$this->view->config   = $this->config;
-
-		$this->view->show_answers_tip  = JComponentHelper::isEnabled('com_answers');
-		$this->view->show_wishlist_tip = JComponentHelper::isEnabled('com_wishlist');
-		$this->view->show_ticket_tip   = JComponentHelper::isEnabled('com_support');
+		$this->view->archive  = $this->archive;
 
 		if ($this->getError()) 
 		{
@@ -118,35 +106,34 @@ class KbControllerArticles extends Hubzero_Controller
 		}
 
 		// Get the category
-		$sect = 0;
+		$sect = -1;
 		$cat  = 0;
-		
-		$this->view->category = new KbCategory($this->database);
-		$this->view->section  = new KbCategory($this->database);
+
+		$this->view->category = new KbModelCategory($alias);
+		$this->view->section  = new KbModelCategory($this->view->category->get('section'));
 		if ($alias == 'all') 
 		{
-			$this->view->category->alias = 'all';
-			$this->view->category->title = JText::_('All Articles');
-			$this->view->category->id    = 0;
-			$this->view->category->state = 1;
+			$this->view->category->set('alias', 'all');
+			$this->view->category->set('title', JText::_('All Articles'));
+			$this->view->category->set('id', 0);
+			$this->view->category->set('state', 1);
 		} 
 		else 
 		{
-			$this->view->category->loadAlias($alias);
-			if ($this->view->category->section) 
+			if ($this->view->category->get('section')) 
 			{
-				$this->view->section->load($this->view->category->section);
+				//$this->view->section  = new KbModelCategory($this->view->category->get('section'));
 
-				$sect = $this->view->category->section;
-				$cat  = $this->view->category->id;
+				$sect = $this->view->category->get('section');
+				$cat  = $this->view->category->get('id');
 			} 
 			else 
 			{
-				$sect = $this->view->category->id;
+				$sect = $this->view->category->get('id');
 			}
 		}
 
-		if (!$this->view->category->state) 
+		if (!$this->view->category->isPublished()) 
 		{
 			JError::raiseError(404, JText::_('COM_KB_ERROR_CATEGORY_NOT_FOUND'));
 			return;
@@ -172,14 +159,11 @@ class KbControllerArticles extends Hubzero_Controller
 			$this->view->filters['user_id'] = $this->juser->get('id');
 		}
 
-		// Get the list of articles for this category
-		$kba = new KbArticle($this->database);
-
 		// Get a record count
-		$this->view->total = $kba->getCount($this->view->filters);
+		$this->view->total = $this->view->category->articles('count', $this->view->filters);
 
 		// Get the records
-		$this->view->articles = $kba->getRecords($this->view->filters);
+		$this->view->articles = $this->view->category->articles('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -190,10 +174,7 @@ class KbControllerArticles extends Hubzero_Controller
 		);
 
 		// Get all main categories for menu
-		$this->view->categories = $this->view->category->getCategories(1, 1);
-
-		// Get sub categories
-		$this->view->subcategories = $this->view->category->getCategories(1, 1, $sect);
+		$this->view->categories = $this->archive->categories();
 
 		// Add the CSS to the template
 		$this->_getStyles();
@@ -233,123 +214,64 @@ class KbControllerArticles extends Hubzero_Controller
 
 		// Incoming
 		$alias = JRequest::getVar('alias', '');
-		$id = JRequest::getVar('id', '');
+		$id    = JRequest::getInt('id', 0);
 
 		// Load the article
-		$this->view->article = new KbArticle($this->database);
+		$this->view->article = new KbModelArticle(($alias ? $alias : $id), JRequest::getVar('category'));
 
-		if ($alias) 
-		{
-			$this->view->article->loadAlias($alias);
-		} 
-		else if ($id) 
-		{
-			$this->view->article->load($id);
-		}
-
-		if (!$this->view->article->id) 
+		if (!$this->view->article->exists()) 
 		{
 			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
 			return;
 		}
-		
-		if (!$this->view->article->state) 
+
+		if (!$this->view->article->isPublished()) 
 		{
 			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
 			return;
 		}
 
 		// Is the user logged in?
-		if (!$this->juser->get('guest')) 
+		/*if (!$this->juser->get('guest')) 
 		{
 			ximport('Hubzero_Environment');
 			
 			// See if this person has already voted
-			$h = new KbVote($this->database);
+			$h = new KbTableVote($this->database);
 			$this->view->vote = $h->getVote(
-				$this->view->article->id, 
+				$this->view->article->get('id'), 
 				$this->juser->get('id'), 
 				Hubzero_Environment::ipAddress(), 
 				'entry'
 			);
 		} 
 		else 
-		{
+		{*/
 			$this->view->vote = strtolower(JRequest::getVar('vote', ''));
-		}
+		//}
 
 		// Load the category object
-		$this->view->section = new KbCategory($this->database);
-		$this->view->section->load($this->view->article->section);
-		if (!$this->view->section->state) 
+		$this->view->section = new KbModelCategory($this->view->article->get('section'));
+		if (!$this->view->section->isPublished()) 
 		{
 			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
 			return;
 		}
 
 		// Load the category object
-		$this->view->category = new KbCategory($this->database);
-		if ($this->view->article->category) 
+		$this->view->category = $this->view->article->category();
+		if ($this->view->category->exists() && !$this->view->category->isPublished()) 
 		{
-			$this->view->category->load($this->view->article->category);
-			if (!$this->view->category->state) 
-			{
-				JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
-				return;
-			}
+			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
+			return;
 		}
 
 		// Get all main categories for menu
-		$this->view->categories = $this->view->category->getCategories(1, 1);
+		$this->view->categories = $this->archive->categories('list');
 
-		$this->view->subcategories = $this->view->category->getCategories(1, 1, $this->view->section->id);
+		$this->view->subcategories = $this->view->section->children('list');
 
-		// Get tags on this article
-		$this->view->tags = null;
-		if (class_exists('KbTags'))
-		{
-			$kt = new KbTags($this->database);
-			$this->view->tags = $kt->get_tags_on_object($this->view->article->id, 0, 0, 0);
-		}
-
-		// Get comments on this article
-		$bc = new KbComment($this->database);
-		$this->view->comments = $bc->getAllComments($this->view->article->id);
-
-		$this->view->comment_total = 0;
-		if ($this->view->comments) 
-		{
-			foreach ($this->view->comments as $com)
-			{
-				$this->view->comment_total++;
-				if ($com->replies) 
-				{
-					foreach ($com->replies as $rep)
-					{
-						$this->view->comment_total++;
-						if ($rep->replies) 
-						{
-							$this->view->comment_total += count($rep->replies);
-						}
-					}
-				}
-			}
-		}
-
-		$r = JRequest::getInt('reply', 0);
-		$this->view->replyto = new KbComment($this->database);
-		$this->view->replyto->load($r);
-
-		// Get parameters and merge with the component params
-		$paramClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-		}
-		$rparams = new $paramClass($this->view->article->params);
-
-		$this->view->config = $this->config;
-		$this->view->config->merge($rparams);
+		$this->view->replyto = new KbModelComment(JRequest::getInt('reply', 0));
 
 		// Add the CSS to the template
 		$this->_getStyles();
@@ -367,7 +289,7 @@ class KbControllerArticles extends Hubzero_Controller
 		$this->view->title   = JText::_('COM_KB');
 		$this->view->juser   = $this->juser;
 		$this->view->helpful = $this->helpful;
-		$this->view->catid   = $this->view->section->id;
+		$this->view->catid   = $this->view->section->get('id');
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -381,9 +303,9 @@ class KbControllerArticles extends Hubzero_Controller
 	/**
 	 * Pushes items to the global breadcrumbs object
 	 * 
-	 * @param      object $section  KbCategory
-	 * @param      object $category KbCategory
-	 * @param      object $article  KbArticle
+	 * @param      object $section  KbTableCategory
+	 * @param      object $category KbTableCategory
+	 * @param      object $article  KbTableArticle
 	 * @return     void
 	 */
 	protected function _buildPathway($section=null, $category=null, $article=null)
@@ -398,35 +320,35 @@ class KbControllerArticles extends Hubzero_Controller
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (is_object($section) && $section->alias) 
+		if (is_object($section) && $section->get('alias')) 
 		{
 			$pathway->addItem(
-				stripslashes($section->title),
-				'index.php?option=' . $this->_option . '&section=' . $section->alias
+				stripslashes($section->get('title')),
+				'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
 			);
 		}
-		if (is_object($category) && $category->alias) 
+		if (is_object($category) && $category->get('alias')) 
 		{
 			$lnk  = 'index.php?option=' . $this->_option;
-			$lnk .= (is_object($section) && $section->alias) ? '&section=' . $section->alias : '';
-			$lnk .= '&category=' . $category->alias;
+			$lnk .= (is_object($section) && $section->get('alias')) ? '&section=' . $section->get('alias') : '';
+			$lnk .= '&category=' . $category->get('alias');
 
 			$pathway->addItem(
-				stripslashes($category->title),
+				stripslashes($category->get('title')),
 				$lnk
 			);
 		}
-		if (is_object($article) && $article->alias) 
+		if (is_object($article) && $article->get('alias')) 
 		{
-			$lnk = 'index.php?option=' . $this->_option . '&section=' . $section->alias;
-			if (is_object($category) && $category->alias) 
+			$lnk = 'index.php?option=' . $this->_option . '&section=' . $section->get('alias');
+			if (is_object($category) && $category->get('alias')) 
 			{
-				$lnk .= '&category=' . $category->alias;
+				$lnk .= '&category=' . $category->get('alias');
 			}
-			$lnk .= '&alias=' . $article->alias;
+			$lnk .= '&alias=' . $article->get('alias');
 
 			$pathway->addItem(
-				stripslashes($article->title),
+				stripslashes($article->get('title')),
 				$lnk
 			);
 		}
@@ -435,25 +357,25 @@ class KbControllerArticles extends Hubzero_Controller
 	/**
 	 * Builds the document title
 	 * 
-	 * @param      object $section  KbCategory
-	 * @param      object $category KbCategory
-	 * @param      object $article  KbArticle
+	 * @param      object $section  KbTableCategory
+	 * @param      object $category KbTableCategory
+	 * @param      object $article  KbTableArticle
 	 * @return     void
 	 */
 	protected function _buildTitle($section=null, $category=null, $article=null)
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
-		if (is_object($section) && $section->title != '') 
+		if (is_object($section) && $section->get('title') != '') 
 		{
-			$this->_title .= ': ' . stripslashes($section->title);
+			$this->_title .= ': ' . stripslashes($section->get('title'));
 		}
-		if (is_object($category) && $category->title != '') 
+		if (is_object($category) && $category->get('title') != '') 
 		{
-			$this->_title .= ': ' . stripslashes($category->title);
+			$this->_title .= ': ' . stripslashes($category->get('title'));
 		}
 		if (is_object($article)) 
 		{
-			$this->_title .= ': ' . stripslashes($article->title);
+			$this->_title .= ': ' . stripslashes($article->get('title'));
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
@@ -478,29 +400,24 @@ class KbControllerArticles extends Hubzero_Controller
 		}
 
 		// Incoming
-		$no_html = JRequest::getInt('no_html', 0);
-		$type    = JRequest::getVar('type', '');
-		$id      = JRequest::getVar('id', '');
-		$vote    = strtolower(JRequest::getVar('vote', ''));
-
-		ximport('Hubzero_Environment');
-		$ip = Hubzero_Environment::ipAddress();
-
-		// See if this person has already voted
-		$h = new KbVote($this->database);
-		$result = $h->getVote($id, $this->juser->get('id'), $ip, $type);
-
-		if ($result) 
-		{
-			$h->deleteVote($id, $this->juser->get('id'), $ip, $type);
-		}
+		$type = strtolower(JRequest::getVar('type', ''));
+		$vote = strtolower(JRequest::getVar('vote', ''));
+		$id   = JRequest::getInt('id', 0);
 
 		// Did they vote?
 		if (!$vote) 
 		{
 			// Already voted
 			$this->setError(JText::_('COM_KB_USER_DIDNT_VOTE'));
-			$this->article();
+			$this->articleTask();
+			return;
+		}
+
+		if (!in_array($type, array('entry', 'comment'))) 
+		{
+			// Already voted
+			$this->setError(JText::_('COM_KB_WRONG_VOTE_TYPE'));
+			$this->displayTask();
 			return;
 		}
 
@@ -508,70 +425,23 @@ class KbControllerArticles extends Hubzero_Controller
 		switch ($type)
 		{
 			case 'entry':
-				$row = new KbArticle($this->database);
+				$row = new KbModelArticle($id);
 			break;
 			case 'comment':
-				$row = new KbComment($this->database);
-			break;
-		}
-		$row->load($id);
-
-		// Record if it was helpful or not
-		switch ($vote)
-		{
-			case 'yes':
-			case 'positive':
-			case 'like':
-				$row->helpful++;
-			break;
-
-			case 'no':
-			case 'negative':
-			case 'dislike':
-				$row->nothelpful++;
+				$row = new KbModelComment($id);
 			break;
 		}
 
-		switch ($result)
-		{
-			case 'like':
-				$row->helpful--;
-			break;
-			case 'dislike':
-				$row->nothelpful--;
-			break;
-		}
-
-		if (!$row->store()) 
+		if (!$row->vote($vote, $this->juser->get('id'))) 
 		{
 			$this->setError($row->getError());
 			return;
 		}
 
-		// Record user's vote
-		$params = array(
-			'id'        => null,
-			'object_id' => $row->id,
-			'ip'        => $ip,
-			'vote'      => $vote,
-			'user_id'   => $this->juser->get('id'),
-			'type'      => $type
-		);
+		if (JRequest::getInt('no_html', 0)) 
+		{
+			$this->view->setLayout('_vote');
 
-		$h->bind($params);
-		if (!$h->check()) 
-		{
-			$this->setError($h->getError());
-			return;
-		}
-		if (!$h->store()) 
-		{
-			$this->setError($h->getError());
-			return;
-		}
-
-		if ($no_html) 
-		{
 			$this->view->item = $row;
 			$this->view->type = $type;
 			$this->view->vote = $vote;
@@ -586,7 +456,11 @@ class KbControllerArticles extends Hubzero_Controller
 		{
 			if ($type == 'entry') 
 			{
-				JRequest::setVar('alias', $row->alias);
+				//JRequest::setVar('alias', $row->get('alias'));
+				$this->setRedirect(
+					JRoute::_($row->link())
+				);
+				return;
 			}
 			$this->articleTask();
 		}
@@ -614,10 +488,10 @@ class KbControllerArticles extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post');
+		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new KbComment($this->database);
+		$row = new KbModelComment($comment['id']);
 		if (!$row->bind($comment)) 
 		{
 			$this->setError($row->getError());
@@ -625,22 +499,8 @@ class KbControllerArticles extends Hubzero_Controller
 			return;
 		}
 
-		// Set the created time
-		if (!$row->id) 
-		{
-			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			$this->articleTask();
-			return;
-		}
-
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			$this->articleTask();
@@ -648,7 +508,7 @@ class KbControllerArticles extends Hubzero_Controller
 		}
 
 		$this->setRedirect(
-			'index.php?option=com_kb&task=article&id=' . $comment['entry_id'] . '#comments'
+			$row->link() . '#comments'
 		);
 	}
 
@@ -697,7 +557,7 @@ class KbControllerArticles extends Hubzero_Controller
 			return $this->displayTask();
 		}
 
-		$entry = new KbArticle($this->database);
+		$entry = new KbTableArticle($this->database);
 		$entry->loadAlias($alias);
 
 		if (!$entry->id) 
@@ -706,18 +566,18 @@ class KbControllerArticles extends Hubzero_Controller
 		}
 
 		// Load the category object
-		$section = new KbCategory($this->database);
+		$section = new KbTableCategory($this->database);
 		$section->load($entry->section);
 
 		// Load the category object
-		$category = new KbCategory($this->database);
+		$category = new KbTableCategory($this->database);
 		if ($entry->category) 
 		{
 			$category->load($entry->category);
 		}
 
 		// Load the comments
-		$bc = new KbComment($this->database);
+		$bc = new KbTableComment($this->database);
 		$rows = $bc->getAllComments($entry->id);
 
 		// Build some basic RSS document information
@@ -735,7 +595,7 @@ class KbControllerArticles extends Hubzero_Controller
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => '',
-				'pagename' => $entry->alias,
+				'pagename' => $entry->get('alias'),
 				'pageid'   => $entry->id,
 				'filepath' => '',
 				'domain'   => ''
@@ -746,7 +606,7 @@ class KbControllerArticles extends Hubzero_Controller
 			foreach ($rows as $row)
 			{
 				// URL link to article
-				$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $row->id);
+				$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&alias=' . $entry->get('alias') . '#c' . $row->id);
 
 				$author = JText::_('COM_KB_ANONYMOUS');
 				if (!$row->anonymous) 
@@ -789,7 +649,7 @@ class KbControllerArticles extends Hubzero_Controller
 					foreach ($row->replies as $reply)
 					{
 						// URL link to article
-						$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
+						$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&alias=' . $entry->get('alias') . '#c' . $reply->id);
 
 						$author = JText::_('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous) 
@@ -831,7 +691,7 @@ class KbControllerArticles extends Hubzero_Controller
 							foreach ($reply->replies as $response)
 							{
 								// URL link to article
-								$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
+								$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&alias=' . $entry->get('alias') . '#c' . $response->id);
 
 								$author = JText::_('COM_KB_ANONYMOUS');
 								if (!$response->anonymous) 

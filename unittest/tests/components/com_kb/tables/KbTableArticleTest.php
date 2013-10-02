@@ -66,7 +66,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 	{
 		PHPUnitTestHelper::siteSetup();
 		$db = PHPUnitTestHelper::getDBO();
-		$this->instance = new KbArticle($db);
+		$this->instance = new KbTableArticle($db);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 	 */
 	function testIsInstanceOfKbTableArticle()
 	{
-		$this->assertTrue($this->instance instanceof KbArticle);
+		$this->assertTrue($this->instance instanceof KbTableArticle);
 	}
 
 	/**
@@ -159,7 +159,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 	{
 		foreach ($this->attributes as $a)
 		{
-			$this->assertClassHasAttribute($a, 'KbArticle');
+			$this->assertClassHasAttribute($a, 'KbTableArticle');
 		}
 	}
 

@@ -39,7 +39,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
+
 	// Authorization check
 	$user = JFactory::getUser();
 	if (!$user->authorize($option, 'manage'))
@@ -55,15 +55,11 @@ else
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
 
-	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
-	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'article.php');
+	//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
+	//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'article.php');
 }
 // Include scripts
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'comment.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'article.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'vote.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'kb.php');
 

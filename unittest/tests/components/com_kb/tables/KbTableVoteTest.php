@@ -39,7 +39,7 @@ class KbTableVoteTest extends PHPUnit_Framework_TestCase
 	{
 		PHPUnitTestHelper::siteSetup();
 		$db = PHPUnitTestHelper::getDBO();
-		$this->instance = new KbVote($db);
+		$this->instance = new KbTableVote($db);
 	}
 
 	/**
@@ -67,7 +67,7 @@ class KbTableVoteTest extends PHPUnit_Framework_TestCase
 	 */
 	function testIsInstanceOfKbTableVote()
 	{
-		$this->assertTrue($this->instance instanceof KbVote);
+		$this->assertTrue($this->instance instanceof KbTableVote);
 	}
 
 	/**
@@ -89,7 +89,7 @@ class KbTableVoteTest extends PHPUnit_Framework_TestCase
 	{
 		foreach ($this->attributes as $a)
 		{
-			$this->assertClassHasAttribute($a, 'KbVote');
+			$this->assertClassHasAttribute($a, 'KbTableVote');
 		}
 	}
 

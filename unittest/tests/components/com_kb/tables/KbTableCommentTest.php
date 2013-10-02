@@ -46,7 +46,7 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	{
 		PHPUnitTestHelper::siteSetup();
 		$db = PHPUnitTestHelper::getDBO();
-		$this->instance = new KbComment($db);
+		$this->instance = new KbTableComment($db);
 	}
 
 	/**
@@ -74,7 +74,7 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	 */
 	function testIsInstanceOfKbTableComment()
 	{
-		$this->assertTrue($this->instance instanceof KbComment);
+		$this->assertTrue($this->instance instanceof KbTableComment);
 	}
 
 	/**
@@ -96,7 +96,7 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	{
 		foreach ($this->attributes as $a)
 		{
-			$this->assertClassHasAttribute($a, 'KbComment');
+			$this->assertClassHasAttribute($a, 'KbTableComment');
 		}
 	}
 

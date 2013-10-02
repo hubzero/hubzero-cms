@@ -32,78 +32,30 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'KbHtml'
- * 
- * Long description (if any) ...
+ * Knowledgebase helper class for HTML
  */
-class KbHtml
+class KbHelperHtml
 {
-
 	/**
-	 * Short description for 'alert'
+	 * Outputs a <select> element with a specific value chosen
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array  $categories Data to populate list with
+	 * @param      mixed  $value      Chosen value
+	 * @param      string $name       Field name
+	 * @return     string HTML <select>
 	 */
-	public function alert( $msg )
+	public function sectionSelect($categories, $val, $name)
 	{
-		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
-	}
-
-	/**
-	 * Short description for 'formSelect'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      mixed $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function formSelect($name, $array, $value, $class='', $id)
-	{
-		$out  = '<select name="'.$name.'" id="'.$name.'" onchange="return listItemTask(\'cb'. $id .'\',\'regroup\')"';
-		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
-		$out .= ' <option value="0"';
-		$out .= ($value == 0 || $value == '') ? ' selected="selected"' : '';
-		$out .= '>'. JText::_('NONE') .'</option>'."\n";
-		foreach ($array as $anode)
-		{
-			$selected = ($anode->id == $value || $anode->title == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$out .= ' <option value="'.$anode->id.'"'.$selected.'>'.$anode->title.'</option>'."\n";
-		}
-		$out .= '</select>'."\n";
-		return $out;
-	}
-
-	/**
-	 * Short description for 'sectionSelect'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $categories Parameter description (if any) ...
-	 * @param      unknown $val Parameter description (if any) ...
-	 * @param      string $name Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function sectionSelect( $categories, $val, $name )
-	{
-		$out  = '<select name="'.$name.'">'."\n";
-		$out .= "\t".'<option value="">'.JText::_('COM_KB_SELECT_CATEGORY') .'</option>'."\n";
+		$out  = '<select name="' . $name . '">';
+		$out .= '<option value="-1">' . JText::_('COM_KB_SELECT_CATEGORY') . '</option>';
 		foreach ($categories as $category)
 		{
-			$selected = ($category->id == $val)
+			$selected = ($category->get('id') == $val)
 					  ? ' selected="selected"'
 					  : '';
-			$out .= "\t".'<option value="'.$category->id.'"'.$selected.'>'.$category->title.'</option>'."\n";
+			$out .= '<option value="' . $category->get('id') . '"' . $selected . '>' . stripslashes($category->get('title')) . '</option>';
 		}
-		$out .= '</select>'."\n";
+		$out .= '</select>';
 		return $out;
 	}
 }

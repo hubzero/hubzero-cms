@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,37 +24,25 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php'))
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+
+/**
+ * Knowledgebase Tagging class
+ */
+class KbModelTags extends TagsModelCloud
 {
-	require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-	
 	/**
-	 * Extended class for retrieving and setting tags on a knowledge base article
+	 * Object type, used for linking objects (such as resources) to tags
+	 * 
+	 * @var string
 	 */
-	class KbTags extends TagsHandler
-	{
-
-		/**
-		 * Short description for '__construct'
-		 * 
-		 * Long description (if any) ...
-		 * 
-		 * @param      unknown $db Parameter description (if any) ...
-		 * @param      array $config Parameter description (if any) ...
-		 * @return     void
-		 */
-		public function __construct( $db, $config=array() )
-		{
-			$this->_db  = $db;
-			$this->_tbl = 'kb';
-		}
-	}
+	protected $_scope = 'kb';
 }
 

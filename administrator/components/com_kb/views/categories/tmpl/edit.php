@@ -34,7 +34,7 @@ $canDo = KbHelper::getActions('category');
 
 $text = ($this->task == 'edit' ? JText::_('COM_KB_EDIT') : JText::_('COM_KB_NEW'));
 
-JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_CATEGORY') . ': <small><small>[ ' . $text . ' ]</small></small>', 'kb.png');
+JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_CATEGORY') . ': ' . $text, 'kb.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -80,37 +80,37 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<th class="key"><label for="field->section"><?php echo JText::_('COM_KB_PARENT_CATEGORY'); ?>:</label></th>
-						<td><?php echo KbHtml::sectionSelect($this->sections, $this->row->section, 'fields[section]'); ?></td>
+						<td><?php echo KbHelperHtml::sectionSelect($this->sections, $this->row->get('section'), 'fields[section]'); ?></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>:</label></th>
-						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
+						<td><input type="text" name="fields[title]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label></th>
-						<td><input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /></td>
+						<td><input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-description"><?php echo JText::_('COM_KB_DESCRIPTION'); ?>:</label></th>
-						<td><?php echo $editor->display('fields[description]', $this->escape(stripslashes($this->row->description)), '', '', '50', '10'); ?></td>
+						<td><?php echo $editor->display('fields[description]', $this->escape(stripslashes($this->row->get('description'))), '', '', '50', '10'); ?></td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('Metadata for this category'); ?>">
+		<table class="meta">
 			<tbody>
 				<tr>
 					<th class="key"><?php echo JText::_('ID'); ?>:</th>
 					<td>
-						<?php echo $this->row->id; ?>
-						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->id; ?>" />
+						<?php echo $this->row->get('id'); ?>
+						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_KB_PARAMETERS'); ?></span></legend>
 
@@ -118,19 +118,25 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="field-state"><?php echo JText::_('COM_KB_PUBLISH'); ?>:</label></td>
-						<td><input type="checkbox" name="fields[state]" id="field-state" value="1" <?php echo $this->row->state ? 'checked="checked"' : ''; ?> /></td>
+						<td><input type="checkbox" name="fields[state]" id="field-state" value="1" <?php echo $this->row->get('state') ? 'checked="checked"' : ''; ?> /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label></td>
-						<td><?php echo JHTML::_('list.accesslevel', $this->row); ?></td>
+						<td class="key"><label for="field-access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label></td>
+						<td>
+							<select name="fields[access]" id="field-access">
+								<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
+								<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
+								<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Special'); ?></option>
+							</select>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
-	<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+
+	<?php /*if (version_compare(JVERSION, '1.6', 'ge')) { ?>
 		<?php if ($canDo->get('core.admin')): ?>
 			<div class="col width-100 fltlft">
 				<fieldset class="panelform">
@@ -140,11 +146,11 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="clr"></div>
 		<?php endif; ?>
-	<?php } ?>
-	
+	<?php }*/ ?>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

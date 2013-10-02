@@ -38,7 +38,7 @@ if ($this->filters['orphans']) {
 	$ttle = JText::_('COM_KB_ARTICLES');
 }
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_KB') . '</a> <span class="sep">&rsaquo;</span> <span>' . $ttle . '</span>', 'kb.png');
+JToolBarHelper::title(JText::_('COM_KB') . ': ' . $ttle, 'kb.png');
 if ($canDo->get('core.edit.state')) 
 {
 	JToolBarHelper::publishList();
@@ -78,13 +78,13 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
 		<?php
-			if ($this->filters['cid']) {
-				echo KbHtml::sectionSelect($this->sections, $this->filters['cid'], 'id');
+			if ($this->filters['category']) {
+				echo KbHelperHtml::sectionSelect($this->sections, $this->filters['category'], 'category');
 			} else {
-				echo KbHtml::sectionSelect($this->sections, $this->filters['id'], 'id');
+				echo KbHelperHtml::sectionSelect($this->sections, $this->filters['section'], 'section');
 			}
 		?>
-		
+
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
 	<div class="clr"> </div>
@@ -107,79 +107,76 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$database =& JFactory::getDBO();
-//$sc = new SupportComment($database);
-$st = new KbTags($database);
-
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
+$i = 0;
+foreach ($this->rows as $row)
 {
-	$row = &$this->rows[$i];
-
-	switch ($row->state)
+	switch ((int) $row->get('state', 0))
 	{
-		case '1':
+		case 1:
 			$class = 'publish';
 			$task = 'unpublish';
 			$alt = JText::_('COM_KB_PUBLISHED');
-			break;
-		case '2':
+		break;
+		case 2:
 			$class = 'expire';
 			$task = 'publish';
 			$alt = JText::_('COM_KB_TRASHED');
-			break;
-		case '0':
+		break;
+		case 0:
+		default:
 			$class = 'unpublish';
 			$task = 'publish';
 			$alt = JText::_('COM_KB_UNPUBLISHED');
-			break;
+		break;
 	}
 
-	$tags = $st->get_tag_cloud(3, 1, $row->id);
+	$tags = $row->tags('cloud');
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
-					<span class="checkedout" title="Checked out :: <?php echo $this->escape($row->editor); ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+			<?php if ($row->get('checked_out') && $row->get('checked_out') != $juser->get('id')) { ?>
+					<span class="checkedout" title="Checked out :: <?php echo $this->escape($row->get('editor')); ?>">
+						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 					</span>
-<?php } else { ?>
-	<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+			<?php } else { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
+						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 					</a>
-	<?php } else { ?>
+				<?php } else { ?>
 					<span>
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 					</span>
-	<?php } ?>
-<?php } ?>
-<?php if ($tags) { ?>
+				<?php } ?>
+			<?php } ?>
+				<?php if ($tags) { ?>
 					<br /><span><?php echo JText::_('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;cid=<?php echo $this->filters['id']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK',$task);?>">
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;section=<?php echo $this->filters['section']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span class="state <?php echo $class; ?>">
 						<span><?php echo $alt; ?></span>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-					<?php echo $this->escape($row->ctitle); echo ($row->cctitle) ? ' ('.$this->escape($row->cctitle).')' : ''; ?>
+					<?php echo $this->escape($row->get('ctitle')); echo ($row->get('cctitle') ? ' (' . $this->escape($row->get('cctitle')) . ')' : ''); ?>
 				</td>
 				<td>
-					+<?php echo $row->helpful; ?> 
-					-<?php echo $row->nothelpful; ?>
+					<span style="color: green;">+<?php echo $row->get('helpful', 0); ?></span> 
+					<span style="color: red;">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
 <?php
+	$i++;
 	$k = 1 - $k;
 }
 ?>
@@ -190,7 +187,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="cid" value="<?php echo $this->filters['cid']; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 

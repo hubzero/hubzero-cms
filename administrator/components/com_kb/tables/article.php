@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for knowledge base articles
  */
-class KbArticle extends JTable
+class KbTableArticle extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -287,11 +287,9 @@ class KbArticle extends JTable
 	}
 
 	/**
-	 * Short description for 'store'
+	 * Store changes.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     boolean
 	 */
 	public function store()
 	{
@@ -317,7 +315,7 @@ class KbArticle extends JTable
 		{
 			return false;
 		}
-		$sql  = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
+		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid);
 		$sql .= ($cat) ? " AND section=" . $this->_db->Quote($cat) : '';
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
@@ -332,255 +330,77 @@ class KbArticle extends JTable
 	}
 
 	/**
-	 * Get articles for a category
-	 * 
-	 * @param      integer $noauth   Restrict by article authorizartion level
-	 * @param      integer $section  Section ID
-	 * @param      integer $category Category ID
-	 * @param      string  $access   Access
-	 * @return     array
-	 */
-	public function getCategoryArticles($noauth, $section, $category, $access)
-	{
-		$juser =& JFactory::getUser();
-
-		$query = "SELECT a.id, a.title, a.created, a.created_by, a.access, a.hits, a.section, a.category, a.helpful, a.nothelpful, a.alias, c.alias AS calias"
-				. " FROM $this->_tbl AS a"
-				. " LEFT JOIN #__faq_categories AS c ON c.id = a.category"
-				. " WHERE a.section=" . $this->_db->Quote($section) . " AND a.category=" . $this->_db->Quote($category) . " AND a.state=1"
-				. ($noauth ? " AND a.access<='" . $juser->get('aid') . "'" : '')
-				. " AND '" . $access . "'<='" . $juser->get('aid') . "'"
-				. " ORDER BY a.modified DESC";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get published articles
-	 * 
-	 * @param      integer $limit Number of records to return
-	 * @param      string  $order Sort field
-	 * @return     array
-	 */
-	public function getArticles($limit, $order)
-	{
-		$juser =& JFactory::getUser();
-
-		$query = "SELECT a.id, a.title, a.state, a.access, a.created, a.modified, a.hits, a.alias, c.alias AS category,  cc.alias AS section"
-				." FROM $this->_tbl AS a"
-				. " LEFT JOIN #__faq_categories AS c ON c.id = a.section"
-				. " LEFT JOIN #__faq_categories AS cc ON cc.id = a.category"
-				." WHERE a.state=1"
-				." AND a.access <= ". $juser->get('aid') .""
-				." ORDER BY " . $order
-				." LIMIT " . $limit;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get all records for a specific category
-	 * 
-	 * @param      integer $cid Category ID
-	 * @return     array
-	 */
-	public function getCollection($cid=NULL)
-	{
-		if ($cid == NULL) 
-		{
-			$cid = $this->category;
-		}
-		$query = "SELECT r.id, r.section, r.category"
-				. " FROM $this->_tbl AS r"
-				. " WHERE r.section=" . $this->_db->Quote($cid) . " OR r.category=" . $this->_db->Quote($cid);
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get a count of all records
-	 * Used by admin interface
-	 * 
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
-	 */
-	public function getArticlesCount($filters=array())
-	{
-		if (isset($filters['cid']) && $filters['cid']) 
-		{
-			$where = "m.section=" . $this->_db->Quote($filters['cid']) . " AND m.category=" . $this->_db->Quote($filters['id']);
-		} 
-		else 
-		{
-			if (isset($filters['id']) && $filters['id']) 
-			{
-				$where = "m.section=" . $filters['id'];
-			} 
-			else 
-			{
-				$where = "m.section!=0";
-			}
-		}
-		if (isset($filters['orphans']) && $filters['orphans']) 
-		{
-			$where = "m.section=0";
-		}
-
-		$query = "SELECT count(*) FROM $this->_tbl AS m WHERE " . $where;
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	/**
-	 * Get all records
-	 * Used by admin interface
-	 * 
-	 * @param      array $filters Filters to build query from
-	 * @return     array
-	 */
-	public function getArticlesAll($filters=array())
-	{
-		if (isset($filters['cid']) && $filters['cid']) 
-		{
-			$where = "m.section=".$this->_db->Quote($filters['cid'])." AND m.category=".$this->_db->Quote($filters['id']);
-		} 
-		else 
-		{
-			if (isset($filters['id']) && $filters['id']) 
-			{
-				$where = "m.section=".$this->_db->Quote($filters['id']);
-			} 
-			else 
-			{
-				$where = "m.section!=0";
-			}
-		}
-		if (isset($filters['orphans']) && $filters['orphans']) 
-		{
-			$where = "m.section=0";
-		}
-
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = "SELECT m.id, m.title, m.created, m.state, m.access, m.checked_out, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, cc.title AS cctitle, u.name AS editor, g.name AS groupname"
-				. " FROM $this->_tbl AS m"
-				. " LEFT JOIN #__users AS u ON u.id = m.checked_out"
-				. " LEFT JOIN #__groups AS g ON g.id = m.access";
-		}
-		else 
-		{
-			$query = "SELECT m.id, m.title, m.created, m.state, m.access, m.checked_out, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, cc.title AS cctitle, u.name AS editor, g.title AS groupname"
-				. " FROM $this->_tbl AS m"
-				. " LEFT JOIN #__users AS u ON u.id = m.checked_out"
-				. " LEFT JOIN #__viewlevels AS g ON g.id = (m.access + 1)";
-		}
-		$query .= " LEFT JOIN #__faq_categories AS c ON c.id = m.section"
-				. " LEFT JOIN #__faq_categories AS cc ON cc.id = m.category"
-				. " WHERE ".$where
-				. " ORDER BY ".$filters['filterby'];
-		if (isset($filters['limit']) && $filters['limit'])
-		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Delete an SEF record
-	 * 
-	 * @param      string $option Component name
-	 * @param      string $id     Record ID
-	 * @return     boolean True upon success
-	 */
-	public function deleteSef($option, $id=NULL)
-	{
-		if ($id == NULL) 
-		{
-			$id = $this->id;
-		}
-		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=" . $this->_db->getEscaped($option) . "&task=article&id=" . intval($id) . "'");
-		if ($this->_db->query()) 
-		{
-			return true;
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-	}
-
-	/**
 	 * Build a query from filters
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters=array())
+	private function _buildQuery($filters=array())
 	{
-		$sql = "FROM $this->_tbl AS m 
-				LEFT JOIN #__faq_categories AS c ON c.id = m.section 
-				LEFT JOIN #__faq_categories AS cc ON cc.id = m.category ";
-		/*if (isset($filters['search']) && $filters['search'] != '') {
-			$sql .= " LEFT JOIN #__tags_object AS tt ON tt.objectid=m.id AND tt.tbl='kb'";
-			$sql .= " LEFT JOIN #__tags AS t ON tt.tagid=t.id";
-		}*/
+		$query = "FROM $this->_tbl AS a
+					LEFT JOIN #__faq_categories AS c ON c.id = a.section 
+					LEFT JOIN #__faq_categories AS cc ON cc.id = a.category ";
+
 		if (isset($filters['user_id']) && $filters['user_id'] > 0) 
 		{
-			$sql .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=m.id AND v.user_id=" . $this->_db->Quote($filters['user_id']) . " AND v.type='entry' ";
+			$query .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=a.id AND v.user_id=" . $this->_db->Quote($filters['user_id']) . " AND v.type='entry' ";
 		}
 
-		$w = array();
-		if (isset($filters['section']) && $filters['section']) 
+		$where = array();
+
+		if (isset($filters['section']) && $filters['section'] >= 0) 
 		{
-			$w[] = "m.section=" . $this->_db->Quote($filters['section']);
+			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
 		}
-		if (isset($filters['category']) && $filters['category']) 
+		if (isset($filters['category']) && $filters['category'] >= 0) 
 		{
-			$w[] = "m.category=" . $this->_db->Quote($filters['category']);
+			$where[] = "a.`category`=" . $this->_db->Quote($filters['category']);
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']) && $filters['state'] >= 0) 
 		{
-			$w[] = "m.state=" . $this->_db->Quote($filters['state']);
-			$w[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['access']) && $filters['access'] >= 0) 
 		{
-			/*$w[] = "(
-					m.title LIKE '%".$filters['search']."%' 
-					OR m.fulltxt LIKE '%".$filters['search']."%' 
-					OR t.raw_tag LIKE '%".$filters['search']."%' 
-					OR t.tag LIKE '%".$filters['search']."%'
-			)";*/
-			$w[] = "(
-					m.title LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' 
-					OR m.fulltxt LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' 
-				)";
+			$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$where[] = "(a.`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR a.`fulltxt` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
 		}
 
-		$sql .= (count($w) > 0) ? "WHERE " : "";
-		$sql .= implode(" AND ", $w);
-
-		if (isset($filters['order']) && $filters['order'] != '') 
+		if (count($where) > 0)
 		{
-			switch ($filters['order'])
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		if (isset($filters['sort']) && $filters['sort']) 
+		{
+			switch ($filters['sort'])
 			{
-				case 'recent': $order = 'm.modified DESC, m.created DESC'; break;
-				//case 'created': $order = $filters['orderby'].' DESC'; break;
-				case 'popularity': $order = '(m.helpful-m.nothelpful) DESC'; break;
-				default: $order = $filters['order']; break;
+				case 'recent':     $filters['sort'] = 'a.modified DESC, a.created'; break;
+				case 'popularity': $filters['sort'] = '(a.helpful - a.nothelpful)'; break;
+				default:
+					if (substr($filters['sort'], 0, 2) != 'a.' && array_key_exists($filters['sort'], $this->getFields()))
+					{
+						$filters['sort'] = 'a.' . $filters['sort'];
+					}
+
+					$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
+				break;
 			}
-			$sql .= " ORDER BY " . $order;
-		}
-		if (isset($filters['limit']) && $filters['limit'] != '') 
-		{
-			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+
+			$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+			if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+			{
+				$filters['sort_Dir'] = 'ASC';
+			}
+
+			$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
 		}
 
-		return $sql;
+		return $query;
 	}
 
 	/**
@@ -589,10 +409,12 @@ class KbArticle extends JTable
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
-	public function getCount($filters=array())
+	public function count($filters=array())
 	{
-		$filters['limit'] = '';
-		$query = "SELECT count(*) " . $this->buildQuery($filters);
+		$filters['sort'] = null;
+
+		$query  = "SELECT COUNT(a.id) ";
+		$query .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -604,14 +426,21 @@ class KbArticle extends JTable
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
-	public function getRecords($filters=array())
+	public function find($filters=array())
 	{
-		$query = "SELECT DISTINCT(m.id), m.title, m.created, m.state, m.access, m.modified, m.section, m.category, m.helpful, m.nothelpful, m.alias, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
+		if (!isset($filters['start']))
+		{
+			$filters['start'] = 0;
+		}
+
+		$query  = "SELECT a.*, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
 		if (isset($filters['user_id']) && $filters['user_id'] > 0) 
 		{
 			$query .= ", v.vote, v.user_id ";
 		}
-		$query .= $this->buildQuery($filters);
+
+		$query .= $this->_buildQuery($filters);
+		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

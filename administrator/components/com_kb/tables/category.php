@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for knowledge base categories
  */
-class KbCategory extends JTable
+class KbTableCategory extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -103,9 +103,7 @@ class KbCategory extends JTable
 	 */
 	public function check()
 	{
-		$this->id = intval($this->id);
-		$this->title = trim($this->title);
-
+		$this->title       = trim($this->title);
 		if ($this->title == '') 
 		{
 			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
@@ -117,6 +115,12 @@ class KbCategory extends JTable
 			$this->alias = str_replace(' ', '-', strtolower($this->title));
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+
+		$this->id          = intval($this->id);
+		$this->description = trim($this->description);
+		$this->section     = intval($this->section);
+		$this->state       = intval($this->state);
+		$this->access      = intval($this->access);
 
 		return true;
 	}
@@ -197,13 +201,19 @@ class KbCategory extends JTable
 	 * @param      string $oid Alias
 	 * @return     boolean True upon success, False if errors
 	 */
-	public function loadAlias($oid=NULL)
+	public function load($oid=NULL)
 	{
 		if (empty($oid)) 
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
+
+		if (is_numeric($oid))
+		{
+			return parent::load($oid);
+		}
+
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -216,151 +226,133 @@ class KbCategory extends JTable
 	}
 
 	/**
-	 * Get categories for a section
+	 * Load a record and bind to $this
 	 * 
-	 * @param      integer $noauth    Restrict by article authorizartion level
-	 * @param      integer $empty_cat Return empty categories?
-	 * @param      integer $catid     Section ID
-	 * @return     array
+	 * @param      string $oid Alias
+	 * @return     boolean True upon success, False if errors
 	 */
-	public function getCategories($noauth, $empty_cat=0, $catid=0)
+	public function loadAlias($oid=NULL)
 	{
-		$juser =& JFactory::getUser();
-
-		if ($empty_cat) 
-		{
-			$empty = '';
-		} 
-		else 
-		{
-			$empty = "\n HAVING COUNT(b.id) > 0";
-		}
-
-		if ($catid) 
-		{
-			$sect = "b.category";
-		} 
-		else 
-		{
-			$sect = "b.section";
-		}
-
-		$query = "SELECT a.*, COUNT(b.id) AS numitems"
-				. " FROM $this->_tbl AS a"
-				. " LEFT JOIN #__faq AS b ON " . $sect . " = a.id AND b.state=1 AND b.access=0"
-				. " WHERE a.state=1 AND a.section=" . $this->_db->Quote($catid)
-				. ($noauth ? " AND a.access <= '" . $juser->get('aid') . "'" : '')
-				. " GROUP BY a.id"
-				. $empty
-				. " ORDER BY a.title";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->load($oid);
 	}
 
 	/**
-	 * Delete an SEF record
+	 * Build a query from filters
 	 * 
-	 * @param      string $option Component name
-	 * @param      string $id     Record ID
-	 * @return     boolean True upon success
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function deleteSef($option, $id=NULL)
+	private function _buildQuery($filters=array())
 	{
-		if ($id == NULL) 
+		$query = "FROM $this->_tbl AS a";
+		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$id = $this->id;
+			$query .= " LEFT JOIN #__groups AS g ON g.`id` = a.`access`";
 		}
-		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=" . $this->_db->getEscaped($option) . "&task=category&id=" . intval($id) . "'");
-		if ($this->_db->query()) 
+		else
 		{
-			return true;
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
+			$query .= " LEFT JOIN #__viewlevels AS g ON g.`id` = (a.`access` + 1)";
 		}
+
+		$where = array();
+
+		if (isset($filters['section']) && $filters['section'] >= 0) 
+		{
+			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
+		}
+		if (isset($filters['state']) && $filters['state'] >= 0) 
+		{
+			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
+		}
+		if (isset($filters['access']) && $filters['access'] >= 0) 
+		{
+			$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$where[] = "(a.`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR a.`description` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
+		}
+		if (isset($filters['empty']) && !$filters['empty'])
+		{
+			$where[] = "(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id) > 0";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		if (isset($filters['sort']) && $filters['sort']) 
+		{
+			if (substr($filters['sort'], 0, 2) != 'a.' && array_key_exists($filters['sort'], $this->getFields()))
+			{
+				$filters['sort'] = 'a.' . $filters['sort'];
+			}
+			$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
+			$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+			if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+			{
+				$filters['sort_Dir'] = 'DESC';
+			}
+
+			$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
+		}
+
+		return $query;
 	}
 
 	/**
-	 * Get all sections
-	 * 
-	 * @return     array
-	 */
-	public function getAllSections()
-	{
-		$this->_db->setQuery("SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section=0 ORDER BY m.title");
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get all categories
-	 * 
-	 * @return     array
-	 */
-	public function getAllCategories()
-	{
-		$this->_db->setQuery("SELECT m.id, m.title, m.alias FROM $this->_tbl AS m WHERE m.section!=0 ORDER BY m.title");
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get a count of records based off of filters
+	 * Get a record count
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
-	public function getCategoriesCount($filters=array())
+	public function count($filters=array())
 	{
-		$query  = "SELECT count(*) FROM $this->_tbl WHERE section=";
-		$query .= (isset($filters['id'])) ? $filters['id'] : "0";
+		$filters['sort'] = null;
+
+		$query  = "SELECT COUNT(a.id) ";
+		$query .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Get records based off of filters
+	 * Get records
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
-	public function getCategoriesAll($filters=array())
+	public function find($filters=array())
 	{
-		if (isset($filters['id']) && $filters['id']) 
+		// Make sure article count takes access and state into consideration
+		$access = '';
+		if (isset($filters['state']) && $filters['state'] >= 0) 
 		{
-			$sect = $filters['id'];
-			$sfield = "category";
-		} 
-		else 
+			$access .= " AND fa.`state`=" . $this->_db->Quote($filters['state']);
+		}
+		if (isset($filters['access']) && $filters['access'] >= 0) 
 		{
-			$sect = 0;
-			$sfield = "section";
+			$access .= " AND fa.`access`=" . $this->_db->Quote($filters['access']);
 		}
 
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.name AS groupname, 
-					(SELECT count(*) FROM #__faq AS fa WHERE fa." . $sfield . "=m.id) AS total, 
-					(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
-				. " FROM #__faq_categories AS m"
-				. " LEFT JOIN #__groups AS g ON g.id = m.access";
+			$query  = "SELECT a.*, g.`name` AS groupname, 
+					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles, 
+					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
 		}
-		else 
+		else
 		{
-			$query = "SELECT m.id, m.title, m.section, m.state, m.access, m.alias, g.title AS groupname, 
-					(SELECT count(*) FROM #__faq AS fa WHERE fa." . $sfield . "=m.id) AS total, 
-					(SELECT count(*) FROM $this->_tbl AS fc WHERE fc.section=m.id) AS cats"
-				. " FROM #__faq_categories AS m"
-				. " LEFT JOIN #__viewlevels AS g ON g.id = (m.access + 1)";
+			$query  = "SELECT a.*, g.`title` AS groupname, 
+					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles, 
+					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
 		}
-		$query .= " WHERE m.section=" . $sect
-				. " ORDER BY " . $filters['filterby'];
-		if (isset($filters['limit']) && $filters['limit'])
-		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}
-		
+
+		$query .= $this->_buildQuery($filters);
+		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
