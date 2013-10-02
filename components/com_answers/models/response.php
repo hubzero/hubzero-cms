@@ -311,9 +311,53 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 *
 	 * @return    boolean False if error, True on success
 	 */
-	public function accept()
+	public function accept($question_id)
 	{
+		/*$question = new AnswersModelQuestion($question_id);
+		if (!$question->exists())
+		{
+			$this->setError(JText::_('Question not found.'));
+			return false;
+		}
+		// Mark it at the chosen one
+		$question->set('state', 1);
+		if (!$question->store(true)) 
+		{
+			$this->setError($question->getError());
+			return false;
+		}*/
+
 		$this->set('state', 1);
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Mark a response as "Rejected"
+	 *
+	 * @return    boolean False if error, True on success
+	 */
+	public function reject($question_id)
+	{
+		/*$question = new AnswersModelQuestion($question_id);
+		if (!$question->exists())
+		{
+			$this->setError(JText::_('Question not found.'));
+			return false;
+		}
+		// Mark it at the chosen one
+		$question->set('state', 0);
+		if (!$question->store(true)) 
+		{
+			$this->setError($question->getError());
+			return false;
+		}*/
+
+		$this->set('state', 0);
 		if (!$this->store())
 		{
 			return false;

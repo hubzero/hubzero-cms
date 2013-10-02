@@ -279,6 +279,16 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
+	public function rejectTask()
+	{
+		$this->acceptTask();
+	}
+
+	/**
+	 * Mark an entry as "accepted" and unmark any previously accepted entry
+	 * 
+	 * @return     void
+	 */
 	public function acceptTask()
 	{
 		// Check for request forgeries
@@ -298,8 +308,8 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		// Check for an ID
 		if (count($id) < 1)
 		{
-			$action = ($publish == 1) ? 'accept' : 'unaccept';
-			
+			$action = ($publish == 1) ? 'accept' : 'reject';
+
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				JText::_('Select an answer to ' . $action),
@@ -336,7 +346,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		}
 		else if ($publish == '0')
 		{
-			$message = JText::_('Item successfully Unaccepted');
+			$message = JText::_('Item successfully Rejected');
 		}
 
 		$this->setRedirect(
