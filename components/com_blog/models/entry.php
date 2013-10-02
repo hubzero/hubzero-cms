@@ -573,8 +573,8 @@ class BlogModelEntry extends \Hubzero\Model
 						$option = 'com_groups';
 						$plg = JPluginHelper::getPlugin('groups', 'blog');
 						$config = new $paramsClass($plg->params);
-						$path = str_replace('{{gid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog'));
-						$scope = $this->get('scope_id') . '/blog';
+						$path = str_replace('{{gid}}', $this->get('group_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog'));
+						$scope = $this->get('group_id') . '/blog';
 					break;
 
 					case 'member':
@@ -609,7 +609,7 @@ class BlogModelEntry extends \Hubzero\Model
 					'domain'   => ''
 				);
 
-				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig));
+				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig, true, true));
 
 				if ($shorten)
 				{
