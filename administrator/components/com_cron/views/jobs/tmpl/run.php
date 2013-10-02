@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CronHelper::getActions('component');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Cron') . '</a>', 'cron.png');
+JToolBarHelper::title(JText::_('Cron'), 'cron.png');
 
 ?>
 

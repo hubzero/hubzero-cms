@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -48,7 +48,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 class CronModelJob extends JObject
 {
 	/**
-	 * CollectionsTableCollection
+	 * CronTableJob
 	 * 
 	 * @var object
 	 */
@@ -71,8 +71,7 @@ class CronModelJob extends JObject
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      integer $id ID or alias
 	 * @return     void
 	 */
 	public function __construct($oid=null)
@@ -85,11 +84,7 @@ class CronModelJob extends JObject
 		{
 			$this->_tbl->load($oid);
 		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->_tbl->bind($oid);
 		}
@@ -107,14 +102,10 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to a CronModelJob
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @param      integer $oid Record ID
+	 * @return     object CronModelJob
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -197,10 +188,10 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Check if the course exists
+	 * Bind data to the $_tbl
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      mixed $data Data to bind (array or object)
+	 * @return     boolean
 	 */
 	public function bind($data=null)
 	{
@@ -208,12 +199,10 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
+	 * Store the record in the database
 	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
+	 * @param     boolean $check Perform data validation?
+	 * @return    boolean True on success, False on error
 	 */
 	public function store($check=true)
 	{

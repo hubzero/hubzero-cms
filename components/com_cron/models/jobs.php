@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -54,7 +54,14 @@ class CronModelJobs extends JObject
 	private $_tbl = NULL;
 
 	/**
-	 * Container for properties
+	 * CronModelJob
+	 * 
+	 * @var array
+	 */
+	private $_job = null;
+
+	/**
+	 * \Hubzero\ItemList
 	 * 
 	 * @var array
 	 */
@@ -74,14 +81,9 @@ class CronModelJobs extends JObject
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to a cron Jobs model
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @return     object CronModelJobs
 	 */
 	static function &getInstance()
 	{
@@ -93,69 +95,62 @@ class CronModelJobs extends JObject
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific job
 	 * 
 	 * @return     void
 	 */
 	public function job($id=null)
 	{
-		// If the current offering isn't set
-		//    OR the ID passed doesn't equal the current offering's ID or alias
+		// If the current job isn't set
+		//    OR the ID passed doesn't equal the current job's ID or alias
 		if (!isset($this->_job) 
-		 || ($id !== null && (int) $this->_collection->get('id') != $id && (string) $this->_collection->get('alias') != $id))
+		 || ($id !== null && (int) $this->_job->get('id') != $id && (string) $this->_job->get('alias') != $id))
 		{
-			// Reset current offering
-			$this->_collection = null;
+			// Reset current job
+			$this->_job = null;
 
-			// If the list of all offerings is available ...
-			if (isset($this->_collections) && is_a($this->_collections, 'CollectionsModelIterator'))
+			// If the list of all jobs is available ...
+			if ($this->_jobs instanceof \Hubzero\ItemList)
 			{
-				// Find an offering in the list that matches the ID passed
-				foreach ($this->collections() as $key => $collection)
+				// Find a job in the list that matches the ID passed
+				foreach ($this->jobs() as $job)
 				{
-					if ((int) $collection->get('id') == $id || (string) $collection->get('alias') == $id)
+					if ((int) $job->get('id') == $id || (string) $job->get('alias') == $id)
 					{
-						// Set current offering
-						$this->_collection = $collection;
+						// Set current job
+						$this->_job = $job;
 						break;
 					}
 				}
 			}
-			else
+
+			if (!$this->_job)
 			{
-				$this->_collection = CollectionsModelCollection::getInstance($id, $this->_object_id, $this->_object_type);
+				$this->_job = CronModelJob::getInstance($id);
 			}
 		}
-		// Return current offering
+		// Return current job
 		return $this->_job;
 	}
 
 	/**
-	 * Get a list of resource types
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of jobs
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      array $filters Filters to apply to data fetch
+	 * @return     object \Hubzero\ItemList
 	 */
 	public function jobs($filters=array())
 	{
-		/*if (!isset($filters['state']))
-		{
-			$filters['state'] = 1;
-		}*/
-
 		if (isset($filters['count']) && $filters['count'])
 		{
 			return $this->_tbl->count($filters);
 		}
 
-		if (!isset($this->_collections) || !is_a($this->_collections, 'CollectionsModelIterator'))
+		if (!($this->_jobs instanceof \Hubzero\ItemList))
 		{
 			if (($results = $this->_tbl->find($filters)))
 			{
-				// Loop through all the items and push assets and tags
+				// Loop through all the items and turn into models
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CronModelJob($result);
@@ -166,7 +161,7 @@ class CronModelJobs extends JObject
 				$results = array();
 			}
 
-			$this->_jobs = $results; //new CollectionsModelIterator($results);
+			$this->_jobs = new \Hubzero\ItemList($results);
 		}
 
 		return $this->_jobs;
