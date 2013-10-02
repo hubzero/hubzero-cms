@@ -503,17 +503,17 @@ if ($this->wishlist && $this->wish) {
 		<?php } //if ($this->admin) { ?>
 
 		<?php if ($this->wish->action == 'delete') { ?>
-			<div class="error" id="action">
+			<div class="warning" id="action">
 				<!-- <a name="action"></a> -->
 				<h4><?php echo JText::_('COM_WISHLIST_ARE_YOU_SURE_DELETE_WISH'); ?></h4>
 				<p>
 					<span class="say_yes">
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=withdraw&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
+						<a class="btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=withdraw&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 							<?php echo strtoupper(JText::_('COM_WISHLIST_YES')); ?>
 						</a>
 					</span> 
 					<span class="say_no">
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
+						<a class="btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 							<?php echo strtoupper(JText::_('COM_WISHLIST_NO')); ?>
 						</a>
 					</span>
