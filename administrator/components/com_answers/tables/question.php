@@ -226,26 +226,29 @@ class AnswersTableQuestion extends JTable
 				$query .= " GROUP BY C.id ";
 			}
 		}
-		switch ($filters['sortby'])
+		if (!isset($filters['count']) || !$filters['count'])
 		{
-			case 'rewards':      $query .= " ORDER BY C.reward DESC, points DESC, C.created DESC"; break;
-			case 'votes':        $query .= " ORDER BY C.helpful DESC, C.created DESC"; break;
-			case 'date':         $query .= " ORDER BY C.created DESC"; break;
-			case 'random':       $query .= " ORDER BY RAND()"; break;
-			case 'responses':    $query .= " ORDER BY rcount DESC, C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
-			case 'status':       $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
-			case 'withinplugin': $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
-			default:
-				if (isset($filters['sort'])) 
-				{
-					$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
-					$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
-				}
-				else 
-				{
-					$query .= " ";
-				}
-			break;
+			switch ($filters['sortby'])
+			{
+				case 'rewards':      $query .= " ORDER BY C.reward DESC, points DESC, C.created DESC"; break;
+				case 'votes':        $query .= " ORDER BY C.helpful DESC, C.created DESC"; break;
+				case 'date':         $query .= " ORDER BY C.created DESC"; break;
+				case 'random':       $query .= " ORDER BY RAND()"; break;
+				case 'responses':    $query .= " ORDER BY rcount DESC, C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
+				case 'status':       $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
+				case 'withinplugin': $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
+				default:
+					if (isset($filters['sort'])) 
+					{
+						$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
+						$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
+					}
+					else 
+					{
+						$query .= " ";
+					}
+				break;
+			}
 		}
 
 		return $query;
