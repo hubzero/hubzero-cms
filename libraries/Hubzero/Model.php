@@ -60,14 +60,14 @@ abstract class Model extends Object
 	const APP_STATE_DELETED     = 2;
 
 	/**
-	 * CoursesTableAsset
+	 * Table class name
 	 * 
 	 * @var string
 	 */
 	protected $_tbl_name = null;
 
 	/**
-	 * CoursesTableAsset
+	 * JTable
 	 * 
 	 * @var object
 	 */
@@ -355,6 +355,12 @@ abstract class Model extends Object
 	 */
 	public function delete()
 	{
+		// Can't delete what doesn't exist
+		if (!$this->exists())
+		{
+			return true;
+		}
+
 		// Remove record from the database
 		if (!$this->_tbl->delete())
 		{
