@@ -561,14 +561,14 @@ class JPagination extends JObject
 	protected function _list_footer($list)
 	{
 		$html = array();
+		$html[] = '<nav class="pagination">';
 		$html[] = '<ul class="list-footer">';
-
 		$html[] = '<li class="counter">' . $list['pagescounter'] . '</li>';
 		$html[] = '<li class="limit"><label for="' . $list['prefix'] . 'limit">' . JText::_('JGLOBAL_DISPLAY_NUM') . '</label> ' . $list['limitfield'] . '</li>';
 		$html[] = $list['pageslinks'];
-
 		$html[] = '</ul>';
 		$html[] = '<input type="hidden" name="' . $list['prefix'] . 'limitstart" value="' . $list['limitstart'] . '" />';
+		$html[] = '</nav>';
 
 		return implode("\n", $html);
 	}
@@ -635,7 +635,7 @@ class JPagination extends JObject
 		}
 		else
 		{
-			return "<a title=\"" . $item->text . "\" href=\"" . $item->link . "\" class=\"pagenav\">" . $item->text . "</a>";
+			return "<a title=\"" . $item->text . "\" href=\"" . $item->link . "\" " . ($item->rel ? 'rel="' . $item->rel . '" ' : '') . "class=\"pagenav\">" . $item->text . "</a>";
 		}
 	}
 
@@ -677,6 +677,8 @@ class JPagination extends JObject
 	 */
 	protected function _buildDataObject()
 	{
+		$this->setAdditionalUrlParam('limit', $this->limit);
+
 		// Initialise variables.
 		$data = new stdClass;
 
@@ -740,6 +742,8 @@ class JPagination extends JObject
 			$data->pages[$i] = new JPaginationObject($i, $this->prefix);
 			if ($i != $this->get('pages.current') || $this->_viewall)
 			{
+				$data->pages[$i]->rel  = (($i + 1) == $this->get('pages.current')) ? 'prev' : '';
+				$data->pages[$i]->rel  = (($i - 1) == $this->get('pages.current')) ? 'next' : $data->pages[$i]->rel;
 				$data->pages[$i]->base = $offset;
 				$data->pages[$i]->link = JRoute::_($params . '&' . $this->prefix . 'limitstart=' . $offset);
 			}
@@ -780,6 +784,12 @@ class JPaginationObject extends JObject
 	 * @since  11.1
 	 */
 	public $prefix;
+
+	/**
+	 * @var    integer  The prefix used for request variables.
+	 * @since  11.1
+	 */
+	public $rel;
 
 	/**
 	 * Class constructor.
