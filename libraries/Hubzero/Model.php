@@ -97,6 +97,9 @@ abstract class Model extends Object
 
 			if (!($this->_tbl instanceof \JTable))
 			{
+				$this->_logError(
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+				);
 				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
 			}
 
@@ -298,10 +301,66 @@ abstract class Model extends Object
 		}
 		else
 		{
+			$this->_logError(
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data))
+			);
 			throw new \InvalidArgumentException(\JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data)));
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Log an error message
+	 *
+	 * @param     string $message Message to log
+	 * @return    void
+	 */
+	protected function _logError($message)
+	{
+		return $this->_log('error', $message);
+	}
+
+	/**
+	 * Log an error message
+	 *
+	 * @param     string $message Message to log
+	 * @return    void
+	 */
+	protected function _logDebug($message)
+	{
+		return $this->_log('debug', $message);
+	}
+
+	/**
+	 * Log an error message
+	 *
+	 * @param     string $message Message to log
+	 * @param     string $message Message to log
+	 * @return    void
+	 */
+	protected function _log($type='error', $message)
+	{
+		if (!$message)
+		{
+			return;
+		}
+
+		$trace = false;
+		if (JDEBUG)
+		{
+			$message = \JRequest::GetVar('REQUEST_URI', '', 'server') . ' -- ' . $message;
+			$trace = true;
+		}
+
+		$type = strtolower($type);
+		if (!in_array($type, array('error', 'debug', 'crit', 'warning', 'notice', 'auth', 'alert', 'emergency', 'info')))
+		{
+			return;
+		}
+		$func = 'log' . ucfirst($type);
+
+		\Hubzero_Log::$func($message, $trace);
 	}
 
 	/**
