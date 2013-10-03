@@ -83,6 +83,13 @@ class BlogModelEntry extends \Hubzero\Model
 	public $params = NULL;
 
 	/**
+	 * Scope adapter
+	 * 
+	 * @var object
+	 */
+	private $_adapter = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      mixed   $oid      ID (int) or alias (string)
@@ -433,89 +440,53 @@ class BlogModelEntry extends \Hubzero\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 
-	 * @param      string $type The type of link to return
+	 * @param      string $type   The type of link to return
+	 * @param      mixed  $params String or array of extra params to append
 	 * @return     string
 	 */
-	public function link($type='')
+	public function link($type='', $params=null)
 	{
-		if (!isset($this->_base))
+		return $this->_adapter()->build($type, $params);
+	}
+
+	/**
+	 * Return the adapter for this entry's scope,
+	 * instantiating it if it doesn't already exist
+	 * 
+	 * @return    object
+	 */
+	private function _adapter()
+	{
+		if (!$this->_adapter)
 		{
-			switch (strtolower($this->get('scope')))
+			$scope = strtolower($this->get('scope'));
+			if ($scope == 'group')
 			{
-				case 'group':
-					$group = Hubzero_Group::getInstance($this->get('group_id'));
-					$this->_base = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog';
-				break;
-
-				case 'member':
-					$this->_base = 'index.php?option=com_members&id=' . $this->get('created_by') . '&active=blog';
-				break;
-
-				case 'site':
-				default:
-					$this->_base = 'index.php?option=com_blog';
-				break;
+				$this->set('scope_id', $this->get('group_id'));
 			}
+			else if ($scope == 'member')
+			{
+				$this->set('scope_id', $this->get('created_by'));
+			}
+
+			$cls = 'BlogModelAdapter' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = dirname(__FILE__) . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->_adapter = new $cls($this->get('scope_id'));
+			$this->_adapter->set('publish_up', $this->get('publish_up'));
+			$this->_adapter->set('id', $this->get('id'));
+			$this->_adapter->set('alias', $this->get('alias'));
 		}
-		$link = $this->_base;
-
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'edit':
-				if (strtolower($this->get('scope')))
-				{
-					$link .= '&action=edit&entry=' . $this->get('id');
-				}
-				else 
-				{
-					$link .= '&task=edit&entry=' . $this->get('id');
-				}
-			break;
-
-			case 'delete':
-				if (strtolower($this->get('scope')))
-				{
-					$link .= '&action=delete&entry=' . $this->get('id');
-				}
-				else 
-				{
-					$link .= '&task=delete&entry=' . $this->get('id');
-				}
-			break;
-
-			case 'comments':
-				if (strtolower($this->get('scope')) == 'group')
-				{
-					$link .= '&scope=';
-				}
-				else
-				{
-					$link .= '&task=';
-				}
-				$link .= JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$link .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
-				$link .= $this->get('alias');
-				$link .= '#comments';
-			break;
-
-			case 'permalink':
-			default:
-				if (strtolower($this->get('scope')) == 'group')
-				{
-					$link .= '&scope=';
-				}
-				else
-				{
-					$link .= '&task=';
-				}
-				$link .= JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$link .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
-				$link .= $this->get('alias');
-			break;
-		}
-
-		return $link;
+		return $this->_adapter;
 	}
 
 	/**
@@ -561,51 +532,17 @@ class BlogModelEntry extends \Hubzero\Model
 					return $this->get('content_parsed');
 				}
 
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				switch ($this->get('scope'))
-				{
-					case 'group':
-						$option = 'com_groups';
-						$plg = JPluginHelper::getPlugin('groups', 'blog');
-						$config = new $paramsClass($plg->params);
-						$path = str_replace('{{gid}}', $this->get('group_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog'));
-						$scope = $this->get('group_id') . '/blog';
-					break;
-
-					case 'member':
-						ximport('Hubzer_View_Helper_Html');
-						$option = 'com_members';
-						$plg = JPluginHelper::getPlugin('members', 'blog');
-						$config = new $paramsClass($plg->params);
-						$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->get('created_by')), $config->get('uploadpath', '/site/members/{{uid}}/blog'));
-						$scope = $this->get('created_by') . '/blog';
-					break;
-
-					case 'site':
-					default:
-						$option = 'com_blog';
-						$config = JComponentHelper::getParams($option);
-						$path = $config->get('uploadpath', '/site/blog');
-						$scope = $this->get('scope');
-					break;
-				}
-
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
 				$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
 				$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
 
 				$wikiconfig = array(
-					'option'   => $option,
-					'scope'    => $scope, //$this->get('scope')
+					'option'   => $this->_adapter()->get('option'),
+					'scope'    => $this->_adapter()->get('scope'),
 					'pagename' => $this->get('alias'),
 					'pageid'   => 0, //$this->get('id'),
-					'filepath' => $path,
+					'filepath' => $this->_adapter()->get('path'),
 					'domain'   => ''
 				);
 
