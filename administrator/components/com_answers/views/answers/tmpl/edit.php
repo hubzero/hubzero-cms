@@ -123,7 +123,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="created_by">Change Creator:</label></td>
-						<td><input type="text" name="answer[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->escape($this->row->get('created_by', JFactory::getUser()->get('id'))); ?>" /></td>
+						<td><input type="text" name="answer[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->escape($this->row->get('created_by', JFactory::getUser()->get('username'))); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>
