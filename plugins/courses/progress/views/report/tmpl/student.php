@@ -298,7 +298,7 @@ $progress_timeline .= '</div>';
 	<div class="clear"></div>
 
 <? if (!is_null($this->course->offering()->badge()->get('id')) && $student->badge()->hasEarned()) : ?>
-	<div class="badge earned">
+	<div class="recognition badge earned">
 		<img src="<?= $this->course->offering()->badge()->get('img_url') ?>" />
 		<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
 		<p>
@@ -307,7 +307,7 @@ $progress_timeline .= '</div>';
 		</p>
 		<? if ($student->badge()->get('claim_url')) : ?>
 			<p>
-				<a class="claim-badge" href="<?= $student->badge()->get('claim_url') ?>">Claim your badge!</a>
+				<a class="claim-item" href="<?= $student->badge()->get('claim_url') ?>">Claim your badge!</a>
 			</p>
 		<? else : ?>
 			<p>
@@ -316,6 +316,21 @@ $progress_timeline .= '</div>';
 		<? endif; ?>
 	</div>
 <? endif; ?>
+
+<?php if ($this->course->config()->get('certificate', '') && $student->badge()->hasEarned()) : ?>
+	<div class="recognition certificate earned">
+		<h3>Congratulations!</h3>
+		<p>
+			You've completed all of the requirements of <?php echo $this->escape(stripslashes($this->course->get('title'))); ?>, qualifying you to receive
+			a certificate of completion.
+		</p>
+		<p>
+			<a class="claim-item" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=certificate&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '')); ?>">
+				<?php echo JText::_('Download your certificate!'); ?>
+			</a>
+		</p>
+	</div>
+<?php endif; ?>
 
 	<div class="grades">
 		<div class="current-score">

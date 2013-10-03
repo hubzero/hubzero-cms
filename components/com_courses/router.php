@@ -42,6 +42,10 @@ function CoursesBuildRoute(&$query)
 
 	if (!empty($query['controller'])) 
 	{
+		if ($query['controller'] == 'certificate')
+		{
+			$segments[] = $query['controller'];
+		}
 		unset($query['controller']);
 	}
 
@@ -119,6 +123,19 @@ function CoursesParseRoute($segments)
 		{
 			$vars['controller'] = 'courses';
 			$vars['task'] = $segments[0];
+		}
+		else if ($segments[0] == 'certificate')
+		{
+			$vars['controller'] = $segments[0];
+			if (isset($segments[1])) 
+			{
+				$vars['course'] = $segments[1];
+			}
+			if (isset($segments[2]))
+			{
+				$vars['offering'] = $segments[2];
+			}
+			return $vars;
 		}
 		else
 		{

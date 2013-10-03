@@ -47,14 +47,14 @@ class CoursesControllerCertificate extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		$course   = CoursesModelCourse::getInstance(JRequest::getInt('course', 0));
-		$offering = $course->offering(JRequest::getInt('offering', 0));
+		$course   = CoursesModelCourse::getInstance(JRequest::getVar('course', ''));
+		$offering = $course->offering(JRequest::getVar('offering', ''));
 
 		// Ensure the course exists
 		if (!$course->exists() || !$offering->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses')
 			);
 			return;
 		}
@@ -64,7 +64,7 @@ class CoursesControllerCertificate extends Hubzero_Controller
 		if (!$student->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses')
 			);
 			return;
 		}
@@ -95,7 +95,7 @@ class CoursesControllerCertificate extends Hubzero_Controller
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::create($dir, 0755))
 				{
-					JError::raiseError(500, 'Failed to create folder to store receipts');
+					JError::raiseError(500, JText::_('Failed to create folder to store receipts'));
 					return;
 				}
 			}
@@ -141,13 +141,13 @@ class CoursesControllerCertificate extends Hubzero_Controller
 	public function renderTask()
 	{
 		// Get the course
-		$this->view->course   = CoursesModelCourse::getInstance(JRequest::getInt('course', 0));
-		$this->view->offering = $this->view->course->offering(JRequest::getInt('offering', 0));
+		$this->view->course   = CoursesModelCourse::getInstance(JRequest::getVar('course', ''));
+		$this->view->offering = $this->view->course->offering(JRequest::getVar('offering', ''));
 
 		// Ensure the course exists
 		if (!$this->view->course->exists() || !$this->view->offering->exists())
 		{
-			echo JText::_('Course does not exist.');
+			JError::raiseError(404, JText::_('Course does not exist.'));
 			return;
 		}
 
@@ -155,7 +155,7 @@ class CoursesControllerCertificate extends Hubzero_Controller
 		$this->view->student = $this->view->offering->member(JRequest::getInt('u', 0));
 		if (!$this->view->student->exists())
 		{
-			echo JText::_('User is not a student of specified course.');
+			JError::raiseError(404, JText::_('User is not a student of specified course.'));
 			return;
 		}
 
@@ -166,7 +166,7 @@ class CoursesControllerCertificate extends Hubzero_Controller
 		$hash = JUtility::getHash($this->view->course->get('id') . $this->view->offering->get('id') . $this->view->juser->get('id'));
 		if ($hash != JRequest::getVar('key'))
 		{
-			echo JText::_('Access denied.');
+			JError::raiseError(403, JText::_('Access denied.'));
 			return;
 		}
 
