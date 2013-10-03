@@ -57,7 +57,7 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Scope adapter
 	 * 
-	 * @var array
+	 * @var object
 	 */
 	private $_adapter = null;
 
