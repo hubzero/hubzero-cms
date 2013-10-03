@@ -315,6 +315,17 @@
 		padding: 1em 1em 0.4em 1em;
 		font-size: 85%;
 	}
+
+	#hubForm .submit input,
+	#hubForm .submit a {
+		display: inline-block;
+		*display: inline;
+		vertical-align: baseline;
+	}
+	#hubForm .submit a {
+		margin-left: 2em;
+	}
+	/*
 	#hubForm .submit input,
 	#hubForm .submit a {
 		display: inline-block;
@@ -338,7 +349,7 @@
 		        box-shadow: inset 0 0 1px #fff;
 		color: #fff;
 	}
-	/* Button */
+	/* Button 
 	#hubForm .submit input {
 		font-size: 1.1em;
 		padding: 0.4em 1.5em 0.42em;
@@ -368,7 +379,7 @@
 		    -ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 		        box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 	}
-	/* Link */
+	/* Link 
 	#hubForm .submit a {
 		font-size: 85%;
 		margin: 0 0 0 2em;
@@ -393,7 +404,7 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#bf404f), to(#f16c7c));
 		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
-	}
+	}*/
 	.entry-content ul,
 	.entry-content ol {
 		padding: 0;

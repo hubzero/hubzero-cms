@@ -127,7 +127,6 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('entry[content]', 'entrycontent', $this->escape(stripslashes($this->entry->get('content'))), '', '50', '40');
 				?>
-				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -192,11 +191,13 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 		<input type="hidden" name="task" value="save" />
 
 		<?php echo JHTML::_('form.token'); ?>
-		
+
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('COM_BLOG_SAVE'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_BLOG_SAVE'); ?>" />
 <?php if ($this->entry->get('id')) { ?>
-			<a href="<?php echo JRoute::_($this->entry->link()); ?>"><?php echo JText::_('Cancel'); ?></a>
+			<a class="btn btn-secondary btn-danger" href="<?php echo JRoute::_($this->entry->link()); ?>">
+				<?php echo JText::_('COM_BLOG_CANCEL'); ?>
+			</a>
 <?php } ?>
 		</p>
 	</form>

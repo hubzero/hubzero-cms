@@ -539,7 +539,7 @@ class BlogModelEntry extends \Hubzero\Model
 
 				$wikiconfig = array(
 					'option'   => $this->_adapter()->get('option'),
-					'scope'    => $this->_adapter()->get('scope'),
+					'scope'    => $scope, //$this->_adapter()->get('scope'),
 					'pagename' => $this->get('alias'),
 					'pageid'   => 0, //$this->get('id'),
 					'filepath' => $this->_adapter()->get('path'),

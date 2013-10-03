@@ -313,8 +313,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<div class="clear"></div>
 
 	<h3>
-		<!-- <a name="post-comment"></a> -->
-		<?php echo JText::_('Post a comment'); ?>
+		<?php echo JText::_('COM_BLOG_POST_COMMENT'); ?>
 	</h3>
 
 	<div class="subject">
@@ -352,7 +351,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 					<p>
 						<strong><?php echo $name; ?></strong> 
-						<span class="comment-date-at">@</span> 
+						<span class="comment-date-at"><?php echo JText::_('COM_BLOG_AT'); ?></span> 
 						<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
 						<span class="comment-date-on"><?php echo JText::_('COM_BLOG_ON'); ?></span> 
 						<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
@@ -388,7 +387,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				</label>
 
 				<p class="submit">
-					<input type="submit" name="submit" value="Submit" />
+					<input type="submit" name="submit" value="<?php echo JText::_('COM_BLOG_SUBMIT'); ?>" />
 				</p>
 			<?php } ?>
 				<input type="hidden" name="comment[id]" value="0" />

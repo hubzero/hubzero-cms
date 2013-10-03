@@ -534,6 +534,9 @@ class BlogControllerEntries extends Hubzero_Controller
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Delete the entry itself
 		$entry->set('state', -1);
 		if (!$entry->store()) 

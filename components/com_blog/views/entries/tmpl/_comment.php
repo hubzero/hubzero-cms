@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong> 
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span> 
+					<span class="comment-date-at"><?php echo JText::_('COM_BLOG_AT'); ?></span> 
 					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo $this->comment->created('time'); ?></time></span> 
 					<span class="comment-date-on"><?php echo JText::_('COM_BLOG_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo $this->comment->created('date'); ?></time></span>

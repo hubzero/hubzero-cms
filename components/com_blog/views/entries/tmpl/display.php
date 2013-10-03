@@ -176,15 +176,10 @@ $first = $this->model->entries('first');
 				<?php } else if (!isset($this->filters['year']) || !$this->filters['year']) { ?>
 					<?php echo JText::_('COM_BLOG_LATEST_ENTRIES'); ?>
 				<?php } else { 
-					$format = '%b %Y';
-					if (version_compare(JVERSION, '1.6', 'ge'))
-					{
-						$format = 'M Y';
-					}
 					$archiveDate  = $this->filters['year'];
 					$archiveDate .= ($this->filters['month']) ? '-' . $this->filters['month'] : '-01';
 					$archiveDate .= '-01 00:00:00';
-					echo JHTML::_('date', $archiveDate, $format, BLOG_DATE_TIMEZONE); /* BLOG_DATE_TIMEZONE defined in BlogModelEntry */
+					echo JHTML::_('date', $archiveDate, 'M Y');
 				} ?>
 				</h3>
 
