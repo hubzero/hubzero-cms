@@ -188,7 +188,13 @@ class ForumModel extends ForumModelAbstract
 			{
 				$this->_cache['section'] = ForumModelSection::getInstance($id, $this->get('scope'), $this->get('scope_id'));
 			}
+			if (!$this->_cache['section']->exists())
+			{
+				$this->_cache['section']->set('scope', $this->get('scope'));
+				$this->_cache['section']->set('scope_id', $this->get('scope_id'));
+			}
 		}
+
 		return $this->_cache['section'];
 	}
 

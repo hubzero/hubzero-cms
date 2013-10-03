@@ -413,6 +413,7 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		if (!$id) 
 		{
+			$this->view->post->set('scope', $this->model->get('scope'));
 			$this->view->post->set('created_by', $this->juser->get('id'));
 		}
 		elseif ($this->view->post->get('created_by') != $this->juser->get('id') && !$this->config->get('access-edit-thread')) 

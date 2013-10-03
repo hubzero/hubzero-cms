@@ -166,6 +166,11 @@ class ForumModelSection extends ForumModelAbstract
 			{
 				$this->_cache['category'] = ForumModelCategory::getInstance($id, $this->get('id')); //, $this->get('scope'), $this->get('scope_id'));
 			}
+			if (!$this->_cache['category']->exists())
+			{
+				$this->_cache['category']->set('scope', $this->get('scope'));
+				$this->_cache['category']->set('scope_id', $this->get('scope_id'));
+			}
 		}
 		return $this->_cache['category'];
 	}

@@ -98,25 +98,6 @@ class ForumModelCategory extends ForumModelAbstract
 				$this->bind($oid);
 			}
 		}
-
-		switch (strtolower($this->get('scope')))
-		{
-			case 'group':
-				$group = Hubzero_Group::getInstance($this->get('scope_id'));
-				$this->_base = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=forum';
-			break;
-
-			case 'course':
-				$offering = CoursesModelOffering::getInstance($this->get('scope_id'));
-				$course = CoursesModelCourse::getInstance($offering->get('course_id'));
-				$this->_base = 'index.php?option=com_courses&gid=' . $course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') != '__default' ? ':' . $offering->section()->get('alias') : '') . '&active=discussions';
-			break;
-
-			case 'site':
-			default:
-				$this->_base = 'index.php?option=com_forum';
-			break;
-		}
 	}
 
 	/**
@@ -197,6 +178,11 @@ class ForumModelCategory extends ForumModelAbstract
 			if (!$this->_cache['thread'])
 			{
 				$this->_cache['thread'] = ForumModelThread::getInstance($id);
+			}
+			if (!$this->_cache['thread']->exists())
+			{
+				$this->_cache['thread']->set('scope', $this->get('scope'));
+				$this->_cache['thread']->set('scope_id', $this->get('scope_id'));
 			}
 		}
 		return $this->_cache['thread'];

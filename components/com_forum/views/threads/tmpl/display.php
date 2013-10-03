@@ -180,47 +180,12 @@ $this->thread->set('category', $this->category->get('alias'));
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-</div><!-- / .main section -->
+
 <?php if (!$this->thread->get('closed')) { ?>
-<div class="below section">
+
 	<h3 class="post-comment-title">
 		<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
 	</h3>
-	<div class="aside">
-		<table class="wiki-reference">
-			<caption>Wiki Syntax Reference</caption>
-			<tbody>
-				<tr>
-					<td>'''bold'''</td>
-					<td><b>bold</b></td>
-				</tr>
-				<tr>
-					<td>''italic''</td>
-					<td><i>italic</i></td>
-				</tr>
-				<tr>
-					<td>__underline__</td>
-					<td><span style="text-decoration:underline;">underline</span></td>
-				</tr>
-				<tr>
-					<td>{{{monospace}}}</td>
-					<td><code>monospace</code></td>
-				</tr>
-				<tr>
-					<td>~~strike-through~~</td>
-					<td><del>strike-through</del></td>
-				</tr>
-				<tr>
-					<td>^superscript^</td>
-					<td><sup>superscript</sup></td>
-				</tr>
-				<tr>
-					<td>,,subscript,,</td>
-					<td><sub>subscript</sub></td>
-				</tr>
-			</tbody>
-		</table>
-	</div><!-- /.aside -->
 	<div class="subject">
 		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
@@ -240,9 +205,9 @@ $this->thread->set('category', $this->category->get('alias'));
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape(stripslashes($juser->get('name'))); ?></a>
 					</strong> 
 					<span class="permalink">
-						<span class="comment-date-at">@</span>
+						<span class="comment-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span> 
 						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?> </span>
+						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
@@ -257,7 +222,7 @@ $this->thread->set('category', $this->category->get('alias'));
 				</label>
 
 				<label>
-					<?php echo JText::_('COM_FORUM_FIELD_YOUR_TAGS'); ?>:
+					<?php echo JText::_('COM_FORUM_FIELD_YOUR_TAGS'); ?>
 					<?php 
 						$tags = $this->thread->tags('string');
 						
@@ -326,5 +291,6 @@ $this->thread->set('category', $this->category->get('alias'));
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-</div><!-- / .below section -->
 <?php } ?>
+
+</div><!-- / .below section -->

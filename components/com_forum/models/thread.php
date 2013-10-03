@@ -140,6 +140,11 @@ class ForumModelThread extends ForumModelPost
 			{
 				$this->_cache['post'] = ForumModelPost::getInstance($id);
 			}
+			if (!$this->_cache['post']->exists())
+			{
+				$this->_cache['post']->set('scope', $this->get('scope'));
+				$this->_cache['post']->set('scope_id', $this->get('scope_id'));
+			}
 		}
 		return $this->_cache['post'];
 	}

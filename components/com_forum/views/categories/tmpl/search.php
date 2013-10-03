@@ -36,7 +36,7 @@ $juser =& JFactory::getUser();
 	<h2><?php echo $this->escape($this->title); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
+	<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?></a></p>
 </div>
 <div class="clear"></div>
 
@@ -48,31 +48,33 @@ $juser =& JFactory::getUser();
 	<div class="aside">
 	<?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('Start Your Own'); ?></h3>
-		<?php if (!$this->category->get('closed')) { ?>
+			<h3><?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN'); ?></h3>
+		<?php if (!$this->category->isClosed()) { ?>
 			<p>
-				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
+				<?php echo JText::_('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
 			</p>
 			<p>
-				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+				<a class="icon-add add btn" href="<?php echo JRoute::_($this->category->link('newthread')); ?>"><?php echo JText::_('COM_FORUM_NEW_DISCUSSION'); ?></a>
 			</p>
 		<?php } else { ?>
 			<p class="warning">
-				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
+				<?php echo JText::_('COM_FORUM_CATEGORY_CLOSED'); ?>
 			</p>
 		<?php } ?>
-		</div>
+		</div><!-- / .container -->
 	<?php } ?>
 	</div><!-- / .aside -->
 
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_FORUM_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search posts'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<legend><span><?php echo JText::_('COM_FORUM_SEARCH_LEGEND'); ?></span></legend>
+
+					<label for="entry-search-field"><?php echo JText::_('COM_FORUM_SEARCH_LABEL'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="categories" />
 					<input type="hidden" name="task" value="search" />
@@ -92,7 +94,7 @@ $juser =& JFactory::getUser();
 					$title = $this->escape(stripslashes($row->get('title')));
 					$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
 
-					$name = JText::_('Anonymous');
+					$name = JText::_('COM_FORUM_ANONYMOUS');
 					if (!$row->get('anonymous'))
 					{
 						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
@@ -119,20 +121,17 @@ $juser =& JFactory::getUser();
 									<span class="entry-date">
 										<?php echo $row->created('date'); ?>
 									</span>
-									<?php echo JText::_('by'); ?>
-									<span class="entry-author">
-										<?php echo $name; ?>
-									</span>
+									<?php echo JText::sprintf('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
 								</span>
 							</td>
 							<td>
-								<span><?php echo JText::_('Section'); ?></span>
+								<span><?php echo JText::_('COM_FORUM_SECTION'); ?></span>
 								<span class="entry-details">
 									<?php echo $this->escape($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title')); ?>
 								</span>
 							</td>
 							<td>
-								<span><?php echo JText::_('Category'); ?></span>
+								<span><?php echo JText::_('COM_FORUM_CATEGORY'); ?></span>
 								<span class="entry-details">
 									<?php echo $this->escape($this->categories[$row->get('category_id')]->get('title')); ?>
 								</span>
@@ -141,7 +140,7 @@ $juser =& JFactory::getUser();
 					<?php } ?>
 				<?php } else { ?>
 						<tr>
-							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
+							<td><?php echo JText::_('COM_FORUM_CATEGORY_EMPTY'); ?></td>
 						</tr>
 				<?php } ?>
 					</tbody>

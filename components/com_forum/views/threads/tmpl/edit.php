@@ -49,7 +49,7 @@ else
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>"><?php echo JText::_('All discussions'); ?></a></p>
+	<p><a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>"><?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?></a></p>
 </div>
 <div class="clear"></div>
 
@@ -69,39 +69,13 @@ else
 	<?php } ?>
 	</h3>			
 	<div class="aside">
-		<table class="wiki-reference" summary="<?php echo JText::_('COM_FORUM_WIKI_SYNTAX_REFERENCE'); ?>">
-			<caption><?php echo JText::_('COM_FORUM_WIKI_SYNTAX_REFERENCE'); ?></caption>
-			<tbody>
-				<tr>
-					<td>'''bold'''</td>
-					<td><b>bold</b></td>
-				</tr>
-				<tr>
-					<td>''italic''</td>
-					<td><i>italic</i></td>
-				</tr>
-				<tr>
-					<td>__underline__</td>
-					<td><span style="text-decoration:underline;">underline</span></td>
-				</tr>
-				<tr>
-					<td>{{{monospace}}}</td>
-					<td><code>monospace</code></td>
-				</tr>
-				<tr>
-					<td>~~strike-through~~</td>
-					<td><del>strike-through</del></td>
-				</tr>
-				<tr>
-					<td>^superscript^</td>
-					<td><sup>superscript</sup></td>
-				</tr>
-				<tr>
-					<td>,,subscript,,</td>
-					<td><sub>subscript</sub></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="container">
+			<p><strong><?php echo JText::_('COM_FORUM_WHAT_IS_STICKY'); ?></strong><br />
+			<?php echo JText::_('COM_FORUM_STICKY_EXPLANATION'); ?></p>
+
+			<p><strong><?php echo JText::_('COM_FORUM_WHAT_IS_LOCKING'); ?></strong><br />
+			<?php echo JText::_('COM_FORUM_LOCKING_EXPLANATION'); ?></p>
+		</div>
 	</div><!-- /.aside -->
 	<div class="subject">
 		<form action="<?php echo JRoute::_($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
@@ -119,16 +93,16 @@ else
 			<?php if ($this->config->get('access-manage-thread') && !$this->post->get('parent')) { ?>
 				<div class="grid">
 					<div class="col span-half">
-					<label for="field-sticky">
-						<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> /> 
-						<?php echo JText::_('COM_FORUM_FIELD_STICKY'); ?>
-					</label>
+						<label for="field-sticky">
+							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('COM_FORUM_FIELD_STICKY'); ?>
+						</label>
 					</div>
 					<div class="col span-half omega">
-					<label for="field-closed">
-						<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> /> 
-						<?php echo JText::_('COM_FORUM_FIELD_CLOSED_THREAD'); ?>
-					</label>
+						<label for="field-closed">
+							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> /> 
+							<?php echo JText::_('COM_FORUM_FIELD_CLOSED_THREAD'); ?>
+						</label>
 					</div>
 				</div>
 			<?php } else { ?>
@@ -138,9 +112,8 @@ else
 
 			<?php if (!$this->post->get('parent')) { ?>
 				<label for="field-category_id">
-					<?php echo JText::_('COM_FORUM_FIELD_CATEGORY'); ?>
+					<?php echo JText::_('COM_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo JText::_('COM_FORUM_REQUIRED'); ?></span>
 					<select name="fields[category_id]" id="field-category_id">
-						<option value="0"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
 				<?php foreach ($this->model->sections() as $section) { ?>
 					<?php if ($section->categories('list')->total() > 0) { ?>
 						<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
@@ -162,7 +135,7 @@ else
 			<?php } ?>
 
 				<label for="fieldcomment">
-					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?>
+					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_FORUM_REQUIRED'); ?></span>
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
@@ -189,13 +162,13 @@ else
 					<div class="grid">
 						<div class="col span-half">
 							<label for="upload">
-								<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?>: <?php if ($this->post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($this->post->attachment()->get('filename'))) . '</strong>'; } ?>
+								<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?> <?php if ($this->post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($this->post->attachment()->get('filename'))) . '</strong>'; } ?>
 								<input type="file" name="upload" id="upload" />
 							</label>
 						</div>
 						<div class="col span-half omega">
 							<label for="field-attach-descritpion">
-								<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>:
+								<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>
 								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($this->post->attachment()->get('description'))); ?>" />
 							</label>
 						</div>
@@ -203,7 +176,7 @@ else
 					</div>
 					<?php if ($this->post->attachment()->exists()) { ?>
 						<p class="warning">
-							<?php echo JText::_('Selecting a new file will replace the current file.'); ?>
+							<?php echo JText::_('COM_FORUM_FIELD_FILE_WARNING'); ?>
 						</p>
 					<?php } ?>
 				</fieldset>
