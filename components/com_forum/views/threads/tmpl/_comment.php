@@ -1,4 +1,33 @@
-<?php 
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2013 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 defined('_JEXEC') or die('Restricted access');
 
 	ximport('Hubzero_User_Profile');
@@ -32,19 +61,21 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?><?php if (!$this->comment->get('parent')) { echo ' start'; } ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<!-- <a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a> -->
 			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong> 
-				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
-					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+				<a class="permalink" href="<?php echo JRoute::_($this->comment->link('anchor')); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>">
+					<span class="comment-date-at">@</span> 
+					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span> 
+					<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					<?php if ($this->comment->wasModified()) { ?>
 						&mdash; <?php echo JText::_('COM_FORUM_EDITED'); ?>
 						<span class="comment-date-at">@</span> 
-						<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+						<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span> 
+						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 						<span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
 					<?php } ?>
 				</a>
@@ -83,38 +114,38 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 			<?php //} ?>
 			<?php if (!$this->comment->get('reports')) { ?>
-				<?php if (!$this->post->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
+				<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->base); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_FORUM_CANCEL'); ?><!-- 
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->base . '&reply=' . $this->comment->get('id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_FORUM_REPLY'); ?><!-- 
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('parent')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
+				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
 					--><?php echo JText::_('COM_FORUM_REPORT_ABUSE'); ?><!-- 
 				--></a>
 			<?php } ?>
 			</p>
 			<?php } ?>
 
-		<?php if (!$this->post->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
+		<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
 			<div class="comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
+				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
 					<!-- <a name="commentform<?php echo $this->comment->get('id'); ?>"></a> -->
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('COM_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_FORUM_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="fields[id]" value="0" />
 						<input type="hidden" name="fields[state]" value="1" />
-						<input type="hidden" name="fields[scope]" value="<?php echo $this->post->get('scope'); ?>" />
-						<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->get('category_id'); ?>" />
-						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->post->get('scope_id'); ?>" />
-						<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
-						<input type="hidden" name="fields[object_id]" value="<?php echo $this->post->get('object_id'); ?>" />
+						<input type="hidden" name="fields[scope]" value="<?php echo $this->thread->get('scope'); ?>" />
+						<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
+						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->thread->get('scope_id'); ?>" />
+						<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
+						<input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
 						<input type="hidden" name="fields[parent]" value="<?php echo $this->comment->get('id'); ?>" />
 						<input type="hidden" name="fields[thread]" value="<?php echo $this->comment->get('thread'); ?>" />
 						<input type="hidden" name="fields[created]" value="" />
@@ -169,11 +200,10 @@ defined('_JEXEC') or die('Restricted access');
 			$view->thread     = $this->comment->get('thread');
 			$view->comments   = $this->comment->get('replies');
 
-			$view->post       = $this->post;
+			$view->thread     = $this->thread;
 			$view->config     = $this->config;
 			$view->depth      = $this->depth;
 			$view->cls        = $cls;
-			$view->base       = $this->base;
 			$view->filters    = $this->filters;
 			$view->category   = $this->category;
 

@@ -32,14 +32,15 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'];
+$this->category->set('section_alias', $this->filters['section']);
+//$base = 'index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'];
 ?>
 
 <div id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
+	<p><a class="icon-folder categories btn" href="<?php echo JRoute::_($this->category->link('base')); ?>"><?php echo JText::_('All categories'); ?></a></p>
 </div>
 <div class="clear"></div>
 
@@ -61,8 +62,10 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 				{
 					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $last->creator('id')) . '">' . $this->escape(stripslashes($last->creator('name'))) . '</a>';
 				}
+				$last->set('category', $this->filters['category']);
+				$last->set('section', $this->filters['section']);
 			?>
-				<a href="<?php echo JRoute::_($base . '&thread=' . $last->get('thread')); ?>" class="entry-date">
+				<a href="<?php echo JRoute::_($last->link()); ?>" class="entry-date">
 					<span class="entry-date-at">@</span>
 					<span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> 
 					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
@@ -85,7 +88,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p>
-				<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+				<a class="icon-add add btn" href="<?php echo JRoute::_($this->category->link('newthread')); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
 		<?php } else { ?>
 			<p class="warning">
@@ -102,10 +105,10 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
 					<legend><span><?php echo JText::_('Search posts'); ?></span></legend>
-					
+
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
-					
+
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="categories" />
 					<input type="hidden" name="task" value="search" />
@@ -115,22 +118,22 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 			<div class="container">
 				<ul class="entries-menu order-options">
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'created') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=created'); ?>" title="<?php echo JText::_('Sort by created date'); ?>">
+						<a<?php echo ($this->filters['sortby'] == 'created') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=created')); ?>" title="<?php echo JText::_('Sort by created date'); ?>">
 							<?php echo JText::_('&darr; Created'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'activity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=activity'); ?>" title="<?php echo JText::_('Sort by activity'); ?>">
+						<a<?php echo ($this->filters['sortby'] == 'activity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=activity')); ?>" title="<?php echo JText::_('Sort by activity'); ?>">
 							<?php echo JText::_('&darr; Activity'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'replies') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=replies'); ?>" title="<?php echo JText::_('Sort by number of posts'); ?>">
+						<a<?php echo ($this->filters['sortby'] == 'replies') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=replies')); ?>" title="<?php echo JText::_('Sort by number of posts'); ?>">
 							<?php echo JText::_('&darr; # Posts'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=title'); ?>" title="<?php echo JText::_('Sort by title'); ?>">
+						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=title')); ?>" title="<?php echo JText::_('Sort by title'); ?>">
 							<?php echo JText::_('&darr; Title'); ?>
 						</a>
 					</li>
@@ -139,10 +142,14 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 				<table class="entries">
 					<caption>
 						<?php
-						if ($this->filters['search']) {
-							if ($this->category->get('title')) {
+						if ($this->filters['search']) 
+						{
+							if ($this->category->get('title')) 
+							{
 								echo JText::sprintf('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
-							} else {
+							} 
+							else 
+							{
 								echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
 							}
 						} else {
@@ -169,13 +176,16 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 						{
 							$cls[] = 'sticky';
 						}
+
+						$row->set('category', $this->filters['category']);
+						$row->set('section', $this->filters['section']);
 						?>
 						<tr<?php if (count($cls) > 0) { echo ' class="' . implode(' ', $cls) . '"'; } ?>>
 							<th>
 								<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id')); ?>">
+								<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>">
 									<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 								</a>
 								<span class="entry-details">
@@ -222,12 +232,12 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 						<?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 							<td class="entry-options">
 								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
-									<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=edit'); ?>">
+									<a class="icon-edit edit" href="<?php echo JRoute::_($row->link('edit')); ?>">
 										<?php echo JText::_('COM_FORUM_EDIT'); ?>
 									</a>
 								<?php } ?>
 								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
-									<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&thread=' . $row->get('id') . '&task=delete'); ?>">
+									<a class="icon-delete delete" href="<?php echo JRoute::_($row->link('delete')); ?>">
 										<?php echo JText::_('COM_FORUM_DELETE'); ?>
 									</a>
 								<?php } ?>

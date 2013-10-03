@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a forum
@@ -58,7 +57,7 @@ class ForumModelPost extends ForumModelAbstract
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id Course ID or alias
+	 * @param      integer $id Post ID, array, or object
 	 * @return     void
 	 */
 	public function __construct($oid)
@@ -86,13 +85,10 @@ class ForumModelPost extends ForumModelAbstract
 	}
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to a forum post model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param      mixed $oid ID (int) or array or object
+	 * @return     object ForumModelPost
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -118,7 +114,7 @@ class ForumModelPost extends ForumModelAbstract
 
 		if (!isset($instances[$oid])) 
 		{
-			$instances[$oid] = new ForumModelThread($oid);
+			$instances[$oid] = new ForumModelPost($oid);
 		}
 
 		return $instances[$oid];
@@ -149,11 +145,11 @@ class ForumModelPost extends ForumModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('modified'), FORUM_DATE_FORMAT, FORUM_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('modified'), JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('modified'), FORUM_TIME_FORMAT, FORUM_DATE_TIMEZONE);
+				return JHTML::_('date', $this->get('modified'), JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -196,9 +192,7 @@ class ForumModelPost extends ForumModelAbstract
 			$this->set('anonymous', 0);
 		}
 
-		$res = parent::store($check);
-
-		if (!$res)
+		if (!parent::store($check))
 		{
 			return false;
 		}
@@ -224,7 +218,7 @@ class ForumModelPost extends ForumModelAbstract
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new ForumModelTags($this->get('id'));
+		$cloud = new ForumModelTags($this->get('thread'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -234,9 +228,10 @@ class ForumModelPost extends ForumModelAbstract
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 
 	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param      mixed  $params Optional string or associative array of params to append
+	 * @return     string
 	 */
-	public function link($type='')
+	public function link($type='', $params=null)
 	{
 		$link  = $this->_base;
 
@@ -265,6 +260,37 @@ class ForumModelPost extends ForumModelAbstract
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
 		{
+			case 'base':
+				return $this->_base;
+			break;
+
+			case 'new':
+				switch (strtolower($this->get('scope')))
+				{
+					case 'group':
+						$link  = $this->_base;
+						$link .= '&scope=' . $this->get('section');
+						$link .= '/' . $this->get('category');
+						$link .= '/new';
+					break;
+
+					case 'course':
+						$link  = $this->_base;
+						$link .= '&unit=' . $this->get('section');
+						$link .= '&b=' . $this->get('category');
+						$link .= '&c=new';
+					break;
+
+					case 'site':
+					default:
+						$link  = $this->_base;
+						$link .= '&section=' . $this->get('section');
+						$link .= '&category=' . $this->get('category');
+						$link .= '&task=new';
+					break;
+				}
+			break;
+
 			case 'edit':
 				switch (strtolower($this->get('scope')))
 				{
@@ -327,13 +353,75 @@ class ForumModelPost extends ForumModelAbstract
 				}
 			break;
 
+			case 'reply':
+				switch (strtolower($this->get('scope')))
+				{
+					case 'group':
+						$link .= '?reply=' . $this->get('id');
+					break;
+
+					case 'course':
+						$link .= '&reply=' . $this->get('id');
+					break;
+
+					case 'site':
+					default:
+						$link .= '&reply=' . $this->get('id');
+					break;
+				}
+			break;
+
+			case 'anchor':
+				$link .= '#c' . $this->get('id');
+			break;
+
+			case 'abuse':
+				return 'index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->get('id') . '&parent=' . $this->get('parent');
+			break;
+
 			case 'permalink':
 			default:
 
 			break;
 		}
 
-		return $link;
+		if (is_array($params))
+		{
+			$bits = array();
+			foreach ($params as $key => $param)
+			{
+				$bits[] = $key . '=' . $param;
+			}
+			$params = implode('&', $bits);
+		}
+
+		if ($params)
+		{
+			if (strtolower($this->get('scope')) == 'group')
+			{
+				if (substr($params, 0, 1) == '&')
+				{
+					$params = substr($params, 1);
+				}
+				if (substr($params, 0, 1) != '?' && substr($params, 0, 1) != '#')
+				{
+					$params = '?' . $params;
+				}
+			}
+			else
+			{
+				if (substr($params, 0, 1) == '?')
+				{
+					$params = substr($params, 1);
+				}
+				if (substr($params, 0, 1) != '&' && substr($params, 0, 1) != '#')
+				{
+					$params = '&' . $params;
+				}
+			}
+		}
+
+		return $link . (string) $params;
 	}
 
 	/**
@@ -355,12 +443,6 @@ class ForumModelPost extends ForumModelAbstract
 					return $this->get('content_parsed');
 				}
 
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
 				$wikiconfig = array(
@@ -374,7 +456,7 @@ class ForumModelPost extends ForumModelAbstract
 
 				$attach = new ForumAttachment($this->_db);
 
-				$this->set('content_parsed', $p->parse("\n" . stripslashes($this->get('comment')), $wikiconfig));
+				$this->set('content_parsed', $p->parse(stripslashes($this->get('comment')), $wikiconfig, true, true));
 				$this->set('content_parsed', $this->get('content_parsed') . $attach->getAttachment(
 					$this->get('id'), 
 					$this->link('download'), 
@@ -405,7 +487,12 @@ class ForumModelPost extends ForumModelAbstract
 
 			case 'raw':
 			default:
-				return $this->get('comment');
+				$content = $this->get('comment');
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+				}
+				return $content;
 			break;
 		}
 	}

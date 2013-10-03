@@ -29,26 +29,34 @@
  */
 
 defined('_JEXEC') or die( 'Restricted access' );
+
 $juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&section=' . $this->section->get('alias') . '&category=' . $this->category->get('alias');
-if ($this->post->get('id')) {
-	$action = $base . '&task=edit&thread=' . $this->post->get('id');
-} else {
-	$action = $base . '&task=new';
+$this->category->set('section_alias', $this->section->get('alias'));
+$this->post->set('section', $this->section->get('alias'));
+$this->post->set('category', $this->category->get('alias'));
+
+if ($this->post->exists()) 
+{
+	$action = $this->post->link('edit');
+} 
+else 
+{
+	$action = $this->post->link('new');
 }
 ?>
 <div id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="icon-comments comments btn" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('All discussions'); ?></a></p>
+	<p><a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>"><?php echo JText::_('All discussions'); ?></a></p>
 </div>
 <div class="clear"></div>
 
 <?php
-	foreach($this->notifications as $notification) {
-		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+	foreach ($this->notifications as $notification) 
+	{
+		echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 	}
 ?>
 
@@ -103,9 +111,8 @@ if ($this->post->get('id')) {
 				ximport('Hubzero_User_Profile_Helper');
 				$jxuser = new Hubzero_User_Profile();
 				$jxuser->load($this->post->get('created_by', $juser->get('id')));
-				$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 				?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0); ?>" alt="" />
 			</p>
 
 			<fieldset>
@@ -167,13 +174,12 @@ if ($this->post->get('id')) {
 					<?php echo JText::_('COM_FORUM_FIELD_TAGS'); ?>:
 					<?php 
 						JPluginHelper::importPlugin('hubzero');
-						$dispatcher = JDispatcher::getInstance();
-						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->post->tags('string'))) );
-						if (count($tf) > 0) {
-							echo $tf[0];
-						} else {
-							echo '<input type="text" name="tags" value="'. $this->post->tags('string') .'" />';
-						}
+						$tf = JDispatcher::getInstance()->trigger(
+							'onGetMultiEntry', 
+							array(array('tags', 'tags', 'actags', '', $this->post->tags('string')))
+						);
+
+						echo (count($tf) > 0) ? implode("\n", $tf) : '<input type="text" name="tags" id="actags" value="'. $this->escape($this->post->tags('string')) .'" />';
 					?>
 				</label>
 
@@ -197,7 +203,7 @@ if ($this->post->get('id')) {
 					</div>
 					<?php if ($this->post->attachment()->exists()) { ?>
 						<p class="warning">
-							Selecting a new file will replace the current file.
+							<?php echo JText::_('Selecting a new file will replace the current file.'); ?>
 						</p>
 					<?php } ?>
 				</fieldset>
@@ -229,7 +235,7 @@ if ($this->post->get('id')) {
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="threads" />
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="section" value="<?php echo $this->section->get('alias'); ?>" />
+			<input type="hidden" name="section" value="<?php echo $this->escape($this->section->get('alias')); ?>" />
 
 			<?php echo JHTML::_('form.token'); ?>
 		</form>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,28 +34,22 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php');
 
 /**
- * Courses model class for a forum
+ * Model class for a forum
  */
 class ForumModel extends ForumModelAbstract
 {
 	/**
-	 * ForumModelCategory
+	 * Container for interally cached data
 	 * 
-	 * @var object
+	 * @var array
 	 */
 	private $_cache = array();
 
 	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $_stats = array();
-
-	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id Course ID or alias
+	 * @param      string  $scope    Forum scope [site, group, course]
+	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
 	 * @return     void
 	 */
 	public function __construct($scope='site', $scope_id=0)
@@ -71,10 +65,8 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Returns a reference to a forum model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
+	 * @param      string  $scope    Forum scope [site, group, course]
+	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
 	 * @return     object ForumModelCourse
 	 */
 	static function &getInstance($scope='site', $scope_id=0)
@@ -99,12 +91,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @access	public
 	 * @param	string $property The name of the property
 	 * @param	mixed  $default The default value
 	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
  	 */
 	public function get($property, $default=null)
 	{
@@ -118,12 +107,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @access	public
 	 * @param	string $property The name of the property
 	 * @param	mixed  $value The value of the property to set
 	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
 	 */
 	public function set($property, $value = null)
 	{
@@ -133,10 +119,9 @@ class ForumModel extends ForumModelAbstract
 	}
 
 	/**
-	 * Check if the forum exists
+	 * Populate the forum with defaulta section and category
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return     boolean
 	 */
 	public function setup()
 	{
@@ -170,56 +155,13 @@ class ForumModel extends ForumModelAbstract
 			return false;
 		}
 
-		/*$model = new ForumCategory($this->database);
-		// Check if there are uncategorized posts
-		// This should mean legacy data
-		if (($posts = $model->getPostCount(0, 0)) || !$this->view->sections || !count($this->view->sections))
-		{
-			// Create a default section
-			$dSection = new ForumSection($this->database);
-			$dSection->title = JText::_('Default Section');
-			$dSection->scope = 'site';
-			$dSection->scope_id = 0;
-			$dSection->state = 1;
-			if ($dSection->check())
-			{
-				$dSection->store();
-			}
-
-			// Create a default category
-			$dCategory = new ForumCategory($this->database);
-			$dCategory->title = JText::_('Discussions');
-			$dCategory->description = JText::_('Default category for all discussions in this forum.');
-			$dCategory->section_id = $dSection->id;
-			$dCategory->scope = 'site';
-			$dCategory->state = 1;
-			$dCategory->scope_id = 0;
-			if ($dCategory->check())
-			{
-				$dCategory->store();
-			}
-
-			if ($posts)
-			{
-				// Update all the uncategorized posts to the new default
-				$tModel = new ForumPost($this->database);
-				$tModel->updateCategory(0, $dCategory->id, 0);
-			}
-
-			$this->view->sections = $sModel->getRecords(array(
-				'state' => 1, 
-				'scope' => $this->view->filters['scope'],
-				'scope_id' => $this->view->filters['scope_id']
-			));
-		}*/
-
-		$this->_cache['sections'] = new ForumModelIterator(array($section));
+		$this->_cache['sections'] = new \Hubzero\ItemList(array($section));
 
 		return true;
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific section
 	 * 
 	 * @return     void
 	 */
@@ -229,7 +171,8 @@ class ForumModel extends ForumModelAbstract
 		 || ($id !== null && (int) $this->_cache['section']->get('id') != $id && (string) $this->_cache['section']->get('alias') != $id))
 		{
 			$this->_cache['section'] = null;
-			if (isset($this->_cache['sections']) && is_a($this->_cache['sections'], 'ForumModelIterator'))
+
+			if (isset($this->_cache['sections']) && ($this->_cache['sections'] instanceof \Hubzero\ItemList))
 			{
 				foreach ($this->_cache['sections'] as $key => $section)
 				{
@@ -240,7 +183,7 @@ class ForumModel extends ForumModelAbstract
 					}
 				}
 			}
-			
+
 			if (!$this->_cache['section'])
 			{
 				$this->_cache['section'] = ForumModelSection::getInstance($id, $this->get('scope'), $this->get('scope_id'));
@@ -250,15 +193,14 @@ class ForumModel extends ForumModelAbstract
 	}
 
 	/**
-	 * Get a list of categories for a forum
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of sections for a forum
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      string  $rtrn    What data to return [count, list, first]
+	 * @param      array   $filters Filters to apply to data fetch
+	 * @param      boolean $clear   Clear cached data?
+	 * @return     mixed
 	 */
-	public function sections($rtrn='', $filters=array())
+	public function sections($rtrn='', $filters=array(), $clear=false)
 	{
 		if (!isset($filters['scope']))
 		{
@@ -274,28 +216,32 @@ class ForumModel extends ForumModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_cache['sections_count'])) // || $this->_cache['filters'] != serialize($filters))
+				if (!isset($this->_cache['sections_count']) || $clear)
 				{
-					//$this->_cache['filters'] = serialize($filters);
 					$this->_cache['sections_count'] = (int) $tbl->getCount($filters);
 				}
 				return $this->_cache['sections_count'];
 			break;
 
 			case 'first':
-				$filters['limit'] = 1;
-				$filters['start'] = 0;
-				$filters['sort'] = 'created';
-				$filters['sort_Dir'] = 'ASC';
-				$results = $tbl->getRecords($filters);
-				$res = isset($results[0]) ? $results[0] : null;
-				return new ForumModelSection($res);
+				if (!isset($this->_cache['sections_first']) || !($this->_cache['sections_first'] instanceof ForumModelSection) || $clear)
+				{
+					$filters['limit'] = 1;
+					$filters['start'] = 0;
+					$filters['sort'] = 'created';
+					$filters['sort_Dir'] = 'ASC';
+					$results = $tbl->getRecords($filters);
+					$res = isset($results[0]) ? $results[0] : null;
+
+					$this->_cache['sections_first'] = new ForumModelSection($res);
+				}
+				return $this->_cache['sections_first'];
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['sections']) || !is_a($this->_cache['sections'], 'ForumModelIterator'))
+				if (!isset($this->_cache['sections']) || !($this->_cache['sections'] instanceof \Hubzero\ItemList) || $clear)
 				{
 					if ($results = $tbl->getRecords($filters))
 					{
@@ -308,73 +254,79 @@ class ForumModel extends ForumModelAbstract
 					{
 						$results = array();
 					}
-					//$this->_entries = new BlogModelIterator($results);
-					//$this->_cache['filters']  = serialize($filters);
-					$this->_cache['sections'] = new ForumModelIterator($results);
+					$this->_cache['sections'] = new \Hubzero\ItemList($results);
 				}
 				return $this->_cache['sections'];
 			break;
 		}
-		//return null;
 	}
 
 	/**
 	 * Check a user's authorization
 	 * 
-	 * @param      string $action Action to check
+	 * @param      string  $action    Action to check
+	 * @param      string  $assetType Type of asset to check
+	 * @param      integer $assetId   ID of item to check access on
 	 * @return     boolean True if authorized, false if not
 	 */
-	public function access($action='view', $assetId=null)
+	public function access($action='view', $assetType='section', $assetId=null)
 	{
-		$assetType = 'section';
+		//$assetType = 'section';
 
-		$this->config()->set('access-view-' . $assetType, true);
-
-		if (!$juser->get('guest')) 
+		if (!$this->config()->get('access-check-done', false))
 		{
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$asset  = 'com_forum';
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
+			$this->config()->set('access-view-' . $assetType, true);
 
-				$at = '';
-				if ($assetType != 'component')
-				{
-					$at .= '.' . $assetType;
-				}
-
-				// Admin
-				$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
-				$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
-				// Permissions
-				$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
-				$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
-				$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
-				$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
-				$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
-			}
-			else 
+			if (!$juser->get('guest')) 
 			{
-				if ($assetType == 'post' || $assetType == 'thread')
+				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
-					$this->config()->set('access-create-' . $assetType, true);
-					$this->config()->set('access-edit-' . $assetType, true);
-					$this->config()->set('access-delete-' . $assetType, true);
+					$asset  = 'com_forum';
+					if ($assetId)
+					{
+						$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+						$asset .= ($assetId) ? '.' . $assetId : '';
+					}
+
+					$at = '';
+					if ($assetType != 'component')
+					{
+						$at .= '.' . $assetType;
+					}
+
+					// Admin
+					$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
+					$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
+					// Permissions
+					$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
+					$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
+					$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
+					$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
+					$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
 				}
-				if ($juser->authorize($this->_option, 'manage'))
+				else 
 				{
-					$this->config()->set('access-manage-' . $assetType, true);
-					$this->config()->set('access-admin-' . $assetType, true);
-					$this->config()->set('access-create-' . $assetType, true);
-					$this->config()->set('access-delete-' . $assetType, true);
-					$this->config()->set('access-edit-' . $assetType, true);
+					if ($assetType == 'post' || $assetType == 'thread')
+					{
+						$this->config()->set('access-create-' . $assetType, true);
+						$this->config()->set('access-edit-' . $assetType, true);
+						$this->config()->set('access-delete-' . $assetType, true);
+					}
+					if ($juser->authorize($this->_option, 'manage'))
+					{
+						$this->config()->set('access-manage-' . $assetType, true);
+						$this->config()->set('access-admin-' . $assetType, true);
+						$this->config()->set('access-create-' . $assetType, true);
+						$this->config()->set('access-delete-' . $assetType, true);
+						$this->config()->set('access-edit-' . $assetType, true);
+					}
 				}
 			}
+
+			$this->config()->set('access-check-done', true);
 		}
+
+		return $this->config()->get('access-' . $action . '-' . $assetType);
 	}
 
 	/**
@@ -385,60 +337,58 @@ class ForumModel extends ForumModelAbstract
 	 */
 	public function count($what='threads')
 	{
-		$what = strtolower(trim($what));
+		$key = 'stats.' . strtolower(trim($what));
 
-		if (!isset($this->_stats[$what]))
+		if (!isset($this->_cache[$key]))
 		{
-			$this->_stats[$what] = 0;
+			$this->_cache[$key] = 0;
 
-			switch ($what)
+			switch ($key)
 			{
-				case 'sections':
-					$this->_stats[$what] = $this->sections()->total();
+				case 'stats.sections':
+					$this->_cache[$key] = $this->sections()->total();
 				break;
 
-				case 'categories':
+				case 'stats.categories':
 					foreach ($this->sections() as $section)
 					{
-						$this->_stats[$what] += $section->categories()->total();
+						$this->_cache[$key] += $section->categories()->total();
 					}
 				break;
 
-				case 'threads':
+				case 'stats.threads':
 					foreach ($this->sections() as $section)
 					{
-						$this->_stats[$what] += $section->count('threads');
+						$this->_cache[$key] += $section->count('threads');
 					}
 				break;
 
-				case 'posts':
+				case 'stats.posts':
 					foreach ($this->sections() as $section)
 					{
-						$this->_stats[$what] += $section->count('posts');
+						$this->_cache[$key] += $section->count('posts');
 					}
 				break;
 
 				default:
-					$this->setError(JText::_('Property value not accepted'));
+					$this->setError(JText::sprintf('Property value of "%s" not accepted', $what));
 					return 0;
 				break;
 			}
 		}
 
-		return $this->_stats[$what];
+		return $this->_cache[$key];
 	}
 
 	/**
-	 * Get the most recent post mad ein the forum
+	 * Get the most recent post made in the forum
 	 * 
 	 * @return     ForumModelPost
 	 */
 	public function lastActivity()
 	{
-		if (!isset($this->_cache['last']) || !is_a($this->_cache['last'], 'ForumModelPost'))
+		if (!isset($this->_cache['last']) || !($this->_cache['last'] instanceof ForumModelPost))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
-
 			$post = new ForumPost($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'))))
 			{

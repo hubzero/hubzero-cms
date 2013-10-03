@@ -54,7 +54,7 @@ $juser =& JFactory::getUser();
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p>
-				<a class="icon-add add" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
 		<?php } else { ?>
 			<p class="warning">

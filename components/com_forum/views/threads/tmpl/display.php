@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -32,26 +32,19 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:i a';
-	$tz = true;
-}
-
 ximport('Hubzero_User_Profile_Helper');
 
-$base = 'index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias') . '&thread=' . $this->thread->get('id');
+$this->category->set('section_alias', $this->filters['section']);
+
+$this->thread->set('section', $this->filters['section']);
+$this->thread->set('category', $this->category->get('alias'));
 ?>
 <div id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="icon-comments comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->get('alias')); ?>">
+		<a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>">
 			<?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?>
 		</a>
 	</p>
@@ -115,14 +108,14 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 			foreach ($this->thread->attachments() as $attachment) 
 			{
 				$cls = 'file';
-				$title = trim($attachment->get('description')) ? $attachment->get('description') : $attachment->get('filename');
+				$title = $attachment->get('description', $attachment->get('filename'));
 				if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
 				{
 					$cls = 'img';
 				}
 			?>
 				<li>
-					<a class="<?php echo $cls; ?> attachment" href="<?php echo JRoute::_($base . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename')); ?>">
+					<a class="<?php echo $cls; ?> attachment" href="<?php echo JRoute::_($this->thread->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename')); ?>">
 						<?php echo $this->escape(stripslashes($title)); ?>
 					</a>
 				</li>
@@ -136,7 +129,7 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 		<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
 			<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
 		</h3>
-		<form action="<?php echo JRoute::_($base); ?>" method="get">
+		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
 			<?php
 			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
 			{
@@ -150,13 +143,12 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 				$view->controller = $this->controller;
 
 				$view->comments   = $this->thread->posts($this->config->get('threading', 'list'));
-				$view->post       = $this->thread;
+				$view->thread     = $this->thread;
 				$view->parent     = 0;
 
 				$view->config     = $this->config;
 				$view->depth      = 0;
 				$view->cls        = 'odd';
-				$view->base       = $base;
 				$view->filters    = $this->filters;
 				$view->category   = $this->category;
 
@@ -230,28 +222,13 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 		</table>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
-				if (!$juser->get('guest')) 
-				{
-					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load($juser->get('id'));
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
-				} 
-				else 
-				{
-					$config = JComponentHelper::getParams('com_members');
-					$thumb = $config->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) 
-					{
-						$thumb = DS . $dfthumb;
-					}
-					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
-				}
-				$now = date('Y-m-d H:i:s', time());
+				$anon = (!$juser->get('guest') ? 0 : 1); 
+				$now  = date('Y-m-d H:i:s', time());
 				?>
-				<img src="<?php echo $thumb; ?>" alt="<?php echo JText::_('COM_FORUM_USER_PHOTO'); ?>" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('COM_FORUM_USER_PHOTO'); ?>" />
 			</p>
 
 			<fieldset>
@@ -260,12 +237,13 @@ $base = 'index.php?option=' . $this->option . '&section=' . $this->filters['sect
 			<?php } else if ($this->config->get('access-create-post')) { ?>
 				<p class="comment-title">
 					<strong>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape(stripslashes($juser->get('name'))); ?></a>
 					</strong> 
 					<span class="permalink">
 						<span class="comment-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?> </span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?> </span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 

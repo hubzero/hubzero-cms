@@ -30,16 +30,6 @@
  
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:i a';
-	$tz = true;
-}
-
 $juser = JFactory::getUser();
 ?>
 <div id="content-header" class="full">
@@ -92,18 +82,19 @@ $juser = JFactory::getUser();
 						{
 							if ($row->get('id') == $post->get('category_id'))
 							{
-								$cat = $row->get('alias');
-								$sec = $section->get('alias');
+								$post->set('category', $row->get('alias'));
+								$post->set('section', $section->get('alias'));
 								break;
 							}
 						}
 					}
 				}
 				?>
-				<a class="entry-date" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $sec . '&category=' . $cat . '&thread=' . $post->get('thread')); ?>">
+				<a class="entry-date" href="<?php echo JRoute::_($post->link()); ?>">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
-					<span class="date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), $dateFormat, $tz); ?></time></span>
+					<span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span> 
+					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+					<span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
 				</a>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>
@@ -117,11 +108,10 @@ $juser = JFactory::getUser();
 		
 <?php if ($this->config->get('access-create-section')) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('Sections'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('Sections'); ?></h3>
 			<p>
 				<?php echo JText::_('Use sections to group related categories.'); ?>
 			</p>
-			
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 				<fieldset>
 					<legend><?php echo JText::_('New Section'); ?></legend>
@@ -133,6 +123,7 @@ $juser = JFactory::getUser();
 						<input type="submit" value="<?php echo JText::_('Create'); ?>" />
 					</p>
 					<input type="hidden" name="task" value="save" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="sections" />
 					<input type="hidden" name="fields[scope]" value="site" />
 					<input type="hidden" name="fields[scope_id]" value="0" />
@@ -211,12 +202,15 @@ foreach ($this->sections as $section)
 				<tbody>
 			<?php if ($section->categories()->total() > 0) { ?>
 				<?php foreach ($section->categories() as $row) { ?>
+					<?php 
+					$row->set('section_alias', $section->get('alias'));
+					?>
 					<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
 						<th scope="row">
 							<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 						</th>
 						<td>
-							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $row->get('alias')); ?>">
+							<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>">
 								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 							</a>
 							<span class="entry-details">
@@ -240,12 +234,12 @@ foreach ($this->sections as $section)
 					<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-categort')) { ?>
 						<td class="entry-options">
 							<?php if (($row->get('created_by') == $juser->get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
-								<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $row->get('alias') . '&task=edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
+								<a class="icon-edit edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('Edit'); ?>">
 									<span><?php echo JText::_('Edit'); ?></span>
 								</a>
 							<?php } ?>
 							<?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
-								<a class="icon-delete delete tooltips" title="<?php echo JText::_('COM_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $row->get('alias') . '&task=delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+								<a class="icon-delete delete tooltips" title="<?php echo JText::_('COM_FORUM_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('Delete'); ?>">
 									<span><?php echo JText::_('Delete'); ?></span>
 								</a>
 							<?php } ?>

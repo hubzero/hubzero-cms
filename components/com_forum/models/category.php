@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'thread.php');
 
 /**
@@ -49,30 +48,17 @@ class ForumModelCategory extends ForumModelAbstract
 	protected $_tbl_name = 'ForumCategory';
 
 	/**
-	 * ForumTableSection
-	 * 
-	 * @var object
-	 */
-	private $_thread = null;
-
-	/**
-	 * ForumTableSection
-	 * 
-	 * @var object
-	 */
-	private $_threads = null;
-
-	/**
 	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	private $_stats = array();
+	private $_cache = array();
 
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id Course ID or alias
+	 * @param      mixed   $oid        ID (integer), alias (string), array or object
+	 * @param      integer $section_id Section ID
 	 * @return     void
 	 */
 	public function __construct($oid, $section_id=0)
@@ -82,17 +68,28 @@ class ForumModelCategory extends ForumModelAbstract
 		$cls = $this->_tbl_name;
 		$this->_tbl = new $cls($this->_db);
 
-		if (is_numeric($oid))
+		if (!($this->_tbl instanceof \JTable))
 		{
-			$this->_tbl->load($oid);
+			$this->_logError(
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+			);
+			throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
 		}
-		else if (is_string($oid))
+
+		if ($oid)
 		{
-			$this->_tbl->loadByAlias($oid, $section_id);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
+			if (is_numeric($oid))
+			{
+				$this->_tbl->load($oid);
+			}
+			else if (is_string($oid))
+			{
+				$this->_tbl->loadByAlias($oid, $section_id);
+			}
+			else if (is_object($oid) || is_array($oid))
+			{
+				$this->bind($oid);
+			}
 		}
 
 		switch (strtolower($this->get('scope')))
@@ -110,19 +107,16 @@ class ForumModelCategory extends ForumModelAbstract
 
 			case 'site':
 			default:
-				$this->_base = 'index.php?option=com_courses';
+				$this->_base = 'index.php?option=com_forum';
 			break;
 		}
 	}
 
 	/**
-	 * Returns a reference to a forum model
-	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
+	 * Returns a reference to a forum category model
 	 *
 	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @return     object ForumModelCategory
 	 */
 	static function &getInstance($oid=null, $section_id=0) //, $scope='site', $scope_id=0)
 	{
@@ -161,7 +155,7 @@ class ForumModelCategory extends ForumModelAbstract
 	 */
 	public function isClosed()
 	{
-		if ($this->get('closed') == 1) 
+		if ($this->get('closed', 0) == 1) 
 		{
 			return true;
 		}
@@ -169,9 +163,10 @@ class ForumModelCategory extends ForumModelAbstract
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific thread
 	 * 
-	 * @return     void
+	 * @param      mixed $id ID (integer) or alias (string)
+	 * @return     object ForumModelThread
 	 */
 	public function thread($id=null)
 	{
@@ -179,7 +174,8 @@ class ForumModelCategory extends ForumModelAbstract
 		 || ($id !== null && (int) $this->_cache['thread']->get('id') != $id))
 		{
 			$this->_cache['thread'] = null;
-			if (isset($this->_cache['threads']) && is_a($this->_cache['threads'], 'ForumModelIterator'))
+
+			if (isset($this->_cache['threads']) && ($this->_cache['threads'] instanceof \Hubzero\ItemList))
 			{
 				foreach ($this->_cache['threads'] as $key => $thread)
 				{
@@ -190,6 +186,7 @@ class ForumModelCategory extends ForumModelAbstract
 					}
 				}
 			}
+
 			if (!$this->_cache['thread'])
 			{
 				$this->_cache['thread'] = ForumModelThread::getInstance($id);
@@ -210,24 +207,28 @@ class ForumModelCategory extends ForumModelAbstract
 	public function threads($rtrn='list', $filters=array(), $clear=false)
 	{
 		$filters['category_id'] = isset($filters['category_id']) ? $filters['category_id'] : $this->get('id');
-		$filters['state']       = isset($filters['state'])       ? $filters['state']       : 1;
+		$filters['state']       = isset($filters['state'])       ? $filters['state']       : self::APP_STATE_PUBLISHED;
 		$filters['parent']      = isset($filters['parent'])      ? $filters['parent']      : 0;
 
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				$tbl = new ForumPost($this->_db);
-				return $tbl->getCount($filters);
+				if (!isset($this->_cache['threads_count']) || $clear)
+				{
+					$tbl = new ForumPost($this->_db);
+					$this->_cache['threads_count'] = $tbl->getCount($filters);
+				}
+				return $this->_cache['threads_count'];
 			break;
 
 			case 'first':
-				return $this->threads('list', $filters)->fetch('first');
+				return $this->threads('list', $filters)->first();
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['threads']) || !is_a($this->_cache['threads'], 'ForumModelIterator') || $clear)
+				if (!isset($this->_cache['threads']) || !($this->_cache['threads'] instanceof \Hubzero\ItemList) || $clear)
 				{
 					$tbl = new ForumPost($this->_db);
 
@@ -243,7 +244,7 @@ class ForumModelCategory extends ForumModelAbstract
 						$results = array();
 					}
 
-					$this->_cache['threads'] = new ForumModelIterator($results);
+					$this->_cache['threads'] = new \Hubzero\ItemList($results);
 				}
 
 				return $this->_cache['threads'];
@@ -260,56 +261,58 @@ class ForumModelCategory extends ForumModelAbstract
 	public function count($what='threads')
 	{
 		$what = strtolower(trim($what));
+		$key  = 'stats.' . $what;
 
-		if (!isset($this->_stats[$what]))
+		if (!isset($this->_cache[$key]))
 		{
-			$this->_stats[$what] = 0;
+			$this->_cache[$key] = 0;
 
 			switch ($what)
 			{
 				case 'threads':
 					if ($this->get('threads', null) !== null)
 					{
-						$this->_stats[$what] += (int) $this->get('threads');
+						$this->_cache[$key] += (int) $this->get('threads');
 					}
 					else
 					{
-						$this->_stats[$what] += (int) $this->threads('count');
+						$this->_cache[$key] += (int) $this->threads('count');
 					}
 				break;
 
 				case 'posts':
 					if ($this->get('posts', null) !== null)
 					{
-						$this->_stats[$what] += (int) $this->get('posts');
+						$this->_cache[$key] += (int) $this->get('posts');
 					}
 					else
 					{
 						foreach ($this->threads() as $thread)
 						{
-							$this->_stats[$what] += (int) $thread->posts('count');
+							$this->_cache[$key] += (int) $thread->posts('count');
 						}
 					}
 				break;
 
 				default:
-					$this->setError(JText::_('Property value not accepted'));
-					return 0;
+					$this->setError(JText::sprintf('Property value of "%" not accepted', $what));
+					return $this->_cache[$key];
 				break;
 			}
 		}
 
-		return $this->_stats[$what];
+		return $this->_cache[$key];
 	}
 
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param      string $type   The type of link to return
+	 * @param      mixed  $params Optional string or associative array of params to append
+	 * @return     string
 	 */
-	public function link($type='')
+	public function link($type='', $params=null)
 	{
 		$link  = $this->_base;
 
@@ -335,6 +338,10 @@ class ForumModelCategory extends ForumModelAbstract
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
 		{
+			case 'base':
+				return $this->_base;
+			break;
+
 			case 'edit':
 				switch (strtolower($this->get('scope')))
 				{
@@ -371,13 +378,68 @@ class ForumModelCategory extends ForumModelAbstract
 				}
 			break;
 
+			case 'new':
+			case 'newthread':
+				switch (strtolower($this->get('scope')))
+				{
+					case 'group':
+						$link .= '/new';
+					break;
+
+					case 'course':
+						$link .= '&c=new';
+					break;
+
+					case 'site':
+					default:
+						$link .= '&task=new';
+					break;
+				}
+			break;
+
 			case 'permalink':
 			default:
 
 			break;
 		}
 
-		return $link;
+		if (is_array($params))
+		{
+			$bits = array();
+			foreach ($params as $key => $param)
+			{
+				$bits[] = $key . '=' . $param;
+			}
+			$params = implode('&', $bits);
+		}
+
+		if ($params)
+		{
+			if (strtolower($this->get('scope')) == 'group')
+			{
+				if (substr($params, 0, 1) == '&')
+				{
+					$params = substr($params, 1);
+				}
+				if (substr($params, 0, 1) != '?' && substr($params, 0, 1) != '#')
+				{
+					$params = '?' . $params;
+				}
+			}
+			else
+			{
+				if (substr($params, 0, 1) == '?')
+				{
+					$params = substr($params, 1);
+				}
+				if (substr($params, 0, 1) != '&' && substr($params, 0, 1) != '#')
+				{
+					$params = '&' . $params;
+				}
+			}
+		}
+
+		return $link . (string) $params;
 	}
 
 	/**
@@ -389,8 +451,6 @@ class ForumModelCategory extends ForumModelAbstract
 	{
 		if (!isset($this->_cache['last']) || !is_a($this->_cache['last'], 'ForumModelPost'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
-
 			$post = new ForumPost($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'), $this->get('id'))))
 			{

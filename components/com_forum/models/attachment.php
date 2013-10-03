@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,7 +35,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' .
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Courses model class for a forum
+ * Model class for a forum post attachment
  */
 class ForumModelAttachment extends ForumModelAbstract
 {
@@ -47,13 +47,11 @@ class ForumModelAttachment extends ForumModelAbstract
 	protected $_tbl_name = 'ForumAttachment';
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to a forum post attachment model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param      mixed   $oid ID (int), alias (string), array, or object
+	 * @param      integer $pid Post ID
+	 * @return     object ForumModelAttachment
 	 */
 	static function &getInstance($oid=0, $pid=null)
 	{
@@ -64,12 +62,25 @@ class ForumModelAttachment extends ForumModelAbstract
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (is_numeric($oid) || is_string($oid))
 		{
-			$instances[$oid] = new ForumModelAttachment($oid, $pid);
+			$key = $pid . '_' . $oid;
+		}
+		else if (is_object($oid))
+		{
+			$key = $pid . '_' . $oid->id;
+		}
+		else if (is_array($oid))
+		{
+			$key = $pid . '_' . $oid['id'];
 		}
 
-		return $instances[$oid];
+		if (!isset($instances[$key])) 
+		{
+			$instances[$key] = new ForumModelAttachment($oid, $pid);
+		}
+
+		return $instances[$key];
 	}
 }
 
