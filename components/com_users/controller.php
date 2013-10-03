@@ -79,6 +79,23 @@ class UsersController extends JControllerLegacy
 
 				// Handle the default views.
 				case 'login':
+					// If the user is already logged in, redirect to the return or profile page.
+					$user = JFactory::getUser();
+					if ($user->get('guest') != 1) {
+						
+						$return = base64_decode(JRequest::getVar('return', '',  'method', 'base64'));
+						
+						if ($return)
+						{
+							$this->setRedirect(JRoute::_($return, false));
+							return;	
+						}
+						
+						// Redirect to profile page.
+						$this->setRedirect(JRoute::_('index.php?option=com_members&task=myaccount', false));
+						return;
+					}
+					
 					$model = $this->getModel($vName);
 					break;
 
