@@ -55,6 +55,13 @@ class ForumModelCategory extends ForumModelAbstract
 	private $_cache = array();
 
 	/**
+	 * Scope adapter
+	 * 
+	 * @var array
+	 */
+	private $_adapter = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      mixed   $oid        ID (integer), alias (string), array or object
@@ -314,132 +321,31 @@ class ForumModelCategory extends ForumModelAbstract
 	 */
 	public function link($type='', $params=null)
 	{
-		$link  = $this->_base;
-
-		switch (strtolower($this->get('scope')))
+		if (!$this->_adapter)
 		{
-			case 'group':
-				$link .= '&scope='  . $this->get('section_alias');
-				$link .= '/' . $this->get('alias');
-			break;
+			$scope = strtolower($this->get('scope'));
+			$cls = 'ForumModelAdapter' . ucfirst($scope);
 
-			case 'course':
-				$link .= '&unit='  . $this->get('section_alias');
-				$link .= '&b=' . $this->get('alias');
-			break;
-
-			case 'site':
-			default:
-				$link .= '&section='  . $this->get('section_alias');
-				$link .= '&category=' . $this->get('alias');
-			break;
-		}
-
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'base':
-				return $this->_base;
-			break;
-
-			case 'edit':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link .= '/edit';
-					break;
-
-					case 'course':
-						$link .= '&c=edit';
-					break;
-
-					case 'site':
-					default:
-						$link .= '&task=edit';
-					break;
-				}
-			break;
-
-			case 'delete':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link .= '/delete';
-					break;
-
-					case 'course':
-						$link .= '&c=delete';
-					break;
-
-					case 'site':
-					default:
-						$link .= '&task=delete';
-					break;
-				}
-			break;
-
-			case 'new':
-			case 'newthread':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link .= '/new';
-					break;
-
-					case 'course':
-						$link .= '&c=new';
-					break;
-
-					case 'site':
-					default:
-						$link .= '&task=new';
-					break;
-				}
-			break;
-
-			case 'permalink':
-			default:
-
-			break;
-		}
-
-		if (is_array($params))
-		{
-			$bits = array();
-			foreach ($params as $key => $param)
+			if (!class_exists($cls))
 			{
-				$bits[] = $key . '=' . $param;
+				$path = dirname(__FILE__) . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
 			}
-			$params = implode('&', $bits);
+
+			$this->_adapter = new $cls($this->get('scope_id'));
+			if (!$this->get('section_alias'))
+			{
+				$this->set('section_alias', ForumModelSection::getInstance($this->get('section_id'))->get('alias'));
+			}
+			$this->_adapter->set('section', $this->get('section_alias'));
+			$this->_adapter->set('category', $this->get('alias'));
 		}
 
-		if ($params)
-		{
-			if (strtolower($this->get('scope')) == 'group')
-			{
-				if (substr($params, 0, 1) == '&')
-				{
-					$params = substr($params, 1);
-				}
-				if (substr($params, 0, 1) != '?' && substr($params, 0, 1) != '#')
-				{
-					$params = '?' . $params;
-				}
-			}
-			else
-			{
-				if (substr($params, 0, 1) == '?')
-				{
-					$params = substr($params, 1);
-				}
-				if (substr($params, 0, 1) != '&' && substr($params, 0, 1) != '#')
-				{
-					$params = '&' . $params;
-				}
-			}
-		}
-
-		return $link . (string) $params;
+		return $this->_adapter->build($type, $params);
 	}
 
 	/**

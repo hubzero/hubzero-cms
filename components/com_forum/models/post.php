@@ -48,41 +48,18 @@ class ForumModelPost extends ForumModelAbstract
 	protected $_tbl_name = 'ForumPost';
 
 	/**
-	 * ForumTablePost
+	 * ForumModelAttachment
 	 * 
 	 * @var object
 	 */
-	protected $_base = null;
+	protected $_attachment = null;
 
 	/**
-	 * Constructor
+	 * Scope adapter
 	 * 
-	 * @param      integer $id Post ID, array, or object
-	 * @return     void
+	 * @var array
 	 */
-	public function __construct($oid)
-	{
-		parent::__construct($oid);
-
-		switch (strtolower($this->get('scope')))
-		{
-			case 'group':
-				$group = Hubzero_Group::getInstance($this->get('scope_id'));
-				$this->_base = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=forum';
-			break;
-
-			case 'course':
-				$offering = CoursesModelOffering::getInstance($this->get('scope_id'));
-				$course = CoursesModelCourse::getInstance($offering->get('course_id'));
-				$this->_base = 'index.php?option=com_courses&gid=' . $course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') != '__default' ? ':' . $offering->section()->get('alias') : '') . '&active=discussions';
-			break;
-
-			case 'site':
-			default:
-				$this->_base = 'index.php?option=com_forum';
-			break;
-		}
-	}
+	private $_adapter = null;
 
 	/**
 	 * Returns a reference to a forum post model
@@ -233,195 +210,42 @@ class ForumModelPost extends ForumModelAbstract
 	 */
 	public function link($type='', $params=null)
 	{
-		$link  = $this->_base;
-
-		switch (strtolower($this->get('scope')))
+		if (!$this->_adapter)
 		{
-			case 'group':
-				$link .= '&scope=' . $this->get('section');
-				$link .= '/' . $this->get('category');
-				$link .= '/' . $this->get('thread');
-			break;
+			$scope = strtolower($this->get('scope'));
+			$cls = 'ForumModelAdapter' . ucfirst($scope);
 
-			case 'course':
-				$link .= '&unit=' . $this->get('section');
-				$link .= '&b=' . $this->get('category');
-				$link .= '&c=' . $this->get('thread');
-			break;
-
-			case 'site':
-			default:
-				$link .= '&section=' . $this->get('section');
-				$link .= '&category=' . $this->get('category');
-				$link .= '&thread=' . $this->get('thread');
-			break;
-		}
-
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'base':
-				return $this->_base;
-			break;
-
-			case 'new':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link  = $this->_base;
-						$link .= '&scope=' . $this->get('section');
-						$link .= '/' . $this->get('category');
-						$link .= '/new';
-					break;
-
-					case 'course':
-						$link  = $this->_base;
-						$link .= '&unit=' . $this->get('section');
-						$link .= '&b=' . $this->get('category');
-						$link .= '&c=new';
-					break;
-
-					case 'site':
-					default:
-						$link  = $this->_base;
-						$link .= '&section=' . $this->get('section');
-						$link .= '&category=' . $this->get('category');
-						$link .= '&task=new';
-					break;
-				}
-			break;
-
-			case 'edit':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link .= '/edit';
-					break;
-
-					case 'course':
-						$link .= '&c=edit';
-					break;
-
-					case 'site':
-					default:
-						$link  = $this->_base;
-						$link .= '&section=' . $this->get('section');
-						$link .= '&category=' . $this->get('category');
-						$link .= '&thread=' . $this->get('id');
-						$link .= '&task=edit';
-					break;
-				}
-			break;
-
-			case 'delete':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link .= '/delete';
-					break;
-
-					case 'course':
-						$link .= '&c=delete';
-					break;
-
-					case 'site':
-					default:
-						$link  = $this->_base;
-						$link .= '&section=' . $this->get('section');
-						$link .= '&category=' . $this->get('category');
-						$link .= '&thread=' . $this->get('id');
-						$link .= '&task=delete';
-					break;
-				}
-			break;
-
-			case 'download':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link .= '/' . $this->get('id') . '/';
-					break;
-
-					case 'course':
-						$link .= '&post=' . $this->get('id') . '&file=';
-					break;
-
-					case 'site':
-					default:
-						$link .= '&post=' . $this->get('id') . '&file=';
-					break;
-				}
-			break;
-
-			case 'reply':
-				switch (strtolower($this->get('scope')))
-				{
-					case 'group':
-						$link .= '?reply=' . $this->get('id');
-					break;
-
-					case 'course':
-						$link .= '&reply=' . $this->get('id');
-					break;
-
-					case 'site':
-					default:
-						$link .= '&reply=' . $this->get('id');
-					break;
-				}
-			break;
-
-			case 'anchor':
-				$link .= '#c' . $this->get('id');
-			break;
-
-			case 'abuse':
-				return 'index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->get('id') . '&parent=' . $this->get('parent');
-			break;
-
-			case 'permalink':
-			default:
-
-			break;
-		}
-
-		if (is_array($params))
-		{
-			$bits = array();
-			foreach ($params as $key => $param)
+			if (!class_exists($cls))
 			{
-				$bits[] = $key . '=' . $param;
+				$path = dirname(__FILE__) . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
 			}
-			$params = implode('&', $bits);
+
+			$this->_adapter = new $cls($this->get('scope_id'));
+			$this->_adapter->set('thread', $this->get('thread'));
+			$this->_adapter->set('parent', $this->get('parent'));
+			$this->_adapter->set('post', $this->get('id'));
+
+			if (!$this->get('category'))
+			{
+				$category = ForumModelCategory::getInstance($this->get('category_id'));
+				$this->set('category', $category->get('alias'));
+			}
+			$this->_adapter->set('category', $this->get('category'));
+
+			if (!$this->get('section'))
+			{
+				$category = ForumModelCategory::getInstance($this->get('category_id'));
+				$this->set('section', ForumModelSection::getInstance($category->get('section_id'))->get('alias'));
+			}
+			$this->_adapter->set('section', $this->get('section'));
 		}
 
-		if ($params)
-		{
-			if (strtolower($this->get('scope')) == 'group')
-			{
-				if (substr($params, 0, 1) == '&')
-				{
-					$params = substr($params, 1);
-				}
-				if (substr($params, 0, 1) != '?' && substr($params, 0, 1) != '#')
-				{
-					$params = '?' . $params;
-				}
-			}
-			else
-			{
-				if (substr($params, 0, 1) == '?')
-				{
-					$params = substr($params, 1);
-				}
-				if (substr($params, 0, 1) != '&' && substr($params, 0, 1) != '#')
-				{
-					$params = '&' . $params;
-				}
-			}
-		}
-
-		return $link . (string) $params;
+		return $this->_adapter->build($type, $params);
 	}
 
 	/**

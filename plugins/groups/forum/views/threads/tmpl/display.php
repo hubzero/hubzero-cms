@@ -2,23 +2,18 @@
 defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:i a';
-	$tz = true;
-}
-
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('thread');
+
+$this->category->set('section_alias', $this->filters['section']);
+
+$this->thread->set('section', $this->filters['section']);
+$this->thread->set('category', $this->category->get('alias'));
 
 ximport('Hubzero_User_Profile_Helper');
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-comments comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->get('alias')); ?>">
+		<a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>">
 			<?php echo JText::_('All discussions'); ?>
 		</a>
 	</li>
@@ -84,7 +79,7 @@ ximport('Hubzero_User_Profile_Helper');
 			{
 				$cls = 'file';
 				$title = $attachment->get('description', $attachment->get('filename'));
-				if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $attachment->get('filename')))
+				if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
 				{
 					$cls = 'img';
 				}
@@ -104,8 +99,8 @@ ximport('Hubzero_User_Profile_Helper');
 		<!-- <h4 class="comments-title">
 			<?php echo JText::_('PLG_GROUPS_FORUM_COMMENTS'); ?>
 		</h4> -->
-		<form action="<?php echo JRoute::_($base); ?>" method="get">
-		<ol class="comments">
+		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
+			<ol class="comments">
 			<?php
 			if ($this->thread->posts('list', $this->filters)->total() > 0) {
 				ximport('Hubzero_User_Profile');
@@ -134,12 +129,15 @@ ximport('Hubzero_User_Profile_Helper');
 					<div class="comment-content">
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_($base . '#c' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
-								<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+							<a class="permalink" href="<?php echo JRoute::_($row->link('anchor')); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>">
+								<span class="comment-date-at">@</span> 
+								<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
+								<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
 								<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 								<?php if ($row->wasModified()) { ?>
 									&mdash; <?php echo JText::_('PLG_GROUPS_FORUM_EDITED'); ?>
-									<span class="time"><time datetime="<?php echo $row->modified(); ?>"><?php echo $row->modified('time'); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+									<span class="time"><time datetime="<?php echo $row->modified(); ?>"><?php echo $row->modified('time'); ?></time></span> 
+									<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
 									<span class="date"><time datetime="<?php echo $row->modified(); ?>"><?php echo $row->modified('date'); ?></time></span>
 								<?php } ?>
 							</a>
@@ -148,12 +146,12 @@ ximport('Hubzero_User_Profile_Helper');
 						<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->get('created_by')) { ?>
 						<p class="comment-options">
 							<?php if ($this->config->get('access-delete-thread')) { ?>
-							<a class="icon-delete delete" href="<?php echo JRoute::_($base . '/delete'); ?>"><!-- 
+							<a class="icon-delete delete" href="<?php echo JRoute::_($row->link('delete')); ?>"><!-- 
 								--><?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?><!-- 
 							--></a>
 							<?php } ?>
 							<?php if ($this->config->get('access-edit-thread')) { ?>
-							<a class="icon-edit edit" href="<?php echo JRoute::_($base . '/edit'); ?>"><!-- 
+							<a class="icon-edit edit" href="<?php echo JRoute::_($row->link('edit')); ?>"><!-- 
 								--><?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?><!-- 
 							--></a>
 							<?php } ?>
@@ -161,26 +159,26 @@ ximport('Hubzero_User_Profile_Helper');
 						<?php } ?>
 					</div>
 				</li>
+				<?php } ?>
+			<?php } else { ?>
+				<li>
+					<p><?php echo JText::_('PLG_GROUPS_FORUM_NO_REPLIES_FOUND'); ?></p>
+				</li>
 			<?php } ?>
-		<?php } else { ?>
-			<li>
-				<p><?php echo JText::_('PLG_GROUPS_FORUM_NO_REPLIES_FOUND'); ?></p>
-			</li>
-		<?php } ?>
-		</ol>
-		<?php 
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination(
-				$this->thread->posts('count', $this->filters), 
-				$this->filters['start'], 
-				$this->filters['limit']
-			);
-			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-			$pageNav->setAdditionalUrlParam('active', 'forum');
-			$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id'));
+			</ol>
+			<?php 
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->thread->posts('count', $this->filters), 
+					$this->filters['start'], 
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+				$pageNav->setAdditionalUrlParam('active', 'forum');
+				$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id'));
 
-			echo $pageNav->getListFooter();
-		?>
+				echo $pageNav->getListFooter();
+			?>
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
@@ -230,15 +228,10 @@ ximport('Hubzero_User_Profile_Helper');
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 				<?php
-				$anon = 1;
-				$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
-				if (!$juser->get('guest')) 
-				{
-					$anon = 0;
-				}
+				$anon = (!$juser->get('guest') ? 0 : 1);
 				$now = date('Y-m-d H:i:s', time());
 				?>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="" />
 			</p>
 
 			<fieldset>
@@ -250,8 +243,9 @@ ximport('Hubzero_User_Profile_Helper');
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
 					<span class="permalink"><span class="comment-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+						<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				
