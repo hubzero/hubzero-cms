@@ -1540,41 +1540,31 @@ class plgProjectsFiles extends JPlugin
 		$extractPath = $prefix . $temp_path . DS . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 );
 		$z 			 = 0;
 		$unzipto 	 = $subdir ? $prefix . $path . DS . $subdir : $prefix . $path;
-		
+
 		// Create dir to extract into					
 		if (!is_dir($extractPath))
 		{
 			JFolder::create($extractPath);
 		}
-		
-		// Upload temp file
-		if (is_file($tmp_name))
-		{
-			$archive = $tmp_name;
-		}
-		else
-		{
-			JFile::upload($tmp_name, $archive);
-		}
-		
-		if (!is_file($archive))
+
+		if (!is_file($tmp_name))
 		{
 			$this->setError(JText::_('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
 			return false;
 		}
-		
+
 		// Do virus check
-		if (ProjectsHelper::virusCheck($archive))
+		if (ProjectsHelper::virusCheck($tmp_name))
 		{
 			$this->setError(JText::_('Virus detected, refusing to upload'));
 			return false;
 		}
-		
+
 		// Expand tar
 		try 
 		{																
 			chdir($prefix . $temp_path);
-			exec('tar xvf ' . $archive . ' -C ' . $extractPath . ' 2>&1', $out );
+			exec('tar xvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out );
 			
 			// Now copy extracted contents into project
 			$extracted = JFolder::files($extractPath, '.', true, true, $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));	
@@ -1583,7 +1573,7 @@ class plgProjectsFiles extends JPlugin
 			{
 				$fileinfo = pathinfo($e);
 				$a_dir  = $fileinfo['dirname'];
-				$a_dir	= str_replace($extractPath . DS, '', $a_dir);
+				$a_dir	= str_replace($extractPath, '', $a_dir);
 				$a_file = $fileinfo['basename'];
 				
 				// Skip certain system files
