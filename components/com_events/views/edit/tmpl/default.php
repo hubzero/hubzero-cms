@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="icon-browse browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Browse Events'); ?></a>
+			<a class="icon-browse browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('EVENTS_BROWSE'); ?></a>
 		</li>
 	</ul>
 </div>
@@ -248,14 +248,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 						</td>
 					</tr>
 				</tbody>
-            </table>
+			</table>
 			</fieldset>
 		</fieldset><div class="clear"></div>
 <?php } ?>
 		<input type="hidden" name="email" value="<?php echo $this->escape(stripslashes($this->row->email)); ?>" />
 		<input type="hidden" name="restricted" value="<?php echo $this->escape(stripslashes($this->row->restricted)); ?>" />
-		<p class="submit"><input type="submit" value="<?php echo JText::_('EVENTS_SAVE'); ?>" /></p>
-      
+		<p class="submit">
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('EVENTS_SAVE'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo $this->row->id ? JRoute::_('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) : JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('EVENTS_CANCEL'); ?>
+			</a>
+		</p>
+
 		<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
 		<input type="hidden" name="created_by_alias" value="<?php echo $this->escape($this->row->created_by_alias); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

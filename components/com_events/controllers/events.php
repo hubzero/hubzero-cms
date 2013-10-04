@@ -847,7 +847,7 @@ class EventsControllerEvents extends Hubzero_Controller
 
 		// Set the page title
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_task)) . ': ' . stripslashes($row->title));
+		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task)) . ': ' . stripslashes($row->title));
 
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
@@ -1732,7 +1732,11 @@ class EventsControllerEvents extends Hubzero_Controller
 			return;
 		}
 
+		$event->state = 2;
+		$event->store();
+
 		// Delete the event
+		/* [!] No! Don't! True record deletion should only occur on the amdin side! - zooley 10/2013
 		$event->delete($id);
 
 		// Delete any associated pages 
@@ -1750,6 +1754,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Load the event's category and update the count
 		$category = new EventsCategory($this->database);
 		$category->updateCount($event->catid);
+		*/
 
 		$jconfig =& JFactory::getConfig();
 
