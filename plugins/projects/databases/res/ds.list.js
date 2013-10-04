@@ -70,6 +70,15 @@
 				}
 			});
 		});
+
+		$('.update-help-icon').on('click', function() {
+			$('#update-db-help-dialog').dialog({
+				height: 620,
+				width: 740,
+				modal: true
+			});
+		});
+
 	});
 
 }) (this, document, DataStore, jQuery);

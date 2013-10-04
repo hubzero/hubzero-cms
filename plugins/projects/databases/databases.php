@@ -133,6 +133,36 @@ class plgProjectsDatabases extends JPlugin
 		$uid, $msg = '', $error = '', 
 		$action = 'view', $areas = null, $case)
 	{
+
+		// Check if the plugin parameters the two mysql accounts are properly set
+		$db_opt_rw['driver'] 		= 'mysqli';
+		$db_opt_rw['host'] 		= $this->_params->get('db_host');
+		$db_opt_rw['user'] 		= $this->_params->get('db_user');
+		$db_opt_rw['password'] 	= $this->_params->get('db_password');
+		$db_opt_rw['prefix'] 		= '';
+		$db_rw = &JDatabase::getInstance($db_opt_rw);
+
+		$db_opt_ro['driver'] 		= 'mysqli';
+		$db_opt_ro['host'] 		= $this->_params->get('db_host');
+		$db_opt_ro['user'] 		= $this->_params->get('db_ro_user');
+		$db_opt_ro['password'] 	= $this->_params->get('db_ro_password');
+		$db_opt_ro['prefix'] 		= '';
+		$db_ro = &JDatabase::getInstance($db_opt_ro);
+
+		if (get_class($db_rw) == 'JException' || get_class($db_ro) == 'JException')
+		{
+			// Output HTML
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'=>'projects',
+					'element'=>'databases',
+					'name'=>'config_error'
+				)
+			);
+
+			return array('html'=>$view->loadTemplate());
+		}
+
 		$arr = array(
 			'html'=>'',
 			'metadata'=>'',
@@ -159,7 +189,7 @@ class plgProjectsDatabases extends JPlugin
 		}
 
 		// Load language file
-		$this->loadLanguage();
+		JPlugin::loadLanguage( 'plg_projects_databases' );
 
 		$this->_project 	= $project;
 		$this->_option 		= $option;

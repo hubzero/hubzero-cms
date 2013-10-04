@@ -39,17 +39,20 @@ span.db-update:hover {
 	font-family: 'Fontcons';
 	color: #C4D2D6;
 	margin-left: 0.3em;
+	display: inline-block;
 }
 
 span.db-update:before {
 	font-size: 1.3em;
 	padding: 0 5px;
 	content: "\270D";
+	display: inline-block;
 }
 
 span.db-update:hover:after {
 	font-size: .8em;
 	content: "EDIT";
+	display: inline-block;
 }
 
 table.listing a.delete-db:before {
@@ -64,6 +67,20 @@ table.listing a.delete-db:hover {
 	color: red;
 }
 
+span.update-help-icon {
+	width: 16px;
+	height: 18px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+span.update-help-icon:after {
+	content: '\f059';
+	font-family: 'Fontcons';
+	margin-left: 0.4em;
+	font-size: 1.3em;
+	cursor: pointer;
+}
 
 /* making jQuery UI font-size to match the project */
 .ui-helper-clearfix {

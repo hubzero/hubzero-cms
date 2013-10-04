@@ -43,7 +43,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	}
 </style>
 <div id="plg-header">
-<h3 class="databases c-header"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=databases'.a. 'alias=' . $this->project->alias); ?>">Databases</a> &raquo; <span class="indlist"><?php echo JText::_('PLG_PROJECTS_DATA_START'); ?></span></h3>
+<h3 class="databases c-header"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=databases'.a. 'alias=' . $this->project->alias); ?>">Databases</a> &raquo; <span class="indlist"><?= isset($this->db_id) ? 'Update Database' : JText::_('PLG_PROJECTS_DATA_START'); ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php
