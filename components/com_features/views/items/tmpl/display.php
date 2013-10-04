@@ -31,19 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b %Y';
-$dateFormat2 = '%d %b. %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$dateFormat2 = 'd M. Y';
-	$timeFormat = 'h:i A';
-	$tz = null;
-}
-
 $types = array(
 	''          => JText::_('COM_FEATURES_ALL'),
 	'tools'     => JText::_('COM_FEATURES_TOOLS'),
@@ -52,9 +39,15 @@ $types = array(
 	'profiles'  => JText::_('COM_FEATURES_PROFILES'),
 );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
+
+<?php if ($this->config->get('access-manage-component')) { ?>
+<div id="content-header-extra">
+	<p><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo JText::_('COM_FEATURES_ADD'); ?></a></p>
+</div><!-- / #content-header-extra -->
+<?php } ?>
 
 <div class="main section">
 <?php if ($this->getError()) { ?>
@@ -66,22 +59,14 @@ $types = array(
 				<label>
 					<?php echo JText::_('COM_FEATURES_TYPE'); ?>
 					<select name="type" id="type">
-<?php 
-					foreach ($types as $avalue => $alabel)
-					{
-?>
+					<?php foreach ($types as $avalue => $alabel) { ?>
 						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->filters['type'] || $alabel == $this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
-<?php
-					}
-?>
+					<?php } ?>
 					</select>
 				</label>
 				<p class="submit"><input type="submit" name="go" value="<?php echo JText::_('COM_FEATURES_GO'); ?>" /></p>
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			</fieldset>
-<?php if ($this->config->get('access-manage-component')) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo JText::_('COM_FEATURES_ADD'); ?></a></p>
-<?php } ?>
 		</div><!-- / .aside -->
 		<div class="subject">
 			<div class="container">
@@ -146,7 +131,7 @@ if (count($this->rows) > 0)
 			{
 				$fh->tbl = 'tools';
 			}
-			$curDate = JHTML::_('date', $fh->featured, $dateFormat, $tz);
+			$curDate = JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1'));
 			if ($curDate != $prevDate)
 			{
 				$prevDate = $curDate;
@@ -196,7 +181,7 @@ if (count($this->rows) > 0)
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
 					$html .= '<p class="title"><a href="' . JRoute::_($href) . '">' . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
-					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, $dateFormat, $tz) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
+					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) {
 						$html .= ' <span>|</span> <a class="delete" href="' . JRoute::_('index.php?option=' . $this->option . '&task=delete&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_DELETE') . '</a>' . "\n";
 						$html .= ' <span>|</span> <a class="edit" href="' . JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_EDIT') . '</a>' . "\n";
@@ -240,7 +225,7 @@ if (count($this->rows) > 0)
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
 					$html .= '<p class="title"><a href="' . JRoute::_($href) . '">' . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
-					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, $dateFormat, $tz) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
+					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) 
 					{
 						$html .= ' <span>|</span> <a class="delete" href="' . JRoute::_('index.php?option=' . $this->option . '&task=delete&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_DELETE') . '</a>' . "\n";
@@ -285,7 +270,7 @@ if (count($this->rows) > 0)
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
 					$html .= '<p class="title"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id='.$row->id) . '">' . $this->escape(stripslashes($row->subject)) . '</a></p>' . "\n";
-					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, $dateFormat, $tz) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
+					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) 
 					{
 						$html .= ' <span>|</span> <a class="delete" href="' . JRoute::_('index.php?option=' . $this->option . '&task=delete&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_DELETE') . '</a>' . "\n";
@@ -351,7 +336,7 @@ if (count($this->rows) > 0)
 						$html .= '<p class="featured-img"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
 					}
 					$html .= '<p class="title"><a href="' . JRoute::_('index.php?option=com_members&id='.$id) . '">' . stripslashes($title) . '</a></p>' . "\n";
-					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, $dateFormat, $tz) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
+					$html .= '<p class="details">' . JText::_('COM_FEATURES_FEATURED') . ' ' . JHTML::_('date', $fh->featured, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('COM_FEATURES_IN') . ' ' . JText::_(strtoupper($this->option) . '_' . strtoupper($fh->tbl));
 					if ($this->config->get('access-manage-component')) 
 					{
 						$html .= ' <span>|</span> <a class="delete" href="' . JRoute::_('index.php?option=' . $this->option . '&task=delete&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_DELETE') . '</a>' . "\n";
@@ -366,15 +351,16 @@ if (count($this->rows) > 0)
 		echo $html;
 ?>
 					</ul>
-				</div><!-- / .container-block -->
 
-<?php
+				<?php
 				$this->pageNav->setAdditionalUrlParam('type', $this->filters['type']);
 				echo $this->pageNav->getListFooter();
-} else { ?>
+				?>
+<?php } else { ?>
 				<p class="warning"><?php echo JText::_('COM_FEATURES_NONE_FOUND'); ?></p>
 <?php } ?>
 				<div class="clearfix"></div>
+				</div><!-- / .container-block -->
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>

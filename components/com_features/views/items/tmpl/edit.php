@@ -44,7 +44,7 @@ $types = array(
 </div><!-- / #content-header -->
 
 <div id="content-header-extra">
-	<p><a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Back to Features History'); ?></a></p>
+	<p><a class="icon-prev main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_FEATURES_BACK'); ?></a></p>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
@@ -54,12 +54,12 @@ $types = array(
 		</div><!-- / .aside -->
 		<fieldset>
 			<legend><?php echo JText::_('COM_FEATURES_FEATURED_ITEM'); ?></legend>
-			
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="note" value="<?php echo $this->escape($this->row->note); ?>" />
-			
+
 			<label>
 				<?php echo JText::_('COM_FEATURES_OBJECT_ID'); ?>: <span class="required">*</span>
 				<input type="text" name="objectid" value="<?php echo $this->escape($this->row->objectid); ?>" />
@@ -67,14 +67,9 @@ $types = array(
 			<label>
 				<?php echo JText::_('COM_FEATURES_OBJECT_TYPE'); ?>: <span class="required">*</span>
 				<select name="tbl" id="tbl">
-<?php 
-				foreach ($types as $avalue => $alabel)
-				{
-?>
+				<?php foreach ($types as $avalue => $alabel) { ?>
 					<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->tbl || $alabel == $this->row->tbl) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
-<?php
-				}
-?>
+				<?php } ?>
 				</select>
 			</label>
 			<label>
@@ -82,7 +77,13 @@ $types = array(
 				<input type="text" name="featured" value="<?php echo $this->escape($this->row->featured); ?>" />
 			</label>
 		</fieldset>
-		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_FEATURES_SUBMIT'); ?>" /></p>
+		<p class="submit">
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_FEATURES_SUBMIT'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_FEATURES_CANCEL'); ?>
+			</a>
+		</p>
 	</form>
 </div><!-- / .main section -->
 

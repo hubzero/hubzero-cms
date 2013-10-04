@@ -32,54 +32,49 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'FeaturesHistory'
- * 
- * Long description (if any) ...
+ * Table class for archived featured content
  */
 class FeaturesHistory extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var intger
 	 */
-	var $id          = NULL;  // int(11)
+	var $id          = NULL;
 
 	/**
-	 * Description for 'featured'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $featured    = NULL;  // datetime(0000-00-00 00:00:00)
+	var $featured    = NULL;
 
 	/**
-	 * Description for 'objectid'
+	 * string(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $objectid    = NULL;  // string(100)
+	var $objectid    = NULL;
 
 	/**
-	 * Description for 'tbl'
+	 * string(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $tbl         = NULL;  // string(100)
+	var $tbl         = NULL;
 
 	/**
-	 * Description for 'note'
+	 * string(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $note        = NULL;  // string(100)
+	var $note        = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -88,19 +83,52 @@ class FeaturesHistory extends JTable
 	}
 
 	/**
-	 * Short description for 'loadActive'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
+	 * @return     boolean True if data is valid
+	 */
+	public function check()
+	{
+		$this->tbl = trim($this->tbl);
+		if ($this->tbl == '') 
+		{
+			$this->setError(JText::_('Please provide an Object type.'));
+		}
+
+		$this->objectid = intval($this->objectid);
+		if (!$this->objectid) 
+		{
+			$this->setError(JText::_('Please provide an Object ID.'));
+		}
+
+		if (!$this->getError())
+		{
+			return false;
+		}
+
+		$this->note = trim($this->note);
+
+		if (!$this->featured) 
+		{
+			$this->featured = date('Y-m-d H:i:s', time());
+		}
+
+		return true;
+	}
+
+	/**
+	 * Load a record by featured time/date and object type
 	 * 
-	 * @param      unknown $start Parameter description (if any) ...
-	 * @param      string $tbl Parameter description (if any) ...
-	 * @param      string $note Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $start Featured timestamp
+	 * @param      string $tbl   Object type
+	 * @param      string $note  Optional note value to filter further by
+	 * @return     boolean True on success, False on error
 	 */
 	public function loadActive($start, $tbl='', $note='')
 	{
-		$query  = "SELECT * FROM $this->_tbl WHERE featured='$start' AND tbl='$tbl'";
-		$query .= ($note) ? " AND note='$note'" : '';
+		$query  = "SELECT * FROM $this->_tbl WHERE `featured`=" . $this->_db->Quote($start) . " AND `tbl`=" . $this->_db->Quote($tbl);
+		$query .= ($note) ? " AND `note`=" . $this->_db->Quote($note) : '';
+
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -114,17 +142,16 @@ class FeaturesHistory extends JTable
 	}
 
 	/**
-	 * Short description for 'loadObject'
+	 * Load a record by object ID and object type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $objectid Parameter description (if any) ...
-	 * @param      string $tbl Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $objectid Object ID
+	 * @param      string  $tbl      Object type
+	 * @return     boolean True on success, False on error
 	 */
 	public function loadObject($objectid, $tbl='')
 	{
-		$query = "SELECT * FROM $this->_tbl WHERE objectid='$objectid' AND tbl='$tbl'";
+		$query = "SELECT * FROM $this->_tbl WHERE objectid=" . $this->_db->Quote(intval($objectid)) . " AND tbl=" . $this->_db->Quote((string) $tbl);
+
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -138,36 +165,32 @@ class FeaturesHistory extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $authorized Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array   $filters    Filters to apply to query
+	 * @param      boolean $authorized Is the user an admin?
+	 * @return     integer
 	 */
 	public function getCount($filters=array(), $authorized=false)
 	{
 		$query  = "SELECT COUNT(*)";
-		$query .= $this->buildQuery($filters, $authorized);
+		$query .= $this->_buildQuery($filters, $authorized);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get a list of records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $authorized Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array   $filters    Filters to apply to query
+	 * @param      boolean $authorized Is the user an admin?
+	 * @return     array
 	 */
 	public function getRecords($filters=array(), $authorized=false)
 	{
 		$query  = "SELECT *";
-		$query .= $this->buildQuery($filters, $authorized);
+		$query .= $this->_buildQuery($filters, $authorized);
 		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != '0') 
 		{
 			$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
@@ -178,24 +201,20 @@ class FeaturesHistory extends JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from an array of filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $authorized Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array   $filters    Filters to apply to query
+	 * @param      boolean $authorized Is the user an admin?
+	 * @return     string
 	 */
-	public function buildQuery($filters=array(), $authorized=false)
+	private function _buildQuery($filters=array(), $authorized=false)
 	{
-		$juser =& JFactory::getUser();
-
-		// build body of query
 		$query  = " FROM $this->_tbl AS f ";
+
+		$where = array();
 
 		if (isset($filters['type']) && $filters['type'] != '') 
 		{
-			$query .= " WHERE";
 			if ($filters['type'] == 'tools') 
 			{
 				$filters['type'] = 'resources';
@@ -205,33 +224,22 @@ class FeaturesHistory extends JTable
 			{
 				$filters['note'] = 'nontools';
 			}
-			$query .= " f.tbl='" . $filters['type'] . "' ";
+			$where[] = "f.`tbl`=" . $this->_db->Quote($filters['type']);
 		}
 		if (isset($filters['note']) && $filters['note'] != '') 
 		{
-			if (isset($filters['type']) && $filters['type'] != '') 
-			{
-				$query .= " AND";
-			} 
-			else 
-			{
-				$query .= " WHERE";
-			}
-			$query .= " f.note='" . $filters['note'] . "' ";
+			$where[] = "f.`note`=" . $this->_db->Quote($filters['note']);
 		}
 		if (!$authorized) 
 		{
-			$now = date('Y-m-d H:i:s');
-			if (isset($filters['note']) && $filters['note'] != '' && isset($filters['type']) && $filters['type'] != '') 
-			{
-				$query .= " AND";
-			} 
-			else 
-			{
-				$query .= " WHERE";
-			}
-			$query .= " f.featured <= '$now'";
+			$where[] = "f.featured <= " . $this->_db->Quote(date('Y-m-d H:i:s'));
 		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
 		$query .= " ORDER BY f.featured DESC, f.id ASC";
 
 		return $query;
