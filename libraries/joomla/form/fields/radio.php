@@ -49,6 +49,7 @@ class JFormFieldRadio extends JFormField
 		// Get the field options.
 		$options = $this->getOptions();
 
+		$html[] = '<ul>';
 		// Build the radio field output.
 		foreach ($options as $i => $option)
 		{
@@ -61,12 +62,15 @@ class JFormFieldRadio extends JFormField
 			// Initialize some JavaScript option attributes.
 			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
+			$html[] = '<li>';
 			$html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '"' . ' value="'
 				. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
 
 			$html[] = '<label for="' . $this->id . $i . '"' . $class . '>'
 				. JText::alt($option->text, preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)) . '</label>';
+			$html[] = '</li>';
 		}
+		$html[] = '</ul>';
 
 		// End the radio field output.
 		$html[] = '</fieldset>';
