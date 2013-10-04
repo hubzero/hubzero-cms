@@ -41,132 +41,137 @@ defined('_JEXEC') or die('Restricted access');
 		<ul>
 			<li>
 				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=tags&page=index'); ?>">
-					<?php echo JText::_('Need Help?'); ?>
+					<?php echo JText::_('COM_TAGS_HELP_PAGES'); ?>
 				</a>
 			</li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="two columns first">
-			<h3><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS'); ?></h3>
-			<p><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS_EXPLANATION'); ?></p>
+		<div class="grid">
+			<div class="col span6">
+				<h3><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS'); ?></h3>
+				<p><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS_EXPLANATION'); ?></p>
+			</div>
+			<div class="col span6 omega">
+				<h3><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK'); ?></h3>
+				<p><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK_EXPLANATION'); ?></p>
+			</div>
 		</div>
-		<div class="two columns second">
-			<h3><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK'); ?></h3>
-			<p><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK_EXPLANATION'); ?></p>
-		</div>
-		<div class="clear"></div>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 
 <div class="section">
-	
-	<div class="four columns first">
-		<h2><?php echo JText::_('COM_TAGS_FIND_CONTENT_WITH_TAG'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=view'); ?>" method="get" class="search">
-				<fieldset>
-					<p>
-						<label for="actags">Enter tags:</label>
-						<?php 
-						JPluginHelper::importPlugin('hubzero');
-						$dispatcher =& JDispatcher::getInstance();
-						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags','','')));
 
-						if (count($tf) > 0) {
-							echo $tf[0];
-						} else { ?>
-							<input type="text" name="tag" id="actags" value="" />
-						<?php } ?>
-						<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
-					</p>
-				</fieldset>
-			</form>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div>
-				<p>Using more than one tag will perform an "AND" operation. For example, if you enter "circuits" and "devices", it will find all content tagged with <strong>both</strong> tags.</p>
-			</div><!-- / .browse -->
-		</div><!-- / .two columns second -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+	<div class="grid">
+		<div class="col span3">
+			<h2><?php echo JText::_('COM_TAGS_FIND_CONTENT_WITH_TAG'); ?></h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="grid">
+				<div class="col span6">
+					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=view'); ?>" method="get" class="search">
+						<fieldset>
+							<p>
+								<label for="actags"><?php echo JText::_('COM_TAGS_SEARCH_ENTER_TAGS'); ?></label>
+								<?php 
+								JPluginHelper::importPlugin('hubzero');
+								$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags','','')));
 
-	<div class="four columns first">
-		<h2><?php echo JText::_('COM_TAGS_RECENTLY_USED'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="block">
-		<?php
-		$cloud = $this->cloud->render('html', array(
-			'limit'    => 25,
-			'admin'    => 0,
-			'sort'     => 'taggedon',
-			'sort_Dir' => 'DESC',
-			'by'       => 'user'
-		), true);
-		if ($cloud)
-		{
-			echo $cloud;
-		}
-		else 
-		{
-			echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
-		}
-		?>
-		</div><!-- / .block -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+								echo (count($tf) > 0) ? implode("\n", $tf) : '<input type="text" name="tag" id="actags" value="" />';
+								?>
+								<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
+							</p>
+						</fieldset>
+					</form>
+				</div><!-- / .col span6 -->
+				<div class="col span6 omega">
+					<div>
+						<p><?php echo JText::_('COM_TAGS_SEARCH_EXPLANATION'); ?></p>
+					</div><!-- / .browse -->
+				</div><!-- / .col span6 omega -->
+			</div><!-- / .grid -->
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
 
-	<div class="four columns first">
-		<h2><?php echo JText::_('COM_TAGS_TOP_100'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="block">
-		<?php
-		$cloud = $this->cloud->render('html', array(
-			'limit'    => 100,
-			'admin'    => 0,
-			'sort'     => 'total',
-			'sort_Dir' => 'DESC',
-			'by'       => 'user'
-		), true);
-		if ($cloud)
-		{
-			echo $cloud;
-		}
-		else 
-		{
-			echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
-		}
-		?>
-		</div><!-- / .block -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+	<div class="grid">
+		<div class="col span3">
+			<h2><?php echo JText::_('COM_TAGS_RECENTLY_USED'); ?></h2>
+		</div><!-- / .four columns first -->
+		<div class="col span9 omega">
+			<div class="block">
+			<?php
+			$cloud = $this->cloud->render('html', array(
+				'limit'    => 25,
+				'admin'    => 0,
+				'sort'     => 'taggedon',
+				'sort_Dir' => 'DESC',
+				'by'       => 'user'
+			), true);
+			if ($cloud)
+			{
+				echo $cloud;
+			}
+			else 
+			{
+				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
+			}
+			?>
+			</div><!-- / .block -->
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
 
-	<div class="four columns first">
-		<h2><?php echo JText::_('COM_TAGS_FIND_A_TAG'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
-				<fieldset>
-					<p>
-						<label for="tsearch">Keyword or phrase:</label>
-						<input type="text" name="search" id="tsearch" value="" />
-						<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
-					</p>
-				</fieldset>
-			</form>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
-			</div><!-- / .browse -->
-		</div><!-- / .two columns second -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+	<div class="grid">
+		<div class="col span3">
+			<h2><?php echo JText::_('COM_TAGS_TOP_100'); ?></h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="block">
+			<?php
+			$cloud = $this->cloud->render('html', array(
+				'limit'    => 100,
+				'admin'    => 0,
+				'sort'     => 'total',
+				'sort_Dir' => 'DESC',
+				'by'       => 'user'
+			), true);
+			if ($cloud)
+			{
+				echo $cloud;
+			}
+			else 
+			{
+				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
+			}
+			?>
+			</div><!-- / .block -->
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
+
+	<div class="grid">
+		<div class="col span3">
+			<h2><?php echo JText::_('COM_TAGS_FIND_A_TAG'); ?></h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="grid">
+				<div class="col span6">
+					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
+						<fieldset>
+							<p>
+								<label for="tsearch"><?php echo JText::_('CON_TAGS_FIND_LABEL'); ?></label>
+								<input type="text" name="search" id="tsearch" value="" />
+								<input type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
+							</p>
+						</fieldset>
+					</form>
+				</div><!-- / .col span6 -->
+				<div class="col span6 omega">
+					<div class="browse">
+						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_TAGS_BROWSE_LIST'); ?></a></p>
+					</div><!-- / .browse -->
+				</div><!-- / .col span6 omega -->
+			</div><!-- / .grid -->
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
 
 </div><!-- / .section -->

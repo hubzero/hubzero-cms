@@ -58,25 +58,25 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<legend><?php echo JText::_('COM_TAGS_DETAILS'); ?></legend>
 
 			<label for="field-raw_tag">
-				<?php echo JText::_('COM_TAGS_TAG'); ?>
+				<?php echo JText::_('COM_TAGS_FIELD_TAG'); ?>
 				<input type="text" name="fields[raw_tag]" id="field-raw_tag" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" size="38" />
 			</label>
 
 			<label for="field-admin">
 				<input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1" /> 
-				<strong><?php echo JText::_('COM_TAGS_ADMINISTRATION'); ?></strong>
-				<span class="hint">(<?php echo JText::_('COM_TAGS_ADMINISTRATION_EXPLANATION'); ?>)</span>
+				<strong><?php echo JText::_('COM_TAGS_FIELD_ADMINISTRATION'); ?></strong>
+				<span class="hint">(<?php echo JText::_('COM_TAGS_FIELD_ADMINISTRATION_EXPLANATION'); ?>)</span>
 			</label>
 
 			<label for="field-description">
-				<?php echo JText::_('COM_TAGS_DESCRIPTION'); ?>
+				<?php echo JText::_('COM_TAGS_FIELD_DESCRIPTION'); ?>
 				<textarea name="fields[description]" id="field-description" rows="7" cols="35"><?php echo $this->escape(stripslashes($this->tag->get('description'))); ?></textarea>
 			</label>
 
 			<label for="field-substitutions">
-				<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
+				<?php echo JText::_('COM_TAGS_FIELD_ALIAS'); ?>
 				<textarea name="fields[substitutions]" id="field-substitutions" rows="5" cols="35"><?php echo $this->escape(stripslashes($this->tag->substitutes('string'))); ?></textarea>
-				<span class="hint"><?php echo JText::_('Enter a comma-separated list of tags you wish this tag to be substituted for. For example: If you enter "h20, aqua" for the tag "water", any time someone enters "h20" or "aqua" it will result in a tag of "water".'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_TAGS_FIELD_ALIAS_HINT'); ?></span>
 			</label>
 
 			<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->get('tag'); ?>" />
@@ -90,6 +90,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 			<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		</fieldset>
-		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_TAGS_SUBMIT'); ?>" /></p>
+		<p class="submit">
+			<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_TAGS_SUBMIT'); ?>" />
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">
+				<?php echo JText::_('COM_TAGS_CANCEL'); ?>
+			</a>
+		</p>
 	</form>
 </div><!-- / .main section -->

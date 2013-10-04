@@ -46,11 +46,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); //.'&tag='.$this->tagstring); ?>" method="get">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
 		
 	<div class="aside">
 		<div class="container">
-		<h3><?php echo JText::_('Categories'); ?></h3>
+		<h3><?php echo JText::_('COM_TAGS_CATEGORIES'); ?></h3>
 		<?php
 		// Add the "all" category
 		$all = array(
@@ -68,10 +68,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		foreach ($cats as $cat)
 		{
 			// Only show categories that have returned search results
-			if ($cat['total'] > 0) {
+			if ($cat['total'] > 0) 
+			{
 				// If we have a specific category, prepend it to the search term
 				$blob = '';
-				if ($cat['category']) {
+				if ($cat['category']) 
+				{
 					$blob = $cat['category'];
 				}
 
@@ -85,7 +87,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				// Is this the active category?
 				$a = '';
-				if ($cat['category'] == $this->active) {
+				if ($cat['category'] == $this->active) 
+				{
 					$a = ' class="active"';
 
 					$app =& JFactory::getApplication();
@@ -96,23 +99,27 @@ defined('_JEXEC') or die( 'Restricted access' );
 				// Build the HTML
 				$l = "\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 				// Are there sub-categories?
-				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
+				if (isset($cat['_sub']) && is_array($cat['_sub'])) 
+				{
 					// An array for storing the HTML we make
 					$k = array();
 					// Loop through each sub-category
 					foreach ($cat['_sub'] as $subcat)
 					{
 						// Only show sub-categories that returned search results
-						if ($subcat['total'] > 0) {
+						if ($subcat['total'] > 0) 
+						{
 							// If we have a specific category, prepend it to the search term
 							$blob = '';
-							if ($subcat['category']) {
+							if ($subcat['category']) 
+							{
 								$blob = $subcat['category'];
 							}
 
 							// Is this the active category?
 							$a = '';
-							if ($subcat['category'] == $this->active) {
+							if ($subcat['category'] == $this->active) 
+							{
 								$a = ' class="active"';
 
 								$app =& JFactory::getApplication();
@@ -130,7 +137,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 					// Do we actually have any links?
 					// NOTE: this method prevents returning empty list tags "<ul></ul>"
-					if (count($k) > 0) {
+					if (count($k) > 0) 
+					{
 						$l .= "\t\t".'<ul>'."\n";
 						$l .= implode( "\n", $k );
 						$l .= "\t\t".'</ul>'."\n";
@@ -142,12 +150,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		// Do we actually have any links?
 		// NOTE: this method prevents returning empty list tags "<ul></ul>"
-		if (count($links) > 0) {
+		if (count($links) > 0) 
+		{
 			// Yes - output the necessary HTML
 			$html  = '<ul>'."\n";
 			$html .= implode( "\n", $links );
 			$html .= '</ul>'."\n";
-		} else {
+		} 
+		else 
+		{
 			// No - nothing to output
 			$html = '';
 		}
@@ -156,37 +167,32 @@ defined('_JEXEC') or die( 'Restricted access' );
 		echo $html;
 		?>
 			<p class="info">
-				<strong>Note:</strong>  <?php echo JText::_('Results do not include pending, unpublished, and some private items.'); ?>
+				<?php echo JText::_('COM_TAGS_RESULTS_NOTE'); ?>
 			</p>
 		</div>
 	</div><!-- / .aside -->
 	<div class="subject">
-		
+
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="Search" />
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-<?php
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher =& JDispatcher::getInstance();
-			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tag', 'actags','',$this->search)) );
-?>
+				<?php
+				JPluginHelper::importPlugin('hubzero');
+				$tf = JDispatcher::getInstance()->trigger( 'onGetMultiEntry', array(array('tags', 'tag', 'actags','',$this->search)) );
+				?>
 				<label for="actags">
 					<?php echo JText::_('COM_TAGS_SEARCH_WITH_TAGS'); ?>
 				</label>
-<?php if (count($tf) > 0) {
-						echo $tf[0];
-} else { ?>
+				<?php if (count($tf) > 0) {
+					echo $tf[0];
+				} else { ?>
 				<input type="text" name="tag" id="actags" value="<?php echo $this->escape($this->search); ?>" />
-<?php } ?>
+				<?php } ?>
 			</fieldset>
 		</div><!-- / .container -->
-		
-		<?php
-		if (count($this->tags) == 1) {
-			$tagobj = $this->tags[0];
-			if ($tagobj->get('description') != '') {
-				//$tagobj->description = Hubzero_View_Helper_Html::xhtml($tagobj->description);
-		?>
+
+		<?php foreach ($this->tags as $tagobj) { ?>
+			<?php if ($tagobj->get('description') != '') { ?>
 		<div class="container">
 			<div class="container-block">
 				<h4><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h4>
@@ -196,10 +202,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</div>
 			</div>
 		</div><!-- / .container -->
-		<?php
-			}
-		}
-		?>
+			<?php } ?>
+		<?php } ?>
+
 		<div class="container">
 			<ul class="entries-menu">
 				<li>
@@ -209,8 +214,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$sef = str_replace(' ',',',$sef);
 						$sef = str_replace('+',',',$sef);
 						echo $sef;
-					?>" title="Sort by title">
-						&darr; <?php echo JText::_('COM_TAGS_OPT_TITLE'); ?>
+					?>" title="COM_TAGS_OPT_SORT_BY_TITLE">
+						<?php echo JText::_('COM_TAGS_OPT_TITLE'); ?>
 					</a>
 				</li>
 				<li>
@@ -220,11 +225,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$sef = str_replace(' ',',',$sef);
 						$sef = str_replace('+',',',$sef);
 						echo $sef;
-					?>" title="Sort by newest to oldest">
-						&darr; <?php echo JText::_('COM_TAGS_OPT_DATE'); ?>
+					?>" title="COM_TAGS_OPT_SORT_BY_DATE">
+						<?php echo JText::_('COM_TAGS_OPT_DATE'); ?>
 					</a>
 				</li>
-<?php /*				<li><a<?php echo ($this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li> */ ?>
 			</ul>
 
 			<div class="container-block">
@@ -335,7 +339,7 @@ foreach ($this->results as $category)
 		// Build the category HTML
 		$html .= '<h3 id="rel-'.$divid.'">';
 		if (!$dopaging) {
-			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$cats[$k]['category']).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
+			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$cats[$k]['category']).'" title="'.JText::sprintf('COM_TAGS_VIEW_ALL', $name).'">';
 		}
 		$html .= $this->escape(stripslashes($name)).' <span>('.$num.$total.')</span> ';
 		if (!$dopaging) {
@@ -410,22 +414,22 @@ if (!$foundresults) {
 echo $html;
 ?>
 			</div><!-- / .container-block -->
-<?php
-if ($dopaging) {
-	jimport('joomla.html.pagination');
-	$pageNav = new JPagination(
-		$this->total, 
-		$this->filters['start'], 
-		$this->filters['limit']
-	);
+			<?php
+			if ($dopaging) {
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total, 
+					$this->filters['start'], 
+					$this->filters['limit']
+				);
 
-	$pageNav->setAdditionalUrlParam('task', 'view');
-	$pageNav->setAdditionalUrlParam('tag', $this->tagstring);
-	$pageNav->setAdditionalUrlParam('active', $this->active);
-	$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-	echo $pageNav->getListFooter() . '<div class="clearfix"></div>';
-}
-?>
+				$pageNav->setAdditionalUrlParam('task', 'view');
+				$pageNav->setAdditionalUrlParam('tag', $this->tagstring);
+				$pageNav->setAdditionalUrlParam('active', $this->active);
+				$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+				echo $pageNav->getListFooter() . '<div class="clearfix"></div>';
+			}
+			?>
 		</div><!-- / .container -->
 	</div><!-- / .subject -->
 	<div class="clear"></div>

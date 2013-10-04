@@ -58,23 +58,23 @@ $this->filters['sort'] = '';
 				</p>
 			<?php } else { ?>
 				<p>
-					Here you will find a list of all tags currently in use. Click a tag to see the items tagged with it.
+					<?php echo JText::_('COM_TAGS_BROWSE_EXPLANATION'); ?>
 				</p>
 			<?php } ?>
 				<p class="info">
-					<strong>Note:</strong> <?php echo JText::_('# tagged includes all usage (pending, unpublished, and private items).'); ?>
+					<?php echo JText::_('COM_TAGS_BROWSE_TAGGED_NOTE'); ?>
 				</p>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
 
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="Search" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
 					<label for="entry-search-text">
 						<?php echo JText::_('COM_TAGS_SEARCH_TAGS'); ?>
 					</label>
-					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter tag'); ?>" />
+					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TAGS_SEARCH_ENTER_TAGS'); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
@@ -85,8 +85,8 @@ $this->filters['sort'] = '';
 							$cls = ($this->filters['sortby'] == 'total') ? ' class="active"' : '';
 							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=total&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0)); 
 						?>
-						<a <?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('Sort by popularity'); ?>">
-							&darr; <?php echo JText::_('Popular'); ?>
+						<a <?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
+							<?php echo JText::_('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
 						</a>
 					</li>
 					<li> 
@@ -94,8 +94,8 @@ $this->filters['sort'] = '';
 							$cls = ($this->filters['sortby'] == '' || $this->filters['sortby'] == 'raw_tag') ? ' class="active"' : '';
 							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=raw_tag&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
 						?>
-						<a<?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('Sort by title'); ?>">
-							&darr; <?php echo JText::_('Alphabetically'); ?>
+						<a<?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('COM_TAGS_BROWSE_SORT_ALPHA_TITLE'); ?>">
+							<?php echo JText::_('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
 						</a>
 					</li>
 				</ul>
@@ -118,10 +118,11 @@ $this->filters['sort'] = '';
 							<th>
 								<?php
 								if ($this->filters['search'] != '') {
-									echo 'Search for "' . $this->escape($this->filters['search']) . '" in ';
+									echo JText::sprintf('COM_TAGS_BROWSE_SEARCH_FOR_IN', $this->escape($this->filters['search']), JText::_('COM_TAGS'));
+								} else {
+									echo JText::_('COM_TAGS');
 								}
 								?>
-								<?php echo JText::_('COM_TAGS'); ?>
 								<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
 							</th>
 						<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
