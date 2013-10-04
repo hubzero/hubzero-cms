@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+		<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_KB_MAIN'); ?></a>
 	</p>
 </div>
 <div class="main section">
@@ -45,11 +45,11 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 	<div class="aside">
 		<div class="container">
-			<h3><?php echo JText::_('Categories'); ?></h3>
+			<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
 			<ul class="categories">
 				<li>
 					<a <?php if ($this->get('catid') == 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
-						<?php echo JText::_('All Articles'); ?>
+						<?php echo JText::_('COM_KB_ALL_ARTICLES'); ?>
 					</a>
 				</li>
 			<?php foreach ($this->categories as $row) { ?>
@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 				</div>
 			<?php if ($tags = $this->article->tags('cloud')) { ?>
 				<div class="entry-tags">
-					<p><?php echo JText::_('Tags:'); ?></p>
+					<p><?php echo JText::_('COM_KB_TAGS'); ?></p>
 					<?php echo $tags; ?>
 				</div><!-- / .entry-tags -->
 			<?php } ?>
@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 				</p>
 
 				<p class="entry-details">
-					<?php echo JText::_('Last updated'); ?> 
+					<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?> 
 					<span class="entry-date-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
 					<span class="entry-time"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('time'); ?></time></span> 
 					<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span> 
@@ -119,10 +119,10 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->article->param('allow_comments')) { ?>
 <div class="below section" id="comments">
 	<h3 class="comments-title">
-		<?php echo JText::_('Comments on this entry'); ?>
+		<?php echo JText::_('COM_KB_COMMENTS_ON_ENTRY'); ?>
 		<?php if ($this->article->param('feeds_enabled') && $this->article->comments('count') > 0) { ?>
-			<a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo JText::_('Comments Feed'); ?>">
-				<?php echo JText::_('Feed'); ?>
+			<a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo JText::_('COM_KB_COMMENT_FEED'); ?>">
+				<?php echo JText::_('COM_KB_FEED'); ?>
 			</a>
 		<?php } ?>
 	</h3>
@@ -130,7 +130,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="aside">
 	<?php if ($this->article->commentsOpen()) { ?>
 		<p>
-			<a class="icon-add add btn" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
+			<a class="icon-add add btn" href="#post-comment"><?php echo JText::_('COM_KB_ADD_COMMENT'); ?></a>
 		</p>
 	<?php } ?>
 	</div>
@@ -157,12 +157,12 @@ defined('_JEXEC') or die('Restricted access');
 		{
 		?>
 		<p class="no-comments">
-			<?php echo JText::_('There are no comments on this entry.'); ?>
+			<?php echo JText::_('COM_KB_NO_COMMENTS'); ?>
 		</p>
 		<?php } ?>
 
 		<h3 class="post-comment-title">
-			<?php echo JText::_('Post a comment'); ?>
+			<?php echo JText::_('COM_KB_POST_COMMENT'); ?>
 		</h3>
 		<form method="post" action="<?php echo JRoute::_($this->article->link()); ?>" id="commentform">
 			<p class="comment-member-photo">
@@ -205,7 +205,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<?php if ($this->article->commentsOpen()) { ?>
 				<label for="commentcontent">
-					Your <?php echo ($this->replyto->get('id')) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('required'); ?></span>
+					<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
 				<?php
 				if (!$this->juser->get('guest')) {
 					ximport('Hubzero_Wiki_Editor');
@@ -214,7 +214,7 @@ defined('_JEXEC') or die('Restricted access');
 					$rtrn = JRoute::_($this->article->link() . '#post-comment');
 					?>
 					<p class="warning">
-						You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
+						<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', base64_encode($rtrn)); ?>
 					</p>
 					<?php
 				}
@@ -224,16 +224,16 @@ defined('_JEXEC') or die('Restricted access');
 				<?php if (!$this->juser->get('guest')) { ?>
 				<label id="comment-anonymous-label" for="comment-anonymous">
 					<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-					<?php echo JText::_('Post anonymously'); ?>
+					<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
 				</label>
 
 				<p class="submit">
-					<input type="submit" name="submit" value="<?php echo JText::_('Submit'); ?>" />
+					<input type="submit" name="submit" value="<?php echo JText::_('COM_KB_SUBMIT'); ?>" />
 				</p>
 				<?php } ?>
 			<?php } else { ?>
 				<p class="warning">
-					<?php echo JText::_('Comments are closed on this entry.'); ?>
+					<?php echo JText::_('COM_KB_COMMENTS_CLOSED'); ?>
 				</p>
 			<?php } ?>
 				<input type="hidden" name="comment[id]" value="0" />
@@ -248,10 +248,7 @@ defined('_JEXEC') or die('Restricted access');
 
 				<div class="sidenote">
 					<p>
-						<strong><?php echo JText::_('Please keep comments relevant to this entry.'); ?></strong>
-					</p>
-					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
+						<strong><?php echo JText::_('COM_KB_COMMENT_KEEP_RELEVANT'); ?></strong>
 					</p>
 				</div>
 			</fieldset>

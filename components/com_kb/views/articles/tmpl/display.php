@@ -41,25 +41,25 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="aside">
 	<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
 		<div class="container">
-			<h3>Community Help</h3>
+			<h3><?php echo JText::_('COM_KB_COMMUNITY'); ?></h3>
 			<p>
-				Can't find something in the Knowledge Base? Try the community <a href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">Questions &amp; Answers</a> and see if it has already been addressed by the community.
+				<?php echo JText::_('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo JText::sprintf('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('COM_ANSWERS') . '</a>'); ?>
 			</p>
 		</div><!-- / .container -->
 	<?php } ?>
 	<?php if (JComponentHelper::isEnabled('com_wishlist')) { ?>
 		<div class="container">
-			<h3>Feature Requests</h3>
+			<h3><?php echo JText::_('COM_KB_FEATURE_REQUEST'); ?></h3>
 			<p>
-				Have an idea or feature request? <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>">Let us know!</a>
+				<?php echo JText::_('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_KB_FEATURE_TELL_US'); ?></a>
 			</p>
 		</div><!-- / .container -->
 	<?php } ?>
 	<?php if (JComponentHelper::isEnabled('com_support')) { ?>
 		<div class="container">
-			<h3>Trouble Report</h3>
+			<h3><?php echo JText::_('COM_KB_TROUBLE_REPORT'); ?></h3>
 			<p>
-				Found a bug? <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>">Let us know!</a>
+				<?php echo JText::_('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_KB_TROUBLE_TELL_US'); ?></a>
 			</p>
 		</div><!-- / .container -->
 	<?php } ?>
@@ -67,11 +67,11 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="order" value="recent" />
 					<input type="hidden" name="task" value="category" />
 					<input type="hidden" name="section" value="all" />
@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 						<div class="col span-half">
 							<h4>
 								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
-									<?php echo JText::_('Most Popular Articles'); ?> <span class="more">&raquo;</span>
+									<?php echo JText::_('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
 								</a>
 							</h4>
 						<?php 
@@ -103,13 +103,13 @@ defined('_JEXEC') or die('Restricted access');
 							<?php } ?>
 							</ul>
 						<?php } else { ?>
-							<p><?php echo JText::_('No articles found.'); ?></p>
+							<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
 						<?php } ?>
 						</div><!-- / .col span-half -->
 						<div class="col span-half omega">
 							<h4>
 								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
-									<?php echo JText::_('Most Recent Articles'); ?> <span class="more">&raquo;</span>
+									<?php echo JText::_('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
 								</a>
 							</h4>
 						<?php 
@@ -125,12 +125,12 @@ defined('_JEXEC') or die('Restricted access');
 							<?php } ?>
 							</ul>
 						<?php } else { ?>
-							<p><?php echo JText::_('No articles found.'); ?></p>
+							<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
 						<?php } ?>
 						</div><!-- / .col span-half -->
 					</div><!-- / .grid -->
 
-					<h3><?php echo JText::_('Categories'); ?></h3>
+					<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
 					<div class="grid">
 					<?php 
 						$i = 0;
@@ -174,7 +174,7 @@ defined('_JEXEC') or die('Restricted access');
 							<?php } ?>
 							</ul>
 						<?php } else { ?>
-							<p><?php echo JText::_('No articles found.'); ?></p>
+							<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
 						<?php } ?>
 						</div><!-- / .two columns <?php echo $cls; ?> -->
 						<?php //echo ($i >= 2) ? '<div class="clearfix"></div>' : ''; ?>

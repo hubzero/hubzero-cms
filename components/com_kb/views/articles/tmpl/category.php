@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+		<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_KB_MAIN'); ?></a>
 	</p>
 </div>
 <div class="main section">
@@ -45,11 +45,11 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 	<div class="aside">
 		<div class="container">
-			<h3><?php echo JText::_('Categories'); ?></h3>
+			<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
 			<ul class="categories">
 				<li>
 					<a<?php if ($this->catid <= 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
-						<?php echo JText::_('All Articles'); ?>
+						<?php echo JText::_('COM_KB_ALL_ARTICLES'); ?>
 					</a>
 				</li>
 			<?php foreach ($this->categories as $row) { ?>
@@ -77,11 +77,11 @@ defined('_JEXEC') or die('Restricted access');
 		<form action="<?php echo JRoute::_($this->category->link()); ?>" method="post">
 
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="order" value="<?php echo $this->escape($this->filters['order']); ?>" />
 					<input type="hidden" name="section" value="<?php echo $this->escape($this->category->get('alias')); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -91,13 +91,13 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="container">
 				<ul class="entries-menu">
 					<li>
-						<a<?php echo ($this->filters['order'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&order=popularity'); ?>" title="<?php echo JText::_('Sort by most liked to least liked'); ?>">
-							<?php echo JText::_('&darr; Popular'); ?>
+						<a<?php echo ($this->filters['order'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&order=popularity'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_POPULAR'); ?>">
+							<?php echo JText::_('COM_KB_SORT_POPULAR'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['order'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&order=recent'); ?>" title="<?php echo JText::_('Sort by newest to oldest'); ?>">
-							<?php echo JText::_('&darr; Recent'); ?>
+						<a<?php echo ($this->filters['order'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&order=recent'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_RECENT'); ?>">
+							<?php echo JText::_('COM_KB_SORT_RECENT'); ?>
 						</a>
 					</li>
 				</ul>
@@ -109,11 +109,11 @@ defined('_JEXEC') or die('Restricted access');
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 						if ($this->filters['search'] != '') 
 						{
-							echo 'Search for "' . $this->filters['search'] . '" in ';
-						}
-						?>
-						<?php echo $this->escape(stripslashes($this->category->get('title'))); ?> 
-						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
+							echo JText::sprintf('COM_KB_SEARCH_FOR_IN', $this->filters['search'], $this->escape(stripslashes($this->category->get('title'))));
+						} else {
+							echo $this->escape(stripslashes($this->category->get('title'))); 
+						} ?> 
+						<span>(<?php echo JText::sprintf('COM_KB_NUM_OF_TOTAL', $s . '-' . $e, $this->total); ?>)</span>
 					</caption>
 					<tbody>
 					<?php foreach ($this->articles as $row) { ?>
@@ -124,8 +124,8 @@ defined('_JEXEC') or die('Restricted access');
 							<td>
 								<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a><br />
 								<span class="entry-details">
-									<?php if ($this->catid <= 0) { echo JText::sprintf(' in "<strong>%s</strong>", ', $this->escape(stripslashes($row->get('ctitle')))); } ?>
-									<?php echo JText::_('Last updated'); ?> 
+									<?php if ($this->catid <= 0) { echo JText::sprintf('COM_KB_IN_CATEGORY', $this->escape(stripslashes($row->get('ctitle')))); } ?>
+									<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?> 
 									<span class="entry-time-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
 									<span class="entry-time"><?php echo $row->modified('time'); ?></span> 
 									<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span>
