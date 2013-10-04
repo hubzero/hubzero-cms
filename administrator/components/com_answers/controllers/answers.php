@@ -200,6 +200,16 @@ class AnswersControllerAnswers extends Hubzero_Controller
 	}
 
 	/**
+	 * Save a question and fall back to edit form
+	 * 
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Save a response
 	 * 
 	 * @return     void
@@ -233,11 +243,16 @@ class AnswersControllerAnswers extends Hubzero_Controller
 			return;
 		}
 
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Answer Successfully Saved')
-		);
+		if ($redirect)
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Answer Successfully Saved')
+			);
+		}
+
+		$this->editTask($row);
 	}
 
 	/**

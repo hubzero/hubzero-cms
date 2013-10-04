@@ -30,11 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$canDo = AnswersHelper::getActions('question');
+
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
 JToolBarHelper::title(JText::_('Answers Manager') . ': ' . JText::_('Question') . ': ' . $text, 'answers.png');
-JToolBarHelper::spacer();
-JToolBarHelper::save();
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::apply();
+	JToolBarHelper::save();
+	JToolBarHelper::spacer();
+}
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('question.html', true);
@@ -64,36 +70,42 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-50 fltlft">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span>Details</span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="anonymous">Anonymous:</label></td>
-						<td><input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /> Hide your name</td>
+						<td>
+							<input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /> <label for="anonymous">Anonymous</label>
+						</td>
+						<td>
+							<input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> /> <label for="email">Notify of responses</label>
+						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="email">Notify:</label></td>
-						<td><input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> /> Send e-mail when someone posts a response</td>
+						<td colspan="2">
+							<label for="q_subject">Subject: <span class="required">*</span></label><br />
+							<input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" />
+						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="q_subject">Subject: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" /></td>
+						<td colspan="2">
+							<label for="question[question]">Question:</label><br />
+							<?php echo $editor->display('question[question]', stripslashes($this->row->get('question')), '100%', 'auto', '50', '15'); ?>
+						</td>
 					</tr>
 					<tr>
-						<td class="key" style="vertical-align:top;"><label for="question[question]">Question:</label></td>
-						<td><?php echo $editor->display('question[question]', stripslashes($this->row->get('question')), '360px', '200px', '50', '10'); ?></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="q_tags">Tags: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->escape(stripslashes($this->row->tags('string'))); ?>" /></td>
+						<td colspan="2">
+							<label for="q_tags">Tags: <span class="required">*</span></label><br />
+							<textarea name="question[tags]" id="q_tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-50 fltrt">
+	<div class="col width-40 fltrt">
 		<table class="meta" summary="Metadata for this entry">
 			<tbody>
 				<tr>

@@ -201,11 +201,21 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	}
 
 	/**
+	 * Save a question and fall back to edit form
+	 * 
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Save a question
 	 * 
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -245,11 +255,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Add the tag(s)
 		$row->tag($fields['tags'], $this->juser->get('id'), 1);
 
-		// Redirect back to the full questions list
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Question Successfully Saved')
-		);
+		if ($redirect)
+		{
+			// Redirect back to the full questions list
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Question Successfully Saved')
+			);
+		}
+
+		$this->editTask($row);
 	}
 
 	/**

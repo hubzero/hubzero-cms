@@ -238,6 +238,10 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		{
 			$filters['filterby'] = 'rejected';
 		}
+		if (!isset($filters['replies']))
+		{
+			$filters['replies'] = true;
+		}
 		$filters['sort']     = 'created';
 		$filters['sort_Dir'] = 'DESC';
 
@@ -255,7 +259,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 					foreach ($c as $com)
 					{
 						$total++;
-						if ($com->replies()) 
+						if ($filters['replies'] && $com->replies()->total()) 
 						{
 							foreach ($com->replies() as $rep)
 							{

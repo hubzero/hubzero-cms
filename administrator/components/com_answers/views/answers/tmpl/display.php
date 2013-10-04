@@ -74,12 +74,15 @@ function submitbutton(pressbutton) {
 	<div class="clr"></div>
 
 	<table class="adminlist">
-		<caption>
-			<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->filters['qid']; ?>" title="Edit this question">
-				<?php echo $this->escape(stripslashes($this->question->get('subject'))); ?>
-			</a>
-		</caption>
 		<thead>
+			<tr>
+				<th colspan="6">
+					#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> - 
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->filters['qid']; ?>" title="Edit this question">
+						<?php echo $this->escape(stripslashes($this->question->get('subject'))); ?>
+					</a>
+				</th>
+			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Answer', 'answer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -143,8 +146,8 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 <?php } ?>
 				</td>
 				<td>
-					<span class="vote like">+<?php echo $row->get('helpful', 0); ?></span> 
-					<span class="vote dislike">-<?php echo $row->get('nothelpful', 0); ?></span>
+					<span class="vote like" style="color:green;">+<?php echo $row->get('helpful', 0); ?></span> 
+					<span class="vote dislike" style="color:red;">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
 <?php

@@ -157,7 +157,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<br /><span>(anonymous)</span>
 				<?php } ?>
 				</td>
-			<?php if ($row->comments('count', array('filterby' => 'all')) > 0) { ?>
+			<?php if ($row->comments('count', array('filterby' => 'all', 'replies' => false)) > 0) { ?>
 				<td style="white-space: nowrap;">
 					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=answers&amp;qid=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('View the answers for this Question'); ?>">
 						<span><?php echo JText::sprintf('%s response(s)', $row->comments('count')); ?></span>

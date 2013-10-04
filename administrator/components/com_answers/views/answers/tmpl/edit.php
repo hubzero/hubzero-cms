@@ -37,7 +37,9 @@ $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 JToolBarHelper::title(JText::_('Answers Manager') . ': ' . JText::_('Response') . ': ' . $text, 'answers.png');
 if ($canDo->get('core.edit')) 
 {
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 
@@ -73,28 +75,34 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-50 fltlft">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span>Details</span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="anonymous">Anonymous:</label></td>
-						<td><input type="checkbox" name="answer[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /></td>
+						<td>
+							<input type="checkbox" name="answer[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> />
+							<label for="anonymous">Anonymous:</label>
+						</td>
 					</tr>
 					<tr>
-						<td class="key">Question:</td>
-						<td><?php echo $this->escape(stripslashes($this->question->get('subject'))); ?></td>
+						<td>
+							<span>Question:</span><br />
+							<?php echo $this->escape(stripslashes($this->question->get('subject'))); ?>
+						</td>
 					</tr>
 					<tr>
-						<td class="key"><label>Answer</label></td>
-						<td><?php echo $editor->display('answer[answer]', stripslashes($this->row->get('answer')), '360px', '200px', '50', '10'); ?></td>
+						<td>
+							<label>Answer:</label><br />
+							<?php echo $editor->display('answer[answer]', stripslashes($this->row->get('answer')), '100%', 'auto', '50', '15'); ?>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-50 fltrt">
+	<div class="col width-40 fltrt">
 		<table class="meta" summary="Metadata for this entry">
 			<tbody>
 				<tr>
@@ -132,7 +140,8 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key">Helpful:</td>
 						<td>
-							+<?php echo $this->row->get('helpful'); ?> -<?php echo $this->row->get('nothelpful'); ?>
+							<span style="color:green;">+<?php echo $this->row->get('helpful'); ?></span> 
+							<span style="color:red;">-<?php echo $this->row->get('nothelpful'); ?></span> 
 							<?php if ( $this->row->get('helpful') > 0 || $this->row->get('nothelpful') > 0 ) { ?>
 								<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('reset');" />
 							<?php } ?>
