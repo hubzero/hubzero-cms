@@ -115,7 +115,7 @@ if (!$this->question->get('anonymous'))
 					if ($resource)
 					{
 						?>
-						<p>This question was asked on the <a href="<?php echo JRoute::_('index.php?option=com_resources&' . $resource); ?>">following resource</a>.</p>
+						<p><?php echo JText::sprintf('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . JRoute::_('index.php?option=com_resources&' . $resource) . '">' . JText::_('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
 						<?php 
 						break;
 					}
@@ -235,8 +235,8 @@ if (!$this->question->get('anonymous'))
 					<input type="hidden" name="task" value="deleteq" />
 
 					<p class="submit">
-						<input class="btn btn-success btn-primary" type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
-						<a class="btn btn-danger btn-secondary" href="<?php echo JRoute::_($this->question->link()); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
+						<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
+						<a class="btn btn-secondary" href="<?php echo JRoute::_($this->question->link()); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
 					</p>
 				</form>
 			</div><!-- / .subject-wrap -->

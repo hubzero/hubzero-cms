@@ -201,8 +201,10 @@ if (!$this->filters['filterby'] == 'none')
 								</span><br />
 							<?php } ?>
 								<span class="entry-details">
-									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> <span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
-									<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
+									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> 
+									<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
+									<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
+									<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
 									<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-state">

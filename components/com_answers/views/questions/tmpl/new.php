@@ -122,6 +122,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</fieldset>
 		<div class="clear"></div>
 
-		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" /></p>
+		<p class="submit">
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo $this->question->exists() ? JRoute::_($this->question->link()) : JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>
+			</a>
+		</p>
 	</form>
 </div><!-- / .main section -->
