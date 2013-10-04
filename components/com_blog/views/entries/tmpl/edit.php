@@ -194,11 +194,10 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_BLOG_SAVE'); ?>" />
-<?php if ($this->entry->get('id')) { ?>
-			<a class="btn btn-secondary btn-danger" href="<?php echo JRoute::_($this->entry->link()); ?>">
+
+			<a class="btn btn-secondary" href="<?php echo $this->entry->get('id') ? JRoute::_($this->entry->link()) : JRoute::_('index.php?option=' . $this->option); ?>">
 				<?php echo JText::_('COM_BLOG_CANCEL'); ?>
 			</a>
-<?php } ?>
 		</p>
 	</form>
 </div><!-- / .section -->

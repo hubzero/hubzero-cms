@@ -74,7 +74,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		<p class="submit">
 			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_BLOG_DELETE'); ?>" />
-			<a class="btn btn-secondary btn-success" href="<?php echo $this->entry->link(); ?>">
+			<a class="btn btn-secondary" href="<?php echo $this->entry->link(); ?>">
 				<?php echo JText::_('COM_BLOG_CANCEL'); ?>
 			</a>
 		</p>
