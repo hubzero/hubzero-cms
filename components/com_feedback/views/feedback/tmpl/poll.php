@@ -41,7 +41,7 @@ jimport('joomla.application.module.helper');
 	<ul>
 		<li>
 			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('Main page'); ?>
+				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
 			</a>
 		</li>
 	</ul>

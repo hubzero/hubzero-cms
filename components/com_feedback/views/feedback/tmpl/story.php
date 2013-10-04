@@ -41,7 +41,7 @@ $jconfig =& JFactory::getConfig();
 	<ul>
 		<li>
 			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('Main page'); ?>
+				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
 			</a>
 		</li>
 	</ul>
@@ -92,15 +92,19 @@ $jconfig =& JFactory::getConfig();
 				<input type="checkbox" name="fields[publish_ok]" id="publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_QUOTE', $jconfig->getValue('config.sitename'), $jconfig->getValue('config.sitename')); ?>
 			</label>
-	
+
 			<label for="contact_ok">
 				<input type="checkbox" name="fields[contact_ok]" id="contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', $jconfig->getValue('config.sitename')); ?>
 			</label>
-	
+
 		</fieldset><div class="clear"></div>
 		<p class="submit">
-			<input type="submit" name="submit" value="<?php echo JText::_('COM_FEEDBACK_SUBMIT'); ?>" />
+			<input class="btn btn-success" type="submit" name="submit" value="<?php echo JText::_('COM_FEEDBACK_SUBMIT'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_FEEDBACK_CANCEL'); ?>
+			</a>
 		</p>
 	</form>
 </div><!-- / .main section -->
