@@ -92,7 +92,7 @@ ximport('Hubzero_User_Profile_Helper');
 			<p class="submit">
 				<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_FORUM_SUBMIT'); ?>" />
 
-				<a class="btn btn-danger btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 					<?php echo JText::_('COM_FORUM_CANCEL'); ?>
 				</a>
 			</p>
