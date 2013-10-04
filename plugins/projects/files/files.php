@@ -1984,7 +1984,7 @@ class plgProjectsFiles extends JPlugin
 			: JRoute::_($route . a . 'active=files');
 
 		// Check that we have directory to delete
-		if (!$dir || !is_dir($this->prefix . $path . DS . $dir) || $dir == '.git' || $dir == '.')
+		if (!$dir || !file_exists($this->prefix . $path . DS . $dir) || $dir == '.git' || $dir == '.')
 		{
 			$this->setError(JText::_('COM_PROJECTS_ERROR_NO_DIR_TO_DELETE'));	
 		}
@@ -1995,12 +1995,12 @@ class plgProjectsFiles extends JPlugin
 			$this->_git->gitCommit($path, $commitMsg);
 						
 			// If directory is still there (not in Git)			
-			if (is_dir($this->prefix . $path . DS . $dir))
+			if (file_exists($this->prefix . $path . DS . $dir))
 			{
 				JFolder::delete($this->prefix . $path . DS . $dir);
 			}
 			
-			if (!is_dir($this->prefix . $path . DS . $dir))
+			if (!file_exists($this->prefix . $path . DS . $dir))
 			{
 				$this->_msg = JText::_('COM_PROJECTS_DELETED_DIRECTORY');
 				
@@ -2281,7 +2281,7 @@ class plgProjectsFiles extends JPlugin
 				$newdir = JFolder::makeSafe($newdir);
 				$newdir = $subdir ? $subdir . DS . $newdir : $newdir;
 			}
-			if ($newdir && !is_dir( $this->prefix . $path . DS . $newdir )) 
+			if ($newdir && !file_exists( $this->prefix . $path . DS . $newdir )) 
 			{
 				// Create new directory
 				if (!JFolder::create( $this->prefix . $path . DS . $newdir, 0777 )) 
@@ -3624,7 +3624,7 @@ class plgProjectsFiles extends JPlugin
 		$outputDir = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'compiled';
 		
 		// Make sure output dir exists
-		if (!is_dir( JPATH_ROOT . DS . $outputDir )) 
+		if (!file_exists( JPATH_ROOT . DS . $outputDir )) 
 		{
 			jimport('joomla.filesystem.folder');
 			
