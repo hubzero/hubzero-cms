@@ -53,7 +53,8 @@ if (!$lecture)
 	JError::raiseError(404, JText::_('uh-oh'));
 }
 
-$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline';
+$base    = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&active=outline';
+$altBase = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 $current = $unit->assetgroups()->key();
 
 if (!$this->course->offering()->access('view')) { ?>
@@ -107,7 +108,7 @@ if (!$this->course->offering()->access('view')) { ?>
 						{
 							continue;
 						}
-						$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&asset=' . $a->get('id'));
+						$href = JRoute::_($altBase . '&asset=' . $a->get('id'));
 						/*if ($a->get('type') == 'video')
 						{
 							$href = JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
