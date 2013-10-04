@@ -35,65 +35,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Module class for displaying what's new in a category of content
  */
-class modWhatsNew
+class modWhatsNew extends Hubzero_Module
 {
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object $params JParameter
-	 * @param      object $module Database row
-	 * @return     void
-	 */
-	public function __construct($params, $module)
-	{
-		$this->params = $params;
-		$this->module = $module;
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) 
-		{
-			return $this->attributes[$property];
-		}
-	}
-
-	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Property to check
-	 * @return     boolean True if set
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_attributes[$property]);
-	}
-
 	/**
 	 * Get the categories for What's New
 	 * 

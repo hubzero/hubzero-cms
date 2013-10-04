@@ -32,82 +32,12 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'modDashboard'
- * 
- * Long description (if any) ...
+ * Module class for Administrator dashboard
  */
-class modDashboard
+class modDashboard extends Hubzero_Module
 {
-
 	/**
-	 * Description for '_attributes'
-	 * 
-	 * @var array
-	 */
-	private $_attributes = array();
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $params Parameter description (if any) ...
-	 * @param      unknown $module Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($params, $module)
-	{
-		$this->params = $params;
-		$this->module = $module;
-	}
-
-	/**
-	 * Short description for '__set'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_attributes[$property] = $value;
-	}
-
-	/**
-	 * Short description for '__get'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_attributes[$property]))
-		{
-			return $this->_attributes[$property];
-		}
-	}
-
-	/**
-	 * Short description for '__isset'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_attributes[$property]);
-	}
-
-	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
+	 * Output module TML
 	 * 
 	 * @return     void
 	 */
@@ -124,7 +54,8 @@ class modDashboard
 		$threemonths 	= date( 'Y-m-d H:i:s', time() - (92 * 24 * 60 * 60));
 		$onemonth 		= date( 'Y-m-d H:i:s', time() - (30 * 24 * 60 * 60) );
 
-		if ($banking && JComponentHelper::isEnabled('com_store')) {
+		if ($banking && JComponentHelper::isEnabled('com_store')) 
+		{
 			// get new store orders
 			$database->setQuery( "SELECT count(*) FROM #__orders WHERE status=0");
 			$orders = $database->loadResult();
@@ -167,21 +98,23 @@ class modDashboard
 		$database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_wishlist' AND enabled=1" );
 		$found = $database->loadResult();
 
-		if($found) {
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.group.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php' );
-			include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php' );
-			$obj = new Wishlist( $database );
-			$objWish = new Wish( $database );
+		if ($found) 
+		{
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php');
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php');
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php');
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.group.php');
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php');
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php');
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php');
+			$obj = new Wishlist($database);
+			$objWish = new Wish($database);
 			$juser 	  =& JFactory::getUser();
 
 			// Check if main wishlist exists, create one if missing
 			$mainlist = $obj->get_wishlistID(1, 'general');
-			if(!$mainlist) {
+			if (!$mainlist) 
+			{
 				$mainlist = $obj->createlist('general', 1);
 			}
 			$filters = array('filterby'=>'pending', 'sortby'=>'date');

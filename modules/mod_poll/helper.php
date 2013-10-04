@@ -67,4 +67,3 @@ class modPollHelper
 		return $options;
 	}
 }
-?>

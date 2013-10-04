@@ -34,53 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Mod_Billboards helper class, used to query for billboards and contains the display method
  */
-class modBillboards
+class modBillboards extends Hubzero_Module
 {
-
-	/**
-	 * Attributes
-	 * 
-	 * @var array
-	 */
-	private $attributes = array();
-
-	/**
-	 * construct method
-	 * 
-	 * @param  $params
-	 * @return void
-	 */
-	public function __construct($params)
-	{
-		$this->params = $params;
-	}
-
-	/**
-	 * set method
-	 * 
-	 * @param  $property
-	 * @param  $value
-	 * @return void
-	 */
-	public function __set($property, $value)
-	{
-		$this->attributes[$property] = $value;
-	}
-
-	/**
-	 * get method
-	 *
-	 * @param   $property
-	 * @return  array
-	 */
-	public function __get($property)
-	{
-		if (isset($this->attributes[$property])) 
-		{
-			return $this->attributes[$property];
-		}
-	}
-
 	/**
 	 * Get the list of billboads in the selected collection
 	 * 
