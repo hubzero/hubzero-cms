@@ -643,10 +643,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						)
 					{
 						// Mark student as having earned badge
-						$badge = CoursesModelMemberBadge::loadByMemberId($member_id);
-						if (!$badge->hasEarned())
+						$badge = CoursesModelMemberBadge::loadByMemberId($m);
+						if (is_object($badge) && !$badge->hasEarned())
 						{
-							$badge->set('member_id', $member_id);
+							$badge->set('member_id', $m);
 							$badge->set('earned', 1);
 							$badge->set('earned_on', date("Y-m-d H:i:s"));
 							$badge->store();
