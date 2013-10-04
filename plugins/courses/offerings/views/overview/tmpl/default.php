@@ -60,7 +60,7 @@ if ($offerings->total() > 0)
 {
 	foreach ($offerings as $offering)
 	{
-		$url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias');
+		//$url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias');
 		?>
 		<tr>
 			<th class="offering-title">
@@ -77,7 +77,7 @@ if ($offerings->total() > 0)
 					Access Course
 				</a>
 				<?php } else { ?>
-					<?php if ($offering->isAvailable()) { ?>
+					<?php if ($offerings->total() > 1 && $offering->isAvailable()) { ?>
 					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
 						Enroll in Course
 					</a>
@@ -124,7 +124,7 @@ if ($offerings->total() > 0)
 						continue;
 					}
 				}*/
-				$surl = $url . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '');
+				//$surl = $url . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '');
 			?>
 		<tr>
 			<th class="section-title">
@@ -142,7 +142,7 @@ if ($offerings->total() > 0)
 					Access Course
 				</a>
 				<?php } else { ?>
-					<?php if ($offering->isAvailable()) { ?>
+					<?php if ($offerings->total() > 1 && $offering->isAvailable()) { ?>
 					<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
 						Enroll in Course
 					</a>
@@ -150,9 +150,6 @@ if ($offerings->total() > 0)
 					--
 					<?php } ?>
 				<?php } ?>
-				<!-- <a class="enter btn" href="<?php echo JRoute::_($surl); ?>">
-					Enter section
-				</a> -->
 			</td>
 			<td>
 				<?php 

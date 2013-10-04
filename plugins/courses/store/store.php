@@ -75,7 +75,7 @@ class plgCoursesStore extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onCourseView($course, $active=null)
+	/*public function onCourseView($course, $active=null)
 	{
 		$arr = array(
 			'name'     => $this->_name,
@@ -99,6 +99,46 @@ class plgCoursesStore extends JPlugin
 		$arr['controls'] = $view->loadTemplate();
 
 		return $arr;
+	}*/
+
+	/**
+	 * Return data on a resource view (this will be some form of HTML)
+	 * 
+	 * @param      object  $resource Current resource
+	 * @param      string  $option    Name of the component
+	 * @param      array   $areas     Active area(s)
+	 * @param      string  $rtrn      Data to be returned
+	 * @return     array
+	 */
+	public function onCourseEnrollLink($course, $offering, $section)
+	{
+		if (!$course->exists() || !$offering->exists())
+		{
+			return;
+		}
+
+		$url = 'index.php?option=com_courses&controller=offering&gid=' . $course->get('alias') . '&offering=' . $offering->get('alias') . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '') . '&task=enroll';
+
+		if ($offering->params('store_product_id', 0))
+		{
+			$warehouse = new Hubzero_Storefront_Warehouse();
+			// Get course by pID returned with $course->add() above
+			try 
+			{
+				$product = $warehouse->getCourse($offering->params('store_product_id', 0));
+			}
+			catch (Exception $e) 
+			{
+				echo 'ERROR: ' . $e->getMessage();
+			}
+		}
+
+		if ($product && $product->data->id)
+		{
+			$url = '/cart'; //index.php?option=com_storefront/product/' . $product->pId;
+		}
+
+		return $url;
 	}
 
 	/**

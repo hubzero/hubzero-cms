@@ -90,7 +90,7 @@ if ($offerings->total())
 		}
 		$c++;
 
-		$controls = '';
+		/*$controls = '';
 
 		if ($this->sections)
 		{
@@ -101,7 +101,7 @@ if ($offerings->total())
 					$controls = $section['controls'];
 				}
 			}
-		}
+		}*/
 
 		if (!$controls) 
 		{
@@ -136,6 +136,7 @@ if ($offerings->total())
 						// No default? Get the first in the list
 						$dflt = $offering->sections()->fetch('first');
 					}
+					$offering->section($dflt->get('alias'));
 				?>
 			<div class="offering-info">
 				<table>
@@ -157,7 +158,7 @@ if ($offerings->total())
 				<?php if ($offering->sections()->total() > 1) { ?>
 				<div class="btn-group-wrap">
 					<div class="btn-group dropdown">
-						<a class="btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias'). '&offering=' . $offering->get('alias') . ($dflt->get('alias') != '__default' ? ':' . $dflt->get('alias') : '')); ?>"><?php echo $this->escape(stripslashes($dflt->get('title'))); ?></a>
+						<a class="btn" href="<?php echo JRoute::_($offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($dflt->get('title'))); ?></a>
 						<span class="btn dropdown-toggle"></span>
 						<ul class="dropdown-menu">
 						<?php 
@@ -168,9 +169,10 @@ if ($offerings->total())
 							{
 								continue;
 							}
+							$offering->section($section->get('id'));
 							?>
 							<li>
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias'). '&offering=' . $offering->get('alias') . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '')); ?>">
+								<a href="<?php echo JRoute::_($offering->link()); ?>">
 									<?php echo $this->escape(stripslashes($section->get('title'))); ?>
 								</a>
 							</li>
@@ -183,7 +185,7 @@ if ($offerings->total())
 				</div>
 				<?php } else { ?>
 				<p>
-					<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias'). '&offering=' . $offering->get('alias') . ($dflt->get('alias') != '__default' ? ':' . $dflt->get('alias') : '')); ?>">
+					<a class="outline btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
 						<?php echo JText::_('Access Course'); ?>
 					</a>
 				</p>

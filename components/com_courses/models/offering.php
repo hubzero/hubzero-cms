@@ -185,6 +185,13 @@ class CoursesModelOffering extends CoursesModelAbstract
 	private $_link = NULL;
 
 	/**
+	 * JRegistry
+	 * 
+	 * @var object
+	 */
+	private $_params = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course offering ID or alias
@@ -262,6 +269,31 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		return $instances[$key];
+	}
+
+	/**
+	 * Get a param value
+	 * 
+	 * @param	   string $key     Property to return
+	 * @param	   mixed  $default Default value to return
+	 * @return     mixed
+	 */
+	public function params($key='', $default=null)
+	{
+		if (!$this->_params)
+		{
+			$paramsClass = 'JParameter';
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$paramsClass = 'JRegistry';
+			}
+			$this->_params = new $paramsClass($this->get('params'));
+		}
+		if ($key)
+		{
+			return $this->_params->get((string) $key, $default);
+		}
+		return $this->_params;
 	}
 
 	/**
@@ -1327,7 +1359,21 @@ class CoursesModelOffering extends CoursesModelAbstract
 			break;
 
 			case 'enroll':
-				$link = $this->_link . '&task=enroll';
+				JPluginHelper::importPlugin('courses');
+
+				$course = CoursesModelCourse::getInstance($this->get('course_id'));
+
+				$data = JDispatcher::getInstance()->trigger('onCourseEnrollLink', array(
+					$course, $this, $this->section()
+				));
+				if ($data && count($data) > 0)
+				{
+					$link = implode('', $data);
+				}
+				else
+				{
+					$link = $this->_link . '&task=enroll';
+				}
 			break;
 
 			case 'permalink':
