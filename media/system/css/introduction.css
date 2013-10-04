@@ -139,11 +139,17 @@
 /* Four Columns */
 	/*div[class^="com_"] .four,
 	div[class*=" com_"] .four*/
+	#content .grid,
 	#content .three,
 	#content .four {
 		border: none;
 		border-top: 1px solid #e0e0e0;
 		position: relative;
+		margin-bottom: 3em;
+	}
+	#content .grid .grid {
+		border: none;
+		margin-bottom: 0;
 	}
 	#content .four {
 		margin-right: 0;
@@ -179,6 +185,7 @@
 	#content .four li {
 		margin: 1em 0;
 	}
+	#content .grid h2,
 	#content .first h2 { 
 		font-weight: normal;
 		margin: 0;
@@ -223,6 +230,10 @@
 	#content .browse:before {
 		content: "\f00b";
 		top: 0;
+	}
+	#content #introduction .grid {
+		border: none;
+		margin-bottom: 0;
 	}
 	.columns,
 	.grid .col {
