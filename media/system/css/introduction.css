@@ -170,11 +170,13 @@
 	#content .second.third.fourth {
 		width: 73.75%;
 	}
+	#content .col h3,
 	#content .four h3 { 
 		color: #000; 
 		margin-top: 1em; 
 		padding-top: 0em;
 	}
+	#content .col h3 a,
 	#content .four h3 a { 
 		color: #000; 
 		border-bottom: none; 
