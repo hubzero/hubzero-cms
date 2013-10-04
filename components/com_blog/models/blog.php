@@ -172,7 +172,7 @@ class BlogModel extends JObject
 		 || ($id !== null && (int) $this->_entry->get('id') != $id && (string) $this->_entry->get('alias') != $id))
 		{
 			/*$this->_entry = null;
-			if (isset($this->_entries) && is_a($this->_entries, 'BlogModelIterator'))
+			if (isset($this->_entries) && ($this->_entries instanceof \Hubzero\ItemList))
 			{
 				foreach ($this->_entries as $key => $entry)
 				{
@@ -278,7 +278,7 @@ class BlogModel extends JObject
 					{
 						$results = array();
 					}
-					//$this->_entries = new BlogModelIterator($results);
+					//$this->_entries = new \Hubzero\ItemList($results);
 				//}
 				return new \Hubzero\ItemList($results);
 			break;
