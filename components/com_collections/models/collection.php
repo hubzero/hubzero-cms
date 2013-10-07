@@ -32,13 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'collection.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 
 /**
  * Table class for forum posts
  */
-class CollectionsModelCollection extends JObject
+class CollectionsModelCollection extends \Hubzero\Model
 {
 	/**
 	 * Resource ID
@@ -48,18 +47,18 @@ class CollectionsModelCollection extends JObject
 	private $_authorized = false;
 
 	/**
-	 * CollectionsTableCollection
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_tbl = NULL;
+	protected $_tbl_name = 'CollectionsTableCollection';
 
 	/**
 	 * JDatabase
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
+	//private $_db = NULL;
 
 	/**
 	 * Container for properties
@@ -108,11 +107,11 @@ class CollectionsModelCollection extends JObject
 		}
 		else if (is_object($oid))
 		{
-			$this->_tbl->bind($oid);
-			if (isset($oid->posts))
+			$this->bind($oid);
+			/*if (isset($oid->posts))
 			{
 				$this->_tbl->set('posts', $oid->posts);
-			}
+			}*/
 			if (isset($oid->following))
 			{
 				$this->_following = $oid->following ? true : false;
@@ -120,11 +119,11 @@ class CollectionsModelCollection extends JObject
 		}
 		else if (is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-			if (isset($oid['posts']))
+			$this->bind($oid);
+			/*if (isset($oid['posts']))
 			{
 				$this->_tbl->set('posts', $oid['posts']);
-			}
+			}*/
 			if (isset($oid['following']))
 			{
 				$this->_following = $oid['following'] ? true : false;
@@ -133,14 +132,12 @@ class CollectionsModelCollection extends JObject
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to CollectionsModelCollection object
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @param      mixed   $oid         ID, array, or object
+	 * @param      integer $object_id   ID
+	 * @param      string  $object_type [member, group]
+	 * @return     object CollectionsModelCollection
 	 */
 	static function &getInstance($oid=null, $object_id=0, $object_type='member')
 	{
@@ -159,51 +156,6 @@ class CollectionsModelCollection extends JObject
 		}
 
 		return $instances[$key];
-	}
-
-	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $default  The default value
-	 * @return    mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $value    The value of the property to set
-	 * @return    mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -236,17 +188,6 @@ class CollectionsModelCollection extends JObject
 	}
 
 	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
 	 * Short title for 'update'
 	 * Long title (if any) ...
 	 *
@@ -256,30 +197,14 @@ class CollectionsModelCollection extends JObject
 	 */
 	public function store($check=true)
 	{
-		if (empty($this->_db))
+		if (!parent::store($check))
 		{
-			return false;
-		}
-
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
 			return false;
 		}
 
 		// Create an Item entry
-		// This is because even collections can be reposted. Thus, there needs to be an item entry to "repost"
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
-
+		// This is because even collections can be reposted. 
+		// Thus, there needs to be an item entry to "repost"
 		$item = new CollectionsTableItem($this->_db);
 		$item->loadType($this->get('id'), 'collection');
 		if (!$item->get('id'))
@@ -310,10 +235,8 @@ class CollectionsModelCollection extends JObject
 	 */
 	public function item()
 	{
-		if (!isset($this->_item) || !is_a($this->_item, 'CollectionsModelItem'))
+		if (!($this->_item instanceof CollectionsModelItem))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
-
 			$item = new CollectionsTableItem($this->_db);
 			$item->loadType($this->get('id'), 'collection');
 			if (!$item->get('id'))
@@ -368,7 +291,7 @@ class CollectionsModelCollection extends JObject
 			$this->_post = null;
 
 			// If the list of all posts is available ...
-			if (isset($this->_posts) && is_a($this->_posts, 'CollectionsModelIterator'))
+			if (isset($this->_posts) && $this->_posts instanceof \Hubzero\ItemList)
 			{
 				// Find a post in the list that matches the ID passed
 				foreach ($this->posts() as $key => $post)
@@ -381,7 +304,8 @@ class CollectionsModelCollection extends JObject
 					}
 				}
 			}
-			else
+
+			if (!$this->_post)
 			{
 				$this->_post = CollectionsModelPost::getInstance($id);
 			}
@@ -412,7 +336,7 @@ class CollectionsModelCollection extends JObject
 			return $tbl->getCount($filters);
 		}
 
-		if (!isset($this->_posts) || !is_a($this->_posts, 'CollectionsModelIterator'))
+		if (!isset($this->_posts) || !($this->_posts instanceof \Hubzero\ItemList))
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
 
@@ -478,7 +402,7 @@ class CollectionsModelCollection extends JObject
 				$results = array();
 			}
 
-			$this->_posts = new CollectionsModelIterator($results);
+			$this->_posts = new \Hubzero\ItemList($results);
 		}
 
 		return $this->_posts;

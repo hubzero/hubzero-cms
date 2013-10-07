@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,60 +32,40 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'following.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Table class for forum posts
  */
-class CollectionsModelFollowing extends JObject
+class CollectionsModelFollowing extends \Hubzero\Model
 {
 	/**
-	 * Resource ID
+	 * Table class name
 	 * 
-	 * @var mixed
+	 * @var string
 	 */
-	private $_authorized = false;
+	protected $_tbl_name = 'CollectionsTableFollowing';
 
 	/**
-	 * CollectionsTableCollection
+	 * CollectionsModelFollowingAbstract
 	 * 
 	 * @var object
 	 */
-	private $_tbl = NULL;
+	private $_following = null;
 
 	/**
-	 * JDatabase
+	 * CollectionsModelFollowingAbstract
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
-
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $_posts = null;
-
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $_post = null;
-
-	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $_item = null;
+	private $_follower = null;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      mixed   $oid            Following ID, array, or object
+	 * @param      string  $following_type Type being followed [collection, member, group]
+	 * @param      integer $follower_id    Follower ID [member, group]
+	 * @param      string  $follower_type  [member, group]
 	 * @return     void
 	 */
 	public function __construct($oid=null, $following_type=null, $follower_id=0, $follower_type='member')
@@ -96,45 +76,25 @@ class CollectionsModelFollowing extends JObject
 
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load($oid, $following_type, $follower_id, $follower_type);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-
-			$properties = get_object_vars($this->_tbl);
-			foreach (get_object_vars($oid) as $key => $property)
+			if (!$oid)
 			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set($key, $property);
-				}
+				$this->_tbl->load($oid, $following_type, $follower_id, $follower_type);
 			}
 		}
-		else if (is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-
-			$properties = get_object_vars($this->_tbl);
-			foreach (array_keys($oid) as $property)
-			{
-				if (!array_key_exists($property, $properties))
-				{
-					$this->_tbl->set($property, $oid[$property]);
-				}
-			}
+			$this->bind($oid);
 		}
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to a CollectionsModelFollowing object
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @param      mixed   $oid            Following ID, array, or object
+	 * @param      string  $following_type Type being followed [collection, member, group]
+	 * @param      integer $follower_id    Follower ID [member, group]
+	 * @param      string  $follower_type  [member, group]
+	 * @return     object CollectionsModelFollowing
 	 */
 	static function &getInstance($oid=null, $following_type=null, $follower_id=0, $follower_type='member')
 	{
@@ -156,112 +116,64 @@ class CollectionsModelFollowing extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $default  The default value
-	 * @return    mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $value    The value of the property to set
-	 * @return    mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
+	 * Return the adapter for this entry's follower,
+	 * instantiating it if it doesn't already exist
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * @return     object
+	 * @return    object
 	 */
 	public function follower()
 	{
-		if (!isset($this->_follower) || !is_object($this->_follower))
+		if (!$this->_follower)
 		{
-			$path = JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following';
-
-			if (is_file($path . DS . $this->get('follower_type') . '.php'))
-			{
-				require_once($path . DS . $this->get('follower_type') . '.php');
-
-				$cls = 'CollectionsModelFollowing' . ucfirst(strtolower($this->get('follower_type')));
-			}
-			else
-			{
-				require_once($path . DS . 'abstract.php');
-
-				$cls = 'CollectionsModelFollowingAbstract';
-			}
-
-			$this->_follower = new $cls($this->get('follower_id'));
+			$this->_follower = $this->_adapter('follower');
 		}
 		return $this->_follower;
 	}
 
 	/**
-	 * Get the creator of this entry
-	 *
-	 * @return     object
+	 * Return the adapter for this entry's following,
+	 * instantiating it if it doesn't already exist
+	 * 
+	 * @return    object
 	 */
 	public function following()
 	{
-		if (!isset($this->_following) || !is_object($this->_following))
+		if (!$this->_following)
 		{
-			$path = JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following';
-
-			if (is_file($path . DS . $this->get('following_type') . '.php'))
-			{
-				require_once($path . DS . $this->get('following_type') . '.php');
-
-				$cls = 'CollectionsModelFollowing' . ucfirst(strtolower($this->get('following_type')));
-			}
-			else
-			{
-				require_once($path . DS . 'abstract.php');
-
-				$cls = 'CollectionsModelFollowingAbstract';
-			}
-
-			$this->_following = new $cls($this->get('following_id'));
+			$this->_following = $this->_adapter('following');
 		}
 		return $this->_following;
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get an adapter
+	 * 
+	 * @param     string $what Key name [following, follower]
+	 * @return    object
+	 */
+	private function _adapter($key='following')
+	{
+		$scope = strtolower($this->get($key . '_type'));
+		$cls = 'CollectionsModelFollowing' . ucfirst($scope);
+
+		if (!class_exists($cls))
+		{
+			$path = dirname(__FILE__) . '/following/' . $scope . '.php';
+			if (!is_file($path))
+			{
+				throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+			}
+			include_once($path);
+		}
+
+		return new $cls($this->get($key . '_id'));
+	}
+
+	/**
+	 * Get a count for the specified key
 	 *
-	 * @return     object
+	 * @param     string $what Key name [following, followers, collectios, posts]
+	 * @return    integer
 	 */
 	public function count($what='following')
 	{
@@ -330,10 +242,10 @@ class CollectionsModelFollowing extends JObject
 	}
 
 	/**
-	 * Check if the resource exists
+	 * Stop following an object
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      integer $id ID of record to unfollow
+	 * @return     boolean
 	 */
 	public function unfollow($id=null)
 	{
@@ -343,74 +255,6 @@ class CollectionsModelFollowing extends JObject
 		}
 
 		if (!$this->_tbl->delete($id))
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
-	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
-	 */
-	public function store($check=true)
-	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
-	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
-	 */
-	public function delete()
-	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		if (!$this->_tbl->delete())
 		{
 			$this->setError($this->_tbl->getError());
 			return false;

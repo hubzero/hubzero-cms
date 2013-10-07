@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,19 +33,18 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'asset.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
  */
-class CollectionsModelItem extends JObject
+class CollectionsModelItem extends \Hubzero\Model
 {
 	/**
-	 * CoursesTableInstance
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var strong
 	 */
-	public $_tbl = NULL;
+	protected $_tbl_name = 'CollectionsTableItem';
 
 	/**
 	 * CoursesTableInstance
@@ -66,7 +65,7 @@ class CollectionsModelItem extends JObject
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
+	//private $_db = NULL;
 
 	/**
 	 * Container for properties
@@ -92,11 +91,11 @@ class CollectionsModelItem extends JObject
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
+	 * @param      integer $id  ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid=null)
+	/*public function __construct($oid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -121,14 +120,6 @@ class CollectionsModelItem extends JObject
 			{
 				$this->set('voted', ($oid->voted ? $oid->voted : 0));
 			}
-			/*$properties = $this->_tbl->getProperties();
-			foreach (get_object_vars($oid) as $key => $property)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $property);
-				}
-			}*/
 		}
 		else if (is_array($oid))
 		{
@@ -145,26 +136,14 @@ class CollectionsModelItem extends JObject
 			{
 				$this->set('voted', $oid['voted']);
 			}
-			/*$properties = $this->_tbl->getProperties();
-			foreach (array_keys($oid) as $key)
-			{
-				if (!array_key_exists($key, $properties))
-				{
-					$this->_tbl->set('__' . $key, $oid[$key]);
-				}
-			}*/
 		}
-	}
+	}*/
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to a collections item instance
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @param      mixed $oid Integer or string
+	 * @return     object CollectionsModelItem
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -208,11 +187,6 @@ class CollectionsModelItem extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		/*if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;*/
 		switch (strtolower($property))
 		{
 			case 'reposts':
@@ -236,7 +210,7 @@ class CollectionsModelItem extends JObject
 			default:
 			break;
 		}
-		return $this->_tbl->get($property, $default);
+		return parent::get($property, $default);
 	}
 
 	/**
@@ -249,13 +223,10 @@ class CollectionsModelItem extends JObject
 	 * @see		setProperties()
 	 * @since	1.5
 	 */
-	public function set($property, $value = null)
+	/*public function set($property, $value = null)
 	{
-		/*$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;*/
 		return $this->_tbl->set($property, $value);
-	}
+	}*/
 
 	/**
 	 * Check if the resource exists
@@ -263,14 +234,14 @@ class CollectionsModelItem extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function exists()
+	/*public function exists()
 	{
 		if ($this->get('id') && (int) $this->get('id') > 0) 
 		{
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * Get the creator of this entry
@@ -288,10 +259,10 @@ class CollectionsModelItem extends JObject
 			ximport('Hubzero_User_Profile');
 			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		/*if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && $this->_creator instanceof Hubzero_User_Profile)
 		{
 			return $this->_creator->get($property);
-		}*/
+		}
 		return $this->_creator;
 	}
 
@@ -311,10 +282,10 @@ class CollectionsModelItem extends JObject
 			ximport('Hubzero_User_Profile');
 			$this->_modifier = Hubzero_User_Profile::getInstance($this->get('modified_by'));
 		}
-		/*if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && $this->_creator instanceof Hubzero_User_Profile)
 		{
 			return $this->_creator->get($property);
-		}*/
+		}
 		return $this->_modifier;
 	}
 
@@ -369,7 +340,7 @@ class CollectionsModelItem extends JObject
 	 */
 	public function assets($filters=array())
 	{
-		if (!isset($this->_assets) || !is_a($this->_assets, 'CollectionsModelIterator'))
+		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\ItemList))
 		{
 			$tbl = new CollectionsTableAsset($this->_db);
 
@@ -390,7 +361,7 @@ class CollectionsModelItem extends JObject
 				$results = array();
 			}
 
-			$this->_assets = new CollectionsModelIterator($results);
+			$this->_assets = new \Hubzero\ItemList($results);
 		}
 		return $this->_assets;
 	}
@@ -403,13 +374,13 @@ class CollectionsModelItem extends JObject
 	 */
 	public function addAsset($asset=null)
 	{
-		if (!isset($this->_assets) || !is_a($this->_assets, 'CollectionsModelIterator'))
+		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\ItemList))
 		{
-			$this->_assets = new CollectionsModelIterator(array());
+			$this->_assets = new \Hubzero\ItemList(array());
 		}
 		if ($asset)
 		{
-			if (!is_a($asset, 'CollectionsModelAsset'))
+			if (!($asset instanceof CollectionsModelAsset))
 			{
 				$asset = new CollectionsModelAsset($asset);
 			}
@@ -426,7 +397,7 @@ class CollectionsModelItem extends JObject
 	public function removeAsset($asset)
 	{
 		// Remove the asset
-		if (is_a($asset, 'CollectionsModelAsset'))
+		if ($asset instanceof CollectionsModelAsset)
 		{
 			if (!$asset->remove())
 			{
@@ -595,10 +566,10 @@ class CollectionsModelItem extends JObject
 	 * @param      mixed $data Array or object
 	 * @return     boolean True on success, false if errors
 	 */
-	public function bind($data=null)
+	/*public function bind($data=null)
 	{
 		return $this->_tbl->bind($data);
-	}
+	}*/
 
 	/**
 	 * Store content
@@ -609,25 +580,11 @@ class CollectionsModelItem extends JObject
 	 */
 	public function store($check=true)
 	{
-		if (empty($this->_db))
+		if (!parent::store($check))
 		{
 			return false;
 		}
 
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
 		if (!$this->get('id'))
 		{
 			if (!$this->_tbl->id)

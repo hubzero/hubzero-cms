@@ -129,20 +129,13 @@ class plgMembersCollections extends JPlugin
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', $this->_name);
 
-			$this->dateFormat = '%d %b, %Y';
-			$this->timeFormat = '%I:%M %p';
-			$this->tz = 0;
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$this->dateFormat = 'd M, Y';
-				$this->timeFormat = 'h:i a';
-				$this->tz = true;
-			}
-
 			$juri =& JURI::getInstance();
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 
 			{
+				$path = str_replace($juri->base(true), '', $path);
+				$path = str_replace('index.php', '', $path);
+				$path = DS . trim($path, DS);
 				$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
 				$path = ltrim($path, DS);
 				$bits = explode('/', $path);
@@ -580,9 +573,6 @@ class plgMembersCollections extends JPlugin
 		$view->member     = $this->member;
 		$view->option     = $this->option;
 		$view->params     = $this->params;
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
 		$view->model      = $this->model;
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
@@ -810,9 +800,6 @@ class plgMembersCollections extends JPlugin
 		$view->member     = $this->member;
 		$view->option     = $this->option;
 		$view->params     = $this->params;
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
@@ -902,9 +889,6 @@ class plgMembersCollections extends JPlugin
 		$view->member     = $this->member;
 		$view->option     = $this->option;
 		$view->params     = $this->params;
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
 		$view->model      = $this->model;
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
@@ -996,9 +980,6 @@ class plgMembersCollections extends JPlugin
 		$view->params     = $this->params;
 		$view->juser      = $this->juser;
 		$view->name       = $this->_name;
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
 		$view->model      = $this->model;
 
 		$post_id = JRequest::getInt('post', 0);
@@ -1110,9 +1091,6 @@ class plgMembersCollections extends JPlugin
 		$view->member     = $this->member;
 		$view->task       = $this->action;
 		$view->params     = $this->params;
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
 		$view->no_html     = $no_html;
 
 		$id = JRequest::getInt('post', 0);

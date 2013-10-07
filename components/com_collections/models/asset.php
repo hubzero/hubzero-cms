@@ -34,36 +34,29 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'asset.php');
 
 /**
- * Courses model class for a course
+ * Collections model class for an Asset
  */
-class CollectionsModelAsset extends JObject
+class CollectionsModelAsset extends \Hubzero\Model
 {
 	/**
-	 * CoursesTableInstance
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	public $_tbl = NULL;
+	public $_tbl_name = 'CollectionsTableAsset';
 
 	/**
-	 * CoursesTableInstance
+	 * JUser
 	 * 
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
-
-	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      mixed   $oid     ID, string, array, or object
+	 * @param      integer $item_id ID of the item asset is attached
 	 * @return     void
 	 */
 	public function __construct($oid=null, $item_id=null)
@@ -76,25 +69,18 @@ class CollectionsModelAsset extends JObject
 		{
 			$this->_tbl->load($oid, $item_id);
 		}
-		else if (is_object($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
+			$this->bind($oid);
 		}
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to an asset object
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @param      mixed   $oid     ID, string, array, or object
+	 * @param      integer $item_id ID of the item asset is attached
+	 * @return     object CollectionsModelAsset
 	 */
 	static function &getInstance($oid=null, $item_id=null)
 	{
@@ -127,57 +113,6 @@ class CollectionsModelAsset extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
@@ -192,10 +127,10 @@ class CollectionsModelAsset extends JObject
 		{
 			$this->_creator = JUser::getInstance($this->created_by);
 		}
-		/*if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && $this->_creator instanceof JUser)
 		{
 			return $this->_creator->get($property);
-		}*/
+		}
 		return $this->_creator;
 	}
 
@@ -233,21 +168,11 @@ class CollectionsModelAsset extends JObject
 	}
 
 	/**
-	 * Bind data to the model's table object
-	 * 
-	 * @param      mixed $data Array or object
-	 * @return     boolean True on success, false if errors
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Store content
-	 * Can be passed a boolean to turn off check() method
+	 * Update content
 	 *
-	 * @param     boolean $check Call check() method?
+	 * @param     string $field  Field name
+	 * @param     string $before 
+	 * @param     string $after
 	 * @return    boolean True on success, false if errors
 	 */
 	public function update($field, $before, $after)
@@ -270,11 +195,6 @@ class CollectionsModelAsset extends JObject
 	 */
 	public function store($check=true)
 	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
 		if ($this->get('_file'))
 		{
 			$config = JComponentHelper::getParams('com_collections');
@@ -309,22 +229,7 @@ class CollectionsModelAsset extends JObject
 			$this->set('filename', $file['name']);
 		}
 
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
+		return parent::store($check);
 	}
 
 	/**

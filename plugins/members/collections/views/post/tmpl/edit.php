@@ -274,9 +274,9 @@ if (!$dir)
 	<input type="hidden" name="action" value="save" />
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<?php if ($item->get('id')) { ?>
-			<a href="<?php echo JRoute::_($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>"><?php echo JText::_('Cancel'); ?></a>
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>"><?php echo JText::_('Cancel'); ?></a>
 		<?php } ?>
 	</p>
 </form>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -37,28 +37,28 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Courses model class for a course
  */
-class CollectionsModelPost extends JObject
+class CollectionsModelPost extends \Hubzero\Model
 {
 	/**
-	 * CollectionsStick
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	public $_tbl = NULL;
+	protected $_tbl_name = 'CollectionsTablePost';
 
 	/**
-	 * JUser
+	 * Hubzero_User_Profile
 	 * 
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
-	 * JDatabase
+	 * CollectionsModelAdapterAbstract
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_adapter = NULL;
 
 	/**
 	 * CollectionsModelPost
@@ -74,7 +74,7 @@ class CollectionsModelPost extends JObject
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid=null)
+	/*public function __construct($oid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -84,7 +84,10 @@ class CollectionsModelPost extends JObject
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->_tbl->load($oid);
+			if ($oid)
+			{
+				$this->_tbl->load($oid);
+			}
 		}
 		else if (is_object($oid))
 		{
@@ -135,7 +138,7 @@ class CollectionsModelPost extends JObject
 			$this->item($item);
 			//$this->set('item_id', $this->item()->get('id'));
 		}
-	}
+	}*/
 
 	/**
 	 * Returns a reference to a wiki page object
@@ -178,39 +181,70 @@ class CollectionsModelPost extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
+	 * Bind data to the model
+	 * 
+	 * @param      mixed $data Object or array
+	 * @return     boolean True on success, False on error
 	 */
-	public function set($property, $value = null)
+	public function bind($data=null)
 	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
+		$item = new stdClass;
+
+		if (is_object($data))
+		{
+			$res = $this->_tbl->bind($data);
+
+			if ($res)
+			{
+				$properties = $this->_tbl->getProperties();
+				foreach (get_object_vars($data) as $key => $property)
+				{
+					if (substr($key, 0, strlen('item_')) == 'item_')
+					{
+						$nk = substr($key, strlen('item_'));
+						$item->$nk = $property;
+						continue;
+					}
+					if (!array_key_exists($key, $properties))
+					{
+						$this->_tbl->set('__' . $key, $property);
+					}
+				}
+			}
+		}
+		else if (is_array($data))
+		{
+			$res = $this->_tbl->bind($data);
+
+			if ($res)
+			{
+				$properties = $this->_tbl->getProperties();
+				foreach (array_keys($data) as $key)
+				{
+					if (substr($key, 0, strlen('item_')) == 'item_')
+					{
+						$nk = substr($key, strlen('item_'));
+						$item->$nk = $oid[$key];
+						continue;
+					}
+					if (!array_key_exists($key, $properties))
+					{
+						$this->_tbl->set('__' . $key, $data[$key]);
+					}
+				}
+			}
+		}
+		else
+		{
+			$this->_logError(
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data))
+			);
+			throw new \InvalidArgumentException(\JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data)));
+		}
+
+		$this->item($item);
+
+		return $res;
 	}
 
 	/**
@@ -221,7 +255,7 @@ class CollectionsModelPost extends JObject
 	 */
 	public function item($oid=null)
 	{
-		if (!isset($this->_data) || !is_a($this->_data, 'CollectionsModelItem'))
+		if (!isset($this->_data) || !($this->_data instanceof CollectionsModelItem))
 		{
 			if ($oid === null)
 			{
@@ -232,21 +266,6 @@ class CollectionsModelPost extends JObject
 		}
 
 		return $this->_data;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -286,7 +305,7 @@ class CollectionsModelPost extends JObject
 	}
 
 	/**
-	 * Remove a post
+	 * Move a post
 	 * 
 	 * @return     boolean True on success, false on error
 	 */
@@ -327,77 +346,53 @@ class CollectionsModelPost extends JObject
 			ximport('Hubzero_User_Profile');
 			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		/*if ($property && is_a($this->_creator, 'JUser'))
+		if ($property && $this->_creator instanceof Hubzero_User_Profile)
 		{
 			return $this->_creator->get($property);
-		}*/
+		}
 		return $this->_creator;
-	}
-
-	/**
-	 * Bind data to the model's table object
-	 * 
-	 * @param      mixed $data Array or object
-	 * @return     boolean True on success, false if errors
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Store content
-	 * Can be passed a boolean to turn off check() method
-	 *
-	 * @param     boolean $check Call check() method?
-	 * @return    boolean True on success, false if errors
-	 */
-	public function store($check=true)
-	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
 	 * Get the URL for this group
 	 *
+	 * @param      string $type   The type of link to return
+	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string
 	 */
-	public function link()
+	public function link($type='', $params=null)
 	{
-		switch ($this->get('object_type'))
-		{
-			case 'group':
-				ximport('Hubzero_Group');
-				$group = Hubzero_Group::getInstance($this->get('object_id'));
-				$href = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
-			break;
+		return $this->_adapter()->build($type, $params);
+	}
 
-			case 'member':
-			default:
-				$href = 'index.php?option=com_members&id=' . $this->get('object_id') . '&active=collections&task=' . $this->get('alias');
-			break;
+	/**
+	 * Return the adapter for this entry's scope,
+	 * instantiating it if it doesn't already exist
+	 * 
+	 * @return    object
+	 */
+	private function _adapter()
+	{
+		if (!$this->_adapter)
+		{
+			$scope = strtolower($this->get('object_type'));
+			$cls = 'CollectionsModelAdapter' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = dirname(__FILE__) . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->_adapter = new $cls($this->get('object_id'));
+			$this->_adapter->set('id', $this->get('id'));
+			$this->_adapter->set('alias', $this->get('alias'));
 		}
-		return $href;
+		return $this->_adapter;
 	}
 }
 

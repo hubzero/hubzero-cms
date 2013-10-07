@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collection.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Table class for forum posts
@@ -42,23 +41,16 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 class CollectionsModel extends JObject
 {
 	/**
-	 * Resource ID
+	 * Object type [member, group, etc.]
 	 * 
-	 * @var mixed
-	 */
-	private $_authorized = false;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
+	 * @var string
 	 */
 	private $_object_type = NULL;
 
 	/**
-	 * JDatabase
+	 * Object ID [member ID, group ID, etc.]
 	 * 
-	 * @var object
+	 * @var integer
 	 */
 	private $_object_id = NULL;
 
@@ -70,25 +62,46 @@ class CollectionsModel extends JObject
 	private $_db = NULL;
 
 	/**
-	 * Container for properties
+	 * \Hubzero\ItemList
 	 * 
-	 * @var array
+	 * @var object
 	 */
 	private $_collections = null;
 
 	/**
-	 * Container for properties
+	 * CollectionsModelCollection
 	 * 
 	 * @var array
 	 */
 	private $_collection = null;
 
-
+	/**
+	 * \Hubzero\ItemList
+	 * 
+	 * @var object
+	 */
 	private $_followers = null;
-	
+
+	/**
+	 * \Hubzero\ItemList
+	 * 
+	 * @var object
+	 */
 	private $_following = null;
-	
-	private $_followed = null;
+
+	/**
+	 * Is following?
+	 * 
+	 * @var boolean
+	 */
+	private $_isFollowing = null;
+
+	/**
+	 * Is being followed?
+	 * 
+	 * @var boolean
+	 */
+	private $_isFollowed = null;
 
 	/**
 	 * Constructor
@@ -182,7 +195,7 @@ class CollectionsModel extends JObject
 			$this->_collection = null;
 
 			// If the list of all offerings is available ...
-			if (isset($this->_collections) && is_a($this->_collections, 'CollectionsModelIterator'))
+			if (isset($this->_collections) && $this->_collections instanceof \Hubzero\ItemList)
 			{
 				// Find an offering in the list that matches the ID passed
 				foreach ($this->collections() as $key => $collection)
@@ -195,7 +208,8 @@ class CollectionsModel extends JObject
 					}
 				}
 			}
-			else
+
+			if (!$this->_collection)
 			{
 				$this->_collection = CollectionsModelCollection::getInstance($id, $this->_object_id, $this->_object_type);
 			}
@@ -229,7 +243,7 @@ class CollectionsModel extends JObject
 			return $tbl->getCount($filters);
 		}
 
-		if (!isset($this->_collections) || !is_a($this->_collections, 'CollectionsModelIterator'))
+		if (!($this->_collections instanceof \Hubzero\ItemList))
 		{
 			$tbl = new CollectionsTableCollection($this->_db);
 
@@ -240,17 +254,9 @@ class CollectionsModel extends JObject
 				{
 					$results[$key] = new CollectionsModelCollection($result);
 				}
-			/*}
-			else
-			{
-				$tbl->setup($filters['object_id'], $filters['object_type']);
-				if (!($results = $tbl->getRecords($filters)))
-				{
-					$results = array();
-				}*/
 			}
 
-			$this->_collections = new CollectionsModelIterator($results);
+			$this->_collections = new \Hubzero\ItemList($results);
 		}
 
 		return $this->_collections;
@@ -276,7 +282,7 @@ class CollectionsModel extends JObject
 
 			return $tbl->count($filters);
 		}
-		if (!isset($this->_followers) || !is_a($this->_followers, 'CollectionsModelIterator'))
+		if (!($this->_followers instanceof \Hubzero\ItemList))
 		{
 			$tbl = new CollectionsTableFollowing($this->_db);
 
@@ -289,7 +295,7 @@ class CollectionsModel extends JObject
 				}
 			}
 
-			$this->_followers = new CollectionsModelIterator($results);
+			$this->_followers = new \Hubzero\ItemList($results);
 		}
 
 		return $this->_followers;
@@ -321,7 +327,7 @@ class CollectionsModel extends JObject
 			$filters['limit'] = 1;
 		}
 
-		if (!isset($this->_following) || !is_a($this->_following, 'CollectionsModelIterator'))
+		if (!($this->_following instanceof \Hubzero\ItemList))
 		{
 			$tbl = new CollectionsTableFollowing($this->_db);
 
@@ -334,14 +340,14 @@ class CollectionsModel extends JObject
 				}
 			}
 
-			$this->_following = new CollectionsModelIterator($results);
+			$this->_following = new \Hubzero\ItemList($results);
 		}
 
 		if ($what == 'collections')
 		{
-			$ids = array();
+			$ids     = array();
 			$members = array();
-			$groups = array();
+			$groups  = array();
 			foreach ($this->_following as $following)
 			{
 				if ($following->get('following_type') == 'collection')
@@ -498,9 +504,9 @@ class CollectionsModel extends JObject
 	 */
 	public function isFollowing($follower_id=null, $follower_type='member')
 	{
-		if (!isset($this->_followed))
+		if (!isset($this->_isFollowing))
 		{
-			$this->_followed = false;
+			$this->_isFollowing = false;
 
 			if (!$follower_id && $follower_type == 'member')
 			{
@@ -510,10 +516,10 @@ class CollectionsModel extends JObject
 			$follow = new CollectionsModelFollowing($this->_object_id, $this->_object_type, $follower_id, $follower_type);
 			if ($follow->exists())
 			{
-				$this->_followed = true;
+				$this->_isFollowing = true;
 			}
 		}
-		return $this->_followed;
+		return $this->_isFollowing;
 	}
 
 	/**
@@ -525,9 +531,9 @@ class CollectionsModel extends JObject
 	 */
 	public function isFollowed($follower_id=null, $follower_type='member')
 	{
-		if (!isset($this->_followed))
+		if (!isset($this->_isFollowed))
 		{
-			$this->_followed = false;
+			$this->_isFollowed = false;
 
 			if (!$follower_id && $follower_type == 'member')
 			{
@@ -537,10 +543,10 @@ class CollectionsModel extends JObject
 			$follow = new CollectionsModelFollowing($follower_id, $follower_type, $this->_object_id, $this->_object_type);
 			if ($follow->exists())
 			{
-				$this->_followed = true;
+				$this->_isFollowed = true;
 			}
 		}
-		return $this->_followed;
+		return $this->_isFollowed;
 	}
 
 	/**

@@ -82,7 +82,9 @@ else
 	<input type="hidden" name="action" value="savecollection" />
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
-		<a href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('Cancel'); ?></a>
+		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+		<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>">
+			<?php echo JText::_('Cancel'); ?>
+		</a>
 	</p>
 </form>
