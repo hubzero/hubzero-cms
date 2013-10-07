@@ -70,7 +70,7 @@ class BlogModelComment extends \Hubzero\Model
 	 * Returns a reference to a blog comment model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = BlogModelComment::getInstance($alias);
+	 *     $comment = BlogModelComment::getInstance($id);
 	 *
 	 * @param      mixed $oid ID (int) or alias (string)
 	 * @return     object BlogModelComment
@@ -239,6 +239,10 @@ class BlogModelComment extends \Hubzero\Model
 						foreach ($results as $key => $result)
 						{
 							$results[$key] = new BlogModelComment($result);
+							$results[$key]->set('option', $this->get('option'));
+							$results[$key]->set('scope', $this->get('scope'));
+							$results[$key]->set('alias', $this->get('alias'));
+							$results[$key]->set('path', $this->get('path'));
 						}
 					}
 					else
@@ -248,6 +252,77 @@ class BlogModelComment extends \Hubzero\Model
 					$this->_comments = new \Hubzero\ItemList($results);
 				}
 				return $this->_comments;
+			break;
+		}
+	}
+
+	/**
+	 * Get the content of the entry
+	 * 
+	 * @param      string  $as      Format to return state in [text, number]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     string
+	 */
+	public function content($as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+
+		switch ($as)
+		{
+			case 'parsed':
+				if (($content = $this->get('content_parsed')))
+				{
+					if ($shorten)
+					{
+						$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 0);
+						if (substr($content, -7) == '&#8230;') 
+						{
+							$content .= '</p>';
+						}
+						
+					}
+					return $content;
+				}
+
+				$config = array(
+					'option'   => $this->get('option', JRequest::getCmd('option')),
+					'scope'    => $this->get('scope', 'blog'),
+					'pagename' => $this->get('alias'),
+					'pageid'   => 0,
+					'filepath' => $this->get('path'),
+					'domain'   => ''
+				);
+
+				JPluginHelper::importPlugin('hubzero');
+				$content = JDispatcher::getInstance()->trigger('onWikiParseText', array(
+					stripslashes($this->get('content')), 
+					$config,  // options
+					false,     // full parse
+					false      // new parser?
+				));
+
+				$this->set('content_parsed', implode('', $content));
+
+				return $this->content($as, $shorten);
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->content('content_parsed'));
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+				}
+				return $content;
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get('content'));
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+				}
+				return $content;
 			break;
 		}
 	}

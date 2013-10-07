@@ -345,6 +345,10 @@ class BlogModelEntry extends \Hubzero\Model
 						foreach ($results as $key => $result)
 						{
 							$results[$key] = new BlogModelComment($result);
+							$results[$key]->set('option', $this->_adapter()->get('option'));
+							$results[$key]->set('scope', $this->_adapter()->get('scope'));
+							$results[$key]->set('alias', $this->_adapter()->get('alias'));
+							$results[$key]->set('path', $this->_adapter()->get('path'));
 						}
 					}
 					else
@@ -527,17 +531,23 @@ class BlogModelEntry extends \Hubzero\Model
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('content_parsed'))
+				if (($content = $this->get('content_parsed')))
 				{
-					return $this->get('content_parsed');
+					if ($shorten)
+					{
+						$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 0);
+						if (substr($content, -7) == '&#8230;') 
+						{
+							$content .= '</p>';
+						}
+					}
+					return $content;
 				}
-
-				$p =& Hubzero_Wiki_Parser::getInstance();
 
 				$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
 				$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
 
-				$wikiconfig = array(
+				$config = array(
 					'option'   => $this->_adapter()->get('option'),
 					'scope'    => $scope, //$this->_adapter()->get('scope'),
 					'pagename' => $this->get('alias'),
@@ -546,23 +556,21 @@ class BlogModelEntry extends \Hubzero\Model
 					'domain'   => ''
 				);
 
-				$this->set('content_parsed', $p->parse(stripslashes($this->get('content')), $wikiconfig, true, true));
+				JPluginHelper::importPlugin('hubzero');
+				$content = JDispatcher::getInstance()->trigger('onWikiParseText', array(
+					stripslashes($this->get('content')), 
+					$config,  // options
+					true,     // full parse
+					true      // new parser?
+				));
 
-				if ($shorten)
-				{
-					$content = Hubzero_View_Helper_Html::shortenText($this->get('content_parsed'), $shorten, 0, 0);
-					if (substr($content, -7) == '&#8230;') 
-					{
-						$content .= '</p>';
-					}
-					return $content;
-				}
+				$this->set('content_parsed', implode('', $content));
 
-				return $this->get('content_parsed');
+				return $this->content($as, $shorten);
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('parsed'));
+				$content = strip_tags($this->content('content_parsed'));
 				if ($shorten)
 				{
 					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
@@ -572,7 +580,12 @@ class BlogModelEntry extends \Hubzero\Model
 
 			case 'raw':
 			default:
-				return $this->get('content');
+				$content = stripslashes($this->get('content'));
+				if ($shorten)
+				{
+					$content = Hubzero_View_Helper_Html::shortenText($content, $shorten, 0, 1);
+				}
+				return $content;
 			break;
 		}
 	}

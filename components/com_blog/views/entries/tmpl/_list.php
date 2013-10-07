@@ -51,8 +51,6 @@ if (isset($this->comments) && $this->comments instanceof \Hubzero\ItemList)
 		$view->depth      = $this->depth;
 		$view->cls        = $cls;
 		$view->base       = $this->base;
-		$view->parser     = $this->parser;
-		$view->wikiconfig = $this->wikiconfig;
 		$view->display();
 	}
 } 

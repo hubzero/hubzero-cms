@@ -293,15 +293,6 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			$view->comments   = $this->row->comments('list');
 			$view->config     = $this->config;
 			$view->base       = $this->row->link();
-			$view->parser     = Hubzero_Wiki_Parser::getInstance();
-			$view->wikiconfig = array(
-				'option'   => $this->option,
-				'scope'    => 'blog',
-				'pagename' => $this->row->get('alias'),
-				'pageid'   => 0,
-				'filepath' => $this->config->get('uploadpath'),
-				'domain'   => ''
-			);
 			$view->display();
 		?>
 	<?php } else { ?>

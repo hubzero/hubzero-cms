@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	else
 	{
-		$comment  = $this->parser->parse(stripslashes($this->comment->get('content')), $this->wikiconfig, false);
+		$comment  = $this->comment->content('parsed');
 	}
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
@@ -129,8 +129,6 @@ defined('_JEXEC') or die('Restricted access');
 			$view->depth      = $this->depth;
 			$view->cls        = $cls;
 			$view->base       = $this->base;
-			$view->parser     = $this->parser;
-			$view->wikiconfig = $this->wikiconfig;
 			$view->display();
 		}
 		?>
