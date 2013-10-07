@@ -300,9 +300,31 @@ class Hubzero_API extends JApplication
 		{
 			array_shift($segments);
 		}
+		// If "api" is in the array but not the first element
+		// it means we're running from an instance where the site
+		// isn't in the top-level webroot
+		if (in_array('api', $segments) && $segments[0] != 'api')
+		{
+			// Ditch everything leading up to "api"
+			foreach ($segments as $segment)
+			{
+				if ($segment == 'api')
+				{
+					break;
+				}
+				array_shift($segments);
+			}
+		}
 		if ((count($segments) >= 2) && ($segments[0] == 'api'))
 		{
 			array_shift($segments);
+
+			// Is the script name in the array?
+			// If so, get rid of it
+			if ($segments[0] == 'index.php')
+			{
+				array_shift($segments);
+			}
 
 			if (is_numeric($segments[0]))
 			{
@@ -313,9 +335,12 @@ class Hubzero_API extends JApplication
 
 			$filename = JPATH_SITE . DS . 'components' . DS . 'com_'
 				. $segments[0] . DS . 'controllers' . DS . 'api.php';
-			
+
+			// Strip invalid characters from name
+			$segments[0] = preg_replace("/[^a-zA-Z0-9_]/", '', strtolower($segments[0]));
+
 			$classname = ucfirst($segments[0]) . 'ControllerApi';
-			
+
 			if (!class_exists($classname))
 			{			
 				if (is_file($filename))
