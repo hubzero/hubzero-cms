@@ -247,7 +247,7 @@ if (!$this->app->sess) {
 					<?php } ?>
 				</label>
 				<label for="group">
-					<?php echo JText::_('Share with one of you Groups:'); ?>
+					<?php echo JText::_('Share with one of your Groups:'); ?>
 					<select name="group" id="group">
 						<option value=""><?php echo JText::_('- Select Group &mdash;'); ?></option>
 						<?php foreach ($this->mygroups as $group) : ?>
