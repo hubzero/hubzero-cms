@@ -47,6 +47,20 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 */
 	public function execute()
 	{
+		if ($section_id = JRequest::getInt('section', 0, 'get'))
+		{
+			$section = CoursesModelSection::getInstance($section_id);
+			if ($section->exists())
+			{
+				$offering = CoursesModelOffering::getInstance($section->get('offering_id'));
+				$offering->section($section->get('alias'));
+
+				$this->setRedirect(
+					JRoute::_($offering->link())
+				);
+			}
+		}
+
 		$this->registerTask('__default', 'intro');
 
 		$this->_authorize('course');
