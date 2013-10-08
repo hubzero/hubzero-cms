@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 	<div id="small-page">
-		<form action="index.php" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<label>
 					<input type="file" class="option" name="upload" />

@@ -35,47 +35,48 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-		<form action="index.php" id="authors-form" method="post" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="authors-form" method="post" enctype="multipart/form-data">
 			<fieldset>
-				<div class="six columns first second third fourth">
-					<label>
-						<?php echo JText::_('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
-						<?php 
-						JPluginHelper::importPlugin('hubzero');
-						$dispatcher =& JDispatcher::getInstance();
-						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
-						if (count($mc) > 0) {
-							echo $mc[0];
-						} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
-						<input type="text" name="new_authors" id="acmembers" value="" />
-						<?php } ?>
-					</label>
-				</div>
-				<div class="six columns fifth">
-					<label for="new-authors-role">
-						<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
-						<select name="role" id="new-authors-role">
-							<option value=""><?php echo JText::_('Author'); ?></option>
+				<div class="grid">
+					<div class="col span8">
+						<label>
+							<?php echo JText::_('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
+							<?php 
+							JPluginHelper::importPlugin('hubzero');
+							$dispatcher =& JDispatcher::getInstance();
+							$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
+							if (count($mc) > 0) {
+								echo $mc[0];
+							} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+							<input type="text" name="new_authors" id="acmembers" value="" />
+							<?php } ?>
+						</label>
+					</div>
+					<div class="col span2">
+						<label for="new-authors-role">
+							<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
+							<select name="role" id="new-authors-role">
+								<option value=""><?php echo JText::_('Author'); ?></option>
 <?php 
 		if ($this->roles)
 		{
 			foreach ($this->roles as $role)
 			{
 ?>
-							<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+								<option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
 <?php
 			}
 		}
 ?>
-						</select>
-					</label>
+							</select>
+						</label>
+					</div>
+					<div class="col span2 omega">
+						<p class="submit">
+							<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_ADD'); ?>" />
+						</p>
+					</div>
 				</div>
-				<div class="six columns sixth">
-					<p class="submit">
-						<input type="submit" value="<?php echo JText::_('COM_CONTRIBUTE_ADD'); ?>" />
-					</p>
-				</div>
-				<div class="clear"></div>
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
