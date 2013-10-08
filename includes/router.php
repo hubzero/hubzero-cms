@@ -70,12 +70,17 @@ class JRouterSite extends JRouter
 		}
 
 		//Remove prefix
-                $path = str_replace('index.php', '', $path);
+		$path = str_replace('index.php', '', $path);
 
 		//Set the route
 		$uri->setPath(trim($path , '/'));
 
 		$vars += parent::parse($uri);
+
+		if (empty($vars['option']) && isset($_POST['option']))
+		{
+			$vars['option'] = JRequest::getCmd('option', '', 'post');
+		}
 
 		if (empty($vars['option']))
 		{
