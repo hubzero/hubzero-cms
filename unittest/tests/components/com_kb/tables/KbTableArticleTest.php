@@ -1,6 +1,6 @@
 <?php
 /**
- * Test class for the time records table class
+ * Test class for the Knowledge Base article table class
  * 
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
@@ -136,7 +136,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that getRecords
+	 * Test that getRecords returns an array
 	 * 
 	 * @group com_kb
 	 * @covers KbTableArticle::find
@@ -205,7 +205,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 	 */
 	function testSectionIsNumeric($instance)
 	{
-		$this->assertTrue(is_numeric($instance->section), "Ssection is numeric");
+		$this->assertTrue(is_numeric($instance->section), "Section is numeric");
 	}
 
 	/**
@@ -221,7 +221,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that getCount returns number
+	 * Test that the alias is a string
 	 *
 	 * @group com_kb
 	 * @depends testRecordCheck

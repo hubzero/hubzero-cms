@@ -1,6 +1,6 @@
 <?php
 /**
- * Test class for the time records table class
+ * Test class for the Knowledge Base category table class
  * 
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
@@ -132,7 +132,7 @@ class KbTableCategoryTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @group com_kb
 	 */
-	function testTagHasAttributes()
+	function testObjectHasAttributes()
 	{
 		foreach ($this->attributes as $a)
 		{

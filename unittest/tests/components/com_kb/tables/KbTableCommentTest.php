@@ -1,6 +1,6 @@
 <?php
 /**
- * Test class for the time records table class
+ * Test class for the Knowledge Base comment table class
  * 
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
@@ -134,7 +134,7 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that getCount returns number
+	 * Test that entry ID is numeric
 	 *
 	 * @group com_kb
 	 * @depends testRecordCheck
@@ -142,11 +142,11 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	 */
 	function testEntryIdIsNumeric($instance)
 	{
-		$this->assertTrue(is_numeric($instance->antry_id), "Entry ID is numeric");
+		$this->assertTrue(is_numeric($instance->entry_id), "Entry ID is numeric");
 	}
 
 	/**
-	 * Test that getCount returns number
+	 * Test that content is a string
 	 *
 	 * @group com_kb
 	 * @depends testRecordCheck
@@ -158,7 +158,7 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that getCount returns number
+	 * Test that parent ID is numeric
 	 *
 	 * @group com_kb
 	 * @depends testRecordCheck
@@ -195,7 +195,7 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test record save fails when no time is provided
+	 * Test record save fails when content is provided
 	 *
 	 * @group com_kb
 	 * @covers KbTableComment::check
@@ -212,7 +212,7 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test record save fails when no time is provided
+	 * Test record save fails when entry ID is provided
 	 *
 	 * @group com_kb
 	 * @covers KbTableComment::check

@@ -127,7 +127,7 @@ class KbTableVoteTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that getCount returns number
+	 * Test that type is a string
 	 *
 	 * @group com_kb
 	 * @depends testRecordCheck
@@ -139,7 +139,7 @@ class KbTableVoteTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test that getCount returns number
+	 * Test that object ID is numeric
 	 *
 	 * @group com_kb
 	 * @depends testRecordCheck
