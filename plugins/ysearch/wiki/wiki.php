@@ -70,11 +70,11 @@ class plgYSearchWiki extends YSearchPlugin
 			
 			if (($gids = $authz->get_group_ids()))
 			{
-				$authorization = '(wp.access IN (' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
+				$authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
 			}
 			else 
 			{
-				$authorization = '(wp.access IN (' . $viewlevels . '))';
+				$authorization = '(wp.access IN (0,' . $viewlevels . '))';
 			}
 		}
 		else 
@@ -114,7 +114,7 @@ class plgYSearchWiki extends YSearchPlugin
 		$rows = new YSearchResultSQL(
 			"SELECT 
 				wp.title,
-				wv.pagetext AS description,
+				wv.pagehtml AS description,
 				CASE 
 					WHEN wp.group_cn THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
 					ELSE concat('index.php?option=com_wiki&scope=', wp.scope, '&pagename=', wp.pagename)
@@ -135,6 +135,7 @@ class plgYSearchWiki extends YSearchPlugin
 				" AND (xg.gidNumber IS NULL OR (".implode(' OR ', $groupAuth)."))  
 			 ORDER BY $weight DESC"
 		);
+
 		foreach ($rows->to_associative() as $row)
 		{
 			if (!$row) 
@@ -143,7 +144,8 @@ class plgYSearchWiki extends YSearchPlugin
 			}
 			# rough de-wikifying. probably a bit faster than rendering to html and then stripping the tags, but not perfect
 			$row->set_link(JRoute::_($row->get_raw_link()));
-			$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
+			//$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
+			$row->set_description(strip_tags($row->get_description()));
 			$results->add($row);
 		}
 	}
