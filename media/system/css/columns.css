@@ -226,7 +226,7 @@
 		*margin-left: 8.494623655913976%;
 	}
 
-@media (max-width: 760px) {
+@media (max-width: 460px) {
 	.columns,
 	.grid [class*="span"] {
 		float: none;
