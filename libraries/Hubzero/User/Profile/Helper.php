@@ -155,15 +155,15 @@ class Hubzero_User_Profile_Helper
 
 		if ($thumbAlt && file_exists(JPATH_ROOT . $thumbAlt)) 
 		{
-			return rtrim(JURI::getInstance()->base(true), DS) . $thumbAlt;
+			return str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $thumbAlt;
 		} 
 		else if ($thumb && file_exists(JPATH_ROOT . $thumb)) 
 		{
-			return rtrim(JURI::getInstance()->base(true), DS) . $thumb;
+			return str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $thumb;
 		} 
 		else if (file_exists(JPATH_ROOT . $dfthumb)) 
 		{
-			return rtrim(JURI::getInstance()->base(true), DS) . $dfthumb;
+			return str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $dfthumb;
 		}
 	}
 
