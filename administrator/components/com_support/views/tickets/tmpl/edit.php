@@ -140,7 +140,7 @@ if ($this->row->id) {
 		
 		if (count($this->comments) > 0) { 
 			$last = end($this->comments);
-			$lastactivity = '<time>' . JHTML::_('date', $last->created, $timeFormat, $tz) . '</time>';
+			$lastactivity = '<time>' . JHTML::_('date', $last->created, JText::_('TIME_FORMAT_HZ1')) . '</time>';
 		} else {
 			$lastactivity = JText::_('N/A');
 		}

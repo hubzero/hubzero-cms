@@ -605,7 +605,7 @@ class KbControllerArticles extends Hubzero_Controller
 				}
 
 				// Prepare the title
-				$title = JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $author) . ' @ ' . JHTML::_('date', $row->created, $timeFormat, $tz) . ' on ' . JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
+				$title = JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $author) . ' @ ' . JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
 
 				// Strip html from feed item description text
 				if ($row->reports) 
@@ -648,7 +648,7 @@ class KbControllerArticles extends Hubzero_Controller
 						}
 
 						// Prepare the title
-						$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, $timeFormat, $tz) . ' on ' . JHTML::_('date', $reply->created, JText::_('DATE_FORMAT_HZ1'));
+						$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $reply->created, JText::_('DATE_FORMAT_HZ1'));
 
 						// Strip html from feed item description text
 						if ($reply->reports) 
@@ -690,7 +690,7 @@ class KbControllerArticles extends Hubzero_Controller
 								}
 
 								// Prepare the title
-								$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, $timeFormat, $tz) . ' on ' . JHTML::_('date', $response->created, JText::_('DATE_FORMAT_HZ1'));
+								$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $response->created, JText::_('DATE_FORMAT_HZ1'));
 
 								// Strip html from feed item description text
 								if ($response->reports) 

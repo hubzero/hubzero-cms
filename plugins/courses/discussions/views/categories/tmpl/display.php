@@ -116,7 +116,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
+										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 									</span>
 								<?php /*
 									<?php echo JText::_('by'); ?>

@@ -31,15 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
-	$tz = true;
-}
 ?>
 <h3 class="section-header">
 	<a name="messages"></a>
@@ -74,7 +65,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							<tr>
 								<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=viewmessage&msg='.$row->id); ?>"><?php echo $this->escape(stripslashes($row->subject)); ?></a></td>
 								<td><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></td>
-								<td><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></td>
+								<td><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time></td>
 							</tr>
 						<?php } ?>
 					<?php } else { ?>

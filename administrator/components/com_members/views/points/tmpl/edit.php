@@ -30,16 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateTimeFormat = '%d %b, %Y %I:%M %p';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateTimeFormat = 'd M, Y h:i A';
-	$tz = false;
-}
-
-JToolBarHelper::title( JText::_( 'MEMBERS' ).': <small><small>[ Manage Points ]</small></small>', 'user.png' );
+JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
 
 ?>
 <div role="navigation" class="sub-navigation">
@@ -142,7 +133,7 @@ function submitbutton(pressbutton)
 		{
 ?>
 				<tr>
-					<td><?php echo JHTML::_('date',$item->created, $dateTimeFormat, $tz); ?></td>
+					<td><?php echo JHTML::_('date',$item->created, JText::_('DATE_FORMAT_HZ1') . ' ' . JText::_('TIME_FORMAT_HZ1')); ?></td>
 					<td><?php echo $item->description; ?></td>
 					<td><?php echo $item->category; ?></td>
 					<td><?php echo $item->type; ?></td>

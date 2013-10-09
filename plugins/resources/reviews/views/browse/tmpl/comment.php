@@ -33,16 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile_Helper');
 
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
-	$tz = true;
-}
-
 $wikiconfig = array(
 	'option'   => $this->option,
 	'scope'    => 'reply',
@@ -80,8 +70,8 @@ if ($this->reply->anonymous != 1)
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
 		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_RESOURCES_REVIEWS_PERMALINK'); ?>">
-			<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $timeFormat, $tz); ?></time></span> 
-			<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $dateFormat, $tz); ?></time></span>
+			<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+			<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 		</a>
 	</p>
 <?php if ($this->abuse && $this->reply->abuse_reports > 0) { ?>

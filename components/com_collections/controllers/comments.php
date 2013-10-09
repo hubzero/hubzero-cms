@@ -164,22 +164,6 @@ class plgGroupsBulletinboard extends JPlugin
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
 
-			$this->dateFormat  = '%d %b, %Y';
-			$this->timeFormat  = '%I:%M %p';
-			$this->monthFormat = '%b';
-			$this->yearFormat  = '%Y';
-			$this->dayFormat   = '%d';
-			$this->tz = 0;
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$this->dateFormat  = 'd M, Y';
-				$this->timeFormat  = 'h:i a';
-				$this->monthFormat = 'b';
-				$this->yearFormat  = 'Y';
-				$this->dayFormat   = 'd';
-				$this->tz = true;
-			}
-
 			//include helpers
 			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whiteboard' . DS . 'tables' . DS . 'whiteboard.comment.php');
 			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whiteboard' . DS . 'helpers' . DS . 'whiteboard.member.php');
@@ -273,12 +257,6 @@ class plgGroupsBulletinboard extends JPlugin
 		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
 
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
 		$view->canpost = true;
 
 		Hubzero_Document::addPluginScript('groups', $this->_name, 'jquery.masonry');
@@ -432,13 +410,6 @@ class plgGroupsBulletinboard extends JPlugin
 		$view->config = $this->params;
 		$view->authorized = $this->authorized;
 		$view->juser = $this->juser;
-
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
 
 		if (isset($this->entry) && is_object($this->entry)) 
 		{
@@ -667,13 +638,6 @@ class plgGroupsBulletinboard extends JPlugin
 		$view->task       = $this->action;
 		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
-
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->yearFormat  = $this->yearFormat;
-		$view->monthFormat = $this->monthFormat;
-		$view->dayFormat   = $this->dayFormat;
-		$view->tz          = $this->tz;
 
 		$id = JRequest::getInt('entry', 0);
 
@@ -975,13 +939,6 @@ class plgGroupsBulletinboard extends JPlugin
 			$view->config = $this->params;
 			$view->entry = $entry;
 			$view->authorized = $this->authorized;
-			
-			$view->dateFormat  = $this->dateFormat;
-			$view->timeFormat  = $this->timeFormat;
-			$view->yearFormat  = $this->yearFormat;
-			$view->monthFormat = $this->monthFormat;
-			$view->dayFormat   = $this->dayFormat;
-			$view->tz          = $this->tz;
 			
 			if ($this->getError()) 
 			{

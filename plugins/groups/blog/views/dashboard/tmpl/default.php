@@ -31,15 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateTimeFormat = '%b. %d, %Y @%I:%M %p';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateTimeFormat = 'M. d, Y @h:i A';
-	$tz = false;
-}
-
 ?>
 <table class="activity" summary="<?php echo JText::_('PLG_GROUPS_BLOG_ENTRIES_TABLE_SUMMARY'); ?>">
 	<tbody>
@@ -52,7 +43,7 @@ if ($this->entries) {
 			<th scope="row"><?php echo $area; ?></th>
 			<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$entry->created_by); ?>"><?php echo stripslashes($name); ?></a></td>
 			<td class="action"><?php echo stripslashes($entry->title); ?></td>
-			<td class="date"><?php echo JHTML::_('date', $entry->publish_up, $dateTimeFormat, $tz); ?></td>
+			<td class="date"><?php echo JHTML::_('date', $entry->publish_up, JText::_('DATE_FORMAT_HZ1') . ' @' . JText::_('TIME_FORMAT_HZ1')); ?></td>
 		</tr>
 <?php
 	}

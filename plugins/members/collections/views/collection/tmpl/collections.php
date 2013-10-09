@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->dateFormat  = '%d %b, %Y';
-$this->timeFormat  = '%I:%M %p';
-$this->tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$this->dateFormat  = 'd M, Y';
-	$this->timeFormat  = 'h:i a';
-	$this->tz = true;
-}
-
 ximport('Hubzero_User_Profile_Helper');
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;

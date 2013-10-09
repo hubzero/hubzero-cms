@@ -145,7 +145,7 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td>
 				<td>
-					<?php echo JHTML::_('date', $row->get('start_date'), $dateFormat, $tz); ?>
+					<?php echo JHTML::_('date', $row->get('start_date'), JText::_('DATE_FORMAT_HZ1')); ?>
 				</td>
 				<td>
 					<?php echo ($row->get('end_date') && $row->get('end_date') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('end_date'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?>

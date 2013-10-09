@@ -40,7 +40,7 @@ if (!defined('ANNOUNCEMENTS_DATE_FORMAT'))
 	{
 		define('ANNOUNCEMENTS_DATE_TIMEZONE', true);
 		define('ANNOUNCEMENTS_DATE_FORMAT', 'd M Y');
-		define('ANNOUNCEMENTS_TIME_FORMAT', 'H:i p');
+		define('ANNOUNCEMENTS_TIME_FORMAT', 'g:i a');
 	}
 	else
 	{

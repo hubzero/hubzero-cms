@@ -33,16 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile_Helper');
 
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
-	$tz = true;
-}
-
 $database =& JFactory::getDBO();
 $juser =& JFactory::getUser();
 $html = '';
@@ -185,7 +175,7 @@ if ($this->reviews) {
 		
 		$html .= "\t\t".'<p class="comment-title">'."\n";
 		$html .= "\t\t".'	<strong>'. $name.'</strong> '."\n";
-		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$review->id).'" title="'. JText::_('PLG_RESOURCES_REVIEWS_PERMALINK').'"><span class="comment-date-at">@</span> <span class="time"><time datetime="' . $review->created . '">'. JHTML::_('date', $review->created, $timeFormat, $tz).'</time></span> <span class="comment-date-on">on</span> <span class="date"><time datetime="' . $review->created . '">'.JHTML::_('date',$review->created, $dateFormat, $tz).'</time></span></a>'."\n";
+		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$review->id).'" title="'. JText::_('PLG_RESOURCES_REVIEWS_PERMALINK').'"><span class="comment-date-at">@</span> <span class="time"><time datetime="' . $review->created . '">'. JHTML::_('date', $review->created, JText::_('TIME_FORMAT_HZ1')).'</time></span> <span class="comment-date-on">on</span> <span class="date"><time datetime="' . $review->created . '">'.JHTML::_('date',$review->created, JText::_('DATE_FORMAT_HZ1')).'</time></span></a>'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-title -->'."\n";
 		$html .= "\t\t\t".'<p><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></p>'."\n";
 		if ($abuse && $abuse_reports > 0) {

@@ -113,7 +113,7 @@ else
 			$html .= ($row2->section) ? JText::_($row2->area) : JText::_(strtoupper($row2->section));
 			if ($row2->publish_up)
 			{
-				$html .= ', ' . JHTML::_('date', $row2->publish_up, $dateFormat, $tz);
+				$html .= ', ' . JHTML::_('date', $row2->publish_up, JText::_('DATE_FORMAT_HZ1'));
 			}
 			$html .= '</span></li>' . "\n";
 

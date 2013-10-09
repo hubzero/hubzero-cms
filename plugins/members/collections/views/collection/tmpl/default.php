@@ -221,8 +221,8 @@ if ($this->rows->total() > 0)
 						</a> -->
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></time></span>
+							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->

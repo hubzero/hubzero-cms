@@ -31,17 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//date/time formating strings
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
-	$tz = true;
-}
-
 //wiki parser setup
 $wikiconfig = array(
 	'option'   => $this->option,
@@ -105,12 +94,12 @@ if ($closed == 'closed' && $this->showClose == true)
 			<?php endif; ?>
 			<dd class="time">
 				<time datetime="<?php echo $this->announcement->created; ?>">
-					<?php echo JHTML::_('date', $this->announcement->created, $timeFormat, $tz); ?>
+					<?php echo JHTML::_('date', $this->announcement->created, JText::_('TIME_FORMAT_HZ1')); ?>
 				</time>
 			</dd>
 			<dd class="date">
 				<time datetime="<?php echo $this->announcement->created; ?>">
-					<?php echo JHTML::_('date', $this->announcement->created, $dateFormat, $tz); ?>
+					<?php echo JHTML::_('date', $this->announcement->created, JText::_('DATE_FORMAT_HZ1')); ?>
 				</time>
 			</dd>
 		

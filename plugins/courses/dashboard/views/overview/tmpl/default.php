@@ -31,27 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$yearFormat  = '%Y';
-$monthFormat = '%m';
-$dayFormat   = '%d';
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$yearFormat  = 'Y';
-	$monthFormat = 'm';
-	$dayFormat   = 'd';
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
-	$tz = true;
-}
-
 $now = date('Y-m-d H:i:s', time());
 
-$year  = JHTML::_('date', $now, $yearFormat, $tz);
-$month = JHTML::_('date', $now, $monthFormat, $tz);
-$day   = JHTML::_('date', $now, $dayFormat, $tz);
+$year  = JHTML::_('date', $now, 'Y');
+$month = JHTML::_('date', $now, 'm');
+$day   = JHTML::_('date', $now, 'd');
 
 $weeklater = date('Y-m-d H:i:s', mktime(0, 0, 0, $month, $day+7, $year));
 
@@ -111,7 +95,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			</div>
 			<div class="four columns second third fourth">
 				<div class="dashboard-timeline-start">
-					<p><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></p>
+					<p><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></p>
 				</div>
 			<?php if ($rows) { ?>
 				<ul class="dashboard-timeline">
@@ -139,7 +123,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 							<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
 						</a>
 						<span class="details">
-							<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, $dateFormat, $tz); ?></time>
+							<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</span>
 					</li>
 				<?php 
@@ -155,7 +139,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				</ul>
 			<?php } ?>
 				<div class="dashboard-timeline-start">
-					<p><?php echo JHTML::_('date', $weeklater, $dateFormat, $tz); ?></p>
+					<p><?php echo JHTML::_('date', $weeklater, JText::_('DATE_FORMAT_HZ1')); ?></p>
 				</div>
 			</div>
 			<div class="clear"></div>

@@ -159,8 +159,8 @@ if ($this->rows->total() > 0)
 						posted 
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></span> 
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
