@@ -456,7 +456,9 @@ class JRouterSite extends JRouter
 						// If menu route exactly matches url route,
 						// redirect (if necessary) to menu link
 						if (trim($item->route,"/") == trim($route,"/")) {
-							if (trim($item->route,"/") != trim($item->link,"/")) {
+							if (trim($item->route,"/") != trim($item->link,"/") 
+							 && trim($uri->base(true) . '/' . $item->route,"/") != trim($item->link,"/") // Added because it would cause redirect loop for instals not in top-level webroot
+							 && trim($uri->base(true) . '/index.php/' . $item->route,"/") != trim($item->link,"/")) { // Added because it would cause redirect loop for instals not in top-level webroot
 								$app->redirect($item->link);
 							}
 						}
