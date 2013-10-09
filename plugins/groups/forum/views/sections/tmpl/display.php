@@ -1,16 +1,6 @@
 <?php 
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-        $dateFormat = 'd M, Y';
-        $timeFormat = 'h:i a';
-        $tz = true;
-}
-
 $juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
@@ -70,8 +60,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				?>
 				<a class="entry-date" href="<?php echo JRoute::_($base . '&scope=' . $sec . '/' . $cat . '/' . $post->get('thread')); ?>">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
-					<span class="date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), $dateFormat, $tz); ?></time></span>
+					<span class="time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
+					<span class="date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo JHTML::_('date', $post->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 				</a>
 				<span class="entry-author">
 					<?php echo JText::_('by'); ?>

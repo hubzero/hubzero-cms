@@ -36,8 +36,9 @@ $text = ($this->task == 'edit' ? JText::_('Edit entry') : JText::_('New entry'))
 JToolBarHelper::title(JText::_('Blog Manager') . ': ' . $text, 'blog.png');
 if ($canDo->get('core.edit')) 
 {
-	JToolBarHelper::save();
 	JToolBarHelper::apply();
+	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 

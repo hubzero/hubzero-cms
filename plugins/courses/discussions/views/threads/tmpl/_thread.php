@@ -34,16 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 //$juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:i a';
-	$tz = true;
-}
-
 $this->active = (isset($this->active) ? $this->active : '');
 
 if (!isset($this->instructors) || !is_array($this->instructors))
@@ -126,7 +116,7 @@ if (!$this->thread->thread)
 							</p>
 							<?php } ?>
 							<p class="comment-title">
-								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo JHTML::_('date', $this->thread->created, $dateFormat, $tz); ?></time></span>
+								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo JHTML::_('date', $this->thread->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 							</p>
 							<p class="comment-body">
 								<a href="<?php echo JRoute::_($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>

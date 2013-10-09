@@ -238,26 +238,15 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 				</ul><!-- /#page_menu -->
 
 				<?php /* <div id="page_info">
-					<?php 
-						$dateFormat = '%d %b, %Y';
-						$timeFormat = '%I:%M %p';
-						$tz = 0;
-						if (version_compare(JVERSION, '1.6', 'ge'))
-						{
-							$dateFormat = 'd M, Y';
-							$timeFormat = 'h:m a';
-							$tz = true;
-						}
-					?>
 					<div class="course-info">
 						<ul>
 							<li class="info-join-policy">
 								<span class="label">Starts</span>
-								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_up'), $dateFormat, $tz); ?></span>
+								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_up'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 							</li>
 							<li class="info-created">
 								<span class="label">Ends</span>
-								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_down'), $dateFormat, $tz); ?></span>
+								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_down'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 							</li>
 						</ul>
 					</div>

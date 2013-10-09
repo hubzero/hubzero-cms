@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	$dateFormat = '%d&nbsp;%b&nbsp;%y';
-	$tz = 0;
-
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = 'd&\nb\sp;M&\nb\sp;y';
-		$tz = null;
-	}
-
 	/* Jobs List */
 	$jobs = $this->jobs;
 	$option = $this->option;
@@ -210,7 +201,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				//$txt = (is_object($p)) ? $p->parse( stripslashes($jobs[$i]->description) ) : nl2br(stripslashes($jobs[$i]->description));
 				$txt = $p->parse(stripslashes($jobs[$i]->description), $wikiconfig);
-				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, $dateFormat, $tz) : 'ASAP';
+				$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, 'd&\nb\sp;M&\nb\sp;y') : 'ASAP';
 				if($jobs[$i]->closedate !='0000-00-00 00:00:00' && $jobs[$i]->closedate < $now)
 				{
 					$closedate = 'closed';
@@ -268,15 +259,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$html .= t.t.t.t.'<td class="secondary">'.$curcat.'</td>'."\n";
 				$html .= t.t.t.t.'<td class="secondary">'.$curtype.'</td>'."\n";
 				$html .= t.t.t.t.'<td class="secondary">'."\n";
-				$html .= t.t.t.t.t.'<span class="datedisplay">'.JHTML::_('date',$jobs[$i]->added, $dateFormat, $tz).'</span>'."\n";
+				$html .= t.t.t.t.t.'<span class="datedisplay">'.JHTML::_('date',$jobs[$i]->added, 'd&\nb\sp;M&\nb\sp;y').'</span>'."\n";
 				$html .= t.t.t.t.'</td>'."\n";
 				$html .= t.t.t.t.'<td>'."\n";
 				if ($jobs[$i]->applied) {
-					$applieddate = JHTML::_('date',$jobs[$i]->applied, $dateFormat, $tz);
+					$applieddate = JHTML::_('date',$jobs[$i]->applied, 'd&\nb\sp;M&\nb\sp;y');
 					$html .= '<span class="alreadyapplied">'.JText::_('COM_JOBS_JOB_APPLIED_ON').' <span class="datedisplay">'.$applieddate.'</span></span>';
 				}
 				else if ($jobs[$i]->withdrawn) {
-					$withdrew = JHTML::_('date',$jobs[$i]->withdrawn, $dateFormat, $tz);
+					$withdrew = JHTML::_('date',$jobs[$i]->withdrawn, 'd&\nb\sp;M&\nb\sp;y');
 					$html .= '<span class="withdrawn">'.JText::_('COM_JOBS_JOB_WITHDREW_ON').' <span class="datedisplay">'.$withdrew.'</span></span>';
 				}
 				else {

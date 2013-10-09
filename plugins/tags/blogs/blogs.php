@@ -168,25 +168,15 @@ class plgTagsBlogs extends JPlugin
 
 			if ($rows) 
 			{
-				$yearFormat = '%Y';
-				$monthFormat = '%b';
-				$tz = 0;
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$yearFormat = 'Y';
-					$monthFormat = 'm';
-					$tz = true;
-				}
-
 				foreach ($rows as $key => $row)
 				{
 					switch ($row->rcount)
 					{
 						case 'site':
-							$rows[$key]->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+							$rows[$key]->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
 						break;
 						case 'member':
-							$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+							$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
 						break;
 						case 'group':
 						break;
@@ -209,25 +199,13 @@ class plgTagsBlogs extends JPlugin
 	{
 		$juri =& JURI::getInstance();
 
-		$yearFormat = '%Y';
-		$monthFormat = '%b';
-		$dateFormat = '%d %b %Y';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$yearFormat = 'Y';
-			$monthFormat = 'm';
-			$dateFormat = 'd M Y';
-			$tz = true;
-		}
-
 		switch ($row->rcount)
 		{
 			case 'site':
-				$row->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+				$row->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
 			break;
 			case 'member':
-				$row->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+				$row->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
 			break;
 			case 'group':
 			break;
@@ -237,7 +215,7 @@ class plgTagsBlogs extends JPlugin
 		// Start building the HTML
 		$html  = "\t" . '<li class="blog-entry">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		$html .= "\t\t" . '<p class="details">' . JHTML::_('date', $row->publish_up, $dateFormat, $tz);
+		$html .= "\t\t" . '<p class="details">' . JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1'));
 		$html .= ' <span>|</span> ' . JText::sprintf('PLG_TAGS_BLOGS_POSTED_BY', '<cite><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . stripslashes($row->data1) . '</a></cite>');
 		$html .= '</p>'."\n";
 		if ($row->ftext) 

@@ -253,11 +253,22 @@ class BlogControllerComments extends Hubzero_Controller
 	}
 
 	/**
-	 * Save an entry
+	 * Save changes to an entry and go back to edit form
 	 * 
 	 * @return     void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save changes to an entry
+	 * 
+	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
+	 * @return     void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -282,11 +293,17 @@ class BlogControllerComments extends Hubzero_Controller
 			return;
 		}
 
-		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'],
-			JText::_('Comment saved!')
-		);
+		if ($redirect)
+		{
+			// Set the redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'],
+				JText::_('Comment saved!')
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**

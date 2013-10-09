@@ -34,16 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $juri =& JURI::getInstance();
 $jconfig =& JFactory::getConfig();
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'h:i a';
-	$tz = true;
-}
-
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
@@ -270,11 +260,11 @@ Content-type: text/html;charset=utf-8";
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reported:</th>
-																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->created, $timeFormat, $tz); ?> on <?php echo JHTML::_('date', $this->report->created, $dateFormat, $tz); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reviewd:</th>
-																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->reviewed, $timeFormat, $tz); ?> on <?php echo JHTML::_('date', $this->report->reviewed, $dateFormat, $tz); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->reviewed, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->reviewed, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 															<?php if ($this->report->note) { ?>
 																<tr>
@@ -297,7 +287,7 @@ Content-type: text/html;charset=utf-8";
 											<tbody>
 												<tr>
 													<th style="text-align: left;" align="left"><?php echo $this->commentor->get('name'); ?> (<?php echo $this->commentor->get('username'); ?>)</th>
-													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo JHTML::_('date', $this->reported->created, $timeFormat, $tz); ?> on <?php echo JHTML::_('date', $this->reported->created, $dateFormat, $tz); ?></th>
+													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo JHTML::_('date', $this->reported->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->reported->created, JText::_('DATE_FORMAT_HZ1')); ?></th>
 												</tr>
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">

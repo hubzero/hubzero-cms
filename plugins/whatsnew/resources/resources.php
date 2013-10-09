@@ -300,15 +300,6 @@ class plgWhatsnewResources extends JPlugin
 	 */
 	public function out($row, $period)
 	{
-		$dateFormat = '%d %b %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M Y';
-			$tz = false;
-		}
-
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
@@ -319,14 +310,9 @@ class plgWhatsnewResources extends JPlugin
 		// Get the component params and merge with resource params
 		$config =& JComponentHelper::getParams('com_resources');
 		$paramClass = 'JParameter';
-		$dateFormat = '%d %b %Y';
-		$tz = null;
-
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramClass = 'JRegistry';
-			$dateFormat = 'd M Y';
-			$tz = false;
 		}
 
 		$rparams = new $paramClass($row->params);
@@ -337,9 +323,9 @@ class plgWhatsnewResources extends JPlugin
 		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, $dateFormat, $tz);    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, $dateFormat, $tz);   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, $dateFormat, $tz); break;
+			case 1: $thedate = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, JText::_('DATE_FORMAT_HZ1'));   break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
 		}
 
 		$juri =& JURI::getInstance();

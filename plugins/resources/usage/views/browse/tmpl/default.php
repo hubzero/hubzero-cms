@@ -31,15 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Set date time format
-$dateFormat = '%b %Y';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'M Y';
-	$tz = true;
-}
-
 // Push scripts to document
 ximport('Hubzero_Document');
 Hubzero_Document::addPluginStylesheet('resources', 'usage');
@@ -165,7 +156,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 				<p class="total">
 					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
-					<span><?php echo JText::_('in'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, $dateFormat, $tz); ?></time></span></span>
+					<span><?php echo JText::_('in'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
 			</div><!-- / .four columns first -->
 			<div class="four columns second third fourth">
@@ -194,7 +185,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 					{
 						$height = ($highest) ? round(($result->users / $highest)*100) : 0;
 						$sparkline .= "\t" . '<span class="index">';
-						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, $dateFormat, $tz) . ': ' . number_format($result->users) . '">';
+						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
 						$sparkline .= number_format($result->users); //trim($this->_fmt_result($result->value, $result->valfmt));
 						$sparkline .= '</span> ';
 						$sparkline .= '</span>' . "\n";
@@ -585,7 +576,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
 				<p class="total">
 					<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
-					<span><?php echo JText::_('in'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, $dateFormat, $tz); ?></time></span></span>
+					<span><?php echo JText::_('in'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
 			</div><!-- / .four columns first -->
 			<div class="four columns second third fourth">
@@ -612,7 +603,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 					{
 						$height = ($highest) ? round(($result->jobs / $highest)*100) : 0;
 						$sparkline .= "\t" . '<span class="index">';
-						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, $dateFormat, $tz) . ': ' . $result->jobs . '">';
+						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
 						$sparkline .= number_format($result->jobs); //trim($this->_fmt_result($result->value, $result->valfmt));
 						$sparkline .= '</span> ';
 						$sparkline .= '</span>' . "\n";

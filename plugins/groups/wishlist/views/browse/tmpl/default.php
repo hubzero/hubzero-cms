@@ -64,16 +64,6 @@ if (!defined('n')) {
 	define('a','&amp;');
 }
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'h:i a';
-	$tz = null;
-}
-
 $title = ($this->admin) ? JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
 if(count($this->wishlist->items) > 0 && $this->items > $this->filters['limit']) {
 	$title .= ' <span>(<a href="'.JRoute::_('index.php?option=com_wishlist'.a.'task=wishlist'.a.'category='. $this->wishlist->category.a.'rid='.$this->wishlist->referenceid).'">'.JText::_('view all') .' '.$this->items.'</a>)</span>';
@@ -164,8 +154,8 @@ else {
 							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 							<span class="entry-details">
 								<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
-								<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
-								<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateFormat, $tz); ?></time></span>
+								<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <?php echo JText::_('on'); ?> 
+								<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<span class="entry-details-divider">&bull;</span>
 								<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 							</span>
@@ -228,7 +218,7 @@ else {
 								case 1:
 									$html .= '<span class="granted">'.JText::_('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
 									/*if ($item->granted != '0000-00-00 00:00:00') {
-										$html .= ' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, $dateFormat, $tz).'</span>';
+										$html .= ' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, JText::_('DATE_FORMAT_HZ1')).'</span>';
 									}*/
 								break;
 								case 3:

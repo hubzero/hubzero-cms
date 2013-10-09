@@ -92,22 +92,15 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label></td>
-						<td><input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: *</label></td>
-						<td>
+						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required">*</span></label><br />
 							<select name="field[]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
 							<?php foreach ($this->sections as $section) { ?>
 								<option value="<?php echo $section->get('id'); ?>"<?php echo ($this->row->get('section') == $section->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
 							<?php } ?>
 							</select>
 						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="fieldcategory"><?php echo JText::_('COM_KB_SUB_CATEGORY'); ?>:</label></td>
-						<td>
+
+						<td class="key"><label for="fieldcategory"><?php echo JText::_('COM_KB_SUB_CATEGORY'); ?>:</label><br />
 							<select name="fields[category]" id="fieldcategory">
 								<option value="0"<?php echo ($this->row->get('category') == 0) ? ' selected="selected"' : ''; ?>>[ none ]</option>
 						<?php if ($selected) { ?>
@@ -120,20 +113,24 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: *</label><br />
+							<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required">*</span></label><br />
 							<input type="text" name="fields[title]" id="field-title" size="100" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 						</td>
 					</tr>
 					<tr>
+						<td colspan="2"><label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label><br />
+						<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" /></td>
+					</tr>
+					<tr>
 						<td colspan="2">
-							<label for="field-fulltxt"><?php echo JText::_('COM_KB_BODY'); ?>: *</label><br />
+							<label for="field-fulltxt"><?php echo JText::_('COM_KB_BODY'); ?>: <span class="required">*</span></label><br />
 							<?php echo $editor->display('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), '', '', '60', '30'); ?>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label><?php echo JText::_('COM_KB_TAGS'); ?>: *</label><br />
-							<input type="text" name="tags" size="100" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->tags('string'))); ?>" />
+							<label><?php echo JText::_('COM_KB_TAGS'); ?>: <span class="required">*</span></label><br />
+							<textarea name="tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 						</td>
 					</tr>
 				</tbody>

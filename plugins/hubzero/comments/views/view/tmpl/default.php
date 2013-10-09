@@ -25,15 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
-	$tz = true;
-}
 ?>
 <?php if ($this->params->get('access-view-comment')) { ?>
 	<div class="below section">
@@ -156,8 +147,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<blockquote cite="c<?php echo $this->replyto->id ?>">
 						<p>
 							<strong><?php echo $name; ?></strong> 
-							@ <span class="time"><?php echo JHTML::_('date', $reply->created, $timeformat, $tz); ?></span> 
-							on <span class="date"><?php echo JHTML::_('date', $reply->created, $dateformat, $tz); ?></span>
+							@ <span class="time"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAT_HZ1')); ?></span> 
+							on <span class="date"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
 						</p>
 						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($reply->content), 300, 0); ?></p>
 					</blockquote>

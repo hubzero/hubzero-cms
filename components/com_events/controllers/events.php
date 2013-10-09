@@ -54,7 +54,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$this->tz = 0;
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$this->dateFormat = 'd M Y';
+			$this->dateFormat = JText::_('DATE_FORMAT_HZ1');
 			$this->dateFormatShort = 'd M';
 			$this->timeFormat = 'h:i A';
 			$this->yearFormat  = "Y";

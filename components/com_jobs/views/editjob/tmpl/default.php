@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	$dateFormat = "%Y-%m-%d";
-	$tz = 0;
-
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = "Y-m-d";
-		$tz = false;
-	}
-
 	/* Post New Job / Edit Job Form */
 
 	// load some classes
@@ -51,8 +42,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$profile = $this->profile;
 	$id = $this->jobid;
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->startdate, $dateFormat, $tz) : '';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, $dateFormat, $tz) : '';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->startdate, 'Y-m-d') : '';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, 'Y-m-d') : '';
 
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode	
 	

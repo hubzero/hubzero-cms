@@ -51,16 +51,6 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -130,7 +120,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input type="checkbox" name="id" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onClick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, $dateFormat, $tz); ?></time>
+					<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>

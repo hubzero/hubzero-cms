@@ -30,16 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
 ?>
 <div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : ''; echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
 <?php if (count($this->rows) > 0) { ?>
@@ -66,13 +56,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 ?>
 		<li>
 <?php if ($this->style == 'compact') { ?>
-			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id); ?>"><?php echo stripslashes($row->subject); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->subject)); ?></a>
 <?php } else { ?>
-			<h4><a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id); ?>"><?php echo stripslashes($row->subject); ?></a></h4>
+			<h4><a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->subject)); ?></a></h4>
 			<p class="entry-details">
-				<?php echo JText::sprintf('MOD_POPULARQUESTIONS_ASKED_BY', $name); ?> @ 
-				<span class="entry-time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> on 
-				<span class="entry-date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
+				<?php echo JText::sprintf('MOD_POPULARQUESTIONS_ASKED_BY', $this->escape($name)); ?> @ 
+				<span class="entry-time"><?php echo JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')); ?></span> on 
+				<span class="entry-date"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
 				<span class="entry-details-divider">&bull;</span>
 				<span class="entry-comments">
 					<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id . '#answers'); ?>" title="<?php echo JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->rcount); ?>">
@@ -88,8 +78,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				foreach ($tags as $tag)
 				{
 					$tag['raw_tag'] = str_replace('&amp;', '&', stripslashes($tag['raw_tag']));
-					$tag['raw_tag'] = str_replace('&', '&amp;', $tag['raw_tag']);
-					$tagarray[] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_answers&task=tag&tag=' . $tag['tag']) . '" rel="tag">' . $tag['raw_tag'] . '</a></li>';
+					//$tag['raw_tag'] = str_replace('&', '&amp;', $tag['raw_tag']);
+					$tagarray[] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_answers&task=tag&tag=' . $tag['tag']) . '" rel="tag">' . $this->escape($tag['raw_tag']) . '</a></li>';
 				}
 				$tagarray[] = '</ol>';
 

@@ -41,20 +41,10 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
 $created = NULL;
 if (intval($this->row->created) <> 0)
 {
-	$created = JHTML::_('date', $this->row->created, $dateFormat, $tz);
+	$created = JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_HZ1'));
 }
 
 ?>

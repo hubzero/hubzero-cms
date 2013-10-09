@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
-
 $canDo = ResourcesHelper::getActions('resource');
 
 JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Resource Manager') . '</a>', 'resources.png');
@@ -69,16 +60,6 @@ if ($canDo->get('core.edit'))
 if ($canDo->get('core.delete')) 
 {
 	JToolBarHelper::deleteList();
-}
-
-$dateFormat = 'd M, Y';
-$timeFormat = 'H:m a';
-$tz = true;
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$dateFormat = '%d %b, %Y';
-	$timeFormat = '%I:%M %p';
-	$tz = 0;
 }
 
 JHTML::_('behavior.tooltip');
@@ -258,7 +239,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$checked = JHTMLGrid::_checkedOut($row);
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
-				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, $dateFormat, $tz).'<br />'
+				 ? JText::_('Checked out').': '.JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')).'<br />'
 				 : '';
 		if ($row->editor)
 		{
@@ -295,7 +276,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td style="white-space: nowrap">
 					<?php if ($row->modified == '0000-00-00 00:00:00') { echo JText::_('Not modified'); } else { ?>
 					<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
-						<?php echo JHTML::_('date', ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created), $dateFormat, $tz); //$this->escape($license); ?>
+						<?php echo JHTML::_('date', ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created), JText::_('DATE_FORMAT_HZ1')); //$this->escape($license); ?>
 					</time>
 					<?php } ?>
 				</td>

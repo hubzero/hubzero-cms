@@ -53,14 +53,6 @@ if ($this->error) {
 		</thead>
 		<tbody>
 <?php
-	$dateformat = '%d %b %Y';
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateformat = 'd M Y';
-		$tz = true;
-	}
-
 	$cls = 'even';
 	foreach ($this->history as $item)
 	{
@@ -68,7 +60,7 @@ if ($this->error) {
 ?>
 			<tr class="<?php echo $cls; ?>">
 				<td>
-					<time datetime="<?php echo $item->created; ?>"><?php echo JHTML::_('date', $item->created, $dateformat, $tz); ?></time>
+					<time datetime="<?php echo $item->created; ?>"><?php echo JHTML::_('date', $item->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
 					<?php echo $item->type; ?>

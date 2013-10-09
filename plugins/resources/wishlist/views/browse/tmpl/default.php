@@ -30,16 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'h:i A';
-	$tz = true;
-}
 ?>
 	<h3 class="section-header">
 		<a name="wishlist"></a>
@@ -109,8 +99,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 						<span class="entry-details">
 							<?php echo JText::_('WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
-							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
-							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateFormat, $tz); ?></time></span>
+							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <?php echo JText::_('on'); ?> 
+							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							<span class="entry-details-divider">&bull;</span>
 							<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 						</span>
@@ -173,7 +163,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							case 1:
 								$html .= '<span class="granted">'.JText::_('WISH_STATUS_GRANTED').'</span>';
 								/*if ($item->granted != '0000-00-00 00:00:00') {
-									$html .= ' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, $dateFormat, $tz).'</span>';
+									$html .= ' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, JText::_('DATE_FORMAT_HZ1')).'</span>';
 								}*/
 							break;
 							case 3:

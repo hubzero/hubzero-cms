@@ -3,16 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:m a';
-	$tz = true;
-}
-
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>
 <!-- <ul id="page_options">
@@ -161,7 +151,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 										}
 ?>
 									<span class="entry-date">
-										<time datetime="<?php echo $lastpost->created; ?>"><?php echo JHTML::_('date', $lastpost->created, $dateFormat, $tz); ?></time>
+										<time datetime="<?php echo $lastpost->created; ?>"><?php echo JHTML::_('date', $lastpost->created, JText::_('DATE_FORMAt_HZ1')); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">

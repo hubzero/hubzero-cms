@@ -2,16 +2,6 @@
 defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:i a';
-	$tz = true;
-}
-
 ximport('Hubzero_User_Profile_Helper');
 
 ximport('Hubzero_User_Profile');
@@ -242,8 +232,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
 					<span class="permalink"><span class="comment-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 					</span>
 				</p>
 				

@@ -1,14 +1,5 @@
 <?php
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
-
 ?>
 
 <div class="hub-mail">
@@ -21,7 +12,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<tbody>
 		<tr>
 			<th><?php echo JText::_('PLG_MEMBERS_MESSAGES_DATE_RECEIVED'); ?></th>
-			<td><?php echo JHTML::_('date', $this->xmessage->created, $dateFormat, $tz); ?></td>
+			<td><?php echo JHTML::_('date', $this->xmessage->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 		</tr>
 		<tr>
 			<th><?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?></th>

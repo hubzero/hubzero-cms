@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = false;
-}
-
 $canDo = CoursesHelper::getActions('unit');
 
 JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
@@ -142,7 +133,7 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td>
 				<td>
-					<?php echo JHTML::_('date', $row->get('created'), $dateFormat, $tz); ?>
+					<?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?>
 				</td>
 				<td>
 					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), $dateFormat, $tz) : JText::_('(never)'); ?>

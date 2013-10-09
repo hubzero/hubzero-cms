@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = JobsHelper::getActions('job');
 
-JToolBarHelper::title('<a href="index.php?option=com_jobs">' . JText::_('Jobs Manager') . '</a>', 'addedit.png');
+JToolBarHelper::title(JText::_('Jobs Manager'), 'addedit.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences('com_jobs', '550');
@@ -50,16 +50,6 @@ if ($canDo->get('core.edit'))
 if ($canDo->get('core.delete')) 
 {
 	JToolBarHelper::deleteList();
-}
-
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
 }
 
 JHTML::_('behavior.tooltip');
@@ -128,7 +118,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$curcat  = $row->cid > 0  ? $jc->getCat($row->cid)   : '';
 
 	// Build some publishing info
-	$info  = JText::_('Created') . ': ' . JHTML::_('date', $row->added, $dateFormat, $tz) . '<br />';
+	$info  = JText::_('Created') . ': ' . JHTML::_('date', $row->added, JText::_('DATE_FORMAT_HZ1')) . '<br />';
 	$info .= JText::_('Created by') . ': ' . $row->addedBy;
 	$info .= $admin ? ' ' . JText::_('(admin)') : '';
 	$info .= '<br />';
@@ -201,7 +191,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->added; ?>"><?php echo JHTML::_('date', $row->added, $dateFormat, $tz); ?></time>
+					<time datetime="<?php echo $row->added; ?>"><?php echo JHTML::_('date', $row->added, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
 					<?php echo $row->applications; ?>

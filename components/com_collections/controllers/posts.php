@@ -51,16 +51,6 @@ class CollectionsControllerPosts extends Hubzero_Controller
 
 		$this->registerTask('comment', 'post');
 
-		$this->dateFormat = '%d %b %Y';
-		$this->timeFormat = '%I:%M %p';
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = 'd M Y';
-			$this->timeFormat = 'H:i p';
-			$this->tz = true;
-		}
-
 		parent::execute();
 	}
 
@@ -86,10 +76,6 @@ class CollectionsControllerPosts extends Hubzero_Controller
 
 		$this->view->config     = $this->config;
 		$this->view->juser      = $this->juser;
-
-		$this->view->dateFormat = $this->dateFormat;
-		$this->view->timeFormat = $this->timeFormat;
-		$this->view->tz         = $this->tz;
 
 		$this->view->model      = $this->model;
 		$this->view->no_html    = JRequest::getInt('no_html', 0);
@@ -140,9 +126,6 @@ class CollectionsControllerPosts extends Hubzero_Controller
 
 		$this->view->juser      = $this->juser;
 		$this->view->config     = $this->config;
-		$this->view->dateFormat = $this->dateFormat;
-		$this->view->timeFormat = $this->timeFormat;
-		$this->view->tz         = $this->tz;
 
 		// Incoming
 		$this->view->no_html = JRequest::getInt('no_html', 0);

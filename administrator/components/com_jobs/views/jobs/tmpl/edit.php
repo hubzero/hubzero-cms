@@ -31,19 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '$Y-%m-%d';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'Y-M-d';
-	$tz = false;
-}
-
 $canDo = JobsHelper::getActions('job');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Job').': <small><small>[ '. $text.' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Job').': '. $text, 'addedit.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -56,9 +47,9 @@ $usonly = $this->config->get('usonly');
 $this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : htmlentities(JText::_('United States'));
 $this->row->code = !$this->isnew ? $this->row->code : JText::_('N/A (new job)');
 
-$startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->startdate, $dateFormat, $tz) : '';
-$closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->closedate, $dateFormat, $tz) : '';
-$opendate = ($this->row->opendate && $this->row->opendate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->opendate, $dateFormat, $tz) : '';
+$startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->startdate, 'Y-M-d') : '';
+$closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->closedate, 'Y-M-d') : '';
+$opendate = ($this->row->opendate && $this->row->opendate !='0000-00-00 00:00:00') ? JHTML::_('date',$this->row->opendate, 'Y-M-d') : '';
 
 $status = (!$this->isnew) ? $this->row->status : 4; // draft mode
 

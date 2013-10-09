@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WikiHelper::getActions('comment');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Wiki') . '</a>', 'wiki.png');
+JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Comments') , 'wiki.png');
 
 if ($canDo->get('core.delete')) 
 {
@@ -48,14 +48,6 @@ if ($canDo->get('core.create'))
 	JToolBarHelper::addNew();
 }
 JHTML::_('behavior.tooltip');
-
-$dateFormat = '%d %b %Y';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = 0;
-}
 
 ximport('Hubzero_View_Helper_Html');
 ?>
@@ -190,7 +182,7 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 				</td>
 				<td>
 					<time datetime="<?php echo $row->created; ?>">
-						<?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?>
+						<?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')) ?>
 					</time>
 				</td>
 			</tr>

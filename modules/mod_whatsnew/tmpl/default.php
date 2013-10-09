@@ -31,15 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = ' %b %d, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = ' M d, Y';
-	$tz = false;
-}
-
 // Output HTML
 $html  = '<div';
 $html .= ($this->cssId) ? ' id="' . $this->cssId . '"' : '';
@@ -72,7 +63,7 @@ if (!$this->tagged)
 			$html .= ($row->area) ? JText::_(stripslashes($row->area)) : JText::_(strtoupper(stripslashes($row->section)));
 			if ($row->publish_up)
 			{
-				$html .= ', ' . JHTML::_('date', $row->publish_up, $dateFormat, $tz);
+				$html .= ', ' . JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1'));
 			}
 			$html .= '</span></li>' . "\n";
 

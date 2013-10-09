@@ -53,15 +53,8 @@ $html = '';
 	</form>
 <?php } ?>
 <?php if (count($this->content) > 0) { ?>
-    <ul>
+	<ul>
 <?php 
-		$dateFormat = '%d %b %Y';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M Y';
-			$tz = true;
-		}
 		foreach ($this->content as $item) 
 		{
 			$url  = $item->secname;
@@ -94,7 +87,7 @@ $html = '';
 				</span>
 <?php 		if ($this->params->get('show_date', '')) { ?>
 				<span class="a-date">
-					<?php echo JHTML::_('date', $item->publish_up, $dateFormat, $tz); ?>
+					<?php echo JHTML::_('date', $item->publish_up, JText::_('DATE_FORMAT_HZ1')); ?>
 				</span>
 <?php 		} ?>
 <?php 		if ($this->params->get('show_desc', '') && $desc != '') { ?>

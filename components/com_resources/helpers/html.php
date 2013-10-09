@@ -820,15 +820,6 @@ class ResourcesHtml
 	 */
 	public function title($option, $resource, $params, $show_edit, $config=null, $show_posted=1)
 	{
-		$dateFormat = '%d %b %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M Y';
-			$tz = false;
-		}
-
 		$mode = JRequest::getWord('mode', '');
 
 		$txt = '';
@@ -867,7 +858,7 @@ class ResourcesHtml
 			$typenorm = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($resource->getTypeTitle()));
 
 			$html .= '<p>' . JText::_('COM_RESOURCES_POSTED') . ' ';
-			$html .= ($thedate) ? JHTML::_('date', $thedate, $dateFormat, $tz) . ' ' : '';
+			$html .= ($thedate) ? JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')) . ' ' : '';
 			$html .= JText::_('COM_RESOURCES_IN') . ' <a href="' . JRoute::_('index.php?option=' . $option . '&type=' . $typenorm) . '">' . $resource->getTypeTitle() . '</a></p>' . "\n";
 		}
 
@@ -985,7 +976,6 @@ class ResourcesHtml
 		$exp1Format = '%B %d, %Y';
 		$exp2Format = '%I:%M %p, %B %d, %Y';
 		$yearFormat = '%Y';
-		$dateFormat = '%d %b %Y';
 		$tz = null;
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -993,7 +983,6 @@ class ResourcesHtml
 			$exp1Format = 'M d, Y';
 			$exp2Format = 'h:i A, M d, Y';
 			$yearFormat = 'Y';
-			$dateFormat = 'd M Y';
 			$tz = false;
 		}
 
@@ -1331,8 +1320,8 @@ class ResourcesHtml
 				if ($resource->revision!='dev') 
 				{
 					$versiontext .=  ' - '.JText::_('COM_RESOURCES_PUBLISHED_ON').' ';
-					$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, $dateFormat, $tz): JHTML::_('date', $resource->publish_up, $dateFormat, $tz);
-					$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.JText::_('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, $dateFormat, $tz): '';
+					$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, JText::_('DATE_FORMAT_HZ1')): JHTML::_('date', $resource->publish_up, JText::_('DATE_FORMAT_HZ1'));
+					$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.JText::_('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, JText::_('DATE_FORMAT_HZ1')): '';
 				} 
 				else 
 				{
@@ -1342,7 +1331,7 @@ class ResourcesHtml
 			else if ($curtool) 
 			{
 				$versiontext .= $curtool->version.'</strong> - '.JText::_('PUBLISHED_ON').' ';
-				$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, $dateFormat, $tz): JHTML::_('date', $resource->publish_up, $dateFormat, $tz);
+				$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, JText::_('DATE_FORMAT_HZ1')) : JHTML::_('date', $resource->publish_up, JText::_('DATE_FORMAT_HZ1'));
 			}
 
 			if ($revision == 'dev') 
@@ -2408,13 +2397,9 @@ class ResourcesHtml
 	public function writeResults(&$database, &$lines, $show_edit=0, $show_date=3)
 	{
 		$paramsClass = 'JParameter';
-		$dateFormat = '%d %b %Y';
-		$tz = 0;
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
-			$dateFormat = 'd M Y';
-			$tz = true;
 		}
 
 		$juser =& JFactory::getUser();
@@ -2461,9 +2446,9 @@ class ResourcesHtml
 			switch ($params->get('show_date'))
 			{
 				case 0: $view->thedate = ''; break;
-				case 1: $view->thedate = JHTML::_('date', $line->created, $dateFormat, $tz);    break;
-				case 2: $view->thedate = JHTML::_('date', $line->modified, $dateFormat, $tz);   break;
-				case 3: $view->thedate = JHTML::_('date', $line->publish_up, $dateFormat, $tz); break;
+				case 1: $view->thedate = JHTML::_('date', $line->created, JText::_('DATE_FORMAT_HZ1'));    break;
+				case 2: $view->thedate = JHTML::_('date', $line->modified, JText::_('DATE_FORMAT_HZ1'));   break;
+				case 3: $view->thedate = JHTML::_('date', $line->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
 			}
 
 			$html .= $view->loadTemplate();

@@ -42,18 +42,6 @@ switch ($this->model->params->get('show_date'))
 	case 3: $thedate = $this->model->resource->publish_up; break;
 }
 
-$dateFormat = '%d %b %Y';
-$yearFormat = '%Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$yearFormat = 'Y';
-	$timeFormat = 'h:M a';
-	$tz = true;
-}
-
 $this->model->resource->introtext = stripslashes($this->model->resource->introtext);
 $this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
 $this->model->resource->fulltxt = ($this->model->resource->fulltxt) ? trim($this->model->resource->fulltxt) : trim($this->model->resource->introtext);
@@ -108,7 +96,7 @@ $maintext = str_replace('</blink>', '', $maintext);
 		<div class="two columns second">
 			<h4><?php echo JText::_('Published on'); ?></h4>
 			<p class="resource-content">
-				<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, $dateFormat, $tz); ?></time>
+				<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')); ?></time>
 			</p>
 		</div>
 		<div class="clearfix"></div>
@@ -181,7 +169,7 @@ if (!$this->model->access('view-all')) {
 			
 			$cite = new stdClass();
 			$cite->title = $this->model->resource->title;
-			$cite->year = JHTML::_('date', $thedate, $yearFormat, $tz);
+			$cite->year = JHTML::_('date', $thedate, 'Y');
 			$cite->location = $juri->base() . ltrim($sef, DS);
 			$cite->date = date("Y-m-d H:i:s");
 			$cite->url = '';
@@ -217,9 +205,9 @@ if (!$this->model->access('view-all')) {
 // If the resource had a specific event date/time
 if ($this->model->attribs->get('timeof', '')) {
 	if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
-		$exp = $dateFormat; //'%B %d %Y';
+		$exp = JText::_('DATE_FORMAT_HZ1'); //'%B %d %Y';
 	} else {
-		$exp = $timeFormat . ', ' . $dateFormat; //'%I:%M %p, %B %d %Y';
+		$exp = JText::_('TIME_FORMAT_HZ1') . ', ' . JText::_('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
 	}
 	if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-') {
 		$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->model->attribs->get('timeof', '') != '')

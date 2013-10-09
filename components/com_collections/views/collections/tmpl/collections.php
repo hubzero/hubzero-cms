@@ -138,9 +138,6 @@ if ($this->rows->total() > 0)
 					);
 					$view->option     = $this->option;
 					$view->params     = $this->config;
-					$view->dateFormat = $this->dateFormat;
-					$view->timeFormat = $this->timeFormat;
-					$view->tz         = $this->tz;
 					$view->row        = $row;
 					//$view->collection = $this->collection;
 					$view->parser     = $p;
@@ -202,8 +199,8 @@ if ($this->rows->total() > 0)
 
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 
-							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></span>
+							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->

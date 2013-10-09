@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = false;
-}
-
 $txt = '';
 $mode = strtolower(JRequest::getWord('mode', ''));
 
@@ -188,14 +179,14 @@ if ($mode != 'preview')
 			$versiontext .= $thistool->version.'</strong>';
 			if ($this->model->resource->revision!='dev') {
 				$versiontext .=  '<br /> '.ucfirst(JText::_('COM_RESOURCES_PUBLISHED_ON')).' ';
-				$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, $dateFormat, $tz): JHTML::_('date', $this->model->resource->publish_up, $dateFormat, $tz);
-				$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.JText::_('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, $dateFormat, $tz): '';
+				$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, JText::_('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, JText::_('DATE_FORMAT_HZ1'));
+				$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.JText::_('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, JText::_('DATE_FORMAT_HZ1')): '';
 			} else {
 				$versiontext .= ' ('.JText::_('COM_RESOURCES_IN_DEVELOPMENT').')';
 			}
 		} else if ($curtool) {
 			$versiontext .= $curtool->version.'</strong> - '.JText::_('COM_RESOURCES_PUBLISHED_ON').' ';
-			$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, $dateFormat, $tz): JHTML::_('date', $this->model->resource->publish_up, $dateFormat, $tz);
+			$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, JText::_('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, JText::_('DATE_FORMAT_HZ1'));
 		}
 
 		if (!$thistool) 

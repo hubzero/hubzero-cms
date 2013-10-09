@@ -49,14 +49,6 @@ if ($canDo->get('core.create'))
 }
 JHTML::_('behavior.tooltip');
 
-$dateFormat = '%d %b %Y';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = 0;
-}
-
 ximport('Hubzero_View_Helper_Html');
 ?>
 <script type="text/javascript">
@@ -159,7 +151,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<time datetime="<?php echo $row->get('created'); ?>">
-						<?php echo $row->created('date'); //JHTML::_('date', $row->created, $dateFormat, $tz) ?>
+						<?php echo $row->created('date'); ?>
 					</time>
 				</td>
 			</tr>

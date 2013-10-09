@@ -73,15 +73,7 @@ if (!$this->no_html) {
 			case 0:  $class = 'deleted';    break;  // pending
 		}
 
-		$dateformat = '%d %b %Y';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateformat = 'd M Y';
-			$tz = true;
-		}
-
-		$thedate = JHTML::_('date', $this->contributions[$i]->publish_up, $dateformat, $tz);
+		$thedate = JHTML::_('date', $this->contributions[$i]->publish_up, JText::_('DATE_FORMAT_HZ1'));
 ?>
 				<li class="<?php echo $class; ?>">
 					<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->contributions[$i]->id); ?>">

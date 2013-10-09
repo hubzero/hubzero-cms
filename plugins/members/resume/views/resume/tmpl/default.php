@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
-	$tz = true;
-}
-
 $juser = JFactory::getUser();
 ?>
 
@@ -259,7 +249,7 @@ $juser = JFactory::getUser();
 						<?php } ?>
 						</td>
 						<td>
-							<time datetime="<?php echo $this->resume->created; ?>"><?php echo JHTML::_('date', $this->resume->created, $dateformat, $tz); ?></time>
+							<time datetime="<?php echo $this->resume->created; ?>"><?php echo JHTML::_('date', $this->resume->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
 							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('APLG_RESUME_CTION_DELETE_THIS_RESUME'); ?>">

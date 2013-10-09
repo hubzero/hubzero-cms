@@ -30,19 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
 $canDo = CoursesHelper::getActions('unit');
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ' <small><small>[' . JText::_('Students') . ']</small></small>', 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Students'), 'courses.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
@@ -219,7 +209,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>
-					<?php echo JHTML::_('date', $row->get('enrolled'), $dateFormat, $tz); ?>
+					<?php echo JHTML::_('date', $row->get('enrolled'), JText::_('DATE_FORMAT_HZ1')); ?>
 				<?php } else { ?>
 					<?php echo JText::_('(unknown)'); ?>
 				<?php } ?>

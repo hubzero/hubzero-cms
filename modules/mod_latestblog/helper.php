@@ -128,22 +128,6 @@ class modLatestBlog extends Hubzero_Module
 			break;
 		}
 
-		$this->dateFormat = '%d %b %Y';
-		$this->timeFormat = '%I:%M %p';
-		$this->yearFormat  = "%Y";
-		$this->monthFormat = "%m";
-		$this->dayFormat   = "%d";
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = 'd M Y';
-			$this->timeFormat = 'H:i p';
-			$this->yearFormat  = "Y";
-			$this->monthFormat = "m";
-			$this->dayFormat   = "d";
-			$this->tz = true;
-		}
-
 		//function to sort by created date
 		function sortbydate($a, $b)
 		{

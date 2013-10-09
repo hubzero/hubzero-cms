@@ -34,17 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Document');
 Hubzero_Document::addPluginStylesheet('courses', $this->name);
 //Hubzero_Document::addPluginScript('courses', $this->_name);
-
-$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
-	$tz = true;
-}
-
 ?>
 <div id="related-courses" class="after section">
 	<?php if (count($this->ids) > 1) { ?>

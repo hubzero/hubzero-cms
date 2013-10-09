@@ -36,16 +36,6 @@ $jconfig =& JFactory::getConfig();
 
 $st = new SupportTags(JFactory::getDBO());
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'h:i a';
-	$tz = true;
-}
-
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
@@ -328,7 +318,7 @@ Content-type: text/html;charset=utf-8";
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->ticket->created, $timeFormat, $tz); ?> on <?php echo JHTML::_('date', $this->ticket->created, $dateFormat, $tz); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->ticket->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->ticket->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
@@ -361,7 +351,7 @@ Content-type: text/html;charset=utf-8";
 											<tbody>
 												<tr>
 													<th style="text-align: left;" align="left"><?php echo $this->commentor->get('name'); ?> (<?php echo $this->commentor->get('username'); ?>)</th>
-													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo JHTML::_('date', $this->comment->created, $timeFormat, $tz); ?> on <?php echo JHTML::_('date', $this->comment->created, $dateFormat, $tz); ?></th>
+													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAT_HZ1')); ?></th>
 												</tr>
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">

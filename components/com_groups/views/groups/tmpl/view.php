@@ -205,16 +205,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 						$gl = new XGroupLog( $database );
 						$gl->getLog( $this->group->get('gidNumber'), 'first' );
 
-						$dateFormat = '%d %b, %Y';
-						$timeFormat = '%I:%M %p';
-						$tz = 0;
-						if (version_compare(JVERSION, '1.6', 'ge'))
-						{
-							$dateFormat = 'd M, Y';
-							$timeFormat = 'h:m a';
-							$tz = true;
-						}
-						$created = JHTML::_('date', $gl->timestamp, $dateFormat, $tz);
+						$created = JHTML::_('date', $gl->timestamp, JText::_('DATE_FORMAT_HZ1'));
 					?>
 					<div class="group-info">
 						<ul>

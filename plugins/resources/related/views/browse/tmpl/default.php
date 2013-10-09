@@ -31,15 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
-
 $juser =& JFactory::getUser();
 $database =& JFactory::getDBO();
 ?>
@@ -116,7 +107,7 @@ foreach ($this->related as $line)
 <?php } ?>
 								<tr>
 									<th><?php echo JText::_('PLG_RESOURCES_RELATED_DATE'); ?></th>
-									<td><?php echo JHTML::_('date',$line->publish_up, $dateFormat, $tz); ?></td>
+									<td><?php echo JHTML::_('date',$line->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></td>
 								</tr>
 								<tr>
 									<th><?php echo JText::_('PLG_RESOURCES_RELATED_AVG_RATING'); ?></th>

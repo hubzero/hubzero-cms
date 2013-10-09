@@ -33,11 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = WikiHelper::getActions('comment');
 
 $text = ($this->task == 'edit' ? JText::_('Edit comment') : JText::_('New comment'));
-JToolBarHelper::title(JText::_('Wiki') . ': <small><small>[ ' . $text . ' ]</small></small>', 'Wiki.png');
+JToolBarHelper::title(JText::_('Wiki') . ': ' . $text, 'Wiki.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 

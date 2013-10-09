@@ -30,16 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
-
-JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'REPORT_ABUSE' ).' ]</small></small>', 'support.png' );
+JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'REPORT_ABUSE' ), 'support.png' );
 
 ?>
 <script type="text/javascript">
@@ -110,9 +101,9 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $status;  ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=view&amp;id=<?php echo $row->id; ?>&amp;cat=<?php echo $row->category; ?>"><?php echo ($row->category.' #'.$row->referenceid); ?></a></td>
-				<td><?php echo $row->subject; ?></td>
-				<td><?php echo $juser->get('username');  ?></td>
-				<td><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></td>	   
+				<td><?php echo $this->escape($row->subject); ?></td>
+				<td><?php echo $this->escape($juser->get('username')); ?></td>
+				<td><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 <?php
 	$k = 1 - $k;

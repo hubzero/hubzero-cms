@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	$tz = 0;
-	$dateFormat = '%d %b %Y';
-
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = 'd M Y';
-		$tz = null;
-	}
-
 	/* Job Posting */
 
 	// load some classes
@@ -51,8 +42,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$job->cat = $job->cat ? $job->cat : 'unspecified';
 	$job->type = $job->type ? $job->type : 'unspecified';
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, $dateFormat, $tz) : 'N/A';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, $dateFormat, $tz) : 'N/A';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, JText::_('DATE_FORMAT_HZ1')) : 'N/A';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, JText::_('DATE_FORMAT_HZ1')) : 'N/A';
 
 	// Transform the wikitext to HTML
 	$wikiconfig = array(
@@ -140,11 +131,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= t.t.'<div class="apply"><p>'."\n";
 		if($job->applied) {
-			$html .= t.t.'<span class="alreadyapplied">'.JText::_('COM_JOBS_JOB_APPLIED_ON').' '.JHTML::_('date', $job->applied, $dateFormat, $tz).'<span>'."\n";
+			$html .= t.t.'<span class="alreadyapplied">'.JText::_('COM_JOBS_JOB_APPLIED_ON').' '.JHTML::_('date', $job->applied, JText::_('DATE_FORMAT_HZ1')).'<span>'."\n";
 			$html .= t.t.'<span><a href="'.JRoute::_('index.php?option='.$this->option.'&task=editapp&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_EDIT_APPLICATION').'</a> | <a href="'.JRoute::_('index.php?option='.$this->option.'&task=withdraw&code='.$job->code).'" id="showconfirm">'.JText::_('COM_JOBS_ACTION_WITHDRAW_APPLICATION').'</a><span>'."\n";
 		}
 		else if($job->withdrawn) {
-			$html .= t.t.'<span class="withdrawn">'.JText::_('COM_JOBS_JOB_WITHDREW_ON').' '.JHTML::_('date', $job->withdrawn, $dateFormat, $tz).'<span>'."\n";
+			$html .= t.t.'<span class="withdrawn">'.JText::_('COM_JOBS_JOB_WITHDREW_ON').' '.JHTML::_('date', $job->withdrawn, JText::_('DATE_FORMAT_HZ1')).'<span>'."\n";
 			$html .= t.t.'<span><a href="'.JRoute::_('index.php?option='.$this->option.'&task=apply&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_REAPPLY').'</a><span>'."\n";
 		}
 		else {
@@ -220,7 +211,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$k = 1;
 		for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {
 			if($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
-				$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, $dateFormat, $tz) : JText::_('N/A');
+				$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, JText::_('DATE_FORMAT_HZ1')) : JText::_('N/A');
 				$html  .= '<li class="applic">'."\n";
 				$html  .= '<span class="countc">'.$k.'</span> '.$job->applications[$i]->seeker->name.' '.JText::_('applied on').' '.$applied."\n";
 				$html  .= $job->applications[$i]->cover ? '<blockquote>'.trim(stripslashes($job->applications[$i]->cover)).'</blockquote>' : '';

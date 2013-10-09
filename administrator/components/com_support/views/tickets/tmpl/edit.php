@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( JText::_( 'Ticket' ).': <small><small>[ '. $text.' ]</small></small>', 'support.png' );
+JToolBarHelper::title( JText::_( 'Ticket' ).': '. $text, 'support.png' );
 JToolBarHelper::save();
 JToolBarHelper::apply();
 JToolBarHelper::cancel();
@@ -103,19 +103,6 @@ if ($this->row->owner)
 
 ximport('Hubzero_User_Profile');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$dateFormat = '%d %b, %Y';
-	$timeFormat = '%I:%M %p';
-	$tz = 0;
-}
-else 
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'H:m a';
-	$tz = true;
-}
-
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
 
@@ -172,8 +159,8 @@ if ($this->row->id) {
 						<?php echo $name; ?>
 					</strong>
 					<a class="permalink" href="index.php?option=com_support&amp;controller=tickets&amp;task=edit&amp;id=<?php echo $this->row->id; ?>" title="<?php echo JText::_('Permalink'); ?>">@ 
-						<span class="time"><time><?php echo JHTML::_('date', $this->row->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
-						<span class="date"><time><?php echo JHTML::_('date', $this->row->created, $dateFormat, $tz); ?></time></span>
+						<span class="time"><time><?php echo JHTML::_('date', $this->row->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <?php echo JText::_('on'); ?> 
+						<span class="date"><time><?php echo JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</a>
 				</div>
 				<blockquote class="ticket-content" cite="<?php echo ($this->row->login) ? $this->escape($this->row->login) : $this->escape($this->row->name); ?>">
@@ -325,8 +312,8 @@ if ($this->row->id) {
 							<?php echo $name; ?>
 						</strong>
 						<a class="permalink" href="<?php echo 'index.php?option=com_support&controller=tickets&task=edit&amp;id=' . $this->row->id . '#c' . $comment->id; ?>" title="<?php echo JText::_('permalink'); ?>">@ 
-							<span class="time"><time><?php echo JHTML::_('date',$comment->created, $dateFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?>
-							<span class="date"><time><?php echo JHTML::_('date',$comment->created, $timeFormat, $tz); ?></time></span>
+							<span class="time"><time><?php echo JHTML::_('date',$comment->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <?php echo JText::_('on'); ?>
+							<span class="date"><time><?php echo JHTML::_('date',$comment->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 						</a>
 					</p>
 <?php if ($comment->comment) { ?>
@@ -532,8 +519,8 @@ if ($this->row->id) {
 						</a>
 					</strong>
 					<span class="permalink">
-						<?php echo JText::_('@'); ?> <span class="time"><time><?php echo JHTML::_('date', date("Y-m-d H:i:s"), $dateFormat, $tz); ?></time></span> 
-						<?php echo JText::_('on'); ?> <span class="date"><time><?php echo JHTML::_('date', date("Y-m-d H:i:s"), $timeFormat, $tz); ?></time></span>
+						<?php echo JText::_('@'); ?> <span class="time"><time><?php echo JHTML::_('date', date("Y-m-d H:i:s"), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+						<?php echo JText::_('on'); ?> <span class="date"><time><?php echo JHTML::_('date', date("Y-m-d H:i:s"), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 
 					<label for="comment-field-access" class="private">

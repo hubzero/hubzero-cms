@@ -30,19 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
-
 JHTML::_('behavior.tooltip');
 
 // Menu
-JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': <small><small>[ ' . JText::_('BILLBOARDS') . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . JText::_('BILLBOARDS'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '200', '500');
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
@@ -83,7 +74,7 @@ $juser =& JFactory::getUser();
 		{
 			$checked = JHtml::_('jgrid.checkedout', $row, JFactory::getUser($row->checked_out)->get('name'), $row->checked_out_time);
 			$info = ($row->checked_out_time != '0000-00-00 00:00:00')
-					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, $dateFormat, $tz).'<br />'
+					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')).'<br />'
 					 : '';
 			if ($row->editor) 
 			{

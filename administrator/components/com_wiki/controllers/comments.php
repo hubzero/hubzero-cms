@@ -278,9 +278,9 @@ class WikiControllerComments extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function applyTask($redirect=1)
+	public function applyTask()
 	{
-		$this->saveTask(0);
+		$this->saveTask(false);
 	}
 
 	/**
@@ -289,7 +289,7 @@ class WikiControllerComments extends Hubzero_Controller
 	 * @param      integer $redirect Redirect (1) or fall through to edit form (0) ?
 	 * @return     void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -330,6 +330,7 @@ class WikiControllerComments extends Hubzero_Controller
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $fields['pageid'],
 				JText::_('Comment saved!')
 			);
+			return;
 		}
 
 		$this->editTask($row);

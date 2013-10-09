@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
 $this->c = ($this->c) ? $this->c : 'odd';
 $i = 1;
 $html = '';
@@ -100,7 +90,7 @@ if (count($this->comments) > 0) {
 		$html .= "\t\t".'	<p class="comment-title">'."\n";
 		$html .= "\t\t".'		<strong>'. $author.'</strong> '."\n";
 		$html .= "\t\t".'		<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=comments#c'.$comment->id).'" title="'. JText::_('Permalink').'">';
-		$html .= '<span class="comment-date-at">@</span> <span class="time">'. JHTML::_('date', $comment->created, $timeFormat, $tz).'</span> <span class="comment-date-on">on</span> <span class="date">'.JHTML::_('date',$comment->created, $dateFormat, $tz).'</span>';
+		$html .= '<span class="comment-date-at">@</span> <span class="time">'. JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')).'</span> <span class="comment-date-on">on</span> <span class="date">'.JHTML::_('date',$comment->created, JText::_('DATE_FORMAT_HZ1')).'</span>';
 		if ($this->level == 1) {
 			$html .= ' to revision '.$comment->version;
 		}

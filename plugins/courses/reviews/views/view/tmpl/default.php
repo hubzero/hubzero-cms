@@ -25,16 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
-	$tz = true;
-}
-
 $comment = new Hubzero_Item_Comment($this->database);
 
 $edit = JRequest::getInt('editcomment', 0);
@@ -140,8 +130,8 @@ $edit = JRequest::getInt('editcomment', 0);
 					<blockquote cite="c<?php echo $this->replyto->id ?>">
 						<p>
 							<strong><?php echo $name; ?></strong> 
-							@ <span class="time"><?php echo JHTML::_('date', $reply->created, $timeformat, $tz); ?></span> 
-							on <span class="date"><?php echo JHTML::_('date', $reply->created, $dateformat, $tz); ?></span>
+							@ <span class="time"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAt_HZ1')); ?></span> 
+							on <span class="date"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAt_HZ1')); ?></span>
 						</p>
 						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($reply->content), 300, 0); ?></p>
 					</blockquote>
@@ -160,8 +150,8 @@ $edit = JRequest::getInt('editcomment', 0);
 					?>
 					<p class="warning">
 						<strong>Note:</strong> You are editing a comment originally posted <br />
-						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $timeformat, $tz); ?></time></span> 
-						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $dateformat, $tz); ?></time></span>
+						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 					</p>
 					<?php
 					if ($comment->parent)

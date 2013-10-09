@@ -40,18 +40,8 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
-$order_date = (intval($this->row->ordered) <> 0) ? JHTML::_('date', $this->row->ordered, $dateFormat, $tz) : NULL ;
-$status_changed = (intval($this->row->status_changed) <> 0) ? JHTML::_('date', $this->row->status_changed, $dateFormat, $tz) : NULL;
+$order_date = (intval($this->row->ordered) <> 0) ? JHTML::_('date', $this->row->ordered, JText::_('DATE_FORMAT_HZ1')) : NULL ;
+$status_changed = (intval($this->row->status_changed) <> 0) ? JHTML::_('date', $this->row->status_changed, JText::_('DATE_FORMAT_HZ1')) : NULL;
 
 switch ($this->row->status)
 {

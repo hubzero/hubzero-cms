@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=courses';
 ?>
 <h3 class="section-header">
@@ -143,8 +133,8 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							</a><br />
 							<span class="entry-details">
 								<?php echo $dateText; ?> 
-								<!-- <span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, $timeFormat, $tz); ?></time></span>  -->
-								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, $dateFormat, $tz); ?></time></span>
+								<!-- <span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('TIME_FORMAT_HZ1')); ?></time></span>  -->
+								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php if ($row->section_title) { ?>
 								<span class="entry-section">
 									 &mdash; <strong>Section:</strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
@@ -164,8 +154,8 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							<?php echo JText::_('PLG_MEMBERS_COURSES_STARTS'); ?><br />
 							<span class="entry-details">
 							<?php if ($row->starts != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, $timeFormat, $tz); ?></time></span> 
-								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, $dateFormat, $tz); ?></time></span>
+								<span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							<?php } else { ?>
 								<?php echo JText::_('n/a'); ?>
 							<?php } ?>
@@ -177,8 +167,8 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							<?php echo JText::_('PLG_MEMBERS_COURSES_ENDS'); ?><br />
 							<span class="entry-details">
 								<?php if ($row->ends != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, $timeFormat, $tz); ?></time></span> 
-								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, $dateFormat, $tz); ?></time></span>
+								<span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php } else { ?>
 									<?php echo JText::_('n/a'); ?>
 								<?php } ?>

@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	$dateFormat = '%d %b %Y';
-	$tz = null;
-
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = 'd M Y';
-		$tz = false;
-	}
-
 	/* Subscription screen */
 
 	$jconfig = JFactory::getConfig();
@@ -127,7 +118,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$expires .= JText::_( 'COM_JOBS_YOUR' ).' '.$length.'-'.$this->services[$i]->unitmeasure.' '.JText::_( 'COM_JOBS_SUBSCRIPTION' ).' ';
 						if($this->subscription->status==1) {
 							$expires .= $this->subscription->expires > $now ? strtolower(JText::_( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(JText::_( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED' )) ;
-							$expires .= ' '.JText::_( 'COM_JOBS_ON' ).' '.JHTML::_('date', $this->subscription->expires, $dateFormat, $tz).'.';
+							$expires .= ' '.JText::_( 'COM_JOBS_ON' ).' '.JHTML::_('date', $this->subscription->expires, JText::_('DATE_FORMAT_HZ1')).'.';
 						}
 						else {
 						$expires .= JText::_( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' ) ;

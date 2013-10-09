@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
-
 $k = 1; 
 $customer = $this->customer;
 $row = $this->row;
@@ -89,11 +80,11 @@ $row = $this->row;
 		</tr>
 		<tr>
 			<td style="color: #525f6b;"><?php echo JText::_('Order placed') . ': '; ?></td>
-			<td><?php echo JHTML::_('date', $row->ordered, $dateFormat, $tz); ?></td>
+			<td><?php echo JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1')); ?></td>
 		</tr>
 		<tr>
 			<td style="color: #525f6b;"><?php echo JText::_('Order completed') . ': '; ?></td>
-			<td><?php echo JHTML::_('date', date( 'Y-m-d H:i:s', time() ), $dateFormat, $tz); ?></td>
+			<td><?php echo JHTML::_('date', date( 'Y-m-d H:i:s', time() ), JText::_('DATE_FORMAT_HZ1')); ?></td>
 		</tr>
  </tbody>
 </table>

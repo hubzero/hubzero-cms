@@ -34,17 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Profile_Helper');
 
-$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
-$tz = 0;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateformat = 'd M Y';
-	$timeformat = 'h:i A';
-	$tz = null;
-}
-
 		/* Wish view */
 		$error		= $this->getError();
 		
@@ -66,7 +55,7 @@ if ($this->wishlist && $this->wish) {
 			}
 				
 			$this->wish->status = ($this->wish->accepted==1 && $this->wish->status==0) ? 6 : $this->wish->status;
-			$due  = ($this->wish->due !='0000-00-00 00:00:00') ? JHTML::_('date', $this->wish->due, $dateformat, $tz) : '';
+			$due  = ($this->wish->due !='0000-00-00 00:00:00') ? JHTML::_('date', $this->wish->due, JText::_('DATE_FORMAT_HZ1')) : '';
 				
 			switch ($this->wish->status) 
 			{
@@ -85,7 +74,7 @@ if ($this->wishlist && $this->wish) {
 							$statusnote = JText::_('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO');
 				break;
 				case 1:    	$status = strtolower(JText::_('COM_WISHLIST_WISH_STATUS_GRANTED'));
-							$statusnote = $this->wish->granted!='0000-00-00 00:00:00' ? strtolower(JText::_('ON')).' '.JHTML::_('date', $this->wish->granted, $dateformat, $tz).' '.strtolower(JText::_('BY')).' '.$this->wish->grantedby : '';
+							$statusnote = $this->wish->granted!='0000-00-00 00:00:00' ? strtolower(JText::_('ON')).' '.JHTML::_('date', $this->wish->granted, JText::_('DATE_FORMAT_HZ1')).' '.strtolower(JText::_('BY')).' '.$this->wish->grantedby : '';
 				break;
 			}
 			
@@ -228,8 +217,8 @@ if ($this->wishlist && $this->wish) {
 					<p class="entry-title">
 						<strong><?php echo $name; ?></strong>
 						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>" rel="bookmark" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
-							<span class="time"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $timeformat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span> 
-							<span class="date"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $dateformat, $tz); ?></time></span>
+							<span class="time"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span> 
+							<span class="date"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 						</a>
 					</p><!-- / .wish-title -->
 
@@ -1021,7 +1010,7 @@ if ($this->wishlist && $this->wish) {
 				<?php } ?>
 					<div class="planbody">
 						<p class="plannote">
-							<?php echo JText::_('COM_WISHLIST_PLAN_LAST_EDIT').' '.JHTML::_('date', $this->wish->plan->created, $dateformat, $tz).' at '.JHTML::_('date',$this->wish->plan->created, $timeformat, $tz).' '.JText::_('by').' '.$this->wish->plan->authorname;?>
+							<?php echo JText::_('COM_WISHLIST_PLAN_LAST_EDIT').' '.JHTML::_('date', $this->wish->plan->created, JText::_('DATE_FORMAT_HZ1')).' at '.JHTML::_('date',$this->wish->plan->created, JText::_('TIME_FORMAT_HZ1')).' '.JText::_('by').' '.$this->wish->plan->authorname;?>
 						</p>
 						<?php
 							$wikiconfig = array(

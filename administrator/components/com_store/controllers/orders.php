@@ -436,15 +436,6 @@ class StoreControllerOrders extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
-		$dateFormat = '%d %b, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M, Y';
-			$tz = false;
-		}
-
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
@@ -480,7 +471,7 @@ class StoreControllerOrders extends Hubzero_Controller
 			$emailbody .= '----------------------------------------------------------'."\r\n";
 			$emailbody .= JText::_('ORDER').' '.JText::_('NUM').': '. $id ."\r\n";
 			$emailbody .= "\t".JText::_('ORDER').' '.JText::_('TOTAL').': '. $cost ."\r\n";
-			$emailbody .= "\t\t".JText::_('PLACED').': '. JHTML::_('date', $row->ordered, $dateFormat, $tz)."\r\n";
+			$emailbody .= "\t\t".JText::_('PLACED').': '. JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1'))."\r\n";
 			$emailbody .= "\t\t".JText::_('STATUS').': ';
 
 			switch ($action)
@@ -561,12 +552,12 @@ class StoreControllerOrders extends Hubzero_Controller
 					$emailbody .= ' ' . JText::_('IN_PROCESS') . "\r\n";
 					break;
 				case 1:
-					$emailbody .= ' '.strtolower(JText::_('COMPLETED')).' '.JText::_('ON').' '.JHTML::_('date', $row->status_changed, $dateFormat, $tz)."\r\n\r\n";
+					$emailbody .= ' '.strtolower(JText::_('COMPLETED')).' '.JText::_('ON').' '.JHTML::_('date', $row->status_changed, JText::_('DATE_FORMAT_HZ1'))."\r\n\r\n";
 					$emailbody .= JText::_('EMAIL_PROCESSED').'.'."\r\n";
 					break;
 				case 2:
 				default:
-					$emailbody .= ' '.strtolower(JText::_('CANCELLED')).' '.JText::_('ON').' '.JHTML::_('date', $row->status_changed, $dateFormat, $tz)."\r\n\r\n";
+					$emailbody .= ' '.strtolower(JText::_('CANCELLED')).' '.JText::_('ON').' '.JHTML::_('date', $row->status_changed, JText::_('DATE_FORMAT_HZ1'))."\r\n\r\n";
 					$emailbody .= JText::_('EMAIL_CANCELLED').'.'."\r\n";
 					break;
 			}

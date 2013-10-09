@@ -30,16 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
-
-JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'REPORT_ABUSE' ).' ]</small></small>', 'support.png' );
+JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'REPORT_ABUSE' ), 'support.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -93,7 +84,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<p style="color:#999;">
-								<?php echo JText::_('REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('UNKNOWN'); ?>, <?php echo JText::_('RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, $dateFormat, $tz); ?>: 
+								<?php echo JText::_('REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('UNKNOWN'); ?>, <?php echo JText::_('RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?>: 
 								<?php 
 								if ($this->report->report) {
 									echo '<br /><br />' . $this->escape(stripslashes($this->report->report));

@@ -55,7 +55,7 @@ $c = 0;
 							'filepath' => '/site/blog',
 							'domain'   => ''
 						);
-						$url = 'index.php?option=com_blog&task=' . JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
+						$url = 'index.php?option=com_blog&task=' . JHTML::_('date', $post->publish_up, 'Y') . '/' . JHTML::_('date', $post->publish_up, 'm') . '/' . $post->alias;
 						$location = '<a href="' . JRoute::_('index.php?option=com_blog') . '">' . JText::_('Site-Wide Blog') . '</a>';
 					break;
 
@@ -68,7 +68,7 @@ $c = 0;
 							'filepath' => '/site/members' . $post->created_by . '/blog',
 							'domain'   => ''
 						);
-						$url = 'index.php?option=com_members&id=' . $post->created_by . '&active=blog&task=' . JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
+						$url = 'index.php?option=com_members&id=' . $post->created_by . '&active=blog&task=' . JHTML::_('date', $post->publish_up, 'Y') . '/' . JHTML::_('date', $post->publish_up, 'm') . '/' . $post->alias;
 						$location = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->created_by . '&active=blog') . '">' . JText::_('Member Blog') . '</a>';
 					break;
 
@@ -83,7 +83,7 @@ $c = 0;
 						);
 						ximport('Hubzero_Group');
 						$group = Hubzero_Group::getInstance($post->group_id);
-						$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog&scope=' .  JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
+						$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog&scope=' .  JHTML::_('date', $post->publish_up, 'Y') . '/' . JHTML::_('date', $post->publish_up, 'm') . '/' . $post->alias;
 						$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
 					break;
 				}
@@ -111,12 +111,12 @@ $c = 0;
 								</dt>
 								<dd class="date">
 									<time datetime="<?php echo $post->publish_up; ?>">
-										<?php echo JHTML::_('date', $post->publish_up, $this->dateFormat, $this->tz); ?>
+										<?php echo JHTML::_('date', $post->publish_up, JText::_('DATE_FORMAT_HZ1')); ?>
 									</time>
 								</dd>
 								<dd class="time">
 									<time datetime="<?php echo $post->publish_up; ?>">
-										<?php echo JHTML::_('date', $post->publish_up, $this->timeFormat, $this->tz); ?>
+										<?php echo JHTML::_('date', $post->publish_up, JText::_('TIME_FORMAT_HZ1')); ?>
 									</time>
 								</dd>
 								<dd class="author">

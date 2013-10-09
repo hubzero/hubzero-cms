@@ -182,14 +182,6 @@ class plgUsageOverview extends JPlugin
 	 */
 	private function _getSparkline($db, $id, $period, $datetime)
 	{
-		$dateFormat = '%d %b %Y';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M Y';
-			$tz = true;
-		}
-
 		$sparkline = '';
 
 		$thisyear = date("Y");
@@ -223,7 +215,7 @@ class plgUsageOverview extends JPlugin
 			{
 				$height = round(($result->value / $highest)*100);
 				$sparkline .= "\t" . '<span class="index">';
-				$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, $dateFormat, $tz) . ': ' . trim($this->_fmt_result($result->value, $result->valfmt)) . '">';
+				$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . trim($this->_fmt_result($result->value, $result->valfmt)) . '">';
 				$sparkline .= trim($this->_fmt_result($result->value, $result->valfmt));
 				$sparkline .= '</span> ';
 				$sparkline .= '</span>' . "\n";

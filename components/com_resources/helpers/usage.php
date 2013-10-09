@@ -130,7 +130,7 @@ class ResourcesUsage
 		$this->tz = 0;
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$this->dateFormat = 'd M Y';
+			$this->dateFormat = JText::_('DATE_FORMAT_HZ1');
 			$this->tz = true;
 		}
 	}

@@ -31,32 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/*$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
-	$tz = true;
-}*/
-
-//get objects
-//$config   =& JFactory::getConfig();
-//$database =& JFactory::getDBO();
-
 $offerings = $this->course->offerings(array(
 	'available' => true, 
 	'sort'      => 'publish_up'
 ));
-/*if (!$offerings->total())
-{
-	$offering = $offerings->fetch('first');
-}
-else
-{
-	$offering = new CoursesModelOffering(0, $this->course->get('id'));
-}*/
 
 Hubzero_Document::addComponentScript('com_courses', 'assets/js/courses.overview');
 ?>

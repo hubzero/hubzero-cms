@@ -7,16 +7,6 @@ defined('_JEXEC') or die('Restricted access');
 	
 	ximport('Hubzero_User_Profile_Helper');
 
-	$dateFormat = '%d %b %Y';
-	$timeFormat = '%I:%M %p';
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = 'd M Y';
-		$timeFormat = 'H:i p';
-		$tz = true;
-	}
-
 	$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 	$huser = '';
 	if (!$this->comment->anonymous) 
@@ -82,13 +72,13 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong> 
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->id); ?>" title="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
-					<span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
-					<span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateFormat, $tz); ?></time></span>
+					<span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+					<span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 					<?php if ($this->comment->modified && $this->comment->modified != '0000-00-00 00:00:00') { ?>
 						&mdash; <?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDITED'); ?>
 						<span class="comment-date-at">@</span> 
-						<span class="time"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
-						<span class="date"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $dateFormat, $tz); ?></time></span>
+						<span class="time"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, JText::_('TIME_FORMAt_HZ1')); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 					<?php } ?>
 				</a>
 			<?php /*if (!$this->comment->anonymous && $this->course->offering()->member($this->comment->created_by)->get('id') && !$this->course->offering()->member($this->comment->created_by)->get('student')) { ?>

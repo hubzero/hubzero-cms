@@ -59,14 +59,6 @@ if ($canDo->get('core.delete'))
 	//JToolBarHelper::deleteList();
 }
 
-$dateFormat = '%Y-%m-%d';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'Y-m-d';
-	$tz = true;
-}
-
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
@@ -192,7 +184,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	} 
 	else 
 	{
-		$lvisit = JHTML::_('date', $row->lastvisitDate, $dateFormat, $tz);
+		$lvisit = JHTML::_('date', $row->lastvisitDate, 'Y-m-d');
 	}
 	
 	if ($row->picture)
@@ -230,15 +222,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<a class="state <?php echo $state; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
-						<img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
-<?php } else { ?>
 						<span class="text"><?php echo $alt; ?></span>
-<?php } ?>
 					</a>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->registerDate; ?>"><?php echo JHTML::_('date', $row->registerDate, $dateFormat, $tz); ?></time>
+					<time datetime="<?php echo $row->registerDate; ?>"><?php echo JHTML::_('date', $row->registerDate, 'Y-m-d'); ?></time>
 				</td>
 				<td>
 					<time datetime="<?php echo $row->lastvisitDate; ?>"><?php echo $lvisit; ?></time>

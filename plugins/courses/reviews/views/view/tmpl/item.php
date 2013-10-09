@@ -28,16 +28,6 @@ defined('_JEXEC') or die('Restricted access');
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
-	$dateformat = '%d %b %Y';
-	$timeformat = '%I:%M %p';
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateformat = 'd M Y';
-		$timeformat = 'H:i p';
-		$tz = true;
-	}
-
 	$juser = JFactory::getUser();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
@@ -118,12 +108,12 @@ defined('_JEXEC') or die('Restricted access');
 					<?php } ?>
 					</strong> 
 					<a class="permalink" href="<?php echo $this->url . '#c' . $this->comment->id; ?>" title="<?php echo JText::_('PLG_COURSES_REVIEWS_PERMALINK'); ?>">
-						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeformat, $tz); ?></time></span> 
-						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateformat, $tz); ?></time></span>
+						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						<?php if ($this->comment->modified && $this->comment->modified != '0000-00-00 00:00:00') { ?>
 							&mdash; <?php echo JText::_('Edited'); ?>
-							<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $timeformat, $tz); ?></time></span> 
-							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, $dateformat, $tz); ?></time></span>
+							<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						<?php } ?>
 					</a>
 				</p>

@@ -108,14 +108,6 @@ class RecentPageMacro extends WikiMacro
 		// Did we get a result from the database?
 		if ($rows) 
 		{
-			$dateFormat = '%d %b %Y';
-			$tz = 0;
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$dateFormat = 'd M Y';
-				$tz = true;
-			}
-
 			foreach ($rows as $row)
 			{
 				if ($row->version > 1) 
@@ -133,7 +125,7 @@ class RecentPageMacro extends WikiMacro
 				}
 				$html .= '>' . "\n";
 				$html .= "\t" . '<h3><a href="' . JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope) . '">' . stripslashes($row->title) . '</a></h3>' . "\n";
-				$html .= "\t" . '<p class="modified-date">' . $t . ' on ' . JHTML::_('date', $row->created, $dateFormat, $tz) . '</p>' . "\n";
+				$html .= "\t" . '<p class="modified-date">' . $t . ' on ' . JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')) . '</p>' . "\n";
 				$html .= $this->_shortenText($row->pagehtml);
 				$html .= "\t" . '<p><a href="' . JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope) . '">Read more &rsaquo;</a></p>' . "\n";
 				$html .= '</div>' . "\n";

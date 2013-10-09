@@ -138,19 +138,11 @@ class modNotices extends Hubzero_Module
 		// Set today's time and date
 		$now = date('Y-m-d H:i:s', time());
 
-		$this->dateFormat = '%Y-%m-%d %H:%M:%S';
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = 'Y-m-d H:i:s';
-			$this->tz = true;
-		}
-
 		// Get some initial parameters
 		$start = $this->params->get('start_publishing');
-		$start = JHTML::_('date', $start, $this->dateFormat, $this->tz);
+		$start = JHTML::_('date', $start, JText::_('DATE_FORMAT_HZ1'));
 		$stop  = $this->params->get('stop_publishing');
-		$stop  = JHTML::_('date', $stop, $this->dateFormat, $this->tz);
+		$stop  = JHTML::_('date', $stop, JText::_('DATE_FORMAT_HZ1'));
 
 		$this->publish = false;
 		if (!$start || $start == '0000-00-00 00:00:00') 

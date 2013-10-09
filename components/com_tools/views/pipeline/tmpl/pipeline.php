@@ -31,16 +31,6 @@ $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#',
 $project_path 	= $this->config->get('project_path', '/tools/');
 $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
 ximport('Hubzero_View_Helper_Html');
 ?>
 <div id="content-header">
@@ -177,7 +167,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							</a><br />
 							<span class="entry-details">
 								<?php echo JText::_('COM_TOOLS_REGISTERED'); ?>
-								<span class="entry-date"><?php echo JHTML::_('date', $row->registered, $dateFormat, $tz); ?></span>
+								<span class="entry-date"><?php echo JHTML::_('date', $row->registered, JText::_('DATE_FORMAT_HZ1')); ?></span>
 							</span>
 						</td>
 						<td>

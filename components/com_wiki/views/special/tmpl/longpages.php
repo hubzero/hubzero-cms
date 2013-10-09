@@ -111,14 +111,6 @@ if ($rows)
 {
 	ximport('Hubzero_User_Profile');
 
-	$dateFormat = '%d %b %Y';
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = 'd M Y';
-		$tz = true;
-	}
-
 	foreach ($rows as $row)
 	{
 		$name = JText::_('(unknown)');

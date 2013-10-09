@@ -220,7 +220,18 @@ class CronControllerJobs extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function saveTask() 
+	public function applyTask() 
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save changes to an entry
+	 * 
+	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
+	 * @return     void
+	 */
+	public function saveTask($redirect=true) 
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -294,11 +305,17 @@ class CronControllerJobs extends Hubzero_Controller
 			return;
 		}
 
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Item Successfully Saved')
-		);
+		if ($redirect)
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Item Successfully Saved')
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**

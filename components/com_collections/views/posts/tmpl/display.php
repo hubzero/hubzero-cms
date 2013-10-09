@@ -77,8 +77,8 @@ if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'li
 				</a> created this post
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></span> 
-					<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></span>
+					<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+					<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
@@ -98,10 +98,6 @@ $view->option     = $this->option;
 //$view->member     = $this->member;
 $view->params     = $this->config;
 //$view->authorized = $this->authorized;
-
-$view->dateFormat = $this->dateFormat;
-$view->timeFormat = $this->timeFormat;
-$view->tz         = $this->tz;
 
 $view->row        = $this->post;
 //$view->collection = $this->collection;

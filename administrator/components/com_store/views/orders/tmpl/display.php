@@ -40,16 +40,6 @@ if ($canDo->get('core.admin'))
 	JToolBarHelper::preferences('com_store', '550');
 }
 
-$dateFormat = '%d %b %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$timeFormat = 'H:i p';
-	$tz = true;
-}
-
 ?>
 <script type="text/javascript">
 public function submitbutton(pressbutton) 
@@ -143,7 +133,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->author)); ?>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, $dateFormat, $tz); ?></time>
+					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ORDER'); ?>">

@@ -41,14 +41,6 @@ if ($this->getError()) {
 <?php } else { ?>
 	<ul class="expandedlist">
 <?php
-	$dateformat = '%d %b %Y %I:%M %p';
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateformat = 'd M Y H:i p';
-		$tz = true;
-	}
-	
 	foreach ($this->rows as $row)
 	{
 		$cls = 'box';
@@ -69,7 +61,7 @@ if ($this->getError()) {
 			</a>
 			<span>
 				<span>
-					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateformat, $tz); ?></time>
+					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</span>
 			</span>
 		</li>

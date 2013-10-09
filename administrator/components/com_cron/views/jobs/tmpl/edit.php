@@ -31,10 +31,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 $canDo = CronHelper::getActions('component');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Job') : JText::_('New Job'));
-JToolBarHelper::title(JText::_('Cron') . ': ' . $text, 'cron.png');
-JToolBarHelper::spacer();	
-if ($canDo->get('core.edit')) {
+
+JToolBarHelper::title(JText::_('Cron') . ': ' . $text, 'cron.png');	
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 

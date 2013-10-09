@@ -48,16 +48,6 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->_authorize('collection');
 		$this->_authorize('item');
 
-		$this->dateFormat = '%d %b %Y';
-		$this->timeFormat = '%I:%M %p';
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = 'd M Y';
-			$this->timeFormat = 'H:i p';
-			$this->tz = true;
-		}
-
 		$this->registerTask('__default', 'recent');
 		$this->registerTask('posts', 'recent');
 		$this->registerTask('all', 'collections');
@@ -74,9 +64,6 @@ class CollectionsControllerCollections extends Hubzero_Controller
 	{
 		$this->view->setLayout('posts');
 
-		$this->view->dateFormat  = $this->dateFormat;
-		$this->view->timeFormat  = $this->timeFormat;
-		$this->view->tz          = $this->tz;
 		$this->view->config     = $this->config;
 
 		$this->_getStyles();
@@ -137,9 +124,6 @@ class CollectionsControllerCollections extends Hubzero_Controller
 	{
 		$this->view->setLayout('posts');
 
-		$this->view->dateFormat  = $this->dateFormat;
-		$this->view->timeFormat  = $this->timeFormat;
-		$this->view->tz          = $this->tz;
 		$this->view->config     = $this->config;
 
 		$this->_getStyles();
@@ -208,9 +192,6 @@ class CollectionsControllerCollections extends Hubzero_Controller
 	{
 		$this->view->setLayout('collections');
 
-		$this->view->dateFormat = $this->dateFormat;
-		$this->view->timeFormat = $this->timeFormat;
-		$this->view->tz         = $this->tz;
 		$this->view->config     = $this->config;
 
 		$this->_getStyles();

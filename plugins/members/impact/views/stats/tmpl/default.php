@@ -33,15 +33,6 @@ $oneMonth = date('M', strtotime("-1 month"));
 $twoMonth = date('M', strtotime("-2 month"));
 $threeMonth = date('M', strtotime("-3 month"));
 
-$dateFormat = '%b %d, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'M d, Y';
-	$tz = false;
-}
-
 $i = 0;
 
 $xticks = "[0, '" . $threeMonth . "'], [1, '" . $twoMonth . "'], [2, '" . $oneMonth . "'], [3, '" . $nowMonth . "']";
@@ -113,7 +104,7 @@ tooltip: true,
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo $pubthumb; ?>" alt=""/>
 					<span class="h-title"><a href="<?php echo JRoute::_('index.php?option=com_publications' . a . 'id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
-					<span class="block mini faded"><?php echo JText::_('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, $dateFormat, $tz) . ' ' . JText::_('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo JText::_('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo Hubzero_View_Helper_Html::shortenText($stat->project_title, 65, 0); ?></a></span></span>
+					<span class="block mini faded"><?php echo JText::_('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo JText::_('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo Hubzero_View_Helper_Html::shortenText($stat->project_title, 65, 0); ?></a></span></span>
 				</td></tr>
 				<tr>
 					<td></td>
@@ -125,7 +116,7 @@ tooltip: true,
 					
 					<td><?php echo '<span class="pubstats-label">' . JText::_('PLG_MEMBERS_IMPACT_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
 					
-					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . JText::_('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . JText::_('PLG_MEMBERS_IMPACT_SINCE') . ' ' .JHTML::_('date', $toDate, $dateFormat, $tz) . ' ' . '</span>';  ?></td>					
+					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . JText::_('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . JText::_('PLG_MEMBERS_IMPACT_SINCE') . ' ' .JHTML::_('date', $toDate, JText::_('DATE_FORMAT_HZ1')) . ' ' . '</span>';  ?></td>					
 				</tr>
 				<tr>
 					<td class="pubstats-sh"><?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_VIEWS'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_VIEWS_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>

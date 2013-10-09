@@ -31,14 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat = '%d %b %Y';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = true;
-}
-
 $mode = $this->page->params->get('mode', 'wiki');
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
@@ -124,7 +116,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 			<?php echo $this->revision->pagehtml; ?>
 		</div>
 		<p class="timestamp">
-			<?php echo JText::_('COM_WIKI_PAGE_CREATED').' <time datetime="' . $first->created . '">'.JHTML::_('date', $first->created, $dateFormat, $tz).'</time>, '.JText::_('COM_WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created . '">'.JHTML::_('date', $this->revision->created, $dateFormat, $tz) . '</time>'; ?>
+			<?php echo JText::_('COM_WIKI_PAGE_CREATED').' <time datetime="' . $first->created . '">'.JHTML::_('date', $first->created, JText::_('DATE_FORMAT_HZ1')).'</time>, '.JText::_('COM_WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created . '">'.JHTML::_('date', $this->revision->created, JText::_('DATE_FORMAT_HZ1')) . '</time>'; ?>
 			<?php if ($stats = $this->page->getMetrics()) { ?>
 			<span class="article-usage">
 				<?php echo $stats['visitors']; ?> Visitors, <?php echo $stats['visits']; ?> Visits

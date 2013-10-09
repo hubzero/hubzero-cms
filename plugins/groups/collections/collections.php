@@ -182,16 +182,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', $this->_name);
 
-			$this->dateFormat  = '%d %b, %Y';
-			$this->timeFormat  = '%I:%M %p';
-			$this->tz = 0;
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$this->dateFormat  = 'd M, Y';
-				$this->timeFormat  = 'h:i a';
-				$this->tz = true;
-			}
-
 			$task = '';
 			$controller = 'board';
 			$id = 0;
@@ -556,9 +546,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->tz          = $this->tz;
 		$view->model      = $this->model;
 
 		//Hubzero_Document::addPluginScript('groups', $this->_name, 'jquery.masonry');
@@ -773,9 +760,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->params     = $this->params;
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
 		$view->model      = $this->model;
 
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
@@ -864,9 +848,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$view->params      = $this->params;
 		$view->juser       = $this->juser;
 		$view->name        = $this->_name;
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->tz          = $this->tz;
 		$view->model      = $this->model;
 
 		$post_id = JRequest::getInt('post', 0);
@@ -973,9 +954,6 @@ class plgGroupsCollections extends Hubzero_Plugin
 		$view->group       = $this->group;
 		$view->task        = $this->action;
 		$view->params      = $this->params;
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->tz          = $this->tz;
 		$view->no_html     = $no_html;
 
 		$id = JRequest::getInt('post', 0);

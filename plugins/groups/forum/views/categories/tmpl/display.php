@@ -3,16 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:m a';
-	$tz = true;
-}
-
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'];
 ?>
 

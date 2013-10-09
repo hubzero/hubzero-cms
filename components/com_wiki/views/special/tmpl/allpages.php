@@ -102,14 +102,6 @@ $rows = $database->loadObjectList();
 <?php
 if ($rows) 
 {
-	$dateFormat = '%d %b %Y';
-	$tz = 0;
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$dateFormat = 'd M Y';
-		$tz = true;
-	}
-
 	$columns = array_chunk($rows, ceil(count($rows) / 3 ), true /* preserve keys */ );
 
 	$index = '';

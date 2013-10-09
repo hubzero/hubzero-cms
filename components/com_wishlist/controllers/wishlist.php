@@ -1205,15 +1205,6 @@ class WishlistController extends JObject
 	 */
 	public function saveplan() 
 	{
-		$dateFormat = '%d %b, %Y';
-		$tz = null;
-	
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M, Y';
-			$tz = false;
-		}
-
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
@@ -1374,7 +1365,7 @@ class WishlistController extends JObject
 			$message  = '----------------------------'.r.n;
 			$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
 			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
-			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, $dateFormat, $tz);
+			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, JText::_('DATE_FORMAT_HZ1'));
 			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 			$message .= $objWish->anonymous ? '' : '('.$login.')';
 			$message .= r.n.r.n;
@@ -1560,15 +1551,6 @@ class WishlistController extends JObject
 	 */
 	public function savewish()
 	{
-		$dateFormat = '%d %b, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M, Y';
-			$tz = false;
-		}
-
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
@@ -1736,7 +1718,7 @@ class WishlistController extends JObject
 			$message  = '----------------------------'."\r\n";
 			$message .= JText::_('COM_WISHLIST_WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('COM_WISHLIST_WISHLIST')."\r\n";
 			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject)."\r\n";
-			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$row->proposed, $dateFormat, $tz);
+			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$row->proposed, JText::_('DATE_FORMAT_HZ1'));
 			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 			$message .= $row->anonymous ? '' : '('.$login.')';
 			$message .= "\r\n";
@@ -1777,15 +1759,6 @@ class WishlistController extends JObject
 	 */
 	public function editwish()
 	{
-		$dateFormat = '%d %b, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M, Y';
-			$tz = false;
-		}
-
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
@@ -1932,7 +1905,7 @@ class WishlistController extends JObject
 					$message  = '----------------------------'."\r\n";
 					$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('COM_WISHLIST')."\r\n";
 					$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject)."\r\n";
-					$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, $dateFormat, $tz);
+					$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, JText::_('DATE_FORMAT_HZ1'));
 					$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 					$message .= $objWish->anonymous ? '' : '('.$login.')';
 					$message .= "\r\n\r\n";
@@ -2000,15 +1973,6 @@ class WishlistController extends JObject
 	 */
 	public function movewish()
 	{
-		$dateFormat = '%d %b, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M, Y';
-			$tz = false;
-		}
-
 		ximport('Hubzero_Group');
 
 		$database =& JFactory::getDBO();
@@ -2227,7 +2191,7 @@ class WishlistController extends JObject
 					$message  = '----------------------------' . "\r\n";
 					$message .= JText::_('COM_WISHLIST_WISH').' #'.$wishid.', '.$newtitle.' '.JText::_('COM_WISHLIST') . "\r\n";
 					$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject) . "\r\n";
-					$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, $dateFormat, $tz);
+					$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, JText::_('DATE_FORMAT_HZ1'));
 					$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
 					$message .= $objWish->anonymous ? '' : '('.$login.')' . "\r\n";
 					$message .= JText::_('COM_WISHLIST_WISH_TRANSFERRED_FROM_WISHLIST').' "'.$oldtitle.'"';
@@ -2729,15 +2693,6 @@ class WishlistController extends JObject
 	 */
 	public function savereply()
 	{
-		$dateFormat = '%d %b %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'd M Y';
-			$tz = false;
-		}
-
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
@@ -2888,7 +2843,7 @@ class WishlistController extends JObject
 				$message .= '----------------------------' . "\r\n";
 				$message .= JText::_('COM_WISHLIST_MSG_COMMENT_BY').' '.$name.' ';
 				$message .= $row->anonymous ? '' : '('.$login.')';
-				$message .= ' '.JText::_('COM_WISHLIST_MSG_POSTED_ON').' '.JHTML::_('date',$row->added, $dateFormat, $tz).':' . "\r\n";
+				$message .= ' '.JText::_('COM_WISHLIST_MSG_POSTED_ON').' '.JHTML::_('date',$row->added, JText::_('DATE_FORMAT_HZ1')).':' . "\r\n";
 				$message .= $attach->parse(Hubzero_View_Helper_Html::purifyText($row->comment)) . "\r\n\r\n";
 				$message .= "\r\n";
 
