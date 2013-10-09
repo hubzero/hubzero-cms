@@ -157,9 +157,10 @@ class CoursesControllerOffering extends Hubzero_Controller
 	 */
 	public function loginTask($message = '')
 	{
-		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->gid . '&offering=' . $this->course->offering()->get('alias') . '&task=' . $this->_task, false, true));
+		$rtrn = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') !== '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&task=' . $this->_task, false, true));
+		$link = str_replace('&amp;', '&', JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $rtrn));
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . $return),
+			$link,
 			JText::_($message),
 			'warning'
 		);
@@ -189,12 +190,24 @@ class CoursesControllerOffering extends Hubzero_Controller
 
 		// Get the active tab (section)
 		$default = 'outline';
+		$this->view->nonadmin = 0;
 		if ($this->course->offering()->access('manage', 'section'))
 		{
-			$default = 'dashboard';
+			$app = JFactory::getApplication();
+
+			$this->view->nonadmin = JRequest::getInt('nonadmin', $app->getUserState(
+				$this->_option . '.offering' . $this->course->offering()->get('id') . '.nonadmin',
+				0
+			));
+			$app->setUserState(
+				$this->_option . '.offering' . $this->course->offering()->get('id') . '.nonadmin',
+				$this->view->nonadmin
+			);
+
+			$default = ($this->view->nonadmin ? $default : 'dashboard');
 		}
-		$active = JRequest::getVar('active', $default);
-		$this->view->active = $active;
+
+		$this->view->active = JRequest::getVar('active', $default);
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
@@ -384,8 +397,18 @@ class CoursesControllerOffering extends Hubzero_Controller
 
 		if ($enrolled)
 		{
+			$link = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') !== '__default' ? ':' . $offering->section()->get('alias') : '');
+
+			JPluginHelper::importPlugin('courses');
+			$data = JDispatcher::getInstance()->trigger('onCourseEnrolled', array(
+				$this->course, $offering, $offering->section()
+			));
+			if ($data && count($data) > 0)
+			{
+				$link = implode('', $data);
+			}
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($offering->section()->get('alias') !== '__default' ? ':' . $offering->section()->get('alias') : ''))
+				JRoute::_($link)
 			);
 			return;
 		}

@@ -73,7 +73,7 @@ class plgCoursesPec extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onCourseEnrollLink($course, $offering, $section)
+	public function onCourseEnrolled($course, $offering, $section)
 	{
 		if (!$course->exists() || !$offering->exists())
 		{
