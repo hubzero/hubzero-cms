@@ -169,16 +169,20 @@ class Object
 
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
+	 * Returns $this so set() can be chained
+	 * 
+	 *    $object->set('foo', $bar)
+	 *           ->set('bar', $foo)
+	 *           ->doSomething();
 	 *
 	 * @param   string  $property  The name of the property.
 	 * @param   mixed   $value     The value of the property to set.
-	 * @return  mixed  Previous value of the property.
+	 * @return  object
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->$property) ? $this->$property : null;
 		$this->$property = $value;
-		return $previous;
+		return $this; // So we can do method chaining!
 	}
 
 	/**
@@ -208,8 +212,15 @@ class Object
 	 * @param   string  $error  Error message.
 	 * @return  void
 	 */
-	public function setError($error)
+	public function setError($error, $key=null)
 	{
-		array_push($this->_errors, $error);
+		if ($key)
+		{
+			$this->_errors[$key] = $error;
+		}
+		else
+		{
+			array_push($this->_errors, $error);
+		}
 	}
 }

@@ -72,7 +72,7 @@ class Hubzero_Module_Helper
 	 */
 	public static function displayModules($position, $style=-2)
 	{
-		echo Hubzero_Module_Helper::renderModules($position, $style);
+		echo self::renderModules($position, $style);
 	}
 
 	/**
@@ -85,7 +85,7 @@ class Hubzero_Module_Helper
 	 */
 	public static function displayModule($name, $style=-1)
 	{
-		echo Hubzero_Module_Helper::renderModule($name,$style);
+		echo self::renderModule($name,$style);
 	}
 
 	/**
