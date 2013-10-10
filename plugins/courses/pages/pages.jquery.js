@@ -41,9 +41,9 @@ jQuery(document).ready(function(jq){
 
 		$('#field-section_id').on('change', function(e){
 			var section = $('#field-section_id').val();
-			$('#file-uploader').attr('data-section', section);
-			console.log($('#file-uploader').attr('data-list') + section);
-			$.get($('#file-uploader').attr('data-list') + section, {}, function(data) {
+			uploader.attr('data-section', section);
+
+			$.get(uploader.attr('data-list') + section, {}, function(data) {
 				filelist.html(data);
 			});
 		});
@@ -60,7 +60,7 @@ jQuery(document).ready(function(jq){
 		});
 
 		if (typeof(qq) != 'undefined') {
-			var uploader = new qq.FileUploader({
+			var fuploader = new qq.FileUploader({
 				element: uploader[0],
 				action: uploader.attr('data-action') + uploader.attr('data-section'),
 				multiple: true,
@@ -74,7 +74,7 @@ jQuery(document).ready(function(jq){
 				},
 				onComplete: function(id, file, response) {
 					$('.qq-upload-list').empty();
-					$.get($('#file-uploader').attr('data-list') + uploader.attr('data-section'), {}, function(data) {
+					$.get(uploader.attr('data-list') + uploader.attr('data-section'), {}, function(data) {
 						filelist.html(data);
 					});
 				}
