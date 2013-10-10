@@ -45,6 +45,8 @@ jQuery(document).ready(function(jq){
 				if (guide.length > 0) {
 					guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
 				}
+			},
+			afterShow: function() {
 				$('#guide-content').css('position', 'absolute');
 			},
 			onUpdate: function() {
@@ -80,6 +82,8 @@ jQuery(document).ready(function(jq){
 						if (guide.length > 0) {
 							guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
 						}
+					},
+					afterShow: function() {
 						$('#guide-content').css('position', 'absolute');
 					},
 					beforeClose: function() {
