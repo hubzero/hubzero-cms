@@ -458,7 +458,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 							$action = 'editcategory';
 						}
 						$d = JRequest::getVar('d', '');
-						switch ($c)
+						switch ($d)
 						{
 							case 'edit':
 								$action = 'editcategory';
