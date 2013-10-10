@@ -84,7 +84,7 @@ class Hubzero_Register_Premis
 	}
 	
 	/**
-	 * Short description for 'savePremisActivity'
+	 * Short description for 'savePremisUser'
 	 * 
 	 * Long description (if any) ...
 	 * 
@@ -97,13 +97,39 @@ class Hubzero_Register_Premis
 		$db = & JFactory::getDBO();
 		
 		$sql = 	'INSERT INTO `#__premis_users` SET ' .
-				'`premisId` = ' . $db->quote($user['premisId']) . ', ' .
-				'`userId` = ' . $db->quote($user['lName']) . ', ' .
-				'`premisEnrollmentId` = ' . $db->quote($user['fName']);
+				'`premisId` = ' . $db->quote($premisId) . ', ' .
+				'`userId` = ' . $db->quote($uId) . ', ' .
+				'`premisEnrollmentId` = ' . $db->quote($premisEnrollmentId);
 				
 		$db->setQuery($sql);
 		//echo $db->_sql;
 		$db->query();	
+	}
+	
+	/**
+	 * Short description for 'isPremisUser'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      	array 		Premis user info
+	 * @param      	int 		Hub user ID
+	 * @return		void
+	 */
+	public static function isPremisUser($uId)
+	{
+		$db = & JFactory::getDBO();
+		
+		$sql = 	'SELECT * FROM `#__premis_users` WHERE ' .
+				'`userId` = ' . $db->quote($uId);
+				
+		$db->setQuery($sql);
+		$db->query();	
+		
+		if ($db->getNumRows() > 0)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -147,7 +173,11 @@ class Hubzero_Register_Premis
 		$return['status'] = 'ok';
 		
 		// Check all minimally required data
-		if ((empty($user['premisId']) && empty($user['casId'])) || empty($user['email']) || (empty($courses['add']) && empty($courses['drop'])))
+		if (	(empty($user['casId']) && empty($user['password'])) || 
+				(empty($user['premisId']) && empty($user['casId'])) || 
+				(empty($user['email'])) || 
+				(empty($courses['add']) && empty($courses['drop']))
+			)
 		{
 			$return['status'] = 'error';
 			$return['code'] = 400;
@@ -205,7 +235,7 @@ class Hubzero_Register_Premis
 			$userId = Hubzero_Registration::getEmailId($user['email']);	
 		}
 		
-		// No hub account found -- create new account set the password 
+		// No hub account found -- create new account set the password
 		if (empty($userId))
 		{
 			// Create new account
@@ -357,6 +387,7 @@ class Hubzero_Register_Premis
 		
 		// Save Premis info
 		Hubzero_Register_Premis::savePremisActivity($user, $courses);
+		Hubzero_Register_Premis::savePremisUser($userId, $user['premisId'], $user['premisEnrollmentId']);
 		
 		// Do we have a user ID?
 		if (empty($userId))
@@ -368,54 +399,112 @@ class Hubzero_Register_Premis
 		}
 		
 		// Do the adds/drops
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+		
+		// Section ID is always provided
+		//if (!empty($courses['lookupByOfferingId']) && $courses['lookupByOfferingId']
+
+		//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
 		
 		if (!empty($add))
 		{
-			foreach ($add as $courseId) {
+			foreach ($add as $sectionId) {
+				$section = CoursesModelSection::getInstance($sectionId);
 				
-				$course = CoursesModelCourse::getInstance($courseId);
-				
-				if (!$course->offerings()->count()) {
+				if (!$section->get('offering_id'))
+				{
 					$return['status'] = 'error';
 					$return['code'] = 400;
-					$return['message'] = 'Bad course id.';
+					$return['message'] = 'Error: Section not found';
 					return $return;
 				}
-								
-				// Get to the first and probably the only offering
-				$offering = $course->offerings()->current();
-				$offering->add($userId);				
+												
+				$section->add($userId);
+				if ($section->getError())
+				{
+					$return['status'] = 'error';
+					$return['code'] = 500;
+					$return['message'] = 'Error: ' . $section->getError();
+					return $return;
+				}
 			}
 		}
-		
+	
 		if (!empty($drop))
 		{
-			foreach ($drop as $courseId) {
+			foreach ($drop as $sectionId) {
 					
-				$course = CoursesModelCourse::getInstance($courseId);
+				$section = CoursesModelSection::getInstance($sectionId);
 				
-				//print_r($course->offerings()->count()); die;
-				
-				echo $course->offerings()->total(); echo 'gg';
-				
-				if (!$course->offerings()->total()) {
+				if (!$section->get('offering_id'))
+				{
 					$return['status'] = 'error';
 					$return['code'] = 400;
-					$return['message'] = 'Bad course id.';
+					$return['message'] = 'Error: Section not found';
 					return $return;
 				}
 				
-				// Get to the first and probably the only offering
-				$offering = $course->offerings()->current();
-				$offering->remove($userId);					
+				$section->remove($userId);									
+				if($section->getError())
+				{
+					$return['status'] = 'error';
+					$return['code'] = 500;
+					$return['message'] = 'Error: ' . $section->getError();
+					return $return;
+				}
 			}
 		}
 		
+		/*
+		// Aliases are provided (change)
+		else {
+			
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+			
+			if (!empty($add))
+			{
+				foreach ($add as $courseId) {
+					
+					$course = CoursesModelCourse::getInstance($courseId);
+					
+					if (!$course->offerings()->count()) {
+						$return['status'] = 'error';
+						$return['code'] = 400;
+						$return['message'] = 'Bad course id.';
+						return $return;
+					}
+									
+					// Get to the first and probably the only offering
+					$offering = $course->offerings()->current();
+					$offering->add($userId);				
+				}
+			}
+		
+			if (!empty($drop))
+			{
+				foreach ($drop as $courseId) {
+						
+					$course = CoursesModelCourse::getInstance($courseId);
+					
+					//print_r($course->offerings()->count()); die;
+					
+					$course->offerings()->total();
+					
+					if (!$course->offerings()->total()) {
+						$return['status'] = 'error';
+						$return['code'] = 400;
+						$return['message'] = 'Bad course id.';
+						return $return;
+					}
+					
+					// Get to the first and probably the only offering
+					$offering = $course->offerings()->current();
+					$offering->remove($userId);					
+				}
+			}
+		}
+		*/	
 				
-		$course = CoursesModelCourse::getInstance('nanoscaletransistors');		
-		$offering = $course->offerings()->current();		
-		//$offering->remove(1062);
 						
 		$return['message'] = 'User ID ' . $userId . ' registered.';
 		$return['code'] = 201;
@@ -504,6 +593,62 @@ class Hubzero_Register_Premis
 		
 		// Success
 		$return['message'] = 'User profile updated.';
+		$return['code'] = 201;
+		return $return;	
+	}
+	
+	/**
+	 * Short description for 'doProfileDelete'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      	array 		Premis user info
+	 * @return		void
+	 */
+	public static function doProfileDelete($user)
+	{
+		$return['status'] = 'ok';
+		
+		// Check all minimally required data
+		if (empty($user['email']))
+		{
+			$return['status'] = 'error';
+			$return['code'] = 400;
+			$return['message'] = 'Some required data missing. Please check the API specs.';
+			return $return;
+		}
+		
+		// Find user match by email
+		ximport('Hubzero_Registration');
+			
+		// do the email match	
+		$userId = Hubzero_Registration::getEmailId($user['email']);	
+		
+		// Error if not found
+		if (!$userId)
+		{
+			$return['status'] = 'error';
+			$return['code'] = 400;
+			$return['message'] = 'Bad user email.';
+			return $return;
+		}
+		
+		// Check if profile exists and it is a Premis created profile
+				
+		// ** Delete profile
+		if(!self::isPremisUser($userId))
+		{
+			$return['status'] = 'error';
+			$return['code'] = 401;
+			$return['message'] = 'You are not authorized to delete this user.';
+			return $return;
+		}
+		
+		$user =& JUser::getInstance((int)$userId);
+		$user->delete();
+		
+		// Success
+		$return['message'] = 'User profile deleted.';
 		$return['code'] = 201;
 		return $return;	
 	}

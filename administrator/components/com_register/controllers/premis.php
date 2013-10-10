@@ -89,7 +89,7 @@ class RegisterControllerPremis extends Hubzero_Controller
 			$filename = substr($filename, 0, 230);			
 		}
 	
-		$path = JPATH_COMPONENT . DS . "uploads";
+		$path = JPATH_ROOT . DS . 'site' . DS . 'protected' . DS . 'premis_uploads';
 		
 		if (!is_dir($path)) 
 		{
@@ -146,6 +146,7 @@ class RegisterControllerPremis extends Hubzero_Controller
 					$user['casId'] = $data[4];
 					$user['premisId'] = $data[3];
 					$user['password'] = $data[5];
+					$user['premisEnrollmentId'] = $data[9];
 					
 					$courses['add'] = $data[6];
 					$courses['drop'] = $data[7];

@@ -95,7 +95,10 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 				}
 			break;
 
-			default:                       $this->method_not_found();         break;
+			// Passport
+			case 'passport':                $this->passport();             break;
+
+			default:                       	$this->method_not_found();     break;
 		}
 	}
 
@@ -1026,6 +1029,90 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		// Return message
 		$this->setMessage(array('form_id' => $formId), 200, 'OK');
 	}
+	
+	/**
+	 * Passport badges. Placeholder for now.
+	 * 
+	 * @return 200 OK on success
+	 */
+	private function passport()
+	{		
+		
+		if (!$this->authorize_call())
+		{
+			return;	
+		}
+		
+		$action   = JRequest::getVar('action', '');
+		$badge_id = JRequest::getVar('badge_id', '');
+		$user_email = JRequest::getVar('user_email', '');
+		
+		if (empty($action))
+		{
+			$this->errorMessage(400, 'Please provide action');
+			return;
+		}
+		if ($action != 'accept' && $action != 'deny')
+		{
+			$this->errorMessage(400, 'Bad action. Must be either accept or deny');
+			return;
+		}
+		if (empty($badge_id))
+		{
+			$this->errorMessage(400, 'Please provide badge ID');
+			return;
+		}
+		if (empty($user_email))
+		{
+			$this->errorMessage(400, 'Please provide user email');
+			return;
+		}
+		
+		// Badge logic
+		
+		//find user by email		
+		$user_email = Hubzero_User_Profile_Helper::find_by_email($user_email);
+		
+		if (empty($user_email[0]))
+		{
+			$this->errorMessage(404, 'User was not found');
+			return;
+		}
+		$user = Hubzero_User_Profile::getInstance($user_email[0]);
+		if ($user === false)
+		{
+			$this->errorMessage(404, 'User was not found');
+			return;
+		}
+		$user_id = $user->get('uidNumber');
+		
+		//find member ID by user ID and attached badge
+		$sql = 'SELECT m.`id` AS `member_id` FROM `#__courses_members` m LEFT JOIN `#__courses_offering_badges` ob 
+				ON ob.`offering_id` = m.`offering_id` 
+				WHERE m.`user_id` = ' . $this->db->quote($user_id) . ' AND badge_id = ' . $this->db->quote($badge_id);
+				
+		$this->db->setQuery($sql);
+		$this->db->query();	
+		
+		// Check if there is a match
+		if (!$this->db->getNumRows())
+		{
+			$this->errorMessage(401, 'No badge-user match');
+			return;
+		}
+		
+		$member_id = $this->db->loadResult();
+		
+		$sql = 'UPDATE `#__courses_member_badges` SET `action` = ' . $this->db->quote($action) . ', `action_on` = NOW() 
+				WHERE member_id = ' . $this->db->quote($member_id);
+				
+		$this->db->setQuery($sql);
+		$this->db->query();	
+	
+		// Return message
+		$this->setMessage('Passport data saved.', 200, 'OK');		
+	}
+
 
 	/**
 	 * Look up the form id and deployment id based on the asset id
@@ -1092,6 +1179,78 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		$this->_response->setErrorMessage(404, 'Not found');
 		return;
 	}
+	
+	/**
+	 * Helper function to check whether or not someone is using oauth and authorized to use this call
+	 * 
+	 * @return bool - true if in group, false otherwise
+	 */
+	private function authorize_call()
+	{		
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$user = Hubzero_User_Profile::getInstance($userid);
+		//make sure we have a user
+		if ($user === false)
+		{
+			$this->errorMessage(401, 'You don\'t have permission to do this');
+			return;
+		}
+		
+		// Get the requested path
+		$path = ($this->getRequest()->get('path'));		
+		
+		// Do access check
+		/* 
+			The following assumption is made: the code check only permissions for the closest parent. Parent's parent permissions are not inherited.
+		*/
+		
+		// First find the closest matching permission (closest parent, longest path).
+		
+		$sql = 'SELECT `path` FROM `#__api_permissions`
+				WHERE INSTR(' . $this->db->quote($path) . ', `path`) = 1
+				GROUP BY LENGTH(`path`)
+				ORDER BY LENGTH(`path`) DESC
+				LIMIT 1';
+				
+		$this->db->setQuery($sql);
+		$this->db->query();	
+		
+		// Check if there is a match, if no match, no permissions set, good to go
+		if (!$this->db->getNumRows())
+		{
+			return true;
+		}
+		
+		$permissions_path = $this->db->loadResult();			
+
+		// Get all groups the current user is a member of
+		$user_groups = $user->getGroups('members');
+		
+		// Next see if the user is allowed to make this call
+		$sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = ' . $this->db->quote($permissions_path) . ' AND 
+				(`user_id` = ' . $this->db->quote($userid) . ' OR 0';
+		
+		foreach ($user_groups as $group)
+		{
+			$sql .= ' OR `group_id` = ' . $this->db->quote($group->gidNumber);
+		}
+		
+		$sql .= ')';
+		$this->db->setQuery($sql);
+		$this->db->query();
+		
+		// There is a match, permission granted
+		if ($this->db->getNumRows())
+		{
+			return true;	
+		}
+				
+		// No match, too bad. Unauthorized
+		$this->errorMessage(401, 'You don\'t have permission to make this call');
+		return;
+		
+	}
 
 	/**
 	 * Helper function to check whether or not someone is using oauth and authorized
@@ -1137,5 +1296,29 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		}
 
 		return $authorized;
+	}
+	
+	/**
+	 * Method to report errors. creates error node for response body as well
+	 *
+	 * @param	$code		Error Code
+	 * @param	$message	Error Message
+	 * @param	$format		Error Response Format
+	 *
+	 * @return     void
+	 */
+	private function errorMessage($code, $message)
+	{
+		//build error code and message
+		$object = new stdClass();
+		$object->error->code = $code;
+		$object->error->message = $message;
+				
+		//set http status code and reason
+		$response = $this->getResponse();
+		$response->setErrorMessage($object->error->code, $object->error->message, $object->error->message);
+		
+		//add error to message body
+		$this->setMessage($object);
 	}
 }
