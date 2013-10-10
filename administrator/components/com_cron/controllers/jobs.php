@@ -72,12 +72,10 @@ class CronControllerJobs extends Hubzero_Controller
 		$model = new CronModelJobs();
 
 		// Get a record count
-		$this->view->filters['count'] = true;
-		$this->view->total = $model->jobs($this->view->filters);
+		$this->view->total = $model->jobs('count', $this->view->filters);
 
 		// Get records
-		$this->view->filters['count'] = false;
-		$this->view->results = $model->jobs($this->view->filters);
+		$this->view->results = $model->jobs('list', $this->view->filters);
 
 		// initiate paging
 		jimport('joomla.html.pagination');
@@ -270,7 +268,6 @@ class CronControllerJobs extends Hubzero_Controller
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -300,7 +297,6 @@ class CronControllerJobs extends Hubzero_Controller
 		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}

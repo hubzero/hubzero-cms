@@ -85,7 +85,7 @@ class CronControllerJobs extends Hubzero_Controller
 		$output = new stdClass;
 		$output->jobs = array();
 
-		if (($results = $model->jobs($filters)))
+		if (($results = $model->jobs('list', $filters)))
 		{
 			foreach ($results as $job)
 			{

@@ -31,47 +31,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'tables' . DS . 'job.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cron' . DS . 'models' . DS . 'job.php');
 
 /**
- * Table class for forum posts
+ * Table class for cron jobs
  */
-class CronModelJobs extends JObject
+class CronModelJobs extends \Hubzero\Model
 {
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
-
-	/**
-	 * CronTableJob
-	 * 
-	 * @var object
-	 */
-	private $_tbl = NULL;
-
 	/**
 	 * CronModelJob
 	 * 
-	 * @var array
+	 * @var object
 	 */
 	private $_job = null;
 
 	/**
+	 * Record count for total number of jobs
+	 * 
+	 * @var integer
+	 */
+	private $_jobs_count = null;
+
+	/**
 	 * \Hubzero\ItemList
 	 * 
-	 * @var array
+	 * @var object
 	 */
 	private $_jobs = null;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct()
@@ -97,7 +87,8 @@ class CronModelJobs extends JObject
 	/**
 	 * Set and get a specific job
 	 * 
-	 * @return     void
+	 * @param      integer $id Record ID
+	 * @return     object CronModelJob
 	 */
 	public function job($id=null)
 	{
@@ -136,34 +127,46 @@ class CronModelJobs extends JObject
 	/**
 	 * Get a list of jobs
 	 * 
-	 * @param      array $filters Filters to apply to data fetch
-	 * @return     object \Hubzero\ItemList
+	 * @param      string  $rtrn    What data to fetch
+	 * @param      array   $filters Filters to apply to data fetch
+	 * @param      boolean $clear   Clear cached data?
+	 * @return     mixed
 	 */
-	public function jobs($filters=array())
+	public function jobs($rtrn='list', $filters=array(), $clear=false)
 	{
-		if (isset($filters['count']) && $filters['count'])
+		switch (strtolower($rtrn))
 		{
-			return $this->_tbl->count($filters);
-		}
-
-		if (!($this->_jobs instanceof \Hubzero\ItemList))
-		{
-			if (($results = $this->_tbl->find($filters)))
-			{
-				// Loop through all the items and turn into models
-				foreach ($results as $key => $result)
+			case 'count':
+				if (!isset($this->_jobs_count) || $clear)
 				{
-					$results[$key] = new CronModelJob($result);
+					$this->_jobs_count = $this->_tbl->count($filters);
 				}
-			}
-			else
-			{
-				$results = array();
-			}
+				return $this->_jobs_count;
+			break;
 
-			$this->_jobs = new \Hubzero\ItemList($results);
+			case 'list':
+			case 'all':
+			default:
+				if (!($this->_jobs instanceof \Hubzero\ItemList) || $clear)
+				{
+					if (($results = $this->_tbl->find($filters)))
+					{
+						// Loop through all the items and turn into models
+						foreach ($results as $key => $result)
+						{
+							$results[$key] = new CronModelJob($result);
+						}
+					}
+					else
+					{
+						$results = array();
+					}
+
+					$this->_jobs = new \Hubzero\ItemList($results);
+				}
+
+				return $this->_jobs;
+			break;
 		}
-
-		return $this->_jobs;
 	}
 }

@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'tables' . DS . 'job.php');
+
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'FieldInterface.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'AbstractField.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'DayOfMonthField.php');
@@ -43,23 +45,16 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php');
 
 /**
- * Table class for forum posts
+ * Table class for a cron job model
  */
-class CronModelJob extends JObject
+class CronModelJob extends \Hubzero\Model
 {
 	/**
-	 * CronTableJob
+	 * Table class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_tbl = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
+	protected $_tbl_name = 'CronTableJob';
 
 	/**
 	 * JProfiler
@@ -71,23 +66,12 @@ class CronModelJob extends JObject
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id ID or alias
+	 * @param      integer $id Record ID, array, or object
 	 * @return     void
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new CronTableJob($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
+		parent::__construct($oid);
 
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -125,77 +109,26 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $default  The default value
-	 * @return    mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $value    The value of the property to set
-	 * @return    mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @return     mixed
+	 * @param     string $property Value to get from user object
+	 * @return    mixed
 	 */
-	public function creator()
+	public function creator($property=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!isset($this->_creator) || !($this->_creator instanceof JUser))
 		{
 			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
+		if ($property)
+		{
+			return $this->_creator->get((string) $property);
+		}
 		return $this->_creator;
-	}
-
-	/**
-	 * Bind data to the $_tbl
-	 * 
-	 * @param      mixed $data Data to bind (array or object)
-	 * @return     boolean
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
 	}
 
 	/**
@@ -206,29 +139,14 @@ class CronModelJob extends JObject
 	 */
 	public function store($check=true)
 	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
 		$params = $this->get('params');
 		if (is_object($params))
 		{
 			$this->set('params', $params->toString());
 		}
 
-		if (!$this->_tbl->store())
+		if (!parent::store($check))
 		{
-			$this->setError($this->_tbl->getError());
 			return false;
 		}
 
@@ -238,9 +156,9 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Get the item entry for a collection
+	 * Get a cron expression
 	 * 
-	 * @return     void
+	 * @return     object
 	 */
 	public function expression()
 	{
@@ -252,7 +170,7 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Get the last run timestamp
 	 * 
 	 * @return     void
 	 */
@@ -262,7 +180,7 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Get the next run timestamp
 	 * 
 	 * @return     void
 	 */
@@ -275,7 +193,7 @@ class CronModelJob extends JObject
 	 * Mark a time
 	 * 
 	 * @param      string $label
-	 * @return     void
+	 * @return     boolean
 	 */
 	public function mark($label)
 	{
@@ -296,9 +214,9 @@ class CronModelJob extends JObject
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Return data about this job, icluding profile info as an array
 	 * 
-	 * @return     void
+	 * @return     array
 	 */
 	public function toArray()
 	{
