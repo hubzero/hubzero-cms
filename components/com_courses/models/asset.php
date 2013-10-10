@@ -239,10 +239,10 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view->course_id         = $this->get('course_id');
 		$view->viewed            = date('Y-m-d H:i:s', time());
 		$view->viewed_by         = $member->get('id');
-		$view->ip                = $_SERVER['REMOTE_ADDR'];
-		$view->url               = $_SERVER['REQUEST_URI'];
-		$view->referrer          = $_SERVER['HTTP_REFERER'];
-		$view->user_agent_string = $_SERVER['HTTP_USER_AGENT'];
+		$view->ip                = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
+		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
+		$view->referrer          = (isset($_SERVER['HTTP_REFERRER']) ? $_SERVER['HTTP_REFERRER'] : '');
+		$view->user_agent_string = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$view->session_id        = JFactory::getSession()->getId();
 		if (!$view->store()) 
 		{
