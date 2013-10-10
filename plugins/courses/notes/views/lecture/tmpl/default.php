@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 jQuery(document).ready(function(jQuery){
 	var $ = jQuery,
 		_DEBUG = false,
-		url = "<?php echo '/index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
+		url = "<?php echo '/index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
 
 	var options = {
 		notes: <?php 
@@ -46,7 +46,7 @@ jQuery(document).ready(function(jQuery){
 			{
 				$access = array(0, 1);
 			}
-			if ($notes = $this->model->notes(array('scope' => 'lecture', 'scope_id' => $this->lecture->get('id'), 'access' => $access)))
+			if ($notes = $this->model->notes(array('scope' => 'lecture', 'scope_id' => $this->lecture->get('id'), 'access' => $access, 'section_id' => $this->offering->section()->get('id'))))
 			{
 				foreach ($notes as $note)
 				{
