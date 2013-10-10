@@ -16,7 +16,7 @@ class Migration20130905195600ComCourses extends Hubzero_Migration
 		if ($db->tableHasField('#__courses_grade_book', 'user_id'))
 		{
 			// Fix gradebook entires
-			$query = "SELECT * FROM `#__courses_grade_book`";
+			$query = "SELECT * FROM `#__courses_grade_book` ORDER BY `user_id` ASC";
 			$db->setQuery($query);
 			$results = $db->loadObjectList();
 
@@ -49,9 +49,18 @@ class Migration20130905195600ComCourses extends Hubzero_Migration
 					$db->setQuery($query);
 					$id = $db->loadResult();
 
-					$query = "UPDATE `#__courses_grade_book` SET `user_id` = '{$id}' WHERE `id` = '{$r->id}'";
-					$db->setQuery($query);
-					$db->query();
+					if ($id)
+					{
+						$query = "UPDATE `#__courses_grade_book` SET `user_id` = '{$id}' WHERE `id` = '{$r->id}'";
+						$db->setQuery($query);
+						$db->query();
+					}
+					else
+					{
+						$query = "DELETE FROM `#__courses_grade_book` WHERE `id` = '{$r->id}'";
+						$db->setQuery($query);
+						$db->query();
+					}
 				}
 			}
 		}
