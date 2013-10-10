@@ -185,9 +185,7 @@ class Hubzero_Register_Premis
 			return $return;
 		}
 		
-		// Clean and parse add and drop requests		
-		$courses['add'] = preg_replace("/[^A-Za-z0-9_,\.]/", '', $courses['add']);
-		$courses['drop'] = preg_replace("/[^A-Za-z0-9_,\.]/", '', $courses['drop']);		
+		// Clean and parse add and drop requests
 		
 		if (!empty($courses['add'])) {
 			$add = explode(',', $courses['add']);
@@ -195,6 +193,27 @@ class Hubzero_Register_Premis
 		if (!empty($courses['drop'])) {
 			$drop = explode(',', $courses['drop']);
 		}
+		
+		// Parse PREMIS value and extract the section values
+		$addValues = array();
+		foreach ($add as $val)
+		{
+			$tmp = explode('section', $val);
+			$addValues[] = $tmp[1];
+		}
+		
+		$add = $addValues;		
+		//print_r($add); die;	
+		
+		$dropValues = array();
+		foreach ($drop as $val)
+		{
+			$tmp = explode('section', $val);
+			$dropValues[] = $tmp[1];
+		}
+		
+		$drop = $dropValues;		
+		//print_r($drop); die;	
 		
 		// *** Check if there is already a hub user
 		
