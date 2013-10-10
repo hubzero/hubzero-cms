@@ -144,7 +144,7 @@ abstract class Model extends Object
 	 *
 	 * @param	string $property The name of the property
 	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed  Previous value of the property
+	 * @return	object This current model
 	 */
 	public function set($property, $value = null)
 	{
@@ -152,9 +152,8 @@ abstract class Model extends Object
 		{
 			$property = '__' . $property;
 		}
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
 		$this->_tbl->$property = $value;
-		return $previous;
+		return $this;
 	}
 
 	/**
@@ -194,7 +193,7 @@ abstract class Model extends Object
 	 */
 	public function exists()
 	{
-		if (!array_key_exists('id', $this->_tbl->getFields())) //getProperties
+		if (!array_key_exists('id', $this->_tbl->getFields()))
 		{
 			return true;
 		}
@@ -212,7 +211,7 @@ abstract class Model extends Object
 	 */
 	public function isPublished()
 	{
-		if (!array_key_exists('state', $this->_tbl->getFields())) //getProperties
+		if (!array_key_exists('state', $this->_tbl->getFields()))
 		{
 			return true;
 		}
@@ -230,7 +229,7 @@ abstract class Model extends Object
 	 */
 	public function isUnpublished()
 	{
-		if (!array_key_exists('state', $this->_tbl->getFields())) //getProperties
+		if (!array_key_exists('state', $this->_tbl->getFields()))
 		{
 			return false;
 		}
@@ -248,7 +247,7 @@ abstract class Model extends Object
 	 */
 	public function isDeleted()
 	{
-		if (!array_key_exists('state', $this->_tbl->getFields())) //getProperties
+		if (!array_key_exists('state', $this->_tbl->getFields()))
 		{
 			return false;
 		}
@@ -335,7 +334,7 @@ abstract class Model extends Object
 	/**
 	 * Log an error message
 	 *
-	 * @param     string $message Message to log
+	 * @param     string $message Message type to log
 	 * @param     string $message Message to log
 	 * @return    void
 	 */
@@ -349,7 +348,7 @@ abstract class Model extends Object
 		$trace = false;
 		if (JDEBUG)
 		{
-			$message = \JRequest::GetVar('REQUEST_URI', '', 'server') . ' -- ' . $message;
+			$message = \JRequest::getVar('REQUEST_URI', '', 'server') . ' -- ' . $message;
 			$trace = true;
 		}
 
@@ -373,7 +372,7 @@ abstract class Model extends Object
 		// Is data valid?
 		if (!$this->_tbl->check())
 		{
-			$this->setError($this->_tbl->getError());
+			$this->_errors = $this->_tbl->getErrors();
 			return false;
 		}
 		return true;

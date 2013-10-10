@@ -210,6 +210,7 @@ class Object
 	 * Add an error message.
 	 *
 	 * @param   string  $error  Error message.
+	 * @param   string  $key    Specific key to set the value to
 	 * @return  void
 	 */
 	public function setError($error, $key=null)
