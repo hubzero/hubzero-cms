@@ -53,46 +53,6 @@ class plgWikiCollect extends JPlugin
 	}
 
 	/**
-	 * prepare content method
-	 * 
-	 * @param      object $page     Wiki page
-	 * @param      object $revision Wiki revision
-	 * @param      object $config   Wiki config
-	 * @return     string
-	 */
-	public function onPrepareContent($page, $revision, $config)
-	{
-	}
-
-	/**
-	 * After display title method
-	 * Method is called by the view and the results are imploded and displayed in a placeholder
-	 * 
-	 * @param      object $page     Wiki page
-	 * @param      object $revision Wiki revision
-	 * @param      object $config   Wiki config
-	 * @return     string
-	 */
-	public function onAfterDisplayTitle($page, $revision, $config)
-	{
-		return '';
-	}
-
-	/**
-	 * Before display content method
-	 * Method is called by the view and the results are imploded and displayed in a placeholder
-	 * 
-	 * @param      object $page     Wiki page
-	 * @param      object $revision Wiki revision
-	 * @param      object $config   Wiki config
-	 * @return     string
-	 */
-	public function onBeforeDisplayContent($page, $revision, $config)
-	{
-		return '';
-	}
-
-	/**
 	 * After display content method
 	 * Method is called by the view and the results are imploded and displayed in a placeholder
 	 * 
@@ -124,46 +84,22 @@ class plgWikiCollect extends JPlugin
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
-			//if ($rtrn == 'all' || $rtrn == 'metadata') 
-			//{
-				// Push some scripts to the template
-				ximport('Hubzero_Document');
-				Hubzero_Document::addPluginScript('wiki', $this->_name);
-				Hubzero_Document::addPluginStylesheet('wiki', $this->_name);
+			// Push some scripts to the template
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginScript('wiki', $this->_name);
+			Hubzero_Document::addPluginStylesheet('wiki', $this->_name);
 
-				/*ximport('Hubzero_Favorite');
-				if (!class_exists('Hubzero_Favorite')) 
-				{
-					return $arr;
-				}
-
-				$database =& JFactory::getDBO();
-
-				$fav = new Hubzero_Favorite($database);
-				$fav->loadFavorite($juser->get('id'), $resource->id, 'resources');
-				if (!$fav->id) 
-				{
-					$txt = JText::_('Repost');
-					$cls = '';
-				} 
-				else 
-				{
-					$txt = JText::_('Unpost');
-					$cls = 'faved';
-				}*/
-
-				ximport('Hubzero_Plugin_View');
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'wiki',
-						'element' => $this->_name,
-						'name'    => 'metadata'
-					)
-				);
-				$view->option = 'com_wiki';
-				$view->page = $page;
-				return $view->loadTemplate();
-			//}
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'wiki',
+					'element' => $this->_name,
+					'name'    => 'metadata'
+				)
+			);
+			$view->option = 'com_wiki';
+			$view->page = $page;
+			return $view->loadTemplate();
 		}
 
 		return '';
@@ -178,8 +114,6 @@ class plgWikiCollect extends JPlugin
 	public function fav()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
 
 		$this->option = 'com_wiki';
 		$this->juser = JFactory::getUser();
@@ -192,35 +126,33 @@ class plgWikiCollect extends JPlugin
 		$no_html       = JRequest::getInt('no_html', 0);
 
 		$model = new CollectionsModel('member', $this->juser->get('id'));
-		//if (!$item_id && $collection_id)
-		//{
-			$b = new CollectionsTableItem($this->database);
-			$b->loadType($this->page->id, 'wiki');
-			if (!$b->id)
+
+		$b = new CollectionsTableItem($this->database);
+		$b->loadType($this->page->id, 'wiki');
+		if (!$b->id)
+		{
+			$row = new CollectionsTableCollection($this->database);
+			$row->load($collection_id);
+
+			ximport('Hubzero_View_Helper_Html');
+
+			$b->url         = JRoute::_('index.php?option=com_wiki&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename);
+			$b->type        = 'wiki';
+			$b->object_id   = $this->page->id;
+			$b->title       = $this->page->title;
+			$b->description = Hubzero_View_Helper_Html::shortenText(strip_tags($this->revision->pagehtml), 300, 0, 1);
+			if (!$b->check()) 
 			{
-				$row = new CollectionsTableCollection($this->database);
-				$row->load($collection_id);
-
-				ximport('Hubzero_View_Helper_Html');
-
-				$b->url         = JRoute::_('index.php?option=com_wiki&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename);
-				$b->type        = 'wiki';
-				$b->object_id   = $this->page->id;
-				$b->title       = $this->page->title;
-				$b->description = Hubzero_View_Helper_Html::shortenText(strip_tags($this->revision->pagehtml), 300, 0, 1);
-				if (!$b->check()) 
-				{
-					$this->setError($b->getError());
-				}
-				// Store new content
-				if (!$b->store()) 
-				{
-					$this->setError($b->getError());
-				}
-				$collection_id = 0;
+				$this->setError($b->getError());
 			}
-			$item_id = $b->id;
-		//}
+			// Store new content
+			if (!$b->store()) 
+			{
+				$this->setError($b->getError());
+			}
+			$collection_id = 0;
+		}
+		$item_id = $b->id;
 
 		// No board ID selected so present repost form
 		if (!$collection_id && !$collection_title)
