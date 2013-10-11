@@ -36,7 +36,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-folder categories btn" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('All categories'); ?></a>
+		<a class="icon-folder categories btn" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?></a>
 	</li>
 </ul>
 
@@ -47,13 +47,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 		<form action="<?php echo JRoute::_($base); ?>" method="post">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<legend><?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 					<input type="hidden" name="active" value="forum" />
 					<input type="hidden" name="action" value="search" />
 				</fieldset>
@@ -62,7 +62,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			<div class="container">
 				<table class="entries">
 					<caption>
-						<?php echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search'])); ?>
+						<?php echo JText::sprintf('PLG_GROUPS_FORUM_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
 					</caption>
 					<tbody>
 			<?php
@@ -73,7 +73,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					$title = $this->escape(stripslashes($row->get('title')));
 					$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
 
-					$name = JText::_('Anonymous');
+					$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 					if (!$row->get('anonymous'))
 					{
 						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
@@ -107,13 +107,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								</span>
 							</td>
 							<td>
-								<span><?php echo JText::_('Section'); ?></span>
+								<span><?php echo JText::_('PLG_GROUPS_FORUM_SECTION'); ?></span>
 								<span class="entry-details">
 									<?php echo $this->escape($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title')); ?>
 								</span>
 							</td>
 							<td>
-								<span><?php echo JText::_('Category'); ?></span>
+								<span><?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY'); ?></span>
 								<span class="entry-details">
 									<?php echo $this->escape($this->categories[$row->get('category_id')]->get('title')); ?>
 								</span>
@@ -122,7 +122,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<?php } ?>
 				<?php } else { ?>
 						<tr>
-							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
+							<td><?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY_EMPTY'); ?></td>
 						</tr>
 				<?php } ?>
 					</tbody>

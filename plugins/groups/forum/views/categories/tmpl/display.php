@@ -9,7 +9,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
 	<li>
 		<a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>">
-			<?php echo JText::_('All categories'); ?>
+			<?php echo JText::_('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?>
 		</a>
 	</li>
 </ul>
@@ -20,13 +20,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<?php } ?>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<legend><?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 					<input type="hidden" name="active" value="forum" />
 					<input type="hidden" name="action" value="search" />
 				</fieldset>
@@ -34,30 +34,30 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 		<?php if ($this->category->get('closed')) { ?>
 			<p class="warning">
-				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
+				<?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY_CLOSED'); ?>
 			</p>
 		<?php } ?>
 
 			<div class="container">
 				<ul class="entries-menu order-options">
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'created') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=created'); ?>" title="<?php echo JText::_('Sort by created date'); ?>">
-							<?php echo JText::_('&darr; Created'); ?>
+						<a<?php echo ($this->filters['sortby'] == 'created') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=created'); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_SORT_BY_CREATED'); ?>">
+							<?php echo JText::_('PLG_GROUPS_FORUM_SORT_CREATED'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'activity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=activity'); ?>" title="<?php echo JText::_('Sort by activity'); ?>">
-							<?php echo JText::_('&darr; Activity'); ?>
+						<a<?php echo ($this->filters['sortby'] == 'activity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=activity'); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY'); ?>">
+							<?php echo JText::_('PLG_GROUPS_FORUM_SORT_ACTIVITY'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'replies') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=replies'); ?>" title="<?php echo JText::_('Sort by number of posts'); ?>">
-							<?php echo JText::_('&darr; # Posts'); ?>
+						<a<?php echo ($this->filters['sortby'] == 'replies') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=replies'); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS'); ?>">
+							<?php echo JText::_('PLG_GROUPS_FORUM_SORT_NUM_POSTS'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=title'); ?>" title="<?php echo JText::_('Sort by title'); ?>">
-							<?php echo JText::_('&darr; Title'); ?>
+						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=title'); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_SORT_BY_TITLE'); ?>">
+							<?php echo JText::_('PLG_GROUPS_FORUM_SORT_TITLE'); ?>
 						</a>
 					</li>
 				</ul>
@@ -67,15 +67,15 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						<?php
 							if ($this->filters['search']) {
 								if ($this->category->exists()) {
-									echo JText::sprintf('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
+									echo JText::sprintf('PLG_GROUPS_FORUM_SEARCH_FOR_IN', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
 								} else {
-									echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
+									echo JText::sprintf('PLG_GROUPS_FORUM_SEARCH_FOR', $this->escape($this->filters['search']));
 								}
 							} else {
 								if ($this->category->exists()) {
-									echo JText::sprintf('Discussions in "%s"', $this->escape(stripslashes($this->category->get('title'))));
+									echo JText::sprintf('PLG_GROUPS_FORUM_DISCUSSIONS_IN', $this->escape(stripslashes($this->category->get('title'))));
 								} else {
-									echo JText::_('Discussions');
+									echo JText::_('PLG_GROUPS_FORUM_DISCUSSIONS');
 								}
 							}
 						?>
@@ -85,7 +85,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						<tr>
 							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
 								<a class="icon-add add btn" href="<?php echo JRoute::_($base . '/new'); ?>">
-									<?php echo JText::_('Add Discussion'); ?>
+									<?php echo JText::_('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
 								</a>
 							</td>
 						</tr>
@@ -96,7 +96,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				if ($this->category->threads('list', $this->filters)->total() > 0) {
 					foreach ($this->category->threads() as $row) 
 					{
-						$name = JText::_('Anonymous');
+						$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 						if (!$row->get('anonymous'))
 						{
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
@@ -123,26 +123,23 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 									<span class="entry-date">
 										<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 									</span>
-									<?php echo JText::_('by'); ?>
-									<span class="entry-author">
-										<?php echo $name; ?>
-									</span>
+									<?php echo JText::sprintf('PLG_GROUPS_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
 								</span>
 							</td>
 							<td>
 								<span><?php echo ($row->posts('count')); ?></span>
 								<span class="entry-details">
-									<?php echo JText::_('Comments'); ?>
+									<?php echo JText::_('PLG_GROUPS_FORUM_COMMENTS'); ?>
 								</span>
 							</td>
 							<td>
-								<span><?php echo JText::_('Last Post:'); ?></span>
+								<span><?php echo JText::_('PLG_GROUPS_FORUM_LAST_POST'); ?></span>
 								<span class="entry-details">
 							<?php 
 								$lastpost = $row->lastActivity();
 								if ($lastpost->exists()) 
 								{
-										$lname = JText::_('Anonymous');
+										$lname = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 										if (!$lastpost->get('anonymous')) 
 										{
 											$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastpost->creator('id')) . '">' . $this->escape(stripslashes($lastpost->creator('name'))) . '</a>';
@@ -151,12 +148,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 									<span class="entry-date">
 										<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
 									</span>
-									<?php echo JText::_('by'); ?>
-									<span class="entry-author">
-										<?php echo $lname; ?>
-									</span>
+									<?php echo JText::sprintf('PLG_GROUPS_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
 							<?php } else { ?>
-									<?php echo JText::_('none'); ?>
+									<?php echo JText::_('PLG_GROUPS_FORUM_NONE'); ?>
 							<?php } ?>
 								</span>
 							</td>
@@ -178,7 +172,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<?php } ?>
 				<?php } else { ?>
 						<tr>
-							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
+							<td><?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY_EMPTY'); ?></td>
 						</tr>
 				<?php } ?>
 					</tbody>

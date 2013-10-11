@@ -130,7 +130,7 @@ ximport('Hubzero_User_Profile_Helper');
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
 							<a class="permalink" href="<?php echo JRoute::_($row->link('anchor')); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>">
-								<span class="comment-date-at">@</span> 
+								<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span> 
 								<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
 								<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
 								<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
@@ -189,7 +189,7 @@ ximport('Hubzero_User_Profile_Helper');
 		<?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?>
 	</h3>
 	<div class="aside">
-		<table class="wiki-reference" summary="Wiki Syntax Reference">
+		<table class="wiki-reference">
 			<caption>Wiki Syntax Reference</caption>
 			<tbody>
 				<tr>
@@ -242,7 +242,7 @@ ximport('Hubzero_User_Profile_Helper');
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
-					<span class="permalink"><span class="comment-date-at">@</span>
+					<span class="permalink"><span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
 						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
 						<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
 						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
@@ -253,23 +253,20 @@ ximport('Hubzero_User_Profile_Helper');
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?>
 					<?php
 					ximport('Hubzero_Wiki_Editor');
-					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', '', '', '35', '15');
+					echo Hubzero_Wiki_Editor::getInstance()->display('fields[comment]', 'field_comment', '', '', '35', '15');
 					?>
 				</label>
 				
 				<label>
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_YOUR_TAGS'); ?>:
 					<?php 
-						$tags = $this->thread->tags('string');
-
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
-						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)) );
+						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->thread->tags('string'))) );
 						if (count($tf) > 0) {
 							echo $tf[0];
 						} else {
-							echo '<input type="text" name="tags" value="' . $tags . '" />';
+							echo '<input type="text" name="tags" value="' . $this->escape($this->thread->tags('string')) . '" />';
 						}
 					?>
 				</label>
@@ -277,28 +274,28 @@ ximport('Hubzero_User_Profile_Helper');
 				<fieldset>
 					<legend><?php echo JText::_('PLG_GROUPS_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
-						<label>
+						<label for="upload">
 							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
 						</label>
 
-						<label>
+						<label for="upload-description">
 							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
-							<input type="text" name="description" value="" />
+							<input type="text" name="description" id="upload-description" value="" />
 						</label>
 					</div>
 				</fieldset>
-		
+
 				<label for="field-anonymous" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
 				</label>
-		
+
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
 				</p>
 			<?php } ?>
-		
+
 				<div class="sidenote">
 					<p>
 						<strong><?php echo JText::_('PLG_GROUPS_FORUM_KEEP_POLITE'); ?></strong>
@@ -308,19 +305,19 @@ ximport('Hubzero_User_Profile_Helper');
 					</p>
 				</div>
 			</fieldset>
-			<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
-			<input type="hidden" name="fields[parent]" value="<?php echo $this->thread->get('id'); ?>" />
-			<input type="hidden" name="fields[thread]" value="<?php echo $this->thread->get('id'); ?>" />
+			<input type="hidden" name="fields[category_id]" value="<?php echo $this->escape($this->thread->get('category_id')); ?>" />
+			<input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
+			<input type="hidden" name="fields[thread]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[scope]" value="<?php echo $this->model->get('scope'); ?>" />
-			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->model->get('scope_id'); ?>" />
+			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
 			<input type="hidden" name="fields[id]" value="" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
-			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
+			<input type="hidden" name="section" value="<?php echo $this->escape($this->filters['section']); ?>" />
 
 			<?php echo JHTML::_('form.token'); ?>
 		</form>

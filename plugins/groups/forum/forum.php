@@ -171,6 +171,9 @@ class plgGroupsForum extends Hubzero_Plugin
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 
 			{
+				$path = str_replace($juri->base(true), '', $path);
+				$path = str_replace('index.php', '', $path);
+				$path = DS . trim($path, DS);
 				$path = str_replace('/groups/' . $this->group->get('cn') . '/forum', '', $path);
 				$path = ltrim($path, DS);
 
@@ -968,14 +971,14 @@ class plgGroupsForum extends Hubzero_Plugin
 		$this->view->section  = $this->model->section($this->view->filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
 		if (!$this->view->section->exists())
 		{
-			JError::raiseError(404, JText::_('Section not found.'));
+			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_ERROR_SECTION_NOT_FOUND'));
 			return;
 		}
 
 		$this->view->category = $this->view->section->category($this->view->filters['category']);
 		if (!$this->view->category->exists())
 		{
-			JError::raiseError(404, JText::_('Category not found.'));
+			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
 			return;
 		}
 
@@ -1042,14 +1045,14 @@ class plgGroupsForum extends Hubzero_Plugin
 		$this->view->section  = $this->model->section($sectionAlias, $this->model->get('scope'), $this->model->get('scope_id'));
 		if (!$this->view->section->exists())
 		{
-			JError::raiseError(404, JText::_('Section not found.'));
+			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_ERROR_SECTION_NOT_FOUND'));
 			return;
 		}
 
 		$this->view->category = $this->view->section->category($category);
 		if (!$this->view->category->exists())
 		{
-			JError::raiseError(404, JText::_('Category not found.'));
+			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_ERROR_CATEGORY_NOT_FOUND'));
 			return;
 		}
 
@@ -1128,7 +1131,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
-				JText::_('You are not authorized to perform this action.'),
+				JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
 			return;

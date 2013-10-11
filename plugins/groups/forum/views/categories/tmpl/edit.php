@@ -9,7 +9,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
 	<li>
 		<a class="icon-folder categories btn" href="<?php echo JRoute::_($base); ?>">
-			<?php echo JText::_('All categories'); ?>
+			<?php echo JText::_('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?>
 		</a>
 	</li>
 </ul>
@@ -68,17 +68,21 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		</fieldset>
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SAVE'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('PLG_GROUPS_FORUM_CANCEL'); ?>
+			</a>
 		</p>
 
-		<input type="hidden" name="fields[alias]" value="<?php echo $this->category->get('alias'); ?>" />
-		<input type="hidden" name="fields[id]" value="<?php echo $this->category->get('id'); ?>" />
+		<input type="hidden" name="fields[alias]" value="<?php echo $this->escape($this->category->get('alias')); ?>" />
+		<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->category->get('id')); ?>" />
 		<input type="hidden" name="fields[state]" value="1" />
-		<input type="hidden" name="fields[scope]" value="<?php echo $this->model->get('scope'); ?>" />
-		<input type="hidden" name="fields[scope_id]" value="<?php echo $this->model->get('scope_id'); ?>" />
+		<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
+		<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 		<input type="hidden" name="active" value="forum" />
 		<input type="hidden" name="action" value="savecategory" />
 

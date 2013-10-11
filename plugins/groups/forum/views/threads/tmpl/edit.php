@@ -13,7 +13,7 @@ if ($this->post->exists()) {
 <ul id="page_options">
 	<li>
 		<a class="icon-comments comments btn" href="<?php echo JRoute::_($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')); ?>">
-			<?php echo JText::_('All discussions'); ?>
+			<?php echo JText::_('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
 		</a>
 	</li>
 </ul>
@@ -29,7 +29,7 @@ if ($this->post->exists()) {
 	<?php } else { ?>
 		<?php echo JText::_('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
 	<?php } ?>
-	</h3>			
+	</h3>
 	<div class="aside">
 		<table class="wiki-reference" summary="<?php echo JText::_('PLG_GROUPS_FORUM_WIKI_SYNTAX_REFERENCE'); ?>">
 			<caption><?php echo JText::_('PLG_GROUPS_FORUM_WIKI_SYNTAX_REFERENCE'); ?></caption>
@@ -77,7 +77,7 @@ if ($this->post->exists()) {
 				?>
 				<img src="<?php echo $thumb; ?>" alt="" />
 			</p>
-	
+
 			<fieldset>
 			<?php if ($this->config->get('access-edit-thread') && !$this->post->get('parent')) { ?>
 				<div class="grid">
@@ -97,8 +97,8 @@ if ($this->post->exists()) {
 
 				
 			<?php } else { ?>
-				<input type="hidden" name="fields[sticky]" id="field-sticky" value="<?php echo $this->post->get('sticky'); ?>" />
-				<input type="hidden" name="fields[closed]" id="field-closed" value="<?php echo $this->post->get('closed'); ?>" />
+				<input type="hidden" name="fields[sticky]" id="field-sticky" value="<?php echo $this->escape($this->post->get('sticky')); ?>" />
+				<input type="hidden" name="fields[closed]" id="field-closed" value="<?php echo $this->escape($this->post->get('closed')); ?>" />
 			<?php } ?>
 
 			<?php if (!$this->post->get('parent')) { ?>
@@ -123,7 +123,7 @@ if ($this->post->exists()) {
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->post->get('title'))); ?>" />
 				</label>
 			<?php } else { ?>
-				<input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->post->get('category_id'); ?>" />
+				<input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->escape($this->post->get('category_id')); ?>" />
 			<?php } ?>
 
 				<label for="field_comment">
@@ -144,7 +144,7 @@ if ($this->post->exists()) {
 						if (count($tf) > 0) {
 							echo $tf[0];
 						} else {
-							echo '<input type="text" name="tags" value="'. $this->post->tags('string') .'" />';
+							echo '<input type="text" name="tags" value="'. $this->escape($this->post->tags('string')) .'" />';
 						}
 					?>
 				</label>
@@ -186,17 +186,17 @@ if ($this->post->exists()) {
 					</p>
 				</div>
 			</fieldset>
-			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->get('parent'); ?>" />
+			<input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->post->get('parent')); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[id]" value="<?php echo $this->post->get('id'); ?>" />
-			<input type="hidden" name="fields[scope]" value="<?php echo $this->model->get('scope'); ?>" />
-			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->model->get('scope_id'); ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->post->get('id')); ?>" />
+			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
-			<input type="hidden" name="section" value="<?php echo $this->section->get('alias'); ?>" />
+			<input type="hidden" name="section" value="<?php echo $this->escape($this->section->get('alias')); ?>" />
 
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
