@@ -45,17 +45,19 @@ class plgCronNewsletter extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = $this->_name;
 		$obj->events = array(
 			array(
 				'name'   => 'processMailings',
-				'label'  => JText::_('Process any newsletter mailings in the queue.'),
+				'label'  => JText::_('PLG_CRON_NEWSLETTER_PROCESS_QUEUE'),
 				'params' => 'processmailings'
 			),
 			array(
 				'name'   => 'processIps',
-				'label'  => JText::_('Process IP addresses to location data for newsletter email actions.'),
+				'label'  => JText::_('PLG_CRON_NEWSLETTER_IP_ADDRESSES_TO_LOCATION'),
 				'params' => ''
 			)
 		);

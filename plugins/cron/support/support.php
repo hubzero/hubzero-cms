@@ -45,23 +45,20 @@ class plgCronSupport extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = 'support';
-		/*$obj->events = array(
-			'onClosePending' => JText::_('Close pending tickets'),
-			'sendTicketsReminder' => JText::_('Email reminder for open tickets'),
-		);
-		$obj->params = 'ticketreminder';*/
 
 		$obj->events = array(
 			array(
 				'name'   => 'onClosePending',
-				'label'  => JText::_('Close pending tickets'),
+				'label'  => JText::_('PLG_CRON_SUPPORT_CLOSE_PENDING'),
 				'params' => 'ticketpending'
 			),
 			array(
 				'name'   => 'sendTicketsReminder',
-				'label'  =>  JText::_('Email reminder for open tickets'),
+				'label'  =>  JText::_('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
 				'params' => 'ticketreminder'
 			)
 		);

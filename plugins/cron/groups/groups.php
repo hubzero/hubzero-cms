@@ -45,12 +45,14 @@ class plgCronGroups extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = $this->_name;
 		$obj->events = array(
 			array(
 				'name'   => 'cleanGroupFolders',
-				'label'  => JText::_('Remove group asset folders that were abandoned.'),
+				'label'  => JText::_('PLG_CRON_GROUPS_REMOVE_ABANDONED_ASSETS'),
 				'params' => ''
 			)
 		);

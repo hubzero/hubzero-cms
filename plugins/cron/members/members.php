@@ -45,12 +45,14 @@ class plgCronMembers extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = 'members';
 		$obj->events = array(
 			array(
 				'name'   => 'onPointRoyalties',
-				'label'  => JText::_('Calculate point royalties'),
+				'label'  => JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES'),
 				'params' => ''
 			)
 		);
@@ -82,9 +84,9 @@ class plgCronMembers extends JPlugin
 		$curyear = date("Y-m");
 		$ref = strtotime($curyear);
 
-		$this->_message = 'Royalties on Answers for '.$curyear.' were distributed successfully.';
-		$rmsg = 'Royalties on Reviews for '.$curyear.' were distributed successfully.';
-		$resmsg = 'Royalties on Resources for '.$curyear.' were distributed successfully.';
+		$this->_message = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
+		$rmsg = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_REVIEWS', $curyear);
+		$resmsg = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_RESOURCES', $curyear);
 
 		// Make sure we distribute royalties only once/ month
 		$MH = new Hubzero_Bank_MarketHistory($this->database);
@@ -143,12 +145,12 @@ class plgCronMembers extends JPlugin
 			} 
 			else 
 			{
-				$this->_message = 'There were no questions eligible for royalty payment. ';
+				$this->_message = JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_QUESTIONS');
 			}
 		} 
 		else 
 		{
-			$this->_message = 'Royalties on Answers for '.$curyear.' were previously distributed. ';
+			$this->_message = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_ANSWERS', $curyear);
 		}
 
 		// Get Royalties on Resource Reviews
@@ -182,7 +184,7 @@ class plgCronMembers extends JPlugin
 			} 
 			else 
 			{
-				$this->_message .= 'There were no reviews eligible for royalty payment. ';
+				$this->_message .= JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_REVIEWS');
 			}
 
 			// make a record of royalty payment
@@ -209,7 +211,7 @@ class plgCronMembers extends JPlugin
 		} 
 		else 
 		{
-			$this->_message .= 'Royalties on Reviews for '.$curyear.' were previously distributed. ';
+			$this->_message .= JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_REVIEWS', $curyear);
 		}
 
 		// Get Royalties on Resources
@@ -232,7 +234,7 @@ class plgCronMembers extends JPlugin
 			} 
 			else 
 			{
-				$this->_message .= 'There were no resources eligible for royalty payment.';
+				$this->_message .= JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_RESOURCES');
 			}
 
 			// make a record of royalty payment
@@ -259,7 +261,7 @@ class plgCronMembers extends JPlugin
 		} 
 		else 
 		{
-			$this->_message .= 'Royalties on Resources for ' . $curyear . ' were previously distributed.';
+			$this->_message .= JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_RESOURCES', $curyear);
 		}
 
 		//$time_end = microtime(true);

@@ -45,23 +45,25 @@ class plgCronProjects extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = 'projects';
 
 		$obj->events = array(
 			array(
 				'name'   => 'computeStats',
-				'label'  => JText::_('Compute and log overall projects usage stats'),
+				'label'  => JText::_('PLG_CRON_PROJECTS_LOG_STATS'),
 				'params' => ''
 			),
 			array(
 				'name'   => 'googleSync',
-				'label'  => JText::_('Auto sync project repositories connected with GDrive'),
+				'label'  => JText::_('PLG_CRON_PROJECTS_SYNC_GDRIVE'),
 				'params' => ''
 			),
 			array(
 				'name'   => 'gitGc',
-				'label'  => JText::_('Rn git gc for project repos to optimize disk usage'),
+				'label'  => JText::_('PLG_CRON_PROJECTS_GITGC'),
 				'params' => ''
 			)
 		);

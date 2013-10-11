@@ -45,12 +45,14 @@ class plgCronUsers extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = $this->_name;
 		$obj->events = array(
 			array(
 				'name'   => 'cleanAuthTempAccounts',
-				'label'  => JText::_('Remove temporary acounts that have been created and abandoned during the third party authentication process.'),
+				'label'  => JText::_('PLG_CRON_USERS_REMOVE_TEMP_ACCOUNTS'),
 				'params' => ''
 			)
 		);

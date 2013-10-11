@@ -45,12 +45,14 @@ class plgCronCache extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = $this->_name;
 		$obj->events = array(
 			array(
 				'name'   => 'cleanSystemCss',
-				'label'  => JText::_('Remove old system CSS files'),
+				'label'  => JText::_('PLG_CRON_CACHE_REMOVE_SYSTEM_CSS'),
 				'params' => ''
 			)
 		);
