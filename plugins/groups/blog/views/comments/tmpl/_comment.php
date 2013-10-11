@@ -2,10 +2,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 	ximport('Hubzero_User_Profile');
-	
-	$juser = JFactory::getUser();
-	
 	ximport('Hubzero_User_Profile_Helper');
+
+	$juser = JFactory::getUser();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
@@ -26,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	else
 	{
-		$comment  = $this->parser->parse(stripslashes($this->comment->get('content')), $this->wikiconfig, false);
+		$comment  = $this->comment->content('parsed');
 	}
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
@@ -38,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong> 
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span> 
+					<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span> 
 					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
 					<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
@@ -91,7 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 						<input type="hidden" name="active" value="blog" />
 						<input type="hidden" name="task" value="view" />
 						<input type="hidden" name="action" value="savecomment" />
@@ -100,8 +99,7 @@ defined('_JEXEC') or die('Restricted access');
 							<span class="label-text"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_COMMENTS'); ?></span>
 							<?php
 							ximport('Hubzero_Wiki_Editor');
-							$editor = Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('comment[content]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
+							echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
 							?>
 						</label>
 
@@ -136,8 +134,6 @@ defined('_JEXEC') or die('Restricted access');
 			$view->depth      = $this->depth;
 			$view->cls        = $cls;
 			$view->base       = $this->base;
-			$view->parser     = $this->parser;
-			$view->wikiconfig = $this->wikiconfig;
 			$view->group      = $this->group;
 			$view->display();
 		}

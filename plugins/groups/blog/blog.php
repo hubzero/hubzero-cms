@@ -236,6 +236,26 @@ class plgGroupsBlog extends Hubzero_Plugin
 	}
 
 	/**
+	 * Parse an SEF URL into its component bits
+	 * stripping out the path leading up to the blog plugin
+	 * 
+	 * @return     string
+	 */
+	private function _parseUrl()
+	{
+		$juri =& JURI::getInstance();
+		$path = $juri->getPath();
+
+		$path = str_replace($juri->base(true), '', $path);
+		$path = str_replace('index.php', '', $path);
+		$path = DS . trim($path, DS);
+		$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
+		$path = ltrim($path, DS);
+
+		return explode('/', $path);
+	}
+
+	/**
 	 * Display a list of latest blog entries
 	 * 
 	 * @return     string
@@ -277,12 +297,8 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
 		{
-			$path = str_replace($juri->base(true), '', $path);
-			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
-			$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
-			$path = ltrim($path, DS);
-			$bits = explode('/', $path);
+			$bits = $this->_parseUrl();
+
 			$view->filters['year']  = (isset($bits[0])) ? $bits[0] : $view->filters['year'];
 			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
 		}
@@ -372,12 +388,8 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$path = JURI::getInstance()->getPath();
 		if (strstr($path, '/')) 
 		{
-			$path = str_replace(JURI::getInstance()->base(true), '', $path);
-			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
-			$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
-			$path = trim($path, DS);
-			$bits = explode('/', $path);
+			$bits = $this->_parseUrl();
+
 			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
 			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
 		}
@@ -485,11 +497,8 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$path = JURI::getInstance()->getPath();
 			if (strstr($path, '/')) 
 			{
-				$path = str_replace(JURI::getInstance()->base(true), '', $path);
-				$path = str_replace('index.php', '', $path);
-				$path = DS . trim($path, DS);
-				$path = str_replace('/groups/' . $this->group->get('cn') . '/blog/', '', $path);
-				$bits = explode('/', $path);
+				$bits = $this->_parseUrl();
+
 				$alias = end($bits);
 			}
 
@@ -567,16 +576,11 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$app->redirect('/login?return=' . base64_encode($blog));
 		}
 
-		if (!$this->authorized) 
+		if (!$this->authorized || !$this->_getPostingPermissions()) 
 		{
-			$app->enqueueMessage(JText::_('You are not authorized to edit this blog entry.'), 'error');
+			$app->enqueueMessage(JText::_('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'), 'error');
 			$app->redirect($blog);
-		}
-
-		if (!$this->_getPostingPermissions()) 
-		{
-			$app->enqueueMessage(JText::_('You do not have permission to post entries.'), 'error');
-			$app->redirect($blog);
+			return;
 		}
 
 		// Instantiate view
@@ -651,7 +655,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		if (!$this->_getPostingPermissions()) 
 		{
-			$this->setError(JText::_('You do not have permission to edit/save entries.'));
+			$this->setError(JText::_('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
 			return $this->_browse();
 		}
 
@@ -672,7 +676,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 			$item = $this->model->entry($row->alias);
 			if ($item->get('id'))
 			{
-				$this->setError(JText::_('An entry with the alias generated from this title already exists. Please modify the title.'));
+				$this->setError(JText::_('PLG_GROUPS_BLOG_ERROR_ALIAS_EXISTS'));
 				return $this->_edit($row);
 			}
 		}
@@ -718,7 +722,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		if (!$this->_getPostingPermissions()) 
 		{
-			$this->setError(JText::_('You do not have permission to delete entries.'));
+			$this->setError(JText::_('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
 			return $this->_browse();
 		}
 
@@ -964,7 +968,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 		//$this->message = JText::_('Settings successfully saved!');
 		//return $this->_settings();
 		$app =& JFactory::getApplication();
-		$app->enqueueMessage('Settings successfully saved!', 'passed');
+		$app->enqueueMessage(JText::_('PLG_GROUPS_BLOG_SETTINGS_SAVED'), 'passed');
 		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'));
 	}
 
@@ -974,7 +978,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 * @param      string $text
 	 * @return     string
 	 */
-	public static function stripWiki($text)
+	/*public static function stripWiki($text)
 	{
 		$wiki = array(
 			"'''",   // <strong>
@@ -997,5 +1001,5 @@ class plgGroupsBlog extends Hubzero_Plugin
 		$stripped_text = str_replace($wiki, '', $stripped_text);
 
 		return nl2br($stripped_text);
-	}
+	}*/
 }

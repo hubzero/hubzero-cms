@@ -50,8 +50,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 	<?php } ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<li>
-			<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-				<?php echo JText::_('Settings'); ?>
+			<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>">
+				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS'); ?>
 			</a>
 		</li>
 	<?php } ?>
@@ -111,7 +111,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			<dl class="entry-meta">
 				<dt>
 					<span>
-						<?php echo JText::sprintf('Entry #%s', $this->row->get('id')); ?>
+						<?php echo JText::sprintf('PLG_GROUPS_BLOG_ENTRY_NUMBER', $this->row->get('id')); ?>
 					</span>
 				</dt>
 				<dd class="date">
@@ -163,7 +163,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 			{
 			?>
 			<div class="entry-author">
-				<h3><?php echo JText::_('About the author'); ?></h3>
+				<h3><?php echo JText::_('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
 				<p class="entry-author-photo"><img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($author, 0); ?>" alt="" /></p>
 				<div class="entry-author-content">
 					<h4>
@@ -175,7 +175,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 						<?php if ($author->get('bio')) { ?>
 							<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
 						<?php } else { ?>
-							<?php echo JText::_('This author has yet to provide a bio.'); ?>
+							<?php echo JText::_('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?>
 						<?php } ?>
 					</p>
 				</div>
@@ -219,15 +219,6 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 					$view->comments   = $this->row->comments('list');
 					$view->config     = $this->config;
 					$view->base       = $this->row->link();
-					$view->parser     = Hubzero_Wiki_Parser::getInstance();
-					$view->wikiconfig = array(
-						'option'   => $this->option,
-						'scope'    => 'blog',
-						'pagename' => $this->row->get('alias'),
-						'pageid'   => 0,
-						'filepath' => $this->config->get('uploadpath'),
-						'domain'   => ''
-					);
 					$view->display();
 				?>
 			<?php } else { ?>
@@ -311,8 +302,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 						<p>
 							<strong><?php echo $name; ?></strong> 
-							<span class="comment-date-at">@</span><span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
-							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+							<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span> 
+							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
+							<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span> 
+							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
 						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($replyto->get('content')), 300, 0); ?></p>
 					</blockquote>
@@ -330,11 +323,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 						</label>
 
 						<p class="submit">
-							<input type="submit" name="submit" value="<?php echo JText::_('Submit'); ?>" />
+							<input type="submit" name="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
 						</p>
 					<?php } else { ?>
 						<p class="warning">
-							You must <a href="/login?return=<?php echo base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true)); ?>">log in</a> to post comments.
+							<?php echo JText::sprintf('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="/login?return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true)) . '">' . JText::_('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
 						</p>
 					<?php } ?>
 
@@ -352,7 +345,9 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 						<p>
 							<strong><?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
 						</p>
-						<p>Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.</p>
+						<p>
+							<?php echo JText::_('PLG_GROUPS_BLOG_COMMENT_HELP'); ?>
+						</p>
 					</div>
 				</fieldset>
 			</form>

@@ -37,7 +37,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
 	<li>
 		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>">
-			<?php echo JText::_('Archive'); ?>
+			<?php echo JText::_('PLG_GROUPS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
 </ul>
@@ -48,7 +48,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<form action="<?php echo JRoute::_($base . '&action=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
 		<div class="explaination">
 		<?php if ($this->authorized) { ?>
-			<p><a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+			<p><a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>"><?php echo JText::_('PLG_GROUPS_BLOG_NEW_ENTRY'); ?></a></p>
 		<?php } ?>
 		</div>
 		<fieldset>
@@ -63,7 +63,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		</fieldset>
 		<div class="clear"></div>
 
-		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
@@ -72,7 +72,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<input type="hidden" name="entry" value="<?php echo $this->entry->get('id'); ?>" />
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
-			<a href="<?php echo JRoute::_($this->entry->link()); ?>"><?php echo JText::_('Cancel'); ?></a>
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->entry->link()); ?>">
+				<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>
+			</a>
 		</p>
 	</form>

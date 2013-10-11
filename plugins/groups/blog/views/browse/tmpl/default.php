@@ -43,14 +43,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 	<?php if ($this->canpost) { ?>
 	<li>
 		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
-			<?php echo JText::_('New entry'); ?>
+			<?php echo JText::_('PLG_GROUPS_BLOG_NEW_ENTRY'); ?>
 		</a>
 	</li>
 	<?php } ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 	<li>
-		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-			<?php echo JText::_('Settings'); ?>
+		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>">
+			<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS'); ?>
 		</a>
 	</li>
 	<?php } ?>
@@ -60,7 +60,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 <form method="get" action="<?php echo JRoute::_($base . '&action=browse'); ?>" id="blogentries">
 	<div class="aside">
 		<div class="container blog-entries-years">
-			<h4><?php echo JText::_('Entries By Year'); ?></h4>
+			<h4><?php echo JText::_('PLG_GROUPS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 			<ol>
 				<?php if ($first->exists()) { ?>
 					<?php 
@@ -158,30 +158,25 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 	<?php endif; ?>
 
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search for posts'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase...'); ?>" />
+				<legend><?php echo JText::_('PLG_GROUPS_BLOG_SEARCH_LEGEND'); ?></legend>
+				<label for="entry-search-field"><?php echo JText::_('PLG_GROUPS_BLOG_SEARCH_LABEL'); ?></label>
+				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
 
 		<div class="container">
 			<h3>
 			<?php if (isset($this->search) && $this->search) { ?>
-				<?php echo JText::sprintf('Search for "%s"', $this->escape($this->search)); ?>
+				<?php echo JText::sprintf('PLG_GROUPS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
 			<?php } else if (!isset($this->year) || !$this->year) { ?>
-				<?php echo JText::_('Latest Entries'); ?>
+				<?php echo JText::_('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
 			<?php } else { 
-				$format = '%b %Y';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$format = 'M Y';
-				}
 				$archiveDate  = $this->year;
 				$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
 				$archiveDate .= '-01 00:00:00';
-				echo JHTML::_('date', $archiveDate, $format, $this->tz);
+				echo JHTML::_('date', $archiveDate, 'M Y');
 			} ?>
 				<?php
 					if ($this->config->get('feeds_enabled', 1)) :
@@ -197,7 +192,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 						$feed = str_replace('https://', 'http://', $feed);
 				?>
 				<a class="feed" href="<?php echo $feed; ?>">
-					<?php echo JText::_('RSS Feed'); ?>
+					<?php echo JText::_('PLG_GROUPS_BLOG_RSS_FEED'); ?>
 				</a>
 				<?php endif; ?>
 			</h3>

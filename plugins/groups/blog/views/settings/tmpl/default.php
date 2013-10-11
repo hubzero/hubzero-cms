@@ -35,8 +35,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Archive'); ?>">
-			<?php echo JText::_('Archive'); ?>
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>">
+			<?php echo JText::_('PLG_GROUPS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
 </ul>
@@ -49,45 +49,45 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 <?php } ?>
 	<form action="<?php echo JRoute::_($base . '&action=savesettings'); ?>" method="post" id="hubForm" class="full">
 		<fieldset class="settings">
-			<legend><?php echo JText::_('Posts'); ?></legend>
-			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
+			<legend><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_POSTS'); ?></legend>
+			<p><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_POSTS_EXPLANATION'); ?></p>
 		</fieldset>
 		<fieldset class="settings">
-			<legend><?php echo JText::_('Blog Settings'); ?></legend>
+			<legend><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRIES'); ?></legend>
 
 			<label for="param-posting">
-				Who can post to this blog?
+				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST'); ?>
 				<select name="params[posting]" id="param-posting">
-					<option value="0"<?php if (!$this->config->get('posting', 0)) { echo ' selected="selected"'; }?>>All group members</option>
-					<option value="1"<?php if ($this->config->get('posting', 0) == 1) { echo ' selected="selected"'; }?>>Group managers only</option>
+					<option value="0"<?php if (!$this->config->get('posting', 0)) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_ALL'); ?></option>
+					<option value="1"<?php if ($this->config->get('posting', 0) == 1) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_MANAGERS'); ?></option>
 				</select>
 			</label>
 			
 			<p class="help">
-				Group managers can add/edit/delete any post. Standard group members can only edit/delete <strong>their own</strong> posts.
+				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_HELP'); ?>
 			</p>
 		</fieldset>
 		<fieldset class="settings">
-			<legend><?php echo JText::_('Feeds'); ?></legend>
+			<legend><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_FEEDS'); ?></legend>
 
 			<label for="param-feeds_enabled">
-				RSS Feed of entries
+				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRY_FEED'); ?>
 				<select name="params[feeds_enabled]" id="param-feeds_enabled">
-					<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>>Disabled</option>
-					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>>Enabled</option>
+					<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_DISABLED'); ?></option>
+					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENABLED'); ?></option>
 				</select>
 			</label>
 			
 			<label for="param-feeds_entries">
-				The length of RSS feed entries
+				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
 				<select name="params[feed_entries]" id="param-feeds_entries">
-					<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>>Full</option>
-					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>>Partial</option>
+					<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_FULL'); ?></option>
+					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_PARTIAL'); ?></option>
 				</select>
 			</label>
 			
 			<p class="help">
-				<strong>Note:</strong> Feeds will only contain content marked as <strong>public</strong>. This is because there is currently no way to generate secure or private feeds.
+				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_FEED_HELP'); ?>
 			</p>
 			
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
@@ -104,7 +104,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 		<input type="hidden" name="action" value="savesettings" />
 		
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
-			<a href="<?php echo JRoute::_($base); ?>">Cancel</a>
+			<input class="btn btn-succes" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>">
+				<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>
+			</a>
 		</p>
 	</form>
