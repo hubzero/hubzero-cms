@@ -48,7 +48,7 @@ HUB.Resources = {
 
 				if (this.element.attr('class')) {
 					var sizeString = this.element.attr('class').split(' ').pop();
-					if (sizeString) { // && sizeString.match('/\d+x\d+/gi')) {
+					if (sizeString && sizeString.match(/\d+x\d+/i)) {
 						var sizeTokens = sizeString.split('x');
 						if (parseInt(sizeTokens[0])) {
 							this.width  = parseInt(sizeTokens[0]) - 20;

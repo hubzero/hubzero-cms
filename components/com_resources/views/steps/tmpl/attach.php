@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$base = rtrim(JURI::getInstance()->base(true), '/');
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -44,19 +46,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header -->
 
 <div class="main section">
-<?php
-	$view = new JView(array(
-		'name'   => 'steps',
-		'layout' => 'steps'
-	));
-	$view->option = $this->option;
-	$view->step = $this->step;
-	$view->steps = $this->steps;
-	$view->id = $this->id;
-	$view->resource = $this->row;
-	$view->progress = $this->progress;
-	$view->display();
-?>
+	<?php
+		$view = new JView(array(
+			'name'   => 'steps',
+			'layout' => 'steps'
+		));
+		$view->option   = $this->option;
+		$view->step     = $this->step;
+		$view->steps    = $this->steps;
+		$view->id       = $this->id;
+		$view->resource = $this->row;
+		$view->progress = $this->progress;
+		$view->display();
+	?>
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -64,15 +66,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_CONTRIBUTE_ATTACH_WHAT_ARE_ATTACHMENTS'); ?></h4>
 			<p><?php echo JText::_('COM_CONTRIBUTE_ATTACH_EXPLANATION'); ?></p>
-
-			<h4><?php echo JText::_('COM_CONTRIBUTE_ATTACH_HOW_TO_ATTACH_BREEZE'); ?></h4>
-			<p><?php echo JText::_('COM_CONTRIBUTE_ATTACH_BREEZE_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTRIBUTE_ATTACH_ATTACHMENTS'); ?></legend>
+
 			<div class="field-wrap">
-				<iframe width="100%" height="280" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
-			</div>
+				<div class="asset-uploader">
+			<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
+					<div class="grid">
+						<div class="col span-half">
+							<div id="ajax-uploader" data-action="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;task=save&amp;pid=<?php echo $this->id; ?>" data-list="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;pid=<?php echo $this->id; ?>">
+							</div>
+							<script src="<?php echo $base; ?>/media/system/js/jquery.fileuploader.js"></script>
+							<script src="<?php echo $base; ?>/components/com_resources/assets/js/fileupload.jquery.js"></script>
+						</div><!-- / .two columns first -->
+						<div class="col span-half omega">
+							<div id="link-adder" data-action="index.php?option=com_resources&amp;controller=attachments&amp;no_html=1&amp;task=create&amp;pid=<?php echo $this->id; ?>&amp;url=" data-list="index.php?option=com_resources&amp;controller=attachments&amp;no_html=1&amp;pid=<?php echo $this->id; ?>">
+							</div>
+						</div><!-- / .two columns second -->
+					</div>
+				<?php } ?>
+					<iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+				</div><!-- / .asset-uploader -->
+			</div><!-- / .field-wrap -->
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />

@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 	<div id="small-page">
+		<?php if (!JRequest::getInt('hideform', 0)) { ?>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<label>
@@ -47,24 +48,28 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="task" value="save" />
 			</fieldset>
 		</form>
-<?php if ($this->getError()) { ?>
+		<?php } ?>
+
+	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
+	<?php } ?>
+
 		<?php
 		$out = '';
 		// loop through children and build list
-		if ($this->children) {
+		if ($this->children) 
+		{
 			$base = $this->config->get('uploadpath');
 
 			$k = 0;
 			$i = 0;
 			$files = array(13,15,26,33,35,38);
-			$n = count( $this->children );
-?>
+			$n = count($this->children);
+		?>
 		<p><?php echo Jtext::_('COM_CONTRIBUTE_ATTACH_EDIT_TITLE_EXPLANATION'); ?></p>
 		<table class="list">
 			<tbody>
-<?php
+			<?php
 			foreach ($this->children as $child)
 			{
 				$k++;
@@ -73,12 +78,15 @@ defined('_JEXEC') or die('Restricted access');
 				switch ($child->type)
 				{
 					case 12:
-						if ($child->path) {
+						if ($child->path) 
+						{
 							// internal link, not a resource
 							$url = $child->path;
-						} else {
+						} 
+						else 
+						{
 							// internal link but a resource
-							$url = '/index.php?option=com_resources&id='. $child->id;
+							$url = '/index.php?option=com_resources&id=' . $child->id;
 						}
 						break;
 					default:
@@ -87,43 +95,58 @@ defined('_JEXEC') or die('Restricted access');
 				}
 
 				// figure out the file type so we can give it the appropriate CSS class
-				$type = '';
-				$liclass = '';
-				$file_name_arr = explode('.',$url);
-	    		$type = end($file_name_arr);
-				$type = (strlen($type) > 3) ? substr($type, 0, 3): $type;
-				if ($child->type == 12) {
-					$liclass = 'html';
-				} else {
+				$type = JFile::getExt($url);
+				if (!$child->type != 12 && $child->type != 11) 
+				{
 					$type = ($type) ? $type : 'html';
-					$liclass = $type;
 				}
-?>			
+
+				$isFile = true;
+				if (($child->type == 12 || $child->type == 11) 
+				 || in_array($type, array('html', 'htm', 'php', 'asp', 'shtml')) 
+				 || strstr($url, '?'))
+				{
+					$isFile = false;
+				}
+				?>
 				<tr>
-					<td width="100%" class="<?php echo $liclass; ?>"><span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>"><?php echo $child->title; ?></span> <?php echo Hubzero_View_Helper_Html::getFileAttribs( $url, $base ); ?></td>
-					<td class="u"><?php
-					if ($i > 0 || ($i+0 > 0)) {
-					    echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
-			  		} else {
-			  		    echo '&nbsp;';
-					}
-					?></td>
-					<td class="d"><?php
-					if ($i < $n-1 || $i+0 < $n-1) {
-						echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
-			  		} else {
-			  		    echo '&nbsp;';
-					}
-					?></td>
-					<td class="t"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></a></td>
+					<td width="100%">
+						<span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>">
+							<?php echo $this->escape($child->title); ?>
+						</span> 
+						<?php echo ($isFile) ? Hubzero_View_Helper_Html::getFileAttribs($url, $base) : '<span class="caption">' . $url . '</span>'; ?>
+					</td>
+					<td class="u">
+						<?php
+						if ($i > 0 || ($i+0 > 0)) {
+							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+						} else {
+							echo '&nbsp;';
+						}
+						?>
+					</td>
+					<td class="d">
+						<?php
+						if ($i < $n-1 || $i+0 < $n-1) {
+							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+						} else {
+							echo '&nbsp;';
+						}
+						?>
+					</td>
+					<td class="t">
+						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>">
+							<span><?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?></span>
+						</a>
+					</td>
 				</tr>
-<?php
+				<?php
 				$i++;
 			}
-?>
+			?>
 			</tbody>
 		</table>
-<?php } else { ?>
+	<?php } else { ?>
 		<p><?php echo JText::_('COM_CONTRIBUTE_ATTACH_NONE_FOUND'); ?></p>
-<?php } ?>
+	<?php } ?>
 	</div>

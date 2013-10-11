@@ -64,6 +64,433 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 	}
 
 	/**
+	 * Upload a file to the wiki
+	 * 
+	 * @return     void
+	 */
+	public function createTask()
+	{
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->ajaxCreateTask();
+		}
+
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->displayTask();
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$pid = JRequest::getInt('pid', 0, 'post');
+		if (!$pid) 
+		{
+			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->displayTask();
+			return;
+		}
+
+		// Create database entry
+		$asset = new ResourcesResource($this->database);
+		$asset->title        = 'A link';
+		$asset->introtext    = $row->title;
+		$asset->created      = date('Y-m-d H:i:s');
+		$asset->created_by   = $this->juser->get('id');
+		$asset->published    = 1;
+		$asset->publish_up   = date('Y-m-d H:i:s');
+		$asset->publish_down = '0000-00-00 00:00:00';
+		$asset->standalone   = 0;
+		$asset->path         = 'http://'; // make sure no path is specified just yet
+		$asset->type         = 11;
+		if (!$asset->check()) 
+		{
+			$this->setError($asset->getError());
+			$this->displayTask();
+			return;
+		}
+		if (!$asset->store()) 
+		{
+			$this->setError($asset->getError());
+			$this->displayTask();
+			return;
+		}
+
+		// Instantiate a ResourcesAssoc object
+		$assoc = new ResourcesAssoc($this->database);
+
+		// Get the last child in the ordering
+		$assoc->ordering = $assoc->getLastOrder($pid);
+		$assoc->ordering = ($assoc->ordering) ? $assoc->ordering : 0;
+
+		// Increase the ordering - new items are always last
+		$assoc->ordering++;
+
+		// Create new parent/child association
+		$assoc->parent_id = $pid;
+		$assoc->child_id  = $asset->id;
+		$assoc->grouping  = 0;
+		if (!$assoc->check()) 
+		{
+			$this->setError($assoc->getError());
+		}
+		if (!$assoc->store(true)) 
+		{
+			$this->setError($assoc->getError());
+		}
+
+		$this->displayTask();
+	}
+
+	/**
+	 * Upload a file to the wiki via AJAX
+	 * 
+	 * @return     string
+	 */
+	public function ajaxCreateTask()
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$pid = strtolower(JRequest::getInt('pid', 0));
+		if (!$pid) 
+		{
+			echo json_encode(array('error' => JText::_('COM_RESOURCES_NO_ID')));
+			return;
+		}
+
+		// Create database entry
+		$asset = new ResourcesResource($this->database);
+		$asset->title        = 'A link';
+		$asset->introtext    = $asset->title;
+		$asset->created      = date('Y-m-d H:i:s');
+		$asset->created_by   = $this->juser->get('id');
+		$asset->published    = 1;
+		$asset->publish_up   = date('Y-m-d H:i:s');
+		$asset->publish_down = '0000-00-00 00:00:00';
+		$asset->standalone   = 0;
+		$asset->access       = 0;
+		$asset->path         = urldecode(JRequest::getVar('url', 'http://')); // make sure no path is specified just yet
+		$asset->type         = 11;
+		if (!$asset->check()) 
+		{
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $asset->getErrors(),
+				'file'      => $asset->path,
+				'directory' => '',
+				'parent'    => $pid,
+				'id'        => 0
+			));
+			return;
+		}
+		if (!$asset->store()) 
+		{
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $asset->getErrors(),
+				'file'      => 'http://',
+				'directory' => '',
+				'parent'    => $pid,
+				'id'        => 0
+			));
+			return;
+		}
+
+		// Instantiate a ResourcesAssoc object
+		$assoc = new ResourcesAssoc($this->database);
+
+		// Get the last child in the ordering
+		$assoc->ordering = $assoc->getLastOrder($pid);
+		$assoc->ordering = ($assoc->ordering) ? $assoc->ordering : 0;
+
+		// Increase the ordering - new items are always last
+		$assoc->ordering++;
+
+		// Create new parent/child association
+		$assoc->parent_id = $pid;
+		$assoc->child_id  = $asset->id;
+		$assoc->grouping  = 0;
+		if (!$assoc->check()) 
+		{
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $assoc->getErrors(),
+				'file'      => $asset->path,
+				'directory' => '',
+				'parent'    => $pid,
+				'id'        => $asset->id
+			));
+			return;
+		}
+		if (!$assoc->store(true)) 
+		{
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $assoc->getErrors(),
+				'file'      => $asset->path,
+				'directory' => '',
+				'parent'    => $pid,
+				'id'        => $asset->id
+			));
+			return;
+		}
+
+		//echo result
+		echo json_encode(array(
+			'success'   => true, 
+			'file'      => $asset->path,
+			'directory' => '',
+			'parent'    => $pid,
+			'id'        => $asset->id
+		));
+	}
+
+	/**
+	 * Upload a file to the wiki via AJAX
+	 * 
+	 * @return     string
+	 */
+	public function ajaxUploadTask()
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$pid = strtolower(JRequest::getInt('pid', 0));
+		if (!$pid) 
+		{
+			echo json_encode(array('error' => JText::_('COM_RESOURCES_NO_ID')));
+			return;
+		}
+
+		//max upload size
+		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+
+		// get the file
+		if (isset($_GET['qqfile']))
+		{
+			$stream = true;
+			$file = $_GET['qqfile'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
+		}
+		elseif (isset($_FILES['qqfile']))
+		{
+			//$files = JRequest::getVar('qqfile', '', 'files', 'array');
+			
+			$stream = false;
+			$file = $_FILES['qqfile']['name'];
+			$size = (int) $_FILES['qqfile']['size'];
+		}
+		else
+		{
+			echo json_encode(array('error' => JText::_('File not found')));
+			return;
+		}
+
+		//check to make sure we have a file and its not too big
+		if ($size == 0) 
+		{
+			echo json_encode(array(
+				'error' => JText::_('File is empty')
+			));
+			return;
+		}
+		if ($size > $sizeLimit) 
+		{
+			ximport('Hubzero_View_Helper_Html');
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			echo json_encode(array(
+				'error' => JText::sprintf('File is too large. Max file upload size is %s', $max)
+			));
+			return;
+		}
+
+		// don't overwrite previous files that were uploaded
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$filename = urldecode($filename);
+		$filename = JFile::makeSafe($filename);
+		$filename = str_replace(' ', '_', $filename);
+
+		$ext = $pathinfo['extension'];
+		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		{
+			$filename .= rand(10, 99);
+		}
+
+		// Instantiate a new resource object
+		$row = new ResourcesResource($this->database);
+		$row->title        = $filename . '.' . $ext;
+		$row->introtext    = $row->title;
+		$row->created      = date('Y-m-d H:i:s');
+		$row->created_by   = $this->juser->get('id');
+		$row->published    = 1;
+		$row->publish_up   = date('Y-m-d H:i:s');
+		$row->publish_down = '0000-00-00 00:00:00';
+		$row->standalone   = 0;
+		$row->access       = 0;
+		$row->path         = ''; // make sure no path is specified just yet
+		$row->type         = $this->_getChildType($filename . '.' . $ext);
+
+		// Check content
+		if (!$row->check()) 
+		{
+			echo json_encode(array(
+				'error' => $row->getError()
+			));
+			return;
+		}
+		
+		// File already exists
+		if ($row->loadByFile($filename, $pid))
+		{
+			echo json_encode(array(
+				'error' => JText::_('A file with this name and type appears to already exist.')
+			));
+			return;
+		}
+		
+		// Store new content
+		if (!$row->store()) 
+		{
+			echo json_encode(array(
+				'error' => $row->getError()
+			));
+			return;
+		}
+
+		if (!$row->id) 
+		{
+			$row->id = $row->insertid();
+		}
+
+		//define upload directory and make sure its writable
+		$listdir = $this->_buildPathFromDate($row->created, $row->id, '');
+		$path = $this->_buildUploadPath($listdir, '');
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path, 0777)) 
+			{
+				echo json_encode(array(
+					'error' => JText::_('Error uploading. Unable to create path.')
+				));
+				return;
+			}
+		}
+
+		if (!is_writable($path))
+		{
+			echo json_encode(array(
+				'error' => JText::_('Server error. Upload directory isn\'t writable.')
+			));
+			return;
+		}
+
+		$file = $path . DS . $filename . '.' . $ext;
+
+		if ($stream)
+		{
+			//read the php input stream to upload file
+			$input = fopen("php://input", "r");
+			$temp = tmpfile();
+			$realSize = stream_copy_to_stream($input, $temp);
+			fclose($input);
+
+			//move from temp location to target location which is user folder
+			$target = fopen($file , "w");
+			fseek($temp, 0, SEEK_SET);
+			stream_copy_to_stream($temp, $target);
+			fclose($target);
+		}
+		else
+		{
+			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+		}
+
+		$assoc = new ResourcesAssoc($this->database);
+
+		// Get the last child in the ordering
+		$assoc->ordering = $assoc->getLastOrder($pid);
+		$assoc->ordering = ($assoc->ordering) ? $assoc->ordering : 0;
+
+		// Increase the ordering - new items are always last
+		$assoc->ordering++;
+
+		// Create new parent/child association
+		$assoc->parent_id = $pid;
+		$assoc->child_id  = $asset->id;
+		$assoc->grouping  = 0;
+		if (!$assoc->check()) 
+		{
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $assoc->getErrors(),
+				'file'      => $filename . '.' . $ext,
+				'directory' => '',
+				'parent'    => $pid
+			));
+			return;
+		}
+		if (!$assoc->store(true)) 
+		{
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $assoc->getErrors(),
+				'file'      => $filename . '.' . $ext,
+				'directory' => '',
+				'parent'    => $pid
+			));
+			return;
+		}
+
+		if (!$row->path) 
+		{
+			$row->path = $listdir . DS . $filename . '.' . $ext;
+		}
+		$row->path = ltrim($row->path, DS);
+		$row->store();
+
+		if (is_readable($file))
+		{
+			$hash = @sha1_file($file);
+
+			if (!empty($hash))
+			{
+				$this->database->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
+				if (!($doc_id = $this->database->loadResult()))
+				{
+					$this->database->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
+					$doc_id = $this->database->insertId();
+				}
+
+				$this->database->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$asset->id . ')');
+				system('/usr/bin/textifier ' . escapeshellarg($file) . ' >/dev/null');
+			}
+		}
+
+		echo json_encode(array(
+			'success'   => true, 
+			'file'      => $filename . '.' . $ext,
+			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'parent'    => $pid
+		));
+	}
+
+	/**
 	 * Reorder an attachment
 	 * 
 	 * @return     void
@@ -159,6 +586,11 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->ajaxUploadTask();
+		}
+
 		// Incoming
 		$pid = JRequest::getInt('pid', 0);
 		if (!$pid) 
@@ -264,14 +696,11 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 			$row->type = $this->_getChildType($file['name']);
 
 			// If it's a package (ZIP, etc) ...
+			/*
+			Breeze presentations haven't been used for some time.
+			Completely unnecessary code?
 			if ($row->type == 38) 
 			{
-				/*jimport('joomla.filesystem.archive');
-				
-				// Extract the files
-				if (!JArchive::extract($file_to_unzip, $path)) {
-					$this->setError(JText::_('Could not extract package.'));
-				}*/
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
 
 				if (!extension_loaded('zlib')) 
@@ -334,7 +763,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 						$row->title = $isbreeze;
 					}
 				}
-			}
+			}*/
 		}
 
 		// Scan for viruses
@@ -394,22 +823,20 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		}
 		else
 		{
-			$dbh =& JFactory::getDBO();
-
 			if (is_readable($path . DS . $file['name']))
 			{
 				$hash = @sha1_file($path . DS . $file['name']);
 
 				if (!empty($hash))
 				{
-					$dbh->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
-					if (!($doc_id = $dbh->loadResult()))
-						{
-						$dbh->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
-						$doc_id = $dbh->insertId();
+					$this->database->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
+					if (!($doc_id = $this->database->loadResult()))
+					{
+						$this->database->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
+						$doc_id = $this->database->insertId();
 					}
 
-					$dbh->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
+					$this->database->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
 					system('/usr/bin/textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
 				}
 			}
@@ -469,7 +896,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		// Check if the folder even exists
 		if (!file_exists($path) or !$path) 
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND'));
+			//$this->setError(JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND'));
 		} 
 		else 
 		{
