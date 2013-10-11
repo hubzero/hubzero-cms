@@ -29,7 +29,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( '<a href="index.php?option=com_services">'.JText::_( 'Services &amp; Subscriptions Manager' ).'</a>: <small><small>[ Services ]</small></small>', 'addedit.png' );
+JToolBarHelper::title(JText::_( 'Services &amp; Subscriptions Manager' ).': Services', 'addedit.png');
 //JToolBarHelper::addNew('newservice','New Service');
 
 ?>

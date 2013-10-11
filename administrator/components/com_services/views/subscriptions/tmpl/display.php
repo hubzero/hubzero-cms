@@ -30,10 +30,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(JText::_( 'Services &amp; Subscriptions Manager' ).': Subscriptions', 'addedit.png' );
+JToolBarHelper::title(JText::_('Services &amp; Subscriptions Manager').': Subscriptions', 'addedit.png' );
 JToolBarHelper::preferences('com_services', '550');
 
 $now = date( 'Y-m-d H:i:s', time() );
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -138,7 +139,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td><?php echo $row->pendingpayment &&  ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span style="color:#ff0000;">'.$pending.'</span>' : $pending;  ?></td>
 				<td><?php echo $name.' ('.$login.')';  ?></td>
-				<td><?php echo JHTML::_('date', $row->added, JText::_('DATE_FORMAT_HZ1'); ?></td>
+				<td><?php echo JHTML::_('date', $row->added, JText::_('DATE_FORMAT_HZ1')); ?></td>
 				<td><?php echo $row->updated ? JHTML::_('date', $row->updated, JText::_('DATE_FORMAT_HZ1')) : 'never'; ?></td>
 				<td><?php echo $expires; ?></td>
 			</tr>
