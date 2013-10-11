@@ -226,9 +226,9 @@ class plgMembersGroups extends JPlugin
 
 				if (count($invitees))
 				{
-					$title = count($invitees) . ' new group invitation(s)';
+					$title = JText::sprintf('PLG_MEMBERS_GROUPS_NEW_INVITATION', count($invitees));
 					$link = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=groups&filter=invitees');
-					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Groups Alert</h5>' . $title . '</span></a>';
+					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . JText::_('PLG_MEMBERS_GROUPS_ALERT') . '</h5>' . $title . '</span></a>';
 				}
 			}
 		}
