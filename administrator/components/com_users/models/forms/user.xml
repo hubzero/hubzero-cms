@@ -22,8 +22,9 @@
 			class="inputbox validate-password"
 			description="COM_USERS_USER_FIELD_PASSWORD_DESC"
 			filter="raw"
-			label="JGLOBAL_PASSWORD"
+			label="Password (please change user passwords via HUBzero members manager)"
 			size="30"
+			disabled="true"
 		/>
 
 		<field name="password2" type="password"
@@ -35,6 +36,7 @@
 			size="30"
 			validate="equals"
 			field="password2"
+			disabled="true"
 		/>
 
 		<field name="email" type="email"
