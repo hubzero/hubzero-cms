@@ -457,6 +457,30 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 			return;
 		}
 
+		exec("clamscan -i --no-summary --block-encrypted $file", $output, $status);
+		if ($status == 1)
+		{
+			if (JFile::delete($file)) 
+			{
+				// Delete associations to the resource
+				$row->deleteExistence();
+
+				// Delete resource
+				$row->delete();
+			}
+
+			$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
+
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $this->getErrors(),
+				'file'      => $filename . '.' . $ext,
+				'directory' => str_replace(JPATH_ROOT, '', $path),
+				'parent'    => $pid
+			));
+			return;
+		}
+
 		if (!$row->path) 
 		{
 			$row->path = $listdir . DS . $filename . '.' . $ext;
