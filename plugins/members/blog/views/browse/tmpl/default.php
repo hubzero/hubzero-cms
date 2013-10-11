@@ -41,12 +41,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <ul id="page_options">
 	<li>
 		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
-			<?php echo JText::_('New entry'); ?>
+			<?php echo JText::_('PLG_MEMBERS_BLOG_NEW_ENTRY'); ?>
 		</a>
 	</li>
 	<li>
-		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-			<?php echo JText::_('Settings'); ?>
+		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&task=settings'); ?>">
+			<?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS'); ?>
 		</a>
 	</li>
 </ul>
@@ -147,32 +147,29 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	<?php endif; ?>
 
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<input type="text" name="search" value="<?php echo $this->escape($this->search); ?>" />
+				<legend><?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH_LEGEND'); ?></legend>
+				<label for="entry-search-field"><?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH_LABEL'); ?></label>
+				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" placeholder="<?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
 	
 		<div class="container">
 			<h3>
 				<?php if (isset($this->search) && $this->search) { ?>
-					<?php echo JText::sprintf('Search for "%s"', $this->escape($this->search)); ?>
+					<?php echo JText::sprintf('PLG_MEMBERS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
 				<?php } else if (!isset($this->year) || !$this->year) { ?>
-					<?php echo JText::_('Latest Entries'); ?>
+					<?php echo JText::_('PLG_MEMBERS_BLOG_LATEST_ENTRIES'); ?>
 				<?php } else { 
-						$format = '%b %Y';
-						if (version_compare(JVERSION, '1.6', 'ge'))
-						{
-							$format = 'M Y';
-						}
 					$archiveDate  = $this->year;
 					$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
 					$archiveDate .= '-01 00:00:00';
-					echo JHTML::_('date', $archiveDate, $format, BLOG_DATE_TIMEZONE); /* BLOG_DATE_TIMEZONE defined in BlogModelEntry */
+					echo JHTML::_('date', $archiveDate, 'M Y');
 				} ?>
 				<?php
 				if ($this->config->get('feeds_enabled', 1)) {
-					$path  = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=feed.rss';
+					$path  = $base . '&task=feed.rss';
 					$path .= ($this->year)  ? '&year=' . $this->year   : '';
 					$path .= ($this->month) ? '&month=' . $this->month : '';
 					$feed = JRoute::_($path);
@@ -183,7 +180,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					$feed = str_replace('https:://', 'http://', $feed);
 				?>
 				<a class="feed" href="<?php echo $feed; ?>">
-					<?php echo JText::_('RSS Feed'); ?>
+					<?php echo JText::_('PLG_MEMBERS_BLOG_RSS_FEED'); ?>
 				</a>
 				<?php } ?>
 			</h3>

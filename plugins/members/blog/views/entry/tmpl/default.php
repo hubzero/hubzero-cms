@@ -111,7 +111,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<dl class="entry-meta">
 				<dt>
 					<span>
-						<?php echo JText::sprintf('Entry #%s', $this->row->get('id')); ?>
+						<?php echo JText::sprintf('PLG_MEMBERS_BLOG_ENTRY_NUMBER', $this->row->get('id')); ?>
 					</span>
 				</dt>
 				<dd class="date">
@@ -191,15 +191,6 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					$view->comments   = $this->row->comments('list');
 					$view->config     = $this->config;
 					$view->base       = $this->row->link();
-					$view->parser     = Hubzero_Wiki_Parser::getInstance();
-					$view->wikiconfig = array(
-						'option'   => $this->option,
-						'scope'    => 'blog',
-						'pagename' => $this->row->get('alias'),
-						'pageid'   => 0,
-						'filepath' => $this->config->get('uploadpath'),
-						'domain'   => ''
-					);
 					$view->display();
 				?>
 			<?php } else { ?>
@@ -212,7 +203,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 
 		<div class="aside aside-below">
-			<table class="wiki-reference" summary="Wiki Syntax Reference">
+			<table class="wiki-reference">
 				<caption>Wiki Syntax Reference</caption>
 				<tbody>
 					<tr>
@@ -246,7 +237,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 				</tbody>
 			</table>
 		</div><!-- / .aside -->
-	
+
 		<div class="subject below">
 			<h3>
 				<a name="post-comment"></a>
@@ -283,8 +274,10 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 						<p>
 							<strong><?php echo $name; ?></strong> 
-							<span class="comment-date-at">@</span><span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
-							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+							<span class="comment-date-at"><?php echo JText::_('PLG_MEMBERS_BLOG_AT'); ?></span> 
+							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
+							<span class="comment-date-on"><?php echo JText::_('PLG_MEMBERS_BLOG_ON'); ?></span> 
+							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
 						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($replyto->get('content')), 300, 0); ?></p>
 					</blockquote>
@@ -296,12 +289,11 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 						<?php
 						if (!$juser->get('guest')) {
 							//ximport('Hubzero_Wiki_Editor');
-							$editor =& Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('comment[content]', 'commentcontent', '', '', '40', '15');
+							echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', '', '', '40', '15');
 						} else { 
 						?>
 						<p class="warning">
-							You must <a href="/login?return=<?php echo base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true)); ?>">log in</a> to post comments.
+							<?php echo JText::sprintf('PLG_MEMBERS_BLOG_MUST_LOG_IN', '<a href="/login?return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true)) . '">' . JText::_('PLG_MEMBERS_BLOG_LOG_IN') . '</a>'); ?>
 						</p>
 						<?php } ?>
 					</label>
@@ -313,7 +305,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					</label>
 
 					<p class="submit">
-						<input type="submit" name="submit" value="Submit" />
+						<input type="submit" name="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SUBMIT'); ?>" />
 					</p>
 				<?php } ?>
 					<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
@@ -332,7 +324,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							<strong><?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
 						</p>
 						<p>
-							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
+							<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENT_HELP'); ?>
 						</p>
 					</div>
 				</fieldset>

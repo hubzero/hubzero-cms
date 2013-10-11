@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <ol class="comments" id="t<?php echo (isset($this->parent) ? $this->parent : '0'); ?>">
 <?php
-if ($this->comments && is_a($this->comments, 'BlogModelIterator')) 
+if ($this->comments && $this->comments instanceof \Hubzero\ItemList) 
 { 
 	$cls = 'odd';
 	if (isset($this->cls))
@@ -53,8 +53,6 @@ if ($this->comments && is_a($this->comments, 'BlogModelIterator'))
 		$view->depth      = $this->depth;
 		$view->cls        = $cls;
 		$view->base       = $this->base;
-		$view->parser     = $this->parser;
-		$view->wikiconfig = $this->wikiconfig;
 		$view->display();
 	}
 } 

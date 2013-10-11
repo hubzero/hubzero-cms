@@ -41,7 +41,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 <ul id="page_options">
 	<li>
 		<a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
-			<?php echo JText::_('Archive'); ?>
+			<?php echo JText::_('PLG_MEMBERS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
 </ul>
@@ -104,8 +104,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				</table>">Wiki formatting</a> is allowed.</span>
 				<?php
 				ximport('Hubzero_Wiki_Editor');
-				$editor =& Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('entry[content]', 'entrycontent', stripslashes($this->entry->get('content')), '', '50', '30');
+				echo Hubzero_Wiki_Editor::getInstance()->display('entry[content]', 'entrycontent', stripslashes($this->entry->get('content')), '', '50', '30');
 				?>
 			</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
@@ -122,7 +121,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<label>
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_TAGS'); ?>
 			<?php if (count($tf) > 0) {
-				echo $tf[0];
+				echo implode("\n", $tf);
 			} else { ?>
 				<input type="text" name="tags" value="<?php echo $this->escape($this->entry->tags('string')); ?>" />
 			<?php } ?>
@@ -138,9 +137,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				<label for="field-state">
 					<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PRIVACY'); ?>
 					<select name="entry[state]" id="field-state">
-						<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
-						<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
-						<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>
+						<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_PUBLIC'); ?></option>
+						<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_REGISTERED'); ?></option>
+						<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_STATE_PRIVATE'); ?></option>
 					</select>
 				</label>
 			</div>
@@ -149,23 +148,23 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				<label for="field-publish_up">
 					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
 					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
-					<span class="hint">Date format: YYYY-MM-dd hh:mm:ss</span>
+					<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 
 				<label for="field-publish_down">
 					<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
 					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
-					<span class="hint">Date format: YYYY-MM-dd hh:mm:ss</span>
+					<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 			</div>
 		</fieldset>
 		<div class="clear"></div>
 
-		<input type="hidden" name="id" value="<?php echo $this->entry->get('created_by'); ?>" />
-		<input type="hidden" name="entry[id]" value="<?php echo $this->entry->get('id'); ?>" />
-		<input type="hidden" name="entry[alias]" value="<?php echo $this->entry->get('alias'); ?>" />
-		<input type="hidden" name="entry[created]" value="<?php echo $this->entry->get('created'); ?>" />
-		<input type="hidden" name="entry[created_by]" value="<?php echo $this->entry->get('created_by'); ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
+		<input type="hidden" name="entry[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
+		<input type="hidden" name="entry[alias]" value="<?php echo $this->escape($this->entry->get('alias')); ?>" />
+		<input type="hidden" name="entry[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
+		<input type="hidden" name="entry[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
 		<input type="hidden" name="entry[scope]" value="member" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
@@ -173,9 +172,11 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 		<input type="hidden" name="action" value="save" />
 		
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
+			<input class="btn btn-succes" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
 		<?php if ($this->entry->get('id')) { ?>
-			<a href="<?php echo JRoute::_($this->entry->link()); ?>">Cancel</a>
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->entry->link()); ?>">
+				<?php echo JText::_('PLG_MEMBERS_BLOG_CANCEL'); ?>
+			</a>
 		<?php } ?>
 		</p>
 	</form>

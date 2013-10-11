@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <ul id="page_options">
 	<li>
 		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
-			<?php echo JText::_('Archive'); ?>
+			<?php echo JText::_('PLG_MEMBERS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
 </ul>
@@ -45,47 +45,50 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
 		<fieldset class="settings">
-			<legend><?php echo JText::_('Posts'); ?></legend>
-			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
+			<legend><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_POSTS'); ?></legend>
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_POSTS_EXPLANATION'); ?></p>
 		</fieldset>
 		<fieldset class="settings">
-			<legend><?php echo JText::_('Feeds'); ?></legend>
-			
-			<label>
-				RSS Feed of entries
-				<select name="params[feeds_enabled]">
-					<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>>Disabled</option>
-					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>>Enabled</option>
+			<legend><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_FEEDS'); ?></legend>
+
+			<label for="field-param-feeds_enabled">
+				<?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_ENTRY_FEED'); ?>
+				<select name="params[feeds_enabled]" id="field-param-feeds_enabled">
+					<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_DISABLED'); ?></option>
+					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_ENABLED'); ?></option>
 				</select>
 			</label>
-			
-			<label>
-				The length of RSS feed entries
-				<select name="params[feed_entries]">
-					<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>>Full</option>
-					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>>Partial</option>
+
+			<label for="field-params-feed_entries">
+				<?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
+				<select name="params[feed_entries]" id="field-params-feed_entries">
+					<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_FULL'); ?></option>
+					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_PARTIAL'); ?></option>
 				</select>
 			</label>
-			
+
 			<p class="help">
-				<strong>Note:</strong> Feeds will only contain content marked as <strong>public</strong>. This is because there is currently no way to generate secure or private feeds.
+				<?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_FEED_HELP'); ?>
 			</p>
-			
+
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
 			<input type="hidden" name="settings[object_id]" value="<?php echo $this->member->get('uidNumber'); ?>" />
 			<input type="hidden" name="settings[folder]" value="members" />
 			<input type="hidden" name="settings[element]" value="blog" />
 		</fieldset>
 		<div class="clear"></div>
-		
+
 		<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
 		<input type="hidden" name="action" value="savesettings" />
-		
+
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">Cancel</a>
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
+				<?php echo JText::_('PLG_MEMBERS_BLOG_CANCEL'); ?>
+			</a>
 		</p>
 	</form>

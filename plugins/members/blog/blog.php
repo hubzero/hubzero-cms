@@ -184,6 +184,26 @@ class plgMembersBlog extends JPlugin
 	}
 
 	/**
+	 * Parse an SEF URL into its component bits
+	 * stripping out the path leading up to the blog plugin
+	 * 
+	 * @return     string
+	 */
+	private function _parseUrl()
+	{
+		$juri =& JURI::getInstance();
+		$path = $juri->getPath();
+
+		$path = str_replace($juri->base(true), '', $path);
+		$path = str_replace('index.php', '', $path);
+		$path = DS . trim($path, DS);
+		$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
+		$path = ltrim($path, DS);
+
+		return explode('/', $path);
+	}
+
+	/**
 	 * Display a list of latest blog entries
 	 * 
 	 * @return     string
@@ -223,12 +243,8 @@ class plgMembersBlog extends JPlugin
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
 		{
-			$path = str_replace($juri->base(true), '', $path);
-			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
-			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
-			$path = ltrim($path, DS);
-			$bits = explode('/', $path);
+			$bits = $this->_parseUrl();
+
 			$view->filters['year']  = (isset($bits[0])) ? $bits[0] : $view->filters['year'];
 			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
 		}
@@ -280,9 +296,9 @@ class plgMembersBlog extends JPlugin
 			$this->_browse();
 			return;
 		}
-		
+
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-		
+
 		// Set the mime encoding for the document
 		$jdoc =& JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
@@ -309,12 +325,8 @@ class plgMembersBlog extends JPlugin
 		$path = JURI::getInstance()->getPath();
 		if (strstr($path, '/')) 
 		{
-			$path = str_replace(JURI::getInstance()->base(true), '', $path);
-			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
-			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/blog', '', $path);
-			$path = ltrim($path, DS);
-			$bits = explode('/', $path);
+			$bits = $this->_parseUrl();
+
 			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
 			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
 		}
@@ -356,7 +368,7 @@ class plgMembersBlog extends JPlugin
 				$doc->addItem($item);
 			}
 		}
-		
+
 		// Output the feed
 		echo $doc->render();
 	}
@@ -391,11 +403,8 @@ class plgMembersBlog extends JPlugin
 			$alias = '';
 			if (strstr($path, '/')) 
 			{
-				$path = str_replace(JURI::getInstance()->base(true), '', $path);
-				$path = str_replace('index.php', '', $path);
-				$path = DS . trim($path, DS);
-				$path = str_replace('/members/' . $this->member->get('uidNumber') . '/blog/', '', $path);
-				$bits = explode('/', $path);
+				$bits = $this->_parseUrl();
+
 				$alias = end($bits);
 			}
 
@@ -656,17 +665,6 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _savecomment() 
 	{
-		$yearFormat = '%Y';
-		$monthFormat = '%m';
-		$tz = 0;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$yearFormat = 'Y';
-			$monthFormat = 'm';
-			$tz = null;
-		}
-
 		// Ensure the user is logged in
 		$juser =& JFactory::getUser();
 		if ($juser->get('guest')) 
@@ -694,10 +692,10 @@ class plgMembersBlog extends JPlugin
 		}
 
 		/*
-		if ($row->created_by != $this->member->get('uidNumber)) {
-			$this->entry = new BlogTableEntry($this->database);
-			$this->entry->load($row->entry_id);
-			
+		if ($row->get('created_by') != $this->member->get('uidNumber)) 
+		{
+			$this->entry = new BlogModelEntry($row->get('entry_id'));
+
 			// Get the site configuration
 			$jconfig =& JFactory::getConfig();
 
@@ -708,23 +706,17 @@ class plgMembersBlog extends JPlugin
 
 			$subject = JText::_('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
 
-			// Build the SEF referenced in the message
-			$juri =& JURI::getInstance();
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->member->get('uidNumber').'&active=blog&task='.JHTML::_('date',$this->entry->publish_up, $yearFormat, $tz).'/'.JHTML::_('date',$this->entry->publish_up, $monthFormat, $tz).'/'.$this->entry->alias.'#comments);
-			if (substr($sef,0,1) == '/') {
-				$sef = substr($sef,1,strlen($sef));
-			}
-
 			// Message
 			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
 			$message .= stripslashes($row->content)."\r\n\r\n";
 			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= $juri->base().$sef . "\r\n";
+			$message .= rtrim(JURI::getInstance()->base(), '/') . '/' . ltrim(JRoute::_($this->entry->link() . '#comments), '/') . "\r\n";
 
 			// Send the message
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option))) {
+			if (!$dispatcher->trigger('onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option))) 
+			{
 				$this->setError(JText::_('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
 			}
 		}
