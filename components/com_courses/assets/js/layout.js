@@ -254,6 +254,7 @@ jQuery(function($) {
 					}
 					$('#layout-error').text('Ensure you have selected a correct answer for each question group').show();
 					$(group).addClass('missing-answer');
+					saveButton.text('Save and Close').attr('disabled', false);
 					errors = true;
 				}
 			});

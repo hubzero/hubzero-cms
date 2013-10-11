@@ -102,6 +102,14 @@ label {
 .error {
 	display: none;
 }
+#layout-error, #title-error {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	right: 0;
+	margin: 20px;
+	z-index: 10;
+}
 .tablesorter button {
 	float: right;
 	font-size: x-small;
