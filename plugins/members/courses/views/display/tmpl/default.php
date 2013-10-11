@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=courses';
 ?>
 <h3 class="section-header">
-	<a name="courses"></a>
 	<?php echo JText::_('PLG_MEMBERS_COURSES'); ?>
 </h3>
 
@@ -70,13 +69,13 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 			<ul class="entries-menu order-options">
 				<li>
-					<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_TITLE'); ?>">
-						&darr; <?php echo JText::_('PLG_MEMBERS_COURSES_TITLE'); ?>
+					<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_BY_TITLE'); ?>">
+						<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_TITLE'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filters['sort'] == 'enrolled') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&task=' . urlencode($this->filters['task']) . '&sort=enrolled'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_ENROLLED'); ?>">
-						&darr; <?php echo JText::_('PLG_MEMBERS_COURSES_ENROLLED'); ?>
+					<a<?php echo ($this->filters['sort'] == 'enrolled') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&task=' . urlencode($this->filters['task']) . '&sort=enrolled'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'); ?>">
+						<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_ENROLLED'); ?>
 					</a>
 				</li>
 			</ul>
@@ -133,11 +132,15 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							</a><br />
 							<span class="entry-details">
 								<?php echo $dateText; ?> 
-								<!-- <span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('TIME_FORMAT_HZ1')); ?></time></span>  -->
-								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+								<!-- 
+								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span> 
+								<span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+								-->
+								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span> 
+								<span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php if ($row->section_title) { ?>
 								<span class="entry-section">
-									 &mdash; <strong>Section:</strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
+									 &mdash; <strong><?php echo JText::_('PLG_MEMBERS_COURSES_SECTION'); ?></strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
 								</span>
 								<?php } ?>
 							</span>
@@ -154,8 +157,10 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							<?php echo JText::_('PLG_MEMBERS_COURSES_STARTS'); ?><br />
 							<span class="entry-details">
 							<?php if ($row->starts != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span> 
+								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span> 
+								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							<?php } else { ?>
 								<?php echo JText::_('n/a'); ?>
 							<?php } ?>
@@ -167,10 +172,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 							<?php echo JText::_('PLG_MEMBERS_COURSES_ENDS'); ?><br />
 							<span class="entry-details">
 								<?php if ($row->ends != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at">@</span> <span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-								<span class="entry-date-on">on</span> <span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span> 
+								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span> 
+								<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php } else { ?>
-									<?php echo JText::_('n/a'); ?>
+									<?php echo JText::_('PLG_MEMBERS_COURSES_NA'); ?>
 								<?php } ?>
 							</span>
 							<?php } ?>
@@ -205,14 +212,14 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	<div id="courses-introduction">
 		<div class="instructions">
 			<ol>
-				<li><?php echo JText::sprintf('Find a <a href="%s">course</a> that looks interesting.', JRoute::_('index.php?option=com_courses')); ?></li>
-				<li><?php echo JText::_('Enroll.'); ?></li>
-				<li><?php echo JText::_('Get learning!'); ?></li>
+				<li><?php echo JText::sprintf('PLG_MEMBERS_COURSES_FIND_COURSE', JRoute::_('index.php?option=com_courses')); ?></li>
+				<li><?php echo JText::_('PLG_MEMBERS_COURSES_ENROLL'); ?></li>
+				<li><?php echo JText::_('PLG_MEMBERS_COURSES_GET_LEARNING'); ?></li>
 			</ol>
 		</div><!-- / .instructions -->
 		<div class="questions">
-			<p><strong>What are courses?</strong></p>
-			<p>This is how you can add other content on the site to a collection. You can collect wiki pages, resources, and more. You can even collect other collections!<p>
+			<p><strong><?php echo JText::_('PLG_MEMBERS_COURSES_WHAT_ARE_COURSES'); ?></strong></p>
+			<p><?php echo JText::_('PLG_MEMBERS_COURSES_EXPLANATION'); ?><p>
 		</div><!-- / .post-type -->
 	</div><!-- / #collection-introduction -->
 <?php } ?>
