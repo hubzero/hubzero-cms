@@ -34,18 +34,18 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_View_Helper_Html');
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
-	<h4><?php echo JText::_('Submitted Wishes'); ?></h4>
+	<h4><?php echo JText::_('MOD_MYWISHES_SUBMITTED'); ?></h4>
 <?php if (count($this->rows1) <= 0) { ?>
-	<p><?php echo JText::_('NO_WISHES'); ?></p>
+	<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
 <?php } else { ?>
 	<ul class="expandedlist">
-<?php
+		<?php
 		foreach ($this->rows1 as $row) 
 		{
 			$when = Hubzero_View_Helper_Html::timeAgo($row->proposed);
-?>
+		?>
 		<li class="wishlist">
-			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo htmlentities(stripslashes($row->subject), ENT_QUOTES) . ' :: ' . Hubzero_View_Helper_Html::shortenText(htmlentities(stripslashes($row->about), ENT_QUOTES), 160); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->about)), 160); ?>">
 				#<?php echo $row->id; ?>: <?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject), 35, 0); ?>
 			</a>
 			<span>
@@ -56,35 +56,35 @@ ximport('Hubzero_View_Helper_Html');
 				}
 				?>">
 					<?php
-					echo ($row->status==3) ? JText::_('REJECTED') : ''; 
+					echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
 					if ($row->status==0) { 
-						echo ($row->accepted==1) ? JText::_('ACCEPTED') : JText::_('PENDING');
+						echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
 					}
 					?>
 				</span>
 				<span>
-					<?php echo JText::_('WISHLIST') . ': ' . stripslashes($row->listtitle); ?>
+					<?php echo JText::_('MOD_MYWISHES_WISHLIST') . ': ' . $this->escape(stripslashes($row->listtitle)); ?>
 				</span>
 			</span>
 		</li>
-<?php
+		<?php
 		}
-?>
+		?>
 	</ul>
 <?php } ?>
 
-	<h4><?php echo JText::_('Assigned Wishes'); ?></h4>
+	<h4><?php echo JText::_('MOD_MYWISHES_ASSIGNED'); ?></h4>
 <?php if (count($this->rows2) <= 0) { ?>
-	<p><?php echo JText::_('NO_WISHES'); ?></p>
+	<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
 <?php } else { ?>
 	<ul class="expandedlist">
-<?php
+		<?php
 		foreach ($this->rows2 as $row) 
 		{
 			$when = Hubzero_View_Helper_Html::timeAgo($row->proposed);
-?>
+		?>
 		<li class="wishlist">
-			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo htmlentities(stripslashes($row->subject), ENT_QUOTES) . ' :: ' . Hubzero_View_Helper_Html::shortenText(htmlentities(stripslashes($row->about), ENT_QUOTES), 160); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->about)), 160); ?>">
 				#<?php echo $row->id; ?>: <?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject), 35, 0); ?>
 			</a>
 			<span>
@@ -95,27 +95,27 @@ ximport('Hubzero_View_Helper_Html');
 				}
 				?>">
 					<?php
-					echo ($row->status==3) ? JText::_('REJECTED') : ''; 
+					echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
 					if ($row->status==0) { 
-						echo ($row->accepted==1) ? JText::_('ACCEPTED') : JText::_('PENDING');
+						echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
 					}
 					?>
 				</span>
 				<span>
-					<?php echo JText::_('WISHLIST') . ': ' . stripslashes($row->listtitle); ?>
+					<?php echo JText::_('MOD_MYWISHES_WISHLIST') . ': ' . $this->escape(stripslashes($row->listtitle)); ?>
 				</span>
 			</span>
 		</li>
-<?php
+		<?php
 		}
-?>
+		?>
 	</ul>
 <?php } ?>
-	
+
 	<ul class="module-nav">
 		<li>
 			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category=general&rid=1'); ?>">
-				<?php echo JText::_('NEW_WISH'); ?>
+				<?php echo JText::_('MOD_MYWISHES_NEW_WISH'); ?>
 			</a>
 		</li>
 	</ul>
