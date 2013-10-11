@@ -57,14 +57,14 @@ $total = count($this->courses);
 			//$status = $this->getStatus($group);
 ?>
 		<li class="course">
-			<a href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>"><?php echo stripslashes($course->title); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>"><?php echo $this->escape(stripslashes($course->title)); ?></a>
 			<?php if ($course->section_title) { ?>
-			<small><strong>Section:</strong> <?php echo $course->section_title; ?></small>
+			<small><strong><?php echo JText::_('MOD_MYCOURSES_SECTION'); ?></strong> <?php echo $this->escape($course->section_title); ?></small>
 			<?php } ?>
 			<?php if ($course->state == 3) { ?>
-			<small><?php echo JText::_('Draft'); ?></small>
+			<small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_DRAFT'); ?></small>
 			<?php } ?>
-			<span><span class="<?php echo $course->role; ?> status"><?php echo $course->role; ?></span></span>
+			<span><span class="<?php echo $this->escape($course->role); ?> status"><?php echo $this->escape($course->role); ?></span></span>
 		</li>
 <?php
 			$i++;
