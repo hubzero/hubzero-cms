@@ -42,7 +42,8 @@ $database =& JFactory::getDBO();
 		<select class="option" name="filter">
 			<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
 			<?php
-				if ($this->components) {
+				if ($this->components) 
+				{
 					foreach ($this->components as $component) 
 					{
 						$component = substr($component, 4);
@@ -147,7 +148,6 @@ $database =& JFactory::getDBO();
 							}
 						}*/
 					?>
-				
 					<tr<?php /*if ($row->actionid) { echo ' class="actionitem"'; }*/ ?>>
 						<td class="check"><?php echo $check; ?></td>
 						<td class="status"><?php echo $status; ?></td>

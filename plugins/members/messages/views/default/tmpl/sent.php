@@ -35,7 +35,7 @@ $database =& JFactory::getDBO();
 
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>" method="post">
-	<table class="data" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_OVERVIEW'); ?>">
+	<table class="data">
 		<thead>
 			<tr>
 				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
@@ -51,7 +51,7 @@ $database =& JFactory::getDBO();
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php if($this->rows) : ?>
+			<?php if ($this->rows) : ?>
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
 					

@@ -72,7 +72,6 @@ $no_html = JRequest::getVar("no_html", 0);
 ?>
 <?php if(!$no_html) : ?>
 <h3 class="section-header">
-	<a name="messages"></a>
 	<?php echo JText::_('PLG_MEMBERS_MESSAGES'); ?>
 </h3>
 
@@ -90,7 +89,7 @@ $no_html = JRequest::getVar("no_html", 0);
 		<?php endforeach; ?>
 	</ul>
 	<br class="clear" />
-	
+
 	<div id="messages-container">
 		<?php 
 			foreach($this->notifications as $n) {

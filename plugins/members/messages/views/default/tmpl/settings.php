@@ -1,9 +1,9 @@
 <?php if (!$this->components) { ?>
-		<p class="error"><?php echo JText::_('No components configured for XMessages.'); ?></p>
+		<p class="error"><?php echo JText::_('PLG_MEMBERS_MESSAGES_NO_COMPONENTS_FOUND'); ?></p>
 <?php } else { ?>
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm" class="full">
 			<input type="hidden" name="action" value="savesettings" />
-			<table class="settings" summary="<?php echo JText::_('PLG_MEMBERS_MESSAGES_TBL_SUMMARY_METHODS'); ?>">
+			<table class="settings">
 				<caption>
 					<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
 				</caption>
@@ -38,7 +38,7 @@
 						$sheader = $component->name;
 ?>
 					<tr class="section-header">
-						<th scope="col"><?php echo $component->name; ?></th>
+						<th scope="col"><?php echo $this->escape($component->name); ?></th>
 <?php
 						foreach ($this->notimethods as $notimethod) 
 						{
@@ -53,7 +53,7 @@
 					$cls = (($cls == 'even') ? 'odd' : 'even');
 ?>
 					<tr class="<?php echo $cls; ?>">
-						<th scope="col"><?php echo $component->title; ?></th>
+						<th scope="col"><?php echo $this->escape($component->title); ?></th>
 						<?php echo plgMembersMessages::selectMethod($this->notimethods, $component->action, $this->settings[$component->action]['methods'], $this->settings[$component->action]['ids']); ?>
 					</tr>
 <?php

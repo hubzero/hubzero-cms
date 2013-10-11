@@ -43,10 +43,10 @@ $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', '
 <form action="<?php echo JRoute::_('index.php?option='.$option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset class="hub-mail">
 		<div class="cont">
-			<h3>Compose Message</h3>
-			<label <?php if ($this->no_html){ echo "class=\"width-65\""; } ?> >
+			<h3><?php echo JText::_('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
+			<label<?php if ($this->no_html) { echo ' class="width-65"'; } ?>>
 				<?php echo JText::_('PLG_MEMBERS_MESSAGES_TO'); ?> 
-				<span class="required">Required</span>
+				<span class="required"><?php echo JText::_('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
 				<?php 
 					if (count($tos) > 0) 
 					{
@@ -54,7 +54,7 @@ $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', '
 					} 
 					else 
 					{ 
-						echo "<input type=\"text\" name=\"mbrs\" id=\"members\" value=\"\" />";
+						echo '<input type="text" name="mbrs" id="members" value="" />';
 					} 
 				?>
 			</label>
@@ -63,7 +63,7 @@ $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', '
 				<input type="text" name="subject" id="msg-subject" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'); ?>"  />
 			</label>
 			<label>
-				<?php echo JText::_('PLG_MEMBERS_MESSAGES_MESSAGE'); ?> <span class="required">Required</span>
+				<?php echo JText::_('PLG_MEMBERS_MESSAGES_MESSAGE'); ?> <span class="required"><?php echo JText::_('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
 				<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 			</label>
 			<p class="submit">

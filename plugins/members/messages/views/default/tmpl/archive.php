@@ -135,7 +135,7 @@ $database =& JFactory::getDBO();
 					
 						//delete link
 						$del_link = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash');
-						$delete = "<a title=\"Remove Message\" class=\"trash\" href=\"{$del_link}\">" . JText::_('PLG_MEMBERS_MESSAGES_TRASH') . "</a>";
+						$delete = '<a title="' . JText::_('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . JText::_('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
 					
 						//special action
 						/*if ($row->actionid) {
