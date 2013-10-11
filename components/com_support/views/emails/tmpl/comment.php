@@ -99,7 +99,7 @@ if ($this->comment->changelog)
 				//$message .= "\n\n";
 				if ($type == 'changes')
 				{
-					$message .= ' * ' . $items['field'] . ' changed from "' . $items['before'] . '" to "' . $items['before'] . '"' . "\n";
+					$message .= ' * ' . $items['field'] . ' changed from "' . $items['before'] . '" to "' . $items['after'] . '"' . "\n";
 				}
 				else 
 				{
