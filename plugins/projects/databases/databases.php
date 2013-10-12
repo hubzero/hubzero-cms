@@ -91,7 +91,7 @@ class plgProjectsDatabases extends JPlugin
 	{
 		//default areas returned to nothing
 		$area = array();
-		
+				
 		// Check if plugin is restricted to certain projects
 		$projects = $this->_params->get('restricted') ? ProjectsHelper::getParamArray($this->_params->get('restricted')) : array();
 		
@@ -202,7 +202,7 @@ class plgProjectsDatabases extends JPlugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas ) && $action != 'browser') 
+		if (is_array( $areas )) 
 		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
 			{				

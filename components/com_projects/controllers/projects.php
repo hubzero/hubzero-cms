@@ -110,6 +110,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
 			$p_params 		= new JParameter($plugin->params);
+
 			if ($p_params->get('noconflictSite'))
 			{
 				$app = JFactory::getApplication();
@@ -572,7 +573,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	protected function _features() 
 	{		
 		// Get language file
-		//JPlugin::loadLanguage( 'com_projects_features' );
 		$lang = JFactory::getLanguage();
 		$lang->load('com_projects_features');
 		
@@ -1096,7 +1096,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$ajax 			=  JRequest::getInt( 'ajax', 0 );
 		$action  		=  JRequest::getVar( 'action', '' );
 		$sync 			=  0;
-		
+				
 		// Stop ajax action if user got logged put
 		if ($ajax && $this->juser->get('guest'))
 		{
@@ -1505,10 +1505,17 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			
 			// Get plugin content
 			if ($this->active != 'info')
-			{
+			{	
 				// Do not go further if plugin is inactive or does not exist
 				if (!in_array($plugin, $tabs))
 				{
+					if ($ajax)
+					{
+						// Plugin not active in this project					
+						echo '<p class="error">' . JText::_('We are sorry, this content cannot load in this project.') . '</p>';
+						return;
+					}
+					
 					$this->_redirect = JRoute::_('index.php?option=' . $this->_option
 						. a . 'task=view' . a . 'alias=' . $project->alias);
 					return;
@@ -1542,7 +1549,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$tool->loadTool($toolname, $project->id);
 					
 					// Direct to relevant plugin
-					if (($action == 'source' || $this->active == 'files') && $tool && $tool->status > 1)
+					if (($action == 'source' || $this->active == 'files') && $tool)
 					{
 						$plugin = 'files';
 						$extraParam = 'tools:' . $tool->name;
@@ -1628,7 +1635,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Get project params
 		$view->params = new JParameter( $project->params );
-		
+				
 		// Get team for public page
 		if ($layout == 'external' && $view->params->get('team_public', 0)) 
 		{
