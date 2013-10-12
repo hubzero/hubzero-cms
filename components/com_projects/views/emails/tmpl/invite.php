@@ -25,12 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%m/%d/%Y';
+$dateFormat = '%b %d, %Y';
 $tz = null;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'm/d/Y';
+	$dateFormat = 'M d, Y';
 	$tz = false;
 }
 

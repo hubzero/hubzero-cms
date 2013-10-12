@@ -716,12 +716,12 @@ class PublicationHelper extends JObject
 	 */
 	public function getPubStateProperty($row, $get = 'class', $version = 1) 
 	{
-		$dateFormat = '%d %b %Y';
+		$dateFormat = '%b %d, %Y';
 		$tz = null;
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$dateFormat = 'd m Y';
+			$dateFormat = 'M d, Y';
 			$tz = false;
 		}
 	

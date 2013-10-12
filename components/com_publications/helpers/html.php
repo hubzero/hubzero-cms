@@ -880,7 +880,7 @@ class PublicationsHtml
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$dateFormat = 'm d, Y';
+			$dateFormat = 'M d, Y';
 			$tz = false;
 		}
 
@@ -1270,15 +1270,15 @@ class PublicationsHtml
 
 	public function writeResults( &$database, &$lines, $filters = array(), $show_date = 3 ) 
 	{
-		$dateFormat = '%d %b %Y';
+		$dateFormat = '%b %d, %Y';
 		$tz = null;
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$dateFormat = 'd m Y';
+			$dateFormat = 'M d, Y';
 			$tz = false;
 		}
-
+		
 		$juser =& JFactory::getUser();
 
 		$config =& JComponentHelper::getParams( 'com_publications' );
