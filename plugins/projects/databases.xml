@@ -50,5 +50,7 @@
 		<param name="@spacer" type="spacer" default="Read only MySQL Account" label="" description="" />
 		<param name="db_ro_user" type="text" menu="hide" default="dataviewer" label="Database User [ro]" description="User name for the MySQL account [used by the dataviewer]" />
 		<param name="db_ro_password" type="password" menu="hide" default="" label="Database Password [ro]" description="Password for the MySQL account [used by the dataviewer]" />
+		<param name="@spacer" type="spacer" default="Read only MySQL Account" label="" description="" />
+		<param name="restricted" type="text" menu="hide" default="" label="Restricted to projects" description="Comma-separated aliases of projects that have databases plugin enabled (empty field means NO RESTRICTIONS)" />
 	</params>
 </install>

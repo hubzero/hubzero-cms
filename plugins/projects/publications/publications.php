@@ -467,6 +467,47 @@ class plgProjectsPublications extends JPlugin
 	}
 	
 	/**
+	 * Get supported master types applicable to individual project
+	 * 
+	 * @return     string
+	 */
+	private function _getAllowedTypes($tChoices) 
+	{
+		$choices = array();
+		
+		if (is_object($this->_project) && $this->_project->id && !empty($tChoices))
+		{
+			foreach ($tChoices as $choice)
+			{
+				$pluginName = is_object($choice) ? $choice->alias : $choice;
+
+				// We need a plugin
+				if (!JPluginHelper::isEnabled('projects', $pluginName))
+				{
+					continue;
+				}
+				
+				$plugin = JPluginHelper::getPlugin('projects', $pluginName);
+				$params = new JParameter($plugin->params);
+				
+				// Get restrictions from plugin params 
+				$projects = $params->get('restricted') ? ProjectsHelper::getParamArray($params->get('restricted')) : array();
+				
+				if (!empty($projects))
+				{
+					if (!in_array($this->_project->alias, $projects))
+					{
+						continue;
+					}
+				}
+
+				$choices[] = $choice;
+			}
+		}
+		return $choices;
+	}
+	
+	/**
 	 * Start a publication
 	 * 
 	 * @return     string
@@ -476,6 +517,19 @@ class plgProjectsPublications extends JPlugin
 		// Get master publication types
 		$mt = new PublicationMasterType( $this->_database );
 		$choices = $mt->getTypes('*', 1, 0, 'ordering', $this->_config);
+		
+		// Contribute process outside of projects
+		if (!is_object($this->_project) or !$this->_project->id) 
+		{
+			$this->_project = new Project( $this->_database );
+			$this->_project->provisioned = 1;
+			
+			// Send to file picker
+			return $this->add();
+		}
+		
+		// Check that choices apply to a particular project
+		$choices = $this->_getAllowedTypes($choices);
 
 		// Do we have a choice?
 		if (count($choices) <= 1 ) 
@@ -492,17 +546,7 @@ class plgProjectsPublications extends JPlugin
 				'name'=>'start',
 			)
 		);
-		
-		// Contribute process outside of projects
-		if (!is_object($this->_project) or !$this->_project->id) 
-		{
-			$this->_project = new Project( $this->_database );
-			$this->_project->provisioned = 1;
-			
-			// Send to file picker
-			return $this->add();
-		}
-		
+				
 		// Build pub url
 		$view->route = $this->_project->provisioned 
 					? 'index.php?option=com_publications' . a . 'task=submit'
@@ -570,6 +614,10 @@ class plgProjectsPublications extends JPlugin
 		// Get master publication types
 		$mt = new PublicationMasterType( $this->_database );
 		$view->choices = $mt->getTypes('alias', 1);
+		
+		// Check that choices apply to a particular project
+		$view->choices = $this->_getAllowedTypes($view->choices);
+		
 		if (!in_array($base, $view->choices)) 
 		{
 			$base = 'files'; // default to files
@@ -789,6 +837,9 @@ class plgProjectsPublications extends JPlugin
 		$mt = new PublicationMasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 		
+		// Check that choices apply to a particular project
+		$choices = $this->_getAllowedTypes($choices);
+		
 		// Default primary content
 		if (!in_array($base, $choices)) 
 		{
@@ -822,19 +873,9 @@ class plgProjectsPublications extends JPlugin
 			if ($layout == 'supportingdocs')
 			{
 				$sChoices = $mt->getTypes('alias', 0, 1);
-				$choices = array();
 				
-				// Check if type is supported (need a plugin)
-				if (!empty($sChoices))
-				{
-					foreach ($sChoices as $choice)
-					{
-						if (JPluginHelper::isEnabled('projects', $choice))
-						{
-							$choices[] = $choice;
-						}
-					}
-				}
+				// Check that choices apply to a particular project
+				$choices = $this->_getAllowedTypes($sChoices);				
 			}
 		}
 		// Which description panel?
@@ -904,7 +945,7 @@ class plgProjectsPublications extends JPlugin
 		);
 		
 		// Get extra tool information
-		if ($view->pub->base == 'apps' && $view->pub->toolid) 
+		if ($view->pub->base == 'tools' && $view->pub->toolid) 
 		{
 			$tool = array();
 			$hzt = Hubzero_Tool::getInstance($view->pub->toolid);
@@ -992,7 +1033,7 @@ class plgProjectsPublications extends JPlugin
 			case 'license':
 				// Get available licenses
 				$objL = new PublicationLicense( $this->_database);
-				$apps_only = $pub->master_type == 'apps' ? 1 : 0;
+				$apps_only = $pub->master_type == 'tools' ? 1 : 0;
 				$view->licenses = $objL->getLicenses( $filters=array('apps_only' => $apps_only));
 				
 				// If no active licenses are found, give default choice
@@ -1670,6 +1711,9 @@ class plgProjectsPublications extends JPlugin
 		$mt = new PublicationMasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 		
+		// Check that choices apply to a particular project
+		$choices = $this->_getAllowedTypes($choices);
+				
 		// Get type info
 		$view->_category = new PublicationCategory( $this->_database );
 		$view->_category->load($pub->category);
@@ -1863,6 +1907,10 @@ class plgProjectsPublications extends JPlugin
 			{				
 				// Determine publication master type
 				$choices = $mt->getTypes('alias', 1);
+				
+				// Check that choices apply to a particular project
+				$choices = $this->_getAllowedTypes($choices);
+				
 				$mastertype = in_array($base, $choices) ? $base : 'files';
 								
 				// Need to provision a project
@@ -1873,7 +1921,7 @@ class plgProjectsPublications extends JPlugin
 					$random = strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
 					$this->_project->alias 	 			= 'pub-' . $random;
 					$this->_project->title 	 			= $this->_project->alias;
-					$this->_project->type 	 			= $base == 'apps' ? 2 : 3; // content publication
+					$this->_project->type 	 			= $base == 'tools' ? 2 : 3; // content publication
 					$this->_project->state   			= 1;
 					$this->_project->created 			= date( 'Y-m-d H:i:s' );
 					$this->_project->created_by_user 	= $this->_uid;
@@ -6001,7 +6049,7 @@ class plgProjectsPublications extends JPlugin
 			{
 				// Check content
 				$checked['content'] = 0;
-				if ($type == 'apps') 
+				if ($type == 'tools') 
 				{
 					// Check tool
 					// TBD
@@ -6126,7 +6174,7 @@ class plgProjectsPublications extends JPlugin
 			$sels = explode("##", $selections);
 			
 			$files 		= array();
-			$apps 		= array();
+			$tools 		= array();
 			$links 		= array();
 			$notes 		= array();
 			$data  		= array();
@@ -6145,9 +6193,9 @@ class plgProjectsPublications extends JPlugin
 				{
 					$links[] = urldecode($arr[1]);	
 				}
-				elseif ($arr[0] == 'app') 
+				elseif ($arr[0] == 'tool') 
 				{
-					$apps[] = urldecode($arr[1]);	
+					$tools[] = urldecode($arr[1]);	
 				}
 				elseif ($arr[0] == 'note') 
 				{
@@ -6163,13 +6211,13 @@ class plgProjectsPublications extends JPlugin
 				}
 			}
 			
-			$count = count($files) + count($links) + count($apps) + count($notes) + count($data) + count($collection);
+			$count = count($files) + count($links) + count($tools) + count($notes) + count($data) + count($collection);
 						
 			$selections = array(
 				'first' => $sels[0], 
 				'files' => $files, 
 				'links' => $links, 
-				'apps' => $apps, 
+				'tools' => $tools, 
 				'notes' => $notes, 
 				'data' => $data, 
 				'collection' => $collection,

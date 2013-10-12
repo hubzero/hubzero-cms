@@ -89,6 +89,30 @@ class plgProjectsDatabases extends JPlugin
 	 */
 	public function &onProjectAreas()
 	{
+		//default areas returned to nothing
+		$area = array();
+		
+		// Check if plugin is restricted to certain projects
+		$projects = $this->_params->get('restricted') ? ProjectsHelper::getParamArray($this->_params->get('restricted')) : array();
+		
+		if (!empty($projects))
+		{
+			$alias  = JRequest::getVar( 'alias', '' );
+			$id     = JRequest::getVar( 'id', '' );
+			
+			if (!$alias)
+			{
+				$database =& JFactory::getDBO();
+				$obj = new Project( $database );
+				$alias = $obj->getAlias( $id );
+			}
+			
+			if (!$alias || !in_array($alias, $projects))
+			{
+				return $area;
+			}
+		}
+		
 		$area = array(
 			'name' => 'databases',
 			'title' => 'Databases'
@@ -169,6 +193,10 @@ class plgProjectsDatabases extends JPlugin
 			'message'=>'',
 			'error'=>''
 		);
+		
+		// Incoming
+		$raw_op = JRequest::getInt('raw_op', 0);
+		$action = $action ? $action : JRequest::getVar('action', 'list');
 
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
@@ -177,8 +205,8 @@ class plgProjectsDatabases extends JPlugin
 		if (is_array( $areas )) 
 		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
-			{
-				return;
+			{				
+				return $arr;
 			}
 		}
 
@@ -205,10 +233,6 @@ class plgProjectsDatabases extends JPlugin
 		// Enable views
 		ximport('Hubzero_View_Helper_Html');
 		ximport('Hubzero_Plugin_View');
-
-		// Incoming
-		$raw_op = JRequest::getInt('raw_op', 0);
-		$action = $action ? $action : JRequest::getVar('action', 'list');
 		
 		// Publishing?
 		if ($action == 'browser')
@@ -276,7 +300,7 @@ class plgProjectsDatabases extends JPlugin
 		$ajax 		= JRequest::getInt('ajax', 0);
 		$primary 	= JRequest::getInt('primary', 1);
 		$versionid  = JRequest::getInt('versionid', 0);
-				
+								
 		if (!$ajax) 
 		{
 			return false;
