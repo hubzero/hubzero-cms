@@ -202,7 +202,7 @@ class plgProjectsDatabases extends JPlugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ) && $action != 'browser') 
 		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
 			{				
