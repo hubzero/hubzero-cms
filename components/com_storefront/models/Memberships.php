@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  * Memberships lookup and management
  * 
  */
-class Hubzero_Storefront_Memberships
+class StorefrontModelMemberships
 {	
 	// Database instance
 	var $_db = NULL;
@@ -164,7 +164,7 @@ class Hubzero_Storefront_Memberships
 	 */
 	private function _getTtl($ttl, $qty)
 	{
-		Hubzero_Storefront_Memberships::checkTtl($ttl);
+		StorefrontModelMemberships::checkTtl($ttl);
 		// Split ttl into parts
 		$ttlParts = explode(' ', $ttl);
 		$ttlParts[0] = $qty * $ttlParts[0];

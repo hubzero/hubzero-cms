@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  * Products inventory and structure (only product lookup and inventory management)
  * 
  */
-class Hubzero_Storefront_Warehouse
+class StorefrontModelWarehouse
 {
 	/**
 	 * array Product categories to look at (to define scope)

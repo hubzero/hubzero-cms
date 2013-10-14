@@ -45,8 +45,8 @@ class StorefrontControllerProduct extends ComponentController
 	 */
 	public function execute()
 	{
-		ximport('Hubzero_Storefront_Warehouse');
-		$this->warehouse = new Hubzero_Storefront_Warehouse();
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		$this->warehouse = new StorefrontModelWarehouse();
 		
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
@@ -112,8 +112,8 @@ class StorefrontControllerProduct extends ComponentController
 			{
 				$sku = $this->warehouse->mapSku($pId, $options);
 				
-				ximport('Hubzero_Cart_Cart');
-				$cart = new Hubzero_Cart();				
+				include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+				$cart = new CartModelCart();				
 				$cart->add($sku, $qty);					
 			}		
 			catch (Exception $e)

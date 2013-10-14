@@ -50,10 +50,7 @@ ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
 //require needed files
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php');
-//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'warehouse.php');
-//require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Helper.php');
 
 // require base component controller
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'component.php');

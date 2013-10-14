@@ -39,111 +39,123 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 	<h2>Review your order</h2>
 </div>
 
-<div class="section">
-
-<?php
-
-$perks = false;
-if (!empty($this->transactionInfo->tiPerks))
-{
-	$perks = $this->transactionInfo->tiPerks;
-	$perks = unserialize($perks);
-}
-
-$membershipInfo = false;
-if (!empty($this->transactionInfo->tiMeta))
-{
-	$meta = unserialize($this->transactionInfo->tiMeta);
+<section class="main">
+	<div class="section-inner">
 	
-	if (!empty($meta['membershipInfo']))
-	{
-		$membershipInfo = $meta['membershipInfo'];		
-	}
-}
-
-$view = new JView(array('name'=>'shared', 'layout' => 'messages'));
-$view->setError($this->getError());
-$view->display();
-
-?>
-
-<div class="grid section">
-
-<?php
-
-$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_items'));
-
-$view->perks = $perks;
-$view->membershipInfo = $membershipInfo;
-$view->transactionItems = $this->transactionItems;
-$view->tiShippingDiscount = $this->transactionInfo->tiShippingDiscount;
-
-echo '<div class="col span6">';
-
-$view->display();
-
-echo '</div>';
-
-echo '<div class="col span6 omega orderSummary">';
-
-if (!empty($this->transactionInfo))
-{
-	$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
-	$discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
-	
-	echo '<h2>Order summary:</h2>';
-	
-	echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
-	
-	if ($this->transactionInfo->tiShipping > 0)
-	{
-		echo '<p>Shipping: ' . money_format('%n', $this->transactionInfo->tiShipping) . '</p>';
-	}
-	if ($discount > 0)
-	{
-		echo '<p>Discounts: ' . money_format('%n', $discount) . '</p>';
-	}
-	
-	echo '<p class="orderTotal">Order total: ' . money_format('%n', $orderTotal) . '</p>';		
+		<?php
+				
+		$errors = $this->getError();
+		if (!empty($errors))
+		{
+			foreach ($errors as $error)
+			{
+				echo '<p class="error">' . $error . '</p>';
+			}
+		}	
 		
-}
+		?>
 
-echo '</div>';
-
-?>
-
-</div>
-
-<?php
-
-if (in_array('shipping', $this->transactionInfo->steps))
-{
-	$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_shippinginfo'));
-	$view->transactionInfo = $this->transactionInfo;
-	$view->display();
-}
-
-$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
-
-
-if ($orderTotal > 0)
-{
-	$buttonLabel = 'Proceed to payment';
-	$buttonLink = JRoute::_('index.php?option=com_cart/checkout/confirm');
-}
-else 
-{
-	$buttonLabel = 'Place order';
-	$buttonLink = JRoute::_('index.php?option=com_cart/order/place/' . $this->token);
-}
-
-
-echo '<a href="';
-echo $buttonLink;
-echo '" class="btn">';
-echo $buttonLabel;
-echo '</a>';
-
-?>
-
+		<?php
+		
+		$perks = false;
+		if (!empty($this->transactionInfo->tiPerks))
+		{
+			$perks = $this->transactionInfo->tiPerks;
+			$perks = unserialize($perks);
+		}
+		
+		$membershipInfo = false;
+		if (!empty($this->transactionInfo->tiMeta))
+		{
+			$meta = unserialize($this->transactionInfo->tiMeta);
+			
+			if (!empty($meta['membershipInfo']))
+			{
+				$membershipInfo = $meta['membershipInfo'];		
+			}
+		}
+		
+		$view = new JView(array('name'=>'shared', 'layout' => 'messages'));
+		$view->setError($this->getError());
+		$view->display();
+		
+		?>
+		
+		<div class="grid">
+			
+			<?php
+			
+			$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_items'));
+			
+			$view->perks = $perks;
+			$view->membershipInfo = $membershipInfo;
+			$view->transactionItems = $this->transactionItems;
+			$view->tiShippingDiscount = $this->transactionInfo->tiShippingDiscount;
+			
+			echo '<div class="col span6">';
+			
+			$view->display();
+			
+			echo '</div>';
+			
+			echo '<div class="col span6 omega orderSummary">';
+			
+			if (!empty($this->transactionInfo))
+			{
+				$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
+				$discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
+				
+				echo '<h2>Order summary:</h2>';
+				
+				echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
+				
+				if ($this->transactionInfo->tiShipping > 0)
+				{
+					echo '<p>Shipping: ' . money_format('%n', $this->transactionInfo->tiShipping) . '</p>';
+				}
+				if ($discount > 0)
+				{
+					echo '<p>Discounts: ' . money_format('%n', $discount) . '</p>';
+				}
+				
+				echo '<p class="orderTotal">Order total: ' . money_format('%n', $orderTotal) . '</p>';		
+					
+			}
+			
+			echo '</div>';
+			
+			?>
+			
+		</div>
+		
+		<?php
+		
+		if (in_array('shipping', $this->transactionInfo->steps))
+		{
+			$view = new JView(array('name'=>'checkout', 'layout' => 'checkout_shippinginfo'));
+			$view->transactionInfo = $this->transactionInfo;
+			$view->display();
+		}
+		
+		$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
+		
+		
+		if ($orderTotal > 0)
+		{
+			$buttonLabel = 'Proceed to payment';
+			$buttonLink = JRoute::_('index.php?option=com_cart/checkout/confirm');
+		}
+		else 
+		{
+			$buttonLabel = 'Place order';
+			$buttonLink = JRoute::_('index.php?option=com_cart/order/place/' . $this->token);
+		}
+		
+		?>
+		
+		<p class="submit">
+			<a href="<?php echo $buttonLink; ?>" class="btn"><?php echo $buttonLabel; ?></a>
+		</p>
+		
+	</div>
 </div>

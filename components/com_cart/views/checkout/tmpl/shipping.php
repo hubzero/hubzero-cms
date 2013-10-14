@@ -31,84 +31,114 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$states = Cart_Helper::getUsStates();
+
 ?>
 
 <div id="content-header">
 	<h2>Checkout: shipping information</h2>
 </div>
 
-<div class="section">
-
-<?php
-
-$view = new JView(array('name'=>'shared', 'layout' => 'messages'));
-$view->setError($this->getError());
-$view->display();
-
-$states = getUsStates();	
-
-?>
-
-<?php
-
-if (!empty($this->savedShippingAddresses))
-{
-	echo '<h2>Select saved address</h2>';
+<section class="main">
+	<div class="section-inner">
 	
-	foreach ($this->savedShippingAddresses as $address)
-	{
-		echo '<div class="box">';
-		echo '<p>';
-		echo $address->saToFirst . ' ' . $address->saToLast . '<br>';
-		echo $address->saAddress . '<br>';
-		echo $address->saCity . ', ' . $address->saState . ' ' . $address->saZip;
-		echo '</p>';
-		
-		echo '<a href="';
-		echo JRoute::_('index.php?option=com_cart/checkout/shipping/select/' . $address->saId);
-		echo '">';
-		echo 'Ship to this address';
-		echo '</a>';
-		
-		echo '</div>';	
-	}
-}
-
-?>
-
-<form name="cartShippingInfo" id="cartShippingInfo" method="post">
-
-<label for="shippingToFirst">First name:</label> <input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo JRequest::getVar('shippingToFirst', false, 'post'); ?>" />
-<label for="shippingToLast">Last name:</label> <input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
-
-<label for="shippingAddress">Shipping address:</label> <input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
-<label for="shippingCity">City:</label> <input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
-<label for="shippingZip">Zip:</label> <input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
-
-<label for="shippingState">State:</label>
-<select name="shippingState" id="shippingState">
-	<option value=""> -- please select -- </option>
-	<?php
-		foreach ($states as $abbr => $state)
+		<?php
+				
+		$errors = $this->getError();
+		if (!empty($errors))
 		{
-			echo '<option value="' . $abbr . '"';
-			if (JRequest::getVar('shippingState', false, 'post') == $abbr)
+			foreach ($errors as $error)
 			{
-				echo ' selected';
+				echo '<p class="error">' . $error . '</p>';
 			}
-			echo '>' . $state . '</option>';
-		}
-	?>
-</select>
-
-<br>
-
-<input type="checkbox" name="saveAddress" id="saveAddress" /><label for="saveAddress">Save this address?</label>
-
-<br>
-
-<input type="submit" value="next" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
-
-</form>
-
-</div>
+		}	
+		
+		?>
+		
+		<div class="grid">
+			<div class="col span6">
+			
+				<h2>Shipping address</h2>
+			
+				<form name="cartShippingInfo" id="cartShippingInfo" method="post" class="hubForm">
+				
+					<label for="shippingToFirst">First name:
+					<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo JRequest::getVar('shippingToFirst', false, 'post'); ?>" />
+					</label>
+					
+					<label for="shippingToLast">Last name:
+					<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
+					</label> 
+					
+					<label for="shippingAddress">Shipping address:
+					<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
+					</label> 
+					
+					<label for="shippingCity">City:
+					<input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
+					</label> 
+					
+					<label for="shippingZip">Zip:
+					<input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
+					</label> 
+					
+					<label for="shippingState">State:
+					<select name="shippingState" id="shippingState">
+						<option value=""> -- please select -- </option>
+						<?php
+							foreach ($states as $abbr => $state)
+							{
+								echo '<option value="' . $abbr . '"';
+								if (JRequest::getVar('shippingState', false, 'post') == $abbr)
+								{
+									echo ' selected';
+								}
+								echo '>' . $state . '</option>';
+							}
+						?>
+					</select>
+					</label> 
+					
+					
+					<label for="saveAddress"><input type="checkbox" name="saveAddress" id="saveAddress" /> Save this address?</label>
+										
+					<p class="submit">
+						<input type="submit" value="Next" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
+					</p>
+				
+				</form>
+			
+			</div>
+			<div class="col span6 omega">
+				
+				
+				<?php
+				
+				if (!empty($this->savedShippingAddresses))
+				{
+					echo '<h2>Select saved address</h2>';
+					
+					foreach ($this->savedShippingAddresses as $address)
+					{
+						echo '<div class="cartSection">';
+						echo '<p>';
+						echo $address->saToFirst . ' ' . $address->saToLast . '<br>';
+						echo $address->saAddress . '<br>';
+						echo $address->saCity . ', ' . $address->saState . ' ' . $address->saZip;
+						echo '</p>';
+						
+						echo '<a href="';
+						echo JRoute::_('index.php?option=com_cart/checkout/shipping/select/' . $address->saId);
+						echo '">';
+						echo 'Ship to this address';
+						echo '</a>';
+						
+						echo '</div>';	
+					}
+				}
+				
+				?>
+			</div>
+		</div>
+	</div>
+</section>

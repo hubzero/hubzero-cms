@@ -37,77 +37,77 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2>Thank you!</h2>
 </div>
 
-<div class="section">
-
-<p>Thank you for your order.</p> 
-<p>You will receive an email confirmation shortly the the email address associated with your account. Your transaction is now complete.</p>
-
-<?php
-
-	if (!empty($this->transactionInfo))
-	{
+<section>	
+	<div class="section-inner">
+		<p>Thank you for your order.</p> 
+		<p>You will receive an email confirmation shortly the the email address associated with your account. Your transaction is now complete.</p>
 		
-		$transactionItems = unserialize($this->transactionInfo->tiItems);
-		$meta = unserialize($this->transactionInfo->tiMeta);
-		$membershipInfo = $meta['membershipInfo'];
+		<?php
 		
-		//print_r($transactionItems); die;
-		
-		echo '<h2>Order contents</h2>';
-		echo '<table id="cartContents">';
-		echo '<tr><th>Item</th><th>Status</th><th>Action</th></tr>';
-		foreach ($transactionItems as $sId => $item)
-		{
-			$info = $item['info'];
-			$action = '';
-			
-			// If course
-			if ($info->ptId == 20)
+			if (!empty($this->transactionInfo))
 			{
-				$status = 'Registered';
-				$action = '<a href="' . JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId']);
-				$action .= '">Go to the course page</a>';
-			}
-			else {
-				$status = 'Purchased';
-			}
-			
-			echo '<tr>';
-			
-			echo '<td>';
-				echo $info->pName;
-			
-				if (!empty($item['options']) && count($item['options']))
-				{
-					foreach ($item['options'] as $oName)
-					{
-						echo ', ' . $oName;	
-					}
-				}			
-			echo '</td>';
-			
-			echo '<td>';
-				echo $status;
 				
-				// Check is there is any membership info for this item
-				if (!empty($membershipInfo[$sId]))
+				$transactionItems = unserialize($this->transactionInfo->tiItems);
+				$meta = unserialize($this->transactionInfo->tiMeta);
+				$membershipInfo = $meta['membershipInfo'];
+				
+				//print_r($transactionItems); die;
+				
+				echo '<h2>Order contents</h2>';
+				echo '<table id="cartContents">';
+				echo '<tr><th>Item</th><th>Status</th><th>Action</th></tr>';
+				foreach ($transactionItems as $sId => $item)
 				{
-					echo ', valid until ' . date('M j, Y', $membershipInfo[$sId]->newExpires);
+					$info = $item['info'];
+					$action = '';
+					
+					// If course
+					if ($info->ptId == 20)
+					{
+						$status = 'Registered';
+						$action = '<a href="' . JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId']);
+						$action .= '">Go to the course page</a>';
+					}
+					else {
+						$status = 'Purchased';
+					}
+					
+					echo '<tr>';
+					
+					echo '<td>';
+						echo $info->pName;
+					
+						if (!empty($item['options']) && count($item['options']))
+						{
+							foreach ($item['options'] as $oName)
+							{
+								echo ', ' . $oName;	
+							}
+						}			
+					echo '</td>';
+					
+					echo '<td>';
+						echo $status;
+						
+						// Check is there is any membership info for this item
+						if (!empty($membershipInfo[$sId]))
+						{
+							echo ', valid until ' . date('M j, Y', $membershipInfo[$sId]->newExpires);
+						}
+						
+					echo '</td>';
+					
+					echo '<td>';
+						echo $action;
+					echo '</td>';
+					
+					echo '</tr>';
+					
 				}
 				
-			echo '</td>';
-			
-			echo '<td>';
-				echo $action;
-			echo '</td>';
-			
-			echo '</tr>';
-			
-		}
-		
-		echo '</table>';
-		
-	}
-?>
-
-</div>
+				echo '</table>';
+				
+			}
+		?>
+	</div>
+</section>

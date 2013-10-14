@@ -45,8 +45,8 @@ class StorefrontControllerBrowse extends ComponentController
 	 */
 	public function execute()
 	{
-		ximport('Hubzero_Storefront_Warehouse');
-		$this->warehouse = new Hubzero_Storefront_Warehouse();
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		$this->warehouse = new StorefrontModelWarehouse();
 		
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();

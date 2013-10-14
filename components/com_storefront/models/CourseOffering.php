@@ -30,9 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-ximport('Hubzero_Storefront_Sku');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Sku.php');
 
-class Hubzero_Storefront_CourseOffering extends Hubzero_Storefront_Sku
+class StorefrontModelCourseOffering extends StorefrontModelSku
 {
 	
 	public function __construct()

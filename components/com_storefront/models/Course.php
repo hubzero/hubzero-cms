@@ -38,7 +38,7 @@ ximport('Hubzero_Storefront_CourseOffering');
  * Storefront course product class
  * 
  */
-class Hubzero_Storefront_Course extends Hubzero_Storefront_SingleSkuProduct
+class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 {	
 	/**
 	 * Contructor

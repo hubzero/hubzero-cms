@@ -39,21 +39,22 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 	<h2>Pretend payment page</h2>
 </div>
 
-<div class="section">
+<section>
+	<div class="section-inner">
+		<p>Imagine you have a lot of money and free to spend it. He is it, the pretend pay page. Just hit the 'Pay' button.</p>
 
-	<p>Imagine you have a lot of money and free to spend it. He is it, the pretend pay page. Just hit the 'Pay' button.</p>
-
-	<form action="" id="frm" method="post">
-	
-	<?php
-		foreach($_POST as $k => $v)
-		{
-			echo '<input type="hidden" name="' . $k . '" value="' . $v . '"></input>';
-		}
-	?>
-	
-	<input type="hidden" name="dummypay" value="1"></input>
-	
-	<input type="submit" value="Pay">
-	</form>
-</div>
+		<form action="" id="frm" method="post">
+		
+		<?php
+			foreach($_POST as $k => $v)
+			{
+				echo '<input type="hidden" name="' . $k . '" value="' . $v . '"></input>';
+			}
+		?>
+		
+		<input type="hidden" name="dummypay" value="1"></input>
+		
+		<input type="submit" value="Pay">
+		</form>
+	</div>
+</section>

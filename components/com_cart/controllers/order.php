@@ -33,9 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
 
 /**
- * Courses controller class
+ * Cart order controller class
  */
 class CartControllerOrder extends ComponentController
 {	
@@ -100,7 +101,7 @@ class CartControllerOrder extends ComponentController
 		//print_r($tId); die;
 		
 		// Lookup the order
-		$cart = new Hubzero_Cart(NULL, true);
+		$cart = new CartModelCart(NULL, true);
 		
 		// Verify token
 		if (!$token || !$cart->verifyToken($token, $tId))
@@ -111,10 +112,10 @@ class CartControllerOrder extends ComponentController
 		// Get transaction info 
 		$tInfo = $cart->getTransactionFacts($tId);	
 		//print_r($tId); die;
-		//print_r($tInfo); die;
+		//print_r($tInfo);
 				
 		if(empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed') {
-			die('Error processing your order???');
+			die('Error processing your order.');
 			//JError::raiseError(404, JText::_('Error processing transaction.'));
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
 			$app  = & JFactory::getApplication();
@@ -138,7 +139,7 @@ class CartControllerOrder extends ComponentController
 	public function placeTask() 
 	{
 		// Get the current active trancsaction
-		$cart = new Hubzero_Cart();
+		$cart = new CartModelCart();
 				
 		$transaction = $cart->liftTransaction();
 		//print_r($transaction); die;
@@ -227,7 +228,7 @@ class CartControllerOrder extends ComponentController
 		//$postBackTransactionId = 1;
 				
 		// Initialize static cart
-		$cart = new Hubzero_Cart(NULL, true);
+		$cart = new CartModelCart(NULL, true);
 		
 		// Initialize logger
 		$logger = new CartMessenger('Payment Postback');
@@ -300,7 +301,7 @@ class CartControllerOrder extends ComponentController
 	private function completeOrder($tInfo) 
 	{
 		// Initialize static cart
-		$cart = new Hubzero_Cart(NULL, true);
+		$cart = new CartModelCart(NULL, true);
 		
 		// Initialize logger
 		$logger = new CartMessenger('Complete order');

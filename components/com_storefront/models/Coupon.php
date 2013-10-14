@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  * Coupon class
  * 
  */
-class Hubzero_Storefront_Coupon
+class StorefrontModelCoupon
 {	
 	// Database instance
 	var $db = NULL;
@@ -325,8 +325,8 @@ class Hubzero_Storefront_Coupon
 	{
 		$this->verify();
 		
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
 		
 		return($warehouse->addCoupon($this));
 	}	

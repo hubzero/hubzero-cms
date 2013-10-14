@@ -66,8 +66,8 @@ class CartControllerCart extends ComponentController
 	 */
 	public function homeTask() 
 	{
-		//ximport('Hubzero_Cart_Cart');
-		$cart = new Hubzero_Cart();
+		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart();
 		
 		// update cart if needed for non-ajax transactions
 		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');
@@ -80,8 +80,8 @@ class CartControllerCart extends ComponentController
 		if (!empty($pIds))
 		{		
 			$skus = array();
-			ximport('Hubzero_Storefront_Warehouse');
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+			$warehouse = new StorefrontModelWarehouse();
 			
 			foreach($pIds as $pId => $qty)
 			{

@@ -76,8 +76,8 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function checkoutTask() 
 	{
-		ximport('Hubzero_Cart_Cart');
-		$cart = new Hubzero_Cart();
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart();
 		
 		// This is a starting point in checkout process. All existing transactinos for this user have to be removed and a new one has to be created.
 		// Do the final check of the cart
@@ -118,8 +118,8 @@ class CartControllerCheckout extends ComponentController
 	public function continueTask() 
 	{
 		// Decide where to go next
-		ximport('Hubzero_Cart_Cart');
-		$cart = new Hubzero_Cart();
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart();
 		
 		// Check/create/update transaction here		
 		$transactionInfo = $cart->getTransaction();	
@@ -143,7 +143,8 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function shippingTask() 
 	{
-		$cart = new Hubzero_Cart();
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart();;
 		
 		// initialize address set var
 		$addressSet = false;
@@ -234,7 +235,8 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function summaryTask() 
 	{
-		$cart = new Hubzero_Cart();
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart();
 						
 		$transaction = $cart->liftTransaction();
 		//print_r($transaction); die;
@@ -272,7 +274,8 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function confirmTask() 
 	{
-		$cart = new Hubzero_Cart();
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart();
 				
 		$transaction = $cart->liftTransaction();		
 		if (!$transaction)
@@ -298,7 +301,7 @@ class CartControllerCheckout extends ComponentController
 		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 		
-		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php' );
+		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 		$paymentDispatcher = new PaymentDispatcher($paymentGatewayProivder);
 		$pay = $paymentDispatcher->getPaymentProvider();
 		
@@ -352,7 +355,7 @@ class CartControllerCheckout extends ComponentController
 	 */
 	private function printTransaction($t)
 	{
-		echo '<div class="box">';
+		echo '<div class="cartSection">';
 		foreach($t as $k => $v)
 		{
 			echo '<p>';

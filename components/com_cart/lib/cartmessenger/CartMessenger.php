@@ -226,8 +226,8 @@ class CartMessenger
 		$clientEmail = 'Thank you for your order at ' .  $jconfig->getValue('config.sitename') . "!\n\n";
 		$clientEmail .= $summary;
 		
-		ximport('Hubzero_Cart_Cart');
-		$cart = new Hubzero_Cart(NULL, true);
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart(NULL, true);
 		$to = array($cart->getCartUser($transactionInfo->crtId));	
 		
 		$dispatcher->trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));

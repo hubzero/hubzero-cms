@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  * Storefront SKU class
  * 
  */
-class Hubzero_Storefront_Sku
+class StorefrontModelSku
 {	
 
 	var $data;

@@ -30,14 +30,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-ximport('Hubzero_Storefront_Sku');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Sku.php');
 
 /**
  *
  * Storefront product class
  * 
  */
-class Hubzero_Storefront_Product
+class StorefrontModelProduct
 {	
 	// Product data container
 	var $data;
@@ -122,7 +122,7 @@ class Hubzero_Storefront_Product
 	
 	public function addSku($sku)
 	{
-		if (!($sku instanceof Hubzero_Storefront_Sku))
+		if (!($sku instanceof StorefrontModelSku))
 		{
 			throw new Exception(JText::_('Bad SKU. Unable to add.'));	
 		}		
@@ -135,12 +135,12 @@ class Hubzero_Storefront_Product
 	/**
 	 * Sets a new SKU for the product, used by single SKU products
 	 * 
-	 * @param	Hubzero_Storefront_Sku
+	 * @param	StorefrontModelSku
 	 * @return	void
 	 */
 	protected function setSku($sku) 
 	{		
-		if (!($sku instanceof Hubzero_Storefront_Sku))
+		if (!($sku instanceof StorefrontModelSku))
 		{
 			throw new Exception(JText::_('Bad SKU. Unable to add.'));	
 		}		
@@ -297,10 +297,10 @@ class Hubzero_Storefront_Product
 	/**
 	 * Check if everything checks out and the product is ready to go
 	 * 
-	 * @param  int		courseId
+	 * @param  void
 	 * @return bool		true on sucess, throws exception on failure
 	 */
-	public function verify($action = NULL)
+	public function verify()
 	{		
 		if (empty($this->data->name))
 		{
@@ -329,8 +329,8 @@ class Hubzero_Storefront_Product
 	{
 		$this->verify();
 		
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
 		
 		return($warehouse->addProduct($this));
 	}
@@ -343,8 +343,8 @@ class Hubzero_Storefront_Product
 	 */
 	public function update()
 	{
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();		
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();		
 		
 		return($warehouse->updateProduct($this));
 	}

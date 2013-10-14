@@ -67,7 +67,7 @@ class CartControllerTest extends ComponentController
 	public function homeTask() 
 	{
 		
-		die();
+		die('no access');
 			
 	}
 	
@@ -82,11 +82,11 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// CREATE COUPON
-			ximport('Hubzero_Storefront_Coupon');		
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
 			try 
 			{
 				// Constructor take the coupon code
-				$coupon = new Hubzero_Storefront_Coupon('hui');
+				$coupon = new StorefrontModelCoupon('hui');
 				// Couponn description (shows up in the cart)
 				$coupon->setDescription('Test coupon, 10% off product with ID 3');
 				// Expiration date 
@@ -114,8 +114,8 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// DELETE COUPON
-			ximport('Hubzero_Storefront_Warehouse');
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelWarehouse.php');
+			$warehouse = new StorefrontModelWarehouse();
 			try 
 			{
 				$warehouse->deleteCoupon('couponcode3');
@@ -130,9 +130,9 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// CREATE NEW COURSE
-			ximport('Hubzero_Storefront_Product');
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
 			
-			$course = new Hubzero_Storefront_Course();
+			$course = new StorefrontModelCourse();
 			$course->setName('Name of the course');
 			$course->setDescription('Short description');
 			$course->setPrice(12.00);
@@ -156,10 +156,9 @@ class CartControllerTest extends ComponentController
 		
 		if (1)
 		{
-			
 			// GET EXISTING COURSE, modify it and save
-			ximport('Hubzero_Storefront_Warehouse');
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+			$warehouse = new StorefrontModelWarehouse();
 			try 
 			{		
 				// Get course by pID returned with $course->add() above
@@ -180,8 +179,8 @@ class CartControllerTest extends ComponentController
 
 		if (0) {				
 			// UPDATE COURSE by recreatiing it				
-			ximport('Hubzero_Storefront_Product');
-			$course = new Hubzero_Storefront_Course();
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
+			$course = new StorefrontModelCourse();
 			$course->setName('Operations Management 104');
 			$course->setDescription('Operations Management 104 is some kind of test course for now...');
 			$course->setPrice(13.05);
@@ -204,8 +203,8 @@ class CartControllerTest extends ComponentController
 		if (0) 
 		{
 			// DELETE COURSE
-			ximport('Hubzero_Storefront_Warehouse');
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+			$warehouse = new StorefrontModelWarehouse();
 			// Delete by existing course ID (pID returned with $course->add() when the course was created)
 			$warehouse->deleteProduct(1023);
 			return;
@@ -229,6 +228,148 @@ class CartControllerTest extends ComponentController
 		$this->view->display();
 	}
 	
+	public function apipostTask() 
+	{	
+	
+		$curl_result = '';
+		$curl_err = '';
+		
+		//$url = ('https://dev26.hubzero.org/api/courses/premisRegister');
+		//$url = ('https://dev26.hubzero.org/api/register/premisRegister');
+		$url = 'https://dev.courses.purduenext.purdue.edu/api/register/premisRegister/';
+		
+		// !! $value = urlencode(stripslashes($value));
+		
+		$data['fName'] = 'Tolik';
+		$data['lName'] = 'Dusik';
+		$data['email'] = 'ilya@zuki.com';
+		$data['premisId'] = 'zero0';
+		$data['premisEnrollmentId'] = 'primus0';
+		//$data['casId'] = 'ishunko';
+		$data['password'] = '';
+		
+		$data['addRegistration'] = 'nanoscaletransistors';
+		$data['dropRegistration'] = '';
+		
+		$req = 'ss=VezefruchASpEdruvE_RAmE4pesWep!A';
+		
+		foreach ($data as $key => $value) 
+		{
+			$value = urlencode(stripslashes($value));
+			$req .= "&$key=$value";
+		}
+				
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
+		curl_setopt($ch, CURLOPT_HEADER, 0);   
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		
+		$curl_result = @curl_exec($ch);
+		$curl_err = curl_error($ch);
+		curl_close($ch);
+	
+		print_r(json_decode($curl_result));
+		//print_r($curl_result);
+		die('+');
+		
+		$doc =& JFactory::getDocument();
+		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		
+		$this->view->display();
+	}
+	
+	public function apideleteTask() 
+	{	
+		$curl_result = '';
+		$curl_err = '';
+		
+		$url = 'https://dev.courses.purduenext.purdue.edu/api/register/premisDeleteProfile/';
+		
+		// !! $value = urlencode(stripslashes($value));
+		
+		$data['email'] = 'ilya@zuki.com';
+	
+		$req = 'ss=VezefruchASpEdruvE_RAmE4pesWep!A';
+		
+		foreach ($data as $key => $value) 
+		{
+			$value = urlencode(stripslashes($value));
+			$req .= "&$key=$value";
+		}
+				
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
+		curl_setopt($ch, CURLOPT_HEADER, 0);   
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		
+		$curl_result = @curl_exec($ch);
+		$curl_err = curl_error($ch);
+		curl_close($ch);
+	
+		print_r(json_decode($curl_result));
+		//print_r($curl_result);
+		die('~');
+		
+	}
+	
+	public function passportTask() 
+	{	
+		// Instantiate badges manager, provide badges provider (right now there is only one: 'PASSPORT'). 
+		$badges = new Hubzero_Badges('PASSPORT');
+		
+		// Get the actual badges provider class
+		$passport = $badges->getProvider();
+		
+		// Set credentials and settings (outh in not secured at this point)
+		$credentials->clientId = 43;
+		$credentials->issuerId = 17;
+		// These are not used so far, but have some value
+		$credentials->consumer_key = 'xxx';
+		$credentials->consumer_secret = 'xxx';
+		$credentials->username = 'xxx';
+		$credentials->password = 'xxx';
+		
+		// Set credentials
+		try {
+			$passport->setCredentials($credentials);
+		}
+		catch(Exception $e)
+		{
+			echo $e->getMessage();
+		}
+		
+		// Set badges details
+		$badge->id = 83;
+		$badge->evidenceUrl = 'http://hubzero.org';
+		
+		// Award a badge
+		try {
+			// Single user
+			//$passport->grantBadge($badge, 'ishunko@purdue.edu');
+			
+			// Multiple users
+			$users = array('ishunko@purdue.edu', 'mshunko@purdue.edu');
+			$passport->grantBadge($badge, $users);
+			
+			echo 'Badges granted';
+		}
+		catch(Exception $e)
+		{
+			echo 'Error: ' . $e->getMessage();			
+		}				
+	}
 	
 	/**
 	 * Test payment task
@@ -250,6 +391,8 @@ class CartControllerTest extends ComponentController
 				}
 			}	
 			
+			//echo $req;
+			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, JURI::root() . 'cart/order/postback');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -265,7 +408,7 @@ class CartControllerTest extends ComponentController
 			$curl_err = curl_error($ch);
 			curl_close($ch);
 		
-			//print_r(json_decode($curl_result));
+			//print_r($curl_result); die;
 			
 			// Redirect to confirmation page
 			$redirect_url  = JURI::root() . 'cart/order/complete?' . $req;

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Product handler. Handled purchased products/items.
  */
-class Hubzero_Cart_ProductHandler
+class Cart_ProductHandler
 {
 	// Item info
 	var $item;
@@ -154,15 +154,12 @@ class Course_Type_Handler extends Type_Handler
 		if (!$course->offerings()->count()) {
 			// error enrolling
 		}
-		else 
-		{
-			// Get to the first and probably the only offering
-			//$offering = $course->offerings()->current();
-			$offering = $course->offering($this->item['meta']['offeringId']);
-			
-			$offering->add($userId);	
-			//$offering->remove($userId);				
-		}					
+		// Get to the first and probably the only offering
+		//$offering = $course->offerings()->current();
+		$offering = $course->offering($this->item['meta']['offeringId']);
+		
+		//$offering->add($userId);	
+		$offering->remove($userId);				
 	}
 }
 

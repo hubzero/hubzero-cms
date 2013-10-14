@@ -30,15 +30,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-ximport('Hubzero_Storefront_Product');
-ximport('Hubzero_Storefront_Sku');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Product.php');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Sku.php');
 
 /**
  *
  * Storefront course product class
  * 
  */
-class Hubzero_Storefront_SingleSkuProduct extends Hubzero_Storefront_Product
+class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 {
 	/**
 	 * Contructor
@@ -51,7 +51,7 @@ class Hubzero_Storefront_SingleSkuProduct extends Hubzero_Storefront_Product
 		parent::__construct();
 		
 		// Create SKU automatically
-		$this->setSku(new Hubzero_Storefront_Sku());
+		$this->setSku(new StorefrontModelSku());
 	}
 	
 	/**
@@ -109,8 +109,8 @@ class Hubzero_Storefront_SingleSkuProduct extends Hubzero_Storefront_Product
 	{
 		// For single product update SKU must save the original SKU ID (since SKU was generated automatically)
 		// Find the SKU ID for this product and save
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		$warehouse = new StorefrontModelWarehouse();
 		
 		$sku = $warehouse->getProductSkus($this->data->id);
 		

@@ -57,8 +57,8 @@ class CartControllerRequest extends ComponentController
 	{		
 		$response->status = 'ok';
 		
-		ximport('Hubzero_Cart_Cart');
-		$cart = new Hubzero_Cart();
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart();
 		
 		// update cart
 		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');		
@@ -70,8 +70,8 @@ class CartControllerRequest extends ComponentController
 		if (!empty($pIds))
 		{		
 			$skus = array();
-			ximport('Hubzero_Storefront_Warehouse');
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+			$warehouse = new StorefrontModelWarehouse();
 			
 			foreach($pIds as $pId => $qty)
 			{

@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  * Coupons lookup and management
  * 
  */
-class Hubzero_Storefront_Coupons
+class StorefrontModelCoupons
 {	
 	// Database instance
 	var $db = NULL;
