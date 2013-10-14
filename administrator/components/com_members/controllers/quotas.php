@@ -1,0 +1,628 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Sam Wilson <samwilson@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+ximport('Hubzero_Controller');
+
+/**
+ * Manage member quotas
+ */
+class MembersControllerQuotas extends Hubzero_Controller
+{
+	/**
+	 * Display member quotas
+	 * 
+	 * @return     void
+	 */
+	public function displayTask()
+	{
+		// Get configuration
+		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
+
+		// Incoming
+		$this->view->filters = array();
+		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limitstart', 'limitstart', 0, 'int');
+
+		$obj = new UsersQuotas($this->database);
+
+		// Get a record count
+		$this->view->total = $obj->getCount($this->view->filters, true);
+		$this->view->rows = $obj->getRecords($this->view->filters, true);
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total,
+			$this->view->filters['start'],
+			$this->view->filters['limit']
+		);
+
+		$this->view->config = $this->config;
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Create a new quota class
+	 * 
+	 * @return     void
+	 */
+	public function addTask()
+	{
+		// Output the HTML
+		$this->editTask();
+	}
+
+	/**
+	 * Edit a member quota
+	 * 
+	 * @param      integer $id ID of user to edit
+	 * @return     void
+	 */
+	public function editTask($id=0)
+	{
+		$this->view->setLayout('edit');
+
+		if (!$id)
+		{
+			// Incoming
+			$ids = JRequest::getVar('id', array());
+
+			// Get the single ID we're working with
+			if (is_array($ids))
+			{
+				$id = (!empty($ids)) ? $ids[0] : 0;
+			}
+			else
+			{
+				$id = 0;
+			}
+		}
+
+		$quotas          = new UsersQuotas($this->database);
+		$this->view->row = $quotas->getRecord($id);
+
+		// Build classes select option
+		$quotaClass = new MembersQuotasClasses($this->database);
+		$classes    = $quotaClass->getRecords();
+		$selected   = '';
+		$options[]  = JHTML::_('select.option', '0', JText::_('custom'), 'value', 'text');
+
+		foreach($classes as $class) 
+		{
+			$options[] = JHTML::_('select.option', $class->id, JText::_($class->alias), 'value', 'text');
+			if ($class->id == $this->view->row->class_id) 
+			{
+				$selected = $class->id;
+			}
+		}
+		$this->view->classes = JHTML::_('select.genericlist', $options, 'fields[class_id]', '', 'value', 'text', $selected, 'class_id', false, false);
+
+		$this->view->du = $this->getQuotaUsageTask('array', $this->view->row->id);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Apply changes to a user quota
+	 * 
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		// Save without redirect
+		$this->saveTask(0);
+	}
+
+	/**
+	 * Save user quota
+	 * 
+	 * @param      integer $redirect - whether or not to redirect after save
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function saveTask($redirect=1)
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming fields
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		// Load the profile
+		$row = new UsersQuotas($this->database);
+
+		if ($fields['class_id'])
+		{
+			$class = new MembersQuotasClasses($this->database);
+			$class->load($fields['class_id']);
+
+			if ($class->id)
+			{
+				$fields['hard_files']  = $class->hard_files;
+				$fields['soft_files']  = $class->soft_files;
+				$fields['hard_blocks'] = $class->hard_blocks;
+				$fields['soft_blocks'] = $class->soft_blocks;
+			}
+		}
+
+		if (isset($fields['user_id']) && !is_numeric($fields['user_id']))
+		{
+			$fields['user_id'] = JFactory::getUser($fields['user_id'])->get('id');
+		}
+
+		// Try to save
+		if (!$row->save($fields))
+		{
+			$this->view->setLayout('edit');
+			$this->view->task = 'edit';
+			$this->setError($row->getError());
+			$this->editTask($row->id);
+			return;
+		}
+
+		// Redirect
+		if ($redirect)
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'),
+				'message'
+			);
+		} 
+		else
+		{
+			$this->view->setLayout('edit');
+			$this->view->task = 'edit';
+			$this->editTask($row->id);
+		}
+	}
+
+	/**
+	 * Restore member to default quota class
+	 * 
+	 * @return     void
+	 */
+	public function restoreDefaultTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			// Loop through each ID and restore
+			foreach ($ids as $id)
+			{
+				$id = intval($id);
+
+				$row = new UsersQuotas($this->database);
+				$row->load($id);
+
+				$class = new MembersQuotasClasses($this->database);
+				// @FIXME: bad! don't assume 1!
+				$class->load(1);
+
+				$row->set('class_id'   , 1);
+				$row->set('hard_files' , $class->hard_files);
+				$row->set('soft_files' , $class->soft_files);
+				$row->set('hard_blocks', $class->hard_blocks);
+				$row->set('soft_blocks', $class->soft_blocks);
+
+				$row->store();
+			}
+		}
+		else // no rows were selected
+		{
+			// Output message and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'),
+				'warning'
+			);
+		}
+
+		// Output messsage and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('COM_MEMBERS_QUOTA_SET_TO_DEFAULT')
+		);
+	}
+
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return     void
+	 */
+	public function cancelTask()
+	{
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+	}
+
+	/* ------------- */
+	/* Classes tasks */
+	/* ------------- */
+
+	/**
+	 * Display quota classes
+	 * 
+	 * @return     void
+	 */
+	public function displayClassesTask()
+	{
+		// Get configuration
+		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
+
+		// Incoming
+		$this->view->filters = array();
+		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limitstart', 'limitstart', 0, 'int');
+
+		$obj = new MembersQuotasClasses($this->database);
+
+		// Get a record count
+		$this->view->total = $obj->getCount($this->view->filters, true);
+		$this->view->rows = $obj->getRecords($this->view->filters, true);
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
+
+		$this->view->config = $this->config;
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Create a new quota class
+	 * 
+	 * @return     void
+	 */
+	public function addClassTask()
+	{
+		// Output the HTML
+		$this->editClassTask();
+	}
+
+	/**
+	 * Edit a quota class
+	 * 
+	 * @param      integer $id ID of class to edit
+	 * @return     void
+	 */
+	public function editClassTask($id=0)
+	{
+		$this->view->setLayout('editClass');
+
+		if (!$id)
+		{
+			// Incoming
+			$ids = JRequest::getVar('id', array());
+
+			// Get the single ID we're working with
+			if (is_array($ids))
+			{
+				$id = (!empty($ids)) ? $ids[0] : 0;
+			}
+			else
+			{
+				$id = 0;
+			}
+		}
+
+		// Initiate database class and load info
+		$this->view->row = new MembersQuotasClasses($this->database);
+		$this->view->row->load($id);
+
+		$quotas = new UsersQuotas($this->database);
+		$this->view->user_count = count($quotas->getRecords(array('class_id'=>$id)));
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Apply changes to a quota class item
+	 * 
+	 * @return     void
+	 */
+	public function applyClassTask()
+	{
+		// Save without redirect
+		$this->saveClassTask(0);
+	}
+
+	/**
+	 * Save quota class
+	 * 
+	 * @param      integer $redirect - whether or not to redirect after save
+	 * @return     void
+	 */
+	public function saveClassTask($redirect=1)
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming fields
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		// Load the profile
+		$row = new MembersQuotasClasses($this->database);
+
+		// Try to save
+		if (!$row->save($fields))
+		{
+			$this->view->setLayout('editClass');
+			$this->view->task = 'editClass';
+			$this->setError($row->getError());
+			$this->editClassTask($row->id);
+			return;
+		}
+
+		// If changing, update members referencing this class
+		$quotas = new UsersQuotas($this->database);
+		$quotas->updateUsersByClassId($row->id);
+
+		// Redirect
+		if ($redirect)
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses',
+				JText::_('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'),
+				'message'
+			);
+		} 
+		else
+		{
+			$this->view->setLayout('editClass');
+			$this->view->task = 'editClassTask';
+			$this->editClassTask($row->id);
+		}
+	}
+
+	/**
+	 * Removes class(es)
+	 * 
+	 * @return     void
+	 */
+	public function deleteClassTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			// Loop through each ID and delete the necessary items
+			foreach ($ids as $id)
+			{
+				$id = intval($id);
+
+				$row = new MembersQuotasClasses($this->database);
+				$row->load($id);
+
+				if ($row->alias == 'default')
+				{
+					// Output message and redirect
+					$this->setRedirect(
+						'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses',
+						JText::_('COM_MEMBERS_QUOTA_CLASS_DONT_DELETE_DEFAULT'),
+						'warning'
+					);
+
+					return;
+				}
+
+				// Remove the record
+				$row->delete($id);
+
+				// Restore all members of this class to default
+				$quota = new UsersQuotas($this->database);
+				$quota->restoreDefaultClass($id);
+			}
+		}
+		else // no rows were selected
+		{
+			// Output message and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses',
+				JText::_('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'),
+				'warning'
+			);
+		}
+
+		// Output messsage and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses',
+			JText::_('COM_MEMBERS_QUOTA_DELETE_SUCCESSFUL')
+		);
+	}
+
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return     void
+	 */
+	public function cancelClassTask()
+	{
+		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses';
+	}
+
+	/**
+	 * Get class values
+	 *
+	 * @return     void
+	 */
+	public function getClassValuesTask()
+	{
+		$class_id = JRequest::getInt('class_id');
+
+		$class = new MembersQuotasClasses($this->database);
+		$class->load($class_id);
+
+		$return = array(
+			'soft_files'  => $class->soft_files,
+			'hard_files'  => $class->hard_files,
+			'soft_blocks' => $class->soft_blocks,
+			'hard_blocks' => $class->hard_blocks
+		);
+
+		echo json_encode($return);
+		exit();
+	}
+
+	/**
+	 * Get quota usage info for a given quota id
+	 *
+	 * @return     void
+	 */
+	public function getQuotaUsageTask($returnType='json', $id=NULL)
+	{
+		if (is_null($id))
+		{
+			$id = JRequest::getInt('id');
+		}
+
+		$quota = new UsersQuotas($this->database);
+		$quota->load($id);
+		$username = JFactory::getUser($quota->user_id)->get('username');
+
+		$info = array();
+		$success = false;
+
+		$config =& JComponentHelper::getParams('com_tools');
+		$host = $config->get('storagehost');
+
+		if ($username && $host) 
+		{
+			$fp = @stream_socket_client($host, $errno, $errstr, 30);
+			if (!$fp) 
+			{
+				$info[] = "$errstr ($errno)\n";
+			} 
+			else 
+			{
+				$msg = '';
+				fwrite($fp, "getquota user=" . $username . "\n");
+				while (!feof($fp))
+				{
+					$msg .= fgets($fp, 1024);
+				}
+				fclose($fp);
+				$tokens = preg_split('/,/',$msg);
+				foreach ($tokens as $token)
+				{
+					if (!empty($token))
+					{
+						$t = preg_split('#=#', $token);
+						$info[$t[0]] = (isset($t[1])) ? $t[1] : '';
+					}
+				}
+
+				$used = ($info['softspace'] != 0) ? bcdiv($info['space'], $info['softspace'], 6) : 0;
+				$percent = round($used * 100);
+
+				$success = true;
+			}
+		}
+
+		$return = array(
+			'success' => $success,
+			'info'    => $info,
+			'used'    => $used,
+			'percent' => $percent
+		);
+
+		if ($returnType == 'json')
+		{
+			echo json_encode($return);
+			exit();
+		}
+		else
+		{
+			return $return;
+		}
+	}
+}

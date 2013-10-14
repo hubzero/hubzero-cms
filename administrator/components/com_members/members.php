@@ -62,6 +62,8 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'profile.php')
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'password_rules.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'password_blacklist.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'quotas_classes.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'users_quotas.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'members.php');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_User_Profile');
@@ -107,7 +109,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_members&controller=passwordblacklist',
 	$controllerName == 'passwordblacklist'
 );
-
+JSubMenuHelper::addEntry(
+	JText::_('Quotas'),
+	'index.php?option=com_members&controller=quotas',
+	$controllerName == 'quotas'
+);
 
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
