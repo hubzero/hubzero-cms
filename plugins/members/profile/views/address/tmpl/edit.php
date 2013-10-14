@@ -39,57 +39,57 @@ defined('_JEXEC') or die('Restricted access');
 <form action="index.php" method="post" id="hubForm<?php if (JRequest::getInt('no_html', 0)) { echo '-ajax'; }; ?>" class="member-address-form">
 	<?php if (!JRequest::getInt('no_html', 0)) : ?>
 	<div class="explaination">
-		<h3>Manage Addresses</h3>
-		<p>Click the link below to go back and manage all my addresses</p>
-		<p><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=profile&action=manageaddresses'); ?>">&larr; Manage Addresses</a></p>
+		<h3><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></h3>
+		<p><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE_EXPLANATION') ;?></p>
+		<p><a class="icon-prev btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=profile&action=manageaddresses'); ?>"><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></a></p>
 	</div>
 	<?php endif; ?>
 	<fieldset>
-		<legend><?php echo ($this->address->id != 0) ? 'Edit': 'Add'; ?> Address</legend>
-		<p>Please fill in any of the following fields or <a id="locate-me" class="btn add locate" href="javascript:;" title="Locate Me">Click to Locate Me</a></p>
+		<legend><?php echo ($this->address->id != 0) ? JText::_('PLG_MEMBERS_PROFILE_ADDRESS_EDIT') : JText::_('PLG_MEMBERS_PROFILE_ADDRESS_ADD'); ?></legend>
+		<p><?php echo Jtext::sprintf('PLG_MEMBERS_PROFILE_ADDRESS_LOCATE', 'javascript:;'); ?></p>
 		<label>
-			To/Label:
-			<input type="text" name="address[addressTo]" value="<?php echo $this->address->addressTo; ?>" />
+			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_TO'); ?>
+			<input type="text" name="address[addressTo]" value="<?php echo $this->escape($this->address->addressTo); ?>" />
 		</label>
 		<label>
-			Line 1:
-			<input type="text" name="address[address1]" id="address1" value="<?php echo $this->address->address1; ?>" />
+			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_LINE1'); ?>
+			<input type="text" name="address[address1]" id="address1" value="<?php echo $this->escape($this->address->address1); ?>" />
 		</label>
 		<label>
-			Line 2:
-			<input type="text" name="address[address2]" id="address2" value="<?php echo $this->address->address2; ?>" />
+			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_LINE2'); ?>
+			<input type="text" name="address[address2]" id="address2" value="<?php echo $this->escape($this->address->address2); ?>" />
 		</label>
 		<label>
-			City:
-			<input type="text" name="address[addressCity]" id="addressCity" value="<?php echo $this->address->addressCity; ?>" />
+			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_CITY'); ?>
+			<input type="text" name="address[addressCity]" id="addressCity" value="<?php echo $this->escape($this->address->addressCity); ?>" />
 		</label>
 		<label>
-			State/Providence/Region:
-			<input type="text" name="address[addressRegion]" id="addressRegion" value="<?php echo $this->address->addressRegion; ?>" />
+			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_PROVINCE'); ?>
+			<input type="text" name="address[addressRegion]" id="addressRegion" value="<?php echo $this->escape($this->address->addressRegion); ?>" />
 		</label>
 		<label>
-			Postal Code:
-			<input type="text" name="address[addressPostal]" id="addressPostal" value="<?php echo $this->address->addressPostal; ?>" />
+			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_POSTALCODE'); ?>
+			<input type="text" name="address[addressPostal]" id="addressPostal" value="<?php echo $this->escape($this->address->addressPostal); ?>" />
 		</label>
 		<label>
-			Country:
+			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_COUNTRY'); ?>
 			<?php
 				ximport('Hubzero_Geo');
 				$countries = Hubzero_Geo::getcountries();
 			?>
 			<select name="address[addressCountry]" id="addressCountry">
-				<option value=""><?php echo JText::_('- Select Country &mdash;'); ?></option>
-				<?php foreach($countries as $country) : ?>
+				<option value=""><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_SELECT_COUNTRY'); ?></option>
+				<?php foreach ($countries as $country) : ?>
 					<?php $sel = ($country['name'] == $this->address->addressCountry) ? 'selected="selected"' : ''; ?>
-					<option <?php echo $sel; ?> value="<?php echo $country['name']; ?>"><?php echo $country['name']; ?></option>
+					<option <?php echo $sel; ?> value="<?php echo $country['name']; ?>"><?php echo $this->escape($country['name']); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</label>
-		<input type="hidden" name="address[addressLatitude]" id="addressLatitude" value="<?php echo $this->address->addressLatitude; ?>" />
-		<input type="hidden" name="address[addressLongitude]" id="addressLongitude" value="<?php echo $this->address->addressLongitude; ?>" />
+		<input type="hidden" name="address[addressLatitude]" id="addressLatitude" value="<?php echo $this->escape($this->address->addressLatitude); ?>" />
+		<input type="hidden" name="address[addressLongitude]" id="addressLongitude" value="<?php echo $this->escape($this->address->addressLongitude); ?>" />
 	</fieldset>
 	<p class="submit">
-		<input type="submit" value="Submit" />
+		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
 	</p>
 	<input type="hidden" name="option" value="com_members" />
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />

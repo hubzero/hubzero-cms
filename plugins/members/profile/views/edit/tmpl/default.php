@@ -6,8 +6,8 @@
 				<?php echo $this->inputs; ?>
 				<?php echo $this->access; ?>
 
-				<input type="submit" class="section-edit-submit" value="Save" /> 
-				<input type="reset" class="section-edit-cancel" value="Cancel" />
+				<input type="submit" class="section-edit-submit" value="<?php echo JText::_('PLG_MEMBERS_PROFILE_SAVE'); ?>" /> 
+				<input type="reset" class="section-edit-cancel" value="<?php echo JText::_('PLG_MEMBERS_PROFILE_CANCEL'); ?>" />
 				<input type="hidden" name="field_to_check[]" value="<?php echo $this->registration_field; ?>" /> 
 				<input type="hidden" name="option" value="com_members" />
 				<input type="hidden" name="id" value="<?php echo $this->profile->get("uidNumber"); ?>" />
