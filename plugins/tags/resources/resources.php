@@ -412,31 +412,23 @@ class plgTagsResources extends JPlugin
 
 		// Get the component params and merge with resource params
 		$config =& JComponentHelper::getParams('com_resources');
-		$paramClass = 'JParameter';
-		$dformat = '%d %b %Y';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-			$dformat = 'd M Y';
-			$tz = true;
-		}
-		$rparams = new $paramClass($row->params);
+
+		$rparams = new JRegistry($row->params);
 		$params = $config;
 		$params->merge($rparams);
 
-		$row->rating = $row->rcount;
+		$row->rating   = $row->rcount;
 		$row->category = $row->data1;
-		$row->area = $row->data2;
-		$row->ranking = $row->data3;
+		$row->area     = $row->data2;
+		$row->ranking  = $row->data3;
 
 		// Set the display date
-		switch ($params->get('show_date'))
+		switch ($params->get('show_date', 3))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, $dformat, $tz);    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, $dformat, $tz);   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, $dformat, $tz); break;
+			case 1: $thedate = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, JText::_('DATE_FORMAT_HZ1'));   break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
 		}
 
 		if (strstr($row->href, 'index.php')) 
@@ -528,7 +520,7 @@ class plgTagsResources extends JPlugin
 		{
 			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>'."\n";
 
 		// Return output
