@@ -95,7 +95,6 @@ foreach ($this->cats as $cat)
 }
 ?>
 <h3 class="section-header">
-	<a name="contributions"></a>
 	<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS'); ?>
 </h3>
 
@@ -107,7 +106,7 @@ foreach ($this->cats as $cat)
 <?php if (count($links) > 0) { ?>
 			<ul class="entries-menu filter-options">
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&sort=date'); ?>"><?php echo JText::_('Categories'); ?></a>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&sort=date'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'); ?></a>
 					<ul>
 						<?php echo implode("\n", $links); ?>
 					</ul>
@@ -116,9 +115,9 @@ foreach ($this->cats as $cat)
 <?php } ?>
 
 			<ul class="entries-menu">
-				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('Date'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="Sort by title">&darr; <?php echo JText::_('Title'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
 			</ul>
 
 			<div class="clearfix"></div>
@@ -211,7 +210,7 @@ foreach ($this->results as $category)
 		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">';
 		if (!$dopaging) 
 		{
-			$html .= '<a href="'.JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area='. urlencode(stripslashes($this->cats[$k]['category']))).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
+			$html .= '<a href="'.JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area='. urlencode(stripslashes($this->cats[$k]['category']))).'">';
 		}
 		$html .= $name.' <span>('.$num.$total.')</span>';
 		if (!$dopaging) 
