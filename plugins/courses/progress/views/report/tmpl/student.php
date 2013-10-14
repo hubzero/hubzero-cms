@@ -510,7 +510,7 @@ $progress_timeline .= '</div>';
 	</div>
 
 <? if (!is_null($this->course->offering()->badge()->get('id')) && !$student->badge()->hasEarned()) : ?>
-	<div class="badge">
+	<div class="recognition badge">
 		<img src="<?= $this->course->offering()->badge()->get('img_url') ?>" />
 		<h3>Work hard. Earn a badge.</h3>
 		<p>

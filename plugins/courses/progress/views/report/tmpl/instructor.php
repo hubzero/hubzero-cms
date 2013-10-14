@@ -31,219 +31,220 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Make sure required files are included
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
-ximport('Hubzero_User_Profile_Helper');
-
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
-
-$total = $this->course->offering()->section()->members(array('student'=>1, 'count'=>true));
-$start = JRequest::getInt('limitstart', 0);
-$limit = JRequest::getInt('limit', 10);
-
-// Get all section members
-$members = $this->course->offering()->section()->members(array('student'=>1, 'start'=>$start, 'limit'=>$limit));
-$m = array();
-
-// Get member id's for refresh filter
-foreach ($members as $member)
-{
-	$m[] = $member->get('id');
-}
-
-// Refresh the grades
-$this->course->offering()->gradebook()->refresh($m);
-
-// Initiate paging
-jimport('joomla.html.pagination');
-$pagination = new JPagination(
-	$total, 
-	$start, 
-	$limit
-);
-
-// Get the grades
-$grades    = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
-$progress  = $this->course->offering()->gradebook()->progress($m);
-$passing   = $this->course->offering()->gradebook()->passing();
-
-// Get the grading policy
-$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
-$policy = $gradePolicy->get('description');
-
+$base = 'index.php?option='.$this->option.'&controller=offering&active=progress&gid='.$this->course->get('alias');
+$base .= '&offering='.$this->course->offering()->get('alias');
+$base .= ($this->course->offering()->section()->get('alias') != '__default') ? ':'.$this->course->offering()->section()->get('alias') : '';
 ?>
 
-<div class="instructor">
-	<div class="extra">
-
-	</div>
-	<?php if ($this->course->config()->get('section_grade_policy', true) || $this->course->offering()->access('manage')) : ?>
-		<div class="grade-policy">
-			<div class="grade-policy-header">
-				Scoring policy<span class="details">: <?= $gradePolicy->get('description') ?></span>
-				<div class="grade-policy-edit">
-					edit
+<script id="progress-template-main" type="text/x-handlebars-template">
+	<div class="grade-policy">
+		<div class="grade-policy-inner">
+			{{#if gradepolicy.editable}}
+				<div class="label-input-pair">
+					<label for="exam-weight">Exam Weight:</label>
+					<input type="text" name="exam-weight" value="{{gradepolicy.exam_weight}}" class="slider" size="4" />
 				</div>
-			</div>
-			<div class="grade-policy-inner">
-				<form action="<?= JRoute::_($base . '&active=progress') ?>" method="POST">
-					<div class="label-input-pair">
-						<label for="exam-weight">Exam Weight:</label>
-						<input type="text" name="exam-weight" value="<?= $gradePolicy->get('exam_weight') * 100 ?>" class="slider" size="4" />
-					</div>
-					<div class="label-input-pair">
-						<label for="quiz-weight">Quiz Weight:</label>
-						<input type="text" name="quiz-weight" value="<?= $gradePolicy->get('quiz_weight') * 100 ?>" class="slider" size="4" />
-					</div>
-					<div class="label-input-pair">
-						<label for="homework-weight">Homework Weight:</label>
-						<input type="text" name="homework-weight" value="<?= $gradePolicy->get('homework_weight') * 100 ?>" class="slider" size="4" />
-					</div>
-					<div class="label-input-pair">
-						<label for="threshold">Passing Threshold:</label>
-						<input type="text" name="threshold" value="<?= $gradePolicy->get('threshold') * 100 ?>" class="slider" size="4" />
-					</div>
-					<div class="label-input-pair">
-						<label for="description">Policy Description:</label>
-						<textarea name="description" cols="50" rows="2"><?= $gradePolicy->get('description') ?></textarea>
-					</div>
-					<input type="hidden" name="action" value="policysave" />
-					<button type="submit">Submit</button>
-					<a class="restore-defaults" href="<?= JRoute::_($base. '&active=progress&action=restoredefaults') ?>">Restore Defaults</a>
-				</form>
-			</div>
+				<div class="label-input-pair">
+					<label for="quiz-weight">Quiz Weight:</label>
+					<input type="text" name="quiz-weight" value="{{gradepolicy.quiz_weight}}" class="slider" size="4" />
+				</div>
+				<div class="label-input-pair">
+					<label for="homework-weight">Homework Weight:</label>
+					<input type="text" name="homework-weight" value="{{gradepolicy.homework_weight}}" class="slider" size="4" />
+				</div>
+				<div class="label-input-pair">
+					<label for="threshold">Passing Threshold:</label>
+					<input type="text" name="threshold" value="{{gradepolicy.threshold}}" class="slider" size="4" />
+				</div>
+				<div class="label-input-pair">
+					<label for="description">Policy Description:</label>
+					<textarea name="description" cols="50" rows="2">{{gradepolicy.description}}</textarea>
+				</div>
+				<button type="submit">Submit</button>
+				<a class="restore-defaults" href="<?php echo JRoute::_($base. '&active=progress&action=restoredefaults') ?>">Restore Defaults</a>
+			{{else}}
+				<p class="warning">Sorry, you do not have permission to edit the grade policy for this course</p>
+			{{/if}}
 		</div>
-	<?php endif; ?>
-	<div class="headers">
-		<div class="header-student-name">Name</div>
+	</div>
+	<div class="headers main-headers">
+		<div class="cell header-student-name">
+			<div class="sorter" data-sort-val="name" data-sort-dir="asc"></div>
+			Name
+		</div>
 		<div class="header-sub">
-			<div class="header-progress">Unit Progress
-				<span title="This reflects what students have viewed, not the actual scores that they may have received.">details</span>
+			<div class="cell header-progress">
+				Unit Progress
+				<div class="details" title="This reflects what students have viewed, not the actual scores that they may have received."></div>
 			</div>
-			<div class="header-score">Current Score
-				<span title="<?= $policy ?>">details</span>
+			<div class="cell header-score">
+				<div class="sorter" data-sort-val="score" data-sort-dir="asc"></div>
+				Current Score
+				<div class="details" title="{{gradepolicy.description}}"></div>
 			</div>
 		</div>
 	</div>
-	<div class="clear"></div>
-	<? if(count($members) > 0) : ?>
-		<? foreach($members as $m) : ?>
-			<div class="student">
-				<a href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">
-					<div class="student-name">
-						<div class="picture-thumb">
-							<?
-								$src = '/components/com_members/assets/img/profile.gif';
-								$src = Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, true);
-							?>
-							<img src="<?= $src ?>" />
-						</div>
-						<?= JFactory::getUser($m->get('user_id'))->get('name') ?>
-					</div>
-					<div class="progress-container">
-						<div class="student-progress-timeline">
-							<div class="student-progress-timeline-inner length_<?= count($this->course->offering()->units()) ?>">
-								<? foreach($this->course->offering()->units() as $unit) : ?>
-									<? $height = (isset($progress[$m->get('id')][$unit->get('id')]['percentage_complete']))
-													? $progress[$m->get('id')][$unit->get('id')]['percentage_complete']
-													: 0; ?>
-									<? $margin = 100 - $height; ?>
-									<? $cls    = ($height == 100) ? ' complete' : ''; ?>
-									<div class="unit">
-										<div class="unit-inner">
-											<div class="unit-title"><?= $unit->get('title') ?></div>
-											<div class="unit-fill" title="<?= $unit->get('title') ?> (<?= $height ?>%)">
-												<div class="unit-fill-inner<?= $cls ?>" style="height:<?= $height ?>%;margin-top:<?= $margin ?>%;"></div>
-											</div>
-										</div>
-									</div>
-								<? endforeach; ?>
-							</div>
-						</div>
-						<div class="progress-bar-container">
-							<div class="progress-bar-inner">
-								<? if (isset($grades[$m->get('id')]) && isset($grades[$m->get('id')]['course'][$this->course->get('id')])) : ?>
-									<?
-										$cls = '';
+	<div class="students"></div>
+</script>
 
-										if(isset($passing[$m->get('id')]) && $passing[$m->get('id')] === 1)
-										{
-											$cls = ' go';
-										}
-										elseif (isset($passing[$m->get('id')]) && $passing[$m->get('id')] === 0)
-										{
-											$cls = ' stop';
-										}
-									?>
-									<div class="student-progress-bar <?= $cls ?>" style="width:<?= $grades[$m->get('id')]['course'][$this->course->get('id')] ?>%;">
-										<div class="score-text"><?= $grades[$m->get('id')]['course'][$this->course->get('id')] ?></div>
-									</div>
-								<? endif; ?>
-							</div>
-						</div>
+<script id="progress-template-row" type="text/x-handlebars-template">
+	{{#each members}}
+		<div class="student">
+			<div class="student-clickable">
+				<div class="cell student-name">
+					<div class="picture-thumb">
+						<img src="<?php echo Juri::base(); ?>{{this.thumb}}" />
 					</div>
-				</a>
-				<div class="clear"></div>
-				<div class="student-details grades">
-					<div class="extended-info">
-						<div class="picture">
-							<?
-								$src = '/components/com_members/assets/img/profile.gif';
-								$src = Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, false);
-							?>
-							<img src="<?= $src ?>" />
-							<a class="more-details" href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">More details</a>
-						</div>
-						<div class="extended-info-extra">
-							<h6>Joined Course</h6>
-							<p><?= date('M j, Y', strtotime($m->get('enrolled'))) ?></p>
-							<h6>Last Visit</h6>
-							<p><?= date('M j, Y', strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate'))) ?></p>
-						</div>
+					<div class="name-value">
+						{{this.name}}
 					</div>
-					<div class="units">
-						<div class="headers">
-							<div class="header-units">Unit Scores</div>
-						</div>
-						<? foreach($this->course->offering()->units() as $unit) : ?>
-							<div class="unit-entry">
-								<div class="unit-overview">
-									<div class="unit-title"><?= $unit->get('title') ?></div>
-									<div class="unit-score">
-										<?= 
-											(isset($grades[$m->get('id')]['units'][$unit->get('id')]))
-												? $grades[$m->get('id')]['units'][$unit->get('id')] . '%'
-												: '--'
-										?>
+				</div>
+				<div class="student-progress-container">
+					<div class="student-progress-timeline">
+						<div class="student-progress-timeline-inner length_{{countUnits ../units}}">
+							{{#each ../units}}
+								<div class="unit">
+									<div class="unit-inner">
+										<div class="unit-title">{{this.title}}</div>
+										{{getFill ../../progress ../id}}
 									</div>
 								</div>
+							{{/each}}
+						</div>
+					</div>
+					<div class="progress-bar-container">
+						<div class="progress-bar-container-inner">
+							<div class="progress-bar-inner">
+								{{getBar ../grades ../passing ../course_id}}
 							</div>
-						<? endforeach; ?>
-							<div class="unit-entry">
-								<div class="unit-overview">
-									<div class="unit-title">Course Average</div>
-									<div class="unit-score">
-										<?= 
-											(isset($grades[$m->get('id')]['course'][$this->course->get('id')]))
-												? $grades[$m->get('id')]['course'][$this->course->get('id')] . '%'
-												: '--'
-										?>
-									</div>
-								</div>
-							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="clear"></div>
-		<? endforeach; ?>
-		<?php //if ($total > $limit) : ?>
-			<form action="<?= JRoute::_($base . '&active=progress') ?>" method="GET">
-				<div class="pagenav">
-					<?php echo $pagination->getListFooter() ?>
+			<div class="student-details grades">
+				<div class="extended-info">
+					<div class="picture">
+						<img src="<?php echo Juri::base(); ?>{{this.full}}" />
+						<a class="more-details" href="<?php echo JRoute::_($base.'&active=progress&id=') ?>{{this.user_id}}">More details</a>
+					</div>
+					<div class="extended-info-extra">
+						<h6>Joined Course</h6>
+						<p>{{enrolled}}</p>
+						<h6>Last Visit</h6>
+						<p>{{lastvisit}}</p>
+					</div>
 				</div>
-			</form>
-		<?php //endif; ?>
-	<? else : ?>
-		<p class="info">The section does not currently have anyone enrolled</p>
-	<? endif; ?>
+				<div class="units">
+					<div class="headers">
+						<div class="header-units">Unit Scores</div>
+					</div>
+					{{#each ../units}}
+						<div class="unit-entry">
+							<div class="unit-overview">
+								<div class="unit-title">{{this.title}}</div>
+								<div class="unit-score">
+									{{getScore "units" ../../grades ../id this.id}}
+								</div>
+							</div>
+						</div>
+					{{/each}}
+					<div class="unit-entry">
+						<div class="unit-overview">
+							<div class="unit-title">Course Average</div>
+							<div class="unit-score">
+								{{getScore "course" ../grades this.id ../course_id}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{{/each}}
+</script>
+
+<script id="gradebook-template-main" type="text/x-handlebars-template">
+	<div class="gradebook-container-inner">
+		<div class="gradebook-column gradebook-students">
+			<div class="cell search-box"><input type="text" placeholder="Search students" /></div>
+			{{#each members}}
+					<div class="cell cell-title cell-row{{@index}}" title="{{this.name}}" data-rownum="cell-row{{@index}}">
+						{{shorten name 25}}
+					</div>
+				</tr>
+			{{/each}}
+		</div>
+		<div class="slidable-outer">
+			<div class="slidable">
+				<div class="slidable-inner">
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="gradebook-template-asset" type="text/x-handlebars-template">
+	{{#each assets}}
+		<div class="gradebook-column" data-colnum="{{@index}}" data-asset-id="{{this.id}}">
+			<div class="cell form-name" title="{{this.title}}">
+				<div class="form-name-inner">
+					<div class="form-title">
+						{{shorten title 10}}
+					</div>
+					<div class="form-type">
+						<select name="type">
+							<option value="exam"{{ifAreEqual subtype "exam"}}>Exam</option>
+							<option value="quiz"{{ifAreEqual subtype "quiz"}}>Quiz</option>
+							<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			{{#each ../members}}
+				<div class="cell cell-entry cell-row{{@index}}" data-asset-id="{{../id}}" data-student-id="{{this.id}}" data-rownum="cell-row{{@index}}">
+					<div class="cell-score">{{getGrade ../../grades this.id ../id}}</div>
+					<div class="override{{ifIsOverride ../../grades this.id ../id}}"></div>
+				</div>
+			{{/each}}
+		</div>
+	{{/each}}
+</script>
+
+<div class="main-container">
+	<div id="message-container"></div>
+	<div class="loading">
+		<img src="/components/com_courses/assets/img/loading-light.gif" />
+	</div>
+
+	<div class="controls-wrap">
+		<div class="controls clear">
+			<div title="progress view" class="progress-button button active"></div>
+			<div title="gradebook view" class="gradebook-button button"></div>
+			<div title="edit grade policy" class="progress_button policy button"></div>
+			<div title="add a new entry" class="gradebook_button addrow button"></div>
+			<div title="export to csv" class="gradebook_button export button"></div>
+			<div title="refresh gradebook view" class="gradebook_button refresh button"></div>
+		</div>
+		<div class="fetching-rows">
+			<div class="fetching-rows-inner">
+				<div class="fetching-message">loading students...</div>
+				<div class="fetching-rows-bar"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+
+	<form action="<?php echo JRoute::_($base); ?>" class="progress-form"></form>
+
+	<div class="clear"></div>
+
+	<div class="navigation">
+		<div class="search-box"><input type="text" placeholder="Search students" /></div>
+		<div class="nav-wrap">
+			<div class="prv"></div>
+			<div class="nxt"></div>
+			<div class="slider-container"><div class="slider"></div></div>
+		</div>
+	</div>
 </div>
