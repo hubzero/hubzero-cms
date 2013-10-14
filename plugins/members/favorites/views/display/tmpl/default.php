@@ -30,7 +30,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Add the "all" category
-$all = array('category'=>'','title'=>JText::_('PLG_MEMBERS_FAVORITES_ALL_CATEGORIES'),'total'=>$this->total);
+$all = array(
+	'category' =>'',
+	'title'    => JText::_('PLG_MEMBERS_FAVORITES_ALL_CATEGORIES'),
+	'total'    => $this->total
+);
 array_unshift($this->cats, $all);
 
 // An array for storing all the links we make
@@ -98,11 +102,11 @@ foreach ($this->cats as $cat)
 
 	<div class="info">
 	<?php if (JFactory::getUser()->get('id') == $this->member->get('uidNumber')) { ?>
-		<h4><?php echo JText::_('Your Favorites'); ?></h4>
-		<p><?php echo JText::_('Here you will find resources, content, and items of interest you marked as a "favorite".'); ?></p>
+		<h4><?php echo JText::_('PLG_MEMBERS_FAVORITES_YOURS'); ?></h4>
+		<p><?php echo JText::_('PLG_MEMBERS_FAVORITES_YOURS_EXPLANATION'); ?></p>
 	<?php } else { ?>
-		<h4><?php echo JText::_('Favorites'); ?></h4>
-		<p><?php echo JText::_('Here you will find resources, content, and items of interest this member marked as a "favorite".'); ?></p>
+		<h4><?php echo JText::_('PLG_MEMBERS_FAVORITES_THEIRS'); ?></h4>
+		<p><?php echo JText::_('PLG_MEMBERS_FAVORITES_THEIRS_EXPLANATION'); ?></p>
 	<?php } ?>
 	</div>
 
@@ -112,7 +116,7 @@ foreach ($this->cats as $cat)
 <?php if (count($links) > 0) { ?>
 		<ul class="entries-menu filter-options">
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=favorites'); ?>"><?php echo JText::_('Categories'); ?></a>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=favorites'); ?>"><?php echo JText::_('PLG_MEMBERS_FAVORITES_CATEGORIES'); ?></a>
 				<ul>
 					<?php echo implode("\n", $links); ?>
 				</ul>
@@ -212,7 +216,7 @@ foreach ($this->results as $category)
 		// Build the category HTML
 		$html .= '<h4 class="category-header opened" id="rel-' . $divid . '">';
 		if (!$dopaging) {
-			$html .= '<a href="'.JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=favorites&area=' . urlencode(stripslashes($this->cats[$k]['category']))) . '" title="' . JText::_('View all items in &quot;' . $name . '&quot;') . '">';
+			$html .= '<a href="'.JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=favorites&area=' . urlencode(stripslashes($this->cats[$k]['category']))) . '">';
 		}
 		$html .= $name .' <span>(' . $num . $total . ')</span>';
 		if (!$dopaging) 
@@ -241,7 +245,7 @@ foreach ($this->results as $category)
 		{
 			$row->href = str_replace('&amp;', '&', $row->href);
 			$row->href = str_replace('&', '&amp;', $row->href);
-			
+
 			// Does this category have a unique output display?
 			$func = 'plgMembers' . ucfirst($row->section) . 'Out';
 			// Check if a method exist (using JPlugin style)

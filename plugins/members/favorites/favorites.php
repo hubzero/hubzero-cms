@@ -47,7 +47,7 @@ class plgMembersFavorites extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->loadLanguage('', JPATH_ROOT);
+		$this->loadLanguage();
 	}
 
 	/**
@@ -59,7 +59,9 @@ class plgMembersFavorites extends JPlugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		$areas['favorites'] = JText::_('PLG_MEMBERS_FAVORITES');
+		$areas = array(
+			'favorites' => JText::_('PLG_MEMBERS_FAVORITES')
+		);
 		return $areas;
 	}
 
@@ -246,8 +248,9 @@ class plgMembersFavorites extends JPlugin
 			$total += $cat['total'];
 		}
 
-		$prefix = ($user->get('id') == $member->get("uidNumber")) ? 'I have' : $member->get("name") . ' has';
-		$title = $prefix . " {$total} favorites.";
+		$title = ($user->get('id') == $member->get("uidNumber")) 
+		       ? JText::sprintf('PLG_MEMBERS_FAVORITES_I_HAVE', $total) 
+		       : JText::sprintf('PLG_MEMBERS_FAVORITES_MEMBER_HAS', stripslashes($member->get('name')), $total);
 
 		$arr['metadata']['count'] = $total;
 
