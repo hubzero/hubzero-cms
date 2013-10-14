@@ -34,10 +34,31 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Cron plugin for support tickets
+ * Cron plugin for handling/cleaning cached data
  */
 class plgCronCache extends JPlugin
 {
+	/**
+	 * Path to cache directory
+	 * 
+	 * @var string
+	 */
+	protected $_path = null;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$subject Event observer
+	 * @param      array  $config   Optional config values
+	 * @return     void
+	 */
+	public function __construct(&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+
+		$this->_path = JPATH_ROOT . DS . 'cache';
+	}
+
 	/**
 	 * Return a list of events
 	 * 
@@ -54,6 +75,11 @@ class plgCronCache extends JPlugin
 				'name'   => 'cleanSystemCss',
 				'label'  => JText::_('PLG_CRON_CACHE_REMOVE_SYSTEM_CSS'),
 				'params' => ''
+			),
+			array(
+				'name'   => 'trashExpiredData',
+				'label'  => JText::_('PLG_CRON_CACHE_TRASH_EXPIRED_DATA'),
+				'params' => ''
 			)
 		);
 
@@ -61,15 +87,33 @@ class plgCronCache extends JPlugin
 	}
 
 	/**
-	 * Calculate point royalties for members
+	 * Trash all expired cache data
 	 * 
-	 * @return     array
+	 * @param     $params object JRegistry
+	 * @return    boolean
+	 */
+	public function trashExpiredData($params=null)
+	{
+		if (!is_dir($this->_path))
+		{
+			return;
+		}
+
+		$cache = JFactory::getCache();
+		$cache->gc();
+
+		return true;
+	}
+
+	/**
+	 * Clean out old system CSS files
+	 * 
+	 * @param     $params object JRegistry
+	 * @return    boolean
 	 */
 	public function cleanSystemCss($params=null)
 	{
-		$path = JPATH_ROOT . DS . 'cache';
-
-		if (!is_dir($path))
+		if (!is_dir($this->_path))
 		{
 			return;
 		}
@@ -77,7 +121,7 @@ class plgCronCache extends JPlugin
 		$docs = array();
 		jimport('joomla.filesystem.file');
 
-		$dirIterator = new DirectoryIterator($path);
+		$dirIterator = new DirectoryIterator($this->path);
 		foreach ($dirIterator as $file)
 		{
 			if ($file->isDot() || $file->isDir())
@@ -103,14 +147,12 @@ class plgCronCache extends JPlugin
 					continue;
 				}
 
-				$docs[$path . DS . $name] = $name;
+				$docs[$this->_path . DS . $name] = $name;
 			}
 		}
 
 		if (count($docs) > 1)
 		{
-			//$last = array_pop($docs);
-
 			foreach ($docs as $p => $n)
 			{
 				JFile::delete($p);
