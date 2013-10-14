@@ -79,6 +79,9 @@
 		margin-right: 3.225806451612903%;
 		*margin-right: 3.172043010752688%;
 	}
+	.five.columns {
+		width: 17.41935483870968%;
+	}
 	/* .grid .col:first-child */
 	.grid .col.omega,
 	.two.second,
