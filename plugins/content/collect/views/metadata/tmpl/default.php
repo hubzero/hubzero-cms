@@ -40,6 +40,6 @@ if (!$url)
 
 <p id="fav" class="fav">
 	<a id="fav-this" class="collect" href="<?php echo $url . '?action=collect'; ?>">
-		<?php echo JText::_('Collect'); ?>
+		<?php echo JText::_('PLG_CONTENT_COLLECT_ACTION'); ?>
 	</a>
 </p>

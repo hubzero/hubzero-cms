@@ -61,7 +61,7 @@ class plgContentCollect extends JPlugin
 	 * @param      object $config   Wiki config
 	 * @return     string
 	 */
-	public function onAfterDisplayContent(&$article, &$params, $limitstart)
+	public function onContentAfterDisplay($context, &$article, &$params, $page=0)
 	{
 		$this->article = $article;
 
@@ -190,6 +190,9 @@ class plgContentCollect extends JPlugin
 			}
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
 		if (!$collection_id)
 		{
 			$collection = new CollectionsModelCollection();
@@ -238,7 +241,7 @@ class plgContentCollect extends JPlugin
 			}
 			else
 			{
-				$response->message = JText::sprintf('Article collected! %s', $item_id);
+				$response->message = JText::sprintf('PLG_CONTENT_COLLECT_PAGE_COLLECTED', $item_id);
 			}
 			echo json_encode($response);
 			exit;
