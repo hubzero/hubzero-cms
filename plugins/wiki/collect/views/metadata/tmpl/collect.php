@@ -42,15 +42,15 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php } ?>
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&action=repost'); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
-		<legend><?php echo JText::_('Collect'); ?></legend>
+		<legend><?php echo JText::_('PLG_WIKI_COLLECT'); ?></legend>
 
 		<div class="grid">
-		<div class="two columns first">
-		<label for="field-collection">
-			<?php echo JText::_('Select collection'); ?>
-			<select name="collection" id="field-collection">
-				<option value="0"><?php echo JText::_('Select ...'); ?></option>
-				<optgroup label="<?php echo JText::_('My collections'); ?>">
+			<div class="col span-half">
+				<label for="field-collection">
+					<?php echo JText::_('PLG_WIKI_COLLECT_SELECT_COLLECTION'); ?>
+					<select name="collection" id="field-collection">
+						<option value="0"><?php echo JText::_('PLG_WIKI_COLLECT_SELECT'); ?></option>
+						<optgroup label="<?php echo JText::_('PLG_WIKI_COLLECT_MY_COLLECTIONS'); ?>">
 <?php 
 $i = 0;
 if ($this->myboards)
@@ -58,49 +58,50 @@ if ($this->myboards)
 	foreach ($this->myboards as $board)
 	{
 ?>
-					<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+							<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
 		$i++;
 	}
 }
 ?>
-				</optgroup>
+						</optgroup>
 <?php 
 if ($this->groupboards)
 {
 	foreach ($this->groupboards as $optgroup => $boards)
 	{
 ?>
-				<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
+						<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
 <?php
 		foreach ($boards as $board)
 		{
 ?>
-					<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+							<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
 			$i++;
 		}
 ?>
-				</optgroup>
+						</optgroup>
 <?php
 	}
 }
 ?>
-			</select>
-		</label>
-		</div>
-		<p class="or">OR</p>
-		<div class="two columns second">
-			<label for="field-collection_title">
-				<?php echo JText::_('Create collection'); ?>
-				<input type="text" name="collection_title" id="field-collection_title" />
-			</label>
-		</div>
-		<div class="clear"></div>
+					</select>
+				</label>
+			</div>
+
+			<p class="or"><?php echo JText::_('PLG_WIKI_COLLECT_OR'); ?></p>
+
+			<div class="col span-half omega">
+				<label for="field-collection_title">
+					<?php echo JText::_('PLG_WIKI_COLLECT_CREATE_COLLECTION'); ?>
+					<input type="text" name="collection_title" id="field-collection_title" />
+				</label>
+			</div>
 		</div>
 
 		<label for="field_description">
-			<?php echo JText::_('Add a description'); ?>
+			<?php echo JText::_('PLG_WIKI_COLLECT_ADD_DESCRIPTION'); ?>
 			<span class="syntax hint">limited <a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
 				<tbody>
 					<tr>
@@ -137,16 +138,18 @@ if ($this->groupboards)
 		</label>
 	</fieldset>
 
-	<input type="hidden" name="item" value="<?php echo $this->item_id; ?>" />
-	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
+	<input type="hidden" name="item" value="<?php echo $this->escape($this->item_id); ?>" />
+	<input type="hidden" name="no_html" value="<?php echo $this->escape($this->no_html); ?>" />
 
-	<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-	<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
+	<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->scope); ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 	<input type="hidden" name="task" value="display" />
 	<input type="hidden" name="action" value="collect" />
 
+	<?php echo JHTML::_('form.token'); ?>
+
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+		<input type="submit" value="<?php echo JText::_('PLG_WIKI_COLLECT_SAVE'); ?>" />
 	</p>
 </form>

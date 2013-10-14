@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -115,15 +115,15 @@ class plgWikiCollect extends JPlugin
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
 
-		$this->option = 'com_wiki';
-		$this->juser = JFactory::getUser();
+		$this->option   = 'com_wiki';
+		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
 
 		// Incoming
-		$item_id       = JRequest::getInt('item', 0);
-		$collection_id = JRequest::getInt('collection', 0);
+		$item_id          = JRequest::getInt('item', 0);
+		$collection_id    = JRequest::getInt('collection', 0);
 		$collection_title = JRequest::getVar('collection_title', '');
-		$no_html       = JRequest::getInt('no_html', 0);
+		$no_html          = JRequest::getInt('no_html', 0);
 
 		$model = new CollectionsModel('member', $this->juser->get('id'));
 
@@ -188,6 +188,9 @@ class plgWikiCollect extends JPlugin
 			}
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
 		if (!$collection_id)
 		{
 			$collection = new CollectionsModelCollection();
@@ -236,7 +239,7 @@ class plgWikiCollect extends JPlugin
 			}
 			else
 			{
-				$response->message = JText::sprintf('Wiki collected! %s', $item_id);
+				$response->message = JText::sprintf('PLG_WIKI_COLLECT_PAGE_COLLECTED', $item_id);
 			}
 			echo json_encode($response);
 			exit;

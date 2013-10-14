@@ -34,6 +34,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <p id="fav" class="fav">
 	<a id="fav-this" class="collect" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&action=collect'); ?>">
-		<?php echo JText::_('Collect'); ?>
+		<?php echo JText::_('PLG_WIKI_COLLECT_ACTION'); ?>
 	</a>
 </p>
