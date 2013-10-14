@@ -41,12 +41,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <ul id="page_options">
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
-		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
-			<span><?php echo JText::_('Unfollow All'); ?></span>
+		<a class="unfollow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
+			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
 		</a>
 		<?php } else { ?>
-		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
-			<span><?php echo JText::_('Follow All'); ?></span>
+		<a class="follow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
+			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
 		</a>
 		<?php } ?>
 	</li>
@@ -60,25 +60,25 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
 		<span class="posts count">
-			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
+			<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_POSTS', $this->posts); ?>
 		</span>
 <?php if (!$this->juser->get('guest')) { ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-		<a class="icon-add add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
-			<span><?php echo JText::_('New post'); ?></span>
+		<a class="icon-add add btn tooltips" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST_TITLE'); ?>" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?></span>
 		</a>
 	<?php } else { ?>
 		<?php if ($this->collection->isFollowing()) { ?>
-			<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('Follow this'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow this'); ?>" title="<?php echo JText::_('Unfollow :: Unfollow this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/unfollow'); ?>">
-				<span><?php echo JText::_('Unfollow this'); ?></span>
+			<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_TITLE'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/unfollow'); ?>">
+				<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS'); ?></span>
 			</a>
 		<?php } else { ?>
-			<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('Follow this'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow this'); ?>" title="<?php echo JText::_('Follow :: Follow this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
-				<span><?php echo JText::_('Follow this'); ?></span>
+			<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_TITLE'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
+				<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS'); ?></span>
 			</a>
 		<?php } ?>
-		<a class="repost btn tooltips" title="<?php echo JText::_('Collect :: Add this collection to one of your own'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/collect'); ?>">
-			<span><?php echo JText::_('Collect'); //Repost collection ?></span>
+		<a class="repost btn tooltips" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COLLECT_TITLE'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/collect'); ?>">
+			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
 		</a>
 	<?php } ?>
 <?php } ?>
@@ -95,7 +95,6 @@ if ($this->rows->total() > 0)
 	ximport('Hubzero_User_Profile_Helper');
 
 	ximport('Hubzero_Wiki_Parser');
-
 	$wikiconfig = array(
 		'option'   => $this->option,
 		'scope'    => 'collections',
@@ -141,7 +140,6 @@ if ($this->rows->total() > 0)
 				$view->member     = $this->member;
 				$view->params     = $this->params;
 				$view->row        = $row;
-				//$view->board      = $this->collection;
 				$view->parser     = $p;
 				$view->wikiconfig = $wikiconfig;
 				$view->display();
@@ -154,100 +152,67 @@ if ($this->rows->total() > 0)
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
+							<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
 						</span>
 						<span class="comments">
-							<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
+							<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_COMMENTS', $item->get('comments', 0)); ?>
 						</span>
 						<span class="reposts">
-							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
+							<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
 			<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
 				<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
-							<span><?php echo JText::_('Edit'); ?></span>
+							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
 						</a>
 				<?php } else { ?>
-						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
-							<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
+						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
+							<span><?php echo ($item->get('voted')) ? JText::_('PLG_MEMBERS_COLLECTIONS_UNLIKE') : JText::_('PLG_MEMBERS_COLLECTIONS_LIKE'); ?></span>
 						</a>
 				<?php } ?>
 						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
-							<span><?php echo JText::_('Comment'); ?></span>
+							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
 						</a>
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
-							<span><?php echo JText::_('Collect'); ?></span>
+							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
 						</a>
 				<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
-							<span><?php echo JText::_('Delete'); ?></span>
+							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
 						</a>
 				<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
 						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
-							<span><?php echo JText::_('Remove'); ?></span>
+							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_REMOVE'); ?></span>
 						</a>
 				<?php } ?>
 					</div><!-- / .actions -->
 			<?php } ?>
 				</div><!-- / .meta -->
 
-			<?php /*if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { 
-				$collection = CollectionsModelCollection::getInstance($row->get('collection_id'));
-				switch ($collection->get('object_type'))
-				{
-					case 'group':
-						$href = 'index.php?option=com_groups&gid=' . $collection->get('object_id') . '&active=collections&scope=' . $collection->get('alias');
-					break;
-
-					case 'member':
-					default:
-						$href = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
-					break;
-				}
-				?>
-				<div class="convo attribution clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
-					</a>
-					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by') . '&active=collections'); ?>">
-							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
-						</a> 
-						posted
-						<!-- <a href="<?php echo JRoute::_($href); ?>">
-							<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
-						</a> -->
-						<br />
-						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
-						</span>
-					</p>
-				</div><!-- / .attribution -->
-			<?php }*/ ?>
-			<?php //if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->member, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->member, 0); ?>" alt="<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->creator()->get('name')))); ?>" />
 					</a>
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by') . '&active=collections'); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
-						onto 
+						<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_ONTO'); ?>
 						<a href="<?php echo JRoute::_($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
 							<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+							<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_AT'); ?></span> 
+							<span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+							<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_ON'); ?></span> 
+							<span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php //} ?>
+
 			</div><!-- / .content -->
 		</div><!-- / .post -->
 	<?php } ?>
@@ -259,19 +224,15 @@ if ($this->rows->total() > 0)
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
 				<ol>
-					<li><?php echo JText::_('Find images, files, links or text you want to share.'); ?></li>
-					<li><?php echo JText::_('Click on "New post" button.'); ?></li>
-					<li><?php echo JText::_('Add anything extra you want (tags are nice).'); ?></li>
-					<li><?php echo JText::_('Done!'); ?></li>
+					<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_POST_INSTRUCTIONS_STEP1'); ?></li>
+					<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_POST_INSTRUCTIONS_STEP2'); ?></li>
+					<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_POST_INSTRUCTIONS_STEP3'); ?></li>
+					<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_POST_INSTRUCTIONS_STEP4'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
-			<!-- <div class="questions">
-				<p><strong>What is the "Collect" button for?</strong></p>
-				<p>This is how you can add other content on the site to a collection. You can collect wiki pages, resources, and more. You can even collect other collections!<p>
-			</div><!- / .post-type -->
 	<?php } else { ?>
 			<div class="instructions">
-				<p><?php echo JText::_('No posts available for this collection.'); ?></p>
+				<p><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_EMPTY_COLLECTION'); ?></p>
 			</div><!-- / .instructions -->
 	<?php } ?>
 		</div><!-- / #collection-introduction -->
