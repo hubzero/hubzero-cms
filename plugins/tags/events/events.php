@@ -190,23 +190,11 @@ class plgTagsEvents extends JPlugin
 	 */
 	public function out($row)
 	{
-		$yearFormat = '%Y';
-		$dayFormat = '%d';
-		$monthFormat = '%b';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$yearFormat = 'Y';
-			$monthFormat = 'M';
-			$dayFormat = 'd';
-			$tz = true;
-		}
-
 		$juri =& JURI::getInstance();
 
-		$month = JHTML::_('date', $row->publish_up, $monthFormat, $tz);
-		$day   = JHTML::_('date', $row->publish_up, $dayFormat, $tz);
-		$year  = JHTML::_('date', $row->publish_up, $yearFormat, $tz);
+		$month = JHTML::_('date', $row->publish_up, 'M');
+		$day   = JHTML::_('date', $row->publish_up, 'd');
+		$year  = JHTML::_('date', $row->publish_up, 'Y');
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="event">'."\n";
