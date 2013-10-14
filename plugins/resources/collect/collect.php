@@ -236,6 +236,9 @@ class plgResourcesCollect extends JPlugin
 			}
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
 		if (!$collection_id)
 		{
 			$collection = new CollectionsModelCollection();
@@ -281,7 +284,7 @@ class plgResourcesCollect extends JPlugin
 		}
 		else
 		{
-			$response->message = 'Resource collected! ' . $item_id;
+			$response->message = JText::sprintf('PLG_RESOURCES_COLLECT_ITEM_COLLECTED', $item_id);
 		}
 		ob_clean();
 		header('Content-type: text/plain');

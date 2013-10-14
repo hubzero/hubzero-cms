@@ -34,6 +34,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <p id="fav" class="fav">
 	<a id="fav-this" class="collect" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&action=collect'); ?>">
-		<?php echo JText::_('Collect'); ?>
+		<?php echo JText::_('PLG_RESOURCES_COLLECT_ACTION'); ?>
 	</a>
 </p>
