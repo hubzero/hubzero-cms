@@ -87,6 +87,9 @@ class CronControllerJobs extends Hubzero_Controller
 
 		if (($results = $model->jobs('list', $filters)))
 		{
+			JPluginHelper::importPlugin('cron');
+			$dispatcher =& JDispatcher::getInstance();
+
 			foreach ($results as $job)
 			{
 				if ($job->get('active'))
@@ -97,9 +100,6 @@ class CronControllerJobs extends Hubzero_Controller
 				$job->set('last_run', date('Y-m-d H:i:s', time()));
 				$job->set('next_run', $job->nextRun());
 				$job->store();
-
-				JPluginHelper::importPlugin('cron');
-				$dispatcher =& JDispatcher::getInstance();
 
 				// Show related content
 				$job->mark('start_run');
