@@ -162,7 +162,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span> 
 								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							<?php } else { ?>
-								<?php echo JText::_('n/a'); ?>
+								<?php echo JText::_('PLG_MEMBERS_COURSES_NA'); ?>
 							<?php } ?>
 							</span>
 							<?php } ?>
