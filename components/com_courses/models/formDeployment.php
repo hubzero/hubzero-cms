@@ -227,7 +227,10 @@ class PdfFormDeployment
 				$members = (array) $members;
 			}
 
-			$where = ' AND member_id IN (' . implode(',', $members) . ')';
+			if (!empty($members))
+			{
+				$where = ' AND member_id IN (' . implode(',', $members) . ')';
+			}
 		}
 
 		$dbh->setQuery(
