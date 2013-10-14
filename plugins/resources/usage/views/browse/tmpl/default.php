@@ -31,18 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$base = rtrim(JURI::getInstance()->base(true), '/');
+
 // Push scripts to document
 ximport('Hubzero_Document');
 Hubzero_Document::addPluginStylesheet('resources', 'usage');
 $document = JFactory::getDocument();
 if (!JPluginHelper::isEnabled('system', 'jquery'))
 {
-	$document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.min.js');
+	$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.min.js');
 }
-$document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.min.js');
-$document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.selection.js');
-$document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.resize.min.js');
-$document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.crosshair.min.js');
+$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.min.js');
+$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.selection.js');
+$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.resize.min.js');
+$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.crosshair.min.js');
 
 // Set the base URL
 if ($this->resource->alias) {
@@ -60,16 +62,24 @@ $database =& JFactory::getDBO();
 
 $topvals = new ResourcesStatsToolsTopvals($database);
 
+switch ($this->params->get('defaultDataset', 'cumulative'))
+{
+	case 'yearly': $prd = 12; break;
+	case 'monthly': $prd = 1; break;
+	case 'cumulative': 
+	default: $prd = 14; break;
+}
+
 if (intval($this->params->get('cache', 1)))
 {
 	$cache =& JFactory::getCache('callback');
 	$cache->setCaching(1);
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getOverview'), $this->resource->id);
+	$results = $cache->call(array('plgResourcesUsage', 'getOverview'), $this->resource->id, $prd);
 }
 else 
 {
-	$results = plgResourcesUsage::getOverview($this->resource->id);
+	$results = plgResourcesUsage::getOverview($this->resource->id, $prd);
 }
 
 $users = array();
@@ -125,7 +135,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 			<div class="four columns second third fourth">
 				<p>
 					<a href="<?php echo $tool_map; ?>.png" title="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
-						<img style="width:100%;max-width:510px;" src="<?php echo $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
+						<img style="width:100%;max-width:510px;" src="<?php echo $base . $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
 					</a>
 				</p>
 			</div><!-- / .four columns second third fourth -->
@@ -137,17 +147,17 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 		<div id="user-overview-wrap" class="usage-wrap">
 			<ul class="dataset-controls" id="set-data">
 				<li>
-					<a id="monthly" class="dataset active" href="/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=1">
+					<a id="monthly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'monthly') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=1">
 						Monthly
 					</a>
 				</li>
 				<li>
-					<a id="yearly" class="dataset" href="/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=12">
+					<a id="yearly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'yearly') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=12">
 						Yearly
 					</a>
 				</li>
 				<li>
-					<a id="cumulative" class="dataset" href="/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=14">
+					<a id="cumulative" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'cumulative') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=14">
 						Cumulative
 					</a>
 				</li>
@@ -427,7 +437,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 							<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
 							<td class="textual-data"><?php 
 							if (isset($codes[$row->name])) { ?>
-								<img src="/components/com_members/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" /> 
+								<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" /> 
 							<?php }
 							echo $row->name; ?></td>
 							<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>%)</span></span></td>
@@ -719,7 +729,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 					{
 						tbl.append(
 							'<tr>' +
-								'<td class="textual-data">' + (data[i]['code'] ? '<img src="/components/com_members/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' + 
+								'<td class="textual-data">' + (data[i]['code'] ? '<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' + 
 								'<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100),2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100),2) + '%)</span></span></td>' + 
 								//'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' + 
 							'</tr>'
