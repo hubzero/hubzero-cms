@@ -37,14 +37,14 @@ $juser = JFactory::getUser();
 	<div class="aside">
 		<div class="container">
 		<?php if ($this->self) { ?>
-			<p><?php echo JText::_('PLG_RESUME_HUB_OFFERS'); ?></p>
+			<p><?php echo JText::_('PLG_MEMBERS_RESUME_HUB_OFFERS'); ?></p>
 		<?php } else { ?>
-			<p><?php echo JText::_('PLG_RESUME_NOTICE_YOU_ARE_EMPLOYER'); ?></p>
+			<p><?php echo JText::_('PLG_MEMBERS_RESUME_NOTICE_YOU_ARE_EMPLOYER'); ?></p>
 		<?php } ?>
 
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option=com_jobs'); ?>" class="minimenu">
-					<?php echo JText::_('View Jobs') . ($this->config->get('industry') ? ' ' . JText::_('IN') . ' ' . $this->config->get('industry') : ''); ?>
+				<a href="<?php echo JRoute::_('index.php?option=com_jobs'); ?>" class="icon-next btn">
+					<?php echo ($this->config->get('industry') ? JText::sprintf('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry')) : JText::_('PLG_MEMBERS_RESUME_VIEW_JOBS')); ?>
 				</a>
 			</p>
 		</div><!-- / .container -->
@@ -52,26 +52,26 @@ $juser = JFactory::getUser();
 		<?php if ($this->self && $this->js->active) { ?>
 		<div class="container">
 			<ul class="jobstats">
-				<li class="statstitle"><?php echo JText::_('PLG_RESUME_YOUR_STATS'); ?></li>
+				<li class="statstitle"><?php echo JText::_('PLG_MEMBERS_RESUME_YOUR_STATS'); ?></li>
 				<li>
 					<span><?php echo $this->stats['totalviewed']; ?></span>
-					<?php echo JText::_('PLG_RESUME_TOTAL_VIEWED'); ?>
+					<?php echo JText::_('PLG_MEMBERS_RESUME_TOTAL_VIEWED'); ?>
 				</li>
 				<li>
 					<span><?php echo $this->stats['viewed_thismonth']; ?></span>
-					<?php echo JText::_('PLG_RESUME_VIEWED_PAST_30_DAYS'); ?>
+					<?php echo JText::_('PLG_MEMBERS_RESUME_VIEWED_PAST_30_DAYS'); ?>
 				</li>
 				<li>
 					<span><?php echo $this->stats['viewed_thisweek']; ?></span>
-					<?php echo JText::_('PLG_RESUME_VIEWED_PAST_7_DAYS'); ?>
+					<?php echo JText::_('PLG_MEMBERS_RESUME_VIEWED_PAST_7_DAYS'); ?>
 				</li>
 				<li>
 					<span><?php echo $this->stats['viewed_today']; ?></span>
-					<?php echo JText::_('PLG_RESUME_VIEWED_PAST_24_HOURS'); ?>
+					<?php echo JText::_('PLG_MEMBERS_RESUME_VIEWED_PAST_24_HOURS'); ?>
 				</li>
 				<li>
 					<span><?php echo $this->stats['shortlisted']; ?></span>
-					<?php echo JText::_('PLG_RESUME_PROFILE_SHORTLISTED'); ?>
+					<?php echo JText::_('PLG_MEMBERS_RESUME_PROFILE_SHORTLISTED'); ?>
 				</li>
 			</ul>
 		</div><!-- / .container -->
@@ -86,18 +86,18 @@ $juser = JFactory::getUser();
 		<div id="prefs" class="<?php echo $this->js->active ? 'yes_search' : 'no_search'; ?>">
 			<p>
 				<?php if ($this->js->active && $this->file) { ?>
-					<?php echo JText::_('PLG_RESUME_PROFILE_INCLUDED'); ?>
+					<?php echo JText::_('PLG_MEMBERS_RESUME_PROFILE_INCLUDED'); ?>
 				<?php } else if ($this->file) { ?>
-					<?php echo JText::_('PLG_RESUME_PROFILE_NOT_INCLUDED'); ?>
+					<?php echo JText::_('PLG_MEMBERS_RESUME_PROFILE_NOT_INCLUDED'); ?>
 				<?php } ?>
 
 		<?php if (!$this->editpref) { ?>
 				<span class="includeme">
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=activate') . '&on=' . ($this->js->active && $this->file ? 0 : 1); ?>">
 				<?php if ($this->js->active && $this->file) { ?>
-					[-] <?php echo JText::_('PLG_RESUME_ACTION_HIDE'); ?>
+					[-] <?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_HIDE'); ?>
 				<?php } else if ($this->file) { ?>
-					[+] <?php echo JText::_('PLG_RESUME_ACTION_INCLUDE'); ?>
+					[+] <?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_INCLUDE'); ?>
 				<?php } ?>
 					</a>.
 				</span>
@@ -107,47 +107,47 @@ $juser = JFactory::getUser();
 			<form id="prefsForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>">
 				<fieldset>
 					<legend>
-						<?php echo $this->editpref==1 ? JText::_('PLG_RESUME_ACTION_INCLUDE_WITH_INFO') :  JText::_('PLG_RESUME_ACTION_EDIT_PREFS'); ?>
+						<?php echo $this->editpref==1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_INCLUDE_WITH_INFO') :  JText::_('PLG_MEMBERS_RESUME_ACTION_EDIT_PREFS'); ?>
 					</legend>
 
 					<label class="spacious">
-						<?php echo JText::_('PLG_RESUME_PERSONAL_TAGLINE'); ?>
+						<?php echo JText::_('PLG_MEMBERS_RESUME_PERSONAL_TAGLINE'); ?>
 						<span class="selectgroup">
 							<textarea name="tagline" id="tagline-men" rows="6" cols="35"><?php echo stripslashes($this->js->tagline); ?></textarea>
 							<span class="counter"><span id="counter_number_tagline"></span> <?php echo JText::_('chars left'); ?></span>
 						</span>
 					</label>
 					<label class="spacious">
-						<?php echo JText::_('PLG_RESUME_LOOKING_FOR'); ?>
+						<?php echo JText::_('PLG_MEMBERS_RESUME_LOOKING_FOR'); ?>
 						<span class="selectgroup">
 							<textarea name="lookingfor" id="lookingfor-men" rows="6" cols="35"><?php echo stripslashes($this->js->lookingfor); ?></textarea>
-							<span class="counter"><span id="counter_number_lookingfor"></span> <?php echo JText::_('PLG_RESUME_CHARS_LEFT'); ?></span>
+							<span class="counter"><span id="counter_number_lookingfor"></span> <?php echo JText::_('PLG_MEMBERS_RESUME_CHARS_LEFT'); ?></span>
 						</span>
 					</label>
 					<label>
-						<?php echo JText::_('PLG_RESUME_WEBSITE');?>
+						<?php echo JText::_('PLG_MEMBERS_RESUME_WEBSITE');?>
 						<span class="selectgroup">
-							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo $this->js->url ? $this->js->url : $this->member->get('url'); ?>" />
+							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo ($this->js->url ? $this->js->url : $this->member->get('url')); ?>" />
 						</span>
 					</label>
 					<label>
-						<?php echo JText::_('PLG_RESUME_LINKEDIN'); ?>
+						<?php echo JText::_('PLG_MEMBERS_RESUME_LINKEDIN'); ?>
 						<span class="selectgroup">
 							<input type="text" class="inputtxt" maxlength="190" name="linkedin" value="' . $this->js->linkedin . '" />
 						</span>
 					</label>
 					<label class="cats">
-						<?php echo JText::_('PLG_RESUME_POSITION_SOUGHT'); ?>: 
+						<?php echo JText::_('PLG_MEMBERS_RESUME_POSITION_SOUGHT'); ?>: 
 					</label>
 
 					<?php
 					// get job types
 					$types = $this->jt->getTypes();
-					$types[0] = JText::_('PLG_RESUME_TYPE_ANY');
+					$types[0] = JText::_('PLG_MEMBERS_RESUME_TYPE_ANY');
 
 					// get job categories
 					$cats = $this->jc->getCats();
-					$cats[0] = JText::_('PLG_RESUME_CATEGORY_ANY');
+					$cats[0] = JText::_('PLG_MEMBERS_RESUME_CATEGORY_ANY');
 					?>
 
 					<div class="selectgroup catssel">
@@ -159,7 +159,7 @@ $juser = JFactory::getUser();
 									$selected = ($avalue == $this->js->sought_type || $alabel == $this->js->sought_type)
 											  ? ' selected="selected"'
 											  : '';
-									echo ' <option value="' . $avalue . '"' . $selected . '>' . $alabel . '</option>' . "\n";
+									echo ' <option value="' . $this->escape($avalue) . '"' . $selected . '>' . $this->escape($alabel) . '</option>' . "\n";
 								}
 								?>
 							</select>
@@ -172,7 +172,7 @@ $juser = JFactory::getUser();
 									$selected = ($avalue == $this->js->sought_cid || $alabel == $this->js->sought_cid)
 											  ? ' selected="selected"'
 											  : '';
-									echo ' <option value="' . $avalue . '"' . $selected . '>' . $alabel . '</option>' . "\n";
+									echo ' <option value="' . $this->escape($avalue) . '"' . $selected . '>' . $this->escape($alabel) . '</option>' . "\n";
 								}
 								?>
 							</select>
@@ -182,9 +182,9 @@ $juser = JFactory::getUser();
 
 					<div class="submitblock">
 						<span class="selectgroup">
-							<input type="submit" value="<?php echo $this->editpref == 1 ? JText::_('PLG_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_RESUME_ACTION_SAVE'); ?>" /> 
+							<input type="submit" value="<?php echo $this->editpref == 1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" /> 
 							<span class="cancelaction">
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>"><?php echo JText::_('PLG_RESUME_CANCEL'); ?></a>
+								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
 							</span>
 						</span>
 					</div>
@@ -205,7 +205,7 @@ $juser = JFactory::getUser();
 
 			if (!$seeker or count($seeker)==0) 
 			{
-				echo '<p class="error">'.JText::_('PLG_RESUME_ERROR_RETRIEVING_PROFILE').'</p>';
+				echo '<p class="error">'.JText::_('PLG_MEMBERS_RESUME_ERROR_RETRIEVING_PROFILE').'</p>';
 			}
 			else 
 			{
@@ -218,9 +218,9 @@ $juser = JFactory::getUser();
 			<table class="list">
 				<thead>
 					<tr>
-						<th class="col halfwidth"><?php echo ucfirst(JText::_('PLG_RESUME_RESUME')); ?></th>
-						<th class="col"><?php echo JText::_('PLG_RESUME_LAST_UPDATED'); ?></th>
-						<?php echo $this->self ? '<th scope="col">' . JText::_('PLG_RESUME_OPTIONS') . '</th>' : ''; ?>
+						<th class="col halfwidth"><?php echo ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')); ?></th>
+						<th class="col"><?php echo JText::_('PLG_MEMBERS_RESUME_LAST_UPDATED'); ?></th>
+						<?php echo $this->self ? '<th scope="col">' . JText::_('PLG_MEMBERS_RESUME_OPTIONS') . '</th>' : ''; ?>
 					</tr>
 				</thead>
 				<tbody>
@@ -238,7 +238,7 @@ $juser = JFactory::getUser();
 									<label class="resume">
 										<input type="text" name="title" value="<?php echo $this->escape($title); ?>" class="gettitle" maxlength="40" />
 										<input type="hidden" name="author" value="<?php echo $this->member->get('uidNumber'); ?>" />
-										<input type="submit" value="<?php echo JText::_('PLG_RESUME_ACTION_SAVE'); ?>" />
+										<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 									</label>
 								</fieldset>
 							</form>
@@ -252,8 +252,8 @@ $juser = JFactory::getUser();
 							<time datetime="<?php echo $this->resume->created; ?>"><?php echo JHTML::_('date', $this->resume->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('APLG_RESUME_CTION_DELETE_THIS_RESUME'); ?>">
-								<?php echo JText::_('PLG_RESUME_ACTION_DELETE'); ?>
+							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('APLG_MEMBERS_RESUME_CTION_DELETE_THIS_RESUME'); ?>">
+								<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
@@ -261,7 +261,7 @@ $juser = JFactory::getUser();
 			</table>
 		<?php } else if (!$this->js->active) { ?>
 			<p class="no_resume">
-				<?php echo (!$this->self) ? JText::_('PLG_RESUME_USER_HAS_NO_RESUME') : JText::_('PLG_RESUME_YOU_HAVE_NO_RESUME'); ?>
+				<?php echo (!$this->self) ? JText::_('PLG_MEMBERS_RESUME_USER_HAS_NO_RESUME') : JText::_('PLG_MEMBERS_RESUME_YOU_HAVE_NO_RESUME'); ?>
 			</p>
 		<?php } ?>
 
@@ -270,19 +270,22 @@ $juser = JFactory::getUser();
 				<fieldset>
 					<legend>
 						<?php echo ($this->resume->id && $this->file) 
-									? JText::_('PLG_RESUME_ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . JText::_('PLG_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n" 
-									:  JText::_('PLG_RESUME_ACTION_UPLOAD_A_RESUME') . "\n"; ?>
+									? JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . JText::_('PLG_MEMBERS_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n" 
+									:  JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD_A_RESUME') . "\n"; ?>
 					</legend>
 					<div>
 						<label>
-							<?php echo JText::_('PLG_RESUME_ACTION_ATTACH_FILE'); ?>
+							<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_ATTACH_FILE'); ?>
 							<input type="file" name="uploadres" id="uploadres" />
 						</label>
 					</div>
+
+					<?php echo JHTML::_('form.token'); ?>
+
 					<input type="hidden" name="action" value="uploadresume" />
-					<input type="hidden" name="path" value="<?php echo $this->path; ?>" />
-					<input type="hidden" name="emp" value="<?php echo $this->emp; ?>" />
-					<input type="submit" value="<?php echo JText::_('PLG_RESUME_ACTION_UPLOAD'); ?>" />
+					<input type="hidden" name="path" value="<?php echo $this->escape($this->path); ?>" />
+					<input type="hidden" name="emp" value="<?php echo $this->escape($this->emp); ?>" />
+					<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD'); ?>" />
 				</fieldset>
 			</form>
 		<?php } ?>

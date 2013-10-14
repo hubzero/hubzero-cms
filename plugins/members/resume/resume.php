@@ -630,6 +630,9 @@ class plgMembersResume extends JPlugin
 			return $this->view($database, $option, $member, $emp);
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming file
 		$file = JRequest::getVar('uploadres', '', 'files', 'array');
 
