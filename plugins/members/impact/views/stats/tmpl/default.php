@@ -35,6 +35,8 @@ $threeMonth = date('M', strtotime("-3 month"));
 
 $i = 0;
 
+$base = rtrim(JURI::getInstance()->base(true), '/');
+
 $xticks = "[0, '" . $threeMonth . "'], [1, '" . $twoMonth . "'], [2, '" . $oneMonth . "'], [3, '" . $nowMonth . "']";
 
 // Common options for js charts
@@ -73,11 +75,11 @@ tooltip: true,
 <?php if ($this->pubstats) { 
 ?>
 
-<script src="/media/system/js/flot/jquery.flot.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.pie.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.resize.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.min.js"></script>
+<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
+<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
+<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.resize.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <?php if ($this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?php echo JText::_('PLG_MEMBERS_IMPACT_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . JText::_('PLG_MEMBERS_IMPACT_PUBLICATIONS_S') . ' ' . JText::_('PLG_MEMBERS_IMPACT_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . JText::_('PLG_MEMBERS_IMPACT_TIMES'); ?>.</p>
