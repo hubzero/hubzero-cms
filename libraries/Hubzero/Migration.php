@@ -906,7 +906,7 @@ class Hubzero_Migration
 			$name    = 'plg_' . $folder . '_' . $element;
 
 			// First, make sure it isn't already there
-			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = " . $db->quote($name);
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
 			$db->setQuery($query);
 			if ($db->loadResult())
 			{
