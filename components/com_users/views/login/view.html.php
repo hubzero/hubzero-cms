@@ -117,6 +117,17 @@ class UsersViewLogin extends JViewLegacy
 				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
+			else if ($p->name == 'hubzero')
+			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
+				$pparams = new $paramsClass($p->params);
+				$remember_me_default = $pparams->get('remember_me_default', 0);
+			}
 		}
 
 		// Override $multiAuth if authenticator is set to hubzero
@@ -128,9 +139,10 @@ class UsersViewLogin extends JViewLegacy
 		// Set the return if we have it...
 		$this->returnQueryString = (!empty($return)) ? "&return={$return}" : '';
 
-		$this->multiAuth = $multiAuth;
-		$this->return = $return;
-		$this->authenticators = $authenticators;
+		$this->multiAuth           = $multiAuth;
+		$this->return              = $return;
+		$this->authenticators      = $authenticators;
+		$this->remember_me_default = $remember_me_default;
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
 		$authenticator = JRequest::getVar('authenticator', '', 'method');

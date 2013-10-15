@@ -10,5 +10,10 @@
 	<files>
 		<filename plugin="hubzero">hubzero.php</filename>
 	</files>
-	<params/>
+	<params>
+		<param name="remember_me_default" type="list" default="0" label="Remember me default state" description="Select whether or not remember me option is checked by default">
+			<option value="0">Unckecked</option>
+			<option value="1">Checked</option>
+		</param>
+	</params>
 </install>

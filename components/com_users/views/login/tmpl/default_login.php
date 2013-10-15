@@ -88,7 +88,7 @@ if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
 					</div>
 					<div class="submission">
 					<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
-						<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" checked="checked" />
+						<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" <?php echo ($this->remember_me_default) ? 'checked="checked"' : ''; ?> />
 						<label for="remember" id="remember-me-label"><?php echo JText::_('Keep me logged in?'); ?></label>
 					<?php endif; ?>
 					<input type="submit" value="Login" id="login-submit"/>
