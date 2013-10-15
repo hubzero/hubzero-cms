@@ -59,6 +59,7 @@ class Service
 	 * @var array
 	 */
 	protected $invokableClasses = array(
+		'simple'       => 'Hubzero\Antispam\Adapter\Simple',
 		'akismet'      => 'Hubzero\Antispam\Adapter\Akismet',
 		'mollom'       => 'Hubzero\Antispam\Adapter\Mollom',
 		'spamassassin' => 'Hubzero\Antispam\Adapter\SpamAssassin'
