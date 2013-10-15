@@ -293,6 +293,11 @@ class Akismet extends AbstractAdapter
 			$this->setValue($value);
 		}
 
+		if (!$this->getValue())
+		{
+			return false;
+		}
+
 		$response = $this->_sendRequest($this->_getQueryString(), $this->apiKey . '.rest.akismet.com', '/' . $this->akismetVersion . '/comment-check');
 
 		if ($response[1] == 'invalid' && !$this->isKeyValid()) 

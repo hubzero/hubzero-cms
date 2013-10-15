@@ -62,6 +62,11 @@ class Simple extends AbstractAdapter
 			$this->setValue($value);
 		}
 
+		if (!$this->getValue())
+		{
+			return false;
+		}
+
 		$config = JComponentHelper::getParams('com_support');
 
 		// Spammer IPs (banned)
@@ -111,7 +116,7 @@ class Simple extends AbstractAdapter
 		// Check the text against bad words
 		foreach ($patterns as $pattern)
 		{
-			preg_match_all($pattern, $text, $matches);
+			preg_match_all($pattern, $this->getValue(), $matches);
 			if (count($matches[0]) >=1) 
 			{
 				$spam = true;
@@ -122,7 +127,7 @@ class Simple extends AbstractAdapter
 		// Very unusual to have 5 or more - usually only spammers
 		if (!$spam) 
 		{
-			$num = substr_count($text, 'http://');
+			$num = substr_count($this->getValue(), 'http://');
 			if ($num >= 5) // too many links
 			{ 
 				$spam = true;

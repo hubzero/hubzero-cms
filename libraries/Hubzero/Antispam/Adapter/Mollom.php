@@ -127,6 +127,11 @@ class Mollom extends AbstractAdapter
 			$this->setValue($value);
 		}
 
+		if (!$this->getValue())
+		{
+			return false;
+		}
+
 		$mollom = new HubzeroMollom(array(
 			'publicKey'  => $this->get('apiPublicKey'),
 			'privateKey' => $this->get('apiPrivateKey')
@@ -135,7 +140,7 @@ class Mollom extends AbstractAdapter
 		$result = $mollom->checkContent(array(
 			'checks'     => array('spam'),
 			'postTitle'  => $this->get('title'),
-			'postBody'   => $this->getValue($value),
+			'postBody'   => $this->getValue(),
 			'authorName' => $this->get('user_name'),
 			'authorUrl'  => $this->get('user_url'),
 			'authorIp'   => $this->get('user_ip'),
