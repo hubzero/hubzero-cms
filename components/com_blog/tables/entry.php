@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -159,7 +159,7 @@ class BlogTableEntry extends JTable
 	{
 		if ($oid === NULL) 
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ARGUMENT'));
 			return false;
 		}
 		if ($scope === NULL) 
@@ -168,7 +168,7 @@ class BlogTableEntry extends JTable
 		}
 		if (!$scope) 
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ARGUMENT'));
 			return false;
 		}
 		switch ($scope)
@@ -180,7 +180,7 @@ class BlogTableEntry extends JTable
 				}
 				if (!$created_by) 
 				{
-					$this->setError(JText::_('Missing argument.'));
+					$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ARGUMENT'));
 					return false;
 				}
 				$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND scope=" . $this->_db->Quote($scope) . " AND created_by=" . $this->_db->Quote($created_by);
@@ -225,7 +225,7 @@ class BlogTableEntry extends JTable
 		$this->title = trim($this->title);
 		if ($this->title == '') 
 		{
-			$this->setError(JText::_('Please provide a title.'));
+			$this->setError(JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'));
 			return false;
 		}
 
@@ -239,7 +239,7 @@ class BlogTableEntry extends JTable
 		$this->content = trim($this->content);
 		if ($this->content == '') 
 		{
-			$this->setError(JText::_('Please provide content.'));
+			$this->setError(JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'));
 			return false;
 		}
 
@@ -547,7 +547,7 @@ class BlogTableEntry extends JTable
 		}
 		if (!$id) 
 		{
-			$this->setError(JText::_('Missing Entry ID.'));
+			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
 			return false;
 		}
 
@@ -609,14 +609,14 @@ class BlogTableEntry extends JTable
 		}
 		if (!$id) 
 		{
-			$this->setError(JText::_('Missing Entry ID.'));
+			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
 			return false;
 		}
 
 		$bt = new BlogModelTags($id);
 		if (!$bt->removeAll()) 
 		{
-			$this->setError(JText::_('UNABLE_TO_DELETE_TAGS'));
+			$this->setError(JText::_('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
 			return false;
 		}
 		return true;
@@ -626,7 +626,7 @@ class BlogTableEntry extends JTable
 	 * Get a list of entries based on comment count
 	 * 
 	 * @param      array $filters Filters to build query from
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getPopularEntries($filters=array())
 	{

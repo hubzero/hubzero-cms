@@ -60,10 +60,10 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 </div>
 
 <div class="main section">
-<?php if ($this->getError()) { ?>
+<?php /*if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	
+<?php }*/ ?>
+
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<table class="wiki-reference" summary="Wiki Syntax Reference">
@@ -112,16 +112,15 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<legend><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></legend>
 
 			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-				<?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?>
+				<?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 				<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 			</label>
-
 		<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
-			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
+			<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
 		<?php } ?>
 
-			<label for="entrycontent">
-				<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?>
+			<label for="entrycontent"<?php if ($this->task == 'save' && !$this->entry->get('content')) { echo ' class="fieldWithErrors"'; } ?>>
+				<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 				<?php
 				ximport('Hubzero_Wiki_Editor');
 				$editor =& Hubzero_Wiki_Editor::getInstance();
@@ -129,7 +128,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				?>
 			</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
-			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
+			<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
 		<?php } ?>
 
 			<label>
