@@ -249,6 +249,10 @@
 		font-weight: bold;
 		letter-spacing: -0.1em;
 	}
+	
+	table#event-info td {
+		word-break: break-all;
+	}
 
 /* (sub) Tabs */
 	.com_events .main h3 {
