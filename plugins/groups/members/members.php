@@ -306,9 +306,9 @@ class plgGroupsMembers extends Hubzero_Plugin
 		
 		//do we have any pending requests
 		$pending = $group->get("applicants");
-		if(count($pending) > 0)
+		if(count($pending) > 0 && in_array($juser->get('id'), $group->get("managers")))
 		{
-			$title = $this->group->get('description')." has <strong>".count($pending)."</strong> pending membership request.";
+			$title = $group->get('description')." has <strong>".count($pending)."</strong> pending membership request.";
 			$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=members&filter=pending');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Member Alert</h5>{$title}</span></a>";
 		}
