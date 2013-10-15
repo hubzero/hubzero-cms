@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -76,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->id; ?>">
 			<p class="comment-member-photo">
-				<span class="comment-anchor"><a name="#c<?php echo $this->comment->id; ?>"></a></span>
+				<span class="comment-anchor"></span>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $this->comment->anonymous); ?>" alt="" />
 			</p>
 			<div class="comment-content">
@@ -108,43 +114,47 @@ defined('_JEXEC') or die('Restricted access');
 					<?php } ?>
 					</strong> 
 					<a class="permalink" href="<?php echo $this->url . '#c' . $this->comment->id; ?>" title="<?php echo JText::_('PLG_COURSES_REVIEWS_PERMALINK'); ?>">
-						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span> 
+						<span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						<?php if ($this->comment->modified && $this->comment->modified != '0000-00-00 00:00:00') { ?>
 							&mdash; <?php echo JText::_('Edited'); ?>
-							<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+							<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span> 
+							<span class="time"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+							<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span> 
+							<span class="date"><time datetime="<?php echo $this->comment->created; ?>"><?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						<?php } ?>
 					</a>
 				</p>
 				<div class="comment-body">
 					<?php if ($this->comment->rating) { ?>
 						<p class="avgrating <?php echo $rating; ?>">
-							<?php echo JText::sprintf('%s out of 5 stars', $this->comment->rating); ?>
+							<?php echo JText::sprintf('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $this->comment->rating); ?>
 						</p>
 					<?php } ?>
-				<?php
-				if ($this->comment->state == 3) 
-				{
-					echo '<p class="warning">' . JText::_('PLG_COURSES_REVIEWS_REPORTED_AS_ABUSIVE') . '</p>';
-				} 
-				else 
-				{
-					echo (is_object($p)) ? $p->parse(stripslashes($this->comment->content)) : nl2br($this->escape(stripslashes($this->comment->content)));
-				}
-				?>
+					<?php
+					if ($this->comment->state == 3) 
+					{
+						echo '<p class="warning">' . JText::_('PLG_COURSES_REVIEWS_REPORTED_AS_ABUSIVE') . '</p>';
+					} 
+					else 
+					{
+						echo (is_object($p)) ? $p->parse(stripslashes($this->comment->content)) : nl2br($this->escape(stripslashes($this->comment->content)));
+					}
+					?>
 				</div><!-- / .comment-body -->
 
 			<?php if ($this->comment->filename) { ?>
 				<div class="attachment">
-					<p>Attached file: <?php echo '<a href="' . JURI::base() . 'site' . DS . 'comments' . DS . $this->comment->filename . '" target="_blank">' . $this->comment->filename . '</a>'; ?></p>
+					<p><?php echo JText::_('PLG_COURSES_REVIEWS_ATTACHED_FILE'); ?> <a href="<?php echo JURI::base() . 'site/comments/' . $this->comment->filename; ?>"><?php echo $this->escape($this->comment->filename); ?></a></p>
 				</div>
 			<?php } ?>
 
 			<?php if ($this->comment->state != 3) { ?>
 				<p class="comment-options">
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<a class="icon-reply reply" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_COURSES_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>"><!-- 
 						--><?php echo JText::_('PLG_COURSES_REVIEWS_REPLY'); ?><!-- 
 					--></a>
 				<?php } ?>
@@ -192,11 +202,6 @@ defined('_JEXEC') or die('Restricted access');
 								&nbsp; <input class="option" type="hidden" name="comment[anonymous]" value="0" /> 
 						<?php } ?>
 							</label>
-
-							<!-- <label for="commentFile">
-								<?php echo JText::_('PLG_COURSES_REVIEWS_ATTACH_FILE'); ?>:
-								<input type="file" name="commentFile" id="commentFile" />
-							</label> -->
 
 							<p class="submit">
 								<input type="submit" value="<?php echo JText::_('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" /> 

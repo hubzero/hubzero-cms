@@ -216,7 +216,7 @@ class CoursesPluginReviewTable extends JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get a count of course reviews
 	 * 
 	 * @param  array $filters
 	 * @return object Return course units
@@ -231,10 +231,10 @@ class CoursesPluginReviewTable extends JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get an object list of course reviews
 	 * 
 	 * @param  array $filters
-	 * @return object Return course units
+	 * @return array
 	 */
 	public function find($filters=array())
 	{
@@ -259,28 +259,15 @@ class CoursesPluginReviewTable extends JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get an object list ratings for a course
 	 * 
 	 * @param  array $filters
-	 * @return object Return course units
+	 * @return array
 	 */
 	public function ratings($filters=array())
 	{
 		$query  = "SELECT r.rating";
 		$query .= $this->_buildquery($filters);
-
-		/*if (isset($filters['sort']) && $filters['sort'])
-		{
-			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
-			{
-				$filters['sort_Dir'] = 'ASC';
-			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		}
-		if (!empty($filters['start']) && !empty($filters['limit']))
-		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}*/
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

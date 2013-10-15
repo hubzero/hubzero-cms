@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,10 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 $filters = array(
-	'state' => 1,
-	'item_id' => $this->course->get('id'),
+	'state'     => 1,
+	'item_id'   => $this->course->get('id'),
 	'item_type' => 'courses',
-	'parent' => 0
+	'parent'    => 0
 );
 
 $total = 0;
@@ -85,13 +85,13 @@ switch ($avg)
 ?>
 <div class="reviews-summary">
 	<p class="avgrating <?php echo $cls; ?>">
-		<strong><span><?php echo $avg; ?> out of 5 stars</span> (<?php echo $total; ?>)</strong>
+		<strong><span><?php echo JText::sprintf('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?></span> (<?php echo $total; ?>)</strong>
 	</p>
 	<table class="reviews-distribution">
-		<caption>Rating distribution</caption>
+		<caption><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_DISTRIBUTION'); ?></caption>
 		<tbody>
 			<tr>
-				<th>5 star</th>
+				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_5_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[5] / $total, 2)*100 : 0; ?>%;">
@@ -101,7 +101,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th>4 star</th>
+				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_4_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[4] / $total, 2)*100 : 0; ?>%;">
@@ -111,7 +111,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th>3 star</th>
+				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_3_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[3] / $total, 2)*100 : 0; ?>%;">
@@ -121,7 +121,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th>2 star</th>
+				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_2_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[2] / $total, 2)*100 : 0; ?>%;">
@@ -131,7 +131,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th>1 star</th>
+				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_1_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[1] / $total, 2)*100 : 0; ?>%;">

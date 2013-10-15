@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -69,38 +69,6 @@ class plgCoursesReviews extends JPlugin
 		);
 		return $areas;
 	}
-
-	/**
-	 * Rate a resource
-	 * 
-	 * @param      string $option Name of the component
-	 * @return     array
-	 */
-	/*public function onCourseRateItem($option)
-	{
-		$id = JRequest::getInt('rid', 0);
-
-		$arr = array(
-			'area'     => 'reviews',
-			'html'     => '',
-			'metadata' => ''
-		);
-
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
-
-		$database =& JFactory::getDBO();
-		$resource = new ResourcesResource($database);
-		$resource->load($id);
-
-		$h = new PlgResourcesReviewsHelper();
-		$h->resource = $resource;
-		$h->option   = $option;
-		$h->_option  = $option;
-		$h->execute();
-
-		return $arr;
-	}*/
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
@@ -214,8 +182,8 @@ class plgCoursesReviews extends JPlugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->option     = $this->option; //JRequest::getCmd('option', 'com_courses');
-			$view->controller = $this->controller; //JRequest::getWord('controller', 'course');
+			$view->option     = $this->option;
+			$view->controller = $this->controller;
 			$view->course     = $course;
 			$view->tbl        = $tbl;
 
@@ -257,24 +225,6 @@ class plgCoursesReviews extends JPlugin
 				$yearFormat  = "Y";
 				$monthFormat = "m";
 				$dayFormat   = "d";
-				/*$asset  = $this->option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'comment') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				// Are they an admin?
-				$this->params->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->params->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				if ($this->params->set('access-admin-' . $assetType) 
-				 || $this->params->set('access-manage-' . $assetType))
-				{
-					$this->params->set('access-create-' . $assetType, true);
-					$this->params->set('access-delete-' . $assetType, true);
-					$this->params->set('access-edit-' . $assetType, true);
-					return;
-				}*/
 			}
 			else 
 			{
@@ -283,17 +233,6 @@ class plgCoursesReviews extends JPlugin
 				$yearFormat  = "%Y";
 				$monthFormat = "%m";
 				$dayFormat   = "%d";
-
-				// Are they an admin?
-				/*if ($this->juser->authorize($this->option, 'manage'))
-				{
-					$this->params->set('access-manage-' . $assetType, true);
-					$this->params->set('access-admin-' . $assetType, true);
-					$this->params->set('access-create-' . $assetType, true);
-					$this->params->set('access-delete-' . $assetType, true);
-					$this->params->set('access-edit-' . $assetType, true);
-					return;
-				}*/
 			}
 			if ($this->obj->isManager())
 			{
@@ -307,19 +246,9 @@ class plgCoursesReviews extends JPlugin
 			{
 				return;
 			}
+			
+			$d = $this->obj->get('created');
 
-			/*if (isset($this->obj->publish_up) && $this->obj->publish_up) 
-			{
-				$d = $this->obj->publish_up;
-			}
-			else if (isset($this->obj->modified) && $this->obj->modified) 
-			{
-				$d = $this->obj->modified;
-			}
-			else 
-			{*/
-				$d = $this->obj->get('created');
-			//}
 			$year  = intval(substr($d, 0, 4));
 			$month = intval(substr($d, 5, 2));
 			$day   = intval(substr($d, 8, 2));
@@ -411,15 +340,14 @@ class plgCoursesReviews extends JPlugin
 		$v = new Hubzero_Item_Vote($this->database);
 		$v->created_by = $this->juser->get('id');
 		$v->item_type  = 'comment';
-		//$v->item_id    = JRequest::getInt('comment', 0);
-		//$v->vote       = JRequest::getVar('vote', 'up');
+
 		if ($item_id = JRequest::getInt('voteup', 0))
 		{
-			$v->vote    = 1;
+			$v->vote   = 1;
 		} 
 		else if ($item_id = JRequest::getInt('votedown', 0))
 		{
-			$v->vote    = -1;
+			$v->vote   = -1;
 		}
 		$v->item_id    = $item_id;
 
@@ -497,8 +425,6 @@ class plgCoursesReviews extends JPlugin
 	protected function _view() 
 	{
 		// Get comments on this article
-		//$hc = new Hubzero_Item_Comment($this->database);
-
 		$this->view->comments = $this->view->tbl->getComments(
 			$this->obj_type, 
 			$this->obj->get('id'),
@@ -580,7 +506,7 @@ class plgCoursesReviews extends JPlugin
 			);
 			return;
 		}
-		
+
 		$this->redirect(
 			$this->url, 
 			JText::_('PLG_COURSES_REVIEWS_SAVED'),

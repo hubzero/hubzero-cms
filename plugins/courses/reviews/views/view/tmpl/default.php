@@ -1,25 +1,31 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -31,9 +37,7 @@ $edit = JRequest::getInt('editcomment', 0);
 
 ?>
 <?php if ($this->params->get('access-view-comment')) { ?>
-	<!-- <div class="below section"> -->
 		<h3 class="review-title">
-			<a name="reviews"></a>
 			<?php echo JText::_('PLG_COURSES_REVIEWS'); ?>
 		</h3>
 	<?php if ($this->comments) {
@@ -56,30 +60,36 @@ $edit = JRequest::getInt('editcomment', 0);
 		$view->display();
 	} else if ($this->depth <= 1) { ?>
 		<div class="no-reviews">
+			<?php if ($this->obj->isManager()) { ?>
 			<div class="instructions">
 				<p><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS'); ?></p>
+			</div><!-- / .instructions -->
+			<div class="questions">
+				<p><strong><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_MANAGER'); ?></strong></p>
+				<p><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_MANAGER_EXPLANATION'); ?></p>
+			</div>
+			<?php } else { ?>
+			<div class="instructions">
+				<p><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_BE_FIRST'); ?></p>
 				<ol>
-					<li><?php echo JText::_('Enroll in the course.'); ?></li>
-					<li><?php echo JText::_('Get your learn on!'); ?></li>
-					<li><?php echo JText::_('Come back and tell us about the experience.'); ?></li>
+					<li><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP1'); ?></li>
+					<li><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP2'); ?></li>
+					<li><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP3'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong><?php echo JText::_('How do I enroll?'); ?></strong></p>
-				<p><?php echo JText::_('Find the description page for the course you want to take (hint: you\'re on one right now). Look for an "enroll" button and click it. If you don\'t see the button, the course currently isn\'t active.'); ?></p>
-				<p><strong><?php echo JText::_('Can I review without enrolling?'); ?></strong></p>
-				<p><?php echo JText::_('Sorry, no. To review a course you must have taken the course.'); ?></p>
+				<p><strong><?php echo JText::_('PLG_COURSES_REVIEWS_HOW_TO_ENROLL'); ?></strong></p>
+				<p><?php echo JText::_('PLG_COURSES_REVIEWS_HOW_TO_ENROLL_EXPLANATION'); ?></p>
+				<p><strong><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_WITHOUT_ENROLLING'); ?></strong></p>
+				<p><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_WITHOUT_ENROLLING_EXPLANATION'); ?></p>
 			</div>
+			<?php } ?>
 		</div>
 	<?php } ?>
-	<!-- </div>/ .below section -->
 
-	<?php if (($this->depth <= 1 && $this->params->get('access-review-comment') && !$comment->hasRated($this->obj->get('id'), $this->obj_type, $this->juser->get('id'))) 
-		|| $edit) { ?>
-	<?php //if ($this->params->get('access-create-comment')) { ?>
+	<?php if (($this->depth <= 1 && $this->params->get('access-review-comment') && !$comment->hasRated($this->obj->get('id'), $this->obj_type, $this->juser->get('id'))) || $edit) { ?>
 	<div class="below section">
 		<h3 class="post-comment-title">
-			<a name="post-comment"></a>
 		<?php if ($this->depth <= 1 && $this->params->get('access-review-comment')) { ?>
 			<?php echo JText::_('PLG_COURSES_REVIEWS_POST_A_REVIEW'); ?>
 		<?php } else { ?>
@@ -89,11 +99,10 @@ $edit = JRequest::getInt('editcomment', 0);
 
 			<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform">
 				<p class="comment-member-photo">
-					<span class="comment-anchor"><a name="post-comment"></a></span>
+					<span class="comment-anchor"></span>
 					<?php
 					ximport('Hubzero_User_Profile');
 					ximport('Hubzero_User_Profile_Helper');
-					
 					$anonymous = 1;
 					if (!$this->juser->get('guest')) 
 					{
@@ -102,7 +111,7 @@ $edit = JRequest::getInt('editcomment', 0);
 						$anonymous = 0;
 					}
 					?>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anonymous); ?>" alt="" />
+					<img src="<?php echo $jxuser->getPicture($anonymous); ?>" alt="" />
 				</p>
 				<fieldset>
 				<?php
@@ -112,13 +121,12 @@ $edit = JRequest::getInt('editcomment', 0);
 					{
 						$reply = new Hubzero_Item_Comment($this->database);
 						$reply->load($replyto);
-						
+
 						ximport('Hubzero_View_Helper_Html');
-						
+
 						$name = JText::_('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous) 
 						{
-							//$xuser =& JUser::getInstance( $reply->created_by );
 							$xuser = new Hubzero_User_Profile();
 							$xuser->load($reply->created_by);
 							if (is_object($xuser) && $xuser->get('name')) 
@@ -127,11 +135,13 @@ $edit = JRequest::getInt('editcomment', 0);
 							}
 						}
 					?>
-					<blockquote cite="c<?php echo $this->replyto->id ?>">
+					<blockquote cite="c<?php echo $this->replyto->id; ?>">
 						<p>
 							<strong><?php echo $name; ?></strong> 
-							@ <span class="time"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAt_HZ1')); ?></span> 
-							on <span class="date"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAt_HZ1')); ?></span>
+							<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span> 
+							<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+							<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span> 
+							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						</p>
 						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($reply->content), 300, 0); ?></p>
 					</blockquote>
@@ -149,9 +159,11 @@ $edit = JRequest::getInt('editcomment', 0);
 					}*/
 					?>
 					<p class="warning">
-						<strong>Note:</strong> You are editing a comment originally posted <br />
-						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+						<?php echo JText::_('PLG_COURSES_REVIEWS_NOTE_EDITING_COMMENT_POSTED'); ?> <br />
+						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span> 
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
+						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 					</p>
 					<?php
 					if ($comment->parent)
@@ -200,20 +212,8 @@ $edit = JRequest::getInt('editcomment', 0);
 					<label>
 						<?php echo JText::_('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
 						<?php
-						if (!$this->juser->get('guest')) 
-						{
 							ximport('Hubzero_Wiki_Editor');
-							$editor =& Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('comment[content]', 'commentcontent', $comment->content, 'minimal', '40', '20');
-						/*} else {
-							$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
-							?>
-							<p class="warning">
-								You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
-							</p>
-							<?php
-						*/
-						}
+							echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', $comment->content, 'minimal', '40', '20');
 						?>
 					</label>
 
@@ -221,7 +221,7 @@ $edit = JRequest::getInt('editcomment', 0);
 					<label id="comment-anonymous-label">
 					<?php if ($this->params->get('comments_anon', 1)) { ?>
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->anonymous) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Post anonymously'); ?>
+						<?php echo JText::_('PLG_COURSES_REVIEWS_POST_ANONYMOUSLY'); ?>
 					<?php } else { ?>
 						&nbsp; <input class="option" type="hidden" name="comment[anonymous]" id="comment-anonymous" value="0" />
 					<?php } ?>
@@ -244,12 +244,11 @@ $edit = JRequest::getInt('editcomment', 0);
 							<strong><?php echo JText::_('PLG_COURSES_REVIEWS_KEEP_RELEVANT'); ?></strong>
 						</p>
 						<p>
-							Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
+							<?php echo JText::sprintf('PLG_COURSES_REVIEWS_CONTENT_NOTE', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting')); ?>
 						</p>
 					</div>
 				</fieldset>
 			</form>
-		<!-- </div>/ .subject -->
 		<div class="clear"></div>
 	</div><!-- / .section -->
 	<?php } ?>
