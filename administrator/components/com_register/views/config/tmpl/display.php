@@ -81,36 +81,56 @@ foreach ($this->params as $field => $values)
 				<tr>
 					<td class="key"><?php echo $title; ?></td>
 					<td>
-						<select name="settings[<?php echo $field; ?>][create]">
-							<option value="O"<?php if ($create == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
-							<option value="R"<?php if ($create == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
-							<option value="H"<?php if ($create == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
-							<option value="U"<?php if ($create == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
-						</select>
+						<?php if ($create != '-') : ?>
+							<select name="settings[<?php echo $field; ?>][create]">
+								<option value="O"<?php if ($create == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
+								<option value="R"<?php if ($create == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
+								<option value="H"<?php if ($create == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
+								<option value="U"<?php if ($create == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
+							</select>
+						<?php else: ?>
+							<?php echo JText::_('n/a'); ?>
+							<input type="hidden" name="settings[<?php echo $field; ?>][create]" value="-">
+						<?php endif; ?>
 					</td>
 					<td>
-						<select name="settings[<?php echo $field; ?>][proxy]">
-							<option value="O"<?php if ($proxy == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
-							<option value="R"<?php if ($proxy == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
-							<option value="H"<?php if ($proxy == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
-							<option value="U"<?php if ($proxy == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
-						</select>
+						<?php if ($proxy != '-') : ?>
+							<select name="settings[<?php echo $field; ?>][proxy]">
+								<option value="O"<?php if ($proxy == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
+								<option value="R"<?php if ($proxy == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
+								<option value="H"<?php if ($proxy == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
+								<option value="U"<?php if ($proxy == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
+							</select>
+						<?php else: ?>
+							<?php echo JText::_('n/a'); ?>
+							<input type="hidden" name="settings[<?php echo $field; ?>][proxy]" value="-">
+						<?php endif; ?>
 					</td>
 					<td>
-						<select name="settings[<?php echo $field; ?>][update]">
-							<option value="O"<?php if ($update == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
-							<option value="R"<?php if ($update == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
-							<option value="H"<?php if ($update == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
-							<option value="U"<?php if ($update == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
-						</select>
+						<?php if ($update != '-') : ?>
+							<select name="settings[<?php echo $field; ?>][update]">
+								<option value="O"<?php if ($update == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
+								<option value="R"<?php if ($update == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
+								<option value="H"<?php if ($update == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
+								<option value="U"<?php if ($update == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
+							</select>
+						<?php else: ?>
+							<?php echo JText::_('n/a'); ?>
+							<input type="hidden" name="settings[<?php echo $field; ?>][update]" value="-">
+						<?php endif; ?>
 					</td>
 					<td>
-						<select name="settings[<?php echo $field; ?>][edit]">
-							<option value="O"<?php if ($edit == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
-							<option value="R"<?php if ($edit == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
-							<option value="H"<?php if ($edit == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
-							<option value="U"<?php if ($edit == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
-						</select>
+						<?php if ($edit != '-') : ?>
+							<select name="settings[<?php echo $field; ?>][edit]">
+								<option value="O"<?php if ($edit == 'O') { echo ' selected="selected"'; }?>><?php echo JText::_('Optional'); ?></option>
+								<option value="R"<?php if ($edit == 'R') { echo ' selected="selected"'; }?>><?php echo JText::_('Required'); ?></option>
+								<option value="H"<?php if ($edit == 'H') { echo ' selected="selected"'; }?>><?php echo JText::_('Hide'); ?></option>
+								<option value="U"<?php if ($edit == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('Read only'); ?></option>
+							</select>
+						<?php else: ?>
+							<?php echo JText::_('n/a'); ?>
+							<input type="hidden" name="settings[<?php echo $field; ?>][edit]" value="-">
+						<?php endif; ?>
 					</td>
 				</tr>
 <?php
