@@ -136,8 +136,10 @@ function _dd_post($dd)
 	}
 
 	// Data for Custom Views
-	$custom_view = JRequest::getVar('custom_view', array());
-	if (count($custom_view) > 0) {
+	$custom_view = JRequest::getVar('custom_view', '');
+
+	if ($custom_view != '') {
+		$custom_view = explode(',', $custom_view);
 		unset($dd['customizer']);
 
 		// Custom Title

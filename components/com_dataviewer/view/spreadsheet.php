@@ -44,9 +44,6 @@ function view($dd = false) {
 
 	dv_add_script('datatables.plugins.js');
 
-//	$document->addScript($html_path . '/jquery.tipsy.js' . $ver);
-//	$document->addStyleSheet($html_path . '/jquery.tipsy.css' . $ver);
-
 	dv_add_script('jqplot/jquery.jqplot.js');
 	dv_add_script('jqplot/plugins.dev');
 	dv_add_css('jqplot/jquery.jqplot.css');
@@ -56,9 +53,10 @@ function view($dd = false) {
 
 	dv_add_script('dv-spreadsheet-charts.js');
 	dv_add_script('dv-spreadsheet-charts-dl.js');
+
+	dv_add_script('dv_custom_views.js');
+	dv_add_css('dv_custom_views.css');
 //	$document->addScript($html_path . '/dv_maps.js' . $ver);
-//	$document->addScript($html_path . '/dv_custom_views.js' . $ver);
-//	$document->addStyleSheet($html_path . '/dv_custom_views.css' . $ver);
 
 	dv_add_script('jquery.dv.js');
 
@@ -66,15 +64,16 @@ function view($dd = false) {
 	$dv_conf['settings']['view']['id'] = $dd['dv_id'];
 	$dv_conf['settings']['view']['type'] = 'spreadsheet';
 	$dv_conf['settings']['data_url'] = "/?option=com_$com_name&task=data&db=" . $dd['db_id']['id'] . '&dv=' . $dd['dv_id'];
+	$dv_conf['settings']['view_url'] = "/dataviewer/view/{$dd['db_id']['id']}/{$dd['dv_id']}/";
 
 
 	// Get the list of IDs if any
 	$rec_ids = JRequest::getVar('id', '');
 	if ($rec_ids != '') {
 		$dv_conf['settings']['data_url'] .= '&id=' . htmlentities($rec_ids);
-		$dataview_url = "/$com_name/spreadsheet/$name/?id=" . htmlentities($rec_ids);
+		$dv_conf['settings']['view_url'] .= '?id=' . htmlentities($rec_ids);
 	} else {
-		$dataview_url = "/$com_name/spreadsheet/$name/?dv_first=1";
+		$dv_conf['settings']['view_url'] .= '?dv_first=1';
 	}
 
 	if ($dd) {
@@ -167,7 +166,7 @@ function view($dd = false) {
 		}
 	?>
 	<a name="dv_top"></a>
-	<div id="dv-spreadsheet" class="ss_wrapper" style="padding: 20px 10px;">
+	<div id="dv-spreadsheet" class="ss_wrapper" style="padding: 20px 10px; overflow: hidden;">
 	
 	<?php if(!JRequest::getVar('show_table_only', false)): ?>
 
@@ -209,6 +208,13 @@ function view($dd = false) {
 				<span class="lbl">Charts</span>
 			</button>
 			<?php endif; ?>
+
+			<?php if(isset($dd['customizer'])): ?>
+			<button id="dv-customizer-btn" class="btn btn-mini" title="Enables users to select a sub-set of columns to view.">
+				<i class="icon-edit"> </i >
+				<span class="lbl">Customize DataView</span>
+			</button>
+			<?php endif; ?>
 		</div>
 
 		<div style="display: none;">
@@ -220,9 +226,9 @@ function view($dd = false) {
 				<input type="checkbox" id="dv_maps" class="dv_panel_btn" /><label for="dv_maps">Map</label>
 				<?php endif; ?>
 				<?php if(isset($dd['customizer']) && $show_customizer): ?>
-				<input type="checkbox" checked="checked" id="dv_customizer_btn" class="dv_panel_btn" /><label for="dv_customizer_btn">Customize View</label>
+				<input type="checkbox" id="" class="dv_panel_btn" /><label for="dv-customizer-btn"></label>
 				<?php elseif(isset($dd['customizer'])): ?>
-				<input type="checkbox" id="dv_customizer_btn" class="dv_panel_btn" /><label for="dv_customizer_btn">Customize View</label>
+				<input type="checkbox" id="dv-customizer-btn" class="dv_panel_btn" /><label for="dv-customizer-btn">Customize View</label>
 				<?php endif; ?>
 			</span>
 		</div>
@@ -308,9 +314,9 @@ function view($dd = false) {
 				<p id="dv_customizer_title_container" style="padding-left: 10px;">
 					New Title: <input id="dv_customizer_view_title" value="<?=$dd['title']?>" type="text" style="width: 550px;" />
 					&nbsp;&nbsp;
-					<input id="dv_customizer_group_by_btn" data-view-url="<?=$dataview_url?>" value="Group By [Reduce Duplicates]" type="button" style="display: none; padding: 2px;" />
+					<input id="dv_customizer_group_by_btn" data-view-url="<?=$dv_conf['settings']['view_url']?>" value="Group By [Reduce Duplicates]" type="button" style="display: none; padding: 2px;" />
 					&nbsp;&nbsp;
-					<input id="dv_customizer_launch_view_btn" data-view-url="<?=$dataview_url?>" value="Launch Custom View" type="button" style="display: none; padding: 2px;" />
+					<input id="dv_customizer_launch_view_btn" data-view-url="<?=$dv_conf['settings']['view_url']?>" value="Launch Custom View" type="button" style="display: none; padding: 2px;" />
 				</p>
 				<table border="0">
 					<tr id="dv_customizer_lists_top">

@@ -47,35 +47,20 @@ function get_dd($db_id)
 		$dd['table'] = $td['name'];
 		$dd['title'] = $r['name'];
 
-		if ($db_id['extra'] == 'table') {
-			foreach($td['columns'] as $col) {
-				if ($col['name'] != '__ds_rec_id') {
-					if ($col['type'] == 'file') {
-						$dd['cols'][$td['name'] . '.' . $col['name']]['type'] = 'file';
-						$dd['cols'][$td['name'] . '.' . $col['name']]['type_extra'] = $col['type_extra'];
-						$dd['cols'][$td['name'] . '.' . $col['name']]['ds-repo-path'] = "/file_repo/{$td['name']}/{$col['name']}";
-						$dd['cols'][$td['name'] . '.' . $col['name']]['file-verify'] = true;
-					}
+		if ($db_id['extra'] == 'table' || $db_id['extra'] == 'update') {
 
-					if ($col['type'] == 'txt' && ($col['type_extra'] == 'medium' || $col['type_extra'] == 'large')) {
-						$dd['cols'][$td['name'] . '.' . $col['name']]['width'] = '150';
-						$dd['cols'][$td['name'] . '.' . $col['name']]['truncate'] = 'truncate';
-					}
+			if ($db_id['extra'] == 'update') {
+				$update_link = '/datastores/' . $db_id['name'] . '/table/data_record_update/?table=' . $dv_id . '&__ds_rec_id=';
 
-					$dd['cols'][$td['name'] . '.' . $col['name']]['label'] = $col['label'];
-				}
+				$dd['cols'][$td['name'] . '.__ds_rec_id'] = array(
+					'label'=>'Select <br />Record',
+					'raw'=>"CONCAT('$update_link', __ds_rec_id)",
+					'type'=>'link',
+					'relative'=>'true',
+					'link_label'=>'Edit',
+					'link_title'=>'Click here to update or remove this record'
+				);
 			}
-		} elseif ($db_id['extra'] == 'update') {
-			$update_link = '/datastores/' . $db_id['name'] . '/table/data_record_update/?table=' . $dv_id . '&__ds_rec_id=';
-
-			$dd['cols'][$td['name'] . '.__ds_rec_id'] = array(
-				'label'=>'Select <br />Record',
-				'raw'=>"CONCAT('$update_link', __ds_rec_id)",
-				'type'=>'link',
-				'relative'=>'true',
-				'link_label'=>'Edit',
-				'link_title'=>'Click here to update or remove this record'
-			);
 
 			foreach($td['columns'] as $col) {
 				if ($col['name'] != '__ds_rec_id') {
@@ -109,19 +94,32 @@ function get_dd($db_id)
 
 	$dd = _dd_post($dd);
 
+	$dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : array();
+
+	if(isset($dd['conf']['proc_mode_switch'])) {
+		$dv_conf['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
+	}
+
+	if(isset($dd['conf']['proc_switch_threshold'])) {
+		$dv_conf['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
+	}
 
 	/* Dynamically set processing mode */
-	$link = get_db($dd['db']);
-	$cell_count_threshold = 20000;
-	$total = mysql_query(query_gen_total($dd), $link);
-	$total = mysql_fetch_assoc($total);
-	$total = isset($total['total']) ? $total['total'] : 0;
-	$dd['total_records'] = $total;
+	if (isset($dv_conf['proc_mode_switch']) && $dv_conf['proc_mode_switch']) {
+		$link = get_db();
+		$total = mysql_query(query_gen_total($dd), $link);
+		$total = mysql_fetch_assoc($total);
+		$total = isset($total['total']) ? $total['total'] : 0;
+		$dd['total_records'] = $total;
 
-	$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+		$vis_col_count = 0;
+		if(isset($dd['cols'])) {
+			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+		}
 
-	if ($cell_count_threshold < ($total * $vis_col_count)) {
-		$dd['serverside'] = true;
+		if ($dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
+			$dd['serverside'] = true;
+		}
 	}
 
 
@@ -159,7 +157,26 @@ function get_dd($db_id)
 
 
 	/* ACL */
-	$sql = 'SELECT username FROM #__datastores ds LEFT JOIN #__users u ON (u.id = ds.created_by)';
+
+	// Dataviews attached to resources
+	$sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path 
+		FROM jos_datastore_resources AS dr 
+		LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id) 
+		WHERE r.id IS NOT NULL AND dr.datastore_id = {$db_id['name']} AND dv.path = '/dataviewer/view/{$db_id['name']}:ds/$dv_id/'";
+	$db->setQuery($sql);
+	$res = $db->loadAssoc();
+
+	if (isset($res['id'])) {
+		$dd['acl'] = array();
+
+		// Public
+		if ($res['access'] == 0) {
+			$dd['acl']['public'] = true;
+		}
+	}
+
+	//$sql = 'SELECT username FROM #__datastores ds LEFT JOIN #__users u ON (u.id = ds.created_by)';
+	$sql = "SELECT username FROM #__datastore_users ds LEFT JOIN #__users u ON (u.id = ds.value AND ds.type='user') WHERE ds.id = " . $db_id['name'];
 	$db->setQuery($sql);
 	$managers = $db->loadResultArray();
 
@@ -168,6 +185,13 @@ function get_dd($db_id)
 	} elseif(!isset($dd['acl']['registered']) || !isset($dd['acl']['public'])) {
 		$dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
 		$dd['acl']['allowed_users'] = array_merge($dd['acl']['allowed_users'], $managers);
+	}
+
+	// Giving Hub admins full access to the DataStore dataviews
+	$juser =& JFactory::getUser();
+	if ($juser->get('usertype') == 'Super Administrator' || $juser->get('usertype') == 'Administrator' || $juser->get('usertype') == 'Manager' ) {
+		$dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
+		$dd['acl']['allowed_users'][] = $juser->get('username');
 	}
 
 	return $dd;
@@ -190,8 +214,10 @@ function _dd_post($dd)
 	}
 
 	// Data for Custom Views
-	$custom_view = JRequest::getVar('custom_view', array());
-	if (count($custom_view) > 0) {
+	$custom_view = JRequest::getVar('custom_view', '');
+
+	if ($custom_view != '') {
+		$custom_view = explode(',', $custom_view);
 		unset($dd['customizer']);
 
 		// Custom Title

@@ -20,6 +20,10 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+	margin: 0;
+	width: inherit;
+	min-width: 100%;
+	min-height: 100%;
 	z-index: 1000;
 	background: white;
 	overflow: auto;
@@ -126,10 +130,14 @@ table.dataTable thead th div.DataTables_sort_wrapper {
 	height: 100px;
 }
 
-#dv-spreadsheet ul li { 
+ul.ui-autocomplete li { 
 	margin: 1em 0;
 	padding: 0 0 0 13px;
 	background: none;
+}
+
+ul.ui-autocomplete li a { 
+	border-bottom: none;
 }
 
 
@@ -141,14 +149,6 @@ table.dataTable thead th div.DataTables_sort_wrapper {
 	-o-text-overflow:ellipsis;
 	-ms-text-overflow:ellipsis;
 }
-
-/* Firefox 7 and above support this now
-@-moz-document url-prefix() {
-	.truncateafter:before {
-		content: "...";
-	}
-}
-*/
 
 .scrollcell:hover {
 	margin-right: -5px; 

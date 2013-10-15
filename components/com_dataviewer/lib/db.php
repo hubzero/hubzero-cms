@@ -32,7 +32,7 @@ function get_db($db = false) {
 
 	mysql_set_charset('utf8');
 
-	mysql_query("SET SESSION group_concat_max_len = 2048");
+	mysql_query("SET SESSION group_concat_max_len = 16384");
 
 	return $link;
 }
@@ -352,7 +352,16 @@ function query_gen(&$dd)
 				$val['val'] = trim(str_replace('!', '', $val['val']));
 				$where_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
 			} else {
-				$where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
+				$v_arr = explode(' ', $val['val']);
+				if (count($v_arr) > 1) {
+					$list = array();
+					foreach($v_arr as $v) {
+						$list[] = $val['col'] . " LIKE '%" . $v . "%'";
+					}
+					$where_filter_arr[] = '(' . implode(' AND ', $list) . ')';
+				} elseif(trim($v_arr[0]) != '') {
+					$where_filter_arr[] = $val['col'] . " LIKE '%" . $v_arr[0] . "%'";
+				}
 			}
 		}
 
@@ -439,7 +448,16 @@ function query_gen(&$dd)
 				$val['val'] = trim(str_replace('!', '', $val['val']));
 				$having_filter_arr[] = $val['col'] . " NOT LIKE '%" . $val['val'] . "%'";
 			} else {
-				$having_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
+				$v_arr = explode(' ', $val['val']);
+				if (count($v_arr) > 1) {
+					$list = array();
+					foreach($v_arr as $v) {
+						$list[] = $val['col'] . " LIKE '%" . $v . "%'";
+					}
+					$having_filter_arr[] = '(' . implode(' AND ', $list) . ')';
+				} elseif(trim($v_arr[0]) != '') {
+					$having_filter_arr[] = $val['col'] . " LIKE '%" . $v_arr[0] . "%'";
+				}
 			}
 		}
 

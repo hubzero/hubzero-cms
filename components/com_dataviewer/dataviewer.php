@@ -48,10 +48,4 @@ $dv_conf['settings']['com_name'] = $com_name;
 
 controller();
 return;
-// Instantiate controller
-$controller = new Controller();
-$mainframe = &JFactory::getApplication();
-$controller->mainframe = $mainframe;
-$controller->execute();
-$controller->redirect();
 ?>

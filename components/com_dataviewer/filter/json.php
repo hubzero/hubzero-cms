@@ -227,10 +227,65 @@ function filter($res, $dd)
 
 					$null_val = true;
 
+				} elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'file') {
+					if (!isset($dd['cols'][$key]['ds-repo-path'])) {
+						$dd['cols'][$key]['ds-repo-path'] = "/file_repo/{$dd['table']}/$key";
+					}
+
+					if ($dd['cols'][$key]['type_extra'] == 'multi') {
+						$list = explode('|#|', $val);
+						$val = array();
+						foreach($list as $l) {
+							$link_label = $l;
+							$link = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . $l;
+							
+							$title = $l;
+							$missing = '';
+							if (isset($dd['cols'][$key]['file-verify'])) {
+								$full_path = $dv_conf['base_path'] . $dd['cols'][$key]['ds-repo-path'] . DS . $l;
+								if (!file_exists($full_path)) {
+									$missing = 'dv-file-missing';
+									$title = 'Missing File: ' . $dd['cols'][$key]['ds-repo-path'] . DS . $l;
+									$link_label = $link_label . '&nbsp;[missing]';
+								}
+							}
+							
+							if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
+								$small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $l;
+								$medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $l;
+								$link_label = '<img class="dv_image dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
+							}
+
+							$val[] = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
+						}
+						$val = implode('&nbsp;', $val);
+					} else {
+						$link_label = $val;
+						$link = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . $val;
+						
+						
+						$title = $val;
+						$missing = '';
+						if (isset($dd['cols'][$key]['file-verify'])) {
+							$full_path = $dv_conf['base_path'] . $dd['cols'][$key]['ds-repo-path'] . DS . $val;
+							if (!file_exists($full_path)) {
+								$missing = 'dv-file-missing';
+								$title = 'Missing File: ' . $dd['cols'][$key]['ds-repo-path'] . DS . $val;
+								$link_label = $link_label . '&nbsp;[missing]';
+							}
+						}
+						
+						if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
+							$small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $val;
+							$medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $val;
+							$link_label = '<img class="dv_image dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
+						}
+						$val = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
+					}
 				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'date') {
 					$val = strtotime($val);
 					$val = date("m/d/Y", $val);
-				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'image') {
+				} elseif((isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'image') || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] == 'image')) {
 					$small_img = $val;
 					$medium_img = $val;
 
@@ -300,7 +355,12 @@ function filter($res, $dd)
 					}
 				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'email') {
 					$val = '<a href="mailto:' . $val . '">' . $val . '</a>';
-				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'link') {
+				} elseif(isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'link' || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] != 'image')) {
+
+					if (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] == 'full_link') {
+						$dd['cols'][$key]['full_url'] = true;
+					}
+
 					if (!isset($dd['cols'][$key]['multi'])) {
 						$preview = '';
 						if (isset($dd['cols'][$key]['preview'])) {
@@ -595,7 +655,7 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 		}
 	} else {
 		$hash = get_dl_hash($path);
-		$link = "/" . $com_name . '/?task=file&hash=' . $hash;
+		$link = '/' . $com_name . '/stream_file/' . $dd['db_id']['id'] . '/?hash=' . $hash;
 		if (!$label) {
 			$pi = pathinfo($path);
 			$label = isset($pi['filename'])? $pi['filename']: false;

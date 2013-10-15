@@ -67,6 +67,14 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 	}
 
+	// Access restrictions for unpublished databases
+	if(!isset($dd['publication_state']) || $dd['publication_state'] != 1) {
+		$sql = "SELECT username FROM #__project_owners po JOIN #__users u ON (u.id = po.userid) WHERE projectid = {$dd['project']}";
+		$db = &JFactory::getDBO();
+		$db->setQuery($sql);
+		$dd['acl']['allowed_users'] = $db->loadResultArray();
+	}
+
 	$dv_conf['db']['database'] = $dd['database'];
 
 	$dd['db_id'] = $db_id;

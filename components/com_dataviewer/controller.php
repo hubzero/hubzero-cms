@@ -52,6 +52,14 @@ function task_file($db_id)
 	}
 }
 
+
+function task_stream_file($db_id)
+{
+	$hash = JRequest::getVar('hash');
+	stream_file($hash);
+	exit;
+}
+
 function task_view($db_id)
 {
 	global $dv_conf;

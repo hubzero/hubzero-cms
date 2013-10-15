@@ -66,7 +66,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 		<?endforeach;?>
 		</select>
 		<br />
-		<input type="button" value="Next >>" id="prj-db-preview-file" />
+		<input type="submit" value="Next >>" id="prj-db-preview-file" style="color: #000000;" />
 	</form>
 <?php
 	}
@@ -90,10 +90,10 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	else
 	{
 ?>
-	<h3>Sorry, You need to have CSV formatted spreadsheet files to create databases.</h3>
+	<h3>Sorry, you need to have CSV formatted spreadsheet files to create databases.</h3>
 	<p>Maybe the file has already been used for a database. Please <a href="/projects/<?=$this->project->alias?>/databases">go back</a> and remove the database that's using the file</p>
 	<p>or</p>
-	<p>Please <a href="/projects/<?=$this->project->alias?>/files">Click here</a> to upload a new CSV file.</p>
+	<p><a href="/projects/<?=$this->project->alias?>/files">Click here</a> to upload a new CSV file.</p>
 <?php
 	}
 ?>

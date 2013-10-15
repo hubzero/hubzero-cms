@@ -45,7 +45,7 @@ jQuery(document).ready(function($) {
 				$('label[for="dv_download"]').remove();
 				$('#dv_maps').remove();
 				$('label[for="dv_maps"]').remove();
-				$('#dv_customizer_btn').prop('disabled', true);
+				$('#dv-customizer-btn').prop('disabled', true);
 
 				$('#dv_table_container').hide();
 			} else {
@@ -61,24 +61,24 @@ jQuery(document).ready(function($) {
 
 		if (dv_show_customizer) {
 			$('#dv_customizer_panel').show();
-			$('#dv_customizer_btn').prop('checked', true);
+			$('#dv-customizer-btn').addClass('btn-inverse');
 		}
 
 	}
 
-	$('#dv_customizer_full_list li').live('dblclick', function() {
+	$(document).on('dblclick', '#dv_customizer_full_list li', function() {
 		$('#dv_customizer_selected').append($(this).clone());
 		$(this).remove();
 		$('.dv_customizer_col_lists').trigger('sortupdate');
 	});
 
-	$('#dv_customizer_selected li').live('dblclick', function() {
+	$(document).on('dblclick', '#dv_customizer_selected li', function() {
 		$('#dv_customizer_full_list').append($(this).clone());
 		$(this).remove();
 		$('.dv_customizer_col_lists').trigger('sortupdate');
 	});
 
-	$('#dv_customizer_selected').bind('sortupdate', function(event, ui) {
+	$('#dv_customizer_selected').on('sortupdate', function(event, ui) {
 		if ($(this).find('li').length < 1) {
 			$('#dv_customizer_launch_view_btn').hide();
 		} else {
@@ -113,7 +113,7 @@ jQuery(document).ready(function($) {
 			url = url.substring(0, url.length-1);
 		}
 
-		window.open (url, "DataViewerCustomView");
+		window.open (url, 'DataViewerCustomView');
 	});
 
 	// Group By
@@ -135,13 +135,14 @@ jQuery(document).ready(function($) {
 	});
 
 	// Hide/Show Customizer
-	$('#dv_customizer_btn').live('click', function() {
+	$(document).on('click', '#dv-customizer-btn', function() {
 		$('.dv_top_pannel').hide();
-		if ($(this).prop('checked') === true) {
-			$('.dv_panel_btn').not(this).prop('checked', false);
-			$('#dv_customizer_panel').show();
-		} else {
+		if ($(this).hasClass('btn-inverse')) {
+			$(this).removeClass('btn-inverse');
 			$('#dv_customizer_panel').hide();
+		} else {
+			$(this).addClass('btn-inverse');
+			$('#dv_customizer_panel').show();
 		}
 	});
 });
