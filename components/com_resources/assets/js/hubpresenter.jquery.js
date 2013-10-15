@@ -904,14 +904,6 @@ HUB.Presenter = {
 	
 	navBar: function() 
 	{
-		//back home
-		jQ("#nanohub").bind("click",function(e) {
-			if(!mobile) {
-				e.preventDefault();
-				window.close();
-			}
-		});
-		
 		//presentation picker
 		jQ("#presentation").bind("change", function(e) {
 			if(this.value != "") {

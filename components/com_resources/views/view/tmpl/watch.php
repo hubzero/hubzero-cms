@@ -141,7 +141,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 ?>
 
 <div id="presenter-nav-bar">
-	<a href="/resources/<?php echo $rr->id; ?>" id="nanohub" title="Close Window">&times; Close Window</a>
+	<a href="/resources/<?php echo $rr->id; ?>" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
+		<span>powered by</span> <?php echo JFactory::getConfig()->get('sitename'); ?>
+	</a>
 	
 	<?php if($children) : ?>
 		<form name="presentation-picker" id="presentation-picker" method="post">
