@@ -308,15 +308,15 @@ class GroupsControllerManage extends Hubzero_Controller
 		$g['cn'] = strtolower($g['cn']);
 
 		// Ensure the data passed is valid
-		if (!$this->_validCn($g['cn'], $g['type']))
+		if (!$this->_validCn($g['cn']))
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_INVALID_ID'));
 		}
-		if ($isNew && Hubzero_Group::exists($g['cn']))
+		if (Hubzero_Group::exists($g['cn'], true))
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
 		}
-
+		
 		// Push back into edit mode if any errors
 		if ($this->getError())
 		{
@@ -753,30 +753,33 @@ class GroupsControllerManage extends Hubzero_Controller
 	 *
 	 * @return boolean True if CN is valid
 	 */
-	private function _validCn($name, $type)
+	/**
+	 * Check if a group alias is valid
+	 * 
+	 * @param 		integer 	$cname 			Group alias
+	 * @param 		boolean		$allowDashes 	Allow dashes in cn
+	 * @return 		boolean		True if valid, false if not
+	 */
+    private function _validCn( $cn, $allowDashes = false )
 	{
-		if ($type == 1)
+		$regex = '/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i';
+		if ($allowDashes)
 		{
-			$admin = false;
-		}
-		else
-		{
-			$admin = true;
+			$regex = '/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i';
 		}
 
-		if (($admin && preg_match("#^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$#i", $name))
-		 || (!$admin && preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $name)))
+		if (preg_match($regex, $cn))
 		{
-			if (is_numeric($name) && intval($name) == $name && $name >= 0)
+			if (is_numeric($cn) && intval($cn) == $cn && $cn >= 0) 
 			{
 				return false;
-			}
-			else
+			} 
+			else 
 			{
 				return true;
 			}
-		}
-		else
+		} 
+		else 
 		{
 			return false;
 		}

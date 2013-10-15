@@ -1113,6 +1113,12 @@ class Hubzero_Group
 				return true;
 			}
 		}
+		
+		// check reserved
+		if (Hubzero_Validate::is_reserved_group($group))
+		{
+			return true;
+		}
 
 		if (is_numeric($group))
 		{
