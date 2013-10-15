@@ -282,8 +282,9 @@ class Akismet extends AbstractAdapter
 	 *	Tests for spam.
 	 *	Uses the web service provided by {@link http://www.akismet.com Akismet} to see whether or not the submitted comment is spam.  Returns a boolean value.
 	 *
-	 *	@return		bool	True if the comment is spam, false if not
-	 *  @throws		Will throw an exception if the API key passed to the constructor is invalid.
+	 * @param    string $value Conent to test
+	 * @return   bool True if the comment is spam, false if not
+	 * @throws   Will throw an exception if the API key passed to the constructor is invalid.
 	 */
 	public function isSpam($value = null) 
 	{

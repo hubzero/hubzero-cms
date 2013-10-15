@@ -43,6 +43,28 @@ class Service
 	protected $_adapter = null;
 
 	/**
+	 * @var array map of characters to be replaced through strtr
+	 */
+	protected $canonicalNamesReplacements = array(
+		'-'  => '', 
+		'_'  => '', 
+		' '  => '', 
+		'\\' => '', 
+		'/'  => ''
+	);
+
+	/**
+	 * Default set of adapters
+	 *
+	 * @var array
+	 */
+	protected $invokableClasses = array(
+		'akismet'      => 'Hubzero\Antispam\Adapter\Akismet',
+		'mollom'       => 'Hubzero\Antispam\Adapter\Mollom',
+		'spamassassin' => 'Hubzero\Antispam\Adapter\SpamAssassin'
+	);
+
+	/**
 	 * Constructor
 	 *
 	 * @param    Adapter\AdapterInterface $adapter
@@ -77,25 +99,82 @@ class Service
 	{
 		if (is_string($adapter))
 		{
-			$invokable = '\Hubzero\Antispam\Adapter\\' . $adapter;
-			if (!class_exists($invokable)) 
+			$cName = $this->canonicalizeName($adapter);
+
+			if (isset($this->invokableClasses[$cName])) 
 			{
-				throw new Exception\AdapterNotFoundException(sprintf(
-					'%s: failed retrieving adapter via invokable class "%s"; class does not exist',
-					get_class($this) . '::' . __FUNCTION__,
-					$invokable
-				));
+				//$invokable = '\Hubzero\Antispam\Adapter\\' . $adapter;
+				$invokable = $this->invokableClasses[$cName];
+
+				if (!class_exists($invokable)) 
+				{
+					throw new Exception\AdapterNotFoundException(sprintf(
+						'%s: failed retrieving adapter via invokable class "%s"; class does not exist',
+						get_class($this) . '::' . __FUNCTION__,
+						$invokable
+					));
+				}
+				$adapter = new $invokable;
 			}
-			$adapter = new $invokable();
 		}
 
 		if (!($adapter instanceof Adapter\AdapterInterface))
 		{
-			throw new \InvalidArgumentException(JText::_('Adapter must implement ' . __NAMESPACE__ . '\AdapterInterface'));
+			throw new \InvalidArgumentException(sprintf(
+				'%s was unable to fetch adapter or adapter was not an instance of %s',
+				get_class($this) . '::' . __FUNCTION__,
+				__NAMESPACE__ . '\AdapterInterface'
+			));
 		}
 
 		$this->_adapter = $adapter;
 		return $this;
+	}
+
+	/**
+	 * Set a property
+	 *
+	 * @param    string $key
+	 * @param    mixed  $value
+	 * @return   object
+	 */
+	public function set($key, $value)
+	{
+		$this->getAdapter()->set($key, $value);
+		return $this;
+	}
+
+	/**
+	 * Get a property
+	 *
+	 * @param    string $key
+	 * @return   mixed
+	 */
+	public function get($key)
+	{
+		return $this->getAdapter()->get($key);
+	}
+
+	/**
+	 * Set properties
+	 *
+	 * @param    mixed $data Array or object
+	 * @return   object
+	 */
+	public function setProperties($data)
+	{
+		$this->getAdapter()->setProperties($data);
+		return $this;
+	}
+
+	/**
+	 * Get properties
+	 *
+	 * @return   array
+	 */
+	public function getProperties()
+	{
+		return $this->getAdapter()->getProperties();
 	}
 
 	/**
@@ -118,12 +197,19 @@ class Service
 	}
 
 	/**
-	 * Clears the identity from persistent storage
+	 * Canonicalize name
 	 *
-	 * @return   void
+	 * @param  string $name
+	 * @return string
 	 */
-	public function getMessages()
+	protected function canonicalizeName($name)
 	{
-		return $this->getAdapter()->getMessages();
+		if (isset($this->canonicalNames[$name])) 
+		{
+			return $this->canonicalNames[$name];
+		}
+
+		// this is just for performance instead of using str_replace
+		return strtolower(strtr($name, $this->canonicalNamesReplacements));
 	}
 }
