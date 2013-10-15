@@ -66,6 +66,7 @@ class plgCoursesRelated extends JPlugin
 		{
 			return;
 		}
+
 		$ids = array();
 		foreach ($instructors as $instructor)
 		{
@@ -73,8 +74,6 @@ class plgCoursesRelated extends JPlugin
 		}
 
 		$database =& JFactory::getDBO();
-
-		//$now = date('Y-m-d H:i:s', time());
 
 		$query  = "SELECT c.* 
 					FROM #__courses AS c 
@@ -84,9 +83,7 @@ class plgCoursesRelated extends JPlugin
 					AND m.user_id IN (" . implode(",", $ids) . ")
 					AND m.student=0
 					AND c.state=1
-					AND c.id !=" . $database->Quote($course->get('id'));
-	/*				AND (c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $database->Quote($now) . ")
-					AND (c.publish_down = '0000-00-00 00:00:00' OR c.publish_down >= " . $database->Quote($now) . ")";*/
+					AND c.id !=" . $database->Quote($course->get('id')) . " LIMIT " . (int) $this->params->get('display_limit', 3);
 
 		$database->setQuery($query);
 		if (($courses = $database->loadObjectList()))
