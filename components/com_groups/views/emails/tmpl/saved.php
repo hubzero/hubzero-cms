@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->g_cn.'&active=members');
+$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->g_cn);
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
