@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,7 +35,7 @@ require_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'notes' . DS . 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Courses model class for a course
+ * Courses model class for a course note
  */
 class CoursesPluginModelNote extends CoursesModelAbstract
 {
@@ -54,27 +54,24 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 	protected $_scope = 'note';
 
 	/**
-	 * Object scope
+	 * CoursesModelIterator
 	 * 
-	 * @var string
+	 * @var object
 	 */
 	protected $_notes = null;
 
 	/**
-	 * Object scope
+	 * Serialized string of filers
 	 * 
 	 * @var string
 	 */
 	protected $_filters = null;
 
 	/**
-	 * Returns a reference to a course model
-	 *
-	 * This method must be invoked as:
-	 *     $offering = CoursesModelAnnouncement::getInstance($alias);
+	 * Returns a reference to a course note model
 	 *
 	 * @param      integer $oid ID (int)
-	 * @return     object CoursesModelCourse
+	 * @return     object CoursesPluginModelNote
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -94,8 +91,7 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 	}
 
 	/**
-	 * Get a list of assets for a unit
-	 *   Accepts an array of filters to apply to the list of assets
+	 * Get a list or count of notes
 	 * 
 	 * @param      array $filters Filters to apply
 	 * @return     object CoursesModelIterator
@@ -117,9 +113,8 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 			return $this->_tbl->count($filters);
 		}
 
-		if (!isset($this->_notes) || !is_a($this->_notes, 'CoursesModelIterator') || (!empty($filters) && serialize($filters) != $this->_filters))
+		if (!isset($this->_notes) || !($this->_notes instanceof CoursesModelIterator) || (!empty($filters) && serialize($filters) != $this->_filters))
 		{
-			//$tbl = new CoursesTableMemberNote($this->_db);
 			$this->_filters = serialize($filters);
 
 			if ($results = $this->_tbl->find($filters))

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -37,7 +37,7 @@ if ($notes)
 {
 	foreach ($notes as $note)
 	{
-		$ky = $note->get('scope_id'); //$note->get('scope') . '_' . $note->get('scope_id');
+		$ky = $note->get('scope_id');
 		if (!isset($results[$ky]))
 		{
 			$results[$ky] = array();
@@ -64,7 +64,6 @@ $base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course-
 
 				if ($note->get('timestamp') != '00:00:00') 
 				{
-					//echo str_replace('%3A', ':', JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp'))));
 					echo ' video time: ' . $this->escape($note->get('timestamp')); 
 				} 
 				echo "\n";
