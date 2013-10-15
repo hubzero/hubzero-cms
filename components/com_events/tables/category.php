@@ -42,14 +42,56 @@ class EventsCategory extends JTable
 	 * @var integer
 	 */
 	var $id               = NULL;
-
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $asset_id        = NULL;
+	
 	/**
 	 * int(11)
 	 * 
 	 * @var integer
 	 */
 	var $parent_id        = NULL;
-
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $lft        = NULL;
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $rgt        = NULL;
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $level        = NULL;
+	
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $path            = NULL;
+	
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $extension            = NULL;
+	
 	/**
 	 * varchar(255)
 	 * 
@@ -62,42 +104,14 @@ class EventsCategory extends JTable
 	 * 
 	 * @var string
 	 */
-	var $name             = NULL;
-
-	/**
-	 * varchar(255)
-	 * 
-	 * @var string
-	 */
 	var $alias            = NULL;
-
+	
 	/**
 	 * varchar(255)
 	 * 
 	 * @var string
 	 */
-	var $image            = NULL;
-
-	/**
-	 * varchar(50)
-	 * 
-	 * @var string
-	 */
-	var $section          = NULL;
-
-	/**
-	 * varchar(30)
-	 * 
-	 * @var string
-	 */
-	var $image_position   = NULL;
-
-	/**
-	 * text
-	 * 
-	 * @var string
-	 */
-	var $description      = NULL;
+	var $description            = NULL;
 
 	/**
 	 * int(1)
@@ -121,32 +135,11 @@ class EventsCategory extends JTable
 	var $checked_out_time = NULL;
 
 	/**
-	 * varchar(50)
-	 * 
-	 * @var string
-	 */
-	var $editor           = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $ordering         = NULL;
-
-	/**
 	 * int(3)
 	 * 
 	 * @var string
 	 */
 	var $access           = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $count            = NULL;
 
 	/**
 	 * text
@@ -242,14 +235,7 @@ class EventsCategory extends JTable
 		{
 			$section = $this->section;
 		}
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE section=" . $this->_db->Quote($section));
-		}
-		else
-		{
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE extension=" . $this->_db->Quote($section));
-		}
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE extension=" . $this->_db->Quote($section));
 		return $this->_db->loadResult();
 	}
 }

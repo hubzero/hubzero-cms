@@ -34,8 +34,8 @@ $text = ($this->task == 'editcat') ? JText::_('COM_EVENTS_EDIT') : JText::_('COM
 JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': <small><small>[ '. $text.' '.JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY').' ]</small></small>', 'event.png');
 JToolBarHelper::spacer();
 JToolBarHelper::save();
-JToolBarHelper::spacer();
-JToolBarHelper::media_manager();
+//JToolBarHelper::spacer();
+//JToolBarHelper::media_manager();
 JToolBarHelper::cancel();
 
 if ($this->row->image == '') {
@@ -74,11 +74,11 @@ function submitbutton(pressbutton, section)
 				<tbody>
 					<tr>
 						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
-						<td><input type="text" name="title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" maxlength="50" title="A short name to appear in menus" /></td>
+						<td><input type="text" name="category[title]" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" maxlength="50" title="A short name to appear in menus" /></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_NAME'); ?>:</td>
-						<td><input type="text" name="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" maxlength="255" title="A long name to be displayed in headings" /></td>
+						<td class="key"><?php echo JText::_('Category Alias'); ?>:</td>
+						<td><input type="text" name="category[alias]" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" maxlength="255" title="A long name to be displayed in headings" /></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
@@ -92,13 +92,14 @@ function submitbutton(pressbutton, section)
 				<?php } ?>
 					<tr>
 						<td class="key" style="vertical-align: top;"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</td>
-						<td><?php echo $editor->display('description', stripslashes($this->row->description), '100%', 'auto', '45', '10', false); ?></td>
+						<td><?php echo $editor->display('category[description]', stripslashes($this->row->description), '100%', 'auto', '45', '10', false); ?></td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
+		<!--
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Image'); ?></span></legend>
 
@@ -125,14 +126,14 @@ function submitbutton(pressbutton, section)
 				</tbody>
 			</table>
 		</fieldset>
+		-->
 	</div>
 	<div class="clr"></div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="section" value="<?php echo $this->row->section; ?>" />
-	<input type="hidden" name="oldtitle" value="<?php echo $this->row->title ; ?>" />
-	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="category[extension]" value="com_events" />
+	<input type="hidden" name="category[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="task" value="save" />
 
 	<?php echo JHTML::_('form.token'); ?>

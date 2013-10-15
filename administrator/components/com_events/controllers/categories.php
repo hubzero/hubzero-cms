@@ -354,47 +354,46 @@ class EventsControllerCategories extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-
+		
+		//get category info
+		$category = JRequest::getVar('category', array());
+		
+		//set path
+		$category['parent_id'] = 21; // root
+		$category['level']     = 1;
+		$category['path']      = (isset($category['alias'])) ? $category['alias'] : '';
+		$category['published'] = 1;
+		$category['access']    = 1;
+		
 		$row = new EventsCategory($this->database);
-		if (!$row->bind($_POST)) 
-		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
-		if (!$row->check()) 
-		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
 
-		if (!$row->store()) 
+		if (!$row->save($category)) 
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		$row->checkin();
 		//$row->updateOrder("section='$row->section'");
 
-		if ($oldtitle = JRequest::getVar('oldtitle', null, 'post')) 
-		{
-			if ($oldtitle != $row->title) 
-			{
-				$this->database->setQuery("UPDATE #__menu SET name='$row->title' WHERE name='$oldtitle' AND type='content_category'");
-				$this->database->query();
-			}
-		}
+		//if ($oldtitle = JRequest::getVar('oldtitle', null, 'post')) 
+		//{
+		//	if ($oldtitle != $row->title) 
+		//	{
+		//		$this->database->setQuery("UPDATE #__menu SET name='$row->title' WHERE name='$oldtitle' AND type='content_category'");
+		//		$this->database->query();
+		//	}
+		//}
 
-		// Update Section Count
-		if ($row->section != 'com_weblinks') 
-		{
-			$this->database->setQuery("UPDATE #__sections SET count=count+1 WHERE id = '$row->section'");
-		}
+		//// Update Section Count
+		//if ($row->section != 'com_weblinks') 
+		//{
+		//	$this->database->setQuery("UPDATE #__sections SET count=count+1 WHERE id = '$row->section'");
+		//}
 
-		if (!$this->database->query()) 
-		{
-			JError::raiseError(500, $this->database->getErrorMsg());
-			return;
-		}
+		//if (!$this->database->query()) 
+		//{
+		//	JError::raiseError(500, $this->database->getErrorMsg());
+		//	return;
+		//}
 
 		// Redirect
 		$this->setRedirect(
