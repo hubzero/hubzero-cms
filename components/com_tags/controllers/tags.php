@@ -108,6 +108,13 @@ class TagsControllerTags extends Hubzero_Controller
 		// Ensure we were passed a tag
 		if (!$tagstring && !$addtag) 
 		{
+			if (JRequest::getWord('task', '', 'get'))
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option)
+				);
+				return;
+			}
 			JError::raiseError(404, JText::_('COM_TAGS_NO_TAG'));
 			return;
 		}
