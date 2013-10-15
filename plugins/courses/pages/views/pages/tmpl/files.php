@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
 ?>
 	<div id="attachments">
-		<form action="/index.php" id="adminForm" method="post" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_($base); ?>" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
 					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="<?php echo JRoute::_($base . '&action=list&tmpl=component&page=' . $this->page->get('id') . '&section_id=' . $this->page->get('section_id')); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
@@ -48,16 +48,16 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 							<td><input type="file" name="upload" id="upload" /></td>
 						</tr>
 						<tr>
-							<td><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></td>
+							<td><input type="submit" value="<?php echo JText::_('PLG_COURSES_PAGES_UPLOAD'); ?>" /></td>
 						</tr>
 					</tbody>
 				</table>
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-				<input type="hidden" name="page" value="<?php echo $this->page->get('id'); ?>" />
-				<input type="hidden" name="section_id" value="<?php echo $this->page->get('section_id'); ?>" />
+				<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+				<input type="hidden" name="page" value="<?php echo $this->escape($this->page->get('id')); ?>" />
+				<input type="hidden" name="section_id" value="<?php echo $this->escape($this->page->get('section_id')); ?>" />
 				<input type="hidden" name="active" value="pages" />
 				<input type="hidden" name="action" value="upload" />
 				<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />

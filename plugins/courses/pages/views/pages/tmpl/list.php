@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -76,38 +76,33 @@ if (!$no_html) { ?>
 		<form action="index.php" method="post" id="filelist">
 <?php } ?>
 <?php if (count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('No files found.'); ?></p>
+			<p><?php echo JText::_('PLG_COURSES_PAGES_NO_FILES_FOUND'); ?></p>
 <?php } else { ?>
-			<table summary="<?php echo JText::_('Files for this page'); ?>">
+			<table>
 				<tbody>
-<?php
-if ($this->docs) 
-{
-	jimport('joomla.filesystem.file');
-	
-	foreach ($this->docs as $path => $name)
-	{
-		$ext = JFile::getExt($name);
-?>
+				<?php
+				if ($this->docs) 
+				{
+					jimport('joomla.filesystem.file');
+					
+					foreach ($this->docs as $path => $name)
+					{
+						$ext = JFile::getExt($name);
+				?>
 					<tr>
-						<!-- <td>
-							<span class="<?php echo $ext; ?> file">
-								<?php echo JText::_('File type'); ?>: <?php echo $ext; ?>
-							</span>
-						</td> -->
 						<td width="100%">
 							<span><?php echo $this->escape(stripslashes($name)); ?></span>
 						</td>
 						<td>
-							<a class="delete" href="<?php echo JRoute::_($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1')); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('DELETE'); ?>">
-								<?php echo JText::_('DELETE'); ?>
+							<a class="delete" href="<?php echo JRoute::_($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1')); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>">
+								<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
-<?php
-	}
-}
-?>
+				<?php
+					}
+				}
+				?>
 				</tbody>
 			</table>
 <?php } ?>

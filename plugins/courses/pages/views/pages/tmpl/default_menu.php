@@ -1,36 +1,40 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-//$pages = $this->offering->pages();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
 ?>
 <div class="pages-menu">
 	<ul>
-<?php if (count($this->pages) > 0) { ?>
+	<?php if (count($this->pages) > 0) { ?>
 		<?php
 		foreach ($this->pages as $page)
 		{
@@ -41,16 +45,16 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<?php
 		}
 		?>
-<?php } else { ?>
+	<?php } else { ?>
 		<li>
-			<a class="active page" href="<?php echo $base; ?>"><?php echo JText::_('[No Pages Found]'); ?></a>
+			<a class="active page" href="<?php echo $base; ?>"><?php echo JText::_('PLG_COURSES_PAGES_NONE_FOUND'); ?></a>
 		</li>
-<?php } ?>
+	<?php } ?>
 	</ul>
 <?php if ($this->offering->access('manage', 'section')) { ?>
 	<p>
 		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&unit=add'); ?>">
-			<?php echo JText::_('Add page'); ?>
+			<?php echo JText::_('PLG_COURSES_PAGES_ADD_PAGE'); ?>
 		</a>
 	</p>
 <?php } ?>

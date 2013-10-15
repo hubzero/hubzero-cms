@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -130,8 +130,6 @@ class plgCoursesPages extends Hubzero_Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			//$document =& JFactory::getDocument();
-			//$document->addScript("/media/system/js/jquery.fileuploader.js");
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 			Hubzero_Document::addPluginScript('courses', $this->_name);
@@ -140,7 +138,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			if ($action && $action != 'edit' && $action != 'delete')
 			{
 				$action = 'download';
-			}//JRequest::getWord('group', '')
+			}
 
 			$active = strtolower(JRequest::getWord('unit', ''));
 
@@ -260,9 +258,9 @@ class plgCoursesPages extends Hubzero_Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name);
+			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -282,7 +280,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		{
 			$page = JRequest::getVar('unit', '');
 
-			$this->view->model = $this->view->offering->page($page); //new CoursesModelPage($page);
+			$this->view->model = $this->view->offering->page($page);
 		}
 		if (!$this->view->model)
 		{
@@ -331,9 +329,9 @@ class plgCoursesPages extends Hubzero_Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name);
+			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -348,7 +346,6 @@ class plgCoursesPages extends Hubzero_Plugin
 
 		if (!$model->bind($page))
 		{
-			//$this->setError($model->getError());
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->_edit($model);
 		}
@@ -361,12 +358,10 @@ class plgCoursesPages extends Hubzero_Plugin
 
 		if (!$model->store(true))
 		{
-			//$this->setError($model->getError());
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->_edit($model);
 		}
 
-		//return $this->_list();
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name . '&unit=' . $model->get('url'))
 		);
@@ -382,9 +377,9 @@ class plgCoursesPages extends Hubzero_Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name);
+			$return = JRoute::_('index.php?option=' . $this->view->option . '&gid=' . $this->view->course->get('alias') . '&offering=' . $this->view->offering->get('alias') . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -439,13 +434,10 @@ class plgCoursesPages extends Hubzero_Plugin
 		{
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')));
 			exit();
 		}
 
-		//allowed extensions for uplaod
-		//$allowedExtensions = array("png","jpeg","jpg","gif");
-		
 		//max upload size
 		$sizeLimit = $this->params->get('maxAllowed', 40000000);
 
@@ -458,8 +450,6 @@ class plgCoursesPages extends Hubzero_Plugin
 		}
 		elseif (isset($_FILES['qqfile']))
 		{
-			//$files = JRequest::getVar('qqfile', '', 'files', 'array');
-			
 			$stream = false;
 			$file = $_FILES['qqfile']['name'];
 			$size = (int) $_FILES['qqfile']['size'];
@@ -468,15 +458,9 @@ class plgCoursesPages extends Hubzero_Plugin
 		{
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('File not found')));
+			echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED')));
 			exit();
 		}
-
-		/*$page = new CoursesModelPage(JRequest::getInt('page', 0));
-		if (!$page->exists())
-		{
-			$page = null;
-		}*/
 
 		//define upload directory and make sure its writable
 		$path = $this->_path();
@@ -487,7 +471,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			{
 				ob_clean();
 				header('Content-type: text/plain');
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD')));
 				exit();
 			}
 		}
@@ -496,7 +480,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		{
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_UPLOAD_DIR_NOT_WRITABLE')));
 			exit();
 		}
 
@@ -513,7 +497,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			echo json_encode(array('error' => JText::sprintf('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARG', $max)));
 			exit();
 		}
 
@@ -586,7 +570,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		$listdir = JRequest::getInt('listdir', 0, 'post');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('WIKI_NO_ID'));
+			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_ID_PROVIDED'));
 			return $this->_files();
 		}
 
@@ -594,15 +578,9 @@ class plgCoursesPages extends Hubzero_Plugin
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('WIKI_NO_FILE'));
+			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
 			return $this->_files();
 		}
-
-		/*$page = new CoursesModelPage(JRequest::getInt('page', 0));
-		if (!$page->exists())
-		{
-			$page = null;
-		}*/
 
 		// Build the upload path if it doesn't exist
 		$path = $this->_path();
@@ -612,7 +590,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				$this->setError(JText::_('Error uploading. Unable to create path.'));
+				$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
 				return $this->_files();
 			}
 		}
@@ -626,7 +604,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		// Upload new files
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD'));
 		}
 
 		// Push through to the media view
@@ -694,7 +672,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		$file = trim(JRequest::getVar('file', '', 'get'));
 		if (!$file) 
 		{
-			$this->setError(JText::_('No file name provided.'));
+			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
 			if ($no_html)
 			{
 				ob_clean();
@@ -708,26 +686,20 @@ class plgCoursesPages extends Hubzero_Plugin
 			return $this->_files();
 		}
 
-		/*$page = new CoursesModelPage(JRequest::getInt('page', 0));
-		if (!$page->exists())
-		{
-			$page = null;
-		}*/
-
 		// Build the file path
 		$path = $this->_path();
 
 		// Delete the file
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
-			$this->setError(JText::_('File not found.'));
+			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_FILE_NOT_FOUND'));
 			if ($no_html)
 			{
 				ob_clean();
 				header('Content-type: text/plain');
 				echo json_encode(array(
-					'success'   => false, 
-					'error'     => $this->getError()
+					'success' => false, 
+					'error'   => $this->getError()
 				));
 				exit();
 			}
@@ -739,14 +711,14 @@ class plgCoursesPages extends Hubzero_Plugin
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file)) 
 			{
-				$this->setError(JText::_('Unable to delete file.'));
+				$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_DELETE_FILE'));
 				if ($no_html)
 				{
 					ob_clean();
 					header('Content-type: text/plain');
 					echo json_encode(array(
-						'success'   => false, 
-						'error'     => $this->getError()
+						'success' => false, 
+						'error'   => $this->getError()
 					));
 					exit();
 				}
@@ -755,12 +727,6 @@ class plgCoursesPages extends Hubzero_Plugin
 
 		if ($no_html)
 		{
-			/*ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode(array(
-				'success'   => true
-			));
-			exit();*/
 			return $this->_fileList();
 		}
 
@@ -889,35 +855,35 @@ class plgCoursesPages extends Hubzero_Plugin
 		// Ensure we have a path
 		if (empty($filename)) 
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').'[r]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
 			return;
 		}
 		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[f]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[f]' . $filename);
 			return;
 		}
 		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[e]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[e]' . $filename);
 			return;
 		}
 		// Disallow windows drive letter
 		if (preg_match("/^\s*[.]:/", $filename)) 
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[s]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[s]' . $filename);
 			return;
 		}
 		// Disallow \
 		if (strpos('\\', $filename)) 
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[g]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[g]' . $filename);
 			return;
 		}
 		// Disallow ..
 		if (strpos('..', $filename)) 
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[h]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[h]' . $filename);
 			return;
 		}
 
@@ -940,7 +906,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		// Ensure the file exist
 		if (!file_exists($filename)) 
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').'[j]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filename);
 			return;
 		}
 
@@ -953,7 +919,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		if (!$xserver->serve()) 
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR').'[x]'.$filename);
+			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR') . '[x]' . $filename);
 		} 
 		else 
 		{
