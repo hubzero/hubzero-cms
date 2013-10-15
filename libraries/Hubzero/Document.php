@@ -480,6 +480,8 @@ class Hubzero_Document
 		// Path to system CSS
 		$thispath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
 
+		$env = JFactory::getConfig()->getValue('config.application_env', 'production');
+
 		try {
 			// Primary build file
 			$primary   = 'site';
@@ -489,7 +491,7 @@ class Hubzero_Document
 
 			// If debugging is turned off and a cache file exist
 			//if (!JDEBUG && file_exists($output))
-			if (JFactory::getConfig()->getValue('config.application_env', 'production') == 'production' && file_exists($output))
+			if ($env == 'production' && file_exists($output))
 			{
 				$output =  DS . 'cache' . DS . $primary. '.css?v=' . filemtime($output);
 			}
@@ -504,7 +506,10 @@ class Hubzero_Document
 
 				// Try to compile LESS files
 				$less = new lessc;
-				$less->setFormatter('compressed');
+				if ($env != 'development')
+				{
+					$less->setFormatter('compressed');
+				}
 
 				// Are there any template overrides?
 				$template  = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'less'; // . 'bootstrap.less';
