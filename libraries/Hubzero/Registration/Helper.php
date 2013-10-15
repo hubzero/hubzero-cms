@@ -80,8 +80,8 @@ class Hubzero_Registration_Helper
 	public function validlogin($login)
 	{
 		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z\.]+$/i", $login)) {
-			// check max len, currently there is a 150 char limit in DB
-			if (strlen($login) > 150)
+			// check max len, currently there is a 32 char limit in DB
+			if (strlen($login) > 32)
 			{
 				return false;	
 			}
