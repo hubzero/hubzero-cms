@@ -41,15 +41,7 @@ else
 	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
 	$content = ($this->row->get('description')) ? $this->row->get('description') : $collection->get('description'); 
 }
-/*if (isset($this->collection))
-{
-	$collection = $this->collection;
-}
-else
-{
-	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
-}*/
-//print_r($collection);
+
 switch ($collection->get('object_type'))
 {
 	case 'member':
@@ -70,30 +62,23 @@ switch ($collection->get('object_type'))
 ?>
 		<h4<?php if ($collection->get('access', 0) == 4) { echo ' class="private"'; } ?>>
 			<a href="<?php echo JRoute::_($url); ?>">
-				<?php echo $this->escape(stripslashes($collection->get('title'))); //($collection->get('title')) ? $this->escape(stripslashes($collection->get('title'))) : $this->escape(stripslashes($this->row->get('title'))); ?>
+				<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
 			</a>
 		</h4>
 		<div class="description">
-			<?php 
-			//$content = ($this->row->get('description')) ? $this->row->get('description') : $collection->get('description'); 
-			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
-			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); 
-			?>
+			<?php echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false); ?>
 		</div>
 		<table summary="Board content counts">
 			<tbody>
 				<tr>
-					<!-- <td>
-						<strong><?php //echo $collection->count('image'); ?></strong> <span class="post-type image">images</span>
-					</td> -->
 					<td>
-						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file"><?php echo JText::_('files'); ?></span>
+						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file"><?php echo JText::_('COM_COLLECTIONS_POST_TYPE_FILES'); ?></span>
 					</td>
 					<td>
-						<strong><?php echo $collection->count('collection'); ?></strong> <span class="post-type collection"><?php echo JText::_('collections'); ?></span>
+						<strong><?php echo $collection->count('collection'); ?></strong> <span class="post-type collection"><?php echo JText::_('COM_COLLECTIONS_POST_TYPE_COLLECTIONS'); ?></span>
 					</td>
 					<td>
-						<strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link"><?php echo JText::_('links'); ?></span>
+						<strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link"><?php echo JText::_('COM_COLLECTIONS_POST_TYPE_LINKS'); ?></span>
 					</td>
 				</tr>
 			</tbody>

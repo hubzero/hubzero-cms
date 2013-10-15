@@ -41,14 +41,14 @@ $this->juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option;
 ?>
 <div id="content-header">
-	<h2><?php echo JText::_('Collections'); ?></h2>
+	<h2><?php echo JText::_('COM_COLLECTIONS'); ?></h2>
 </div>
 
 <div id="content-header-extra">
 	<ul>
 		<li>
 			<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
-				<span><?php echo JText::_('Getting started'); ?></span>
+				<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
 			</a>
 		</li>
 	</ul>
@@ -60,62 +60,62 @@ $base = 'index.php?option=' . $this->option;
 		<ul>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
+					<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->total); ?></span>
+					<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->total); ?></span>
 				</a>
 			</li>
 		</ul>
 		<div class="clear"></div>
 		<p>
 			<label for="filter-search">
-				<span><?php echo JText::_('Search'); ?></span>
-				<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search posts'); ?>" />
+				<span><?php echo JText::_('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
+				<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COLLECTIONS_SEARCH_PLACEHOLDER'); ?>" />
 			</label>
-			<input type="submit" class="filter-submit" value="<?php echo JText::_('Go'); ?>" />
+			<input type="submit" class="filter-submit" value="<?php echo JText::_('COM_COLLECTIONS_GO'); ?>" />
 		</p>
 		</div>
 	</fieldset>
 
 	<div class="main section">
 
-		<p class="tagline">A quick and easy way to share, favorite, and organize information on a hub.</p>
+		<p class="tagline"><?php echo JText::_('COM_COLLECTIONS_TAGLINE'); ?></p>
 
 		<div class="about-odd posts">
-			<h3>Post</h3>
+			<h3><?php echo JText::_('COM_COLLECTIONS_POST'); ?></h3>
 			<p>
-				A post starts with an image, link, or file you want to share. You can add a post by collecting content on the site or upload a file right from your computer. Any post can be reposted, and all posts link back to their source.
+				<?php echo JText::_('COM_COLLECTIONS_POST_EXPLANATION'); ?>
 			</p>
 		</div>
 
 		<div class="about-even collections">
-			<h3>Collection</h3>
+			<h3><?php echo JText::_('COM_COLLECTIONS_COLLECTION'); ?></h3>
 			<p>
-				A collection is where you organize your posts by topic. You could collect resources for creating an introduction to Nanotechnology, for example. Collections can be secret or public, and you can even put a collection inside another collection!
+				<?php echo JText::_('COM_COLLECTIONS_COLLECTION_EXPLANATION'); ?>
 			</p>
 		</div>
 
 		<div class="about-odd following">
-			<h3>Follow</h3>
+			<h3><?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?></h3>
 			<p>
-				When you follow someone, their posts show up in your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount/collections'); ?>">live feed</a>. You can follow all of someone's collections or just the ones you like best. To manage who you're following, go to your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">profile</a>, find <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount/collections'); ?>">Collections</a>, and click Following.
+				<?php echo JText::sprintf('COM_COLLECTIONS_FOLLOW_EXPLANATION', JRoute::_('index.php?option=com_members&task=myaccount/collections'), JRoute::_('index.php?option=com_members&task=myaccount'), JRoute::_('index.php?option=com_members&task=myaccount/collections')); ?>
 			</p>
 		</div>
 
 		<div class="about-even unfollowing">
-			<h3>Unfollow</h3>
+			<h3><?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?></h3>
 			<p>
-				When you unfollow someone, their collections won't show up in your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount/collections'); ?>">live feed</a> anymore. You can unfollow all of someone's collections, or just the ones you're not that interested in. <!-- Nobody will get notified if you unfollow them. -->
+				<?php echo JText::sprintf('COM_COLLECTIONS_UNFOLLOW_EXPLANATION', JRoute::_('index.php?option=com_members&task=myaccount/collections')); ?>
 			</p>
 		</div>
 
 		<div class="about-odd livefeed">
-			<h3>Live Feed</h3>
+			<h3><?php echo JText::_('COM_COLLECTIONS_LIVE_FEED'); ?></h3>
 			<p>
-				Your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount/collections'); ?>">live feed</a> is a collection of posts from collectors and collections you follow. It's updated every time someone you follow adds a post.
+				<?php echo JText::sprintf('COM_COLLECTIONS_LIVE_FEED_EXPLANATION', JRoute::_('index.php?option=com_members&task=myaccount/collections')); ?>
 			</p>
 		</div>
 

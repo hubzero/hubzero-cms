@@ -53,14 +53,14 @@ $this->juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option;
 ?>
 <div id="content-header">
-	<h2><?php echo JText::_('Collections'); ?></h2>
+	<h2><?php echo JText::_('COM_COLLECTIONS'); ?></h2>
 </div>
 
 <div id="content-header-extra">
 	<ul>
 		<li>
 			<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
-				<span><?php echo JText::_('Getting started'); ?></span>
+				<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
 			</a>
 		</li>
 	</ul>
@@ -72,22 +72,22 @@ $base = 'index.php?option=' . $this->option;
 			<ul>
 				<li>
 					<a class="collections count active" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-						<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->total); ?></span>
+						<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->total); ?></span>
 					</a>
 				</li>
 				<li>
 					<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-						<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
+						<span><?php echo JText::sprintf('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
 					</a>
 				</li>
 			</ul>
 			<div class="clear"></div>
 			<p>
 				<label for="filter-search">
-					<span><?php echo JText::_('Search'); ?></span>
-					<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search collections'); ?>" />
+					<span><?php echo JText::_('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
+					<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COLLECTIONS_SEARCH_PLACEHOLDER'); ?>" />
 				</label>
-				<input type="submit" class="filter-submit" value="<?php echo JText::_('Go'); ?>" />
+				<input type="submit" class="filter-submit" value="<?php echo JText::_('COM_COLLECTIONS_GO'); ?>" />
 			</p>
 		</div><!-- / .filters-inner -->
 	</fieldset>
@@ -139,7 +139,6 @@ if ($this->rows->total() > 0)
 					$view->option     = $this->option;
 					$view->params     = $this->config;
 					$view->row        = $row;
-					//$view->collection = $this->collection;
 					$view->parser     = $p;
 					$view->wikiconfig = $wikiconfig;
 					$view->display();
@@ -152,10 +151,10 @@ if ($this->rows->total() > 0)
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
+							<?php echo JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
 						</span>
 						<span class="reposts">
-							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
+							<?php echo JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
 				<?php if (!$this->juser->get('guest')) { ?>
@@ -163,25 +162,25 @@ if ($this->rows->total() > 0)
 						<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == $this->juser->get('id')) { ?>
 							<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
 								<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/edit'); ?>">
-									<span><?php echo JText::_('Edit'); ?></span>
+									<span><?php echo JText::_('COM_COLLECTIONS_EDIT'); ?></span>
 								</a>
 							<?php //} ?>
 							<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
 								<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/delete'); ?>">
-									<span><?php echo JText::_('Delete'); ?></span>
+									<span><?php echo JText::_('COM_COLLECTIONS_DELETE'); ?></span>
 								</a>
 							<?php // } ?>
 						<?php } else { ?>
 								<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&board=' . $row->get('id') . '&task=collect'); ?>">
-									<span><?php echo JText::_('Collect'); ?></span>
+									<span><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></span>
 								</a>
 							<?php if ($row->isFollowing()) { ?>
-								<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($row->link() . '/unfollow'); ?>">
-									<span><?php echo JText::_('Unfollow'); ?></span>
+								<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo JRoute::_($row->link() . '/unfollow'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?></span>
 								</a>
 							<?php } else { ?>
-								<a class="follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($row->link() . '/follow'); ?>">
-									<span><?php echo JText::_('Follow'); ?></span>
+								<a class="follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo JRoute::_($row->link() . '/follow'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?></span>
 								</a>
 							<?php } ?>
 						<?php } ?>
@@ -190,17 +189,18 @@ if ($this->rows->total() > 0)
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="<?php echo JText::sprintf('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->creator()->get('name')))); ?>" />
 					</a>
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id') . '&active=collections'); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
-
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
+							<span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+							<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+							<span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -216,29 +216,15 @@ else
 	<?php if ($this->config->get('access-create-bulletin')) { ?>
 			<div class="instructions">
 				<ol>
-					<li>Find an image, file, link or text you want to share.</li>
-					<li>Click on the appropriate type of post.</li>
-					<li>Add anything extra you want (tags are nice).</li>
-					<li>Done!</li>
+					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP1'); ?></li>
+					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP2'); ?></li>
+					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP3'); ?></li>
+					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP4'); ?></li>
 				</ol>
-			</div>
-			<ul class="post-type">
-				<li class="post-image">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&controller=posts&task=new&type=image&board=' . $this->collection->get('alias')); ?>" rel="post-image" title="Post an image">Image</a>
-				</li>
-				<li class="post-file">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&controller=posts&task=new&type=file&board=' . $this->collection->get('alias')); ?>" rel="post-file" title="Post a file">File</a>
-				</li>
-				<li class="post-text">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&controller=posts&task=new&type=text&board=' . $this->collection->get('alias')); ?>" rel="post-text" title="Post some text">Text</a>
-				</li>
-				<li class="post-link">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&controller=posts&task=new&type=link&board=' . $this->collection->get('alias')); ?>" rel="post-link" title="Post a link">Link</a>
-				</li>
 			</ul>
 	<?php } else { ?>
 			<div class="instructions">
-				<p>No bulletins available for this board.</p>
+				<p><?php echo JText::_('COM_COLLECTIONS_NO_COLLECTIONS_FOUND'); ?></p>
 			</div>
 	<?php } ?>
 		</div>
