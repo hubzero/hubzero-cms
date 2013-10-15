@@ -214,14 +214,19 @@ var typewatch = (function(){
 			//if (note.timestamp && note.timestamp != '00:00:00') {
 				var tm = '00:00:00';
 				//console.log(HUB);
-				if (typeof HUB.Presenter !== 'undefined') {
-					var tm = HUB.Presenter.getCurrent();
+				if (typeof HUB.Presenter !== 'undefined' || typeof HUB.Video !== 'undefined') {
+					var tm = (typeof HUB.Presenter !== 'undefined') 
+					       ? HUB.Presenter.getCurrent()
+					       : HUB.Video.getCurrent();
 
 					if (_DEBUG) {
 						window.console && console.log(tm);
 					}
 					if (tm) {
-						_div_header.append(jQuery('<span></span>').addClass('time').text(HUB.Presenter.formatTime(tm)));
+						var formatted = (typeof HUB.Presenter !== 'undefined') 
+						              ? HUB.Presenter.formatTime(tm)
+						              : HUB.Video.formatTime(tm);
+						_div_header.append(jQuery('<span></span>').addClass('time').text(formatted));
 					}
 				}
 			//}
