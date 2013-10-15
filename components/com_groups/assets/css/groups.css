@@ -847,7 +847,7 @@ background:url("/components/com_groups/assets/img/menu-active.png") no-repeat 0 
 .dropdown-menu li a.group-edit:after { content: '\2699'; } 
 .dropdown-menu li a.group-customize:after { content: '\270E'; } 
 .dropdown-menu li a.group-pages:after { content: '\f016'; }
-.dropdown-menu li a.group-cancel:after { content: '\2298'; } 
+.dropdown-menu li a.group-cancel:after { content: '\2298'; display: none } 
 .dropdown-menu li a.group-delete:after { content: '\f057'; }
 
 a.group-join,
