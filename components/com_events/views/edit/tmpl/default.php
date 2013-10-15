@@ -64,7 +64,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 
 			<label>
-				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>: <span class="required"><?php echo JText::_('EVENTS_CAL_LANG_REQUIRED'); ?></span>
+				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:
 				<textarea name="econtent" id="econtent" rows="15" cols="10"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
 			</label>
 
