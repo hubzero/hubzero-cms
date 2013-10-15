@@ -312,10 +312,14 @@ HUB.Mw = {
 		var $ = this.jQuery;
 		//fetch.periodical(60000);
 		var holdTheInterval = setInterval(function(){
-			$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
-				$('#diskusage').html(data);
-			}, 'html');
-		}, 60000); 
+			$.get('/api/members/diskusage', {}, function(data) {
+				if (data && $.type(data.amount) === "number" && $.type(data.total) === "number")
+				{
+					$('#diskusage .du-amount-bar').css('width', data.amount+'%');
+					$('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');
+				}
+			}, 'JSON');
+		}, 60000);
 	},
 	
 	sessionSharing: function() {

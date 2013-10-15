@@ -15,6 +15,7 @@ class MembersControllerApi extends Hubzero_Api_Controller
 			case 'mysessions':		$this->mysessions();				break;
 			case 'recenttools':		$this->recenttools();				break;
 			case 'checkpass':		$this->checkpass();					break;
+			case 'diskusage':		$this->diskusage();					break;
 			default:				$this->not_found();
 		}
 	}
@@ -356,6 +357,41 @@ class MembersControllerApi extends Hubzero_Api_Controller
 		$object->html = $html;
 		$this->setMessageType("json");
 		$this->setMessage($object);
+	}
+
+	private function diskusage()
+	{
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+
+		if ($result === false)
+		{
+			return $this->not_found();
+		}
+
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
+		$du = ToolsHelperUtils::getDiskUsage($result->get('username'));
+		if (count($du) <=1) 
+		{
+			// error
+			$percent = 0;
+		} 
+		else 
+		{
+			bcscale(6);
+			$val = (isset($du['softspace']) && $du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
+			$percent = round($val * 100);
+		}
+
+		$amt = ($percent > 100) ? '100' : $percent;
+		$total = (isset($du['softspace'])) ? $du['softspace'] / 1024000000 : 0;
+
+		//encode sessions for return
+		$object = new stdClass();
+		$object->amount = $amt;
+		$object->total  = $total;
+		$this->setMessageType( "json" );
+		$this->setMessage( $object );
 	}
 
 	//------
