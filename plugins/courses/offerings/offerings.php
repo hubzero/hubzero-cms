@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Courses Plugin class for course members
+ * Courses Plugin class for course offerings
  */
 class plgCoursesOfferings extends JPlugin
 {
@@ -120,9 +120,6 @@ class plgCoursesOfferings extends JPlugin
 			'metadata' => ''
 		);
 
-		//$this->option = JRequest::getVar('option', 'com_courses');
-		//$this->course = $course;
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($active)) 
 		{
@@ -135,9 +132,6 @@ class plgCoursesOfferings extends JPlugin
 		{
 			return $arr;
 		}
-
-		//Create user object
-		//$juser =& JFactory::getUser();
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(

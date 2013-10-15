@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/courses/members.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/courses/offerings/offerings.xml
+@copyright      Copyright 2005-2013 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2013 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,16 +28,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" course="courses">
-	<name>Courses - Dashboard</name>
-	<author>Shawn Rice</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<name>Courses - Offerings</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Display a course manager dashboard</description>
+	<description>Display a course's offerings</description>
 	<files>
-		<filename plugin="dashboard">dashboard.php</filename>
+		<filename plugin="offerings">offerings.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_courses_dashboard.ini</language>
+		<language tag="en-GB">en-GB.plg_courses_offerings.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
@@ -48,8 +48,6 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="members">Only Course Members</option>
 					<option value="nobody">Disabled/Off</option>
 				</field>
-				<field type="spacer" />
-				<field name="display_limit" type="text" size="3" default="50" label="Display Limit" description="Number of items to return"/>
 			</fieldset>
 		</fields>
 	</config>

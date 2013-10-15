@@ -1,24 +1,18 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/resources/reviews/reviews.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/courses/offerings/offerings.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 /*
 
 	-- -- -- -- -- -- --
-	Resources Reviews plugin CSS
+	Course offerings plugin CSS
 	-- -- -- -- -- -- --
 
 */
 
-	/*.entries thead th {
-		text-align: right;
-	}
-	.entries thead th:first-child {
-		text-align: left;
-	}*/
 	.entries tbody th {
 		text-align: left;
 		width: 50%;
