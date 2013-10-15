@@ -826,7 +826,9 @@ HUB.Video = {
 	{
 		$jQ("#video-toolbar").after("<div id=\"video-subtitles\"></div>");
 		$jQ("#full-screen").after("<ul id=\"subtitle-picker\"><li><a href=\"javascript:void(0);\">CC</a><ul id=\"cc\"><li><a class=\"active\" rel=\"\" href=\"#\">None</a></ul></li></ul>");
-
+		
+		var auto = false;
+		
 		for(n=0; n<sub_titles.length; n++) {
 			var sub = sub_titles[n],
 				sub_lang = sub.lang.toLowerCase(),
