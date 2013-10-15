@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 			{
 ?>
 				<tr>
-					<td class="paramlist_key"><a href="index.php?option=com_groups&amp;controller=manage&amp;task=manage&amp;gid=<?php echo $group->cn; ?>" target="_parent"><?php echo $group->description . ' (' . $group->cn . ')'; ?></a></td>
+					<td class="paramlist_key"><a href="index.php?option=com_groups&amp;controller=manage&amp;task=edit&amp;id[]=<?php echo $group->cn; ?>" target="_parent"><?php echo $group->description . ' (' . $group->cn . ')'; ?></a></td>
 					<td class="paramlist_value"><?php 
 					$seen[] = $group->cn;
 
