@@ -32,8 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'asset.php');
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'item.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 
 /**
@@ -106,34 +104,8 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		// Get the configured upload path
 		$filename = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
 
-		// Does the path start with a slash?
-		/*$asset->set('filename', DS . ltrim($asset->get('filename'), DS));
-
-		// Does the beginning of the $attachment->path match the config path?
-		if (substr($asset->get('filename'), 0, strlen($base_path)) == $base_path) 
-		{
-			// Yes - this means the full path got saved at some point
-		} 
-		else 
-		{
-			// No - append it
-			$asset->set('filename', $base_path . $asset->get('filename'));
-		}*/
-
-		/*jimport('joomla.filesystem.file');
-		$ext = strtolower(JFile::getExt($asset->get('filename')));
-
-		$exts = explode(',', strtolower($this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')));
-
-		//make sure that file is acceptable type
-		if (!in_array($ext, $exts)) 
-		{
-			JError::raiseError(404, JText::_('Unknown file type.'));
-			return;
-		}*/
-
-		// Add JPATH_ROOT
-		//$filename = JPATH_ROOT . $asset->get('filename');
+		jimport('joomla.filesystem.file');
+		$ext = strtolower(JFile::getExt($filename));
 
 		// Ensure the file exist
 		if (!file_exists($filename)) 
@@ -153,7 +125,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		{
 			$xserver->disposition('attachment');
 		}
-		$xserver->disposition($disposition);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
 		if (!$xserver->serve()) 
@@ -332,9 +303,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			$listdir = $item->get('id');
 		}
 
-		//allowed extensions for uplaod
-		//$allowedExtensions = array("png","jpeg","jpg","gif");
-
 		//max upload size
 		$sizeLimit = $this->config->get('maxAllowed', 40000000);
 
@@ -347,8 +315,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		}
 		elseif (isset($_FILES['qqfile']))
 		{
-			//$files = JRequest::getVar('qqfile', '', 'files', 'array');
-			
 			$stream = false;
 			$file = $_FILES['qqfile']['name'];
 			$size = (int) $_FILES['qqfile']['size'];
@@ -566,15 +532,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			return;
 		}
 
-		// Incoming
-		/*$listdir = JRequest::getInt('dir', 0, 'get');
-		if (!$listdir) 
-		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
-			$this->displayTask();
-			return;
-		}*/
-
 		// Incoming asset
 		$id = JRequest::getInt('asset', 0, 'get');
 
@@ -617,7 +574,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 						'error'   => $model->getError()
 					));
 					return;
-					//$this->setError($model->getError());
 				}
 			}
 		}
@@ -670,7 +626,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
 		}
 
-		$this->view->item    = CollectionsModelItem::getInstance($listdir);
+		$this->view->item = CollectionsModelItem::getInstance($listdir);
 		if (!$this->view->item->exists())
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));

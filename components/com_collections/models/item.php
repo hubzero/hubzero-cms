@@ -622,7 +622,7 @@ class CollectionsModelItem extends \Hubzero\Model
 			$a->reorder();
 		}
 
-		if ($this->get('_files'))
+		if ($files = $this->get('_files'))
 		{
 			$config = JComponentHelper::getParams('com_collections');
 
@@ -639,7 +639,6 @@ class CollectionsModelItem extends \Hubzero\Model
 				}
 			}
 
-			$files = $this->get('_files');
 			$descriptions = $this->get('_descriptions', array());
 
 			foreach ($files['name'] as $i => $file)
