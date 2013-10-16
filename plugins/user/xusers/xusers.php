@@ -391,6 +391,30 @@ class plgUserXusers extends JPlugin
 				$xprofile->update();
 			}
 		}
+
+		// Check if quota exists for the user
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+
+		$quota = new UsersQuotas($this->database);
+		$quota->load(array('user_id'=>$user['id']));
+
+		if (!$quota->id)
+		{
+			$class = new MembersQuotasClasses($this->database);
+			$class->load(array('alias'=>'default'));
+
+			if ($class->id)
+			{
+				$quota->set('user_id'    , $user['id']);
+				$quota->set('class_id'   , $class->id);
+				$quota->set('soft_blocks', $class->soft_blocks);
+				$quota->set('hard_blocks', $class->hard_blocks);
+				$quota->set('soft_files' , $class->soft_files);
+				$quota->set('hard_files' , $class->hard_files);
+				$quota->store();
+			}
+		}
 	}
 
 	public function onUserAfterDelete($user, $succes, $msg)
@@ -417,6 +441,16 @@ class plgUserXusers extends JPlugin
 		}
 
 		Hubzero_Auth_Link::delete_by_user_id($user['id']);
+
+		// Check if quota exists for the user
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+
+		$quota = new UsersQuotas($this->database);
+		$quota->load(array('user_id'=>$user['id']));
+		if ($quota->id)
+		{
+			$quota->delete();
+		}
 
 		return true;
 	}
