@@ -30,6 +30,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$cert = $this->course->config()->get('certificate', 'default');
+if ($cert != 'default')
+{
+	$path = DS . trim($this->course->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->course->get('id') . DS . 'certificates' . DS . $cert . DS;
+
+	if (is_file(JPATH_ROOT . $path . 'template.php'))
+	{
+		include_once(JPATH_ROOT . $path . 'template.php');
+	}
+}
+else
+{
 $path = '/components/com_courses/views/certificate/tmpl/';
 $juri =& JURI::getInstance();
 ?>
@@ -151,3 +163,4 @@ $juri =& JURI::getInstance();
 		</div>
 	</body>
 </html>
+<?php } ?>
