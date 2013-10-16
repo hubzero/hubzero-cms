@@ -80,9 +80,9 @@ if ($this->wishlist && $this->wish) {
 			
 			// Can't view wishes on a private list if not list admin
 	if (!$this->wishlist->public && !$this->admin) {
-		$html .= Hubzero_View_Helper_Html::div(Hubzero_View_Helper_Html::hed(2, JText::_('COM_WISHLIST_PRIVATE_LIST')), '', 'content-header');
+		$html .= '<div id="content-header"><h2>' . JText::_('COM_WISHLIST_PRIVATE_LIST')) . '</h2></div>';
 		$html .= '<div class="main section">'."\n";
-		$html .= Hubzero_View_Helper_Html::error(JText::_('COM_WISHLIST_WARNING_NOT_AUTHORIZED_PRIVATE_LIST'))."\n";
+		$html .= '<p class="error">' . JText::_('COM_WISHLIST_WARNING_NOT_AUTHORIZED_PRIVATE_LIST') . '</p>' ."\n";
 		$html .= '</div>'."\n";	
 	 } else {
 		
@@ -633,7 +633,7 @@ if ($this->wishlist && $this->wish) {
 				<!-- <a name="action"></a> -->
 				<form class="edit-form" id="moveWish" method="post" action="index.php?option=<?php echo $this->option; ?>">
 				<?php if ($error) {
-					echo Hubzero_View_Helper_Html::error($error);
+					echo '<p class="error">' . $error . '</p>';
 				} ?>
 					<h4><?php echo JText::_('COM_WISHLIST_WISH_BELONGS_TO'); ?>:</h4>
 					<fieldset>
@@ -1041,6 +1041,6 @@ if ($this->wishlist && $this->wish) {
 <?php }	// end if not private	
 	} else {
 		// throw error, shouldn't be here
-		echo Hubzero_View_Helper_Html::error(JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+		echo '<p class="error">' . JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND') . '</p>';
 	}
 ?>

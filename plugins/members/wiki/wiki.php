@@ -223,7 +223,7 @@ class plgMembersWiki extends JPlugin
 		if ($row->text) 
 		{
 			//if ($row->access == 1) {
-			//	$html .= "\t\t".Hubzero_View_Helper_Html::warning(JText::_('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED'))."\n";
+			//	$html .= "\t\t".'<p class="warning">' . JText::_('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED') . '</p>' ."\n";
 			//} else {
 				$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(stripslashes($row->text)) . "\n";
 			//}

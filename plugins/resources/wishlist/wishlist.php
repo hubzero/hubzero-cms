@@ -163,7 +163,7 @@ class plgResourcesWishlist extends JPlugin
 
 		if (!$wishlist) 
 		{
-			$html = Hubzero_View_Helper_Html::error(JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			$html = '<p class="error">' . JText::_('ERROR_WISHLIST_NOT_FOUND') . '</p>';
 		} 
 		else 
 		{

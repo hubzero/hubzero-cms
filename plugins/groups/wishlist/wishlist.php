@@ -218,7 +218,7 @@ class plgGroupsWishlist extends Hubzero_Plugin
 			//if we dont have a wishlist display error
 			if (!$wishlist) 
 			{
-				$arr['html'] = Hubzero_View_Helper_Html::error(JText::_('ERROR_WISHLIST_NOT_FOUND'));
+				$arr['html'] = '<p class="error">' . JText::_('ERROR_WISHLIST_NOT_FOUND') . '</p>';
 				return $arr;
 			}
 
@@ -227,7 +227,7 @@ class plgGroupsWishlist extends Hubzero_Plugin
 
 			//if user is guest and wishlist isnt public
 			//if(!$wishlist->public && $juser->get('guest')) {
-			//	$arr['html'] = Hubzero_View_Helper_Html::warning(JText::_('The Group Wishlist is not a publicly viewable list.'));
+			//	$arr['html'] = '<p class="warning">' . JText::_('The Group Wishlist is not a publicly viewable list.') . '</p>';
 			//	return $arr;
 			//}
 

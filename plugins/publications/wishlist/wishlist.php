@@ -170,7 +170,7 @@ class plgPublicationsWishlist extends JPlugin
 		
 		if (!$wishlist) 
 		{
-			$html = Hubzero_View_Helper_Html::error(JText::_('ERROR_WISHLIST_NOT_FOUND'));
+			$html = '<p class="error">' . JText::_('ERROR_WISHLIST_NOT_FOUND') . '</p>';
 		} 
 		else 
 		{
@@ -200,7 +200,7 @@ class plgPublicationsWishlist extends JPlugin
 				return;
 			}
 			
-			$items = $objWish->get_count ($id, $filters, $admin);	
+			$items = $objWish->get_count ($id, $filters, $admin);
 			
 			if ($rtrn != 'metadata') 
 			{
@@ -216,15 +216,13 @@ class plgPublicationsWishlist extends JPlugin
 				$title = ($admin) ?  JText::_('WISHLIST_TITLE_PRIORITIZED') : JText::_('WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit']) 
 				{
-					$title.= ' (<a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a
-						.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid)
-						.'">'.JText::_('view all') .' '.$items.'</a>)';
+					$title.= ' (<a href="'.JRoute::_('index.php?option='.$option.'&task=wishlist&category='. $wishlist->category.'&rid='.$wishlist->referenceid).'">'.JText::_('view all') .' '.$items.'</a>)';
 				} 
 				else 
 				{
 					$title .= ' ('.$items.')';
 				}
-				
+
 				// HTML output
 				// Instantiate a view
 				ximport('Hubzero_Plugin_View');
@@ -235,7 +233,7 @@ class plgPublicationsWishlist extends JPlugin
 						'name'=>'browse'
 					)
 				);
-	
+
 				// Pass the view some info
 				$view->option = $option;
 				$view->publication = $publication;
@@ -248,27 +246,25 @@ class plgPublicationsWishlist extends JPlugin
 				{
 					$view->setError( $this->getError() );
 				}
-	
+
 				// Return the output
 				$html = $view->loadTemplate();
-			}						
+			}
 		}
-					
+
 		// Build the HTML meant for the "about" tab's metadata overview
 		$metadata = '';
-		
+
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-				$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_publications'.a.'id='.
-					$publication->id.a.'active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
-				$metadata .= '</a> (<a href="'.JRoute::_('index.php?option='.$option.a.'id='.
-					$id.a.'task=add').'">'.JText::_('ADD_NEW_WISH').'</a>)</p>'.n;
+			$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_publications&id='. $publication->id.'&active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
+			$metadata .= '</a> (<a href="'.JRoute::_('index.php?option='.$option.'&id='. $id.'&task=add').'">'.JText::_('ADD_NEW_WISH').'</a>)</p>'."\n";
 		}
-		
+
 		$arr = array(
-				'html'=>$html,
-				'metadata'=>$metadata
-			);
+			'html'=>$html,
+			'metadata'=>$metadata
+		);
 
 		return $arr;
 	}

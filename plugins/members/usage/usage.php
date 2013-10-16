@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Members Plugin class for usage
  */
-class plgMembersUsage extends JPlugin
+class plgMembersUsage extends Hubzero_Plugin
 {
 	/**
 	 * Constructor
@@ -61,7 +61,7 @@ class plgMembersUsage extends JPlugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		$areas['usage'] = JText::_('PLG_MEMBERS_USAGE');
+		$areas = array('usage' => JText::_('PLG_MEMBERS_USAGE'));
 		return $areas;
 	}
 
@@ -95,23 +95,20 @@ class plgMembersUsage extends JPlugin
 
 		$database =& JFactory::getDBO();
 		$tables = $database->getTableList();
-		$table = $database->getPrefix() . 'author_stats';
 
-		if (!in_array($table,$tables)) 
+		if ($returnhtml && 
+			(!in_array($database->getPrefix() . 'author_stats', $tables) 
+		 || !in_array($database->getPrefix() . 'metrics_author_cluster', $tables))) 
 		{
 			ximport('Hubzero_View_Helper_Html');
-			$arr['html'] = Hubzero_View_Helper_Html::error(JText::_('USAGE_ERROR_MISSING_TABLE'));
-			$arr['metadata'] = '<p class="usage"><a href="' . JRoute::_('index.php?option=' . $option . '&id='.$member->get('uidNumber') . '&active=usage') . '">' . JText::_('PLG_MEMBERS_USAGE_DETAILED_USAGE') . '</a></p>' . "\n";
+			$arr['html'] = '<p class="error">' . JText::_('PLG_MEMBERS_USAGE_ERROR_MISSING_TABLE') . '</p>';
 			return $arr;
 		}
 
-		$html = '';
 		if ($returnhtml) 
 		{
 			ximport('Hubzero_Document');
 			Hubzero_Document::addComponentStylesheet('com_usage');
-
-			//$sort = JRequest::getVar('sort','');
 
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
@@ -127,25 +124,26 @@ class plgMembersUsage extends JPlugin
 			$view->contribution = $this->first_last_contribution($member->get('uidNumber'));
 			$view->rank = $this->get_rank($member->get('uidNumber'));
 
-			$view->total_tool_users = $this->get_total_stats($member->get('uidNumber'), 'tool_users',14);
+			$view->total_tool_users    = $this->get_total_stats($member->get('uidNumber'), 'tool_users',14);
 			$view->total_andmore_users = $this->get_total_stats($member->get('uidNumber'), 'andmore_users',14);
-			$view->citation_count = $this->get_citationcount(null, $member->get('uidNumber'));
+			$view->citation_count      = $this->get_citationcount(null, $member->get('uidNumber'));
+
 			$cluster = $this->get_classroom_usage($member->get('uidNumber'));
 			$view->cluster_classes = $cluster['classes'];
-			$view->cluster_users = $cluster['users'];
+			$view->cluster_users   = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
-			
+
 			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type FROM #__resources AS r LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.$member->get("uidNumber").'") AND (r.access=0 OR r.access=3) ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
-			$view->tool_stats = $database->loadObjectList();
+			$view->tool_stats    = $database->loadObjectList();
 			$view->tool_total_12 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 12);
 			$view->tool_total_14 = $this->get_total_stats($member->get('uidNumber'), 'tool_users', 14);
 
 			$sql = 'SELECT DISTINCT r.id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type FROM #__resources AS r LEFT JOIN #__resource_types AS rt ON r.TYPE=rt.id LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable="resources" WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND (aa.authorid="'.$member->get("uidNumber").'") AND (r.access=0 OR r.access=3) ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
-			$view->andmore_stats = $database->loadObjectList();
+			$view->andmore_stats    = $database->loadObjectList();
 			$view->andmore_total_12 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 12);
 			$view->andmore_total_14 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 14);
 
@@ -159,13 +157,6 @@ class plgMembersUsage extends JPlugin
 
 			$arr['html'] = $view->loadTemplate();
 		}
-
-		//$arr['metadata'] = '<p class="usage"><a href="'.JRoute::_('index.php?option='.$option.'&id='.$member->get('uidNumber').'&active=usage').'">'.JText::_('PLG_MEMBERS_USAGE_DETAILED_USAGE').'</a></p>'."\n";
-		//if (is_file(JPATH_ROOT . DS . 'site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'_th.gif')) {
-		//	$arr['metadata'] .= '<p><a rel="lightbox" href="/site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'.gif"><img src="/site/stats/contributor_impact/impact_'.$this->uid($member->get('uidNumber')).'_th.gif" alt="'.JText::_('PLG_MEMBERS_USAGE_IMPACT_PLOT').'" /></a></p>'."\n";
-		//}
-
-		$arr['metadata'] = "";
 
 		return $arr;
 	}

@@ -3766,7 +3766,7 @@ class plgProjectsPublications extends JPlugin
 				if (!JFolder::create( $publishPath, 0777 )) 
 				{
 					$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
-					return Hubzero_View_Helper_Html::error($this->getError());
+					return '<p class="error">' . $this->getError() . '</p>';
 				}
 			}
 			
@@ -4202,7 +4202,7 @@ class plgProjectsPublications extends JPlugin
 			if (!JFolder::create( $newpath, 0777 )) 
 			{
 				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
-				return Hubzero_View_Helper_Html::error($this->getError());
+				return '<p class="error">' . $this->getError() . '</p>';
 			}
 		}
 					
@@ -4272,7 +4272,7 @@ class plgProjectsPublications extends JPlugin
 			if (!JFolder::create( $newpath, 0777 )) 
 			{
 				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
-				return Hubzero_View_Helper_Html::error($this->getError());
+				return '<p class="error">' . $this->getError() . '</p>';
 			}
 		}
 		

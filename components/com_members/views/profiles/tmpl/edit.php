@@ -108,8 +108,8 @@ $html .= "\t\t".'</label>'."\n";
 
 if ($this->registration->Fullname != REG_HIDE) {
 	$required = ($this->registration->Fullname == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['name'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['name']) : '';
-	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
+	$message = (!empty($this->xregistration->_invalid['name'])) ? '<p class="error">' . $this->xregistration->_invalid['name'] . '</p>' : '';
+	$fieldclass = ($message) ? ' class="fieldWithErrors"' : ''
 
 	$html .= "\t\t".'<div class="threeup group">'."\n";
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
@@ -137,12 +137,12 @@ if ($this->registration->Email != REG_HIDE
 	// Email
 	if ($this->registration->Email != REG_HIDE) {
 		$required = ($this->registration->Email == REG_REQUIRED) ? '<span class="required">'.JText::_('required').'</span>' : '';
-		$message = (!empty($this->xregistration->_invalid['email'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['email'],'span') : '';
+		$message = (!empty($this->xregistration->_invalid['email'])) ? '<span class="error">' . $this->xregistration->_invalid['email'] . '</span>' : '';
 		$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 		$html .= "\t\t\t".'<label '.$fieldclass.'>'."\n";
 		$html .= "\t\t\t\t".JText::_('Valid E-mail').': '.$required."\n";
-		$html .= "\t\t\t\t".'<input name="email" id="email" type="text" value="'.htmlentities($this->profile->get('email'),ENT_COMPAT,'UTF-8').'" />'."\n";
+		$html .= "\t\t\t\t".'<input name="email" id="email" type="text" value="'.$this->escape($this->profile->get('email')).'" />'."\n";
 		$html .= ($message) ? "\t\t\t\t".$message."\n" : '';
 		$html .= "\t\t\t".'</label>'."\n";
 	}
@@ -155,7 +155,7 @@ if ($this->registration->Email != REG_HIDE
 			$confirmEmail = '';
 		}
 		if (!empty($this->xregistration->_invalid['confirmEmail'])) {
-			$message = Hubzero_View_Helper_Html::error($this->xregistration->_invalid['confirmEmail'],'span');
+			$message = '<span class="error">' . $this->xregistration->_invalid['confirmEmail'] . '</span>';
 		}
 
 		$required = ($this->registration->ConfirmEmail == REG_REQUIRED) ? '<span class="required">'.JText::_('required').'</span>' : '';
@@ -163,7 +163,7 @@ if ($this->registration->Email != REG_HIDE
 
 		$html .= "\t\t\t".'<label'.$fieldclass.'>'."\n";
 		$html .= "\t\t\t\t".JText::_('Confirm E-mail').': '.$required."\n";
-		$html .= "\t\t\t\t".'<input name="email2" id="email2" type="text" value="'.htmlentities($confirmEmail,ENT_COMPAT,'UTF-8').'" />'."\n";
+		$html .= "\t\t\t\t".'<input name="email2" id="email2" type="text" value="'.$this->escape($confirmEmail).'" />'."\n";
 		$html .= ($message) ? "\t\t\t\t".$message."\n" : '';
 		$html .= "\t\t\t".'</label>'."\n";
 	}
@@ -171,13 +171,13 @@ if ($this->registration->Email != REG_HIDE
 	$html .= "\t\t".'</div>'."\n";
 
 	if ($this->registration->Email != REG_HIDE) {
-		$html .= "\t\t".Hubzero_View_Helper_Html::warning('Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.');
+		$html .= "\t\t".'<p class="warning">Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.</p>';
 	}
 }
 
 if ($this->registration->URL != REG_HIDE) {
 	$required = ($this->registration->URL == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['web'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['web']) : '';
+	$message = (!empty($this->xregistration->_invalid['web'])) ? '<p class="error">' . $this->xregistration->_invalid['web'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
@@ -189,7 +189,7 @@ if ($this->registration->URL != REG_HIDE) {
 
 if ($this->registration->Phone != REG_HIDE) {
 	$required = ($this->registration->Phone == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['phone'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['phone']) : '';
+	$message = (!empty($this->xregistration->_invalid['phone'])) ? '<p class="error">' . $this->xregistration->_invalid['phone'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
@@ -205,7 +205,7 @@ $html .= "\t\t".'<legend>'.JText::_('Personal Information').'</legend>'."\n";
 
 if ($this->registration->Employment != REG_HIDE) {
 	$required = ($this->registration->Employment == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['orgtype'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['orgtype']) : '';
+	$message = (!empty($this->xregistration->_invalid['orgtype'])) ? '<p class="error">' . $this->xregistration->_invalid['orgtype'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	$orgtype = stripslashes($this->profile->get('orgtype'));
@@ -277,7 +277,7 @@ if ($this->registration->Employment != REG_HIDE) {
 
 if ($this->registration->Organization != REG_HIDE) {
 	$required = ($this->registration->Organization == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['org'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['org']) : '';
+	$message = (!empty($this->xregistration->_invalid['org'])) ? '<p class="error">' . $this->xregistration->_invalid['org'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	$organization = stripslashes($this->profile->get('organization'));
@@ -320,23 +320,23 @@ if ($this->registration->Organization != REG_HIDE) {
 	$html .= '</option>'."\n";
 	foreach ($orgs as $org)
 	{
-		$html .= "\t\t\t\t".'<option value="'. htmlentities($org,ENT_COMPAT,'UTF-8') .'"';
+		$html .= "\t\t\t\t".'<option value="'. $this->escape($org) .'"';
 		if ($org == $organization) {
 			$orgtext = '';
 			$html .= ' selected="selected"';
 		}
-		$html .= '>' . htmlentities($org) . '</option>'."\n";
+		$html .= '>' . $this->escape($org) . '</option>'."\n";
 	}
 	$html .= "\t\t\t".'</select>'."\n";
 	$html .= $message;
 	$html .= "\t\t".'</label>'."\n";
 	$html .= "\t\t".'<label for="orgtext" id="orgtextlabel">'.JText::_('Enter organization below').'</label>'."\n";
-	$html .= "\t\t".'<input type="text" name="orgtext" id="orgtext" value="'. htmlentities($orgtext,ENT_COMPAT,'UTF-8') .'" />'."\n";
+	$html .= "\t\t".'<input type="text" name="orgtext" id="orgtext" value="'. $this->escape($orgtext) .'" />'."\n";
 }
 
 if ($this->registration->Interests != REG_HIDE) {
 	$required = ($this->registration->Interests == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['interests'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['interests']) : '';
+	$message = (!empty($this->xregistration->_invalid['interests'])) ? '<p class="error">' . $this->xregistration->_invalid['interests'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	JPluginHelper::importPlugin( 'hubzero' );
@@ -383,7 +383,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	if ($this->registration->Citizenship != REG_HIDE) {
 		$required = ($this->registration->Citizenship == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
-		$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['countryorigin']) : '';
+		$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? '<p class="error">' . $this->xregistration->_invalid['countryorigin'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 		$countryorigin = $this->profile->get('countryorigin');
@@ -413,7 +413,7 @@ if ($this->registration->Citizenship != REG_HIDE
 				if ($countryorigin == $country['code']) {
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . htmlentities($country['name'],ENT_COMPAT,'UTF-8') . '</option>'."\n";
+				$html .= '>' . $this->escape($country['name']) . '</option>'."\n";
 			}
 		}
 		$html .= "\t\t\t\t".'</select></label>'."\n";
@@ -422,7 +422,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	if ($this->registration->Residency != REG_HIDE) {
 		$required = ($this->registration->Residency == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
-		$message = (!empty($this->xregistration->_invalid['countryresident'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['countryresident']) : '';
+		$message = (!empty($this->xregistration->_invalid['countryresident'])) ? '<p class="error">' . $this->xregistration->_invalid['countryresident'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 		$countryresident = $this->profile->get('countryresident');
@@ -452,7 +452,7 @@ if ($this->registration->Citizenship != REG_HIDE
 				if (strcasecmp($countryresident,$country['code']) == 0) {
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . htmlentities($country['name'],ENT_COMPAT,'UTF-8') . '</option>'."\n";
+				$html .= '>' . $this->escape($country['name']) . '</option>'."\n";
 			}
 		}
 		$html .= "\t\t\t\t".'</select></label>'."\n";
@@ -460,7 +460,7 @@ if ($this->registration->Citizenship != REG_HIDE
 	}
 
 	if ($this->registration->Sex != REG_HIDE) {
-		$message = (!empty($this->xregistration->_invalid['countryresident'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['countryresident']) : '';
+		$message = (!empty($this->xregistration->_invalid['countryresident'])) ? '<p class="error">' . $this->xregistration->_invalid['countryresident'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 		$required = ($this->registration->Sex == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
 
@@ -482,7 +482,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	// Disability
 	if ($this->registration->Disability != REG_HIDE) {
-		$message = (!empty($this->xregistration->_invalid['disability'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['disability']) : '';
+		$message = (!empty($this->xregistration->_invalid['disability'])) ? '<p class="error">' . $this->xregistration->_invalid['disability'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 		$required = ($this->registration->Disability == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
 
@@ -547,7 +547,7 @@ if ($this->registration->Citizenship != REG_HIDE
 		}
 		$html .= '/> '.JText::_('Vocal / Speech Disability').'</label>'."\n";
 		$html .= "\t\t\t\t".'<label>'.JText::_('Other (please specify)').':'."\n";
-		$html .= "\t\t\t\t".'<input name="disabilityother" id="disabilityother" type="text" value="'. htmlentities($disabilityother,ENT_COMPAT,'UTF-8') .'" /></label>'."\n";
+		$html .= "\t\t\t\t".'<input name="disabilityother" id="disabilityother" type="text" value="'. $this->escape($disabilityother) .'" /></label>'."\n";
 		$html .= "\t\t\t".'</fieldset>'."\n";
 		$html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityno" value="no"';
 		if (in_array('no', $disabilities)) {
@@ -564,7 +564,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	// Hispanic
 	if ($this->registration->Hispanic != REG_HIDE) {
-		$message = (!empty($this->xregistration->_invalid['hispanic'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['hispanic']) : '';
+		$message = (!empty($this->xregistration->_invalid['hispanic'])) ? '<p class="error">' . $this->xregistration->_invalid['hispanic'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 		$required = ($this->registration->Hispanic == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
 
@@ -616,7 +616,7 @@ if ($this->registration->Citizenship != REG_HIDE
 		}
 		$html .= '/> '.JText::_('Puerto Rican').'</label>'."\n";
 		$html .= "\t\t\t\t".'<label>'.JText::_('Other Hispanic or Latino').':'."\n";
-		$html .= "\t\t\t\t".'<input name="profile[hispanic][other]" id="hispanicother" type="text" value="'. htmlentities($hispanicother,ENT_COMPAT,'UTF-8') .'" /></label>'."\n";
+		$html .= "\t\t\t\t".'<input name="profile[hispanic][other]" id="hispanicother" type="text" value="'. $this->escape($hispanicother) .'" /></label>'."\n";
 		$html .= "\t\t\t".'</fieldset>'."\n";
 		$html .= "\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicno" value="no"';
 		if (in_array('no', $hispanic)) {
@@ -633,7 +633,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	// Race
 	if ($this->registration->Race != REG_HIDE) {
-		$message = (!empty($this->xregistration->_invalid['race'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['race']) : '';
+		$message = (!empty($this->xregistration->_invalid['race'])) ? '<p class="error">' . $this->xregistration->_invalid['race'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 		$required = ($this->registration->Race == REG_REQUIRED) ? ' <span class="required">'.JText::_('REQUIRED').'</span>' : '';
 
@@ -653,7 +653,7 @@ if ($this->registration->Citizenship != REG_HIDE
 		}
 		$html .= '/> '.JText::_('American Indian or Alaska Native').'</label>'."\n";
 		$html .= "\t\t\t".'<label class="indent">'.JText::_('Tribal Affiliation(s)').':'."\n";
-		$html .= "\t\t\t".'<input name="profile[nativetribe]" id="racenativetribe" type="text" value="'. htmlentities($this->profile->get('nativeTribe'),ENT_COMPAT,'UTF-8') .'" /></label>'."\n";
+		$html .= "\t\t\t".'<input name="profile[nativetribe]" id="racenativetribe" type="text" value="'. $this->escape($this->profile->get('nativeTribe')) .'" /></label>'."\n";
 		$html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceasian" id="raceasian" ';
 		if (in_array('asian', $race)) {
 			$html .= 'checked="checked" ';
@@ -688,7 +688,7 @@ if ($this->registration->Citizenship != REG_HIDE
 if ($this->registration->OptIn != REG_HIDE) // newsletter Opt-In
 {
 	$required = ($this->registration->OptIn == REG_REQUIRED) ? '<span class="required">'.JText::_('required').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['mailPreferenceOption'])) ? Hubzero_View_Helper_Html::error($this->xregistration->_invalid['mailPreferenceOption']) : '';
+	$message = (!empty($this->xregistration->_invalid['mailPreferenceOption'])) ? '<p class="error">' . $this->xregistration->_invalid['mailPreferenceOption'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	$html .= "\t".'<fieldset>'."\n";

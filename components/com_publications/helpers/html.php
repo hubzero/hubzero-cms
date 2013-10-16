@@ -347,7 +347,7 @@ class PublicationsHtml
 				$html .= $pop;
 			}
 			
-			return Hubzero_View_Helper_Html::div($html, 'usagescale');		
+			return '<div class="usagescale">' . $html . '</div>';
 		}
 		
 		return $html;				
@@ -405,8 +405,8 @@ class PublicationsHtml
 			{
 				$html .= (isset($section['metadata'])) ? $section['metadata'] : '';
 			}
-			$html .= Hubzero_View_Helper_Html::div('', 'clear');
-			return Hubzero_View_Helper_Html::div($html, 'metadata');
+			$html .= '<div class="clear"></div>';
+			return '<div class="metadata">' . $html . '</div>';
 		}
 		else {
 			if ($lastPubRelease && $lastPubRelease->id != $publication->version_id) 
@@ -422,8 +422,8 @@ class PublicationsHtml
 			{
 				$html .= (isset($section['metadata'])) ? $section['metadata'] : '';
 			}
-			$html .= Hubzero_View_Helper_Html::div('', 'clear');
-			return Hubzero_View_Helper_Html::div($html, 'metadata');	
+			$html .= '<div class="clear"></div>';
+			return '<div class="metadata">' . $html . '</div>';
 		}
 	}
 			
@@ -502,7 +502,7 @@ class PublicationsHtml
 				{
 					$cls .= ($h) ? $h.' ' : '';
 				}
-				$html .= Hubzero_View_Helper_Html::div( $section['html'], $cls.'section', key($cats[$k]).'-section' );
+				$html .= '<div class="' . $cls . 'section" id="' . key($cats[$k]) . '-section">' . $section['html'] . '</div>';
 			}
 			$k++;
 		}
@@ -1143,8 +1143,8 @@ class PublicationsHtml
 	{
 		$txt = '';
 		$txt .= stripslashes($publication->title);	
-		$html  = Hubzero_View_Helper_Html::hed(2,$txt)."\n";
-		$html  = Hubzero_View_Helper_Html::div($html,'full','content-header');
+		$html  = '<h2>' . $txt . '</h2>' . "\n";
+		$html  = '<div id="content-header" class="full">' . $html . '</div>';
 		
 		return $html;
 	}
@@ -1233,7 +1233,7 @@ class PublicationsHtml
 		
 		
 		$title = $title ? $title : $msg;
-		$pop   = $pop ? Hubzero_View_Helper_Html::warning($pop) : '';
+		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
 		
 		return PublicationsHtml::primaryButton($class, $url, $msg, $xtra, $title, $action, $disabled, $pop);		
 	}
@@ -1507,14 +1507,14 @@ class PublicationsHtml
 	
 	public function aside($txt, $id='')
 	{
-		return Hubzero_View_Helper_Html::div($txt, 'aside', $id);
+		return '<div class="aside" id="' . $id . '">' . $txt . '</div>';
 	}
 	
 	//-----------
 	
 	public function subject($txt, $id='')
 	{
-		return Hubzero_View_Helper_Html::div($txt, 'subject', $id);
+		return '<div class="subject" id="' . $id . '">' . $txt . '</div>';
 	}
 
 	//-----------

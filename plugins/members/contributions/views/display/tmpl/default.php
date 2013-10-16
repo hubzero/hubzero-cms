@@ -258,7 +258,7 @@ foreach ($this->results as $category)
 				$html .= "\t".'<li>'."\n";
 				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.$this->escape(stripslashes($row->title)).'</a></p>'."\n";
 				if ($row->text) {
-					$html .= "\t\t".MembersHtml::shortenText(stripslashes($row->text))."\n";
+					$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(stripslashes($row->text))."\n";
 				}
 				$html .= "\t".'</li>'."\n";
 			}
@@ -282,7 +282,7 @@ foreach ($this->results as $category)
 }
 echo $html;
 if (!$foundresults) {
-	echo Hubzero_View_Helper_Html::warning(JText::_('PLG_MEMBERS_CONTRIBUTIONS_NONE'));
+	echo '<p class="warning">' . JText::_('PLG_MEMBERS_CONTRIBUTIONS_NONE') . '</p>';
 }
 ?>
 				</div><!-- / .container-block -->

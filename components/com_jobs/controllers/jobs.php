@@ -279,7 +279,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Ensure we have a trigger
 		if (!$trigger) 
 		{
-			echo Hubzero_View_Helper_Html::error(JText::_('COM_JOBS_ERROR_NO_TRIGGER_FOUND'));
+			echo '<p class="error">' . JText::_('COM_JOBS_ERROR_NO_TRIGGER_FOUND') . '</p>';
 			return;
 		}
 

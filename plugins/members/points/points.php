@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Members Plugin class for points
  */
-class plgMembersPoints extends JPlugin
+class plgMembersPoints extends Hubzero_Plugin
 {
 	/**
 	 * Constructor
@@ -97,13 +97,8 @@ class plgMembersPoints extends JPlugin
 			}
 		}
 
-		//if (!$authorized) {
-		//	$returnhtml = false;
-		//	$returnmeta = false;
-		//}
-
 		$arr = array(
-			'html' => '',
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -111,10 +106,9 @@ class plgMembersPoints extends JPlugin
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'users_points';
 
-		if (!in_array($table,$tables)) 
+		if (!in_array($table, $tables)) 
 		{
-			ximport('Hubzero_View_Helper_Html');
-			$arr['html'] = Hubzero_View_Helper_Html::error(JText::_('PLG_MEMBERS_POINTS_ERROR_MISSING_TABLE'));
+			$arr['html'] = '<p class="error">' . JText::_('PLG_MEMBERS_POINTS_ERROR_MISSING_TABLE') . '</p>';
 			return $arr;
 		}
 
