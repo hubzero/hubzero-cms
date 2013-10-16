@@ -69,129 +69,129 @@ if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'li
 	<div class="content">
 		<div class="creator attribution clearfix">
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($item->creator()->get('name')))); ?>" />
 			</a>
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
-					<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
-				</a> created this post
+				<?php echo JText::sprintf('COM_COLLECTIONS_USER_CREATEd_POST', '<a href="' . JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')) . '">' . $this->escape(stripslashes($item->creator()->get('name'))) . '</a>'); ?>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-					<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
+					<span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+					<span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
-<?php
 
-$view = new JView(
-	array(
-		'name'    => $this->controller,
-		'layout'  => 'display_' . $type
-	)
-);
+		<?php
+		$view = new JView(
+			array(
+				'name'    => $this->controller,
+				'layout'  => 'display_' . $type
+			)
+		);
+		$view->actual     = true;
+		$view->option     = $this->option;
+		$view->params     = $this->config;
+		$view->row        = $this->post;
+		$view->parser     = $p;
+		$view->wikiconfig = $wikiconfig;
+		$view->display();
+		?>
 
-$view->actual     = true;
-//$view->name       = $this->name;
-//$view->juser      = $this->juser;
-$view->option     = $this->option;
-//$view->member     = $this->member;
-$view->params     = $this->config;
-//$view->authorized = $this->authorized;
-
-$view->row        = $this->post;
-//$view->collection = $this->collection;
-$view->parser     = $p;
-$view->wikiconfig = $wikiconfig;
-
-$view->display();
-?>
 	<?php if (count($item->tags()) > 0) { ?>
 		<div class="tags-wrap">
 			<?php echo $item->tags('render'); ?>
-		</div>
+		</div><!-- / .tags-wrap -->
 	<?php } ?>
+
 		<div class="meta">
 			<p class="stats">
 				<span class="likes">
-					<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
+					<?php echo JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
 				</span>
 				<span class="comments">
-					<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
+					<?php echo JText::sprintf('COM_COLLECTIONS_NUM_COMMENTS', $item->get('comments', 0)); ?>
 				</span>
 				<span class="reposts">
-					<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
+					<?php echo JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 				</span>
 			</p>
 		</div><!-- / .meta -->
-<?php //if ($this->post->created_by != $this->post->created_by) { ?>
+
 		<div class="convo attribution clearfix">
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->post->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->post->creator(), 0); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->post->creator()->get('name')))); ?>" />
 			</a>
 			<p>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
 					<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>
 				</a> 
-				onto 
+				<?php echo JText::_('COM_COLLECTIONS_ONTO'); ?>
 				<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
 					<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 				</a>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-					<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
+					<span class="time"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+					<span class="date"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
-<?php 
-if ($item->get('comments')) 
-{ 
-	?>
+
+	<?php if ($item->get('comments')) { ?>
 		<div class="commnts">
-	<?php
-	foreach ($item->comments() as $comment)
-	{
-		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
-?>
-		
+		<?php
+		foreach ($item->comments() as $comment)
+		{
+			$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
+		?>
 			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($cuser->get('name')))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> 
-					said
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>">
+						<?php echo $this->escape(stripslashes($cuser->get('name'))); ?>
+					</a> 
+					<?php echo JText::_('COM_COLLECTIONS_SAID'); ?>
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span> 
-						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
+						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
+						<span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span> 
+						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+						<span class="date"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>
 				<blockquote>
 					<p><?php echo stripslashes($comment->content); ?></p>
 				</blockquote>
 			</div>
-<?php 
-	}
-	?>
+		<?php } ?>
 		</div>
-	<?php
-} 
-$now = date('Y-m-d H:i:s', time());
-?>
+	<?php } ?>
+
 		<div class="commnts">
 			<div class="comment convo clearfix">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->juser->get('name')))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a> 
-					will say
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>">
+						<?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>
+					</a> 
+					<?php echo JText::_('COM_COLLECTIONS_USER_WILL_SAY'); ?>
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span> 
-						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></span>
+						<?php 
+						$now = date('Y-m-d H:i:s', time()); 
+						?>
+						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
+						<span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span> 
+						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+						<span class="date"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>
 				<form action="<?php echo JRoute::_($base . '&post=' . $this->post->get('id') . '&task=savecomment' . ($this->no_html ? '&no_html=' . $this->no_html  : '')); ?>" id="comment-form" method="post" enctype="multipart/form-data">
@@ -200,18 +200,18 @@ $now = date('Y-m-d H:i:s', time());
 						<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
 						<input type="hidden" name="comment[item_type]" value="collection" />
 						<input type="hidden" name="comment[state]" value="1" />
-					
+
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 						<input type="hidden" name="post" value="<?php echo $this->post->get('id'); ?>" />
 						<input type="hidden" name="task" value="savecomment" />
 						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
-					
+
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
-						<input type="submit" class="comment-submit" value="<?php echo JText::_('Post comment'); ?>" />
+						<input type="submit" class="comment-submit" value="<?php echo JText::_('COM_COLLECTIONS_SAVE'); ?>" />
 					</fieldset>
 				</form>
-			</div>
-		</div>
+			</div><!-- / .comment -->
+		</div><!-- / .commnts -->
 	</div><!-- / .content -->
 </div><!-- / .bulletin -->

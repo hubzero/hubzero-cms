@@ -112,7 +112,7 @@ if ($assets->total() > 0)
 				<?php if ($asset->get('type') != 'link') { ?>
 							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 				<?php } else { ?>
-							<?php echo JText::_('link'); ?>
+							<?php echo JText::_('COM_COLLECTIONS_ASSET_TYPE_LINK'); ?>
 				<?php } ?>
 						</span>
 				<?php if ($asset->get('description')) { ?>

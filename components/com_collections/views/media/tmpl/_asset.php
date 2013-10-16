@@ -44,8 +44,8 @@ defined('_JEXEC') or die('Restricted access');
 			<span class="asset-description">
 				<input type="hidden" name="assets[<?php echo $this->i; ?>][type]" value="<?php echo $this->asset->get('type'); ?>" />
 				<input type="hidden" name="assets[<?php echo $this->i; ?>][id]" value="<?php echo $this->asset->get('id'); ?>" />
-				<a class="delete" data-id="<?php echo $this->asset->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
-					delete
+				<a class="icon-delete delete" data-id="<?php echo $this->asset->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html); ?>" title="<?php echo JText::_('COM_COLLECTIONS_DELETE_ASSET'); ?>">
+					<?php echo JText::_('COM_COLLECTIONS_DELETE'); ?>
 				</a>
 			</span>
 		</p>

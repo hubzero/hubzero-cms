@@ -47,66 +47,67 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php } ?>
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=collect&post=' . $this->post_id); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
-		<legend><?php echo JText::_('Collect'); ?></legend>
+		<legend><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></legend>
 
 		<div class="grid">
-		<div class="two columns first">
-		<label for="field-collection_id">
-			<?php echo JText::_('Collection'); ?>
-			<select name="collection_id" id="field-collection_id">
-				<option value="0"><?php echo JText::_('Select a collection...'); ?></option>
-				<optgroup label="<?php echo JText::_('My collections'); ?>">
-<?php 
-if ($this->myboards)
-{
-	foreach ($this->myboards as $board)
-	{
-		if ($board->id == $this->collection_id)
-		{
-			continue;
-		}
-?>
-					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
-<?php
-	}
-}
-?>
-				</optgroup>
-<?php 
-if ($this->groupboards)
-{
-	foreach ($this->groupboards as $optgroup => $boards)
-	{
-?>
-				<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
-<?php
-		foreach ($boards as $board)
-		{
-?>
-					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
-<?php
-		}
-?>
-				</optgroup>
-<?php
-	}
-}
-?>
-			</select>
-		</label>
-		</div>
-		<p class="or">OR</p>
-		<div class="two columns second">
-			<label for="field-collection_title">
-				<?php echo JText::_('Create collection'); ?>
-				<input type="text" name="collection_title" id="field-collection_title" />
-			</label>
-		</div>
-		<div class="clear"></div>
-		</div>
+			<div class="col span-half">
+				<label for="field-collection_id">
+					<?php echo JText::_('COM_COLLECTIONS_COLLECTION'); ?>
+					<select name="collection_id" id="field-collection_id">
+						<option value="0"><?php echo JText::_('COM_COLLECTIONS_SELECT_COLLECTION'); ?></option>
+						<optgroup label="<?php echo JText::_('COM_COLLECTIONS_MY_COLLECTIONS'); ?>">
+					<?php 
+					if ($this->myboards)
+					{
+						foreach ($this->myboards as $board)
+						{
+							if ($board->id == $this->collection_id)
+							{
+								continue;
+							}
+							?>
+							<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+							<?php
+						}
+					}
+					?>
+						</optgroup>
+				<?php 
+				if ($this->groupboards)
+				{
+					foreach ($this->groupboards as $optgroup => $boards)
+					{
+						?>
+						<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
+						<?php
+						foreach ($boards as $board)
+						{
+							?>
+							<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+							<?php
+						}
+						?>
+						</optgroup>
+						<?php
+					}
+				}
+				?>
+					</select>
+				</label>
+			</div><!-- / .col -->
+
+			<p class="or"><?php echo JText::_('COM_COLLECTIONS_OR'); ?></p>
+
+			<div class="col span-half omega">
+				<label for="field-collection_title">
+					<?php echo JText::_('COM_COLLECTIONS_CREATE_COLLECTION'); ?>
+					<input type="text" name="collection_title" id="field-collection_title" value="" />
+				</label>
+			</div><!-- / .col -->
+		</div><!-- / .grid -->
 
 		<label for="field_description">
-			<?php echo JText::_('Add a description'); ?>
+			<?php echo JText::_('COM_COLLECTIONS_ADD_DESCRIPTION'); ?>
 			<span class="syntax hint">limited <a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
 				<tbody>
 					<tr>
