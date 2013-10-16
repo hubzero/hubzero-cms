@@ -29,71 +29,79 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$wikiconfig = array(
-	'option'   => 'com_forum',
-	'scope'    => '',
-	'pagename' => 'forum',
-	'pageid'   => 1,
-	'filepath' => DS . ltrim('/site/forum', DS),
-	'domain'   => ''
-);
-
-ximport('Hubzero_Wiki_Parser');
-$parser = Hubzero_Wiki_Parser::getInstance();
-
 $c = 0;
 ?>
-<div id="latest_discussions_module" class="<?php echo $this->cls; ?>">
-	<?php if (count($this->posts > 0)) : ?>
+<div id="latest_discussions_module" class="<?php echo $this->params->get('moduleclass_sfx'); ?>">
+	<?php if (count($this->posts) > 0) : ?>
 		<ul class="discussions">
 			<?php foreach ($this->posts as $post) : ?>
-				<?php if ($c < $this->limit) : ?>
 					<?php
-						if ($post['scope_id'] == 0) {
-							$url = 'index.php?option=com_forum&section=' . $this->categories[$post['category_id']]->section . '&category=' . $this->categories[$post['category_id']]->alias . '&thread=' . ($post['parent'] ? $post['parent'] : $post['id']);
-							$location = '<a href="' . JRoute::_('index.php?option=com_forum') . '">' . JText::_('Site-Wide Forum') . '</a>';
+						if ($c >= $this->limit)
+						{
+							break;
+						}
+						$c++;
+
+						$post->set('section', $this->categories[$post->get('category_id')]->section);
+						$post->set('category', $this->categories[$post->get('category_id')]->alias);
+
+						if ($post->get('scope_id') == 0) {
+							$location = '<a href="' . JRoute::_('index.php?option=com_forum') . '">' . JText::_('MOD_LATESTDISCUSSIONS_SITE_FORUM') . '</a>';
 						} else {
-							ximport('Hubzero_Group');
-							$group = Hubzero_Group::getInstance($post['scope_id']);
-							$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=forum&scope=' .  $this->categories[$post['category_id']]->section . '/' . $this->categories[$post['category_id']]->alias . '/' . ($post['parent'] ? $post['parent'] : $post['id']);
-							$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
+							$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $post->get('group_alias')) . '">' . $this->escape(stripslashes($post->get('group_title'))) . '</a>';
 						}
 					?>
 					<li>
 						<h4>
-							<a href="<?php echo JRoute::_($url); ?>" title=""><?php echo ($post['parent'] && isset($this->threads[$post['parent']])) ? stripslashes($this->threads[$post['parent']]) : stripslashes($post['title']); ?></a>
+							<a href="<?php echo JRoute::_($post->link()); ?>">
+								<?php 
+								echo ($post->get('parent') && isset($this->threads[$post->get('parent')])) 
+									? $this->escape(stripslashes($this->threads[$post->get('parent')])) 
+									: $this->escape(stripslashes($post->get('title'))); 
+								?>
+							</a>
 						</h4>
 						<span class="discussion-author">
 							<?php 
-								if ($post['anonymous']) {
-									echo '<em>' . JText::_('Anonymous') . '</em>';
+								if ($post->get('anonymous')) {
+									echo '<em>' . JText::_('MOD_LATESTDISCUSSIONS_ANONYMOUS') . '</em>';
 								} else {
-									$juser =& JUser::getInstance($post['created_by']); 
-									echo '<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '">' . stripslashes($juser->get("name")) . '</a>';
+									echo '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
 								}
 								echo ', in&nbsp;'
 							?>
 						</span>
-						<span class="discussion-location"><?php echo $location; ?></span>
-						<span class="discussion-date"><?php echo date("F jS, Y, g:ia", strtotime($post['created'])); ?></span>
-						<?php if ($this->charlimit > 0) : ?>
-							<span class="discussion-comment"><?php echo substr(strip_tags($parser->parse($post['comment'], $wikiconfig)), 0, $this->charlimit); if (strlen($post['comment']) > $this->charlimit) { echo '&hellip;'; } ?></span>
-						<?php endif; ?>
+						<span class="discussion-location">
+							<?php echo $location; ?>
+						</span>
+						<span class="discussion-date">
+							<time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time') . ' ' . JText::_('on') . ' ' . $post->created('date'); ?></time>
+						</span>
+					<?php if ($this->charlimit > 0) : ?>
+						<span class="discussion-comment">
+							<?php echo $post->content('clean', $this->charlimit); ?>
+						</span>
+					<?php endif; ?>
 					</li>
-				<?php endif; ?>
-				<?php $c++; ?>
 			<?php endforeach; ?>
 		</ul>
 	<?php else : ?>
-		<p><?php echo JText::_('Currently there are no discussions'); ?></p>
+		<p><?php echo JText::_('MOD_LATESTDISCUSSIONS_NO_RESULTS'); ?></p>
 	<?php endif; ?>
-	
-	<?php if ($this->morelink != '') : ?>
-		<p class="more"><a href="<?php echo $this->morelink; ?>">More Discussions &rsaquo;</a></p>
+
+	<?php if ($more = $this->params->get('morelink', '')) : ?>
+		<p class="more">
+			<a href="<?php echo $more; ?>">
+				<?php echo JText::_('MOD_LATESTDISCUSSIONS_MORE_RESULTS'); ?>
+			</a>
+		</p>
 	<?php endif; ?>
-	
-	<?php if ($this->feedlink == 'yes') : ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_forum&task=latest.rss', true, -1); ?>" class="newsfeed" title="Latest Discussion's Feed">Latest Discussion's Feed</a>
-		<br class="clear" />
+
+	<?php if ($this->params->get('feedlink', 'yes') == 'yes') : ?>
+		<p>
+			<a href="<?php echo JRoute::_('index.php?option=com_forum&task=latest.rss', true, -1); ?>" class="newsfeed">
+				<?php echo JText::_('MOD_LATESTDISCUSSIONS_FEED'); ?>
+			</a>
+		</p>
 	<?php endif; ?>
-</div>
+</div><!-- / #latest_discussions_module -->

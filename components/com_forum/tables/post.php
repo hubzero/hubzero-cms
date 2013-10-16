@@ -725,7 +725,7 @@ class ForumPost extends JTable
 		{
 			$where[] = "c.parent != 0";
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']) && $filters['state'] >= 0) 
 		{
 			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
@@ -741,13 +741,34 @@ class ForumPost extends JTable
 		{
 			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
 		}
-		if (isset($filters['scope']) && (string) $filters['scope']) 
+		if (isset($filters['scope']) && $filters['scope']) 
 		{
-			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+			if (is_array($filters['scope']))
+			{
+				foreach ($filters['scope'] as $k => $scope)
+				{
+					$filters['scope'][$k] = $this->_db->Quote(strtolower((string) $scope));
+				}
+
+				$where[] = "c.scope IN (" . implode(',', $filters['scope']) . ")";
+			}
+			else
+			{
+				$where[] = "c.scope=" . $this->_db->Quote(strtolower((string) $filters['scope']));
+			}
 		}
-		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+		if (isset($filters['scope_id'])) 
 		{
-			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+			if (is_array($filters['scope_id']) && count($filters['scope_id']) > 0)
+			{
+				$filters['scope_id'] = array_map('intval', $filters['scope_id']);
+
+				$where[] = "c.scope_id IN (" . implode(',', $filters['scope_id']) . ")";
+			}
+			else if ((int) $filters['scope_id'] >= 0)
+			{
+				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+			}
 		}
 		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
 		{
@@ -891,6 +912,10 @@ class ForumPost extends JTable
 
 		if ($filters['limit'] != 0) 
 		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}
 

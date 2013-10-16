@@ -43,84 +43,122 @@ class modLatestDiscussions extends Hubzero_Module
 	public function display()
 	{
 		$database =& JFactory::getDBO();
-
 		$juser =& JFactory::getUser();
 
 		ximport("Hubzero_Group");
 		ximport("Hubzero_Group_Helper");
 
 		//get the params
-		$this->cls = $this->params->get('moduleclass_sfx');
 		$this->limit = $this->params->get('limit', 5);
 		$this->charlimit = $this->params->get('charlimit', 100);
-		$this->feedlink = $this->params->get('feedlink', 'yes');
-		$this->morelink = $this->params->get('morelink', '');
-		$include = $this->params->get('forum', 'both');
 
-		//get all forum posts on site forum
-		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id='0' AND scope='site' AND f.state='1'");
-		$site_forum = $database->loadAssocList();
+		include_once(JPATH_ROOT . '/components/com_forum/models/forum.php');
 
-		//get any group posts
-		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id<>'0' AND scope='group' AND f.state='1'");
-		$group_forum = $database->loadAssocList();
+		$forum = new ForumModel();
 
-		//make sure that the group for each forum post has the right privacy setting
-		foreach ($group_forum as $k => $gf) 
-		{
-			$group = Hubzero_Group::getInstance($gf['scope_id']);
-			if (is_object($group)) 
-			{
-				$forum_access = Hubzero_Group_Helper::getPluginAccess($group, 'forum');
-				
-				if ($forum_access == 'nobody' 
-				 || ($forum_access == 'registered' && $juser->get('guest')) 
-				 || ($forum_access == 'members' && !in_array($juser->get('id'), $group->get('members')))) 
-				{
-					unset($group_forum[$k]);
-				}
-			} 
-			else 
-			{
-				unset($group_forum[$k]);
-			}
-		}
-		
 		//based on param decide what to include
-		switch ($include) 
+		switch ($this->params->get('forum', 'both')) 
 		{
-			case 'site':  $posts = $site_forum;  break;
-			case 'group': $posts = $group_forum; break;
-			case 'both':  
+			case 'site':
+				$posts = $forum->posts('list', array(
+					'scope'    => 'site',
+					'scope_id' => 0,
+					'state'    => 1,
+					'limit'    => 100,
+					'sort'     => 'created',
+					'sort_Dir' => 'DESC'
+				));
+			break;
+
+			case 'group':
+				$posts = $forum->posts('list', array(
+					'scope'    => 'site',
+					'scope_id' => -1,
+					'state'    => 1,
+					'limit'    => 100,
+					'sort'     => 'created',
+					'sort_Dir' => 'DESC'
+				));
+			break;
+
+			case 'both':
 			default:
-				$posts = array_merge($site_forum, $group_forum);
+				$posts = $forum->posts('list', array(
+					'scope'    => array('site', 'group'),
+					'scope_id' => -1,
+					'state'    => 1,
+					'limit'    => 100,
+					'sort'     => 'created',
+					'sort_Dir' => 'DESC'
+				));
 			break;
 		}
 
+		//make sure that the group for each forum post has the right privacy setting
 		$categories = array();
 		$ids = array();
 		$threads = array();
+		$t = array();
 
-		foreach ($posts as $post)
+		// Run through all the posts and collect some data
+		foreach ($posts as $k => $post) 
 		{
-			if ($post['parent'] == 0)
+			if ($post->get('scope') == 'group')
 			{
-				$threads[$post['id']] = $post['title'];
+				$group = Hubzero_Group::getInstance($post->get('scope_id'));
+				if (is_object($group)) 
+				{
+					$forum_access = Hubzero_Group_Helper::getPluginAccess($group, 'forum');
+
+					if ($forum_access == 'nobody' 
+					 || ($forum_access == 'registered' && $juser->get('guest')) 
+					 || ($forum_access == 'members' && !in_array($juser->get('id'), $group->get('members')))) 
+					{
+						$posts->remove($k);
+						continue;
+					}
+				} 
+				else 
+				{
+					$posts->remove($k);
+					continue;
+				}
+				$posts[$k]->set('group_alias', $group->get('cn'));
+				$posts[$k]->set('group_title', $group->get('description'));
+			}
+
+			if ($post->get('parent') == 0)
+			{
+				$threads[$post->get('id')] = $post->get('title');
 			}
 			else 
 			{
-				$threads[$post['parent']] = (isset($threads[$post['parent']])) ? $threads[$post['parent']] : '';
+				$threads[$post->get('thread')] = (isset($threads[$post->get('thread')])) ? $threads[$post->get('thread')] : '';
+				if (!$threads[$post->get('thread')])
+				{
+					$t[] = $post->get('thread');
+				}
 			}
-			$ids[] = $post['category_id'];
+			$ids[] = $post->get('category_id');
 		}
-		foreach ($threads as $k => $thread)
+
+		// Get any threads not found above
+		if (count($t) > 0)
 		{
-			if (!trim($thread) && $k)
+			$thrds = $forum->posts('list', array(
+				'scope'    => array('site', 'group'),
+				'scope_id' => -1,
+				'state'    => 1,
+				'sort'     => 'created',
+				'sort_Dir' => 'DESC',
+				'id'       => $t
+			));
+			foreach ($thrds as $thread)
 			{
-				$database->setQuery("SELECT f.title FROM #__forum_posts f WHERE f.id=" . $k);
-				$threads[$k] = $database->loadResult();
+				$threads[$thread->get('id')] = $thread->get('title');
 			}
 		}
+
 		$database->setQuery("SELECT c.id, c.alias, s.alias as section FROM #__forum_categories c LEFT JOIN #__forum_sections as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
 		$cats = $database->loadObjectList();
 		if ($cats)
@@ -130,18 +168,6 @@ class modLatestDiscussions extends Hubzero_Module
 				$categories[$category->id] = $category;
 			}
 		}
-
-		//function to sort by created date
-		function sortbydate($a, $b)
-		{
-			$d1 = date("Y-m-d H:i:s", strtotime($a['created']));
-			$d2 = date("Y-m-d H:i:s", strtotime($b['created']));
-			
-			return ($d1 > $d2) ? -1 : 1;
-		}
-
-		//sort using function above - date desc
-		usort($posts, "sortbydate");
 
 		//set posts to view
 		$this->threads = $threads;

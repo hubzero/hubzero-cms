@@ -268,6 +268,63 @@ class ForumModel extends ForumModelAbstract
 	}
 
 	/**
+	 * Get a list or count of posts for a forum
+	 * 
+	 * @param      string  $rtrn    Data to return
+	 * @param      array   $filters Filters to apply to the query
+	 * @param      boolean $clear   Clear cached results?
+	 * @return     object \Hubzero\ItemList
+	 */
+	public function posts($rtrn='list', $filters=array(), $clear=false)
+	{
+		$filters['scope']    = isset($filters['scope'])    ? $filters['scope']    : $this->get('scope');
+		$filters['scope_id'] = isset($filters['scope_id']) ? $filters['scope_id'] : $this->get('scope_id');
+		$filters['state']    = isset($filters['state'])    ? $filters['state']    : self::APP_STATE_PUBLISHED;
+		$filters['state']    = isset($filters['parent'])   ? $filters['parent']   : -1;
+
+		switch (strtolower($rtrn))
+		{
+			case 'count':
+				if (!isset($this->_cache['posts.count']) || $clear)
+				{
+					$tbl = new ForumPost($this->_db);
+					$this->_cache['posts.count'] = $tbl->count($filters);
+				}
+				return $this->_cache['posts.count'];
+			break;
+
+			case 'first':
+				return $this->posts('list', $filters)->first();
+			break;
+
+			case 'list':
+			case 'results':
+			default:
+				if (!isset($this->_cache['posts.list']) || !($this->_cache['posts.list'] instanceof \Hubzero\ItemList) || $clear)
+				{
+					$tbl = new ForumPost($this->_db);
+
+					if (($results = $tbl->find($filters)))
+					{
+						foreach ($results as $key => $result)
+						{
+							$results[$key] = new ForumModelPost($result);
+						}
+					}
+					else
+					{
+						$results = array();
+					}
+
+					$this->_cache['posts.list'] = new \Hubzero\ItemList($results);
+				}
+
+				return $this->_cache['posts.list'];
+			break;
+		}
+	}
+
+	/**
 	 * Check a user's authorization
 	 * 
 	 * @param      string  $action    Action to check
