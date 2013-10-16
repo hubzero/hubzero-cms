@@ -69,36 +69,6 @@ class Hubzero_Toolbox
 	}
 
 	/**
-	 * Get the URL for this page
-	 * 
-	 * @param      integer $cutgetvars Strip querystring?
-	 * @return     string
-	 */
-	public function thisurl($cutgetvars = 0)
-	{
-		if (!empty($_SERVER['REDIRECT_URL'])) 
-		{
-			$thisurl = $_SERVER['REDIRECT_URL'];
-		} 
-		else 
-		{
-			$thisurl = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/') + 1);
-		}
-
-		if ($cutgetvars) 
-		{
-			$pvar = strpos($thisurl, '?');
-
-			if ($pvar) 
-			{
-				$thisurl = substr($thisurl, 0, $pvar);
-			}
-		}
-
-		return $thisurl;
-	}
-
-	/**
 	 * Replace discouraged characters introduced by Microsoft Word
 	 * 
 	 * @param      string  $text       Text to clean
