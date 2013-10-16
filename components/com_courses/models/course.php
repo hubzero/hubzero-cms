@@ -306,7 +306,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	}
 
 	/**
-	 * Check if the current user is enrolled
+	 * Retrieve a specific manager record by user ID
 	 * 
 	 * @return     boolean
 	 */
@@ -332,10 +332,10 @@ class CoursesModelCourse extends CoursesModelAbstract
 	}
 
 	/**
-	 * Get a list of units for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of managers for a course
+	 *   If a manager has multiple entries, it will set
+	 *   the entry int he array with the record that has
+	 *   the highest permission levels
 	 * 
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Force a new dataset?
@@ -398,6 +398,48 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		return $this->_managers;
+	}
+
+	/**
+	 * Get a list of students for a course
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @return     mixed
+	 */
+	public function students($filters=array(), $clear=false)
+	{
+		if (!isset($filters['course_id']))
+		{
+			$filters['course_id'] = (int) $this->get('id');
+		}
+		$filters['student'] = 1;
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CoursesTableMember($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_students) || !is_array($this->_students) || $clear)
+		{
+			$tbl = new CoursesTableMember($this->_db);
+
+			$results = array();
+
+			if (($data = $tbl->find($filters)))
+			{
+				foreach ($data as $key => $result)
+				{
+					$results[$key] = new CoursesModelStudent($result, $this->get('id'));
+				}
+			}
+
+			$this->_students = $results; //new CoursesModelIterator($results);
+		}
+
+		return $this->_students;
 	}
 
 	/**
