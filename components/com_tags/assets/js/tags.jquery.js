@@ -5,83 +5,50 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-
-//----------------------------------------------------------
-// Tags scripts
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Tags = {
-	jQuery: jq,
-	
-	initialize: function()
-	{
-		//
-		HUB.Tags.submitbutton();
-		
-		//
-		HUB.Tags.deleteTag();
-	},
-	
-	//-----
-	
-	submitbutton: function(pressbutton) {
-		var $ = this.jQuery;
-		
-		var form = $('#hubForm');
-		
-		if(form.length)
-		{
-			if (pressbutton == 'cancel') {
-				submitform( pressbutton );
-				return;
-			}
+jQuery(document).ready(function(jq){
+	var $ = jq,
+		form = $('#hubForm');
 
+	if (form.length) {
+		form.on('submit', function (e){
 			// do field validation
-			if (form.raw_tag.value == ''){
+			if ($('#field-raw_tag').val() == ''){
 				alert( 'You must fill in a tag name' );
-			} else {
-				submitform( pressbutton );
+				e.preventDefault();
+				return false;
 			}
-		}
-	},
-	
-	//-----
-	
-	deleteTag: function()
-	{
-		var $ = this.jQuery;
-		
-		//add count to url
-		$(".delete-tag").each(function(index) {
-			var count = index + 1,
-				url = $(this).attr("href");
-			
-			url += (url.indexOf("?") == -1) ? "?count="+count : "&count="+count;
-			$(this).attr("href", url);
+			return true;
 		});
-		
-		//do we need to scroll down
-		if(window.location.hash)
-		{
-			var row_id = window.location.hash.replace("#count", ""),
-				row = $($(".entries tr")[row_id]);
-			
-			$("body").animate({
-				scrollTop: row.offset().top
-			}, 500);
-		}
 	}
-}
 
-jQuery(document).ready(function($){
-	HUB.Tags.initialize();
+	//add count to url
+	$(".delete-tag").each(function(index) {
+		var count = index + 1,
+			url = $(this).attr("href");
+
+		url += (url.indexOf("?") == -1) ? "?count="+count : "&count="+count;
+		$(this).attr("href", url);
+
+		$(this).on('click', function (e) {
+			var res = confirm('Are you sure you wish to delete this tag?');
+			if (!res) {
+				e.preventDefault();
+			}
+			return res;
+		});
+	});
+
+	//do we need to scroll down
+	if (window.location.hash) {
+		var row_id = window.location.hash.replace("#count", ""),
+			row = $($(".entries tr")[row_id]);
+		
+		$("body").animate({
+			scrollTop: row.offset().top
+		}, 500);
+	}
 });

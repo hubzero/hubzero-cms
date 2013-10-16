@@ -711,7 +711,7 @@ class TagsControllerTags extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Push scripts to the document
-		$this->_getScripts('assets/css/tags');
+		$this->_getScripts('assets/js/tags');
 
 		$this->view->config = $this->config;
 
