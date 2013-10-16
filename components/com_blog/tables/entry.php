@@ -157,62 +157,28 @@ class BlogTableEntry extends JTable
 	 */
 	public function loadAlias($oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL)
 	{
-		if ($oid === NULL) 
-		{
-			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ARGUMENT'));
-			return false;
-		}
-		if ($scope === NULL) 
-		{
-			$scope = $this->scope;
-		}
-		if (!$scope) 
-		{
-			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ARGUMENT'));
-			return false;
-		}
+		$fields = array(
+			'alias' => (string) $oid
+		);
+
 		switch ($scope)
 		{
 			case 'member':
-				if ($created_by === NULL) 
-				{
-					$created_by = $this->created_by;
-				}
-				if (!$created_by) 
-				{
-					$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ARGUMENT'));
-					return false;
-				}
-				$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND scope=" . $this->_db->Quote($scope) . " AND created_by=" . $this->_db->Quote($created_by);
+				$fields['created_by'] = (int) $created_by; 
+				$fields['scope']      = (string) $scope;
 			break;
 
 			case 'group':
-				if ($group_id === NULL) {
-					$group_id = $this->group_id;
-				}
-				if (!$group_id) 
-				{
-					$this->setError(JText::_('Missing argument.'));
-					return false;
-				}
-				//$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND group_id='$group_id'";
-				$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND group_id=" . $this->_db->Quote($group_id);
+				$fields['group_id']   = (int) $group_id; 
+				$fields['scope']      = (string) $scope;
 			break;
 
 			default:
-				$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND scope=" . $this->_db->Quote($scope);
+				$fields['scope']      = (string) $scope;
 			break;
 		}
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+
+		return parent::load($fields);
 	}
 
 	/**

@@ -139,16 +139,10 @@ class BlogTableComment extends JTable
 	 */
 	public function loadUserComment($entry_id, $user_id)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id) . " AND created_by=" . $this->_db->Quote($user_id) . " LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'entry_id'   => (int) $entry_id,
+			'created_by' => (int) $user_id
+		));
 	}
 
 	/**
