@@ -203,7 +203,7 @@ class FileMacro extends WikiMacro
 		$key = strtolower(trim($matches[1]));
 		$val = trim($matches[2]);
 
-		$size   = '/^[0-9]+(%|px|em)?$/';
+		$size   = '/^[0-9]+(%|px|em)+$/';
 		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
@@ -221,6 +221,7 @@ class FileMacro extends WikiMacro
 
 		if (is_numeric($val) && in_array($key, array('width', 'height')))
 		{
+
 			$this->attr['style'][$key] = $val . 'px';
 			$this->attr[$key] = $val;
 		}
@@ -325,7 +326,7 @@ class FileMacro extends WikiMacro
 
 		// Set width if just a pixel size is given 
 		// e.g., [[File(myfile.jpg, 120px)]]
-		$size   = '/[0-9+](%|px|em)?$/';
+		$size   = '/[0-9+](%|px|em)+$/';
 		if (preg_match($size, $key, $matches)) 
 		{
 			if ($matches[0])
@@ -475,6 +476,14 @@ class FileMacro extends WikiMacro
 			case 'unity3d':
 				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
 				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
+				if (isset($attr['style']['width']))
+				{
+					$attr['width'] = intval($attr['style']['width']);
+				}
+				if (isset($attr['style']['height']))
+				{
+					$attr['height'] = intval($attr['style']['height']);
+				}
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
 				/*if (!array_key_exists('alt', $attr) 
@@ -524,6 +533,14 @@ class FileMacro extends WikiMacro
 			case 'cdf':
 				$attr['width']  = (isset($attr['width']) && $attr['width'])  ? $attr['width']  : 400;
 				$attr['height'] = (isset($attr['height']) && $attr['height']) ? $attr['height'] : 400;
+				if (isset($attr['style']['width']))
+				{
+					$attr['width'] = intval($attr['style']['width']);
+				}
+				if (isset($attr['style']['height']))
+				{
+					$attr['height'] = intval($attr['style']['height']);
+				}
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
 				$juri = JURI::getInstance();
