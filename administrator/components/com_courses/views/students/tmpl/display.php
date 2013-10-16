@@ -46,6 +46,8 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 
+JToolBarHelper::custom('csv', 'csv', '', 'CSV', false, true);
+
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
@@ -116,7 +118,8 @@ function submitbutton(pressbutton)
 <?php } else { ?>
 			<input type="hidden" name="section" id="filter_section" value="0" />
 <?php } ?>
-			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" onClick="adminForm.elements['task'].value='';" />
+						
 		</div>
 	</fieldset>
 	<div class="clr"></div>
@@ -222,7 +225,7 @@ foreach ($this->rows as $row)
 ?>
 		</tbody>
 	</table>
-
+	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />

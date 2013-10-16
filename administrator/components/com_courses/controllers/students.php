@@ -65,7 +65,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 			'section',
 			0
 		);
-
+		
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
 		/*if (!$this->view->offering->exists())
@@ -131,7 +131,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 				$this->view->rows[$key] = new CoursesModelStudent($row);
 			}
 		}
-
+		
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -433,4 +433,57 @@ class CoursesControllerStudents extends Hubzero_Controller
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : '')
 		);
 	}
+	
+	
+	/**
+	 * Save students info as CSV file
+	 *
+	 * @return	void
+	 */
+	public function csvTask() 
+	{	
+		// Get configuration
+		$app =& JFactory::getApplication();
+		$config = JFactory::getConfig();
+
+		$this->view->filters['offering']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.offering',
+			'offering',
+			0
+		);
+		$this->view->filters['section_id']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.section',
+			'section',
+			0
+		);
+		
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->filters['offering_id'] = $this->view->filters['offering'];
+		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+
+		if (!$this->view->filters['offering_id'])
+		{
+			$this->view->filters['offering_id'] = null;
+		}
+		if (!$this->view->filters['section_id'])
+		{
+			$this->view->filters['section_id'] = null;
+		}
+		$this->view->filters['student'] = 1;
+
+		$tbl = new CoursesTableMember($this->database);
+
+		$this->view->rows = $tbl->find($this->view->filters); //$this->view->offering->students($this->view->filters);
+		if ($this->view->rows)
+		{
+			foreach ($this->view->rows as $key => $row)
+			{
+				$this->view->rows[$key] = new CoursesModelStudent($row);
+			}
+		}
+		
+		// Output the CSV
+		$this->view->display();
+	}
+			
 }
