@@ -41,6 +41,7 @@ JToolBarHelper::deleteList('Are you sure?', 'deleteClass');
 	<ul id="subsubmenu">
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Members</a></li> 
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=displayClasses" class="active">Quota Classes</a></li>
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=import">Import</a></li>
 	</ul>
 </div>
 

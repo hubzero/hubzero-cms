@@ -625,4 +625,142 @@ class MembersControllerQuotas extends Hubzero_Controller
 			return $return;
 		}
 	}
+
+	/**
+	 * Display quota import page
+	 * 
+	 * @return     void
+	 */
+	public function importTask()
+	{
+		// Get configuration
+		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
+
+		$this->view->config = $this->config;
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Process quota import
+	 * 
+	 * @return     void
+	 */
+	public function processImportTask()
+	{
+		// Import quotas
+		$qfile     = JRequest::getVar('conf_text');
+		$overwrite = JRequest::getInt('overwrite_existing', 0);
+
+		if (empty($qfile))
+		{
+			// Output message and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=import',
+				JText::_('COM_MEMBERS_QUOTA_NO_CONF_TEXT'),
+				'warning'
+			);
+
+			return;
+		}
+
+		$lines   = explode("\n", $qfile);
+		$classes = array();
+		foreach ($lines as $line)
+		{
+			$line = trim($line);
+			if (empty($line))
+			{
+				continue;
+			}
+
+			if (substr($line, 0, 1) == "#")
+			{
+				continue;
+			}
+
+			$args = explode(" ", $line);
+			switch ($args[0])
+			{
+				case 'class':
+					$class = new MembersQuotasClasses($this->database);
+					$class->load(array('alias' => $args[1]));
+
+					if ($class->id && !$overwrite)
+					{
+						continue;
+					}
+
+					$class->set('alias'      , $args[1]);
+					$class->set('soft_blocks', $args[2]);
+					$class->set('hard_blocks', $args[3]);
+					$class->set('soft_files' , $args[4]);
+					$class->set('hard_files' , $args[5]);
+					$class->store();
+				break;
+
+				case 'user':
+					if ($args[2] == 'ignore')
+					{
+						continue;
+					}
+
+					$juser = JFactory::getUser($args[1]);
+					if (!is_object($juser) || !is_numeric($juser->get('id')))
+					{
+						continue;
+					}
+					else
+					{
+						$user_id = $juser->get('id');
+					}
+
+					$class = new MembersQuotasClasses($this->database);
+					$class->load(array('alias' => $args[2]));
+
+					if (!$class->id)
+					{
+						continue;
+					}
+
+					// Restore all members of this class to default
+					$quota = new UsersQuotas($this->database);
+					$quota->load(array('user_id' => $user_id));
+
+					if ($quota->id && !$overwrite)
+					{
+						continue;
+					}
+
+					$quota->set('user_id'    , $user_id);
+					$quota->set('class_id'   , $class->id);
+					$quota->set('soft_blocks', $class->soft_blocks);
+					$quota->set('hard_blocks', $class->hard_blocks);
+					$quota->set('soft_files' , $class->soft_files);
+					$quota->set('hard_files' , $class->hard_files);
+					$quota->store();
+				break;
+			}
+		}
+
+		// Output message and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('COM_MEMBERS_QUOTA_CONF_IMPORT_SUCCESSFUL'),
+			'passed'
+		);
+
+		return;
+	}
 }

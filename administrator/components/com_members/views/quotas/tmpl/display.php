@@ -92,6 +92,7 @@ JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'Default');
 	<ul id="subsubmenu">
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" class="active">Members</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=displayClasses">Quota Classes</a></li>
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=import">Import</a></li>
 	</ul>
 </div>
 
