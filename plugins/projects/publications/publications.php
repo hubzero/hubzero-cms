@@ -809,6 +809,11 @@ class plgProjectsPublications extends JPlugin
 		
 		// Instantiate project publication
 		$pub = $objP->getPublication($pid, $version, $this->_project->id);
+		
+		// Start url
+		$route = $this->_project->provisioned 
+					? 'index.php?option=com_publications' . a . 'task=submit'
+					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';		
 
 		// If publication not found, raise error
 		if (!$pub) 
@@ -851,12 +856,7 @@ class plgProjectsPublications extends JPlugin
 		{
 			$section = 'content';
 		}
-		
-		// Start url
-		$route = $this->_project->provisioned 
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';		
-		
+				
 		// Which content panel?
 		if ($section == 'content') 
 		{
@@ -945,13 +945,9 @@ class plgProjectsPublications extends JPlugin
 		);
 		
 		// Get extra tool information
-		if ($view->pub->base == 'tools' && $view->pub->toolid) 
+		if ($view->pub->base == 'tools') 
 		{
-			$tool = array();
-			$hzt = Hubzero_Tool::getInstance($view->pub->toolid);
-			$tool['tool'] = $hzt;
-			$tool['dev'] = $hzt->getRevision('dev');
-			$tool['current'] = $hzt->getRevision('current');
+			// TBD
 		}
 		
 		// Autocompleter
@@ -3406,6 +3402,13 @@ class plgProjectsPublications extends JPlugin
 			$view->data->loadRecord($item);
 		}
 		
+		// Tool content
+		if ($type == 'tool')
+		{
+			$view->tool = new ProjectTool($this->_database);
+			$view->tool->loadTool($item);
+		}
+		
 		// Wiki content
 		if ($type == 'note')
 		{			
@@ -3519,7 +3522,7 @@ class plgProjectsPublications extends JPlugin
 		$selections = $this->_parseSelections($selections);
 		
 		// Allowed choices
-		$options = array('download', 'tardownload', 'inlineview');
+		$options = array('download', 'tardownload', 'inlineview', 'invoke', 'video', 'external');
 		
 		// Check if selections are the same as in another publication
 		$used = $objPA->checkUsed($base, $selections, $this->_project->id, $pid);
@@ -3556,6 +3559,19 @@ class plgProjectsPublications extends JPlugin
 				foreach($selections['data'] as $data) 
 				{
 					if ($objPA->loadAttachment($vid, $data, 'data' )) 
+					{
+						$finfo = array();
+						$finfo['object_name'] = $objPA->object_name;
+						$finfo['object_revision'] = $objPA->object_revision;
+						$info[] = $finfo;
+					}
+				}
+			}			
+			elseif ($base == 'tools' && !empty($selections['tool']))
+			{	
+				foreach($selections['tool'] as $tool) 
+				{
+					if ($objPA->loadAttachment($vid, $tool, 'tool' )) 
 					{
 						$finfo = array();
 						$finfo['object_name'] = $objPA->object_name;
@@ -3641,8 +3657,13 @@ class plgProjectsPublications extends JPlugin
 						// More than 1 file
 						$serveas = 'tardownload';
 					}				
-				}			
+				}
 			}
+		}
+		elseif ($base == 'tools')
+		{
+			$serveas = 'invoke';
+			$choices = array();
 		}
 		else
 		{
@@ -3893,6 +3914,63 @@ class plgProjectsPublications extends JPlugin
 				{
 					$i++;
 					$added++;
+				}				
+			}
+		}
+		
+		// Save tool attachments
+		if (isset($selections['tools']) && count($selections['tools']) > 0) 
+		{
+			// Attach every selected tool
+			foreach ($selections['tools'] as $toolname) 
+			{
+				// Get tool
+				$objTool = new ProjectTool( $this->_database );
+				$tool = $objTool->getFullRecord($toolname);
+				
+				if (!$tool)
+				{
+					// Can't proceed
+					continue;
+				}
+				
+				if ($objPA->loadAttachment($vid, $toolname, 'tool')) 
+				{
+					$objPA->modified_by = $this->_uid;
+					$objPA->modified = date( 'Y-m-d H:i:s' );
+				}
+				else 
+				{
+					$objPA = new PublicationAttachment( $this->_database );
+					$objPA->publication_id 			= $pid;
+					$objPA->publication_version_id 	= $vid;
+					$objPA->path 					= '';
+					$objPA->type 					= 'tool';
+					$objPA->created_by 				= $this->_uid;
+					$objPA->created 				= date( 'Y-m-d H:i:s' );
+				}
+				
+				// Save object information
+				$objPA->object_id   	= $tool->id;
+				$objPA->object_name 	= $tool->name;
+				$objPA->object_revision = $tool->revision;
+				$objPA->object_instance = $tool->instance;
+			
+				$objPA->ordering 		= $i;
+				$objPA->role 			= $primary;
+				$objPA->title 			= $tool->title;
+				$objPA->params 			= $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
+			
+				if ($objPA->store()) 
+				{
+					$i++;
+					$added++;
+				}
+				
+				// Update tool record
+				if ($primary)
+				{
+					$objTool->updatePubAssoc($tool->id, $tool->instance, $pid, $vid );
 				}	
 			}
 		}
@@ -6226,29 +6304,6 @@ class plgProjectsPublications extends JPlugin
 		}
 		
 		return $selections;
-	}
-			
-	/**
-	 * Get clone path
-	 * 
-	 * @return     string
-	 */
-	protected function _getClonePath() 
-	{		
-		$clone  = $this->_config->get('gitclone');
-		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-		$webdir = $this->_config->get('webpath');
-		
-		if (substr($webdir, 0, 1) != DS) 
-		{
-			$webdir = DS.$webdir;
-		}
-		if (substr($webdir, -1, 1) == DS) 
-		{
-			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-		}
-		$clone = $clone ? JPATH_ROOT.$clone : $prefix . $webdir . DS .'clone' . DS . '.git';
-		return $clone;				
 	}
 	
 	/**
