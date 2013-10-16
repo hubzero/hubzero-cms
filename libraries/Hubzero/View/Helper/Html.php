@@ -37,25 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class Hubzero_View_Helper_Html
 {
 	/**
-	 * Clean up text to be XHTML valid
-	 * 
-	 * @param      string $text Text to clean
-	 * @return     string
-	 */
-	public static function xhtml($text)
-	{
-		$text = stripslashes($text);
-		$text = strip_tags($text);
-		$text = str_replace('&amp;', '&', $text);
-		$text = str_replace('&', '&amp;', $text);
-		$text = str_replace('&amp;quot;', '&quot;', $text);
-		$text = str_replace('&amp;lt;', '&lt;', $text);
-		$text = str_replace('&amp;gt;', '&gt;', $text);
-
-		return $text;
-	}
-
-	/**
 	 * Shorten a string to a max length, preserving whole words
 	 * 
 	 * @param      string  $text      String to shorten

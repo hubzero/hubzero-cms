@@ -49,10 +49,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				
 				if($wishlist->items) {
 					$html  .= t.'<ul id="wishlist">'.n;
-					foreach ($wishlist->items as $item) {					
+					foreach ($wishlist->items as $item) {
 						$item->subject = stripslashes($item->subject);
-						$item->subject = str_replace('&quote;','&quot;',$item->subject);
-						$item->subject = htmlspecialchars($item->subject);
+						$item->subject = $this->escape($item->subject);
 						$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
 						$name = $item->anonymous == 1 ? JText::_('ANONYMOUS') : $item->authorname;
 						
@@ -81,7 +80,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						
 						$html .= t.t.'<div class="ensemble_left">'.n;
 						if(!$item->reports) {
-							$html .= t.t.t.'<p class="wishcontent"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$filters['filterby'].'" class="wishtitle" title="'.htmlspecialchars(Hubzero_View_Helper_Html::xhtml($item->about)).'" >'.Hubzero_View_Helper_Html::shortenText($item->subject, 160, 0).'</a></p>'.n;
+							$html .= t.t.t.'<p class="wishcontent"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$filters['filterby'].'" class="wishtitle" title="'.$this->escape($item->about).'" >'.Hubzero_View_Helper_Html::shortenText($item->subject, 160, 0).'</a></p>'.n;
 							$html .= t.t.t.'<p class="proposed">'.JText::_('WISH_PROPOSED_BY').' '.$name.' '.JText::_('ON').' '.JHTML::_('date',$item->proposed, $dateFormat, $tz);
 							$html .= ', <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?com=1#comments">'.$item->numreplies; 
 							$html .= '<span class="nobreak">';

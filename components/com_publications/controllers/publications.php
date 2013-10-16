@@ -2252,7 +2252,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Build some basic RSS document information
 		$dtitle = Hubzero_View_Helper_Html::purifyText(stripslashes($title));
 		$doc->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle), 250, 0));
-		$doc->description = Hubzero_View_Helper_Html::xhtml(html_entity_decode( Hubzero_View_Helper_Html::purifyText(stripslashes($publication->abstract))));
+		$doc->description = htmlentities(html_entity_decode( Hubzero_View_Helper_Html::purifyText(stripslashes($publication->abstract))));
 		$doc->copyright = JText::sprintf('COM_PUBLICATIONS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->type = JText::_('COM_PUBLICATIONS_RSS_CATEGORY');
 		$doc->link = JRoute::_('index.php?option='.$this->_option.'&id='.$publication->id);

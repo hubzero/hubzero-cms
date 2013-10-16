@@ -135,7 +135,7 @@ foreach ($letters as $letter)
 					<li><a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show=contributors&sortby=' . $this->filters['sortby']); ?>" title="Show only members with Contributions">Contributors</a></li>
 				</ul>
 				
-				<table class="members entries" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+				<table class="members entries">
 					<caption>
 						<?php
 						$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
@@ -353,7 +353,7 @@ if (count($this->rows) > 0)
 							<td>
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $id); ?>"><?php echo $name; ?></a><br />
 								<span class="entry-details">
-									<span class="organization"><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></span>
+									<span class="organization"><?php echo $this->escape(stripslashes($row->organization)); ?></span>
 								</span>
 							</td>
 							<td>
@@ -377,12 +377,12 @@ if (count($this->rows) > 0)
 <?php } ?>
 					</tbody>
 				</table>
-<?php
-	$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
-	$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-	$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
-	echo $this->pageNav->getListFooter();
-?>
+				<?php
+					$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
+					echo $this->pageNav->getListFooter();
+				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->

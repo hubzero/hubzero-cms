@@ -89,7 +89,7 @@ if ($this->results) {
 		}
 
 		// Encode some potentially troublesome characters
-		$line->title = Hubzero_View_Helper_Html::xhtml( $line->title );
+		$line->title = $this->escape( $line->title );
 
 		// Make sure we have an SEF, otherwise it's a querystring
 		if (strstr($line->href,'option=')) {

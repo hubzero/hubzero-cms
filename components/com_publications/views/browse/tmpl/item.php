@@ -45,7 +45,7 @@ switch ($this->line->access)
 $html .= '>'."\n";
 $html .= "\t". "\t". '<div class="pub-thumb"><img src="' . $pubthumb . '" alt=""/></div>' . "\n";
 $html .= "\t" . "\t" . '<div class="pub-details">' . "\n";
-$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml($this->line->title) . '</a>'."\n";
+$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape($this->line->title) . '</a>'."\n";
 /*
 if ($this->show_edit != 0) {
 		$link = JRoute::_('index.php?option=com_projects&id='.$this->line->project_id.'&active=publications&pid='. $this->line->id);

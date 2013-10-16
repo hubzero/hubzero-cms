@@ -189,7 +189,7 @@ switch ($this->level)
 			case 0:
 			default: $html .= ' class="public"'; break;
 		}
-		$html .= '><a href="'.$sef.'">'.Hubzero_View_Helper_Html::xhtml(stripslashes($resource->title)).'</a></h4>';
+		$html .= '><a href="'.$sef.'">'.$this->escape(stripslashes($resource->title)).'</a></h4>';
 		$html .= '<p>'.Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 400, 0).' &nbsp; <a href="'.$sef.'">'.JText::_('COM_RESOURCES_LEARN_MORE').'</a></p>';
 
 		$juser =& JFactory::getUser();

@@ -187,7 +187,7 @@ if (count($this->rows) > 0)
 						$html .= ' <span>|</span> <a class="edit" href="' . JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_EDIT') . '</a>' . "\n";
 					}
 					$html .= '</p>' . "\n";
-					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->introtext)), $txt_length, 1) . "\n";
+					$html .= Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($row->introtext)), $txt_length, 1) . "\n";
 					$html .= '</li>' . "\n";
 				break;
 
@@ -232,7 +232,7 @@ if (count($this->rows) > 0)
 						$html .= ' <span>|</span> <a class="edit" href="' . JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_EDIT') . '</a>' . "\n";
 					}
 					$html .= '</p>' . "\n";
-					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->introtext)), $txt_length, 1) . "\n";
+					$html .= Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($row->introtext)), $txt_length, 1) . "\n";
 					$html .= '</li>' . "\n";
 				break;
 
@@ -280,7 +280,7 @@ if (count($this->rows) > 0)
 					$html .= '<p><span>' . JText::sprintf('COM_FEATURES_ASKED_BY', $name) . '</span> - <span>'.$when.' ago</span> - <span>';
 					$html .= ($row->rcount == 1) ? JText::sprintf('COM_FEATURES_RESPONSE', $row->rcount) : JText::sprintf('COM_FEATURES_RESPONSES', $row->rcount);
 					$html .= '</span></p>' . "\n";
-					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($row->question)), $txt_length, 1) . "\n";
+					$html .= Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($row->question)), $txt_length, 1) . "\n";
 					$html .= '</li>' . "\n";
 				break;
 
@@ -343,7 +343,7 @@ if (count($this->rows) > 0)
 						$html .= ' <span>|</span> <a class="edit" href="' . JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $fh->id) . '">' . JText::_('COM_FEATURES_EDIT') . '</a>' . "\n";
 					}
 					$html .= '</p>' . "\n";
-					$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::xhtml(strip_tags($txt)), $txt_length, 1) . "\n";
+					$html .= Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($txt)), $txt_length, 1) . "\n";
 					$html .= '</li>' . "\n";
 				break;
 			}

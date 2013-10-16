@@ -49,7 +49,7 @@ switch ($this->line->access)
 	default: $html .= ' class="public"'; break;
 }
 $html .= '>'."\n";
-$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html::xhtml(stripslashes($this->line->title)) . '</a>'."\n";
+$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape(stripslashes($this->line->title)) . '</a>'."\n";
 /*if ($this->show_edit != 0) {
 	if ($this->line->published >= 0) {
 		if ($this->line->type == 7) {
