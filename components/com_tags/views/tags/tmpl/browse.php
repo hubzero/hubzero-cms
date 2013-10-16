@@ -51,16 +51,17 @@ $this->filters['sort'] = '';
 	<div class="main section">
 		<div class="aside">
 			<div class="container">
-			<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+			<?php /*if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+				
+			<?php } else {*/ ?>
+				<p>
+					<?php echo JText::_('COM_TAGS_BROWSE_EXPLANATION'); ?>
+				</p>
 				<p class="help">
 					<strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong>
 					<br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?>
 				</p>
-			<?php } else { ?>
-				<p>
-					<?php echo JText::_('COM_TAGS_BROWSE_EXPLANATION'); ?>
-				</p>
-			<?php } /*
+			<?php /*} 
 				<p class="info">
 					<?php echo JText::_('COM_TAGS_BROWSE_TAGGED_NOTE'); ?>
 				</p> */ ?>
