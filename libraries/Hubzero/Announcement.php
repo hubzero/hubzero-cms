@@ -119,6 +119,20 @@ class Hubzero_Announcement extends JTable
 	var $sticky = NULL;
 	
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $email = NULL;
+	
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $sent = NULL;
+	
+	/**
 	 * Constructor method for JTable class
 	 * 
 	 * @param  database object
@@ -240,6 +254,14 @@ class Hubzero_Announcement extends JTable
 		{
 			$where[] = "a.`sticky` = " . $this->_db->Quote(intval($filters['sticky']));
 		}
+		if (isset($filters['email']) && in_array($filters['email'], array(0,1)))
+		{
+			$where[] = "a.`email` = " . $this->_db->Quote(intval($filters['email']));
+		}
+		if (isset($filters['sent']) && in_array($filters['sent'], array(0,1)))
+		{
+			$where[] = "a.`sent` = " . $this->_db->Quote(intval($filters['sent']));
+		}
 		
 		//published
 		if (isset($filters['published']))
@@ -269,5 +291,106 @@ class Hubzero_Announcement extends JTable
 		}
 		
 		return $query;
+	}
+	
+	
+	/**
+	 * Check if date is within announcement publish up/down
+	 * 
+	 * @param    array    $filters
+	 */
+	public function announcementPublishedForDate( $announcement = null, $date = null )
+	{
+		// var to hold if announcment is published
+		$published = false;
+		
+		// make sure we have an announcement
+		if ($announcement === null)
+		{
+			$announcement = $this;
+		}
+		
+		// make sure we have a date
+		if ($date === null)
+		{
+			$date = time();
+		}
+		
+		//get up and down times
+		$up = $down = null;
+		if ($announcement->publish_up != '' && $announcement->publish_up != '0000-00-00 00:00:00')
+		{
+			$up = strtotime($announcement->publish_up);
+		}
+		if ($announcement->publish_down != '' && $announcement->publish_down != '0000-00-00 00:00:00')
+		{
+			$down = strtotime($announcement->publish_down);
+		}
+		
+		// if we have a null uptime or uptime less then our date
+		// and if down is null or downtime is greater then our date
+		if (($up == null || $date >= $up) && ($down == null || $date <= $down))
+		{
+			$published = true;
+		}
+		
+		return $published;
+	}
+	
+	/**
+	 * Email Announcement
+	 * 
+	 * @param    array    $filters
+	 */
+	public function emailAnnouncement( $announcement = null )
+	{
+		// make sure we have an announcement
+		if ($announcement === null)
+		{
+			$announcement = $this;
+		}
+		
+		ini_set('display_errors', 1);
+		error_reporting(E_ALL);
+		
+		// load group
+		$group = Hubzero_Group::getInstance( $announcement->scope_id );
+		
+		//create view object
+		ximport('Hubzero_Plugin_View');
+		$eview = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'groups',
+				'element' => 'announcements',
+				'name'    => 'email',
+				'layout'  => 'announcement'
+			)
+		);
+		$eview->announcement = $announcement;
+		$eview->boundary     = md5(date('U'));
+		$message             = $eview->loadTemplate();
+		$message             = str_replace("\n", "\r\n", $message);
+		
+		$jconfig =& JFactory::getConfig();
+		
+		// define headers
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-Type: multipart/alternative; boundary=' . $eview->boundary . "\r\n";
+		$headers .= 'From: ' . $jconfig->getValue('config.sitename') . ' Groups' .' <'. $jconfig->getValue('config.mailfrom') . ">\n";
+		$headers .= "X-Priority: 3\n";
+		$headers .= "X-MSMail-Priority: High\n";
+		$headers .= 'X-Mailer: '. $jconfig->getValue('config.sitename') ."\n";
+		
+		// define subject
+		$subject = $group->get('description') . ' Group Announcement';
+		
+		// send to all group members
+		foreach ($group->get('members') as $member)
+		{
+			$profile = Hubzero_User_Profile::getInstance( $member );
+			mail($profile->get('email'), $subject, $message, $headers);
+		}
+		
+		return true; 
 	}
 }

@@ -360,7 +360,16 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 		
-		//are we creating the announcement?
+		// email announcement
+		$email = (isset($fields['email']) && $fields['email'] == 1) ? true : false;
+		
+		//mark as not sent if we want to email again
+		if ($email === true)
+		{
+			$fields['sent'] = 0;
+		}
+		
+		// are we creating the announcement?
 		if (!isset($fields['id']) || $fields['id'] == 0)
 		{
 			$fields['scope']      = 'group';
@@ -395,6 +404,17 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		{
 			$this->setError( $announcement->getError() );
 			return $this->_edit( $fields );
+		}
+		
+		// does user want to email and should we email yet?
+		if ($email === true && $announcement->announcementPublishedForDate())
+		{
+			// email announcement
+			$announcement->emailAnnouncement();
+			
+			//set that we sent it and resave
+			$announcement->sent = 1;
+			$announcement->save($announcement);
 		}
 		
 		//success!

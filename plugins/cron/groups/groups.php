@@ -54,6 +54,11 @@ class plgCronGroups extends JPlugin
 				'name'   => 'cleanGroupFolders',
 				'label'  => JText::_('PLG_CRON_GROUPS_REMOVE_ABANDONED_ASSETS'),
 				'params' => ''
+			),
+			array(
+				'name'   => 'sendGroupAnnouncements',
+				'label'  => JText::_('PLG_CRON_GROUPS_SEND_ANNOUNCEMENTS'),
+				'params' => ''
 			)
 		);
 
@@ -95,6 +100,40 @@ class plgCronGroups extends JPlugin
 		}
 
 		//job is no longer active
+		return true;
+	}
+	
+	
+	/**
+	 * Send scheduled group announcements
+	 * 
+	 * @return     array
+	 */
+	public function sendGroupAnnouncements($params=null)
+	{
+		// get hubzero announcement object
+		$hubzeroAnnouncement = new Hubzero_Announcement( JFactory::getDBO() );
+		
+		// get all announcements that are not yet sent but want to be mailed
+		$announcements = $hubzeroAnnouncement->find(array('email' => 1,'sent' => 0));
+		
+		// loop through each announcement
+		foreach ($announcements as $announcement)
+		{
+			// load the announcement object
+			$hubzeroAnnouncement->load($announcement->id);
+			
+			// check to see if we can send
+			if ($hubzeroAnnouncement->announcementPublishedForDate())
+			{
+				// email announcement
+				$hubzeroAnnouncement->emailAnnouncement();
+				
+				// mark as sent
+				$hubzeroAnnouncement->sent = 1;
+				$hubzeroAnnouncement->save( $hubzeroAnnouncement );
+			}
+		}
 		return true;
 	}
 }

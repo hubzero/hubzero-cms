@@ -106,10 +106,10 @@ if ($closed == 'closed' && $this->showClose == true)
 			<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
 				<dd class="entry-options">
 					<?php if ($this->juser->get('id') == $this->announcement->created_by) : ?>
-						<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=edit&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+						<a class="icon-edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=edit&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('Edit'); ?>">
 							<?php echo JText::_('Edit'); ?>
 						</a>
-						<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=delete&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+						<a class="icon-delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=delete&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('Delete'); ?>">
 							<?php echo JText::_('Delete'); ?>
 						</a>
 					<?php endif; ?>
