@@ -87,6 +87,9 @@
 	}
 
 /* Entries */
+	.entries tbody td a {
+		white-space: nowrap;
+	}
 	.entries tbody td a.entry-title {
 		font-size: 10px !important;
 		position: relative;
@@ -149,6 +152,9 @@
 	}
 	.entries tbody td a.entry-title:hover:before {
 		border-color: transparent #000 transparent transparent !important;
+	}
+	.entries tbody td span {
+		color: #ccc;
 	}
 
 /* Misc. */

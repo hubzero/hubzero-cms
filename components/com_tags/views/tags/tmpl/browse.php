@@ -60,10 +60,10 @@ $this->filters['sort'] = '';
 				<p>
 					<?php echo JText::_('COM_TAGS_BROWSE_EXPLANATION'); ?>
 				</p>
-			<?php } ?>
+			<?php } /*
 				<p class="info">
 					<?php echo JText::_('COM_TAGS_BROWSE_TAGGED_NOTE'); ?>
-				</p>
+				</p> */ ?>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
@@ -125,10 +125,11 @@ $this->filters['sort'] = '';
 								?>
 								<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
 							</th>
-						<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+						<?php //if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<th><?php echo JText::_('COM_TAGS_COL_ALIAS'); ?></th>
-						<?php } ?>
+						<?php /*} 
 							<th><?php echo JText::_('COM_TAGS_COL_NUMBER_TAGGED'); ?></th>
+							*/ ?>
 						</tr>
 					</thead>
 					<tbody>
@@ -162,14 +163,14 @@ $this->filters['sort'] = '';
 									<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 								</a>
 							</td>
-					<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+					<?php //if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
-								<?php echo $this->escape($row->get('substitutes')); ?>
+								<?php echo $row->get('substitutes') ? $this->escape(stripslashes($row->substitutes('string'))) : '<span>' . JText::_('COM_TAGS_NONE') . '</span>'; ?>
 							</td>
-					<?php } ?>
-							<td>
+					<?php //}
+							/* <td>
 								<?php echo $this->escape($row->get('total')); ?>
-							</td>
+							</td> */ ?>
 						</tr>
 				<?php
 					}
@@ -183,7 +184,7 @@ $this->filters['sort'] = '';
 					echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
-				<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
+				<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 			</div><!-- / .container -->
 		</div><!-- / .main subject -->
 		<div class="clear"></div>
