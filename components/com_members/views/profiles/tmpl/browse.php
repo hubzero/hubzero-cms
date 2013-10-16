@@ -41,100 +41,124 @@ $juser =& JFactory::getUser();
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="post">
 		<div class="aside">
 			<div class="container">
-				<h3>Site Members</h3>
-				<p class="starter"><span class="starter-point"></span>When people join this site and make their profiles public they will appear here.</p>
-				<p>Use the sorting and filtering options to see members listed alphabetically, by their organization, or the number of contributions they have.</p>
-				<p>Use the 'Search' to find specific members if you would like to check out their profiles, contributions or message them privately.</p>
+				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_SITE_MEMBERS'); ?></h3>
+				<p><?php echo JText::_('COM_MEMBERS_BROWSE_EXPLANATION'); ?></p>
+				<p><?php echo JText::_('COM_MEMBERS_BROWSE_SORTING_EXPLANATION'); ?></p>
+				<p><?php echo JText::_('COM_MEMBERS_BROWSE_SEARCH_EXPLANATION'); ?></p>
 			</div><!-- / .container -->
-			
+
 			<div class="container">
-				<h3>Member Stats</h3>
-				<p class="starter">
-					<span class="starter-point"></span>
-					<table>
-						<tbody>
-							<tr>
-								<th>Total Members:</th>
-								<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
-							</tr>
-							<tr>
-								<th>Private Profiles:</th>
-								<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
-							</tr>
-							<tr>
-								<th>New (past month): </th>
-								<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
-							</tr>
-						</tbody>
-					</table>
-					<p class="align-right">
-						<a href="/usage#tot">All Member Usage &raquo;</a>
-					</p>
+				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_MEMBER_STATS'); ?></h3>
+				<table>
+					<tbody>
+						<tr>
+							<th><?php echo JText::_('COM_MEMBERS_BROWSE_TOTAL_MEMBERS'); ?></th>
+							<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
+						</tr>
+						<tr>
+							<th><?php echo JText::_('COM_MEMBERS_BROWSE_PRIVATE_PROFILES'); ?></th>
+							<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
+						</tr>
+						<tr>
+							<th><?php echo JText::_('COM_MEMBERS_BROWSE_NEW_PROFILES'); ?></th>
+							<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="align-right">
+					<a href="<?php echo JRoute::_('index.php?option=com_usage#tot'); ?>">
+						<?php echo JText::_('COM_MEMBERS_BROWSE_ALL_MEMBER_USAGE'); ?>
+					</a>
 				</p>
 			</div><!-- / .container -->
-			
+
 			<div class="container">
-				<h3>Looking for groups?</h3>
-				<p class="starter"><span class="starter-point"></span>Go to the <a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">Groups page</a>.</p>
+				<h3><?php echo JText::_('COM_MEMBERS_BROWSE_LOOKING_FOR_GROUPS'); ?></h3>
+				<p>
+					<?php echo JText::sprintf('COM_MEMBERS_BROWSE_GO_TO_GROUPS', JRoute::_('index.php?option=com_groups')); ?>
+				</p>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
-			
+
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="Search" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_MEMBERS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend>Search for Members</legend>
-					<label for="entry-search-field">Enter keyword or phrase</label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search Members by name'); ?>" />
+					<legend><?php echo JText::_('COM_MEMBERS_SEARCH_LEGEND'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('COM_MEMBERS_SEARCH_LABEL'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
-			
-<?php 
-$qs = array();
-foreach ($this->filters as $f=>$v)
-{
-	$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'start') ? $f . '=' . $v : '';
-}
-$qs[] = 'limitstart=0';
-$qs = implode(a,$qs);
 
-$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+			<?php 
+			$qs = array();
+			foreach ($this->filters as $f=>$v)
+			{
+				$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'start') ? $f . '=' . $v : '';
+			}
+			$qs[] = 'limitstart=0';
+			$qs = implode('&', $qs);
 
-$url  = 'index.php?option=' . $this->option . '&task=browse';
-$url .= ($qs != '') ? '&' . $qs : '';
-$html  = '<a href="' . JRoute::_($url) . '"';
-if ($this->filters['index'] == '') {
-	$html .= ' class="active-index"';
-}
-$html .= '>' . JText::_('ALL') . '</a> ' . "\n";
-foreach ($letters as $letter)
-{
-	$url  = 'index.php?option=' . $this->option . '&task=browse&index=' . strtolower($letter);
-	$url .= ($qs != '') ? '&' . $qs : '';
+			$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
-	$html .= "\t\t\t\t\t\t\t\t".'<a href="' . JRoute::_($url) . '"';
-	if ($this->filters['index'] == strtolower($letter)) {
-		$html .= ' class="active-index"';
-	}
-	$html .= '>' . $letter . '</a> ' . "\n";
-}
-?>
+			$url  = 'index.php?option=' . $this->option . '&task=browse';
+			$url .= ($qs != '') ? '&' . $qs : '';
+
+			$html  = '<a href="' . JRoute::_($url) . '"';
+			if ($this->filters['index'] == '') 
+			{
+				$html .= ' class="active-index"';
+			}
+			$html .= '>' . JText::_('ALL') . '</a> ' . "\n";
+			foreach ($letters as $letter)
+			{
+				$url  = 'index.php?option=' . $this->option . '&task=browse&index=' . strtolower($letter);
+				$url .= ($qs != '') ? '&' . $qs : '';
+
+				$html .= '<a href="' . JRoute::_($url) . '"';
+				if ($this->filters['index'] == strtolower($letter)) 
+				{
+					$html .= ' class="active-index"';
+				}
+				$html .= '>' . $letter . '</a> ' . "\n";
+			}
+			?>
 			<div class="container">
 				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'name') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=name'); ?>" title="Sort by name">&darr; Name</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'organization') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=organization'); ?>" title="Sort by organization">&darr; Organization</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=contributions'); ?>" title="Sort by number of contributions">&darr; Contributions</a></li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'name') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=name'); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_BY_NAME'); ?>">
+							<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_NAME'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'organization') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=organization'); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_BY_ORG'); ?>">
+							<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_ORG'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=contributions'); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_BY_CONTRIBUTIONS'); ?>">
+							<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_CONTRIBUTIONS'); ?>
+						</a>
+					</li>
 				</ul>
 				
 				<ul class="entries-menu filter-options">
-					<li><a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&sortby=' . $this->filters['sortby']); ?>" title="Show All members">All</a></li>
-					<li><a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show=contributors&sortby=' . $this->filters['sortby']); ?>" title="Show only members with Contributions">Contributors</a></li>
+					<li>
+						<a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_BY_ALL'); ?>">
+							<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_ALL'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show=contributors&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_BY_CONTRIBUTORS'); ?>">
+							<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_CONTRIBUTORS'); ?>
+						</a>
+					</li>
 				</ul>
-				
+
 				<table class="members entries">
 					<caption>
 						<?php
@@ -142,19 +166,24 @@ foreach ($letters as $letter)
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 						$e = ($this->filters['limit'] == 0) ? $this->total : $e;
 
-						if ($this->filters['search'] != '') {
-							echo JText::sprintf('Search for "%s" in ', $this->filters['search']);
-						}
-						?>
-						<?php if ($this->filters['show'] != 'contributors') {
-							echo JText::_('All Members');
+						if ($this->filters['show'] != 'contributors') {
+							$title = 'COM_MEMBERS_BROWSE_ALL_MEMBERS';
 						} else {
-							echo JText::_('Contributors');
-						}?> 
-						<?php if ($this->filters['index']) { ?>
-							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
-						<?php } ?>
-						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
+							$title = 'COM_MEMBERS_BROWSE_CONTRIBUTORS';
+						}
+						if ($this->filters['index']) { 
+							$title = JText::sprintf($title . '_STARTING_WITH', strToUpper($this->filters['index']));
+						} 
+						else
+						{
+							$title = JText::_($title);
+						}
+						if ($this->filters['search'] != '') {
+							$title = JText::sprintf('COM_MEMBERS_SEARCH_FOR_IN', $this->filters['search'], $title);
+						}
+						echo $title;
+						?>
+						<span><?php echo JText::sprintf('COM_MEMBERS_BROWSE_NUM_OF_RESULTS', $s, $e, $this->total); ?></span>
 					</caption>
 					<thead>
 						<tr>
@@ -277,7 +306,7 @@ if (count($this->rows) > 0)
 		}
 		if (!trim($name)) 
 		{
-			$name = 'Unknown (' . $row->username . ')';
+			$name = JText::_('COM_MEMBERS_UNKNOWN') . ' (' . $row->username . ')';
 		}
 
 		// User picture
@@ -348,10 +377,13 @@ if (count($this->rows) > 0)
 ?>
 						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 							<th class="entry-img">
-								<img width="50" height="50" src="<?php echo $p; ?>" alt="Avatar for <?php echo $this->escape($name); ?>" />
+								<img width="50" height="50" src="<?php echo $p; ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_BROWSE_AVATAR', $this->escape($name)); ?>" />
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $id); ?>"><?php echo $name; ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $id); ?>">
+									<?php echo $name; ?>
+								</a>
+								<br />
 								<span class="entry-details">
 									<span class="organization"><?php echo $this->escape(stripslashes($row->organization)); ?></span>
 								</span>
@@ -361,9 +393,11 @@ if (count($this->rows) > 0)
 								<span class="activity"><?php echo $row->resource_count . ' Resources, ' . $row->wiki_count . ' Topics'; ?></span>
 							</td>
 							<td class="message-member">
-<?php if ($messageuser) { ?>
-								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $juser->get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="Message :: Send a message to <?php echo $this->escape($name); ?>"><?php echo JText::_('Send a message to ' . $this->escape($name)); ?></a></td>
-<?php } ?>
+							<?php if ($messageuser) { ?>
+								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $juser->get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
+									<?php echo JText::sprintf('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO', $this->escape($name)); ?>
+								</a>
+							<?php } ?>
 							</td>
 						</tr>
 <?php

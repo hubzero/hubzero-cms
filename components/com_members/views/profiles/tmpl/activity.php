@@ -37,22 +37,22 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="main section" id="statistics">
 	
-	<table class="activeusers" summary="Logged-in users">
-		<caption><?php echo JText::_('Table 1: Logged-in Users'); ?></caption>
+	<table class="activeusers">
+		<caption><?php echo JText::_('COM_MEMBERS_ACTIVITY_TABLE1'); ?></caption>
 		<thead>
 			<tr>
-				<th><?php echo JText::_('Name'); ?></th>
-				<th><?php echo JText::_('Login'); ?></th>
-				<th><?php echo JText::_('Org Type'); ?></th>
-				<th><?php echo JText::_('Organization'); ?></th>
-				<th><?php echo JText::_('Resident'); ?></th>
-				<th><?php echo JText::_('IP'); ?></th>
-				<th><?php echo JText::_('Idle'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_NAME'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_LOGIN'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_ORG_TYPE'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_ORGANIZATION'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_RESIDENT'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_IP'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_IDLE'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr class="summary">
-				<th colspan="7" class="numerical-data"><?php echo JText::_('Total Users'); ?></th>
+				<th colspan="6" class="numerical-data"><?php echo JText::_('COM_MEMBERS_ACTIVITY_TABLE1_TOTAL'); ?></th>
 				<td><?php echo count($this->users); ?></td>
 			</tr>
 		</tfoot>
@@ -75,64 +75,64 @@ defined('_JEXEC') or die('Restricted access');
 						if ($i) {
 							$html .= "\t\t\t".'<td colspan="5">&nbsp;</td>'."\n";
 						} else {
-							$html .= "\t\t\t".'<td class="textual-data">'. stripslashes($users[$userkey]['name']) .'</td>'."\n";
-							$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&username='.$userkey).'">'.$userkey.'</td>'."\n";
+							$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['name'])) .'</td>'."\n";
+							$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&username='.$userkey).'">'.$this->escape($userkey).'</td>'."\n";
 							$html .= "\t\t\t".'<td class="textual-data">';
 							switch ($users[$userkey]['orgtype'])
 							{
 								case 'universitystudent':
-									$html .= JText::_('University / College Student');
+									$html .= JText::_('UNIVERSITY_STUDENT');
 									break;
 								case 'university':
 								case 'universityfaculty':
-									$html .= JText::_('University / College Faculty');
+									$html .= JText::_('UNIVERSITY_FACULTY');
 									break;
 								case 'universitystaff':
-									$html .= JText::_('University / College Staff');
+									$html .= JText::_('UNIVERSITY_STAFF');
 									break;
 								case 'precollege':
-								case 'precollegefacultystaff': $html .= JText::_('K - 12 (Pre-College) Faculty or Staff'); break;
-								case 'precollegestudent':  $html .= JText::_('K - 12 (Pre-College) Student'); break;
-								case 'educational': $html .= JText::_('Educational');          break;
-								case 'nationallab': $html .= JText::_('National Laboratory');  break;
-								case 'industry':    $html .= JText::_('Industry / Private');   break;
-								case 'government':  $html .= JText::_('Government Agency');    break;
-								case 'military':    $html .= JText::_('Military');             break;
-								case 'personal':    $html .= JText::_('Personal');             break;
-								case 'unemployed':  $html .= JText::_('Retired / Unemployed'); break;
+								case 'precollegefacultystaff': $html .= JText::_('PRECOLLEGE_STAFF'); break;
+								case 'precollegestudent':  $html .= JText::_('PRECOLLEGE_STUDENT'); break;
+								case 'educational': $html .= JText::_('EDUCATIONAL');          break;
+								case 'nationallab': $html .= JText::_('NATIONALLAB');  break;
+								case 'industry':    $html .= JText::_('INDUSTRY');   break;
+								case 'government':  $html .= JText::_('GOVERNMENT');    break;
+								case 'military':    $html .= JText::_('MILITARY');             break;
+								case 'personal':    $html .= JText::_('PERSONAL');             break;
+								case 'unemployed':  $html .= JText::_('UNEMPLOYED'); break;
 								default: $html .=  $users[$userkey]['orgtype']; break;
 							}
 							$html .= '</td>'."\n";
-							$html .= "\t\t\t".'<td class="textual-data">'. stripslashes($users[$userkey]['org']) .'</td>'."\n";
-							$html .= "\t\t\t".'<td class="textual-data">'. $users[$userkey]['countryresident'] .'</td>'."\n";
+							$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['org'])) .'</td>'."\n";
+							$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey]['countryresident']) .'</td>'."\n";
 						}
-						$html .= "\t\t\t".'<td class="textual-data">'. $users[$userkey][$i]['ip'] .'</td>'."\n";
+						$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey][$i]['ip']) .'</td>'."\n";
 						$html .= "\t\t\t".'<td class="textual-data">'. MembersHtml::valformat($users[$userkey][$i]['idle'], 3) .'</td>'."\n";
 						$html .= "\t\t".'</tr>'."\n";
 					}
 				}
 			} else {
 				$html .= "\t\t".'<tr class="odd">'."\n";
-				$html .= "\t\t\t".'<td colspan="8">'.JText::_('No results found.').'</td>'."\n";
+				$html .= "\t\t\t".'<td colspan="8">'.JText::_('COM_MEMBERS_ACTIVITY_NO_RESULTS').'</td>'."\n";
 				$html .= "\t\t".'</tr>'."\n";
 			}
 			echo $html;
 			?>
 		</tbody>
 	</table>
-	
-	<table summary="<?php echo JText::_('Guest users'); ?>">
-		<caption><?php echo JText::_('Table 2: Guests'); ?></caption>
+
+	<table>
+		<caption><?php echo JText::_('COM_MEMBERS_ACTIVITY_TABLE2'); ?></caption>
 		<thead>
 			<tr>
-				<th><?php echo JText::_('Name'); ?></th>
-				<th><?php echo JText::_('IP'); ?></th>
-				<th><?php echo JText::_('Idle'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_NAME'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_IP'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_ACTIVITY_COL_IDLE'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr class="summary">
-				<th colspan="3" class="numerical-data"><?php echo JText::_('Total Guests'); ?></th>
+				<th colspan="2" class="numerical-data"><?php echo JText::_('COM_MEMBERS_ACTIVITY_TABLE2_TOTAL'); ?></th>
 				<td><?php echo count($this->guests); ?></td>
 			</tr>
 		</tfoot>
@@ -146,23 +146,22 @@ defined('_JEXEC') or die('Restricted access');
 			{
 				$cls = (($cls == 'even') ? 'odd' : 'even');
 
-				$guest['ip'] = ($guest['ip']) ? $guest['ip'] : JText::_('Unknown');
+				$guest['ip'] = ($guest['ip']) ? $guest['ip'] : JText::_('COM_MEMBERS_ACTIVITY_UNKNOWN');
 
 				$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
-				$html .= "\t\t\t".'<td class="textual-data">'.JText::_('(guest)').'</td>'."\n";
-				$html .= "\t\t\t".'<td class="textual-data">'.$guest['ip'].'</td>'."\n";
+				$html .= "\t\t\t".'<td class="textual-data">'.JText::_('COM_MEMBERS_ACTIVITY_GUEST').'</td>'."\n";
+				$html .= "\t\t\t".'<td class="textual-data">'.$this->escape($guest['ip']).'</td>'."\n";
 				$html .= "\t\t\t".'<td class="textual-data">'.MembersHtml::valformat($guest['idle'], 3).'</td>'."\n";
 				$html .= "\t\t".'</tr>'."\n";
 			}
 		} else {
 			$html .= "\t\t".'<tr class="odd">'."\n";
-			$html .= "\t\t\t".'<td colspan="5">'.JText::_('No results found.').'</td>'."\n";
+			$html .= "\t\t\t".'<td colspan="5">'.JText::_('COM_MEMBERS_ACTIVITY_NO_RESULTS').'</td>'."\n";
 			$html .= "\t\t".'</tr>'."\n";
 		}
 		echo $html;
 		?>
 		</tbody>
 	</table>
-	
-</div><!-- / .section -->
 
+</div><!-- / .section -->
