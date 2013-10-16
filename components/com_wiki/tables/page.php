@@ -1080,7 +1080,7 @@ class WikiPage extends JTable
 	 */
 	public function getTitle()
 	{
-		$this->title = ($this->title) ? stripslashes($this->title) : $this->_splitPagename(stripslashes($this->pagename));
+		$this->title = ($this->title) ? stripslashes($this->title) : $this->splitPagename(stripslashes($this->pagename));
 		return $this->title;
 	}
 
@@ -1091,7 +1091,7 @@ class WikiPage extends JTable
 	 * @param      string $page Wiki page name
 	 * @return     string
 	 */
-	private function _splitPagename($page)
+	public function splitPagename($page)
 	{
 		if (preg_match("/\s/", $page) || !$page)
 		{
@@ -1106,7 +1106,7 @@ class WikiPage extends JTable
 
 		if (!isset($RE)) 
 		{
-			$language = strtolower(JFactory::getLanguage()->getName());
+			$language = strtolower(JFactory::getLanguage()->getTag());
 
 			// This mess splits between a lower-case letter followed by
 			// either an upper-case or a numeral; except that it wont
@@ -1115,15 +1115,15 @@ class WikiPage extends JTable
 			{
 				case 'fr':
 				case 'french':
-				case 'fr-FR':
+				case 'fr-fr':
 					$RE[] = '/([[:lower:]])((?<!Mc|Di)[[:upper:]]|\d)/';
 				break;
 
 				case 'en':
 				case 'english':
-				case 'en-US':
-				case 'en-GB':
-				case 'en-AU':
+				case 'en-us':
+				case 'en-gb':
+				case 'en-au':
 
 				case 'it':
 				case 'italian':
@@ -1131,12 +1131,12 @@ class WikiPage extends JTable
 
 				case 'es':
 				case 'spanish':
-				case 'es-ES':
+				case 'es-es':
 				
 
 				case 'de':
 				case 'german':
-				case 'de-DE':
+				case 'de-de':
 					$RE[] = '/([[:lower:]])((?<!Mc|De|Di)[[:upper:]]|\d)/';
 				break;
 			}
