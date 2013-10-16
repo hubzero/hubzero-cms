@@ -234,7 +234,7 @@ class VideoMacro extends WikiMacro
 						break;
 					}
 				}
-				$video_url = 'http://www.kaltura.com/p/' . $partner_id . '/sp/' . $partner_id . '00/embedIframeJs/uiconf_id/' . $uiconf_id . '/partner_id/' . $partner_id . '?iframeembed=true&playerId=movie' . rand(0, 1000) . '&entry_id=' . $entry_id . '&flashvars[autoPlay]=false';
+				$video_url = 'https://www.kaltura.com/p/' . $partner_id . '/sp/' . $partner_id . '00/embedIframeJs/uiconf_id/' . $uiconf_id . '/partner_id/' . $partner_id . '?iframeembed=true&playerId=movie' . rand(0, 1000) . '&entry_id=' . $entry_id . '&flashvars[autoPlay]=false';
 			}
 		}
 
