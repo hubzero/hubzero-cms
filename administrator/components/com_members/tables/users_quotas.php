@@ -304,8 +304,12 @@ class UsersQuotas extends JTable
 	public function restoreDefaultClass($id)
 	{
 		$class = new MembersQuotasClasses($this->_db);
-		// @FIXME: bad! don't assume default is 1
-		$class->load(1);
+		$class->load(array('alias' => 'default'));
+
+		if (!$class->id)
+		{
+			return false;
+		}
 
 		$records = self::getRecords(array('class_id'=>$id));
 
@@ -319,7 +323,7 @@ class UsersQuotas extends JTable
 				$quota->set('soft_files',  $class->soft_files);
 				$quota->set('hard_blocks', $class->hard_blocks);
 				$quota->set('soft_blocks', $class->soft_blocks);
-				$quota->set('class_id',    1);
+				$quota->set('class_id',    $class->id);
 				$quota->store();
 			}
 		}

@@ -254,10 +254,20 @@ class MembersControllerQuotas extends Hubzero_Controller
 				$row->load($id);
 
 				$class = new MembersQuotasClasses($this->database);
-				// @FIXME: bad! don't assume 1!
-				$class->load(1);
+				$class->load(array('alias' => 'default'));
 
-				$row->set('class_id'   , 1);
+				if (!$class->id)
+				{
+					// Output message and redirect
+					$this->setRedirect(
+						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						JText::_('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
+						'error'
+					);
+					return;
+				}
+
+				$row->set('class_id'   , $class->id);
 				$row->set('hard_files' , $class->hard_files);
 				$row->set('soft_files' , $class->soft_files);
 				$row->set('hard_blocks', $class->hard_blocks);
@@ -734,7 +744,6 @@ class MembersControllerQuotas extends Hubzero_Controller
 						continue;
 					}
 
-					// Restore all members of this class to default
 					$quota = new UsersQuotas($this->database);
 					$quota->load(array('user_id' => $user_id));
 
@@ -758,6 +767,66 @@ class MembersControllerQuotas extends Hubzero_Controller
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('COM_MEMBERS_QUOTA_CONF_IMPORT_SUCCESSFUL'),
+			'passed'
+		);
+
+		return;
+	}
+
+	/**
+	 * Check for registered users without quota entries and add them
+	 * 
+	 * @return     void
+	 */
+	public function importMissingTask()
+	{
+		// Query for all members in the CMS
+		$query = "SELECT `id` FROM `#__users`";
+		$this->database->setQuery($query);
+		$results = $this->database->loadObjectList();
+
+		if (count($results) > 0)
+		{
+			$updates = 0;
+			$class = new MembersQuotasClasses($this->database);
+			$class->load(array('alias' => 'default'));
+
+			if (!$class->id)
+			{
+				// Output message and redirect
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=import',
+					JText::_('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
+					'error'
+				);
+				return;
+			}
+
+			foreach ($results as $r)
+			{
+				$quota = new UsersQuotas($this->database);
+				$quota->load(array('user_id' => $r->id));
+
+				if ($quota->id)
+				{
+					continue;
+				}
+
+				$quota->set('user_id'    , $r->id);
+				$quota->set('class_id'   , $class->id);
+				$quota->set('soft_blocks', $class->soft_blocks);
+				$quota->set('hard_blocks', $class->hard_blocks);
+				$quota->set('soft_files' , $class->soft_files);
+				$quota->set('hard_files' , $class->hard_files);
+				$quota->store();
+				$updates++;
+			}
+		}
+
+		// Output message and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::sprintf('COM_MEMBERS_QUOTA_MISSING_USERS_IMPORT_SUCCESSFUL', $updates),
 			'passed'
 		);
 

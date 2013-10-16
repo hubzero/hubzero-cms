@@ -51,8 +51,8 @@ JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php endif; ?>
 
-<form action="index.php" method="post" name="adminForm">
-	<div class="col width-100 fltlft">
+<div class="col width-70 fltlft">
+	<form action="index.php" method="post" name="adminForm">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_LEGEND'); ?></span></legend>
 
@@ -85,6 +85,30 @@ JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 				<input class="btn btn-primary" type="submit" value="<?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
 			</p>
 		</fieldset>
-	</div>
-	<?php echo JHTML::_('form.token'); ?>
-</form>
+		<?php echo JHTML::_('form.token'); ?>
+	</form>
+</div>
+<div class="col width-30 fltrt">
+	<table class="meta">
+		<tbody>
+			<tr>
+				<th><?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_MISSING_USERS'); ?>:</th>
+				<td>
+					<form action="index.php" method="post">
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+						<input type="hidden" name="task" value="importMissing" />
+						<input type="submit" value="<?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<p>
+						<?php echo JText::_('COM_MEMBERS_QUOTA_MISSING_USERS_IMPORT_DESCRIPTION'); ?>
+					</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
