@@ -598,7 +598,7 @@ class Publication extends JTable
 	}
 	
 	/**
-	 * Delete publication existance
+	 * Delete publication existence
 	 * 
 	 * @param      integer 		$id
 	 * @return     void
@@ -611,6 +611,7 @@ class Publication extends JTable
 		}
 		
 		// Delete child associations
+		/*
 		$this->_db->setQuery( "DELETE FROM #__publication_assoc WHERE child_version_id=".$id );
 		if (!$this->_db->query()) 
 		{
@@ -624,6 +625,8 @@ class Publication extends JTable
 			echo $this->_db->getErrorMsg();
 			exit;
 		}
+		*/
+		
 		// Delete tag associations
 		$this->_db->setQuery( "DELETE FROM #__tags_object WHERE tbl='publications' AND objectid=".$id );
 		if (!$this->_db->query()) 
