@@ -88,11 +88,18 @@ class CoursesModelCourse extends CoursesModelAbstract
 	private $_manager = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * List of managers
 	 * 
-	 * @var object
+	 * @var array
 	 */
 	private $_managers = NULL;
+
+	/**
+	 * List of students
+	 * 
+	 * @var array
+	 */
+	private $_students = NULL;
 
 	/**
 	 * CoursesModelOffering
