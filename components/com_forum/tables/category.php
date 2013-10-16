@@ -261,33 +261,22 @@ class ForumCategory extends JTable
 	 */
 	public function loadByAlias($oid=NULL, $section_id=null, $scope_id=null, $scope='site')
 	{
-		if ($oid === NULL) 
-		{
-			return false;
-		}
-		$oid = trim($oid);
-		
-		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
+		$fields = array(
+			'alias' => trim((string) $oid),
+			'state' => 1
+		);
+
 		if ($section_id !== null)
 		{
-			$query .= " AND section_id=" . $this->_db->Quote($section_id);
+			$fields['section_id'] = (int) $section_id; 
 		}
 		if ($scope_id !== null)
 		{
-			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
+			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope']    = (string) $scope;
 		}
-		$query .= " AND state=1 LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
@@ -298,33 +287,22 @@ class ForumCategory extends JTable
 	 */
 	public function loadByObject($oid=NULL, $section_id=null, $scope_id=null, $scope='site')
 	{
-		if ($oid === NULL) 
-		{
-			return false;
-		}
-		$oid = intval($oid);
+		$fields = array(
+			'object_id' => intval($oid),
+			'state'     => 1
+		);
 
-		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid);
 		if ($section_id !== null)
 		{
-			$query .= " AND section_id=" . $this->_db->Quote($section_id);
+			$fields['section_id'] = (int) $section_id; 
 		}
 		if ($scope_id !== null)
 		{
-			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
+			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope']    = (string) $scope;
 		}
-		$query .= " AND state=1 LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**

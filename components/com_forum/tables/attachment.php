@@ -88,21 +88,7 @@ class ForumAttachment extends JTable
 	 */
 	public function loadByPost($post_id=NULL)
 	{
-		if ($post_id === NULL) 
-		{
-			return false;
-		}
-		$post_id = intval($post_id);
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE post_id='$post_id' LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array('post_id' => (int) $post_id));
 	}
 
 	/**
@@ -114,21 +100,12 @@ class ForumAttachment extends JTable
 	 */
 	public function loadByThread($parent=NULL, $filename=NULL)
 	{
-		if ($parent === NULL || $filename === NULL) 
-		{
-			return false;
-		}
-		$parent = intval($parent);
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent=" . $this->_db->Quote($parent) . " AND filename=" . $this->_db->Quote($filename) . " LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		$fields = array(
+			'parent'   => intval($parent),
+			'filename' => (string) $filename
+		);
+
+		return parent::load($fields);
 	}
 
 	/**

@@ -214,29 +214,18 @@ class ForumSection extends JTable
 	 */
 	public function loadByAlias($oid=NULL, $scope_id=null, $scope='site')
 	{
-		if ($oid === NULL) 
-		{
-			return false;
-		}
-		$oid = trim($oid);
+		$fields = array(
+			'alias' => trim((string) $oid),
+			'state' => 1
+		);
 
-		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
 		if ($scope_id !== null)
 		{
-			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
+			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope']    = (string) $scope;
 		}
-		$query .= " AND state=1 LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
@@ -247,29 +236,18 @@ class ForumSection extends JTable
 	 */
 	public function loadByObject($oid=NULL, $scope_id=null, $scope='site')
 	{
-		if ($oid === NULL) 
-		{
-			return false;
-		}
-		$oid = intval($oid);
+		$fields = array(
+			'object_id' => intval($oid),
+			'state'     => 1
+		);
 
-		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid);
 		if ($scope_id !== null)
 		{
-			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
+			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope']    = (string) $scope;
 		}
-		$query .= " AND state=1 LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
@@ -460,7 +438,7 @@ class ForumSection extends JTable
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		
+
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
@@ -468,57 +446,5 @@ class ForumSection extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get the last post of a thread
-	 * 
-	 * @param      integer $parent Parent post (thread ID)
-	 * @return     array
-	 */
-	public function getLastPost($parent=null)
-	{
-		if (!$parent) 
-		{
-			$parent = $this->parent;
-		}
-		if (!$parent) 
-		{
-			return null;
-		}
-
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " ORDER BY created DESC LIMIT 1";
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Delete all replies to a parent entry
-	 * 
-	 * @param      integer $parent Parent post (thread ID)
-	 * @return     boolean False if errors, True otherwise
-	 */
-	public function deleteReplies($parent=null)
-	{
-		if (!$parent) 
-		{
-			$parent = $this->parent;
-		}
-		if (!$parent) 
-		{
-			return null;
-		}
-
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($parent));
-		if (!$this->_db->query()) 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		} 
-		else 
-		{
-			return true;
-		}
 	}
 }

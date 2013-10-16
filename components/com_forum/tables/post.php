@@ -296,29 +296,18 @@ class ForumPost extends JTable
 	 */
 	public function loadByObject($oid=NULL, $scope_id=null, $scope='site')
 	{
-		if ($oid === NULL) 
-		{
-			return false;
-		}
-		$oid = intval($oid);
+		$fields = array(
+			'object_id' => intval($oid)
+		);
 
-		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid);
 		if ($scope_id !== null)
 		{
-			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0";
+			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope']    = (string) $scope;
+			$fields['parent']   = 0;
 		}
-		$query .= " LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
-		{
-			return $this->bind($result);
-		} 
-		else 
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
