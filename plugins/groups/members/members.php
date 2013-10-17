@@ -113,6 +113,8 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$this->group = $group;
 		$this->_name = substr($option, 4, strlen($option));
 
+		$juser = JFactory::getUser();
+
 		// Only perform the following if this is the active tab/plugin
 		if ($returnhtml) 
 		{
