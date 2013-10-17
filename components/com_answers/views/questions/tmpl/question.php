@@ -228,7 +228,7 @@ if (!$this->question->get('anonymous'))
 			<div class="subject-wrap">
 				<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
 
-				<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete'); ?>" method="post" id="deleteForm">
+				<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=deleteq&id=' . $this->question->get('id')); ?>" method="post" id="deleteForm">
 					<input type="hidden" name="qid" value="<?php echo $this->question->get('id'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

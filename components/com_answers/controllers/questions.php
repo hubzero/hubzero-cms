@@ -1073,7 +1073,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		}
 
 		// Delete all tag associations	
-		$tagging = new AnswersTags($this->database);
+		/*$tagging = new AnswersModelTags($this->database);
 		$tagging->remove_all_tags($id);
 
 		// Get all the answers for this question
@@ -1088,7 +1088,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				// Delete response
 				$ar->deleteResponse($answer->id);
 			}
-		}
+		}*/
 
 		// Redirect to the question
 		$this->setRedirect(

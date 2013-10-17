@@ -141,7 +141,10 @@ function AnswersParseRoute($segments)
 		case 'reply':
 		case 'math':
 			$vars['task'] = $segments[0];
-			$vars['id']   = $segments[1];
+			if (isset($segments[1]))
+			{
+				$vars['id']   = $segments[1];
+			}
 		break;
 
 		case 'rateitem':
