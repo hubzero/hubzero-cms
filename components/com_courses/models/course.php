@@ -127,7 +127,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * 
 	 * @var string
 	 */
-	private $_link = NULL;
+	private $_base = NULL;
 
 	/**
 	 * Constructor
@@ -895,9 +895,9 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 */
 	public function link($type='')
 	{
-		if (!isset($this->_link))
+		if (!isset($this->_base))
 		{
-			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('alias');
+			$this->_base  = 'index.php?option=com_courses&gid=' . $this->get('alias');
 		}
 
 		// If it doesn't exist or isn't published
