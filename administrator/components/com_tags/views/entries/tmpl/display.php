@@ -104,6 +104,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
+$i = 0;
 foreach ($this->rows as $row)
 {
 	$check = '';
@@ -150,6 +151,7 @@ foreach ($this->rows as $row)
 				</td>
 			</tr>
 <?php
+	$i++;
 	$k = 1 - $k;
 }
 ?>
