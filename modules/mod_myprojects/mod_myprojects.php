@@ -37,10 +37,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Include the logic only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//-------------------------------------------------------------
-
-$modmyprojects = new modMyProjects( $params );
+$modmyprojects = new modMyProjects($params, $module);
 $modmyprojects->display();
-
-require( JModuleHelper::getLayoutPath('mod_myprojects') );
-?>

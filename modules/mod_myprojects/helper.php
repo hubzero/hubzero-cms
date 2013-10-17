@@ -84,6 +84,8 @@ class modMyProjects extends Hubzero_Module
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet('mod_myprojects');
+
+		require(JModuleHelper::getLayoutPath('mod_myprojects'));
 	}
 }
 

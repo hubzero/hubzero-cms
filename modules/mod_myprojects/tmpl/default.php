@@ -30,18 +30,18 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
-$projects = $modmyprojects->rows;
+$projects = $this->rows;
 
-$setup_complete = $modmyprojects->pconfig->get('confirm_step', 0) ? 3 : 2;
+$setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 ?>
-<div<?php echo ($modmyprojects->moduleclass) ? ' class="'.$modmyprojects->moduleclass.'"' : '';?> id="myprojects">
+<div<?php echo ($this->moduleclass) ? ' class="'.$this->moduleclass.'"' : '';?> id="myprojects">
 <?php if ($projects && count($projects) > 0) { ?>
 	<ul class="compactlist">
 <?php
 	$i = 0;
 	foreach ($projects as $row)
 	{
-			$thumb = ProjectsHTML::getThumbSrc($row->id, $row->alias, $row->picture, $modmyprojects->pconfig);
+			$thumb = ProjectsHTML::getThumbSrc($row->id, $row->alias, $row->picture, $this->pconfig);
 			$goto  = 'alias=' . $row->alias;
 			$owned_by = JText::_('MOD_MYPROJECTS_BY').' ';
 			if($row->owned_by_group) {
