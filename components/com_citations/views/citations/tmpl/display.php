@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access');
 
 <div id="introduction" class="section">
 	<div class="aside">
-		<h3>Help</h3>
+		<!--<h3>Help</h3>-->
 		
 	</div><!-- / .aside -->
 	<div class="subject">
