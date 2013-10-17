@@ -402,8 +402,26 @@ class RegisterController extends Hubzero_Controller
 		$target_juser->set('username', $xregistration->get('login'));
 		$target_juser->set('password_clear','');
 		$target_juser->set('email', $xregistration->get('email'));
-		$target_juser->set('gid', $acl->get_group_id('', $usertype));
-		$target_juser->set('usertype', $usertype);
+
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$target_juser->set('gid', $acl->get_group_id('', $usertype));
+			$target_juser->set('usertype', $usertype);
+		}
+		else
+		{
+			// There's got to be a better way to do this!
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('id')
+				->from('#__usergroups')
+				->where('title = ' . $db->quote(trim($usertype)));
+			$db->setQuery($query);
+			$result = $db->loadResult();
+
+			$target_juser->set('groups', array($result));
+		}
+
 		$target_juser->save();
 
 		// Attempt to retrieve the new user
