@@ -349,7 +349,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 		
 		
 		<div class="explaination">
-			<p><?php echo JText::_('Please enter all the resources, articles, or topic pages the work references.'); ?></p>
+			<p><?php echo JText::_('Please enter all the resources the work references.'); ?></p>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CITATIONS_CITATION_FOR'); ?></legend>
