@@ -275,7 +275,12 @@ var typewatch = (function(){
 
 			if (this.options.resizable) {
 				_div_wrap.resizable({
+					maxHeight: 1000,
+					maxWidth: 1000,
+					minHeight: 130,
+					minWidth: 130,
 					stop: function(event, ui) { 
+						jQuery(this).find('textarea').css('height', jQuery(this).height() - 32);
 						self.resizedNote(note_id)
 					}
 				});
@@ -461,7 +466,16 @@ var typewatch = (function(){
 			}
 
 			if (this.options.resizable) {
-				_div_wrap.resizable({stop: function(event, ui) { self.resizedNote(note.id) }});
+				_div_wrap.resizable({
+					maxHeight: 1000,
+					maxWidth: 1000,
+					minHeight: 130,
+					minWidth: 130,
+					stop: function(event, ui) { 
+						jQuery(this).find('textarea').css('height', jQuery(this).height() - 32);
+						self.resizedNote(note.id);
+					}
+				});
 			}
 
 			_div_wrap.draggable({
