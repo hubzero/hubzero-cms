@@ -578,6 +578,7 @@ class PlgResourcesReviewsHelper extends JObject
 			);
 			$view->option = $this->_option;
 			$view->item = $response[0];
+			$view->rid = $rid;
 
 			$view->display();
 			exit();

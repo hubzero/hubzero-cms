@@ -70,8 +70,10 @@ if ($this->reply->anonymous != 1)
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
 		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_RESOURCES_REVIEWS_PERMALINK'); ?>">
-			<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-			<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+			<span class="comment-date-at">@</span> 
+			<span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+			<span class="comment-date-on">on</span> 
+			<span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 		</a>
 	</p>
 <?php if ($this->abuse && $this->reply->abuse_reports > 0) { ?>
@@ -91,7 +93,7 @@ if ($this->reply->anonymous != 1)
 			$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id);
 		}
 ?>
-		<a class="abuse" href="<?php echo $href; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?></a>
+		<a class="icon-abuse abuse" href="<?php echo $href; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?></a>
 <?php } ?>
 <?php
 	// Cannot reply at third level
@@ -107,7 +109,7 @@ if ($this->reply->anonymous != 1)
 		//} else {
 			echo 'href="'.$href.'" ';
 		//}
-		echo 'class="reply" id="rep_'.$this->reply->id.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>';
+		echo 'class="icon-reply reply" id="rep_'.$this->reply->id.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>';
 	}
 ?>
 	</p>

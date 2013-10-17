@@ -71,9 +71,10 @@ HUB.Plugins.ResourcesReviews = {
 						href += '&no_html=1';
 					}
 					$(this).attr('href', href);
-
+console.log($(this).attr('href'));
 					$.get($(this).attr('href'), {}, function(data) {
 						$(item).closest('.voting').html(data);
+						$('.tooltip').hide();
 					});
 				});
 			}
