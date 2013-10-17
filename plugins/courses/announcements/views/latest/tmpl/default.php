@@ -55,10 +55,7 @@ if ($rows->total() > 0)
 	{
 ?>
 	<div class="announcements">
-		<?php
-		foreach ($announcements as $row)
-		{
-			?>
+		<?php foreach ($announcements as $row) { ?>
 			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
 				<?php echo $row->content('parsed'); ?>
 				<dl class="entry-meta">
@@ -80,17 +77,15 @@ if ($rows->total() > 0)
 					{
 						$page .= (strstr($page, '?')) ? '&' : '?';
 						$page .= 'ancmnt' . $row->get('id') . '=closed';
-				?>
-						<a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo JText::_('Close this announcement'); ?>">
-							<span><?php echo JText::_('close'); ?></span>
+						?>
+						<a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CLOSE_THIS'); ?>">
+							<span><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CLOSE'); ?></span>
 						</a>
-				<?php
+						<?php
 					}
 				?>
 			</div>
-			<?php
-		}
-		?>
+		<?php } ?>
 	</div>
 	<?php
 	}

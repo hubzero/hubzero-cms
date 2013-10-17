@@ -39,7 +39,7 @@ $juser = JFactory::getUser();
 <?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<table class="wiki-reference" summary="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_WIKI_SYNTAX_REFERENCE'); ?>">
+			<table class="wiki-reference">
 				<caption><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_WIKI_SYNTAX_REFERENCE'); ?></caption>
 				<tbody>
 					<tr>
@@ -83,27 +83,27 @@ $juser = JFactory::getUser();
 			</legend>
 
 			<label for="field_content">
-				<?php echo JText::_('Announcement'); ?>
+				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
 				ximport('Hubzero_Wiki_Editor');
-				$editor =& Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('fields[content]', 'field_content', $this->escape(stripslashes($this->model->get('content'))), 'minimal no-footer', '35', '5');
+				echo Hubzero_Wiki_Editor::getInstance()->display('fields[content]', 'field_content', $this->escape(stripslashes($this->model->get('content'))), 'minimal no-footer', '35', '5');
 				?>
-				<!-- <textarea name="fields[content]" id="field-content" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->get('content'))); ?></textarea> -->
 			</label>
 
 			<fieldset>
-				<legend><?php echo JText::_('Publish window'); ?> <span class="optional"><?php echo JText::_('optional'); ?></span></legend>
+				<legend><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PUBLISH_WINDOW'); ?></legend>
 				<div class="two columns first">
 					<label for="field-publish_up" id="priority-publish_up">
-						<?php echo JText::_('Start'); ?>
+						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_START'); ?>
 						<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($this->model->get('publish_up')); ?>" /> 
+						<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 					</label>
 				</div>
 				<div class="two columns second">
 					<label for="field-publish_down" id="priority-publish_down">
-						<?php echo JText::_('End'); ?>
+						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_END'); ?>
 						<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($this->model->get('publish_down')); ?>" /> 
+						<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 					</label>
 				</div>
 				<div class="clear"></div>
@@ -111,14 +111,17 @@ $juser = JFactory::getUser();
 
 			<label for="field-priority" id="priority-label">
 				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->model->get('priority')) { echo ' checked="checked"'; } ?> /> 
-				<?php echo JText::_('Mark as high priority'); ?>
+				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
 			</label>
-
-			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
-			</p>
 		</fieldset>
 		<div class="clear"></div>
+
+		<p class="submit">
+			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>">
+				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CANCEL'); ?>
+			</a>
+		</p>
 
 		<input type="hidden" name="fields[id]" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="fields[state]" value="1" />
@@ -130,5 +133,7 @@ $juser = JFactory::getUser();
 		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="action" value="save" />
+
+		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div><!-- / .main section -->

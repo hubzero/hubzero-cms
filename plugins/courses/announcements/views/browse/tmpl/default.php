@@ -47,67 +47,66 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 ?>
 <div class="course_members">
 	<h3 class="heading">
-		<a name="members"></a>
 		<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS'); ?>
 	</h3>
 
 	<form action="<?php echo JRoute::_($base); ?>" method="post">
-			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
-				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search announcements'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
-				</fieldset>
-			</div><!-- / .container -->
-			<?php if ($manager) { ?>
-				<p class="btn-container">
-					<a class="add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
-						<?php echo JText::_('New announcement'); ?>
-					</a>
-				</p>
-			<?php } ?>
-			<div class="acontainer">
+		<div class="container data-entry">
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH'); ?>" />
+			<fieldset class="entry-search">
+				<legend><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LEGEND'); ?></legend>
+				<label for="entry-search-field"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LABEL'); ?></label>
+				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>"/>
+			</fieldset>
+		</div><!-- / .container -->
+		<?php if ($manager) { ?>
+			<p class="btn-container">
+				<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
+					<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
+				</a>
+			</p>
+		<?php } ?>
+		<div class="acontainer">
 
-<?php if ($rows->total() > 0) { ?>
-	<?php foreach ($rows as $row) { ?>
-						<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-							<?php echo $row->content('parsed'); ?>
-							<dl class="entry-meta">
-								<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
-								<?php if ($manager) { ?>
-									<dd class="entry-author">
-										<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
-									</dd>
-								<?php } ?>
-								<dd class="time">
-									<time datetime="<?php echo $row->published(); ?>">
-										<?php echo $row->published('time'); ?>
-									</time>
-								</dd>
-								<dd class="date">
-									<time datetime="<?php echo $row->published(); ?>">
-										<?php echo $row->published('date'); ?>
-									</time>
-								</dd>
-						<?php if ($manager) { ?>
-								<dd class="entry-options">
-								<?php if ($juser->get('id') == $row->get('created_by')) { ?>
-									<a class="edit" href="<?php echo JRoute::_($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
-										<?php echo JText::_('Edit'); ?>
-									</a>
-									<a class="delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Delete'); ?>">
-										<?php echo JText::_('Delete'); ?>
-									</a>
-								<?php } ?>
-								</dd>
-						<?php } ?>
-							</dl>
-						</div>
+	<?php if ($rows->total() > 0) { ?>
+		<?php foreach ($rows as $row) { ?>
+			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
+				<?php echo $row->content('parsed'); ?>
+				<dl class="entry-meta">
+					<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
+					<?php if ($manager) { ?>
+						<dd class="entry-author">
+							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+						</dd>
+					<?php } ?>
+					<dd class="time">
+						<time datetime="<?php echo $row->published(); ?>">
+							<?php echo $row->published('time'); ?>
+						</time>
+					</dd>
+					<dd class="date">
+						<time datetime="<?php echo $row->published(); ?>">
+							<?php echo $row->published('date'); ?>
+						</time>
+					</dd>
+			<?php if ($manager) { ?>
+					<dd class="entry-options">
+					<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+						<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
+							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
+						</a>
+						<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
+							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>
+						</a>
+					<?php } ?>
+					</dd>
+			<?php } ?>
+				</dl>
+			</div>
+		<?php } ?>
+	<?php } else { ?>
+			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
 	<?php } ?>
-<?php } else { ?>
-					<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
-<?php } ?>
 
 			<?php 
 			jimport('joomla.html.pagination');
@@ -121,8 +120,8 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 			$pageNav->setAdditionalUrlParam('active', 'announcements');
 			echo $pageNav->getListFooter();
 			?>
-				<div class="clearfix"></div>
-			</div><!-- / .container -->
+			<div class="clearfix"></div>
+		</div><!-- / .container -->
 
 		<div class="clear"></div>
 

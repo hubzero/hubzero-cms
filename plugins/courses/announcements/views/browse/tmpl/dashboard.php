@@ -39,7 +39,7 @@ $rows = $this->offering->announcements(array(
 	<div class="sub-section announcements">
 		<div class="grid">
 			<div class="col span-half">
-				<h3>Last Announcement</h3>
+				<h3><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_LATEST'); ?></h3>
 		<?php
 		if ($rows->total() > 0)
 		{
@@ -61,21 +61,21 @@ $rows = $this->offering->announcements(array(
 							</time>
 						</dd>
 					</dl>
-				</div>
+				</div><!-- / .announcement -->
 				<?php
 			}
 		}
 		else
 		{
 		?>
-			<p>No announcements made.</p>
+			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NONE_MADE'); ?></p>
 		<?php
 		}
 		?>
-			</div>
+			</div><!-- / .col -->
 
 			<div class="col span-half omega">
-				<h3>New Announcement</h3>
+				<h3><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?></h3>
 				<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="announcementForm" class="full">
 					<fieldset>
 						<legend>
@@ -83,17 +83,16 @@ $rows = $this->offering->announcements(array(
 						</legend>
 
 						<label for="field_content">
-							<span><?php echo JText::_('Announcement'); ?></span>
+							<span><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?></span> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 							<?php
 							ximport('Hubzero_Wiki_Editor');
-							$editor =& Hubzero_Wiki_Editor::getInstance();
-							echo $editor->display('fields[content]', 'field_content', '', 'minimal no-footer', '35', '3');
+							echo Hubzero_Wiki_Editor::getInstance()->display('fields[content]', 'field_content', '', 'minimal no-footer', '35', '3');
 							?>
 						</label>
 
 						<label for="field-priority" id="priority-label">
 							<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" /> 
-							<?php echo JText::_('Mark as high priority'); ?>
+							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
 						</label>
 
 						<p class="submit">
@@ -112,7 +111,9 @@ $rows = $this->offering->announcements(array(
 					<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
 					<input type="hidden" name="active" value="announcements" />
 					<input type="hidden" name="action" value="save" />
+
+					<?php echo JHTML::_('form.token'); ?>
 				</form>
-			</div>
-		</div>
-	</div>
+			</div><!-- / .col -->
+		</div><!-- / .grid -->
+	</div><!-- / .sub-section announcements -->

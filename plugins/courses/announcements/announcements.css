@@ -72,11 +72,13 @@
 		margin-bottom: 0;
 	}
 
+	#course-outline dl.entry-meta,
 	dl.entry-meta {
 		margin: 0;
 		padding: 0;
 		color: #999;
 		font-size: 11px;
+		line-height: 1;
 	}
 	dl.entry-meta dt {
 		display: none;
@@ -149,6 +151,7 @@
 		left: 0.61803399em;
 		font-family: 'Fontcons';
 	}
+	#course-outline .announcement .close,
 	.announcement .close {
 		display: block;
 		position: absolute;
@@ -158,20 +161,26 @@
 		width: 18px;
 		height: 18px;
 		font-size: 18px !important;
-		line-height: 18px !important;
+		line-height: 1 !important;
 		overflow: hidden;
 		white-space: nowrap;
 		border: none !important;
 		color: #999;
 	}
+	#course-outline .announcement .close span {
+		font-size: 18px !important;
+		line-height: 1 !important;
+	}
 	.announcement .close:hover {
 		color: #c00 !important;
 		border: none !important;
 	}
+	#course-outline .announcement .close:before,
 	.announcement .close span.announcement-before,
 	.announcement .close:before {
 		font-family: 'Fontcons';
-		margin-top: -0.25em;
+		/*margin-top: -0.25em;*/
+		line-height: 1 !important;
 		content: "\f057";
 	}
 	.announcement .close span.announcement-before {
@@ -194,14 +203,16 @@
 	}
 
 	.course_announcements #hubForm .submit {
-		clear: both;
+		/*clear: both;
 		margin: -1.5em 1.618em 0 0;
+		text-align: right;*/
 		padding: 0;
-		text-align: right;
+		margin-right: 0;
 	}
 	.course_announcements #hubForm .submit input,
 	.course_announcements #hubForm .option {
 		width: auto;
+		margin-right: 1em;
 	}
 	.course_announcements #hubForm #priority-label {
 		width: 50%;
