@@ -15,7 +15,7 @@ class Migration20130918132946ComForum extends Hubzero_Migration
 	{
 		self::addComponentEntry('Forum');
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__components'))
 		{
 			$query = "SELECT * FROM `#__components` WHERE `name` = 'Forum'";
 			$db->setQuery($query);

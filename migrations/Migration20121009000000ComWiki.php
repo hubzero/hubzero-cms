@@ -7,7 +7,7 @@ class Migration20121009000000ComWiki extends Hubzero_Migration
 {
 	protected static function up($db)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__plugins'))
 		{
 			$query = "UPDATE `#__plugins` SET element='wiki' WHERE element='topics';\n";
 		}

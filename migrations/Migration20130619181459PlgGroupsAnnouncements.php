@@ -38,7 +38,7 @@ class Migration20130619181459PlgGroupsAnnouncements extends Hubzero_Migration
 		self::addPluginEntry('groups', 'announcements', 1, $params);
 
 		//get citation params
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if ($db->tableExists('#__extensions'))
 		{
 			$sql = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `element`='messages' AND `folder` = 'groups'";
 		}
@@ -57,7 +57,7 @@ class Migration20130619181459PlgGroupsAnnouncements extends Hubzero_Migration
 		$params->set('display_tab', 0);
 
 		//save new params
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if ($db->tableExists('#__extensions'))
 		{
 			$query = "UPDATE `#__extensions` SET `params`=".$db->quote(json_encode($params->toArray()))." WHERE `element`='messages' AND `folder`='groups'";
 		}

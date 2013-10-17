@@ -733,7 +733,7 @@ class Hubzero_Migration
 	{
 		$db = self::$db;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__components'))
 		{
 			// First, make sure it isn't already there
 			$query = "SELECT `id` FROM `#__components` WHERE `name` = " . $db->quote($name);
@@ -864,7 +864,7 @@ class Hubzero_Migration
 	{
 		$db = self::$db;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__plugins'))
 		{
 			$folder  = strtolower($folder);
 			$element = strtolower($element);
@@ -942,11 +942,7 @@ class Hubzero_Migration
 	{
 		$db = self::$db;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			// Nothing to do here
-		}
-		else
+		if ($db->tableExists('#__extensions'))
 		{
 			$name = $element;
 
@@ -982,7 +978,7 @@ class Hubzero_Migration
 	{
 		$db = self::$db;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__components'))
 		{
 			// Delete component entry
 			$query = "DELETE FROM `#__components` WHERE `name` = " . $db->quote($name);
@@ -1040,7 +1036,7 @@ class Hubzero_Migration
 	{
 		$db = self::$db;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__plugins'))
 		{
 			// Delete plugin(s) entry
 			$query = "DELETE FROM `#__plugins` WHERE `folder` = " . $db->quote($folder) . ((!is_null($element)) ? " AND `element` = '{$element}'" : "");
@@ -1066,11 +1062,7 @@ class Hubzero_Migration
 	{
 		$db = self::$db;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			// Do nothing
-		}
-		else
+		if ($db->tableExists('#__extensions'))
 		{
 			// Delete module entry
 			$query = "DELETE FROM `#__extensions` WHERE `element` = '{$element}'";

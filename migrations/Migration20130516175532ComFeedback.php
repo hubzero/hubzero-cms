@@ -13,7 +13,7 @@ class Migration20130516175532ComFeedback extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__components'))
 		{
 			$query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/images/contributor.gif','/components/com_feedback/assets/img/contributor.gif') WHERE `option` = 'com_feedback';";
 		}
@@ -34,7 +34,7 @@ class Migration20130516175532ComFeedback extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__components'))
 		{
 			$query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/assets/img/contributor.gif','/components/com_feedback/images/contributor.gif') WHERE `option` = 'com_feedback';";
 		}

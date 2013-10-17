@@ -13,7 +13,7 @@ class Migration20130517101308ComContent extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($db->tableExists('#__components'))
 		{
 			$query  = "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=\n','') WHERE `option` = 'com_content';";
 			$query .= "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=0\n','') WHERE `option` = 'com_content';";
