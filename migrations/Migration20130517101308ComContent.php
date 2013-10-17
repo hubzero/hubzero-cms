@@ -38,7 +38,7 @@ class Migration20130517101308ComContent extends Hubzero_Migration
 					$params = json_decode($r->params);
 					unset($params->show_pdf_icon);
 
-					$query = "UPDATE `#__extensions` SET `params` = " . $db->quote(json_encode($params)) . " WHERE `extension_id` = " . $db->quote($r->id);
+					$query = "UPDATE `#__extensions` SET `params` = " . $db->quote(json_encode($params)) . " WHERE `extension_id` = " . $db->quote($r->extension_id);
 					$db->setQuery($query);
 					$db->query();
 				}
