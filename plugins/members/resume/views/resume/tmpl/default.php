@@ -209,7 +209,20 @@ $juser = JFactory::getUser();
 			}
 			else 
 			{
-				echo $this->showSeeker($seeker[0], $this->emp, 0, $this->option);
+				//echo $this->showSeeker($seeker[0], $this->emp, 0, $this->option);
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'  => 'members',
+						'element' => 'resume',
+						'name'    => 'resume',
+						'layout'  => 'seeker'
+					)
+				);
+				$view->seeker = $seeker[0];
+				$view->emp    = $this->emp;
+				$view->admin  = 0;
+				$view->option = $this->option;
+				$view->display();
 			}
 		}
 		?>
