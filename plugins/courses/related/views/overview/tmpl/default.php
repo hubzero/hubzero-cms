@@ -75,7 +75,7 @@ Hubzero_Document::addPluginStylesheet('courses', $this->name);
 			</div><!-- / .content -->
 		</div><!-- / .col -->
 		<?php 
-		if ($i == 0)
+		if ($i == 0 || $i == count($this->courses))
 		{
 		?>
 	</div><!-- / .grid -->
