@@ -67,12 +67,12 @@ defined('_JEXEC') or die('Restricted access');
 
 		case 'proxycreate':
 			$html .= '<div class="help">'."\n";
-			$html .= "\t".'<h4>Proxy Account Creation Questions</h4>'."\n";
+			$html .= "\t".'<h4>Proxy Account Creation Instructions</h4>'."\n";
 			$html .= "\t".'<p>Simply fill out the form below and an account will be created for that person. ';
 			$html .= 'You will then be shown the basic text of an email which you <strong>MUST</strong> then copy ';
-			$html .= 'and paste and send to that person. This email will provide them a random initial password ';
-			$html .= 'and their email confirmation link, and you may add any other information about contributed ';
-			$html .= 'resources or the reason for their account you deem appropriate.</p>'."\n";
+			$html .= 'and paste and send to that person. This email will provide them with the initial password ';
+			$html .= 'set for them below as well as their email confirmation link. You may add any other information ';
+			$html .= 'that you deem appropriate, including contributed resources or the reason for their account.</p>'."\n";
 			//$html .= "\t".'<h4>What if I need to find the contents of the email to the user again?</h4>'."\n";
 			//$html .= "\t".'<p>You can retrieve the same email template and contents at any time from the user\'s ';
 			//$html .= '<a href="'.JRoute::_('index.php?option=com_members&task=whois').'">whois page</a>, under their confirmation email.</p>'."\n";
@@ -282,8 +282,6 @@ defined('_JEXEC') or die('Restricted access');
 
 		if ($this->task == 'create') {
 			$html .= "\t\t".'<p>'.JText::_('COM_REGISTER_ACTIVATION_EMAIL_HINT').'</p>'."\n";
-		} else if ($this->task == 'proxycreate') {
-			$html .= "\t\t".'<p>Once you create an account, the new account owner will be sent an email containing an activation link.</p>'."\n";
 		}
 		$html .= "\t\t".'<p>'.JText::_('COM_REGISTER_PRIVACY_HINT').'</p>'."\n";
 		$html .= "\t".'</div>'."\n";
@@ -371,7 +369,7 @@ defined('_JEXEC') or die('Restricted access');
 			if ($this->registrationEmail != REG_HIDE) {
 				$jconfig =& JFactory::getConfig();
 				if ($this->task == 'proxycreate') {
-					$html .= "\t\t".RegistrationHelperHtml::warning('Important! The user <strong>must</strong> confirm receipt of confirmation e-mail from '.RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom')).' in order to complete registration.');
+					$html .= "\t\t".RegistrationHelperHtml::warning('Important! The user <strong>MUST</strong> click on the email confirmation link that you will send them in order for them to start using the account you have created for them.');
 				} else if ($this->task == 'create') {
 					$html .= "\t\t".RegistrationHelperHtml::warning(JText::sprintf('COM_REGISTER_YOU_MUST_CONFIRM_EMAIL', RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom'))));
 				} else {
