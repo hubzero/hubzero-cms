@@ -133,7 +133,7 @@ if ($label == "none") {
 					</fieldset>
 				<?php } ?>
 				<label>
-					<?php echo JText::_('SORT_BY'); ?>
+					<?php echo JText::_('Sort By'); ?>
 					<select name="sort" id="sort" class="">
 						<?php foreach($this->sorts as $k => $v) : ?>
 							<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
