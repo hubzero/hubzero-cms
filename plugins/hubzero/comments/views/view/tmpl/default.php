@@ -166,6 +166,15 @@ defined('_JEXEC') or die('Restricted access');
 						$comment = new Hubzero_Item_Comment($this->database);
 					}
 				}
+				
+				//get old content - failed submission
+				$oldContent = JFactory::getApplication()->getUserState('failed_comment');
+				if ($oldContent != '')
+				{
+					$comment->content = $oldContent;
+					JFactory::getApplication()->setUserState('failed_comment', null);
+					$oldContent = null;
+				}
 ?>
 					<label for="comment[content]">
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_HUBZERO_COMMENTS_REQUIRED'); ?></span>
@@ -190,6 +199,7 @@ defined('_JEXEC') or die('Restricted access');
 					<label>
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>:
 						<input type="file" name="commentFile" id="commentFile" />
+						<div class="hint">Accepted File Types: <?php echo implode(', ', $this->extensions); ?></div>
 					</label>
 
 <?php 			//if (!$this->juser->get('guest')) { ?>

@@ -39,6 +39,7 @@ jimport('joomla.plugin.plugin');
 class plgHubzeroComments extends JPlugin
 {
 	private $_pushscripts = true;
+	private $_allowedExtensions = null;
 
 	/**
 	 * Constructor
@@ -62,7 +63,7 @@ class plgHubzeroComments extends JPlugin
 	 * @param      string  $authorized Authorization level
 	 * @return     string HTML
 	 */
-	public function onAfterDisplayContent($obj, $option, $url=null) 
+	public function onAfterDisplayContent($obj, $option, $url=null, $allowedExtensions = array()) 
 	{
 		// Ensure we have needed vars
 		if (!is_object($obj)) 
@@ -93,7 +94,12 @@ class plgHubzeroComments extends JPlugin
 		$this->_authorize();
 
 		$this->view->params   = $this->params;
-
+		
+		// set allowed Extensions
+		// defaults to set of image extensions defined in Hubzero_Comment
+		$this->comment = new Hubzero_Item_Comment($this->database);
+		$this->comment->setAllowedExtensions( $allowedExtensions );
+		
 		$this->view->task     = $this->task    = JRequest::getVar('action', '');
 		
 		switch ($this->task) 
@@ -389,17 +395,15 @@ class plgHubzeroComments extends JPlugin
 			$this->_pushscripts = false;
 		}
 
-		// Get comments on this article
-		$hc = new Hubzero_Item_Comment($this->database);
-
-		$this->view->comments = $hc->getComments(
+		$this->view->comments = $this->comment->getComments(
 			$this->obj_type, 
 			$this->obj->id,
 			0,
 			$this->params->get('comments_limit', 25)
 		);
 		
-		//print_r($this->view->comments); die;
+		// get the accepted file types
+		$this->view->extensions = $this->comment->getAllowedExtensions();
 
 		if ($this->getError()) 
 		{
@@ -431,8 +435,11 @@ class plgHubzeroComments extends JPlugin
 		// Incoming
 		$comment = JRequest::getVar('comment', array(), 'post');
 
-		// Instantiate a new comment object and pass it the data
-		$row = new Hubzero_Item_Comment($this->database);
+		// Instantiate a new comment object
+		//$row = new Hubzero_Item_Comment($this->database);
+		$row = $this->comment;
+		
+		// pass data to comment object
 		if (!$row->bind($comment)) 
 		{
 			$this->redirect(
@@ -457,6 +464,10 @@ class plgHubzeroComments extends JPlugin
 		// Check content
 		if (!$row->check()) 
 		{
+			$key   = 'failed_comment';
+			$value = $row->content;
+			JFactory::getApplication()->setUserState($key, $value);
+			
 			$this->redirect(
 				$this->url, 
 				$row->getError(),

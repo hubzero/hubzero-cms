@@ -141,6 +141,13 @@ class Hubzero_Item_Comment extends JTable
 	 * @var string
 	 */
 	var $_uploadDir    = '/sites/comments';
+	
+	/**
+	 * Allowed Extensions
+	 * 
+	 * @var string
+	 */
+	var $_extensions    = array('jpg','png','gif','bmp','tiff');
 
 	/**
 	 * array
@@ -260,8 +267,8 @@ class Hubzero_Item_Comment extends JTable
 			$uploadedFileNameParts = explode('.', $fileName);
 			$uploadedFileExtension = array_pop($uploadedFileNameParts);
 
-			$validFileExts = explode(',', 'jpeg,jpg,png,gif');
-
+			$validFileExts = $this->getAllowedExtensions();
+			
 			//assume the extension is false until we know its ok
 			$extOk = false;
 
@@ -277,7 +284,7 @@ class Hubzero_Item_Comment extends JTable
 
 			if ($extOk == false) 
 			{
-				$this->setError(JText::_('INVALID EXTENSION'));
+				$this->setError(JText::_('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
 				return false;
 			}
 
@@ -333,7 +340,38 @@ class Hubzero_Item_Comment extends JTable
 	{
 		return JPATH_ROOT . DS . ltrim($this->_uploadDir, DS);
 	}
-
+	
+	/**
+	 * Get allowed file extensions
+	 * 
+	 * @return     array
+	 */
+	public function getAllowedExtensions()
+	{
+		return $this->_extensions;
+	}
+	
+	/**
+	 * Set allowed file extensions
+	 * 
+	 * @param      $exts    Array of file extensions
+	 * @return     void
+	 */
+	public function setAllowedExtensions( $exts = array() )
+	{
+		if (is_array($exts) && !empty($exts))
+		{
+			$this->_extensions = $exts;
+		}
+	}
+	
+	/**
+	 * Check File Name
+	 * 
+	 * @param      $uploadDir    Upload Directory
+	 * @param      $fileName     File Name
+	 * @return     void
+	 */
 	private function checkFileName($uploadDir, $fileName) 
 	{
 		$ext = strrchr($fileName, '.');
