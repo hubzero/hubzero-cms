@@ -40,7 +40,7 @@ jQuery(document).ready(function(jq){
 				'</div>'
 			);
 			$('.linker-button').on('click', function(){
-				var i = $('.item-asset').length;
+				var i = $('.item-asset').length + 1000;
 				$('#ajax-uploader-list').append(
 					'<p class="item-asset">' +
 						'<span class="asset-handle"></span>' +
@@ -78,6 +78,7 @@ jQuery(document).ready(function(jq){
 
 					uploader.setParams({dir: $('#field-dir').val()});
 				}
+
 				// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
 				response.html = response.html.replace(/&gt;/g, '>');
 				response.html = response.html.replace(/&lt;/g, '<');
