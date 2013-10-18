@@ -188,6 +188,8 @@ class plgSystemJquery extends JPlugin
 				$base . '/media/system/js/mootools.js',
 				$base . '/media/system/js/mootools-core-uncompressed.js',
 				$base . '/media/system/js/mootools-core.js',
+				$base . '/media/system/js/mootools-more-uncompressed.js',
+				$base . '/media/system/js/mootools-more.js',
 				$base . '/media/system/js/caption-uncompressed.js',
 				$base . '/media/system/js/caption.js',
 				$base . '/media/system/js/core-uncompressed.js',
