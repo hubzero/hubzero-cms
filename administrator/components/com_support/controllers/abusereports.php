@@ -303,7 +303,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 				}
 			}
 		}
-
+		
 		// Remove the reported item and any other related processes that need be performed
 		$results = $dispatcher->trigger('deleteReportedItem', array(
 			$report->referenceid,
@@ -344,10 +344,10 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 
 			// Email subject
-			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT',$jconfig->getValue('config.sitename'));
+			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
 
 			$from['multipart'] = md5(date('U'));
-
+			
 			$eview = new JView(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails', 
@@ -358,10 +358,11 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			$eview->reported   = $reported;
 			$eview->report     = $report;
 			$eview->boundary   = $from['multipart'];
-
-			$message['multipart'] = $eview->loadTemplate();
-			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
-
+			
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+			
+			
 			// Build the email message
 			/*if ($note)
 			{
@@ -378,7 +379,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			// Send the email
 			if (SupportUtilities::checkValidEmail($juser->get('email')))
 			{
-				SupportUtilities::sendEmail($juser->get('email'), $subject, $message, $from);
+				SupportUtilities::sendEmail($juser->get('email'), $subject, $message, $from);							
 			}
 		}
 
