@@ -159,6 +159,9 @@ class plgGroupsForum extends Hubzero_Plugin
 
 			//group vars
 			//$this->members = $members;
+			//get the plugins params
+			$p = new Hubzero_Plugin_Params($this->database);
+			$this->params = $p->getParams($this->group->get('gidNumber'), 'groups', $this->_name);
 
 			//option and paging vars
 			$this->option = $option;
@@ -184,6 +187,10 @@ class plgGroupsForum extends Hubzero_Plugin
 					if ($bits[0] == 'new')
 					{
 						$action = 'newsection';
+					}
+					else if ($bits[0] == 'settings' || $bits[0] == 'savesettings')
+					{
+						$action = $bits[0];
 					}
 					else 
 					{
@@ -264,6 +271,10 @@ class plgGroupsForum extends Hubzero_Plugin
 
 			switch ($action)
 			{
+				// Settings
+				case 'savesettings':   $arr['html'] .= $this->savesettings();   break;
+				case 'settings':       $arr['html'] .= $this->settings();       break;
+
 				case 'sections':       $arr['html'] .= $this->sections();       break;
 				case 'savesection':    $arr['html'] .= $this->savesection();    break;
 				case 'deletesection':  $arr['html'] .= $this->deletesection();  break;
@@ -348,6 +359,7 @@ class plgGroupsForum extends Hubzero_Plugin
 					$this->params->set('access-create-' . $assetType, true);
 					if ($this->authorized == 'admin' || $this->authorized == 'manager')
 					{
+						$this->params->set('access-manage-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
 						$this->params->set('access-edit-' . $assetType, true);
 						$this->params->set('access-view-' . $assetType, true);
@@ -356,6 +368,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				case 'category':
 					if ($this->authorized == 'admin' || $this->authorized == 'manager')
 					{
+						$this->params->set('access-manage-' . $assetType, true);
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
 						$this->params->set('access-edit-' . $assetType, true);
@@ -365,6 +378,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				case 'section':
 					if ($this->authorized == 'admin' || $this->authorized == 'manager')
 					{
+						$this->params->set('access-manage-' . $assetType, true);
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
 						$this->params->set('access-edit-' . $assetType, true);
@@ -375,6 +389,7 @@ class plgGroupsForum extends Hubzero_Plugin
 				default:
 					if ($this->authorized == 'admin' || $this->authorized == 'manager')
 					{
+						$this->params->set('access-manage-' . $assetType, true);
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
 						$this->params->set('access-edit-' . $assetType, true);
@@ -487,6 +502,16 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->setRedirect(
 				JRoute::_($this->base),
 				$section->getError(),
+				'error'
+			);
+			return;
+		}
+
+		if (in_array($section->get('alias'), array('new', 'settings', 'savesettings')))
+		{
+			$this->setRedirect(
+				JRoute::_($this->base),
+				JText::sprintf('PLG_GROUPS_FORUM_SECTION_TITLE_RESERVED', $section->get('alias')),
 				'error'
 			);
 			return;
@@ -1218,7 +1243,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Determine route
 		if ($model->parent) 
 		{
-			$thread = $model->parent;
+			$thread = $model->thread;
 		} 
 		else 
 		{
@@ -1323,7 +1348,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_($this->base . '&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id),
+			JRoute::_($this->base . '&scope=' . $section . '/' . $category->alias . '/' . $thread), // . '#c' . $model->id),
 			$message,
 			'passed'
 		);
@@ -1726,5 +1751,119 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		return $log;
+	}
+
+	/**
+	 * Display blog settings
+	 * 
+	 * @return     string
+	 */
+	private function settings()
+	{
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) 
+		{
+			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
+			return;
+		}
+
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') 
+		{
+			$this->setError(JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
+			return $this->sections();
+		}
+
+		// Output HTML
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'groups',
+				'element' => $this->_name,
+				'name'    => 'settings'
+			)
+		);
+		$view->option     = $this->option;
+		$view->group      = $this->group;
+		$view->config     = $this->params;
+		$view->model      = $this->model;
+
+		$view->settings   = new Hubzero_Plugin_Params($this->database);
+		$view->settings->loadPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
+
+		$view->authorized = $this->authorized;
+		$view->message    = (isset($this->message)) ? $this->message : '';
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Save blog settings
+	 * 
+	 * @return     void
+	 */
+	private function savesettings()
+	{
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) 
+		{
+			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
+			return;
+		}
+
+		if ($this->authorized != 'manager' && $this->authorized != 'admin') 
+		{
+			$this->setError(JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
+			return $this->sections();
+		}
+
+		$settings = JRequest::getVar('settings', array(), 'post');
+
+		$row = new Hubzero_Plugin_Params($this->database);
+		if (!$row->bind($settings)) 
+		{
+			$this->setError($row->getError());
+			return $this->settings();
+		}
+
+		// Get parameters
+		$paramsClass = 'JParameter';
+		$mthd = 'bind';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+			$mthd = 'loadArray';
+		}
+
+		$p = new $paramsClass('');
+		$p->$mthd(JRequest::getVar('params', '', 'post'));
+
+		$row->params = $p->toString();
+
+		// Check content
+		if (!$row->check()) 
+		{
+			$this->setError($row->getError());
+			return $this->_settings();
+		}
+
+		// Store new content
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			return $this->_settings();
+		}
+
+		//$this->message = JText::_('Settings successfully saved!');
+		//return $this->_settings();
+		$app =& JFactory::getApplication();
+		$app->enqueueMessage(JText::_('PLG_GROUPS_FORUM_SETTINGS_SAVED'), 'passed');
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'));
 	}
 }

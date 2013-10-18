@@ -4,7 +4,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 $juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
+
+if ($this->config->get('access-manage-section')) {
 ?>
+<ul id="page_options">
+	<li>
+		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '/settings'); ?>">
+			<?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS'); ?>
+		</a>
+	</li>
+</ul>
+<?php } ?>
+
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
