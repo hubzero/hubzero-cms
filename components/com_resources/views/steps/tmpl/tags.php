@@ -67,7 +67,7 @@ class RecommendedTags
 		$this->fa_properties = $dbh->loadAssocList('raw_tag');
 
 		$dbh->setQuery(
-			'SELECT raw_tag, label IS NOT NULL AS is_focus_area
+			'SELECT raw_tag, (label IS NOT NULL AND label != "") AS is_focus_area
 			FROM #__tags_object to1
 			INNER JOIN #__tags t ON t.id = to1.tagid
 			WHERE to1.tbl = \'resources\' AND to1.objectid = '.$rid

@@ -1115,23 +1115,28 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			$tags[] = $tag[0];
 		}
 		$tags = implode(', ', $tags);
-		
-		//$rt = new ResourcesTags($this->database);
+
+		$rt = new ResourcesTags($this->database);
 		//$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
 		$this->database->execute('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
 		foreach ($push as $tag) 
 		{
-			$this->database->setQuery('SELECT id FROM #__tags WHERE tag = ' . $this->database->quote($tag[1]));
+			/*$this->database->setQuery('SELECT id FROM #__tags WHERE tag = ' . $this->database->quote($tag[1]));
 			if (!($tid = $this->database->loadResult())) 
 			{
 				$this->database->setQuery('SELECT tag_id FROM #__tags_substitute WHERE tag = ' . $this->database->quote($tag[1]));
+				$tid = $this->database->loadResult();
 				if (!($tid = $this->database->loadResult())) 
 				{
-					$this->database->execute('INSERT INTO #__tags(tag, raw_tag) VALUES (' . $this->database->quote($tag[1]) . ', ' . $this->database->quote($tag[0]) . ')');
+					$this->database->setQuery('INSERT INTO #__tags(tag, raw_tag) VALUES (' . $this->database->quote($tag[1]) . ', ' . $this->database->quote($tag[0]) . ')');
+					$this->database->execute();
 					$tid = $this->database->insertid();
+					//var_dump($tid);
 				}
 			}
-			$this->database->execute('INSERT INTO #__tags_object(tbl, objectid, tagid, label) VALUES (\'resources\', ' . $id . ', ' . $tid . ', ' . ($tag[2] ? $this->database->quote($tag[2]) : 'NULL') . ')');
+			$this->database->execute('INSERT INTO #__tags_object(tbl, objectid, tagid, label) VALUES (\'resource\', ' . $id . ', ' . $tid . ', ' . ($tag[2] ? $this->database->quote($tag[2]) : 'NULL') . ')');*/
+
+			$rt->safe_tag($user->get('id'), $id, $tag[0], 1, ($tag[2] ? $tag[2] : ''));
 		}
 	}
 
