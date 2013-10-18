@@ -1323,7 +1323,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		//$juser =& JFactory::getUser();
 		if ($this->juser->get('guest') && $revision == 'dev') 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1341,7 +1341,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				if (!$this->check_toolaccess($toolid)) 
 				{
 					// Denied, punk! How do you like them apples?!
-					JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+					JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 					return;
 				}
 			}
@@ -1655,14 +1655,14 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Make sure the resource is published and standalone
 		if ($resource->published == 0 || $resource->standalone != 1) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
 		// Make sure they have access to view this resource
 		if ($this->checkGroupAccess($resource)) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -2155,7 +2155,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		if ($resource->access == 1 && $juser->get('guest')) 
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -2166,7 +2166,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		{
 			if ($this->checkGroupAccess($resource, $juser)) 
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 				return;
 			}
 		}
@@ -2316,7 +2316,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		if (!$opencode) 
 		{
 			// This tool is not open source
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
