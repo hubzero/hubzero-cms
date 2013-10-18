@@ -210,7 +210,7 @@ else
 			<div class="col span-half omega">
 				<h4><?php echo JText::_('PLG_MEMBERS_GROUPS_WHAT_ARE_GROUPS'); ?></h4>
 				<p><?php echo JText::_('PLG_MEMBERS_GROUPS_EXPLANATION'); ?></p>
-				<p><?php echo JText::_('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', JRoute::_('index.php?option=com_groups')); ?></p>
+				<p><?php echo JText::sprintf('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', JRoute::_('index.php?option=com_groups')); ?></p>
 			</div><!-- / .col -->
 		</div>
 <?php } ?>
