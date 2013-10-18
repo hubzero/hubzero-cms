@@ -941,13 +941,15 @@ class plgGroupsBlog extends Hubzero_Plugin
 
 		// Get parameters
 		$paramsClass = 'JParameter';
+		$mthd = 'bind';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
+			$mthd = 'loadArray';
 		}
 
 		$p = new $paramsClass('');
-		$p->bind(JRequest::getVar('params', '', 'post'));
+		$p->$mthd(JRequest::getVar('params', '', 'post'));
 
 		$row->params = $p->toString();
 
