@@ -491,7 +491,7 @@ class Hubzero_User_Profile extends JObject
 			$paramsClass = 'JRegistry';
 		}
 		
-		$this->_params = new $paramsClass('');
+		$this->_params = new $paramsClass($result['params']);
 		
 		foreach ($result as $property=>$value)
 		{

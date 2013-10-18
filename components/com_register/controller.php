@@ -1586,47 +1586,56 @@ class RegisterController extends Hubzero_Controller
 		} 
 		elseif ($email_confirmed < 0 && $email_confirmed == -$code) 
 		{
+			//var to hold return path
+			$return = '';
+			
+			// get com_register return path
+			$hconfig = &JComponentHelper::getParams('com_register');
+			$cReturn = $hconfig->get('ConfirmationReturn');
+			if ($cReturn) 
+			{
+				$return = $cReturn;
+			}
+			
+			//load user profile
 			ximport('Hubzero_User_Profile');
 			$profile = new Hubzero_User_Profile();
 			$profile->load($xprofile->get('username'));
-
-			$myreturn = base64_decode($profile->getParam('return'));
-			if ($myreturn) 
+			
+			//check to see if we have a return param
+			$pReturn = base64_decode($profile->getParam('return'));
+			if ($pReturn) 
 			{
+				$return = $pReturn;
 				$profile->setParam('return','');
 			}
+			
+			// make as confirmed
 			$profile->set('emailConfirmed', 1);
-
+			
+			// set public setting
 			$mconfig =& JComponentHelper::getParams('com_members');
 			$profile->set('public', $mconfig->get('privacy', '0'));
-
+			
+			// upload profile
 			if (!$profile->update()) 
 			{
 				$this->setError(JText::_('COM_REGISTER_ERROR_CONFIRMING'));
 			}
-
-			$hconfig = &JComponentHelper::getParams('com_register');
-
-			// Override any other return settings if $return is explicitly set
-			$return = $hconfig->get('ConfirmationReturn');
-			if ($return) 
-			{
-				$myreturn = $return;
-			}
-
+			
 			// Redirect
-			if (empty($myreturn)) 
+			if (empty($return)) 
 			{
 				$r = $hconfig->get('LoginReturn');
-				$myreturn = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
+				$return = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
 				// consume cookie (yum) if available to return to whatever action prompted registration
 				if (isset($_COOKIE['return'])) {
-					$myreturn = $_COOKIE['return'];
+					$return = $_COOKIE['return'];
 					setcookie('return', '', time() - 3600);
 				}
 			}
 
-			$app->redirect($myreturn,'','message',true);
+			$app->redirect($return,'','message',true);
 		} 
 		else 
 		{
