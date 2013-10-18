@@ -86,7 +86,7 @@ abstract class Model extends Object
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($oid=null)
 	{
 		$this->_db = \JFactory::getDBO();
 
