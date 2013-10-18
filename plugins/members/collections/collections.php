@@ -1156,7 +1156,7 @@ class plgMembersCollections extends JPlugin
 		/*$descriptions = JRequest::getVar('description', array(), 'post');*/
 
 		// Get model
-		$row = new CollectionsModelItem();
+		$row = new CollectionsModelItem(0);
 
 		// Bind content
 		if (!$row->bind($fields)) 
