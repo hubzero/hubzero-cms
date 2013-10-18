@@ -311,7 +311,7 @@ class TagsModelCloud extends JObject
 		}
 
 		// Force data to an array
-		if (!is_array($tag))
+		if (!is_array($tags))
 		{
 			$tags = array($tags);
 		}
