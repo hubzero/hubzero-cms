@@ -28,12 +28,16 @@ jQuery(document).ready(function(jq){
 		if ($('#link-adder').length > 0) {
 			$('#link-adder')
 				.on('click', function(){
+					iframe.parent().find('p.error').remove();
+
 					var fname = prompt("Please provide a link:", "http://");
 
 					if (fname) {
 						$.getJSON($(this).attr('data-action') + encodeURIComponent(fname), {}, function(data) {
 							if (data.success) {
 								iframe.attr('src', iframe.attr('src') + '1');
+							} else {
+								iframe.before('<p class="error">' + data.errors.join('<br />') + '</p>');
 							}
 						});
 					}
@@ -58,10 +62,14 @@ jQuery(document).ready(function(jq){
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
 			onSubmit: function(id, file) {
+				iframe.parent().find('p.error').remove();
 			},
 			onComplete: function(id, file, response) {
-
-				iframe.attr('src', iframe.attr('src') + '1');
+				if (response.success) {
+					iframe.attr('src', iframe.attr('src') + '1');
+				} else {
+					iframe.before('<p class="error">' + response.errors.join('<br />') + '</p>');
+				}
 			}
 		});
 	}

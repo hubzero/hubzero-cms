@@ -432,7 +432,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 
 		// Create new parent/child association
 		$assoc->parent_id = $pid;
-		$assoc->child_id  = $asset->id;
+		$assoc->child_id  = $row->id;
 		$assoc->grouping  = 0;
 		if (!$assoc->check()) 
 		{
