@@ -717,6 +717,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 				$this->view->row->published  = 3; // default to "new" status
 				$this->view->row->standalone = 1;
 			}
+			$this->view->row->access = 0;
 		}
 
 		// Editing existing
