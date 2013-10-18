@@ -641,30 +641,33 @@ class CollectionsModelItem extends \Hubzero\Model
 
 			$descriptions = $this->get('_descriptions', array());
 
-			foreach ($files['name'] as $i => $file)
+			if (isset($files['name']))
 			{
-				// Make the filename safe
-				jimport('joomla.filesystem.file');
-				$files['name'][$i] = urldecode($files['name'][$i]);
-				$files['name'][$i] = JFile::makeSafe($files['name'][$i]);
-				$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
+				foreach ($files['name'] as $i => $file)
+				{
+					// Make the filename safe
+					jimport('joomla.filesystem.file');
+					$files['name'][$i] = urldecode($files['name'][$i]);
+					$files['name'][$i] = JFile::makeSafe($files['name'][$i]);
+					$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
 
-				// Upload new files
-				if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
-				{
-					$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
-				}
-				// File was uploaded 
-				else 
-				{
-					$asset = new CollectionsModelAsset();
-					//$asset->set('_file', $file);
-					$asset->set('item_id', $this->get('id'));
-					$asset->set('filename', $files['name'][$i]);
-					$asset->set('description', (isset($descriptions[$i]) ? $descriptions[$i] : ''));
-					if (!$asset->store())
+					// Upload new files
+					if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
 					{
-						$this->setError($asset->getError());
+						$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
+					}
+					// File was uploaded 
+					else 
+					{
+						$asset = new CollectionsModelAsset();
+						//$asset->set('_file', $file);
+						$asset->set('item_id', $this->get('id'));
+						$asset->set('filename', $files['name'][$i]);
+						$asset->set('description', (isset($descriptions[$i]) ? $descriptions[$i] : ''));
+						if (!$asset->store())
+						{
+							$this->setError($asset->getError());
+						}
 					}
 				}
 			}
