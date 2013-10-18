@@ -619,7 +619,8 @@ $area = JRequest::getVar('area', 'about');
 			$params = array(
 				$citation,
 				$this->option,
-				JRoute::_('index.php?option='.$this->option.'&task=view&id='.$citation->id.'&area=reviews#reviews')
+				JRoute::_('index.php?option='.$this->option.'&task=view&id='.$citation->id.'&area=reviews#reviews'),
+				array('png','jpg','gif','tiff','pdf')
 			);
 			$comments = $dispatcher->trigger( 'onAfterDisplayContent', $params );
 			echo $comments[0];
