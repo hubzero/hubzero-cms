@@ -76,7 +76,7 @@ class CollectionsModelFollowing extends \Hubzero\Model
 
 		if (is_numeric($oid))
 		{
-			if (!$oid)
+			if ($oid)
 			{
 				$this->_tbl->load($oid, $following_type, $follower_id, $follower_type);
 			}
