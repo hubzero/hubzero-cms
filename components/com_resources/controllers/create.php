@@ -77,11 +77,20 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/create');
 
+		;
+
+		if ($id = JRequest::getInt('id', 0))
+		{
+			// Instantiate a new resource object
+			$row = new ResourcesResource($this->database);
+			$row->load($id);
+		}
+
 		// Build the title
-		$this->_buildTitle();
+		$this->_buildTitle($row);
 
 		// Build the pathway
-		$this->_buildPathway();
+		$this->_buildPathway($row);
 
 		parent::execute();
 	}
@@ -91,7 +100,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function _buildPathway()
+	public function _buildPathway($row)
 	{
 		$pathway =& JFactory::getApplication()->getPathway();
 
@@ -102,10 +111,20 @@ class ResourcesControllerCreate extends Hubzero_Controller
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
-			JText::_('COM_CONTRIBUTE_NEW'),
-			'index.php?option=' . $this->_option . '&task=new'
-		);
+		if ($row->id && $row->published == 1)
+		{
+			$pathway->addItem(
+				JText::_('COM_CONTRIBUTE_EDIT'),
+				'index.php?option=' . $this->_option . '&task=new'
+			);
+		}
+		else
+		{
+			$pathway->addItem(
+				JText::_('COM_CONTRIBUTE_NEW'),
+				'index.php?option=' . $this->_option . '&task=new'
+			);
+		}
 		if ($this->_task) 
 		{
 			$pathway->addItem(
@@ -127,9 +146,17 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function _buildTitle()
+	public function _buildTitle($row)
 	{
-		$this->_title = JText::_(strtoupper($this->_option)) . ': ' . JText::_('COM_CONTRIBUTE');
+		$this->_title = JText::_(strtoupper($this->_option)) . ': ';
+		if ($row->id && $row->published == 1)
+		{
+			$this->_title .= JText::_('COM_CONTRIBUTE_EDIT');
+		}
+		else
+		{
+			$this->_title .= JText::_('COM_CONTRIBUTE_NEW');
+		}
 		if ($this->_task) 
 		{
 			$this->_title .= ': ' . JText::_('COM_CONTRIBUTE' . '_' . strtoupper($this->_task));
