@@ -1179,14 +1179,20 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$start = $iCalReader->iCalDateToUnixTimestamp($icalEvent['DTSTART']);
 		$end   = $iCalReader->iCalDateToUnixTimestamp($icalEvent['DTEND']);
 		
+		// get values from ical File
+		$title       = (isset($icalEvent['SUMMARY'])) ? $icalEvent['SUMMARY'] : '';
+		$description = (isset($icalEvent['DESCRIPTION'])) ? $icalEvent['DESCRIPTION'] : '';
+		$location    = (isset($icalEvent['LOCATION'])) ? $icalEvent['LOCATION'] : '';
+		$website     = (isset($icalEvent['URL;VALUE=URI'])) ? $icalEvent['URL;VALUE=URI'] : '';
+		
 		//object to hold event data
 		$event           = new stdClass;
-		$event->title    = $icalEvent['SUMMARY'];
-		$event->content  = stripslashes(str_replace('\n', "\n", $icalEvent['DESCRIPTION']));
+		$event->title    = $title;
+		$event->content  = stripslashes(str_replace('\n', "\n", $description));
 		$event->start    = date("m/d/Y @ g:i a", $start);
 		$event->end      = date("m/d/Y @ g:i a", $end);
-		$event->location = (isset($icalEvent['LOCATION'])) ? $icalEvent['LOCATION'] : '';
-		$event->website  = (isset($icalEvent['URL;VALUE=URI'])) ? $icalEvent['URL;VALUE=URI'] : '';
+		$event->location = $location;
+		$event->website  = $website;
 		
 		//return event details
 		echo json_encode(array('event'=>$event));
