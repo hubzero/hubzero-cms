@@ -29,6 +29,10 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
+JHTML::_('behavior.mootools');
+
+$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -106,3 +110,7 @@ for ($c = 0; $c < count($this->columns); $c++)
 	
 	<?php echo JHTML::_('form.token'); ?>
 </form>
+<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
+<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script>
+<script type="text/javascript" src="<?php echo $base; ?>/plugins/members/dashboard/dashboard.admin.js"></script>

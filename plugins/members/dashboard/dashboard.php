@@ -861,10 +861,14 @@ class plgMembersDashboard extends Hubzero_Plugin
 		$this->view->task = $this->task;
 		$this->view->juser = $this->juser;
 
+		$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+
 		$document =& JFactory::getDocument();
-		$document->addStylesheet(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.css');
-		$document->addScript(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'xsortables.js');
-		$document->addScript(DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.admin.js');
+		$document->addStylesheet($base . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.css');
+		//$document->addScript($base . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'xsortables.js');
+		//$document->addScript($base . DS . 'media/system/js/jquery.js');
+		//$document->addScript($base . DS . 'media/system/js/jquery.noconflict.js');
+		//$document->addScript($base . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'dashboard.admin.js');
 
 		// Select user's list of modules from database
 		$myhub = new MyhubPrefs($this->database);

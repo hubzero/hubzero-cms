@@ -29,24 +29,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<h3 class="section-header"><a name="dashboard"></a><?php echo JText::_('PLG_MEMBERS_DASHBOARD'); ?></h3>
+<h3 class="section-header">
+	<?php echo JText::_('PLG_MEMBERS_DASHBOARD'); ?>
+</h3>
 
 <?php if ($this->config->get('allow_customization', 0) != 1) { ?>
 <div class="section-header-extra">
 	<ul id="page_options">
 		<li class="last hide" id="personalize">
-			<a class="btn icon-config dashboard" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->juser->get('id').'&active=dashboard'); ?>">
+			<a class="btn icon-config dashboard" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->juser->get('id') . '&active=dashboard'); ?>">
 				<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PERSONALIZE'); ?>
 			</a>
 			<div id="modules-dock">
-				<?php /*<p class="undo">
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&id='.$this->juser->get('id').'&active=dashboard&action=restore'); ?>">
-						<?php echo JText::_('PLG_MEMBERS_DASHBOARD_RESTORE_SETTINGS'); ?>
-					</a>
-				</p> */ ?>
 				<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&id='.$this->juser->get('id').'&active=dashboard'); ?>" method="post" name="mysettings" id="cpnlc">
 					<input type="hidden" name="uid" id="uid" value="<?php echo $this->juser->get('id'); ?>" />
-					<input type="hidden" name="serials" id="serials" value="<?php echo $this->usermods[0].';'.$this->usermods[1].';'.$this->usermods[2]; ?>" />
+					<input type="hidden" name="serials" id="serials" value="<?php echo $this->escape($this->usermods[0] . ';' . $this->usermods[1] . ';' . $this->usermods[2]); ?>" />
 					<fieldset id="available">
 						<?php
 						// Instantiate a view
@@ -67,24 +64,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 </div><!-- / .section-header-extra -->
 <?php } ?>
+
 <div class="main section">
 	<noscript>
 		<p class="warning"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
 	</noscript>
-	<table id="droppables" summary="<?php echo JText::_('PLG_MEMBERS_DASHBOARD_MY_MODULES'); ?>">
+	<table id="droppables">
 		<tbody>
 			<tr>
-<?php
-// Loop through each column and output modules assigned to each one
-for ($c = 0; $c < count($this->columns); $c++)
-{
-?>
+			<?php for ($c = 0; $c < count($this->columns); $c++) { ?>
 				<td class="sortable" id="sortcol_<?php echo $c; ?>">
 					<?php echo $this->columns[$c]; ?>
 				</td>
-<?php
-}
-?>
+			<?php } ?>
 			</tr>
 		</tbody>
 	</table>
