@@ -39,10 +39,10 @@ defined('_JEXEC') or die('Restricted access');
 
 	$profile = Hubzero_User_Profile::getInstance($this->seeker->uid);
 
-	$jobtype = $jt->getType($this->seeker->sought_type, strtolower(JText::_('PLG_RESUME_TYPE_ANY')));
-	$jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(JText::_('PLG_RESUME_CATEGORY_ANY')));
+	$jobtype = $jt->getType($this->seeker->sought_type, strtolower(JText::_('PLG_MEMBERS_RESUME_TYPE_ANY')));
+	$jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(JText::_('PLG_MEMBERS_RESUME_CATEGORY_ANY')));
 
-	$title = JText::_('ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
+	$title = JText::_('ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME'));
 
 	// Get the configured upload path
 		$base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);
@@ -67,9 +67,9 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 
 		<div class="aboutlb">
-			<?php echo $list ? '<a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume') . '" class="profilelink">' : ''; ?>
+			<?php echo $this->list ? '<a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume') . '" class="profilelink">' : ''; ?>
 			<?php echo $this->seeker->name; ?>
-			<?php echo $list ? '</a>' : ''; ?>
+			<?php echo $this->list ? '</a>' : ''; ?>
 			<?php if ($this->seeker->countryresident) { ?>
 				, <span class="wherefrom"><?php echo $this->escape($this->seeker->countryresident); ?></span>
 			<?php } ?>
@@ -81,8 +81,8 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 
 		<div class="lookingforlb">
-			<?php echo JText::_('PLG_RESUME_LOOKING_FOR'); ?>
-			<span class="jobprefs">';
+			<?php echo JText::_('PLG_MEMBERS_RESUME_LOOKING_FOR'); ?>
+			<span class="jobprefs">
 				<?php echo $jobtype ? $jobtype : ' '; ?>
 				<?php echo $jobcat ? ' &bull; ' . $jobcat : ''; ?>
 			</span>
@@ -93,12 +93,12 @@ defined('_JEXEC') or die('Restricted access');
 
 	<?php if ($this->seeker->mine) { ?>
 		<span class="editbt">
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs'); ?>" title="<?php echo JText::_('PLG_RESUME_ACTION_EDIT_MY_PROFILE'); ?>">&nbsp;</a>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs'); ?>" title="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_EDIT_MY_PROFILE'); ?>">&nbsp;</a>
 		</span>
 	<?php } else if ($this->emp or $this->admin) { ?>
 		<span id ="o<?php echo $this->seeker->uid; ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist'); ?>" class="favvit" title="<?php echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? JText::_('PLG_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_RESUME_ACTION_ADD_TO_SHORTLIST'); ?>">
-				<?php echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? JText::_('PLG_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_RESUME_ACTION_ADD_TO_SHORTLIST'); ?>
+			<a href="<?php echo JRoute::_('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist'); ?>" class="favvit" title="<?php echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? JText::_('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST'); ?>">
+				<?php echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? JText::_('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST'); ?>
 			</a>
 		</span>
 	<?php } ?>
@@ -106,23 +106,23 @@ defined('_JEXEC') or die('Restricted access');
 		<span class="indented">
 	<?php if ($resume) { ?>
 			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $title; ?>">
-				<?php echo ucfirst(JText::_('PLG_RESUME_RESUME')); ?>
+				<?php echo ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')); ?>
 			</a> 
-			<span class="mini"><?php echo JText::_('PLG_RESUME_LAST_UPDATE'); ?>: <?php echo $this->nicetime($this->seeker->created); ?></span>
+			<span class="mini"><?php echo JText::_('PLG_MEMBERS_RESUME_LAST_UPDATE'); ?>: <?php echo plgMembersResume::nicetime($this->seeker->created); ?></span>
 			<?php if ($this->seeker->url) { ?>
 				<span class="mini"> | </span> 
 				<span class="mini">
-					<a href="<?php echo $this->seeker->url; ?>" class="web" rel="external" title="<?php echo JText::_('PLG_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo JText::_('PLG_RESUME_WEBSITE'); ?></a>
+					<a href="<?php echo $this->seeker->url; ?>" class="web" rel="external" title="<?php echo JText::_('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_WEBSITE'); ?></a>
 				</span>
 			<?php } ?>
 			<?php if ($this->seeker->linkedin) { ?>
 				<span class="mini"> | </span> 
 				<span class="mini">
-					<a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo JText::_('PLG_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo JText::_('PLG_RESUME_LINKEDIN'); ?></a>
+					<a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo JText::_('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_LINKEDIN'); ?></a>
 				</span>
 			<?php } ?>
 	<?php } else { ?>
-			<span class="unavail"><?php echo JText::_('PLG_RESUME_ACTION_DOWNLOAD'); ?></span>
+			<span class="unavail"><?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD'); ?></span>
 	<?php } ?>
 		</span>
 	</div>

@@ -872,7 +872,7 @@ class plgMembersResume extends JPlugin
 	 * @param      string $date Timestamp
 	 * @return     string
 	 */
-	public function nicetime($date)
+	public static function nicetime($date)
 	{
 		if (empty($date)) 
 		{

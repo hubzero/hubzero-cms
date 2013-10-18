@@ -114,7 +114,7 @@ $juser = JFactory::getUser();
 						<?php echo JText::_('PLG_MEMBERS_RESUME_PERSONAL_TAGLINE'); ?>
 						<span class="selectgroup">
 							<textarea name="tagline" id="tagline-men" rows="6" cols="35"><?php echo stripslashes($this->js->tagline); ?></textarea>
-							<span class="counter"><span id="counter_number_tagline"></span> <?php echo JText::_('chars left'); ?></span>
+							<span class="counter"><span id="counter_number_tagline"></span> <?php echo JText::_('PLG_MEMBERS_RESUME_CHARS_LEFT'); ?></span>
 						</span>
 					</label>
 					<label class="spacious">
@@ -133,7 +133,7 @@ $juser = JFactory::getUser();
 					<label>
 						<?php echo JText::_('PLG_MEMBERS_RESUME_LINKEDIN'); ?>
 						<span class="selectgroup">
-							<input type="text" class="inputtxt" maxlength="190" name="linkedin" value="' . $this->js->linkedin . '" />
+							<input type="text" class="inputtxt" maxlength="190" name="linkedin" value="<?php echo $this->js->linkedin; ?>" />
 						</span>
 					</label>
 					<label class="cats">
@@ -222,6 +222,8 @@ $juser = JFactory::getUser();
 				$view->emp    = $this->emp;
 				$view->admin  = 0;
 				$view->option = $this->option;
+				$view->params = $this->params;
+				$view->list   = 0;
 				$view->display();
 			}
 		}
@@ -242,8 +244,8 @@ $juser = JFactory::getUser();
 						<?php 
 						$title = $this->resume->title ?  stripslashes($this->resume->title) : $this->resume->filename;
 						$default_title = $this->member->get('firstname') 
-									? $this->member->get('firstname').' '.$this->member->get('lastname').' '.JText::_('PLG_RESUME') 
-									: $this->member->get('name').' '.JText::_('PLG_RESUME');
+									? $this->member->get('firstname').' '.$this->member->get('lastname').' '.JText::_('PLG_MEMBERS_RESUME') 
+									: $this->member->get('name').' '.JText::_('PLG_MEMBERS_RESUME');
 						?>
 						<?php if ($this->edittitle && $this->self) { ?>
 							<form id="editTitleForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=savetitle'); ?>">
@@ -265,7 +267,7 @@ $juser = JFactory::getUser();
 							<time datetime="<?php echo $this->resume->created; ?>"><?php echo JHTML::_('date', $this->resume->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('APLG_MEMBERS_RESUME_CTION_DELETE_THIS_RESUME'); ?>">
+							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('PLG_MEMBERS_RESUME_CTION_DELETE_THIS_RESUME'); ?>">
 								<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DELETE'); ?>
 							</a>
 						</td>
