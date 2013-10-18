@@ -326,10 +326,10 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
-		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		/*while (file_exists($path . DS . $filename . '.' . $ext)) 
 		{
 			$filename .= rand(10, 99);
-		}
+		}*/
 
 		// Instantiate a new resource object
 		$row = new ResourcesResource($this->database);
