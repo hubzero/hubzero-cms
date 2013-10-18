@@ -37,7 +37,10 @@ if (!$url)
 {
 	$url = JRoute::_('index.php?option=com_content&id=' . $this->article->alias);
 }
-
+if ($url == '/?action=collect&nohtml=1')
+{
+	$url = '/home' . $url;
+}
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>

@@ -176,7 +176,7 @@ jQuery(document).ready(function(jq){
 			beforeLoad: function() {
 				var href = $(this).attr('href').nohtml();
 				$(this).attr('href', href);
-				console.log(href);
+				//console.log(href);
 			},
 			afterShow: function() {
 				var el = this.element;
@@ -184,6 +184,7 @@ jQuery(document).ready(function(jq){
 					$('#hubForm').on('submit', function(e) {
 						e.preventDefault();
 						$.post($(this).attr('action'), $(this).serialize(), function(data) {
+							//console.log(data);
 							var response = jQuery.parseJSON(data);
 							if (data.code == 1) {
 								$('#sbox-content').html('<p class="error" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>')
