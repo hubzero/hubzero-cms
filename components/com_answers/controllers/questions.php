@@ -907,7 +907,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$eview->jconfig  = $jconfig;
 			$eview->sitename  = $jconfig->getValue('config.sitename');
 			$eview->juser     = $this->juser;
-			$eview->row       = $row;
+			$eview->question  = $row;
 			$eview->id        = $row->get('id', 0);
 			$eview->boundary  = $from['multipart'];
 			$eview->plaintext = $message['plaintext'];
