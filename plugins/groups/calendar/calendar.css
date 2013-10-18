@@ -473,8 +473,7 @@ form[name=importevent] fieldset {
 	clear: right;
 	margin: 0 20px;
 	border: 3px dashed #ccc;
-	padding: 0;
-	height: 200px;
+	padding: 100px 20px 20px 20px;
 }
 .upload:before {
 	content: '\f046';
@@ -488,11 +487,7 @@ form[name=importevent] fieldset {
 	color: #ccc;
 }
 .upload .title {
-	position: absolute;
 	display: block;
-	top: 90px;
-	left: 0;
-	right: 0;
 	text-align: center; 
 	font-weight: bold;
 	font-size: 16px;
@@ -500,30 +495,25 @@ form[name=importevent] fieldset {
 	color: #555;
 	}
 .upload .description {
-	position: absolute;
-	top: 110px;
-	left: 0;
-	right: 0;
+	display: block;
 	text-align: center; 
 	font-weight: normal;
 	font-size: 12px;
 	color: #aaa;
 }
 .upload .button-container {
-	position: absolute;
-	top: 140px;
-	left: 0;
-	right: 0;
+	display: block;
 	text-align: center;
+	padding: 10px 0 0 0;
 }
 .upload .button-container .btn {
-	position: relative;
 	padding: 5px 20px;
 }
 .upload .button-container .btn:hover {
 	cursor: pointer;
 	border: 1px solid #AAA;
 	-webkit-box-shadow: inset 0 0 1px #FFF, 0 0 2px rgba(0, 0, 0, 0.35);
+	box-shadow: inset 0 0 1px #FFF, 0 0 2px rgba(0, 0, 0, 0.35);
 }
 .upload .button-container .btn input[type=file] {
 	position: absolute;
