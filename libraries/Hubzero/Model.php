@@ -30,9 +30,6 @@
 
 namespace Hubzero;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Abstract model class
  */
@@ -348,7 +345,7 @@ abstract class Model extends Object
 		$trace = false;
 		if (JDEBUG)
 		{
-			$message = \JRequest::getVar('REQUEST_URI', '', 'server') . ' -- ' . $message;
+			$message = '[' . \JRequest::getVar('REQUEST_URI', '', 'server') . '] [' . $message . ']';
 			$trace = true;
 		}
 
@@ -359,7 +356,18 @@ abstract class Model extends Object
 		}
 		$func = 'log' . ucfirst($type);
 
-		\Hubzero_Log::$func($message, $trace);
+		$file = '/var/log/hubzero/cmsdebug.log'; //JFactory::getConfig();->getValue('config.log_path');
+
+		$handler = new \Hubzero_Log_FileHandler($file);
+
+		$logger = new \Hubzero_Log();
+
+		$logger->attach(HUBZERO_LOG_INFO, $handler);
+		$logger->attach(HUBZERO_LOG_ERR, $handler);
+		$logger->attach(HUBZERO_LOG_NOTICE, $handler);
+		$logger->attach(HUBZERO_LOG_DEBUG, $handler);
+
+		$logger->$func($message, $trace);
 	}
 
 	/**
