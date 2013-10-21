@@ -46,8 +46,6 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 
-JToolBarHelper::custom('csv', 'csv', '', 'CSV', false, true);
-
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
@@ -65,11 +63,11 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="col width-30">
+		<div class="col width-30 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		</div>
-		<div class="col width-70">
+		<div class="col width-70 fltrt">
 			<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label> 
 			<select name="offering" id="filter_offering">
 				<option value="0"><?php echo JText::_('(none)'); ?></option>
@@ -118,8 +116,7 @@ function submitbutton(pressbutton)
 <?php } else { ?>
 			<input type="hidden" name="section" id="filter_section" value="0" />
 <?php } ?>
-			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" onClick="adminForm.elements['task'].value='';" />
-						
+			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 		</div>
 	</fieldset>
 	<div class="clr"></div>
@@ -225,7 +222,7 @@ foreach ($this->rows as $row)
 ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
