@@ -698,7 +698,7 @@ class CitationFormat
 		if ($citation->eprint) 
 		{
 			$html .= '<span>|</span>';
-			$html .= '<a href="' . Hubzero_View_Helper_Html::ampReplace($citation->eprint) . '">' . JText::_('ELECTRONIC_PAPER') . '</a>';
+			$html .= '<a href="' . Hubzero_View_Helper_Html::ampReplace($citation->eprint) . '">' . JText::_('Electronic Paper') . '</a>';
 		}
 		
 		return $html;
