@@ -65,6 +65,10 @@ HUB.MembersMsg = {
 					href += '&no_html=1';
 				}
 				$(this).attr('href', href);
+			},
+			afterShow: function() {
+				$(this.element).removeClass('unread');
+				$(this.element).parents('tr').find('td.status span').removeClass('unread')
 			}
 		}); 
 		
