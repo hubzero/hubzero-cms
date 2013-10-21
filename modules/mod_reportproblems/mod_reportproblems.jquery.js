@@ -44,10 +44,14 @@ HUB.Modules.ReportProblems = {
 		send:    '#send-form'
 	},
 
-	initialize: function() {
+	initialize: function(trigger) {
 		var ticket = this,
 			$ = this.jQuery,
 			settings = this.settings;
+
+		if (trigger) {
+			settings.toggle = trigger;
+		}
 
 		if (!$(settings.pane)) {
 			return;
@@ -187,7 +191,8 @@ HUB.Modules.ReportProblems = {
 		return true;
 	}
 };
-
-jQuery(document).ready(function($){
-	HUB.Modules.ReportProblems.initialize();
+/*
+jQuery(document).ready(function(jq) {
+	HUB.Modules.ReportProblems.initialize('#tab');
 });
+*/

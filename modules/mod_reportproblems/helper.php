@@ -83,6 +83,8 @@ class modReportProblems extends Hubzero_Module
 		Hubzero_Document::addModuleStylesheet($this->module->module);
 		Hubzero_Document::addModuleScript($this->module->module);
 
+		JFactory::getDocument()->addScriptDeclaration('jQuery(document).ready(function(jq) { HUB.Modules.ReportProblems.initialize("' . $this->params->get('trigger', '#tab') . '"); });');
+
 		$this->supportParams = JComponentHelper::getParams('com_support');
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
