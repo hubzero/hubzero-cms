@@ -215,6 +215,14 @@ class WishlistControllerComments extends Hubzero_Controller
 			$this->view->row->load($id);
 		}
 
+		if (!$this->view->row->id)
+		{
+			$this->view->row->category    = 'wishcomment';
+			$this->view->row->referenceid = $this->view->wish;
+			$this->view->row->added       = date('Y-m-d H:i:s', time());
+			$this->view->row->added_by    = $this->juser->get('id');
+		}
+
 		// Set any errors
 		if ($this->getError()) 
 		{
