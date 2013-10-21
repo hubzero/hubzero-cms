@@ -83,5 +83,7 @@ JHtml::_('behavior.formvalidation');
 	<?php echo JHtml::_('form.token'); ?>
 	</div>
 
+	<input type="hidden" name="component" value="<?php echo JRequest::getCmd('component', ''); ?>" />
+
 	<div class="clr"></div>
 </form>
