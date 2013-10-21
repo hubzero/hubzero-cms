@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
+include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 
 /**
  * Courses Plugin class for store
@@ -49,7 +50,7 @@ class plgCoursesStore extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		//$this->loadLanguage();
+		$this->loadLanguage();
 	}
 
 	/**
@@ -121,7 +122,7 @@ class plgCoursesStore extends JPlugin
 
 		if ($offering->params('store_product_id', 0))
 		{
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			$warehouse = new StorefrontModelWarehouse();
 			// Get course by pID returned with $course->add() above
 			try 
 			{
@@ -173,8 +174,8 @@ class plgCoursesStore extends JPlugin
 
 			if (!$params->get('store_product_id', 0))
 			{
-				ximport('Hubzero_Storefront_Product');
-				$product = new Hubzero_Storefront_Course();
+				include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+				$product = new StorefrontModelCourse();
 				$product->setName($title);
 				$product->setDescription($description);
 				$product->setPrice($price);
@@ -210,7 +211,7 @@ class plgCoursesStore extends JPlugin
 			else
 			{
 				ximport('Hubzero_Storefront_Warehouse');
-				$warehouse = new Hubzero_Storefront_Warehouse();
+				$warehouse = new StorefrontModelWarehouse();
 				try 
 				{
 					// Get course by pID returned with $course->add() above
@@ -260,7 +261,7 @@ class plgCoursesStore extends JPlugin
 		if ($product = $params->get('store_product_id', 0))
 		{
 			ximport('Hubzero_Storefront_Warehouse');
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			$warehouse = new StorefrontModelWarehouse();
 			// Delete by existing course ID (pID returned with $course->add() when the course was created)
 			$warehouse->deleteProduct($product);
 		}
@@ -339,11 +340,12 @@ class plgCoursesStore extends JPlugin
 		}
 		if ($isNew && JRequest::getInt('store_product', 0))
 		{
-			ximport('Hubzero_Storefront_Coupon');
+			include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
+
 			try 
 			{
 				// Constructor take the coupon code
-				$coupon = new Hubzero_Storefront_Coupon($model->get('code'));
+				$coupon = new StorefrontModelCoupon($model->get('code'));
 				// Couponn description (shows up in the cart)
 				$coupon->setDescription(JRequest::getVar('description', 'Test coupon, 10% off product with ID 111'));
 				// Expiration date 
@@ -356,7 +358,8 @@ class plgCoursesStore extends JPlugin
 				// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
 				//$section = new CorusesModelSection($model->get('section_id'));
 
-				$product = new CorusesModelStore();
+				include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+				$product = new StorefrontModelCourse();
 				$product->set('course_id', $model->find('course'));
 
 				$coupon->addObject($product->get('product_id'), 1);
@@ -388,13 +391,12 @@ class plgCoursesStore extends JPlugin
 			return;
 		}
 
-		ximport('Hubzero_Storefront_Warehouse');
-		$warehouse = new Hubzero_Storefront_Warehouse();
+		$warehouse = new StorefrontModelWarehouse();
 		try 
 		{
 			$warehouse->deleteCoupon($model->get('code'));
 		}
-		catch(Exception $e) 
+		catch (Exception $e) 
 		{
 			echo 'ERROR: ' . $e->getMessage();
 		}
