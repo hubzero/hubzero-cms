@@ -233,6 +233,11 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		//max upload size
 		$sizeLimit = $config->get('upload_maxsize');
 
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
+
 		//get the file
 		if (isset($_GET['qqfile']))
 		{

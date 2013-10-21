@@ -85,7 +85,12 @@ class FileAssetHandler extends AssetHandler
 		$config =& JComponentHelper::getParams('com_media');
 
 		// Max upload size
-		$sizeLimit = $config->get('upload_maxsize');
+		$sizeLimit = (int) $config->get('upload_maxsize');
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
 
 		// Check to make sure we have a file and its not too big
 		if ($size == 0) 

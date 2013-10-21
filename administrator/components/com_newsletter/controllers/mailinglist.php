@@ -329,7 +329,12 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$allowedExtensions = array('txt','csv','xls','xlsx');
 		
 		//max file size
-		$maxFileSize = $config->get('upload_maxsize');
+		$maxFileSize = (int) $config->get('upload_maxsize');
+		
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$maxFileSize = $maxFileSize * 1024 * 1024;
+		}
 		
 		//if we have a file
 		if (isset($this->emailFile['size']) && $this->emailFile['size'] > 0)

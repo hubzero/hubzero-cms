@@ -94,6 +94,11 @@ class WikiAssetHandler extends ContentAssetHandler
 			// Max upload size
 			$sizeLimit = $config->get('upload_maxsize');
 
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$sizeLimit = $sizeLimit * 1024 * 1024;
+			}
+
 			// Get courses config
 			$cconfig =& JComponentHelper::getParams('com_courses');
 
