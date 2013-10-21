@@ -122,21 +122,21 @@ defined('_JEXEC') or die('Restricted access');
 				
 <?php 		if ($this->comment->state != 3) { ?>
 				<p class="comment-options">
-					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>">
-						<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?>
-					</a>
 <?php 			if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<a class="reply" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
+					<a class="icon-reply reply" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?>
 					</a>
 <?php 			} ?>
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>">
+						<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?>
+					</a>
 <?php 			if (($this->params->get('access-edit-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="edit" href="<?php echo JRoute::_($rtrn . 'editcomment=' . $this->comment->id . '#post-comment'); ?>">
+					<a class="icon-edit edit" href="<?php echo JRoute::_($rtrn . 'editcomment=' . $this->comment->id . '#post-comment'); ?>">
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_EDIT'); ?></span>
 					</a>
 <?php 			} ?>
 <?php 			if (($this->params->get('access-delete-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="delete" href="<?php echo JRoute::_($rtrn . 'action=delete&comment=' . $this->comment->id); ?>">
+					<a class="icon-delete delete" href="<?php echo JRoute::_($rtrn . 'action=delete&comment=' . $this->comment->id); ?>">
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_DELETE'); ?>
 					</a>
 <?php 			} ?>

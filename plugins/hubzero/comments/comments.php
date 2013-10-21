@@ -170,8 +170,8 @@ class plgHubzeroComments extends JPlugin
 				// Are they an admin?
 				$this->params->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
 				$this->params->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				if ($this->params->set('access-admin-' . $assetType) 
-				 || $this->params->set('access-manage-' . $assetType))
+				if ($this->params->get('access-admin-' . $assetType) 
+				 || $this->params->get('access-manage-' . $assetType))
 				{
 					$this->params->set('access-create-' . $assetType, true);
 					$this->params->set('access-delete-' . $assetType, true);
@@ -267,7 +267,7 @@ class plgHubzeroComments extends JPlugin
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
-		$url = ($url != '') ? $url : JRequest::GetVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->obj->id . '&active=comments'), 'server');
+		$url = ($url != '') ? $url : JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->obj->id . '&active=comments'), 'server');
 		$url = str_replace('&amp;', '&', $url);
 
 		$msg = ($msg) ? $msg : '';

@@ -48,34 +48,105 @@ class plgSupportComments extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'comment') 
+		if ($category != 'comment' && $category != 'itemcomment') 
 		{
 			return null;
 		}
 
-		$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, rc.added AS created, NULL as subject, rc.anonymous as anon";
-		$query .= ", CASE rc.category WHEN 'reviewcomment' THEN 'reviewcomment' WHEN 'review' THEN 'reviewcomment' WHEN 'answer' THEN 'answercomment' WHEN 'answercomment' THEN 'answercomment' WHEN 'wishcomment' THEN 'wishcomment' WHEN 'wish' THEN 'wishcomment' END AS parent_category";
-		$query .= " FROM #__comments AS rc";
-		$query .= " WHERE rc.id=" . $refid;
+		switch ($category)
+		{
+			case 'itemcomment':
+				$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, rc.`item_type` AS `parent_category` " 
+						. "FROM #__item_comments AS rc "
+						. "WHERE rc.id=" . $refid;
+			break;
+
+			default:
+				$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, rc.added AS created, NULL as subject, rc.anonymous as anon";
+				$query .= ", CASE rc.category WHEN 'reviewcomment' THEN 'reviewcomment' WHEN 'review' THEN 'reviewcomment' WHEN 'answer' THEN 'answercomment' WHEN 'answercomment' THEN 'answercomment' WHEN 'wishcomment' THEN 'wishcomment' WHEN 'wish' THEN 'wishcomment' END AS parent_category";
+				$query .= " FROM #__comments AS rc";
+				$query .= " WHERE rc.id=" . $refid;
+			break;
+		}
 
 		$database =& JFactory::getDBO();
 		$database->setQuery($query);
-		$rows = $database->loadObjectList();
-		if ($rows) 
+
+		if ($rows = $database->loadObjectList())
 		{
-			foreach ($rows as $key => $row)
+			if ($parent)
 			{
-				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_resources&id=' . $parent . '&active=reviews') : '';
-				if ($rows[$key]->parent_category == 'answercomment') 
+				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $parent);
-				}
-				if ($rows[$key]->parent_category == 'wishcomment') 
-				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
+					switch ($row->parent_category)
+					{
+						case 'collection':
+							$rows[$key]->href = JRoute::_('index.php?option=com_collections&controller=posts&post=' . $parent);
+						break;
+
+						case 'citations':
+							$rows[$key]->href = JRoute::_('index.php?option=com_citations&id=' . $parent . '&active=reviews');
+						break;
+
+						case 'reviewcomment':
+							$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $parent . '&active=reviews');
+						break;
+
+						case 'answercomment':
+							$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $parent);
+						break;
+
+						case 'wishcomment':
+							$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
+						break;
+					}
 				}
 			}
 		}
 		return $rows;
+	}
+
+	/**
+	 * Retrieves a row from the database
+	 * 
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @param      string $message  If the element has a parent element
+	 * @return     array
+	 */
+	public function deleteReportedItem($refid, $parent, $category, $message)
+	{
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'collection', 'itemcomment'))) 
+		{
+			return null;
+		}
+
+		$database =& JFactory::getDBO();
+
+		switch ($category)
+		{
+			case 'collection':
+			case 'citations':
+				$comment = new Hubzero_Item_Comment($database);
+				$comment->load($refid);
+				$comment->anonymous = 1;
+				$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+			break;
+
+			case 'reviewcomment':
+			case 'answercomment':
+			case 'wishcomment':
+			default:
+				$comment = new Hubzero_Comment($database);
+				$comment->load($refid);
+				$comment->anonymous = 1;
+				$comment->comment = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+			break;
+		}
+
+		$comment->store();
+
+		return '';
 	}
 }
