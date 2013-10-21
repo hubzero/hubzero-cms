@@ -439,7 +439,7 @@ defined('_JEXEC') or die('Restricted access');
 			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 			$html .= "\t\t\t" . '<label' . $fieldclass . '>' . "\n";
-			$html .= "\t\t\t\t" . JText::_('Employment Status') . ': ' . $required . "\n";
+			$html .= "\t\t\t\t" . JText::_('Employment Type') . ': ' . $required . "\n";
 			$html .= "\t\t\t\t" . '<select name="orgtype" id="orgtype">' . "\n";
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
