@@ -365,7 +365,7 @@ class CitationFormat
 							: '<span class="citation-title">' . $t . '</span>';
 					
 					//do we want to display single citation
-					$singleCitationView = $config->get('citation_single_view', 1);
+					$singleCitationView = $config->get('citation_single_view', 0);
 					if ($singleCitationView && isset($citation->id))
 					{
 						$title = '<a href="'.JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id).'">' . $t . '</a>';

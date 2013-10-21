@@ -366,7 +366,7 @@ if ($label == "none") {
 								<tr>
 									<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
 										<?php
-											$singleCitationView = $this->config->get('citation_single_view', 1);
+											$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView)
 											{
 												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); 
