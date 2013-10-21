@@ -349,6 +349,27 @@ class Hubzero_User_Helper
 
 		return $result;
 	}
+	
+	/**
+	 * Remove User From Groups
+	 * 
+	 * @param      string $uid 
+	 * @return     boolean
+	 */
+	public static function removeUserFromGroups( $uid )
+	{
+		$db = JFactory::getDBO();
+		$tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
+		
+		foreach ($tables as $table)
+		{
+			$sql = "DELETE FROM `".$table."` WHERE uidNumber=" . $db->quote( $uid );
+			$db->setQuery( $sql );
+			$db->query();
+		}
+		
+		return true;
+	}
 
 	/**
 	 * Short description for 'getCourses'

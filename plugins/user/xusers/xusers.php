@@ -435,6 +435,9 @@ class plgUserXusers extends JPlugin
 		ximport('Hubzero_Auth_Link');
 
 		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
+		
+		// remove user from groups
+		Hubzero_User_Helper::removeUserFromGroups($user['id']);
 
 		if (is_object($xprofile)) {
 			$xprofile->delete();
