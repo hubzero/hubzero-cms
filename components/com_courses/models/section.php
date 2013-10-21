@@ -236,7 +236,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	public function canEnroll()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->isAvailable()) 
+		if (!$this->exists() || !$this->isPublished()) 
 		{
 			return false;
 		}
