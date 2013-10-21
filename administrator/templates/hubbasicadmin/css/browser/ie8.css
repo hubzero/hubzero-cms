@@ -9,6 +9,7 @@
 	.toolbar-box {
 		border-bottom: 1px solid #ccc;
 	}
+	.toolbar-box li a span:before,
 	.toolbar-box table a span:before {
 		top: -8px;
 	}
