@@ -446,7 +446,14 @@ class MembersControllerPlugins extends Hubzero_Controller
 		$client = JRequest::getWord('filter_client', 'site');
 
 		// Bind data
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		if (!$row->bind(JRequest::get('post'))) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -549,9 +556,18 @@ class MembersControllerPlugins extends Hubzero_Controller
 			return;
 		}
 
-		$query = 'UPDATE #__plugins SET published = '.(int) $state
-			. ' WHERE id IN (' . implode(',', $id) . ')'
-			. ' AND (checked_out = 0 OR (checked_out = '.(int) $this->juser->get('id').'))';
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$query = 'UPDATE #__plugins SET published = '.(int) $state
+				. ' WHERE id IN (' . implode(',', $id) . ')'
+				. ' AND (checked_out = 0 OR (checked_out = '.(int) $this->juser->get('id').'))';
+		}
+		else 
+		{
+			$query = "UPDATE #__extensions SET enabled = ".(int) $state
+				. " WHERE extension_id IN (" . implode(',', $id) . ")"
+				. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
+		}
 
 		$this->database->setQuery($query);
 		if (!$this->database->query()) 
@@ -566,7 +582,14 @@ class MembersControllerPlugins extends Hubzero_Controller
 
 		if (count($id) == 1) 
 		{
-			$row =& JTable::getInstance('plugin');
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$row =& JTable::getInstance('plugin');
+			}
+			else
+			{
+				$row =& JTable::getInstance('extension');
+			}
 			$row->checkin($id[0]);
 		}
 
@@ -603,7 +626,14 @@ class MembersControllerPlugins extends Hubzero_Controller
 			$where = "client_id = 0";
 		}
 		
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		$row->load($uid);
 		$row->move($inc, 'folder='.$this->database->Quote($row->folder).' AND ordering > -10000 AND ordering < 10000 AND ('.$where.')');
 
@@ -658,7 +688,14 @@ class MembersControllerPlugins extends Hubzero_Controller
 		JArrayHelper::toInteger($cid, array(0));
 
 		// Load the object
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		$row->load($cid[0]);
 
 		// Set the access
@@ -709,7 +746,14 @@ class MembersControllerPlugins extends Hubzero_Controller
 		$order = JRequest::getVar('order', array(0), 'post', 'array');
 		JArrayHelper::toInteger($order, array(0));
 
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		$conditions = array();
 
 		// update ordering values

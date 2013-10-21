@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = MembersHelper::getActions('component');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Members') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('Members') . ': ' . JText::_('Plugins'), 'user.png');
 if ($canDo->get('core.edit.state')) 
 {
 	JToolBarHelper::publishList();
