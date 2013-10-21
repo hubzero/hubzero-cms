@@ -103,8 +103,8 @@ class plgHubzeroWikiparser extends JPlugin
 	public function onWikiParseText($text, $config, $fullparse=true, $getnew=false)
 	{
 		$parser = $this->onGetWikiParser($config, $getnew);
-
+		$config['camelcase'] = (isset($config['camelcase']) ? $config['camelcase'] : 1);
 		//return is_object($parser) ? $parser->parse("\n".stripslashes($text), $fullparse) : $text;
-		return is_object($parser) ? $parser->parse("\n" . $text, $fullparse) : $text;
+		return is_object($parser) ? $parser->parse("\n" . $text, $fullparse, 0, $config['camelcase']) : $text;
 	}
 }
