@@ -85,11 +85,11 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 			<p><?php echo JText::_('Please enter the information for the work that references content on this site. <strong>Not all fields may apply to the citation</strong> - fill in only those that do.'); ?></p>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('DETAILS'); ?></legend>
+			<legend><?php echo JText::_('Details'); ?></legend>
 
 			<div class="group twoup">
 				<label for="type">
-					<?php echo JText::_('TYPE'); ?>: <span class="required">Required</span>
+					<?php echo JText::_('Type'); ?>: <span class="required">Required</span>
 					<select name="type" id="type">
 						<option value=""> - Select a Citation Type &mdash;</option>
 						<?php

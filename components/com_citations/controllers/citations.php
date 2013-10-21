@@ -731,7 +731,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->editTask();
 			return;
 		}
-
+		
 		// New entry so set the created date
 		if (!$row->id) 
 		{
@@ -748,9 +748,26 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->editTask();
 			return;
 		}
+		
+		// set volume as null if empty
+		if ($row->volume == '')
+		{
+			$row->volume = NULL;
+		}
+		
+		// set year as null if empty
+		if ($row->year == '')
+		{
+			$row->year = NULL;
+		}
+		
+		// remove tags and abdges since were updating nulls
+		unset($row->tags);
+		unset($row->badges);
 
 		// Store new content
-		if (!$row->store()) 
+		// update nulls
+		if (!$row->store(true)) 
 		{
 			$this->setError($row->getError());
 			$this->editTask();

@@ -441,13 +441,13 @@ class CitationsCitation extends JTable
 	{
 		if (trim($this->title) == '') 
 		{
-			$this->setError(JText::_('CITATION_MUST_HAVE_TITLE'));
+			$this->setError(JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TITLE'));
 			return false;
 		}
 
 		if ($this->type == '' || !is_numeric($this->type))
 		{
-			$this->setError(JText::_('CITATION_MUST_HAVE_TYPE'));
+			$this->setError(JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TYPE'));
 			return false; 
 		}
 		return true;
