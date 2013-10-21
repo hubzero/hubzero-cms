@@ -49,6 +49,37 @@
 	ol.comments dl.comment-details {
 		display: none;
 	}
+	ol.comments .comment-options,
+	ol.comments .comment-options:hover a,
+	ol.comments .comment-options a.reply {
+		visibility: visible;
+	}
+	ol.comments .comment-options a {
+		color: #ccc;
+		border: none;
+	}
+	ol.comments .comment-options:hover a {
+		color: #999;
+	}
+	ol.comments .comment-options a.active,
+	ol.comments .comment-options a:hover {
+		color: #333;
+	}
+	ol.comments .comment-options a.delete,
+	ol.comments .comment-options a.edit {
+		float: right;
+		display: block;
+	}
+	ol.comments .comment-options a.abuse:hover,
+	ol.comments .comment-options a.delete:hover {
+		color: #c00;
+	}
+	ol.comments .comment-options a:before {
+		margin-right: 0.4em;
+	}
+	ol.comments .comment-options a.active:before {
+		content: "\2716";
+	}
 	/* Member photo */
 	ol.comments p.comment-member-photo {
 		float: left;

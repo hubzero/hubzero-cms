@@ -1,78 +1,63 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/hubzero/wikieditortoolbar/wikieditortoolbar.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/hubzero/comments.comments.jquery.js
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
-}
-
-//----------------------------------------------------------
-// Comments
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Plugins.HubzeroComments = {
-	jQuery: jq,
-	
-	initialize: function() {
-		var $ = this.jQuery;
-		
-		$('.reply').each(function(i, item) {
-			$(item).click(function (e) {
-				e.preventDefault();
-				var frm = '#' + $(this).attr('rel');
-				if ($(frm).hasClass('hide')) {
-					$(frm).removeClass('hide');
-				} else {
-					$(frm).addClass('hide');
-				}
-			});
-		});
-		
-		$('.cancelreply').each(function(i, item) {
-			$(item).click(function (e) {
-				e.preventDefault();
-				$(this).closest('.addcomment').addClass('hide');
-			});
-		});
-		
-		$('span.vote-button').click(function(event){
-			event.preventDefault();
-			alert('You cannot vote on this comment.');
-		});
-		
-		$('a.vote-button').each(function(i, el) {
-			if ($(el).attr('href')) {
-				href = $(el).attr('href');
-				if (href.indexOf('?') == -1) {
-					href += '?no_html=1';
-				} else {
-					href += '&no_html=1';
-				}
-				$(el).attr('href', href);
-			}
-			$(el).click(function (e) {
-				e.preventDefault();
-
-				$.get($(this).attr('href'), {}, function(data) {
-	            	$($(el).parent().parent()).html(data);
-				});
-			});
-		});
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
 	}
-}
+};
 
-jQuery(document).ready(function($){
-	HUB.Plugins.HubzeroComments.initialize();
+jQuery(document).ready(function(jq){
+	var $ = jq,
+		thread = $('div.thread');
+		
+	if (!thread.length) {
+		return;
+	}
+
+	thread
+		.on('click', 'a.reply', function (e) {
+			e.preventDefault();
+
+			var frm = $('#' + $(this).attr('rel'));
+
+			if (frm.hasClass('hide')) {
+				frm.removeClass('hide');
+
+				$(this)
+					.addClass('active')
+					.text($(this).attr('data-txt-active'));
+			} else {
+				frm.addClass('hide');
+				$(this)
+					.removeClass('active')
+					.text($(this).attr('data-txt-inactive'));
+			}
+		})// Add confirm dialog to delete links
+		.on('click', 'a.delete', function (e) {
+			var res = confirm('Are you sure you wish to delete this item?');
+			if (!res) {
+				e.preventDefault();
+			}
+			return res;
+		})
+		.on('click', 'a.vote-button', function(e) {
+			e.preventDefault();
+
+			var el = $(this);
+
+			$.get(el.attr('href').nohtml(), {}, function(data) {
+				$(el.parent().parent()).html(data);
+			});
+		});
 });

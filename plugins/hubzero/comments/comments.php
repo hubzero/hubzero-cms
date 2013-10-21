@@ -38,7 +38,18 @@ jimport('joomla.plugin.plugin');
  */
 class plgHubzeroComments extends JPlugin
 {
+	/**
+	 * Push scripts to the document?
+	 * 
+	 * @var boolean
+	 */
 	private $_pushscripts = true;
+
+	/**
+	 * List of allowed extensions
+	 * 
+	 * @var array
+	 */
 	private $_allowedExtensions = null;
 
 	/**
@@ -70,7 +81,7 @@ class plgHubzeroComments extends JPlugin
 		{
 			return '';
 		}
-		
+
 		ximport('Hubzero_Item_Comment');
 		ximport('Hubzero_Item_Vote');
 		ximport('Hubzero_Plugin_View');
@@ -94,14 +105,14 @@ class plgHubzeroComments extends JPlugin
 		$this->_authorize();
 
 		$this->view->params   = $this->params;
-		
+
 		// set allowed Extensions
 		// defaults to set of image extensions defined in Hubzero_Comment
 		$this->comment = new Hubzero_Item_Comment($this->database);
 		$this->comment->setAllowedExtensions( $allowedExtensions );
 		
 		$this->view->task     = $this->task    = JRequest::getVar('action', '');
-		
+
 		switch ($this->task) 
 		{
 			// Feeds
@@ -432,13 +443,16 @@ class plgHubzeroComments extends JPlugin
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$comment = JRequest::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object
 		//$row = new Hubzero_Item_Comment($this->database);
 		$row = $this->comment;
-		
+
 		// pass data to comment object
 		if (!$row->bind($comment)) 
 		{
