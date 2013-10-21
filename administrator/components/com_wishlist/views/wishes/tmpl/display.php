@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WishlistHelper::getActions('component');
 
-JToolBarHelper::title('<a href="index.php?option=com_wishlist">' . JText::_('Wishlist Manager') . '</a>', 'wishlist.png');
+JToolBarHelper::title(JText::_('Wishlist Manager') . ': ' . JText::_('Wishes'), 'wishlist.png');
 if ($canDo->get('core.edit.state')) 
 {
 	JToolBarHelper::publishList();
@@ -68,7 +68,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		
 		<label for="filter-by"><?php echo JText::_('COM_WISHLIST_FILTERBY'); ?>:</label> 
 		<select name="filterby" id="filter-by">

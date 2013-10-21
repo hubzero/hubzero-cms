@@ -34,7 +34,7 @@ $canDo = WishlistHelper::getActions('list');
 
 $text = ($this->task == 'edit' ? JText::_('COM_WISHLIST_EDIT') : JText::_('COM_WISHLIST_NEW'));
 
-JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_LIST') . ': <small><small>[ ' . $text . ' ]</small></small>', 'wishlist.png');
+JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_LIST') . ': ' . $text, 'wishlist.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
