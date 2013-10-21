@@ -136,8 +136,13 @@ class FormAssetHandler extends ContentAssetHandler
 					type: 'iframe',
 					href: '/courses/".$gid."/".$oid."/form.layout?formId=".$id."&tmpl=component',
 					afterShow: function() {
+						var frameContents = $('.fancybox-iframe').contents();
+
+						var navHeight = frameContents.find('.navbar').height();
+						frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
+
 						// Highjack the 'done' button to close the iframe
-						$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
+						frameContents.find('#done').bind('click', function(e) {
 							e.preventDefault();
 
 							$.fancybox.close();
@@ -213,11 +218,15 @@ class FormAssetHandler extends ContentAssetHandler
 				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&tmpl=component',
 				afterShow: function() {
 					// Highjack the 'done' button to close the iframe
-					$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
+					var frameContents = $('.fancybox-iframe').contents();
+					frameContents.find('#done').bind('click', function(e) {
 						e.preventDefault();
 
 						$.fancybox.close();
 					});
+
+					var navHeight = frameContents.find('.navbar').height();
+					frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
 
 					// Listen for savesuccessful call from iframe
 					$('body').on('savesuccessful', function() {
@@ -263,8 +272,13 @@ class FormAssetHandler extends ContentAssetHandler
 				type: 'iframe',
 				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&readonly=1&tmpl=component',
 				afterShow: function() {
+					var frameContents = $('.fancybox-iframe').contents();
+
+					var navHeight = frameContents.find('.navbar').height();
+					frameContents.find('.main.section.courses-form').css('margin-bottom', navHeight);
+
 					// Highjack the 'done' button to close the iframe
-					$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
+					frameContents.find('#done').bind('click', function(e) {
 						e.preventDefault();
 
 						$.fancybox.close();

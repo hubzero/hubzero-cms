@@ -122,6 +122,7 @@ label {
 }
 .navbar {
 	margin-top: 20px;
+	overflow: hidden;
 }
 .navbar button,
 .navbar a {
