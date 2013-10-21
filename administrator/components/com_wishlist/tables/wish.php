@@ -310,6 +310,8 @@ class Wish extends JTable
 		}
 		if (isset($filters['search']) && $filters['search']) 
 		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'tags.php');
+
 			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
@@ -447,8 +449,8 @@ class Wish extends JTable
 			}
 		}
 
-		$sql .= "\n WHERE ws.wishlist='" . $listid . "'";
-		$sql .= "\n AND 1=1 ";
+		$sql .= " WHERE 1=1 ";
+		$sql .= ($listid > 0) ? " AND ws.wishlist='" . $listid . "'" : '';
 
 		if (!$fullinfo && isset($filters['timelimit'])) 
 		{
