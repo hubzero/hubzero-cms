@@ -32,40 +32,41 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'SpanMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class that will wrap some content in a <span> tag
  */
 class SpanMacro extends WikiMacro
 {
+	/**
+	 * Allow macro in partial parsing?
+	 * 
+	 * @var string
+	 */
+	public $allowPartial = true;
 
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Wraps text or other elements inside a `<span>` tag.";
-		$txt['html'] = "<p>Wraps text or other elements inside a <code>&lt;span&gt;</code> tag.</p>";
+		$txt['wiki'] = 'Wraps text or other elements inside a `<span>` tag.';
+		$txt['html'] = '<p>Wraps text or other elements inside a <code>&lt;span&gt;</code> tag.</p>';
 		return $txt['html'];
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) {
+		if (!$et) 
+		{
 			return '';
 		}
 
@@ -73,20 +74,21 @@ class SpanMacro extends WikiMacro
 		$text = array_shift($attribs);
 
 		$atts = array();
-		if (!empty($attribs) && count($attribs) > 0) {
+		if (!empty($attribs) && count($attribs) > 0) 
+		{
 			foreach ($attribs as $a)
 			{
-				$a = preg_split('#=#',$a);
+				$a = preg_split('/=/', $a);
 				$key = $a[0];
 				$val = end($a);
 
-				$atts[] = $key.'="'.$val.'"';
+				$atts[] = $key . '="' . trim($val, "'\"") . '"';
 			}
 		}
 
 		$span  = '<span';
-		$span .= (!empty($atts)) ? ' '.implode(' ',$atts).'>' : '>';
-		$span .= trim($text).'</span>';
+		$span .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
+		$span .= trim($text) . '</span>';
 
 		return $span;
 	}
