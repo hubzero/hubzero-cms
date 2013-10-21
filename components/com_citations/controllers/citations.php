@@ -748,26 +748,9 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->editTask();
 			return;
 		}
-		
-		// set volume as null if empty
-		if ($row->volume == '')
-		{
-			$row->volume = NULL;
-		}
-		
-		// set year as null if empty
-		if ($row->year == '')
-		{
-			$row->year = NULL;
-		}
-		
-		// remove tags and abdges since were updating nulls
-		unset($row->tags);
-		unset($row->badges);
 
 		// Store new content
-		// update nulls
-		if (!$row->store(true)) 
+		if (!$row->store()) 
 		{
 			$this->setError($row->getError());
 			$this->editTask();

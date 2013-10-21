@@ -591,12 +591,14 @@
 		margin-top:0;
 	}
 	table.citation .badges a,
-	.citation-details .badges a {
+	.citation-details .badges a,
+	.citation-details .badges a:hover {
 		background-color:#8e6e59 !important;
 		color:#FFF !important;
 	}
 	table.citation .badges a:before,
-	.citation-details .badges a:before {
+	.citation-details .badges a:before,
+	.citation-details .badges a:hover:before {
 		border-color: transparent #8e6e59 transparent transparent !important;
 	}
 	table.citation ul {

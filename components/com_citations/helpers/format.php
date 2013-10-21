@@ -732,7 +732,7 @@ class CitationFormat
 				$html = '<ul class="tags badges">';
 				foreach ($badges as $badge) 
 				{
-					$html .= '<li><a href="javscript:void(0);">' . stripslashes($badge['raw_tag']) . '</a></li>';
+					$html .= '<li><a>' . stripslashes($badge['raw_tag']) . '</a></li>';
 				}
 				$html .= "</ul>";
 				return $html;
