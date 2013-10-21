@@ -93,6 +93,7 @@ class MembersControllerPlugins extends Hubzero_Controller
 			'filter_order_Dir',
 			'ASC'
 		));
+		
 		$this->view->filters['state']    = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.state',
 			'state',
