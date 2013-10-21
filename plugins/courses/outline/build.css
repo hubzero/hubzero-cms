@@ -762,6 +762,7 @@ ul {
 }
 .asset-group .unpublished {
 	opacity: 0.8;
+	z-index: 5;
 
 	background-image: url("/media/system/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
