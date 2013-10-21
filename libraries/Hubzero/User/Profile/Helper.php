@@ -144,13 +144,11 @@ class Hubzero_User_Profile_Helper
 			}
 		}
 
-		if (!isset($dfthumb))
+		// always reset and then thumb if need be
+		$dfthumb = DS . ltrim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
+		if ($thumbit)
 		{
-			$dfthumb = DS . ltrim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
-			if ($thumbit)
-			{
-				$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
-			}
+			$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
 		}
 
 		if ($thumbAlt && file_exists(JPATH_ROOT . $thumbAlt)) 
