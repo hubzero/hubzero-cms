@@ -197,7 +197,7 @@ class ResourcesUsage
 	{
 		$html  = '<table class="usagestats" summary="Review and Citation statistics for this resource">' . "\n";
 		$html .= ' <caption>Reviews &amp; Citations</caption>' . "\n";
-		$html .= ' <tfoot>' . "\n";
+		/*$html .= ' <tfoot>' . "\n";
 		$html .= '  <tr>' . "\n";
 		$html .= '   <td colspan="2">Google/IEEE';
 		if ($this->lastcite) 
@@ -206,7 +206,7 @@ class ResourcesUsage
 		}
 		$html .= '</td>' . "\n";
 		$html .= '  </tr>' . "\n";
-		$html .= ' </tfoot>' . "\n";
+		$html .= ' </tfoot>' . "\n";*/
 		$html .= ' <tbody>' . "\n";
 		$html .= '  <tr>' . "\n";
 		$html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> Review:</th>' . "\n";
