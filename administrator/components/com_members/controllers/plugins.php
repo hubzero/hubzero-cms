@@ -537,7 +537,7 @@ class MembersControllerPlugins extends Hubzero_Controller
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
 		$id = JRequest::getVar('id', array(0), '', 'array');
@@ -607,7 +607,7 @@ class MembersControllerPlugins extends Hubzero_Controller
 	public function orderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
 		$cid 	= JRequest::getVar('cid', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
@@ -681,7 +681,7 @@ class MembersControllerPlugins extends Hubzero_Controller
 	public function accessTask($access=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
 		$cid = JRequest::getVar('id', array(0), 'post', 'array');
@@ -737,7 +737,7 @@ class MembersControllerPlugins extends Hubzero_Controller
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
 		$cid = JRequest::getVar('cid', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
