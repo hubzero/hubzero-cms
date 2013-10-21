@@ -62,7 +62,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$pth = true;
-			$paramsClass = 'JRegistry';
+			//$paramsClass = 'JRegistry';
 		}
 
 		$data = $ag->get('params');

@@ -306,13 +306,15 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		if ($params = JRequest::getVar('params', false, 'post'))
 		{
 			$paramsClass = 'JParameter';
+			$mthd        = 'bind';
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
 				$paramsClass = 'JRegistry';
+				$mthd        = 'loadArray';
 			}
 
 			$p = new $paramsClass('');
-			$p->bind($params);
+			$p->$mthd($params);
 
 			$assetGroup->set('params', $p->toString());
 		}
