@@ -316,9 +316,9 @@ Class GroupPages extends JTable
 		{
 			$public_desc = $this->group->get('description');
 		}
-
+		
 		//parse the content with the wiki parser
-		$public_desc = $this->parser->parse(stripslashes($public_desc), $this->config);
+		$public_desc = $this->parser->parse(stripslashes($public_desc), $this->config, false);
 
 		//if there is no private desc use the public desc
 		if ($private_desc == '') 
@@ -327,7 +327,7 @@ Class GroupPages extends JTable
 		} 
 		else 
 		{
-			$private_desc = $this->parser->parse(stripslashes($private_desc), $this->config);
+			$private_desc = $this->parser->parse(stripslashes($private_desc), $this->config, false);
 		}
 
 		//load the member profile lib
