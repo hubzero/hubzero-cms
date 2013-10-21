@@ -69,9 +69,6 @@ foreach ($this->rows as $row)
 					<strong><?php echo JText::_( 'User' ); ?></strong>
 				</td>
 				<td class="title">
-					<strong><?php echo JText::_( 'User Type' ); ?></strong>
-				</td>
-				<td class="title">
 					<strong><?php echo JText::_( 'Location' ); ?></strong>
 				</td>
 				<td class="title">
@@ -104,7 +101,6 @@ foreach ($this->rows as $row)
 									}
 								?>
 							</td>
-							<td><?php echo $row->usertype;?></td>
 							<td>
 								<?php
 									$clientInfo =& JApplicationHelper::getClientInfo( $row->client_id );
