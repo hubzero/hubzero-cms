@@ -141,13 +141,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->private) 
 	{
 		$color_access = 'style="color: red;"';
-		$task_access = 'accessregistered';
+		$task_access = 'accesspublic';
 		$groupname = 'Private';
 	} 
 	else 
 	{
 		$color_access = 'style="color: black;"';
-		$task_access = 'accesspublic';
+		$task_access = 'accessregistered';
 		$groupname = 'Public';
 	}
 ?>
@@ -177,7 +177,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK',$task);?>">
+					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 <?php } else { ?>
@@ -188,7 +188,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>" <?php echo $color_access; ?> title="<?php echo JText::_('COM_WISHLIST_CHANGE_ACCESS'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="<?php echo JText::_('COM_WISHLIST_CHANGE_ACCESS'); ?>">
 						<?php echo $groupname; ?>
 					</a>
 <?php } else { ?>

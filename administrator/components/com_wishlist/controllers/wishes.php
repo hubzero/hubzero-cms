@@ -427,6 +427,173 @@ class WishlistControllerWishes extends Hubzero_Controller
 	}
 
 	/**
+	 * Set the access level of an article to 'public'
+	 * 
+	 * @return     void
+	 */
+	public function accesspublicTask()
+	{
+		return $this->accessTask(0);
+	}
+	
+	/**
+	 * Set the access level of an article to 'registered'
+	 * 
+	 * @return     void
+	 */
+	public function accessregisteredTask()
+	{
+		return $this->accessTask(1);
+	}
+	
+	/**
+	 * Set the access level of an article to 'special'
+	 * 
+	 * @return     void
+	 */
+	public function accessspecialTask()
+	{
+		return $this->accessTask(2);
+	}
+
+	/**
+	 * Set the access level of an article
+	 * 
+	 * @param      integer $access Access level to set
+	 * @return     void
+	 */
+	public function accessTask($access=0)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$id = JRequest::getInt('id', 0);
+
+		// Make sure we have an ID to work with
+		if (!$id) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_WISHLIST_NO_ID'),
+				'error'
+			);
+			return;
+		}
+
+		// Load the article
+		$row = new Wish($this->database);
+		$row->load($id);
+		$row->private = $access;
+
+		// Check and store the changes
+		if (!$row->check()) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				$row->getError(),
+				'error'
+			);
+			return;
+		}
+		if (!$row->store()) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				$row->getError(),
+				'error'
+			);
+			return;
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
+	}
+	
+	/**
+	 * Calls stateTask to publish entries
+	 * 
+	 * @return     void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+	
+	/**
+	 * Calls stateTask to unpublish entries
+	 * 
+	 * @return     void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Set the state of an entry
+	 * 
+	 * @param      integer $state State to set
+	 * @return     void
+	 */
+	public function stateTask($state=0)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$cid = JRequest::getInt('cid', 0);
+		$ids = JRequest::getVar('id', array(0));
+		if (!is_array($ids)) 
+		{
+			$ids = array(0);
+		}
+
+		// Check for an ID
+		if (count($ids) < 1) 
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				($state == 1 ? JText::_('COM_WISHLIST_SELECT_PUBLISH') : JText::_('COM_WISHLIST_SELECT_UNPUBLISH')),
+				'error'
+			);
+			return;
+		}
+
+		// Update record(s)
+		foreach ($ids as $id)
+		{
+			// Updating a category
+			$row = new Wish($this->database);
+			$row->load($id);
+			$row->status = $state;
+			$row->store();
+		}
+
+		// Set message
+		switch ($state)
+		{
+			case '-1': 
+				$message = JText::sprintf('COM_WISHLIST_ARCHIVED', count($ids));
+			break;
+			case '1':
+				$message = JText::sprintf('COM_WISHLIST_PUBLISHED', count($ids));
+			break;
+			case '0':
+				$message = JText::sprintf('COM_WISHLIST_UNPUBLISHED', count($ids));
+			break;
+		}
+
+		// Set the redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''),
+			$message
+		);
+	}
+
+	/**
 	 * Cancel a task (redirects to default task)
 	 *
 	 * @return     void
