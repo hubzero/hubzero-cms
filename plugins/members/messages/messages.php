@@ -206,7 +206,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		//if we have unread messages show alert
 		if (count($umessages) > 0) 
 		{
-			$title = 'I have ' . count($umessages) . ' unread message(s).';
+			$title = count($umessages) . ' unread message(s).';
 			$link = JRoute::_('index.php?option=com_members&id='.$member->get("uidNumber").'&active=messages');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Messages Alert</h5>{$title}</span></a>";
 		}
