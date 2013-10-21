@@ -239,7 +239,7 @@ class plgResourcesCollect extends JPlugin
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
-		if (!$collection_id)
+		if ($collection_title)
 		{
 			$collection = new CollectionsModelCollection();
 			$collection->set('title', $collection_title);
