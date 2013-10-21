@@ -29,10 +29,41 @@
 		<filename plugin="comments">comments.php</filename>
 	</files>
 	<languages folder="lang">
-        	<language tag="en-GB">en-GB.plg_hubzero_comments.ini</language>
+		<language tag="en-GB">en-GB.plg_hubzero_comments.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
+			<field name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
+			<field name="comments_limit" type="text" size="5" default="25" label="Limit" description="The number of records to display at a time."/>
+			<field name="comments_viewable" type="list" default="0" label="Viewable by" description="Set the view access type.">
+				<option value="0">Anyone</option>
+				<option value="1">Logged-in users</option>
+			</field>
+			<field name="comments_editable" type="list" default="1" label="Can edit" description="Users can edit their comments.">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="comments_deletable" type="list" default="0" label="Can delete" description="Users can delete their comments.">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="comments_votable" type="list" default="1" label="Can vote" description="Users can cote comments up or down.">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="comments_close" type="list" default="year" label="Close Comments" description="Auto-close comments on entries from the date">
+				<option value="never">Never</option>
+				<option value="now">Immediately</option>
+				<option value="day">After 1 day</option>
+				<option value="week">After 1 week</option>
+				<option value="month">After 1 month</option>
+				<option value="6months">After 6 months</option>
+				<option value="year">After 1 year</option>
+			</field>
+			<field name="comments_feed" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
+				<option value="0">Disabled</option>
+				<option value="1">Enabled</option>
+			</field>
 		</fields>
 	</config>
 </extension>
