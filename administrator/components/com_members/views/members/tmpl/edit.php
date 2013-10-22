@@ -91,7 +91,6 @@ function submitbutton(pressbutton)
 						<li><a href="#" onclick="return false;" id="password">Password</a></li>
 						<li><a href="#" onclick="return false;" id="groups">Groups</a></li>
 						<li><a href="#" onclick="return false;" id="hosts">Hosts</a></li>
-						<li><a href="#" onclick="return false;" id="managers">Managers</a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -396,13 +395,6 @@ function submitbutton(pressbutton)
 					<legend><span><?php echo JText::_('HOSTS'); ?></span></legend>
 
 					<iframe width="100%" height="500" name="hosts" id="hosts" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
-				</fieldset>
-			</div>
-			<div id="page-managers" class="tab">
-				<fieldset class="adminform">
-					<legend><span><?php echo JText::_('Managers'); ?></span></legend>
-
-					<iframe width="100%" height="500" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=managers&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 				</fieldset>
 			</div>
 		</div>

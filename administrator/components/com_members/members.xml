@@ -333,8 +333,6 @@ HUBzero is a registered trademark of Purdue University.
 			<filename>views/member/tmpl/groups.xml</filename>
 			<filename>views/member/tmpl/hosts.php</filename>
 			<filename>views/member/tmpl/hosts.xml</filename>
-			<filename>views/member/tmpl/managers.php</filename>
-			<filename>views/member/tmpl/managers.xml</filename>
 			<filename>views/add/tmpl/default.php</filename>
 			<filename>views/add/tmpl/default.xml</filename>
 		</files>
