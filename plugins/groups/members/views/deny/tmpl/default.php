@@ -38,22 +38,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<fieldset>
 		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_MEMBERSHIP'); ?></legend>
 
-		<label>
-			<?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_USERS'); ?><br />
 <?php 
 $names = array();
 foreach ($this->users as $user)
 {
 	$u =& JUser::getInstance($user);
-	$names[] = $u->get('name');
+	$names[] = $this->escape($u->get('name'));
 ?>
-			<input type="hidden" name="users[]" value="<?php echo $user; ?>" />
+			<input type="hidden" name="users[]" value="<?php echo $this->escape($user); ?>" />
 <?php
 }
 ?>
-			<strong><?php echo implode(', ',$names); ?></strong>
-		</label>
 		<label>
+			<?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_USERS'); ?><br />
+			<strong><?php echo implode(', ', $names); ?></strong>
+		</label>
+
+		<label for="reason">
 			<?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_REASON'); ?>
 			<textarea name="reason" id="reason" rows="12" cols="50"></textarea>
 		</label>

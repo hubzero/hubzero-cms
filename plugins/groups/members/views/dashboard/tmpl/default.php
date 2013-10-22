@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<table class="activity" summary="<?php echo JText::_('PLG_GROUPS_MEMBERS_ACTIVITY_TABLE_SUMMARY'); ?>">
+<table class="activity">
 	<tbody>
 <?php 
 if ($this->logs) {
 	foreach ($this->logs as $log)
 	{
-		$name = JText::_('UNKNOWN');
-		//$username = JText::_('UNKNOWN');
+		$name = JText::_('PLG_GROUPS_MEMBERS_UNKNOWN');
+		//$username = JText::_('PLG_GROUPS_MEMBERS_UNKNOWN');
 
 		$juser =& JUser::getInstance( $log->actorid );
 		if (is_object($juser) && $juser->get('name')) {
@@ -49,8 +49,8 @@ if ($this->logs) {
 		$info = '';
 
 		if ($log->uid && $log->uid != $log->actorid) {
-			$target_name = JText::_('UNKNOWN');
-			//$target_username = JText::_('UNKNOWN');
+			$target_name = JText::_('PLG_GROUPS_MEMBERS_UNKNOWN');
+			//$target_username = JText::_('PLG_GROUPS_MEMBERS_UNKNOWN');
 
 			if(is_numeric($log->uid)) {
 				$target_user =& JUser::getInstance( $log->uid );
@@ -58,7 +58,7 @@ if ($this->logs) {
 					$target_name = $target_user->get('name');
 					//$target_username = $target_user->get('username');
 				}
-				$info .= ' <a href="'.JRoute::_('index.php?option=com_members&id='.$log->uid).'">'.$target_name.'</a>';
+				$info .= ' <a href="'.JRoute::_('index.php?option=com_members&id='.$log->uid).'">'.$this->escape($target_name).'</a>';
 			} else {
 				$info .= $log->uid;
 			}
@@ -107,7 +107,7 @@ if ($this->logs) {
 ?>
 		<tr>
 			<th scope="row"><?php echo $area; ?></th>
-			<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$log->actorid); ?>"><?php echo stripslashes($name); ?></a></td>
+			<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$log->actorid); ?>"><?php echo $this->escape(stripslashes($name)); ?></a></td>
 			<td class="action"><?php echo JText::_('PLG_GROUPS_'.strtoupper($log->action)).$info; ?></td>
 			<td class="date"><?php echo JHTML::_('date', $log->timestamp, 'M. d, Y @h:i A'); ?></td>
 		</tr>

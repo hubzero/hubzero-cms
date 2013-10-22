@@ -38,25 +38,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<fieldset>
 		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATION'); ?></legend>
 
-		<label>
-			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATIONS'); ?><br />
 <?php 
 $names = array();
 foreach ($this->users as $user)
 {
-	if(preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $user)) {
+	if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $user)) {
 		$names[] = $user;
 	} else {
 		$u =& JUser::getInstance($user);
-		$names[] = $u->get('name');
+		$names[] = $this->escape($u->get('name'));
 	}
 ?>
-			<input type="hidden" name="users[]" value="<?php echo $user; ?>" />
+			<input type="hidden" name="users[]" value="<?php echo $this->escape($user); ?>" />
 <?php
 }
 ?>
-			<strong><?php echo implode(', ',$names); ?></strong>
+		<label>
+			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATIONS'); ?><br />
+			<strong><?php echo implode(', ', $names); ?></strong>
 		</label>
+
 		<label for="reason">
 			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_REASON'); ?>
 			<textarea name="reason" id="reason" rows="12" cols="50"></textarea>
