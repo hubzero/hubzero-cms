@@ -345,6 +345,7 @@
 		margin: 1em 2.5% 1em 0;
 		padding: 0;
 		background: transparent;
+		border: none;
 	}
 	.group_members .aside #addrole {
 		margin-left: 2.5%;
@@ -358,6 +359,8 @@
 		padding: 0 0 1em 0;
 		border: none;
 	}
+	.group_members .aside .container:before,
+	.group_members .aside .container:after,
 	.group_members .aside:before,
 	.group_members .aside:after,
 	.group_members .subject:after {
