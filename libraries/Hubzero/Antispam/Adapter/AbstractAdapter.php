@@ -30,10 +30,12 @@
 
 namespace Hubzero\Antispam\Adapter;
 
+use Hubzero\Object;
+
 /**
  * Abstract Antispam adapter
  */
-abstract class AbstractAdapter implements AdapterInterface
+abstract class AbstractAdapter extends Object implements AdapterInterface
 {
 	/**
 	 * The value to be validated

@@ -14,7 +14,7 @@ namespace Hubzero\Antispam\Adapter;
  *
  * Each specific antispam implementation should implement this interface
  */
-interface AdapterInterface extends Object
+interface AdapterInterface
 {
 	/**
 	 * Returns true if and only if $value meets the validation requirements

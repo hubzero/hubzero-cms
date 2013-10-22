@@ -67,7 +67,7 @@ class Simple extends AbstractAdapter
 			return false;
 		}
 
-		$config = JComponentHelper::getParams('com_support');
+		$config = \JComponentHelper::getParams('com_support');
 
 		// Spammer IPs (banned)
 		$ips = $config->get('blacklist');
@@ -135,6 +135,7 @@ class Simple extends AbstractAdapter
 		}
 
 		// Check the user's IP against the blacklist
+		$ip = \Hubzero_Environment::ipAddress();
 		if (in_array($ip, $bl)) 
 		{
 			$spam = true;
