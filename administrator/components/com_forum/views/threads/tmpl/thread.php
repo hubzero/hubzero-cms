@@ -28,22 +28,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ForumHelper::getActions('category');
+$canDo = ForumHelper::getActions('thread');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'forum.png');
-if ($canDo->get('core.admin')) {
+JToolBarHelper::title(JText::_('Forums') . ': ' . JText::_('Thread'), 'forum.png');
+if ($canDo->get('core.admin')) 
+{
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) {
+if ($canDo->get('core.edit.state')) 
+{
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) {
+if ($canDo->get('core.create')) 
+{
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) {
+if ($canDo->get('core.delete')) 
+{
 	JToolBarHelper::deleteList();
 }
 ?>

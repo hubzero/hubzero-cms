@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ForumHelper::getActions('section');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Forums') . '</a>', 'forum.png');
+JToolBarHelper::title(JText::_('Forums'), 'forum.png');
 if ($canDo->get('core.admin')) {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();

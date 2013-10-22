@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $canDo = ForumHelper::getActions('section');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Section') : JText::_('New Section'));
-JToolBarHelper::title(JText::_('Forums') . ': <small><small>[ ' . $text . ' ]</small></small>', 'forum.png');
+JToolBarHelper::title(JText::_('Forums') . ': ' . $text, 'forum.png');
 JToolBarHelper::spacer();	
 if ($canDo->get('core.edit')) {
 	JToolBarHelper::save();

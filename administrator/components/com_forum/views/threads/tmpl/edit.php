@@ -28,16 +28,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ForumHelper::getActions('section');
+$canDo = ForumHelper::getActions('thread');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Thread') : JText::_('New Thread'));
-if ($this->row->parent) {
+if ($this->row->parent) 
+{
 	$text = ($this->task == 'edit' ? JText::_('Edit Post') : JText::_('New Post'));
 }
-JToolBarHelper::title(JText::_('Forums') . ': <small><small>[ ' . $text . ' ]</small></small>', 'forum.png');
-JToolBarHelper::spacer();	
-if ($canDo->get('core.edit')) {
+JToolBarHelper::title(JText::_('Forums') . ': ' . $text, 'forum.png');
+if ($canDo->get('core.edit')) 
+{
 	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 
