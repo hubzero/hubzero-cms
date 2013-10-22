@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 				</div><!-- / .comment-body -->
 
-			<?php if ($this->comment->filename) : ?>
+			<?php if ($this->comment->filename && $this->comment->state != 3) : ?>
 				<div class="comment-attachment">
 					<p><?php echo JText::_('PLG_HUBZERO_COMMENTS_ATTACHED_FILE'); ?> <?php echo '<a href="' . rtrim(JURI::getInstance()->base(true), '/') . 'site/comments/' . $this->escape($this->comment->filename) . '" target="_blank">' . $this->escape($this->comment->filename) . '</a>'; ?></p>
 				</div><!-- / .comment-attachment -->
@@ -131,7 +131,7 @@ defined('_JEXEC') or die('Restricted access');
 						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?><!-- 
 					--></a>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>"><!-- 
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=' . $this->comment->item_type . '&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>"><!-- 
 						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?><!-- 
 					--></a>
 				<?php if (($this->params->get('access-edit-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>

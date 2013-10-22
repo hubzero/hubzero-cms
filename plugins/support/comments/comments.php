@@ -48,7 +48,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'comment' && $category != 'itemcomment') 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'collection', 'itemcomment'))) 
 		{
 			return null;
 		}
@@ -56,13 +56,15 @@ class plgSupportComments extends JPlugin
 		switch ($category)
 		{
 			case 'itemcomment':
-				$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, rc.`item_type` AS `parent_category` " 
+			case 'collection':
+			case 'citations':
+				$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, rc.`item_type` AS `parent_category`, NULL AS `href` " 
 						. "FROM #__item_comments AS rc "
 						. "WHERE rc.id=" . $refid;
 			break;
 
 			default:
-				$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, rc.added AS created, NULL as subject, rc.anonymous as anon";
+				$query  = "SELECT rc.id, rc.comment as text, rc.added_by as author, rc.added AS created, NULL as subject, rc.anonymous as anon, NULL AS `href`";
 				$query .= ", CASE rc.category WHEN 'reviewcomment' THEN 'reviewcomment' WHEN 'review' THEN 'reviewcomment' WHEN 'answer' THEN 'answercomment' WHEN 'answercomment' THEN 'answercomment' WHEN 'wishcomment' THEN 'wishcomment' WHEN 'wish' THEN 'wishcomment' END AS parent_category";
 				$query .= " FROM #__comments AS rc";
 				$query .= " WHERE rc.id=" . $refid;
@@ -126,6 +128,7 @@ class plgSupportComments extends JPlugin
 
 		switch ($category)
 		{
+			case 'itemcomment':
 			case 'collection':
 			case 'citations':
 				$comment = new Hubzero_Item_Comment($database);
@@ -138,6 +141,49 @@ class plgSupportComments extends JPlugin
 			case 'wishcomment':
 			default:
 
+			break;
+		}
+
+		$comment->store();
+
+		return '';
+	}
+
+	/**
+	 * Release a reported item
+	 * 
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     array
+	 */
+	public function releaseReportedItem($refid, $parent, $category)
+	{
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'collection', 'itemcomment'))) 
+		{
+			return null;
+		}
+
+		$database =& JFactory::getDBO();
+
+		switch ($category)
+		{
+			case 'itemcomment':
+			case 'collection':
+			case 'citations':
+				$comment = new Hubzero_Item_Comment($database);
+				$comment->load($refid);
+				//$comment->anonymous = 0;
+				$comment->state = 1;
+			break;
+
+			case 'reviewcomment':
+			case 'answercomment':
+			case 'wishcomment':
+			default:
+				$comment = new Hubzero_Comment($database);
+				$comment->load($refid);
+				//$comment->anonymous = 0;
 			break;
 		}
 
@@ -166,13 +212,14 @@ class plgSupportComments extends JPlugin
 
 		switch ($category)
 		{
+			case 'itemcomment':
 			case 'collection':
 			case 'citations':
 				$comment = new Hubzero_Item_Comment($database);
 				$comment->load($refid);
-				$comment->anonymous = 1;
+				//$comment->anonymous = 1;
 				$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
-				//$comment->state = 3;
+				//$comment->state = 2;
 			break;
 
 			case 'reviewcomment':
@@ -181,7 +228,7 @@ class plgSupportComments extends JPlugin
 			default:
 				$comment = new Hubzero_Comment($database);
 				$comment->load($refid);
-				$comment->anonymous = 1;
+				//$comment->anonymous = 1;
 				$comment->comment = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
 			break;
 		}

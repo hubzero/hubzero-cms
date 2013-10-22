@@ -216,6 +216,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);
+		$parentid = JRequest::getInt('parentid', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -237,6 +238,16 @@ class SupportControllerAbusereports extends Hubzero_Controller
 			JError::raiseError(500, $report->getError());
 			return;
 		}
+
+		JPluginHelper::importPlugin('support');
+		$dispatcher =& JDispatcher::getInstance();
+
+		// Remove the reported item and any other related processes that need be performed
+		$results = $dispatcher->trigger('releaseReportedItem', array(
+			$report->referenceid,
+			$parentid,
+			$report->category
+		));
 
 		// Redirect
 		$this->setRedirect(
