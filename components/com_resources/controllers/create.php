@@ -77,12 +77,10 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/create');
 
-		;
-
+		$row = new ResourcesResource($this->database);
 		if ($id = JRequest::getInt('id', 0))
 		{
 			// Instantiate a new resource object
-			$row = new ResourcesResource($this->database);
 			$row->load($id);
 		}
 
