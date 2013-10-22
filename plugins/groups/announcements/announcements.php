@@ -309,7 +309,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		$id = JRequest::getInt('id', 0);
 		
 		//create new announcement Object
-		$view->announcement = new Hubzero_Announcement( $this->database );
+		$view->announcement = new Hubzero_Announcement($this->database);
 		
 		//if we have an id load that announcemnt
 		if (isset($id) && $id != 0)
@@ -320,7 +320,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		//make sure its this groups announcement
 		if (!$view->announcement->belongsToObject('group', $this->group->get('gidNumber')))
 		{
-			$this->setError( JText::_('You do not have permission to edit that group annoucement.') );
+			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
 			return $this->_list();
 		}
 		
@@ -352,7 +352,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		//verify were authorized
 		if ($this->authorized != 'manager')
 		{
-			$this->setError( JText::_('Only Group Managers can create and edit group announcements.') );
+			$this->setError( JText::_('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_CREATE') );
 			return $this->_list();
 		}
 		
@@ -419,7 +419,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		
 		//success!
 		$redirect = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements');
-		$message  = JText::_('You have successfully created/edited a group announcement.');
+		$message  = JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_CREATED');
 		$this->redirect( $redirect, $message, 'success');
 		return;
 	}
@@ -434,7 +434,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		//verify were authorized
 		if ($this->authorized != 'manager')
 		{
-			$this->setError( JText::_('Only Group Managers can delete group announcements.') );
+			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_DELETE'));
 			return $this->_list();
 		}
 		
@@ -452,7 +452,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		//make sure we are the one who created it
 		if ($announcement->created_by != $this->juser->get('id'))
 		{
-			$this->setError("Only the Group Manager '" . $profile->get('name') . "' can delete this announcement.");
+			$this->setError(JText::sprintf('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $profile->get('name')));
 			return $this->_list();
 		}
 		
@@ -462,12 +462,12 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		//attempt to delete announcement
 		if (!$announcement->save( $announcement ))
 		{
-			$this->setError("Unable to make announcement as deleted.");
+			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_UNABLE_TO_DELETE'));
 			return $this->_list();
 		}
 		
 		$redirect = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements');
-		$message  = JText::_('You have successfully deleted the group announcement.');
+		$message  = JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED');
 		$this->redirect( $redirect, $message, 'success');
 		return;
 	}

@@ -74,24 +74,26 @@ if ($closed == 'closed' && $this->showClose == true)
 
 <div class="announcement-container <?php echo $class; ?>">
 	<?php if (strstr($class, 'unpublished')) : ?>
-		<span class="unpublished-message">Not Currently Active</span>
+		<span class="unpublished-message"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_NOT_ACTIVE'); ?></span>
 	<?php endif; ?>
 	<div class="announcement">
 		<?php echo $p->parse(stripslashes($this->announcement->content), $wikiconfig); ?>
 		<dl class="entry-meta">
-			<dt class="entry-id"><?php echo $this->announcement->id; ?></dt> 
-			<?php if ($this->authorized == 'manager') : ?>
-				<dd class="entry-author">
-					<?php
-						ximport('Hubzero_User_Profile');
-						$profile = Hubzero_User_Profile::getInstance( $this->announcement->created_by );
-						if (is_object($profile) && $profile->get('name') != '')
-						{
-							echo $profile->get('name');
-						}
-					?>
-				</dd>
-			<?php endif; ?>
+			<dt class="entry-id">
+				<?php echo $this->announcement->id; ?>
+			</dt> 
+		<?php if ($this->authorized == 'manager') : ?>
+			<dd class="entry-author">
+				<?php
+					ximport('Hubzero_User_Profile');
+					$profile = Hubzero_User_Profile::getInstance($this->announcement->created_by);
+					if (is_object($profile) && $profile->get('name') != '')
+					{
+						echo $this->escape($profile->get('name'));
+					}
+				?>
+			</dd>
+		<?php endif; ?>
 			<dd class="time">
 				<time datetime="<?php echo $this->announcement->created; ?>">
 					<?php echo JHTML::_('date', $this->announcement->created, JText::_('TIME_FORMAT_HZ1')); ?>
@@ -102,24 +104,23 @@ if ($closed == 'closed' && $this->showClose == true)
 					<?php echo JHTML::_('date', $this->announcement->created, JText::_('DATE_FORMAT_HZ1')); ?>
 				</time>
 			</dd>
-		
-			<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
-				<dd class="entry-options">
-					<?php if ($this->juser->get('id') == $this->announcement->created_by) : ?>
-						<a class="icon-edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=edit&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('Edit'); ?>">
-							<?php echo JText::_('Edit'); ?>
-						</a>
-						<a class="icon-delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=delete&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('Delete'); ?>">
-							<?php echo JText::_('Delete'); ?>
-						</a>
-					<?php endif; ?>
-				</dd>
-			<?php endif; ?>
-		</dl>
-		<?php if ($this->showClose) : ?>
-			<a class="close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements'); ?>" data-id="<?php echo $this->announcement->id; ?>" data-duration="30" title="<?php echo JText::_('Close this announcement?'); ?>">
-				<span><?php echo JText::_('Close'); ?></span>
-			</a>
+		<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
+			<dd class="entry-options">
+				<?php if ($this->juser->get('id') == $this->announcement->created_by) : ?>
+					<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=edit&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
+						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
+					</a>
+					<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements&action=delete&id=' . $this->announcement->id); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
+						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>
+					</a>
+				<?php endif; ?>
+			</dd>
 		<?php endif; ?>
+		</dl>
+	<?php if ($this->showClose) : ?>
+		<a class="close" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements'); ?>" data-id="<?php echo $this->announcement->id; ?>" data-duration="30" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
+			<span><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
+		</a>
+	<?php endif; ?>
 	</div>
 </div>

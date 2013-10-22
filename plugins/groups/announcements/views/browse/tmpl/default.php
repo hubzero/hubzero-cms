@@ -40,24 +40,24 @@ Hubzero_Document::addPluginScript('groups', $this->name);
 <?php if ($this->authorized == 'manager') : ?>
 	<ul id="page_options">
 		<li>
-			<a class="btn add" title="<?php echo JText::_('Manage Calendars'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=announcements&action=new'); ?>">
-				<?php echo JText::_('New Announcement'); ?>
+			<a class="icon-add btn add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=announcements&action=new'); ?>">
+				<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_NEW'); ?>
 			</a>
 		</li>
 	</ul>
 <?php endif; ?>
 
 <div class="main section">
-	<?php if($this->getError()) { ?>
+	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=announcements'); ?>" method="post">
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search announcements'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="Search Announcements..." />
+				<legend><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SEARCH_LEGEND'); ?></legend>
+				<label for="entry-search-field"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SEARCH_LABEL'); ?></label>
+				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
 		
