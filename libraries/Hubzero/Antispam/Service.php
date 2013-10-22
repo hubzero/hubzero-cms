@@ -43,9 +43,11 @@ class Service
 	protected $_adapter = null;
 
 	/**
-	 * @var array map of characters to be replaced through strtr
+	 * Map of characters to be replaced through strtr
+	 * 
+	 * @var array
 	 */
-	protected $canonicalNamesReplacements = array(
+	protected $_canonicalNamesReplacements = array(
 		'-'  => '', 
 		'_'  => '', 
 		' '  => '', 
@@ -58,7 +60,7 @@ class Service
 	 *
 	 * @var array
 	 */
-	protected $invokableClasses = array(
+	protected $_invokableClasses = array(
 		'simple'       => 'Hubzero\Antispam\Adapter\Simple',
 		'akismet'      => 'Hubzero\Antispam\Adapter\Akismet',
 		'mollom'       => 'Hubzero\Antispam\Adapter\Mollom',
@@ -102,10 +104,9 @@ class Service
 		{
 			$cName = $this->canonicalizeName($adapter);
 
-			if (isset($this->invokableClasses[$cName])) 
+			if (isset($this->_invokableClasses[$cName])) 
 			{
-				//$invokable = '\Hubzero\Antispam\Adapter\\' . $adapter;
-				$invokable = $this->invokableClasses[$cName];
+				$invokable = $this->_invokableClasses[$cName];
 
 				if (!class_exists($invokable)) 
 				{
@@ -211,6 +212,6 @@ class Service
 		}
 
 		// this is just for performance instead of using str_replace
-		return strtolower(strtr($name, $this->canonicalNamesReplacements));
+		return strtolower(strtr($name, $this->_canonicalNamesReplacements));
 	}
 }
