@@ -416,11 +416,11 @@ class Hubzero_Document
 
 		if (file_exists(JPATH_SITE . $templatecss)) 
 		{
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
 		} 
 		else if (file_exists(JPATH_SITE . $plugincss))
 		{
-			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
 		}
 	}
 	
@@ -457,11 +457,11 @@ class Hubzero_Document
 
 		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
 		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
 		} 
 		else if (file_exists(JPATH_SITE . $url)) 
 		{
-			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}
 
