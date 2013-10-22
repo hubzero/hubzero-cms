@@ -322,6 +322,11 @@ div.draggable .session-list ul {
 	border-bottom-left-radius: 9px;
 	border-bottom-right-radius: 9px;
 }
+.session-storage p.info,
+.session-storage p.warning,
+.session-storage p.error {
+	margin: 1em 0 0 0 !important;
+}
 .session-storage span {
 	font-weight:bold;
 }

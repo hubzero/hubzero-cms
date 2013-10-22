@@ -152,6 +152,11 @@ defined('_JEXEC') or die('Restricted access');
 				echo "<p class=\"error\">" . JText::_('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . "</p></div>";
 				return;
 			}
+			else if (isset($diskUsage['softspace']) && $diskUsage['softspace'] == 0)
+			{
+				echo "<p class=\"info\">" . JText::_('MOD_MYSESSIONS_NO_QUOTA') . "</p></div>";
+				return;
+			}
 			else
 			{
 				// Calculate the percentage of spaced used
