@@ -608,7 +608,7 @@ class MembersProfile extends JTable
 		{
 			if ($filters['emailConfirmed'] == 1)
 			{
-				$where[] = "m.`emailConfirmed`=" . $this->_db->Quote($filters['emailConfirmed']);
+				$where[] = "m.`emailConfirmed` >= " . $this->_db->Quote($filters['emailConfirmed']);
 			}
 			else
 			{
