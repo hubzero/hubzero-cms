@@ -100,7 +100,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label for="acmembers">User:</label></th>
 						<td>
-							<input type="text" name="fields[user_id]" rel="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" />
+							<input type="text" name="fields[user_id]" rel="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-source="<?php echo $base; ?>/administrator/index.php" />
 							<span class="hint">Enter usernames, IDs, or look up users by name</span>
 							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
 							<script type="text/javascript" src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>

@@ -1031,7 +1031,11 @@ HUB.Plugins.Autocomplete = {
 					};
 				});
 			}
-			$('#'+id).tokenInput('/index.php?option=com_'+option+'&no_html=1&task=autocomplete'+actkn, {
+
+			var src = $(input).attr('data-source');
+			src = src ? src : '/index.php';
+
+			$('#'+id).tokenInput(src + '?option=com_'+option+'&no_html=1&task=autocomplete'+actkn, {
 				theme: cls,
 				hintText: hint,
 				prePopulate: data,

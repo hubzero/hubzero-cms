@@ -603,5 +603,78 @@ class MembersControllerMembers extends Hubzero_Controller
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
+
+	/**
+	 * Return results for autocompleter
+	 * 
+	 * @return     string JSON
+	 */
+	public function autocompleteTask()
+	{
+		if ($this->juser->get('guest')) 
+		{
+			return;
+		}
+
+		$restrict = '';
+
+		$filters = array();
+		$filters['limit']  = 20;
+		$filters['start']  = 0;
+		$filters['search'] = strtolower(trim(JRequest::getString('value', '')));
+
+		// Fetch results
+		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
+				FROM #__xprofiles AS xp 
+				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
+				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed>0 $restrict 
+				ORDER BY xp.name ASC";
+
+		$this->database->setQuery($query);
+		$rows = $this->database->loadObjectList();
+
+		$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+
+		// Output search results in JSON format
+		$json = array();
+		if (count($rows) > 0) 
+		{
+			ximport('Hubzero_User_Profile_Helper');
+
+			$default = DS . trim($this->config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
+			$default = Hubzero_User_Profile_Helper::thumbit($default);
+			foreach ($rows as $row)
+			{
+				$picture = $default;
+
+				$name = str_replace("\n", '', stripslashes(trim($row->name)));
+				$name = str_replace("\r", '', $name);
+				$name = str_replace('\\', '', $name);
+
+				if ($row->public && $row->picture)
+				{
+					$thumb  = $base . DS . trim($this->config->get('webpath', '/site/members'), DS);
+					$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($row->uidNumber);
+					$thumb .= DS . ltrim($row->picture, DS);
+					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+
+					if (file_exists(JPATH_ROOT . $thumb))
+					{
+						$picture = $thumb;
+					}
+				}
+
+				$obj = array();
+				$obj['id']      = $row->uidNumber;
+				$obj['name']    = $name;
+				$obj['org']     = ($row->public ? $row->organization : '');
+				$obj['picture'] = $picture;
+
+				$json[] = $obj;
+			}
+		}
+
+		echo json_encode($json);
+	}
 }
 

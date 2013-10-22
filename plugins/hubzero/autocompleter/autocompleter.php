@@ -87,6 +87,8 @@ class plgHubzeroAutocompleter extends JPlugin
 		$type  = (isset($atts[7])) ? $atts[7] : 'multi'; // Allow single or multiple entries
 		$dsabl = (isset($atts[8])) ? $atts[8] : '';      // Readonly input
 
+		$base = rtrim(JURI::getInstance()->base(true), '/');
+		$datascript = $base . '/index.php';
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) 
 		{
@@ -97,6 +99,7 @@ class plgHubzeroAutocompleter extends JPlugin
 				// Are we on the admin side?
 				if (JFactory::getApplication()->isAdmin())
 				{
+					$datascript = $base . '/administrator/index.php';
 					// Check if jquery is enabled for the admin side
 					$plg = JPluginHelper::getPlugin('system', 'jquery');
 					if ($plg->params)
@@ -122,13 +125,13 @@ class plgHubzeroAutocompleter extends JPlugin
 			//if (JPluginHelper::isEnabled('system', 'jquery'))
 			if ($jq)
 			{
-				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>' . "\n";
+				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>' . "\n";
 			}
 			else 
 			{
-				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>' . "\n";
-				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>' . "\n";
-				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>' . "\n";
+				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>' . "\n";
+				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>' . "\n";
+				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>' . "\n";
 			}
 
 			$scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
@@ -139,11 +142,11 @@ class plgHubzeroAutocompleter extends JPlugin
 			$plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css';
 			if (file_exists(JPATH_SITE . $templatecss)) 
 			{
-				$scripts .= $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss);
+				$scripts .= $base . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss);
 			} 
 			else 
 			{
-				$scripts .= $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss);
+				$scripts .= $base . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss);
 			}
 
 			$scripts .= '";</script>' . "\n";
@@ -158,7 +161,7 @@ class plgHubzeroAutocompleter extends JPlugin
 		$html .= ($class) ? ' class="' . trim($class) . '"' : '';
 		$html .= ($size)  ? ' size="' . $size . '"'         : '';
 		$html .= ($dsabl) ? ' readonly="readonly"'          : '';
-		$html .= ' value="' . htmlentities($value, ENT_COMPAT, 'UTF-8') . '" autocomplete="off" data-css="" />'  . "\n";
+		$html .= ' value="' . htmlentities($value, ENT_COMPAT, 'UTF-8') . '" autocomplete="off" data-css="" data-script="' . $datascript . '" />' . "\n";
 		$html .= $scripts;
 		
 		/*$json = '';
