@@ -32,13 +32,17 @@
 				$cls = 'even';
 
 				$sheader = '';
+				$lang    = JFactory::getLanguage();
 				foreach ($this->components as $component) 
 				{
 					if ($component->name != $sheader) {
 						$sheader = $component->name;
+						$lang->load($component->name);
+
+						$display_header = $lang->hasKey($component->name) ? JText::_($component->name) : ucfirst(str_replace('com_', '', $component->name));
 ?>
 					<tr class="section-header">
-						<th scope="col"><?php echo $this->escape($component->name); ?></th>
+						<th scope="col"><?php echo $this->escape($display_header); ?></th>
 <?php
 						foreach ($this->notimethods as $notimethod) 
 						{
