@@ -1754,7 +1754,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		{
 			case 1:
 				$action = 'contribtool_info_changed';
-				$headline = JText::_('COM_TOOLS_tool information changed');
+				$headline = JText::_('COM_TOOLS_INFORMATION_CHANGED');
 				//$users = $team;
 			break;
 
@@ -1775,13 +1775,13 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 			case 4:
 				$action = 'contribtool_status_changed';
-				$headline = JText::_('COM_TOOLS_new tool registration');
+				$headline = JText::_('COM_TOOLS_NEW_REGISTRATION');
 				//$users = array_merge($team, $admins);
 			break;
 
 			case 5:
 				$action = 'contribtool_status_changed';
-				$headline = JText::_('COM_TOOLS_tool registration cancelled');
+				$headline = JText::_('COM_TOOLS_REGISTRATION_CANCELLED');
 				//$users = array_merge($team, $admins);
 			break;
 		}
@@ -1824,7 +1824,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$dispatcher =& JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option))) 
 			{
-				$this->addComponentMessage(JText::_('COM_TOOLS_Failed to message users.'), 'error');
+				$this->addComponentMessage(JText::_('COM_TOOLS_FAILED_TO_MESSAGE'), 'error');
 			}
 		}
 	}
