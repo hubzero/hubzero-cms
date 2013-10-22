@@ -339,7 +339,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-orgtype section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_STATUS'); ?></div>
+						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE'); ?></div>
 						<?php
 							//get organization types from db
 							include_once( JPATH_ROOT.DS.'components'.DS.'com_register'.DS.'tables'.DS.'organizationtype.php' );
@@ -355,7 +355,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 						?>
 						<div class="value">
-							<?php echo ($orgtype) ? $orgtype : JText::_('PLG_MEMBERS_PROFILE_ENTER_EMPLOYMENT_STATUS'); ?>
+							<?php echo ($orgtype) ? $orgtype : JText::_('PLG_MEMBERS_PROFILE_ENTER_EMPLOYMENT_TYPE'); ?>
 						</div>
 						<br class="clear" />
 						<?php
@@ -378,10 +378,10 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							);
 							$editview->registration_field = 'orgtype';
 							$editview->profile_field = 'orgtype';
-							$editview->title =  JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_STATUS');
+							$editview->title =  JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE');
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
-							$editview->inputs = '<label>' . JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT') . $organization_types.'</label>';
+							$editview->inputs = '<label>' . JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE') . $organization_types.'</label>';
 							$editview->access = '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orgtype]',$this->params->get('access_orgtype'),'input-select') . '</label>';
 							$editview->display();
 						?>
