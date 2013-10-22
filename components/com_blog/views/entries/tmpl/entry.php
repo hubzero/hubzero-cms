@@ -395,9 +395,6 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<p>
 						<strong><?php echo JText::_('COM_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
 					</p>
-					<p>
-						<?php echo JText::_('COM_BLOG_COMMENT_HELP'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
-					</p>
 				</div>
 			</fieldset>
 		</form>
