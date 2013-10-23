@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions('unit');
 
-JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Coupon Codes'), 'courses.png');
 if ($canDo->get('core.create')) 
 {
 	//JToolBarHelper::custom('generate', 'refresh', JText::_('Generate'), JText::_('Generate'), true, false);

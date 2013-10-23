@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions('role');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_COURSES') . '</a>: <small><small>[' . JText::_('Roles') . ']</small></small>', 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Roles'), 'courses.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();

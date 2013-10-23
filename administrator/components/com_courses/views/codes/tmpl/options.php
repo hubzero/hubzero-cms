@@ -34,7 +34,7 @@ $tmpl = JRequest::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(JText::_('COM_GROUPS').': <small><small>[ ' . JText::_('Generate') . ' ]</small></small>', 'course.png');
+	JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Coupon Codes') . ': ' . JText::_('Generate'), 'course.png');
 	if ($canDo->get('core.edit')) 
 	{
 		JToolBarHelper::save();

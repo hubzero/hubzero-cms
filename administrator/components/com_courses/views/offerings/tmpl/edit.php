@@ -34,7 +34,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
 $canDo = CoursesHelper::getActions('course');
 
-JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ' . JText::_('Offering') . ' ]</small></small>', 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Offering'), 'courses.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();

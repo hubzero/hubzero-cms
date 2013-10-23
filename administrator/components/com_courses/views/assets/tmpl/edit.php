@@ -37,7 +37,7 @@ $canDo = CoursesHelper::getActions('asset');
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 if (!$this->tmpl) 
 {
-	JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ]</small></small>', 'courses.png');
+	JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Assets') . ': ' . $text, 'courses.png');
 	if ($canDo->get('core.edit')) 
 	{
 		JToolBarHelper::save();

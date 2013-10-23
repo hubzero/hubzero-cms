@@ -39,7 +39,7 @@ foreach ($this->rows as $row)
 
 $canDo = CoursesHelper::getActions('unit');
 
-JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . JText::_('Asset groups') . ' ]</small></small>', 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Asset groups'), 'courses.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
