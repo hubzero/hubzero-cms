@@ -31,10 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$bio = '';
 if ($b = $this->instructor->get('bio'))
 {
-	$bio = stripslashes($b);
-
 	$wikiconfig = array(
 		'option'   => 'com_members',
 		'scope'    => 'members' . DS . 'profile',
@@ -53,7 +52,7 @@ if ($b = $this->instructor->get('bio'))
 		$b = Hubzero_View_Helper_Html::shortenText($b, 200, 0);
 	}*/
 
-	$bio = $p->parse($b, $wikiconfig, false);
+	$bio = $p->parse(stripslashes($b), $wikiconfig, false);
 	/*if (strlen($b) > 200) 
 	{
 		$bio .= '<p><a class="more" href="' . JRoute::_('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')) . '">' . JText::_('More...') . '</a></p>';
