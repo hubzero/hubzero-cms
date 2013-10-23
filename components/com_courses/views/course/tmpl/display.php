@@ -68,9 +68,9 @@ if ($offerings->total())
 		}
 		$c++;
 
-		/*$controls = '';
+		$controls = '';
 
-		if ($this->sections)
+		/*if ($this->sections)
 		{
 			foreach ($this->sections as $section)
 			{
