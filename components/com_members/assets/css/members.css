@@ -572,6 +572,9 @@
 		font-size: 1em;
 		color: #666;
 	}
+	.com_members .entries tbody th {
+		width: 50px;
+	}
 
 /* Members Edit CSS */
 	#member-picture {
