@@ -86,14 +86,21 @@ class plgYSearchBlogs extends YSearchPlugin
 				be.id,
 				be.title,
 				be.content AS description,
-				concat('/members/', created_by, '/blog/', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
+				(CASE WHEN be.group_id > 0 AND be.scope='group' THEN
+					concat('/groups/', g.cn, '/blog/')
+				WHEN be.scope='member' THEN
+					concat('/members/', be.created_by, '/blog/', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+				ELSE
+					concat('/blog/', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+				END) AS link,
 				$weight AS weight,
 				'Blog Entry' AS section,
 				be.created AS date,
 				u.name AS contributors,
-				created_by AS contributor_ids
+				be.created_by AS contributor_ids
 			FROM #__blog_entries be
 			INNER JOIN #__users u ON u.id = be.created_by
+			LEFT JOIN #__xgroups AS g ON g.gidNumber=be.group_id AND be.scope='group'
 			WHERE
 				$authorization AND
 				$weight > 0" .
