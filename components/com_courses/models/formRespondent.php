@@ -153,16 +153,41 @@ class PdfFormRespondent
 			'detail' => array()
 		);
 
+		// NOTE: added this to allow a scenario where there are multiple correct answers.
+		//       In that scenario, we still want to increment the correct count, but we don't 
+		//       want to increment the total count, as that question has already been counted.
+		$questionIds = array();
+
 		foreach ($dbh->loadAssocList() as $answer)
 		{
+			// If the answer is correct, increment correct count
 			if ($answer['answer_id'] == $answer['correct_answer_id'])
 			{
 				++$rv['summary']['correct'];
 			}
 
-			$rv['summary']['version'] = $answer['version'];
-			++$rv['summary']['total'];
-			$rv['detail'][$answer['question_id']] = $answer;
+			// If this question has already been used, carry on
+			if (in_array($answer['question_id'], $questionIds))
+			{
+				// Before carrying on though, if this is the users correct answer, update answer details
+				if ($answer['answer_id'] == $answer['correct_answer_id'])
+				{
+					$rv['detail'][$answer['question_id']] = $answer;
+				}
+
+				// We're done
+				continue;
+			}
+			else
+			{
+				// Set version and and answer details to array
+				$rv['summary']['version'] = $answer['version'];
+				$rv['detail'][$answer['question_id']] = $answer;
+
+				// Increment total and mark as used
+				++$rv['summary']['total'];
+				$questionIds[] = $answer['question_id'];
+			}
 		}
 
 		$rv['summary']['score'] = ($rv['summary']['total']>0) ? number_format($rv['summary']['correct']*100/$rv['summary']['total'], 1) : 0;
