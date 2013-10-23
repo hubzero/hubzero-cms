@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+
 /**
  *
  * Storefront SKU class
@@ -244,7 +246,7 @@ class StorefrontModelSku
 	public function setTimeToLive($ttl)
 	{
 		ximport('Hubzero_Storefront_Memberships');
-		Hubzero_Storefront_Memberships::checkTtl($ttl);
+		StorefrontModelMemberships::checkTtl($ttl);
 		
 		$this->data->meta['ttl'] = $ttl;
 	}

@@ -31,6 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'CourseOffering.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
+
 /**
  *
  * Products inventory and structure (only product lookup and inventory management)
@@ -530,7 +536,7 @@ class StorefrontModelWarehouse
 	 * Get a course
 	 * 
 	 * @param	int							course ID
-	 * @return	Hubzero_Storefront_Course 	Instance of a product
+	 * @return	StorefrontModelCourse 	Instance of a product
 	 */
 	public function getCourse($courseId) 
 	{
@@ -543,7 +549,7 @@ class StorefrontModelWarehouse
 	 * 
 	 * @param	int							product ID
 	 * @param	string						product type
-	 * @return	Hubzero_Storefront_Product 	Instance of a product
+	 * @return	StorefrontModelProduct 	Instance of a product
 	 */
 	public function getProduct($pId, $productType = 'product') 
 	{
@@ -554,16 +560,16 @@ class StorefrontModelWarehouse
 			throw new Exception(JText::_('Bad product type.'));	
 		}
 		
-		// Create a Hubzero_Storefront_Product
-		ximport('Hubzero_Storefront_Product');
+		// Create a StorefrontModelProduct
+		//ximport('Hubzero_Storefront_Product');
 		
 		if ($productType == 'product')
 		{
-			$product = new Hubzero_Storefront_Product();
+			$product = new StorefrontModelProduct();
 		}
 		elseif ($productType == 'course')
 		{
-			$product = new Hubzero_Storefront_Course();
+			$product = new StorefrontModelCourse();
 		}
 		
 		// Get all product info 
@@ -602,7 +608,7 @@ class StorefrontModelWarehouse
 	 * Get course by alias
 	 * 
 	 * @param	int							course ID
-	 * @return	Hubzero_Storefront_Course 	Instance of a product
+	 * @return	StorefrontModelCourse 	Instance of a product
 	 */
 	public function getCourseByAlias($alias)
 	{
@@ -624,17 +630,17 @@ class StorefrontModelWarehouse
 	 * 
 	 * @param	int							SKU ID
 	 * @param	string						product type
-	 * @return	Hubzero_Storefront_Sku 		Instance of a SKU
+	 * @return	StorefrontModelSku 		Instance of a SKU
 	 */
 	public function getSku($sId, $productType = 'product') 
 	{
 		if ($productType == 'product')
 		{
-			$sku = new Hubzero_Storefront_Sku();
+			$sku = new StorefrontModelSku();
 		}
 		elseif ($productType == 'course')
 		{
-			$sku = new Hubzero_Storefront_CourseOffering();
+			$sku = new StorefrontModelCourseOffering();
 		}
 		
 		$skuInfo = $this->getSkuInfo($sId);
@@ -670,7 +676,7 @@ class StorefrontModelWarehouse
 	/**
 	 * Add a new product
 	 * 
-	 * @param	Hubzero_Storefront_Product 	Instance of a product to add
+	 * @param	StorefrontModelProduct 	Instance of a product to add
 	 * @return	int							product ID
 	 */
 	public function addProduct($product) 
@@ -681,7 +687,7 @@ class StorefrontModelWarehouse
 	/**
 	 * Update existing product
 	 * 
-	 * @param	Hubzero_Storefront_Product 	Instance of a product to add
+	 * @param	StorefrontModelProduct 	Instance of a product to add
 	 * @return	int							product ID
 	 */
 	public function updateProduct($product) 
@@ -723,7 +729,7 @@ class StorefrontModelWarehouse
 	/**
 	 * Handle product actions (add, update)
 	 * 
-	 * @param	Hubzero_Storefront_Product 	Instance of a product to add
+	 * @param	StorefrontModelProduct 	Instance of a product to add
 	 * @return	int							product ID
 	 */
 	private function doProduct($product, $action) 
@@ -743,7 +749,7 @@ class StorefrontModelWarehouse
 		$product->verify($action);
 		
 		// check if this is a product
-		if (!($product instanceof Hubzero_Storefront_Product))
+		if (!($product instanceof StorefrontModelProduct))
 		{
 			throw new Exception(JText::_('Bad product. Unable to nable to .'));	
 		}
@@ -971,20 +977,20 @@ class StorefrontModelWarehouse
 	 * Get coupon
 	 * 
 	 * @param	string						coupon code
-	 * @return	Hubzero_Storefront_Coupon	Instance of a coupon
+	 * @return	StorefrontModelCoupon	Instance of a coupon
 	 */
 	public function getCoupon($code) 
 	{
-		// Create a Hubzero_Storefront_Coupon
-		ximport('Hubzero_Storefront_Coupon');
+		// Create a StorefrontModelCoupon
+		//ximport('Hubzero_Storefront_Coupon');
 		
 		if ($productType == 'product')
 		{
-			$product = new Hubzero_Storefront_Product();
+			$product = new StorefrontModelProduct();
 		}
 		elseif ($productType == 'course')
 		{
-			$product = new Hubzero_Storefront_Course();
+			$product = new StorefrontModelCourse();
 		}
 		
 		// Get all product info 
@@ -1022,7 +1028,7 @@ class StorefrontModelWarehouse
 	/**
 	 * Add product coupon
 	 * 
-	 * @param	Hubzero_Storefront_Coupon 	Instance of a coupon to add
+	 * @param	StorefrontModelCoupon 	Instance of a coupon to add
 	 * @return	int							coupon ID
 	 */
 	public function addCoupon($coupon)
@@ -1085,7 +1091,7 @@ class StorefrontModelWarehouse
 	/**
 	 * Handle product coupon (add, update)
 	 * 
-	 * @param	Hubzero_Storefront_Coupon 	Instance of a product
+	 * @param	StorefrontModelCoupon 	Instance of a product
 	 * @return	int							coupon ID
 	 */
 	private function _doCoupon($coupon, $action) 
@@ -1106,7 +1112,7 @@ class StorefrontModelWarehouse
 		}
 		
 		// check if this is a coupon
-		if (!($coupon instanceof Hubzero_Storefront_Coupon))
+		if (!($coupon instanceof StorefrontModelCoupon))
 		{
 			throw new Exception(JText::_('Bad coupon. Unable to continue.'));	
 		}

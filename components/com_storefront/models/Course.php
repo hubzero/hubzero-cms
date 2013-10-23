@@ -30,8 +30,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-ximport('Hubzero_Storefront_SingleSkuProduct');
-ximport('Hubzero_Storefront_CourseOffering');
+
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'SingleSkuProduct.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'CourseOffering.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 
 /**
  *
@@ -54,7 +56,7 @@ class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 		$this->setType('course');
 				
 		// Override SKU
-		$this->setSku(new Hubzero_Storefront_CourseOffering());
+		$this->setSku(new StorefrontModelCourseOffering());
 	}
 	
 	/**
@@ -104,7 +106,7 @@ class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 		if ($action == 'add')
 		{
 			ximport('Hubzero_Storefront_Warehouse');
-			$warehouse = new Hubzero_Storefront_Warehouse();
+			$warehouse = new StorefrontModelWarehouse();
 			$courseIdExists = $warehouse->getCourseByAlias($this->getCourseId());
 			
 			if ($courseIdExists)
