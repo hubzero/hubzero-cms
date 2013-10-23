@@ -64,6 +64,9 @@ class plgYSearchBlogs extends YSearchPlugin
 			$authorization = 'state = 1 || state = 2';
 		}
 
+		$date =& JFactory::getDate();
+		$now = $date->toMySQL();
+
 		$terms = $request->get_term_ar();
 		$weight = '(match(be.title, be.content) against (\''.join(' ', $terms['stemmed']).'\'))';
 		$addtl_where = array();
@@ -75,6 +78,8 @@ class plgYSearchBlogs extends YSearchPlugin
 		{
 			$addtl_where[] = "(be.title NOT LIKE '%$forb%' AND be.content NOT LIKE '%$forb%')";
 		}
+		$addtl_where[] = "(be.publish_up <= '$now')";
+		$addtl_where[] = "(be.publish_down = '0000-00-00 00:00:00' OR (be.publish_down != '0000-00-00 00:00:00' AND be.publish_down > '$now'))";
 
 		$rows = new YSearchResultSQL(
 			"SELECT 
