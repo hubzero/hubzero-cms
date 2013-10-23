@@ -117,10 +117,27 @@ class plgMembersBlog extends JPlugin
 			// Get and determine task
 			$this->task = JRequest::getVar('action', '');
 
-			if (is_numeric($this->task)) 
+			$bits = $this->_parseUrl();
+			$num = count($bits);
+			switch ($num)
+			{
+				case 3:
+					$this->task = 'entry';
+				break;
+
+				case 2:
+				case 1:
+					if (is_numeric($bits[0])) 
+					{
+						$this->task = 'browse';
+					}
+				break;
+			}
+
+			/*if (is_numeric($this->task)) 
 			{
 				$this->task = 'entry';
-			}
+			}*/
 
 			switch ($this->task) 
 			{
@@ -191,16 +208,23 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _parseUrl()
 	{
-		$juri =& JURI::getInstance();
-		$path = $juri->getPath();
+		static $path;
 
-		$path = str_replace($juri->base(true), '', $path);
-		$path = str_replace('index.php', '', $path);
-		$path = DS . trim($path, DS);
-		$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
-		$path = ltrim($path, DS);
+		if (!$path)
+		{
+			$juri =& JURI::getInstance();
+			$path = $juri->getPath();
 
-		return explode('/', $path);
+			$path = str_replace($juri->base(true), '', $path);
+			$path = str_replace('index.php', '', $path);
+			$path = DS . trim($path, DS);
+			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
+			$path = ltrim($path, DS);
+
+			$path = explode('/', $path);
+		}
+
+		return $path;
 	}
 
 	/**
