@@ -55,6 +55,7 @@
 		
 		display: block;
 		float: left;
+		*border-top: 1px solid #e9e9e9;
 	}
 	.course_pages .pages-menu li a {
 		color: #aaa;
@@ -144,13 +145,29 @@
 	.course_pages .manager-options a:hover {
 		color: #333;
 	}
+	.course_pages .manager-options small.edit-before,
 	.course_pages .manager-options a.edit:before {
 		content: "\270E";
 		font-family: "Fontcons";
 	}
+	.course_pages .manager-options small.delete-before,
 	.course_pages .manager-options a.delete:before {
 		content: "\f014";
 		font-family: "Fontcons";
+	}
+	.course_pages .manager-options small.edit-before,
+	.course_pages .manager-options small.delete-before {
+		margin-right: 1em;
+	}
+	.course_pages .manager-options a.edit {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit-before">&#x270E;</small>' + this.innerHTML);
+	}
+	.course_pages .manager-options a.delete {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="delete-before">&#xf014;</small>' + this.innerHTML);
+	}
+	.course_pages .pages-wrap {
+		*clear: left;
+		*margin-top: -1.5em;
 	}
 
 	.course_pages .embedded-plugin {

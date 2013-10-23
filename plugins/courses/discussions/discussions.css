@@ -50,6 +50,7 @@
 	.ordering-controls span.reorder {
 		color: #ddd;
 	}
+	.ordering-controls small.order-up-before,
 	.ordering-controls .order-up:before {
 		content: "\2191";
 		font-family: "Fontcons";
@@ -58,10 +59,21 @@
 	.ordering-controls .order-down {
 		float: right;
 	}
+	.ordering-controls small.order-down-before,
 	.ordering-controls .order-down:before {
 		content: "\2193";
 		font-family: "Fontcons";
 		margin-right: 5em;
+	}
+
+	.ordering-controls .order-down {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="order-down-before">&#x2193;</small>' + this.innerHTML);
+	}
+	.ordering-controls .order-up {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="order-up-before">&#x2191;</small>' + this.innerHTML);
+	}
+	.course_discussions .container {
+		*margin-top: 2em;
 	}
 
 	.comments-notification {
@@ -355,6 +367,29 @@
 		margin-right: 0;
 		margin-left: 1.2em;
 	}
+	ol.comments li .edit {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit-before">&#x270E;</small>' + this.innerHTML);
+	}
+	ol.comments li .delete {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="delete-before">&#xf014;</small>' + this.innerHTML);
+	}
+	ol.comments li .reply {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="reply-before">&#xf08a;</small>' + this.innerHTML);
+	}
+	ol.comments li .abuse {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="abuse-before">&#x2298;</small>' + this.innerHTML);
+	}
+	ol.comments li .active {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="active-before">&#x2716;</small>' + this.innerHTML);
+	}
+	ol.comments li small.active-before,
+	ol.comments li small.reply-before,
+	ol.comments li small.abuse-before,
+	ol.comments li small.edit-before,
+	ol.comments li small.delete-before {
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
 	/* Student */
 	ol.comments .student>.comment-content {
 		border-color: #0fa1ca;
@@ -485,7 +520,6 @@
 		background: linear-gradient(#FAFAFA, #e0e0e0);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
-		border: 1px solid #bbb;
 		color: #666;
 		border: 1px solid #666;
 		border-left: none;
@@ -594,7 +628,7 @@
 		font-weight: bold;
 		border-top: 1px solid #fff;
 		border-bottom: 1px solid #ccc;
-		background: #e0e0e0;
+		background: #FAFAFA;
 		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
 		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
 		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
@@ -604,6 +638,7 @@
 		background: linear-gradient(#FAFAFA, #e0e0e0);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+		zoom: 1;
 	}
 	.comments-toolbar p {
 		margin: 0;
@@ -653,7 +688,8 @@
 		color: #eee;
 		border-top: 1px solid #929292;
 		border-bottom: 1px solid #5b5b5b;
-		background: #e0e0e0;
+		zoom: 1; /* [!] get IE 7 to behave */
+		background: #7b7b7b;
 		background: -webkit-gradient(linear, left top, left bottom, from(#7b7b7b), to(#6b6b6b));
 		background: -webkit-linear-gradient(#7b7b7b, #6b6b6b);
 		background: -moz-linear-gradient(center top, #7b7b7b 0%, #6b6b6b 100%);
@@ -748,6 +784,7 @@
 		background: linear-gradient(#FAFAFA, #e0e0e0);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+		zoom: 1;
 	}
 	.comments-feed ul.threads>li:last-child .thread-header {
 		border-bottom: none;
@@ -822,10 +859,10 @@
 		border: none;
 		padding: 0;
 		border-bottom: 1px solid #ccc;
+		*clear: left;
 	}
 	.comments-options-bar input {
 		background: #fff;
-		
 		display: block;
 		margin: 0;
 		padding: 0.4045084975em 0.4045084975em;
@@ -860,6 +897,7 @@
 		border: none;
 		padding: 0.7045084975em 0.4045084975em;
 		font-weight: normal;
+		*width: 80%;
 	}
 	.comments-options-bar .submit {
 		width: 15%;
@@ -948,8 +986,9 @@
 		border-radius: 0.25em;
 		white-space: nowrap;
 		color: #fff;
-
 		width: 0.7em;
+		*letter-spacing: 5em;
+		*text-indent: 0.2em;
 	}
 	.comments-feed .instructor-commented:before {
 		content: "i";
@@ -976,6 +1015,8 @@
 		border-radius: 0.25em;
 		white-space: nowrap;
 		color: #fff;
+		*letter-spacing: 5em;
+		*text-indent: 0.2em;
 		display: none;
 	}
 	.comments-feed .stuck .sticky-thread {
@@ -1069,10 +1110,15 @@
 		line-height: 1;
 		background-color: #fff;
 		-webkit-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-		-moz-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-		-ms-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-		-o-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-		box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+		   -moz-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+		    -ms-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+		     -o-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+		        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+		*position: absolute;
+		*top: 0;
+		*left: 0;
+		*right: 0;
+		*margin: 0;
 	}
 	.comments-frame .sticky-thread-controls:before,
 	.comments-frame .sticky-thread-controls:after {
@@ -1094,19 +1140,17 @@
 		top: 0;
 		bottom: 0;
 		left: 1.618em;
-		padding: 1em 0 1em 4em;
-		color: #fff;
+		padding: 1em 0 1em 3em;
 		display: block;
 		line-height: 1;
 		border: none;
 		margin: 0;
-
 		color: #666;
-		padding-left: 3em;
 	}
 	.comments-frame .sticky-thread-controls a:hover {
 		color: #111;
 	}
+	.comments-frame .sticky-thread-controls small.sticky-controls-before,
 	.comments-frame .sticky-thread-controls a:before {
 		content: "\273D";
 		font-family: "Fontcons";
@@ -1121,8 +1165,13 @@
 		padding: 0.5em;
 		color: #fff;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+	}
+	.comments-frame .sticky-thread-controls a {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="sticky-controls-before">&#x273D;</small>' + this.innerHTML);
 	}
 	.comments-frame .sticky-thread-controls a:after {
 		content: "";
@@ -1155,6 +1204,7 @@
 
 	.comments-frame .comment-thread {
 		background-color: #f9f9f9;
+		*padding-top: 4em;
 	}
 
 
@@ -1168,6 +1218,8 @@
 	.categories .entry-id:before {
 		content: "\f07b";
 	}
+	.entries small.edit-before,
+	.entries small.delete-before,
 	.entries .edit:before,
 	.entries .delete:before {
 		font-family: "Fontcons";
@@ -1199,6 +1251,12 @@
 		float: right;
 		margin-left: 0.2em;
 		height: 1.2em;
+	}
+	.entries .edit {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit-before">&#x270E;</small>' + this.innerHTML);
+	}
+	.entries .delete {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="delete-before">&#xf014;</small>' + this.innerHTML);
 	}
 	.entries .edit:hover {
 		color: #333;

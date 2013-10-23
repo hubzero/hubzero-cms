@@ -80,6 +80,7 @@
 	.course_notes fieldset.filters input.filter-submit {
 		background: #f1f1f1;
 		padding: 0.35em 0.41em\9;
+		*padding: 0.15em 0.41em;
 		-webkit-border-radius: 0 0.25em 0.25em 0;
 		   -moz-border-radius: 0 0.25em 0.25em 0;
 		    -ms-border-radius: 0 0.25em 0.25em 0;

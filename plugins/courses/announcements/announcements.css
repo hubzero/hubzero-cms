@@ -117,10 +117,24 @@
 		white-space: nowrap;
 		color: #999;
 	}
+	dl.entry-meta dd.entry-options a.edit {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit-before">&#x270E;</small>' + this.innerHTML);
+	}
+	dl.entry-meta dd.entry-options a.delete {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="delete-before">&#xf014;</small>' + this.innerHTML);
+	}
+	dl.entry-meta dd.entry-options small.edit-before,
+	dl.entry-meta dd.entry-options small.delete-before {
+		font-family: "Fontcons";
+	}
+	dl.entry-meta dd.entry-options small.edit-before,
+	dl.entry-meta dd.entry-options small.delete-before,
 	dl.entry-meta dd.entry-options a:before,
 	dl.entry-meta dd.entry-options a:before {
 		margin-right: 1em;
 	}
+	dl.entry-meta dd.entry-options a:hover small.edit-before,
+	dl.entry-meta dd.entry-options a:hover small.delete-before,
 	dl.entry-meta dd.entry-options a:hover:before,
 	dl.entry-meta dd.entry-options a:hover:before {
 		color: #111;
@@ -139,6 +153,7 @@
 		border-color: #e9bcbc;
 	}
 
+	small.announcement-before,
 	.announcement:before {
 		content: "\f095";
 		position: absolute;
@@ -150,6 +165,9 @@
 		display: inline-block;
 		left: 0.61803399em;
 		font-family: 'Fontcons';
+	}
+	.announcement {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="announcement-before">&#xf095;</small>' + this.innerHTML);
 	}
 	#course-outline .announcement .close,
 	.announcement .close {
@@ -216,6 +234,10 @@
 	}
 	.course_announcements #hubForm #priority-label {
 		width: 50%;
+	}
+
+	.entry-search input#entry-search-field {
+		*margin: -1.8em 0 0 -0.5em;
 	}
 
 /* Dashboard */
