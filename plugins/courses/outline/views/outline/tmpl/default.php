@@ -40,6 +40,12 @@ $isMember       = $this->course->access('view'); //$this->config->get('access-vi
 $isManager      = $this->course->access('manage'); //$this->config->get('access-manage-course');
 $isNowOnManager = ($isManager) ? true : false;
 
+$filters = array();
+if ($isManager)
+{
+	$filters['state'] = -1;
+}
+
 if (JRequest::getInt('nonadmin', 0) == 1) 
 { 
 	$isNowOnManager = false;
@@ -59,22 +65,42 @@ if (!$this->course->offering()->access('view')) { ?>
 <?php } else { ?>
 
 	<div id="course-outline">
-	<div class="outline-head">
-		<?php
-			// Trigger event
-			$dispatcher =& JDispatcher::getInstance();
-			$results = $dispatcher->trigger('onCourseBeforeOutline', array(
-				$this->course,
-				$this->course->offering()
-			));
-			// Output results
-			echo implode("\n", $results);
-		?>
-	</div>
-<?php if ($this->course->offering()->units()->total() > 0) : ?>
+		<div class="outline-head">
+			<?php
+				// Trigger event
+				$dispatcher =& JDispatcher::getInstance();
+				$results = $dispatcher->trigger('onCourseBeforeOutline', array(
+					$this->course,
+					$this->course->offering()
+				));
+				// Output results
+				echo implode("\n", $results);
+			?>
+		</div>
+<?php if ($this->course->offering()->units($filters)->total() > 0) : ?>
 	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
-		<?php if ($unit->isPublished()) { ?>
-		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1); ?>">
+		<?php if ((!$isManager && $unit->isPublished()) || $isManager) { 
+				$cls = '';
+				if (!$unit->isAvailable())
+				{
+					$cls = ' pending';
+				}
+				if ($unit->isDraft())
+				{
+					$cls = ' draft';
+				}
+				
+				if ($unit->isUnpublished())
+				{
+					$cls = ' unpublished';
+				}
+				if ($unit->isDeleted())
+				{
+					continue;
+				}
+				
+			?>
+		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1); echo $cls; ?>">
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>">
 					<h3 class="unit-content-available">
@@ -82,7 +108,7 @@ if (!$this->course->offering()->access('view')) { ?>
 						<?php echo $this->escape(stripslashes($unit->get('description'))); ?>
 					</h3>
 
-				<?php if (!$unit->started()) { ?>
+				<?php if (!$isManager && !$unit->started()) { ?>
 					<div class="unit-availability comingSoon">
 						<!-- <p class="status">Coming soon</p> -->
 						<p class="info">
@@ -92,7 +118,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					<div class="unit-availability">
 						
 						<!-- <p class="status posted">Posted</p> -->
-					<?php if (!$unit->assetgroups()->total() && !$unit->assets()->total()) { ?>
+					<?php if (!$unit->assetgroups(null, $filters)->total() && !$unit->assets()->total()) { ?>
 						<div class="details empty">
 							<p class="info">
 								No content found for this unit.
@@ -101,9 +127,30 @@ if (!$this->course->offering()->access('view')) { ?>
 						<div class="details notempty clearfix">
 							<div class="detailsWrapper">
 								<?php foreach ($unit->assetgroups() as $agt) { ?>
-									<?php if ($agt->isAvailable() && $agt->isPublished() && count($agt->children()) > 0) { ?>
+									<?php if ((($agt->isAvailable() && $agt->isPublished()) || $isManager) && count($agt->children()) > 0) { 
+											$cls = '';
+											if (!$agt->isAvailable())
+											{
+												$cls = ' pending';
+											}
+											if ($agt->isDraft())
+											{
+												$cls = ' draft';
+											}
+											
+											if ($agt->isUnpublished())
+											{
+												$cls = ' unpublished';
+											}
+											
+											if ($agt->isDeleted())
+											{
+												continue;
+											}
+											
+										?>
 										<div class="weeksection">
-											<div class="weeksectioninner">
+											<div class="weeksectioninner<?php echo $cls; ?>">
 												<h4>
 													<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
 												</h4>
@@ -113,21 +160,62 @@ if (!$this->course->offering()->access('view')) { ?>
 												</p>
 											<?php } ?>
 											<?php foreach ($agt->children() as $ag) { ?>
-												<?php if ($ag->isAvailable() && $ag->isPublished()) : ?>
-													<div class="asset-group">
+												<?php if (($ag->isAvailable() && $ag->isPublished()) || $isManager) : 
+													$cls = '';
+													if ($ag->isDraft())
+													{
+														$cls = ' draft';
+													}
+													if (!$ag->isAvailable())
+													{
+														$cls = ' pending';
+													}
+													if ($ag->isUnpublished())
+													{
+														$cls = ' unpublished';
+													}
+													
+													if ($ag->isDeleted())
+													{
+														continue;
+													}
+													
+												?>
+													<div class="asset-group<?php echo $cls; ?>">
 														<?php if (trim($ag->get('title')) !== '--') : ?>
 															<h5>
 																<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
 															</h5>
 														<?php endif; ?>
-														<?php if ($ag->assets()->total()) { ?>
+														<?php if ($ag->assets($filters)->total()) { ?>
 														<ul class="asset-list">
 															<?php
 															// Loop through the assets
 															foreach ($ag->assets() as $a)
 															{
-																if (($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished())
+																if ((($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished()) || $isManager)
 																{
+																	$cls = '';
+																	if (!$a->isAvailable())
+																	{
+																		$cls = ' pending';
+																	}
+																	if ($a->isDraft())
+																	{
+																		$cls = ' draft';
+																	}
+																	
+																	if ($a->isUnpublished())
+																	{
+																		$cls = ' unpublished';
+																	}
+																	
+																	if ($a->isDeleted())
+																	{
+																		continue;
+																	}
+																	
+
 																	$href = JRoute::_($base . '&asset=' . $a->get('id'));
 																	$target = ' target="_blank"';
 																	if ($a->get('type') == 'video')
@@ -139,7 +227,7 @@ if (!$this->course->offering()->access('view')) { ?>
 																	{
 																		$target = '';
 																	}
-																	echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+																	echo '<li><a class="asset ' . $a->get('subtype') . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 																}
 															}
 															?>
@@ -149,17 +237,39 @@ if (!$this->course->offering()->access('view')) { ?>
 												<?php endif; ?>
 											<?php } ?>
 
-											<?php if ($agt->assets()->total()) { ?>
+											<?php if ($agt->assets($filters)->total()) { ?>
 												<ul class="asset-list">
 													<?php
 													foreach ($agt->assets() as $a)
 													{
-														if ($a->isAvailable())
+														if ($a->isAvailable() || $isManager)
 														{
 															if ($a->get('subtype') == 'note')
 															{
 																continue;
 															}
+
+															$cls = '';
+															
+															if (!$a->isAvailable())
+															{
+																$cls = ' pending';
+															}
+															if ($a->isDraft())
+															{
+																$cls = ' draft';
+															}
+															if ($a->isUnpublished())
+															{
+																$cls = ' unpublished';
+															}
+															
+															if ($a->isDeleted())
+															{
+																continue;
+															}
+															
+
 															$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
 															$target = ' target="_blank"';
 															if ($a->get('type') == 'video')
@@ -171,7 +281,7 @@ if (!$this->course->offering()->access('view')) { ?>
 															{
 																$target = '';
 															}
-															echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+															echo '<li><a class="asset ' . $a->get('subtype') . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 														}
 													}
 													?>
@@ -180,7 +290,7 @@ if (!$this->course->offering()->access('view')) { ?>
 												$agt->assets()->rewind();
 												foreach ($agt->assets() as $a)
 												{
-													if ($a->isAvailable())
+													if ($a->isAvailable() || $isManager)
 													{
 														if ($a->get('subtype') != 'note')
 														{
@@ -199,9 +309,9 @@ if (!$this->course->offering()->access('view')) { ?>
 							<?php if ($unit->assets()->total()) { ?>
 							<ul class="asset-list">
 						<?php
-						foreach ($unit->assets() as $a)
+						foreach ($unit->assets($filters) as $a)
 						{
-							if ($a->isAvailable())
+							if ($a->isAvailable() || $isManager)
 							{
 								$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
 								$target = ' target="_blank"';

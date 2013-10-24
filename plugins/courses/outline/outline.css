@@ -331,3 +331,77 @@
 		color: #ccc;
 		margin-right: 0.5em;
 	}
+
+	/*#course-outline .unpublished,
+	#course-outline .deleted,
+	#course-outline .pending,
+	#course-outline .draft {
+		opacity: 0.55;
+	}*/
+	#course-outline .unpublished:after,
+	#course-outline .deleted:after,
+	#course-outline .pending:after,
+	#course-outline .draft:after {
+		font-family: "fontcons";
+		margin-right: 0.2em;
+	}
+
+	#course-outline .draft {
+		color: orange;
+	}
+	#course-outline .pending {
+		color: green;
+	}
+	#course-outline .unpublished,
+	#course-outline .unpublished h3,
+	#course-outline .unpublished h4,
+	#course-outline .unpublished h5,
+	#course-outline .unpublished a {
+		color: #bbb !important;
+	}
+	#course-outline .deleted,
+	#course-outline .deleted h3,
+	#course-outline .deleted h4,
+	#course-outline .deleted h5,
+	#course-outline .deleted a {
+		color: #c00 !important;
+	}
+
+	#course-outline .unit.unpublished,
+	#course-outline .weeksectioninner.unpublished {
+		opacity: 0.65;
+	}
+	#course-outline .unit.deleted,
+	#course-outline .weeksectioninner.deleted {
+		background-color: rgba(200, 0, 0, 0.1);
+	}
+
+	#course-outline .asset-group {
+		position: relative;
+	}
+	#course-outline .weeksectioninner:after {
+		position: absolute;
+		top: 1.7em;
+		left: 1.5em;
+	}
+	#course-outline .asset-group:after {
+		position: absolute;
+		top: 0em;
+		left: -1.2em;
+	}
+
+	#course-outline .pending:after {
+		content: "\f017";
+	}
+	#course-outline .unpublished:after {
+		content: "\2298";
+	}
+	#course-outline .draft:after {
+		content: "\22EF";
+	}
+	#course-outline .deleted:after {
+		content: "\f014";
+	}
+	#course-outline .deleted {
+		text-decoration: line-through;
+	}
