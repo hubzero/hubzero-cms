@@ -47,10 +47,10 @@ if ($this->getError()) { ?>
 	<?php } ?>
 		<p>
 			<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id); ?>">
-				<?php echo stripslashes($this->row->title); ?>
+				<?php echo $this->escape(stripslashes($this->row->title)); ?>
 			</a>:
 		<?php if ($this->row->introtext) { ?>
-			<?php echo Hubzero_View_Helper_Html::shortenText(htmlentities(strip_tags($this->row->introtext)), $this->txt_length, 0); ?>
+			<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($this->row->introtext)), $this->txt_length, 0); ?>
 		<?php } ?>
 		</p>
 	</div>

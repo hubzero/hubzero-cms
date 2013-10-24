@@ -47,16 +47,16 @@ if ($this->getError()) { ?>
 	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
 		<p class="featured-img">
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id); ?>">
-				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="<?php echo htmlentities(stripslashes($this->title)); ?>" />
+				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="<?php echo $this->escape(stripslashes($this->title)); ?>" />
 			</a>
 		</p>
 	<?php } ?>
 		<p>
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id); ?>">
-				<?php echo stripslashes($this->title); ?>
+				<?php echo $this->escape(stripslashes($this->title)); ?>
 			</a>: 
 	<?php if ($this->txt) { ?>
-			<?php echo Hubzero_View_Helper_Html::shortenText(htmlspecialchars(strip_tags($this->txt)), $this->txt_length, 0); ?>
+			<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(strip_tags($this->txt)), $this->txt_length, 0); ?>
 	<?php } ?>
 		</p>
 	</div>

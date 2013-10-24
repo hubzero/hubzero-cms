@@ -35,28 +35,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="/search/" method="get" class="search">
 		<fieldset>
 			<p>
-				<label for="rsearchword"><?php echo JText::_('Keyword or phrase:'); ?></label>
+				<label for="rsearchword"><?php echo JText::_('MOD_FINDRESOURCES_SEARCH_LABEL'); ?></label>
 				<input type="text" name="terms" id="rsearchword" value="" />
 				<input type="hidden" name="domains[]" value="resources" />
-				<input type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input type="submit" value="<?php echo JText::_('MOD_FINDRESOURCES_SEARCH'); ?>" />
 			</p>
 		</fieldset>
 	</form>
 <?php if (count($this->tags) > 0) { ?>
 	<ol class="tags">
-		<li><?php echo JText::_('Popular Tags:'); ?></li>
-<?php
-	foreach ($this->tags as $tag)
-	{
-?>
-		<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo stripslashes($tag->raw_tag); ?></a></li>
-<?php
-	}
-?>	
-		<li><a href="<?php echo JRoute::_('index.php?option=com_tags'); ?>" class="showmore"><?php echo JText::_('More tags &rsaquo;'); ?></a></li>
+		<li><?php echo JText::_('MOD_FINDRESOURCES_POPULAR_TAGS'); ?></li>
+	<?php foreach ($this->tags as $tag) { ?>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
+	<?php } ?>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_tags'); ?>" class="showmore"><?php echo JText::_('MOD_FINDRESOURCES_MORE_TAGS'); ?></a></li>
 	</ol>
 <?php } else { ?>
-	<p><?php echo JText::_('No tags found.'); ?></p>
+	<p><?php echo JText::_('MOD_FINDRESOURCES_NO_TAGS'); ?></p>
 <?php } ?>
 
 <?php if (count($this->categories) > 0) { ?>
@@ -66,7 +61,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	foreach ($this->categories as $category)
 	{
 		$i++;
-		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($category->type));
+		$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($category->type));
 
 		if (substr($normalized, -3) == 'ies') {
 			$cls = $normalized;
@@ -74,16 +69,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$cls = substr($normalized, 0, -1);
 		}
 ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_resources&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources&type='.$normalized); ?>"><?php echo $this->escape(stripslashes($category->type)); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
 <?php 
 	}
 ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>" class="showmore"><?php echo JText::_('All Categories &rsaquo;'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>" class="showmore"><?php echo JText::_('MOD_FINDRESOURCES_ALL_CATEGORIES'); ?></a>
 	</p>
 <?php
 }
 ?>
 	<div class="uploadcontent">
-		<h4><?php echo JText::_('Upload your own content!'); ?> <span><a href="<?php echo JRoute::_('index.php?option=com_resources&task=new'); ?>" class="contributelink"><?php echo JText::_('Get started &rsaquo;'); ?></a></span></h4>
+		<h4><?php echo JText::_('MOD_FINDRESOURCES_UPLOAD_CONTENT'); ?> <span><a href="<?php echo JRoute::_('index.php?option=com_resources&task=new'); ?>" class="contributelink"><?php echo JText::_('MOD_FINDRESOURCES_GET_STARTED'); ?></a></span></h4>
 	</div>
 </div><!-- / <?php echo ($this->params->get('cssId')) ? '#' . $this->params->get('cssId') : ''; ?> -->
