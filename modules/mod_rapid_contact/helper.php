@@ -48,28 +48,28 @@ class modRapidContact extends Hubzero_Module
 		Hubzero_Document::addModuleStylesheet('mod_rapid_contact');
 
 		// Field labels
-		$this->name_label    = $this->params->get('name_label', 'Name:');
-		$this->email_label   = $this->params->get('email_label', 'Email:');
-		$this->subject_label = $this->params->get('subject_label', 'Subject:');
-		$this->message_label = $this->params->get('message_label', 'Message:');
+		$this->name_label    = $this->params->get('name_label', JText::_('MOD_RAPID_CONTACT_FIELD_NAME'));
+		$this->email_label   = $this->params->get('email_label', JText::_('MOD_RAPID_CONTACT_FIELD_EMAIL'));
+		$this->subject_label = $this->params->get('subject_label', JText::_('MOD_RAPID_CONTACT_FIELD_SUBJECT'));
+		$this->message_label = $this->params->get('message_label', JText::_('MOD_RAPID_CONTACT_FIELD_MESSAGE'));
 
 		// Button text
-		$this->button_text   = $this->params->get('button_text', 'Send Message');
+		$this->button_text   = $this->params->get('button_text', JText::_('MOD_RAPID_CONTACT_SEND'));
 
 		// Pre text
 		$this->pre_text      = $this->params->get('pre_text', '');
 
 		// Thank you message
-		$this->page_text     = $this->params->get('page_text', 'Thank you for your contact.');
+		$this->page_text     = $this->params->get('page_text', JText::_('MOD_RAPID_CONTACT_THANK_YOU'));
 
 		// Error messages
-		$this->error_text    = $this->params->get('error_text', 'Your message could not be sent. Please try again.');
-		$this->no_email      = $this->params->get('no_email', 'Please write your email');
-	    $this->invalid_email = $this->params->get('invalid_email', 'Please write a valid email');
+		$this->error_text    = $this->params->get('error_text', JText::_('MOD_RAPID_CONTACT_ERROR_SENDING'));
+		$this->no_email      = $this->params->get('no_email', JText::_('MOD_RAPID_CONTACT_ERROR_NO_EMAIL'));
+	    $this->invalid_email = $this->params->get('invalid_email', JText::_('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
 
 		// From
 		$jconfig =& JFactory::getConfig();
-		$this->from_name     = @$this->params->get('from_name', 'Rapid Contact');
+		$this->from_name     = @$this->params->get('from_name', JText::_('MOD_RAPID_CONTACT'));
 		$this->from_email    = @$this->params->get('from_email', 'rapid_contact@yoursite.com');
 
 		// To
@@ -81,7 +81,7 @@ class modRapidContact extends Hubzero_Module
 
 		// Enable Anti-spam?
 		$this->enable_anti_spam = $this->params->get('enable_anti_spam', true);
-		$this->anti_spam_q   = $this->params->get('anti_spam_q', 'How many eyes has a typical person?');
+		$this->anti_spam_q   = $this->params->get('anti_spam_q', JText::_('MOD_RAPID_CONTACT_ANTIPSAM'));
 		$this->anti_spam_a   = $this->params->get('anti_spam_a', '2');
 
 	    $this->mod_class_suffix = $this->params->get('moduleclass_sfx', '');
@@ -133,7 +133,7 @@ class modRapidContact extends Hubzero_Module
 			{
 				if (!isset($this->posted['anti_spam_answer']) || ($this->posted['anti_spam_answer'] != $this->anti_spam_a))
 				{
-					$this->error = JText::_('Wrong anti-spam answer');
+					$this->error = JText::_('MOD_RAPID_CONTACT_INVALID_ANTIPSAM_ANSWER');
 				}
 			}
 			if ($this->posted['email'] === '') 
@@ -148,7 +148,7 @@ class modRapidContact extends Hubzero_Module
 			if ($this->error == '') 
 			{
 				$mySubject = $this->_cleanXss($this->posted['subject']);
-				$myMessage = 'You received a message from '. $this->posted['email'] ."\n\n". $this->_cleanXss($this->posted['message']);
+				$myMessage = JText::sprintf('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['email']) ."\n\n". $this->_cleanXss($this->posted['message']);
 
 				$this->from_email = $this->posted['email'];
 				$this->from_name  = (isset($this->posted['name']) && $this->_cleanXss($this->posted['name'])) ? $this->_cleanXss($this->posted['name']) : $this->posted['email'];

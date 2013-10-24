@@ -38,11 +38,11 @@ if ($this->error) {
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<p id="point-balance">
-		<span><?php echo JText::_('MOD_MYPOINTS_YOU_HAVE'); ?> </span> <?php echo $this->summary; ?><small> <?php echo strtolower(JText::_('MOD_MYPOINTS_POINTS')); ?></small>
+		<span><?php echo JText::_('MOD_MYPOINTS_YOU_HAVE'); ?> </span> <?php echo $this->escape($this->summary); ?><small> <?php echo strtolower(JText::_('MOD_MYPOINTS_POINTS')); ?></small>
 	</p>
 <?php if (count($this->history) > 0) { ?>
-	<table class="transactions" summary="<?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_SUMMARY'); ?>">
-		<caption><?php echo JText::sprintf('MOD_MYPOINTS_TRANSACTIONS_TBL_CAPTION', $this->limit); ?></caption>
+	<table class="transactions">
+		<caption><?php echo JText::sprintf('MOD_MYPOINTS_TRANSACTIONS_TBL_CAPTION', $this->escape($this->limit)); ?></caption>
 		<thead>
 			<tr>
 				<th scope="col"><?php echo JText::_('MOD_MYPOINTS_TRANSACTIONS_TBL_TH_DATE'); ?></th>
@@ -67,15 +67,15 @@ if ($this->error) {
 				</td>
 				<td class="numerical-data">
 <?php if ($item->type == 'withdraw') { ?>
-					<span class="withdraw">-<?php echo $item->amount; ?></span>
+					<span class="withdraw">-<?php echo $this->escape($item->amount); ?></span>
 <?php } elseif ($item->type == 'hold') { ?>
-					<span class="hold">(<?php echo $item->amount; ?>)</span>
+					<span class="hold">(<?php echo $this->escape($item->amount); ?>)</span>
 <?php } else { ?>
-					<span class="deposit">+<?php echo $item->amount; ?></span>
+					<span class="deposit">+<?php echo $this->escape($item->amount); ?></span>
 <?php } ?>
 				</td>
 				<td class="numerical-data">
-					<?php echo $item->balance; ?>
+					<?php echo $this->escape($item->balance); ?>
 				</td>
 			</tr>
 <?php

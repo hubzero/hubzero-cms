@@ -31,22 +31,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$base = rtrim(JURI::getInstance()->base(true), '/');
+
 if ($this->quote) { ?>
-	<h3 class="notable_quote"><?php echo JText::_('Notable Quote'); ?></h3>
+	<h3 class="notable_quote">
+		<?php echo JText::_('MOD_RANDOMQUOTE_NOTABLE'); ?>
+	</h3>
 	<div class="frontquote">
-		<blockquote cite="<?php echo htmlentities(stripslashes($this->quote->fullname), ENT_COMPAT, 'UTF-8'); ?>">
+		<blockquote cite="<?php echo $this->escape(stripslashes($this->quote->fullname)); ?>">
 			<p>
-				<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->quote_to_show), $this->charlimit, 0); ?>
-<?php if (strlen($this->quote->quote) > $this->charlimit) { ?>
-				<a href="/about/quotes/?quoteid=<?php echo $this->quote->id; ?>" title="<?php echo JText::_('View the full quote by').' '.htmlentities(stripslashes($this->quote->fullname), ENT_COMPAT, 'UTF-8'); ?>" class="showfullquote">...&raquo;</a>
-<?php } ?>
+				<?php echo $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->quote_to_show), $this->charlimit, 0)); ?>
+				<?php if (strlen($this->quote->quote) > $this->charlimit) { ?>
+					<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $this->quote->id; ?>" title="<?php echo JText::sprintf('MOD_RANDOMQUOTE_VIEW_FULL', $this->escape(stripslashes($this->quote->fullname))); ?>" class="showfullquote">
+						<?php echo JText::_('MOD_RANDOMQUOTE_VIEW'); ?>
+					</a>
+				<?php } ?>
 			</p>
 		</blockquote>
 		<p class="cite">
-			<cite><?php echo htmlentities(stripslashes($this->quote->fullname), ENT_COMPAT, 'UTF-8'); ?></cite>, 
-			<?php echo htmlentities(stripslashes($this->quote->org), ENT_COMPAT, 'UTF-8'); ?> 
+			<cite><?php echo $this->escape(stripslashes($this->quote->fullname)); ?></cite>, 
+			<?php echo $this->escape(stripslashes($this->quote->org)); ?> 
 			<span>-</span> 
-			<span><?php echo JText::_('in'); ?> <a href="/about/quotes"><?php echo JText::_('Notable Quotes'); ?></a></span>
+			<span><?php echo JText::sprintf('MOD_RANDOMQUOTE_IN', $base . '/about/quotes'); ?></span>
 		</p>
 	</div>
 <?php } ?>
