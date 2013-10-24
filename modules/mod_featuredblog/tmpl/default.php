@@ -31,9 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->getError()) { ?>
+if ($this->getError()) 
+{
+	?>
 	<p class="error"><?php echo JText::_('MOD_FEATUREDBLOG_MISSING_CLASS'); ?></p>
-<?php } else {
+	<?php 
+} 
+else if ($this->row) 
+{
+	$base = rtrim(JURI::getInstance()->base(true), '/');
+
 	$yearFormat  = "%Y";
 	$monthFormat = "%m";
 	$tz = 0;
@@ -44,25 +51,23 @@ if ($this->getError()) { ?>
 		$tz = true;
 	}
 
-	if ($this->row) {
-		ximport('Hubzero_View_Helper_Html');
-?>
+	ximport('Hubzero_View_Helper_Html');
+	?>
 	<div class="<?php echo $this->cls; ?>">
 		<p class="featured-img">
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat, $tz) . '/' . $this->row->alias); ?>">
-				<img width="50" height="50" src="/modules/mod_featuredblog/images/blog_thumb.gif" alt="<?php echo htmlentities(stripslashes($this->title)); ?>" />
+				<img width="50" height="50" src="<?php echo $base; ?>/modules/mod_featuredblog/images/blog_thumb.gif" alt="<?php echo htmlentities(stripslashes($this->title)); ?>" />
 			</a>
 		</p>
 		<p>
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by . '&active=blog&task=' . JHTML::_('date', $this->row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $this->row->publish_up, $monthFormat, $tz) . '/' . $this->row->alias); ?>">
-				<?php echo stripslashes($this->title); ?>
+				<?php echo $this->escape(stripslashes($this->title)); ?>
 			</a>: 
 		<?php if ($this->txt) { ?>
 			<?php echo Hubzero_View_Helper_Html::shortenText(strip_tags($this->txt), $this->txt_length, 0); ?>
 		<?php } ?>
 		</p>
 	</div>
-<?php
-	}
+	<?php
 }
 ?>

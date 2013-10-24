@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $c = 0;
 ?>
-<div id="latest_discussions_module" class="<?php echo $this->params->get('moduleclass_sfx'); ?>">
+<div class="latest_discussions_module <?php echo $this->params->get('moduleclass_sfx'); ?>">
 	<?php if (count($this->posts) > 0) : ?>
 		<ul class="discussions">
 			<?php foreach ($this->posts as $post) : ?>
@@ -75,7 +75,7 @@ $c = 0;
 							<?php echo $location; ?>
 						</span>
 						<span class="discussion-date">
-							<time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time') . ' ' . JText::_('on') . ' ' . $post->created('date'); ?></time>
+							<time datetime="<?php echo $post->get('created'); ?>"><?php echo JText::sprintf('MOD_LATESTDISCUSSIONS_AT_TIME_ON_DATE', $post->created('time'), $post->created('date')); ?></time>
 						</span>
 					<?php if ($this->charlimit > 0) : ?>
 						<span class="discussion-comment">
