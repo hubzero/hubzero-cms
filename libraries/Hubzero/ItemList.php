@@ -113,6 +113,17 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	}
 
 	/**
+	 * Reset cursor to starting point and reset list (in case we unset some)
+	 *
+	 * @return     void
+	 */
+	public function reset() 
+	{
+		$this->_pos = 0;
+		$this->_data = array_values($this->_data);
+	}
+
+	/**
 	 * Is the current position the first one?
 	 *
 	 * @return     boolean
