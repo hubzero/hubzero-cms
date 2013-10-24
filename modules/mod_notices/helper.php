@@ -114,14 +114,14 @@ class modNotices extends Hubzero_Module
 	{
 		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0) 
 		{
-			$o  = JText::_('IMMEDIATELY');
+			$o  = JText::_('MOD_NOTICES_IMMEDIATELY');
 		} 
 		else 
 		{
-			$o  = JText::_('IN') . ' ';
-			$o .= ($stime[0] > 0) ? $stime[0] . ' ' . JText::_('DAYS') . ', '  : '';
-			$o .= ($stime[1] > 0) ? $stime[1] . ' ' . JText::_('HOURS') . ', ' : '';
-			$o .= ($stime[2] > 0) ? $stime[2] . ' ' . JText::_('MINUTES')      : '';
+			$o  = JText::_('MOD_NOTICES_IN') . ' ';
+			$o .= ($stime[0] > 0) ? $stime[0] . ' ' . JText::_('MOD_NOTICES_DAYS') . ', '  : '';
+			$o .= ($stime[1] > 0) ? $stime[1] . ' ' . JText::_('MOD_NOTICES_HOURS') . ', ' : '';
+			$o .= ($stime[2] > 0) ? $stime[2] . ' ' . JText::_('MOD_NOTICES_MINUTES')      : '';
 		}
 		return $o;
 	}
@@ -140,9 +140,9 @@ class modNotices extends Hubzero_Module
 
 		// Get some initial parameters
 		$start = $this->params->get('start_publishing');
-		$start = JHTML::_('date', $start, JText::_('DATE_FORMAT_HZ1'));
+		//$start = JHTML::_('date', $start, JText::_('DATE_FORMAT_HZ1'));
 		$stop  = $this->params->get('stop_publishing');
-		$stop  = JHTML::_('date', $stop, JText::_('DATE_FORMAT_HZ1'));
+		//$stop  = JHTML::_('date', $stop, JText::_('DATE_FORMAT_HZ1'));
 
 		$this->publish = false;
 		if (!$start || $start == '0000-00-00 00:00:00') 

@@ -39,8 +39,8 @@ if ($this->publish) { ?>
 		$page .= (strstr($page, '?')) ? '&' : '?';
 		$page .= $this->moduleid . '=close';
 ?>
-		<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo JText::_('Close this notice'); ?>">
-			<span><?php echo JText::_('close'); ?></span>
+		<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo JText::_('MOD_NOTICES_CLOSE_TITLE'); ?>">
+			<span><?php echo JText::_('MOD_NOTICES_CLOSE'); ?></span>
 		</a>
 <?php 
 	} 

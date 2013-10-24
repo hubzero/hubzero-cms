@@ -14,9 +14,19 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class modPollHelper
+ximport('Hubzero_Module');
+
+/**
+ * Module class for displaying a poll
+ */
+class modPoll extends Hubzero_Module
 {
-	function getPoll($id)
+	/**
+	 * Get poll data
+	 * 
+	 * @return     object
+	 */
+	public function getPoll($id)
 	{
 		$db		=& JFactory::getDBO();
 		$result	= null;
@@ -48,7 +58,12 @@ class modPollHelper
 		return $result;
 	}
 
-	function getPollOptions($id)
+	/**
+	 * Get poll options
+	 * 
+	 * @return     array
+	 */
+	public function getPollOptions($id)
 	{
 		$db	=& JFactory::getDBO();
 
@@ -59,11 +74,58 @@ class modPollHelper
 			' ORDER BY id';
 		$db->setQuery($query);
 
-		if (!($options = $db->loadObjectList())) {
-			echo "MD ".$db->stderr();
+		if (!($options = $db->loadObjectList())) 
+		{
+			echo "MD " . $db->stderr();
 			return;
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Display module content
+	 * 
+	 * @return     void
+	 */
+	public function display()
+	{
+		$juser =& JFactory::getUser();
+
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+
+		$this->run();
+	}
+
+	/**
+	 * Build module contents
+	 * 
+	 * @return     void
+	 */
+	public function run()
+	{
+		$tabclass_arr = array('sectiontableentry2', 'sectiontableentry1');
+
+		$menu 	= &JSite::getMenu();
+		$items	= $menu->getItems('link', 'index.php?option=com_poll&view=poll');
+		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
+
+		$poll   = $this->getPoll($this->params->get( 'id', 0 ));
+
+		if ($poll && $poll->id) 
+		{
+			$tabcnt = 0;
+			$options = $this->getPollOptions($poll->id);
+
+			require(JModuleHelper::getLayoutPath($this->module->module));
+		}
 	}
 }

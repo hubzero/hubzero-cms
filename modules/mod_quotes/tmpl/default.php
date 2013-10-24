@@ -46,6 +46,9 @@ defined('_JEXEC') or die('Restricted access');
 	$base = rtrim(JURI::getInstance()->base(true), '/');
 	foreach ($this->quotes as $quote)
 	{
+		?>
+	<div class="quote">
+		<?php
 		$quote->org = str_replace('<br>', '<br />', $quote->org);
 
 		if (isset($this->filters['id']) && $this->filters['id'] != '')
@@ -75,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JText::_('MOD_QUOTES_MORE'); ?>
 				</a>
 			<?php } else { ?>
-				<?php echo $this->escape(stripslashes($quote->short_quote); ?>
+				<?php echo $this->escape(stripslashes($quote->short_quote)); ?>
 			<?php } ?>
 			</p>
 		<?php } ?>
@@ -84,6 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 			<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?></cite>
 			<br /><?php echo $this->escape(stripslashes($quote->org)); ?>
 		</p>
+	</div>
 	<?php
 	}
 	?>

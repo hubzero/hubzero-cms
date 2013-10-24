@@ -14,19 +14,18 @@ if (!jq) {
 //-------------------------------------------------------------
 jQuery(document).ready(function(jq){
 	var $ = jq;
-	$('.modnotices .close').each(function(i, item) {
-		$(item).on('click', function(e) {
-			e.preventDefault();
 
-			var id = $($(this).parent().parent()).attr('id');
-			var days = $(this).attr('data-duration');
+	$('.modnotices .close').on('click', function(e) {
+		e.preventDefault();
 
-			$($(this).parent().parent()).slideUp();
+		var id = $($(this).parent().parent()).attr('id'),
+			days = $(this).attr('data-duration');
 
-			var date = new Date();
-			date.setTime(date.getTime()+(days*24*60*60*1000));
+		$($(this).parent().parent()).slideUp();
 
-			document.cookie = id + '=closed; expires=' + date.toGMTString() + ';';
-		});
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+
+		document.cookie = id + '=closed; expires=' + date.toGMTString() + ';';
 	});
 });
