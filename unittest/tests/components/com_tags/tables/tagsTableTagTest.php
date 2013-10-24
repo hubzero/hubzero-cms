@@ -23,8 +23,8 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	);
 	var $mock       = array(
 		'id'          => null,
-		'tag'         => 'evil',
-		'raw_tag'     => 'Evil!',
+		'tag'         => 'phpunittesttag',
+		'raw_tag'     => 'PHP Unit Test Tag',
 		'description' => 'unittest',
 		'admin'       => 0
 	);
@@ -160,7 +160,11 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	function testRecordLoad($id)
 	{
 		$result = $this->instance->load($id);
-		$this->assertTrue(is_numeric($result->id));
+		if (!$result)
+		{
+			$this->assertTrue($result);
+		}
+		$this->assertTrue(is_numeric($this->instance->id));
 	}
 
 	/**
@@ -200,7 +204,7 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 	 */
 	function testRecordCheck()
 	{
-		$this->instance->raw_tag = 'Evil!';
+		$this->instance->raw_tag = 'PHP Unit Test Tag';
 		$result = $this->instance->check();
 
 		$this->assertTrue($result);
@@ -247,6 +251,6 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 		{
 			$res = false;
 		}
-		$this->assertFalse($res, "Tag does not contain punctuation");
+		$this->assertTrue($res, "Tag does not contain punctuation");
 	}
 }

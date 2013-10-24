@@ -102,7 +102,7 @@ class AnswersTableLogTest extends PHPUnit_Framework_TestCase
 	function testRecordLoad($id)
 	{
 		$result = $this->instance->load($id);
-		$this->assertTrue(is_numeric($result->id));
+		$this->assertTrue(is_numeric($this->instance->id));
 	}
 
 	/**
