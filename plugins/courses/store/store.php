@@ -118,6 +118,8 @@ class plgCoursesStore extends JPlugin
 			return;
 		}
 
+		$product = null;
+
 		$url = 'index.php?option=com_courses&controller=offering&gid=' . $course->get('alias') . '&offering=' . $offering->get('alias') . ($section->get('alias') != '__default' ? ':' . $section->get('alias') : '') . '&task=enroll';
 
 		if ($offering->params('store_product_id', 0))
@@ -134,7 +136,7 @@ class plgCoursesStore extends JPlugin
 			}
 		}
 
-		if ($product && $product->data->id)
+		if (is_object($product) && $product->data->id)
 		{
 			$url = '/cart'; //index.php?option=com_storefront/product/' . $product->pId;
 		}
