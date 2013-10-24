@@ -45,7 +45,7 @@ JToolBarHelper::cancel();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-70">
+	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Page details'); ?></span></legend>
 
