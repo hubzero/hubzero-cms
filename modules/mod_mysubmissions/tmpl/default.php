@@ -46,7 +46,7 @@ if ($juser->get('guest')) { ?>
 ?>
 	<div class="submission">
 		<h4>
-			<?php echo stripslashes($row->title); ?> 
+			<?php echo $this->escape(stripslashes($row->title)); ?> 
 			<a class="edit" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $row->id); ?>">
 				<?php echo JText::_('MOD_MYSUBMISSIONS_EDIT'); ?>
 			</a>
@@ -55,9 +55,9 @@ if ($juser->get('guest')) { ?>
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('MOD_MYSUBMISSIONS_TYPE'); ?></th>
-					<td colspan="2"><?php echo $row->typetitle; ?></td>
+					<td colspan="2"><?php echo $this->escape($row->typetitle); ?></td>
 				</tr>
-<?php
+			<?php
 			for ($i=1, $n=count($steps); $i < $n; $i++)
 			{
 				if ($i != $laststep) {
@@ -69,7 +69,7 @@ if ($juser->get('guest')) { ?>
 					} else {
 						$completed = '<span class="no">' . JText::_('MOD_MYSUBMISSIONS_NOT_COMPLETED') . '</span>';
 					}
-?>
+					?>
 				<tr>
 					<th><?php echo $steps[$i]; ?></th>
 					<td><?php echo $completed; ?></td>
@@ -79,10 +79,10 @@ if ($juser->get('guest')) { ?>
 						</a>
 					</td>
 				</tr>
-<?php
+				<?php
 				}
 			}
-?>
+			?>
 		</table>
 		<p class="discrd">
 			<a href="<?php echo JRoute::_('index.php?option=com_resources&task=discard&id=' . $row->id); ?>">

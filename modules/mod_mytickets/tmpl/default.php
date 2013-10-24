@@ -35,66 +35,59 @@ ximport('Hubzero_View_Helper_Html');
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<h4><?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?></h4>
-<?php
-if (count($this->rows1) <= 0) {
-?>
+<?php if (count($this->rows1) <= 0) { ?>
 	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
 <?php } else { ?>
 	<ul class="expandedlist">
-<?php
+	<?php
 	foreach ($this->rows1 as $row)
 	{
-		$when = Hubzero_View_Helper_Html::timeAgo($row->created);
-?>
-		<li class="support-ticket <?php echo $row->severity; ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . htmlentities(htmlentities(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . Hubzero_View_Helper_Html::shortenText(htmlentities(stripslashes($row->summary)), 35, 0); ?></a>
-			<span><span><?php echo $when; ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+		?>
+		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->summary)), 35, 0); ?></a>
+			<span><span><?php echo Hubzero_View_Helper_Html::timeAgo($row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 		</li>
-<?php
+		<?php
 	}
-?>
+	?>
 	</ul>
 <?php } ?>
+
 	<h4><?php echo JText::_('MOD_MYTICKETS_ASSIGNED'); ?></h4>
-<?php
-if (count($this->rows2) <= 0) {
-?>
+<?php if (count($this->rows2) <= 0) { ?>
 	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
 <?php } else { ?>
 	<ul class="expandedlist">
-<?php
+	<?php
 	foreach ($this->rows2 as $row)
 	{
-		$when = Hubzero_View_Helper_Html::timeAgo($row->created);
-?>
-		<li class="support-ticket <?php echo $row->severity; ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . htmlentities(htmlentities(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . Hubzero_View_Helper_Html::shortenText(htmlentities(stripslashes($row->summary)), 35, 0); ?></a>
-			<span><span><?php echo $when; ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+		?>
+		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->summary)), 35, 0); ?></a>
+			<span><span><?php echo Hubzero_View_Helper_Html::timeAgo($row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 		</li>
-<?php
+		<?php
 	}
-?>
+	?>
 	</ul>
 <?php } ?>
+
 <h4><?php echo JText::_('MOD_MYTICKETS_CONTRIBUTIONS'); ?></h4>
-<?php
-if (count($this->rows3) <= 0) {
-?>
+<?php if (count($this->rows3) <= 0) { ?>
 	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
 <?php } else { ?>
 	<ul class="expandedlist">
-<?php
+	<?php
 	foreach ($this->rows3 as $row)
 	{
-		$when = Hubzero_View_Helper_Html::timeAgo($row->created);
-?>
-		<li class="support-ticket <?php echo $row->severity; ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . htmlentities(htmlentities(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . Hubzero_View_Helper_Html::shortenText(htmlentities(stripslashes($row->summary)), 35, 0); ?></a>
-			<span><span><?php echo $when; ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+		?>
+		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->summary)), 35, 0); ?></a>
+			<span><span><?php echo Hubzero_View_Helper_Html::timeAgo($row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 		</li>
-<?php
+		<?php
 	}
-?>
+	?>
 	</ul>
 <?php } ?>
 	<ul class="module-nav">
