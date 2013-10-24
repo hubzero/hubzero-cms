@@ -244,9 +244,9 @@ class BlogModelEntry extends \Hubzero\Model
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
-		if ($property && $this->_creator instanceof JUser)
+		if ($property && $this->_creator instanceof Hubzero_User_Profile)
 		{
 			return $this->_creator->get($property);
 		}
@@ -451,6 +451,17 @@ class BlogModelEntry extends \Hubzero\Model
 	public function link($type='', $params=null)
 	{
 		return $this->_adapter()->build($type, $params);
+	}
+
+	/**
+	 * Gets a property of the adapter's object (e.g., a group, a member)
+	 * 
+	 * @param      string $property Property to get
+	 * @return     string
+	 */
+	public function item($property=null)
+	{
+		return $this->_adapter()->item($property);
 	}
 
 	/**

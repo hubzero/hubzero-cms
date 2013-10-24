@@ -57,9 +57,9 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 	{
 		$this->set('scope_id', $scope_id);
 
-		$group = Hubzero_Group::getInstance($scope_id);
+		$this->_item = Hubzero_Group::getInstance($scope_id);
 
-		$this->_segments['cn']     = $group->get('cn');
+		$this->_segments['cn']     = $this->_item->get('cn');
 		$this->_segments['active'] = 'blog';
 
 		$config = new JRegistry(
@@ -69,6 +69,35 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 		$this->set('path', str_replace('{{gid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog')));
 		$this->set('scope', $this->get('scope_id') . '/blog');
 		$this->set('option', $this->_segments['option']);
+	}
+
+	/**
+	 * Retrieve a property from the internal item object
+	 * 
+	 * @param      string $key Property to retrieve
+	 * @return     string
+	 */
+	public function item($key)
+	{
+		switch (strtolower($key))
+		{
+			case 'title':
+				$key = 'description';
+			break;
+
+			case 'alias':
+				$key = 'cn';
+			break;
+
+			case 'id':
+				$key = 'gidNumber';
+			break;
+
+			default:
+			break;
+		}
+
+		return parent::item($key);
 	}
 
 	/**

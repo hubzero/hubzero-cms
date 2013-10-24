@@ -65,6 +65,35 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 	}
 
 	/**
+	 * Retrieve a property from the internal item object
+	 * 
+	 * @param      string $key Property to retrieve
+	 * @return     string
+	 */
+	public function item($key)
+	{
+		switch (strtolower($key))
+		{
+			case 'title':
+				return JText::_('COM_BLOG');
+			break;
+
+			case 'alias':
+				return $this->get('scope');
+			break;
+
+			case 'id':
+				return $this->get('scope_id');
+			break;
+
+			default:
+			break;
+		}
+
+		return '';
+	}
+
+	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 * 

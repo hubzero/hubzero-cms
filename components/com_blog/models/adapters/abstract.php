@@ -37,6 +37,13 @@ defined('_JEXEC') or die('Restricted access');
 abstract class BlogModelAdapterAbstract extends \Hubzero\Object
 {
 	/**
+	 * The object the referenceid references
+	 * 
+	 * @var object
+	 */
+	protected $_item = null;
+
+	/**
 	 * Script name
 	 * 
 	 * @var string
@@ -58,6 +65,21 @@ abstract class BlogModelAdapterAbstract extends \Hubzero\Object
 	 */
 	public function __construct($scope_id=0)
 	{
+	}
+
+	/**
+	 * Retrieve a property from the internal item object
+	 * 
+	 * @param      string $key Property to retrieve
+	 * @return     string
+	 */
+	public function item($key='')
+	{
+		if ($key && is_object($this->_item))
+		{
+			return $this->_item->$key;
+		}
+		return $this->_item;
 	}
 
 	/**

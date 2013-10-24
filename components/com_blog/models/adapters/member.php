@@ -60,6 +60,8 @@ class BlogModelAdapterMember extends BlogModelAdapterAbstract
 		$this->_segments['id']     = $scope_id;
 		$this->_segments['active'] = 'blog';
 
+		$this->_item = Hubzero_User_Profile::getInstance($scope_id);
+
 		$config = new JRegistry(
 			JPluginHelper::getPlugin('members', 'blog')->params
 		);
@@ -70,6 +72,35 @@ class BlogModelAdapterMember extends BlogModelAdapterAbstract
 		$this->set('path', str_replace('{{uid}}', $id, $config->get('uploadpath', '/site/members/{{uid}}/blog')));
 		$this->set('scope', $this->get('scope_id') . '/blog');
 		$this->set('option', $this->_segments['option']);
+	}
+
+	/**
+	 * Retrieve a property from the internal item object
+	 * 
+	 * @param      string $key Property to retrieve
+	 * @return     string
+	 */
+	public function item($key)
+	{
+		switch (strtolower($key))
+		{
+			case 'title':
+				$key = 'name';
+			break;
+
+			case 'alias':
+				$key = 'username';
+			break;
+
+			case 'id':
+				$key = 'uidNumber';
+			break;
+
+			default:
+			break;
+		}
+
+		return parent::item($key);
 	}
 
 	/**
