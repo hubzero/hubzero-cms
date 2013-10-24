@@ -277,7 +277,7 @@ class PdfFormDeployment
 			return false;
 		}
 
-		if ($this->id && !$resp[$this->id.'.'.$member_id.'.'.$attempt])
+		if ($this->id && !isset($resp[$this->id.'.'.$member_id.'.'.$attempt]))
 		{
 			$resp[$this->id.'.'.$member_id.'.'.$attempt] = new PdfFormRespondent($this->id, $member_id, $attempt);
 		}
