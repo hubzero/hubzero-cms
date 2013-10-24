@@ -202,12 +202,12 @@ window.addEvent('domready', function() {
 					<th scope="col">Hits &amp; Misses</th>
 				</tr>
 <?php $size = 'width='.(GRAPH_SIZE+50).' height='.(GRAPH_SIZE+10); ?>
-<?php if ($this->graphics_avail) { ?>
+<?php if ($this->graphics_avail) : ?>
 				<tr class="row0">
 					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=1&amp;time=<?php echo $time; ?>" /></td>
 					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=2&amp;time=<?php echo $time; ?>" /></td>
 				</tr>
-<?php } else { ?>
+<?php endif; ?>
 				<tr class="row0">
 					<td>
 						<span class="green box">&nbsp;</span>
@@ -228,7 +228,6 @@ window.addEvent('domready', function() {
 						<?php echo "Misses: {$this->cache['num_misses']} " . sprintf(" (%.1f%%)", $this->cache['num_misses']*100/($this->cache['num_hits']+$this->cache['num_misses'])); ?>
 					</td>
 				</tr>
-<?php } ?>
 			</tbody>
 		</table>
 	</div>
