@@ -231,7 +231,10 @@ class CoursesTableUnit extends JTable
 		{
 			$where[] = "cu.offering_id=" . $this->_db->Quote($filters['offering_id']);
 		}
-
+		if (isset($filters['state']) && $filters['state'] >= 0) 
+		{
+			$where[] = "cu.state=" . $this->_db->Quote($filters['state']);
+		}
 		if (isset($filters['search']) && $filters['search']) 
 		{
 			$where[] = "(LOWER(cu.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 

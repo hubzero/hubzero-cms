@@ -212,7 +212,7 @@ class CoursesTableAssetGroup extends JTable
 		{
 			$where[] = "cag.alias=" . $this->_db->Quote($filters['alias']);
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']) && $filters['state'] >= 0) 
 		{
 			$where[] = "cag.state=" . $this->_db->Quote($filters['state']);
 		}

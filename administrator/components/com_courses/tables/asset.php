@@ -191,7 +191,7 @@ class CoursesTableAsset extends JTable
 		{
 			$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['asset_scope']);
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']) && $filters['state'] >= 0) 
 		{
 			$where[] = "ca.state=" . $this->_db->Quote($filters['state']);
 		}
