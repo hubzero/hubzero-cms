@@ -30,29 +30,30 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Display groups
-
-$html = '';
-
-$groups = $this->groups;
-if(!empty($groups)) 
-{
+if (!empty($this->groups)) { ?>
+	<?php
 	foreach ($this->groups as $g)
 	{
-		$html .= '<div class="latestGroup">';
-		$html .= '<h4><a href="' . JRoute::_('index.php?option=com_groups&cn=' . $g->gidNumber) . '">' . stripslashes($g->description) . '</a></h4>';
-		$html .= '<p class="groupDescription">';
-		$html .= stripslashes($g->public_desc);
-		$html .= '</p>';
-		$html .= '</div>';	
+		?>
+		<div class="latestGroup">
+			<h4>
+				<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $g->cn); ?>">
+					<?php echo $this->escape(stripslashes($g->description)); ?>
+				</a>
+			</h4>
+			<p class="groupDescription">
+				<?php echo $this->escape(stripslashes($g->public_desc)); ?>
+			</p>
+		</div>
+		<?php
 	}
-}
-else 
-{
-	$html .= '<p>No popular groups found</p>';
-}
+	?>
+<?php } else { ?>
+	<p><?php echo JText::_('MOD_LATESTGROUPS_NO_RESULTS'); ?></p>
+<?php } ?>
 
-$html .= '<p class="more"><a href="' . JRoute::_('index.php?option=com_groups') . '">' . 'All groups</a></p>';
-
-echo $html;
-
-?>
+	<p class="more">
+		<a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">
+			<?php echo JText::_('MOD_LATESTGROUPS_ALL'); ?>
+		</a>
+	</p>

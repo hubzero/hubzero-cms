@@ -38,7 +38,7 @@ $html .= '>' . "\n";
 
 if ($this->feed)
 {
-	$html .= "\t" . '<h3>' . $this->module->title;
+	$html .= "\t" . '<h3>' . $this->escape($this->module->title);
 	$html .= ' <a class="newsfeed" href="' . $this->feedlink . '" title="' . JText::_('MOD_WHATSNEW_SUBSCRIBE') . '">' . JText::_('MOD_WHATSNEW_NEWS_FEED') . '</a>';
 	$html .= '</h3>' . "\n";
 }
@@ -58,7 +58,7 @@ if (!$this->tagged)
 				continue;
 			}
 			$html .= "\t\t" . '<li class="new">';
-			$html .= '<a href="' . JRoute::_($row->href) . '">' . stripslashes($row->title) . '</a><br />';
+			$html .= '<a href="' . JRoute::_($row->href) . '">' . $this->escape(stripslashes($row->title)) . '</a><br />';
 			$html .= '<span>' . JText::_('in') . ' ';
 			$html .= ($row->area) ? JText::_(stripslashes($row->area)) : JText::_(strtoupper(stripslashes($row->section)));
 			if ($row->publish_up)
@@ -108,7 +108,7 @@ else
 				continue;
 			}
 			$html .= "\t" . ' <li class="new">';
-			$html .= '<a href="' . JRoute::_($row2->href) . '">' . stripslashes($row2->title) . '</a><br />';
+			$html .= '<a href="' . JRoute::_($row2->href) . '">' . $this->escape(stripslashes($row2->title)) . '</a><br />';
 			$html .= '<span>' . JText::_('MOD_WHATSNEW_IN') . ' ';
 			$html .= ($row2->section) ? JText::_($row2->area) : JText::_(strtoupper($row2->section));
 			if ($row2->publish_up)
@@ -130,7 +130,7 @@ else
 		$html .= "\t" . '<p>' . JText::_('MOD_WHATSNEW_NO_RESULTS') . '</p>' . "\n";
 	}
 }
-$html .= "\t" . '<p class="more"><a href="'.JRoute::_('index.php?option=com_whatsnew&period=' . $this->area . ':' . $this->period) . '">' . ($this->area ? JText::sprintf('MOD_WHATSNEW_VIEW_MORE_OF', $this->area) : JText::_('MOD_WHATSNEW_VIEW_MORE')) . '</a></p>' . "\n";
+$html .= "\t" . '<p class="more"><a href="'.JRoute::_('index.php?option=com_whatsnew&period=' . $this->area . ':' . $this->period) . '">' . ($this->area ? JText::sprintf('MOD_WHATSNEW_VIEW_MORE_OF', $this->escape($this->area)) : JText::_('MOD_WHATSNEW_VIEW_MORE')) . '</a></p>' . "\n";
 $html .= '</div>' . "\n";
 
 echo $html;

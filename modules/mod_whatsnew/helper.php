@@ -98,7 +98,7 @@ class modWhatsNew extends Hubzero_Module
 				if ($i < $num)
 				{
 					// display tag
-					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $tags[$i]['tag']) . '">' . stripslashes($tags[$i]['raw_tag']) . '</a> ' . "\n";
+					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $tags[$i]['tag']) . '">' . $this->escape(stripslashes($tags[$i]['raw_tag'])) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num)

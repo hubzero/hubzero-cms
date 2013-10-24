@@ -40,11 +40,11 @@ ximport('Hubzero_Module');
 class modTopTags extends Hubzero_Module
 {
 	/**
-	 * Display module
+	 * Get module contents
 	 * 
 	 * @return     void
 	 */
-	public function display()
+	public function run()
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
@@ -62,6 +62,26 @@ class modTopTags extends Hubzero_Module
 		$this->tags = $obj->getTopTags($numtags);
 
 		require(JModuleHelper::getLayoutPath('mod_toptags'));
+	}
+
+	/**
+	 * Display module
+	 * 
+	 * @return     void
+	 */
+	public function display()
+	{
+		if (intval($this->params->get('cache', 0)))
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+
+		$this->run();
 	}
 }
 

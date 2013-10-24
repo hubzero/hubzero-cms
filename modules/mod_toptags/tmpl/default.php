@@ -43,7 +43,7 @@ if (count($tags) > 0)
 	{
 		if (!in_array($tag->raw_tag, $exclude)) 
 		{
-			$tl[$tag->tag] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_tags&tag='.$tag->tag) . '">' . $tag->raw_tag . '</a></li>'; // <span>' . $tag->tcount . '</span>
+			$tl[$tag->tag] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_tags&tag='.$this->escape($tag->tag)) . '">' . $this->escape($tag->raw_tag) . '</a></li>'; // <span>' . $tag->tcount . '</span>
 		}
 	}
 	if ($this->sortby == 'alphabeta') 

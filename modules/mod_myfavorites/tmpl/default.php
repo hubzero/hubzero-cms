@@ -81,7 +81,7 @@ if ($this->error) {
 			}
 
 			// Build the category HTML
-			$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.stripslashes($name).' <span>'.JText::sprintf('MOD_MYFAVORITES_RESULTS', $total).'</span></h4>'."\n";
+			$html .= '<h4 class="fav-header" id="rel-'.$divid.'">'.$this->escape(stripslashes($name)).' <span>'.JText::sprintf('MOD_MYFAVORITES_RESULTS', $total).'</span></h4>'."\n";
 			$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
 			$html .= '<ol class="compactlist">'."\n";
 			foreach ($category as $row)
@@ -90,7 +90,7 @@ if ($this->error) {
 				$row->href = str_replace('&', '&amp;', $row->href);
 
 				$html .= "\t".'<li class="favorite">'."\n";
-				$html .= "\t\t".'<a href="'.$row->href.'">'.stripslashes($row->title).'</a>'."\n";
+				$html .= "\t\t".'<a href="'.$row->href.'">'.$this->escape(stripslashes($row->title)).'</a>'."\n";
 				$html .= "\t".'</li>'."\n";
 			}
 			$html .= '</ol>'."\n";
@@ -120,4 +120,3 @@ if ($this->error) {
 	// Output the HTML
 	echo $html;
 }
-?>

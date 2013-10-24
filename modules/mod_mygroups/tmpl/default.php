@@ -46,16 +46,16 @@ $total = count($this->groups);
 			$status = $this->getStatus($group);
 ?>
 		<li class="group">
-			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn); ?>"><?php echo stripslashes($group->description); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn); ?>"><?php echo $this->escape(stripslashes($group->description)); ?></a>
 			<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
-			<?php if(!$group->approved): ?>
+			<?php if (!$group->approved): ?>
 				<br />
-				<span class="status pending-approval"><?php echo JText::_('Group Pending Approval'); ?></span>
+				<span class="status pending-approval"><?php echo JText::_('MOD_MYGROUPS_GROUP_STATUS_PENDING'); ?></span>
 			<?php endif; ?>
 			<?php if ($group->regconfirmed && !$group->registered) : ?>
 				<span class="actions">
 					<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>">
-						<?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?> &rsaquo;
+						<?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?>
 					</a>
 				</span>
 			<?php endif; ?>

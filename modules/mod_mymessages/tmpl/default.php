@@ -50,18 +50,18 @@ if ($this->getError()) {
 		}
 		if ($row->component == 'support' || $row->component == 'com_support') 
 		{
-			$fg = explode(' ',$row->subject);
+			$fg = explode(' ', $row->subject);
 			$fh = array_pop($fg);
 			$row->subject = implode(' ', $fg);
 		}
 ?>
 		<li class="<?php echo $cls; ?>">
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=messages&msg=' . $row->id); ?>">
-				<?php echo stripslashes($row->subject); ?>
+				<?php echo $this->escape(stripslashes($row->subject)); ?>
 			</a>
 			<span>
 				<span>
-					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
+					<time datetime="<?php echo $this->escape($row->created); ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</span>
 			</span>
 		</li>
