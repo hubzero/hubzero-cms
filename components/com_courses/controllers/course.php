@@ -179,7 +179,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 			)
 		);
 
-		if ($pages = $this->course->pages())
+		if ($pages = $this->course->pages(array('active' => 1)))
 		{
 			foreach ($pages as $page)
 			{
