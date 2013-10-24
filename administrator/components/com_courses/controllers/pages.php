@@ -919,4 +919,92 @@ class CoursesControllerPages extends Hubzero_Controller
 
 		$this->cancelTask();
 	}
+
+	/**
+	 * Publish a course
+	 *
+	 * @return void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+
+	/**
+	 * Unpublish a course
+	 *
+	 * @return void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Set the state of a course
+	 *
+	 * @return void
+	 */
+	public function stateTask($state=0)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (!is_array($ids)) 
+		{
+			$ids = array();
+		}
+
+		// Do we have any IDs?
+		$num = 0;
+		if (!empty($ids))
+		{
+			//foreach course id passed in
+			foreach ($ids as $id)
+			{
+				// Load the course page
+				$model = new CoursesModelPage($id);
+
+				// Ensure we found the course info
+				if (!$model->exists())
+				{
+					continue;
+				}
+
+				//set the course to be published and update
+				$model->set('active', $state);
+				if (!$model->store())
+				{
+					$this->setError(JText::_('Unable to set state for page #' . $id . '.'));
+					continue;
+				}
+
+				// Log the course approval
+				$model->log($model->get('id'), 'page', ($state ? 'published' : 'unpublished'));
+
+				$num++;
+			}
+		}
+
+		if ($this->getErrors())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller, // . '&course=' . JRequest::getInt('course', 0) . '&offering=' . JRequest::getInt('offering', 0),
+				implode('<br />', $this->getErrors()),
+				'error'
+			);
+		}
+		else
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller, // . '&course=' . JRequest::getInt('course', 0) . '&offering=' . JRequest::getInt('offering', 0),
+				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+			);
+		}
+	}
 }

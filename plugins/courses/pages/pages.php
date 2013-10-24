@@ -110,21 +110,24 @@ class plgCoursesPages extends Hubzero_Plugin
 		//$total = $offering->pages(array('count' => true));
 		// Section specific pages
 		$total = $offering->pages(array(
-			'count' => true,
-			'section_id' => $offering->section()->get('id')
+			'count'       => true,
+			'section_id'  => $offering->section()->get('id'),
+			'active'      => 1
 		), true);
 
 		// Offering specific pages
 		$total += $offering->pages(array(
-			'count' => true,
-			'section_id' => 0
+			'count'       => true,
+			'section_id'  => 0,
+			'active'      => 1
 		), true);
 
 		// All course pages
 		$total += $offering->pages(array(
-			'count' => true,
+			'count'       => true,
 			'course_id'   => 0,
-			'offering_id' => 0
+			'offering_id' => 0,
+			'active'      => 1
 		), true);
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
@@ -211,18 +214,21 @@ class plgCoursesPages extends Hubzero_Plugin
 
 		// Section specific pages
 		$spages = $this->view->offering->pages(array(
-			'section_id' => $this->view->offering->section()->get('id')
+			'section_id'  => $this->view->offering->section()->get('id'),
+			'active'      => 1
 		), true);
 
 		// Offering specific pages
 		$opages = $this->view->offering->pages(array(
-			'section_id' => 0
+			'section_id'  => 0,
+			'active'      => 1
 		), true);
 
 		// All course pages
 		$gpages = $this->view->offering->pages(array(
 			'course_id'   => 0,
-			'offering_id' => 0
+			'offering_id' => 0,
+			'active'      => 1
 		), true);
 
 		$pages = array_merge($spages, $opages);

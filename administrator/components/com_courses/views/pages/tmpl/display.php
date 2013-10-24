@@ -101,9 +101,18 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php if (count($this->rows) > 0) { ?>
 	<?php 
+
 	$i = 0;
-	$n = count($this->rows);
-	foreach ($this->rows as $page) { ?>
+	$rows = array();
+	foreach ($this->rows as $key => $page) 
+	{
+		$rows[$i] = $page;
+		$i++;
+	}
+
+	$i = 0;
+	$n = count($rows);
+	foreach ($rows as $page) { ?>
 			<tr>
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="isChecked(this.checked);" />
@@ -123,20 +132,38 @@ function submitbutton(pressbutton)
 				<?php } ?>
 				</td>
 				<td>
-				<?php if ($page->get('active')) { ?>
-					<span class="state publish">
-						<span class="text"><?php echo JText::_('Published'); ?></span>
-					</span>
-				<?php } else { ?>
-					<span class="state unpublish">
-						<span class="text"><?php echo JText::_('Unpublished'); ?></span>
-					</span>
+				<?php if ($canDo->get('core.edit.state')) { ?>
+					<?php if ($page->get('active') == 1) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Unpublish Page'); ?>">
+						<span class="state publish">
+							<span class="text"><?php echo JText::_('Published'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($page->get('active') == 2) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Restore Page'); ?>">
+						<span class="state trash">
+							<span class="text"><?php echo JText::_('Trashed'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($page->get('active') == 3) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Page'); ?>">
+						<span class="state pending">
+							<span class="text"><?php echo JText::_('Draft'); ?></span>
+						</span>
+					</a>
+					<?php } else if ($page->get('active') == 0) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Page'); ?>">
+						<span class="state unpublish">
+							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
+						</span>
+					</a>
+					<?php } ?>
 				<?php } ?>
 				</td>
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $page->get('ordering'); ?>
-					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($this->rows[$i - 1]), 'orderup', 'Move Up', true); ?></span>
-					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($this->rows[$i + 1]), 'orderdown', 'Move Down', true); ?></span>
+					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($rows[$i - 1]), 'orderup', 'Move Up', true); ?></span>
+					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($rows[$i + 1]), 'orderdown', 'Move Down', true); ?></span>
 				</td>
 			</tr>
 	<?php 
