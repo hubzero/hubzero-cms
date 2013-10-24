@@ -116,6 +116,16 @@ class InstallerModelWarnings extends JModelList
 			$messages[] = array('message'=>JText::_('COM_INSTALLER_MSG_WARNINGS_SMALLUPLOADSIZE'), 'description'=>JText::_('COM_INSTALLER_MSG_WARNINGS_SMALLUPLOADSIZEDESC'));
 		}
 
+		if (!class_exists('imagick'))
+		{
+			$messages[] = array('message'=>JText::_('COM_INSTALLER_MSG_WARNINGS_MISSING_IMAGICK'), 'description'=>JText::_('COM_INSTALLER_MSG_WARNINGS_MISSING_IMAGICK_DESC'));
+		}
+
+		if (!file_exists(DS . 'usr' . DS . 'bin' . DS . 'unzip'))
+		{
+			$messages[] = array('message'=>JText::_('COM_INSTALLER_MSG_WARNINGS_MISSING_UNZIP'), 'description'=>JText::_('COM_INSTALLER_MSG_WARNINGS_MISSING_UNZIP_DESC'));
+		}
+
 		return $messages;
 	}
 }
