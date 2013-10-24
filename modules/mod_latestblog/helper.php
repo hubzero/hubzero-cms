@@ -44,104 +44,64 @@ class modLatestBlog extends Hubzero_Module
 	 */
 	public function run()
 	{
-		$database =& JFactory::getDBO();
-
-		$juser =& JFactory::getUser();
-
-		ximport("Hubzero_Group");
-
-		//get the params
-		$this->cls       = $this->params->get('moduleclass_sfx');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
 
 		$this->pullout   = $this->params->get('pullout', 'yes');
-		$this->limit     = $this->params->get('limit', 5);
-		$this->charlimit = $this->params->get('charlimit', 100);
-
 		$this->feedlink  = $this->params->get('feedlink', 'yes');
-		$this->morelink  = $this->params->get('morelink', '');
+		$this->limit     = $this->params->get('limit', 5);
 
-		$include = $this->params->get('blog', 'site');
-
-		$nullDate = $database->getNullDate();
-		$date =& JFactory::getDate();
-		$now = $date->toMySQL();
-		
-		$query = "AND (f.publish_up = " . $database->Quote($nullDate) . " OR f.publish_up <= " . $database->Quote($now) . ") 
-				AND (f.publish_down = " . $database->Quote($nullDate) . " OR f.publish_down >= " . $database->Quote($now) . ")";
-
-		$site_blog = array();
-		if ($include == 'site' || $include == 'both')
+		$filters = array(
+			'limit'    => $this->params->get('limit', 5),
+			'start'    => 0,
+			'scope'    => $this->params->get('blog', 'site'),
+			'group_id' => 0
+		);
+		if ($filters['scope'] == 'both' || $filters['scope'] == 'group')
 		{
-			//get all blog posts on site blog
-			$database->setQuery("SELECT f.*, u.name FROM #__blog_entries f LEFT JOIN #__users AS u ON u.id=f.created_by WHERE f.group_id='0' AND f.state='1' AND scope='site' $query ORDER BY publish_up DESC LIMIT " . $this->limit);
-			$site_blog = $database->loadObjectList();
+			$filters['limit'] = ($filters['limit'] * 5);  // Since some groups May have private entries, we need to up the limit to try and catch more
+		}
+		if ($filters['scope'] == 'both')
+		{
+			$filters['scope'] = '';
 		}
 
-		$member_blog = array();
-		if ($include == 'member' || $include == 'both')
-		{
-			//get all blog posts on site blog
-			$database->setQuery("SELECT f.*, u.name FROM #__blog_entries f LEFT JOIN #__users AS u ON u.id=f.created_by WHERE f.group_id='0' AND f.state='1' AND scope='member' $query ORDER BY publish_up DESC LIMIT " . $this->limit);
-			$member_blog = $database->loadObjectList();
-		}
+		$archive = new BlogModel('site', 0);
+		$rows = $archive->entries('list', $filters);
 
-		$group_blog = array();
-		if ($include == 'group' || $include == 'both')
+		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
 		{
-			//get any group posts
-			$database->setQuery("SELECT f.*, u.name FROM #__blog_entries f LEFT JOIN #__users AS u ON u.id=f.created_by WHERE f.group_id<>'0' AND f.state='1' AND scope='group' $query ORDER BY publish_up DESC LIMIT " . $this->limit);
-			$group_blog = $database->loadObjectList();
+			ximport('Hubzero_Group_Helper');
+			$juser =& JFactory::getUser();
 
 			//make sure that the group for each blog post has the right privacy setting
-			foreach ($group_blog as $k => $gf) 
+			foreach ($rows as $k => $gf)
 			{
-				$group = Hubzero_Group::getInstance($gf->group_id);
+				if (!$gf->get('group_id'))
+				{
+					continue;
+				}
+
+				$group = $gf->item();
 				if (is_object($group)) 
 				{
-					ximport('Hubzero_Group_Helper');
 					$blog_access = Hubzero_Group_Helper::getPluginAccess($group, 'blog');
 
 					if ($blog_access == 'nobody' 
 					 || ($blog_access == 'registered' && $juser->get('guest')) 
 					 || ($blog_access == 'members' && !in_array($juser->get('id'), $group->get('members')))) 
 					{
-						unset($group_blog[$k]);
+						$rows->offsetUnset($k);
 					}
 				} 
 				else 
 				{
-					unset($group_blog[$k]);
+					$rows->offsetUnset($k);
 				}
 			}
 		}
+		$rows->reset();
 
-		//based on param decide what to include
-		switch ($include) 
-		{
-			case 'site':   $posts = $site_blog;   break;
-			case 'member': $posts = $member_blog; break;
-			case 'group':  $posts = $group_blog;  break;
-			case 'both':  
-			default:
-				$posts = array_merge($site_blog, $member_blog);
-				$posts = array_merge($posts, $group_blog);
-			break;
-		}
-
-		//function to sort by created date
-		function sortbydate($a, $b)
-		{
-			$d1 = date("Y-m-d H:i:s", strtotime($a->created));
-			$d2 = date("Y-m-d H:i:s", strtotime($b->created));
-
-			return ($d1 > $d2) ? -1 : 1;
-		}
-
-		//sort using function above - date desc
-		usort($posts, 'sortbydate');
-
-		//set posts to view
-		$this->posts = $posts;
+		$this->posts = $rows;
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');

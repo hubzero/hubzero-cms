@@ -29,132 +29,94 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_User_Profile_Helper');
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
-
 $c = 0;
 ?>
-<div id="latest_discussions_module" class="<?php echo $this->cls; ?>">
-	<?php if (count($this->posts > 0)) : ?>
+<div class="latest_discussions_module <?php echo $this->params->get('moduleclass_sfx'); ?>">
+	<?php if (count($this->posts) > 0) : ?>
 		<ul class="blog-entries">
-			<?php 
-			foreach ($this->posts as $post) 
-			{ 
-				if ($c < $this->limit) 
-				{
-				switch ($post->scope) 
-				{
-					case 'site':
-						$wikiconfig = array(
-							'option'   => 'com_blog',
-							'scope'    => 'blog',
-							'pagename' => $post->alias,
-							'pageid'   => 0,
-							'filepath' => '/site/blog',
-							'domain'   => ''
-						);
-						$url = 'index.php?option=com_blog&task=' . JHTML::_('date', $post->publish_up, 'Y') . '/' . JHTML::_('date', $post->publish_up, 'm') . '/' . $post->alias;
-						$location = '<a href="' . JRoute::_('index.php?option=com_blog') . '">' . JText::_('Site-Wide Blog') . '</a>';
-					break;
-
-					case 'member':
-						$wikiconfig = array(
-							'option'   => 'com_members',
-							'scope'    => 'blog',
-							'pagename' => $post->alias,
-							'pageid'   => 0,
-							'filepath' => '/site/members' . $post->created_by . '/blog',
-							'domain'   => ''
-						);
-						$url = 'index.php?option=com_members&id=' . $post->created_by . '&active=blog&task=' . JHTML::_('date', $post->publish_up, 'Y') . '/' . JHTML::_('date', $post->publish_up, 'm') . '/' . $post->alias;
-						$location = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->created_by . '&active=blog') . '">' . JText::_('Member Blog') . '</a>';
-					break;
-
-					case 'group':
-						$wikiconfig = array(
-							'option'   => 'com_groups',
-							'scope'    => 'blog',
-							'pagename' => $post->alias,
-							'pageid'   => 0,
-							'filepath' => '/site/groups/' . $post->group_id . '/blog',
-							'domain'   => ''
-						);
-						ximport('Hubzero_Group');
-						$group = Hubzero_Group::getInstance($post->group_id);
-						$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog&scope=' .  JHTML::_('date', $post->publish_up, 'Y') . '/' . JHTML::_('date', $post->publish_up, 'm') . '/' . $post->alias;
-						$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
-					break;
-				}
-				$post->content = $p->parse(stripslashes($post->content), $wikiconfig);
+		<?php 
+		foreach ($this->posts as $post) 
+		{ 
+			if ($c < $this->limit) 
+			{
 				?>
 					<li>
-						<?php
-						$author = Hubzero_User_Profile::getInstance($post->created_by);
-						if (is_object($author) && $author->get('name')) 
-						{
-						?>
-							<p class="entry-author-photo"><img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($author, 0); ?>" alt="" /></p>
-						<?php
-							}
-						?>
+						<p class="entry-author-photo">
+							<img src="<?php echo $post->creator()->getPicture(); ?>" alt="" />
+						</p>
 						<div class="entry-content">
 							<h4>
-								<a href="<?php echo JRoute::_($url); ?>"><?php echo $this->escape(stripslashes($post->title)); ?></a>
+								<a href="<?php echo JRoute::_($post->link()); ?>"><?php echo $this->escape(stripslashes($post->get('title'))); ?></a>
 							</h4>
 							<dl class="entry-meta">
 								<dt>
 									<span>
-										<?php echo JText::sprintf('Entry #%s', $post->id); ?>
+										<?php echo JText::sprintf('MOD_LATESTBLOG_ENTRY_NUMBER', $post->get('id')); ?>
 									</span>
 								</dt>
 								<dd class="date">
-									<time datetime="<?php echo $post->publish_up; ?>">
-										<?php echo JHTML::_('date', $post->publish_up, JText::_('DATE_FORMAT_HZ1')); ?>
+									<time datetime="<?php echo $post->published(); ?>">
+										<?php echo $post->published('date'); ?>
 									</time>
 								</dd>
 								<dd class="time">
-									<time datetime="<?php echo $post->publish_up; ?>">
-										<?php echo JHTML::_('date', $post->publish_up, JText::_('TIME_FORMAT_HZ1')); ?>
+									<time datetime="<?php echo $post->published(); ?>">
+										<?php echo $post->published('time'); ?>
 									</time>
 								</dd>
 								<dd class="author">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $post->created_by); ?>">
-										<?php echo $this->escape(stripslashes($post->name)); ?>
+									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
+										<?php echo $this->escape(stripslashes($post->creator('name'))); ?>
 									</a>
 								</dd>
 								<dd class="location">
-									<?php echo $location; ?>
+									<a href="<?php echo $post->link('base'); ?>">
+										<?php 
+										switch ($post->get('scope')) 
+										{
+											case 'site':
+												echo JText::_('MOD_LATESTBLOG_LOCATION_BLOG_SITE');
+											break;
+
+											case 'member':
+												echo JText::_('MOD_LATESTBLOG_LOCATION_BLOG_MEMBER');
+											break;
+
+											case 'group':
+												echo $this->escape(stripslashes($post->item('title')));
+											break;
+										}
+										?>
+									</a>
 								</dd>
 							</dl>
 							<div class="entry-body">
 								<?php 
 								if ($this->pullout && $c == 0)
 								{
-									$post->content = Hubzero_View_Helper_Html::shortenText($post->content, $this->params->get('pulloutlimit', 500), 0, 1);
+									echo $post->content('clean', $this->params->get('pulloutlimit', 500));
 								}
 								else
 								{
-									$post->content = Hubzero_View_Helper_Html::shortenText($post->content, $this->charlimit, 0, 1);
+									echo $post->content('clean', $this->params->get('charlimit', 100));
 								}
-								if (substr($post->content, -7) == '&#8230;') 
-								{
-									$post->content .= '</p>';
-								}
-								echo $post->content; ?>
+								?>
 							</div>
 						</div>
 					</li>
-				<?php } ?>
-				<?php $c++; ?>
-			<?php } ?>
+				<?php 
+			}
+			$c++;
+		}
+		?>
 		</ul>
 	<?php else : ?>
-		<p><?php echo JText::_('Currently there are no posts.'); ?></p>
+		<p><?php echo JText::_('MOD_LATESTBLOG_NO_RESULTS'); ?></p>
 	<?php endif; ?>
 	
-	<?php if ($this->morelink != '') : ?>
-		<p class="more"><a href="<?php echo $this->morelink; ?>">More posts &rsaquo;</a></p>
+	<?php if ($more = $this->params->get('morelink', '')) : ?>
+		<p class="more">
+			<a href="<?php echo $more; ?>"><?php echo JText::_('MOD_LATESTBLOG_MORE_RESULTS'); ?></a>
+		</p>
 	<?php endif; ?>
 </div>
