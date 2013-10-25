@@ -10,6 +10,7 @@
 	.aside .container .tags li {
 		background: transparent;
 		padding: 0;
+		border: none;
 	}
 	.icon-wish:before {
 		content: "\f078";
@@ -29,12 +30,8 @@
 	}
 	ul.answers li,
 	ul.wishs li {
-		padding: 0 0 0 17px;
+		padding: 0;
 		margin: 0.3em 0;
-		background: url("/components/com_wishlist/assets/img/bullets_medium.gif") no-repeat 0px -133px;
-	}
-	ul.answers li {
-		background: url("/components/com_wishlist/assets/img/bullets_medium.gif") no-repeat 0px -442px;
 	}
 	.entries .list-footer li {
 		background-image: none;
@@ -49,58 +46,72 @@
 		border-bottom: 1px solid #333;
 	}
 
-	.entry-comments {
-		padding-right: 16px;
-		background: url("/components/com_wishlist/assets/img/bullets_small.png") no-repeat right -428px;
+	.entry-comments a:before {
+		content: "\f0e5";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
 	}
 
+	.ideas .entry-id {
+		display: block;
+		overflow: hidden;
+		width: 1.7em;
+		height: 1.7em;
+		margin: .5em 0 0 0;
+		text-align: center;
+	}
 	.ideas .entry-id:before {
 		content: "\f078";
-	}
-	.ideas .entry-id {
-		display: none;
-	}
-	.ideas tbody th {
-		background: url("/components/com_wishlist/assets/img/lightbulb_off.png") right 15px no-repeat;
+		font-family: "Fontcons";
+		font-size: 1.7em;
+		line-height: 1;
+		margin-right: 1em;
+		color: #aaa;
+		font-weight: normal;
 	}
 	/* Accepted */
 	.ideas tbody tr.accepted {
 		background: #ffe;
 	}
-	.ideas tbody tr.accepted th {
-		background: url("/components/com_wishlist/assets/img/lightbulb.png") right 15px no-repeat;
+	.ideas tbody tr.accepted .entry-id:before {
+		content: "\f078";
 	}
 	/* Granted */
-	.ideas tbody tr.granted th {
-		background: url("/components/com_wishlist/assets/img/lightbulb_granted.png") right 15px no-repeat;
+	.ideas tbody tr.granted .entry-id:before {
+		content: "\2714";
+		font-size: 1.2em;
 	}
 	.ideas tbody tr.granted {
 		background: #f7fef4;
 	}
 	/* Rejected */
-	.ideas tbody tr.rejected th {
-		background: url("/components/com_wishlist/assets/img/lightbulb_rejected.png") right 15px no-repeat;
+	.ideas tbody tr.rejected .entry-id:before {
+		content: "\2716";
+		font-size: 1.2em;
 	}
 	.ideas tbody tr.rejected {
 		background: #fff6f4;
 	}
 	/* Flagged */
-	.ideas tbody tr.flagged th {
-		background: url("/components/com_wishlist/assets/img/lightbulb_flagged.png") right 15px no-repeat;
+	.ideas tbody tr.flagged .entry-id:before {
+		content: "\2691";
+		font-size: 1.2em;
 	}
 	/* Withdrawn */
 	.ideas tbody tr.withdrawn {
 		background: #f1f1f1;
 	}
-	.ideas tbody tr.withdrawn th {
-		background: url("/components/com_wishlist/assets/img/lightbulb_withdrawn.png") right 15px no-repeat;
+	.ideas tbody tr.withdrawn .entry-id:before {
+		content: "\2298";
+		font-size: 1.2em;
 	}
 	/* Private */
 	.ideas tbody tr.private {
 		background-image: none;
 	}
-	.ideas tbody tr.private th {
-		background-image: url("/components/com_wishlist/assets/img/lightbulb_private.png"); /* lock.png */
+	.ideas tbody tr.private .entry-id:before {
+		content: "\f023";
+		font-size: 1.2em;
 	}
 	.entries tbody td.voting,
 	.voting {
@@ -174,9 +185,6 @@
 		font-size: 85%;
 	}
 	.entry-reward a {
-		/*background: url("/components/com_wishlist/assets/img/coins.png") top right no-repeat;
-		padding: 0 20px 0 0;
-		display: inline-block;*/
 		color: #999;
 	}
 	.entry-reward a span {
@@ -311,33 +319,6 @@
 	/* Voting */
 	.wish .entry-voting {
 		float:right; 
-	}
-	.wish .entry-voting .wish_vote {
-		margin: 0 0 0 1em;
-		color: #666;
-	}
-	.wish .entry-voting .wish_vote a,
-	.wish .entry-voting .wish_vote a.voted {
-		border: none;
-		width: 19px;
-		height: 19px;
-		display: inline-block;
-		margin: 0;
-		padding: 0 0 3px 0;
-		color: #bfbfbf;
-		overflow: hidden;
-		text-indent: -55em;
-	}
-	.wish .entry-voting .wish_vote a.voted {
-		background: url("/components/com_wishlist/assets/img/thumbup_ok.gif") 0 0 no-repeat;
-	}
-	.wish .entry-voting .wish_vote a {
-		background: url("/components/com_wishlist/assets/img/thumbup.gif") 0 0 no-repeat;
-		height: 15px;	
-	}
-	.wish .entry-voting .wish_vote a:hover {
-		background-position: 0 -32px;
-		color: #000;
 	}
 	.wish-bonus {
 		margin: 1em 0;
