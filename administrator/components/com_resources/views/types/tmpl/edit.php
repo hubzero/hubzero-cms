@@ -38,7 +38,7 @@ $canDo = ResourcesHelper::getActions('type');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resource Type') . '</a>: <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Resource Type') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -299,9 +299,14 @@ window.addEvent('domready', Fields.initialise);
 
 				foreach ($plugins as $plugin)
 				{
+					if (strstr($plugin->name, '_'))
+					{
+						$lang = JFactory::getLanguage();
+						$lang->load($plugin->name);
+					}
 					?>
 					<tr>
-						<td><?php echo stripslashes($plugin->name); ?></td>
+						<td><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></td>
 						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
 						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
 					</tr>
