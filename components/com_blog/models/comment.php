@@ -293,8 +293,7 @@ class BlogModelComment extends \Hubzero\Model
 					'domain'   => ''
 				);
 
-				JPluginHelper::importPlugin('hubzero');
-				$content = JDispatcher::getInstance()->trigger('onWikiParseText', array(
+				$content = $this->importPlugin('hubzero')->trigger('onWikiParseText', array(
 					stripslashes($this->get('content')), 
 					$config,  // options
 					false,     // full parse

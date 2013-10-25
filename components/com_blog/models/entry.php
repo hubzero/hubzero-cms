@@ -567,8 +567,7 @@ class BlogModelEntry extends \Hubzero\Model
 					'domain'   => ''
 				);
 
-				JPluginHelper::importPlugin('hubzero');
-				$content = JDispatcher::getInstance()->trigger('onWikiParseText', array(
+				$content = $this->importPlugin('hubzero')->trigger('onWikiParseText', array(
 					stripslashes($this->get('content')), 
 					$config,  // options
 					true,     // full parse
