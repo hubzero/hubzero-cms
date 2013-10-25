@@ -38,6 +38,9 @@
 	.member_courses .section {
 		padding: 10px;
 	}
+	.member_courses .entries tbody th {
+		width: 1.5em;
+	}
 	.user-options + .container {
 		margin-top: 0;
 	}
