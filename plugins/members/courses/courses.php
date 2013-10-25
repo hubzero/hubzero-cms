@@ -156,7 +156,7 @@ class plgMembersCourses extends JPlugin
 				0,
 				'int'
 			);
-			$view->filters['task'] = strtolower(JRequest::getVar('action', 'student'));
+			$view->filters['task'] = strtolower(JRequest::getVar('action', ''));
 			$view->filters['sort'] = strtolower(JRequest::getWord('sort', 'enrolled'));
 			if (!in_array($view->filters['sort'], array('enrolled', 'title')))
 			{
@@ -170,12 +170,26 @@ class plgMembersCourses extends JPlugin
 
 			if ($view->hasRoles >= 1)
 			{
-				foreach ($roles as $i => $role)
+				$found = false;
+				if ($view->filters['task'])
 				{
-					if ($role->total > 0)
+					foreach ($roles as $i => $role)
 					{
-						$view->filters['task'] = $role->alias;
-						break;
+						if ($view->filters['task'] == $role->alias && $role->total > 0)
+						{
+							$found = true;
+						}
+					}
+				}
+				if (!$found)
+				{
+					foreach ($roles as $i => $role)
+					{
+						if ($role->total > 0)
+						{
+							$view->filters['task'] = $role->alias;
+							break;
+						}
 					}
 				}
 			}
