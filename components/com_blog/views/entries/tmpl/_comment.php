@@ -9,10 +9,9 @@ defined('_JEXEC') or die('Restricted access');
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	$name = JText::_('COM_BLOG_ANONYMOUS');
-	$huser = new Hubzero_User_Profile;
 	if (!$this->comment->get('anonymous')) 
 	{
-		$huser = Hubzero_User_Profile::getInstance($this->comment->get('created_by'));
+		$huser = $this->comment->creator();
 		if (is_object($huser) && $huser->get('name')) 
 		{
 			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
@@ -30,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator('picture'); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">

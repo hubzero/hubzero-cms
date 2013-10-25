@@ -216,22 +216,23 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<?php 
 			if ($this->config->get('show_authors')) 
 			{
-				$author = Hubzero_User_Profile::getInstance($this->row->get('created_by'));
-				if (is_object($author) && $author->get('name')) 
+				if (is_object($this->row->creator())) 
 				{
 			?>
 				<div class="entry-author">
 					<h3><?php echo JText::_('COM_BLOG_AUTHOR_ABOUT'); ?></h3>
-					<p class="entry-author-photo"><img src="<?php echo $author->getPicture(); ?>" alt="" /></p>
+					<p class="entry-author-photo">
+						<img src="<?php echo $this->row->creator('picture'); ?>" alt="" />
+					</p>
 					<div class="entry-author-content">
 						<h4>
 							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->get('created_by')); ?>">
-								<?php echo $this->escape(stripslashes($author->get('name'))); ?>
+								<?php echo $this->escape(stripslashes($this->row->creator('name'))); ?>
 							</a>
 						</h4>
 						<p class="entry-author-bio">
-						<?php if ($author->get('bio')) { ?>
-							<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
+						<?php if ($bio = $this->row->creator('bio')) { ?>
+							<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($bio), 300, 0); ?>
 						<?php } else { ?>
 							<em><?php echo JText::_('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
 						<?php } ?>
@@ -319,7 +320,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					$anonymous = 1;
 				}
 				?>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anonymous); ?>" alt="" />
+				<img src="<?php echo $jxuser->getPicture($anonymous); ?>" alt="" />
 			</p>
 			<fieldset>
 			<?php
@@ -359,7 +360,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<label for="commentcontent">
 					Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 					<?php
-						//ximport('Hubzero_Wiki_Editor');
+						ximport('Hubzero_Wiki_Editor');
 						echo Hubzero_Wiki_Editor::getInstance()->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
 					?>
 				</label>

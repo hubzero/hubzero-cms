@@ -166,6 +166,10 @@ class BlogModelComment extends \Hubzero\Model
 		if ($property && $this->_creator instanceof Hubzero_User_Profile)
 		{
 			$property = ($property == 'id') ? 'uidNumber' : $property;
+			if ($property == 'picture')
+			{
+				return $this->_creator->getPicture($this->get('anonymous'));
+			}
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
