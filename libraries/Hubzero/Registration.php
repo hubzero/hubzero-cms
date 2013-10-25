@@ -1254,7 +1254,7 @@ class Hubzero_Registration
 		// check the general validity
 		if (!Hubzero_Registration_Helper::validlogin($username)) 
 		{
-			$ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only alphanumeric characters.';	
+			$ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase alphanumeric characters.';	
 			return $ret;
 		}
 				
