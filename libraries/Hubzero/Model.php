@@ -437,5 +437,27 @@ abstract class Model extends Object
 		// Hey, no errors!
 		return true;
 	}
+
+	/**
+	 * Import a set of plugins
+	 * 
+	 * @return     object
+	 */
+	public function importPlugin($type='')
+	{
+		\JPluginHelper::importPlugin($type);
+
+		return $this;
+	}
+
+	/**
+	 * Import a set of plugins
+	 * 
+	 * @return     object
+	 */
+	public function trigger($event='', $params=array())
+	{
+		return \JDispatcher::getInstance()->trigger($event, $params);
+	}
 }
 
