@@ -175,8 +175,20 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->access       = 0;
-		$asset->path         = urldecode(JRequest::getVar('url', 'http://')); // make sure no path is specified just yet
+		$asset->path         = urldecode(JRequest::getVar('url', 'http://'));
 		$asset->type         = 11;
+		if (!Hubzero_Validate::validurl($asset->path))
+		{
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => array(JText::_('Link provided is not a valid URL.')),
+				'file'      => $asset->path,
+				'directory' => '',
+				'parent'    => $pid,
+				'id'        => 0
+			));
+			return;
+		}
 		if (!$asset->check()) 
 		{
 			echo json_encode(array(
@@ -244,6 +256,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		//echo result
 		echo json_encode(array(
 			'success'   => true, 
+			'errors'    => array(),
 			'file'      => $asset->path,
 			'directory' => '',
 			'parent'    => $pid,
@@ -501,13 +514,14 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 					$doc_id = $this->database->insertId();
 				}
 
-				$this->database->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$asset->id . ')');
+				$this->database->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
 				system('/usr/bin/textifier ' . escapeshellarg($file) . ' >/dev/null');
 			}
 		}
 
 		echo json_encode(array(
 			'success'   => true, 
+			'errors'    => $this->getErrors(),
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
 			'parent'    => $pid

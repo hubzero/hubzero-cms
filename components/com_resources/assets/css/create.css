@@ -480,6 +480,7 @@
 	}*/
 	.asset-uploader {
 		margin-top: 5em;
+		position: relative;
 	}
 	.asset-uploader .columns {
 		margin-top: 0;
@@ -535,4 +536,14 @@
 	}
 	.qq-upload-list {
 		display: none;
+	}
+	.processing-indicator {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		display: none;
+		background: #fff url("../img/loading.gif") 50% 50% no-repeat;
+		background: rgba(255, 255, 255, 0.8) url("../img/loading.gif") 50% 50% no-repeat;
 	}

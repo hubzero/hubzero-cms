@@ -24,16 +24,20 @@ jQuery(document).ready(function(jq){
 		iframe = $('#attaches');
 
 	if ($("#ajax-uploader").length) {
+		iframe.parent().append('<div class="processing-indicator"></div>');
 
 		if ($('#link-adder').length > 0) {
 			$('#link-adder')
 				.on('click', function(){
 					iframe.parent().find('p.error').remove();
+					
 
 					var fname = prompt("Please provide a link:", "http://");
 
 					if (fname) {
+						iframe.parent().find('div.processing-indicator').show();
 						$.getJSON($(this).attr('data-action') + encodeURIComponent(fname), {}, function(data) {
+							iframe.parent().find('div.processing-indicator').hide();
 							if (data.success) {
 								iframe.attr('src', iframe.attr('src') + '1');
 							} else {
@@ -63,8 +67,11 @@ jQuery(document).ready(function(jq){
 					'</div>',
 			onSubmit: function(id, file) {
 				iframe.parent().find('p.error').remove();
+				iframe.parent().find('div.processing-indicator').show();
 			},
 			onComplete: function(id, file, response) {
+				console.log(response);
+				iframe.parent().find('div.processing-indicator').hide();
 				if (response.success) {
 					iframe.attr('src', iframe.attr('src') + '1');
 				} else {
