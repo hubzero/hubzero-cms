@@ -1170,6 +1170,8 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		$authorized = JRequest::getInt('authorization', 0);
 		if (!$authorized && !$published) 
 		{
+			$this->_getStyles($this->_option, $this->_controller . '.css');
+
 			$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
 			$this->_checkProgress($id);
 			$this->step_review();
@@ -1212,6 +1214,8 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 			if (!$contributors || count($contributors) <= 0) 
 			{
+				$this->_getStyles($this->_option, $this->_controller . '.css');
+
 				$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
 				$this->_checkProgress($id);
 				$this->step_review();
@@ -1231,6 +1235,8 @@ class ResourcesControllerCreate extends Hubzero_Controller
 					$licenseText = JRequest::getVar('license-text', '');
 					if ($licenseText == '[ENTER LICENSE HERE]') 
 					{
+						$this->_getStyles($this->_option, $this->_controller . '.css');
+
 						$this->setError(JText::_('Please enter a license.'));
 						$this->_checkProgress($id);
 						$this->step_review();
