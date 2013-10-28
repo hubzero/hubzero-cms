@@ -815,6 +815,9 @@ class TagsControllerTags extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Check that the user is authorized
 		if (!$this->config->get('access-edit-tag')) 
 		{
