@@ -1116,7 +1116,8 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 		$rt = new ResourcesTags($this->database);
 		//$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
-		$this->database->execute('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
+		$this->database->setQuery('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
+		$this->database->execute();
 		foreach ($push as $tag) 
 		{
 			/*$this->database->setQuery('SELECT id FROM #__tags WHERE tag = ' . $this->database->quote($tag[1]));
