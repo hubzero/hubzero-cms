@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelper::getActions('contributor');
+$canDo = ResourcesHelperPermissions::getActions('contributor');
 
 JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Authors'), 'addedit.png');
 if ($canDo->get('core.admin')) 

@@ -28,7 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelper::getActions('contributor');
+$canDo = ResourcesHelperPermissions::getActions('contributor');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 

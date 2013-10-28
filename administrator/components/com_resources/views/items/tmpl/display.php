@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelper::getActions('resource');
+$canDo = ResourcesHelperPermissions::getActions('resource');
 
 JToolBarHelper::title(JText::_('Resource Manager'), 'resources.png');
 if ($canDo->get('core.admin')) 

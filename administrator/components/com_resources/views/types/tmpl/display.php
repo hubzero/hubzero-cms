@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelper::getActions('type');
+$canDo = ResourcesHelperPermissions::getActions('type');
 
 JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Types'), 'addedit.png');
 if ($canDo->get('core.create')) 

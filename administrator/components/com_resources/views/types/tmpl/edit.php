@@ -36,7 +36,7 @@ $base = str_replacE('/administrator', '', rtrim(JURI::getInstance()->base(true),
 $document =& JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
 
-$canDo = ResourcesHelper::getActions('type');
+$canDo = ResourcesHelperPermissions::getActions('type');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 

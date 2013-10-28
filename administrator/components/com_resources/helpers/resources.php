@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 
-class ResourcesHelper
+class ResourcesHelperPermissions
 {
 	/**
 	 * Name of the component

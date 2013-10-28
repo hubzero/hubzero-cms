@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelper::getActions('resource');
+$canDo = ResourcesHelperPermissions::getActions('resource');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') . ' #' . $this->row->id : JText::_('New'));
 
