@@ -1967,17 +1967,17 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$comment =& $this->view->comments[$i];
 			//$comment->comment = stripslashes($comment->comment);
-			if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
-			{
-				$comment->comment = str_replace("<br />", '', $comment->comment);
+			//if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
+			//{
+				$comment->comment = preg_replace("/<br\s?\/>/i", '', $comment->comment);
 				$comment->comment = $this->view->escape($comment->comment);
 				$comment->comment = nl2br($comment->comment);
 				$comment->comment = str_replace("\t", ' &nbsp; &nbsp;', $comment->comment);
 				$comment->comment = preg_replace('/  /', ' &nbsp;', $comment->comment);
-			}
+			//}
 			$comment->comment = $attach->parse($comment->comment);
 		}
-
+//echo $this->view->escape('<p>blofdsaffdas</p>');
 		$this->view->row->report = $attach->parse($this->view->row->report);
 
 		// Get severities
