@@ -1061,7 +1061,7 @@ class ResourcesModelResource extends JObject
 
 			$cc = new CitationsCitation($this->_db);
 
-			if ($results = $cc->getCitations('resource', $this->_id))
+			if ($results = $cc->getCitations('resource', $this->resource->id))
 			{
 				$this->citations = $results;
 			}
