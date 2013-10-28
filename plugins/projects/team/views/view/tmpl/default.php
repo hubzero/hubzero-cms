@@ -34,15 +34,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-$mconfig =& JComponentHelper::getParams( 'com_members' );
-$path  = $mconfig->get('webpath');
-if (substr($path, 0, 1) != DS) {
-	$path = DS.$path;
-}
-if (substr($path, -1, 1) == DS) {
-	$path = substr($path, 0, (strlen($path) - 1));
-}
-$ih = new ProjectsImgHandler();
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $whatsleft = $this->total - $this->filters['start'] - $this->filters['limit'];
 $prev_start = $this->filters['start'] - $this->filters['limit'];
@@ -56,11 +47,9 @@ $goto  = 'alias=' . $this->project->alias;
 	<h3 class="team"><?php echo $this->title; ?></h3>
 </div>
 <?php
-// Get default profile thumb
-$default_thumb = $mconfig->get('defaultpic');
-if (substr($default_thumb, 0, 1) != DS) {
-	$default_thumb = DS.$default_thumb;
-}
+
+ximport('Hubzero_User_Profile_Helper');
+
 ?>	
 <form id="plg-form" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto).'/?active=team'; ?>">
  <div>
@@ -88,18 +77,10 @@ if (substr($default_thumb, 0, 1) != DS) {
 		<tbody>
 <?php foreach ($this->team as $owner) 
 	{
-					// Get profile thumb image 
-					$thumb = '';					
-					if($owner->picture) {
-						$curthumb = $ih->createThumbName($owner->picture);
-						$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($owner->userid).DS.$curthumb;
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $path . DS . Hubzero_View_Helper_Html::niceidformat($owner->userid) . DS . 'thumb.png';
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $default_thumb;
-					}
+					// Get profile thumb image 				
+					$profile = Hubzero_User_Profile::getInstance($owner->userid);
+					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
+					
 					$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
 					$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'  
 								? ProjectsHtml::timeAgo($owner->lastvisit) . ' ' . JText::_('COM_PROJECTS_AGO')

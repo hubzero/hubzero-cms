@@ -25,18 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Get image path
-$mconfig =& JComponentHelper::getParams( 'com_members' );
-$path  = $mconfig->get('webpath');
-if (substr($path, 0, 1) != DS) {
-	$path = DS.$path;
-}
-if (substr($path, -1, 1) == DS) {
-	$path = substr($path, 0, (strlen($path) - 1));
-}
-
-// Get image handler
-$ih = new ProjectsImgHandler();
+ximport('Hubzero_User_Profile_Helper');
 ?>
 <div class="public-list-header">
 	<h3><?php echo JText::_('COM_PROJECTS_TEAM'); ?></h3>
@@ -45,22 +34,11 @@ $ih = new ProjectsImgHandler();
 	<?php
 	if(count($this->team) > 0) { 	?>		
 		<ul>
-			<?php foreach($this->team as $owner) { 
-				// Get profile thumb image 
-				$thumb = '';					
-				if($owner->picture) {
-					$curthumb = $ih->createThumbName($owner->picture);
-					$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($owner->userid).DS.$curthumb;
-				}
-				if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-					$thumb = $path . DS . Hubzero_View_Helper_Html::niceidformat($owner->userid) . DS . 'thumb.png';
-				}
-				if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-					$thumb = $mconfig->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) {
-						$thumb = DS.$thumb;
-					}
-				}
+			<?php foreach($this->team as $owner) 
+			{ 
+				// Get profile thumb image 			
+				$profile = Hubzero_User_Profile::getInstance($owner->userid);
+				$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
 			?>
 			<li>
 				<img width="50" height="50" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" />

@@ -25,15 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$mconfig =& JComponentHelper::getParams( 'com_members' );
-$path  = $mconfig->get('webpath');
-if (substr($path, 0, 1) != DS) {
-	$path = DS.$path;
-}
-if (substr($path, -1, 1) == DS) {
-	$path = substr($path, 0, (strlen($path) - 1));
-}
-$ih = new ProjectsImgHandler();
+ximport('Hubzero_User_Profile_Helper');
+
 ?>
 <div id="abox-content">
 <?php if($this->ajax) { ?>
@@ -79,21 +72,9 @@ else
 		<tbody>
 <?php foreach ($this->team as $owner) 
 	{
-					$thumb = '';
-					
-					if($owner->picture) {
-						$curthumb = $ih->createThumbName($owner->picture);
-						$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($owner->userid).DS.$curthumb;
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $path . DS . Hubzero_View_Helper_Html::niceidformat($owner->userid) . DS . 'thumb.png';
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $mconfig->get('defaultpic');
-						if (substr($thumb, 0, 1) != DS) {
-							$thumb = DS.$thumb;
-						}
-					}
+					// Get profile thumb image 			
+					$profile = Hubzero_User_Profile::getInstance($owner->userid);
+					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
 					
 					// Determine css class for user
 					$username 	= $owner->username ? $owner->username : $owner->invited_email;

@@ -31,24 +31,8 @@ $route = $this->project->provisioned
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
 $p_url = JRoute::_($route . a . 'active=team');
 
-// Get image path
-$mconfig =& JComponentHelper::getParams( 'com_members' );
-$path  = $mconfig->get('webpath');
-if (substr($path, 0, 1) != DS) {
-	$path = DS.$path;
-}
-if (substr($path, -1, 1) == DS) {
-	$path = substr($path, 0, (strlen($path) - 1));
-}
+ximport('Hubzero_User_Profile_Helper');
 
-// Get image handler
-$ih = new ProjectsImgHandler();
-
-// Get default profile thumb
-$default_thumb = $mconfig->get('defaultpic');
-if (substr($default_thumb, 0, 1) != DS) {
-	$default_thumb = DS.$default_thumb;
-}
 $shown = array();
 ?>
 <div>	
@@ -58,18 +42,9 @@ $shown = array();
 				$i = 0;
 				foreach($this->team as $owner) {
 					
-					// Get profile thumb image 
-					$thumb = '';					
-					if($owner->picture) {
-						$curthumb = $ih->createThumbName($owner->picture);
-						$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($owner->userid).DS.$curthumb;
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $path . DS . Hubzero_View_Helper_Html::niceidformat($owner->userid) . DS . 'thumb.png';
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $default_thumb;
-					}
+					// Get profile thumb image 				
+					$profile = Hubzero_User_Profile::getInstance($owner->userid);
+					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
 					
 					if(in_array($owner->userid, $this->exclude)) {
 						// Skip certain team members if necessary

@@ -34,16 +34,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-$mconfig =& JComponentHelper::getParams( 'com_members' );
-$path  = $mconfig->get('webpath');
-if (substr($path, 0, 1) != DS) {
-	$path = DS.$path;
-}
-if (substr($path, -1, 1) == DS) {
-	$path = substr($path, 0, (strlen($path) - 1));
-}
-$ih = new ProjectsImgHandler();
-
 // List sorting
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $whatsleft = $this->total - $this->filters['start'] - $this->filters['limit'];
@@ -57,6 +47,8 @@ $goto  = 'alias='.$this->project->alias;
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
+
+ximport('Hubzero_User_Profile_Helper');
 
 ?>
 <?php if (!$this->setup) { ?>
@@ -131,21 +123,10 @@ $dispatcher =& JDispatcher::getInstance();
 		<tbody>
 <?php foreach ($this->team as $owner) 
 	{
-					$thumb = '';
+					// Get profile thumb image 			
+					$profile = Hubzero_User_Profile::getInstance($owner->userid);
+					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($profile);
 					
-					if ($owner->picture) {
-						$curthumb = $ih->createThumbName($owner->picture);
-						$thumb = $path.DS.Hubzero_View_Helper_Html::niceidformat($owner->userid).DS.$curthumb;
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $path . DS . Hubzero_View_Helper_Html::niceidformat($owner->userid) . DS . 'thumb.png';
-					}
-					if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-						$thumb = $mconfig->get('defaultpic');
-						if (substr($thumb, 0, 1) != DS) {
-							$thumb = DS.$thumb;
-						}
-					}
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 					$creator = $this->project->created_by_user == $owner->userid ? 1 : 0;
 					
