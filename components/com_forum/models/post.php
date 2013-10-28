@@ -188,6 +188,38 @@ class ForumModelPost extends ForumModelAbstract
 		return true;
 	}
 
+		/**
+	 * Get tags on the entry
+	 * Optinal first agument to determine format of tags
+	 * 
+	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param      integer $admin Include amdin tags? (defaults to no)
+	 * @return     boolean
+	 */
+	public function tags($as='cloud', $admin=0)
+	{
+		if (!$this->exists())
+		{
+			switch (strtolower($as))
+			{
+				case 'array':
+					return array();
+				break;
+
+				case 'string':
+				case 'cloud':
+				case 'html':
+				default:
+					return '';
+				break;
+			}
+		}
+
+		$cloud = new ForumModelTags($this->get('thread'));
+
+		return $cloud->render($as, array('admin' => $admin));
+	}
+
 	/**
 	 * Tag the entry
 	 * 

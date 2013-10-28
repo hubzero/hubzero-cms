@@ -534,10 +534,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->uploadTask($parent, $model->get('id'));
 
 		// Save tags
-		if (!$model->get('parent'))
-		{
-			$model->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'));
-		}
+		$model->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'));
 
 		// Determine message
 		if (!$fields['id'])
