@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Resource') . ': <small><small>[ ' . JText::_('Tags') . ' #' . $this->row->id . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Resource') . ': ' . JText::_('Tags') . ' #' . $this->row->id, 'addedit.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Resource Manager') . '</a>', 'addedit.png' );
+JToolBarHelper::title(JText::_('Resource Manager') . ': ' . JText::_('Add Child'), 'addedit.png' );
 JToolBarHelper::cancel();
 
 ?>

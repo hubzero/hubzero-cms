@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ResourcesHelper::getActions('role');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Roles') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Roles'), 'addedit.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();

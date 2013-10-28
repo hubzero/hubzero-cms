@@ -32,7 +32,7 @@ $canDo = ResourcesHelper::getActions('contributor');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Authors') . ']</small></small>: <small><small>[ ' . $text . ' ]</small></small>', 'forum.png');
+JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Authors') . ': ' . $text, 'forum.png');
 JToolBarHelper::spacer();	
 if ($canDo->get('core.edit')) {
 	JToolBarHelper::save();

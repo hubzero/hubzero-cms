@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-	JToolBarHelper::title( JText::_( 'Resources' ) .': <small><small>[' .JText::_('Plugins').': '.JText::_('Edit'). ']</small></small>', 'plugin.png' );
+	JToolBarHelper::title( JText::_( 'Resources' ) .': ' .JText::_('Plugins').': '.JText::_('Edit'), 'plugin.png' );
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
 	JToolBarHelper::cancel();

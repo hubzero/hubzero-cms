@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ResourcesHelper::getActions('contributor');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Authors') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Authors'), 'addedit.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');

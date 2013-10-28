@@ -34,7 +34,7 @@ $canDo = ResourcesHelper::getActions('license');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resource License') . '</a>: <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Resource License') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
