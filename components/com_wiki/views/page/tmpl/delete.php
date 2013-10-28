@@ -92,6 +92,8 @@ if ($mode != 'static') {
 				<?php echo JText::_('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
 			</p>
 
+			<?php echo JHTML::_('form.token'); ?>
+
 			<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
 			<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
 			<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />

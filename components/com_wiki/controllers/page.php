@@ -720,6 +720,9 @@ class WikiControllerPage extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
 		{
@@ -1014,6 +1017,8 @@ class WikiControllerPage extends Hubzero_Controller
 		switch ($confirmed)
 		{
 			case 1:
+				// Check for request forgeries
+				JRequest::checkToken() or jexit('Invalid Token');
 				//$page = new WikiPage($this->database);
 
 				/*$data = new stdClass();
