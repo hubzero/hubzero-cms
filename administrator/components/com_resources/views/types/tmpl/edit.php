@@ -153,8 +153,14 @@ function submitbutton(pressbutton)
 				}
 				$plugins = $database->loadObjectList();
 
+				$found = array();
 				foreach ($plugins as $plugin)
 				{
+					if (in_array('plg_' . $plugin->element, $found))
+					{
+						continue;
+					}
+					$found[] = 'plg_' . $plugin->element;
 					if (strstr($plugin->name, '_'))
 					{
 						$lang = JFactory::getLanguage();
@@ -163,8 +169,8 @@ function submitbutton(pressbutton)
 					?>
 					<tr>
 						<td><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></td>
-						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
-						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
 					</tr>
 					<?php
 				}
@@ -205,7 +211,7 @@ function submitbutton(pressbutton)
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 			$elements = new ResourcesElements('', $this->row->customFields);
 			$schema = $elements->getSchema();
-			
+
 			if (!is_object($schema))
 			{
 				$schema = new stdClass();
@@ -214,16 +220,21 @@ function submitbutton(pressbutton)
 
 			if (count($schema->fields) <= 0)
 			{
-				$element = new stdClass();
-				$element->name = '';
-				$element->label = '';
-				$element->type = '';
-				$element->required = '';
-				$element->value = '';
-				$element->default = '';
-				$element->description = '';
-				
-				$schema->fields[] = $element;
+				$fs = explode(',', $this->config->get('tagsothr', 'bio,credits,citations,sponsoredby,references,publications'));
+				foreach ($fs as $f)
+				{
+					$f = trim($f);
+					$element = new stdClass();
+					$element->name = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($f));
+					$element->label = ucfirst($f);
+					$element->type = 'text';
+					$element->required = '';
+					$element->value = '';
+					$element->default = '';
+					$element->description = '';
+
+					$schema->fields[] = $element;
+				}
 			}
 
 			$i = 0;

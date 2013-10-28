@@ -158,6 +158,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 
 		// Get the categories
 		$this->view->categories = $this->view->row->getTypes(0);
+		$this->view->config = $this->config;
 
 		// Set any errors
 		if ($this->getError())
