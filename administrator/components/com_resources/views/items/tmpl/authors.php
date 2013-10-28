@@ -36,7 +36,7 @@ $document =& JFactory::getDocument();
 
 $authIDs = array();
 ?>
-<label for="authid"><?php echo JText::_('User ID or username:'); ?></label> 
+<label for="authid"><?php echo JText::_('User ID, name, or username:'); ?></label> 
 <input type="text" name="authid" id="authid" value="" />
 <select name="authrole" id="authrole">
 	<option value=""><?php echo JText::_('Author'); ?></option>

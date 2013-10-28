@@ -1776,6 +1776,15 @@ class ResourcesControllerItems extends Hubzero_Controller
 		$profile = new Hubzero_User_Profile();
 		$profile->load($this->view->id);
 
+		if (!is_object($profile) || !$profile->get('uidNumber'))
+		{
+			$this->database->setQuery("SELECT id FROM #__users WHERE `name`=" . $this->database->Quote($this->view->id));
+			if ($id = $this->database->loadResult())
+			{
+				$profile->load($id);
+			}
+		}
+
 		if (is_object($profile) && $profile->get('uidNumber'))
 		{
 			if (!$profile->get('name'))
@@ -1793,13 +1802,30 @@ class ResourcesControllerItems extends Hubzero_Controller
 		}
 		else 
 		{
+			$this->view->name = null;
+
 			include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
 
 			$rcc = new ResourcesContributor($this->database);
 
-			$this->view->org  = '';
-			$this->view->name = str_replace('_', ' ', $this->view->id);
-			$this->view->id   = $rcc->getUserId($this->view->name);
+			if (is_numeric($this->view->id)) 
+			{
+				$this->database->setQuery("SELECT name, organization FROM #__author_assoc WHERE authorid=" . $this->database->Quote($this->view->id) . " LIMIT 1");
+				$author = $this->database->loadObject();
+
+				if (is_object($author) && $author->name)
+				{
+					$this->view->name = $author->name;
+					$this->view->org  = $author->organization;
+				}
+			}
+
+			if (!$this->view->name)
+			{
+				$this->view->org  = '';
+				$this->view->name = str_replace('_', ' ', $this->view->id);
+				$this->view->id   = $rcc->getUserId($this->view->name);
+			}
 		}
 
 		$row = new ResourcesResource($this->database);
