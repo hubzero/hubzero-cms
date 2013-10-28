@@ -303,18 +303,21 @@ class ForumModelSection extends ForumModelAbstract
 				$cats[] = $category->get('id');
 			}
 
-			// Set all the threads/posts in all the categories to "deleted"
-			$post = new ForumPost($this->_db);
-			if (!$post->setStateByCategory($cats, self::APP_STATE_DELETED))
+			if (count($cats) > 0)
 			{
-				$this->setError($post->getError());
-			}
+				// Set all the threads/posts in all the categories to "deleted"
+				$post = new ForumPost($this->_db);
+				if (!$post->setStateByCategory($cats, self::APP_STATE_DELETED))
+				{
+					$this->setError($post->getError());
+				}
 
-			// Set all the categories to "deleted"
-			$cModel = new ForumCategory($this->_db);
-			if (!$cModel->setStateBySection($this->get('id'), self::APP_STATE_DELETED))
-			{
-				$this->setError($cModel->getError());
+				// Set all the categories to "deleted"
+				$cModel = new ForumCategory($this->_db);
+				if (!$cModel->setStateBySection($this->get('id'), self::APP_STATE_DELETED))
+				{
+					$this->setError($cModel->getError());
+				}
 			}
 		}
 
