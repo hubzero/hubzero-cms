@@ -732,4 +732,15 @@ class Hubzero_User_Password
 		
 		return true;
 	}
+	
+	public function expirePassword($user = null)
+	{
+		$hzup = self::getInstance($user);
+		
+		$hzup->__set('shadowLastChange', '1');
+		$hzup->__set('shadowMax', '0');
+		$hzup->update();
+		
+		return true;
+	}
 }
