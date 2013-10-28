@@ -139,9 +139,9 @@ class modNotices extends Hubzero_Module
 		$now = date('Y-m-d H:i:s', time());
 
 		// Get some initial parameters
-		$start = $this->params->get('start_publishing');
+		$start = $this->params->get('start_publishing', $this->module->publish_up);
 		//$start = JHTML::_('date', $start, JText::_('DATE_FORMAT_HZ1'));
-		$stop  = $this->params->get('stop_publishing');
+		$stop  = $this->params->get('stop_publishing', $this->module->publish_down);
 		//$stop  = JHTML::_('date', $stop, JText::_('DATE_FORMAT_HZ1'));
 
 		$this->publish = false;

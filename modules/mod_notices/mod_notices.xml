@@ -40,8 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>index.html</filename>
 	</files>
 	<params>
-		<param name="start_publishing" type="text" default="0000-00-00 00:00:00" label="Start Publishing" description="The start time the site will be down." />
-		<param name="stop_publishing" type="text" default="0000-00-00 00:00:00" label="Finish Publishing" description="The time the site will be back up." />
 		<param name="alertlevel" type="list" default="low" label="Alert level" description="The alert level the notice field will take. Determines color.">
 			<option value="low">Low</option>
 			<option value="medium">Medium</option>
@@ -57,15 +55,13 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="start_publishing" type="text" default="0000-00-00 00:00:00" label="Start Publishing" description="The start time the site will be down." />
-				<field name="stop_publishing" type="text" default="0000-00-00 00:00:00" label="Finish Publishing" description="The time the site will be back up." />
 				<field name="alertlevel" type="list" default="low" label="Alert level" description="The alert level the notice field will take. Determines color.">
 					<option value="low">Low</option>
 					<option value="medium">Medium</option>
 					<option value="high">High</option>
 				</field>
 				<field name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
+				<field name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed." />
 				<field name="allowClose" type="radio" default="0" label="Allow closing" description="Allow the notice to be closed by the user">
 					<option value="1">Yes</option>
 					<option value="0">No</option>
