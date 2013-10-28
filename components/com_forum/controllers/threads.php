@@ -491,8 +491,9 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
-		$fields['sticky'] = (isset($fields['sticky'])) ? $fields['sticky'] : 0;
-		$fields['closed'] = (isset($fields['closed'])) ? $fields['closed'] : 0;
+		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
+		$fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
+		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
 		if ($fields['id'])
 		{
@@ -503,6 +504,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$model = new ForumModelPost($fields['id']);
 		if ($model->get('parent'))
 		{
+			$fields['thread'] = isset($fields['thread']) ? $fields['thread'] : $model->get('parent');
 			$thread = new ForumModelThread($fields['thread']);
 			if (!$thread->exists() || $thread->get('closed'))
 			{
@@ -532,7 +534,10 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->uploadTask($parent, $model->get('id'));
 
 		// Save tags
-		$model->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'));
+		if (!$model->get('parent'))
+		{
+			$model->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'));
+		}
 
 		// Determine message
 		if (!$fields['id'])

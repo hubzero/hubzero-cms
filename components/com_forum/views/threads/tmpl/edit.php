@@ -201,9 +201,12 @@ else
 			</fieldset>
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->get('parent'); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
+			<input type="hidden" name="fields[thread]" value="<?php echo $this->post->get('thread'); ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->post->get('id'); ?>" />
 			<input type="hidden" name="fields[scope]" value="site" />
 			<input type="hidden" name="fields[scope_id]" value="0" />
+			<input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
+			<input type="hidden" name="fields[object_id]" value="<?php echo $this->post->get('object_id'); ?>" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="threads" />

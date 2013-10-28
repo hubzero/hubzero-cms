@@ -537,6 +537,10 @@ class ForumControllerThreads extends Hubzero_Controller
 			$old->load(intval($fields['id']));
 		}
 
+		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
+		$fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
+		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
+
 		// Initiate extended database class
 		$model = new ForumPost($this->database);
 		if (!$model->bind($fields))
