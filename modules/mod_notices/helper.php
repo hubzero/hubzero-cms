@@ -138,6 +138,11 @@ class modNotices extends Hubzero_Module
 		// Set today's time and date
 		$now = date('Y-m-d H:i:s', time());
 
+		$database->setQuery("SELECT publish_up, publish_down FROm #__modules WHERE id=" . $this->module->id);
+		$item = $database->loadObject();
+		$this->module->publish_up = $item->publish_up;
+		$this->module->publish_down = $item->publish_down;
+
 		// Get some initial parameters
 		$start = $this->params->get('start_publishing', $this->module->publish_up);
 		//$start = JHTML::_('date', $start, JText::_('DATE_FORMAT_HZ1'));
