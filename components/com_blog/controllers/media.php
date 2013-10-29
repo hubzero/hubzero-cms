@@ -45,11 +45,11 @@ class BlogControllerMedia extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		if (JFactory::getUser()->get('guest'))
+		/*if (JFactory::getUser()->get('guest'))
 		{
 			JError::raiseError(403, JText::_('Access denied.'));
 			return;
-		}
+		}*/
 
 		parent::execute();
 	}
@@ -61,6 +61,15 @@ class BlogControllerMedia extends Hubzero_Controller
 	 */
 	public function downloadTask()
 	{
+		$model = new BlogModel('site', 0);
+
+		$entry = $model->entry(JRequest::getVar('alias', ''));
+		if (!$entry->exists() || !$entry->access('view'))
+		{
+			JError::raiseError(403, JText::_('Access denied.'));
+			return;
+		}
+
 		if (!($file = JRequest::getVar('file', '')))
 		{
 			$filename = array_pop(explode('/', $_SERVER['REQUEST_URI']));
@@ -76,51 +85,21 @@ class BlogControllerMedia extends Hubzero_Controller
 			}
 		}
 
-		//decode file name
+		// decode file name
 		$file = urldecode($file);
 
-		//build file path
+		// build file path
 		$file_path = $this->_getUploadPath('site', 0) . DS . $file;
 
 		// Ensure the file exist
 		if (!file_exists($file_path)) 
 		{
-			JError::raiseError(404, JText::_('The requested file could not be found: ') . ' ' . $file);
-			return;
-		}
-
-		if (preg_match("/^\s*http[s]{0,1}:/i", $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
+			JError::raiseError(404, JText::_('The requested file could not be found: %s', $file));
 			return;
 		}
 
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
-
 
 		// Serve up the image
 		$xserver = new Hubzero_Content_Server();
@@ -138,7 +117,6 @@ class BlogControllerMedia extends Hubzero_Controller
 		{
 			exit;
 		}
-		return;
 	}
 
 	/**

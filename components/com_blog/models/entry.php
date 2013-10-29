@@ -565,7 +565,7 @@ class BlogModelEntry extends \Hubzero\Model
 
 				$config = array(
 					'option'   => $this->_adapter()->get('option'),
-					'scope'    => $scope, //$this->_adapter()->get('scope'),
+					'scope'    => $this->_adapter()->get('scope') . '/' . $scope,
 					'pagename' => $this->get('alias'),
 					'pageid'   => 0, //$this->get('id'),
 					'filepath' => $this->_adapter()->get('path'),

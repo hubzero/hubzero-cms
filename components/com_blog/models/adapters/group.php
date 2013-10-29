@@ -67,7 +67,7 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 		);
 
 		$this->set('path', str_replace('{{gid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog')));
-		$this->set('scope', $this->get('scope_id') . '/blog');
+		$this->set('scope', $this->_segments['cn'] . '/blog');
 		$this->set('option', $this->_segments['option']);
 	}
 

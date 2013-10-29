@@ -60,7 +60,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 		$config = JComponentHelper::getParams($this->_segments['option']);
 
 		$this->set('path', $config->get('uploadpath', '/site/blog'));
-		$this->set('scope', 'site');
+		$this->set('scope', '');
 		$this->set('option', $this->_segments['option']);
 	}
 
@@ -79,7 +79,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 			break;
 
 			case 'alias':
-				return $this->get('scope');
+				return 'site';
 			break;
 
 			case 'id':
