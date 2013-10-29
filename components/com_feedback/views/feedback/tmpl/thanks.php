@@ -25,22 +25,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$default = DS . trim($this->config->get('defaultpic'), DS);
+$file = '';
+
 if ($this->row->picture) 
 {
-	$file = DS . trim($this->row->picture, DS);
-}
-else 
-{
-	$file = DS . trim($this->config->get('defaultpic'), DS);
+	// Build upload path
+	ximport('Hubzero_View_Helper_Html');
+	$file  = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($this->user->get('id'));
+	$file .= DS . trim($this->row->picture, DS);
 }
 
-// Build upload path
-ximport('Hubzero_View_Helper_Html');
-$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($this->user->get('id'));
+$ow = 0;
+$oh = 0;
+$base = rtrim(JURI::getInstance()->base(true), '/');
 
-if ($file && file_exists(JPATH_ROOT . $path . $file))
+if ($file && file_exists(JPATH_ROOT . $file))
 {
-	list($ow, $oh) = getimagesize(JPATH_ROOT . $path . $file);
+	list($ow, $oh) = getimagesize(JPATH_ROOT . $file);
+	$img = $base . $file;
+}
+else if ($default && file_exists(JPATH_ROOT . $default))
+{
+	list($ow, $oh) = getimagesize(JPATH_ROOT . $default);
+	$img = $base . $default;
 }
 
 //scale if image is bigger than 120w x120h
@@ -76,7 +84,7 @@ else
 	<table class="storybox" summary="<?php echo JText::_('COM_FEEDBACK_SUCCESS_STORY_OVERVIEW'); ?>">
 		<tbody>
 			<tr>
-				<td><img src="<?php echo $path . $file; ?>" width="<?php echo $mw; ?>" height="<?php echo $mh; ?>" alt="" /></td>
+				<td><img src="<?php echo $img; ?>" width="<?php echo $mw; ?>" height="<?php echo $mh; ?>" alt="" /></td>
 				<td>
 					<blockquote cite="<?php echo$this->escape($this->row->fullname); ?>" class="quote">
 						<?php echo $this->escape(stripslashes($this->row->quote)); ?>
