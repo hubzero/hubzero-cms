@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -37,10 +37,23 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * Base controller for components to extend.
+ * 
+ * Accepts an array of configuration values to the constructor. If no config 
+ * passed, it will automatically determine the component and controller names.
+ * Internally, sets the $database, $user, $view, and component $config.
+ * 
+ * Executable tasks are determined by method name. All public methods that end in 
+ * "Task" (e.g., displayTask, editTask) are callable by the end user.
+ * 
+ * View name defaults to controller name with layout defaulting to task name. So,
+ * a $controller of "One" and a $task of "two" will map to:
+ *
+ *    /{component name}
+ *        /views
+ *            /one
+ *                /tmpl
+ *                    /two.php
  */
 class Hubzero_Controller extends JObject
 {
@@ -119,10 +132,16 @@ class Hubzero_Controller extends JObject
 			else
 			{
 				$r = null;
-				if (!preg_match('/(.*)Controller/i', get_class($this), $r))
+				$cls = get_class($this);
+				if (strstr($cls, '\\'))
+				{
+					$r = explode('\\', $cls);
+				}
+				else if (!preg_match('/(.*)Controller/i', $cls, $r))
 				{
 					return JError::raiseError(500, JText::_('Controller::__construct() : Can\'t get or parse class name.'));
 				}
+
 				$this->_name = strtolower($r[1]);
 			}
 		}
@@ -145,7 +164,7 @@ class Hubzero_Controller extends JObject
 		// Get all the public methods of this class
 		$r = new ReflectionClass($this);
 		$methods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
-		
+
 		foreach ($methods as $method)
 		{
 			$name = $method->getName();
@@ -162,9 +181,9 @@ class Hubzero_Controller extends JObject
 		}
 
 		// Set some commonly used vars
-		$this->juser = JFactory::getUser();
+		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
-		$this->config = JComponentHelper::getParams($this->_option);
+		$this->config   = JComponentHelper::getParams($this->_option);
 
 		// Clear component messages - for cross component messages
 		$this->getComponentMessage();
@@ -221,28 +240,35 @@ class Hubzero_Controller extends JObject
 		{
 			return JError::raiseError(404, JText::sprintf('THE REQUESTED RESOURCE WAS NOT FOUND', $this->_task));
 		}
-		
+
+		$cls = get_class($this);
 		// Attempt to parse the controller name from the class name
-		if ((ucfirst($this->_name) . 'Controller') != get_class($this)
-		 && preg_match('/(\w)Controller(.*)/i', get_class($this), $r))
+		if ((ucfirst($this->_name) . 'Controller') != $cls
+		 && preg_match('/(\w)Controller(.*)/i', $cls, $r))
 		{
 			$this->_controller = strtolower($r[2]);
-
-			// Instantiate a view with layout the same name as the task
-			$this->view = new JView(array(
-				'base_path' => $this->_basePath,
-				'name'      => $this->_controller,
-				'layout'    => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
-			));
+			$name   = $this->_controller;
+			$layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
+		}
+		// Namepsaced component
+		else if (preg_match('/(.?)Controllers\\\(.*)/i', $cls, $r))
+		{
+			$this->_controller = strtolower($r[2]);
+			$name   = $this->_controller;
+			$layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
 		}
 		// No controller name found - single controller component
 		else
 		{
-			$this->view = new JView(array(
-				'base_path' => $this->_basePath,
-				'name'      => $doTask
-			));
+			$name = $doTask;
 		}
+
+		// Instantiate a view with layout the same name as the task
+		$this->view = new JView(array(
+			'base_path' => $this->_basePath,
+			'name'      => $name,
+			'layout'    => $layout
+		));
 
 		// Set some commonly used vars
 		$this->view->option     = $this->_option;
