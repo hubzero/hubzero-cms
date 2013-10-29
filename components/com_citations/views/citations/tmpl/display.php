@@ -62,7 +62,12 @@ defined('_JEXEC') or die( 'Restricted access');
 		</div>
 		<div class="two columns second">
 			<h3>Can I submit a citation?</h3>
-			<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
+			<?php if ($this->allow_import == 1 || $this->allow_bulk_import == 1 ||
+			         ($this->allow_import == 2 && $this->isAdmin) || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
+				<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
+			<?php else : ?>
+				<p>Citation submission is not allowed at this time. If you have any questions please contact the hub <a href="/support">support team</a>.</p>
+			<?php endif; ?>
 		</div>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
