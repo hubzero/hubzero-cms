@@ -218,7 +218,7 @@ else
 					<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_SECTION_LEGEND'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span></legend>
 					<label>
 						<input type="checkbox" class="option" name="discussion_email_autosubscribe" value="1"
-							<?php if ($this->group->get('discussion_email_autosubscribe') == 1) { echo ' checked="checked"'; } ?> /> 
+							<?php if ($this->group->get('discussion_email_autosubscribe') == 1 || $autoEmailResponses) { echo ' checked="checked"'; } ?> /> 
 						<strong><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE'); ?></strong> <br />
 						<span class="indent">
 							<?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_FORUM_AUTO_SUBSCRIBE_NOTE'); ?>
