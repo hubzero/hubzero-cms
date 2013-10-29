@@ -664,38 +664,8 @@ class MembersControllerMedia extends Hubzero_Controller
 			return;
 		}
 
-		if (preg_match("/^\s*http[s]{0,1}:/i", $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $file_path)) 
-		{
-			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
-			return;
-		}
-
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
-
 
 		// Serve up the image
 		$xserver = new Hubzero_Content_Server();

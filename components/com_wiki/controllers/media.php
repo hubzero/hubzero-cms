@@ -168,34 +168,6 @@ class WikiControllerMedia extends Hubzero_Controller
 			JError::raiseError(404, JText::_('COM_WIKI_FILE_NOT_FOUND'));
 			return;
 		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $attachment->filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_WIKI_BAD_FILE_PATH'));
-			return;
-		}
 
 		// Get the configured upload path
 		$base_path = DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $this->page->id;

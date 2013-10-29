@@ -3008,34 +3008,6 @@ class SupportControllerTickets extends Hubzero_Controller
 			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND'));
 			return;
 		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $file)) 
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file)) 
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $file)) 
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $file)) 
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $file)) 
-		{
-			JError::raiseError(404, JText::_('SUPPORT_BAD_FILE_PATH'));
-			return;
-		}
 
 		// Get the configured upload path
 		$basePath = DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $attach->ticket;
