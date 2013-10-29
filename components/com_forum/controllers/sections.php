@@ -70,7 +70,12 @@ class ForumControllerSections extends Hubzero_Controller
 		);
 
 		// Flag to indicate if a section is being put into edit mode
-		$this->view->edit = JRequest::getVar('section', '');
+		$this->view->edit = null;
+		if (($section = JRequest::getVar('section', '')) && $this->_task == 'edit')
+		{
+			$this->view->edit = $section;
+		}
+		//$this->view->edit = JRequest::getVar('section', '');
 
 		$this->view->sections = $this->model->sections('list', array('state' => 1));
 
