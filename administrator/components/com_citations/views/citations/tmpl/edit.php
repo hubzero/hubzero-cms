@@ -66,10 +66,9 @@ $short_title = (!preg_match('!\S!u', $short_title)) ? utf8_encode($short_title) 
 $journal = html_entity_decode($this->row->journal);
 $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 ?>
-<!--
-<script type="text/javascript" src="../includes/js/mootools.js"></script>
-<script type="text/javascript" src="components/com_citations/citations.js"></script>
--->
+
+<script type="text/javascript" src="/components/com_citations/assets/js/citations.jquery.js"></script>
+
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
@@ -288,7 +287,7 @@ function submitbutton(pressbutton)
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="3"><a href="#" onclick="Citations.addRow('assocs');return false;"><?php echo JText::_('ADD_A_ROW'); ?></a></td>
+						<td colspan="3"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo JText::_('ADD_A_ROW'); ?></a></td>
 					</tr>
 				</tfoot>
 				<tbody>
