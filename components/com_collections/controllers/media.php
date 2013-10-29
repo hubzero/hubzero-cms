@@ -46,9 +46,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 	 */
 	public function downloadTask()
 	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
 		$file = JRequest::getVar('file', '');
 		$item = JRequest::getInt('post', 0);
 
@@ -57,55 +54,22 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		// Instantiate an attachment object
 		$asset = CollectionsModelAsset::getInstance($file, $post->get('item_id'));
 
-		// Load the page
+		// Ensure record exist
 		if (!$asset->get('id')) 
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND').'no id');
+			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND') . ' (no ID found)');
 			return;
 		}
-
-		// Check authorization
 
 		// Ensure we have a path
 		if (!$asset->get('filename')) 
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND').'no filename');
-			return;
-		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $asset->get('filename'))) 
-		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $asset->get('filename'))) 
-		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $asset->get('filename'))) 
-		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $asset->get('filename'))) 
-		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $asset->get('filename'))) 
-		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_BAD_FILE_PATH'));
+			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND') . ' (no filename found)');
 			return;
 		}
 
 		// Get the configured upload path
 		$filename = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
-
-		jimport('joomla.filesystem.file');
-		$ext = strtolower(JFile::getExt($filename));
 
 		// Ensure the file exist
 		if (!file_exists($filename)) 
@@ -114,16 +78,19 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			return;
 		}
 
+		jimport('joomla.filesystem.file');
+		$ext = strtolower(JFile::getExt($filename));
+
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
 		// Initiate a new content server and serve up the file
 		$xserver = new Hubzero_Content_Server();
 		$xserver->filename($filename);
+		$xserver->disposition('attachment');
 		if (in_array($ext, array('jpg','jpeg','jpe','png','gif')))
 		{
 			$xserver->disposition('inline');
-		}
-		else
-		{
-			$xserver->disposition('attachment');
 		}
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
@@ -136,7 +103,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		{
 			exit;
 		}
-		return;
 	}
 
 	/**
