@@ -34,35 +34,35 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Serve up a file
  */
-class Hubzero_Content_Server
+class Hubzero_Content_Server extends \Hubzero\Object
 {
 	/**
 	 * File to serve up
 	 * 
 	 * @var string
 	 */
-	var $_filename;
+	private $_filename;
 
 	/**
 	 * Generate Accept-Ranges header?
 	 * 
 	 * @var boolean
 	 */
-	var $_acceptranges;
+	private $_acceptranges;
 
 	/**
 	 * inline or attachment
 	 * 
 	 * @var string
 	 */
-	var $_disposition;
+	private $_disposition;
 
 	/**
 	 * Name to save file as
 	 * 
 	 * @var string
 	 */
-	var $_saveas;
+	private $_saveas;
 
 	/**
 	 * Constructor
@@ -71,13 +71,14 @@ class Hubzero_Content_Server
 	 */
 	public function __construct()
 	{
+		$this->disposition('inline');
 	}
 
 	/**
 	 * Set the name to save file as
 	 * 
 	 * @param      string $saveas Name to save file as
-	 * @return     mixed String if field is set, NULL if not
+	 * @return     mixed  String if field is set, NULL if not
 	 */
 	public function saveas($saveas = null)
 	{
@@ -86,14 +87,14 @@ class Hubzero_Content_Server
 			$this->_saveas = basename($saveas);
 		}
 
-		return($this->_saveas);
+		return $this->_saveas;
 	}
 
 	/**
 	 * Set the filename value
 	 * 
 	 * @param      string $filename File to serve up
-	 * @return     mixed String if field is set, NULL if not
+	 * @return     mixed  String if field is set, NULL if not
 	 */
 	public function filename($filename = null)
 	{
@@ -103,6 +104,46 @@ class Hubzero_Content_Server
 		}
 
 		return $this->_filename;
+	}
+
+	/**
+	 * Set the filename value
+	 * 
+	 * @param      string  $filename File to serve up
+	 * @return     boolean True if path is allowable, False if not
+	 */
+	public function valid($filename = null)
+	{
+		if (!$filename)
+		{
+			return false;
+		}
+
+		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
+		{
+			return false;
+		}
+		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
+		{
+			return false;
+		}
+		// Disallow windows drive letter
+		if (preg_match("/^\s*[.]:/", $filename)) 
+		{
+			return false;
+		}
+		// Disallow \
+		if (strpos($filename, '\\')) 
+		{
+			return false;
+		}
+		// Disallow ..
+		if (strpos($filename, '..')) 
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -157,7 +198,7 @@ class Hubzero_Content_Server
 	 */
 	public function serve()
 	{
-		return Hubzero_Content_Server::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
+		return self::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
 	}
 
 	/**
@@ -171,7 +212,7 @@ class Hubzero_Content_Server
 	 */
 	public function serve_attachment($filename, $saveas = null, $acceptranges = true)
 	{
-		return Hubzero_Content_Server::serve_file($filename, $saveas, 'attachment', $acceptranges);
+		return self::serve_file($filename, $saveas, 'attachment', $acceptranges);
 	}
 
 	/**
@@ -184,7 +225,7 @@ class Hubzero_Content_Server
 	 */
 	public function serve_inline($filename, $acceptranges = true)
 	{
-		return Hubzero_Content_Server::serve_file($filename, null, 'inline', $acceptranges);
+		return self::serve_file($filename, null, 'inline', $acceptranges);
 	}
 
 	/**
@@ -196,8 +237,13 @@ class Hubzero_Content_Server
 	 * @param      boolean $acceptranges Generate Accept-Ranges header?
 	 * @return     boolean True on success, False if error
 	 */
-	public function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true)
+	public static function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true)
 	{
+		if (!self::valid($filename))
+		{
+			return false;
+		}
+
 		$fp = fopen($filename, 'rb');
 
 		if ($fp == false)
