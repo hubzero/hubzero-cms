@@ -348,7 +348,7 @@ class ForumControllerApi extends Hubzero_Api_Controller
 			$filters['start'] = 0;
 		}
 
-		$post = new ForumPost($this->database);
+		$post = new ForumTablePost($this->database);
 
 		$data = new stdClass();
 		$data->code = 0;

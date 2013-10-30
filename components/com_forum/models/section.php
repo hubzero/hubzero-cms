@@ -45,7 +45,7 @@ class ForumModelSection extends ForumModelAbstract
 	 * 
 	 * @var object
 	 */
-	protected $_tbl_name = 'ForumSection';
+	protected $_tbl_name = 'ForumTableSection';
 
 	/**
 	 * Container for instance data
@@ -196,7 +196,7 @@ class ForumModelSection extends ForumModelAbstract
 			case 'count':
 				if (!isset($this->_cache['categories_count']) || $clear)
 				{
-					$tbl = new ForumCategory($this->_db);
+					$tbl = new ForumTableCategory($this->_db);
 					$this->_cache['categories_count'] = (int) $tbl->getCount($filters);
 				}
 				return $this->_cache['categories_count'];
@@ -211,7 +211,7 @@ class ForumModelSection extends ForumModelAbstract
 			default:
 				if (!isset($this->_cache['categories']) || !($this->_cache['categories'] instanceof \Hubzero\ItemList) || $clear)
 				{
-					$tbl = new ForumCategory($this->_db);
+					$tbl = new ForumTableCategory($this->_db);
 					if (($results = $tbl->getRecords($filters)))
 					{
 						foreach ($results as $key => $result)
@@ -306,14 +306,14 @@ class ForumModelSection extends ForumModelAbstract
 			if (count($cats) > 0)
 			{
 				// Set all the threads/posts in all the categories to "deleted"
-				$post = new ForumPost($this->_db);
+				$post = new ForumTablePost($this->_db);
 				if (!$post->setStateByCategory($cats, self::APP_STATE_DELETED))
 				{
 					$this->setError($post->getError());
 				}
 
 				// Set all the categories to "deleted"
-				$cModel = new ForumCategory($this->_db);
+				$cModel = new ForumTableCategory($this->_db);
 				if (!$cModel->setStateBySection($this->get('id'), self::APP_STATE_DELETED))
 				{
 					$this->setError($cModel->getError());

@@ -217,7 +217,7 @@ class ForumModel extends ForumModelAbstract
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
-		$tbl = new ForumSection($this->_db);
+		$tbl = new ForumTableSection($this->_db);
 
 		switch (strtolower($rtrn))
 		{
@@ -287,7 +287,7 @@ class ForumModel extends ForumModelAbstract
 			case 'count':
 				if (!isset($this->_cache['posts.count']) || $clear)
 				{
-					$tbl = new ForumPost($this->_db);
+					$tbl = new ForumTablePost($this->_db);
 					$this->_cache['posts.count'] = $tbl->count($filters);
 				}
 				return $this->_cache['posts.count'];
@@ -302,7 +302,7 @@ class ForumModel extends ForumModelAbstract
 			default:
 				if (!isset($this->_cache['posts.list']) || !($this->_cache['posts.list'] instanceof \Hubzero\ItemList) || $clear)
 				{
-					$tbl = new ForumPost($this->_db);
+					$tbl = new ForumTablePost($this->_db);
 
 					if (($results = $tbl->find($filters)))
 					{
@@ -452,7 +452,7 @@ class ForumModel extends ForumModelAbstract
 	{
 		if (!isset($this->_cache['last']) || !($this->_cache['last'] instanceof ForumModelPost))
 		{
-			$post = new ForumPost($this->_db);
+			$post = new ForumTablePost($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'))))
 			{
 				$last = 0;

@@ -45,7 +45,7 @@ class ForumModelPost extends ForumModelAbstract
 	 * 
 	 * @var object
 	 */
-	protected $_tbl_name = 'ForumPost';
+	protected $_tbl_name = 'ForumTablePost';
 
 	/**
 	 * ForumModelAttachment
@@ -310,7 +310,7 @@ class ForumModelPost extends ForumModelAbstract
 					'domain'   => $this->get('thread')
 				);
 
-				$attach = new ForumAttachment($this->_db);
+				$attach = new ForumTableAttachment($this->_db);
 
 				$this->set('content_parsed', $p->parse(stripslashes($this->get('comment')), $wikiconfig, true, true));
 				$this->set('content_parsed', $this->get('content_parsed') . $attach->getAttachment(

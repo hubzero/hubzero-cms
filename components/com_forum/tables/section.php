@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for a forum category
  */
-class ForumSection extends JTable
+class ForumTableSection extends JTable
 {
 	/**
 	 * Primary key

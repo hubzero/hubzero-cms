@@ -451,7 +451,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		}
 
 		// Set all the threads/posts in all the categories to "deleted"
-		$tModel = new ForumPost($this->database);
+		$tModel = new ForumTablePost($this->database);
 		if (!$tModel->setStateByCategory($category->get('id'), 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 		{
 			$this->setError($tModel->getError());

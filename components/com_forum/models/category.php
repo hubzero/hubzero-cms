@@ -45,7 +45,7 @@ class ForumModelCategory extends ForumModelAbstract
 	 * 
 	 * @var object
 	 */
-	protected $_tbl_name = 'ForumCategory';
+	protected $_tbl_name = 'ForumTableCategory';
 
 	/**
 	 * Container for properties
@@ -208,7 +208,7 @@ class ForumModelCategory extends ForumModelAbstract
 			case 'count':
 				if (!isset($this->_cache['threads_count']) || $clear)
 				{
-					$tbl = new ForumPost($this->_db);
+					$tbl = new ForumTablePost($this->_db);
 					$this->_cache['threads_count'] = $tbl->getCount($filters);
 				}
 				return $this->_cache['threads_count'];
@@ -223,7 +223,7 @@ class ForumModelCategory extends ForumModelAbstract
 			default:
 				if (!isset($this->_cache['threads']) || !($this->_cache['threads'] instanceof \Hubzero\ItemList) || $clear)
 				{
-					$tbl = new ForumPost($this->_db);
+					$tbl = new ForumTablePost($this->_db);
 
 					if (($results = $tbl->getRecords($filters)))
 					{
@@ -343,7 +343,7 @@ class ForumModelCategory extends ForumModelAbstract
 	{
 		if (!isset($this->_cache['last']) || !is_a($this->_cache['last'], 'ForumModelPost'))
 		{
-			$post = new ForumPost($this->_db);
+			$post = new ForumTablePost($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'), $this->get('id'))))
 			{
 				$last = 0;

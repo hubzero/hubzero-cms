@@ -98,7 +98,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		$this->view->filters['admin'] = true;
 
 		// Load the current section
-		$this->view->section = new ForumSection($this->database);
+		$this->view->section = new ForumTableSection($this->database);
 		if (!$this->view->filters['section_id'] || $this->view->filters['section_id'] <= 0)
 		{
 			// No section? Load a default blank section
@@ -173,14 +173,14 @@ class ForumControllerCategories extends Hubzero_Controller
 		}
 		else 
 		{
-			$default = new ForumSection($this->database);
+			$default = new ForumTableSection($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
 		asort($this->view->sections);*/
 
-		$model = new ForumCategory($this->database);
+		$model = new ForumTableCategory($this->database);
 
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -236,7 +236,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			$id = intval($ids[0]);
 		}
 
-		$this->view->section = new ForumSection($this->database);
+		$this->view->section = new ForumTableSection($this->database);
 		$this->view->section->load($section);
 
 		if (is_object($row))
@@ -245,7 +245,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		}
 		else 
 		{
-			$this->view->row = new ForumCategory($this->database);
+			$this->view->row = new ForumTableCategory($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -279,7 +279,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		}
 		else 
 		{
-			$default = new ForumSection($this->database);
+			$default = new ForumTableSection($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
@@ -317,7 +317,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$model = new ForumCategory($this->database);
+		$model = new ForumTableCategory($this->database);
 		if (!$model->bind($fields))
 		{
 			$this->addComponentMessage($model->getError(), 'error');
@@ -327,7 +327,7 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		if (!$model->scope)
 		{
-			$section = new ForumSection($this->database);
+			$section = new ForumTableSection($this->database);
 			$section->load($filters['section_id']);
 			$model->scope    = $section->scope;
 			$model->scope_id = $section->scope_id;
@@ -374,7 +374,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		if (count($ids) > 0) 
 		{
 			// Instantiate some objects
-			$category = new ForumCategory($this->database);
+			$category = new ForumTableCategory($this->database);
 
 			// Loop through each ID
 			foreach ($ids as $id) 
@@ -382,7 +382,7 @@ class ForumControllerCategories extends Hubzero_Controller
 				$id = intval($id);
 
 				// Remove the posts in this category
-				$tModel = new ForumPost($this->database);
+				$tModel = new ForumTablePost($this->database);
 				if (!$tModel->deleteByCategory($id)) 
 				{
 					JError::raiseError(500, $tModel->getError());
@@ -456,7 +456,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumCategory($this->database);
+			$row = new ForumTableCategory($this->database);
 			$row->load(intval($id));
 			$row->state = $state;
 			if (!$row->store()) 
@@ -512,7 +512,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumCategory($this->database);
+			$row = new ForumTableCategory($this->database);
 			$row->load(intval($id));
 			$row->access = $state;
 			if (!$row->store()) 

@@ -304,7 +304,7 @@ class ForumModelThread extends ForumModelPost
 			default:
 				if (!isset($this->_cache['attachments']) || !($this->_cache['attachments'] instanceof \Hubzero\ItemList) || $clear)
 				{
-					$tbl = new ForumAttachment($this->_db);
+					$tbl = new ForumTableAttachment($this->_db);
 
 					if ($results = $tbl->getAttachments($this->get('id')))
 					{
@@ -333,7 +333,7 @@ class ForumModelThread extends ForumModelPost
 	{
 		if (!isset($this->_cache['last']) || !($this->_cache['last'] instanceof ForumModelPost))
 		{
-			$post = new ForumPost($this->_db);
+			$post = new ForumTablePost($this->_db);
 			if (!($last = $post->getLastPost($this->get('id'))))
 			{
 				$last = 0;

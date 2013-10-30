@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for forum attachments
  */
-class ForumAttachment extends JTable 
+class ForumTableAttachment extends JTable 
 {
 	/**
 	 * int(11) Primary key
@@ -84,7 +84,7 @@ class ForumAttachment extends JTable
 	 * Loads a record from the database and populates the current object with DB data
 	 * 
 	 * @param      integer $post_id ID of post the file was attached to
-	 * @return     mixed   Return ForumAttachment object on success, false on failure
+	 * @return     mixed   Return ForumTableAttachment object on success, false on failure
 	 */
 	public function loadByPost($post_id=NULL)
 	{
@@ -96,7 +96,7 @@ class ForumAttachment extends JTable
 	 * 
 	 * @param      integer $parent   Thread the file was posted in
 	 * @param      integer $filename Name of file
-	 * @return     mixed   Return ForumAttachment object on success, false on failure
+	 * @return     mixed   Return ForumTableAttachment object on success, false on failure
 	 */
 	public function loadByThread($parent=NULL, $filename=NULL)
 	{

@@ -93,7 +93,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->view->filters['parent'] = 0;
 
 		// Get the section
-		$this->view->section = new ForumSection($this->database);
+		$this->view->section = new ForumTableSection($this->database);
 		if (!$this->view->section->id || $this->view->filters['section_id'] <= 0)
 		{
 			// No section? Load a default blank section
@@ -105,7 +105,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		// Get the category
-		$this->view->category = new ForumCategory($this->database);
+		$this->view->category = new ForumTableCategory($this->database);
 		if (!$this->view->category->id || $this->view->filters['category_id'] <= 0)
 		{
 			// No category? Load a default blank catgory
@@ -184,14 +184,14 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 		else 
 		{
-			$default = new ForumSection($this->database);
+			$default = new ForumTableSection($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
 		asort($this->view->sections);
 
-		$model = new ForumPost($this->database);
+		$model = new ForumTablePost($this->database);
 
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -279,7 +279,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->view->filters['sticky'] = false;
 
 		// Get the section
-		$this->view->section = new ForumSection($this->database);
+		$this->view->section = new ForumTableSection($this->database);
 		$this->view->section->load($this->view->filters['section_id']);
 		if (!$this->view->section->id)
 		{
@@ -288,7 +288,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		// Get the category
-		$this->view->category = new ForumCategory($this->database);
+		$this->view->category = new ForumTableCategory($this->database);
 		$this->view->category->load($this->view->filters['category_id']);
 		if (!$this->view->category->id)
 		{
@@ -334,14 +334,14 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 		else 
 		{
-			$default = new ForumSection($this->database);
+			$default = new ForumTableSection($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
 		asort($this->view->sections);
 
-		$model = new ForumPost($this->database);
+		$model = new ForumTablePost($this->database);
 
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -407,7 +407,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 		else 
 		{
-			$this->view->row = new ForumPost($this->database);
+			$this->view->row = new ForumTablePost($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -433,7 +433,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		// Get the category
-		$this->view->category = new ForumCategory($this->database);
+		$this->view->category = new ForumTableCategory($this->database);
 		$this->view->category->load($this->view->row->category_id);
 		if (!$this->view->category->id)
 		{
@@ -457,7 +457,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		// Get the section
-		$this->view->section = new ForumSection($this->database);
+		$this->view->section = new ForumTableSection($this->database);
 		$this->view->section->load($this->view->category->section_id);
 		if (!$this->view->section->id)
 		{
@@ -488,7 +488,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 		else 
 		{
-			$default = new ForumSection($this->database);
+			$default = new ForumTableSection($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
@@ -504,9 +504,6 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Get tags on this article
 		$this->view->tModel = new ForumModelTags($this->view->row->id);
 		$this->view->tags = $this->view->tModel->render('string');
-
-		//$this->view->tModel = new ForumTags($this->database);
-		//$this->view->tags = $this->view->tModel->get_tag_string($this->view->row->id, 0, 0, $this->view->row->created_by);
 
 		// Set any errors
 		if ($this->getError()) 
@@ -533,7 +530,7 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		if ($fields['id'])
 		{
-			$old = new ForumPost($this->database);
+			$old = new ForumTablePost($this->database);
 			$old->load(intval($fields['id']));
 		}
 
@@ -542,7 +539,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
 		// Initiate extended database class
-		$model = new ForumPost($this->database);
+		$model = new ForumTablePost($this->database);
 		if (!$model->bind($fields))
 		{
 			$this->addComponentMessage($model->getError(), 'error');
@@ -606,7 +603,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Do we have any IDs?
 		if (count($ids) > 0) 
 		{
-			$thread = new ForumPost($this->database);
+			$thread = new ForumTablePost($this->database);
 			
 			// Loop through each ID
 			foreach ($ids as $id) 
@@ -679,7 +676,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumPost($this->database);
+			$row = new ForumTablePost($this->database);
 			$row->load(intval($id));
 			$row->state = $state;
 			if (!$row->store()) 
@@ -737,7 +734,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumPost($this->database);
+			$row = new ForumTablePost($this->database);
 			$row->load(intval($id));
 			$row->sticky = $state;
 			if (!$row->store()) 
@@ -793,7 +790,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumPost($this->database);
+			$row = new ForumTablePost($this->database);
 			$row->load(intval($id));
 			$row->access = $state;
 			if (!$row->store()) 

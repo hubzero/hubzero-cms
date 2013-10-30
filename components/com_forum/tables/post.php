@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for forum posts
  */
-class ForumPost extends JTable
+class ForumTablePost extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -1202,11 +1202,11 @@ class ForumPost extends JTable
 	 * Get the thread starter
 	 *
 	 * @param   integer $id  Parent to look up
-	 * @return  object  ForumPost
+	 * @return  object  ForumTablePost
 	 */
 	public function getThread($id = null)
 	{
-		$thread = new ForumPost($this->_db);
+		$thread = new ForumTablePost($this->_db);
 		$thread->load($id);
 
 		// Return the asset id.
@@ -1239,7 +1239,7 @@ class ForumPost extends JTable
 		 */
 		if (empty($this->$k) && $this->parent)
 		{
-			$parent = new ForumPost($this->_db);
+			$parent = new ForumTablePost($this->_db);
 			$parent->load($this->parent);
 
 			if (!$parent)

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for a forum category
  */
-class ForumCategory extends JTable
+class ForumTableCategory extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -596,7 +596,7 @@ class ForumCategory extends JTable
 			$this->$k = intval($oid);
 		}
 		
-		$post = new ForumPost($this->_db);
+		$post = new ForumTablePost($this->_db);
 		if (!$post->deleteByCategory($this->$k))
 		{
 			$this->setError($post->getErrorMsg());

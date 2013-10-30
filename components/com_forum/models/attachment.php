@@ -44,7 +44,7 @@ class ForumModelAttachment extends ForumModelAbstract
 	 * 
 	 * @var object
 	 */
-	protected $_tbl_name = 'ForumAttachment';
+	protected $_tbl_name = 'ForumTableAttachment';
 
 	/**
 	 * Returns a reference to a forum post attachment model

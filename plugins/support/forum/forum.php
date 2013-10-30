@@ -126,7 +126,7 @@ class plgSupportForum extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 
-		$comment = new ForumPost($database);
+		$comment = new ForumTablePost($database);
 		$comment->load($parent);
 		if (!$comment->parent)
 		{
@@ -158,7 +158,7 @@ class plgSupportForum extends JPlugin
 
 		$database =& JFactory::getDBO();
 
-		$comment = new ForumPost($database);
+		$comment = new ForumTablePost($database);
 		$comment->load($refid);
 		$comment->anonymous = 1;
 		$comment->state     = 2;

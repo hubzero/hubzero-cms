@@ -941,7 +941,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		// Set all the threads/posts in all the categories to "deleted"
-		$tModel = new ForumPost($this->database);
+		$tModel = new ForumTablePost($this->database);
 		if (!$tModel->setStateByCategory($category->get('id'), 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 		{
 			$this->setError($tModel->getError());
@@ -1167,13 +1167,13 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		if ($fields['id'])
 		{
-			$old = new ForumPost($this->database);
+			$old = new ForumTablePost($this->database);
 			$old->load(intval($fields['id']));
 		}
 
 		// Bind data
-		/* @var $model ForumPost */
-		$model = new ForumPost($this->database);
+		/* @var $model ForumTablePost */
+		$model = new ForumTablePost($this->database);
 		if (!$model->bind($fields)) 
 		{
 			$this->addPluginMessage($model->getError(), 'error');
@@ -1209,7 +1209,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			}
 		}
 
-		$category = new ForumCategory($this->database);
+		$category = new ForumTableCategory($this->database);
 		$category->load(intval($model->category_id));
 
 		$tags = JRequest::getVar('tags', '', 'post');
@@ -1229,10 +1229,10 @@ class plgGroupsForum extends Hubzero_Plugin
 			{
 				$message = JText::_('PLG_GROUPS_FORUM_POST_ADDED');
 
-				/* @var $parentForumPost ForumPost */
-				$parentForumPost = new ForumPost($this->database);
-				$parentForumPost->load(intval($fields['parent']));
-				$posttitle = $parentForumPost->title;
+				/* @var $parentForumTablePost ForumTablePost */
+				$parentForumTablePost = new ForumTablePost($this->database);
+				$parentForumTablePost->load(intval($fields['parent']));
+				$posttitle = $parentForumTablePost->title;
 			}
 		}
 		else 
@@ -1379,7 +1379,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$id = JRequest::getInt('thread', 0);
 
 		// Initiate a forum object
-		$model = new ForumPost($this->database);
+		$model = new ForumTablePost($this->database);
 		$model->load($id);
 
 		// Make the sure the category exist
@@ -1499,7 +1499,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			// File was uploaded
 			// Create database entry
-			$row = new ForumAttachment($this->database);
+			$row = new ForumTableAttachment($this->database);
 			$row->bind(array(
 				'id' => 0,
 				'parent' => $listdir,
@@ -1550,7 +1550,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		// Instantiate an attachment object
-		$attach = new ForumAttachment($this->database);
+		$attach = new ForumTableAttachment($this->database);
 		if (!$post)
 		{
 			$attach->loadByThread($thread, $file);
@@ -1568,7 +1568,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$file = $attach->filename;
 
 		// Get the parent ticket the file is attached to
-		$this->model = new ForumPost($this->database);
+		$this->model = new ForumTablePost($this->database);
 		$this->model->load($attach->post_id);
 
 		if (!$this->model->id) 
@@ -1689,7 +1689,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		$this->database = JFactory::getDBO();
 
-		$sModel = new ForumSection($this->database);
+		$sModel = new ForumTableSection($this->database);
 		$sections = $sModel->getRecords(array(
 			'scope'    => 'group',
 			'scope_id' => $group->get('gidNumber')
@@ -1702,7 +1702,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			foreach ($sections as $section) 
 			{
 				// Get the categories in this section
-				$cModel = new ForumCategory($this->database);
+				$cModel = new ForumTableCategory($this->database);
 				$categories = $cModel->getRecords(array(
 					'section_id' => $section->id,
 					'scope'      => 'group',
@@ -1719,7 +1719,7 @@ class plgGroupsForum extends Hubzero_Plugin
 					}
 
 					// Set all the threads/posts in all the categories to "deleted"
-					$tModel = new ForumPost($this->database);
+					$tModel = new ForumTablePost($this->database);
 					if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 					{
 						$this->setError($tModel->getError());

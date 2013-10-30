@@ -70,7 +70,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					
 					if ($row->parent)
 					{
-						$p = new ForumPost(JFactory::getDBO());
+						$p = new ForumTablePost(JFactory::getDBO());
 						$thread = $p->getThread($row->parent);
 					}
 					else

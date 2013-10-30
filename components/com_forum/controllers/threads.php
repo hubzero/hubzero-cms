@@ -588,7 +588,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$id = JRequest::getInt('thread', 0);
 
 		// Load the post
-		$model = new ForumPost($this->database);
+		$model = new ForumTablePost($this->database);
 		$model->load($id);
 
 		// Make the sure the category exist
@@ -665,7 +665,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		// Instantiate an attachment object
-		$attach = new ForumAttachment($this->database);
+		$attach = new ForumTableAttachment($this->database);
 		if (!$post)
 		{
 			$attach->loadByThread($thread, $file);
@@ -683,7 +683,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$file = $attach->filename;
 
 		// Get the parent ticket the file is attached to
-		$row = new ForumPost($this->database);
+		$row = new ForumTablePost($this->database);
 		$row->load($attach->post_id);
 
 		if (!$row->id) 
@@ -790,7 +790,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
-		$row = new ForumAttachment($this->database);
+		$row = new ForumTableAttachment($this->database);
 		$row->load(JRequest::getInt('attachment', 0));
 		$row->description = trim(JRequest::getVar('description', ''));
 		$row->post_id = $post_id;

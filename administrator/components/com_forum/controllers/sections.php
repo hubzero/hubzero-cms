@@ -89,7 +89,7 @@ class ForumControllerSections extends Hubzero_Controller
 			$this->view->filters['scope_id'] = intval(end($bits));
 		}
 
-		$model = new ForumSection($this->database);
+		$model = new ForumTableSection($this->database);
 		
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -98,7 +98,7 @@ class ForumControllerSections extends Hubzero_Controller
 		$this->view->results = $model->getRecords($this->view->filters);
 		if ($this->view->results)
 		{
-			$category = new ForumCategory($this->database);
+			$category = new ForumTableCategory($this->database);
 			foreach ($this->view->results as $key => $section)
 			{
 				$this->view->filters['section_id'] = $section->id;
@@ -161,7 +161,7 @@ class ForumControllerSections extends Hubzero_Controller
 		else 
 		{
 			// load infor from database
-			$this->view->row = new ForumSection($this->database);
+			$this->view->row = new ForumTableSection($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -201,7 +201,7 @@ class ForumControllerSections extends Hubzero_Controller
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new ForumSection($this->database);
+		$row = new ForumTableSection($this->database);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -254,18 +254,18 @@ class ForumControllerSections extends Hubzero_Controller
 			{
 				$id = intval($id);
 
-				$section = new ForumSection($this->database);
+				$section = new ForumTableSection($this->database);
 				$section->load($id);
 
 				// Get the categories in this section
-				$cModel = new ForumCategory($this->database);
+				$cModel = new ForumTableCategory($this->database);
 				$categories = $cModel->getRecords(array('section_id' => $section->id));
 
 				// Loop through each category
 				foreach ($categories as $category)
 				{
 					// Remove the posts in this category
-					$tModel = new ForumPost($this->database);
+					$tModel = new ForumTablePost($this->database);
 					if (!$tModel->deleteByCategory($category->id)) 
 					{
 						JError::raiseError(500, $tModel->getError());
@@ -345,7 +345,7 @@ class ForumControllerSections extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumSection($this->database);
+			$row = new ForumTableSection($this->database);
 			$row->load(intval($id));
 			$row->state = $state;
 			if (!$row->store()) 
@@ -400,7 +400,7 @@ class ForumControllerSections extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new ForumSection($this->database);
+			$row = new ForumTableSection($this->database);
 			$row->load(intval($id));
 			$row->access = $state;
 			if (!$row->store()) 

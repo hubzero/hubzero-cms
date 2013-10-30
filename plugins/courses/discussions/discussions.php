@@ -114,7 +114,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
 
 		// Attempt to load the category
-		$category = new ForumCategory(JFactory::getDBO());
+		$category = new ForumTableCategory(JFactory::getDBO());
 		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
 
 		// Is there a category already?
@@ -122,7 +122,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		{
 			// No category
 			// Is there a parent section?
-			$section = new ForumSection(JFactory::getDBO());
+			$section = new ForumTableSection(JFactory::getDBO());
 			$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
 			if (!$section->id)
 			{
@@ -195,7 +195,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
 
 		// Attempt to load an associated category
-		$category = new ForumCategory(JFactory::getDBO());
+		$category = new ForumTableCategory(JFactory::getDBO());
 		$category->loadByObject($assetgroup->get('id'), null, $unit->get('offering_id'), 'course');
 
 		// Was a category found?
@@ -211,7 +211,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 			// Mark all threads in category as deleted
-			$thread = new ForumPost(JFactory::getDBO());
+			$thread = new ForumTablePost(JFactory::getDBO());
 			$thread->setStateByCategory($category->get('id'), 2);
 		}
 
@@ -240,7 +240,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 
-		$section = new ForumSection(JFactory::getDBO());
+		$section = new ForumTableSection(JFactory::getDBO());
 		$section->loadByObject($unit->get('id'), $unit->get('offering_id'), 'course');
 		if ($section->id)
 		{
@@ -271,7 +271,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 
-		$section = new ForumSection(JFactory::getDBO());
+		$section = new ForumTableSection(JFactory::getDBO());
 		$section->loadByAlias($unit->get('alias'), $unit->get('offering_id'), 'course');
 		if ($section->id)
 		{
@@ -295,7 +295,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
-				$thread = new ForumPost(JFactory::getDBO());
+				$thread = new ForumTablePost(JFactory::getDBO());
 				$thread->setStateByCategory($ids, 2);
 			}
 		}
@@ -367,7 +367,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			//Create user object
 			$this->juser = JFactory::getUser();
 
-			$this->section = new ForumSection($this->database);
+			$this->section = new ForumTableSection($this->database);
 			$this->sections = $this->section->getRecords(array(
 				'state'    => 1, 
 				'scope'    => 'course',
@@ -397,7 +397,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				{
 					if (!isset($linked[$unit->get('id')]))
 					{
-						$section = new ForumSection($this->database);
+						$section = new ForumTableSection($this->database);
 						$section->title     = $unit->get('title');
 						$section->alias     = $unit->get('alias');
 						$section->state     = 1;
@@ -531,7 +531,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			}
 		}
 
-		$tModel = new ForumPost($this->database);
+		$tModel = new ForumTablePost($this->database);
 
 		$arr['metadata']['count'] = $tModel->getCount(array(
 			'scope'    => 'course',
@@ -629,12 +629,12 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->filters['sort'] = 'c.created';
 		$view->filters['object_id'] = $lecture->get('id');
 
-		$view->post  = new ForumPost($this->database);
+		$view->post  = new ForumTablePost($this->database);
 		$view->total = 0;
 		$view->rows  = null;
 
 		// Load the section
-		$section = new ForumSection($this->database);
+		$section = new ForumTableSection($this->database);
 		if (!$section->loadByAlias($unit->get('alias'), $view->filters['scope_id'], $view->filters['scope']))
 		{
 			// Create a default section
@@ -650,7 +650,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			}
 		}
 
-		$category = new ForumCategory($this->database);
+		$category = new ForumTableCategory($this->database);
 		$category->loadByObject($lecture->get('id'), $section->get('id'), $view->filters['scope_id'], $view->filters['scope']);
 		if (!$category->get('id'))
 		{
@@ -684,7 +684,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->post->parent       = 0;
 
 		// Get attachments
-		$view->attach = new ForumAttachment($this->database);
+		$view->attach = new ForumTableAttachment($this->database);
 		$view->attachments = $view->attach->getAttachments($view->post->id);
 
 		$view->thread = JRequest::getInt('thread', 0);
@@ -860,7 +860,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	/**
 	 * Get an entire thread
 	 * 
-	 * @param      object $post    ForumPost
+	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
 	 */
@@ -937,7 +937,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		$view->wikiconfig = $wikiconfig;
-		$view->attach     = new ForumAttachment($this->database);
+		$view->attach     = new ForumTableAttachment($this->database);
 		$view->course     = $this->course;
 		$view->search     = $filters['search'];
 		$view->post       = $post;
@@ -951,7 +951,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	/**
 	 * Get a filtered list of threads
 	 * 
-	 * @param      object $post    ForumPost
+	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
 	 */
@@ -1026,7 +1026,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	/**
 	 * Get a filtered list of threads
 	 * 
-	 * @param      object $post    ForumPost
+	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
 	 */
@@ -1092,7 +1092,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 	/**
 	 * Get a filtered list of posts for a thread
 	 * 
-	 * @param      object $post    ForumPost
+	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
 	 */
@@ -1152,7 +1152,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				$cview->base       = $this->base;
 				$cview->parser     = $p;
 				$cview->wikiconfig = $wikiconfig;
-				$cview->attach     = new ForumAttachment($this->database);
+				$cview->attach     = new ForumTableAttachment($this->database);
 				$cview->course     = $this->course;
 				$cview->search     = '';
 
@@ -1338,7 +1338,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$view->filters['sort'] = 'c.created';
 			//$view->filters['object_id'] = 0;
 
-			$view->post = new ForumPost($this->database);
+			$view->post = new ForumTablePost($this->database);
 
 			$data = new stdClass();
 			$data->success = true;
@@ -1447,7 +1447,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$view->sections = $this->sections;
 		}
 
-		$model = new ForumCategory($this->database);
+		$model = new ForumTableCategory($this->database);
 
 		$view->stats = new stdClass;
 		$view->stats->categories = 0;
@@ -1501,7 +1501,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 								{
 									continue;
 								}
-								$cat = new ForumCategory($this->database);
+								$cat = new ForumTableCategory($this->database);
 								$cat->loadByObject($ag->get('id'), $section->id, $this->offering->get('id'), 'course');
 								if (!$cat->get('id'))
 								{
@@ -1547,7 +1547,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			}
 		}
 
-		$view->post = new ForumPost($this->database);
+		$view->post = new ForumTablePost($this->database);
 		$view->post->scope    = $view->filters['scope'];
 		$view->post->scope_id = $view->filters['scope_id'];
 		$view->post->scope_sub_id = $this->offering->section()->get('id');
@@ -1629,19 +1629,19 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->thread = JRequest::getInt('thread', 0);
 		$view->notifications = $this->getPluginMessage();
 
-		$view->post = new ForumPost($this->database);
+		$view->post = new ForumTablePost($this->database);
 		$view->post->scope    = $view->filters['scope'];
 		$view->post->scope_id = $view->filters['scope_id'];
 		$view->post->scope_sub_id = $view->filters['scope_sub_id'];
 
-		$this->section = new ForumSection($this->database);
+		$this->section = new ForumTableSection($this->database);
 		$view->sections = $this->section->getRecords(array(
 				'state'    => $view->filters['state'],
 				'scope'    => $view->filters['scope'], 
 				'scope_id' => $view->filters['scope_id']
 			));
 
-		$model = new ForumCategory($this->database);
+		$model = new ForumTableCategory($this->database);
 
 		$view->stats = new stdClass;
 		$view->stats->categories = 0;
@@ -1721,7 +1721,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			'sort_Dir' => 'ASC'
 		));
 
-		$model = new ForumCategory($this->database);
+		$model = new ForumTableCategory($this->database);
 
 		$view->stats = new stdClass;
 		$view->stats->categories = 0;
@@ -1745,7 +1745,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			}
 		}
 
-		$post = new ForumPost($this->database);
+		$post = new ForumTablePost($this->database);
 		$view->lastpost = $post->getLastActivity($this->offering->get('id'), 'course');
 
 		//get authorization
@@ -1783,7 +1783,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a new table row and bind the incoming data
-		$model = new ForumSection($this->database);
+		$model = new ForumTableSection($this->database);
 		if (!$model->bind($fields))
 		{
 			$this->setRedirect(
@@ -1821,7 +1821,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$alias = JRequest::getVar('section', '');
 
 		// Load the section
-		$model = new ForumSection($this->database);
+		$model = new ForumTableSection($this->database);
 		$model->loadByAlias($alias, $this->offering->get('id'), 'course');
 
 		// Make the sure the section exist
@@ -1848,7 +1848,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Get all the categories in this section
-		$cModel = new ForumCategory($this->database);
+		$cModel = new ForumTableCategory($this->database);
 		$categories = $cModel->getRecords(array(
 			'section_id' => $model->id,
 			'scope'      => 'course', 
@@ -1864,7 +1864,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			}
 
 			// Set all the threads/posts in all the categories to "deleted"
-			$tModel = new ForumPost($this->database);
+			$tModel = new ForumTablePost($this->database);
 			if (!$tModel->setStateByCategory($cats, 2))  // 0 = unpublished, 1 = published, 2 = deleted 
 			{
 				$this->setError($tModel->getError());
@@ -1936,11 +1936,11 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		//$view->filters['sticky'] = false;
 		$view->filters['sort_Dir'] = 'ASC';
 		
-		$view->section = new ForumSection($this->database);
+		$view->section = new ForumTableSection($this->database);
 		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
 		$view->filters['section_id'] = $view->section->id;
 
-		$view->category = new ForumCategory($this->database);
+		$view->category = new ForumTableCategory($this->database);
 		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->offering->get('id'), 'course');
 		$view->filters['category_id'] = $view->category->id;
 
@@ -1952,7 +1952,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Initiate a forum object
-		$view->forum = new ForumPost($this->database);
+		$view->forum = new ForumTablePost($this->database);
 
 		// Get record count
 		$view->total = $view->forum->getCount($view->filters);
@@ -2018,7 +2018,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$this->view->filters['scope']    = 'course';
 		$this->view->filters['scope_id'] = $this->offering->get('id');
 
-		$this->view->section = new ForumSection($this->database);
+		$this->view->section = new ForumTableSection($this->database);
 		$this->view->section->title = JText::_('Posts');
 		$this->view->section->alias = str_replace(' ', '-', $this->view->section->title);
 		$this->view->section->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->title));
@@ -2036,7 +2036,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 		$this->view->sections = $s;
 
-		$this->view->category = new ForumCategory($this->database);
+		$this->view->category = new ForumTableCategory($this->database);
 		$this->view->category->title = JText::_('Search');
 		$this->view->category->alias = str_replace(' ', '-', $this->view->category->title);
 		$this->view->category->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->title));
@@ -2055,7 +2055,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$this->view->categories = $c;
 
 		// Initiate a forum object
-		$this->view->forum = new ForumPost($this->database);
+		$this->view->forum = new ForumTablePost($this->database);
 
 		// Get record count
 		$this->view->total = $this->view->forum->getCount($this->view->filters);
@@ -2127,7 +2127,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			return;
 		}
 
-		$sModel = new ForumSection($this->database);
+		$sModel = new ForumTableSection($this->database);
 		$sModel->loadByAlias($section, $this->offering->get('id'), 'course');
 
 		// Incoming
@@ -2137,7 +2137,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 		else 
 		{
-			$this->view->model = new ForumCategory($this->database);
+			$this->view->model = new ForumTableCategory($this->database);
 			$this->view->model->loadByAlias($category, $sModel->id, $this->offering->get('id'), 'course');
 		}
 
@@ -2166,7 +2166,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		{
 			$this->view->sections = array();
 
-			$default = new ForumSection($this->database);
+			$default = new ForumTableSection($this->database);
 			$default->id = 0;
 			$default->title = JText::_('Categories');
 			$default->alias = str_replace(' ', '-', $default->title);
@@ -2207,7 +2207,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$model = new ForumCategory($this->database);
+		$model = new ForumTableCategory($this->database);
 		if (!$model->bind($fields))
 		{
 			$this->addPluginMessage($model->getError(), 'error');
@@ -2268,11 +2268,11 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 		
 		$section = JRequest::getVar('section', '');
-		$sModel = new ForumSection($this->database);
+		$sModel = new ForumTableSection($this->database);
 		$sModel->loadByAlias($section, $this->offering->get('id'), 'course');
 
 		// Initiate a forum object
-		$model = new ForumCategory($this->database);
+		$model = new ForumTableCategory($this->database);
 		$model->loadByAlias($category, $sModel->id, $this->offering->get('id'), 'course');
 
 		// Check if user is authorized to delete entries
@@ -2288,7 +2288,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Set all the threads/posts in all the categories to "deleted"
-		$tModel = new ForumPost($this->database);
+		$tModel = new ForumTablePost($this->database);
 		if (!$tModel->setStateByCategory($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 		{
 			$this->setError($tModel->getError());
@@ -2352,11 +2352,11 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		$thread   = JRequest::getInt('thread', 0);
 
-		$view->section = new ForumSection($this->database);
+		$view->section = new ForumTableSection($this->database);
 		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
 		$view->filters['section_id'] = $view->section->id;
 
-		$view->category = new ForumCategory($this->database);
+		$view->category = new ForumTableCategory($this->database);
 		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->offering->get('id'), 'course');
 		$view->filters['category_id'] = $view->category->id;
 
@@ -2367,7 +2367,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Initiate a forum object
-		$view->post = new ForumPost($this->database);
+		$view->post = new ForumTablePost($this->database);
 
 		// Load the topic
 		$view->post->load($thread);
@@ -2445,7 +2445,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$view->participants = $view->post->getParticipants($view->filters);
 
 		// Get attachments
-		$view->attach = new ForumAttachment($this->database);
+		$view->attach = new ForumTableAttachment($this->database);
 		$view->attachments = $view->attach->getAttachments($view->post->id);
 		
 		// Get tags on this article
@@ -2568,7 +2568,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			return;
 		}
 
-		$this->view->category = new ForumCategory($this->database);
+		$this->view->category = new ForumTableCategory($this->database);
 		$this->view->category->loadByAlias($category);
 
 		// Incoming
@@ -2578,7 +2578,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 		else 
 		{
-			$this->view->post = new ForumPost($this->database);
+			$this->view->post = new ForumTablePost($this->database);
 			$this->view->post->load($id);
 		}
 
@@ -2595,7 +2595,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			return;
 		}
 
-		$sModel = new ForumSection($this->database);
+		$sModel = new ForumTableSection($this->database);
 		$this->view->sections = $sModel->getRecords(array(
 			'state'    => 1, 
 			'scope'    => 'course',
@@ -2614,7 +2614,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			$this->view->sections[] = $default;
 		}
 
-		$cModel = new ForumCategory($this->database);
+		$cModel = new ForumTableCategory($this->database);
 		foreach ($this->view->sections as $key => $section)
 		{
 			$this->view->sections[$key]->categories = $cModel->getRecords(array(
@@ -2687,12 +2687,12 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		if ($fields['id'])
 		{
-			$old = new ForumPost($this->database);
+			$old = new ForumTablePost($this->database);
 			$old->load(intval($fields['id']));
 		}
 
 		// Bind data
-		$model = new ForumPost($this->database);
+		$model = new ForumTablePost($this->database);
 		if (!$model->bind($fields)) 
 		{
 			$this->addPluginMessage($model->getError(), 'error');
@@ -2712,7 +2712,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Load the category
-		$category = new ForumCategory($this->database);
+		$category = new ForumTableCategory($this->database);
 		$category->load(intval($model->category_id));
 		if (!$model->object_id && $category->object_id)
 		{
@@ -2829,7 +2829,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$id = ($id) ? $id : JRequest::getInt('thread', 0);
 
 		// Initiate a forum object
-		$model = new ForumPost($this->database);
+		$model = new ForumTablePost($this->database);
 		$model->load($id);
 
 		// Make the sure the category exist
@@ -2952,7 +2952,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		{
 			// File was uploaded
 			// Create database entry
-			$row = new ForumAttachment($this->database);
+			$row = new ForumTableAttachment($this->database);
 			$row->bind(array(
 				'id'          => 0,
 				'parent'      => $listdir,
@@ -3003,7 +3003,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		}
 
 		// Instantiate an attachment object
-		$attach = new ForumAttachment($this->database);
+		$attach = new ForumTableAttachment($this->database);
 		if (!$post)
 		{
 			$attach->loadByThread($thread, $file);
@@ -3021,7 +3021,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 		$file = $attach->filename;
 
 		// Get the parent ticket the file is attached to
-		$this->model = new ForumPost($this->database);
+		$this->model = new ForumTablePost($this->database);
 		$this->model->load($attach->post_id);
 
 		if (!$this->model->id) 
@@ -3164,7 +3164,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		//$inc = ($this->_task == 'orderup' ? -1 : 1);
 
-		$row = new ForumSection($this->database);
+		$row = new ForumTableSection($this->database);
 		//$row->load($id);
 		if ($row->loadByAlias($alias, $this->offering->get('id'), 'course'))
 		{
@@ -3194,7 +3194,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 
 		$this->database = JFactory::getDBO();
 
-		$sModel = new ForumSection($this->database);
+		$sModel = new ForumTableSection($this->database);
 		$sections = $sModel->getRecords(array(
 			'scope'    => 'course',
 			'scope_id' => $course->offering()->get('id')
@@ -3207,7 +3207,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			foreach ($sections as $section) 
 			{
 				// Get the categories in this section
-				$cModel = new ForumCategory($this->database);
+				$cModel = new ForumTableCategory($this->database);
 				$categories = $cModel->getRecords(array(
 					'section_id' => $section->id,
 					'scope'      => 'course',
@@ -3224,7 +3224,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 					}
 
 					// Set all the threads/posts in all the categories to "deleted"
-					$tModel = new ForumPost($this->database);
+					$tModel = new ForumTablePost($this->database);
 					if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 					{
 						$this->setError($tModel->getError());
