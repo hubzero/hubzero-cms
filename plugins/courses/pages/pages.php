@@ -470,6 +470,7 @@ class plgCoursesPages extends Hubzero_Plugin
 
 		//define upload directory and make sure its writable
 		$path = $this->_path();
+
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
@@ -510,13 +511,13 @@ class plgCoursesPages extends Hubzero_Plugin
 		// don't overwrite previous files that were uploaded
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
-		
+
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
 		$filename = JFile::makeSafe($filename);
 		$filename = str_replace(' ', '_', $filename);
-		
+
 		$ext = $pathinfo['extension'];
 		while (file_exists($path . DS . $filename . '.' . $ext)) 
 		{
@@ -653,7 +654,14 @@ class plgCoursesPages extends Hubzero_Plugin
 			}
 			else
 			{
-				$path .= $this->view->course->get('id') . DS . 'pagefiles' . DS . $this->view->offering->get('id');
+				if ($section = JRequest::getInt('section_id', 0))
+				{
+					$path .= $this->view->course->get('id') . DS . 'sections' . DS . $section . DS . 'pagefiles';
+				}
+				else
+				{
+					$path .= $this->view->course->get('id') . DS . 'pagefiles' . DS . $this->view->offering->get('id');
+				}
 			}
 		}
 		return $path;
@@ -864,7 +872,7 @@ class plgCoursesPages extends Hubzero_Plugin
 			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
 			return;
 		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
+		/*if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[f]' . $filename);
 			return;
@@ -891,7 +899,7 @@ class plgCoursesPages extends Hubzero_Plugin
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[h]' . $filename);
 			return;
-		}
+		}*/
 
 		$page = $this->view->offering->page(JRequest::getVar('unit', ''));
 		if (!$page->exists())

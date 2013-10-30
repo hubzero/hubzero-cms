@@ -33,6 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $no_html = JRequest::getVar('no_html', 0);
 
+$section = JRequest::getInt('section_id', 0);
+
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=pages';
 
 if (!$no_html) { ?>
@@ -94,7 +96,7 @@ if (!$no_html) { ?>
 							<span><?php echo $this->escape(stripslashes($name)); ?></span>
 						</td>
 						<td>
-							<a class="delete" href="<?php echo JRoute::_($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1')); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>">
+							<a class="delete" href="<?php echo JRoute::_($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>">
 								<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>
 							</a>
 						</td>

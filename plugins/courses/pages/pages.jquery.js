@@ -43,6 +43,24 @@ jQuery(document).ready(function(jq){
 			var section = $('#field-section_id').val();
 			uploader.attr('data-section', section);
 
+			var fuploader = new qq.FileUploader({
+				element: uploader[0],
+				action: uploader.attr('data-action') + uploader.attr('data-section'),
+				multiple: true,
+				debug: false,
+				template: '<div class="qq-uploader">' +
+						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+						'<ul class="qq-upload-list"></ul>' + 
+					'</div>',
+				onComplete: function(id, file, response) {
+					$('.qq-upload-list').empty();
+					$.get(uploader.attr('data-list') + uploader.attr('data-section'), {}, function(data) {
+						filelist.html(data);
+					});
+				}
+			});
+
 			$.get(uploader.attr('data-list') + section, {}, function(data) {
 				filelist.html(data);
 			});
@@ -70,8 +88,6 @@ jQuery(document).ready(function(jq){
 						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
-				onSubmit: function(id, file) {
-				},
 				onComplete: function(id, file, response) {
 					$('.qq-upload-list').empty();
 					$.get(uploader.attr('data-list') + uploader.attr('data-section'), {}, function(data) {
