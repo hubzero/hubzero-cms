@@ -843,32 +843,61 @@
 	.screenshots img { 
 		border: none;
 		}
-/* Metadata container */
-	.metadata {
-		border: 1px dashed #bbb;
-		margin: 1em 0 0 0;
-		padding: 10px 10px 5px 10px;
+	/* Metadata container */
+		.metadata {
+			border: 1px dashed #bbb;
+			margin: 0;
+			padding: 10px 10px 5px 10px;
 		}
-	.metadata p {
-		margin: 0.2em 0;
-		padding: 0 0 0 20px;
-		font-size: 90%;
-		color: #999999;
+		/*.upperpane .metadata {
+			margin: 1em 0 0 0;
+		}*/
+		.metadata p {
+			margin: 0.2em 0;
+			padding: 0;
+			font-size: 90%;
+			color: #999;
 		}
-	.metadata .review {
-		background: url("../img/1.gif") -52px 50% no-repeat;
+		.metadata p:before {
+			font-family: 'Fontcons';
+			font-size: 12px;
+			line-height: 12px;
+			margin-right: 0.3em;
+			color: #bbb;
 		}
-	.metadata .citation {
-		background: url("../img/cite.gif") 0 50% no-repeat;
+		.metadata p.review:before {
+			content: "\2605";
 		}
-	.metadata .wishlist {
-		background: url("../img/wishlist.gif") 0 50% no-repeat;
+		.metadata p.citation:before {
+			content: "\275D";
 		}
-	.metadata .usage { 
-		background: url("../img/stats.gif") 0 50% no-repeat;
+		.metadata p.usage:before { 
+			content: "\f080";
 		}
-	.metadata .answer { 
-		background: url("../img/qanda.gif") 0 50% no-repeat;
+		.metadata p.answer:before { 
+			content: "\f086";
+		}
+		.metadata p.wiki:before,
+		.metadata p.topics:before { 
+			content: "\f072";
+		}
+		.metadata p.groups:before { 
+			content: "\f086";
+		}
+		.metadata p.resources:before { 
+			content: "\270D";
+		}
+		.metadata p.favorite:before {
+			content: "\2665";
+		}
+		.metadata p.points:before {
+			content: "\f006";
+		}
+		.metadata p.messages:before { 
+			content: "\2709";
+		}
+		.metadata p.wishlist:before { 
+			content: "\f078";
 		}
 /* Ranking */
 	.rankinfo {

@@ -84,6 +84,9 @@ class plgPublicationsFavorite extends JPlugin
 			'metadata'=>''
 		);
 		
+		// Do not support adding to favorites just yet
+		return $arr;
+		
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) 
 		{
@@ -142,7 +145,7 @@ class plgPublicationsFavorite extends JPlugin
 				ximport('Hubzero_Plugin_View');
 				$view = new Hubzero_Plugin_View(
 					array(
-						'folder'  => 'publication',
+						'folder'  => 'publications',
 						'element' => 'favorite',
 						'name'    => 'metadata'
 					)
