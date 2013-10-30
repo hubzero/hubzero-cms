@@ -138,12 +138,16 @@ class plgContentCollect extends JPlugin
 				$url = JRoute::_('index.php?option=com_content&id=' . $this->article->alias);
 			}
 
+			$text = strip_tags($this->article->text);
+			$text = str_replace(array("\n", "\r", "\t"), ' ', $text);
+			$text = preg_replace('/\s+/', ' ', $text);
+
 			$b->url         = str_replace('?action=collect', '', $url);
 			$b->url         = str_replace('nohtml=1', '', $b->url);
 			$b->type        = 'article';
 			$b->object_id   = $this->article->id;
 			$b->title       = $this->article->title;
-			$b->description = Hubzero_View_Helper_Html::shortenText(strip_tags($this->article->text), 300, 0, 1);
+			$b->description = Hubzero_View_Helper_Html::shortenText($text, 300, 0, 1);
 			if (!$b->check()) 
 			{
 				$this->setError($b->getError());
