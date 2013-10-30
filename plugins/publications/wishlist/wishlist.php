@@ -130,7 +130,8 @@ class plgPublicationsWishlist extends JPlugin
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.plan.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.group.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS 
+			. 'tables' . DS . 'wishlist.owner.group.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.rank.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.attachment.php' );
@@ -159,8 +160,8 @@ class plgPublicationsWishlist extends JPlugin
 			if ($publication->title && $publication->state == 1) 
 			{
 				$rtitle = isset($publication->alias) && $publication->alias
-				? JText::_('WISHLIST_NAME_RESOURCE').' '.$publication->alias 
-				: JText::_('WISHLIST_NAME_PUB_ID').' '.$publication->id;
+				? JText::_('COM_WISHLIST_NAME_RESOURCE').' '.$publication->alias 
+				: JText::_('COM_WISHLIST_NAME_PUB_ID').' '.$publication->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $publication->title);
 			}				
 		}
@@ -170,7 +171,7 @@ class plgPublicationsWishlist extends JPlugin
 		
 		if (!$wishlist) 
 		{
-			$html = '<p class="error">' . JText::_('ERROR_WISHLIST_NOT_FOUND') . '</p>';
+			$html = '<p class="error">' . JText::_('COM_WISHLIST_ERROR_LIST_NOT_FOUNDD') . '</p>';
 		} 
 		else 
 		{
@@ -196,7 +197,7 @@ class plgPublicationsWishlist extends JPlugin
 			elseif (!$wishlist->public && $rtrn != 'metadata') 
 			{
 				// not authorized
-				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				JError::raiseError( 403, JText::_('COM_WISHLIST_ERROR_ALERTNOTAUTH') );
 				return;
 			}
 			
@@ -213,7 +214,7 @@ class plgPublicationsWishlist extends JPlugin
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
 				
-				$title = ($admin) ?  JText::_('WISHLIST_TITLE_PRIORITIZED') : JText::_('WISHLIST_TITLE_RECENT_WISHES');
+				$title = ($admin) ?  JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit']) 
 				{
 					$title.= ' (<a href="'.JRoute::_('index.php?option='.$option.'&task=wishlist&category='. $wishlist->category.'&rid='.$wishlist->referenceid).'">'.JText::_('view all') .' '.$items.'</a>)';
@@ -256,9 +257,20 @@ class plgPublicationsWishlist extends JPlugin
 		$metadata = '';
 
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
-		{
-			$metadata  = '<p class="wishlist"><a href="'.JRoute::_('index.php?option=com_publications&id='. $publication->id.'&active=wishlist').'">'.JText::sprintf('NUM_WISHES',$items);
-			$metadata .= '</a> (<a href="'.JRoute::_('index.php?option='.$option.'&id='. $id.'&task=add').'">'.JText::_('ADD_NEW_WISH').'</a>)</p>'."\n";
+		{		
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'publications',
+					'element' => 'wishlist',
+					'name'    => 'metadata'
+				)
+			);
+			$view->publication   = $publication;
+			$view->items      	 = $items;
+			$view->wishlistid 	 = $id;
+
+			$metadata = $view->loadTemplate();
 		}
 
 		$arr = array(

@@ -200,10 +200,12 @@ class Wishlist extends JTable
 			break;
 
 			case 'resource':
+			case 'publication':
 				// resources can only have one list
-				if (!$this->get_wishlist('', $refid, 'resource')) 
+				if (!$this->get_wishlist('', $refid, $category)) 
 				{
-					$this->title = $title ? $title : 'Resource #' . $rid;
+					$defaultTitle = $category == 'resource' ? 'Resource #' . $refid : 'Publication #' . $refid;
+					$this->title = $title ? $title : $defaultTitle;
 
 					if (!$this->store()) 
 					{
@@ -222,7 +224,7 @@ class Wishlist extends JTable
 			break;
 
 			case 'group':
-				$this->title = $title ? $title : 'Group #' . $rid;
+				$this->title = $title ? $title : 'Group #' . $refid;
 				if (!$this->store()) 
 				{
 					$this->_error = $this->getError();

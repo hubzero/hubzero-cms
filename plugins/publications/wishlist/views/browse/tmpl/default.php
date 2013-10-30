@@ -1,165 +1,195 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b %Y';
-$dateFormat2 = '%d %b %y';
-$tz = null;
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
 
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat = 'd M Y';
-	$dateFormat2 = 'd M y';
-	$tz = false;
+	$dateFormat = 'd M, Y';
+	$timeFormat = 'h:i A';
+	$tz = null;
 }
 
-		$title 		= $this->title;
-		$option 	= $this->option;
-		$wishlist 	= $this->wishlist;
-		$admin 		= $this->admin;
-		$filters	= $this->filters;
-		$error		= $this->getError();
-				
-				$html  = '<h3>'.n;
-				$html .= '   <span><a class="add" href="'.JRoute::_('index.php?option='.$option.a.'task=add'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('ADD_NEW_WISH').'</a></span>'.$title.n;
-				$html .= '</h3>'.n;
-				
-				if($wishlist->items) {
-					$html  .= t.'<ul id="wishlist">'.n;
-					foreach ($wishlist->items as $item) {
-						$item->subject = stripslashes($item->subject);
-						$item->subject = $this->escape($item->subject);
-						$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
-						$name = $item->anonymous == 1 ? JText::_('ANONYMOUS') : $item->authorname;
-						
-						$html  .= t.t.'<li class="reg ';
-						$html  .= (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($admin==2 or $admin==3)) ? ' newwish' : '' ;				
-						$html  .= ($item->private && $wishlist->public) ? ' private' : '' ;
-						$html  .= ($item->status==1) ? ' grantedwish' : '' ;
-						$html  .= '">'.n;
-				
-						$html .= t.t.'<dl class="comment-details">'.n;
-						$html .= t.t.t.'<dt><span class="wish_';
-						if($item->reports) {
-							$html .= 'outstanding';
-						}
-						else if(isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($admin==2 or $admin==3))  {
-							$html .= 'unranked';
-						}	else if($item->status==1) {
-							$html .= 'granted';
-						}
-						else {
-							$html .= 'outstanding';
-						}	
-						$html .='"></span>';		
-						$html .='</dt>'.n;
-						$html .= t.t.'</dl>'.n;	
-						
-						$html .= t.t.'<div class="ensemble_left">'.n;
-						if(!$item->reports) {
-							$html .= t.t.t.'<p class="wishcontent"><a href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$filters['filterby'].'" class="wishtitle" title="'.$this->escape($item->about).'" >'.Hubzero_View_Helper_Html::shortenText($item->subject, 160, 0).'</a></p>'.n;
-							$html .= t.t.t.'<p class="proposed">'.JText::_('WISH_PROPOSED_BY').' '.$name.' '.JText::_('ON').' '.JHTML::_('date',$item->proposed, $dateFormat, $tz);
-							$html .= ', <a href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?com=1#comments">'.$item->numreplies; 
-							$html .= '<span class="nobreak">';
-							$html .= $item->numreplies==1 ? ' '.JText::_('COMMENT') : ' '.JText::_('COMMENTS');
-							$html .= '</span>';
-							$html .= '</a>';
-							if($admin && $admin != 3) {
-								$assigned = $item->assignedto ? $item->assignedto : JText::_('UNKNOWN');
-								$html .= $item->assigned ? '<br /> '.JText::_('WISH_ASSIGNED_TO').' '.$assigned : '';
-							}
-							$html .= '</p>'.n;
-						}
-						else {
-							$html .= t.t.t.'<p class="warning adjust">'.JText::_('NOTICE_POSTING_REPORTED').'</p>'.n;
-						}
-						$html .= t.t.'</div>'.n;
-						if(!$item->reports) {
-						$html .= t.t.'<div class="ensemble_right">'.n;					
-						// admin ranking			
-						if(($admin or $item->status==1 or ($item->status==0 && $item->accepted==1) or $item->status==3 or $item->status==4) && !$item->reports) {
-							$html .= t.t.t.'<div class="wishranking">'.n;
-							$html .=($item->status==1) ?' <span class="special priority_number">'.JText::_('WISH_STATUS_GRANTED').'</span>': '';
-							$html .=($item->status==1 && $item->granted!='0000-00-00 00:00:00') ?' <span class="mini">'.strtolower(JText::_('ON')).' '.JHTML::_('date',$item->granted, $dateFormat2, $tz).'</span>': '';
-							if(isset($item->ranked) && !$item->ranked && $item->status==0 && ($admin==2 or $admin==3)) {
-								$html .= t.t.t.'<a class="rankit" href="index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id.a.'filterby='.$filters['filterby'].'">'.JText::_('WISH_RANK_THIS').'</a>'.n;
-							} else if(isset($item->ranked) && $item->ranked && $item->status==0) {
-								$html .= t.t.t.'<span>'.JText::_('WISH_PRIORITY').': <span class="priority_number">'.$item->ranking.'</span></span>'.n;
-							}
-							$html .= ($item->status==0 && $item->accepted==1) ? '<span class="special accepted">'.JText::_('WISH_STATUS_ACCEPTED').'</span>' : '';
-							$html .= ($item->status==3) ? '<span class="special rejected">'.JText::_('WISH_STATUS_REJECTED').'</span>' : '';
-							$html .= ($item->status==4) ? '<span class="special withdrawn">'.JText::_('WISH_STATUS_WITHDRAWN').'</span>' : '';
-							$html .=t.t.t.'</div>'.n;
-						}
-					
-						// Thumbs ratings
-						$html .= t.t.t.'<div id="wishlist_'.$item->id.'" class="'.$option.' intermed">';
-						jimport('joomla.application.component.view');
-						$view = new JView( array('name'=>'rateitem','base_path' => JPATH_ROOT.DS.'components'.DS.$option) );
-						$view->option = $option;
+?>
+	<h3 class="section-header">
+		<a name="wishlist"></a>
+		<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>" class="add"><?php echo JText::_('COM_WISHLIST_ADD_NEW_WISH'); ?></a></span>
+		<?php echo JText::_('COM_WISHLIST_WISHLIST'); ?>
+	</h3>
+	<div class="container">
+		<table class="ideas entries" summary="<?php echo JText::_('COM_WISHLIST_Ideas submitted by the community'); ?>">
+			<caption>
+				<?php echo $this->title; ?>
+			</caption>
+			<tbody>
+<?php
+	if ($this->wishlist->items) {
+		foreach ($this->wishlist->items as $item) 
+		{ 
+			$item->subject = $this->escape(stripslashes($item->subject));
+
+			$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
+			
+			if ($item->reports) {
+				$status = 'outstanding';
+			} else if (isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($this->admin==2 or $this->admin==3))  {
+				$status = 'unranked';
+			} else {
+				$status = 'outstanding';
+			}
+			
+			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
+			$state .= ($item->private) ? ' private' : '' ;
+			switch ($item->status) 
+			{
+				case 3:
+					$state .= ' rejected';
+				break;
+				case 2:
+					$state .= '';
+				break;
+				case 1:
+					$state .= ' granted';
+				break;
+				case 0:
+				default:
+					if ($item->accepted == 1) {
+						$state .= ' accepted';
+					} else {
+						$state .= ' pending';
+					}
+				break;
+			}
+			
+			$name = JText::_('COM_WISHLIST_ANONYMOUS');
+			if (!$item->anonymous) {
+				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->authorname) . '</a>';
+			}
+?>
+				<tr class="<?php echo $state; ?>">
+					<th class="<?php echo $status; ?>">
+						<span class="entry-id"><?php echo $item->id; ?></span>
+					</th>
+					<td>
+<?php 			if (!$item->reports) { ?>
+						<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
+						<span class="entry-details">
+							<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
+							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_WISHLIST_on'); ?> 
+							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateFormat, $tz); ?></time></span>
+							<span class="entry-details-divider">&bull;</span>
+							<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
+						</span>
+<?php 			} else { ?>
+						<span class="warning adjust"><?php echo JText::_('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?></span>
+<?php 			} ?>
+					</td>
+<?php 			if ($this->config->get('banking')) { ?>
+					<td class="reward">
+						<span class="entry-reward">
+<?php 					if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
+							<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('COM_WISHLIST_MULTIPLE_USERS').' '.JText::_('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('COM_WISHLIST_POINTS').' '.JText::_('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
+<?php 					} else if ($item->status == 0 || $item->status == 6) { ?>
+							<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' :: '.JText::_('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
+<?php 					} else { ?>
+							<span class="inactive" title="<?php echo JText::_('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
+<?php 					} ?>
+						</span>
+					</td>
+<?php 			} ?>
+<?php 			if (!$item->reports) { ?>
+					<td class="voting">
+<?php
+						$view = new JView( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option) );
+						$view->option = $this->option;
 						$view->item = $item;
-						$view->listid = $wishlist->id;
-						$view->plugin = 1;
+						$view->listid = $this->wishlist->id;
+						$view->plugin = 0;
 						$view->admin = 0;
 						$view->page = 'wishlist';
-						$view->filters = $filters;
-						$html .= $view->loadTemplate();											
-						$html .= t.t.t.'</div>'.n;	
-						//$html .= WishlistHtml::rateitem($item, $juser, $option, $wishlist->id, 0, 'wishlist', 1, $filters);									
-					
-						// Points				
-						if($this->config->get('banking')) {
-							$html .= t.t.t.'<div class="assign_bonus">'.n;				
-							if(isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) {
-								$html .= t.t.t.'<a class="bonus tooltips" href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=addbonus#action" title="'.JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS').'">+ '.$item->bonus.'</a>'.n;
-							}
-							else if($item->status==0 or $item->status==6) {
-								$html .= t.t.t.'<a class="nobonus tooltips" href="'.JRoute::_('index.php?option='.$option.a.'task=wish'.a.'category='.$wishlist->category.a.'rid='.$wishlist->referenceid.a.'wishid='.$item->id).'?action=addbonus#action" title="'.JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED').'">&nbsp;</a>'.n;
-							}
-							else {
-								$html .= t.t.t.'<span class="bonus_inactive" title="'.JText::_('WISH_BONUS_NOT_ACCEPTED').'">&nbsp;</span>'.n;
-							}
-							$html .= t.t.t.'</div>'.n; // end assign bonus
-						}
-						$html .= t.t.'</div> <!-- end ensemble right -->';
-					} // end if no abuse
-						$html .= t.t.'<div style="clear:left;"></div>'.n;
-						$html  .= t.t.'</li>'.n;				
-					}
-					$html .= t.'</ul>'.n;
-				}
-				else {
-					if($filters['filterby']=="all" && !$filters['tag']) {
-						$html .= t.t.t.'<p class="nocontent">'.JText::_('WISHLIST_NO_WISHES_BE_FIRST').'</p>'.n;
-					}
-					else {
-						$html .= t.t.t.'<p class="nocontent">'.JText::_('WISHLIST_NO_WISHES_SELECTION').'</p>'.n;
-						$html .= t.t.t.'<p class="nav_wishlist"><a href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('WISHLIST_VIEW_ALL_WISHES').'</a></p>'.n;	
-					}
-				}			
-				
-				echo $html;
+						$view->filters = $this->filters;
+						$view->display();
 ?>
+					</td>
+					<td class="ranking">
+<?php 						/*if ($this->admin 
+						|| $item->status == 1 
+						|| ($item->status == 0 && $item->accepted == 1) 
+						|| $item->status == 3 
+						|| $item->status == 4
+					) { */
+						$html = '';
+						switch ($item->status) 
+						{
+							case 0:
+								if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3)) {
+									$html .= '<a class="rankit" href="index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.JText::_('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
+								} else if (isset($item->ranked) && $item->ranked) {
+									//$html .= JText::_('COM_WISHLIST_WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
+									$html .= '<span class="priority-level-base">
+										<span class="priority-level" style="width: '.(($item->ranking/50)*100).'%">
+											<span>'.JText::_('COM_WISHLIST_WISH_PRIORITY').': '.$item->ranking.'</span>
+										</span>
+									</span>';
+								}
+								if ($item->accepted == 1) {
+									$html .= '<span class="accepted">'.JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED').'</span>';
+								}
+							break;
+							case 1:
+								$html .= '<span class="granted">'.JText::_('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
+								/*if ($item->granted != '0000-00-00 00:00:00') {
+									$html .= ' <span class="mini">'.strtolower(JText::_('COM_WISHLIST_ON')).' '.JHTML::_('date',$item->granted, JText::_('COM_WISHLIST_DATE_FORMAT_HZ1')).'</span>';
+								}*/
+							break;
+							case 3:
+								$html .= '<span class="rejected">'.JText::_('COM_WISHLIST_WISH_STATUS_REJECTED').'</span>';
+							break;
+							case 4:
+								$html .= '<span class="withdrawn">'.JText::_('COM_WISHLIST_WISH_STATUS_WITHDRAWN').'</span>';
+							break;
+						}
+						echo $html;
+					//} ?>
+					</td>
+<?php 			} ?>
+				</tr>
+<?php
+		} // end foreach
+	}
+?>
+			</tbody>
+		</table>
+	</div><!-- / .container -->
