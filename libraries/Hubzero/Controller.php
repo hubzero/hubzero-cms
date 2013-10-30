@@ -86,7 +86,9 @@ class Hubzero_Controller extends JObject
 	 *
 	 * @param array
 	 */
-	protected $_taskMap = array('__default' => 'display');
+	protected $_taskMap = array(
+		'__default' => 'display'
+	);
 
 	/**
 	 * The name of the task to be executed
@@ -103,11 +105,39 @@ class Hubzero_Controller extends JObject
 	protected $_controller = null;
 
 	/**
-	 * The name of this controller
+	 * The name of this component
+	 *
+	 * @param string
+	 */
+	protected $_option = null;
+
+	/**
+	 * The base path to this component
 	 *
 	 * @param string
 	 */
 	protected $_basePath = null;
+
+	/**
+	 * Redirection URL
+	 *
+	 * @param string
+	 */
+	protected $_redirect = null;
+
+	/**
+	 * The message to display
+	 *
+	 * @param string
+	 */
+	protected $_message = null;
+
+	/**
+	 * Message type
+	 *
+	 * @param string
+	 */
+	protected $_messageType = 'message';
 
 	/**
 	 * Constructor
@@ -118,8 +148,8 @@ class Hubzero_Controller extends JObject
 	 */
 	public function __construct($config=array())
 	{
-		$this->_redirect = NULL;
-		$this->_message = NULL;
+		$this->_redirect    = null;
+		$this->_message     = null;
 		$this->_messageType = 'message';
 
 		// Set the controller name
@@ -168,7 +198,7 @@ class Hubzero_Controller extends JObject
 		foreach ($methods as $method)
 		{
 			$name = $method->getName();
-			
+
 			// Ensure task isn't in the exclude list and ends in 'Task'
 			if ((!in_array($name, $xMethods) || $name == 'displayTask')
 			 && substr(strtolower($name), -4) == 'task')
@@ -213,6 +243,18 @@ class Hubzero_Controller extends JObject
 		{
 			return $this->_data[$property];
 		}
+	}
+
+	/**
+	 * Method to set an overloaded variable to the component
+	 *
+	 * @param	string	$property	Name of overloaded variable to add
+	 * @param	mixed	$value 		Value of the overloaded variable
+	 * @return	void
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_data[$property]);
 	}
 
 	/**
@@ -264,7 +306,7 @@ class Hubzero_Controller extends JObject
 		}
 
 		// Instantiate a view with layout the same name as the task
-		$this->view = new JView(array(
+		$this->view = new JView(array(  //\Hubzero\View\
 			'base_path' => $this->_basePath,
 			'name'      => $name,
 			'layout'    => $layout
@@ -302,8 +344,8 @@ class Hubzero_Controller extends JObject
 		$this->view = new JView($config);
 
 		// Set some commonly used vars
-		$this->view->option = $this->_option;
-		$this->view->task = $name;
+		$this->view->option     = $this->_option;
+		$this->view->task       = $name;
 		$this->view->controller = $this->_controller;
 	}
 
@@ -320,19 +362,22 @@ class Hubzero_Controller extends JObject
 		{
 			$this->_taskMap[strtolower($task)] = $method;
 		}
+
+		return $this;
 	}
-	
+
 	/**
 	 * Disable default task, remove __default from the taskmap
 	 *
 	 * When default task disabled the controller will give a 404 error if the method called doesn't exist
 	 *
-	 * @param	void
 	 * @return	void
 	 */
 	public function disableDefaultTask()
 	{
 		unset($this->_taskMap['__default']);
+
+		return $this;
 	}
 
 	/**
@@ -350,7 +395,7 @@ class Hubzero_Controller extends JObject
 				$session =& JFactory::getSession();
 				$session->set('component.message.queue', $this->componentMessageQueue);
 			}
-			
+
 			$app = JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
@@ -391,21 +436,24 @@ class Hubzero_Controller extends JObject
 		{
 			$session =& JFactory::getSession();
 			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage)) {
+			if (count($componentMessage)) 
+			{
 				$this->componentMessageQueue = $componentMessage;
 				$session->set('component.message.queue', null);
 			}
 		}
-		
+
 		//if message is somthing
 		if ($message != '')
 		{
 			$this->componentMessageQueue[] = array(
 				'message' => $message,
-				'type' => strtolower($type),
-				'option' => $this->_option
+				'type'    => strtolower($type),
+				'option'  => $this->_option
 			);
 		}
+
+		return $this;
 	}
 
 	/**
@@ -425,7 +473,7 @@ class Hubzero_Controller extends JObject
 				$session->set('component.message.queue', null);
 			}
 		}
-		
+
 		foreach ($this->componentMessageQueue as $k => $cmq)
 		{
 			if ($cmq['option'] != $this->_option)
@@ -436,12 +484,19 @@ class Hubzero_Controller extends JObject
 
 		return $this->componentMessageQueue;
 	}
-	
+
+	/**
+	 * Clear the component message queue
+	 *
+	 * @return	object
+	 */
 	public function clearComponentMessage()
 	{
 		$this->componentMessageQueue = array();
+
+		return $this;
 	}
-	
+
 	/**
 	 * Method to add stylesheets to the document.
 	 * Defaults to current component and stylesheet name the same as component.
