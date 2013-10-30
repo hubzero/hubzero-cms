@@ -740,7 +740,7 @@ class MembersControllerPlugins extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
-		$cid = JRequest::getVar('cid', array(0), 'post', 'array');
+		$cid = JRequest::getVar('id', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
 
 		$total = count($cid);
