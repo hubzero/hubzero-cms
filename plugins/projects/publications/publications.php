@@ -1990,6 +1990,7 @@ class plgProjectsPublications extends JPlugin
 				$objP->project_id = $this->_project->id;
 				$objP->created_by = $this->_uid;
 				$objP->created = $now;
+				$objP->access = 0;
 				if (!$objP->store()) 
 				{
 					JError::raiseError( $objP->getError() );
@@ -2040,6 +2041,7 @@ class plgProjectsPublications extends JPlugin
 				$row->created 			= $now;
 				$row->version_number 	= 1;
 				$row->license_type 		= 0;
+				$row->access			= 0;
 				
 				// Get hash code for version (to be used as a dir name to guard against direct file access)
 				$code = strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
