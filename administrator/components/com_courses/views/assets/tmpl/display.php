@@ -105,7 +105,8 @@ window.addEvent('domready', function() {
 	$$('a.edit-asset').each(function(el) {
 		el.addEvent('click', function(e) {
 			new Event(e).stop();
-			window.top.document.assetform.fromElement(el);
+			//window.top.document.assetform.fromElement(el);
+			window.top.document.assetform.open($(this).get('href'), {handler: 'iframe', size: {x: 570, y: 550}});
 		});
 	});
 });

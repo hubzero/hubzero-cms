@@ -43,6 +43,8 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
+JHTML::_('behavior.modal');
+
 //jimport('joomla.html.editor');
 //$editor =& JEditor::getInstance();
 ?>
@@ -50,7 +52,6 @@ JToolBarHelper::cancel();
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-	
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -65,6 +66,12 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	}
 }
+window.addEvent("domready", function() {
+	/*SqueezeBox.initialize({
+		handler: 'iframe'
+	});*/
+	document.assetform = SqueezeBox;
+});
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
@@ -128,6 +135,15 @@ function submitbutton(pressbutton)
 					</tr>
 				</tbody>
 			</table>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Assets'); ?></span></legend>
+			<?php if ($this->row->get('id')) { ?>
+						<iframe width="100%" height="400" name="assets" id="assets" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=assets&amp;tmpl=component&amp;scope=unit&amp;scope_id=<?php echo $this->row->get('id'); ?>&amp;course_id=<?php echo $this->offering->get('course_id'); ?>"></iframe>
+			<?php } else { ?>
+						<p><?php echo JText::_('Entry must be saved before assets can be added.'); ?></p>
+			<?php } ?>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">

@@ -60,7 +60,7 @@ else
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -77,9 +77,10 @@ function saveAndUpdate()
 {
 	submitbutton('save');
 	window.top.setTimeout(function(){
-		window.parent.document.getElementById('sbox-window').close();
 		var src = window.parent.document.getElementById('assets').src;
 		window.parent.document.getElementById('assets').src = src;
+
+		window.parent.document.assetform.close();
 	}, 700);
 }
 </script>
@@ -91,7 +92,7 @@ function saveAndUpdate()
 	<fieldset>
 		<div style="float: right">
 			<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('Save'); ?></button>
-			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_('Cancel'); ?></button>
+			<button type="button" onclick="window.parent.document.assetform.close();"><?php echo JText::_('Cancel'); ?></button>
 		</div>
 		<div class="configuration">
 			<?php echo $text; ?>
