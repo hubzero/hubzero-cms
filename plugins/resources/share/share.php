@@ -75,6 +75,11 @@ class plgResourcesShare extends JPlugin
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
+		if (!$model->type->params->get('plg_share')) 
+		{
+			return;
+		}
+
 		$arr = array(
 			'area' => 'share',
 			'html' => '',
