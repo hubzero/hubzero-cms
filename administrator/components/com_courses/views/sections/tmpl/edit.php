@@ -47,8 +47,12 @@ JHtml::_('behavior.switcher');
 
 $editor =& JEditor::getInstance();
 
+$base = rtrim(JURI::getInstance()->base(true), '/');
+
 $document =& JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');
+
+$this->offering->section($this->row->get('alias'));
 
 $course_id = 0;
 ?>
@@ -293,9 +297,9 @@ function submitbutton(pressbutton)
 		<div id="page-datetime" class="tab">
 		<?php if ($this->offering->units()->total() > 0) { ?>
 			<div class="col width-100">
-				<script src="/media/system/js/jquery.js"></script>
-				<script src="/media/system/js/jquery.ui.js"></script>
-				<script src="/media/system/js/jquery.noconflict.js"></script>
+				<script src="<?php echo $base; ?>/media/system/js/jquery.js"></script>
+				<script src="<?php echo $base; ?>/media/system/js/jquery.ui.js"></script>
+				<script src="<?php echo $base; ?>/media/system/js/jquery.noconflict.js"></script>
 				<script src="components/com_courses/assets/js/jquery-ui-timepicker-addon.js"></script>
 				<?php 
 				jimport('joomla.html.pane');
