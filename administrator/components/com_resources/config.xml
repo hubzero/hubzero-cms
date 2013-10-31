@@ -110,6 +110,31 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
 	</params>
 	<fieldset name="basic">
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/images/resource_thumb.gif" label="Default picture" description="Default placeholder image for resource pictures" />
+		<field name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="Tool Fields" description="Default fields for tools type" />
+		<field name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="Default type fields" description="Default fields for resource types" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="accesses" type="text" menu="hide" default="Public,Registered,Special,Protected,Private" label="Access Levels" description="Resource access levels" />
+		<field name="doi" type="text" menu="hide" default="" label="DOI prefix" description="Digital Object Identifier prefix" />
+		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to display to indicate Org supported tools" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to display to describe Org supported tools" />
+		<field name="browsetags" type="list" default="on" label="Tag Browser" description="Use the three column tag browser to find resources.">
+			<option value="on">On</option>
+			<option value="off">Off</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
+	</fieldset>
+	<fieldset name="files">
+		<field name="webpath" type="text" menu="hide" default="/site/resources" label="Resources path" description="File path for resources" />
+		<field name="toolpath" type="text" menu="hide" default="/site/resources/tools" label="Tool path" description="File path for tools" />
+		<field name="uploadpath" type="text" menu="hide" default="/site/resources" label="Upload path" description="File path for attachments" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+	</fieldset>
+	<fieldset name="creation">
 		<field name="autoapprove" type="radio" default="0" label="Auto-approve" description="Automatically approve new submissions">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
@@ -127,30 +152,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/images/resource_thumb.gif" label="Default picture" description="Default placeholder image for resource pictures" />
-		<field name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="Tool Tags" description="Content wrapper tags for tools" />
-		<field name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="Other Tags" description="Content wrapper tags for 'and more' resources" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="accesses" type="text" menu="hide" default="Public,Registered,Special,Protected,Private" label="Access Levels" description="Resource access levels" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="webpath" type="text" menu="hide" default="/site/resources" label="Resources path" description="File path for resources" />
-		<field name="toolpath" type="text" menu="hide" default="/site/resources/tools" label="Tool path" description="File path for tools" />
-		<field name="uploadpath" type="text" menu="hide" default="/site/resources" label="Upload path" description="File path for attachments" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
-		<field name="doi" type="text" menu="hide" default="" label="DOI prefix" description="Digital Object Identifier prefix" />
-		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to display to indicate Org supported tools" />
-		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to display to describe Org supported tools" />
-		<field name="browsetags" type="list" default="on" label="Tag Browser" description="Use the three column tag browser to find resources.">
-			<option value="on">On</option>
-			<option value="off">Off</option>
-		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
+	</fieldset>
+	<fieldset name="entry">
 		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>

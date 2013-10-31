@@ -62,6 +62,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">enabled</option>
 			<option value="0">disabled</option>
 		</field>
+		<field name="show_percentage_granted" type="radio" default="0" label="Show percentage granted?" description="Allow/Disallow diplay of percentage of granted wishes in selection">
+			<option value="1">yes</option>
+			<option value="0">no</option>
+		</field>
+	</fieldset>
+	<fieldset name="advisory">
 		<field name="allow_advisory" type="radio" default="0" label="Allow advisory committee?" description="Allow/Disallow advisory committee">
 			<option value="1">yes</option>
 			<option value="0">no</option>
@@ -70,14 +76,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">50/50</option>
 			<option value="1">80/20</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
+	</fieldset>
+	<fieldset name="files">
 		<field name="webpath" type="text" menu="hide" default="/site/wishlist" label="Web path for storing attachments" description="Specify directory for attachment storage" />
 		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
 		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="show_percentage_granted" type="radio" default="0" label="Show percentage granted?" description="Allow/Disallow diplay of percentage of granted wishes in selection">
-			<option value="1">yes</option>
-			<option value="0">no</option>
-		</field>
 	</fieldset>
 </config>
