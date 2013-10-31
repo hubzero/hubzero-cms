@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_EVENTS_MANAGER').': <small><small>[ '.JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORIES').' ]</small></small>', 'event.png');
+JToolBarHelper::title(JText::_('COM_EVENTS_MANAGER').': '.JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORIES'), 'event.png');
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 JToolBarHelper::spacer();

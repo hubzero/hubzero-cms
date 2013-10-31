@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'editcat') ? JText::_('COM_EVENTS_EDIT') : JText::_('COM_EVENTS_NEW');
-JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': <small><small>[ '. $text.' '.JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY').' ]</small></small>', 'event.png');
+JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': '. $text.' '.JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'), 'event.png');
 JToolBarHelper::spacer();
 JToolBarHelper::save();
 //JToolBarHelper::spacer();

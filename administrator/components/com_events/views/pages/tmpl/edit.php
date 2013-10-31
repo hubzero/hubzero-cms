@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'editpage' ? JText::_( 'COM_EVENTS_EDIT' ) : JText::_( 'COM_EVENTS_NEW' ) );
 
-JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'COM_EVENTS_PAGE' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'event.png' );
+JToolBarHelper::title(JText::_( 'COM_EVENTS_PAGE' ).': '. $text, 'event.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 

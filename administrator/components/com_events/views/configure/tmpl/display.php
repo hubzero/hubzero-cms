@@ -29,7 +29,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'COM_EVENTS_MANAGER' ).': <small><small>[ '.JText::_( 'COM_EVENTS_CONFIGURATION' ).' ]</small></small>', 'event.png' );
+JToolBarHelper::title( JText::_( 'COM_EVENTS_MANAGER' ).': '.JText::_( 'COM_EVENTS_CONFIGURATION' ), 'event.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 ?>

@@ -3,7 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit') ? JText::_('COM_EVENTS_EDIT') : JText::_('COM_EVENTS_NEW');
-JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': <small><small>[ '. $text.' ]</small></small>', 'event.png');
+JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': '. $text, 'event.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 

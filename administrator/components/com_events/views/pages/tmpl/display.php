@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=com_events">'.JText::_('COM_EVENTS').'</a>: <small><small>[ '.JText::_('COM_EVENTS_PAGES').' ]</small></small>', 'event.png');
+JToolBarHelper::title(JText::_('COM_EVENTS').': '.JText::_('COM_EVENTS_PAGES'), 'event.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();

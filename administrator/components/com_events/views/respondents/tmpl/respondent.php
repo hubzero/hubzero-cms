@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'COM_EVENTS' ).'</a>: <small><small>[ '.JText::_('COM_EVENTS_RESPONDANT').' ]</small></small>', 'user.png' );
+JToolBarHelper::title(JText::_( 'COM_EVENTS' ).': '.JText::_('COM_EVENTS_RESPONDANT'), 'user.png' );
 //JToolBarHelper::cancel();
 
 $resp = $this->resp;
