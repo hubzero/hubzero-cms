@@ -98,6 +98,35 @@ class Hubzero_Bank_MarketHistory extends JTable
 	}
 
 	/**
+	 * Validate data
+	 * 
+	 * @return     boolean True if data is valid
+	 */
+	public function check()
+	{
+		$this->itemid = intval($this->itemid);
+		if (!$this->itemid) 
+		{
+			$this->setError(JText::_('Entry must have an item ID.'));
+			return false;
+		}
+
+		$this->category = trim($this->category);
+		if (!$this->category) 
+		{
+			$this->setError(JText::_('Entry must have a category.'));
+			return false;
+		}
+
+		if (!$this->date)
+		{
+			$this->date = JFactory::getDate()->format($this->_db->getDateFormat());
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get the ID of a record matching the data passed
 	 * 
 	 * @param      mixed  $itemid   Integer

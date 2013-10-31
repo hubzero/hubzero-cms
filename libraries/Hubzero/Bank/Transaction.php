@@ -117,11 +117,36 @@ class Hubzero_Bank_Transaction extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->uid) == '') 
+		$this->uid = intval($this->uid);
+		if (!$this->uid) 
 		{
-			$this->setError('Entry must have a user ID.');
+			$this->setError(JText::_('Entry must have a user ID.'));
 			return false;
 		}
+
+		$this->type = trim($this->type);
+		if (!$this->type) 
+		{
+			$this->setError(JText::_('Entry must have a type (e.g., deposit, withdraw).'));
+			return false;
+		}
+
+		$this->category = trim($this->category);
+		if (!$this->category) 
+		{
+			$this->setError(JText::_('Entry must have a category.'));
+			return false;
+		}
+
+		$this->referenceid = intval($this->referenceid);
+		$this->amount      = intval($this->amount);
+		$this->balance     = intval($this->balance);
+
+		if (!$this->created)
+		{
+			$this->created = JFactory::getDate()->format($this->_db->getDateFormat());
+		}
+
 		return true;
 	}
 
@@ -148,7 +173,7 @@ class Hubzero_Bank_Transaction extends JTable
 		{
 			$lmt .= " LIMIT " . $limit;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $uid . " ORDER BY created DESC, id DESC" . $lmt);
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " ORDER BY created DESC, id DESC" . $lmt);
 		return $this->_db->loadObjectList();
 	}
 
@@ -179,7 +204,7 @@ class Hubzero_Bank_Transaction extends JTable
 			$category = $this->category;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE category='" . $category . "' AND type='" . $type . "' AND referenceid=" . $referenceid;
+		$query = "DELETE FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . "' AND referenceid=" . $this->_db->Quote($referenceid);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
@@ -217,10 +242,10 @@ class Hubzero_Bank_Transaction extends JTable
 		{
 			$category = $this->category;
 		}
-		$query = "SELECT amount, SUM(amount) as sum, count(*) as total FROM $this->_tbl WHERE category='" . $category . "' AND type='" . $type . "' AND referenceid=" . $referenceid;
+		$query = "SELECT amount, SUM(amount) as sum, count(*) as total FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
 		if ($uid) 
 		{
-			$query .= " AND uid=" . $uid;
+			$query .= " AND uid=" . $this->_db->Quote($uid);
 		}
 		$query .= " GROUP BY referenceid";
 
@@ -256,10 +281,10 @@ class Hubzero_Bank_Transaction extends JTable
 			$category = $this->category;
 		}
 
-		$query = "SELECT amount FROM $this->_tbl WHERE category='" . $category . "' AND type='" . $type . "' AND referenceid=" . $referenceid;
+		$query = "SELECT amount FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
 		if ($uid) 
 		{
-			$query .= " AND uid=" . $uid;
+			$query .= " AND uid=" . $this->_db->Quote($uid);
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -315,14 +340,14 @@ class Hubzero_Bank_Transaction extends JTable
 			// num of transactions
 			$query .= " COUNT(*)";
 		}
-		$query .= " FROM $this->_tbl WHERE type='" . $type . "' ";
+		$query .= " FROM $this->_tbl WHERE type=" . $this->_db->Quote($type) . " ";
 		if ($category) 
 		{
-			$query .= " AND category='" . $category . "' ";
+			$query .= " AND category=" . $this->_db->Quote($category) . " ";
 		}
 		if ($referenceid) 
 		{
-			$query .= " AND referenceid=" . $referenceid;
+			$query .= " AND referenceid=" . $this->_db->Quote($referenceid);
 		}
 		if ($royalty) 
 		{
