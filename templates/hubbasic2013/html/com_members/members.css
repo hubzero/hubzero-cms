@@ -43,6 +43,10 @@
 		background: #fff;
 		height: 20px;
 	}
+	#page_header #profile-privacy {
+		left: 235px;
+		top: 5px;
+	}
 	#page_container {
 		background-color: transparent;
 		overflow: hidden;

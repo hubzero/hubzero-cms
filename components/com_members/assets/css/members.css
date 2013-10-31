@@ -381,12 +381,14 @@
 		position: absolute;
 		top: 25px;
 		left: 20px;
-		width:21px;
-		height: 25px;
+		width:25px;
+		height: 30px;
+		line-height: 1;
 		border: none;
 		display:block;
 		padding:0;
 		background-image: none;
+		overflow: hidden;
 	}
 	#page_header #profile-privacy:before {
 		content: "\f023";
