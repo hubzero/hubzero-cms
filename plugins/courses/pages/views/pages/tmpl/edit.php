@@ -96,7 +96,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						ximport('Hubzero_Wiki_Editor');
 						echo Hubzero_Wiki_Editor::getInstance()->display('fields[content]', 'field_content', stripslashes($this->model->get('content')), '', '50', '50');
 					?>
-					<span class="hint"><?php echo JText::_('PLG_COURSES_PAGES_FIELD_CONTENT_HINT', JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'), JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros')); ?></span>
+					<span class="hint"><?php echo JText::sprintf('PLG_COURSES_PAGES_FIELD_CONTENT_HINT', JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'), JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros')); ?></span>
 				</label>
 
 				<div class="field-wrap">
