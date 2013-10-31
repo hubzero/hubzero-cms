@@ -239,6 +239,8 @@ $edit = JRequest::getInt('editcomment', 0);
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="action" value="save" />
 
+					<?php echo JHTML::_('form.token'); ?>
+
 					<div class="sidenote">
 						<p>
 							<strong><?php echo JText::_('PLG_COURSES_REVIEWS_KEEP_RELEVANT'); ?></strong>

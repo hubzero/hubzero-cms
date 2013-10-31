@@ -53,6 +53,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					</tbody>
 				</table>
 
+				<?php echo JHTML::_('form.token'); ?>
+
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />

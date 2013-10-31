@@ -346,6 +346,9 @@ class plgCoursesPages extends Hubzero_Plugin
 			return $this->_list();
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$page = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		$model = new CoursesModelPage($page['id']);
@@ -573,6 +576,9 @@ class plgCoursesPages extends Hubzero_Plugin
 			return $this->_ajaxUpload();
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('listdir', 0, 'post');
 		if (!$listdir) 
@@ -775,7 +781,6 @@ class plgCoursesPages extends Hubzero_Plugin
 	 */
 	public function _fileList()
 	{
-		//$page = new CoursesModelPage(JRequest::getInt('page', 0));
 		$page = new CoursesModelPage(JRequest::getInt('page', 0));
 		if (!$page->exists())
 		{
@@ -872,34 +877,6 @@ class plgCoursesPages extends Hubzero_Plugin
 			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
 			return;
 		}
-		/*if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[f]' . $filename);
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[e]' . $filename);
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[s]' . $filename);
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[g]' . $filename);
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH') . '[h]' . $filename);
-			return;
-		}*/
 
 		$page = $this->view->offering->page(JRequest::getVar('unit', ''));
 		if (!$page->exists())
