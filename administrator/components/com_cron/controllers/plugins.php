@@ -194,11 +194,26 @@ class CronControllerPlugins extends Hubzero_Controller
 			JError::raiseError(500, $this->database->stderr());
 			return false;
 		}
-		
+
+		$lang = JFactory::getLanguage();
+		if ($this->view->rows)
+		{
+			foreach ($this->view->rows as &$item) 
+			{
+				$source = JPATH_PLUGINS . '/' . $item->folder . '/' . $item->element;
+				$extension = 'plg_' . $item->folder . '_' . $item->element;
+					$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, null, false, false)
+				||	$lang->load($extension . '.sys', $source, null, false, false)
+				||	$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+				||	$lang->load($extension . '.sys', $source, $lang->getDefault(), false, false);
+				$item->name = JText::_($item->name);
+			}
+		}
+
 		// Get related plugins
 		JPluginHelper::importPlugin($this->_folder);
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Show related content
 		$this->view->manage = $dispatcher->trigger('onCanManage');
 
@@ -427,7 +442,14 @@ class CronControllerPlugins extends Hubzero_Controller
 		$client = JRequest::getWord('filter_client', 'site');
 
 		// Bind data
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		if (!$row->bind(JRequest::get('post'))) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -530,9 +552,18 @@ class CronControllerPlugins extends Hubzero_Controller
 			return;
 		}
 
-		$query = 'UPDATE #__plugins SET published = '.(int) $state
-			. ' WHERE id IN (' . implode(',', $id) . ')'
-			. ' AND (checked_out = 0 OR (checked_out = '.(int) $this->juser->get('id').'))';
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$query = 'UPDATE #__plugins SET published = '.(int) $state
+				. ' WHERE id IN (' . implode(',', $id) . ')'
+				. ' AND (checked_out = 0 OR (checked_out = '.(int) $this->juser->get('id').'))';
+		}
+		else 
+		{
+			$query = "UPDATE #__extensions SET enabled = ".(int) $state
+				. " WHERE extension_id IN (" . implode(',', $id) . ")"
+				. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
+		}
 
 		$this->database->setQuery($query);
 		if (!$this->database->query()) 
@@ -547,7 +578,14 @@ class CronControllerPlugins extends Hubzero_Controller
 
 		if (count($id) == 1) 
 		{
-			$row =& JTable::getInstance('plugin');
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$row =& JTable::getInstance('plugin');
+			}
+			else
+			{
+				$row =& JTable::getInstance('extension');
+			}
 			$row->checkin($id[0]);
 		}
 
@@ -584,7 +622,14 @@ class CronControllerPlugins extends Hubzero_Controller
 			$where = "client_id = 0";
 		}
 		
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		$row->load($uid);
 		$row->move($inc, 'folder='.$this->database->Quote($row->folder).' AND ordering > -10000 AND ordering < 10000 AND ('.$where.')');
 
@@ -639,7 +684,14 @@ class CronControllerPlugins extends Hubzero_Controller
 		JArrayHelper::toInteger($cid, array(0));
 
 		// Load the object
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		$row->load($cid[0]);
 
 		// Set the access
@@ -690,7 +742,14 @@ class CronControllerPlugins extends Hubzero_Controller
 		$order = JRequest::getVar('order', array(0), 'post', 'array');
 		JArrayHelper::toInteger($order, array(0));
 
-		$row =& JTable::getInstance('plugin');
+		if (version_compare(JVERSION, '1.6', 'lt')) 
+		{
+			$row =& JTable::getInstance('plugin');
+		}
+		else
+		{
+			$row =& JTable::getInstance('extension');
+		}
 		$conditions = array();
 
 		// update ordering values

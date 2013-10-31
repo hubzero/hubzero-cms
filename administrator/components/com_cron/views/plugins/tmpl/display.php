@@ -30,12 +30,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Cron') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'cron.png');
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editListX();
+$canDo = CronHelper::getActions('component');
+
+JToolBarHelper::title(JText::_('Cron') . ': ' . JText::_('Plugins'), 'cron.png');
+if ($canDo->get('core.edit.state')) 
+{
+	JToolBarHelper::publishList();
+	JToolBarHelper::unpublishList();
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editListX();
+}
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter">
@@ -44,7 +55,7 @@ JToolBarHelper::editListX();
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 	
-	<table class="adminlist" summary="<?php echo JText::_('A list of resource plugins'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col">
@@ -86,7 +97,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$link = JRoute::_( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
+	//$link = JRoute::_( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
+	$link = 'index.php?option=com_plugins&task=plugin.edit&extension_id=' . $row->id . '&component=' . $row->folder;
+	//$link = 'index.php?option=com_plugins&view=plugin&layout=edit&extension_id=' . $row->id . '&component=' . $row->folder;
 
 	$access 	= JHTML::_('grid.access', $row, $i);
 	$checked 	= JHTML::_('grid.checkedout', $row, $i);
@@ -119,56 +132,58 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php
-					if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
+				<?php
+					if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
 						echo $this->escape($row->name);
 					} else {
-?>
+				?>
 					<a class="editlinktip hasTip" href="<?php echo $link; ?>" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
-<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
+				<?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
 					<span class="state <?php echo $cls; ?>">
-<?php 		if (version_compare(JVERSION, '1.6', 'lt')) { ?>
+					<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
-<?php 		} else { ?>
+					<?php } else { ?>
 						<span class="text"><?php echo $alt; ?></span>
-<?php 		} ?>
+					<?php } ?>
 					</span>
-<?php } else { ?>
+				<?php } else { ?>
 					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('Set this to %s',$task);?>">
-<?php 		if (version_compare(JVERSION, '1.6', 'lt')) { ?>
+					<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
 						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
-<?php 		} else { ?>
+					<?php } else { ?>
 						<span class="text"><?php echo $alt; ?></span>
-<?php 		} ?>
+					<?php } ?>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td class="order">
-					<?php echo $this->pagination->orderUpIcon( $i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'Move Up', $ordering ); ?>
-					<?php echo $this->pagination->orderDownIcon( $i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'Move Down', $ordering ); ?>
-					<?php $disabled = $ordering ?  '' : 'disabled="disabled"'; ?>
+					<span><?php echo $this->pagination->orderUpIcon($i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'Move Up', $row->ordering); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon($i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'Move Down', $row->ordering); ?></span>
+					<?php $disabled = $row->ordering ?  '' : 'disabled="disabled"'; ?>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>"  <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
 				<td align="center">
 					<?php echo $access; ?>
 				</td>
 				<td nowrap="nowrap">
-<?php if (in_array($row->element, $this->manage)) { ?>
+				<?php if (in_array($row->element, $this->manage)) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
 						<span><?php echo JText::_('Manage'); ?></span>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->element); ?>
@@ -185,8 +200,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="sort_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
 	<?php echo JHTML::_('form.token'); ?>
 </form>
