@@ -69,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<noscript>
 		<p class="warning"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
 	</noscript>
-	<table id="droppables">
+	<table id="droppables" data-site="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>">
 		<tbody>
 			<tr>
 			<?php for ($c = 0; $c < count($this->columns); $c++) { ?>

@@ -56,6 +56,8 @@ HUB.Myhub = {
 		if (!jQuery().sortable) {
 			return;
 		}
+
+		myhub.baseURL = $('#droppables').attr('data-site') + myhub.baseURL;
 		
 		this.addModuleControls();
 		this.makeSortable();
