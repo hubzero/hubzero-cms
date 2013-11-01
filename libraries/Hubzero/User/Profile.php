@@ -354,13 +354,6 @@ class Hubzero_User_Profile extends JObject
 	private $_auxv_host = array();
 	
 	/**
-	 * Description for '_auxv_manager'
-	 *
-	 * @var array
-	 */
-	private $_auxv_manager = array();
-	
-	/**
 	 * Description for '_auxv_edulevel'
 	 *
 	 * @var array
