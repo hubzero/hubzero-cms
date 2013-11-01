@@ -91,7 +91,7 @@ if (count($this->notifications) > 0)
 		<div class="col span9 omega">
 			<div class="grid">
 				<div class="col span6">
-					<form action="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>" method="get" class="search">
+					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
 						<fieldset>
 							<p>
 								<label for="gsearch"><?php echo JText::_('Keyword or phrase:'); ?></label>
