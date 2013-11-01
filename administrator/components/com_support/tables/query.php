@@ -353,6 +353,7 @@ class SupportQuery extends JTable
 				{
 					$nottags[] = $expr->val;
 				}
+
 			}
 		}
 
@@ -440,6 +441,16 @@ class SupportQuery extends JTable
 							LEFT JOIN #__tags AS t ON st.' . $this->_db->nameQuote('tagid') . '=t.' . $this->_db->nameQuote('id') . ' 
 							WHERE st.' . $this->_db->nameQuote('tbl') . '=\'support\' 
 							AND (t.' . $this->_db->nameQuote('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
+				$having = " GROUP BY f.id ";
+			}
+			else if (count($tags) && count($nottags))
+			{
+				$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
+				$e[] = 'f.' . $this->_db->nameQuote('id') . ' NOT IN (
+							SELECT jto.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS jto 
+							JOIN #__tags AS jt ON jto.' . $this->_db->nameQuote('tagid') . '=jt.' . $this->_db->nameQuote('id') . ' 
+							WHERE jto.' . $this->_db->nameQuote('tbl') . '=\'support\' 
+							AND (jt.' . $this->_db->nameQuote('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR jt.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . '))';
 				$having = " GROUP BY f.id ";
 			}
 			else

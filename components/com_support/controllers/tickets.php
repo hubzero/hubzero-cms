@@ -671,10 +671,10 @@ class SupportControllerTickets extends Hubzero_Controller
 				$filters = $this->view->filters;
 
 				// Build the query from the condition set
-				if (!$query->query)
-				{
+				//if (!$query->query)
+				//{
 					$query->query = $sq->getQuery($query->conditions);
-				}
+				//}
 				if ($query->id != $this->view->filters['show'])
 				{
 					$filters['search'] = '';
