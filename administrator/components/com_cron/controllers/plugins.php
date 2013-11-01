@@ -593,7 +593,27 @@ class CronControllerPlugins extends Hubzero_Controller
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client
 		);
 	}
-	
+
+	/**
+	 * Reorder a plugin up
+	 * 
+	 * @return     void
+	 */
+	public function orderupTask()
+	{
+		return $this->orderTask();
+	}
+
+	/**
+	 * Reorder a plugin down
+	 * 
+	 * @return     void
+	 */
+	public function orderdownTask()
+	{
+		return $this->orderTask();
+	}
+
 	/**
 	 * Reorder a plugin
 	 * 
@@ -645,9 +665,9 @@ class CronControllerPlugins extends Hubzero_Controller
 	 */
 	public function accesspublicTask()
 	{
-		return $this->accessTask(0);
+		return $this->accessTask(1);
 	}
-
+	
 	/**
 	 * Set the state of an article to 'registered'
 	 * 
@@ -655,9 +675,9 @@ class CronControllerPlugins extends Hubzero_Controller
 	 */
 	public function accessregisteredTask()
 	{
-		return $this->accessTask(1);
+		return $this->accessTask(2);
 	}
-
+	
 	/**
 	 * Set the state of an article to 'special'
 	 * 
@@ -665,7 +685,7 @@ class CronControllerPlugins extends Hubzero_Controller
 	 */
 	public function accessspecialTask()
 	{
-		return $this->accessTask(2);
+		return $this->accessTask(3);
 	}
 
 	/**
@@ -735,7 +755,7 @@ class CronControllerPlugins extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		$cid = JRequest::getVar('cid', array(0), 'post', 'array');
+		$cid = JRequest::getVar('id', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
 
 		$total = count($cid);

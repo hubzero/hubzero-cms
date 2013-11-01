@@ -52,12 +52,12 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			JRequest::setVar('action', $task);
 			JRequest::setVar('task', 'manage');
 		}
-		
-		$this->_folder = 'resources';
-		
+
+		$this->_folder = 'members';
+
 		parent::execute();
 	}
-	
+
 	/**
 	 * List resource types
 	 * 
@@ -93,6 +93,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			'filter_order_Dir',
 			'ASC'
 		));
+		
 		$this->view->filters['state']    = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.state',
 			'state',
@@ -105,7 +106,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			'',
 			'word'
 		));
-		
+
 		$where = array();
 		$this->client = JRequest::getWord('filter_client', 'site');
 
@@ -209,11 +210,11 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 				$item->name = JText::_($item->name);
 			}
 		}
-		
+
 		// Get related plugins
-		JPluginHelper::importPlugin($this->_folder);
+		JPluginHelper::importPlugin('members');
 		$dispatcher =& JDispatcher::getInstance();
-		
+
 		// Show related content
 		$this->view->manage = $dispatcher->trigger('onCanManage');
 
@@ -224,7 +225,10 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -251,7 +255,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		}
 
 		// Get related plugins
-		JPluginHelper::importPlugin($this->_folder, $plugin);
+		JPluginHelper::importPlugin('members', $plugin);
 		$dispatcher =& JDispatcher::getInstance();
 		
 		// Show related content
@@ -332,21 +336,10 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			$cid = JRequest::getVar('cid', array(0), '', 'array');
 			JArrayHelper::toInteger($cid, array(0));
 			
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$this->view->row = JTable::getInstance('extension');
-			}
-			else
-			{
-				$this->view->row = JTable::getInstance('plugin');
-			}
+			$this->view->row = JTable::getInstance('plugin');
 
 			// load the row from the db table
 			$this->view->row->load($cid[0]);
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$this->view->row->published = $this->view->row->enabled;
-			}
 		}
 		
 		// Is this entry checked out?
@@ -396,28 +389,15 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		if ($this->view->row->ordering > -10000 && $this->view->row->ordering < 10000)
 		{
 			// build the html select list for ordering
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$query = 'SELECT ordering AS value, name AS text'
-					. ' FROM #__extensions'
-					. ' WHERE type='.$this->database->Quote('plugin').' AND folder = '.$this->database->Quote($this->_folder)
-					. ' AND enabled > 0'
-					. ' AND '. ($client == 'admin' ? "client_id='1'" : "client_id='0'")
-					. ' AND ordering > -10000'
-					. ' AND ordering < 10000'
-					. ' ORDER BY ordering';
-			}
-			else
-			{
-				$query = 'SELECT ordering AS value, name AS text'
-					. ' FROM #__plugins'
-					. ' WHERE folder = '.$this->database->Quote($this->_folder)
-					. ' AND published > 0'
-					. ' AND '. ($client == 'admin' ? "client_id='1'" : "client_id='0'")
-					. ' AND ordering > -10000'
-					. ' AND ordering < 10000'
-					. ' ORDER BY ordering';
-			}
+			$query = 'SELECT ordering AS value, name AS text'
+				. ' FROM #__plugins'
+				. ' WHERE folder = '.$this->database->Quote($this->_folder)
+				. ' AND published > 0'
+				. ' AND '. ($client == 'admin' ? "client_id='1'" : "client_id='0'")
+				. ' AND ordering > -10000'
+				. ' AND ordering < 10000'
+				. ' ORDER BY ordering'
+			;
 			$order = JHTML::_('list.genericordering',  $query);
 			
 			$this->view->lists['ordering'] = JHTML::_('select.genericlist', $order, 'ordering', 'class="inputbox" size="1"', 'value', 'text', intval($this->view->row->ordering));
@@ -430,10 +410,10 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		$this->view->lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->view->row->published);
 
 		$paramsClass = 'JParameter';
-		/*if (version_compare(JVERSION, '1.6', 'ge'))
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
-		}*/
+		}
 
 		$this->view->params = new $paramsClass(
 			$this->view->row->params, 
@@ -618,7 +598,27 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client
 		);
 	}
-	
+
+	/**
+	 * Reorder a plugin up
+	 * 
+	 * @return     void
+	 */
+	public function orderupTask()
+	{
+		return $this->orderTask();
+	}
+
+	/**
+	 * Reorder a plugin down
+	 * 
+	 * @return     void
+	 */
+	public function orderdownTask()
+	{
+		return $this->orderTask();
+	}
+
 	/**
 	 * Reorder a plugin
 	 * 
@@ -630,7 +630,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
-		$cid 	= JRequest::getVar('cid', array(0), 'post', 'array');
+		$cid 	= JRequest::getVar('id', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
 
 		$uid    = $cid[0];
@@ -647,7 +647,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 			$where = "client_id = 0";
 		}
 		
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if (version_compare(JVERSION, '1.6', 'lt')) 
 		{
 			$row =& JTable::getInstance('plugin');
 		}
@@ -670,7 +670,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 	 */
 	public function accesspublicTask()
 	{
-		return $this->accessTask(0);
+		return $this->accessTask(1);
 	}
 	
 	/**
@@ -680,7 +680,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 	 */
 	public function accessregisteredTask()
 	{
-		return $this->accessTask(1);
+		return $this->accessTask(2);
 	}
 	
 	/**
@@ -690,7 +690,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 	 */
 	public function accessspecialTask()
 	{
-		return $this->accessTask(2);
+		return $this->accessTask(3);
 	}
 
 	/**
@@ -709,7 +709,7 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		JArrayHelper::toInteger($cid, array(0));
 
 		// Load the object
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if (version_compare(JVERSION, '1.6', 'lt')) 
 		{
 			$row =& JTable::getInstance('plugin');
 		}
@@ -760,14 +760,14 @@ class ResourcesControllerPlugins extends Hubzero_Controller
 		// Check for request forgeries
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
-		$cid = JRequest::getVar('cid', array(0), 'post', 'array');
+		$cid = JRequest::getVar('id', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
 
 		$total = count($cid);
 		$order = JRequest::getVar('order', array(0), 'post', 'array');
 		JArrayHelper::toInteger($order, array(0));
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if (version_compare(JVERSION, '1.6', 'lt')) 
 		{
 			$row =& JTable::getInstance('plugin');
 		}

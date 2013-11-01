@@ -51,7 +51,7 @@ JToolBarHelper::editListX();
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'ID', 'p.id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col" class="title">
 					<?php echo JHTML::_('grid.sort', 'Plugin Name', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
