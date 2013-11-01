@@ -83,7 +83,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_AUTHOR'), 'fullname', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_ORGANIZATION'), 'org', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JText::_('FEEDBACK_COL_QUOTE'); ?></th>
-				<th scope="col"><?php echo JText::_('FEEDBACK_COL_PICTURE'); ?></th>
+				<!--<th scope="col"><?php //echo JText::_('FEEDBACK_COL_PICTURE'); ?></th>-->
 <?php 
 if ($this->type == 'regular') {
 	echo ('<th>' . JText::_('FEEDBACK_COL_PUBLISH_CONSENT') . '</th><th>' . JText::_('FEEDBACK_COL_UID') . '</th>');
@@ -146,9 +146,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 <?php } ?>
 				</td>
+				<!--
 				<td>
-					<?php echo ($row->picture != NULL) ? '<span class="state yes"><span>' . JText::_('FEEDBACK_YES') . '<span></span>' : ''; ?>
+					<?php //echo ($row->picture != NULL) ? '<span class="state yes"><span>' . JText::_('FEEDBACK_YES') . '<span></span>' : ''; ?>
 				</td>
+				-->
 				<td>
 					<?php if ($this->type == 'regular') {
 						echo ($row->publish_ok == 1) ? '<span class="state yes"><span>' . JText::_('FEEDBACK_YES') . '</span></span>' : '';

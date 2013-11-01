@@ -188,6 +188,7 @@ function checkState(checkboxname)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
+<!--
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('FEEDBACK_PICTURE'); ?></span></legend>
 <?php
@@ -204,6 +205,7 @@ function checkState(checkboxname)
 	}
 ?>
 		</fieldset>
+-->
 	</div>
 	<div class="clr"></div>
 
