@@ -410,7 +410,7 @@ class plgCoursesProgress extends JPlugin
 			$row[] = JFactory::getUser($m->get('user_id'))->get('name');
 			foreach($assets as $a)
 			{
-				$row[] = $grades[$m->get('id')]['assets'][$a->id]['score'];
+				$row[] = (isset($grades[$m->get('id')]['assets'][$a->id]['score'])) ? $grades[$m->get('id')]['assets'][$a->id]['score'] : '-';
 			}
 			echo implode(',', $row) . "\n";
 		}
