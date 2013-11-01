@@ -516,6 +516,10 @@
 	}
 
 /* Instructions */
+	.enroll-restricted {
+		padding: 30px;
+	}
+
 	#offering-introduction {
 		width: 32em;
 		margin: 3em auto;

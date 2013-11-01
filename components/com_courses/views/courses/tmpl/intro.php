@@ -61,10 +61,10 @@ if (count($this->notifications) > 0)
 		<h3>Questions?</h3>
 		<ul>
 			<li>
-				<a href="/kb/courses/faq">Courses FAQ</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_kb&section=courses&alias=faq'); ?>">Courses FAQ</a>
 			</li>
 			<li>
-				<a href="/kb/courses/guide">Course Guidelines</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_kb&section=courses&alias=guide'); ?>">Course Guidelines</a>
 			</li>
 		</ul>
 	</div><!-- / .aside -->
@@ -83,40 +83,43 @@ if (count($this->notifications) > 0)
 </div><!-- / #introduction.section -->
 
 <div class="section">
-	<div class="four columns first">
-		<h2><?php echo JText::_('Find a course'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>" method="get" class="search">
-				<fieldset>
-					<p>
-						<label for="gsearch"><?php echo JText::_('Keyword or phrase:'); ?></label>
-						<input type="text" name="search" id="gsearch" value="" />
-						<input type="submit" value="<?php echo JText::_('COM_COURSES_SEARCH'); ?>" />
-					</p>
-					<p>
-						<?php echo JText::_('Search course names and descriptions.'); ?>
-					</p>
-				</fieldset>
-			</form>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('Browse the list of available courses'); ?></a></p>
-				<p><?php echo JText::_('A list of all available courses.'); ?></p>
-			</div><!-- / .browse -->
-		</div><!-- / .two columns second -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+	<div class="grid">
+		<div class="col span3">
+			<h2><?php echo JText::_('Find a course'); ?></h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="grid">
+				<div class="col span6">
+					<form action="<?php echo JRoute::_('index.php?option=' . $option . '&task=browse'); ?>" method="get" class="search">
+						<fieldset>
+							<p>
+								<label for="gsearch"><?php echo JText::_('Keyword or phrase:'); ?></label>
+								<input type="text" name="search" id="gsearch" value="" />
+								<input type="submit" value="<?php echo JText::_('COM_COURSES_SEARCH'); ?>" />
+							</p>
+							<p>
+								<?php echo JText::_('Search course names and descriptions.'); ?>
+							</p>
+						</fieldset>
+					</form>
+				</div><!-- / .col span6 omega -->
+				<div class="col span6 omega">
+					<div class="browse">
+						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('Browse the list of available courses'); ?></a></p>
+						<p><?php echo JText::_('A list of all available courses.'); ?></p>
+					</div><!-- / .browse -->
+				</div><!-- / .col span6 omega -->
+			</div><!-- / .grid -->
+		</div><!-- / .col span9 -->
+	</div><!-- / .grid -->
 
 	<?php if (!$this->user->get("guest")) : ?>
 		<?php if ($this->config->get("intro_mycourses", 1)) : ?>
-			<div class="clearfix">
-				<div class="four columns first">
+			<div class="grid">
+				<div class="col span3">
 					<h2><?php echo JText::_('COM_COURSES_MY_COURSES'); ?></h2>
-				</div><!-- / .four columns first -->
-				<div class="four columns second third fourth">
+				</div><!-- / .col span3 -->
+				<div class="col span9 omega">
 					<div class="mycourses clearfix top">
 						<?php 
 						if (count($this->mycourses) > 0)
@@ -146,7 +149,7 @@ if (count($this->notifications) > 0)
 								if ($count == 1) 
 								{
 									$count = 0;
-									echo '<div class="clear"></div>';	
+									echo '<div class="clear"></div>';
 								}
 								else
 								{
@@ -161,19 +164,19 @@ if (count($this->notifications) > 0)
 							<?php
 						}
 						?>
-					</div>
-				</div><!-- / .four columns second third fourth -->
-			</div><!-- /.clearfix -->
+					</div><!-- / .mycourses clearfix top -->
+				</div><!-- / .col span9 -->
+			</div><!-- / .grid -->
 		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php if (!$this->user->get("guest")) : ?>
 		<?php if ($this->config->get("intro_interestingcourses", 1)) : ?>
-			<div class="clearfix">
-				<div class="four columns first">
+			<div class="grid">
+				<div class="col span3">
 					<h2><?php echo JText::_('COM_COURSES_INTERESTING_COURSES'); ?></h2>
-				</div><!-- / .four columns first -->
-				<div class="four columns second third fourth">
+				</div><!-- / .col span3 -->
+				<div class="col span9 omega">
 					<div class="interestingcourses clearfix top">
 						<?php 
 						if (count($this->interestingcourses) > 0)
@@ -193,7 +196,7 @@ if (count($this->notifications) > 0)
 								if ($count == 1) 
 								{
 									$count = 0;
-									echo '<div class="clear"></div>';	
+									echo '<div class="clear"></div>';
 								}
 								else
 								{
@@ -209,22 +212,21 @@ if (count($this->notifications) > 0)
 						}
 						?>
 					</div>
-				</div><!-- / .four columns second third fourth -->
-			</div><!-- /.clearfix -->
+				</div><!-- / .col span9 -->
+			</div><!-- / .grid -->
 		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php if ($this->config->get("intro_popularcourses", 1)) : ?>
-		<div class="clearfix">
-			<div class="four columns first">
+		<div class="grid">
+			<div class="col span3">
 				<h2><?php echo JText::_('COM_COURSES_POPULAR_COURSES'); ?></h2>
 			</div><!-- / .four columns first -->
-			<div class="four columns second third fourth">
+			<div class="col span9 omega">
 				<div class="popularcourses clearfix top">
 					<?php 
 					if (count($this->popularcourses) > 0)
 					{
-						//echo Hubzero_Course_Helper::listCourses(JText::_('COM_COURSES_POPULAR_COURSES'),$this->config,$this->popularcourses,2,true,false,150);
 						$count = 0;
 						foreach ($this->popularcourses as $course)
 						{
@@ -255,8 +257,8 @@ if (count($this->notifications) > 0)
 						<?php
 					}
 					?>
-				</div>
-			</div><!-- / .four columns second third fourth -->
-		</div><!-- /.clearfix -->
+				</div><!-- / .popularcourses clearfix top -->
+			</div><!-- / .col span9 omega -->
+		</div><!-- /.grid -->
 	<?php endif; ?>
 </div><!-- / .section -->

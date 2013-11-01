@@ -30,61 +30,67 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//get objects
-$config 	=& JFactory::getConfig();
-$database 	=& JFactory::getDBO();
-
-$base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 ?>
-	<div id="content-header">
+	<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
-	</div>
+		<?php if ($this->course->get('logo')) { ?>
+		<p class="course-identity">
+			<img src="<?php echo JURI::base(true); ?>/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+		</p>
+		<?php } ?>
+		<p id="page_identity">
+			<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
+				<?php echo JText::_('Course overview'); ?>
+			</a>
+			<strong>
+				<?php echo JText::_('Offering:'); ?>
+			</strong>
+			<span>
+				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
+			</span>
+			<strong>
+				<?php echo JText::_('Section:'); ?>
+			</strong>
+			<span>
+				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
+			</span>
+		</p>
+	</div><!-- #content-header -->
 
-	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="browse btn" href="<?php echo JRoute::_($base); ?>">
-					<?php echo JText::_('Course Overview'); ?>
-				</a>
-			</li>
-		</ul>
-	</div>
-
-	<div class="main section">
+	<div class="main section enroll-restricted">
 		<?php
 			foreach ($this->notifications as $notification) {
 				echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 			}
 		?>
 
-		<form action="<?php echo JRoute::_($base . '&task=enroll'); ?>" method="post" id="hubForm">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') !== '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&task=enroll'); ?>" method="post" id="hubForm">
 			<div class="explaination">
-				<h3>Code not working?</h3>
-				<p>It may be possible that the code has already been redeemed.</p>
+				<h3><?php echo JText::_('Code not working?'); ?></h3>
+				<p><?php echo JText::_('It may be possible that the code has already been redeemed.'); ?></p>
 			</div>
 			<fieldset>
 				<legend><?php echo JText::_('Redeem Coupon Code'); ?></legend>
-				
-				<p>This course has restricted enrollment and requires a coupon code.</p>
-				
+
+				<p class="warning"><?php echo JText::_('This course has restricted enrollment and requires a coupon code.'); ?></p>
+
 				<label for="field-code">
 					<?php echo JText::_('Coupon Code'); ?> <span class="required"><?php echo JText::_('COM_COURSES_REQUIRED'); ?></span>
 					<input type="text" name="code" id="field-code" size="35" value="" />
 				</label>
 			</fieldset>
 			<div class="clear"></div>
-	
-			<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+
+			<input type="hidden" name="offering" value="<?php echo $this->escape($this->course->offering()->get('alias')); ?>" />
+			<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 			<input type="hidden" name="task" value="enroll" />
 
 			<p class="submit">
 				<input type="submit" value="<?php echo JText::_('Redeem'); ?>" />
 			</p>
 		</form>
-	</div><!-- /.innerwrap -->
+	</div><!-- /.main section -->

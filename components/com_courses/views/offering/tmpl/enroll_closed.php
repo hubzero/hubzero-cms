@@ -30,39 +30,47 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-//get objects
-$config 	=& JFactory::getConfig();
-$database 	=& JFactory::getDBO();
-
-$base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 ?>
-	<div id="content-header">
+	<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
-	</div>
-	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="browse btn" href="<?php echo JRoute::_($base); ?>">
-					<?php echo JText::_('Course Overview'); ?>
-				</a>
-			</li>
-		</ul>
-	</div>
+		<?php if ($this->course->get('logo')) { ?>
+		<p class="course-identity">
+			<img src="<?php echo JURI::base(true); ?>/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+		</p>
+		<?php } ?>
+		<p id="page_identity">
+			<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
+				<?php echo JText::_('Course overview'); ?>
+			</a>
+			<strong>
+				<?php echo JText::_('Offering:'); ?>
+			</strong>
+			<span>
+				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
+			</span>
+			<strong>
+				<?php echo JText::_('Section:'); ?>
+			</strong>
+			<span>
+				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
+			</span>
+		</p>
+	</div><!-- #content-header -->
 
-	<div class="main section">
-		<div class="two columns first">
-			<p><img src="/components/com_courses/assets/img/no.png" alt="NO." /></p>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div id="errorbox">
-				<div class="wrap">
-					<h3><?php echo JText::_('Course Enrollment Is Closed'); ?></h3>
-					<p><?php echo JText::_('Enrollment for this course is closed. If you feel this is in error, please contact <a href="/support">support</a>.'); ?></p>
-				</div><!-- / .wrap -->
-			</div><!-- / #errorbox -->
-		</div><!-- / .two columns second -->
-		<div class="clear"></div>
-	</div><!-- /.innerwrap -->
+	<div class="main section enroll-closed">
+
+		<div id="offering-introduction">
+			<div class="instructions">
+				<p class="warning"><?php echo JText::_('Course enrollment is <strong>closed</strong>.'); ?></p>
+			</div><!-- / .instructions -->
+			<div class="questions">
+				<p><strong><?php echo JText::_('Help! I should be in this course!'); ?></strong></p>
+				<p><?php echo JText::sprintf('If you feel this is in error, please contact <a href="%s">support</a>', JRoute::_('index.php?option=com_support')); ?></p>
+				<p><strong><?php echo JText::_('Where can I find other courses?'); ?></strong></p>
+				<p><?php echo JText::sprintf('You can browse the <a href="%s">course listing</a> to find all the current offerings.', JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+			</div><!-- / .questions -->
+		</div><!-- / #offering-introduction -->
+
+	</div><!-- /.main section -->

@@ -31,18 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//get objects
-$config 	=& JFactory::getConfig();
-$database 	=& JFactory::getDBO();
-
-//is membership control managed on course?
-$membership_control = $this->config->get('membership_control', 1);
-
 //get no_html request var
 $no_html = JRequest::getInt( 'no_html', 0 );
 $tmpl    = JRequest::getWord('tmpl', false);
-
-$base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 
 if (!$no_html && $tmpl != 'component') : ?>
 	<div id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
@@ -55,83 +46,28 @@ if (!$no_html && $tmpl != 'component') : ?>
 		</p>
 		<?php } ?>
 		<p id="page_identity">
-			<a class="prev" href="<?php echo JRoute::_($base); ?>">
+			<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
 				<?php echo JText::_('Course overview'); ?>
 			</a>
 			<strong>
-				Offering:
+				<?php echo JText::_('Offering:'); ?>
 			</strong>
 			<span>
 				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 			</span>
 			<strong>
-				Section:
+				<?php echo JText::_('Section:'); ?>
 			</strong>
 			<span>
-				<?php 
-			/*if ($this->course->access('manage'))
-			{
-				?>
-				<select name="section">
-				<?php
-				foreach ($this->course->offering()->sections() as $section)
-				{
-					?>
-					<option value="<?php echo $this->escape(stripslashes($section->get('alias'))); ?>"<?php if ($section->get('alias') == $this->course->offering()->section()->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-					<?php
-				}
-				?>
-				</select>
-				<?php
-			}
-			else
-			{*/
-				echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); 
-			//}
-				?>
+				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
 			</span>
 		</p>
-	</div>
-	<?php /*<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="browse btn" href="<?php echo JRoute::_($base); ?>">
-					<?php echo JText::_('Course Overview'); ?>
-				</a>
-			</li>
-		</ul>
-	</div>
-if ($this->course->offering()->access('manage', 'section')) { ?>
-	<div id="manager_options">
-		<ul id="course_options">
-			<li class="no-float">
-				<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-manager">
-					<?php echo 'Manager'; //($isManager) ? 'Manager' : 'Member'; ?>
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu pull-right">
-			<?php if ($this->course->offering()->access('manage', 'section')) : ?> 
-					<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Students</a></li>
-			<?php endif; ?>
-			<?php if ($this->course->offering()->access('manage')) { ?>
-					<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Build Outline</a></li>
-					<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>/pages">Manage Pages</a></li>
-			<?php } else if ($this->course->offering()->access('manage', 'section')) { ?>
-					<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Change Dates</a></li>
-			<?php } ?>
-			<?php if ($this->course->access('manage')) : ?> 
-					<li class="divider"></li>
-					<li><a class="course-delete" href="/courses/<?php echo $this->course->get('alias'); ?>/delete">Delete Offering</a></li>
-			<?php endif; ?>
-				</ul>
-			</li>
-		</ul><!-- /#page_options -->
-		<p>You're viewing this page as a course admin, <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?nonadmin=1">click</a> to view it as a student</p>
-	</div>
-<?php }*/ ?>
+	</div><!-- / #content-header -->
+
 	<div class="innerwrap">
 		<div id="page_container">
 <?php endif; ?>
+
 <?php if (!$this->course->offering()->access('view')) { ?>
 			<div id="offering-introduction">
 				<div class="instructions">
@@ -139,12 +75,13 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 				</div><!-- / .instructions -->
 				<div class="questions">
 					<p><strong><?php echo JText::_('How can I enroll?'); ?></strong></p>
-					<p><?php echo JText::sprintf('To find out if enrollment is still open and how to enroll, visit the <a href="%s">course overview page</a>', JRoute::_($base)); ?></p>
+					<p><?php echo JText::sprintf('To find out if enrollment is still open and how to enroll, visit the <a href="%s">course overview page</a>', JRoute::_($this->course->link())); ?></p>
 					<p><strong><?php echo JText::_('Where can I learn more bout this course?'); ?></strong></p>
-					<p><?php echo JText::sprintf('To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course listing</a>.', JRoute::_($base), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+					<p><?php echo JText::sprintf('To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course listing</a>.', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 				</div><!-- / .post-type -->
 			</div><!-- / #collection-introduction -->
 <?php } else { ?>
+
 	<?php if (!$no_html && $tmpl != 'component') : ?>
 			<div id="page_sidebar">
 
@@ -173,14 +110,14 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 
 								//menu name & title
 								$active = $cat['name'];
-								$title = $cat['title'];
-								$cls = $cat['name'];
+								$title  = $cat['title'];
+								$cls    = $cat['name'];
 
 								//get the menu items access level
 								//$access = $access_levels[$cat['name']];
 
 								//menu link
-								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&active=' . $active);
+								$link = JRoute::_($this->course->offering()->link() . '&active=' . $active);
 
 								//Are we on the overview tab with sub course pages?
 								if ($cat['name'] == 'outline') // && count($this->pages) > 0
@@ -204,7 +141,7 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 								{
 									if (!$this->course->offering()->access('view'))
 									{
-										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" data-title="This page is restricted to course members only!">';
+										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" data-title="' . JText::_('This page is restricted to course members only!') . '">';
 										$menu_item .= '<span class="' . $cls . '">' . $title . '</span>';
 										$menu_item .= '</li>';
 									}
@@ -217,7 +154,7 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 
 										//create menu item
 										$menu_item  = '<li class="' . $li_cls . ' course-' . $cls . '-tab">';
-										$menu_item .= '<a class="' . $cls . '" data-title="' . $this->escape(stripslashes($title)) . '" href="' . $link . '">' . $title . '</a>';
+										$menu_item .= '<a class="' . $cls . '" data-title="' . $this->escape(stripslashes($title)) . '" href="' . $link . '">' . $this->escape($title) . '</a>';
 										if ($meta_count)
 										{
 											$menu_item .= '<span class="meta">';
@@ -236,21 +173,6 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 						echo $course_menu;
 					?>
 				</ul><!-- /#page_menu -->
-
-				<?php /* <div id="page_info">
-					<div class="course-info">
-						<ul>
-							<li class="info-join-policy">
-								<span class="label">Starts</span>
-								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_up'), JText::_('DATE_FORMAT_HZ1')); ?></span>
-							</li>
-							<li class="info-created">
-								<span class="label">Ends</span>
-								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_down'), JText::_('DATE_FORMAT_HZ1')); ?></span>
-							</li>
-						</ul>
-					</div>
-				</div> */ ?>
 			</div><!-- /#page_sidebar --> 
 
 			<div id="page_main">
@@ -281,6 +203,7 @@ if ($this->course->offering()->access('manage', 'section')) { ?>
 			</div><!-- /#page_main -->
 		<?php endif; ?>
 <?php } ?>
+
 	<?php if (!$no_html && $tmpl != 'component') : ?>
 		</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
