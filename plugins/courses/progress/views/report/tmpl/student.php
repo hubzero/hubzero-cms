@@ -76,7 +76,7 @@ foreach($assets as $asset)
 	if(!$crumb || strlen($crumb) != 20 || $asset->state != 1)
 	{
 		// Try seeing if there's an override grade in the gradebook...
-		if (!is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
+		if (isset($grades[$this->member->get('id')]['assets'][$asset->id]['score']) && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score']))
 		{
 			$details['aux'][] = array('title'=>$asset->title, 'score'=>$grades[$this->member->get('id')]['assets'][$asset->id]['score']);
 		}
