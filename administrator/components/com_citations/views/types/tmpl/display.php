@@ -63,14 +63,16 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->types); ?>);" /></th>
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Alias'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($this->types as $t) : ?>
+			<?php foreach ($this->types as $i => $t) : ?>
 				<tr>
+					<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $t['id']; ?>" onclick="isChecked(this.checked);" /></td>
 					<td><?php echo $t['id']; ?></td>
 					<td>
 						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $t['id']; ?>">
