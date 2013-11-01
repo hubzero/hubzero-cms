@@ -73,7 +73,8 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 		</ul>
 	</div>
 	<div class="outer-container readonly">
-		<div class="three columns first">
+		<div class="grid">
+		<div class="col span-third">
 			<h3 class="headings"><?php echo JText::_('PLG_TIME_HUBS_DETAILS'); ?></h3>
 			<div class="grouping" id="name-grouping">
 				<label for="name"><?php echo JText::_('PLG_TIME_HUBS_NAME'); ?>:</label>
@@ -106,7 +107,7 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 			</div>
 		</div>
 
-		<div class="three columns second">
+		<div class="col span-third">
 			<h3 class="headings"><?php echo JText::_('PLG_TIME_HUBS_CONTACTS'); ?></h3>
 
 			<?php $i = 0;
@@ -127,7 +128,7 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 				<?php } // close else ccount ?>
 		</div>
 
-		<div class="three columns third">
+		<div class="col span-third omega">
 			<h3 class="headings"><?php echo JText::_('PLG_TIME_HUBS_NOTES'); ?></h3>
 			<?php if(!empty($this->row->notes)) {
 				echo '<div class="hub-notes"><div class="inner">';
@@ -137,5 +138,6 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 				echo '<p>' . JText::_('PLG_TIME_HUBS_NO_NOTES') . '</p>';
 			}?>
 		</div>
-	</div><!-- //container -->
+		</div><!-- / .grid -->
+	</div><!-- / .container -->
 </div>

@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="grid">
 		<div class="col span3">
 			<h2><?php echo JText::_('COM_TAGS_RECENTLY_USED'); ?></h2>
-		</div><!-- / .four columns first -->
+		</div><!-- / .col span3 -->
 		<div class="col span9 omega">
 			<div class="block">
 			<?php

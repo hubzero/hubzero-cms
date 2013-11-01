@@ -66,7 +66,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<p>This is a quick overview of how students are doing and what's coming up.</p>
 		</div>
 		<div class="sub-section-content">
-			<div class="four columns first">
+			<div class="grid">
+			<div class="col span3">
 				<table class="breakdown">
 					<tbody>
 						<tr>
@@ -93,7 +94,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					</tbody>
 				</table>
 			</div>
-			<div class="four columns second third fourth">
+			<div class="col span9 omega">
 				<div class="dashboard-timeline-start">
 					<p><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></p>
 				</div>
@@ -142,7 +143,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					<p><?php echo JHTML::_('date', $weeklater, JText::_('DATE_FORMAT_HZ1')); ?></p>
 				</div>
 			</div>
-			<div class="clear"></div>
+			</div><!-- / .grid -->
 		</div>
 		<div class="clear"></div>
 	</div>

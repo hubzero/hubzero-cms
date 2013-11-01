@@ -56,25 +56,26 @@ if (!$this->filters['filterby'] == 'none')
 <div class="clear"></div>
 
 <div id="introduction" class="section">
-	<div class="three columns first">
-		<div class="container">
-			<h3>Discover</h3>
-			<p>The Best Answers chosen by the Community.</p>
+	<div class="grid">
+		<div class="col span-third">
+			<div class="container">
+				<h3>Discover</h3>
+				<p>The Best Answers chosen by the Community.</p>
+			</div>
+		</div>
+		<div class="col span-third">
+			<div class="container">
+				<h3>Ask</h3>
+				<p>What would you like to know?</p>
+			</div>
+		</div>
+		<div class="col span-third omega">
+			<div class="container">
+				<h3>Answer</h3>
+				<p>Share your knowledge, Help others and be an Expert.</p>
+			</div>
 		</div>
 	</div>
-	<div class="three columns second">
-		<div class="container">
-			<h3>Ask</h3>
-			<p>What would you like to know?</p>
-		</div>
-	</div>
-	<div class="three columns third">
-		<div class="container">
-			<h3>Answer</h3>
-			<p>Share your knowledge, Help others and be an Expert.</p>
-		</div>
-	</div>
-	<div class="clear"></div>
 </div>
 
 <div class="main section">

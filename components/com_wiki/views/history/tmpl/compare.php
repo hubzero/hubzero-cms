@@ -89,21 +89,22 @@ if (!$mode || ($mode && $mode != 'static'))
 ?>
 
 <div class="section">
-	<div class="two columns first">
-		<dl class="diff-versions">
-			<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->version; ?><dt>
-			<dd><time datetime="<?php echo $this->or->created; ?>"><?php echo $this->or->created; ?></time> by <?php echo $this->escape($orauthor); ?><dd>
-			
-			<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->version; ?><dt>
-			<dd><time datetime="<?php echo $this->dr->created; ?>"><?php echo $this->dr->created; ?></time> by <?php echo $this->escape($drauthor); ?><dd>
-		</dl>
-	</div><!-- / .aside -->
-	<div class="two columns second">
-		<p class="diff-deletedline"><del class="diffchange">Deletions</del> or items before changed</p>
-		<p class="diff-addedline"><ins class="diffchange">Additions</ins> or items after changed</p>
-	</div><!-- / .subject -->
+	<div class="grid">
+		<div class="col span-half">
+			<dl class="diff-versions">
+				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->version; ?><dt>
+				<dd><time datetime="<?php echo $this->or->created; ?>"><?php echo $this->or->created; ?></time> by <?php echo $this->escape($orauthor); ?><dd>
+				
+				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->version; ?><dt>
+				<dd><time datetime="<?php echo $this->dr->created; ?>"><?php echo $this->dr->created; ?></time> by <?php echo $this->escape($drauthor); ?><dd>
+			</dl>
+		</div><!-- / .col span-half-->
+		<div class="col span-half omega">
+			<p class="diff-deletedline"><del class="diffchange">Deletions</del> or items before changed</p>
+			<p class="diff-addedline"><ins class="diffchange">Additions</ins> or items after changed</p>
+		</div><!-- / .col span-half -->
+	</div><!-- / .grid -->
 </div><!-- / .section -->
-<div class="clear"></div>
 
 <div class="main section">
 	<?php echo $this->content; ?>

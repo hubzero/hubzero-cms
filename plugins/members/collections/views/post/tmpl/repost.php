@@ -50,12 +50,12 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		<legend><?php echo JText::_('Collect'); ?></legend>
 
 		<div class="grid">
-		<div class="two columns first">
-		<label for="field-collection_id">
-			<?php echo JText::_('Select collection'); ?>
-			<select name="collection_id" id="field-collection_id">
-				<option value="0"><?php echo JText::_('Select ...'); ?></option>
-				<optgroup label="<?php echo JText::_('My collections'); ?>">
+			<div class="col span-half">
+				<label for="field-collection_id">
+					<?php echo JText::_('Select collection'); ?>
+					<select name="collection_id" id="field-collection_id">
+						<option value="0"><?php echo JText::_('Select ...'); ?></option>
+						<optgroup label="<?php echo JText::_('My collections'); ?>">
 <?php 
 if ($this->myboards)
 {
@@ -66,43 +66,42 @@ if ($this->myboards)
 			continue;
 		}
 ?>
-					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+							<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
 	}
 }
 ?>
-				</optgroup>
+						</optgroup>
 <?php 
 if ($this->groupboards)
 {
 	foreach ($this->groupboards as $optgroup => $boards)
 	{
 ?>
-				<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
+						<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
 <?php
 		foreach ($boards as $board)
 		{
 ?>
-					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+							<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
 		}
 ?>
-				</optgroup>
+						</optgroup>
 <?php
 	}
 }
 ?>
-			</select>
-		</label>
-		</div>
-		<p class="or">OR</p>
-		<div class="two columns second">
-			<label for="field-collection_title">
-				<?php echo JText::_('Create collection'); ?>
-				<input type="text" name="collection_title" id="field-collection_title" />
-			</label>
-		</div>
-		<div class="clear"></div>
+					</select>
+				</label>
+			</div>
+			<p class="or">OR</p>
+			<div class="col span-half omega">
+				<label for="field-collection_title">
+					<?php echo JText::_('Create collection'); ?>
+					<input type="text" name="collection_title" id="field-collection_title" />
+				</label>
+			</div>
 		</div>
 
 		<label for="field_description">

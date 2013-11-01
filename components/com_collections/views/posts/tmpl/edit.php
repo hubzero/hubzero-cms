@@ -119,7 +119,8 @@ if (!$dir)
 	<?php if ($this->entry->get('original')) { ?>
 			<div class="field-wrap">
 				<div class="asset-uploader">
-					<div class="two columns first">
+					<div class="grid">
+					<div class="col span-half">
 			<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 						<div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //echo &amp;dir=$dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 							<noscript>
@@ -137,8 +138,8 @@ if (!$dir)
 							<input type="file" name="upload" id="upload" />
 						</label>
 			<?php } ?>
-					</div><!-- / .two columns first -->
-					<div class="two columns second">
+					</div><!-- / .col span-half -->
+					<div class="col span-half omega">
 			<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 						<div id="link-adder" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 							<noscript>
@@ -158,14 +159,13 @@ if (!$dir)
 							<input type="hidden" name="assets[-1][type]" value="link" />
 						</label>
 			<?php } ?>
-					</div><!-- / .two columns second -->
-					<div class="clear"></div>
+					</div><!-- / .col span-half -->
+					</div>
 				</div><!-- / .asset-uploader -->
 			</div><!-- / .field-wrap -->
 	<?php } ?>
 			<div id="post-type-form">
 				<div id="post-file" class="fieldset">
-					<a name="file"></a>
 
 	<?php if ($this->entry->get('original')) { ?>
 					<div class="field-wrap" id="ajax-uploader-list">

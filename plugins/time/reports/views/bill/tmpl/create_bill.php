@@ -38,14 +38,14 @@ defined('_JEXEC') or die('Restricted access');
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } // close foreach 
 	} // close if count ?>
-	<div class="filters">
-		<div class="four columns first">
+	<div class="filters grid">
+		<div class="col span3">
 			<div class="grouping">
 				<label for="hub"><?php echo JText::_('PLG_TIME_REPORTS_HUB'); ?>:</label>
 				<?php echo $this->hlist; ?>
 			</div>
 		</div>
-		<div class="four columns second">
+		<div class="col span3">
 			<div class="grouping">
 				<label for="task"><?php echo JText::_('PLG_TIME_REPORTS_TASK'); ?>:</label>
 				<select id="task">
@@ -53,13 +53,13 @@ defined('_JEXEC') or die('Restricted access');
 				<select>
 			</div>
 		</div>
-		<div class="four columns third">
+		<div class="col span3">
 			<div class="grouping">
 				<label for="startdate"><?php echo JText::_('PLG_TIME_REPORTS_START_DATE'); ?>:</label>
 					<input type="text" id="startdate" name="startdate" class="hadDatepicker" />
 			</div>
 		</div>
-		<div class="four columns fourth">
+		<div class="col span3 omega">
 			<div class="grouping">
 				<label for="enddate"><?php echo JText::_('PLG_TIME_REPORTS_END_DATE'); ?>:</label>
 					<input type="text" id="enddate" name="enddate" class="hadDatepicker" />
@@ -85,7 +85,6 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 				</tbody>
 			</table>
-	</div><!-- // close container -->
 
 			<input type="hidden" value="" id="results" name="results" />
 
@@ -93,4 +92,5 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="submit" value="<?php echo JText::_('PLG_TIME_REPORTS_FINALIZE_BILL'); ?>" />
 			</p>
 		</form>
+	</div><!-- // close container -->
 </div>

@@ -40,10 +40,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = null;
 }
 
+$base = rtrim(JURI::getInstance()->base(true), '/');
+
 // Set some ordering variables
 $start   = ($this->filters['start']) ? '&start='.$this->filters['start'] : '';
-$imgasc  = '<img src="'.DS.'components'.DS.$this->option.DS.'images'.DS.'sort_asc.png">';
-$imgdesc = '<img src="'.DS.'components'.DS.$this->option.DS.'images'.DS.'sort_desc.png">';
+$imgasc  = '<img src="'.$base.DS.'components'.DS.$this->option.DS.'images'.DS.'sort_asc.png">';
+$imgdesc = '<img src="'.$base.DS.'components'.DS.$this->option.DS.'images'.DS.'sort_desc.png">';
 $sortcol = $this->mainframe->getUserStateFromRequest("$this->option.$this->active.orderby", 'orderby', 'id');
 $dir     = $this->mainframe->getUserStateFromRequest("$this->option.$this->active.orderdir", 'orderdir', 'desc');
 $newdir  = ($dir == 'asc') ? 'desc' : 'asc';

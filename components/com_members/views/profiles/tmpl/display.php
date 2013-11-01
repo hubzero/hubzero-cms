@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->juser->get('guest')) { ?>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=com_register'); ?>"><?php echo JText::_('Join now!'); ?></a></li>
+		<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_register'); ?>"><?php echo JText::_('Join now!'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>
@@ -48,10 +48,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<ul>
 			<li>
-				<a href="/user/remind">Forgot your username?</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>">Forgot your username?</a>
 			</li>
 			<li>
-				<a href="/user/reset">Forgot your password?</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>">Forgot your password?</a>
 			</li>
 			<li>
 				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=members'); ?>">Need Help?</a>
@@ -62,59 +62,65 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="two columns first">
-			<h3>Why be a member?</h3>
-			<p>As a member, you instantly become part of a community designed
-for you and your colleagues.  Being part of the community provides quick and easy access to share knowledge with
-fellow researchers around the world helping you achieve more of your
-goals.  Membership is free, get started today!</p>
-		</div>
-		<div class="two columns second">
-			<h3>How do I become a member?</h3>
-			<p>To become a member, click on the register link at the top of the page,
-create a username and password, and complete the rest of the form.  After
-submitting, you will receive a confirmation email momentarily; please
-follow the instructions within.  You are now part of the unique experience
-that is the HUB!</p>
-		</div>
-		<div class="clear"></div>
+		<div class="grid">
+			<div class="col span6">
+				<h3>Why be a member?</h3>
+				<p>As a member, you instantly become part of a community designed
+				for you and your colleagues.  Being part of the community provides quick and easy access to share knowledge with
+				fellow researchers around the world helping you achieve more of your
+				goals.  Membership is free, get started today!</p>
+			</div><!-- / .col span6 -->
+			<div class="col span6 omega">
+				<h3>How do I become a member?</h3>
+				<p>To become a member, click on the register link at the top of the page,
+				create a username and password, and complete the rest of the form.  After
+				submitting, you will receive a confirmation email momentarily; please
+				follow the instructions within.  You are now part of the unique experience
+				that is the HUB!</p>
+			</div><!-- / .col span6 -->
+		</div><!-- / .grid -->
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 
 <div class="section">
 
-	<div class="four columns first">
-		<h2>Find members</h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
-				<fieldset>
-					<p>
-						<label for="gsearch">Keyword or phrase:</label>
-						<input type="text" name="search" id="gsearch" value="" />
-						<input type="submit" value="Search" />
-					</p>
-					<p>
-						Search public members. Members with private profiles do not show up in results.
-					</p>
-				</fieldset>
-			</form>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">Browse the list of available members</a></p>
-				<p>A list of all public members. Members with private profiles do not show up in results.</p>
-			</div><!-- / .browse -->
-		</div><!-- / .two columns second -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+	<div class="grid">
+		<div class="col span3">
+			<h2>Find members</h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="grid">
+				<div class="col span6">
+					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
+						<fieldset>
+							<p>
+								<label for="gsearch">Keyword or phrase:</label>
+								<input type="text" name="search" id="gsearch" value="" />
+								<input type="submit" value="Search" />
+							</p>
+							<p>
+								Search public members. Members with private profiles do not show up in results.
+							</p>
+						</fieldset>
+					</form>
+				</div><!-- / .col span6 -->
+				<div class="col span6 omega">
+					<div class="browse">
+						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">Browse the list of available members</a></p>
+						<p>A list of all public members. Members with private profiles do not show up in results.</p>
+					</div><!-- / .browse -->
+				</div><!-- / .col span6 -->
+			</div><!-- / .grid -->
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
 
-	<div class="four columns first">
-		<h2>Top contributors</h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
+	<div class="grid">
+		<div class="col span3">
+			<h2>Top contributors</h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="grid">
 <?php
 	$c = new MembersProfile(JFactory::getDBO());
 	
@@ -146,13 +152,13 @@ that is the HUB!</p>
 
 			switch ($i)
 			{
-				case 2: $cls = 'third'; break;
-				case 1: $cls = 'second'; break;
+				case 2: $cls = ''; break;
+				case 1: $cls = 'omega'; break;
 				case 0: 
-				default: $cls = 'first'; break;
+				default: $cls = ''; break;
 			}
 ?>
-		<div class="two columns <?php echo $cls; ?>">
+		<div class="col span-half <?php echo $cls; ?>">
 			<div class="contributor">
 				<p class="contributor-photo">
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $contributor->get('uidNumber')); ?>">
@@ -180,9 +186,10 @@ that is the HUB!</p>
 				<?php } ?>
 				</p>
 			</div>
-		</div><!-- / .two columns first -->
+		</div><!-- / .col span-third -->
 		<?php if ($i == 1) { ?>
-		<div class="clear"></div>
+		</div><!-- / .grid -->
+		<div class="grid">
 		<?php } ?>
 <?php
 			$i++;
@@ -195,7 +202,8 @@ that is the HUB!</p>
 <?php
 	}
 ?>
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+			</div>
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
 
 </div><!-- / .section -->

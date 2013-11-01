@@ -48,6 +48,7 @@ else
 	$resolutions = $st->find('resolved', array('type' => $this->type, 'open' => 0));
 	$severities  = $st->find('severity', array('type' => $this->type));
 }*/
+$base = rtrim(JURI::getInstance()->base(true), '/');
 
 $database = JFactory::getDBO();
 $sql = "SELECT resolved
@@ -126,7 +127,7 @@ function getMonthName($month)
 		case 0: $monthname = JText::_('October');   break;
 		case 11: $monthname = JText::_('November');  break;
 		case 12: $monthname = JText::_('December');  break;
-    }
+	}
 	return $monthname;
 }
 ?>
@@ -149,46 +150,55 @@ function getMonthName($month)
 	</ul>
 </div><!-- / #content-header-extra -->
 
-	<ul class="sub-menu">
-		<li id="sm-1"<?php if ($this->type == 0) { echo ' class="active"'; } ?>><a class="tab" rel="submitted" href="/support/stats"><span><?php echo JText::_('Submitted Tickets'); ?></span></a></li>
-		<li id="sm-2"<?php if ($this->type == 1) { echo ' class="active"'; } ?>><a class="tab" rel="automatic" href="/support/stats?type=automatic"><span><?php echo JText::_('Automatic Tickets'); ?></span></a></li>
-	</ul>
+<ul class="sub-menu">
+	<li id="sm-1"<?php if ($this->type == 0) { echo ' class="active"'; } ?>>
+		<a class="tab" rel="submitted" href="<?php echo JRoute::_('index.php?option=com_support&task=stats'); ?>">
+			<span><?php echo JText::_('Submitted Tickets'); ?></span>
+		</a>
+	</li>
+	<li id="sm-2"<?php if ($this->type == 1) { echo ' class="active"'; } ?>>
+		<a class="tab" rel="automatic" href="<?php echo JRoute::_('index.php?option=com_support&task=stats&type=automatic'); ?>">
+			<span><?php echo JText::_('Automatic Tickets'); ?></span>
+		</a>
+	</li>
+</ul>
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
 	<div class="main section" id="ticket-stats">
-		<div class="two columns first">
-			<!-- <h3 class="time-range">
-				<?php echo getMonthName(1) . ' ' . $this->first ?> - <?php echo getMonthName($this->month) . ' ' . $this->year; ?>
-			</h3> -->
-			<p class="time-range">
-				<label for="start-date">From</label> <input type="text" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
-				<label for="end-date">to</label> <input type="text" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
-			</p>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<fieldset class="support-stats-filter">
-				<label for="ticket-group">
-					<?php echo JText::_('Show for group:'); ?>
-				</label>
-				<select name="group" id="ticket-group">
-					<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo JText::_('[ all ]'); ?></option>
-					<option value="_none_"<?php if ($this->group == '_none_') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ none ]'); ?></option>
-					<?php
-					if ($this->groups)
-					{
-						foreach ($this->groups as $group)
+		<div class="grid">
+			<div class="col span-half">
+				<!-- <h3 class="time-range">
+					<?php echo getMonthName(1) . ' ' . $this->first ?> - <?php echo getMonthName($this->month) . ' ' . $this->year; ?>
+				</h3> -->
+				<p class="time-range">
+					<label for="start-date">From</label> <input type="text" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
+					<label for="end-date">to</label> <input type="text" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
+				</p>
+			</div><!-- / .col span-half omega -->
+			<div class="col span-half omega">
+				<fieldset class="support-stats-filter">
+					<label for="ticket-group">
+						<?php echo JText::_('Show for group:'); ?>
+					</label>
+					<select name="group" id="ticket-group">
+						<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo JText::_('[ all ]'); ?></option>
+						<option value="_none_"<?php if ($this->group == '_none_') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ none ]'); ?></option>
+						<?php
+						if ($this->groups)
 						{
-					?>
-					<option value="<?php echo $group->group; ?>"<?php if ($this->group == $group->group) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->group); ?></option>
-					<?php
+							foreach ($this->groups as $group)
+							{
+						?>
+						<option value="<?php echo $group->group; ?>"<?php if ($this->group == $group->group) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->group); ?></option>
+						<?php
+							}
 						}
-					}
-					?>
-				</select>
-				<input type="submit" value="Go" />
-			</fieldset>
-		</div><!-- / .two columns second -->
-		<div class="clear"></div>
+						?>
+					</select>
+					<input type="submit" value="Go" />
+				</fieldset>
+			</div><!-- / .col span-half omega -->
+		</div><!-- / .grid -->
 
 		<div class="container">
 			<div id="container" style="min-width: 400px; height: 200px; margin: 0 auto;"></div>
@@ -225,10 +235,10 @@ function getMonthName($month)
 					$openeddata = implode(',', $o);
 				}
 			?>
-			<script src="/media/system/js/flot/jquery.flot.min.js"></script>
-			<script src="/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-			<script src="/media/system/js/flot/jquery.flot.pie.min.js"></script>
-			<script src="/media/system/js/flot/jquery.flot.resize.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.min.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.resize.js"></script>
 			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 			<script type="text/javascript">
 				if (!jq) {
@@ -336,8 +346,9 @@ function getMonthName($month)
 			</table>
 		</div><!-- / .container breakdown -->
 
-		<div class="container breakdown pies">
-			<div class="two columns first">
+	<div class="container breakdown pies">
+		<div class="grid">
+			<div class="col span-half">
 				<h3><?php echo JText::_('Tickets by severity'); ?></h3>
 				<div id="severities-container" style="min-width: 270px; height: 270px;">
 					<table class="support-stats-resolutions" summary="<?php echo JText::_('Breakdown of number of tickets for each severity'); ?>">
@@ -450,8 +461,8 @@ function getMonthName($month)
 				    });
 				}
 				</script>
-			</div><!-- / .two columns first -->
-			<div class="two columns second">
+			</div><!-- / .col span-half -->
+			<div class="col span-half omega">
 				<h3><?php echo JText::_('Tickets by resolution'); ?></h3>
 				<div id="resolutions-container" style="min-width: 270px; height: 270px;">
 					<table class="support-stats-resolutions" summary="<?php echo JText::_('Breakdown of people and the number of tickets closed'); ?>">
@@ -543,10 +554,11 @@ function getMonthName($month)
 				    });
 				}
 				</script>
-			</div><!-- / .two columns second -->
-			<div class="clear"></div>
-		</div><!-- / .container -->
+			</div><!-- / .col span-half omega -->
+		</div><!-- / .grid -->
+	</div><!-- / .container -->
 
+	<div class="grid">
 	<?php
 	if ($this->users)
 	{
@@ -564,23 +576,24 @@ function getMonthName($month)
 				if ($z == 1)
 				{
 					?>
-					</div><!-- / .two columns first -->
-					<div class="two columns second">
+					</div><!-- / .col span-half -->
+					<div class="col span-half omega">
 					<?php
 				}
 				else if ($z == 2)
 				{
 					$z = 0;
 					?>
-					</div><!-- / .two columns second -->
-					<div class="clear"></div>
-					<div class="two columns first">
+					</div><!-- / .col span-half -->
+				</div><!-- / .grid -->
+				<div class="grid">
+					<div class="col span-half">
 					<?php
 				}
 				else
 				{
 					?>
-					<div class="two columns first">
+					<div class="col span-half">
 					<?php
 				}
 
@@ -701,8 +714,8 @@ function getMonthName($month)
 			}
 		}
 	?>
-		</div><!-- / .two columns second -->
-		<div class="clear"></div>
+		</div><!-- / .col span-half omega -->
+	</div><!-- / .grid -->
 	<?php
 	}
 	?>

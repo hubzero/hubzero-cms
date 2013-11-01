@@ -55,6 +55,7 @@ $jconfig =& JFactory::getConfig();
 		<p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
 	</div><!-- /.aside -->
 	<div class="subject">
+		<div class="grid">
 <?php
 	if ($this->types) 
 	{
@@ -76,13 +77,12 @@ $jconfig =& JFactory::getConfig();
 			}
 
 			$i++;
-			switch ($clm)
+			switch ($i)
 			{
-				case 'second': $clm = 'third'; break;
-				case 'first': $clm = 'second'; break;
-				case '':
-				case 'third':
-				default: $clm = 'first'; break;
+				case 3: $clm = 'omega'; break;
+				case 2: $clm = ''; break;
+				case 1:
+				default: $clm = ''; break;
 			}
 
 			if (substr($type->alias, -3) == 'ies') 
@@ -94,16 +94,16 @@ $jconfig =& JFactory::getConfig();
 				$cls = substr($type->alias, 0, -1);
 			}
 ?>
-		<div class="three columns <?php echo $clm; ?>">
+		<div class="col span-third <?php echo $clm; ?>">
 			<div class="type-container <?php echo $cls; ?>">
 				<p class="type-button"><a href="<?php echo $url; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></a></p>
 				<p><?php echo $this->escape(stripslashes($type->description)); ?></p>
 			</div>
-		</div><!-- / .three columns <?php echo $clm; ?> -->
+		</div><!-- / .col span-third <?php echo $clm; ?> -->
 <?php
-			if ($clm == 'third') 
+			if ($clm == 'omega') 
 			{
-				echo '<div class="clear"></div>';
+				echo '</div><div class="grid">';
 				$clm = '';
 				$i = 0;
 			}
@@ -111,13 +111,13 @@ $jconfig =& JFactory::getConfig();
 		if ($i == 1 || $i == 2) 
 		{
 ?>
-		<div class="three columns third">
+		<div class="col span-third omage">
 			<p> </p>
-		</div><!-- / .three columns third -->
+		</div><!-- / .col span-third -->
 <?php
 		}
 ?>
-		<div class="clear"></div>
+		</div>
 <?php
 	}
 ?>

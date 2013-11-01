@@ -91,13 +91,14 @@ $first = end($this->revisions);
 	$view->display();
 ?>
 <div class="section">
-	<div class="two columns first">
-		<p>Versions are listed in reverse-chronological order (newest to oldest). For any version listed below, click on its date to view it. For more help, see <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:PageHistory'); ?>">Help:Page history</a>.</p> 
-	</div><!-- / .aside -->
-	<div class="two columns second">
-		<p>(cur) = difference from current version<br />(last) = difference from preceding version</p>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
+	<div class="grid">
+		<div class="col span-half">
+			<p>Versions are listed in reverse-chronological order (newest to oldest). For any version listed below, click on its date to view it. For more help, see <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:PageHistory'); ?>">Help:Page history</a>.</p> 
+		</div><!-- / .col span-half -->
+		<div class="col span-half omega">
+			<p>(cur) = difference from current version<br />(last) = difference from preceding version</p>
+		</div><!-- / .col span-half omega -->
+	</div><!-- / .grid -->
 </div><!-- / .section -->
 
 <div class="main section">

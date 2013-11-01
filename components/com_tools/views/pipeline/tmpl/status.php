@@ -105,7 +105,8 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 	<?php if (ToolsHelperHtml::getNumofTools($this->status)) { echo '<p>'.ToolsHelperHtml::getNumofTools($this->status).'.</p>'; }?>
 	</div><!-- / .toolinfo_note -->
 
-	<div class="two columns first">
+	<div class="grid">
+	<div class="col span-half">
 		<div class="toolinfo<?php echo $this->statusClass; ?>"> 
 			<table id="toolstatus">
 				<tbody>
@@ -288,8 +289,8 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				</tbody>
 			</table>
 		</div>
-	</div><!-- / .two columns first -->
-	<div class="two columns second">
+	</div><!-- / .col span-half -->
+	<div class="col span-half omega">
 		<div id="whatsnext">
 			<h2 class="nextaction"><?php echo JText::_('COM_TOOLS_WHAT_NEXT');?></h2>
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>" method="post" id="statusForm">
@@ -674,6 +675,6 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			}
 			?>
 		</div><!-- / #whatsnext -->
-	</div><!-- / .two columns second -->
-	<div class="clear"></div>
+	</div><!-- / .col span-half omega -->
+	</div><!-- / .grid -->
 </div><!-- / .main section -->

@@ -70,68 +70,69 @@ if ($this->licenses)
 	}
 	//$license = ($this->status['license'] && !$open) ? $this->status['license'] : '' ;
 ?>
-	<div class="two columns first">
-		<h3>
-			<?php echo ($this->action == 'edit') ? JText::_('Specify license for next tool release:') : JText::_('Please confirm your license for this tool release:'); ?>
-		</h3>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license'); ?>" method="post" id="versionForm" name="versionForm">
-			<fieldset class="versionfield">
-				<label><?php echo JText::_('CODE_ACCESS'); ?>:</label> 
-				<?php echo ContribtoolHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
-				
-				<div id="lic_cl"><?php echo JText::_('LICENSE'); ?>:</div>
-				<div class="licinput" >
-					<textarea name="license" cols="50" rows="15" id="license"><?php echo stripslashes($this->license_choice['text']); ?></textarea>
-					<?php 
-					if ($this->licenses) 
-					{
-						foreach ($this->licenses as $l) 
+	<div class="grid">
+		<div class="col span-half">
+			<h3>
+				<?php echo ($this->action == 'edit') ? JText::_('Specify license for next tool release:') : JText::_('Please confirm your license for this tool release:'); ?>
+			</h3>
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license'); ?>" method="post" id="versionForm" name="versionForm">
+				<fieldset class="versionfield">
+					<label><?php echo JText::_('CODE_ACCESS'); ?>:</label> 
+					<?php echo ContribtoolHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
+					
+					<div id="lic_cl"><?php echo JText::_('LICENSE'); ?>:</div>
+					<div class="licinput" >
+						<textarea name="license" cols="50" rows="15" id="license"><?php echo stripslashes($this->license_choice['text']); ?></textarea>
+						<?php 
+						if ($this->licenses) 
 						{
-							echo '<input type="hidden" name="' . $l->name . '" id="' . $l->name . '" value="'.stripslashes(htmlentities($l->text)).'" />' . "\n";
-						}
-					} 
-					?>
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-					<input type="hidden" name="task" value="savelicense" />
-					<input type="hidden" name="curcode" id="curcode" value="<?php echo $open; ?>" />
-					<input type="hidden" name="newstate" value="<?php echo $newstate; ?>" />
-					<input type="hidden" name="action" value="<?php echo $this->action; ?>" />
-					<input type="hidden" name="toolid" value="<?php echo $this->status['toolid']; ?>" />
-					<input type="hidden" name="alias" value="<?php echo $this->status['toolname']; ?>" />
-				</div>  
-				<div id="lic">
-					<label><?php echo JText::_('LICENSE_TEMPLATE'); ?>:</label> 
-					<?php echo ContribtoolHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'],'shifted',''); ?>
-				</div>     
-				<div id="legendnotes">
-					<p>
-						<?php echo JText::_('LICENSE_TEMPLATE_TIP'); ?>:
-						<br />[<?php echo JText::_('YEAR'); ?>]
-						<br />[<?php echo JText::_('OWNER'); ?>]
-						<br />[<?php echo JText::_('ORGANIZATION'); ?>]
-						<br />[<?php echo strtoupper(JText::_('ONE_LINE_DESCRIPTION')); ?>]
-						<br />[<?php echo JText::_('URL'); ?>]
-					</p>
-					<label><input type="checkbox" name="authorize" value="1" /> <?php echo JText::_('LICENSE_CERTIFY').' <strong>'.JText::_('OPEN_SOURCE').'</strong> '.JText::_('LICENSE_UNDER_SPECIFIED'); ?></label>
-				</div>
-				<div class="moveon">
-					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
-				</div>
-			</fieldset>
-		</form>
-	</div><!-- / .two columns first -->
-	<div class="two columns second">
-    	<h3><?php echo JText::_('CONTRIBTOOL_LICENSE_WHAT_OPTIONS'); ?></h3>
-		<p class="opensource">
-			<?php echo '<strong>'.ucfirst(JText::_('OPEN_SOURCE')).'</strong><br />'.JText::_('CONTRIBTOOL_LICENSE_IF_YOU_CHOOSE').' <a href="http://www.opensource.org/" rel="external" title="Open Source Initiative">'.strtolower(JText::_('OPEN_SOURCE')).'</a>, '.JText::_('CONTRIBTOOL_LICENSE_OPEN_TXT'); ?>
-		</p>
-		<p class="error">
-			<?php echo JText::_('CONTRIBTOOL_LICENSE_ATTENTION'); ?>
-		</p>
-		<p class="closedsource">
-			<strong><?php echo ucfirst(JText::_('CLOSED_SOURCE')); ?></strong><br /><?php echo JText::_('CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?>
-		</p>
-	</div><!-- / .two columns second -->
-	<div class="clear"></div>
+							foreach ($this->licenses as $l) 
+							{
+								echo '<input type="hidden" name="' . $l->name . '" id="' . $l->name . '" value="'.stripslashes(htmlentities($l->text)).'" />' . "\n";
+							}
+						} 
+						?>
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+						<input type="hidden" name="task" value="savelicense" />
+						<input type="hidden" name="curcode" id="curcode" value="<?php echo $open; ?>" />
+						<input type="hidden" name="newstate" value="<?php echo $newstate; ?>" />
+						<input type="hidden" name="action" value="<?php echo $this->action; ?>" />
+						<input type="hidden" name="toolid" value="<?php echo $this->status['toolid']; ?>" />
+						<input type="hidden" name="alias" value="<?php echo $this->status['toolname']; ?>" />
+					</div>  
+					<div id="lic">
+						<label><?php echo JText::_('LICENSE_TEMPLATE'); ?>:</label> 
+						<?php echo ContribtoolHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'],'shifted',''); ?>
+					</div>     
+					<div id="legendnotes">
+						<p>
+							<?php echo JText::_('LICENSE_TEMPLATE_TIP'); ?>:
+							<br />[<?php echo JText::_('YEAR'); ?>]
+							<br />[<?php echo JText::_('OWNER'); ?>]
+							<br />[<?php echo JText::_('ORGANIZATION'); ?>]
+							<br />[<?php echo strtoupper(JText::_('ONE_LINE_DESCRIPTION')); ?>]
+							<br />[<?php echo JText::_('URL'); ?>]
+						</p>
+						<label><input type="checkbox" name="authorize" value="1" /> <?php echo JText::_('LICENSE_CERTIFY').' <strong>'.JText::_('OPEN_SOURCE').'</strong> '.JText::_('LICENSE_UNDER_SPECIFIED'); ?></label>
+					</div>
+					<div class="moveon">
+						<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+					</div>
+				</fieldset>
+			</form>
+		</div><!-- / .col span-half -->
+		<div class="col span-half omega">
+			<h3><?php echo JText::_('CONTRIBTOOL_LICENSE_WHAT_OPTIONS'); ?></h3>
+			<p class="opensource">
+				<?php echo '<strong>'.ucfirst(JText::_('OPEN_SOURCE')).'</strong><br />'.JText::_('CONTRIBTOOL_LICENSE_IF_YOU_CHOOSE').' <a href="http://www.opensource.org/" rel="external" title="Open Source Initiative">'.strtolower(JText::_('OPEN_SOURCE')).'</a>, '.JText::_('CONTRIBTOOL_LICENSE_OPEN_TXT'); ?>
+			</p>
+			<p class="error">
+				<?php echo JText::_('CONTRIBTOOL_LICENSE_ATTENTION'); ?>
+			</p>
+			<p class="closedsource">
+				<strong><?php echo ucfirst(JText::_('CLOSED_SOURCE')); ?></strong><br /><?php echo JText::_('CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?>
+			</p>
+		</div><!-- / .col span-half omega -->
+	</div><!-- / .grid -->
 </div><!-- / .main section -->

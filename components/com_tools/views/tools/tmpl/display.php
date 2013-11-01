@@ -41,7 +41,7 @@ $juri =& JURI::getInstance();
 $juser =& JFactory::getUser();
 if ($juser->get('guest')) {
 ?>
-			<li><a href="/register">Sign up for free!</a></li>
+			<li><a href="<?php echo JRoute::_('index.php?option=com_register'); ?>">Sign up for free!</a></li>
 <?php } ?>
 			<li><a href="http://subversion.tigris.org/" rel="external">Learn about Subversion</a></li>
 			<li><a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=tools&page=index'); ?>">Need Help?</a></li>
@@ -64,10 +64,11 @@ if ($juser->get('guest')) {
 </div><!-- / #introduction.section -->
 
 <div class="section">
-	<div class="four columns first">
+	<div class="grid">
+	<div class="col span3">
 		<h2><?php echo JText::_('Available Tools'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
+	</div><!-- / .col span3 -->
+	<div class="col span9 omega">
 		<table summary="<?php echo JText::_('Tool projects'); ?>">
 			<thead>
 				<tr>
@@ -110,6 +111,6 @@ if (count($this->apps) > 0) {
 ?>
 			</tbody>
 		</table>
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+	</div><!-- / .col span9 omega -->
+	</div>
 </div><!-- / .section -->

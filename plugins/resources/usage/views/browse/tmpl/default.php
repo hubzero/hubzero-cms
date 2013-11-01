@@ -128,18 +128,19 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 	$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
 	if (file_exists(JPATH_ROOT . $tool_map . '.gif')) { ?>
 		<div id="geo-overview-wrap" class="usage-wrap">
-			<div class="four columns first">
-				<h4><?php echo JText::_('World usage'); ?></h4>
-				<p><?php echo JText::sprintf('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
-			</div><!-- / .four columns first -->
-			<div class="four columns second third fourth">
-				<p>
-					<a href="<?php echo $tool_map; ?>.png" title="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
-						<img style="width:100%;max-width:510px;" src="<?php echo $base . $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
-					</a>
-				</p>
-			</div><!-- / .four columns second third fourth -->
-			<div style="clear:left;"></div>
+			<div class="grid">
+				<div class="col span3">
+					<h4><?php echo JText::_('World usage'); ?></h4>
+					<p><?php echo JText::sprintf('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
+				</div><!-- / .col span3 -->
+				<div class="col span9 omega">
+					<p>
+						<a href="<?php echo $tool_map; ?>.png" title="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
+							<img style="width:100%;max-width:510px;" src="<?php echo $base . $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
+						</a>
+					</p>
+				</div><!-- / .col span9 omega -->
+			</div><!-- / .grid -->
 		</div>
 	<?php } ?>
 
@@ -162,14 +163,15 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 					</a>
 				</li>
 			</ul>
-			<div class="four columns first">
+			<div class="grid">
+			<div class="col span3">
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 				<p class="total">
 					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
 					<span><?php echo JText::_('in'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
-			</div><!-- / .four columns first -->
-			<div class="four columns second third fourth">
+			</div><!-- / .col span3 -->
+			<div class="col span9 omega">
 				<p class="zoom-controls" id="set-selection-users">
 					<?php echo JText::_('Zoom'); ?>
 					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('Year to date'); ?>"><?php echo JText::_('1y'); ?></a>
@@ -209,8 +211,9 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 					<!-- blank -->
 				</div>
 
-				<div class="two columns first">
-				<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?>" id="pie-org-data" class="pie-chart">
+				<div class="grid">
+				<div class="col span-half">
+				<table id="pie-org-data" class="pie-chart">
 					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?></caption>
 					<thead>
 						<tr>
@@ -353,8 +356,8 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 					};
 				</script>
 			</div>
-			<div class="two columns second">
-				<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?>" id="pie-country-data" class="pie-chart">
+			<div class="col span-half omega">
+				<table id="pie-country-data" class="pie-chart">
 					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?></caption>
 					<thead>
 						<tr>
@@ -577,19 +580,21 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 						?>
 					};
 				</script>*/ ?>
-			</div><!-- / .four columns second third fourth -->
-			<div style="clear:left;"></div>
+				</div><!-- / .grid -->
+			</div><!-- / .col span9 omega -->
+			</div><!-- / .grid -->
 		</div><!-- / #user-overview-wrap -->
 
 		<div id="runs-overview-wrap" class="usage-wrap">
-			<div class="four columns first">
+			<div class="grid">
+			<div class="col span3">
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
 				<p class="total">
 					<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
 					<span><?php echo JText::_('in'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
-			</div><!-- / .four columns first -->
-			<div class="four columns second third fourth">
+			</div><!-- / .col span3 -->
+			<div class="col span9 omega">
 				<p class="zoom-controls" id="set-selection-runs">
 					<?php echo JText::_('Zoom'); ?>
 					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('Year to date'); ?>"><?php echo JText::_('1y'); ?></a>
@@ -671,8 +676,8 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 						</tr>
 					</tbody>
 				</table>
-			</div><!-- / .four columns second third fourth -->
-			<div style="clear:left;"></div>
+			</div><!-- / .col span9 omega -->
+			</div>
 		</div><!-- / #runs-overview-wrap -->
 		
 		<script type="text/javascript">

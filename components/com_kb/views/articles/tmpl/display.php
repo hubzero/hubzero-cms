@@ -176,7 +176,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php } else { ?>
 							<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
 						<?php } ?>
-						</div><!-- / .two columns <?php echo $cls; ?> -->
+						</div><!-- / .col span-half <?php echo $cls; ?> -->
 						<?php //echo ($i >= 2) ? '<div class="clearfix"></div>' : ''; ?>
 							<?php
 							if ($i >= 2) 

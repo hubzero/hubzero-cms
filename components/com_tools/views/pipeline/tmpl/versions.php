@@ -38,7 +38,7 @@ $juser = &JFactory::getUser();
 	</ul>
 </div><!-- / #content-header-extra -->
 
-<div class="main section">   
+<div class="main section">
 <?php 
 ($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' :$hint = '' ; // if tool is under dev and no version was specified before
 $statuspath = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
@@ -52,7 +52,8 @@ if ($this->action == 'confirm') {
 $rconfig =& JComponentHelper::getParams( 'com_resources' );
 $hubDOIpath = $rconfig->get('doi');
 ?> 
-	<div class="two columns first">	
+	<div class="grid">
+		<div class="col span-half">	
 <?php if ($this->error) { echo ToolsHelperHtml::error( $this->error ); } ?>
 
 <?php if ($this->action != 'dev' && $this->status['state'] != ToolsHelperHtml::getStatusNum('Published')) { ?>
@@ -161,14 +162,14 @@ $hubDOIpath = $rconfig->get('doi');
 	echo (JText::_('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS').' '.$this->status['toolname']. '. '.ucfirst(JText::_('COM_TOOLS_GO_BACK_TO')).' <a href="'.$statuspath.'">'.strtolower(JText::_('COM_TOOLS_TOOL_STATUS')).'</a>.');
 }
 ?>
-	</div>
-	<div class="two columns second">
-		<h3><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_WHY_NEED_NUMBER'); ?></h3>
-		<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_WHY_NEED_NUMBER_ANSWER'); ?></p>
-		<h3><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE'); ?></h3>
-		<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_ONE'); ?></p>			
-		<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_ONE'); ?></p>		
-		<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_THREE'); ?></p>
-	</div>
-	<div class="clear"></div>
+		</div>
+		<div class="col span-half omega">
+			<h3><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_WHY_NEED_NUMBER'); ?></h3>
+			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_WHY_NEED_NUMBER_ANSWER'); ?></p>
+			<h3><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE'); ?></h3>
+			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_ONE'); ?></p>
+			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_ONE'); ?></p>
+			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_THREE'); ?></p>
+		</div>
+	</div><!-- / .grid -->
 </div>

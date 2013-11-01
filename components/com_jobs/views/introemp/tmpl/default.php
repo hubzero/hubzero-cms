@@ -64,13 +64,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= t.t.'</div>'.n;
 	$html .= t.'</div><div class="clear"></div>'.n;
 
-	$html .= '<div class="three columns first">'.n;
+	$html .= '<div class="grid">';
+	$html .= '<div class="col span-third">'.n;
 	ximport('Hubzero_Module_Helper');
 	$html .= Hubzero_Module_Helper::renderModules('force_mod_mini');
 	$html .= t.'<p>'.JText::_('COM_JOBS_LOGIN_NO_ACCOUNT').' <a href="/register">'.JText::_('COM_JOBS_LOGIN_REGISTER_NOW').'</a>. '.JText::_('COM_JOBS_LOGIN_IT_IS_FREE').'</p>';
 	$html .= '</div>'.n;
 
-	$html .= '<div class="three columns second">'.n;
+	$html .= '<div class="col span-third">'.n;
 	$html .= t.t.'<div>'.n;
 	$html .= t.t.t.'<p>';
 	$html .= JText::_('COM_JOBS_INTRO_TO_ACCESS').' ';
@@ -81,7 +82,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= t.t.'</div>'.n;
 	$html .= '</div>'.n;
 
-	$html .= '<div class="three columns third">'.n;
+	$html .= '<div class="col span-third omega">'.n;
 	$html .= t.t.'<div>'.n;
 	$html .= t.t.t.'<p>';
 	$html .= ($this->task=='addjob')
@@ -93,6 +94,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= '</p>';
 	$html .= t.t.'</div>'.n;
 	$html .= '</div>'.n;
+	$html .= '</div><!-- / .grid -->'.n;
 	$html .= '</div><!-- / .main section -->'.n;
 
 	echo $html;

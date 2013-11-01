@@ -473,7 +473,7 @@ function getMonthName($month)
 					if ($z == 1)
 					{
 						?>
-						</div><!-- / .two columns first -->
+						</div><!-- / .col width-50 fltlft -->
 						<div class="col width-50 fltrt">
 						<?php
 					}
@@ -481,7 +481,7 @@ function getMonthName($month)
 					{
 						$z = 0;
 						?>
-						</div><!-- / .two columns second -->
+						</div><!-- / .col width-50 fltrt -->
 						<div class="clr"></div>
 						<div class="col width-50 fltlft">
 						<?php
@@ -612,7 +612,7 @@ function getMonthName($month)
 				}
 			}
 		?>
-			</div><!-- / .two columns second -->
+			</div><!-- / .col width-50 fltrt -->
 			<div class="clr"></div>
 		<?php
 		}

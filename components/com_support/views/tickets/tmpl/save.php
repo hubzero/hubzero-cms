@@ -51,24 +51,25 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php } ?>
-		<div class="two columns first">
-			<div id="ticket-number">
-				<h2>
-					<span><?php echo JText::_('Ticket #'); ?></span><strong><?php echo $this->ticket; ?></strong>
-				</h2>
-			</div>
-		</div>
-		<div class="two columns second">
-			<div id="messagebox">
-				<div class="wrap">
-					<h3><?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?></h3>
-					<p><?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?></p>
-<?php if ($this->ticket) { ?>
-					<p><?php echo JText::sprintf('COM_SUPPORT_TROUBLE_TICKET_REFERENCE', $this->ticket); ?></p>
-<?php } ?>
+		<div class="grid">
+			<div class="col span-half">
+				<div id="ticket-number">
+					<h2>
+						<span><?php echo JText::_('Ticket #'); ?></span><strong><?php echo $this->ticket; ?></strong>
+					</h2>
 				</div>
 			</div>
-		</div><!-- / .two columns second -->
-		<div class="clear"></div>
+			<div class="col span-half omega">
+				<div id="messagebox">
+					<div class="wrap">
+						<h3><?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?></h3>
+						<p><?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?></p>
+					<?php if ($this->ticket) { ?>
+						<p><?php echo JText::sprintf('COM_SUPPORT_TROUBLE_TICKET_REFERENCE', $this->ticket); ?></p>
+					<?php } ?>
+					</div>
+				</div>
+			</div><!-- / .col span-half omega -->
+		</div><!-- / .grid -->
 	</div><!-- / .main section -->
 <?php } ?>

@@ -69,15 +69,16 @@ if (count($this->notifications) > 0)
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="two columns first">
-			<h3>About courses</h3>
-			<p>When you take one of our courses, you will watch lectures taught by world-class professors, learn at your own pace, test your knowledge, and reinforce concepts through interactive exercises. Every course is created based on a syllabus and presented online using an ordered, easy-to-follow framework.</p>
+		<div class="grid">
+			<div class="col span-half">
+				<h3>About courses</h3>
+				<p>When you take one of our courses, you will watch lectures taught by world-class professors, learn at your own pace, test your knowledge, and reinforce concepts through interactive exercises. Every course is created based on a syllabus and presented online using an ordered, easy-to-follow framework.</p>
+			</div>
+			<div class="col span-half omega">
+				<h3>How a course works</h3>
+				<p>As the course progresses, you have access to all the notes, instructor lectures and discussions you've engaged in up to that point, as well as all the course materials. And the dialogue and interaction extends beyond your classmates; For many courses, Professors are actively involved in online classroom discussions and available to answer questions.</p>
+			</div>
 		</div>
-		<div class="two columns second">
-			<h3>How a course works</h3>
-			<p>As the course progresses, you have access to all the notes, instructor lectures and discussions you've engaged in up to that point, as well as all the course materials. And the dialogue and interaction extends beyond your classmates; For many courses, Professors are actively involved in online classroom discussions and available to answer questions.</p>
-		</div>
-		<div class="clear"></div>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
@@ -221,7 +222,7 @@ if (count($this->notifications) > 0)
 		<div class="grid">
 			<div class="col span3">
 				<h2><?php echo JText::_('COM_COURSES_POPULAR_COURSES'); ?></h2>
-			</div><!-- / .four columns first -->
+			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
 				<div class="popularcourses clearfix top">
 					<?php 

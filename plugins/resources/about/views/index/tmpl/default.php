@@ -83,7 +83,8 @@ $maintext = str_replace('</blink>', '', $maintext);
 <div class="subject abouttab">
 	<div class="resource">
 <?php if ($thedate) { ?>
-		<div class="two columns first">
+		<div class="grid">
+		<div class="col span-half">
 <?php } ?>
 			<h4><?php echo JText::_('Category'); ?></h4>
 			<p class="resource-content">
@@ -93,13 +94,13 @@ $maintext = str_replace('</blink>', '', $maintext);
 			</p>
 <?php if ($thedate) { ?>
 		</div>
-		<div class="two columns second">
+		<div class="col span-half omega">
 			<h4><?php echo JText::_('Published on'); ?></h4>
 			<p class="resource-content">
 				<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')); ?></time>
 			</p>
 		</div>
-		<div class="clearfix"></div>
+		</div>
 <?php } ?>
 <?php
 // Check how much we can display

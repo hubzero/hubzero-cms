@@ -65,15 +65,16 @@ defined('_JEXEC') or die('Restricted access');
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="two columns first">
-			<h3><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_TITLE'); ?></h3>
-			<p><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
+		<div class="grid">
+			<div class="col span-half">
+				<h3><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_TITLE'); ?></h3>
+				<p><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
+			</div>
+			<div class="col span-half omega">
+				<h3><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_TITLE'); ?></h3>
+				<p><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_DESC'); ?></p>
+			</div>
 		</div>
-		<div class="two columns second">
-			<h3><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_TITLE'); ?></h3>
-			<p><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_DESC'); ?></p>
-		</div>
-		<div class="clear"></div>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
@@ -107,93 +108,93 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	<?php endif; ?>
 	
-	
-	<div class="four columns first">
-		<h2>
-			<?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP'); ?>
-		</h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
-				<fieldset>
+	<div class="grid">
+		<div class="col span3">
+			<h2>
+				<?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP'); ?>
+			</h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="col span6">
+				<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
+					<fieldset>
+						<p>
+							<label for="gsearch"><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_SEARCH_LABEL'); ?></label>
+							<input type="text" name="search" id="gsearch" value="" />
+							<input type="submit" value="Search" />
+						</p>
+						<p><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_SEARCH_HELP'); ?></p>
+					</fieldset>
+				</form>
+			</div><!-- / .two columns first -->
+			<div class="col span6 omega">
+				<div class="browse">
 					<p>
-						<label for="gsearch"><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_SEARCH_LABEL'); ?></label>
-						<input type="text" name="search" id="gsearch" value="" />
-						<input type="submit" value="Search" />
+						<a class="group-intro-browse" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">
+							<?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_BUTTON_TEXT'); ?>
+						</a>
 					</p>
-					<p><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_SEARCH_HELP'); ?></p>
-				</fieldset>
-			</form>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div class="browse">
-				<p>
-					<a class="group-intro-browse" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">
-						<?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_BUTTON_TEXT'); ?>
-					</a>
-				</p>
-				<p><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_HELP'); ?></p>
-			</div><!-- / .browse -->
-		</div><!-- / .two columns second -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+					<p><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_HELP'); ?></p>
+				</div><!-- / .browse -->
+			</div><!-- / .col span6 -->
+		</div><!-- / .col span9 -->
+	</div><!-- / .grid -->
 	
 	<?php if(!$this->juser->get("guest")) : ?>
 		<?php if($this->config->get("intro_mygroups", 1)) : ?>
-			<div class="clearfix">
-				<div class="four columns first">
+			<div class="grid">
+				<div class="col span3">
 					<h2><?php echo JText::_('COM_GROUPS_INTRO_MY_GROUPS_TITLE'); ?></h2>
-				</div><!-- / .four columns first -->
-				<div class="four columns second third fourth">
+				</div><!-- / .col span3 -->
+				<div class="col span9 omega">
 					<div class="clearfix top">
 						<?php
 							$mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : array();
 							echo Hubzero_Group_Helper::listGroups('My Groups',$this->config,$mygroups_members,2,true,true,0); ?>
 					</div>
-				</div><!-- / .four columns second third fourth -->
-			</div><!-- /.clearfix -->
+				</div><!-- / .col span9 omega -->
+			</div><!-- / .grid -->
 		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php if(!$this->juser->get("guest")) : ?>
 		<?php if($this->config->get("intro_interestinggroups", 1)) : ?>
-			<div class="clearfix">
-				<div class="four columns first">
+			<div class="grid">
+				<div class="col span3">
 					<h2><?php echo JText::_('COM_GROUPS_INTRO_INTERESTING_GROUPS_TITLE'); ?></h2>
-				</div><!-- / .four columns first -->
-				<div class="four columns second third fourth">
+				</div><!-- / .col span3 -->
+				<div class="col span9 omega">
 					<div class="clearfix top">
 						<?php echo Hubzero_Group_Helper::listGroups('Interesting Groups',$this->config,$this->interestinggroups,2,true,false,150); ?>
 					</div>
-				</div><!-- / .four columns second third fourth -->
-			</div><!-- /.clearfix -->
+				</div><!-- / .col span9 omega -->
+			</div><!-- / .grid -->
 		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php if($this->config->get("intro_populargroups", 1)) : ?>
-		<div class="clearfix">
-			<div class="four columns first">
+		<div class="grid">
+			<div class="col span3">
 				<h2><?php echo JText::_('COM_GROUPS_INTRO_POPULAR_GROUPS_TITLE'); ?></h2>
-			</div><!-- / .four columns first -->
-			<div class="four columns second third fourth">
+			</div><!-- / .col span3 -->
+			<div class="col span9 omega">
 				<div class="clearfix top">
 					<?php echo Hubzero_Group_Helper::listGroups('Popular Groups',$this->config,$this->populargroups,2,true,false,150); ?>
 				</div>
-			</div><!-- / .four columns second third fourth -->
-		</div><!-- /.clearfix -->
+			</div><!-- / .col span9 omega -->
+		</div><!-- / .grid -->
 	<?php endif; ?>
 	
 	<?php if($this->config->get("intro_featuredgroups", 1) && count($this->featuredgroups) > 0) : ?>
-		<div class="clearfix">
-			<div class="four columns first">
+		<div class="grid">
+			<div class="col span3">
 				<h2><?php echo JText::_('COM_GROUPS_INTRO_FEATURED_GROUPS_TITLE'); ?></h2>
-			</div><!-- / .four columns first -->
-			<div class="four columns second third fourth">
+			</div><!-- / .col span3 -->
+			<div class="col span9 omega">
 				<div class="clearfix top">
 					<?php echo Hubzero_Group_Helper::listGroups('Featured Groups',$this->config,$this->featuredgroups,2,true,false,150); ?>
 				</div>
-			</div><!-- / .four columns second third fourth -->
-		</div><!-- /.clearfix -->
+			</div><!-- / .col span9 omega -->
+		</div><!-- / .grid -->
 	<?php endif; ?>
 </div><!-- / .section -->

@@ -79,11 +79,11 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 							</div>
 							<script src="<?php echo $base; ?>/media/system/js/jquery.fileuploader.js"></script>
 							<script src="<?php echo $base; ?>/components/com_resources/assets/js/fileupload.jquery.js"></script>
-						</div><!-- / .two columns first -->
+						</div><!-- / .col span-half -->
 						<div class="col span-half omega">
 							<div id="link-adder" data-action="index.php?option=com_resources&amp;controller=attachments&amp;no_html=1&amp;task=create&amp;pid=<?php echo $this->id; ?>&amp;url=" data-list="index.php?option=com_resources&amp;controller=attachments&amp;no_html=1&amp;pid=<?php echo $this->id; ?>">
 							</div>
-						</div><!-- / .two columns second -->
+						</div><!-- / .col span-half omega -->
 					</div>
 				<?php } ?>
 					<iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>

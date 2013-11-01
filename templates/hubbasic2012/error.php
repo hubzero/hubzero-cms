@@ -73,13 +73,13 @@ $v = $browser->getBrowserMajorVersion();
 							<li><a href="/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
 						<?php Hubzero_Module_Helper::displayModules('search'); ?>
-<?php if (Hubzero_Module_Helper::countModules('helppane')) : ?>
+					<?php if (Hubzero_Module_Helper::countModules('helppane')) : ?>
 						<p id="tab">
 							<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
 								<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
 							</a>
 						</p>
-<?php endif; ?>
+					<?php endif; ?>
 					</div><!-- / #topbar -->
 					<div id="masthead">
 						<div class="inner">
@@ -90,11 +90,11 @@ $v = $browser->getBrowserMajorVersion();
 								</a>
 							</h1>
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
-<?php if (!$juser->get('guest')) { 
-		ximport('Hubzero_User_Profile');
-		ximport('Hubzero_User_Profile_Helper');
-		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
-?>
+							<?php if (!$juser->get('guest')) { 
+									ximport('Hubzero_User_Profile');
+									ximport('Hubzero_User_Profile_Helper');
+									$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+							?>
 								<li id="account-info">
 									<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($profile); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />
 									<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
@@ -117,14 +117,14 @@ $v = $browser->getBrowserMajorVersion();
 										</li>
 									</ul>
 								</li>
-<?php } else { ?>
+							<?php } else { ?>
 								<li id="account-login">
 									<a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
 								</li>
 								<li id="account-register">
 									<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
 								</li>
-<?php } ?>
+							<?php } ?>
 							</ul><!-- / #account -->
 							<div id="nav">
 								<a name="nav"></a>
@@ -148,57 +148,58 @@ $v = $browser->getBrowserMajorVersion();
 					<a name="content" id="content-anchor"></a>
 
 					<div class="main section">
-						<div class="two columns first">
-							<div id="errormessage">
-								<h2 class="error-code">
-									<?php echo $this->error->getCode(); ?>
-								</h2>
-							</div><!-- / #errormessage -->
-						</div><!-- / .two columns first -->
-						<div class="two columns second">
-							<div id="errorbox">
-								<div class="wrap">
-<?php if ($this->error->getCode() == 404) { ?>
-									<h3><?php echo JText::_('RE: Your Missing Page'); ?></h3>
-									<blockquote>
-										<p><?php echo JText::_("We're sorry to report that we couldn't find your page. Search parties were unable to recover any remains. It is our current belief that Hubzilla ate it."); ?></p>
-										<p><?php echo JText::_('In a difficult time like this we recommend seeking guidance from our <a href="/home">Home Page</a> or by <a href="/search">searching</a> for a new page. We understand that a new page may never fill the void left by your missing page but hope that you can find some consolation in the text of another.'); ?></p>
-										<p><?php echo JText::_('With our deepest sympathies and condolences,'); ?></p>
-									</blockquote>
-									<p class="signature">&mdash;Cpt. Mura, Science Special Search Party (SSSP)</p>
-<?php } else if ($this->error->getCode() == 403) { ?>
-									<h3><?php echo JText::_('Access Denied!'); ?></h3>
-									<blockquote>
-										<p><?php echo JText::_('It appears you do not have access to this page. You may be detained for further questioning.'); ?></p>
-										<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
-										<p><?php echo JText::_('Please stay calm,'); ?></p>
-									</blockquote>
-									<p class="signature">&mdash;Cpt. Showa, Security</p>
-<?php } else if ($this->error->getCode() == 500) { ?>
-									<h3><?php echo JText::_('Will Hubzilla\'s reign of terror never cease?!'); ?></h3>
-									<blockquote>
-										<p><?php echo JText::_('It seems Hubzilla stomped on this page. Our disaster recovery teams are scouring the wreckage for survivors and our clean-up crews will take over shortly thereafter.'); ?></p>
-										<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
-										<p><?php echo JText::_('With our sincere apologies,'); ?></p>
-									</blockquote>
-									<p class="signature">&mdash;Cpt. Hayata, Disaster Recovery Team (DRT)</p>
-<?php } ?>
-								</div><!-- / .wrap -->
-							</div><!-- / #errorbox -->
-						</div><!-- / .two columns second -->
-						<div class="clear"></div>
-<?php if ($this->debug) { ?>
+						<div class="grid">
+							<div class="col span-half">
+								<div id="errormessage">
+									<h2 class="error-code">
+										<?php echo $this->error->getCode(); ?>
+									</h2>
+								</div><!-- / #errormessage -->
+							</div><!-- / .col span-half -->
+							<div class="col span-half omega">
+								<div id="errorbox">
+									<div class="wrap">
+									<?php if ($this->error->getCode() == 404) { ?>
+										<h3><?php echo JText::_('RE: Your Missing Page'); ?></h3>
+										<blockquote>
+											<p><?php echo JText::_("We're sorry to report that we couldn't find your page. Search parties were unable to recover any remains. It is our current belief that Hubzilla ate it."); ?></p>
+											<p><?php echo JText::_('In a difficult time like this we recommend seeking guidance from our <a href="/home">Home Page</a> or by <a href="/search">searching</a> for a new page. We understand that a new page may never fill the void left by your missing page but hope that you can find some consolation in the text of another.'); ?></p>
+											<p><?php echo JText::_('With our deepest sympathies and condolences,'); ?></p>
+										</blockquote>
+										<p class="signature">&mdash;Cpt. Mura, Science Special Search Party (SSSP)</p>
+									<?php } else if ($this->error->getCode() == 403) { ?>
+										<h3><?php echo JText::_('Access Denied!'); ?></h3>
+										<blockquote>
+											<p><?php echo JText::_('It appears you do not have access to this page. You may be detained for further questioning.'); ?></p>
+											<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
+											<p><?php echo JText::_('Please stay calm,'); ?></p>
+										</blockquote>
+										<p class="signature">&mdash;Cpt. Showa, Security</p>
+									<?php } else if ($this->error->getCode() == 500) { ?>
+										<h3><?php echo JText::_('Will Hubzilla\'s reign of terror never cease?!'); ?></h3>
+										<blockquote>
+											<p><?php echo JText::_('It seems Hubzilla stomped on this page. Our disaster recovery teams are scouring the wreckage for survivors and our clean-up crews will take over shortly thereafter.'); ?></p>
+											<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
+											<p><?php echo JText::_('With our sincere apologies,'); ?></p>
+										</blockquote>
+										<p class="signature">&mdash;Cpt. Hayata, Disaster Recovery Team (DRT)</p>
+									<?php } ?>
+									</div><!-- / .wrap -->
+								</div><!-- / #errorbox -->
+							</div><!-- / .col span-half -->
+						</div><!-- / .grid -->
+					<?php if ($this->debug) { ?>
 						<p class="error">
 							<?php echo $this->error->getMessage(); ?>
 						</p>
-<?php } ?>
+					<?php } ?>
 					</div><!-- / .main section -->
 
-<?php if ($this->debug) { ?>
+				<?php if ($this->debug) { ?>
 					<div id="techinfo">
 						<?php echo $this->renderBacktrace(); ?>
 					</div><!-- / #techinfo -->
-<?php } ?>
+				<?php } ?>
 				</div><!-- / .inner -->
 			</div><!-- / #content -->
 		</div><!-- / #wrap -->

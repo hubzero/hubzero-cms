@@ -56,54 +56,57 @@ defined('_JEXEC') or die( 'Restricted access');
 		
 	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="two columns first">
-			<h3>What are citations?</h3>
-			<p>The following are works that have cited or referenced this site or some piece of site content. Each citation links to the piece of content it references and is downloadable in either BibTex or EndNote format.</p>
-		</div>
-		<div class="two columns second">
-			<h3>Can I submit a citation?</h3>
-			<?php if ($this->allow_import == 1 || $this->allow_bulk_import == 1 ||
-			         ($this->allow_import == 2 && $this->isAdmin) || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
-				<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
-			<?php else : ?>
-				<p>Citation submission is not allowed at this time. If you have any questions please contact the hub <a href="/support">support team</a>.</p>
-			<?php endif; ?>
-		</div>
-		<div class="clear"></div>
+		<div class="clear">
+			<div class="col span-half">
+				<h3>What are citations?</h3>
+				<p>The following are works that have cited or referenced this site or some piece of site content. Each citation links to the piece of content it references and is downloadable in either BibTex or EndNote format.</p>
+			</div>
+			<div class="col span-half omega">
+				<h3>Can I submit a citation?</h3>
+				<?php if ($this->allow_import == 1 || $this->allow_bulk_import == 1 ||
+				         ($this->allow_import == 2 && $this->isAdmin) || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
+					<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
+				<?php else : ?>
+					<p>Citation submission is not allowed at this time. If you have any questions please contact the hub <a href="/support">support team</a>.</p>
+				<?php endif; ?>
+			</div>
+		</div><!-- / .grid -->
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 
 <div class="section">
-	
-	<div class="four columns first">
-		<h2>Find a citation</h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
-				<fieldset>
-					<p>
-						<label for="csearch">Keyword or phrase:</label>
-						<input type="text" name="search" id="csearch" value="" />
-						<input type="submit" value="Search" />
-					</p>
-				</fieldset>
-			</form>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available citations</a></p>
-			</div><!-- / .browse -->
-		</div><!-- / .two columns second -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
 
-	<div class="four columns first">
-		<h2>Metrics</h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div id="statistics">
+	<div class="grid">
+		<div class="col span3">
+			<h2>Find a citation</h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="col span-half">
+				<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
+					<fieldset>
+						<p>
+							<label for="csearch">Keyword or phrase:</label>
+							<input type="text" name="search" id="csearch" value="" />
+							<input type="submit" value="Search" />
+						</p>
+					</fieldset>
+				</form>
+			</div><!-- / .col span-half -->
+			<div class="col span-half omega">
+				<div class="browse">
+					<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available citations</a></p>
+				</div><!-- / .browse -->
+			</div><!-- / .col span-half -->
+		</div><!-- / .col span9 -->
+	</div><!-- / .grid -->
+
+	<div class="grid">
+		<div class="col span3">
+			<h2>Metrics</h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div id="statistics">
 <?php
 $yearlystats = $this->yearlystats;
 $cls = 'even';
@@ -125,7 +128,7 @@ foreach ($yearlystats as $year=>$amt)
 	$tot += (intval($amt['affiliate']) + intval($amt['non-affiliate']));
 }
 
-$html  = '<table summary="'.JText::_('COM_CITATIONS_TABLE_METRICS_YEAR').'">'."\n";
+$html  = '<table>'."\n";
 $html .= "\t".'<caption>'.JText::_('COM_CITATIONS_TABLE_METRICS_YEAR').'</caption>'."\n";
 $html .= "\t".'<thead>'."\n";
 $html .= "\t\t".'<tr>'."\n";
@@ -218,7 +221,7 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 	$tabcnt = 1 - $tabcnt;
 }
 
-$html .= '<table summary="'.JText::_('COM_CITATIONS_TABLE_METRICS_TYPE').'">'."\n";
+$html .= '<table>'."\n";
 $html .= "\t".'<caption>'.JText::_('COM_CITATIONS_TABLE_METRICS_TYPE').'</caption>'."\n";
 $html .= "\t".'<thead>'."\n";
 $html .= "\t\t".'<tr>'."\n";
@@ -245,9 +248,9 @@ $html .= '<div class="footnotes"><hr />
 echo $html;
 
 ?>
-		</div><!-- /#statistics -->
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+			</div><!-- /#statistics -->
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
 
 </div><!-- / .section -->
 

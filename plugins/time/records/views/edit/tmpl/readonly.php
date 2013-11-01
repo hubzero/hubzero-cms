@@ -79,43 +79,45 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<?php if($this->row->billed == 1) : ?>
 		<p class="info"><?php echo JText::_('PLG_TIME_RECORDS_RECORD_BILLED'); ?></p>
 	<?php endif; ?>
-	<div class="readonly two columns first">
-		<h3 class="headings"><?php echo JText::_('PLG_TIME_RECORDS_DETAILS'); ?></h3>
-		<div class="grouping" id="uname-group">
-			<label for="uname"><?php echo JText::_('PLG_TIME_RECORDS_USER'); ?>:</label>
-			<?php echo htmlentities(stripslashes($this->row->uname), ENT_QUOTES); ?>
+	<div class="grid">
+		<div class="readonly col span-half">
+			<h3 class="headings"><?php echo JText::_('PLG_TIME_RECORDS_DETAILS'); ?></h3>
+			<div class="grouping" id="uname-group">
+				<label for="uname"><?php echo JText::_('PLG_TIME_RECORDS_USER'); ?>:</label>
+				<?php echo htmlentities(stripslashes($this->row->uname), ENT_QUOTES); ?>
+			</div>
+
+			<div class="grouping" id="hub-group">
+				<label for="hub"><?php echo JText::_('PLG_TIME_RECORDS_HUB'); ?>:</label>
+				<?php echo htmlentities(stripslashes($this->row->hname), ENT_QUOTES); ?>
+			</div>
+
+			<div class="grouping" id="task-group">
+				<label for="task"><?php echo JText::_('PLG_TIME_RECORDS_TASK'); ?>:</label>
+				<?php echo htmlentities(stripslashes($this->row->pname), ENT_QUOTES); ?>
+			</div>
+
+			<div class="grouping" id="time-group">
+				<label for="time"><?php echo JText::_('PLG_TIME_RECORDS_TIME'); ?>:</label>
+				<?php echo htmlentities(stripslashes($this->row->time), ENT_QUOTES); ?> hour(s)
+			</div>
+
+			<div class="grouping" id="date-group">
+				<label for="date"><?php echo JText::_('PLG_TIME_RECORDS_DATE'); ?>:</label>
+				<?php echo ($this->row->date != '0000-00-00 00:00:00') ? JHTML::_('date', $this->row->date, $dateFormat, $tz) : ''; ?>
+			</div>
 		</div>
 
-		<div class="grouping" id="hub-group">
-			<label for="hub"><?php echo JText::_('PLG_TIME_RECORDS_HUB'); ?>:</label>
-			<?php echo htmlentities(stripslashes($this->row->hname), ENT_QUOTES); ?>
-		</div>
-
-		<div class="grouping" id="task-group">
-			<label for="task"><?php echo JText::_('PLG_TIME_RECORDS_TASK'); ?>:</label>
-			<?php echo htmlentities(stripslashes($this->row->pname), ENT_QUOTES); ?>
-		</div>
-
-		<div class="grouping" id="time-group">
-			<label for="time"><?php echo JText::_('PLG_TIME_RECORDS_TIME'); ?>:</label>
-			<?php echo htmlentities(stripslashes($this->row->time), ENT_QUOTES); ?> hour(s)
-		</div>
-
-		<div class="grouping" id="date-group">
-			<label for="date"><?php echo JText::_('PLG_TIME_RECORDS_DATE'); ?>:</label>
-			<?php echo ($this->row->date != '0000-00-00 00:00:00') ? JHTML::_('date', $this->row->date, $dateFormat, $tz) : ''; ?>
-		</div>
-	</div>
-
-	<div class="readonly two columns second">
-		<h3 class="headings"><?php echo JText::_('PLG_TIME_RECORDS_DESCRIPTION'); ?></h3>
-		<?php if(!empty($this->row->description)) {
-			echo '<div class="hub-notes"><div class="inner">';
-			echo '<p>' . $this->row->description . '</p>';
-			echo '</div></div>';
-		} else {
-			echo '<p>' . JText::_('PLG_TIME_RECORDS_NO_DESCRIPTION') . '</p>';
-		}?>
+		<div class="readonly col span-half omega">
+			<h3 class="headings"><?php echo JText::_('PLG_TIME_RECORDS_DESCRIPTION'); ?></h3>
+			<?php if(!empty($this->row->description)) {
+				echo '<div class="hub-notes"><div class="inner">';
+				echo '<p>' . $this->row->description . '</p>';
+				echo '</div></div>';
+			} else {
+				echo '<p>' . JText::_('PLG_TIME_RECORDS_NO_DESCRIPTION') . '</p>';
+			}?>
+			</div>
 		</div>
 	</div>
 </div>

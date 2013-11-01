@@ -55,11 +55,11 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 		<div id="page-sidebar">
 			<fieldset class="filters">
 				<label for="filter-search"><?php echo JText::_('SUPPORT_FIND'); ?>:</label>
-				<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="Search this query" />
+				<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search this query'); ?>" />
 
-				<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
-				<input type="hidden" name="sortdir" value="<?php echo $this->filters['sortdir']; ?>" />
-				<input type="hidden" name="show" value="<?php echo $this->filters['show']; ?>" />
+				<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+				<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
+				<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
 
 				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 			</fieldset>

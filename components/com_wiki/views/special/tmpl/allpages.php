@@ -98,7 +98,7 @@ $rows = $database->loadObjectList();
 		
 		<input type="submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
-	
+	<div class="grid">
 <?php
 if ($rows) 
 {
@@ -110,12 +110,12 @@ if ($rows)
 	{
 		switch ($i)
 		{
-			case 0: $cls = 'first'; break;
-			case 1: $cls = 'second'; break;
-			case 2: $cls = 'third'; break;
+			case 0: $cls = ''; break;
+			case 1: $cls = ''; break;
+			case 2: $cls = 'omega'; break;
 		}
 ?>
-		<div class="three columns <?php echo $cls; ?>">
+		<div class="col span-third <?php echo $cls; ?>">
 			<?php
 		if (count($column) > 0)
 		{
@@ -158,6 +158,6 @@ if ($rows)
 	}
 }
 ?>
-		<div class="clear"></div>
+		</div>
 	</div>
 </form>

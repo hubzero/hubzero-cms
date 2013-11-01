@@ -64,6 +64,8 @@ if (!$dir)
 {
 	$dir = 'tmp' . time(); // . rand(0, 100);
 }
+
+$jbase = rtrim(JURI::getInstance()->base(true), '/');
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -76,9 +78,10 @@ if (!$dir)
 <?php if ($this->entry->get('original')) { ?>
 		<div class="field-wrap">
 			<div class="asset-uploader">
-				<div class="two columns first">
+				<div class="grid">
+				<div class="col span-half">
 		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
-					<div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+					<div id="ajax-uploader" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 						<noscript>
 							<label for="upload">
 								<?php echo JText::_('File:'); ?>
@@ -86,18 +89,18 @@ if (!$dir)
 							</label>
 						</noscript>
 					</div>
-					<script src="/media/system/js/jquery.fileuploader.js"></script>
-					<script src="/plugins/groups/collections/fileupload.jquery.js"></script>
+					<script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script>
+					<script src="<?php echo $jbase; ?>/plugins/groups/collections/fileupload.jquery.js"></script>
 		<?php } else { ?>
 					<label for="upload">
 						<?php echo JText::_('File:'); ?>
 						<input type="file" name="upload" id="upload" />
 					</label>
 		<?php } ?>
-				</div><!-- / .two columns first -->
-				<div class="two columns second">
+				</div><!-- / .col span-half -->
+				<div class="col span-half">
 		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
-					<div id="link-adder" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+					<div id="link-adder" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 						<noscript>
 							<label for="add-link">
 								<?php echo JText::_('Add a link:'); ?>
@@ -118,8 +121,8 @@ if (!$dir)
 						<input type="hidden" name="assets[-1][type]" value="link" />
 					</label>
 		<?php } ?>
-				</div><!-- / .two columns second -->
-				<div class="clear"></div>
+				</div><!-- / .col span-half -->
+				</div>
 			</div><!-- / .asset-uploader -->
 		</div><!-- / .field-wrap -->
 <?php } ?>

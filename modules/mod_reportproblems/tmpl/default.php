@@ -31,10 +31,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 	<div id="help-pane">
-		<div id="help-container">
+		<div id="help-container" class="grid">
 			<h1><?php echo JText::_('MOD_REPORTPROBLEMS_SUPPORT'); ?></h1>
 
-			<div class="three columns first">
+			<div class="col span4">
 				<h2><?php echo JText::_('Support Options'); ?></h2>
 				<ul>
 					<li class="help-kb">
@@ -54,8 +54,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<p><?php echo JText::_('Check on status of your tickets.'); ?></p>
 					</li>
 				</ul>
-			</div><!-- / .three columns first -->
-			<div class="three columns second third">
+			</div><!-- / .col span4 -->
+			<div class="col span8 omega">
 				<h2>
 					<?php echo JText::_('Submit a Support Ticket'); ?>
 				</h2>
@@ -141,7 +141,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</div>
 				<div id="trSuccess">
 				</div>
-			</div><!-- / .three columns second third -->
-			<div class="clear"></div>
+			</div><!-- / .col span8 omega -->
 		</div><!-- / #help-container -->
 	</div><!-- / #help-pane -->

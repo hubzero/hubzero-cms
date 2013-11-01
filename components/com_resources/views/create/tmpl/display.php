@@ -60,15 +60,16 @@ if (!$juser->get('guest')) {
 		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=draft'); ?>">Get Started &rsaquo;</a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="two columns first">
+		<div class="grid">
+		<div class="col span-half">
 			<h3>Present your work!</h3>
 			<p>Become a contributor and share your work with the community! Contributing content is easy. Our step-by-step forms will guide you through the process.</p>
 		</div>
-		<div class="two columns second">
+		<div class="col span-half omega">
 			<h3>What do I need?</h3>
 			<p>The submission process will guide you through step-by-step, but for more detailed instructions on what can be submitted and how, please see the list of submission types below.</p>
 		</div>
-		<div class="clear"></div>
+		</div>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
@@ -76,10 +77,11 @@ if (!$juser->get('guest')) {
 <div class="section">
 
 <?php if (!$juser->get('guest')) { ?>
-	<div class="four columns first">
+<div class="grid">
+	<div class="col span3">
 		<h2><?php echo JText::_('In Progress'); ?></h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
+	</div><!-- / .col span3 -->
+	<div class="col span9 omega">
 <?php
 		if ($submissions) {
 ?>
@@ -144,94 +146,96 @@ if (!$juser->get('guest')) {
 <?php 
 		}
 ?>
-	</div><!-- / .four columns second third fourth -->
+	</div><!-- / .col span9 omega -->
+</div>
 <?php } ?>
 
-	<div class="four columns first">
-		<h2>Before starting</h2>
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-		<div class="two columns first">
-			<h3>Intellectual Property Considerations</h3>
-			<p>All materials contributed must have <strong>clearly defined rights and privileges</strong>. Online presentations and instructional material are normally licensed under <a class="legal creative-commons" href="/legal/cc" title="Learn more about Creative Commons">Creative Commons 3</a>. Read <a class="legal licensing" href="/legal/licensing">more details</a> about our licensing policies.</p>
-		</div>
-		<div class="two columns second">
-			<h3>Questions or concerns?</h3>
-			<p>We hope that our self-service upload process is intuitive and easy to use. If you encounter any problems during the upload process or need assistance of any kind, please <a class="new-ticket" href="/support/ticket/new">file a trouble report</a>.</p>
-		</div>
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
-	
+	<div class="grid">
+		<div class="col span3">
+			<h2>Before starting</h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="grid">
+				<div class="col span6">
+					<h3>Intellectual Property Considerations</h3>
+					<p>All materials contributed must have <strong>clearly defined rights and privileges</strong>. Online presentations and instructional material are normally licensed under <a class="legal creative-commons" href="/legal/cc" title="Learn more about Creative Commons">Creative Commons 3</a>. Read <a class="legal licensing" href="/legal/licensing">more details</a> about our licensing policies.</p>
+				</div><!-- / .col span6 -->
+				<div class="col span6 omega">
+					<h3>Questions or concerns?</h3>
+					<p>We hope that our self-service upload process is intuitive and easy to use. If you encounter any problems during the upload process or need assistance of any kind, please <a class="new-ticket" href="/support/ticket/new">file a trouble report</a>.</p>
+				</div><!-- / .col span6 -->
+			</div><!-- / .grid -->
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
+
 <?php
 $t = new ResourcesType( $database );
 $categories = $t->getMajorTypes();
 if ($categories) {
 ?>
-	<div class="four columns first">
-		<h2>What can I contribute?</h2>
-		<!-- <p>If you have a contribution that does not seem to fit one of these categories, please contact our <a href="/support">support</a> for further assistance.</p> -->
-	</div><!-- / .four columns first -->
-	<div class="four columns second third fourth">
-<?php
-	$i = 0;
-	$clm = '';
-	/*if (count($categories)%3!=0) { 
-	    ;
-	}*/
-	foreach ($categories as $category)
-	{
-		if ($category->contributable != 1) {
-			continue;
-		}
+	<div class="grid">
+		<div class="col span3">
+			<h2>What can I contribute?</h2>
+		</div><!-- / .col span3 -->
+		<div class="col span9 omega">
+			<div class="grid">
+		<?php
+		$i = 0;
+		$clm = '';
 
-		$i++;
-		switch ($clm)
+		foreach ($categories as $category)
 		{
-			case 'second': $clm = 'third'; break;
-			case 'first': $clm = 'second'; break;
-			case '':
-			default: $clm = 'first'; break;
-		}
+			if ($category->contributable != 1) 
+			{
+				continue;
+			}
 
-		//$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
-		//$normalized = strtolower($normalized);
+			$i++;
+			switch ($i)
+			{
+				case 3: $clm = 'omega'; break;
+				case 2: $clm = ''; break;
+				case 1:
+				default: $clm = ''; break;
+			}
 
-		if (substr($category->alias, -3) == 'ies') {
-			$cls = $category->alias;
-		} else {
-			$cls = substr($category->alias, 0, -1);
+			if (substr($category->alias, -3) == 'ies') {
+				$cls = $category->alias;
+			} else {
+				$cls = substr($category->alias, 0, -1);
+			}
+			?>
+			<div class="col span-third <?php echo $clm; ?>">
+				<div class="<?php echo $cls; ?>">
+					<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=draft&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
+					<p><?php echo $this->escape(stripslashes($category->description)); ?></p>
+				</div>
+			</div><!-- / .col span-third <?php echo $clm; ?> -->
+			<?php
+			if ($clm == 'omega') {
+				echo '</div><div class="grid">';
+				$clm = '';
+				$i = 0;
+			}
 		}
-?>
-		<div class="three columns <?php echo $clm; ?>">
-			<div class="<?php echo $cls; ?>">
-				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=draft&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
-				<p><?php echo $this->escape(stripslashes($category->description)); ?></p>
+		if ($i == 1) {
+			?>
+			<div class="col span-third">
+				<p> </p>
+			</div><!-- / .col span-third -->
+			<?php
+		}
+		if ($i == 1 || $i == 2) {
+			?>
+			<div class="col span-third omega">
+				<p> </p>
+			</div><!-- / .col span-third omega -->
+			<?php
+		}
+		?>
 			</div>
-		</div><!-- / .three columns <?php echo $clm; ?> -->
-<?php
-		if ($clm == 'third') {
-			echo '<div class="clear"></div>';
-			$clm = '';
-			$i = 0;
-		}
-	}
-	if ($i == 1) {
-		?>
-		<div class="three columns second">
-			<p> </p>
-		</div><!-- / .three columns second -->
-		<?php
-	}
-	if ($i == 1 || $i == 2) {
-		?>
-		<div class="three columns third">
-			<p> </p>
-		</div><!-- / .three columns third -->
-		<?php
-	}
-?>
-	</div><!-- / .four columns second third fourth -->
-	<div class="clear"></div>
+		</div><!-- / .col span9 omega -->
+	</div><!-- / .grid -->
 <?php
 }
 ?>

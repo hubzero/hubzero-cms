@@ -156,55 +156,56 @@ $v = $browser->getBrowserMajorVersion();
 				<div class="inner">
 
 					<div class="main section">
-						<div class="two columns first">
-							<div id="errormessage">
-								<h2 class="error-code">
-									<?php echo (in_array($this->error->getCode(), array(404, 403, 500))) ? $this->error->getCode() : 500; ?>
-								</h2>
-							</div><!-- / #errormessage -->
-						</div><!-- / .two columns first -->
-						<div class="two columns second">
-							<div id="errorbox">
-								<div class="wrap">
-								<?php 
-								switch ($this->error->getCode())
-								{
-									case 404: ?>
-									<h3><?php echo JText::_('RE: Your Missing Page'); ?></h3>
-									<blockquote>
-										<p><?php echo JText::_("We're sorry to report that we couldn't find your page. Search parties were unable to recover any remains. It is our current belief that Hubzilla ate it."); ?></p>
-										<p><?php echo JText::_('In a difficult time like this we recommend seeking guidance from our <a href="/home">Home Page</a> or by <a href="/search">searching</a> for a new page. We understand that a new page may never fill the void left by your missing page but hope that you can find some consolation in the text of another.'); ?></p>
-										<p><?php echo JText::_('With our deepest sympathies and condolences,'); ?></p>
-									</blockquote>
-									<p class="signature">&mdash;Cpt. Mura, Science Special Search Party (SSSP)</p>
+						<div class="grid">
+							<div class="col span-half">
+								<div id="errormessage">
+									<h2 class="error-code">
+										<?php echo (in_array($this->error->getCode(), array(404, 403, 500))) ? $this->error->getCode() : 500; ?>
+									</h2>
+								</div><!-- / #errormessage -->
+							</div><!-- / .col span-half -->
+							<div class="col span-half omega">
+								<div id="errorbox">
+									<div class="wrap">
 									<?php 
-									break;
-									case 403: ?>
-									<h3><?php echo JText::_('Access Denied!'); ?></h3>
-									<blockquote>
-										<p><?php echo JText::_('It appears you do not have access to this page. You may be detained for further questioning.'); ?></p>
-										<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
-										<p><?php echo JText::_('Please stay calm,'); ?></p>
-									</blockquote>
-									<p class="signature">&mdash;Cpt. Showa, Security</p>
-									<?php 
-									break;
-									case 500: 
-									default: ?>
-									<h3><?php echo JText::_('Will Hubzilla\'s reign of terror never cease?!'); ?></h3>
-									<blockquote>
-										<p><?php echo JText::_('It seems Hubzilla stomped on this page. Our disaster recovery teams are scouring the wreckage for survivors and our clean-up crews will take over shortly thereafter.'); ?></p>
-										<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
-										<p><?php echo JText::_('With our sincere apologies,'); ?></p>
-									</blockquote>
-									<p class="signature">&mdash;Cpt. Hayata, Disaster Recovery Team (DRT)</p>
-									<?php 
-									break;
-								} ?>
-								</div><!-- / .wrap -->
-							</div><!-- / #errorbox -->
-						</div><!-- / .two columns second -->
-						<div class="clear"></div>
+									switch ($this->error->getCode())
+									{
+										case 404: ?>
+										<h3><?php echo JText::_('RE: Your Missing Page'); ?></h3>
+										<blockquote>
+											<p><?php echo JText::_("We're sorry to report that we couldn't find your page. Search parties were unable to recover any remains. It is our current belief that Hubzilla ate it."); ?></p>
+											<p><?php echo JText::_('In a difficult time like this we recommend seeking guidance from our <a href="/home">Home Page</a> or by <a href="/search">searching</a> for a new page. We understand that a new page may never fill the void left by your missing page but hope that you can find some consolation in the text of another.'); ?></p>
+											<p><?php echo JText::_('With our deepest sympathies and condolences,'); ?></p>
+										</blockquote>
+										<p class="signature">&mdash;Cpt. Mura, Science Special Search Party (SSSP)</p>
+										<?php 
+										break;
+										case 403: ?>
+										<h3><?php echo JText::_('Access Denied!'); ?></h3>
+										<blockquote>
+											<p><?php echo JText::_('It appears you do not have access to this page. You may be detained for further questioning.'); ?></p>
+											<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
+											<p><?php echo JText::_('Please stay calm,'); ?></p>
+										</blockquote>
+										<p class="signature">&mdash;Cpt. Showa, Security</p>
+										<?php 
+										break;
+										case 500: 
+										default: ?>
+										<h3><?php echo JText::_('Will Hubzilla\'s reign of terror never cease?!'); ?></h3>
+										<blockquote>
+											<p><?php echo JText::_('It seems Hubzilla stomped on this page. Our disaster recovery teams are scouring the wreckage for survivors and our clean-up crews will take over shortly thereafter.'); ?></p>
+											<p><?php echo JText::_('Please bear with us during this grueling process of rebuilding in the wake of Hubzilla\'s attack.'); ?></p>
+											<p><?php echo JText::_('With our sincere apologies,'); ?></p>
+										</blockquote>
+										<p class="signature">&mdash;Cpt. Hayata, Disaster Recovery Team (DRT)</p>
+										<?php 
+										break;
+									} ?>
+									</div><!-- / .wrap -->
+								</div><!-- / #errorbox -->
+							</div><!-- / .col span-half omega -->
+						</div><!-- / .grid -->
 					<?php if ($this->debug) { ?>
 						<p class="error">
 							<?php echo $this->error->getMessage(); ?>

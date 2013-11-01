@@ -210,148 +210,149 @@ if (!$this->app->sess) {
 	<div class="clear share-divider"></div>
 <?php if ($this->config->get('shareable', 0)) { ?>
 	<form name="share" id="app-share" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
-		<?php if (is_object($this->app->owns)) : ?>
-		<div class="three columns first second">
-			<p class="share-member-photo">
-				<a class="share-anchor" name="shareform"></a>
-<?php
-				ximport('Hubzero_User_Profile');
-				ximport('Hubzero_User_Profile_Helper');
-				
-				$jxuser = new Hubzero_User_Profile();
-				$jxuser->load($juser->get('id'));
-				$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
-?>
-				<img src="<?php echo $thumb; ?>" alt="" />
-			</p>
-			<fieldset>
-				<legend><?php echo JText::_('Share session'); ?></legend>
-				
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				<input type="hidden" name="task" value="share" />
-				<input type="hidden" name="sess" value="<?php echo $this->app->sess; ?>" />
-				<input type="hidden" name="app" value="<?php echo $this->toolname; ?>" />
-				<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess)); ?>" />
-				
-				<label for="field-username">
-					<?php echo JText::_('Share session with:'); ?>
-					<?php 
-					JPluginHelper::importPlugin('hubzero');
-					$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'username', 'acmembers')));
-					if (count($mc) > 0) {
-						echo '<span class="hint">'.JText::_('(supports usernames, user IDs, and e-mails)').'</span>'.$mc[0];
-					} else { ?> 
-					<span class="hint"><?php echo JText::_('(enter usernames or user IDs separated by spaces or commas)'); ?></span>
-					<input type="text" name="username" id="field-username" value="" />
-					<?php } ?>
-				</label>
-				<label for="group">
-					<?php echo JText::_('Share with one of your Groups:'); ?>
-					<select name="group" id="group">
-						<option value=""><?php echo JText::_('- Select Group &mdash;'); ?></option>
-						<?php foreach ($this->mygroups as $group) : ?>
-							<option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
-						<?php endforeach; ?>
-					</select>
-				</label>
-				<label for="field-readonly" id="readonly-label">
-					<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" /> 
-					<?php echo JText::_('Read-Only? (only you control the session)'); ?>
-				</label>
-				
-				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('Share'); ?>" id="share-btn" />
+		<div class="grid">
+			<?php if (is_object($this->app->owns)) : ?>
+			<div class="col span8">
+				<p class="share-member-photo">
+					<a class="share-anchor" name="shareform"></a>
+					<?php
+					ximport('Hubzero_User_Profile');
+					ximport('Hubzero_User_Profile_Helper');
+					
+					$jxuser = new Hubzero_User_Profile();
+					$jxuser->load($juser->get('id'));
+					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
+					?>
+					<img src="<?php echo $thumb; ?>" alt="" />
 				</p>
-				
-				<div class="sidenote">
-					<p>
-						Anyone added for sharing will see your tool session in the <em>My Sessions</em> area of their dashboard. They will be able to manipulate the session unless you check "read-only".
+				<fieldset>
+					<legend><?php echo JText::_('Share session'); ?></legend>
+					
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+					<input type="hidden" name="task" value="share" />
+					<input type="hidden" name="sess" value="<?php echo $this->app->sess; ?>" />
+					<input type="hidden" name="app" value="<?php echo $this->toolname; ?>" />
+					<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess)); ?>" />
+					
+					<label for="field-username">
+						<?php echo JText::_('Share session with:'); ?>
+						<?php 
+						JPluginHelper::importPlugin('hubzero');
+						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'username', 'acmembers')));
+						if (count($mc) > 0) {
+							echo '<span class="hint">'.JText::_('(supports usernames, user IDs, and e-mails)').'</span>'.$mc[0];
+						} else { ?> 
+						<span class="hint"><?php echo JText::_('(enter usernames or user IDs separated by spaces or commas)'); ?></span>
+						<input type="text" name="username" id="field-username" value="" />
+						<?php } ?>
+					</label>
+					<label for="group">
+						<?php echo JText::_('Share with one of your Groups:'); ?>
+						<select name="group" id="group">
+							<option value=""><?php echo JText::_('- Select Group &mdash;'); ?></option>
+							<?php foreach ($this->mygroups as $group) : ?>
+								<option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</label>
+					<label for="field-readonly" id="readonly-label">
+						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" /> 
+						<?php echo JText::_('Read-Only? (only you control the session)'); ?>
+					</label>
+					
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('Share'); ?>" id="share-btn" />
 					</p>
-				</div>
-			</fieldset>
-			
-			<!-- <p>What does it mean to <a href="/kb/tips/share_a_simulation_session">share a session</a>?</p> -->
-			
-		</div>
-		<?php endif; ?>
-		<div class="<?php if (is_object($this->app->owns)) : ?>three columns third<?php endif; ?>">
-			<table class="entries" summary="<?php echo Jtext::_('A list of users this session is shared with'); ?>">
-				<thead>
-					<tr>
-						<th<?php if (count($this->shares) > 1) { ?> colspan="3"<?php } ?>>
-							This session is shared with:
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-<?php if (count($this->shares) <= 1) { ?>
-					<tr>
-						<td>
-							(none)
-						</td>
-					</tr>
-<?php } else {
-				ximport('Hubzero_View_Helper_Html');
+					
+					<div class="sidenote">
+						<p>
+							Anyone added for sharing will see your tool session in the <em>My Sessions</em> area of their dashboard. They will be able to manipulate the session unless you check "read-only".
+						</p>
+					</div>
+				</fieldset>
 				
-				$config =& JComponentHelper::getParams('com_members');
-				$thumb = $config->get('webpath');
-				$thumb = DS . trim($thumb, DS);
-
-				$dfthumb = $config->get('defaultpic');
-				$dfthumb = DS . ltrim($dfthumb, DS);
-				$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
+				<!-- <p>What does it mean to <a href="/kb/tips/share_a_simulation_session">share a session</a>?</p> -->
 				
-				foreach ($this->shares as $row)
-				{
-					if ($row->viewuser != $juser->get('username')) 
-					{ 
-						$user = Hubzero_User_Profile::getInstance($row->viewuser);
+			</div><!-- / .col span8 -->
+			<?php endif; ?>
+			<div class="<?php if (is_object($this->app->owns)) : ?>col span4 omega<?php endif; ?>">
+				<table class="entries" summary="<?php echo Jtext::_('A list of users this session is shared with'); ?>">
+					<thead>
+						<tr>
+							<th<?php if (count($this->shares) > 1) { ?> colspan="3"<?php } ?>>
+								This session is shared with:
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+	<?php if (count($this->shares) <= 1) { ?>
+						<tr>
+							<td>
+								(none)
+							</td>
+						</tr>
+	<?php } else {
+					ximport('Hubzero_View_Helper_Html');
+					
+					$config =& JComponentHelper::getParams('com_members');
+					$thumb = $config->get('webpath');
+					$thumb = DS . trim($thumb, DS);
 
-						$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
+					$dfthumb = $config->get('defaultpic');
+					$dfthumb = DS . ltrim($dfthumb, DS);
+					$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
+					
+					foreach ($this->shares as $row)
+					{
+						if ($row->viewuser != $juser->get('username')) 
+						{ 
+							$user = Hubzero_User_Profile::getInstance($row->viewuser);
 
-						// User picture
-						$uthumb = '';
-						if ($user->get('picture')) 
-						{
-							$uthumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($user->get('uidNumber')) . DS . $user->get('picture');
-							$uthumb = Hubzero_View_Helper_Html::thumbit($uthumb);
-						}
+							$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
 
-						$p = ($uthumb && is_file(JPATH_ROOT . $uthumb)) ? $uthumb : $dfthumb;
-?>
-					<tr>
-						<th class="entry-img">
-							<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo JText::sprintf('Avatar for %s', $this->escape(stripslashes($user->get('name')))); ?>" />
-						</th>
-						<td>
-							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_members&id='.$id); ?>">
-								<?php echo $this->escape(stripslashes($user->get('name'))); ?>
-							</a><br />
-							<span class="entry-details">
-								<span class="organization"><?php echo $this->escape(stripslashes($user->get('organization'))); ?></span>
-							</span>
-						</td>
-						<td class="entry-actions">
-							<?php if (is_object($this->app->owns)) : ?>
-								<?php if (strtolower($row->readonly) == 'yes') : ?>
-									<span class="readonly">Readonly</span>
+							// User picture
+							$uthumb = '';
+							if ($user->get('picture')) 
+							{
+								$uthumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($user->get('uidNumber')) . DS . $user->get('picture');
+								$uthumb = Hubzero_View_Helper_Html::thumbit($uthumb);
+							}
+
+							$p = ($uthumb && is_file(JPATH_ROOT . $uthumb)) ? $uthumb : $dfthumb;
+	?>
+						<tr>
+							<th class="entry-img">
+								<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo JText::sprintf('Avatar for %s', $this->escape(stripslashes($user->get('name')))); ?>" />
+							</th>
+							<td>
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_members&id='.$id); ?>">
+									<?php echo $this->escape(stripslashes($user->get('name'))); ?>
+								</a><br />
+								<span class="entry-details">
+									<span class="organization"><?php echo $this->escape(stripslashes($user->get('organization'))); ?></span>
+								</span>
+							</td>
+							<td class="entry-actions">
+								<?php if (is_object($this->app->owns)) : ?>
+									<?php if (strtolower($row->readonly) == 'yes') : ?>
+										<span class="readonly">Readonly</span>
+									<?php endif; ?>
+									<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing">
+										<span><?php echo JText::_('Remove this user from sharing'); ?></span>
+									</a>
 								<?php endif; ?>
-								<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing">
-									<span><?php echo JText::_('Remove this user from sharing'); ?></span>
-								</a>
-							<?php endif; ?>
-						</td>
-					</tr>
-<?php
+							</td>
+						</tr>
+	<?php
+						}
 					}
-				}
-?>
-<?php } ?>
-				</tbody>
-			</table>
-		</div>
-		<div class="clear"></div>
+	?>
+	<?php } ?>
+					</tbody>
+				</table>
+			</div><!-- / .col span4 -->
+		</div><!-- / .grid -->
 	</form>
 <?php } // shareable ?>
 <?php } ?>

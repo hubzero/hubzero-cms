@@ -73,29 +73,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php if ($infolink) { ?>
 	<div class="subject">
 	<?php } ?>
-		<div class="three columns first">
-			<p class="intronote"><?php echo JText::_('COM_JOBS_TIP_ENJOY_COMMUNITY_EXPOSURE').' '.$sitename.'. '.JText::_('COM_JOBS_TIP_SERVICES_FREE'); echo ' '.JText::_('COM_JOBS_TIP_EMPLOYERS_SUBSCRIPTION_REQUIRED'); ?></p>
-		</div>
-		<div class="three columns second">
-			<h3><?php echo JText::_('COM_JOBS_EMPLOYERS'); ?></h3>		   
-			<ul>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=resumes'); ?>"><?php echo JText::_('COM_JOBS_ACTION_BROWSE_RESUMES'); ?></a></li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ACTION_POST_JOB'); ?></a></li>				
-			</ul>
-			 <?php if ($promoline) { ?> 
-			<p class="promo"><?php echo $promoline; ?></p>   
-			<?php } ?>	 
-		</div>
-		<div class="three columns third">
-			<h3><?php echo JText::_('COM_JOBS_SEEKERS'); ?></h3>
-		   
-			<ul>
-		   		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=browse'); ?>"><?php echo JText::_('COM_JOBS_ACTION_BROWSE_JOBS'); ?></a></li>
-				<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_ACTION_POST_RESUME'); ?></a></li>
-			</ul>
+		<div class="grid">
+			<div class="col span-third">
+				<p class="intronote"><?php echo JText::_('COM_JOBS_TIP_ENJOY_COMMUNITY_EXPOSURE').' '.$sitename.'. '.JText::_('COM_JOBS_TIP_SERVICES_FREE'); echo ' '.JText::_('COM_JOBS_TIP_EMPLOYERS_SUBSCRIPTION_REQUIRED'); ?></p>
+			</div>
+			<div class="col span-third">
+				<h3><?php echo JText::_('COM_JOBS_EMPLOYERS'); ?></h3>
+				<ul>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=resumes'); ?>"><?php echo JText::_('COM_JOBS_ACTION_BROWSE_RESUMES'); ?></a></li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ACTION_POST_JOB'); ?></a></li>				
+				</ul>
+				 <?php if ($promoline) { ?> 
+				<p class="promo"><?php echo $promoline; ?></p>
+				<?php } ?>	 
+			</div>
+			<div class="col span-third omega">
+				<h3><?php echo JText::_('COM_JOBS_SEEKERS'); ?></h3>
+
+				<ul>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=browse'); ?>"><?php echo JText::_('COM_JOBS_ACTION_BROWSE_JOBS'); ?></a></li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_ACTION_POST_RESUME'); ?></a></li>
+				</ul>
+			</div>
 		</div>
 	<?php if ($infolink) { ?>
-		<div class="clear"></div>
 	</div><!-- / .subject -->
 	<?php } ?>
 	<div class="clear"></div>

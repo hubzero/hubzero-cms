@@ -50,7 +50,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		<legend><?php echo JText::_('Collect'); ?></legend>
 
 		<div class="grid">
-		<div class="two columns first">
+		<div class="col span-half">
 		<label for="field-collection_id">
 			<?php echo JText::_('Select collection'); ?>
 			<select name="collection_id" id="field-collection_id">
@@ -100,13 +100,12 @@ if ($this->groupboards)
 		</label>
 		</div>
 		<p class="or">OR</p>
-		<div class="two columns second">
+		<div class="col span-half omega">
 			<label for="field-collection_title">
 				<?php echo JText::_('Create collection'); ?>
 				<input type="text" name="collection_title" id="field-collection_title" />
 			</label>
 		</div>
-		<div class="clear"></div>
 		</div>
 
 		<label for="field_description">

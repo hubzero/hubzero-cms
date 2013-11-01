@@ -157,7 +157,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 		<p><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
 		<p><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
 
-		<div id="file-uploader" data-action="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+		<div id="file-uploader" data-action="<?php echo rtrim(JRUI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
 			<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->scope; ?>&amp;pagename=<?php echo $this->page->pagename; ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 		</div>
 		<div id="file-uploader-list"></div>
@@ -276,17 +276,18 @@ if ($templates) {
 		
 <?php if ($this->sub) { ?>
 		<div class="field-wrap">
-			<div class="two columns first">
-				<div id="file-uploader" data-action="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-					<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->scope; ?>&amp;pagename=<?php echo $this->page->pagename; ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+			<div class="grid">
+				<div class="col span-half">
+					<div id="file-uploader" data-action="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+						<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->scope; ?>&amp;pagename=<?php echo $this->page->pagename; ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+					</div>
+					<div id="file-uploader-list"></div>
 				</div>
-				<div id="file-uploader-list"></div>
-			</div>
-			<div class="two columns second">
-				<p><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
-				<p><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
-			</div>
-			<div class="clear"></div>
+				<div class="col span-half omega">
+					<p><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
+					<p><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
+				</div>
+			</div><!-- / .grid -->
 		</div>
 <?php } ?>
 	</fieldset><div class="clear"></div>

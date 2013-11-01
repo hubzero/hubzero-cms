@@ -38,27 +38,29 @@ defined('_JEXEC') or die('Restricted access');
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } // close foreach 
 	} // close if count ?>
-	<div>
-		<div class="two columns first">
+
+	<div class="grid">
+		<div class="col span-half">
 			<div class="new_report_box">
 				<h3><?php echo JText::_('PLG_TIME_REPORTS_CREATE_NEW'); ?></h3>
-					<h4><?php echo JText::_('PLG_TIME_REPORTS_CHOOSE_REPORT_TYPE'); ?></h4>
-						<ul>
-							<li>
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active='.$this->active.'&action=createbill'); ?>">Bill</a>
-							</li>
-						</ul>
+				<h4><?php echo JText::_('PLG_TIME_REPORTS_CHOOSE_REPORT_TYPE'); ?></h4>
+				<ul>
+					<li>
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active='.$this->active.'&action=createbill'); ?>">Bill</a>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<div class="two columns second">
+		<div class="col span-half omega">
 			<div class="view_report_box">
 				<h3><?php echo JText::_('PLG_TIME_REPORTS_VIEW_SAVED'); ?></h3>
-					<h4><?php echo JText::_('PLG_TIME_REPORTS_SELECT_REPORT'); ?></h4>
-						<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&active='.$this->active.'&action=viewbill'); ?>">
-							<?php echo $this->rlist; ?>
-							<input type="submit" value="<?php echo JText::_('PLG_TIME_REPORTS_GO'); ?>" />
-						</form>
+				<h4><?php echo JText::_('PLG_TIME_REPORTS_SELECT_REPORT'); ?></h4>
+				<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&active='.$this->active.'&action=viewbill'); ?>">
+					<?php echo $this->rlist; ?>
+					<input type="submit" value="<?php echo JText::_('PLG_TIME_REPORTS_GO'); ?>" />
+				</form>
 			</div>
 		</div>
 	</div>
+
 </div>
