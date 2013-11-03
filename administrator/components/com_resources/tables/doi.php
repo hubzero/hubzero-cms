@@ -312,9 +312,7 @@ class ResourcesDoi extends JTable
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $call);
-
-		/* Purdue Hubzero Username/Password */
-		curl_setopt($ch, CURLOPT_USERPWD, '');
+		curl_setopt($ch, CURLOPT_USERPWD, $userpw);
 		curl_setopt($ch, CURLOPT_POST, true);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($input)));
@@ -376,8 +374,6 @@ class ResourcesDoi extends JTable
 
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $call);
-
-				/* Purdue Hubzero Username/Password */
 				curl_setopt($ch, CURLOPT_USERPWD, $userpw);
 				curl_setopt($ch, CURLOPT_POST, true);
 
