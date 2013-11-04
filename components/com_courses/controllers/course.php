@@ -763,7 +763,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * @param      integer $gid Course alias
 	 * @return     boolean True if valid, false if not
 	 */
-    private function _validCn($gid)
+	private function _validCn($gid)
 	{
 		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $gid))
 		{
@@ -794,8 +794,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		for ($i=0; $i<$length; $i++)
 		{
-		    $d = rand(1, 30)%2;
-		    $str .= $d ? chr(rand(65, 90)) : chr(rand(48, 57));
+			$d = rand(1, 30)%2;
+			$str .= $d ? chr(rand(65, 90)) : chr(rand(48, 57));
 		}
 
 		return strtoupper($str);
@@ -867,41 +867,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 			$filename = substr($filename, strlen('file:'));
 		}
 		$filename = urldecode($filename);
-
-		// Ensure we have a path
-		if (empty($filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
-			return;
-		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH'));
-			return;
-		}
 
 		// Get the configured upload path
 		$base_path = DS . trim($this->config->get('filepath', '/site/courses'), DS) . DS . $this->course->get('id') . DS . 'pagefiles';
