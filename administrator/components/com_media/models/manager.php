@@ -159,8 +159,8 @@ class MediaModelManager extends JModelLegacy
 		list($path) = $mkData(new SplFileInfo($base));
 
 		foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base), RecursiveIteratorIterator::SELF_FIRST) as $file) {
-			// skip hidden files
-			if (substr($file->getFileName(), 0, 1) == '.') {
+			// skip hidden files and non-directories
+			if (substr($file->getFileName(), 0, 1) == '.' || !$file->isDir()) {
 				continue;
 			}
 			list($data, $rel, $parent) = $mkData($file);
