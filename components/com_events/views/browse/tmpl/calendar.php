@@ -112,17 +112,28 @@ for ($d=1;$d<=$lastDayOfMonth;$d++)
 {
 	$do = ($d<10) ? "0$d" : "$d";
 	$selected_date = "$cal_year-$cal_month-$do";
-
+	
+	$sql = "SELECT * FROM `#__events` as e
+	        WHERE `scope`='event' 
+			AND `state`=1 
+			AND `approved`=1
+			AND ((`publish_up` >= '$selected_date 00:00:00' AND `publish_up` <= '$selected_date 23:59:59')
+			OR (`publish_down` >= '$selected_date 00:00:00' AND `publish_down` <= '$selected_date 23:59:59')
+			OR (`publish_up` <= '$selected_date 00:00:00' AND `publish_down` >= '$selected_date 23:59:59'))
+			ORDER BY publish_up ASC";
+			
+	/*
 	$sql = "SELECT #__events.* FROM #__events, #__categories as b"
 		. "\n WHERE #__events.catid = b.id AND b.access <= $gid AND #__events.access <= $gid"
 		. "\n AND ((publish_up >= '$selected_date 00:00:00' AND publish_up <= '$selected_date 23:59:59')"
 		. "\n OR (publish_down >= '$selected_date 00:00:00' AND publish_down <= '$selected_date 23:59:59')"
 		. "\n OR (publish_up <= '$selected_date 00:00:00' AND publish_down >= '$selected_date 23:59:59')) AND state='1'"
 		. "\n ORDER BY publish_up ASC";
-
+	*/
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
-
+	
+	
 	$class = ($selected_date == $to_day) ? 'today' : '';
 	if ($d == $this->day) {
 		//$class .= ' selected';
