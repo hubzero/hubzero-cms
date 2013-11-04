@@ -265,7 +265,7 @@ class Hubzero_Announcement extends JTable
 		//published
 		if (isset($filters['published']))
 		{
-			$now = date('Y-m-d H:i:s', time());
+			$now = JFactory::getDate();
 			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now) . ")";
 		}
@@ -316,11 +316,11 @@ class Hubzero_Announcement extends JTable
 
 		//get up and down times
 		$up = $down = null;
-		if ($announcement->publish_up != '' && $announcement->publish_up != '0000-00-00 00:00:00')
+		if ($announcement->publish_up != '' && $announcement->publish_up != $this->_db->getNullDate())
 		{
 			$up = strtotime($announcement->publish_up);
 		}
-		if ($announcement->publish_down != '' && $announcement->publish_down != '0000-00-00 00:00:00')
+		if ($announcement->publish_down != '' && $announcement->publish_down != $this->_db->getNullDate())
 		{
 			$down = strtotime($announcement->publish_down);
 		}
