@@ -519,8 +519,8 @@ if ($this->row->id) {
 						</a>
 					</strong>
 					<span class="permalink">
-						<?php echo JText::_('@'); ?> <span class="time"><time><?php echo JHTML::_('date', date("Y-m-d H:i:s"), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-						<?php echo JText::_('on'); ?> <span class="date"><time><?php echo JHTML::_('date', date("Y-m-d H:i:s"), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+						<?php echo JText::_('@'); ?> <span class="time"><time><?php echo JHTML::_('date', JFactory::getDate()->toSql(), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+						<?php echo JText::_('on'); ?> <span class="date"><time><?php echo JHTML::_('date', JFactory::getDate()->toSql(), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 
 					<label for="comment-field-access" class="private">

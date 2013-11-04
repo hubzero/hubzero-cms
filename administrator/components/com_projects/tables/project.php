@@ -465,11 +465,11 @@ class Project extends JTable
 		$saveLog = 0;
 		$updated = NULL;
 		
-		$pastMonth 		= date('Y-m-d', time() - (32 * 24 * 60 * 60));		
+		$pastMonth 		= JFactory::getDate(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
 		
-		$thisYearNum 	= date('y', time());
-		$thisMonthNum 	= date('m', time());
-		$thisWeekNum	= date('W', time());
+		$thisYearNum 	= JFactory::getDate()->toFormat('y');
+		$thisMonthNum 	= JFactory::getDate()->toFormat('m');
+		$thisWeekNum	= JFactory::getDate()->toFormat('W');
 		
 		// Do we have a recent saved stats log?
 		$logged = (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
@@ -603,7 +603,7 @@ class Project extends JTable
 			$objStats->year 		= $thisYearNum;
 			$objStats->month 		= $thisMonthNum;
 			$objStats->week 		= $thisWeekNum;
-			$objStats->processed 	= date('Y-m-d H:i:s');
+			$objStats->processed 	= JFactory::getDate()->toSql();
 			$objStats->stats 		= json_encode($stats);
 			$objStats->store();
 		}

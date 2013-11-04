@@ -167,7 +167,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		if(!$id)
 		{
 			$unit->set('offering_id', JRequest::getInt('offering_id', 0));
-			$unit->set('created', date('Y-m-d H:i:s'));
+			$unit->set('created', JFactory::getDate()->toSql());
 			$unit->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
@@ -202,7 +202,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 				$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
 				$assetGroup->set('unit_id', $unit->get('id'));
 				$assetGroup->set('parent', 0);
-				$assetGroup->set('created', date('Y-m-d H:i:s'));
+				$assetGroup->set('created', JFactory::getDate()->toSql());
 				$assetGroup->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 
 				// Save the asset group
@@ -299,7 +299,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		{
 			$assetGroup->set('unit_id', JRequest::getInt('unit_id', 0));
 			$assetGroup->set('parent', JRequest::getInt('parent', 0));
-			$assetGroup->set('created', date('Y-m-d H:i:s'));
+			$assetGroup->set('created', JFactory::getDate()->toSql());
 			$assetGroup->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
@@ -689,7 +689,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$asset->set('subtype', JRequest::getWord('subtype', 'file'));
 			$asset->set('state', 0);
 			$asset->set('course_id', JRequest::getInt('course_id', 0));
-			$asset->set('created', date('Y-m-d H:i:s'));
+			$asset->set('created', JFactory::getDate()->toSql());
 			$asset->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 

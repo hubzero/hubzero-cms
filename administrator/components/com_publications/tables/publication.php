@@ -180,7 +180,7 @@ class Publication extends JTable
 	public function buildQuery( $filters = array(), $usergroups = array() ) 
 	{
 		$juser =& JFactory::getUser();
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = JFactory::getDate()->toSql();
 		$restricted = 0;
 		$groupby = ' GROUP BY C.id ';
 		
@@ -508,7 +508,7 @@ class Publication extends JTable
 		}
 		
 		$juser =& JFactory::getUser();
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = JFactory::getDate()->toSql();
 		$alias = str_replace( ':', '-', $alias );
 		
 		$sql  = "SELECT V.*, C.id as id, C.category, C.master_type, C.project_id, C.access as master_access, 

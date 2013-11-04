@@ -95,10 +95,10 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		$asset = new ResourcesResource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $row->title;
-		$asset->created      = date('Y-m-d H:i:s');
+		$asset->created      = JFactory::getDate()->toSql();
 		$asset->created_by   = $this->juser->get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = date('Y-m-d H:i:s');
+		$asset->publish_up   = JFactory::getDate()->toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->path         = 'http://'; // make sure no path is specified just yet
@@ -168,10 +168,10 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		$asset = new ResourcesResource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $asset->title;
-		$asset->created      = date('Y-m-d H:i:s');
+		$asset->created      = JFactory::getDate()->toSql();
 		$asset->created_by   = $this->juser->get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = date('Y-m-d H:i:s');
+		$asset->publish_up   = JFactory::getDate()->toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->access       = 0;
@@ -348,10 +348,10 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		$row = new ResourcesResource($this->database);
 		$row->title        = $filename . '.' . $ext;
 		$row->introtext    = $row->title;
-		$row->created      = date('Y-m-d H:i:s');
+		$row->created      = JFactory::getDate()->toSql();
 		$row->created_by   = $this->juser->get('id');
 		$row->published    = 1;
-		$row->publish_up   = date('Y-m-d H:i:s');
+		$row->publish_up   = JFactory::getDate()->toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->access       = 0;
@@ -669,10 +669,10 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		}
 		$row->title        = ($row->title) ? $row->title : $file['name'];
 		$row->introtext    = $row->title;
-		$row->created      = date('Y-m-d H:i:s');
+		$row->created      = JFactory::getDate()->toSql();
 		$row->created_by   = $this->juser->get('id');
 		$row->published    = 1;
-		$row->publish_up   = date('Y-m-d H:i:s');
+		$row->publish_up   = JFactory::getDate()->toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->path         = ''; // make sure no path is specified just yet
@@ -1138,13 +1138,13 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		}
 		if ($date) 
 		{
-			$dir_year  = date('Y', $date);
-			$dir_month = date('m', $date);
+			$dir_year  = JFactory::getDate($date)->toFormat('Y');
+			$dir_month = JFactory::getDate($date)->toFormat('m');
 		} 
 		else 
 		{
-			$dir_year  = date('Y');
-			$dir_month = date('m');
+			$dir_year  = JFactory::getDate()->toFormat('Y');
+			$dir_month = JFactory::getDate()->toFormat('m');
 		}
 		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
 

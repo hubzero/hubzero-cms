@@ -269,7 +269,7 @@ if ($this->wishlist && $this->wish) {
 						$html = '';
 						if ($due && $this->wish->status!=1) 
 						{
-							$html .= ($this->wish->due <= date('Y-m-d H:i:s')) ? '<span class="overdue"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('OVERDUE') : '<span class="due"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->due);
+							$html .= ($this->wish->due <= JFactory::getDate()->toSql()) ? '<span class="overdue"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('OVERDUE') : '<span class="due"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->due);
 							$html .= '</a></span>';
 						}
 						//$html .= '</div>'."\n";

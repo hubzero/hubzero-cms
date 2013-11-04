@@ -374,7 +374,7 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		{
 			$fields['scope']      = 'group';
 			$fields['scope_id']   = $this->group->get('gidNumber');
-			$fields['created']    = date('Y-m-d H:i:s');
+			$fields['created']    = JFactory::getDate()->toSql();
 			$fields['created_by'] = $this->juser->get('id');
 		}
 		
@@ -387,13 +387,13 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		//format publish up 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00')
 		{
-			$fields['publish_up'] = date("Y-m-d H:i:s", strtotime(str_replace('@', '', $fields['publish_up'])));
+			$fields['publish_up'] = JFactory::getDate(strtotime(str_replace('@', '', $fields['publish_up'])));
 		}
 		
 		//format publish down
 		if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00')
 		{
-			$fields['publish_down'] = date("Y-m-d H:i:s", strtotime(str_replace('@', '', $fields['publish_down'])));
+			$fields['publish_down'] = JFactory::getDate(strtotime(str_replace('@', '', $fields['publish_down'])));
 		}
 		
 		//announcement model

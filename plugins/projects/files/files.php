@@ -3438,7 +3438,7 @@ class plgProjectsFiles extends JPlugin
 			{
 				$fullpath 	= $this->prefix . $archive['path'];
 				$file  		= $archive['name'];
-				$serveas	= 'Project Files ' . date('Y-m-d H:i:s') . '.zip';
+				$serveas	= 'Project Files ' . JFactory::getDate()->toSql() . '.zip';
 				$deleteTemp = 1;
 			}
 			else
@@ -4135,11 +4135,11 @@ class plgProjectsFiles extends JPlugin
 					if ($autoSync < 1)
 					{
 						$hr = 60 * $autoSync;
-						$timecheck = date('Y-m-d H:i:s', time() - (1 * $hr * 60));
+						$timecheck = JFactory::getDate(time() - (1 * $hr * 60));
 					}
 					else
 					{
-						$timecheck = date('Y-m-d H:i:s', time() - ($autoSync * 60 * 60));
+						$timecheck = JFactory::getDate(time() - ($autoSync * 60 * 60));
 					}
 
 					if ($synced > $timecheck)
@@ -4211,7 +4211,7 @@ class plgProjectsFiles extends JPlugin
 			$status = array('status' => 'complete', 'msg' => $msg);
 			
 			// Refresh view if sync happened recently
-			$timecheck = date('Y-m-d H:i:s', time() - (1 * 1 * 60));
+			$timecheck = JFactory::getDate(ime() - (1 * 1 * 60));
 			if ($synced >= $timecheck)
 			{
 				$status['output'] = $this->view(2);
@@ -4224,11 +4224,11 @@ class plgProjectsFiles extends JPlugin
 				if ($autoSync < 1)
 				{
 					$hr = 60 * $autoSync;
-					$timecheck = date('Y-m-d H:i:s', time() - (1 * $hr * 60));
+					$timecheck = JFactory::getDate(time() - (1 * $hr * 60));
 				}
 				else
 				{
-					$timecheck = date('Y-m-d H:i:s', time() - ($autoSync * 60 * 60));
+					$timecheck = JFactory::getDate(time() - ($autoSync * 60 * 60));
 				}
 
 				if ($synced <= $timecheck)
@@ -4297,7 +4297,7 @@ class plgProjectsFiles extends JPlugin
 		$timeLock = $this->_params->get('sync_lock', 0);
 		if ($timeLock)
 		{
-			$timecheck = date('Y-m-d H:i:s', time() - (1 * $timeLock * 60));
+			$timecheck = JFactory::getDate(time() - (1 * $timeLock * 60));
 		}
 		
 		// Can't run sync - too soon
@@ -4316,7 +4316,7 @@ class plgProjectsFiles extends JPlugin
 			}
 				
 			// Past hour - sync should have been complete, unlock
-			$timecheck = date('Y-m-d H:i:s', time() - (1 * 60 * 60));
+			$timecheck = JFactory::getDate(time() - (1 * 60 * 60));
 			
 			if ($synced && $synced >= $timecheck)
 			{
@@ -4408,7 +4408,7 @@ class plgProjectsFiles extends JPlugin
 		$timedRemotes	= array();
 						
 		// Sync start time
-		$startTime = date('Y-m-d H:i:s');	
+		$startTime = JFactory::getDate()->toSql();
 		$passed = $synced != 1 ? ProjectsHtml::timeDifference(strtotime($startTime) - strtotime($synced)) : 'N/A';
 				
 		// Start debug output
@@ -4726,7 +4726,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				
 				$processedLocal[$filename] = $local;
-				$lastLocalChange = $lChange ? date('Y-m-d H:i:s', $lChange + 1) : NULL;	
+				$lastLocalChange = $lChange ? JFactory::getDate($lChange + 1) : NULL;
 			}
 		}
 		else
@@ -4743,7 +4743,7 @@ class plgProjectsFiles extends JPlugin
 		if (!empty($locals))
 		{
 			$newSyncId = $this->_connect->getChangedItems($service, $projectCreator, 
-				$newSyncId, $newRemotes, $deletes, $connections);			
+				$newSyncId, $newRemotes, $deletes, $connections);
 		}
 		
 		// Get very last received remote change
@@ -4755,7 +4755,7 @@ class plgProjectsFiles extends JPlugin
 				$tChange = $ri['time'] > $tChange ? $ri['time'] : $tChange;
 			}
 
-			$lastRemoteChange = $tChange ? date('Y-m-d H:i:s', $tChange) : NULL;	
+			$lastRemoteChange = $tChange ? JFactory::getDate($tChange) : NULL;
 		}
 		
 		// Image handler for generating thumbnails
@@ -4779,7 +4779,7 @@ class plgProjectsFiles extends JPlugin
 			}
 			
 			// Pick up last remote change
-			$lastRemoteChange = $tChange ? date('Y-m-d H:i:s', $tChange) : NULL;
+			$lastRemoteChange = $tChange ? JFactory::getDate($tChange) : NULL;
 		}
 												
 		// Record sync status
@@ -4829,7 +4829,7 @@ class plgProjectsFiles extends JPlugin
 				$author = $this->_git->getGitAuthor($name, $email);
 				
 				// Set Git author date (GIT_AUTHOR_DATE)
-				$cDate = date('Y-m-d H:i:s', $remote['time']);
+				$cDate = JFactory::getDate($remote['time']);
 				
 				// Item in directory? Make sure we have correct local dir structure
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
@@ -5045,7 +5045,7 @@ class plgProjectsFiles extends JPlugin
 						$match, $remote
 					);
 					
-					$lastLocalChange = date('Y-m-d H:i:s', time() + 1);
+					$lastLocalChange = JFactory::getDate(time() + 1);
 					
 					// Generate local thumbnail
 					if ($remote['thumb'] && $remote['status'] != 'D')
@@ -5067,7 +5067,7 @@ class plgProjectsFiles extends JPlugin
 		sleep(1);
 		
 		// Log time
-		$endTime = date('Y-m-d H:i:s');
+		$endTime = JFactory::getDate()->toSql();
 		$length = ProjectsHtml::timeDifference(strtotime($endTime) - strtotime($startTime));
 		
 		$output .= 'Sync complete:' . "\n";
@@ -5109,7 +5109,7 @@ class plgProjectsFiles extends JPlugin
 		// Debug output
 		//$this->_rSync['debug'] = '<pre>' . $output . '</pre>'; // on-screen debugging
 		$temp = $this->getProjectPath ($this->_project->alias, 'logs');
-		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . date('Y-m') . '.log', true);
+		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . JFactory::getDate()->toFormat('Y-m') . '.log', true);
 				
 		// Record sync status
 		$this->_writeToFile( JText::_('Sync complete! Updating view...') );
@@ -5709,7 +5709,7 @@ class plgProjectsFiles extends JPlugin
 						}
 						if ($sortby == 'modified') 
 						{
-							$sorting[] = strtotime(date( 'Y-m-d H:i:s', strtotime($r->remote_modified)));
+							$sorting[] = strtotime(JFactory::getDate(strtotime($r->remote_modified))->toFormat('Y-m-d H:i:s'));
 						}
 						else
 						{

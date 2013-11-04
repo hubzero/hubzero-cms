@@ -117,7 +117,7 @@ if (count($this->rows) > 0)
 			break;
 		}
 
-		$now = date('Y-m-d H:i:s');
+		$now = JFactory::getDate()->toSql();
 ?>
 					<!-- <ul class="features entries"> -->
 <?php

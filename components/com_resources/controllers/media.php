@@ -85,8 +85,8 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			$trackingInformation->object_duration             = $duration;
 			$trackingInformation->current_position            = $time;
 			$trackingInformation->farthest_position           = $time;
-			$trackingInformation->current_position_timestamp  = date('Y-m-d H:i:s');
-			$trackingInformation->farthest_position_timestamp = date('Y-m-d H:i:s');
+			$trackingInformation->current_position_timestamp  = JFactory::getDate()->toSql();
+			$trackingInformation->farthest_position_timestamp = JFactory::getDate()->toSql();
 			$trackingInformation->completed                   = 0;
 			$trackingInformation->total_views                 = 1;
 			$trackingInformation->total_viewing_time          = 0;
@@ -105,7 +105,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			
 			//set the new current position
 			$trackingInformation->current_position           = $time;
-			$trackingInformation->current_position_timestamp = date('Y-m-d H:i:s');
+			$trackingInformation->current_position_timestamp = JFactory::getDate()->toSql();
 			
 			//set the object duration
 			if($duration > 0)
@@ -117,7 +117,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			if($trackingInformation->current_position > $trackingInformation->farthest_position)
 			{
 				$trackingInformation->farthest_position           = $time;
-				$trackingInformation->farthest_position_timestamp = date('Y-m-d H:i:s');
+				$trackingInformation->farthest_position_timestamp = JFactory::getDate()->toSql();
 			}
 			
 			//if event type is start, means we need to increment view count
@@ -145,15 +145,15 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			$trackingInformationDetailed->object_duration             = $duration;
 			$trackingInformationDetailed->current_position            = $time;
 			$trackingInformationDetailed->farthest_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp  = date('Y-m-d H:i:s');
-			$trackingInformationDetailed->farthest_position_timestamp = date('Y-m-d H:i:s');
+			$trackingInformationDetailed->current_position_timestamp  = JFactory::getDate()->toSql();
+			$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();
 			$trackingInformationDetailed->completed                   = 0;
 		}
 		else
 		{
 			//set the new current position
 			$trackingInformationDetailed->current_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp = date('Y-m-d H:i:s');
+			$trackingInformationDetailed->current_position_timestamp = JFactory::getDate()->toSql();
 			
 			//set the object duration
 			if($duration > 0)
@@ -165,7 +165,7 @@ class ResourcesControllerMedia extends Hubzero_Controller
 			if($trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
 			{
 				$trackingInformationDetailed->farthest_position           = $time;
-				$trackingInformationDetailed->farthest_position_timestamp = date('Y-m-d H:i:s');
+				$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();
 			}
 			
 			//if event type is end, we need to increment completed count

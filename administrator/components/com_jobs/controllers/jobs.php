@@ -314,7 +314,7 @@ class JobsControllerJobs extends Hubzero_Controller
 						$action = '';
 					} else {
 						$job->status 	= 1;
-						$job->opendate	=  date('Y-m-d H:i:s');
+						$job->opendate	= JFactory::getDate()->toSql();
 						$statusmsg .= JText::_('The job ad has been approved and published by site administrators.');
 					}
 				break;
@@ -335,7 +335,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			}
 
 			$job->editedBy = $this->juser->get('id');
-			$job->edited = date('Y-m-d H:i:s');
+			$job->edited = JFactory::getDate()->toSql();
 		}
 
 		if (!$job->store()) {

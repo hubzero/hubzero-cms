@@ -948,7 +948,7 @@ class plgProjectsDatabases extends JPlugin
 				$objPD->source_revision = $hash;
 				$objPD->description 	= $desc;
 				$objPD->data_definition = $dd;
-				$objPD->updated 		= date( 'Y-m-d H:i:s' );
+				$objPD->updated 		= JFactory::getDate()->toSql();
 				$objPD->updated_by 		= $this->_uid;
 				$msg = 'updated database "' . $title . '" in project ';
 			}
@@ -962,7 +962,7 @@ class plgProjectsDatabases extends JPlugin
 				$objPD->source_revision = $hash;
 				$objPD->description 	= $desc;
 				$objPD->data_definition = $dd;
-				$objPD->created 		= date( 'Y-m-d H:i:s' );
+				$objPD->created 		= JFactory::getDate()->toSql();
 				$objPD->created_by 		= $this->_uid;
 				$msg = 'created database "' . $title . '" in project ';
 			}

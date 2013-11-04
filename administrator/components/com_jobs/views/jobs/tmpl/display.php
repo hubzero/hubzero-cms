@@ -100,7 +100,7 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 
-$now = date("Y-m-d H:i:s");
+$now = JFactory::getDate()->toSql();
 
 $database =& JFactory::getDBO();
 

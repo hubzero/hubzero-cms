@@ -80,8 +80,8 @@ class plgCronMembers extends JPlugin
 		$action = 'royalty';
 
 		// What month/year is it now?
-		$curmonth = date("F");
-		$curyear = date("Y-m");
+		$curmonth = JFactory::getDate()->toFormat("F");
+		$curyear = JFactory::getDate()->toFormat("Y-m");
 		$ref = strtotime($curyear);
 
 		$this->_message = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
@@ -126,7 +126,7 @@ class plgCronMembers extends JPlugin
 				{
 					$MH = new Hubzero_Bank_MarketHistory($this->database);
 					$data['itemid']       = $ref;
-					$data['date']         = date("Y-m-d H:i:s");
+					$data['date']         = JFactory::getDate()->toSql();
 					$data['market_value'] = $accumulated;
 					$data['category']     = 'answers';
 					$data['action']       = $action;
@@ -192,7 +192,7 @@ class plgCronMembers extends JPlugin
 			{
 				$MH = new Hubzero_Bank_MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = date("Y-m-d H:i:s");
+				$data['date']         = JFactory::getDate()->toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'reviews';
 				$data['action']       = $action;
@@ -242,7 +242,7 @@ class plgCronMembers extends JPlugin
 			{
 				$MH = new Hubzero_Bank_MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = date("Y-m-d H:i:s");
+				$data['date']         = JFactory::getDate()->toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'resources';
 				$data['action']       = $action;

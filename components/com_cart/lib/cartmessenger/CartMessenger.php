@@ -251,7 +251,7 @@ class CartMessenger
 		// get admin id
 		$adminId = array($params->get('storeAdminId'));
 				
-		$mailMessage = date("Y-m-d H:i:s") . "\n";
+		$mailMessage = JFactory::getDate() . "\n";
 		
 		if	($errorType == 'POSTBACK')
 		{

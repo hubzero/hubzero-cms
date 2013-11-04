@@ -497,7 +497,7 @@ class StoreControllerOrders extends Hubzero_Controller
 					}
 
 					// update order information
-					$row->status_changed = date("Y-m-d H:i:s");
+					$row->status_changed = JFactory::getDate()->toSql();
 					$row->status = 1;
 					$statusmsg = JText::_('ORDER') . ' #' . $id . ' ' . JText::_('HAS_BEEN') . ' ' . strtolower(JText::_('COMPLETED')) . '.';
 				break;
@@ -517,7 +517,7 @@ class StoreControllerOrders extends Hubzero_Controller
 						return;
 					}
 					// update order information
-					$row->status_changed = date("Y-m-d H:i:s");
+					$row->status_changed = JFactory::getDate()->toSql();
 					$row->status = 2;
 
 					$statusmsg = JText::_('ORDER') . ' #' . $id . ' ' . JText::_('HAS_BEEN') . ' ' . strtolower(JText::_('CANCELLED')) . '.';

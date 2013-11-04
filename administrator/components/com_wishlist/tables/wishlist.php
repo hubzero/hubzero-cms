@@ -124,7 +124,28 @@ class Wishlist extends JTable
 			return false;
 		}
 
+		$this->description  = rtrim(stripslashes($this->description));
+		$this->description  = Hubzero_Filter::cleanXss($this->description);
+		$this->description  = nl2br($this->description);
+
 		return true;
+	}
+
+	/**
+	 * Load an entry from the database and bind to $this
+	 * 
+	 * @param      string  $oid        Entry alias
+	 * @param      string  $scope      Entry scope [site, group, member]
+	 * @return     boolean True if data was retrieved and loaded
+	 */
+	public function loadByCategory($referenceid=NULL, $category=NULL)
+	{
+		$fields = array(
+			'referenceid' => (int) $referenceid,
+			'category'    => (string) $category
+		);
+
+		return parent::load($fields);
 	}
 
 	/**
@@ -176,7 +197,7 @@ class Wishlist extends JTable
 		
 		$juser =& JFactory::getUser();
 
-		$this->created     = date('Y-m-d H:i:s');
+		$this->created     = JFactory::getDate()->toSql();
 		$this->category    = $category;
 		$this->created_by  = $juser->get('id');
 		$this->referenceid = $refid;
@@ -200,12 +221,10 @@ class Wishlist extends JTable
 			break;
 
 			case 'resource':
-			case 'publication':
 				// resources can only have one list
-				if (!$this->get_wishlist('', $refid, $category)) 
+				if (!$this->get_wishlist('', $refid, 'resource')) 
 				{
-					$defaultTitle = $category == 'resource' ? 'Resource #' . $refid : 'Publication #' . $refid;
-					$this->title = $title ? $title : $defaultTitle;
+					$this->title = $title ? $title : 'Resource #' . $rid;
 
 					if (!$this->store()) 
 					{
@@ -224,7 +243,7 @@ class Wishlist extends JTable
 			break;
 
 			case 'group':
-				$this->title = $title ? $title : 'Group #' . $refid;
+				$this->title = $title ? $title : 'Group #' . $rid;
 				if (!$this->store()) 
 				{
 					$this->_error = $this->getError();

@@ -314,7 +314,7 @@ class TagsControllerApi extends Hubzero_Api_Controller
 		$ticket = new SupportTicket($this->database);
 
 		// Set the created date
-		$ticket->created   = $msg->submitted = date("Y-m-d H:i:s");
+		$ticket->created   = $msg->submitted = JFactory::getDate()->toSql();
 
 		// Incoming
 		$ticket->report   = JRequest::getVar('report', '', 'post', 'none', 2);

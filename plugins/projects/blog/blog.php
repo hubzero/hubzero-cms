@@ -269,7 +269,7 @@ class plgProjectsBlog extends JPlugin
 			$objM->projectid = $this->_project->id;
 			$objM->blogentry = $entry;
 			$objM->managers_only = $managers;
-			$objM->posted = date( 'Y-m-d H:i:s' );
+			$objM->posted = JFactory::getDate()->toSql();
 			$objM->posted_by = $this->_uid;
 			
 			// Save new blog entry
@@ -624,7 +624,7 @@ class plgProjectsBlog extends JPlugin
 			$objC->tbl 				= $tbl;
 			$objC->parent_activity 	= $parent_activity;
 			$objC->comment 			= $comment;
-			$objC->created 			= date( 'Y-m-d H:i:s' );
+			$objC->created 			= JFactory::getDate()->toSql();
 			$objC->created_by 		= $this->_uid;
 			if (!$objC->store()) 
 			{

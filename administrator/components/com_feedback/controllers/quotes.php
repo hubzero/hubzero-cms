@@ -211,7 +211,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 
 		if (!$id)
 		{
-			$this->view->row->date = date('Y-m-d H:i:s');
+			$this->view->row->date = JFactory::getDate()->toSql();
 		}
 
 		if ($this->type == 'regular')

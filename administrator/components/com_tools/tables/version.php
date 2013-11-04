@@ -436,7 +436,7 @@ class ToolVersion extends  JTable
 		}
 		if ($toolname or $vid) 
 		{
-			$query = "UPDATE #__tool_version SET unpublished='".date('Y-m-d H:i:s')."' WHERE ";
+			$query = "UPDATE #__tool_version SET unpublished='".JFactory::getDate()->toSql()."' WHERE ";
 			if ($toolname) 
 			{
 				$query .= "toolname=" . $this->_db->Quote($toolname) . " ";
@@ -476,7 +476,7 @@ class ToolVersion extends  JTable
 			return false;
 		}
 
-		$query = "UPDATE #__tool_version SET state='0', unpublished='".date('Y-m-d H:i:s')."' WHERE ";
+		$query = "UPDATE #__tool_version SET state='0', unpublished='".JFactory::getDate()->toSql()."' WHERE ";
 		if (intval($vid)) 
 		{
 			$query.= "id=" . $this->_db->Quote($vid) . " AND ";

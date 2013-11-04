@@ -232,7 +232,7 @@ class FeaturesHistory extends JTable
 		}
 		if (!$authorized) 
 		{
-			$where[] = "f.featured <= " . $this->_db->Quote(date('Y-m-d H:i:s'));
+			$where[] = "f.featured <= " . $this->_db->Quote(JFactory::getDate()->toSql());
 		}
 
 		if (count($where) > 0)

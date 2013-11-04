@@ -129,7 +129,7 @@ class ProjectPubStamp extends JTable
 		{
 			return false;
 		}
-		$now = date('Y-m-d H:i:s');
+		$now = JFactory::getDate()->toSql();
 		
 		$query  = "SELECT * FROM $this->_tbl WHERE stamp='$stamp' ";
 		$query .= " AND (expires IS NULL OR expires <= '$now')";
@@ -233,7 +233,7 @@ class ProjectPubStamp extends JTable
 			$this->projectid 	= $projectid;
 			$this->reference 	= $reference;
 			$this->type			= $type;
-			$this->created 		= date('Y-m-d H:i:s');
+			$this->created 		= JFactory::getDate()->toSql();
 			
 			$juser =& JFactory::getUser();
 			$this->created_by	= $juser->get('id');

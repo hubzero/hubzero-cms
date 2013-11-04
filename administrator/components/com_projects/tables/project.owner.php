@@ -858,14 +858,14 @@ class ProjectOwner extends JTable
 		{
 			$this->bind( $result );
 			
-			$timecheck = date('Y-m-d H:i:s', time() - (6 * 60 * 60)); // visit in last 6 hours
+			$timecheck = JFactory::getDate(time() - (6 * 60 * 60))->toSql(); // visit in last 6 hours
 			if ($this->num_visits == 0 or $this->lastvisit < $timecheck) 
 			{
 				$this->num_visits = $this->num_visits + 1; // record visit in a day
 				$this->prev_visit = $this->lastvisit;
 			}
 			
-			$this->lastvisit = date( 'Y-m-d H:i:s', time());
+			$this->lastvisit = JFactory::getDate()->toSql();
 			
 			if (!$this->store()) 
 			{
@@ -1036,7 +1036,7 @@ class ProjectOwner extends JTable
 		{
 			return false;
 		}
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 				
 		$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`added`,`status`,
 			`native`, `role`, `invited_name`, `invited_email`, `invited_code` ) 
@@ -1097,7 +1097,7 @@ class ProjectOwner extends JTable
 			return false;
 		}
 		$owners = array();
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		$added = array();
 		
 		// Individual user added	

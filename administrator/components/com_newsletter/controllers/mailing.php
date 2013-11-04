@@ -373,7 +373,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 				
 				//mark as sent and save
 				$newsletterMailingRecipient->status		= 'sent';
-				$newsletterMailingRecipient->date_sent 	= date('Y-m-d H:i:s');
+				$newsletterMailingRecipient->date_sent 	= JFactory::getDate()->toSql();
 				$newsletterMailingRecipient->save( $newsletterMailingRecipient );
 			}
 			else

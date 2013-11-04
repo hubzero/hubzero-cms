@@ -216,8 +216,8 @@ class plgCoursesProgress extends JPlugin
 				'name'      => JFactory::getUser($m->get('user_id'))->get('name'),
 				'thumb'     => ltrim(Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, true), DS),
 				'full'      => ltrim(Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, false), DS),
-				'enrolled'  => date('M j, Y', strtotime($m->get('enrolled'))),
-				'lastvisit' => date('M j, Y', strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate')))
+				'enrolled'  => JFactory::getDate(strtotime($m->get('enrolled')))->toFormat('M j, Y'),
+				'lastvisit' => JFactory::getDate(strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate')))->toFormat('M j, Y')
 			);
 		}
 
@@ -454,7 +454,7 @@ class plgCoursesProgress extends JPlugin
 			$asset->set('title', 'New Item');
 			$asset->set('type', 'form');
 			$asset->set('subtype', 'exam');
-			$asset->set('created', date("Y-m-d H:i:s"));
+			$asset->set('created', JFactory::getDate()->toSql());
 			$asset->set('created_by', JFactory::getUser()->get('id'));
 			$asset->set('state', 1);
 			$asset->set('course_id', $this->course->get('id'));

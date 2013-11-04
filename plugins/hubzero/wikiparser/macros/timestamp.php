@@ -63,7 +63,7 @@ class TimestampMacro extends WikiMacro
 	 */
 	public function render()
 	{
-		return date("Y-m-d H:i:s");
+		return JFactory::getDate();
 	}
 }
 

@@ -56,7 +56,7 @@ $this->database = JFactory::getDBO();
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 
 // Get the current time
-$now = date("Y-m-d H:i:s");
+$now = JFactory::getDate()->toSql();
 
 $i = 0;
 
@@ -112,7 +112,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					<div class="unit-availability comingSoon">
 						<!-- <p class="status">Coming soon</p> -->
 						<p class="info">
-							Content for this unit will be available starting <?php echo date("F j, Y, g:i a", strtotime($unit->get('publish_up'))); ?>.
+							Content for this unit will be available starting <?php echo JFactory::getDate(strtotime($unit->get('publish_up')))->toFormat("F j, Y, g:i a"); ?>.
 						</p>
 				<?php } else { ?>
 					<div class="unit-availability">

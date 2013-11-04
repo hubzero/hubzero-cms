@@ -321,7 +321,7 @@ class WikiControllerComments extends Hubzero_Controller
 		$this->comment->chtml = $p->parse($this->comment->ctext, $wikiconfig);
 
 		$this->comment->anonymous = ($this->comment->anonymous == 1 || $this->comment->anonymous == '1') ? $this->comment->anonymous : 0;
-		$this->comment->created   = ($this->comment->created) ? $this->comment->created : date("Y-m-d H:i:s");
+		$this->comment->created   = ($this->comment->created) ? $this->comment->created : JFactory::getDate()->toSql();
 
 		// Check for missing (required) fields
 		if (!$this->comment->check()) 

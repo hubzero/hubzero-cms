@@ -231,7 +231,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 		$report->state = 1;
-		$report->reviewed = date("Y-m-d H:i:s");
+		$report->reviewed = JFactory::getDate()->toSql();
 		$report->reviewed_by = $this->juser->get('id');
 		if (!$report->store())
 		{
@@ -287,7 +287,7 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 
-		$report->reviewed = date("Y-m-d H:i:s");
+		$report->reviewed = JFactory::getDate()->toSql();
 		$report->reviewed_by = $this->juser->get('id');
 		$report->note = JRequest::getVar('note', '');
 

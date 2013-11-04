@@ -308,7 +308,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$obj->title = $formdata['title'] ? rtrim($formdata['title']) : $obj->title;
 		$obj->about = rtrim(Hubzero_Filter::cleanXss($formdata['about']));
 		$obj->type 	= isset($formdata['type']) ? $formdata['type'] : 1;
-		$obj->modified = date( 'Y-m-d H:i:s' );
+		$obj->modified = JFactory::getDate()->toSql();
 		$obj->modified_by = $this->juser->get('id');
 		$obj->private = JRequest::getVar( 'private', 0 );
 		
@@ -646,7 +646,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Get log file
 		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;				
 		$repodir = trim($this->_config->get('webpath'), DS);		
-		$sfile 	 = $prefix . DS . $repodir . DS . $obj->alias . DS . 'logs' . DS . 'sync.' . date('Y-m') . '.log';
+		$sfile 	 = $prefix . DS . $repodir . DS . $obj->alias . DS . 'logs' . DS . 'sync.' . JFactory::getDate()->toFormat('Y-m') . '.log';
 		
 		if (file_exists($sfile))
 		{
@@ -655,8 +655,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$xserver->filename($sfile);
 			$xserver->disposition('attachment');
 			$xserver->acceptranges(false);
-			$xserver->saveas('sync.' . date('Y-m') . '.txt');
-			$result = $xserver->serve_attachment($sfile, 'sync.' . date('Y-m') . '.txt', false);
+			$xserver->saveas('sync.' . JFactory::getDate()->toFormat('Y-m') . '.txt');
+			$result = $xserver->serve_attachment($sfile, 'sync.' . JFactory::getDate()->toFormat('Y-m') . '.txt', false);
 			exit;
 		}
 		

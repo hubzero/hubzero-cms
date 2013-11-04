@@ -189,7 +189,7 @@ class plgResourcesFavorite extends JPlugin
 				$fav->uid = $juser->get('id');
 				$fav->oid = $oid;
 				$fav->tbl = 'resources';
-				$fav->faved = date('Y-m-d H:i:s');
+				$fav->faved = JFactory::getDate()->toSql();
 				$fav->check();
 				$fav->store();
 

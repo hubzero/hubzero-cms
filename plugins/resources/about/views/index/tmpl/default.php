@@ -172,7 +172,7 @@ if (!$this->model->access('view-all')) {
 			$cite->title = $this->model->resource->title;
 			$cite->year = JHTML::_('date', $thedate, 'Y');
 			$cite->location = $juri->base() . ltrim($sef, DS);
-			$cite->date = date("Y-m-d H:i:s");
+			$cite->date = JFactory::getDate()->toSql();
 			$cite->url = '';
 			$cite->type = '';
 			$authors = array();

@@ -339,7 +339,7 @@ class Subscription extends JTable
 	public function buildQuery( $filters=array(), $admin=false )
 	{
 		$juser =& JFactory::getUser();
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = JFactory::getDate()->toSql();
 
 		$query  = "";
 		$query .= "WHERE 1=1 ";
@@ -421,11 +421,11 @@ class Subscription extends JTable
 		$limits = array();
 		$starttime = $subscription->added;
 		$lastunit = 0;
-		$today = date('Y-m-d H:i:s', time() - (24 * 60 * 60));
+		$today = JFactory::getDate(time() - (24 * 60 * 60))->toSql();
 
 		for ($i = 0; $i < $maxunits; $i++)
 		{
-			$starttime = date('Y-m-d', strtotime("+".$unitsize."month", strtotime($starttime)));
+			$starttime = JFactory::getDate(strtotime("+".$unitsize."month", strtotime($starttime)))->toFormat('Y-m-d');
 			$limits[$i] = $starttime;
 		}
 

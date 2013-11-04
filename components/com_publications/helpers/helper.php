@@ -729,7 +729,7 @@ class PublicationHelper extends JObject
 		$date 		= '';
 		$class 		= '';
 		
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		
 		switch ($row->state) 
 		{

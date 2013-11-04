@@ -205,12 +205,12 @@ class EventsControllerPages extends Hubzero_Controller
 		//set created date and user
 		if ($row->id == NULL || $row->id == '' || $row->id == 0)
 		{
-			$row->created = date('Y-m-d H:i:s');
+			$row->created = JFactory::getDate()->toSql();
 			$row->created_by = JFactory::getUser()->get('id');
 		}
 		
 		//set modified date and user
-		$row->modified = date('Y-m-d H:i:s');
+		$row->modified = JFactory::getDate()->toSql();
 		$row->modified_by = JFactory::getUser()->get('id');
 
 		// Check content for missing required data

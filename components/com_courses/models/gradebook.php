@@ -648,7 +648,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						{
 							$badge->set('member_id', $m);
 							$badge->set('earned', 1);
-							$badge->set('earned_on', date("Y-m-d H:i:s"));
+							$badge->set('earned_on', JFactory::getDate()->toSql());
 							$badge->store();
 
 							// Tell passport

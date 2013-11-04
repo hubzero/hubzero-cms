@@ -31,7 +31,7 @@ $img = ProjectsHtml::getGoogleIcon($item->remote_format);
 
 $url = $this->url . '/?action=open' . a . 'subdir='.urlencode($this->subdir) . a . 'file=' . urlencode(basename($item->local_path));
 
-$time = date( 'Y-m-d H:i:s', strtotime($item->remote_modified . ' UTC') );
+$time = JFactory::getDate(strtotime($item->remote_modified . ' UTC'))->toSql();
 $when = ProjectsHtml::formatTime($time);
 
 $ext = explode('.', $item->local_path);

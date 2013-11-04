@@ -242,7 +242,7 @@ class EventsCalendar extends JTable
 		if (!strstr($calendarHeaders[0], '200 OK'))
 		{
 			$this->failed_attempts      = $this->failed_attempts + 1;
-			$this->last_fetched_attempt = date("Y-m-d H:i:s");
+			$this->last_fetched_attempt = JFactory::getDate()->toSql();
 			$this->save( $this );
 			$this->setError( $this->title );
 			return false;
@@ -309,7 +309,7 @@ class EventsCalendar extends JTable
 			$eventsEvent->content      = stripslashes(str_replace('\n', "\n", $e->content));
 			$eventsEvent->adresse_info = (isset($incomingEvent['LOCATION'])) ? $incomingEvent['LOCATION'] : '';
 			$eventsEvent->extra_info   = (isset($incomingEvent['URL;VALUE=URI'])) ? $incomingEvent['URL;VALUE=URI'] : '';
-			$eventsEvent->modified     = date("Y-m-d H:i:s");
+			$eventsEvent->modified     = JFactory::getDate()->toSql();
 			$eventsEvent->modified_by  = $juser->get('id');
 			$eventsEvent->publish_up   = $start;
 			$eventsEvent->publish_down = $end;
@@ -323,7 +323,7 @@ class EventsCalendar extends JTable
 				$eventsEvent->scope        = 'group';
 				$eventsEvent->scope_id     = $group->get('gidNumber');
 				$eventsEvent->state        = 1;
-				$eventsEvent->created      = date("Y-m-d H:i:s");
+				$eventsEvent->created      = JFactory::getDate()->toSql();
 				$eventsEvent->created_by   = $juser->get('id');
 				$eventsEvent->time_zone    = -5;
 				$eventsEvent->registerby   = '0000-00-00 00:00:00';
@@ -335,8 +335,8 @@ class EventsCalendar extends JTable
 		}
 		
 		//mark as fetched
-		$this->last_fetched         = date("Y-m-d H:i:s");
-		$this->last_fetched_attempt = date("Y-m-d H:i:s");
+		$this->last_fetched         = JFactory::getDate()->toSql();
+		$this->last_fetched_attempt = JFactory::getDate()->toSql();
 		$this->failed_attempts      = 0;
 		$this->save( $this );
 		return true;

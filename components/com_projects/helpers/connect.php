@@ -1534,7 +1534,7 @@ class ProjectsConnectHelper extends JObject {
 				// If remote, make sure current version is remote
 				if ($converted == 1 && $order == 'last')
 				{
-					$timestamps[]  	= strtotime(date( 'Y-m-d H:i:s' ));
+					$timestamps[]  	= strtotime(JFactory::getDate());
 				}
 				else
 				{

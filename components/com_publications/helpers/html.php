@@ -899,7 +899,7 @@ class PublicationsHtml
 			$class = 'curversion';
 			$text .= ($publication->main == 1 || $publication->state == 1) ? '' : '<strong>'.JText::_('COM_PUBLICATIONS_ARCHIVE').'</strong> ';
 			$text .= JText::_('COM_PUBLICATIONS_VERSION').' <strong>'.$publication->version_label.'</strong>';
-			$now = date( 'Y-m-d H:i:s', time() );
+			$now = JFactory::getDate()->toSql();
 			
 			switch ($publication->state) 
 			{
@@ -991,7 +991,7 @@ class PublicationsHtml
 
 		$msg = '';
 		$project = '';
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = JFactory::getDate()->toSql();
 		
 		if ($publication->project_provisioned == 0)
 		{

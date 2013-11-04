@@ -84,7 +84,7 @@ $row = $this->row;
 		</tr>
 		<tr>
 			<td style="color: #525f6b;"><?php echo JText::_('Order completed') . ': '; ?></td>
-			<td><?php echo JHTML::_('date', date( 'Y-m-d H:i:s', time() ), JText::_('DATE_FORMAT_HZ1')); ?></td>
+			<td><?php echo JHTML::_('date', JFactory::getDate()->toSql(), JText::_('DATE_FORMAT_HZ1')); ?></td>
 		</tr>
  </tbody>
 </table>

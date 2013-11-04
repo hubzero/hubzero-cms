@@ -651,7 +651,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		}
 		
 		// Check for embargo
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = JFactory::getDate()->toSql();
 		if (!$authorized && $publication->published_up > $now)
 		{
 			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
@@ -2253,7 +2253,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$dtitle = Hubzero_View_Helper_Html::purifyText(stripslashes($title));
 		$doc->title = trim(Hubzero_View_Helper_Html::shortenText(html_entity_decode($dtitle), 250, 0));
 		$doc->description = htmlentities(html_entity_decode( Hubzero_View_Helper_Html::purifyText(stripslashes($publication->abstract))));
-		$doc->copyright = JText::sprintf('COM_PUBLICATIONS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->copyright = JText::sprintf('COM_PUBLICATIONS_RSS_COPYRIGHT', JFactory::getDate()->toFormat("Y"), $jconfig->getValue('config.sitename'));
 		$doc->type = JText::_('COM_PUBLICATIONS_RSS_CATEGORY');
 		$doc->link = JRoute::_('index.php?option='.$this->_option.'&id='.$publication->id);
 		

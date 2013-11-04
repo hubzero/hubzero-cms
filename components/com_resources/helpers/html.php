@@ -294,13 +294,13 @@ class ResourcesHtml
 		}
 		if ($date) 
 		{
-			$dir_year  = date('Y', $date);
-			$dir_month = date('m', $date);
+			$dir_year  = JFactory::getDate($date)->toFormat('Y');
+			$dir_month = JFactory::getDate($date)->toFormat('m');
 		} 
 		else 
 		{
-			$dir_year  = date('Y');
-			$dir_month = date('m');
+			$dir_year  = JFactory::getDate()->toFormat('Y');
+			$dir_month = JFactory::getDate()->toFormat('m');
 		}
 		$dir_id = self::niceidformat($id);
 
@@ -1448,7 +1448,7 @@ class ResourcesHtml
 						$juri =& JURI::getInstance();
 
 						$cite->location = $juri->base() . ltrim($sef, DS);
-						$cite->date = date("Y-m-d H:i:s");
+						$cite->date = JFactory::getDate()->toSql();
 					}
 					$cite->url = '';
 					$cite->type = '';

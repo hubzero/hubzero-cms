@@ -73,7 +73,7 @@ class ContentAssetHandler extends AssetHandler
 		$this->asset['type']       = (!empty($this->asset['type']))    ? $this->asset['type']    : 'text';
 		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content';
 		$this->asset['content']    = (!empty($this->asset['content'])) ? $this->asset['content'] : $content;
-		$this->asset['created']    = date('Y-m-d H:i:s');
+		$this->asset['created']    = JFactory::getDate()->toSql();
 		$this->asset['created_by'] = JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = JRequest::getInt('course_id', 0);
 

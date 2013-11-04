@@ -208,19 +208,19 @@ class SupportControllerApi extends Hubzero_Api_Controller
 			switch ($val)
 			{
 				case 'year':
-					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d"), date("Y")-1));
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d"), date("Y")-1))->toFormat("Y-m-d H:i:s");
 				break;
 
 				case 'month':
-					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))->toFormat("Y-m-d H:i:s");
 				break;
 
 				case 'week':
-					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-7, date("Y")));
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-7, date("Y")))->toFormat("Y-m-d H:i:s");
 				break;
 
 				case 'day':
-					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-1, date("Y")));
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-1, date("Y")))->toFormat("Y-m-d H:i:s");
 				break;
 
 				default:
@@ -401,7 +401,7 @@ class SupportControllerApi extends Hubzero_Api_Controller
 		$ticket = new SupportTicket($this->database);
 
 		// Set the created date
-		$ticket->created   = $msg->submitted = date("Y-m-d H:i:s");
+		$ticket->created   = $msg->submitted = JFactory::getDate()->toSql();
 
 		// Incoming
 		$ticket->report   = JRequest::getVar('report', '', 'post', 'none', 2);

@@ -208,10 +208,10 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		}
 		$row->title = ($row->title) ? $row->title : $file['name'];
 		$row->introtext = $row->title;
-		$row->created = date('Y-m-d H:i:s');
+		$row->created = JFactory::getDate()->toSql();
 		$row->created_by = $this->juser->get('id');
 		$row->published = 1;
-		$row->publish_up = date('Y-m-d H:i:s');
+		$row->publish_up = JFactory::getDate()->toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone = 0;
 		$row->path = ''; // make sure no path is specified just yet

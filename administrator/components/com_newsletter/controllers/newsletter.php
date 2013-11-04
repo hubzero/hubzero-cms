@@ -245,7 +245,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		if (!isset($newsletter['id']))
 		{
 			//update the modified info
-			$newsletter['created'] 		= date("Y-m-d H:i:s");
+			$newsletter['created'] 		= JFactory::getDate()->toSql();
 			$newsletter['created_by'] 	= $this->juser->get('id');
 		}
 		else
@@ -288,7 +288,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		}
 		
 		//update the modified info
-		$newsletter['modified'] 		= date("Y-m-d H:i:s");
+		$newsletter['modified'] 		= JFactory::getDate()->toSql();
 		$newsletter['modified_by'] 		= $this->juser->get('id');
 		
 		//save campaign
@@ -791,7 +791,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		
 		if ($scheduler == '1')
 		{
-			$scheduledDate = date('Y-m-d H:i:s');
+			$scheduledDate = JFactory::getDate()->toSql();
 		}
 		else
 		{
@@ -803,7 +803,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			//make sure we have at least the date or we use now
 			if (!$schedulerDate)
 			{
-				$scheduledDate = date('Y-m-d H:i:s');
+				$scheduledDate = JFactory::getDate()->toSql();
 			}
 			
 			//break apart parts of date
@@ -818,7 +818,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			//build scheduled time
 			$scheduledTime = $schedulerDateParts[2] . '-' . $schedulerDateParts[0] . '-' . $schedulerDateParts[1];
 			$scheduledTime .= ' ' . $schedulerHour . ':' . $schedulerMinute . ':00';
-			$scheduledDate = date('Y-m-d H:i:s', strtotime( $scheduledTime ));
+			$scheduledDate = JFactory::getDate(strtotime( $scheduledTime ))->toSql();
 		}
 		
 		//create mailing object
@@ -849,7 +849,7 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 			$mailingRecipient->mid 			= $newsletterMailing->id;
 			$mailingRecipient->email 		= $contact;
 			$mailingRecipient->status 		= 'queued';
-			$mailingRecipient->date_added 	= date('Y-m-d H:i:s');
+			$mailingRecipient->date_added 	= JFactory::getDate()->toSql();
 			
 			//save mailing recipient object
 			$newsletterMailingRecipient = new NewsletterMailingRecipient( $this->database );

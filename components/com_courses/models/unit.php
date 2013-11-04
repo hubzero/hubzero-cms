@@ -507,7 +507,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 				$dt->set('section_id', $this->get('section_id'));
 				$dt->set('scope', $this->_scope);
 				$dt->set('scope_id', $this->get('id'));
-				$dt->set('created', date("Y-m-d H:i:s"));
+				$dt->set('created', JFactory::getDate()->toSql());
 				$dt->set('created_by', JFactory::getUser()->get('id'));
 			}
 

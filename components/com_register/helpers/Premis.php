@@ -360,7 +360,7 @@ class Hubzero_Register_Premis
 					$target_xprofile->set('regHost', JRequest::getVar('REMOTE_HOST','','server'));
 				}
 	
-				$target_xprofile->set('registerDate', date('Y-m-d H:i:s'));
+				$target_xprofile->set('registerDate', JFactory::getDate()->toSql());
 	
 				// Update the account
 				$result = $target_xprofile->update();

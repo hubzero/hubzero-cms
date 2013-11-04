@@ -445,7 +445,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$id       = JRequest::getInt('referenceid', 0 );
 		$rid      = JRequest::getInt('rid', 0 );
 		$category = JRequest::getVar('category', '' );
-		$when     = date( 'Y-m-d H:i:s');
+		$when     = JFactory::getDate()->toSql();
 		
 		// Trim and addslashes all posted items
 		$_POST = array_map('trim',$_POST);
@@ -589,7 +589,7 @@ class PlgPublicationsReviewsHelper extends JObject
 				$v->category = $cat;
 				$v->voter = $juser->get('id');
 				$v->ip = $ip;
-				$v->voted = date( 'Y-m-d H:i:s', time() );
+				$v->voted = JFactory::getDate()->toSql();
 				$v->helpful = $vote;
 
 				if (!$v->check()) 
@@ -725,7 +725,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
 		$row->comment   = nl2br($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created   = ($row->created) ? $row->created : date( "Y-m-d H:i:s" );
+		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
 		$row->created_by = $juser->get('id');
 		
 		// Check for missing (required) fields

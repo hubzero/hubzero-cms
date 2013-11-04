@@ -68,7 +68,7 @@ if (trim($customFields) != '') {
 	}
 }
 
-$now = date( 'Y-m-d H:i:s', time() );
+$now = JFactory::getDate()->toSql();
 
 // Filter meta data
 if (!empty($fields)) {

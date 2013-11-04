@@ -183,7 +183,7 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 		{
 			// Path of file we should expect to find in the database log entry
 			$file = 'Migration20130101000000ComGroups.php';
-			$date = date("Y-m-d H:i:s");
+			$date = JFactory::getDate()->toSql();
 
 			$query  = "SELECT * FROM migrations WHERE `file` = ";
 			$query .= $this->instance->get('db')->Quote($file);
@@ -233,7 +233,7 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 		{
 			// Path of file we should expect to find in the database log entry
 			$file = 'Migration20130101000000ComGroups.php';
-			$date = date("Y-m-d H:i:s");
+			$date = JFactory::getDate()->toSql();
 
 			$query  = "SELECT * FROM migrations WHERE `file` = ";
 			$query .= $this->instance->get('db')->Quote($file);

@@ -471,7 +471,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		if ($appcount > 1) 
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . date("g:i a") . ')';
+			$app->caption .= ' (' . JFactory::getDate()->toFormat("g:i a") . ')';
 		}
 
 		// Save the changed caption
@@ -668,7 +668,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		if($status == 1)
 		{
 			$object = new stdClass();
-			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => date("Y-m-d H:i:s"));
+			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => JFactory::getDate()->toSql());
 			$this->setMessageType( $format );
 			$this->setMessage( $object );
 		}
@@ -714,7 +714,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		if(!$mv->getError())
 		{
 			$object = new stdClass();
-			$object->session = array("session" => $sessionid, "status" => "disconnected", "disconnected" => date("Y-m-d H:i:s"));
+			$object->session = array("session" => $sessionid, "status" => "disconnected", "disconnected" => JFactory::getDate()->toSql());
 			$this->setMessageType( $format );
 			$this->setMessage( $object );
 		}

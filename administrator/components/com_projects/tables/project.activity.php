@@ -329,7 +329,7 @@ class ProjectActivity extends JTable
 		
 		$this->projectid 	= $projectid;
 		$this->userid 		= $by;
-		$this->recorded 	= date( 'Y-m-d H:i:s' );
+		$this->recorded 	= JFactory::getDate()->toSql();
 		$this->activity 	= $activity;
 		$this->highlighted 	= $highlighted;
 		$this->referenceid 	= $referenceid;

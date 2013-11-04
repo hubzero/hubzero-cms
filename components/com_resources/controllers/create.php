@@ -711,7 +711,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		}
 		$isNew = $row->id < 1;
 
-		$row->created    = ($row->created)    ? $row->created    : date('Y-m-d H:i:s');
+		$row->created    = ($row->created)    ? $row->created    : JFactory::getDate()->toSql();
 		$row->created_by = ($row->created_by) ? $row->created_by : $this->juser->get('id');
 
 		// Set status to "composing"
@@ -723,9 +723,9 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		{
 			$row->published = ($row->published) ? $row->published : 2;
 		}
-		$row->publish_up   = ($row->publish_up) ? $row->publish_up : date('Y-m-d H:i:s');
+		$row->publish_up   = ($row->publish_up) ? $row->publish_up : JFactory::getDate()->toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
-		$row->modified     = date('Y-m-d H:i:s');
+		$row->modified     = JFactory::getDate()->toSql();
 		$row->modified_by  = $this->juser->get('id');
 
 		$row->introtext = (trim($row->fulltxt)) ? Hubzero_View_Helper_Html::shortenText(trim($row->fulltxt), 500, 0) : trim($row->fulltxt);
@@ -1881,13 +1881,13 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		}
 		if ($date) 
 		{
-			$dir_year  = date('Y', $date);
-			$dir_month = date('m', $date);
+			$dir_year  = JFactory::getDate($date)->toFormat('Y');
+			$dir_month = JFactory::getDate($date)->toFormat('m');
 		} 
 		else 
 		{
-			$dir_year  = date('Y');
-			$dir_month = date('m');
+			$dir_year  = JFactory::getDate()->toFormat('Y');
+			$dir_month = JFactory::getDate()->toFormat('m');
 		}
 		$dir_id = Hubzero_View_Helper_Html::niceidformat($id);
 

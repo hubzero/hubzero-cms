@@ -106,7 +106,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 			<?php 
 				$html = '';
-				$now = date( 'Y-m-d H:i:s', time() );
+				$now = JFactory::getDate()->toSql();
 				for ($i=0, $n=count( $this->services ); $i < $n; $i++)  {
 					// do we have an active subscription?
 					$thissub = ($this->services[$i]->id == $this->subscription->serviceid) ? 1 : 0;

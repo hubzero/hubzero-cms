@@ -67,7 +67,7 @@ if ($isMember && $this->tab == 'overview') : ?>
 	$units    = $unitsTbl->getCourseUnits();
 
 	// Get the current time
-	$now = date("Y-m-d H:i:s");
+	$now = JFactory::getDate()->toSql();
 ?>
 
 <table cellpadding="0" cellspacing="0" id="course-outline">

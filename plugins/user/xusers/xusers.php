@@ -324,7 +324,7 @@ class plgUserXusers extends JPlugin
 				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
 			}
 			
-			$xprofile->set('registerDate', date('Y-m-d H:i:s'));
+			$xprofile->set('registerDate', JFactory::getDate()->toSql());
 
 			$result = $xprofile->create();
 

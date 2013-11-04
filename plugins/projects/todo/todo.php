@@ -465,7 +465,7 @@ class plgProjectsTodo extends JPlugin
 		if (!$objTD->loadTodo($this->_project->id, $todoid)) 
 		{
 			$objTD->created_by 	= $this->_uid;
-			$objTD->created 	= date( 'Y-m-d H:i:s', time());
+			$objTD->created 	= JFactory::getDate()->toSql();
 			$objTD->projectid 	= $this->_project->id;
 			$assigned 			= $this->_uid; // assign to creator
 			$new 				= 1;
@@ -518,7 +518,7 @@ class plgProjectsTodo extends JPlugin
 						} 
 						if (checkdate($month, $day, $year)) 
 						{
-							$objTD->duedate = date("Y-m-d H:i:s", mktime(0, 0, 0, $month, $day, $year));
+							$objTD->duedate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year));
 						}
 					}
 				}
@@ -583,7 +583,7 @@ class plgProjectsTodo extends JPlugin
 				$objTD->state = $state;
 				if ($state == 1) 
 				{
-					$objTD->closed = date( 'Y-m-d H:i:s', time());
+					$objTD->closed = JFactory::getDate()->toSql();
 					$objTD->closed_by = $this->_uid;
 				}
 				// Store content
@@ -620,7 +620,7 @@ class plgProjectsTodo extends JPlugin
 			{
 				$objTD 				= new ProjectTodo( $this->_database );
 				$objTD->created_by 	= $this->_uid;
-				$objTD->created 	= date( 'Y-m-d H:i:s', time());
+				$objTD->created 	= JFactory::getDate()->toSql();
 				$objTD->projectid 	= $this->_project->id;
 				$objTD->content 	= 'provisioned';
 				$objTD->state 		= 2; // inactive
@@ -924,7 +924,7 @@ class plgProjectsTodo extends JPlugin
 			$objC->parent_activity = $parent_activity;
 			$comment = Hubzero_View_Helper_Html::shortenText($comment, 250, 0);
 			$objC->comment = Hubzero_View_Helper_Html::purifyText($comment);
-			$objC->created = date( 'Y-m-d H:i:s' );
+			$objC->created = JFactory::getDate()->toSql();
 			$objC->created_by = $this->_uid;
 			if (!$objC->store()) 
 			{

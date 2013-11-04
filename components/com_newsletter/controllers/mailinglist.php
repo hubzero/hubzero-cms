@@ -207,7 +207,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 			$subscription->mid        = $list;
 			$subscription->email      = $email;
 			$subscription->status     = 'inactive';
-			$subscription->date_added = date('Y-m-d H:i:s');
+			$subscription->date_added = JFactory::getDate()->toSql();
 			
 			//mail confirmation email and save subscription
 			if (Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false ))
@@ -255,7 +255,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 					$subscription->mid        = $list;
 					$subscription->email      = $email;
 					$subscription->status     = 'inactive';
-					$subscription->date_added = date('Y-m-d H:i:s');
+					$subscription->date_added = JFactory::getDate()->toSql();
 
 					//mail confirmation email and save subscription
 					if (Hubzero_Newsletter_Helper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false ))
@@ -566,7 +566,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		//set that we are now confirmed
 		$newsletterMailinglistEmail->status			= 'active';
 		$newsletterMailinglistEmail->confirmed 		= 1;
-		$newsletterMailinglistEmail->date_confirmed = date("Y-m-d H:i:s");
+		$newsletterMailinglistEmail->date_confirmed = JFactory::getDate()->toSql();
 		
 		//save
 		$newsletterMailinglistEmail->save( $newsletterMailinglistEmail );

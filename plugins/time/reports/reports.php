@@ -340,7 +340,7 @@ class plgTimeReports extends Hubzero_Plugin
 		}
 
 		// Create a report object and save
-		$report  = array('report_type'=>'bill', 'user_id'=>$this->juser->get('id'), 'time_stamp'=>date("Y-m-d H:i:s"));
+		$report  = array('report_type'=>'bill', 'user_id'=>$this->juser->get('id'), 'time_stamp'=>JFactory::getDate()->toSql());
 		$reports = new TimeReports($this->db);
 
 		// Save the report

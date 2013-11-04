@@ -1451,7 +1451,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				}
 				
 				// If newly created - remove join activity of project creator
-				$timecheck = date('Y-m-d H:i:s', time() - (10 * 60)); // last second
+				$timecheck = JFactory::getDate(time() - (10 * 60)); // last second
 				if ($project->created_by_user == $this->juser->get('id') && $timecheck <= $project->created)
 				{
 				    $objAA->deleteActivity($aid);
@@ -2001,14 +2001,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				if ($obj->loadProject($pid)) 
 				{
 					$obj->alias = $setup ? $name : $obj->alias; // name can only change during setup
-					$obj->modified = date( 'Y-m-d H:i:s' );
+					$obj->modified = JFactory::getDate()->toSql();
 					$obj->modified_by = $this->juser->get('id');
 				}
 				else 
 				{
 					$obj->alias = $name;
 					$obj->private = $this->_config->get('privacy', 1);
-					$obj->created = date( 'Y-m-d H:i:s' );
+					$obj->created = JFactory::getDate()->toSql();
 					$obj->created_by_user = $this->juser->get('id');
 					$obj->owned_by_user = $this->juser->get('id');
 					$obj->owned_by_group = $this->_gid;
@@ -2122,7 +2122,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						if ($key == 'grant_status' && $old_params != $project->params)
 						{
 							// Meta data for comment
-							$meta = '<meta>' . JHTML::_('date', date( 'Y-m-d H:i:s' ), $dateFormat, $tz)
+							$meta = '<meta>' . JHTML::_('date', JFactory::getDate()->toSql(), $dateFormat, $tz)
 							. ' - ' . $this->juser->get('name') . '</meta>';
 							
 							$cbase   = $obj->admin_notes;
@@ -2302,7 +2302,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					{
 						$obj->state = $state;
 						$obj->provisioned = 0; // remove provisioned flag if any
-						$obj->created = date( 'Y-m-d H:i:s' );
+						$obj->created = JFactory::getDate()->toSql();
 
 						// Save changes
 						if (!$obj->store()) 
@@ -2506,7 +2506,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$obj->alias 		= $name;
 			$obj->state 		= 0;
 			$obj->setup_stage 	= $setup_complete - 1;
-			$obj->modified		= date( 'Y-m-d H:i:s' );
+			$obj->modified		= JFactory::getDate()->toSql();
 			$obj->modified_by 	= $this->juser->get('id');
 		
 			// Save changes
@@ -2632,7 +2632,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Update project
-		$obj->modified = date( 'Y-m-d H:i:s' );
+		$obj->modified = JFactory::getDate()->toSql();
 		$obj->modified_by = $this->juser->get('id');
 		if ($this->_task != 'fixownership')	
 		{
@@ -2912,7 +2912,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$cbase = $obj->admin_notes;
 			
 			// Meta data for comment
-			$now = date( 'Y-m-d H:i:s' );
+			$now = JFactory::getDate()->toSql();
 			$actor = $this->juser->get('name');
 			$meta = '<meta>' . JHTML::_('date', $now, $dateFormat, $tz) . ' - ' . $actor . '</meta>';				
 						
@@ -4379,7 +4379,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objLog->section 		= $section;
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
-		$objLog->time 			= date('Y-m-d H:i:s');
+		$objLog->time 			= JFactory::getDate()->toSql();
 		$objLog->request_uri 	= JRequest::getVar('REQUEST_URI', $juri->base(), 'server');
 		$objLog->ajax 			= $ajax;
 		$objLog->store();

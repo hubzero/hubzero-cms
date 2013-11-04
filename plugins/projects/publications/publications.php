@@ -1221,7 +1221,7 @@ class plgProjectsPublications extends JPlugin
 				$sparams = JComponentHelper::getParams('com_support');
 			
 				$row = new SupportTicket( $this->_database );
-				$row->created =  date( "Y-m-d H:i:s" );
+				$row->created = JFactory::getDate()->toSql();
 				$row->login = $juser->get('username');
 				$row->email = $juser->get('email');
 				$row->name = $juser->get('name');			
@@ -1384,7 +1384,7 @@ class plgProjectsPublications extends JPlugin
 		// Load default version
 		$row->loadVersion($pid, 'default');
 		$oldid = $row->id;
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		
 		// Can't start a new version if there is a finalized or submitted draft
 		if ($row->state == 4 || $row->state == 5 ) 
@@ -1859,7 +1859,7 @@ class plgProjectsPublications extends JPlugin
 		$layout = $section;
 		$newpub = 0;
 		$newversion = 0;
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 
 		// Check that version exists
 		$row = new PublicationVersion( $this->_database );
@@ -1919,7 +1919,7 @@ class plgProjectsPublications extends JPlugin
 					$this->_project->title 	 			= $this->_project->alias;
 					$this->_project->type 	 			= $base == 'tools' ? 2 : 3; // content publication
 					$this->_project->state   			= 1;
-					$this->_project->created 			= date( 'Y-m-d H:i:s' );
+					$this->_project->created 			= JFactory::getDate()->toSql();
 					$this->_project->created_by_user 	= $this->_uid;
 					$this->_project->owned_by_user 		= $this->_uid;
 					$this->_project->setup_stage 		= 3;
@@ -2619,7 +2619,7 @@ class plgProjectsPublications extends JPlugin
 		}
 		else 
 		{
-			$row->submitted = date( 'Y-m-d H:i:s' );
+			$row->submitted = JFactory::getDate()->toSql();
 			if ($this->_pubconfig->get('autoapprove') == 1 )  
 			{
 				$state = 1;
@@ -2687,12 +2687,12 @@ class plgProjectsPublications extends JPlugin
 					if (checkdate($month, $day, $year)) 
 					{
 						
-						$pubdate = date("Y-m-d H:i:s", mktime(0, 0, 0, $month, $day, $year));
+						$pubdate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year))->toSql();
 					}
 				}
 			}
 			
-			$tenYearsFromNow = date("Y-m-d H:i:s", strtotime("+10 years"));
+			$tenYearsFromNow = JFactory::getDate(strtotime("+10 years"))->toSql();
 			
 			// Stop if more than 10 years from now
 			if ($pubdate > $tenYearsFromNow)
@@ -2727,7 +2727,7 @@ class plgProjectsPublications extends JPlugin
 			$row->rating = '0.0';
 			if (!$republish)
 			{
-				$row->published_up = date( 'Y-m-d H:i:s' );	// Publication open immediately (no embargo)	
+				$row->published_up = JFactory::getDate()->toSql();	// Publication open immediately (no embargo)	
 			}
 			
 			// Set embargo
@@ -2737,7 +2737,7 @@ class plgProjectsPublications extends JPlugin
 			}
 			
 			$row->published_down = '';
-			$row->modified = date( 'Y-m-d H:i:s' );
+			$row->modified = JFactory::getDate()->toSql();
 			$row->modified_by = $this->_uid;	
 			
 			// Get type
@@ -3013,8 +3013,8 @@ class plgProjectsPublications extends JPlugin
 				if ($pub->state == 1) 
 				{					
 					// Unpublish published version
-					$row->published_down = date( 'Y-m-d H:i:s' );	
-					$row->modified = date( 'Y-m-d H:i:s' );
+					$row->published_down = JFactory::getDate()->toSql();
+					$row->modified = JFactory::getDate()->toSql();
 					$row->modified_by = $this->_uid;
 					$row->state = 0;
 					if (!$row->store()) 
@@ -3269,7 +3269,7 @@ class plgProjectsPublications extends JPlugin
 		$selections = $this->_parseSelections($selections);
 		$this->_processContent( $pid, $vid, $selections, $role );
 
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		
 		$objPA = new PublicationAttachment( $this->_database );
 		if ($objPA->loadAttachment( $vid, $item )) 
@@ -3290,7 +3290,7 @@ class plgProjectsPublications extends JPlugin
 			$objPA->type = $type;
 			$objPA->vcs_hash = $vcs_hash;
 			$objPA->created_by = $this->_uid;
-			$objPA->created = date( 'Y-m-d H:i:s' );
+			$objPA->created = JFactory::getDate()->toSql();
 			$objPA->title = $title ? $title : '';
 			$objPA->role = $role;
 		}
@@ -3817,7 +3817,7 @@ class plgProjectsPublications extends JPlugin
 					$result = $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
 					$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
 					$objPA->modified_by = $this->_uid;
-					$objPA->modified = date( 'Y-m-d H:i:s' );					
+					$objPA->modified = JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -3832,7 +3832,7 @@ class plgProjectsPublications extends JPlugin
 				$objPA->publication_version_id = $vid;
 				$objPA->type = 'data';
 				$objPA->created_by = $this->_uid;
-				$objPA->created = date( 'Y-m-d H:i:s' );	
+				$objPA->created = JFactory::getDate()->toSql();
 			}			
 			
 			// We do need a revision number!
@@ -3888,7 +3888,7 @@ class plgProjectsPublications extends JPlugin
 				if ($objPA->loadAttachment($vid, $pageId, 'note')) 
 				{
 					$objPA->modified_by = $this->_uid;
-					$objPA->modified = date( 'Y-m-d H:i:s' );
+					$objPA->modified = JFactory::getDate()->toSql();
 				}
 				else 
 				{
@@ -3898,7 +3898,7 @@ class plgProjectsPublications extends JPlugin
 					$objPA->path 					= '';
 					$objPA->type 					= 'note';
 					$objPA->created_by 				= $this->_uid;
-					$objPA->created 				= date( 'Y-m-d H:i:s' );
+					$objPA->created 				= JFactory::getDate()->toSql();
 				}
 				
 				// Save object information
@@ -3939,7 +3939,7 @@ class plgProjectsPublications extends JPlugin
 				if ($objPA->loadAttachment($vid, $toolname, 'tool')) 
 				{
 					$objPA->modified_by = $this->_uid;
-					$objPA->modified = date( 'Y-m-d H:i:s' );
+					$objPA->modified = JFactory::getDate()->toSql();
 				}
 				else 
 				{
@@ -3949,7 +3949,7 @@ class plgProjectsPublications extends JPlugin
 					$objPA->path 					= '';
 					$objPA->type 					= 'tool';
 					$objPA->created_by 				= $this->_uid;
-					$objPA->created 				= date( 'Y-m-d H:i:s' );
+					$objPA->created 				= JFactory::getDate()->toSql();
 				}
 				
 				// Save object information
@@ -4000,7 +4000,7 @@ class plgProjectsPublications extends JPlugin
 					// Update only if no hash recorded (or update requested)
 					$objPA->vcs_hash = $objPA->vcs_hash && $update_hash == 0 ? $objPA->vcs_hash : $vcs_hash;
 					$objPA->modified_by = $this->_uid;
-					$objPA->modified = date( 'Y-m-d H:i:s' );
+					$objPA->modified = JFactory::getDate()->toSql();
 				}
 				else 
 				{
@@ -4011,7 +4011,7 @@ class plgProjectsPublications extends JPlugin
 					$objPA->type = 'file';
 					$objPA->vcs_hash = $vcs_hash;
 					$objPA->created_by = $this->_uid;
-					$objPA->created = date( 'Y-m-d H:i:s' );	
+					$objPA->created = JFactory::getDate()->toSql();
 				}
 						
 				$objPA->ordering = $i;
@@ -4419,7 +4419,7 @@ class plgProjectsPublications extends JPlugin
 							$objAtt->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
 							$objAtt->object_revision = $dbVersion;
 							$objAtt->modified_by = $this->_uid;
-							$objAtt->modified = date( 'Y-m-d H:i:s' );
+							$objAtt->modified = JFactory::getDate()->toSql();
 							$objAtt->store();
 							$published++;
 						}
@@ -4462,7 +4462,7 @@ class plgProjectsPublications extends JPlugin
 						$objAtt->load($att->id);
 						$objAtt->vcs_hash = $latest['hash'];
 						$objAtt->modified_by = $this->_uid;
-						$objAtt->modified = date( 'Y-m-d H:i:s' );
+						$objAtt->modified = JFactory::getDate()->toSql();
 						if (array_key_exists('content_hash', $fields['jos_publication_attachments'] ))
 						{
 							$file_hash = hash_file('sha256', $newpath. DS .$att->path);
@@ -4499,7 +4499,7 @@ class plgProjectsPublications extends JPlugin
 	protected function _processAuthors( $vid, $selections ) 
 	{		
 		$pAuthor = new PublicationAuthor( $this->_database );
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		
 		// Get original authors
 		$oauthors = $pAuthor->getAuthors($vid, 2);
@@ -4790,7 +4790,7 @@ class plgProjectsPublications extends JPlugin
 			$this->_processAuthors($vid, $selections);
 		}
 		
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		if (!$vid) 
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
@@ -4856,7 +4856,7 @@ class plgProjectsPublications extends JPlugin
 				$objO->projectid = $this->_project->id;
 				$objO->userid = $uid;
 				$objO->status = $uid ? 1 : 0;
-				$objO->added = date( 'Y-m-d H:i:s' );
+				$objO->added = JFactory::getDate()->toSql();
 				$objO->role = 2;
 				$objO->invited_email = $email;
 				$objO->invited_name = $name;
@@ -5158,7 +5158,7 @@ class plgProjectsPublications extends JPlugin
 			return false;
 		}
 		
-		$pAudience->created = date( 'Y-m-d H:i:s' );
+		$pAudience->created = JFactory::getDate()->toSql();
 		$pAudience->created_by = $this->_uid;
 				
 		if (!$pAudience->store()) 
@@ -5236,7 +5236,7 @@ class plgProjectsPublications extends JPlugin
 	protected function _processGallery( $pid, $vid, $selections ) 
 	{
 		$pScreenshot = new PublicationScreenshot( $this->_database );
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		
 		// Get original screenshots
 		$originals = $pScreenshot->getScreenshots( $vid );
@@ -5706,7 +5706,7 @@ class plgProjectsPublications extends JPlugin
 		$selections = $this->_parseSelections($selections);
 		$this->_processGallery( $pid, $vid, $selections );
 		
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		
 		if (!$vid || !$pid) 
 		{
@@ -6907,7 +6907,7 @@ class plgProjectsPublications extends JPlugin
 				
 				$readme .= str_replace($mFolder . DS, '', $rmFile) . "\n ";
 				$readme .= '#####################################' . "\n ";
-				$readme .= 'Archival package produced ' . date( 'Y-m-d H:i:s' );
+				$readme .= 'Archival package produced ' . JFactory::getDate()->toSql();
 								
 				$handle  = fopen($tmpReadme, 'w');
 				fwrite($handle, $readme);

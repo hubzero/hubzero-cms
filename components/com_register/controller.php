@@ -199,7 +199,7 @@ class RegisterController extends Hubzero_Controller
 
 		if ($target_xprofile->get('registerDate') == '') 
 		{
-			$target_xprofile->set('registerDate', date('Y-m-d H:i:s'));
+			$target_xprofile->set('registerDate', JFactory::getDate()->toSql());
 		}
 
 		if ($xregistration->get('email') != $target_xprofile->get('email')) 
@@ -442,7 +442,7 @@ class RegisterController extends Hubzero_Controller
 				$target_xprofile->set('regHost', JRequest::getVar('REMOTE_HOST','','server'));
 			}
 
-			$target_xprofile->set('registerDate', date('Y-m-d H:i:s'));
+			$target_xprofile->set('registerDate', JFactory::getDate()->toSql());
 			$target_xprofile->set('proxyUidNumber', $this->juser->get('id'));
 			$target_xprofile->set('proxyPassword', $xregistration->get('password'));
 
@@ -608,7 +608,7 @@ class RegisterController extends Hubzero_Controller
 
 			if ($xprofile->get('registerDate') == '') 
 			{
-				$xprofile->set('registerDate', date('Y-m-d H:i:s'));
+				$xprofile->set('registerDate', JFactory::getDate()->toSql());
 			}
 
 			if ($xregistration->get('email') != $xprofile->get('email')) 
@@ -1469,7 +1469,7 @@ class RegisterController extends Hubzero_Controller
 					$xprofile =& Hubzero_User_Profile::getInstance($login);
 					if ($xprofile) 
 					{
-						$dtmodify = date("Y-m-d H:i:s");
+						$dtmodify = JFactory::getDate()->toSql();
 						$xprofile->set('email',$pemail);
 						$xprofile->set('modifiedDate',$dtmodify);
 						if ($xprofile->update()) 

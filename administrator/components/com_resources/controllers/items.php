@@ -868,7 +868,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 		if ($isNew)
 		{
 			// New entry
-			$row->created    = $row->created ? $row->created : date("Y-m-d H:i:s");
+			$row->created    = $row->created ? $row->created : JFactory::getDate()->toSql();
 			$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('id');
 		} else {
 			$old = new ResourcesResource($this->database);
@@ -877,9 +877,9 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$created_by_id = JRequest::getInt('created_by_id', 0);
 
 			// Updating entry
-			$row->modified    = date("Y-m-d H:i:s");
+			$row->modified    = JFactory::getDate()->toSql();
 			$row->modified_by = $this->juser->get('id');
-			//$row->created     = $row->created ? $row->created : date("Y-m-d H:i:s");
+			//$row->created     = $row->created ? $row->created : JFactory::getDate()->toSql();
 			if ($created_by_id)
 			{
 				$row->created_by = $row->created_by ? $row->created_by : $created_by_id;
@@ -1409,7 +1409,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 				// If we're publishing, set the UP date
 				if ($publish)
 				{
-					$resource->publish_up = date("Y-m-d H:i:s");
+					$resource->publish_up = JFactory::getDate()->toSql();
 				}
 
 				// Is this a standalone resource and we need to email approved submissions?

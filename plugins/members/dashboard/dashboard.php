@@ -465,7 +465,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 		$myhub = new MyhubPrefs($this->database);
 		$myhub->load($uid);
 		$myhub->prefs = $ids;
-		$myhub->modified = date("Y-m-d H:i:s");
+		$myhub->modified = JFactory::getDate()->toSql();
 		if (!$myhub->check()) 
 		{
 			$this->setError($myhub->getError());
@@ -789,7 +789,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 		$myhub = new MyhubPrefs($this->database);
 		$myhub->load($this->member->get('uidNumber'));
 		$myhub->prefs = rtrim(str_replace(",;", ";", $prefs), ";");
-		$myhub->modified = date("Y-m-d H:i:s");
+		$myhub->modified = JFactory::getDate()->toSql();
 		if (!$myhub->check()) 
 		{
 			$this->setError($myhub->getError());

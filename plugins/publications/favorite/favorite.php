@@ -202,7 +202,7 @@ class plgPublicationsFavorite extends JPlugin
 				$fav->uid = $juser->get('id');
 				$fav->oid = $oid;
 				$fav->tbl = 'publications';
-				$fav->faved = date('Y-m-d H:i:s');
+				$fav->faved = JFactory::getDate()->toSql();
 				$fav->check();
 				$fav->store();
 

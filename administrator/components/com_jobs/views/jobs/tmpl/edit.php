@@ -41,7 +41,7 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-$now = date("Y-m-d H:i:s");
+$now = JFactory::getDate()->toSql();
 
 $usonly = $this->config->get('usonly');
 $this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : htmlentities(JText::_('United States'));

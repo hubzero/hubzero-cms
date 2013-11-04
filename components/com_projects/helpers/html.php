@@ -139,28 +139,28 @@ class ProjectsHtml
 		$parsed 	= date_parse($time);
 		$timestamp	= strtotime($time);
 
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		$current  	= date_parse($now);
 		
 		if ($full)
 		{
-			return date('g:i A M j, Y', $timestamp);
+			return JFactory::getDate($timestamp)->toFormat('g:i A M j, Y');
 		}
 		
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
 			{
-				return date('g:i A', $timestamp);
+				return JFactory::getDate($timestamp)->toFormat('g:i A');
 			}
 			else
 			{
-				return date('M j', $timestamp);
+				return JFactory::getDate($timestamp)->toFormat('M j');
 			}
 		}
 		else
 		{
-			return date('M j, Y', $timestamp);
+			return JFactory::getDate($timestamp)->toFormat('M j, Y');
 		}
 	}
 	

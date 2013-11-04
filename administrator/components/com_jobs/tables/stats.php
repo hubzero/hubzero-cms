@@ -216,9 +216,9 @@ class JobStats extends JTable
 	 */
 	public function getView($itemid=NULL, $category=NULL, $type='viewed', $when ='')
 	{
-		$lastweek  = date('Y-m-d H:i:s', time() - (7 * 24 * 60 * 60));
-		$lastmonth = date('Y-m-d H:i:s', time() - (30 * 24 * 60 * 60));
-		$today     = date('Y-m-d H:i:s', time() - (24 * 60 * 60));
+		$lastweek  = JFactory::getDate(time() - (7 * 24 * 60 * 60))->toFormat('Y-m-d H:i:s');
+		$lastmonth = JFactory::getDate(time() - (30 * 24 * 60 * 60))->toFormat('Y-m-d H:i:s');
+		$today     = JFactory::getDate(time() - (24 * 60 * 60))->toFormat('Y-m-d H:i:s');
 
 		$query  = "SELECT ";
 		if ($type == 'viewed') 
@@ -281,8 +281,8 @@ class JobStats extends JTable
 			return false;
 		}
 
-		$today = date('Y-m-d');
-		$now = date('Y-m-d H:i:s');
+		$today = JFactory::getDate()->toFormat('Y-m-d');
+		$now = JFactory::getDate()->toSql();
 
 		// load existing entry
 		$this->loadStat($itemid, $category);
@@ -327,7 +327,7 @@ class JobStats extends JTable
 	 */
 	public function cleanup()
 	{
-		$lastmonth = date('Y-m-d H:i:s', time() - (30 * 24 * 60 * 60));
+		$lastmonth = JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE lastviewed < " . $this->_db->Quote($lastmonth));
 		$this->_db->query();
 	}

@@ -51,8 +51,8 @@ class modDashboard extends Hubzero_Module
 		$banking =  $upconfig->get('bankAccounts');
 		$sitename = $jconfig->getValue('config.sitename');
 
-		$threemonths 	= date( 'Y-m-d H:i:s', time() - (92 * 24 * 60 * 60));
-		$onemonth 		= date( 'Y-m-d H:i:s', time() - (30 * 24 * 60 * 60) );
+		$threemonths 	= JFactory::getDate(time() - (92 * 24 * 60 * 60))->toSql();
+		$onemonth 		= JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
 
 		if ($banking && JComponentHelper::isEnabled('com_store')) 
 		{

@@ -437,7 +437,7 @@ class ProjectRemoteFile extends JTable
 			$this->remote_title 	= $item['title'];
 			$this->remote_md5 		= $item['md5'];
 			$this->type				= $item['type'];		
-			$this->created			= date( 'Y-m-d H:i:s' );
+			$this->created			= JFactory::getDate()->toSql();
 			$this->created_by		= $uid;
 			$this->remote_editing	= $item['converted'];
 			$this->remote_format 	= $item['mimeType'];
@@ -502,7 +502,7 @@ class ProjectRemoteFile extends JTable
 		{
 			$this->projectid 		= $projectid;
 			$this->service			= $service;
-			$this->created			= date( 'Y-m-d H:i:s' );
+			$this->created			= JFactory::getDate()->toSql();
 			$this->created_by		= $uid ? $uid : $this->uid;
 			$this->type				= $type;			
 		}
@@ -521,7 +521,7 @@ class ProjectRemoteFile extends JTable
 		$this->remote_modified 	= isset($remote['modified']) ? $remote['modified'] : $this->remote_modified;
 		$this->remote_author 	= isset($remote['author']) ? $remote['author'] : $this->remote_author;
 		
-		$this->modified 		= date('Y-m-d H:i:s');
+		$this->modified 		= JFactory::getDate()->toSql();
 		$this->modified_by		= $uid ? $uid : $this->uid;
 		$this->synced 			= gmdate('Y-m-d H:i:s'); 
 	
@@ -557,7 +557,7 @@ class ProjectRemoteFile extends JTable
 			$this->projectid 		= $projectid;
 			$this->remote_id 		= $id;
 			$this->service			= $service;
-			$this->created			= date( 'Y-m-d H:i:s' );
+			$this->created			= JFactory::getDate()->toSql();
 			$this->created_by		= $uid ? $uid : $this->uid;
 		}
 		
@@ -568,7 +568,7 @@ class ProjectRemoteFile extends JTable
 		
 		$this->local_path 		= $local_path ? $local_path : $this->local_path;
 		$this->type				= $type;		
-		$this->modified 		= date('Y-m-d H:i:s');
+		$this->modified 		= JFactory::getDate()->toSql();
 		$this->modified_by		= $uid ? $uid : $this->uid;
 		$this->synced 			= gmdate('Y-m-d H:i:s'); 
 		$this->remote_editing	= $converted ? $converted : $this->remote_editing;

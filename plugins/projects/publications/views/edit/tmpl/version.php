@@ -46,7 +46,7 @@ $v = $this->version == 'default' ? '' : '?v='.$this->version;
 $jconfig =& JFactory::getConfig();
 $site = $jconfig->getValue('config.live_site');
 
-$now = date( 'Y-m-d H:i:s', time() );
+$now = JFactory::getDate()->toSql();
 
 // Build our citation object
 $citation = '';

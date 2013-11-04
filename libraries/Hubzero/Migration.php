@@ -165,7 +165,7 @@ class Hubzero_Migration
 			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `date` DESC LIMIT 1');
 			$rowup = self::$db->loadAssoc();
 
-			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\'ORDER BY `date` DESC LIMIT 1');
+			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\' ORDER BY `date` DESC LIMIT 1');
 			$rowdown = self::$db->loadAssoc();
 
 			if (count($rowup) > 0)
@@ -650,7 +650,7 @@ class Hubzero_Migration
 					'file'      => $file,
 					'hash'      => $hash,
 					'direction' => $direction,
-					'date'      => date("Y-m-d H:i:s"),
+					'date'      => JFactory::getDate()->toSql(),
 					'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : JFactory::getUser()->get('id')
 				);
 

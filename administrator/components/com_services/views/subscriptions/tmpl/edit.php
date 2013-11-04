@@ -40,7 +40,7 @@ $expires = (intval( $this->subscription->expires) <> 0) ? JHTML::_('date', $this
 
 $status = '';
 $pending = $this->subscription->currency.' '.$this->subscription->pendingpayment;
-$now = date( 'Y-m-d H:i:s', time() );
+$now = JFactory::getDate()->toSql();
 
 $onhold_msg = ($this->subscription->status==2) ? JText::_('No action / send message to user') : JText::_('Subscription on hold (pending payment or verification)');
 

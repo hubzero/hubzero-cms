@@ -205,7 +205,7 @@ class PdfFormRespondent
 		$dbh = JFactory::getDBO();
 		$dbh->setQuery('DELETE FROM #__courses_form_respondent_progress WHERE respondent_id = '.(int)$this->id.' AND question_id = '.(int)$qid);
 		$dbh->query();
-		$dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(date("Y-m-d H:i:s")).')');
+		$dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(JFactory::getDate()->toSql()).')');
 		$dbh->query();
 
 		return $this;
@@ -260,7 +260,7 @@ class PdfFormRespondent
 	 **/
 	public function markStart()
 	{
-		$this->started = date('Y-m-d H:i:s');
+		$this->started = JFactory::getDate()->toSql();
 		$dbh = JFactory::getDBO();
 		$dbh->setQuery('UPDATE #__courses_form_respondents SET started = \''.$this->started.'\' WHERE started IS NULL AND id = '.(int)$this->id);
 		$dbh->query();
@@ -275,7 +275,7 @@ class PdfFormRespondent
 	 **/
 	public function markEnd()
 	{
-		$this->started = date('Y-m-d H:i:s');
+		$this->started = JFactory::getDate()->toSql();
 		$dbh = JFactory::getDBO();
 		$dbh->setQuery('UPDATE #__courses_form_respondents SET finished = \''.$this->started.'\' WHERE id = '.(int)$this->id);
 		$dbh->query();

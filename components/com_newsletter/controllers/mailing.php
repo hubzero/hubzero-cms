@@ -81,7 +81,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 				$action->email       = $recipient->email;
 				$action->ip          = $_SERVER['REMOTE_ADDR'];
 				$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-				$action->date        = date("Y-m-d H:i:s");
+				$action->date        = JFactory::getDate()->toSql();
 				
 				//save action
 				$newsletterMailingRecipientAction->save( $action );
@@ -129,7 +129,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 			$action->email       = $recipient->email;
 			$action->ip          = $_SERVER['REMOTE_ADDR'];
 			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = date("Y-m-d H:i:s");
+			$action->date        = JFactory::getDate()->toSql();
 			
 			//save action
 			$newsletterMailingRecipientAction->save( $action );
@@ -171,7 +171,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 			$action->email       = $recipient->email;
 			$action->ip          = $_SERVER['REMOTE_ADDR'];
 			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = date("Y-m-d H:i:s");
+			$action->date        = JFactory::getDate()->toSql();
 			
 			//save action
 			$newsletterMailingRecipientAction->save( $action );
@@ -206,7 +206,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 			$action->email       = $recipient->email;
 			$action->ip          = $_SERVER['REMOTE_ADDR'];
 			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = date("Y-m-d H:i:s");
+			$action->date        = JFactory::getDate()->toSql();
 			
 			//save action
 			$newsletterMailingRecipientAction->save( $action );

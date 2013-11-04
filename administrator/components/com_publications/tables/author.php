@@ -518,7 +518,7 @@ class PublicationAuthor extends JTable
 	 */	
 	public function createAssociation() 
 	{
-		$now = date( 'Y-m-d H:i:s' );
+		$now = JFactory::getDate()->toSql();
 		$name = mysql_real_escape_string($this->name);
 		$firstName = mysql_real_escape_string($this->firstName);
 		$lastName = mysql_real_escape_string($this->lastName);

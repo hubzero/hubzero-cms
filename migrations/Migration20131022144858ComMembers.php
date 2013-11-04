@@ -30,7 +30,7 @@ class Migration20131022144858ComMembers extends Hubzero_Migration
 				foreach ($results as $r)
 				{
 					$query = "INSERT INTO `#__user_notes` (`user_id`, `subject`, `state`, `created_user_id`, `created_time`) VALUES ";
-					$query .= "('{$r->uidNumber}', ".$db->quote($r->manager).", '1', '{$admin_id}', '".date("Y-m-d H:i:s")."')";
+					$query .= "('{$r->uidNumber}', ".$db->quote($r->manager).", '1', '{$admin_id}', '".JFactory::getDate()->toSql()."')";
 					$db->setQuery($query);
 					$db->query();
 				}

@@ -292,7 +292,7 @@ class ProjectComment extends JTable
 		$this->parent_activity 	= $parent_activity;
 		$this->comment 			= $comment;
 		$this->admin 			= $admin;
-		$this->created 			= date( 'Y-m-d H:i:s' );
+		$this->created 			= JFactory::getDate()->toSql();
 		$this->created_by 		= $by;
 		
 		if(!$this->store()) 

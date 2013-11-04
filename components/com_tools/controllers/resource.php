@@ -426,7 +426,7 @@ class ToolsControllerResource extends Hubzero_Controller
 			$resource->fulltxt    = addslashes($status['fulltxt']);
 			$resource->introtext   = $status['description'];
 			$resource->title       = preg_replace('/\s+/', ' ', $status['title']);
-			$resource->modified    = date("Y-m-d H:i:s");
+			$resource->modified    = JFactory::getDate()->toSql();
 			$resource->modified_by = $this->juser->get('id');
 		}
 		if ($published) 
@@ -435,7 +435,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		}
 		if ($newtool && $published == 1) 
 		{
-			$resource->publish_up = date("Y-m-d H:i:s");
+			$resource->publish_up = JFactory::getDate()->toSql();
 		}
 
 		if (!$resource->store()) 
@@ -489,7 +489,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		// Initiate extended database class
 		$row = new ResourcesResource($this->database);
 		$row->created_by = $this->juser->get('id');
-		$row->created    = date('Y-m-d H:i:s');
+		$row->created    = JFactory::getDate()->toSql();
 		$row->published  = 2;  // draft state
 		$row->params     = implode("\n", $params);
 		$row->attribs    = 'marknew=0';

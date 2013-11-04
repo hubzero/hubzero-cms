@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title(JText::_('Services &amp; Subscriptions Manager').': Subscriptions', 'addedit.png' );
 JToolBarHelper::preferences('com_services', '550');
 
-$now = date( 'Y-m-d H:i:s', time() );
+$now = JFactory::getDate()->toSql();
 
 ?>
 <script type="text/javascript">

@@ -405,7 +405,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 			}
 			else
 			{
-				$inserts[] = "(" . $this->mid . ", '" . $email . "', 'active', 0, '".date("Y-m-d H:i:s")."')";
+				$inserts[] = "(" . $this->mid . ", '" . $email . "', 'active', 0, '".JFactory::getDate()->toSql()."')";
 			}
 		}
 		
@@ -646,7 +646,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$emails = $newsletterMailinglist->getListEmails( $id, null, array('status' => 'all') );
 		
 		//file name
-		$filename = 'Newsletter Mailing List Export - ' . $newsletterMailinglist->name . ' - ' . date('m-d-Y') . '.csv';
+		$filename = 'Newsletter Mailing List Export - ' . $newsletterMailinglist->name . ' - ' . JFactory::getDate()->toFormat('m-d-Y') . '.csv';
 		
 		//file contents
 		$content = 'Email, Status' . PHP_EOL;

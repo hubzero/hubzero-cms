@@ -151,7 +151,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 				<select name="presentation" id="presentation">
 					<optgroup label="<?php echo $parent->title; ?>">
 						<?php foreach($children as $c) : ?>
-							<?php if(date("Y-m-d H:i:s") > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
+							<?php if(JFactory::getDate() > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
 								<option <?php if($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $c->title; ?></option>
 							<?php endif; ?>
 						<?php endforeach; ?>

@@ -484,7 +484,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 					$row->published_down = '0000-00-00 00:00:00';
 					if ( $action == 'publish')
 					{
-						$row->published_up 	 = $published_up ? $published_up : date("Y-m-d H:i:s");						
+						$row->published_up 	 = $published_up ? $published_up : JFactory::getDate()->toSql();
 					}
 						
 					// Get type
@@ -559,9 +559,9 @@ class PublicationsControllerItems extends Hubzero_Controller
 					// Save date accepted
 					if ($action == 'publish') 
 					{
-						$row->accepted = date("Y-m-d H:i:s");
+						$row->accepted = JFactory::getDate()->toSql();
 					}
-					$row->modified = date( 'Y-m-d H:i:s' );
+					$row->modified = JFactory::getDate()->toSql();
 					$row->modified_by = $this->juser->get('id');
 					
 					if (!$this->getError()) 
@@ -583,7 +583,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 				
 				case 'unpublish':      
 					$row->state 		 	= 0; 
-					$row->published_down    = date("Y-m-d H:i:s");  
+					$row->published_down    = JFactory::getDate()->toSql();
 					$activity = JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_UNPUBLISHED');   
 					$subject .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED'); 
 					
@@ -618,7 +618,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 					$objC->parent_activity = $aid;
 					$objC->comment = $comment;
 					$objC->admin = 1;
-					$objC->created = date( 'Y-m-d H:i:s' );
+					$objC->created = JFactory::getDate()->toSql();
 					$objC->created_by = $this->juser->get('id');
 					$objC->store();
 					
@@ -653,7 +653,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		// Updating entry if anything changed
 		if ($row != $old && !$this->getError()) 
 		{
-			$row->modified    = date("Y-m-d H:i:s");
+			$row->modified    = JFactory::getDate()->toSql();
 			$row->modified_by = $this->juser->get('id');
 			
 			// Store content

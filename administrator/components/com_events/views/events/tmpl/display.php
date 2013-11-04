@@ -174,7 +174,7 @@ $row = &$this->rows[$i];
 ?></td>
 				<td>
 <?php
-	$now = date("Y-m-d h:i:s");
+	$now = JFactory::getDate()->toSql();
 	if ($now <= $row->publish_up && $row->state == "1") {
 		$img = 'publish_y.png';
 		$alt = JText::_('Pending');
