@@ -561,7 +561,7 @@ class WikiControllerPage extends Hubzero_Controller
 		if (JPluginHelper::isEnabled('system', 'jquery')) 
 		{
 			$document =& JFactory::getDocument();
-			$document->addScript("/media/system/js/jquery.fileuploader.js");
+			$document->addScript(rtrim(JURI::getInstance()->base(true), '/') . "/media/system/js/jquery.fileuploader.js");
 		}
 
 		// Prep the pagename for display 
