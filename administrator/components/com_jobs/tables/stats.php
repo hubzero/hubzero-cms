@@ -216,9 +216,9 @@ class JobStats extends JTable
 	 */
 	public function getView($itemid=NULL, $category=NULL, $type='viewed', $when ='')
 	{
-		$lastweek  = JFactory::getDate(time() - (7 * 24 * 60 * 60))->toFormat('Y-m-d H:i:s');
-		$lastmonth = JFactory::getDate(time() - (30 * 24 * 60 * 60))->toFormat('Y-m-d H:i:s');
-		$today     = JFactory::getDate(time() - (24 * 60 * 60))->toFormat('Y-m-d H:i:s');
+		$lastweek  = JFactory::getDate(time() - (7 * 24 * 60 * 60))->format('Y-m-d H:i:s');
+		$lastmonth = JFactory::getDate(time() - (30 * 24 * 60 * 60))->format('Y-m-d H:i:s');
+		$today     = JFactory::getDate(time() - (24 * 60 * 60))->format('Y-m-d H:i:s');
 
 		$query  = "SELECT ";
 		if ($type == 'viewed') 
@@ -281,7 +281,7 @@ class JobStats extends JTable
 			return false;
 		}
 
-		$today = JFactory::getDate()->toFormat('Y-m-d');
+		$today = JFactory::getDate()->format('Y-m-d');
 		$now = JFactory::getDate()->toSql();
 
 		// load existing entry

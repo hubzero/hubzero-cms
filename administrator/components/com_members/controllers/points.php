@@ -53,8 +53,8 @@ class MembersControllerPoints extends Hubzero_Controller
 
 		$BT = new Hubzero_Bank_Transaction($this->database);
 
-		$thismonth = JFactory::getDate()->toFormat('Y-m');
-		$lastmonth = JFactory::getDate(time() - (32 * 24 * 60 * 60))->toFormat('Y-m');
+		$thismonth = JFactory::getDate()->format('Y-m');
+		$lastmonth = JFactory::getDate(time() - (32 * 24 * 60 * 60))->format('Y-m');
 
 		// Get overall earnings
 		$this->view->stats[] = array(
@@ -547,8 +547,8 @@ class MembersControllerPoints extends Hubzero_Controller
 		}
 
 		// What month/year is it now?
-		$curmonth = JFactory::getDate()->toFormat("F");
-		$curyear = JFactory::getDate()->toFormat("Y-m");
+		$curmonth = JFactory::getDate()->format("F");
+		$curyear = JFactory::getDate()->format("Y-m");
 		$ref = 	strtotime($curyear);
 		$this->_message = 'Royalties on Answers for '.$curyear.' were distributed successfully.';
 		$rmsg = 'Royalties on Reviews for '.$curyear.' were distributed successfully.';

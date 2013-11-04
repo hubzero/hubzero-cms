@@ -165,7 +165,7 @@ class PublicationLog extends JTable
 	 */	
 	public function logAccessFile ( $pid = NULL, $vid = NULL, $type = 'view', $ip = '', $logPath = '' ) 
 	{
-		$filename = 'pub-' . $pid . '-v-' . $vid . '.' . JFactory::getDate()->toFormat('Y-m') . '.log';
+		$filename = 'pub-' . $pid . '-v-' . $vid . '.' . JFactory::getDate()->format('Y-m') . '.log';
 		
 		$juser =& JFactory::getUser();
 		$uid 	= $juser->get('id');
@@ -278,8 +278,8 @@ class PublicationLog extends JTable
 			$this->logAccessFile( $pid, $vid, $type, $ip, $logPath);
 		}
 				
-		$thisYearNum 	= JFactory::getDate()->toFormat('y');
-		$thisMonthNum 	= JFactory::getDate()->toFormat('m');
+		$thisYearNum 	= JFactory::getDate()->format('y');
+		$thisMonthNum 	= JFactory::getDate()->format('m');
 		
 		// Load record to update
 		if (!$this->loadMonthLog( $pid, $vid ))
@@ -327,8 +327,8 @@ class PublicationLog extends JTable
 			return false;
 		}
 				
-		$thisYearNum 	= $yearNum ? $yearNum : JFactory::getDate()->toFormat('y');
-		$thisMonthNum 	= $monthNum ? $monthNum : JFactory::getDate()->toFormat('m');
+		$thisYearNum 	= $yearNum ? $yearNum : JFactory::getDate()->format('y');
+		$thisMonthNum 	= $monthNum ? $monthNum : JFactory::getDate()->format('m');
 			
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=$pid ";
 		$query .= "AND publication_version_id=$vid ";
@@ -363,22 +363,22 @@ class PublicationLog extends JTable
 		
 		if ($lastmonth == true)
 		{
-			$thisYearNum 	= intval(JFactory::getDate(strtotime("-1 month"))->toFormat('y'));
-			$pastMonthNum 	= intval(JFactory::getDate(strtotime("-1 month"))->toFormat('m'));
+			$thisYearNum 	= intval(JFactory::getDate(strtotime("-1 month"))->format('y'));
+			$pastMonthNum 	= intval(JFactory::getDate(strtotime("-1 month"))->format('m'));
 		}
 		else
 		{
-			$thisYearNum 	= intval(JFactory::getDate()->toFormat('y'));
-			$thisMonthNum 	= intval(JFactory::getDate()->toFormat('m'));
+			$thisYearNum 	= intval(JFactory::getDate()->format('y'));
+			$thisMonthNum 	= intval(JFactory::getDate()->format('m'));
 
-			$pastYearNum 	= intval(JFactory::getDate(strtotime("-1 month"))->toFormat('y'));
-			$pastMonthNum 	= intval(JFactory::getDate(strtotime("-1 month"))->toFormat('m'));
+			$pastYearNum 	= intval(JFactory::getDate(strtotime("-1 month"))->format('y'));
+			$pastMonthNum 	= intval(JFactory::getDate(strtotime("-1 month"))->format('m'));
 
-			$pastTwoYear 	= intval(JFactory::getDate(strtotime("-2 month"))->toFormat('y'));
-			$pastTwoMonth 	= intval(JFactory::getDate(strtotime("-2 month"))->toFormat('m'));
+			$pastTwoYear 	= intval(JFactory::getDate(strtotime("-2 month"))->format('y'));
+			$pastTwoMonth 	= intval(JFactory::getDate(strtotime("-2 month"))->format('m'));
 
-			$pastThreeYear 	= intval(JFactory::getDate(strtotime("-3 month"))->toFormat('y'));
-			$pastThreeMonth = intval(JFactory::getDate(strtotime("-3 month"))->toFormat('m'));
+			$pastThreeYear 	= intval(JFactory::getDate(strtotime("-3 month"))->format('y'));
+			$pastThreeMonth = intval(JFactory::getDate(strtotime("-3 month"))->format('m'));
 		}
 			
 		$query  = "SELECT V.id as publication_version_id, V.publication_id, V.title, V.version_label, 
@@ -482,7 +482,7 @@ class PublicationLog extends JTable
 		
 		if ($first)
 		{
-			return JFactory::getDate(strtotime($first))->toFormat('Y-m-01 00:00:00');
+			return JFactory::getDate(strtotime($first))->format('Y-m-01 00:00:00');
 		}		
 	}
 	
@@ -533,19 +533,19 @@ class PublicationLog extends JTable
 			return false;
 		}
 		
-		$thisYearNum 	= intval(JFactory::getDate()->toFormat('y'));
-		$thisMonthNum 	= intval(JFactory::getDate()->toFormat('m'));
+		$thisYearNum 	= intval(JFactory::getDate()->format('y'));
+		$thisMonthNum 	= intval(JFactory::getDate()->format('m'));
 		
-		$pastYearNum 	= intval(JFactory::getDate(strtotime("-1 month"))->toFormat('y'));
-		$pastMonthNum 	= intval(JFactory::getDate(strtotime("-1 month"))->toFormat('m'));
+		$pastYearNum 	= intval(JFactory::getDate(strtotime("-1 month"))->format('y'));
+		$pastMonthNum 	= intval(JFactory::getDate(strtotime("-1 month"))->format('m'));
 		
-		$pastTwoYear 	= intval(JFactory::getDate(strtotime("-2 month"))->toFormat('y'));
-		$pastTwoMonth 	= intval(JFactory::getDate(strtotime("-2 month"))->toFormat('m'));
+		$pastTwoYear 	= intval(JFactory::getDate(strtotime("-2 month"))->format('y'));
+		$pastTwoMonth 	= intval(JFactory::getDate(strtotime("-2 month"))->format('m'));
 		
-		$pastThreeYear 	= intval(JFactory::getDate(strtotime("-3 month"))->toFormat('y'));
-		$pastThreeMonth = intval(JFactory::getDate(strtotime("-3 month"))->toFormat('m'));
+		$pastThreeYear 	= intval(JFactory::getDate(strtotime("-3 month"))->format('y'));
+		$pastThreeMonth = intval(JFactory::getDate(strtotime("-3 month"))->format('m'));
 		
-		$dthis 			= JFactory::getDate()->toFormat('Y') . '-' . JFactory::getDate()->toFormat('m');
+		$dthis 			= JFactory::getDate()->format('Y') . '-' . JFactory::getDate()->format('m');
 			
 		$query  = "SELECT V.id as publication_version_id, V.publication_id, V.title, V.version_label, 
 					V.version_number, V.doi, V.published_up,

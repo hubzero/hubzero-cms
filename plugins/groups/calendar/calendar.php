@@ -169,8 +169,8 @@ class plgGroupsCalendar extends Hubzero_Plugin
 			}
 			
 			//get the request vars
-			$this->month    = JRequest::getInt('month', JFactory::getDate()->toFormat("m") ,'get');
-			$this->year     = JRequest::getInt('year', JFactory::getDate()->toFormat("Y"), 'get');
+			$this->month    = JRequest::getInt('month', JFactory::getDate()->format("m") ,'get');
+			$this->year     = JRequest::getInt('year', JFactory::getDate()->format("Y"), 'get');
 			$this->calendar = JRequest::getInt('calendar', 0, 'get');
 			
 			//set vars for reuse purposes
@@ -309,9 +309,9 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$calendarHTML .= "<tr class=\"calendar-row\">"."\n";
 
 		// Fix to fill in end days out of month correctly
-		$running_day = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->toFormat('w');
-		$days_in_month = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->toFormat('t');
-		$today = JFactory::getDate()->toFormat("Y-m-d");
+		$running_day = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->format('w');
+		$days_in_month = JFactory::getDate(mktime(0,0,0,$this->month,1,$this->year))->format('t');
+		$today = JFactory::getDate()->format("Y-m-d");
 		$days_in_this_week = 1;
 		$day_counter = 0;
 		$dates_array = array();
@@ -325,13 +325,13 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		for ($list_day = 1; $list_day <= $days_in_month; $list_day++) 
 		{
 			$day = mktime(0,0,0,$this->month,$list_day,$this->year);
-			$weekend = JFactory::getDate($day)->toFormat("D");
+			$weekend = JFactory::getDate($day)->format("D");
 			$class = ($weekend == 'Sat' || $weekend == 'Sun') ? ' weekend' : '';
 			
 			//check to see if today
-			$class .= (JFactory::getDate($day)->toFormat("Y-m-d") == $today) ? ' today' : '';
+			$class .= (JFactory::getDate($day)->format("Y-m-d") == $today) ? ' today' : '';
 			
-			$dateString = $this->year . '-' . $this->month . '-' . JFactory::getDate($day)->toFormat('d') . ' 08:00:00';
+			$dateString = $this->year . '-' . $this->month . '-' . JFactory::getDate($day)->format('d') . ' 08:00:00';
 			$calendarHTML .= "<td id=\"box-{$list_day}\" class=\"{$class}\" data-date=\"{$dateString}\">";
 			$calendarHTML .= "<div class=\"day\">{$list_day}</div>";
 			
@@ -575,7 +575,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		{
 			//remove @ symbol
 			$event['publish_up'] = str_replace("@", "", $event['publish_up']);
-			$event['publish_up'] = JFactory::getDate(strtotime($event['publish_up']))->toFormat("Y-m-d H:i:s");
+			$event['publish_up'] = JFactory::getDate(strtotime($event['publish_up']))->format("Y-m-d H:i:s");
 		}
 
 		//parse publish down date/time
@@ -583,7 +583,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		{
 			//remove @ symbol
 			$event['publish_down'] = str_replace("@", "", $event['publish_down']);
-			$event['publish_down'] = JFactory::getDate(strtotime($event['publish_down']))->toFormat("Y-m-d H:i:s");
+			$event['publish_down'] = JFactory::getDate(strtotime($event['publish_down']))->format("Y-m-d H:i:s");
 		}
 
 		//parse register by date/time
@@ -591,7 +591,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		{
 			//remove @ symbol
 			$event['registerby'] = str_replace("@", "", $event['registerby']);
-			$event['registerby'] = JFactory::getDate(strtotime($event['registerby']))->toFormat("Y-m-d H:i:s");
+			$event['registerby'] = JFactory::getDate(strtotime($event['registerby']))->format("Y-m-d H:i:s");
 		}
 
 		//stringify params
@@ -667,8 +667,8 @@ class plgGroupsCalendar extends Hubzero_Plugin
 
 		//get the year and month for this event
 		//so we can jump to that spot
-		$year = JFactory::getDate(strtotime($event['publish_up']))->toFormat("Y");
-		$month = JFactory::getDate(strtotime($event['publish_up']))->toFormat("m");
+		$year = JFactory::getDate(strtotime($event['publish_up']))->format("Y");
+		$month = JFactory::getDate(strtotime($event['publish_up']))->format("m");
 		
 		//build message
 		$message = JText::_('You have successfully created a new group event.');
@@ -1189,8 +1189,8 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		$event           = new stdClass;
 		$event->title    = $title;
 		$event->content  = stripslashes(str_replace('\n', "\n", $description));
-		$event->start    = JFactory::getDate($start)->toFormat("m/d/Y @ g:i a");
-		$event->end      = JFactory::getDate($end)->toFormat("m/d/Y @ g:i a");
+		$event->start    = JFactory::getDate($start)->format("m/d/Y @ g:i a");
+		$event->end      = JFactory::getDate($end)->format("m/d/Y @ g:i a");
 		$event->location = $location;
 		$event->website  = $website;
 		
@@ -1855,8 +1855,8 @@ class plgGroupsCalendar extends Hubzero_Plugin
 	 */
 	private function _getEvents($day, $month, $year, $calendar = 0)
 	{
-		$start = JFactory::getDate(mktime(0,0,0,$month,$day,$year))->toFormat("Y-m-d H:i:s");
-		$end = JFactory::getDate(mktime(23,59,59,$month,$day,$year))->toFormat("Y-m-d H:i:s");
+		$start = JFactory::getDate(mktime(0,0,0,$month,$day,$year))->format("Y-m-d H:i:s");
+		$end = JFactory::getDate(mktime(23,59,59,$month,$day,$year))->format("Y-m-d H:i:s");
 
 		$database =& JFactory::getDBO();
 		$sql = "SELECT e.*, ec.title AS event_calendar_title, ec.color AS event_calendar_color
@@ -1912,7 +1912,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=".$this->group->get('gidNumber')." 
 				AND state=1 
-				AND (publish_up >= '".JFactory::getDate()->toSql()."' OR publish_down >='".JFactory::getDate()->toSql()."') AND publish_up <= '".JFactory::getDate()->toFormat("Y-m-t 23:59:59")."'";
+				AND (publish_up >= '".JFactory::getDate()->toSql()."' OR publish_down >='".JFactory::getDate()->toSql()."') AND publish_up <= '".JFactory::getDate()->format("Y-m-t 23:59:59")."'";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}

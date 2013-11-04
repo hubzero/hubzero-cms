@@ -241,7 +241,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 				$oldunits						= $subscription->units;
 
 				$months 						= $newunits * $service->unitsize;
-				$newexpire 						= ($oldunits > 0  && intval($subscription->expires) <> 0) ? JFactory::getDate(strtotime($subscription->expires . "+" . $months . "months"))->toFormat("Y-m-d") : JFactory::getDate(strtotime("+" . $months . "months"))->toFormat("Y-m-d");
+				$newexpire 						= ($oldunits > 0  && intval($subscription->expires) <> 0) ? JFactory::getDate(strtotime($subscription->expires . "+" . $months . "months"))->format("Y-m-d") : JFactory::getDate(strtotime("+" . $months . "months"))->format("Y-m-d");
 				$subscription->expires 			= $newunits ? $newexpire : $subscription->expires;
 				$subscription->status 			=  1;
 				$subscription->units 			= $subscription->units + $newunits;

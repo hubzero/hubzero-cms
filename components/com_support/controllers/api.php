@@ -208,19 +208,19 @@ class SupportControllerApi extends Hubzero_Api_Controller
 			switch ($val)
 			{
 				case 'year':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d"), date("Y")-1))->toFormat("Y-m-d H:i:s");
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d"), date("Y")-1))->format("Y-m-d H:i:s");
 				break;
 
 				case 'month':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))->toFormat("Y-m-d H:i:s");
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))->format("Y-m-d H:i:s");
 				break;
 
 				case 'week':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-7, date("Y")))->toFormat("Y-m-d H:i:s");
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-7, date("Y")))->format("Y-m-d H:i:s");
 				break;
 
 				case 'day':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-1, date("Y")))->toFormat("Y-m-d H:i:s");
+					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-1, date("Y")))->format("Y-m-d H:i:s");
 				break;
 
 				default:

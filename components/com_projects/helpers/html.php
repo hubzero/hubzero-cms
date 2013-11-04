@@ -144,23 +144,23 @@ class ProjectsHtml
 		
 		if ($full)
 		{
-			return JFactory::getDate($timestamp)->toFormat('g:i A M j, Y');
+			return JFactory::getDate($timestamp)->format('g:i A M j, Y');
 		}
 		
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
 			{
-				return JFactory::getDate($timestamp)->toFormat('g:i A');
+				return JFactory::getDate($timestamp)->format('g:i A');
 			}
 			else
 			{
-				return JFactory::getDate($timestamp)->toFormat('M j');
+				return JFactory::getDate($timestamp)->format('M j');
 			}
 		}
 		else
 		{
-			return JFactory::getDate($timestamp)->toFormat('M j, Y');
+			return JFactory::getDate($timestamp)->format('M j, Y');
 		}
 	}
 	

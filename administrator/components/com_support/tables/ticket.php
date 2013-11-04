@@ -741,7 +741,7 @@ class SupportTicket extends JTable
 	 */
 	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null)
 	{
-		$year = ($year) ? $year : JFactory::getDate()->toFormat("Y");
+		$year = ($year) ? $year : JFactory::getDate()->format("Y");
 		$endyear = intval($year) + 1;
 
 		$sql = "SELECT count(*) 
@@ -775,7 +775,7 @@ class SupportTicket extends JTable
 	 */
 	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null)
 	{
-		$year = ($year) ? $year : JFactory::getDate()->toFormat("Y");
+		$year = ($year) ? $year : JFactory::getDate()->format("Y");
 		$endyear = intval($year) + 1;
 
 		$sql = "SELECT COUNT(DISTINCT k.ticket) 
@@ -859,7 +859,7 @@ class SupportTicket extends JTable
 	 */
 	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null, $username=null)
 	{
-		$year = ($year) ? $year : JFactory::getDate()->toFormat("Y");
+		$year = ($year) ? $year : JFactory::getDate()->format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
 		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
@@ -900,7 +900,7 @@ class SupportTicket extends JTable
 	 */
 	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null)
 	{
-		$year = ($year) ? $year : JFactory::getDate()->toFormat("Y");
+		$year = ($year) ? $year : JFactory::getDate()->format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
 		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
@@ -934,7 +934,7 @@ class SupportTicket extends JTable
 	 */
 	public function getAverageLifeOfTicket($type=0, $year='', $group=null)
 	{
-		$year = ($year) ? $year : JFactory::getDate()->toFormat("Y");
+		$year = ($year) ? $year : JFactory::getDate()->format("Y");
 
 		$sql = "SELECT k.ticket, UNIX_TIMESTAMP(f.created) AS t_created, UNIX_TIMESTAMP(MAX(k.created)) AS c_created
 				FROM #__support_comments AS k, $this->_tbl AS f

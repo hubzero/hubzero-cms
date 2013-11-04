@@ -5109,7 +5109,7 @@ class plgProjectsFiles extends JPlugin
 		// Debug output
 		//$this->_rSync['debug'] = '<pre>' . $output . '</pre>'; // on-screen debugging
 		$temp = $this->getProjectPath ($this->_project->alias, 'logs');
-		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . JFactory::getDate()->toFormat('Y-m') . '.log', true);
+		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . JFactory::getDate()->format('Y-m') . '.log', true);
 				
 		// Record sync status
 		$this->_writeToFile( JText::_('Sync complete! Updating view...') );
@@ -5709,7 +5709,7 @@ class plgProjectsFiles extends JPlugin
 						}
 						if ($sortby == 'modified') 
 						{
-							$sorting[] = strtotime(JFactory::getDate(strtotime($r->remote_modified))->toFormat('Y-m-d H:i:s'));
+							$sorting[] = strtotime(JFactory::getDate(strtotime($r->remote_modified))->format('Y-m-d H:i:s'));
 						}
 						else
 						{

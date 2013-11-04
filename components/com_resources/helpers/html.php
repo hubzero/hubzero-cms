@@ -294,13 +294,13 @@ class ResourcesHtml
 		}
 		if ($date) 
 		{
-			$dir_year  = JFactory::getDate($date)->toFormat('Y');
-			$dir_month = JFactory::getDate($date)->toFormat('m');
+			$dir_year  = JFactory::getDate($date)->format('Y');
+			$dir_month = JFactory::getDate($date)->format('m');
 		} 
 		else 
 		{
-			$dir_year  = JFactory::getDate()->toFormat('Y');
-			$dir_month = JFactory::getDate()->toFormat('m');
+			$dir_year  = JFactory::getDate()->format('Y');
+			$dir_month = JFactory::getDate()->format('m');
 		}
 		$dir_id = self::niceidformat($id);
 

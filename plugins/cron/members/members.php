@@ -80,8 +80,8 @@ class plgCronMembers extends JPlugin
 		$action = 'royalty';
 
 		// What month/year is it now?
-		$curmonth = JFactory::getDate()->toFormat("F");
-		$curyear = JFactory::getDate()->toFormat("Y-m");
+		$curmonth = JFactory::getDate()->format("F");
+		$curyear = JFactory::getDate()->format("Y-m");
 		$ref = strtotime($curyear);
 
 		$this->_message = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);

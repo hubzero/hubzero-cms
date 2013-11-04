@@ -471,7 +471,7 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		if ($appcount > 1) 
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . JFactory::getDate()->toFormat("g:i a") . ')';
+			$app->caption .= ' (' . JFactory::getDate()->format("g:i a") . ')';
 		}
 
 		// Save the changed caption

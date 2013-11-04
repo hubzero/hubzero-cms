@@ -425,7 +425,7 @@ class Subscription extends JTable
 
 		for ($i = 0; $i < $maxunits; $i++)
 		{
-			$starttime = JFactory::getDate(strtotime("+".$unitsize."month", strtotime($starttime)))->toFormat('Y-m-d');
+			$starttime = JFactory::getDate(strtotime("+".$unitsize."month", strtotime($starttime)))->format('Y-m-d');
 			$limits[$i] = $starttime;
 		}
 

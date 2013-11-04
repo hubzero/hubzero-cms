@@ -467,9 +467,9 @@ class Project extends JTable
 		
 		$pastMonth 		= JFactory::getDate(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
 		
-		$thisYearNum 	= JFactory::getDate()->toFormat('y');
-		$thisMonthNum 	= JFactory::getDate()->toFormat('m');
-		$thisWeekNum	= JFactory::getDate()->toFormat('W');
+		$thisYearNum 	= JFactory::getDate()->format('y');
+		$thisMonthNum 	= JFactory::getDate()->format('m');
+		$thisWeekNum	= JFactory::getDate()->format('W');
 		
 		// Do we have a recent saved stats log?
 		$logged = (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
