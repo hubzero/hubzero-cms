@@ -463,7 +463,7 @@ class ResourcesResource extends JTable
 	public function buildQuery($filters=array())
 	{
 		$juser =& JFactory::getUser();
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		$query  = "";
 		if (isset($filters['tag']) && $filters['tag'] != '') 

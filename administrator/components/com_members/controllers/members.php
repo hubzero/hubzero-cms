@@ -284,7 +284,7 @@ class MembersControllerMembers extends Hubzero_Controller
 		{
 			$profile->set('public',0);
 		}
-		$profile->set('modifiedDate', date('Y-m-d H:i:s', time()));
+		$profile->set('modifiedDate', JFactory::getDate()->toSql());
 
 		$profile->set('jobsAllowed', intval(trim($p['jobsAllowed'])));
 

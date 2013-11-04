@@ -142,7 +142,7 @@ class AnswersTableResponse extends JTable
 			$this->anonymous = 1;
 		}
 
-		$this->created    = $this->created    ? $this->created    : date("Y-m-d H:i:s");
+		$this->created    = $this->created    ? $this->created    : JFactory::getDate()->toSql();
 		$this->created_by = $this->created_by ? $this->created_by : JFactory::getUser()->get('username');
 
 		return true;

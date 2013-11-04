@@ -298,7 +298,7 @@ class WikiControllerPages extends Hubzero_Controller
 		$log = new WikiLog($this->database);
 		$log->pid = $page->id;
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action = ($page['id']) ? 'page_edited' : 'page_created';
 		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) 
@@ -404,7 +404,7 @@ class WikiControllerPages extends Hubzero_Controller
 						$log = new WikiLog($this->database);
 						$log->pid = $id;
 						$log->uid = $this->juser->get('id');
-						$log->timestamp = date('Y-m-d H:i:s', time());
+						$log->timestamp = JFactory::getDate()->toSql();
 						$log->action = 'page_removed';
 						$log->actorid = $this->juser->get('id');
 						if (!$log->store()) 

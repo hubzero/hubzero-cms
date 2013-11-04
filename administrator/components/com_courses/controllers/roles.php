@@ -149,7 +149,7 @@ class CoursesControllerRoles extends Hubzero_Controller
 		if (!$this->view->row->id)
 		{
 			$this->view->row->created_by = $this->juser->get('id');
-			$this->view->row->created = date('Y-m-d H:i:s', time());
+			$this->view->row->created = JFactory::getDate()->toSql();
 		}
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');

@@ -257,7 +257,7 @@ class WikiControllerComments extends Hubzero_Controller
 		{
 			$this->view->row->pageid   = JRequest::getInt('pageid', 0);
 			$this->view->row->created_by = $this->juser->get('id');
-			$this->view->row->created    = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->view->row->created    = JFactory::getDate()->toSql();
 		}
 
 		// Set any errors

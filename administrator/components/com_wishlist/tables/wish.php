@@ -205,7 +205,7 @@ class Wish extends JTable
 		if (!$this->id) 
 		{
 			$juser =& JFactory::getUser();
-			$this->proposed = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->proposed = JFactory::getDate()->toSql();
 			$this->proposed_by = $juser->get('id');
 		}
 

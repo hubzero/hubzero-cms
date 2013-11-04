@@ -134,7 +134,7 @@ class SupportQuery extends JTable
 		if (!$this->id) 
 		{
 			//$juser =& JFactory::getUser();
-			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->created = JFactory::getDate()->toSql();
 			//$this->created_by = $juser->get('id');
 		}
 		if ($this->iscore === null)

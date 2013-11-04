@@ -133,7 +133,7 @@ class AnswersTableQuestion extends JTable
 
 		// Updating entry
 		$juser =& JFactory::getUser();
-		$this->created    = $this->created    ? $this->created    : date("Y-m-d H:i:s");
+		$this->created    = $this->created    ? $this->created    : JFactory::getDate()->toSql();
 		$this->created_by = $this->created_by ? $this->created_by : $juser->get('username');
 
 		// Code cleaner

@@ -134,7 +134,7 @@ class KbTableComment extends JTable
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = date('Y-m-d H:i:s', time());
+			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 

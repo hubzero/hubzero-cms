@@ -119,7 +119,7 @@ class Vote extends JTable
 
 		if (!$this->id)
 		{
-			$this->voted = ($this->voted) ? $this->voted : date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->voted = ($this->voted) ? $this->voted : JFactory::getDate()->toSql();
 			$this->voter = ($this->voter) ? $this->voter : JFactory::getUser()->get('id');
 		}
 
@@ -160,7 +160,7 @@ class Vote extends JTable
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid=" . $this->_db->Quote($refid) . " AND category = " . $this->_db->Quote($category) . " AND voter=" . $this->_db->Quote($voter);
 

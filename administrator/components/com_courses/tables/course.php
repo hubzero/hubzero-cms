@@ -239,7 +239,7 @@ class CoursesTableCourse extends JTable
 		if (!$this->id)
 		{
 			$juser =& JFactory::getUser();
-			$this->created = date('Y-m-d H:i:s', time());
+			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		return true;

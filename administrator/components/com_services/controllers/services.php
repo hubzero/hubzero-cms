@@ -114,7 +114,7 @@ class ServicesControllerServices extends Hubzero_Controller
 		$database =& JFactory::getDBO();
 
 		$objS = new Service($database);
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		$default1 = array(
 			'id' => 0,

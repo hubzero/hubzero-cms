@@ -291,7 +291,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			// Creating a new ticket
 			$row->severity = 'normal';
 			$row->status   = 0;
-			$row->created  = date('Y-m-d H:i:s', time());
+			$row->created  = JFactory::getDate()->toSql();
 			$row->login    = $this->juser->get('username');
 			$row->name     = $this->juser->get('name');
 			$row->email    = $this->juser->get('email');
@@ -589,7 +589,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$rowc->ticket     = $id;
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace('<br>', '<br />', $rowc->comment);
-			$rowc->created    = date('Y-m-d H:i:s', time());
+			$rowc->created    = JFactory::getDate()->toSql();
 			$rowc->created_by = JRequest::getVar('username', '');
 			$rowc->changelog  = json_encode($log);
 			$rowc->access     = JRequest::getInt('access', 0);

@@ -170,11 +170,11 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Is this a new job?
 		if (!$id) 
 		{
-			$this->view->row->created      = date('Y-m-d H:i:s', time());
+			$this->view->row->created      = JFactory::getDate()->toSql();
 			$this->view->row->created_by   = $this->juser->get('id');
 			$this->view->row->modified     = '0000-00-00 00:00:00';
 			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = date('Y-m-d H:i:s', time());
+			$this->view->row->publish_up   = JFactory::getDate()->toSql();
 			$this->view->row->employerid   = 1; // admin
 		} 
 		else if (!$this->view->row->load($id)) 
@@ -285,7 +285,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			$code = $subscription->generateCode(8, 8, 0, 1, 0);
 			$job->code = $code;
 
-			$job->added = date('Y-m-d H:i:s');
+			$job->added = JFactory::getDate()->toSql();
 			$job->addedBy = $this->juser->get('id');
 		}
 

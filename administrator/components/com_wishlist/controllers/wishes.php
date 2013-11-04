@@ -370,7 +370,7 @@ class WishlistControllerWishes extends Hubzero_Controller
 
 		//$page->wishid     = $wishid;
 		//$page->created_by = JRequest::getInt('created_by', $juser->get('id'), 'post');
-		//$page->created    = date('Y-m-d H:i:s', time());
+		//$page->created    = JFactory::getDate()->toSql();
 		//$page->approved   = 1;
 		//$page->pagetext   = rtrim($_POST['pagetext']);
 

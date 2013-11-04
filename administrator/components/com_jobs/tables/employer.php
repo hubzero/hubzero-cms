@@ -110,7 +110,7 @@ class Employer extends JTable
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 		$query  = "SELECT e.id FROM $this->_tbl AS e  ";
 		if (!$admin) 
 		{

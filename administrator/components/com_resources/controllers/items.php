@@ -701,11 +701,11 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Is this a new resource?
 		if (!$id)
 		{
-			$this->view->row->created      = date('Y-m-d H:i:s', time());
+			$this->view->row->created      = JFactory::getDate()->toSql();
 			$this->view->row->created_by   = $this->juser->get('id');
-			$this->view->row->modified     = '0000-00-00 00:00:00';
+			$this->view->row->modified     = $this->database->getNullDate();
 			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = date('Y-m-d H:i:s', time());
+			$this->view->row->publish_up   = JFactory::getDate()->toSql();
 			$this->view->row->publish_down = 'Never';
 			if ($this->view->pid)
 			{

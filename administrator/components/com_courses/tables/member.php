@@ -270,7 +270,7 @@ class CoursesTableMember extends JTable
 
 		if (!$this->id)
 		{
-			$this->enrolled = date('Y-m-d H:i:s', time());
+			$this->enrolled = JFactory::getDate()->toSql();
 		}
 
 		return true;

@@ -241,7 +241,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 				$oldunits						= $subscription->units;
 
 				$months 						= $newunits * $service->unitsize;
-				$newexpire 						= ($oldunits > 0  && intval($subscription->expires) <> 0) ? date("Y-m-d", strtotime($subscription->expires . "+" . $months . "months")) : date("Y-m-d", strtotime("+" . $months . "months"));
+				$newexpire 						= ($oldunits > 0  && intval($subscription->expires) <> 0) ? JFactory::getDate(strtotime($subscription->expires . "+" . $months . "months"))->toFormat("Y-m-d") : JFactory::getDate(strtotime("+" . $months . "months"))->toFormat("Y-m-d");
 				$subscription->expires 			= $newunits ? $newexpire : $subscription->expires;
 				$subscription->status 			=  1;
 				$subscription->units 			= $subscription->units + $newunits;
@@ -277,7 +277,7 @@ class ServicesControllerSubscriptions extends Hubzero_Controller
 		if (($action && $action != 'message') || $message) 
 		{
 			$subscription->notes .= '------------------------------' . "\r\n";
-			$subscription->notes .= JText::_('Subscription status update') . ', '.date('Y-m-d H:i:s', time()) . "\r\n";
+			$subscription->notes .= JText::_('Subscription status update') . ', '.JFactory::getDate() . "\r\n";
 			$subscription->notes .= $statusmsg ? $statusmsg . "\r\n" : '';
 			$subscription->notes .= $message   ? $message . "\r\n"   : '';
 			$subscription->notes .= '------------------------------' . "\r\n";

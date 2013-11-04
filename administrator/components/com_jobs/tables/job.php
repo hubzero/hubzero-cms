@@ -319,7 +319,7 @@ class Job extends JTable
 	{
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
 		$category    = isset($filters['category']) ? $filters['category'] : 'all';
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 		$juser =& JFactory::getUser();
 		$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
 		$active = isset($filters['active']) && $filters['active'] == 1 ? 1 : 0;
@@ -522,7 +522,7 @@ class Job extends JTable
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 		$juser =& JFactory::getUser();
 		$myid = $juser->get('id');
 

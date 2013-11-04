@@ -169,8 +169,8 @@ class BlogControllerEntries extends Hubzero_Controller
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', date('Y-m-d H:i:s', time()));  // use gmdate() ?
-			$this->view->row->set('publish_up', date('Y-m-d H:i:s', time()));
+			$this->view->row->set('created', JFactory::getDate()->toSql());  // use gmdate() ?
+			$this->view->row->set('publish_up', JFactory::getDate()->toSql());
 		}
 
 		// Set any errors

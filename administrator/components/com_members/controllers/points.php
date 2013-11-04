@@ -53,8 +53,8 @@ class MembersControllerPoints extends Hubzero_Controller
 
 		$BT = new Hubzero_Bank_Transaction($this->database);
 
-		$thismonth = date('Y-m');
-		$lastmonth = date('Y-m', time() - (32 * 24 * 60 * 60));
+		$thismonth = JFactory::getDate()->toFormat('Y-m');
+		$lastmonth = JFactory::getDate(time() - (32 * 24 * 60 * 60))->toFormat('Y-m');
 
 		// Get overall earnings
 		$this->view->stats[] = array(
@@ -295,7 +295,7 @@ class MembersControllerPoints extends Hubzero_Controller
 				'category'    => JRequest::getVar('category', 'general', 'post'),
 				'amount'      => JRequest::getInt('amount', 0),
 				'description' => JRequest::getVar('description', 'Reason unspecified', 'post'),
-				'created'     => date('Y-m-d H:i:s', time())
+				'created'     => JFactory::getDate()->toSql()
 			);
 
 			switch ($data['type'])
@@ -456,7 +456,7 @@ class MembersControllerPoints extends Hubzero_Controller
 		$data = JRequest::getVar('transaction', array());
 		$data = array_map('trim', $data);
 
-		$when = date('Y-m-d H:i:s', time());
+		$when = JFactory::getDate()->toSql();
 
 		// make sure this function was not already run
 		$MH = new Hubzero_Bank_MarketHistory($this->database);
@@ -492,7 +492,7 @@ class MembersControllerPoints extends Hubzero_Controller
 				// Save log
 				$MH = new Hubzero_Bank_MarketHistory($this->database);
 				$data['itemid']       = $log['ref'];
-				$data['date']         = date("Y-m-d H:i:s");
+				$data['date']         = JFactory::getDate()->toSql();
 				$data['market_value'] = $data['amount'];
 				$data['category']     = $log['category'];
 				$data['action']       = $log['action'];
@@ -547,8 +547,8 @@ class MembersControllerPoints extends Hubzero_Controller
 		}
 
 		// What month/year is it now?
-		$curmonth = date("F");
-		$curyear = date("Y-m");
+		$curmonth = JFactory::getDate()->toFormat("F");
+		$curyear = JFactory::getDate()->toFormat("Y-m");
 		$ref = 	strtotime($curyear);
 		$this->_message = 'Royalties on Answers for '.$curyear.' were distributed successfully.';
 		$rmsg = 'Royalties on Reviews for '.$curyear.' were distributed successfully.';
@@ -591,7 +591,7 @@ class MembersControllerPoints extends Hubzero_Controller
 				{
 					$MH = new Hubzero_Bank_MarketHistory($this->database);
 					$data['itemid']       = $ref;
-					$data['date']         = date("Y-m-d H:i:s");
+					$data['date']         = JFactory::getDate()->toSql();
 					$data['market_value'] = $accumulated;
 					$data['category']     = 'answers';
 					$data['action']       = $action;
@@ -657,7 +657,7 @@ class MembersControllerPoints extends Hubzero_Controller
 			{
 				$MH = new Hubzero_Bank_MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = date("Y-m-d H:i:s");
+				$data['date']         = JFactory::getDate()->toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'reviews';
 				$data['action']       = $action;
@@ -707,7 +707,7 @@ class MembersControllerPoints extends Hubzero_Controller
 			{
 				$MH = new Hubzero_Bank_MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = date("Y-m-d H:i:s");
+				$data['date']         = JFactory::getDate()->toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'resources';
 				$data['action']       = $action;

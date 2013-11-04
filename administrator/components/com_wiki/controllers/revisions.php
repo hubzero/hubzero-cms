@@ -245,7 +245,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 
 		if (!$row->id) 
 		{
-			$row->created = date('Y-m-d H:i:s', time());
+			$row->created = JFactory::getDate()->toSql();
 		}
 
 		$page = new WikiPage($this->database);
@@ -284,7 +284,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 		$log = new WikiLog($this->database);
 		$log->pid = $page->id;
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action = ($revision['id']) ? 'revision_edited' : 'revision_created';
 		$log->actorid = $this->juser->get('id');
 		if (!$log->store()) 
@@ -398,7 +398,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 						$log = new WikiLog($this->database);
 						$log->pid = $pageid;
 						$log->uid = $this->juser->get('id');
-						$log->timestamp = date('Y-m-d H:i:s', time());
+						$log->timestamp = JFactory::getDate()->toSql();
 						$log->action = 'revision_removed';
 						$log->actorid = $this->juser->get('id');
 						if (!$log->store()) {
@@ -461,7 +461,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 			$log = new WikiLog($this->database);
 			$log->pid = $pageid;
 			$log->uid = $this->juser->get('id');
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'revision_approved';
 			$log->actorid = $this->juser->get('id');
 			if (!$log->store()) 

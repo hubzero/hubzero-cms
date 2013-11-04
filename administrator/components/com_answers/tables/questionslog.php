@@ -104,7 +104,7 @@ class AnswersTableQuestionsLog extends JTable
 
 		if (!$this->expires)
 		{
-			$this->expires = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)); // in a week
+			$this->expires = JFactory::getDate(time() + (7 * 24 * 60 * 60)); // in a week
 		}
 
 		ximport('Hubzero_Environment');
@@ -136,7 +136,7 @@ class AnswersTableQuestionsLog extends JTable
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		if ($voter !== null)
 		{

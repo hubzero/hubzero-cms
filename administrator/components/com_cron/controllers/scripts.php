@@ -51,7 +51,7 @@ class CronControllerScripts extends JObject
 
 		$this->filters = array(
 			'state'    => 1,
-			'next_run' => date('Y-m-d H:i:s', time())
+			'next_run' => JFactory::getDate()->toSql()
 		);
 
 		$this->results = $model->getJobs($this->filters);
@@ -86,7 +86,7 @@ class CronControllerScripts extends JObject
 
 				$cron = Cron\CronExpression::factory($row->recurrence);
 
-				$json['last_run'] = $model->last_run = date('Y-m-d H:i:s', time()); //$cron->getPreviousRunDate()->format('Y-m-d H:i:s');
+				$json['last_run'] = $model->last_run = JFactory::getDate()->toSql();
 				$json['next_run'] = $model->next_run = $cron->getNextRunDate()->format('Y-m-d H:i:s');
 				$json['active']   = $model->active   = 1;
 

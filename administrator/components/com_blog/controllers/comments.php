@@ -236,7 +236,7 @@ class BlogControllerComments extends Hubzero_Controller
 		{
 			$this->view->row->set('entry_id', JRequest::getInt('entry_id', 0));
 			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', date('Y-m-d H:i:s', time()));  // use gmdate() ?
+			$this->view->row->set('created', JFactory::getDate()->toSql());  // use gmdate() ?
 		}
 
 		// Set any errors

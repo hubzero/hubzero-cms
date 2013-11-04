@@ -138,7 +138,7 @@ class CronControllerJobs extends Hubzero_Controller
 
 		if (!$this->view->row->get('id'))
 		{
-			$this->view->row->set('created', date('Y-m-d H:i:s', time()));
+			$this->view->row->set('created', JFactory::getDate()->toSql());
 			$this->view->row->set('created_by', $this->juser->get('id'));
 
 			$this->view->row->set('recurrence', '');
@@ -358,7 +358,7 @@ class CronControllerJobs extends Hubzero_Controller
 				continue;
 			}
 
-			$job->set('last_run', date('Y-m-d H:i:s', time()));
+			$job->set('last_run', JFactory::getDate()->toSql());
 			$job->set('next_run', $job->nextRun());
 			$job->store();
 

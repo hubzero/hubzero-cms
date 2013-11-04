@@ -185,7 +185,7 @@ class StoreControllerItems extends Hubzero_Controller
 		{
 			// New item
 			$this->view->row->available = 0;
-			$this->view->row->created   = date('Y-m-d H:i:s', time());
+			$this->view->row->created   = JFactory::getDate()->toSql();
 			$this->view->row->published = 0;
 			$this->view->row->featured  = 0;
 			$this->view->row->special   = 0;
@@ -233,7 +233,7 @@ class StoreControllerItems extends Hubzero_Controller
 		$row->description = Hubzero_Filter::cleanXss($row->description);
 		if (!$id)
 		{
-			$row->created = $row->created ? $row->created : date("Y-m-d H:i:s");
+			$row->created = $row->created ? $row->created : JFactory::getDate()->toSql();
 		}
 		$sizes = ($_POST['sizes']) ? $_POST['sizes'] : '';
 		$sizes = str_replace(' ', '', $sizes);

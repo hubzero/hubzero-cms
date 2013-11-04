@@ -312,7 +312,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// New entry so set the created date
 		if (!$row->id) 
 		{
-			$row->created = date('Y-m-d H:i:s', time());
+			$row->created = JFactory::getDate()->toSql();
 		}
 
 		// Check content for missing required data

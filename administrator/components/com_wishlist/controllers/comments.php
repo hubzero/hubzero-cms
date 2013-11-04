@@ -219,7 +219,7 @@ class WishlistControllerComments extends Hubzero_Controller
 		{
 			$this->view->row->category    = 'wish';
 			$this->view->row->referenceid = $this->view->wish;
-			$this->view->row->added       = date('Y-m-d H:i:s', time());
+			$this->view->row->added       = JFactory::getDate()->toSql();
 			$this->view->row->added_by    = $this->juser->get('id');
 		}
 

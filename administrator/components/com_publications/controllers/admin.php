@@ -185,7 +185,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 			$obj->title = 'Administrative project';
 			$obj->state = 1;
 			$obj->type  = $admintype;
-			$obj->created = date('Y-m-d H:i:s', time());
+			$obj->created = JFactory::getDate()->toSql();
 			$obj->created_by_user = $owner;
 			$obj->owned_by_user = $owner;
 			$obj->setup_stage = 3;
@@ -239,7 +239,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		$model->category    = $appCat;
 		$model->master_type = $appMasterType;
 		$model->project_id  = $projectid;
-		$model->created 	= date('Y-m-d H:i:s', time());
+		$model->created 	= JFactory::getDate()->toSql();
 		$model->created_by 	= $owner;
 		$model->alias 		= $toolname;
 		
@@ -274,7 +274,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		$pubVersion->publication_id = $pid;
 		$pubVersion->main 			= 1;
 		$pubVersion->state 			= 1;
-		$pubVersion->created 		= date('Y-m-d H:i:s', time());
+		$pubVersion->created 		= JFactory::getDate()->toSql();
 		$pubVersion->created_by 	= $owner;
 		
 		$pubVersion->title 		 	= $tv->title ? $tv->title : 'Workspace';
@@ -411,7 +411,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		$pContent->object_revision 		  = $v;
 		
 		$pContent->params				  = 'serveas=invoke' . "\n";
-		$pContent->created 				  = date('Y-m-d H:i:s', time());
+		$pContent->created 				  = JFactory::getDate()->toSql();
 		$pContent->created_by 			  = $owner;
 		
 		if (!$pContent->store())

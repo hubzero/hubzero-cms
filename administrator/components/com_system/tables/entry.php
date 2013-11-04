@@ -105,7 +105,7 @@ class SefEntry extends JTable
 
 		if (!$this->id) 
 		{
-			$this->dateadd = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->dateadd = JFactory::getDate()->toSql();
 		}
 
 		return true;

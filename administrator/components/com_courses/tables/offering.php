@@ -239,7 +239,7 @@ class CoursesTableOffering extends JTable
 		if (!$this->id)
 		{
 			$juser =& JFactory::getUser();
-			$this->created = date('Y-m-d H:i:s', time());
+			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 
@@ -270,7 +270,7 @@ class CoursesTableOffering extends JTable
 
 		if (isset($filters['available']) && $filters['available']) 
 		{
-			$now = date('Y-m-d H:i:s', time());
+			$now = JFactory::getDate()->toSql();
 
 			$where[] = "(ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->Quote($now) . ")";

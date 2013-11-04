@@ -186,7 +186,7 @@ class KbControllerArticles extends Hubzero_Controller
 		else 
 		{
 			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', date('Y-m-d H:i:s', time()));
+			$this->view->row->set('created', JFactory::getDate()->toSql());
 		}
 
 		$this->view->params = new JParameter(

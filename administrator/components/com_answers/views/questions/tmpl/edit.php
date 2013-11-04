@@ -138,7 +138,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>
-						<td><?php echo JHTML::_('calendar', $this->row->get('created', date('Y-m-d H:i:s', time())), 'question[created]', 'created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
+						<td><?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'question[created]', 'created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="state">State:</label></td>

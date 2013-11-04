@@ -149,7 +149,7 @@ class CoursesTableAnnouncement extends JTable
 
 		$this->priority = intval($this->priority);
 
-		if ($this->publish_up && $this->publish_up != '0000-00-00 00:00:00')
+		if ($this->publish_up && $this->publish_up != $this->_db->getNullDate())
 		{
 			// Does the date have the correct format?
 			if (!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}[ ][0-9]{2}:[0-9]{2}:[0-9]{2}/", $this->publish_up)) 
@@ -168,7 +168,7 @@ class CoursesTableAnnouncement extends JTable
 			}
 		}
 
-		if ($this->publish_down && $this->publish_down != '0000-00-00 00:00:00')
+		if ($this->publish_down && $this->publish_down != $this->_db->getNullDate())
 		{
 			// Does the date have the correct format?
 			if (!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}[ ][0-9]{2}:[0-9]{2}:[0-9]{2}/", $this->publish_down)) 
@@ -192,7 +192,7 @@ class CoursesTableAnnouncement extends JTable
 		if (!$this->id)
 		{
 			$juser =& JFactory::getUser();
-			$this->created = date('Y-m-d H:i:s', time());
+			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 
@@ -238,7 +238,7 @@ class CoursesTableAnnouncement extends JTable
 
 		if (isset($filters['published']))
 		{
-			$now = date('Y-m-d H:i:s', time());
+			$now = JFactory::getDate()->toSql();
 			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now) . ")";
 		}

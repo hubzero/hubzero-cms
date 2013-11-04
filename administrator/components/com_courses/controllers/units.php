@@ -307,7 +307,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 				$log->scope_id  = $id;
 				$log->scope     = 'course_unit';
 				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
+				$log->timestamp = JFactory::getDate()->toSql();
 				$log->action    = 'unit_deleted';
 				$log->actor_id  = $this->juser->get('id');
 				if (!$log->store())
