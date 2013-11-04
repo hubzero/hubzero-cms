@@ -131,7 +131,7 @@ class plgYSearchMembers extends YSearchPlugin
 				p.uidNumber AS id,
 				p.name AS title,
 				coalesce(b.bio, '') AS description,
-				concat('/members/', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
+				concat('index.php?option=com_members&id=', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
 				$weight AS weight,
 				NULL AS date,
 				'Members' AS section,
@@ -179,7 +179,7 @@ class plgYSearchMembers extends YSearchPlugin
 				p.uidNumber AS id,
 				p.name AS title,
 				coalesce(b.bio, '') AS description,
-				concat('/members/', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
+				concat('index.php?option=com_members&id=', CASE WHEN p.uidNumber > 0 THEN p.uidNumber ELSE concat('n', abs(p.uidNumber)) END) AS link,
 				NULL AS date,
 				'Members' AS section,
 				CASE WHEN p.picture IS NOT NULL THEN concat('/site/members/', lpad(p.uidNumber, 5, '0'), '/', p.picture) ELSE NULL END AS img_href
@@ -319,7 +319,7 @@ class plgYSearchMembers extends YSearchPlugin
 	{
 		if (!($href = $res->get('img_href')) || !is_file(JPATH_ROOT.$href))
 		{
-			$href = '/components/com_members/assets/img/profile_thumb.gif';
+			$href = rtrim(JURI::base(true), '/') . '/components/com_members/assets/img/profile_thumb.gif';
 		}
 
 		return '<img src="' . $href . '" alt="' . htmlentities($res->get_title()) . '" title="' . htmlentities($res->get_title()) . '" />';

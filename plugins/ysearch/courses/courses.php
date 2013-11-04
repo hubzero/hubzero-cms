@@ -65,7 +65,7 @@ class plgYSearchCourses extends YSearchPlugin
 				c.id,
 				c.title,
 				c.blurb AS description,
-				concat('/courses/', c.alias) AS link,
+				concat('index.php?option=com_courses&gid=', c.alias) AS link,
 				$weight AS weight,
 				'Course' AS section,
 				c.created AS date

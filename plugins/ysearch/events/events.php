@@ -79,7 +79,7 @@ class plgYSearchEvents extends YSearchPlugin
 			"SELECT 
 				e.title,
 				e.content AS description,
-				concat('/events/details/', e.id) AS link,
+				concat('index.php?option=com_events&task=details&id=', e.id) AS link,
 				$weight AS weight,
 				publish_up AS date,
 				'Events' AS section

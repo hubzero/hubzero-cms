@@ -52,7 +52,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<ul class="sub-nav">
 				<li>
 					<?php if ($this->plugin): ?>
-						<a href="/ysearch/?terms=<?php echo $this->url_terms; ?>">All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_ysearch&terms=' . $this->url_terms); ?>">All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
 					<?php else: ?>
 						<strong>All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
 					<?php endif; ?>
@@ -63,7 +63,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<?php if ($this->plugin == $cat && !$this->section): ?>
 							<strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
 						<?php else: ?> 
-							<a href="/ysearch/?terms=<?php echo $cat . ':' . $this->url_terms ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
+							<a href="<?php echo JRoute::_('index.php?option=com_ysearch&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
 						<?php endif; ?>
 						<?php 
 						$fc_child_flag = 'plgYSearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
@@ -74,7 +74,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								<?php 
 								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>
-									<li><a href="/ysearch/?terms=<?php echo $cat . ':' . $section_key . ':' . $this->url_terms ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
+									<li><a href="<?php echo JRoute::_('index.php?option=com_ysearch&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
 								<?php else: ?>
 									<li><strong><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
 								<?php endif; ?>
@@ -89,17 +89,17 @@ $show_weight = array_key_exists('show_weight', $_GET);
 		</div><!-- / .container -->
 	</div><!-- / .aside -->
 	<div class="subject">
-		<form action="/ysearch/" method="get" class="container data-entry">
+		<form action="<?php echo JRoute::_('index.php?option=com_ysearch'); ?>" method="get" class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 			<fieldset class="entry-search">
 				<legend><?php echo JText::_('Search site'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('ESearch terms'); ?></label>
+				<label for="entry-search-field"><?php echo JText::_('Search terms'); ?></label>
 				<input type="text" name="terms" id="terms" <?php $this->attr('value', $this->terms) ?> placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 			</fieldset>
 		</form>
 <?php if ($this->results->valid()) : ?>
 	<?php if (($ct = $this->results->get_custom_title())): ?>
-		<p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="/ysearch/?terms=<?php echo urlencode($this->terms); ?>&amp;force-generic=1">View all results.</a></p>
+		<p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="<?php echo JRoute::_('index.php?option=com_ysearch&terms=' . urlencode($this->terms) . '&force-generic=1'); ?>">View all results.</a></p>
 	<?php endif; ?>
 
 	<div class="container">
@@ -118,7 +118,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php if (($tags = $this->results->get_tags())): ?>
 		<ol class="tags">
 			<?php foreach ($tags as $tag): ?>
-			<li><a href="<?php echo $tag->get_link(); ?>"><?php echo $tag->get_title(); ?></a></li>
+			<li><a href="<?php echo JRoute::_($tag->get_link()); ?>"><?php echo $tag->get_title(); ?></a></li>
 			<?php endforeach; ?>
 		</ol>
 	<?php endif; ?>
@@ -136,7 +136,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				<?php if ($res->has_metadata()): ?>
 					<p class="details">
 						<?php if (($section = $res->get_section())) {?><span class="section"><?php echo $section; ?></span><?php }?>
-						<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo date('j M Y', $date); ?></span><?php } ?>
+						<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo JFactory::getDate($date)->format('j M Y'); ?></span><?php } ?>
 						<?php if (($contributors = $res->get_contributors())): ?>
 						<span class="contributors">
 								<?php 
@@ -145,7 +145,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								?>
 								Contributor(s): 
 								<?php foreach ($contributors as $idx=>$contrib): ?>
-									<a href="/members/<?php echo $contrib_ids[$idx]; ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
+									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
 								<?php endforeach; ?>
 						</span>
 						<?php endif; ?>
@@ -218,7 +218,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 		</li>
 	<?php endforeach; ?>
 	</ol>
-	<form action="/ysearch/" method="get">
+	<form action="<?php echo JRoute::_('index.php?option=com_ysearch'); ?>" method="get">
 	<?php 
 	$this->pagination->setAdditionalUrlParam('terms', $this->terms);
 	echo $this->pagination->getListFooter(); ?>

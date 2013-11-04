@@ -87,11 +87,11 @@ class plgYSearchBlogs extends YSearchPlugin
 				be.title,
 				be.content AS description,
 				(CASE WHEN be.group_id > 0 AND be.scope='group' THEN
-					concat('/groups/', g.cn, '/blog/')
+					concat('index.php?option=com_groups&cn=', g.cn, '&active=blog&scope=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				WHEN be.scope='member' THEN
-					concat('/members/', be.created_by, '/blog/', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+					concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				ELSE
-					concat('/blog/', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+					concat('index.php?option=com_blog&year=', extract(year from be.created), '&month=', extract(month from be.created), '&alias=', be.alias)
 				END) AS link,
 				$weight AS weight,
 				'Blog Entry' AS section,
@@ -106,6 +106,7 @@ class plgYSearchBlogs extends YSearchPlugin
 				$weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
+
 		if (($rows = $rows->to_associative()) instanceof YSearchResultEmpty)
 		{
 			return;
@@ -121,7 +122,7 @@ class plgYSearchBlogs extends YSearchPlugin
 			"SELECT
 		 	CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
 			bc.content AS description,
-			concat('/members/', be.created_by, '/blog/', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
+			concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
 			bc.created AS date,
 			'Comments' AS section,
 			bc.entry_id

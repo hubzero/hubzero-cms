@@ -71,7 +71,7 @@ class plgYSearchKB extends YSearchPlugin
 		$user = JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$addtl_where[] = '(f.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
+			$addtl_where[] = '(f.access IN (0,' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 		}
 		else 
 		{
@@ -89,7 +89,7 @@ class plgYSearchKB extends YSearchPlugin
 			"SELECT 
 				f.title,
 				coalesce(f.`fulltxt`, '') AS description,
-				concat('/kb/', coalesce(concat(s.alias, '/'), ''), f.alias) AS link,
+				concat('index.php?option=com_kb&section=', coalesce(concat(s.alias, '/'), ''), f.alias) AS link,
 				$weight AS weight,
 				created AS date,
 				CASE 

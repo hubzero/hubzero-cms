@@ -72,7 +72,7 @@ class plgYSearchGroups extends YSearchPlugin
 			"SELECT
 				g.description AS title,
 				coalesce(g.public_desc, '') AS description,
-				concat('/groups/', g.cn) AS link,
+				concat('index.php?option=com_groups&cn=', g.cn) AS link,
 				$weight AS weight,
 				NULL AS date,
 				'Groups' AS section

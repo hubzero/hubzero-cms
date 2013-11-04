@@ -151,7 +151,7 @@ class YSearchModelRequest
 				id,
 				t.raw_tag AS title,
 				description,
-				concat('/tags/', t.tag) AS link,
+				concat('index.php?option=com_tags&tag=', t.tag) AS link,
 				$weight AS weight,
 				NULL AS date,
 				'Tags' AS section

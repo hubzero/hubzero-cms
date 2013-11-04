@@ -158,7 +158,7 @@ class plgYSearchQuestions extends YSearchPlugin
 					'description'     => $row['question'],
 					'section'         => 'Questions',
 					'date'            => $row['q_created'],
-					'link'            => '/answers/question/' . $row['qid'],
+					'link'            => 'index.php?option=com_answers&task=question&id=' . $row['qid'],
 					'weight'          => $row['qweight'],
 					'contributors'    => $row['qcontributors'],
 					'contributor_ids' => $row['qcontributor_ids']
@@ -171,7 +171,7 @@ class plgYSearchQuestions extends YSearchPlugin
 					'description'     => $row['answer'],
 					'section'         => 'Questions',
 					'date'            => $row['r_created'],
-					'link'            => '/answers/question/' . $row['qid'],
+					'link'            => 'index.php?option=com_answers&task=question&id=' . $row['qid'],
 					'weight'          => $row['rweight'],
 					'contributors'    => $row['rcontributors'],
 					'contributor_ids' => $row['rcontributor_ids']

@@ -115,9 +115,9 @@ class plgYSearchForum extends YSearchPlugin
 				f.title,
 				coalesce(f.comment, '') AS description, f.scope_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as thread,
 				(CASE WHEN f.scope_id > 0 AND f.scope='group' THEN
-					concat('/groups/', g.cn, '/forum/')
+					concat('index.php?option=com_groups&cn=', g.cn, '&active=forum')
 				ELSE
-					concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
+					concat('index.php?option=com_forum&section=', coalesce(concat(s.alias, '&category=', coalesce(concat(c.alias, '&thread='), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
 				END) AS link,
 				$weight AS weight,
 				f.created AS date,

@@ -202,11 +202,18 @@ abstract class YSearchResult
 	public function get_link()
 	{
 		if (!$this->canonicalized_link)
+		{
 			if (preg_match('/^https?:\/\//', $this->link))
+			{
 				$this->canonicalized_link = $this->link;
+			}
 			else
-				$this->canonicalized_link = (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://'.
-					$_SERVER['HTTP_HOST'].(substr($this->link, 0, 1) == '/' ? $this->link : '/' . $this->link);
+			{
+				/*$this->canonicalized_link = (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://'.
+					$_SERVER['HTTP_HOST'].(substr($this->link, 0, 1) == '/' ? $this->link : '/' . $this->link);*/
+				$this->canonicalized_link = rtrim(JURI::base(), '/') . '/' . substr(ltrim(JRoute::_($this->link), '/'), strlen(JURI::base(true)));
+			}
+		}
 		return $this->canonicalized_link;
 	}
 

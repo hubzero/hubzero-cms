@@ -87,7 +87,7 @@ class plgYSearchContent extends YSearchPlugin
 							CASE WHEN ca.name AND ca.name != s.name THEN concat('/', ca.name) ELSE '' END,
 							CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
 						)
-					ELSE concat('/content/article/', c.id) 
+					ELSE concat('index.php?option=com_content&view=article&id=', c.id) 
 				END AS link,
 				$weight AS weight,
 				publish_up AS date,
@@ -117,7 +117,7 @@ class plgYSearchContent extends YSearchPlugin
 							CASE WHEN ca.alias THEN concat('/', ca.alias) ELSE '' END, 
 							CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
 						)
-					ELSE concat('/content/article/', c.id) 
+					ELSE concat('index.php?option=com_content&view=article&id=', c.id) 
 				END AS link,
 				$weight AS weight,
 				publish_up AS date,
