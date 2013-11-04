@@ -368,7 +368,7 @@ class Hubzero_Bank_Teller extends JObject
 		$data['description'] = $desc;
 		$data['category']    = $cat;
 		$data['referenceid'] = $ref;
-		$data['created']     = JFactory::getDate();
+		$data['created']     = JFactory::getDate()->toSql();
 		$data['balance']     = $this->balance;
 
 		$BT = new Hubzero_Bank_Transaction($this->_db);
