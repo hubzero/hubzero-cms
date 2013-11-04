@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } ?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_ANSWERS_BE_POLITE'); ?></p>
 			<p><?php echo JText::_('COM_ANSWERS_NO_HTML'); ?></p>
