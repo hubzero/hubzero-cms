@@ -40,7 +40,7 @@ class modLatestGroups extends Hubzero_Module
 	 * 
 	 * @return     void
 	 */
-	public function display()
+	public function run()
 	{
 		$database =& JFactory::getDBO();
 
@@ -92,10 +92,32 @@ class modLatestGroups extends Hubzero_Module
 		//set groups to view
 		$this->groups = $groupsToDisplay;
 
+		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+
+	/**
+	 * Display module
+	 * 
+	 * @return     void
+	 */
+	public function display()
+	{
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
+
+		if (!$debug && intval($this->params->get('cache', 0)))
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			return;
+		}
+
+		$this->run();
 	}
 }

@@ -259,7 +259,7 @@ class modFeaturedresource extends Hubzero_Module
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
 		}
 

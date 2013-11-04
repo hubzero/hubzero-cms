@@ -103,10 +103,6 @@ class modLatestBlog extends Hubzero_Module
 
 		$this->posts = $rows;
 
-		// Push the module CSS to the template
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStyleSheet($this->module->module);
-
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
@@ -117,15 +113,19 @@ class modLatestBlog extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
+		// Push the module CSS to the template
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStyleSheet($this->module->module);
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
+
+		if (!$debug && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
 		}
 

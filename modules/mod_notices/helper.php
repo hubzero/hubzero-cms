@@ -136,7 +136,7 @@ class modNotices extends Hubzero_Module
 		$database =& JFactory::getDBO();
 
 		// Set today's time and date
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate();
 
 		$database->setQuery("SELECT publish_up, publish_down FROm #__modules WHERE id=" . $this->module->id);
 		$item = $database->loadObject();
@@ -150,7 +150,7 @@ class modNotices extends Hubzero_Module
 		//$stop  = JHTML::_('date', $stop, JText::_('DATE_FORMAT_HZ1'));
 
 		$this->publish = false;
-		if (!$start || $start == '0000-00-00 00:00:00') 
+		if (!$start || $start == $database->getNullDate()) 
 		{
 			$this->publish = true;
 		} 
@@ -165,7 +165,7 @@ class modNotices extends Hubzero_Module
 				$this->publish = false;
 			}
 		}
-		if (!$stop || $stop == '0000-00-00 00:00:00') 
+		if (!$stop || $stop == $database->getNullDate()) 
 		{
 			$this->publish = true;
 		} 

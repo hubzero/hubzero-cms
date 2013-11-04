@@ -50,6 +50,13 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
 				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
 			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
+			</fieldset>
 		</fields>
 	</config>
 	<languages>

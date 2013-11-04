@@ -44,13 +44,25 @@ class modQuickTips extends Hubzero_Module
 	 */
 	public function display()
 	{
+		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
+
+		if (!$debug && intval($this->params->get('cache', 0)))
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			return;
+		}
+
 		$database =& JFactory::getDBO();
 
 		$catid = trim($this->params->get('catid'));
 		$secid = trim($this->params->get('secid'));
 		$method = trim($this->params->get('method'));
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate();
 
 		if ($method == 'random') 
 		{

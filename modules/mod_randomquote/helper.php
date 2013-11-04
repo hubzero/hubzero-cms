@@ -94,15 +94,15 @@ class modRandomQuote extends Hubzero_Module
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStylesheet($this->module->module);
 
-		$juser =& JFactory::getUser();
+		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		if (!$debug && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
 		}
 

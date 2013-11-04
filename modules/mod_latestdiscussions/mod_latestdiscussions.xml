@@ -74,6 +74,13 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="yes">Yes</option>
 				</field>
 			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
+			</fieldset>
 		</fields>
 	</config>
 	<languages>

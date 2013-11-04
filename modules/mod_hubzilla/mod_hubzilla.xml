@@ -52,6 +52,13 @@
 				<field name="posTop" type="text" default="auto" label="Top" description="Top position" />
 				<field name="posBottom" type="text" default="5px" label="Bottom" description="Bottom position" />
 			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
+			</fieldset>
 		</fields>
 	</config>
 	<languages>

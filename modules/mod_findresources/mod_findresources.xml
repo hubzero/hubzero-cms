@@ -59,6 +59,8 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="cssId" type="text" default="findresources" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
 				<field name="limit" type="text" default="25" label="Number of Tags" description="The number of tags to display." />
+			</fieldset>
+			<fieldset name="advanced">
 				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
 					<option value="0">No</option>
 					<option value="1">Yes</option>

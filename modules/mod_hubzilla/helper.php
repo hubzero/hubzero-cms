@@ -38,38 +38,28 @@ defined('_JEXEC') or die('Restricted access');
 class modHubzilla extends Hubzero_Module
 {
 	/**
-	 * Get module contents
-	 * 
-	 * @return     void
-	 */
-	public function run()
-	{
-		ximport('Hubzero_Document');
-		Hubzero_Document::addModuleStylesheet($this->module->module);
-		Hubzero_Document::addModuleScript($this->module->module);
-
-		require(JModuleHelper::getLayoutPath($this->module->module));
-	}
-
-	/**
 	 * Display module
 	 * 
 	 * @return     void
 	 */
 	public function display()
 	{
-		$juser =& JFactory::getUser();
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleStylesheet($this->module->module);
+		Hubzero_Document::addModuleScript($this->module->module);
 
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
+
+		if (!$debug && intval($this->params->get('cache', 0)))
 		{
 			$cache =& JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
 		}
 
-		$this->run();
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

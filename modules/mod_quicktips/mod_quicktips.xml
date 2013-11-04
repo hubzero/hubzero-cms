@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5">
 	<name>Quick Tips</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>This module shows a quick "tip of the day" or "did you know..." feature.</description>
@@ -50,5 +50,26 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="random">Random</option>
 		</param>
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="catid" type="text" default="" label="Category" description="The category to pull entries from." />
+				<field name="secid" type="text" default="" label="Section" description="The section to pull entries from." />
+				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A class to be applied for styling." />
+				<field name="method" type="list" default="newest" label="Order" description="The method by which entries are to be displayed.">
+					<option value="newest">Newest</option>
+					<option value="ordering">Ordered</option>
+					<option value="random">Random</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 
