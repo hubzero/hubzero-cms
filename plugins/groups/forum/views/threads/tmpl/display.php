@@ -197,7 +197,7 @@ ximport('Hubzero_User_Profile_Helper');
 			<p class="comment-member-photo">
 				<?php
 				$anon = (!$juser->get('guest') ? 0 : 1);
-				$now = date('Y-m-d H:i:s', time());
+				$now = JFactory::getDate();
 				?>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="" />
 			</p>

@@ -244,12 +244,12 @@ class plgHubzeroComments extends JPlugin
 				break;
 				case 'never':
 				default:
-					$dt =mktime(0, 0, 0, $month, $day, $year);
+					$dt = mktime(0, 0, 0, $month, $day, $year);
 				break;
 			}
 
 			$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
-			$today = date('Y-m-d H:i:s', time());
+			$today = JFactory::getDate();
 
 			// Can users create comments?
 			if ($this->params->get('comments_close', 'never') == 'never' 
@@ -644,7 +644,7 @@ class plgHubzeroComments extends JPlugin
 				}
 				
 				// Prepare the title
-				$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date',$row->created, JText::_('TIME_FORMAT_HZ1')).' on '.JHTML::_('date',$row->created, JText::_('DATE_FORMAT_HZ1'));
+				$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')).' on '.JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
 				
 				// Strip html from feed item description text
 				if ($row->reports) {

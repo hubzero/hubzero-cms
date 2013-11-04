@@ -92,10 +92,10 @@ class plgXMessageHandler extends JPlugin
 						$xseen->uid = $uid;
 						$xseen->loadRecord();
 						if ($xseen->whenseen == '' 
-						 || $xseen->whenseen == '0000-00-00 00:00:00' 
+						 || $xseen->whenseen == $database->getNullDate() 
 						 || $xseen->whenseen == NULL) 
 						{
-							$xseen->whenseen = date('Y-m-d H:i:s', time());
+							$xseen->whenseen = JFactory::getDate();
 							$xseen->store(true);
 						}
 					}
@@ -138,7 +138,7 @@ class plgXMessageHandler extends JPlugin
 
 		if ($type == 'member_message') 
 		{
-			$time_limit = intval($this->params->get('time_limit', 30));
+			$time_limit  = intval($this->params->get('time_limit', 30));
 			$daily_limit = intval($this->params->get('daily_limit', 100));
 
 			// First, let's see if they've surpassed their daily limit for sending messages
@@ -188,7 +188,7 @@ class plgXMessageHandler extends JPlugin
 		// Store the message in the database
 		$xmessage->subject    = $subject;
 		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
-		$xmessage->created    = date('Y-m-d H:i:s', time());
+		$xmessage->created    = JFactory::getDate();
 		$xmessage->created_by = $juser->get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
@@ -252,8 +252,8 @@ class plgXMessageHandler extends JPlugin
 				$recipient = new Hubzero_Message_Recipient($database);
 				$recipient->uid      = $uid;
 				$recipient->mid      = $xmessage->id;
-				$recipient->created  = date('Y-m-d H:i:s', time());
-				$recipient->expires  = date('Y-m-d H:i:s', time() + (168 * 24 * 60 * 60));
+				$recipient->created  = JFactory::getDate();
+				$recipient->expires  = JFactory::getDate(time() + (168 * 24 * 60 * 60));
 				$recipient->actionid = 0; //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
 				// Get the user's methods for being notified

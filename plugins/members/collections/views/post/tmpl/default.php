@@ -208,7 +208,7 @@ if ($item->get('comments'))
 		</div>
 	<?php
 } 
-$now = date('Y-m-d H:i:s', time());
+$now = JFactory::getDate();
 ?>
 		<div class="commnts">
 			<div class="comment convo clearfix">

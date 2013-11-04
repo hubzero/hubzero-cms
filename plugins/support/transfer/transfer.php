@@ -228,7 +228,7 @@ class plgSupportTransfer extends JPlugin
 			$author =& JUser::getInstance($juser->get('id'));
 		}
 
-		$today = date('Y-m-d H:i:s', time());
+		$today = JFactory::getDate();
 
 		// Where do we transfer?
 		switch ($to_type)

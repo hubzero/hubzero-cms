@@ -277,7 +277,7 @@ class plgCoursesReviews extends JPlugin
 			}
 
 			$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
-			$today = date('Y-m-d H:i:s', time());
+			$today = JFactory::getDate();
 
 			// Can users create comments?
 			if ($this->params->get('comments_close', 'never') == 'never' 

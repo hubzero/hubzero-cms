@@ -32,9 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesType'
- * 
- * Long description (if any) ...
+ * Table class for resource sponsor
  */
 class ResourcesSponsor extends JTable
 {
@@ -102,11 +100,9 @@ class ResourcesSponsor extends JTable
 	var $description 	= NULL;  // @var text
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -115,11 +111,9 @@ class ResourcesSponsor extends JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Data validation
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True on success, False on error
 	 */
 	public function check()
 	{
@@ -141,12 +135,12 @@ class ResourcesSponsor extends JTable
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
 		{
-			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->created = JFactory::getDate();
 			$this->created_by = $juser->get('id');
 		} 
 		else 
 		{
-			$this->modified = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->modified = JFactory::getDate();
 			$this->modified_by = $juser->get('id');
 		}
 		
@@ -154,12 +148,10 @@ class ResourcesSponsor extends JTable
 	}
 	
 	/**
-	 * Short description for 'loadAlias'
+	 * Load a record by the alias
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $oid Alias
+	 * @return     boolean True on success, False on error
 	 */
 	public function load($oid=NULL)
 	{
@@ -175,7 +167,7 @@ class ResourcesSponsor extends JTable
 		
 		$oid = trim($oid);
 		
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -188,12 +180,10 @@ class ResourcesSponsor extends JTable
 	}
 
 	/**
-	 * Short description for 'getAllCount'
+	 * Get record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to apply to query
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -208,12 +198,10 @@ class ResourcesSponsor extends JTable
 	}
 
 	/**
-	 * Short description for 'getAllTypes'
+	 * Get a list of records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to apply to query
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{

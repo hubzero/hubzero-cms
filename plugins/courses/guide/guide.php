@@ -268,7 +268,7 @@ class plgCoursesGuide extends Hubzero_Plugin
 		{
 			return;
 		}
-		$member->set('first_visit', date('Y-m-d H:i:s', time()));
+		$member->set('first_visit', JFactory::getDate());
 		$member->store();
 	}
 

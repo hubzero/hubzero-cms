@@ -443,7 +443,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_approved';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -530,7 +530,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_promoted';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -633,7 +633,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_demoted';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -801,7 +801,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user_mem;
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_removed';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -953,7 +953,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_denied';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -1085,7 +1085,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		$db =& JFactory::getDBO();
 		foreach ($user_emails as $ue) 
 		{
-			$sql = "DELETE FROM #__xgroups_inviteemails WHERE email=".$db->quote($ue);
+			$sql = "DELETE FROM #__xgroups_inviteemails WHERE email=".$db->Quote($ue);
 			$db->setQuery($sql);
 			$db->query();
 		}
@@ -1097,7 +1097,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_invite_cancelled';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -1114,7 +1114,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_invite_cancelled';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -1156,7 +1156,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		$db = JFactory::getDBO();
-		$sql = "INSERT INTO #__xgroups_roles(gidNumber,role) VALUES('".$gid."','".$role."')";
+		$sql = "INSERT INTO #__xgroups_roles(gidNumber,role) VALUES(".$db->Quote($gid).",".$db->Quote($role).")";
 		$db->setQuery($sql);
 		if (!$db->query()) 
 		{
@@ -1188,11 +1188,11 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		$db =& JFactory::getDBO();
-		$sql = "DELETE FROM #__xgroups_member_roles WHERE role='".$role."'";
+		$sql = "DELETE FROM #__xgroups_member_roles WHERE role=".$db->Quote($role);
 		$db->setQuery($sql);
 		$db->query();
 
-		$sql = "DELETE FROM #__xgroups_roles WHERE id='".$role."'";
+		$sql = "DELETE FROM #__xgroups_roles WHERE id=".$db->Quote($role);
 		$db->setQuery($sql);
 		$db->query();
 
@@ -1289,7 +1289,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 		}
 
 		$db =& JFactory::getDBO();
-		$sql = "INSERT INTO #__xgroups_member_roles(role,uidNumber) VALUES('" . $role . "','" . $uid . "')";
+		$sql = "INSERT INTO #__xgroups_member_roles(role,uidNumber) VALUES(" . $db->Quote($role) . "," . $db->Quote($uid) . ")";
 		$db->setQuery($sql);
 		$db->query();
 
@@ -1323,7 +1323,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 
 		$db =& JFactory::getDBO();
 
-		$sql = "DELETE FROM #__xgroups_member_roles WHERE role='" . $role . "' AND uidNumber='" . $uid . "'";
+		$sql = "DELETE FROM #__xgroups_member_roles WHERE role=" . $db->Quote($role) . " AND uidNumber=" . $db->Quote($uid);
 		$db->setQuery($sql);
 		$db->query();
 

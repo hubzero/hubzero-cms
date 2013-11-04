@@ -31,20 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$now = date('Y-m-d H:i:s', time());
+$now = JFactory::getDate();
 
 $year  = JHTML::_('date', $now, 'Y');
 $month = JHTML::_('date', $now, 'm');
 $day   = JHTML::_('date', $now, 'd');
 
-$weeklater = date('Y-m-d H:i:s', mktime(0, 0, 0, $month, $day+7, $year));
+$weeklater = JFactory::getDate(mktime(0, 0, 0, $month, $day+7, $year));
 
 $database = JFactory::getDBO();
 
 $query  = "SELECT sd.* 
 		FROM #__courses_offering_section_dates AS sd
 		WHERE sd.section_id=" . $this->offering->section()->get('id') . "
-		AND (sd.publish_up >= '" . $now . "' AND sd.publish_up <= '" . $weeklater . "') 
+		AND (sd.publish_up >= " . $database->Quote($now) . "' AND sd.publish_up <= " . $database->Quote($weeklater) . ") 
 		ORDER BY sd.publish_up";
 
 $database->setQuery($query);

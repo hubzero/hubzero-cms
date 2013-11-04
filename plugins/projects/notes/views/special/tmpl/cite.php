@@ -65,7 +65,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$now = date('Y-m-d H:i:s', time());
+$now = JFactory::getDate();
 
 $juri =& JURI::getInstance();
 $permalink = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option='.$this->option.'&scope='.$page->scope.'&pagename=' . $page->pagename . '&version=' . $revision->version), DS);
