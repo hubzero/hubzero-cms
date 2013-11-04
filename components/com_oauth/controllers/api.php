@@ -161,7 +161,7 @@ class OauthControllerApi extends Hubzero_Api_Controller
 			$db->Quote($token_secret) . ", " .
 			$db->Quote($callback_url) . ", " .
 			$db->Quote($verifier) .
-			", NOW());"); 
+			", UTC_TIMESTAMP());"); 
 		
 		if (!$db->query())
 		{

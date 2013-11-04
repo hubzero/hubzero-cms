@@ -418,7 +418,7 @@ class Hubzero_Oauth_Provider
 				$db->Quote($this->_provider->nonce) . 
 				"," .
 				$db->Quote($this->_provider->timestamp) . 
-				", NOW());");
+				", UTC_TIMESTAMP());");
 
 		if (($db->query() === false) && ($db->getErrorNum() != 1062)) // duplicate row error ok (well expected anyway)
 		{

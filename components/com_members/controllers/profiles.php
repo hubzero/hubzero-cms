@@ -1704,7 +1704,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$user  = array();
 		$users = array();
 
-		$sql = "SELECT s.username, s.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
+		$sql = "SELECT s.username, s.ip, (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - s.time) AS idle 
 				FROM #__session AS s WHERE s.username <> '' 
 				ORDER BY username, ip, idle DESC";
 
@@ -1745,7 +1745,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		$guests = array();
-		$sql = "SELECT s.ip, (UNIX_TIMESTAMP(NOW()) - s.time) AS idle 
+		$sql = "SELECT s.ip, (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - s.time) AS idle 
 				FROM #__session AS s WHERE s.username = '' 
 				ORDER BY ip, idle DESC";
 

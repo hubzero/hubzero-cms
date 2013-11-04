@@ -130,7 +130,7 @@ class GroupEventMacro extends WikiMacro
 
 		//build query
 		$sql = "SELECT * FROM #__events 
-				WHERE publish_up >= NOW()
+				WHERE publish_up >= UTC_TIMESTAMP()
 				AND scope=" . $database->quote('group') . "
 				AND scope_id=" . $database->Quote($group->get('gidNumber')) . " 
 				AND state=1";
@@ -173,21 +173,21 @@ class GroupEventMacro extends WikiMacro
 				
 				//build date
 				$date = '';
-				$publishUp = strtotime($event->publish_up);
+				$publishUp   = strtotime($event->publish_up);
 				$publishDown = strtotime($event->publish_down);
 				if (date("z", $publishUp) == date("z", $publishDown))
 				{
-					$date  = date('m/d/Y @ g:i a', $publishUp);
-					$date .= ' &mdash; ' . date('g:i a', $publishDown);
+					$date  = JFactory::getDate($publishUp)->toFormat('m/d/Y @ g:i a');
+					$date .= ' &mdash; ' . JFactory::getDate($publishDown)->toFormat('g:i a');
 				}
 				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
 				{
-					$date  = date('m/d/Y @ g:i a', $publishUp);
-					$date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . date('m/d/Y @ g:i a', $publishDown);
+					$date  = JFactory::getDate($publishUp)->toFormat('m/d/Y @ g:i a');
+					$date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . JFactory::getDate($publishDown)->toFormat('m/d/Y @ g:i a');
 				}
 				else
 				{
-					$date  = date('m/d/Y @ g:i a', $publishUp);
+					$date  = JFactory::getDate($publishUp)->toFormat('m/d/Y @ g:i a');
 				}
 				
 				//shorten content

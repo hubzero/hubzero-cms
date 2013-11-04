@@ -99,7 +99,7 @@ class plgCronNewsletter extends JPlugin
 				WHERE nm.id=nmr.mid
 				AND nmr.status='queued'
 				AND nm.deleted=0
-				AND NOW() >= nm.date
+				AND UTC_TIMESTAMP() >= nm.date
 				ORDER BY nmr.date_added
 				LIMIT {$limit}";
 		$database->setQuery( $sql );

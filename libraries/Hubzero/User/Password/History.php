@@ -83,7 +83,7 @@ class Hubzero_User_Password_History
 		}
 
 		if (empty($invalidated)) {
-			$invalidated = "NOW()";
+			$invalidated = "UTC_TIMESTAMP()";
 		}
 		else {
 			$invalidated = $db->Quote($invalidated); 

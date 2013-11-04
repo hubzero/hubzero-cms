@@ -1105,7 +1105,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		
 		$member_id = $this->db->loadResult();
 		
-		$sql = 'UPDATE `#__courses_member_badges` SET `action` = ' . $this->db->quote($action) . ', `action_on` = NOW() 
+		$sql = 'UPDATE `#__courses_member_badges` SET `action` = ' . $this->db->quote($action) . ', `action_on` = UTC_TIMESTAMP() 
 				WHERE member_id = ' . $this->db->quote($member_id);
 				
 		$this->db->setQuery($sql);

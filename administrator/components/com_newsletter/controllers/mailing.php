@@ -136,13 +136,14 @@ class NewsletterControllerMailing extends Hubzero_Controller
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
 		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
 		{
+			$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 			$document =& JFactory::getDocument();
-			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
-			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
+			$document->addScript( $base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
+			$document->addScript( $base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
 			
-			$document->addScript( '/media/system/js/jvectormap/jquery.jvectormap.min.js' );
-			$document->addScript( '/media/system/js/jvectormap/maps/jquery.jvectormap.us.js' );
-			$document->addScript( '/media/system/js/jvectormap/maps/jquery.jvectormap.world.js' );
+			$document->addScript( $base . '/media/system/js/jvectormap/jquery.jvectormap.min.js' );
+			$document->addScript( $base . '/media/system/js/jvectormap/maps/jquery.jvectormap.us.js' );
+			$document->addScript( $base . '/media/system/js/jvectormap/maps/jquery.jvectormap.world.js' );
 			
 			$document->addScript( 'components/com_newsletter/assets/js/newsletter.jquery.js?v=' . time() );
 			$document->addStyleSheet( 'components/com_newsletter/assets/css/newsletter.css' );
@@ -322,7 +323,7 @@ class NewsletterControllerMailing extends Hubzero_Controller
 				WHERE nm.id=nmr.mid
 				AND nmr.status='queued'
 				AND nm.deleted=0
-				AND NOW() >= nm.date
+				AND UTC_TIMESTAMP() >= nm.date
 				ORDER BY nmr.date_added
 				LIMIT {$limit}";
 		$this->database->setQuery( $sql );

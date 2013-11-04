@@ -259,7 +259,7 @@ class CollectionsTableItem extends JTable
 				$where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 WHERE s.item_id = s2.item_id)";
 				if (isset($filters['trending']))
 				{
-					$where[] = "s.created >= DATE_FORMAT(NOW(), '%Y-%m-01 00:00:00')";
+					$where[] = "s.created >= DATE_FORMAT(UTC_TIMESTAMP(), '%Y-%m-01 00:00:00')";
 				}
 			}
 		}
