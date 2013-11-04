@@ -44,7 +44,7 @@ $database = JFactory::getDBO();
 $query  = "SELECT sd.* 
 		FROM #__courses_offering_section_dates AS sd
 		WHERE sd.section_id=" . $this->offering->section()->get('id') . "
-		AND (sd.publish_up >= " . $database->Quote($now) . "' AND sd.publish_up <= " . $database->Quote($weeklater) . ") 
+		AND (sd.publish_up >= " . $database->Quote($now) . " AND sd.publish_up <= " . $database->Quote($weeklater) . ") 
 		ORDER BY sd.publish_up";
 
 $database->setQuery($query);
