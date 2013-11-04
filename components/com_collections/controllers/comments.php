@@ -989,7 +989,7 @@ class plgGroupsBulletinboard extends JPlugin
 		// Set the created time
 		if (!$row->id) 
 		{
-			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$row->created = JFactory::getDate()->toSql();
 		}
 
 		// Check content

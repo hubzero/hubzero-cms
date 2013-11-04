@@ -178,7 +178,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			//$row->set('comment', Hubzero_View_Helper_Html::purifyText($row->get('comment')));
 			$row->set('comment', nl2br($row->get('comment')));
 			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
-			$row->set('added', date('Y-m-d H:i:s'));
+			$row->set('added', JFactory::getDate()->toSql());
 			$row->set('state', 0);
 			$row->set('added_by', $this->juser->get('id'));
 
@@ -400,7 +400,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$v->category    = $cat;
 			$v->voter       = $this->juser->get('id');
 			$v->ip          = $ip;
-			$v->voted       = date('Y-m-d H:i:s', time());
+			$v->voted       = JFactory::getDate()->toSql();
 			$v->helpful     = $vote;
 			if (!$v->check()) 
 			{

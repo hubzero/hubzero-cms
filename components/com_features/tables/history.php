@@ -110,7 +110,7 @@ class FeaturesHistory extends JTable
 
 		if (!$this->featured) 
 		{
-			$this->featured = date('Y-m-d H:i:s', time());
+			$this->featured = JFactory::getDate()->toSql();
 		}
 
 		return true;

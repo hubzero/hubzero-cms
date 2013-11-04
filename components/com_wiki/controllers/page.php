@@ -744,7 +744,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->revision->id = 0;
 		$this->revision->version++;
 		
-		$this->revision->created    = date('Y-m-d H:i:s', time());
+		$this->revision->created    = JFactory::getDate()->toSql();
 		$this->revision->created_by = $this->juser->get('id');
 		//$this->revision->version    = (isset($rev['version']))    ? intval($rev['version'])    : 0;
 		$this->revision->summary    = (isset($rev['summary']))    ? preg_replace('/\s+/', ' ', trim($rev['summary'])) : '';
@@ -959,7 +959,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$log = new WikiLog($this->database);
 		$log->pid       = $this->page->id;
 		$log->uid       = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action    = ($this->revision->version == 1) ? 'page_created' : 'page_edited';
 		$log->actorid   = $this->juser->get('id');
 		$log->comments  = json_encode($data);
@@ -1053,7 +1053,7 @@ class WikiControllerPage extends Hubzero_Controller
 				$log = new WikiLog($this->database);
 				$log->pid       = $this->page->id;
 				$log->uid       = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
+				$log->timestamp = JFactory::getDate()->toSql();
 				$log->action    = 'page_removed';
 				$log->actorid   = $this->juser->get('id');
 				$log->comments  = json_encode($this->page);
@@ -1274,7 +1274,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$log = new WikiLog($this->database);
 		$log->pid       = $page->id;
 		$log->uid       = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action    = 'page_renamed';
 		$log->actorid   = $this->juser->get('id');
 		$log->comments  = json_encode($data);

@@ -291,7 +291,7 @@ class ProjectsHelper extends JObject {
 		$attachment->pageid      	= $page->id;
 		$attachment->filename    	= $file;
 		$attachment->description 	= '';
-		$attachment->created     	= date('Y-m-d H:i:s', time());
+		$attachment->created     	= JFactory::getDate()->toSql();
 		
 		if (!$uid)
 		{

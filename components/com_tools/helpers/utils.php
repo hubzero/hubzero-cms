@@ -583,7 +583,7 @@ class ToolsHelperUtils
 		$oldest = end($rows);
 		
 		//createed date
-		$created = date('Y-m-d H:i:s', time());
+		$created = JFactory::getDate()->toSql();
 		
 		// Check if any recent tools are the same as the one just launched
 		if ($thisapp) 

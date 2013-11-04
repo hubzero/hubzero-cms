@@ -336,7 +336,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$attachment->pageid      = $listdir;
 		$attachment->filename    = $filename . '.' . $ext;
 		$attachment->description = trim(JRequest::getVar('description', '', 'post'));
-		$attachment->created     = date('Y-m-d H:i:s', time());
+		$attachment->created     = JFactory::getDate()->toSql();
 		$attachment->created_by  = $this->juser->get('id');
 
 		if (!$attachment->check()) 
@@ -426,7 +426,7 @@ class WikiControllerMedia extends Hubzero_Controller
 			$attachment->pageid      = $listdir;
 			$attachment->filename    = $file['name'];
 			$attachment->description = trim(JRequest::getVar('description', '', 'post'));
-			$attachment->created     = date('Y-m-d H:i:s', time());
+			$attachment->created     = JFactory::getDate()->toSql();
 			$attachment->created_by  = $this->juser->get('id');
 
 			if (!$attachment->check()) 

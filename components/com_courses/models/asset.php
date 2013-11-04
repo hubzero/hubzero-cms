@@ -237,7 +237,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view = new CoursesTableAssetViews($this->_db);
 		$view->asset_id          = $this->_tbl->id;
 		$view->course_id         = $this->get('course_id');
-		$view->viewed            = date('Y-m-d H:i:s', time());
+		$view->viewed            = JFactory::getDate()->toSql();
 		$view->viewed_by         = $member->get('id');
 		$view->ip                = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');

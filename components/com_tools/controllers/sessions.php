@@ -624,7 +624,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		if ($appcount > 1) 
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . date("g:i a") . ')';
+			$app->caption .= ' (' . JFactory::getDate("g:i a") . ')';
 		}
 
 		// Save the changed caption
@@ -1243,7 +1243,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$tool = new ToolVersion($this->database);
 		$tool->loadFromName($app);
 
-		$created = date('Y-m-d H:i:s', time());
+		$created = JFactory::getDate()->toSql();
 
 		// Get a list of all their recent tools
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'tables' . DS . 'recent.php');

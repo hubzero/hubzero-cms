@@ -172,10 +172,10 @@ class BlogModelEntry extends \Hubzero\Model
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate();
 
 		if ($this->get('publish_up') 
-		 && $this->get('publish_up') != '0000-00-00 00:00:00' 
+		 && $this->get('publish_up') != $this->_db->getNullDate() 
 		 && $this->get('publish_up') > $now) 
 		{
 			return false;
@@ -197,10 +197,10 @@ class BlogModelEntry extends \Hubzero\Model
 			return true;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate();
 
 		if ($this->get('publish_down') 
-		 && $this->get('publish_down') != '0000-00-00 00:00:00' 
+		 && $this->get('publish_down') != $this->_db->getNullDate() 
 		 && $this->get('publish_down') <= $now) 
 		{
 			return true;

@@ -218,7 +218,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->filters['enduploaddate']   = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['enduploaddate']));
 		if ($this->view->filters['enduploaddate'] == "1969-12-31 19:00:00")
 		{ 
-			$this->view->filters['enduploaddate'] = date('Y-m-d H:i:s', time());
+			$this->view->filters['enduploaddate'] = JFactory::getDate();
 		}
 
 		//Make sure the end date for the upload search isn't before the start date
@@ -735,7 +735,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// New entry so set the created date
 		if (!$row->id) 
 		{
-			$row->created = date('Y-m-d H:i:s', time());
+			$row->created = JFactory::getDate()->toSql();
 		}
 
 		// Field named 'uri' due to conflict with existing 'url' variable
@@ -998,7 +998,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$ext = (strtolower($download) == 'bibtex') ? '.bib' : '.enw';
 
 		//filename
-		$filename = 'citations_export_' . strtolower($download) . '_' . date("Y_m_d") . $ext;
+		$filename = 'citations_export_' . strtolower($download) . '_' . JFactory::getDate("Y_m_d") . $ext;
 
 		//output file
 		header('Content-Type: application/octet-stream');

@@ -336,7 +336,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		$log = new WikiLog($this->database);
 		$log->pid       = $this->page->id;
 		$log->uid       = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action    = 'revision_removed';
 		$log->actorid   = $this->juser->get('id');
 		if (!$log->store()) 
@@ -396,7 +396,7 @@ class WikiControllerHistory extends Hubzero_Controller
 		$log = new WikiLog($this->database);
 		$log->pid       = $this->page->id;
 		$log->uid       = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action    = 'revision_approved';
 		$log->actorid   = $this->juser->get('id');
 		if (!$log->store()) 

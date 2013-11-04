@@ -179,7 +179,7 @@ class ContribtoolHelper
 	public function record_view($database, $ticketid)
 	{
 		$juser =& JFactory::getUser();
-		$when = date('Y-m-d H:i:s', time());
+		$when = JFactory::getDate()->toSql();
 
 		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='" . $ticketid . "' AND uid=" . $juser->get('id');
 		$database->setQuery($sql);

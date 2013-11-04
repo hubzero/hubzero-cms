@@ -289,7 +289,7 @@ class StoreControllerShop extends Hubzero_Controller
 					$item->itemid = $this->view->id;
 					$item->uid = $this->juser->get('id');
 					$item->type = $purchasetype;
-					$item->added = date('Y-m-d H:i:s', time());
+					$item->added = JFactory::getDate()->toSql();
 					$item->quantity = 1;
 					$item->selections = '';
 
@@ -457,7 +457,7 @@ class StoreControllerShop extends Hubzero_Controller
 			return;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		// Get cart object
 		$item = new Cart($this->database);

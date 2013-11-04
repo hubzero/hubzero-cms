@@ -210,7 +210,7 @@ class KbModelArticle extends \Hubzero\Model
 		}
 
 		$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
-		$today = date('Y-m-d H:i:s', time());
+		$today = JFactory::getDate();
 
 		if ($this->param('close_comments') != 'now' && $today < $pdt)
 		{
@@ -238,7 +238,7 @@ class KbModelArticle extends \Hubzero\Model
 	 */
 	public function modified($as='')
 	{
-		if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00')
+		if (!$this->get('modified') || $this->get('modified') == $this->_db->getNullDate())
 		{
 			$this->set('modified', $this->get('created'));
 		}

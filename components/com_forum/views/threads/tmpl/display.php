@@ -191,7 +191,7 @@ $this->thread->set('category', $this->category->get('alias'));
 			<p class="comment-member-photo">
 				<?php
 				$anon = (!$juser->get('guest') ? 0 : 1); 
-				$now  = date('Y-m-d H:i:s', time());
+				$now  = JFactory::getDate();
 				?>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('COM_FORUM_USER_PHOTO'); ?>" />
 			</p>

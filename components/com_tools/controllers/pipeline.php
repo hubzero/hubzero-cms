@@ -947,7 +947,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$tool = array_map('trim', $tool);
 		$tool = array_map(array('JRequest', '_cleanVar'), $tool); // Sanitize the input a bit
 
-		$today = date('Y-m-d H:i:s', time());
+		$today = JFactory::getDate()->toSql();
 
 		$group_prefix = $this->config->get('group_prefix', 'app-');
 		$dev_suffix   = $this->config->get('dev_suffix', '_dev');
@@ -1122,7 +1122,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$hzg->create();
 			$hzg->set('type', 2);
 			$hzg->set('description', "{$tool['title']} Development Group");
-			$hzg->set('created', date("Y-m-d H:i:s"));
+			$hzg->set('created', JFactory::getDate()->toSql());
 			$hzg->set('created_by', $this->juser->get('id'));
 		}
 		else
@@ -1474,7 +1474,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		}
 
 		$hzt->state = $newstate;
-		$hzt->state_changed = date('Y-m-d H:i:s', time());
+		$hzt->state_changed = JFactory::getDate()->toSql();
 		$hzt->update();
 
 		$status = $hztv->toArray();
@@ -1605,7 +1605,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 			$xlog->logDebug(__FUNCTION__ . "() state changing to $newstate");
 			$hzt->state = $newstate;
-			$hzt->state_changed = date('Y-m-d H:i:s', time());
+			$hzt->state_changed = JFactory::getDate()->toSql();
 		}
 
 		// if priority changes 
@@ -1805,7 +1805,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// Compose Message
 		$message  = strtoupper(JText::_('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
 		$message .= strtoupper(JText::_('COM_TOOLS_SUMMARY')) . ': ' . $summary . "\r\n";
-		$message .= strtoupper(JText::_('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', date('Y-m-d H:i:s', time()), JText::_('DATE_FORMAT_HZ1')) . "\r\n";
+		$message .= strtoupper(JText::_('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', JFactory::getDate()->toSql(), JText::_('DATE_FORMAT_HZ1')) . "\r\n";
 		$message .= strtoupper(JText::_('COM_TOOLS_BY')) . ': ' . $this->juser->get('username') . "\r\n";
 		$message .= '----------------------------' . "\r\n\r\n";
 		if ($comment) 
@@ -2012,7 +2012,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		
 		if (!empty($log['changes']) || $comment)
 		{
-			$rowc->created    = date('Y-m-d H:i:s', time());
+			$rowc->created    = JFactory::getDate()->toSql();
 			$rowc->created_by = $this->juser->get('username');
 			$rowc->changelog  = json_encode($log);
 			$rowc->access     = $access;
@@ -2203,7 +2203,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$rowc->comment = nl2br($comment);
 			$rowc->comment = str_replace('<br>', '<br />', $rowc->comment);
 		}
-		$rowc->created    = date('Y-m-d H:i:s', time());
+		$rowc->created    = JFactory::getDate()->toSql();
 		$rowc->created_by = $this->juser->get('username');
 		$rowc->changelog  = json_encode($log);
 		$rowc->access     = $access;
@@ -2242,7 +2242,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		$row = new SupportTicket($this->database);
 		$row->status   = 0;
-		$row->created  = date("Y-m-d H:i:s");
+		$row->created  = JFactory::getDate()->toSql();
 		$row->login    = $this->juser->get('username');
 		$row->severity = 'normal';
 		$row->summary  = JText::_('COM_TOOLS_NEW_TOOL_SUBMISSION') . ': ' . $tool['toolname'];

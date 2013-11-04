@@ -188,10 +188,10 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		if ($this->get('expires') 
-		 && $this->get('expires') != '0000-00-00 00:00:00' 
+		 && $this->get('expires') != $this->_db->getNullDate() 
 		 && $this->get('expires') <= $now) 
 		{
 			return true;
@@ -234,7 +234,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			$redeemed_by = JFactory::getUser()->get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
-		$this->set('redeemed', date('Y-m-d H:i:s', time()));
+		$this->set('redeemed', JFactory::getDate()->toSql());
 		return $this->store();
 	}
 }

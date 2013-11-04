@@ -263,16 +263,16 @@ class ResourcesModelResource extends JObject
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate();
 
 		if ($this->resource->publish_up 
-		 && $this->resource->publish_up != '0000-00-00 00:00:00' 
+		 && $this->resource->publish_up != $this->_db->getNullDate() 
 		 && $this->resource->publish_up >= $now) 
 		{
 			return false;
 		}
 		if ($this->resource->publish_down 
-		 && $this->resource->publish_down != '0000-00-00 00:00:00' 
+		 && $this->resource->publish_down != $this->_db->getNullDate() 
 		 && $this->resource->publish_down <= $now) 
 		{
 			return false;

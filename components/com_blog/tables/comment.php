@@ -124,7 +124,7 @@ class BlogTableComment extends JTable
 		}
 		if (!$this->id)
 		{
-			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->created = JFactory::getDate()->toSql();
 		}
 
 		return true;

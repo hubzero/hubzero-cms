@@ -436,7 +436,7 @@ class WikiPage extends JTable
 	 */
 	public function setRevisionId($id=null)
 	{
-		$modified = date('Y-m-d H:i:s', time());
+		$modified = JFactory::getDate()->toSql();
 		if (!$id)
 		{
 			$revision = $this->getCurrentRevision();
@@ -444,7 +444,7 @@ class WikiPage extends JTable
 			$modified = $revision->created;
 		}
 		$this->version_id = $id;
-		$this->modified   = $modified;  // use gmdate() ?
+		$this->modified   = $modified;
 
 		return $this->store();
 	}
@@ -556,8 +556,8 @@ class WikiPage extends JTable
 				return false;
 			}
 			$juser =& JFactory::getUser();
-			$this->created = date('Y-m-d H:i:s', time());
-			$this->modified = date('Y-m-d H:i:s', time());
+			$this->created = JFactory::getDate()->toSql();
+			$this->modified = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 

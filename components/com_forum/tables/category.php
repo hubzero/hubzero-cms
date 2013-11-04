@@ -362,7 +362,7 @@ class ForumTableCategory extends JTable
 		$juser =& JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = date('Y-m-d H:i:s', time());
+			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 			if (!$this->ordering)
 			{
@@ -371,7 +371,7 @@ class ForumTableCategory extends JTable
 		}
 		else 
 		{
-			$this->modified = date('Y-m-d H:i:s', time());
+			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 

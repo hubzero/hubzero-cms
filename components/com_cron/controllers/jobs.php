@@ -79,7 +79,7 @@ class CronControllerJobs extends Hubzero_Controller
 
 		$filters = array(
 			'state'    => 1,
-			'next_run' => date('Y-m-d H:i:s', time())
+			'next_run' => JFactory::getDate()->toSql()
 		);
 
 		$output = new stdClass;
@@ -97,7 +97,7 @@ class CronControllerJobs extends Hubzero_Controller
 					continue;
 				}
 
-				$job->set('last_run', date('Y-m-d H:i:s', time()));
+				$job->set('last_run', JFactory::getDate()->toSql());
 				$job->set('next_run', $job->nextRun());
 				$job->store();
 

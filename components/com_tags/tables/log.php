@@ -114,7 +114,7 @@ class TagsTableLog extends JTable
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
 		{
-			$this->timestamp = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->timestamp = JFactory::getDate()->toSql();
 			$this->actorid = $juser->get('id');
 		}
 

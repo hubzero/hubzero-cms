@@ -192,10 +192,10 @@ class CoursesModelSection extends CoursesModelAbstract
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		if ($this->get('start_date') 
-		 && $this->get('start_date') != '0000-00-00 00:00:00' 
+		 && $this->get('start_date') != $this->_db->getNullDate() 
 		 && $this->get('start_date') > $now) 
 		{
 			return false;
@@ -216,10 +216,10 @@ class CoursesModelSection extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		if ($this->get('end_date') 
-		 && $this->get('end_date') != '0000-00-00 00:00:00' 
+		 && $this->get('end_date') != $this->_db->getNullDate() 
 		 && $this->get('end_date') <= $now) 
 		{
 			return true;

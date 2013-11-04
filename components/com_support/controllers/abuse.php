@@ -199,7 +199,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 		$row->report     = Hubzero_Filter::cleanXss($row->report);
 		$row->report     = nl2br($row->report);
 		$row->created_by = $this->juser->get('id');
-		$row->created    = date('Y-m-d H:i:s', time());
+		$row->created    = JFactory::getDate()->toSql();
 		$row->state      = 0;
 
 		// Check content

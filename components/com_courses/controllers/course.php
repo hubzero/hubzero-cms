@@ -530,7 +530,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Get and set some vars
-		$date = date('Y-m-d H:i:s', time());
+		$date = JFactory::getDate();
 
 		$jconfig =& JFactory::getConfig();
 
@@ -569,7 +569,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$xlog = new CoursesTableLog($this->database);
 		$xlog->gid       = $this->course->get('id');
 		$xlog->uid       = $this->juser->get('id');
-		$xlog->timestamp = date('Y-m-d H:i:s', time());
+		$xlog->timestamp = JFactory::getDate()->toSql();
 		$xlog->action    = 'course_deleted';
 		$xlog->comments  = $log;
 		$xlog->actorid   = $this->juser->get('id');

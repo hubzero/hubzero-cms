@@ -122,7 +122,7 @@ class CollectionsTableVote extends JTable
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
 		{
-			$this->voted = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->voted = JFactory::getDate()->toSql();
 			$this->user_id = $juser->get('id');
 		}
 

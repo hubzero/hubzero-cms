@@ -186,7 +186,7 @@ if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'li
 					<br />
 					<span class="entry-date">
 						<?php 
-						$now = date('Y-m-d H:i:s', time()); 
+						$now = JFactory::getDate(); 
 						?>
 						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
 						<span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span> 

@@ -141,7 +141,7 @@ class TagsTableObject extends JTable
 
 		if (!$this->id)
 		{
-			$this->taggedon = date('Y-m-d H:i:s', time());
+			$this->taggedon = JFactory::getDate()->toSql();
 		}
 
 		return true;

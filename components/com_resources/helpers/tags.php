@@ -97,7 +97,7 @@ class ResourcesTags extends TagsHandler
 	public function get_tags_with_objects($id=0, $type=0, $tag='')
 	{
 		$juser =& JFactory::getUser();
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		$this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'");
 		$objs = $this->_db->loadObjectList();
@@ -228,7 +228,7 @@ class ResourcesTags extends TagsHandler
 	public function get_objects_on_tag($tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array())
 	{
 		$juser =& JFactory::getUser();
-		$now  = date('Y-m-d H:i:s', time());
+		$now  = JFactory::getDate()->toSql();
 
 		if ($tag || $tag2) 
 		{

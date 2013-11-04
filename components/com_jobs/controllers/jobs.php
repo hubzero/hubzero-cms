@@ -724,7 +724,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$units 		= JRequest::getInt('units_' . $serviceid, 0);
 		$contact 	= JRequest::getVar('contact', '');
 		$total 		= $service->unitprice * $units;
-		$now 		= date('Y-m-d H:i:s', time());
+		$now 		= JFactory::getDate()->toSql();
 		$new 		= 0;
 		$credit 	= 0;
 
@@ -732,7 +732,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		if ($units) 
 		{
 			$months = $units * $service->unitsize;
-			$newexprire = date("Y-m-d", strtotime('+' . $months . 'months'));
+			$newexprire = JFactory::getDate(strtotime('+' . $months . 'months'));
 
 			if ($total && !$contact) 
 			{
@@ -782,7 +782,7 @@ class JobsControllerJobs extends Hubzero_Controller
 					$subscription->units = $autoapprove && !$total ? $subscription->units + $units : $subscription->units;
 					$subscription->pendingunits = $autoapprove && !$total ? 0 : $units;
 					$subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
-					$newexprire = date("Y-m-d", strtotime('+' . $subscription->units * $service->unitsize . 'months'));
+					$newexprire = JFactory::getDate(strtotime('+' . $subscription->units * $service->unitsize . 'months'));
 					$subscription->expires = $autoapprove && !$total ? $newexprire : $subscription->expires;
 					$subscription->updated = $now;
 				} 
@@ -1231,7 +1231,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		$job = new Job($this->database);
 		$ja  = new JobApplication($this->database);
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		if (!$job->loadJob($code)) 
 		{
@@ -1473,11 +1473,11 @@ class JobsControllerJobs extends Hubzero_Controller
 			}
 
 			$job->editedBy = $this->juser->get('id');
-			$job->edited   = date('Y-m-d H:i:s');
+			$job->edited   = JFactory::getDate()->toSql();
 		} 
 		else 
 		{
-			$job->added   = date('Y-m-d H:i:s');
+			$job->added   = JFactory::getDate()->toSql();
 			$job->addedBy = $this->juser->get('id');
 		}
 
@@ -1550,7 +1550,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			{
 				// confirm 
 				$job->status       = !$autoapprove && !$this->_masteradmin ? 0 : 1;
-				$job->opendate     = !$autoapprove && !$this->_masteradmin ? '' : date('Y-m-d H:i:s'); // set open date as of now, if confirming new ad publication
+				$job->opendate     = !$autoapprove && !$this->_masteradmin ? '' : JFactory::getDate()->toSql(); // set open date as of now, if confirming new ad publication
 				$this->_msg_passed = !$autoapprove && !$this->_masteradmin ? JText::_('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL') : JText::_('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
 			}
 		} 
@@ -1794,8 +1794,8 @@ class JobsControllerJobs extends Hubzero_Controller
 				$subscription->uid       = 1;
 				$subscription->units     = 72;
 				$subscription->serviceid = 1;
-				$subscription->expires   = date("Y-m-d",strtotime("+ 72 months"));
-				$subscription->added     = date('Y-m-d H:i:s', time());
+				$subscription->expires   = JFactory::getDate(strtotime("+ 72 months"))->toSql();
+				$subscription->added     = JFactory::getDate()->toSql();
 
 				if (!$subscription->store()) 
 				{
@@ -2240,7 +2240,7 @@ class JobsControllerJobs extends Hubzero_Controller
 	protected function setupServices()
 	{
 		$objS = new Service($this->database);
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		$default1 = array(
 			'id'          => 0,

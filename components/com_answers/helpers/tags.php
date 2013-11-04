@@ -117,7 +117,7 @@ class AnswersTags extends TagsHandler
 		// Add an entry linking the tag to the object it was used on
 		$to->strength = $strength;
 		$to->taggerid = $tagger_id;
-		$to->taggedon = date('Y-m-d H:i:s', time());
+		$to->taggedon = JFactory::getDate()->toSql();
 
 		if (!$to->store()) 
 		{

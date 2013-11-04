@@ -217,18 +217,18 @@ class BlogTableEntry extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$this->publish_up = date('Y-m-d H:i:s', time());
+			$this->created    = JFactory::getDate()->toSql();
+			$this->publish_up = JFactory::getDate()->toSql();
 		}
 
-		if (!$this->publish_up || $this->publish_up == '0000-00-00 00:00:00') 
+		if (!$this->publish_up || $this->publish_up == $this->_db->getNullDate()) 
 		{
 			$this->publish_up = $this->created;
 		}
 
 		if (!$this->publish_down) 
 		{
-			$this->publish_down = '0000-00-00 00:00:00';
+			$this->publish_down = $this->_db->getNullDate();
 		}
 
 		return true;
@@ -297,8 +297,7 @@ class BlogTableEntry extends JTable
 	private function _buildAdminQuery($filters)
 	{
 		$nullDate = $this->_db->getNullDate();
-		//$date =& JFactory::getDate();
-		$now = date('Y-m-d H:i:s', time()); //$date->toMySQL();
+		$now = JFactory::getDate()->toSql();
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
@@ -397,7 +396,7 @@ class BlogTableEntry extends JTable
 	{
 		$nullDate = $this->_db->getNullDate();
 		$date =& JFactory::getDate();
-		$now = $date->toMySQL();
+		$now = $date->toSql();
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  

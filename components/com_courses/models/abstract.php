@@ -284,10 +284,10 @@ abstract class CoursesModelAbstract extends JObject
 			return false;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		if ($this->get('publish_up') 
-		 && $this->get('publish_up') != '0000-00-00 00:00:00' 
+		 && $this->get('publish_up') != $this->_db->getNullDate() 
 		 && $this->get('publish_up') > $now) 
 		{
 			return false;
@@ -309,10 +309,10 @@ abstract class CoursesModelAbstract extends JObject
 			return true;
 		}
 
-		$now = date('Y-m-d H:i:s', time());
+		$now = JFactory::getDate()->toSql();
 
 		if ($this->get('publish_down') 
-		 && $this->get('publish_down') != '0000-00-00 00:00:00' 
+		 && $this->get('publish_down') != $this->_db->getNullDate() 
 		 && $this->get('publish_down') <= $now) 
 		{
 			return true;
@@ -460,7 +460,7 @@ abstract class CoursesModelAbstract extends JObject
 		$log->scope_id  = $scope_id;
 		$log->scope     = $scope;
 		$log->user_id   = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->action    = $action;
 		$log->comments  = $log;
 		$log->actor_id  = $juser->get('id');

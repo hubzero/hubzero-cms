@@ -346,11 +346,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$this->view->rows = $c->getRecords($this->view->filters, $admin);
 		
 		//get newly registered members (past day)
-		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 DAY')) . "'");
+		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 DAY'))->toSql() . "'");
 		$this->view->past_day_members = $stats->past_day_members; //$this->database->loadResult();
 		
 		//get newly registered members (past month)
-		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 MONTH')) . "'");
+		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 MONTH'))->toSql() . "'");
 		$this->view->past_month_members = $stats->past_month_members; //$this->database->loadResult();
 		
 		// Initiate paging
@@ -394,11 +394,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$stats->total_public_members = $c->getCount(array('show' => '', 'authorized' => false), false);
 
 		//get newly registered members (past day)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 DAY')) . "'");
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 DAY'))->toSql() . "'");
 		$stats->past_day_members = $this->database->loadResult();
 
 		//get newly registered members (past month)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 MONTH')) . "'");
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 MONTH'))->toSql() . "'");
 		$stats->past_month_members = $this->database->loadResult();
 
 		return $stats;
@@ -1490,7 +1490,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		// Set the last modified datetime
-		$profile->set('modifiedDate', date('Y-m-d H:i:s', time()));
+		$profile->set('modifiedDate', JFactory::getDate()->toSql());
 
 		// Save the changes
 		if (!$profile->update()) 

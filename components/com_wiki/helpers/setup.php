@@ -102,7 +102,7 @@ class WikiSetup
 			// Instantiate a new revision
 			$revision = new WikiPageRevision($database);
 			$revision->pageid     = $page->id;
-			$revision->created    = date('Y-m-d H:i:s', time());
+			$revision->created    = JFactory::getDate()->toSql();
 			$revision->created_by = $juser->get('id');
 			$revision->minor_edit = 0;
 			$revision->version    = 1;

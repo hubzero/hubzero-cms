@@ -1279,7 +1279,7 @@ class WishlistController extends JObject
 
 		$page->wishid     = $wishid;
 		$page->created_by = JRequest::getInt('created_by', $juser->get('id'), 'post');
-		$page->created    = date('Y-m-d H:i:s', time());
+		$page->created    = JFactory::getDate()->toSql();
 		$page->approved   = 1;
 		$page->pagetext   = rtrim($_POST['pagetext']);
 
@@ -1319,7 +1319,7 @@ class WishlistController extends JObject
 		if ($due) 
 		{
 			$publishtime = $due.' 00:00:00';
-			$due = strftime("%Y-%m-%d %H:%M:%S",strtotime($publishtime));
+			$due = JFactory::getDate(strtotime($publishtime));
 		}
 
 		//is this wish assigned to anyone?
@@ -1655,7 +1655,7 @@ class WishlistController extends JObject
 		$row->anonymous 	= JRequest::getInt('anonymous', 0);
 		$row->private	    = JRequest::getInt('private', 0);
 		$row->about     	= Hubzero_Filter::cleanXss($row->about);
-		$row->proposed    	= ($wishid) ? $row->proposed : date('Y-m-d H:i:s', time());
+		$row->proposed    	= ($wishid) ? $row->proposed : JFactory::getDate()->toSql();
 
 		// check content
 		if (!$row->check()) 
@@ -1855,7 +1855,7 @@ class WishlistController extends JObject
 
 					case 'granted':
 						$objWish->status = 1;
-						$objWish->granted = date('Y-m-d H:i:s', time());
+						$objWish->granted = JFactory::getDate()->toSql();
 						$objWish->granted_by = $juser->get('id');
 						$objWish->granted_vid= $vid ? $vid : 0;
 
@@ -2510,7 +2510,7 @@ class WishlistController extends JObject
 			$objR->load_vote($juser->get('id'), $wishid);
 		}
 
-		$objR->voted = date('Y-m-d H:i:s', time());
+		$objR->voted = JFactory::getDate()->toSql();
 		$objR->importance = $importance;
 		$objR->effort = $effort;
 
@@ -2703,7 +2703,7 @@ class WishlistController extends JObject
 		$wishid   = JRequest::getInt('wishid', 0);
 		$ajax     = JRequest::getInt('ajax', 0);
 		$category = JRequest::getVar('cat', '');
-		$when     = date('Y-m-d H:i:s');
+		$when     = JFactory::getDate()->toSql();
 
 		$obj = new Wishlist($database);
 
@@ -3065,7 +3065,7 @@ class WishlistController extends JObject
 			$v->category = $cat;
 			$v->voter = $juser->get('id');
 			$v->ip = $ip;
-			$v->voted = date('Y-m-d H:i:s', time());
+			$v->voted = JFactory::getDate()->toSql();
 			$v->helpful = $vote;
 			if (!$v->check()) 
 			{
@@ -3808,38 +3808,38 @@ class WishlistController extends JObject
 	public function convertTime($rawnum,  $due=array())
 	{
 		$rawnum = round($rawnum);
-		$today = date('Y-m-d H:i:s');
+		$today = JFactory::getDate()->toSql();
 
 		switch($rawnum)
 		{
 			case '0':
-				$due['immediate'] = date('Y-m-d H:i:s', time() + (62 * 24 * 60 * 60));
-				$due['warning'] = date('Y-m-d H:i:s', time() + (120 * 24 * 60 * 60));
+				$due['immediate'] = JFactory::getDate(time() + (62 * 24 * 60 * 60));
+				$due['warning'] = JFactory::getDate(time() + (120 * 24 * 60 * 60));
 			break; // 2 months	
 
 			case '1':
-				$due['immediate']= date('Y-m-d H:i:s', time() + (14 * 24 * 60 * 60));
-				$due['warning'] = date('Y-m-d H:i:s', time() + (32 * 24 * 60 * 60));
+				$due['immediate']= JFactory::getDate(time() + (14 * 24 * 60 * 60));
+				$due['warning'] = JFactory::getDate(time() + (32 * 24 * 60 * 60));
 			break; // 2 weeks
 
 			case '2':
-				$due['immediate'] = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60));
-				$due['warning'] = date('Y-m-d H:i:s', time() + (14 * 24 * 60 * 60));
+				$due['immediate'] = JFactory::getDate(time() + (7 * 24 * 60 * 60));
+				$due['warning'] = JFactory::getDate(time() + (14 * 24 * 60 * 60));
 			break; // 1 week
 
 			case '3':
-				$due['immediate'] = date('Y-m-d H:i:s', time() + (2 * 24 * 60 * 60));
-				$due['warning'] = date('Y-m-d H:i:s', time() + (6 * 24 * 60 * 60));
+				$due['immediate'] = JFactory::getDate(time() + (2 * 24 * 60 * 60));
+				$due['warning'] = JFactory::getDate(time() + (6 * 24 * 60 * 60));
 			break; // 2 days
 
 			case '4':
-				$due['immediate'] = date('Y-m-d H:i:s', time() + (24 * 60 * 60));
-				$due['warning'] = date('Y-m-d H:i:s', time() + (2 * 24 * 60 * 60));
+				$due['immediate'] = JFactory::getDate(time() + (24 * 60 * 60));
+				$due['warning'] = JFactory::getDate(time() + (2 * 24 * 60 * 60));
 			 break; // 1 day
 
 			case '5':
-				$due['immediate'] = date('Y-m-d H:i:s', time() + (24 * 60 * 60));
-				$due['warning'] = date('Y-m-d H:i:s', time() + (2 * 24 * 60 * 60));
+				$due['immediate'] = JFactory::getDate(time() + (24 * 60 * 60));
+				$due['warning'] = JFactory::getDate(time() + (2 * 24 * 60 * 60));
 			break; // 4 hours
 		}
 

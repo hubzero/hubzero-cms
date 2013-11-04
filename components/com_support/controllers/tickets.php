@@ -1133,7 +1133,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$data = array();
 		$data['id']        = NULL;
 		$data['status']    = 0;
-		$data['created']   = date("Y-m-d H:i:s");
+		$data['created']   = JFactory::getDate()->toSql();
 		$data['login']     = $reporter['login'];
 		$data['severity']  = (isset($problem['severity'])) ? $problem['severity'] : 'normal';
 		$data['owner']     = (isset($problem['owner'])) ? $problem['owner'] : null;
@@ -1317,7 +1317,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 			$rowc = new SupportComment($this->database);
 			$rowc->ticket     = $row->id;
-			$rowc->created    = date('Y-m-d H:i:s', time());
+			$rowc->created    = JFactory::getDate()->toSql();
 			$rowc->created_by = $this->juser->get('id');
 			$rowc->access     = 1;
 
@@ -2133,7 +2133,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		if ($id && !$row->open && $row->open != $old->open)
 		{
 			// Record the closing time
-			$row->closed = date('Y-m-d H:i:s', time());
+			$row->closed = JFactory::getDate()->toSql();
 		}
 
 		// Store new content
@@ -2241,7 +2241,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$rowc->ticket     = $id;
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace('<br>', '<br />', $rowc->comment);
-			$rowc->created    = date('Y-m-d H:i:s', time());
+			$rowc->created    = JFactory::getDate()->toSql();
 			$rowc->created_by = JRequest::getVar('username', '');
 			$rowc->changelog  = json_encode($log);
 			$rowc->access     = JRequest::getInt('access', 0);
@@ -2837,7 +2837,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				$rowc = new SupportComment($this->database);
 				$rowc->ticket     = $ticket;
 				$rowc->comment    = '';
-				$rowc->created    = date('Y-m-d H:i:s', time());
+				$rowc->created    = JFactory::getDate()->toSql();
 				$rowc->created_by = $row->login;
 				$rowc->changelog  = $changelog;
 				$rowc->access     = 1;
@@ -2858,7 +2858,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			// set some defaults
 			$row->status    = 0;
-			$row->created   = date('Y-m-d H:i:s', time());
+			$row->created   = JFactory::getDate()->toSql();
 			$row->severity  = ($row->severity) ? $row->severity : 'normal';
 			$row->category  = ($row->category) ? $row->category : JText::_('CATEGORY_TOOLS');
 			$row->resolved  = '';

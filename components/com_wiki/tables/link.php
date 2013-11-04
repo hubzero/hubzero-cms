@@ -119,7 +119,7 @@ class WikiLink extends JTable
 
 		if (!$this->id)
 		{
-			$this->timestamp = date('Y-m-d H:i:s', time());
+			$this->timestamp = JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -185,7 +185,7 @@ class WikiLink extends JTable
 			return true;
 		}
 
-		$timestamp = date('Y-m-d H:i:s', time());
+		$timestamp = JFactory::getDate()->toSql();
 
 		$query = "INSERT INTO $this->_tbl (`page_id`, `timestamp`, `scope`, `scope_id`, `link`, `url`) VALUES ";
 
