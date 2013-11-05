@@ -459,5 +459,106 @@ abstract class Model extends Object
 	{
 		return \JDispatcher::getInstance()->trigger($event, $params);
 	}
+
+	/**
+	 * Turn the object into a string
+	 * 
+	 * @return     string
+	 */
+	public function __toString()
+	{
+		return $this->toString();
+	}
+
+	/**
+	 * Turn the object into a string
+	 * 
+	 * @return     string
+	 */
+	public function toString($ignore=array('_db'))
+	{
+		return $this->_print_r($this, $ignore);
+	}
+
+
+	/**
+	 * Special print_r to strip out any vars passed in $ignore
+	 * 
+	 * @param  object  $subject  Object to print_r
+	 * @param  array   $ignore   Property names to ignore
+	 * @param  integer $depth    Recursion depth
+	 * @param  array   $refChain Reference chain
+	 * @return string
+	 */
+	private function _print_r($subject, $ignore = array(), $depth = 1, $refChain = array()) 
+	{
+		$str = '';
+
+		if ($depth > 20) 
+		{
+			return $str;
+		}
+
+		if (is_object($subject)) 
+		{
+			foreach ($refChain as $refVal)
+			{
+				if ($refVal === $subject) 
+				{
+					$str .= "*RECURSION*\n";
+					return $str;
+				}
+			}
+
+			array_push($refChain, $subject);
+
+			$str .= get_class($subject) . " Object ( \n";
+			$subject = (array) $subject;
+			foreach ($subject as $key => $val)
+			{
+				if (is_array($ignore) && !in_array($key, $ignore, 1)) 
+				{
+					if ($key{0} == "\0") 
+					{
+						$keyParts = explode("\0", $key);
+						if (is_array($ignore) && in_array($keyParts[2], $ignore, 1)) 
+						{
+							continue;
+						}
+						$str .= str_repeat(" ", $depth * 4) . '[';
+						$str .= $keyParts[2] . (($keyParts[1] == '*')  ? ':protected' : ':private');
+					} 
+					else
+					{
+						$str .= str_repeat(" ", $depth * 4) . '[';
+						$str .= $key;
+					}
+					$str .= '] => ';
+					$str .= $this->_print_r($val, $ignore, $depth + 1, $refChain);
+				}
+			}
+			$str .= str_repeat(" ", ($depth - 1) * 4) . ")\n";
+
+			array_pop($refChain);
+		} 
+		elseif (is_array($subject)) 
+		{
+			$str .= "Array ( \n";
+			foreach ($subject as $key => $val)
+			{
+				if (is_array($ignore) && !in_array($key, $ignore, 1)) 
+				{
+					$str .= str_repeat(" ", $depth * 4) . '[' . $key . '] => ';
+					$str .= $this->_print_r($val, $ignore, $depth + 1, $refChain);
+				}
+			}
+			$str .= str_repeat(" ", ($depth - 1) * 4) . ")\n";
+		} 
+		else
+		{
+			$str .= $subject . "\n";
+		}
+		return $str;
+	}
 }
 
