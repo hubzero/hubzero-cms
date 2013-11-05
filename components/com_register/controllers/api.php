@@ -156,13 +156,6 @@ class RegisterControllerApi extends Hubzero_Api_Controller
 		$user['lName'] = JRequest::getVar('lName', '', 'post');
 		$user['password'] = JRequest::getVar('password', '', 'post');
 		
-		/* Testing
-		$user['email'] = 'ilya@shunko.com';
-		$user['fName'] = 'Илья';
-		$user['lName'] = 'Шунько';
-		$user['password'] = ''; //eblan
-		*/
-		
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'helpers' . DS . 'Premis.php');
 		$return = Hubzero_Register_Premis::doProfileUpdate($user);			
 	}
