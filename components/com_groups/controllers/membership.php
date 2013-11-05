@@ -306,7 +306,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 				$log = new XGroupLog($this->database);
 				$log->gid = $this->view->group->get('gidNumber');
 				$log->uid = $invite;
-				$log->timestamp = date('Y-m-d H:i:s', time());
+				$log->timestamp = JFactory::getDate();
 				$log->action = 'membership_invites_sent';
 				$log->actorid = $this->juser->get('id');
 				if (!$log->store()) 
@@ -324,7 +324,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 				$log = new XGroupLog($this->database);
 				$log->gid = $this->view->group->get('gidNumber');
 				$log->uid = $invite;
-				$log->timestamp = date('Y-m-d H:i:s', time());
+				$log->timestamp = JFactory::getDate();
 				$log->action = 'membership_email_sent';
 				$log->actorid = $this->juser->get('id');
 				if (!$log->store()) 
@@ -574,7 +574,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$log = new XGroupLog($this->database);
 		$log->gid = $this->view->group->get('gidNumber');
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate();
 		$log->comments = $log_comments;
 		$log->action = 'membership_invite_accepted';
 		$log->actorid = $this->juser->get('id');
@@ -693,7 +693,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$log = new XGroupLog($this->database);
 		$log->gid = $this->view->group->get('gidNumber');
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate();
 		$log->action = 'membership_cancelled';
 		$log->actorid = $this->juser->get('id');
 		if (!$log->store())
@@ -843,7 +843,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$log = new XGroupLog($this->database);
 			$log->gid = $this->view->group->get('gidNumber');
 			$log->uid = $this->juser->get('id');
-			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->timestamp = JFactory::getDate();
 			$log->action = 'membership_approved';
 			$log->actorid = $this->juser->get('id');
 			if (!$log->store())
@@ -941,7 +941,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$row->gidNumber = $this->view->group->get('gidNumber');
 		$row->reason    = JRequest::getVar('reason', JText::_('GROUPS_NO_REASON_GIVEN'), 'post');
 		$row->reason    = Hubzero_View_Helper_Html::purifyText($row->reason);
-		$row->date      = date('Y-m-d H:i:s', time());
+		$row->date      = JFactory::getDate();
 
 		// Check and store the reason
 		if (!$row->check()) 
@@ -959,7 +959,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$log = new XGroupLog($this->database);
 		$log->gid = $this->view->group->get('gidNumber');
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate();
 		$log->action = 'membership_requested';
 		$log->actorid = $this->juser->get('id');
 		if (!$log->store())

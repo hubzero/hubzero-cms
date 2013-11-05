@@ -695,7 +695,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$group->set('type', 1);
 			$group->set('published', 1);
 			$group->set('approved', $this->config->get('auto_approve', 1));
-			$group->set('created', date("Y-m-d H:i:s"));
+			$group->set('created', JFactory::getDate());
 			$group->set('created_by', $this->juser->get('id'));
 			$group->add('managers', array($this->juser->get('id')));
 			$group->add('members', array($this->juser->get('id')));
@@ -720,7 +720,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$log = new XGroupLog($this->database);
 		$log->gid = $group->get('gidNumber');
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate();
 		$log->actorid = $this->juser->get('id');
 
 		// Rename the temporary upload directory if it exist
@@ -979,7 +979,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$log = new XGroupLog($this->database);
 		$log->gid = $this->view->group->get('gidNumber');
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->timestamp = JFactory::getDate();
 		$log->actorid = $this->juser->get('id');
 		$log->action = 'group_customized';
 		if (!$log->store()) 
@@ -1239,7 +1239,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$xlog = new XGroupLog($this->database);
 		$xlog->gid 			= $deletedgroup->get('gidNumber');
 		$xlog->uid 			= $this->juser->get('id');
-		$xlog->timestamp 	= date('Y-m-d H:i:s', time());
+		$xlog->timestamp 	= JFactory::getDate();
 		$xlog->action 		= 'group_deleted';
 		$xlog->comments 	= $log;
 		$xlog->actorid 		= $this->juser->get('id');
