@@ -224,7 +224,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_WARNING_LOGIN')));
 			return;
 		}
 
@@ -232,7 +232,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0);
 		if (!$listdir) 
 		{
-			echo json_encode(array('error' => JText::_('COM_WIKI_NO_ID')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_NO_ID')));
 			return;
 		}
 		
@@ -270,27 +270,27 @@ class WikiControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_DIRECTORY_NOT_WRITABLE')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0) 
 		{
-			echo json_encode(array('error' => JText::_('File is empty')));
+			echo json_encode(array('error' => JText::sprintf('COM_WIKI_ERROR_FILE_NOT_FOUND', $file)));
 			return;
 		}
 		if ($size > $sizeLimit) 
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			echo json_encode(array('error' => JText::sprintf('COM_WIKI_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
@@ -379,7 +379,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0, 'post');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -388,7 +388,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_FILE'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -401,7 +401,7 @@ class WikiControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				$this->setError(JText::_('Error uploading. Unable to create path.'));
+				$this->setError(JText::_('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY'));
 				$this->displayTask();
 				return;
 			}
@@ -416,7 +416,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		// Upload new files
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_WIKI_ERROR_UPLOADING'));
 		}
 		// File was uploaded 
 		else 
@@ -461,7 +461,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -470,7 +470,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$folder = trim(JRequest::getVar('folder', '', 'get'));
 		if (!$folder) 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_DIRECTORY'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_DIRECTORY'));
 			$this->displayTask();
 			return;
 		}
@@ -485,12 +485,12 @@ class WikiControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.file');
 			if (!JFolder::delete($path)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
+				$this->setError(JText::_('COM_WIKI_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
 			}
 		} 
 		else 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_DIRECTORY'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_DIRECTORY'));
 		}
 
 		// Push through to the media view
@@ -515,7 +515,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -524,7 +524,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$file = trim(JRequest::getVar('file', '', 'get'));
 		if (!$file) 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_FILE'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -535,8 +535,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		// Delete the file
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
-			$this->displayTask();
+			$this->setError(JText::sprintf('COM_WIKI_ERROR_FILE_NOT_FOUND', $file));
 		} 
 		else 
 		{
@@ -544,7 +543,7 @@ class WikiControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file)) 
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::sprintf('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $file));
 			} 
 			else 
 			{
@@ -565,6 +564,10 @@ class WikiControllerMedia extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		if (JRequest::getInt('no_html'))
+		{
+			return $this->listTask();
+		}
 		$this->view->setLayout('display');
 
 		// Incoming
@@ -591,12 +594,14 @@ class WikiControllerMedia extends Hubzero_Controller
 	 */
 	public function listTask()
 	{
+		$this->view->setLayout('list');
+
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('COM_WIKI_NO_ID'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_ID'));
 		}
 
 		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $listdir;
