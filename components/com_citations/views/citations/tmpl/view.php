@@ -202,6 +202,10 @@ $area = JRequest::getVar('area', 'about');
 						echo '<a id="show-more-button" href="javascript:void(0);">show more</a>';
 						echo '<span class="show-more-text hide">' . substr($abstract, $max) . '</span>';
 					}
+					else
+					{
+						echo $abstract;
+					}
 				?>
 			</div>
 		<?php endif;?>
