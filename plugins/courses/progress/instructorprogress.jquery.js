@@ -959,15 +959,21 @@ HUB.Plugins.CoursesProgress = {
 
 							HUB.Plugins.CoursesProgress.resizeTable(
 								function () {
-									HUB.Plugins.CoursesProgress.move(loc, function() {
-										if (fsi.length) {
-											fsi.append(gbc.last().find('.cell.form-name').clone());
-											gbcl.find('.form-name').hide();
-											fsi.find('.cell').last().find('.form-title').trigger('click');
-										} else {
-											gbc.last().find('.form-title').trigger('click');
-										}
-									}, val);
+									var offset = HUB.Plugins.CoursesProgress.offset;
+
+									if (offset >= 0) {
+										HUB.Plugins.CoursesProgress.move(loc, function() {
+											if (fsi.length) {
+												fsi.append(gbc.last().find('.cell.form-name').clone());
+												gbcl.find('.form-name').hide();
+												fsi.find('.cell').last().find('.form-title').trigger('click');
+											} else {
+												gbc.last().find('.form-title').trigger('click');
+											}
+										}, val);
+									} else {
+										gbc.last().find('.form-title').trigger('click');
+									}
 								}, false
 							);
 						}
@@ -976,6 +982,55 @@ HUB.Plugins.CoursesProgress = {
 					$('html, body').animate({
 						scrollTop : ($('#page_main').offset().top - 10)
 					}, insertColumn);
+				}
+			});
+		});
+
+		// Delete a gradebook item
+		g.off('click', '.form-delete').on('click', '.form-delete', function ( e ) {
+			var t = $(this),
+				f = $('.progress-form'),
+				d = [];
+
+			d.push({"name":"action",   "value":"deletegradebookitem"});
+			d.push({"name":"asset_id", "value":t.parents('.gradebook-column').data('asset-id')});
+
+			// Make sure there aren't any overrides. If there are, warn that they will be lost
+			var active  = false;
+			var entries = t.parents('.gradebook-column').find('.cell-entry .override');
+			entries.each(function ( idx, itm) {
+				if ($(itm).hasClass('active')) {
+					active = true;
+				}
+			});
+
+			if (active) {
+				var res = confirm('Deleting this gradebook item will delete all active overrides as well as delete the associated asset (if applicable). Are you sure?');
+
+				if (!res) {
+					return false;
+				}
+			}
+
+			// Submit save
+			$.ajax({
+				type     : "POST",
+				url      : f.attr('action'),
+				data     : d,
+				dataType : 'json',
+				success  : function ( data, textStatus, jqXHR ) {
+					var column = t.parents('.gradebook-column');
+					column.hide('slide', {direction: 'up'}, 500, function () {
+						column.remove();
+
+						// Reset indices
+						list = $('.gradebook-container .gradebook-column:not(.gradebook-students)');
+						list.each(function ( idx, itm ) {
+							$(itm).attr('data-colnum', idx);
+						});
+
+						HUB.Plugins.CoursesProgress.resizeTable(false, false);
+					});
 				}
 			});
 		});

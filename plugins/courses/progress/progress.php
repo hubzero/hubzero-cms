@@ -138,11 +138,12 @@ class plgCoursesProgress extends JPlugin
 
 		switch (JRequest::getWord('action'))
 		{
-			case 'getprogressrows':     $this->getprogressrows();    break;
+			case 'getprogressrows':     $this->getprogressrows();     break;
 			case 'getprogressdata':     $this->getprogressdata();     break;
 			case 'getgradebookdata':    $this->getgradebookdata();    break;
 			case 'exportcsv':           $this->exportcsv();           break;
 			case 'savegradebookitem':   $this->savegradebookitem();   break;
+			case 'deletegradebookitem': $this->deletegradebookitem(); break;
 			case 'savegradebookentry':  $this->savegradebookentry();  break;
 			case 'resetgradebookentry': $this->resetgradebookentry(); break;
 			case 'policysave':          $this->policysave();          break;
@@ -467,6 +468,51 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		echo json_encode(array('id'=>$asset->get('id'), 'title'=>$asset->get('title')));
+		exit();
+	}
+
+	/**
+	 * Delete a gradebook item
+	 *
+	 * @return void
+	 **/
+	private function deletegradebookitem()
+	{
+		// Only allow for instructors
+		if (!$this->course->offering()->section()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		// Now, also make sure either section managers can edit, or user is a course manager
+		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		$asset = new CoursesTableAsset(JFactory::getDBO());
+
+		// Get request variables
+		if ($asset_id = JRequest::getInt('asset_id', false))
+		{
+			$asset->load($asset_id);
+			$asset->set('state', 2);
+		}
+		else
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		if (!$asset->store())
+		{
+			echo json_encode(array('success'=>false));
+			exit();
+		}
+
+		echo json_encode(array('success'=>true));
 		exit();
 	}
 

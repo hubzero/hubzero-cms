@@ -630,6 +630,47 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+.gradebook-container .form-name-inner .form-delete {
+	display: none;
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	background: #FF5C51;
+	top: -25px;
+	right: -25px;
+	content: "";
+	-ms-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.gradebook-container .form-name-inner:hover .form-delete {
+	display: block;
+}
+.gradebook-container .form-name-inner .form-delete:hover {
+	cursor: pointer;
+
+	-webkit-transition: all 0.15s ease-in-out;
+	-moz-transition: all 0.15s ease-in-out;
+	-ms-transition: all 0.15s ease-in-out;
+	-o-transition: all 0.15s ease-in-out;
+	transition: all 0.15s ease-in-out;
+
+	-moz-transform: scale(1.2, 1.2) rotate(45deg);
+	-o-transform: scale(1.2, 1.2) rotate(45deg);
+	-webkit-transform: scale(1.2, 1.2) rotate(45deg);
+	transform: scale(1.2, 1.2) rotate(45deg);
+}
+.gradebook-container .form-name-inner .form-delete:before {
+	position: absolute;
+	font-family: "fontcons";
+	content: "\271A";
+	top: 30px;
+	right: 20px;
+	color: #FFFFFF;
+	font-size: 11px;
+}
 .gradebook-container .cell-title {
 	text-align: left;
 }
@@ -953,6 +994,17 @@
 	background: #DDDDDD;
 	background: rgba(240,240,240,.2);
 }
+
+/* CSS hacks for elements shifting when using animated transitions */
+/* @NOTE: adding this seems to cause bigger issues than it was fixing.
+          naming as it related to the cloning of the menu bar during scrolling*/
+/*.gradebook-container .form-name-inner .form-delete,
+.gradebook-container .form-name-inner select {
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+}*/
 
 /* jquery ui overrides */
 .ui-slider-handle:hover {

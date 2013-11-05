@@ -281,7 +281,8 @@ class CoursesTableGradeBook extends JTable
 			)
 		);
 
-		$values = array();
+		$values  = array();
+		$deletes = array();
 
 		if (count($assets) > 0)
 		{
@@ -290,10 +291,8 @@ class CoursesTableGradeBook extends JTable
 				// Add null values for unpublished forms that may have already been taken
 				if ($asset->state != 1)
 				{
-					foreach ($member_id as $u)
-					{
-						$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
-					}
+					$deletes[] = $asset->id;
+
 					continue;
 				}
 
@@ -360,6 +359,14 @@ class CoursesTableGradeBook extends JTable
 				$query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`) VALUES\n";
 				$query .= implode(",\n", $values);
 				$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
+
+				$this->_db->setQuery($query);
+				$this->_db->query();
+			}
+
+			if (count($deletes) > 0)
+			{
+				$query = "DELETE FROM `#__courses_grade_book` WHERE `scope` = 'asset' AND `scope_id` IN (".implode(',', $deletes).")";
 
 				$this->_db->setQuery($query);
 				$this->_db->query();

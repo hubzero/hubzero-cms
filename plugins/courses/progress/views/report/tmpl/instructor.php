@@ -198,6 +198,7 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 							<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>
 						</select>
 					</div>
+					<div class="form-delete"></div>
 				</div>
 			</div>
 			{{#each ../members}}
