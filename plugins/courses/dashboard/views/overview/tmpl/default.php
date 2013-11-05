@@ -45,7 +45,8 @@ $query  = "SELECT sd.*
 		FROM #__courses_offering_section_dates AS sd
 		WHERE sd.section_id=" . $this->offering->section()->get('id') . "
 		AND (sd.publish_up >= " . $database->Quote($now) . " AND sd.publish_up <= " . $database->Quote($weeklater) . ") 
-		ORDER BY sd.publish_up";
+		AND sd.scope!='asset'
+		ORDER BY sd.publish_up LIMIT 20";
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();
@@ -100,26 +101,31 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				</div>
 			<?php if ($rows) { ?>
 				<ul class="dashboard-timeline">
-				<?php foreach ($rows as $i => $row) { ?>
-					<li>
-						<?php 
-						switch ($row->scope)
-						{
-							case 'unit':
-								$obj = new CoursesModelUnit($row->scope_id);
-								$url = $base . '&active=outline';
-							break;
-							case 'asset_group':
-								$obj = new CoursesModelAssetGroup($row->scope_id);
-								$unit = CoursesModelUnit::getInstance($obj->get('unit_id'));
-								$url = $base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $obj->get('alias');
-							break;
-							case 'asset':
-								$obj = new CoursesModelAsset($row->scope_id);
-								$url = $base . '&active=outline&unit=&b=&c=';
-							break;
-						}
+				<?php foreach ($rows as $i => $row) { 
+
+					switch ($row->scope)
+					{
+						case 'unit':
+							$obj = CoursesModelUnit::getInstance($row->scope_id);
+							$url = $base . '&active=outline';
+						break;
+						case 'asset_group':
+							$obj = new CoursesModelAssetGroup($row->scope_id);
+							$unit = CoursesModelUnit::getInstance($obj->get('unit_id'));
+							$url = $base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $obj->get('alias');
+						break;
+						case 'asset':
+							$obj = new CoursesModelAsset($row->scope_id);
+							$url = $base . '&active=outline&unit=&b=&c=';
+						break;
+					}
+					if (!$obj->exists() || !$obj->isPublished() || ($row->scope == 'asset_group' && !$obj->get('parent')))
+					{
+						// skip containers
+						continue;
+					}
 					?>
+					<li>
 						<a href="<?php echo JRoute::_($url); ?>">
 							<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
 						</a>
@@ -127,7 +133,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 							<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</span>
 					</li>
-				<?php 
+					<?php 
 					if ($i > 0 && $row->scope == 'unit')
 					{
 						break;
