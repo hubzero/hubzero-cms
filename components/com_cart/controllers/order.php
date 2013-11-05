@@ -201,9 +201,6 @@ class CartControllerOrder extends ComponentController
 	{		
 		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
 		
-		// TESTING ***********************
-		//$_POST = (unserialize('a:44:{s:8:"mc_gross";s:6:"110.00";s:22:"protection_eligibility";s:10:"Ineligible";s:14:"address_status";s:9:"confirmed";s:8:"payer_id";s:13:"VWBF5XUFK7EQY";s:3:"tax";s:4:"0.00";s:14:"address_street";s:17:"6739 wilkins Ave.";s:12:"payment_date";s:25:"11:37:01 Feb 14, 2013 PST";s:14:"payment_status";s:7:"Pending";s:7:"charset";s:12:"windows-1252";s:11:"address_zip";s:5:"15217";s:10:"first_name";s:4:"Ilya";s:6:"mc_fee";s:4:"3.49";s:20:"address_country_code";s:2:"US";s:12:"address_name";s:6:"Shunko";s:14:"notify_version";s:3:"3.7";s:6:"custom";s:4:"1233";s:12:"payer_status";s:8:"verified";s:8:"business";s:32:"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";s:15:"address_country";s:13:"United States";s:12:"address_city";s:10:"Pittsburgh";s:8:"quantity";s:1:"1";s:11:"verify_sign";s:56:"AyXNPaYtSWIZ.Gvz3LBMXetylZ68A4PHsmhBNd7XvoTnI6O.jq6A3POn";s:11:"payer_email";s:15:"ilya@shunko.com";s:4:"memo";s:8:"Hui vam!";s:6:"txn_id";s:17:"9PJ32545H7925942E";s:12:"payment_type";s:7:"instant";s:19:"payer_business_name";s:6:"Shunko";s:9:"last_name";s:6:"Shunko";s:13:"address_state";s:2:"PA";s:14:"receiver_email";s:32:"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";s:11:"payment_fee";s:4:"3.49";s:11:"receiver_id";s:13:"77EPVLSQQAXUW";s:14:"pending_reason";s:13:"paymentreview";s:8:"txn_type";s:10:"web_accept";s:9:"item_name";s:21:"myhub online purchase";s:11:"mc_currency";s:3:"USD";s:11:"item_number";s:0:"";s:17:"residence_country";s:2:"US";s:8:"test_ipn";s:1:"1";s:15:"handling_amount";s:4:"0.00";s:19:"transaction_subject";s:4:"1233";s:13:"payment_gross";s:6:"110.00";s:8:"shipping";s:4:"0.00";s:12:"ipn_track_id";s:13:"3dac021dad97c";}'));
-				
 		if (empty($_POST))
 		{
 			JError::raiseError(404, JText::_('Page not found'));	
