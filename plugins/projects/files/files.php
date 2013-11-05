@@ -4211,7 +4211,7 @@ class plgProjectsFiles extends JPlugin
 			$status = array('status' => 'complete', 'msg' => $msg);
 			
 			// Refresh view if sync happened recently
-			$timecheck = JFactory::getDate(ime() - (1 * 1 * 60));
+			$timecheck = JFactory::getDate(time() - (1 * 1 * 60));
 			if ($synced >= $timecheck)
 			{
 				$status['output'] = $this->view(2);
