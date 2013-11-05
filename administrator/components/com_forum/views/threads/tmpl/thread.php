@@ -157,7 +157,7 @@ if ($this->results)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;parent=<?php echo $this->filters['parent']; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;thread=<?php echo $this->filters['thread']; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				</td>
@@ -198,7 +198,7 @@ if ($this->results)
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="parent" value="<?php echo $this->filters['parent']; ?>" />
+	<input type="hidden" name="thread" value="<?php echo $this->filters['thread']; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	
