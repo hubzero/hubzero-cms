@@ -645,12 +645,14 @@ class Hubzero_Migration
 		// Try inserting a migration record into the database
 		try
 		{
+			$date = new JDate();
+
 			// Craete our object to insert
 			$obj = (object) array(
 					'file'      => $file,
 					'hash'      => $hash,
 					'direction' => $direction,
-					'date'      => JFactory::getDate()->toSql(),
+					'date'      => $date->toSql(),
 					'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : JFactory::getUser()->get('id')
 				);
 
