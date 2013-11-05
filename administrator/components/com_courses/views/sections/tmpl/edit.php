@@ -47,7 +47,7 @@ JHtml::_('behavior.switcher');
 
 $editor =& JEditor::getInstance();
 
-$base = rtrim(JURI::getInstance()->base(true), '/');
+$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
 $document =& JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');
