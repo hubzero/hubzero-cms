@@ -572,6 +572,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		$msg = JText::_('Thread Successfully Saved');
+		$p = '';
 		if (($parent = JRequest::getInt('parent', 0)))
 		{
 			$msg = JText::_('Post Successfully Saved');
