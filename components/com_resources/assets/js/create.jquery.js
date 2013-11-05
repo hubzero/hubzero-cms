@@ -110,8 +110,9 @@ $.fn.editable = function(options){
 $.editableFactory = {
 	'text': {
 		toEditable: function($this,options){
+			console.log($this.data('editable.current').replace(/[\t\r\n]/g, '').replace(/\s+/g, ' '));
 			$('<input/>').appendTo($this)
-						 .val($this.data('editable.current'));
+						 .val($this.data('editable.current').replace(/[\t\r\n]/g, '').replace(/\s+/g, ' '));
 		},
 		getValue: function($this,options){
 			return $this.children().val();
