@@ -990,10 +990,11 @@ HUB.Plugins.CoursesProgress = {
 		g.off('click', '.form-delete').on('click', '.form-delete', function ( e ) {
 			var t = $(this),
 				f = $('.progress-form'),
-				d = [];
+				d = [],
+				a = t.parents('.gradebook-column').data('asset-id');
 
 			d.push({"name":"action",   "value":"deletegradebookitem"});
-			d.push({"name":"asset_id", "value":t.parents('.gradebook-column').data('asset-id')});
+			d.push({"name":"asset_id", "value":a});
 
 			// Make sure there aren't any overrides. If there are, warn that they will be lost
 			var active  = false;
@@ -1019,9 +1020,13 @@ HUB.Plugins.CoursesProgress = {
 				data     : d,
 				dataType : 'json',
 				success  : function ( data, textStatus, jqXHR ) {
-					var column = t.parents('.gradebook-column');
+					if ($(window).scrollTop() > $('#page_main').offset().top) {
+						$(window).scrollTop($('#page_main').offset().top);
+					}
+
+					var column = $('.gradebook-container .gradebook-column[data-asset-id="'+a+'"]');
 					column.hide('slide', {direction: 'up'}, 500, function () {
-						column.remove();
+						$(this).remove();
 
 						// Reset indices
 						list = $('.gradebook-container .gradebook-column:not(.gradebook-students)');
