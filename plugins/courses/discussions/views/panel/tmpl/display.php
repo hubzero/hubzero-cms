@@ -265,7 +265,7 @@ if (count($inst) > 0)
 						<p class="comment-member-photo">
 							<a class="comment-anchor" name="commentform"></a>
 							<?php
-							$anone = 1;
+							$anon = 1;
 							if (!$juser->get('guest')) 
 							{
 								$anon = 0;
