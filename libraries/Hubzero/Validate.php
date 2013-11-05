@@ -373,7 +373,7 @@ class Hubzero_Validate
 	 */
 	public function validurl($url)
 	{
-		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]*$#i", $url)) 
+		if (preg_match("/(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))/i", $url)) 
 		{
 			return true;
 		}
