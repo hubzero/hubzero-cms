@@ -562,7 +562,8 @@ HUB.ProjectFiles = {
 				 && connected == true) 
 			{
 				var href = $(item).attr('href');
-				if (href.search('&no_html=1') == -1) {
+				if (href.search('&no_html=1') == -1) 
+				{
 					href = href + '&no_html=1';
 				}
 				if (href.search('&ajax=1') == -1) {

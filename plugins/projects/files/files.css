@@ -478,7 +478,8 @@
 	
 /* Show more/less of revision text
 --------------------------------------------- */
-	.long-txt pre {
+	.long-txt pre, .short-txt pre 
+	{
 		max-height: 400px;
 		overflow: auto;
 		max-width: 500px;

@@ -104,7 +104,8 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					<span class="l-regular">&nbsp;</span><?php echo JText::_('History') . ': ' . $versions; ?>
 					<span class="l-unused">&nbsp;</span><?php echo JText::_('Available') .': ' . $unused; ?>
 				<span>
-				<?php if (isset($this->pubDiskUsage)) { 
+				<?php if (isset($this->pubDiskUsage)) 
+				{ 
 					$unusedPub = $this->pubQuota - $this->pubDiskUsage;
 					$unusedPub = $unusedPub <= 0 ? 'none' : ProjectsHtml::formatSize($unusedPub);					
 				?>
