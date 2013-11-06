@@ -369,6 +369,7 @@ class plgResourcesQuestions extends JPlugin
 		$row->tag($tags);
 
 		// Add the tag to link to the resource
+		$tag = ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id);
 		$row->addTag($tag, $this->juser->get('id'), ($this->model->isTool() ? 0 : 1));
 
 		// Get users who need to be notified on every question
@@ -444,7 +445,7 @@ class plgResourcesQuestions extends JPlugin
 			$eview->sitename = $jconfig->getValue('config.sitename');
 			$eview->juser    = $this->juser;
 			$eview->row      = $row;
-			$eview->id       = $row->get('id') ? $row->ge('id') : 0;
+			$eview->id       = $row->get('id') ? $row->get('id') : 0;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
