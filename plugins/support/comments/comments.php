@@ -48,7 +48,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationcomment', 'collection', 'itemcomment'))) 
 		{
 			return null;
 		}
@@ -58,6 +58,7 @@ class plgSupportComments extends JPlugin
 			case 'itemcomment':
 			case 'collection':
 			case 'citations':
+			case 'citationcomment':
 				$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, rc.`item_type` AS `parent_category`, NULL AS `href` " 
 						. "FROM #__item_comments AS rc "
 						. "WHERE rc.id=" . $refid;
@@ -87,6 +88,7 @@ class plgSupportComments extends JPlugin
 						break;
 
 						case 'citations':
+						case 'citationcomment':
 							$rows[$key]->href = JRoute::_('index.php?option=com_citations&task=view&id=' . $parent . '&area=reviews');
 						break;
 
@@ -119,7 +121,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function onReportItem($refid, $category)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationcomment', 'collection', 'itemcomment'))) 
 		{
 			return null;
 		}
@@ -131,6 +133,7 @@ class plgSupportComments extends JPlugin
 			case 'itemcomment':
 			case 'collection':
 			case 'citations':
+			case 'citationcomment':
 				$comment = new Hubzero_Item_Comment($database);
 				$comment->load($refid);
 				$comment->state = 3;
@@ -159,7 +162,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationcomment', 'collection', 'itemcomment'))) 
 		{
 			return null;
 		}
@@ -171,6 +174,7 @@ class plgSupportComments extends JPlugin
 			case 'itemcomment':
 			case 'collection':
 			case 'citations':
+			case 'citationcomment':
 				$comment = new Hubzero_Item_Comment($database);
 				$comment->load($refid);
 				//$comment->anonymous = 0;
@@ -203,7 +207,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'collection', 'itemcomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationcomment', 'collection', 'itemcomment'))) 
 		{
 			return null;
 		}

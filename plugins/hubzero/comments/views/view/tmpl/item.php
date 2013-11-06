@@ -131,7 +131,7 @@ defined('_JEXEC') or die('Restricted access');
 						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?><!-- 
 					--></a>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=' . $this->comment->item_type . '&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>"><!-- 
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=' . $this->comment->item_type . 'comment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>"><!-- 
 						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?><!-- 
 					--></a>
 				<?php if (($this->params->get('access-edit-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
