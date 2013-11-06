@@ -391,7 +391,7 @@ class plgProjectsFiles extends JPlugin
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
 		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');	
-							
+									
 		// Something is wrong
 		if (!$path)
 		{
@@ -412,13 +412,13 @@ class plgProjectsFiles extends JPlugin
 						
 		// Initialize Git
 		$this->_git->iniGit($path);
-		
+				
 		// Does subdirectory exist?
 		if ($subdir && !is_dir($this->prefix . $path . DS . $subdir)) 
 		{
 			$subdir = '';
 		}
-		
+				
 		// Write config file
 		$this->writeGitConfig( $this->_project->alias, $this->_config, $this->_case);
 		
@@ -607,12 +607,10 @@ class plgProjectsFiles extends JPlugin
 				
 		if ($prov)
 		{
-			//$view->dirs  = $this->getFolders($path, $subdir, $prefix);
 			$view->files = $this->getMemberFiles($path, $subdir);
 		}		
 		elseif (in_array($content, $this->_valid_cases)) 
 		{	
-			//$view->dirs  = $this->getFolders($path, $subdir, $prefix);
 			$view->files = $this->getFiles($path, $subdir, 0, 0, 0, 0, '', 'ASC', true);
 		}
 		else 
@@ -1532,9 +1530,8 @@ class plgProjectsFiles extends JPlugin
 		}
 		
 		// Reserved names (service directories)
-		$reserved = ProjectsHelper::getParamArray(
-			$this->_params->get('reservedNames'));		
-		
+		$reserved = ProjectsHelper::getParamArray($this->_params->get('reservedNames'));		
+	
 		$temp_path 	 = $this->_task == 'saveprov' ? 'temp' : $this->getProjectPath ($this->_project->alias, 'temp');
 		$archive 	 = $prefix . $temp_path . DS . $file;
 		$extractPath = $prefix . $temp_path . DS . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 );
@@ -1565,10 +1562,10 @@ class plgProjectsFiles extends JPlugin
 		{																
 			chdir($prefix . $temp_path);
 			exec('tar xvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out );
-			
+
 			// Now copy extracted contents into project
 			$extracted = JFolder::files($extractPath, '.', true, true, $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));	
-			
+
 			foreach ($extracted as $e)
 			{
 				$fileinfo = pathinfo($e);
@@ -1984,7 +1981,7 @@ class plgProjectsFiles extends JPlugin
 			: JRoute::_($route . a . 'active=files');
 
 		// Check that we have directory to delete
-		if (!$dir || !file_exists($this->prefix . $path . DS . $dir) || $dir == '.git' || $dir == '.')
+		if (!$dir || !is_dir($this->prefix . $path . DS . $dir) || $dir == '.git' || $dir == '.')
 		{
 			$this->setError(JText::_('COM_PROJECTS_ERROR_NO_DIR_TO_DELETE'));	
 		}
@@ -2337,7 +2334,7 @@ class plgProjectsFiles extends JPlugin
 			if (!$this->getError()) 
 			{
 				// Delete original directory if empty
-				if ($subdir && is_dir($this->prefix. $path . DS . $subdir)) 
+				if ($subdir && file_exists($this->prefix. $path . DS . $subdir)) 
 				{
 					$contents = scandir($this->prefix. $path. DS . $subdir);
 					if (count($contents) <= 2) 
@@ -3002,17 +2999,14 @@ class plgProjectsFiles extends JPlugin
 			}
 			$i++;
 		}		
-		
-		//$layout = $this->_case == 'files' ? 'default' : 'advanced';
-		$layout = 'advanced';
-		
+				
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'	=> 'projects',
 				'element'	=> 'files',
 				'name'		=> 'history',
-				'layout' 	=> $layout
+				'layout' 	=> 'advanced'
 			)
 		);
 		
@@ -3042,7 +3036,7 @@ class plgProjectsFiles extends JPlugin
 		$view->remote		= $remote;
 		$view->connected	= $connected;
 		$view->config		= $this->_config;
-		
+				
 		if ($this->getError()) 
 		{
 			$view->setError( $this->getError() );
@@ -3404,7 +3398,7 @@ class plgProjectsFiles extends JPlugin
 					$content = $content ? ProjectsHtml::shortenText($content, 200) : '';
 				}
 			}
-			
+						
 			// Output HTML
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -3624,7 +3618,7 @@ class plgProjectsFiles extends JPlugin
 		$outputDir = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'compiled';
 		
 		// Make sure output dir exists
-		if (!file_exists( JPATH_ROOT . DS . $outputDir )) 
+		if (!is_dir( JPATH_ROOT . DS . $outputDir )) 
 		{
 			jimport('joomla.filesystem.folder');
 			
@@ -3938,8 +3932,7 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	// REMOTE SERVICES
-	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-		
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^		
 	/**
 	 * Manage connections to outside services
 	 * 
@@ -4205,13 +4198,14 @@ class plgProjectsFiles extends JPlugin
 			$syncLock 	= $pparams->get($service . '_sync_lock', '');
 			
 			// Report last sync time
-			$msg = $synced && $synced != 1 ? 
-				'<span class="faded">Last sync: ' . ProjectsHtml::timeAgo($synced) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' 
+			$msg = $synced && $synced != 1 
+				? '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo(strtotime($synced), false) 
+				. ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' 
 				: '';
 			$status = array('status' => 'complete', 'msg' => $msg);
 			
 			// Refresh view if sync happened recently
-			$timecheck = JFactory::getDate(time() - (1 * 1 * 60));
+			$timecheck = date('c', time() - (1 * 1 * 60));
 			if ($synced >= $timecheck)
 			{
 				$status['output'] = $this->view(2);
@@ -4224,11 +4218,11 @@ class plgProjectsFiles extends JPlugin
 				if ($autoSync < 1)
 				{
 					$hr = 60 * $autoSync;
-					$timecheck = JFactory::getDate(time() - (1 * $hr * 60));
+					$timecheck = date('c', time() - (1 * $hr * 60));
 				}
 				else
 				{
-					$timecheck = JFactory::getDate(time() - ($autoSync * 60 * 60));
+					$timecheck = date('c', time() - ($autoSync * 60 * 60));
 				}
 
 				if ($synced <= $timecheck)
@@ -4297,7 +4291,7 @@ class plgProjectsFiles extends JPlugin
 		$timeLock = $this->_params->get('sync_lock', 0);
 		if ($timeLock)
 		{
-			$timecheck = JFactory::getDate(time() - (1 * $timeLock * 60));
+			$timecheck = date('c', time() - (1 * $timeLock * 60));
 		}
 		
 		// Can't run sync - too soon
@@ -4316,7 +4310,7 @@ class plgProjectsFiles extends JPlugin
 			}
 				
 			// Past hour - sync should have been complete, unlock
-			$timecheck = JFactory::getDate(time() - (1 * 60 * 60));
+			$timecheck = date('c', time() - (1 * 60 * 60));
 			
 			if ($synced && $synced >= $timecheck)
 			{
@@ -4394,7 +4388,7 @@ class plgProjectsFiles extends JPlugin
 		// Record sync status
 		$this->_writeToFile(JText::_('Establishing remote connection') );		
 		
-		// Get service API - always project creator!
+		// Get service API - allways project creator!
 		$this->_connect->setUser($projectCreator);
 		$this->_connect->getAPI($service, $projectCreator);
 									
@@ -4408,13 +4402,12 @@ class plgProjectsFiles extends JPlugin
 		$timedRemotes	= array();
 						
 		// Sync start time
-		$startTime = JFactory::getDate()->toSql();
-		$passed = $synced != 1 ? ProjectsHtml::timeDifference(strtotime($startTime) - strtotime($synced)) : 'N/A';
+		$startTime =  date('c');
+		$passed    = $synced != 1 ? ProjectsHtml::timeDifference(strtotime($startTime) - strtotime($synced)) : 'N/A';
 				
 		// Start debug output
 		$output  = ucfirst($service) . "\n";
-		$output .= $synced != 1 ? 'Last sync (local): ' . $synced . ' | (UTC): ' 
-				. gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
+		$output .= $synced != 1 ? 'Last sync (local): ' . $synced . ' | (UTC): ' . gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
 		$output .= 'Previous sync ID: ' . $prevSyncId . "\n";
 		$output .= 'Current sync ID: ' . $lastSyncId . "\n";
 		$output .= 'Last synced remote change: '.  $lastRemoteChange . "\n";
@@ -4629,13 +4622,13 @@ class plgProjectsFiles extends JPlugin
 				}
 				
 				// Check for match in remote changes
-				if ($match)
+				if ($match && (($match['time'] - strtotime($from)) > 0))
 				{					
 					// skip - remote change prevails
 					$output .= '== local and remote change match (choosing remote over local): '. $filename . "\n";
 					$conflicts[$filename] = $local['remoteid'];
 				}
-				elseif (!$match)
+				else
 				{				
 					// Local change needs to be transferred
 					if ($local['status'] == 'D')
@@ -4726,7 +4719,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				
 				$processedLocal[$filename] = $local;
-				$lastLocalChange = $lChange ? JFactory::getDate($lChange + 1) : NULL;
+				$lastLocalChange = $lChange ? date('c', $lChange + 1) : NULL;
 			}
 		}
 		else
@@ -4755,7 +4748,7 @@ class plgProjectsFiles extends JPlugin
 				$tChange = $ri['time'] > $tChange ? $ri['time'] : $tChange;
 			}
 
-			$lastRemoteChange = $tChange ? JFactory::getDate($tChange) : NULL;
+			$lastRemoteChange = $tChange ? date('c', $tChange) : NULL;
 		}
 		
 		// Image handler for generating thumbnails
@@ -4779,7 +4772,7 @@ class plgProjectsFiles extends JPlugin
 			}
 			
 			// Pick up last remote change
-			$lastRemoteChange = $tChange ? JFactory::getDate($tChange) : NULL;
+			$lastRemoteChange = $tChange ? date('c', $tChange) : NULL;
 		}
 												
 		// Record sync status
@@ -4809,6 +4802,16 @@ class plgProjectsFiles extends JPlugin
 					&& isset($locals[$filename]) 
 					&& $remote['type'] == $locals[$filename]['type'] 
 					? $locals[$filename] : array();	
+					
+				// Check for match in local changes
+				// Remote usually prevails, unless it's older than last synced remote change
+				if ($match && (($match['modified'] > $remote['modified']) > 0))
+				{					
+					// skip
+					$output .= '== local and remote change match, but remote is older, picking local: '. $filename . "\n";
+					$conflicts[$filename] = $local['remoteid'];
+					continue;
+				}
 						
 				$updated 	= 0;
 				$deleted   	= 0;
@@ -4829,7 +4832,7 @@ class plgProjectsFiles extends JPlugin
 				$author = $this->_git->getGitAuthor($name, $email);
 				
 				// Set Git author date (GIT_AUTHOR_DATE)
-				$cDate = JFactory::getDate($remote['time']);
+				$cDate = date('c', $remote['time']); // Important! Needs to be local time, NOT UTC
 				
 				// Item in directory? Make sure we have correct local dir structure
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
@@ -5045,7 +5048,7 @@ class plgProjectsFiles extends JPlugin
 						$match, $remote
 					);
 					
-					$lastLocalChange = JFactory::getDate(time() + 1);
+					$lastLocalChange = date('c', time() + 1);
 					
 					// Generate local thumbnail
 					if ($remote['thumb'] && $remote['status'] != 'D')
@@ -5067,12 +5070,12 @@ class plgProjectsFiles extends JPlugin
 		sleep(1);
 		
 		// Log time
-		$endTime = JFactory::getDate()->toSql();
-		$length = ProjectsHtml::timeDifference(strtotime($endTime) - strtotime($startTime));
+		$endTime = date('c');
+		$length  = ProjectsHtml::timeDifference(strtotime($endTime) - strtotime($startTime));
 		
 		$output .= 'Sync complete:' . "\n";
 		$output .= 'Local time: '. $endTime . "\n";
-		$output .= 'UTC time: '.  gmdate('Y-m-d H:i:s', strtotime($endTime)) . "\n";
+		$output .= 'UTC time: '.  JFactory::getDate()->toSql() . "\n";
 		$output .= 'Sync completed in: '.  $length . "\n";
 		
 		// Determine next sync ID
@@ -5082,32 +5085,25 @@ class plgProjectsFiles extends JPlugin
 		}
 														
 		// Save sync time and last sync ID
-	//	if (empty($failed))
-	//	{
-			$obj = new Project( $this->_database );
-			
-			// Save sync time
-			$obj->saveParam($this->_project->id, $service . '_sync', $endTime);
-			
-			// Save change id for next sync
-			$obj->saveParam($this->_project->id, $service . '_sync_id', ($nextSyncId));
-			$output .= 'Next sync ID: ' . $nextSyncId . "\n";
-			
-			$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);
-			
-			$output .= 'Saving last synced remote change at: ' . $lastRemoteChange . "\n";
-			$obj->saveParam($this->_project->id, $service . '_last_remote_change', $lastRemoteChange);
+		$obj = new Project( $this->_database );
+		
+		// Save sync time
+		$obj->saveParam($this->_project->id, $service . '_sync', $endTime);
+		
+		// Save change id for next sync
+		$obj->saveParam($this->_project->id, $service . '_sync_id', ($nextSyncId));
+		$output .= 'Next sync ID: ' . $nextSyncId . "\n";
+		
+		$obj->saveParam($this->_project->id, $service . '_prev_sync_id', $lastSyncId);
+		
+		$output .= 'Saving last synced remote change at: ' . $lastRemoteChange . "\n";
+		$obj->saveParam($this->_project->id, $service . '_last_remote_change', $lastRemoteChange);
 
-			$output .= 'Saving last synced local change at: ' . $lastLocalChange . "\n";
-			$obj->saveParam($this->_project->id, $service . '_last_local_change', $lastLocalChange);			
-	/*	}
-		else
-		{
-			$output .= 'Some item(s) failed to sync, will repeat' . "\n";
-		} */
+		$output .= 'Saving last synced local change at: ' . $lastLocalChange . "\n";
+		$obj->saveParam($this->_project->id, $service . '_last_local_change', $lastLocalChange);			
+
 				
 		// Debug output
-		//$this->_rSync['debug'] = '<pre>' . $output . '</pre>'; // on-screen debugging
 		$temp = $this->getProjectPath ($this->_project->alias, 'logs');
 		$this->_writeToFile($output, $this->prefix . $temp . DS . 'sync.' . JFactory::getDate()->format('Y-m') . '.log', true);
 				
@@ -5199,7 +5195,7 @@ class plgProjectsFiles extends JPlugin
 		elseif ($hashed) 
 		{
 			// Generate thumbnail locally
-			if (!is_dir( $to_path )) 
+			if (!file_exists( $to_path )) 
 			{
 				jimport('joomla.filesystem.folder');
 				JFolder::create( JPATH_ROOT. $to_path, 0777 );
@@ -5684,7 +5680,7 @@ class plgProjectsFiles extends JPlugin
 				}
 				elseif ($sortby == 'modified') 
 				{
-					$sorting[] = strtotime($file['date']);
+					$sorting[] = strtotime(JFactory::getDate(strtotime($file['date']))); // Make UTC for comparison
 				}
 				else
 				{
@@ -5709,7 +5705,8 @@ class plgProjectsFiles extends JPlugin
 						}
 						if ($sortby == 'modified') 
 						{
-							$sorting[] = strtotime(JFactory::getDate(strtotime($r->remote_modified))->format('Y-m-d H:i:s'));
+							//$sorting[] = strtotime(JFactory::getDate(strtotime($r->remote_modified))->format('Y-m-d H:i:s'));
+							$sorting[] = strtotime($r->remote_modified); // already UTC
 						}
 						else
 						{
@@ -6035,11 +6032,13 @@ class plgProjectsFiles extends JPlugin
 		if (!is_dir( $this->prefix. $path )) 
 		{
 			// Do not create if tool repo
+			/*
 			if (preg_match("/tools:/", $case) && (!isset($this->_tool->name) || !$this->_tool->name))
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_GET_APP_REPO_PATH') );
 				return false;
 			}
+			*/
 			
 			// Create path
 			if (!JFolder::create( $this->prefix. $path, 0777 )) 
