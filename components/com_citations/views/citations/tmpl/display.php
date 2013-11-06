@@ -56,7 +56,7 @@ defined('_JEXEC') or die( 'Restricted access');
 		
 	</div><!-- / .aside -->
 	<div class="subject">
-		<div class="clear">
+		<div class="grid">
 			<div class="col span-half">
 				<h3>What are citations?</h3>
 				<p>The following are works that have cited or referenced this site or some piece of site content. Each citation links to the piece of content it references and is downloadable in either BibTex or EndNote format.</p>
