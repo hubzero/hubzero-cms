@@ -112,7 +112,7 @@ class BlogModelComment extends \Hubzero\Model
 				$ra = new ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
 					'id'       => $this->get('id'), 
-					'category' => 'blog'
+					'category' => 'blogcomment'
 				));
 				$this->set('reports', $val);
 				if ($this->get('reports') > 0)

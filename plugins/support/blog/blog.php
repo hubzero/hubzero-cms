@@ -48,7 +48,7 @@ class plgSupportBlog extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'blog') 
+		if ($category != 'blog' && $category != 'blogcomment') 
 		{
 			return null;
 		}
@@ -98,7 +98,7 @@ class plgSupportBlog extends JPlugin
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
-		if ($category != 'blog') 
+		if ($category != 'blog' && $category != 'blogcomment') 
 		{
 			return null;
 		}
