@@ -596,7 +596,7 @@ $area = JRequest::getVar('area', 'about');
 <?php endif;?>
 
 <?php if ($area == 'resources') : ?>
-	<div class="main section citation-section hide">
+	<div class="main section citation-section">
 		<a name="resources"></a>
 		<h3>Cited Resources</h3>
 		<?php if(count($associationLinks) > 0) : ?>
