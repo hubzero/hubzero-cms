@@ -688,7 +688,7 @@ class CitationFormat
 						}   
 						else
 						{
-							$html .= ' <span>|</span> <a href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('RESOURCE_CITED') . '</a>';  
+							$html .= ' <span>|</span> <a href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';  
 						}
 					}
 				}
