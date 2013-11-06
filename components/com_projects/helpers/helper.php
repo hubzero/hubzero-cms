@@ -298,6 +298,7 @@ class ProjectsHelper extends JObject {
 			$juser =& JFactory::getUser();
 			$uid   = $juser->get('id');
 		}
+		
 		$attachment->created_by  	= $uid;
 
 		if (!$attachment->check()) 

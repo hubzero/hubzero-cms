@@ -1675,7 +1675,8 @@ class ProjectsConnectHelper extends JObject {
 	 *
 	 * @return     integer - change ID
 	 */
-	public function getChangedItems ($service = 'google', $uid = 0, $startChangeId = NULL, &$remotes, &$deletes, $connections = array(), $path = '' ) 
+	public function getChangedItems ($service = 'google', $uid = 0, $startChangeId = NULL, &$remotes, 
+		&$deletes, $connections = array(), $path = '' ) 
 	{
 		// Get api
 		$apiService = $this->getAPI($service, $uid);

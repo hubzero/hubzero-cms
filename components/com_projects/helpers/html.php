@@ -40,7 +40,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-
 if (!defined('n')) {
 
 /**
@@ -134,33 +133,34 @@ class ProjectsHtml
 	 * @param      boolean 	$full	Return detailed date/time?
 	 * @return     string
 	 */
-	public function formatTime($time, $full = false) 
+	public function formatTime($time, $full = false, $utc = false) 
 	{
 		$parsed 	= date_parse($time);
 		$timestamp	= strtotime($time);
 
-		$now = JFactory::getDate()->toSql();
+		$now 		= $utc ? JFactory::getDate()->toSql() : date('c');
 		$current  	= date_parse($now);
 		
 		if ($full)
 		{
-			return JFactory::getDate($timestamp)->format('g:i A M j, Y');
+		//	return $utc ? JFactory::getDate($timestamp)->format('g:i A M j, Y') : date('Y-m-d H:i:s', $timestamp) ;
+			return JHTML::_('date', $timestamp, 'M d, Y H:i:s', false);
 		}
 		
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
 			{
-				return JFactory::getDate($timestamp)->format('g:i A');
+				return JHTML::_('date', $timestamp, 'g:i A', false);
 			}
 			else
 			{
-				return JFactory::getDate($timestamp)->format('M j');
+				return JHTML::_('date', $timestamp, 'M j', false);
 			}
 		}
 		else
 		{
-			return JFactory::getDate($timestamp)->format('M j, Y');
+			return JHTML::_('date', $timestamp, 'M j, Y', false);
 		}
 	}
 	
@@ -170,24 +170,20 @@ class ProjectsHtml
 	 * @param      string $timestamp
 	 * @return     string
 	 */
-	public function timeAgo($timestamp) 
+	public function timeAgo($timestamp, $utc = true) 
 	{
 		$timestamp = Hubzero_View_Helper_Html::mkt($timestamp);
-		$text = Hubzero_View_Helper_Html::timeAgoo($timestamp);
 		
-		$parts = explode(' ',$text);
-
-		$text  = $parts[0].' '.$parts[1];
-		if ($text == '0 seconds' || $parts[0] < 0) 
-		{
-			$text = JText::_('COM_PROJECTS_JUST_A_MOMENT');
-		}
+		// Get current time
+		$current_time = $utc ? strtotime(JFactory::getDate()) : strtotime(date('c'));
+		
+		$text = ProjectsHtml::timeDifference($current_time - $timestamp);
 
 		return $text;
 	}
 	
 	/**
-	 * TGet time difference
+	 * Get time difference
 	 * 
 	 * @param      string $difference
 	 * @return     string
@@ -242,8 +238,8 @@ class ProjectsHtml
 	 */
 	public function timeFromNow ($timestamp)
 	{
-		// Store the current time
-		$current_time = time();
+		// Get current UTC time
+		$current_time = strtotime(JFactory::getDate());
 
 		// Determine the difference, between the time now and the timestamp
 		$difference =  strtotime($timestamp) - $current_time;
@@ -414,7 +410,7 @@ class ProjectsHtml
 				$file_size = round(($file_size / 1024 * 100) / 100, $round);
 			} 
 		}
-		else if($from == 'GB') 
+		elseif ($from == 'GB') 
 		{
 			if ($to == 'b') 
 			{
@@ -480,6 +476,45 @@ class ProjectsHtml
 		}
 		return $icon;
 		
+	}
+	
+	/**
+	 * Fix up some mimetypes
+	 * 
+	 * @param      string $file
+	 * @param      string $mimeType
+	 * @return     string
+	 */
+	public function fixUpMimeType ($file = NULL, $mimeType = NULL) 
+	{
+		if ($file)
+		{
+			// Get file extention
+			$parts = explode('.', $file);
+			$ext   = count($parts) > 1 ? array_pop($parts) : '';
+			$ext   = strtolower($ext);
+			
+			switch (strtolower($ext)) 
+			{
+				case 'key':
+					$mimeType = 'application/x-iwork-keynote-sffkey';
+					break;
+					
+				case 'ods':
+					$mimeType = 'application/vnd.oasis.opendocument.spreadsheet';
+					break;
+					
+				case 'wmf':
+					$mimeType = 'application/x-msmetafile';
+					break;
+					
+				case 'tex':
+					$mimeType = 'application/x-tex';
+					break;
+			}
+		}
+				
+		return $mimeType;
 	}
 	
 	/**

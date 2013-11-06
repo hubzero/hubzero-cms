@@ -109,23 +109,6 @@ class ProjectsGitHelper extends JObject {
 	}
 	
 	/**
-	 * Get date of last commit
-	 * 
-	 * @param      string	$path
-	 * @param      array  	$out
-	 *
-	 * @return     string
-	 */
-	function getLastCommit( $path = '', $out = array() )    
-	{
-		chdir($this->_prefix . $path);
-        $date = exec($this->_gitpath 
-			. " rev-list  --header --max-count=1 HEAD | grep -a committer | cut -f5-6 -d' '");
-			
-        return date("D n/j/y G:i", (int)$date);
-	}
-	
-	/**
 	 * Init Git repository
 	 * 
 	 * @param      string	$path	Repo path
@@ -496,11 +479,11 @@ class ProjectsGitHelper extends JObject {
 	{
 		// Get author profile
 		$author  = $author ? $author : $this->getGitAuthor();
-		
+
 		chdir($this->_prefix . $path);
 		$date = $date ? ' --date="' . $date . '"' : '';
 		exec($this->_gitpath . ' commit -a -m "' . $commitMsg . '" --author="' . $author . '"' . $date . '  2>&1', $out);
-		
+
 		return true;		
 	}
 	
@@ -628,7 +611,7 @@ class ProjectsGitHelper extends JObject {
 				
 		return $out && substr($out[0], 0, 5) == 'fatal' ? array() : $out;
 	}
-		
+				
 	/**
 	 * Get changes for sync
 	 * 
@@ -663,10 +646,10 @@ class ProjectsGitHelper extends JObject {
 				// We are only interested in last local change on the file
 				if (!isset($locals[$filename]))
 				{	
-					$time = strtotime(date('Y-m-d H:i:s', time() ));
+					$time = strtotime(date('c', time() )); // Important! needs to be local time, NOT UTC
 					
 					$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));	
-					$mimeType = $mTypeParts[0];
+					$mimeType = ProjectsHtml::fixUpMimeType($filename , $mTypeParts[0]);
 					
 					$locals[$filename] = array(
 						'status' 		=> 'A', 
@@ -678,7 +661,7 @@ class ProjectsGitHelper extends JObject {
 						'local_path'	=> $filename,
 						'title'			=> basename($filename),
 						'author'		=> NULL,
-						'modified' 		=> gmdate('Y-m-d H:i:s', $time), 
+						'modified'		=> gmdate('Y-m-d H:i:s', $time), 
 						'synced'		=> NULL,
 						'fullPath' 		=> $localPath . DS . $filename,
 						'mimeType'		=> $mimeType,
@@ -692,7 +675,7 @@ class ProjectsGitHelper extends JObject {
 		else
 		{
 			// Collect 
-			$since 			= $synced != 1 ? ' --since="'. $synced . '"' : '';
+			$since 			= $synced != 1 ? ' --since="' . $synced . '"' : '';
 			$where 			= $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';
 			$changes 		= $this->callGit( $path, 'rev-list ' . $where . $since);
 			
@@ -815,7 +798,7 @@ class ProjectsGitHelper extends JObject {
 						if ($type == 'file')
 						{
 							$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));	
-							$mimeType = $mTypeParts[0];
+							$mimeType = ProjectsHtml::fixUpMimeType($filename , $mTypeParts[0]);							
 						}
 
 						// We are only interested in last local change on the file
@@ -831,7 +814,7 @@ class ProjectsGitHelper extends JObject {
 								'local_path'	=> $filename,
 								'title'			=> basename($filename),
 								'author'		=> $author,
-								'modified' 		=> gmdate('Y-m-d H:i:s', $time), 
+								'modified' 		=> gmdate('Y-m-d H:i:s', $time),
 								'synced'		=> $syncT,
 								'fullPath' 		=> $localPath . DS . $filename,
 								'mimeType'		=> $mimeType,
@@ -873,7 +856,8 @@ class ProjectsGitHelper extends JObject {
 		
 		if (count($out) > 0 && $out[0] != '') 
 		{
-			foreach ($out as $line) {
+			foreach ($out as $line) 
+			{
 				$status.=  '<br />' . $line;
 			}
 		}
@@ -973,8 +957,9 @@ class ProjectsGitHelper extends JObject {
 									
 			foreach ($hashes as $hash) 
 			{						
-				$date 			= $this->gitLog($path, '', $hash, 'date');
-				$timestamps[]  	= $this->gitLog($path, '', $hash, 'timestamp');
+				$timestamp  	= $this->gitLog($path, '', $hash, 'timestamp');
+				$timestamps[]	= $timestamp;
+				$date 			= date('Y-m-d H:i:s', $timestamp);
 				
 				$order 			= $h == 1 ? 'first' : '';
 				$order 			= $h == count($hashes) ? 'last' : $order;
@@ -1046,8 +1031,8 @@ class ProjectsGitHelper extends JObject {
 	public function IsBinary($file) 
 	{ 
 	  	if (file_exists($file)) 
-		{ 
-	    	if (!is_file($file)) 
+		{   	
+			if (!is_file($file)) 
 			{
 				return 0;
 			} 
