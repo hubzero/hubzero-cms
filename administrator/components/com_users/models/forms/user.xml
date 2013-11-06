@@ -15,6 +15,7 @@
 			label="COM_USERS_USER_FIELD_USERNAME_LABEL"
 			required="true"
 			size="30"
+			readonly="true"
 		/>
 
 		<field name="password" type="password"
