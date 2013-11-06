@@ -283,7 +283,7 @@ $area = JRequest::getVar('area', 'about');
 				$cls = ($k == $area) ? 'active' : '';
 			?>
 			<li class="<?php echo $cls; ?>">
-				<a class="tab" href="<?php echo JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id.'&area='.$k.'#'.$k); ?>">
+				<a class="tab" href="<?php echo JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id.'&area='.$k); ?>">
 					<span><?php echo $v; ?></span>
 				</a>
 			</li>
@@ -623,7 +623,7 @@ $area = JRequest::getVar('area', 'about');
 			$params = array(
 				$citation,
 				$this->option,
-				JRoute::_('index.php?option='.$this->option.'&task=view&id='.$citation->id.'&area=reviews#reviews'),
+				JRoute::_('index.php?option='.$this->option.'&task=view&id='.$citation->id.'&area=reviews'),
 				array('png','jpg','gif','tiff','pdf')
 			);
 			$comments = $dispatcher->trigger( 'onAfterDisplayContent', $params );
