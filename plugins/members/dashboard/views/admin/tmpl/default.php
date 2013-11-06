@@ -45,6 +45,12 @@ function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
+<?php foreach($this->messages as $message) : ?>
+	<p class="<?php echo $message['type']; ?>">
+		<?php echo $message['message']; ?>
+	</p>
+<?php endforeach; ?>
+
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=dashboard" method="post" name="adminForm" id="adminForm">
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

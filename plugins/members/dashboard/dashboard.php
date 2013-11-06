@@ -933,7 +933,9 @@ class plgMembersDashboard extends Hubzero_Plugin
 		{
 			$this->view->setError($this->getError());
 		}
-
+		
+		$this->view->messages = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+		
 		return $this->view->loadTemplate();
 	}
 
@@ -1037,7 +1039,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=com_members&controller=plugins' . $this->_controller . '&task=manage&plugin=dashboard',
+			'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard',
 			JText::_('Module successfully pushed')
 		);
 		return;
