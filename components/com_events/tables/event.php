@@ -453,10 +453,10 @@ class EventsEvent extends JTable
 						WHERE $this->_tbl.catid = b.id 
 						AND b.access <= $gid 
 						AND $this->_tbl.access <= $gid 
-						AND (((publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_up <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
-							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
-							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
-							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down >= '" . $this->_db->getEscaped($select_date_fin) . "%')) 
+						AND (((publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_up <= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00') 
+							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00') 
+							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00') 
+							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down >= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00')) 
 							AND $this->_tbl.state = '1'";
 				}
 				else
@@ -464,10 +464,10 @@ class EventsEvent extends JTable
 					$sql = "SELECT $this->_tbl.* 
 						FROM #__categories AS b, $this->_tbl
 						WHERE $this->_tbl.catid = b.id 
-						AND (((publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_up <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
-							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
-							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%') 
-							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down >= '" . $this->_db->getEscaped($select_date_fin) . "%')) 
+						AND (((publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_up <= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00') 
+							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00') 
+							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down <= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00') 
+							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . "%' AND publish_down >= '" . $this->_db->getEscaped($select_date_fin) . "%' AND publish_down <> '0000-00-00 00:00:00')) 
 							AND $this->_tbl.state = '1'";
 				}
 

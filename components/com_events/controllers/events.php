@@ -279,7 +279,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		{
 			$month = "0$month";
 		}
-
+		/*
 		$ee = new EventsEvent($this->database);
 
 		// Find the date of the first event
@@ -314,7 +314,7 @@ class EventsControllerEvents extends Hubzero_Controller
 				//$month = $fmonth;
 			}
 		}
-
+*/
 		$this->year  = $year;
 		$this->month = $month;
 		$this->day   = $day;
