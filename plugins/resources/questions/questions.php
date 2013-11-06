@@ -429,25 +429,49 @@ class plgResourcesQuestions extends JPlugin
 			$jconfig =& JFactory::getConfig();
 			$hub = array(
 				'email' => $jconfig->getValue('config.mailfrom'),
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS')
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
+				'multipart' => md5(date('U'))
 			);
 
 			// Build the message subject
 			$subject = JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('new question about content you author or manage');
 
+			// Build the message
+			$juser = JFactory::getUser();
+
+			$eview = new JView(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
+				'name'   => 'emails',
+				'layout' => 'question_plaintext'
+			));
+			$eview->option   = 'com_answers';
+			$eview->jconfig  = $jconfig;
+			$eview->sitename = $jconfig->getValue('config.sitename');
+			$eview->juser    = $juser;
+			$eview->question = $row;
+			$eview->id       = $row->get('id', 0);
+			$eview->boundary = $from['multipart'];
+
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
 			// Build the message	
 			$eview = new JView(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
-				'name'      => 'emails',
-				'layout'    => 'question'
+				'name'   => 'emails',
+				'layout' => 'question'
 			));
-			$eview->option   = 'com_answers';
-			$eview->sitename = $jconfig->getValue('config.sitename');
-			$eview->juser    = $this->juser;
-			$eview->row      = $row;
-			$eview->id       = $row->get('id') ? $row->get('id') : 0;
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
+			$eview->option    = 'com_answers';
+			$eview->jconfig   = $jconfig;
+			$eview->sitename  = $jconfig->getValue('config.sitename');
+			$eview->juser     = $juser;
+			$eview->question  = $row;
+			$eview->id        = $row->get('id', 0);
+			$eview->boundary  = $from['multipart'];
+			$eview->plaintext = $message['plaintext'];
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
