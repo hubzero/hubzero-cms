@@ -5101,7 +5101,6 @@ class plgProjectsFiles extends JPlugin
 
 		$output .= 'Saving last synced local change at: ' . $lastLocalChange . "\n";
 		$obj->saveParam($this->_project->id, $service . '_last_local_change', $lastLocalChange);			
-
 				
 		// Debug output
 		$temp = $this->getProjectPath ($this->_project->alias, 'logs');

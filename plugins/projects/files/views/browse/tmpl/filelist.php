@@ -84,7 +84,7 @@ $lastsync = '';
 <?php if ($this->sharing && !empty($this->services)) { 
 		foreach ($this->services as $service)
 		{ 
-			$lastsync = $this->rSync['status'] == 'complete' ? time() : $this->params->get($service . '_sync', '');
+			$lastsync = $this->rSync['status'] == 'complete' ? date("c") : $this->params->get($service . '_sync', '');
 			if ($lastsync)
 			{
 				$lastsync = '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo(strtotime($lastsync), false) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' ;
