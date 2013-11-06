@@ -267,6 +267,8 @@ if ($this->config->get('access-edit')) {
 		<input type="hidden" name="revision[created_by]" value="<?php echo $this->revision->created_by; ?>" />
 		<input type="hidden" name="revision[created]" value="<?php echo $this->revision->created; ?>" />
 		
+		<?php echo JHTML::_('form.token'); ?>
+		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="gid" value="<?php echo $this->page->group_cn; ?>" />
