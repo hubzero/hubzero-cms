@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <p class="wishlist">
 	<a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$this->resource->id.'&active=wishlist'); ?>">
-		<?php echo JText::sprintf('NUM_WISHES',$this->items); ?>
+		<?php echo JText::sprintf('PLG_RESOURCES_WISHLIST_NUM_WISHES',$this->items); ?>
 	</a>
 	(<a href="<?php echo JRoute::_('index.php?option=com_wishlist&id='.$this->wishlistid.'&task=add'); ?>"><?php echo JText::_('Add a new wish'); ?></a>)
 </p>

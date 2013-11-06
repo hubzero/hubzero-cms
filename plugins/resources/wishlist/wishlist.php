@@ -153,7 +153,7 @@ class plgResourcesWishlist extends JPlugin
 			 && $model->resource->standalone == 1 
 			 && $model->resource->published == 1) 
 			{
-				$rtitle = ($model->istool()) ? JText::_('WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->resource->alias : JText::_('WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->resource->id;
+				$rtitle = ($model->istool()) ? JText::_('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->resource->alias : JText::_('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->resource->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $model->resource->title);
 			}
 		}
