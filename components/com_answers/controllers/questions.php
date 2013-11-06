@@ -904,7 +904,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				'layout' => 'question'
 			));
 			$eview->option    = $this->_option;
-			$eview->jconfig  = $jconfig;
+			$eview->jconfig   = $jconfig;
 			$eview->sitename  = $jconfig->getValue('config.sitename');
 			$eview->juser     = $this->juser;
 			$eview->question  = $row;
@@ -1030,7 +1030,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				$eview->jconfig  = $jconfig;
 				$eview->sitename = $jconfig->getValue('config.sitename');
 				$eview->juser    = $this->juser;
-				$eview->question = $question;
+				$eview->question = new AnswersModelQuestion($question);
 				$eview->id       = $question->get('id');
 				$eview->boundary = $from['multipart'];
 
@@ -1046,7 +1046,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				$eview->jconfig  = $jconfig;
 				$eview->sitename  = $jconfig->getValue('config.sitename');
 				$eview->juser     = $this->juser;
-				$eview->question  = $question;
+				$eview->question  = new AnswersModelQuestion($question);
 				$eview->id        = $id;
 				$eview->boundary  = $from['multipart'];
 				$eview->plaintext = $message['plaintext'];
