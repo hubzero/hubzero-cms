@@ -64,7 +64,7 @@ if ($inuse < 1)
 $inuse = ($inuse > 100) ? 100 : $inuse;
 $approachingQuota = $this->config->get('approachingQuota', 85);
 $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
-$warning = ($inuse > $approachingQuota) ? 1 : 0;
+$warning 		  = ($inuse > $approachingQuota) ? 1 : 0;
 
 $lastsync = '';
 
@@ -87,7 +87,7 @@ $lastsync = '';
 			$lastsync = $this->rSync['status'] == 'complete' ? time() : $this->params->get($service . '_sync', '');
 			if ($lastsync)
 			{
-				$lastsync = '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo($lastsync) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' ;
+				$lastsync = '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo(strtotime($lastsync), false) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' ;
 			}
 			?>
 	<input type="hidden" name="service-<?php echo $service; ?>" id="service-<?php echo $service; ?>" value="<?php echo !empty($this->connections) && isset($this->connections[$service]) ? 1 : 0; ?>" />	
