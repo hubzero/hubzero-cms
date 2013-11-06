@@ -1409,7 +1409,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	{
 		//get the group
 		$group = (!is_null($group)) ? $group : JRequest::getVar('group', '');
-		$group = strtolower(trim($group));
+		$group = trim($group);
 
 		if ($group == '')
 		{
@@ -1588,10 +1588,10 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 */
     private function _validCn( $cn, $allowDashes = false )
 	{
-		$regex = '/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i';
+		$regex = '/^[0-9a-z]+[_0-9a-z]*$/u';
 		if ($allowDashes)
 		{
-			$regex = '/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i';
+			$regex = '/^[0-9a-z]+[-_0-9a-z]*$/u';
 		}
 		
 		if (preg_match($regex, $cn))
