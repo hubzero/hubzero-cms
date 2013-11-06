@@ -618,8 +618,9 @@ class Hubzero_Group
 					}
 				}
 
-				// see who is missing
-				$aNewUserGroupEnrollments = array_diff($list, $aExistingUserMembership);
+				// see who is new, merge with previous additions so we have a complete list after we are done
+				$aNewUserGroupEnrollments = array_merge($aNewUserGroupEnrollments, array_diff($list, $aExistingUserMembership));
+
 			}
 
 			if (is_array($list) && count($list) > 0)
