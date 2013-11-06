@@ -140,8 +140,8 @@ class modNotices extends Hubzero_Module
 
 		$database->setQuery("SELECT publish_up, publish_down FROm #__modules WHERE id=" . $this->module->id);
 		$item = $database->loadObject();
-		$this->module->publish_up = $item->publish_up;
-		$this->module->publish_down = $item->publish_down;
+		$this->module->publish_up = (isset($item->publish_up)) ? $item->publish_up : null;
+		$this->module->publish_down = (isset($item->publish_down)) ? $item->publish_down : null;
 
 		// Get some initial parameters
 		$start = $this->params->get('start_publishing', $this->module->publish_up);
