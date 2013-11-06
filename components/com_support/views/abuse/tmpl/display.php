@@ -75,7 +75,7 @@ if ($this->report) {
 
 			<p class="multiple-option">
 				<label class="option" for="subject1"><input type="radio" class="option" name="subject" id="subject1" value="<?php echo JText::_('OFFENSIVE_CONTENT'); ?>" checked="checked" /> <?php echo JText::_('OFFENSIVE_CONTENT'); ?></label>
-				<label class="option" for="subject2"><input type="radio" class="option" name="subject" id="subject2" value="<?php echo JText::sprintf('STUPID',$this->cat); ?>" /> <?php echo JText::sprintf('STUPID',$this->cat); ?></label>
+				<label class="option" for="subject2"><input type="radio" class="option" name="subject" id="subject2" value="<?php echo JText::sprintf('STUPID', ' '); ?>" /> <?php echo JText::sprintf('STUPID',' '); ?></label>
 				<label class="option" for="subject3"><input type="radio" class="option" name="subject" id="subject3" value="<?php echo JText::_('SPAM'); ?>" /> <?php echo JText::_('SPAM'); ?></label>
 				<label class="option" for="subject4"><input type="radio" class="option" name="subject" id="subject4" value="<?php echo JText::_('OTHER'); ?>" /> <?php echo JText::_('OTHER'); ?></label>
 			</p>

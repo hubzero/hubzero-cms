@@ -66,6 +66,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
+				<th><?php echo JText::_('ID'); ?></th>
 				<th><?php echo JText::_('STATUS'); ?></th>
 				<th><?php echo JText::_('REPORTED_ITEM'); ?></th>
 				<th><?php echo JText::_('REASON'); ?></th>
@@ -75,7 +76,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -99,6 +100,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	$juser =& JUser::getInstance($row->created_by);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
+				<td><?php echo $row->id;  ?></td>
 				<td><?php echo $status;  ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=view&amp;id=<?php echo $row->id; ?>&amp;cat=<?php echo $row->category; ?>"><?php echo ($row->category.' #'.$row->referenceid); ?></a></td>
 				<td><?php echo $this->escape($row->subject); ?></td>
