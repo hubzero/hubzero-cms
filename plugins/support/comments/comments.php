@@ -59,7 +59,7 @@ class plgSupportComments extends JPlugin
 			case 'collection':
 			case 'citations':
 			case 'citationscomment':
-				$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, rc.`item_type` AS `parent_category`, NULL AS `href` " 
+				$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, concat(rc.`item_type`, 'comment') AS `parent_category`, NULL AS `href` " 
 						. "FROM #__item_comments AS rc "
 						. "WHERE rc.id=" . $refid;
 			break;
@@ -143,7 +143,8 @@ class plgSupportComments extends JPlugin
 			case 'answercomment':
 			case 'wishcomment':
 			default:
-
+				$comment = new Hubzero_Comment($database);
+				$comment->load($refid);
 			break;
 		}
 
