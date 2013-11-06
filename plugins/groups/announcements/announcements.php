@@ -92,6 +92,19 @@ class plgGroupsAnnouncements extends Hubzero_Plugin
 		$view->juser      = JFactory::getUser();
 		$view->database   = JFactory::getDBO();
 		
+		// get plugin access
+		$access = Hubzero_Group_Helper::getPluginAccess($group, 'announcements');
+		
+		//if set to nobody make sure cant access
+		//check if guest and force login if plugin access is registered or members
+		//check to see if user is member and plugin access requires members
+		if ($access == 'nobody'
+			|| ($view->juser->get('guest') && $access == 'registered')
+			|| (!in_array($view->juser->get('id'), $group->get('members')) && $access == 'members'))
+		{
+			return '';
+		}
+		
 		//build array of filters
 		$view->filters              = array();
 		$view->filters['scope']     = 'group';
