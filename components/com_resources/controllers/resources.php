@@ -2783,7 +2783,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$this->config->set('access-manage-component', $juser->authorise('core.manage', null));
 				if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
 				{
-					return true;
+					return false;
 				}
 			}
 
