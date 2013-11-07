@@ -225,7 +225,7 @@ class plgSupportComments extends JPlugin
 				$comment->load($refid);
 				//$comment->anonymous = 1;
 				$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
-				//$comment->state = 2;
+				$comment->state = 1;
 			break;
 
 			case 'reviewcomment':

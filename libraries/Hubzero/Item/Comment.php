@@ -210,14 +210,14 @@ class Hubzero_Item_Comment extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate();
+			$this->created = JFactory::getDate()->toSql();
 			$this->state = 1;
 		}
 		else 
 		{
 			$juser = JFactory::getUser();
 			$this->modified_by = $juser->get('id');
-			$this->modified = JFactory::getDate();
+			$this->modified = JFactory::getDate()->toSql();
 		}
 
 		// Check file attachment

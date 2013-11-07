@@ -263,7 +263,7 @@ Content-type: text/html;charset=utf-8";
 																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 																<tr>
-																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reviewd:</th>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reviewed:</th>
 																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->reviewed, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->reviewed, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 															<?php if ($this->report->note) { ?>
