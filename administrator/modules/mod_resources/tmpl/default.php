@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<table class="resources-stats-overview" summary="<?php echo JText::_('Overview of draft and pending resources'); ?>">
+<table class="resources-stats-overview">
 	<thead>
 		<tr>
 			<th scope="col"><?php echo JText::_('Draft (internal)'); ?></th>
@@ -41,14 +41,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="draft-internal"><a href="index.php?option=com_resources&amp;c=resources&amp;status=5" title="<?php echo JText::_('View draft (internal) resources'); ?>"><?php echo $this->draftInternal; ?></a></td>
-			<td class="draft-user"><a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('View draft (user) resources'); ?>"><?php echo $this->draftUser; ?></a></td>
-			<td class="pending"><a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('View pending resources'); ?>"><?php echo $this->pending; ?></a></td>
+			<td class="draft-internal"><a href="index.php?option=com_resources&amp;c=resources&amp;status=5" title="<?php echo JText::_('View draft (internal) resources'); ?>"><?php echo $this->escape($this->draftInternal); ?></a></td>
+			<td class="draft-user"><a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('View draft (user) resources'); ?>"><?php echo $this->escape($this->draftUser); ?></a></td>
+			<td class="pending"><a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('View pending resources'); ?>"><?php echo $this->escape($this->pending); ?></a></td>
 		</tr>
 	</tbody>
 </table>
 
-<table class="resources-stats-overview" summary="<?php echo JText::_('Overview of published resources'); ?>">
+<table class="resources-stats-overview">
 	<thead>
 		<tr>
 			<th scope="col"><?php echo JText::_('Published'); ?></th>
@@ -58,9 +58,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="published"><a href="index.php?option=com_resources&amp;c=resources&amp;status=1" title="<?php echo JText::_('View published resources'); ?>"><?php echo $this->published; ?></a></td>
-			<td class="unpublished"><a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('View unpublished resources'); ?>"><?php echo $this->unpublished; ?></a></td>
-			<td class="removed"><a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('View removed resources'); ?>"><?php echo $this->removed; ?></a></td>
+			<td class="published"><a href="index.php?option=com_resources&amp;c=resources&amp;status=1" title="<?php echo JText::_('View published resources'); ?>"><?php echo $this->escape($this->published); ?></a></td>
+			<td class="unpublished"><a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('View unpublished resources'); ?>"><?php echo $this->escape($this->unpublished); ?></a></td>
+			<td class="removed"><a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('View removed resources'); ?>"><?php echo $this->escape($this->removed); ?></a></td>
 		</tr>
 	</tbody>
 </table>

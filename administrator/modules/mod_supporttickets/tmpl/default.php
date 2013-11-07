@@ -35,7 +35,7 @@ $app = JFactory::getApplication();
 <?php if ($app->getTemplate() == 'khepri' && $this->module->showtitle) : ?>
 	<h3 class="title"><?php echo $this->module->title; ?></h3>
 <?php endif; ?>
-	<table class="support-stats-overview open-tickets" summary="<?php echo JText::_('Overview of open support tickets'); ?>">
+	<table class="support-stats-overview open-tickets">
 		<thead>
 			<tr>
 				<th scope="col"><?php echo JText::_('Open'); ?></th>
@@ -45,14 +45,14 @@ $app = JFactory::getApplication();
 		</thead>
 		<tbody>
 			<tr>
-				<td class="major"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[0]->id; ?>" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->opened[0]->count; ?></a></td>
-				<td class="critical"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[2]->id; ?>" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->opened[2]->count; ?></a></td>
-				<td class="newt"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[1]->id; ?>" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->opened[1]->count; ?></a></td>
+				<td class="major"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[0]->id; ?>" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->escape($this->opened[0]->count); ?></a></td>
+				<td class="critical"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[2]->id; ?>" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->escape($this->opened[2]->count); ?></a></td>
+				<td class="newt"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[1]->id; ?>" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->escape($this->opened[1]->count); ?></a></td>
 			</tr>
 		</tbody>
 	</table>
 
-	<table class="support-stats-overview closed-tickets" summary="<?php echo JText::_('Overview of closed support tickets'); ?>">
+	<table class="support-stats-overview closed-tickets">
 		<thead>
 			<tr>
 				<th scope="col" class="block"><?php echo JText::_('Average lifetime'); ?></th>
@@ -69,7 +69,7 @@ $app = JFactory::getApplication();
 		</tbody>
 	</table>
 <?php if ($this->params->get('showMine', 1)) { ?>
-	<table class="support-stats-overview my-tickets" summary="<?php echo JText::_('Overview of my support tickets'); ?>">
+	<table class="support-stats-overview my-tickets">
 		<thead>
 			<tr>
 				<th scope="col"><?php echo JText::_('My Tickets (reported)'); ?></th>
@@ -78,8 +78,8 @@ $app = JFactory::getApplication();
 		</thead>
 		<tbody>
 			<tr>
-				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[0]->id; ?>" title="<?php echo JText::_('View my reported tickets'); ?>"><?php echo $this->my[0]->count; ?></a></td>
-				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[1]->id; ?>" title="<?php echo JText::_('View my assigned tickets'); ?>"><?php echo $this->my[1]->count; ?></a></td>
+				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[0]->id; ?>" title="<?php echo JText::_('View my reported tickets'); ?>"><?php echo $this->escape($this->my[0]->count); ?></a></td>
+				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[1]->id; ?>" title="<?php echo JText::_('View my assigned tickets'); ?>"><?php echo $this->escape($this->my[1]->count); ?></a></td>
 			</tr>
 		</tbody>
 	</table>

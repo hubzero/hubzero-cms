@@ -89,7 +89,7 @@ class modGroups extends Hubzero_Module
 		$this->pastDay = $this->database->loadResult();
 
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
+		$document->addStyleSheet(JURI::base(true) . '/modules/' . $this->module->module . '/' . $this->module->module . '.css');
 
 		// Get the view
 		require(JModuleHelper::getLayoutPath($this->module->module));

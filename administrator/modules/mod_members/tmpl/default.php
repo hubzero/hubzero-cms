@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<table class="members-stats-overview" summary="<?php echo JText::_('Overview of member stats'); ?>">
+<table class="members-stats-overview">
 	<thead>
 		<tr>
 			<th scope="col"><?php echo JText::_('Confirmed'); ?></th>
@@ -41,9 +41,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="confirmed"><a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('View confirmed members'); ?>"><?php echo $this->confirmed; ?></a></td>
-			<td class="unconfirmed"><a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('View unconfirmed members'); ?>"><?php echo $this->unconfirmed; ?></a></td>
-			<td class="newest"><a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo date("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('View newest members'); ?>"><?php echo $this->pastDay; ?></a></td>
+			<td class="confirmed"><a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('View confirmed members'); ?>"><?php echo $this->escape($this->confirmed); ?></a></td>
+			<td class="unconfirmed"><a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('View unconfirmed members'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a></td>
+			<td class="newest"><a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo date("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('View newest members'); ?>"><?php echo $this->escape($this->pastDay); ?></a></td>
 		</tr>
 	</tbody>
 </table>
