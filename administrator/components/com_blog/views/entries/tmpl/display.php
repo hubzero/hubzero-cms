@@ -198,7 +198,7 @@ foreach ($this->rows as $row)
 		} 
 		else 
 		{
-			$times .= JText::_('Start') . ': '. $publish_up->format();
+			$times .= JText::_('Start') . ': '. $publish_up->toSql();
 		}
 	}
 	if ($row->get('publish_down')) 
@@ -209,7 +209,7 @@ foreach ($this->rows as $row)
 		} 
 		else 
 		{
-			$times .= '<br />' . JText::_('Finish') . ': '. $publish_down->format();
+			$times .= '<br />' . JText::_('Finish') . ': '. $publish_down->toSql();
 		}
 	}
 
