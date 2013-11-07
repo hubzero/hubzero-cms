@@ -2127,6 +2127,11 @@ function initWykiwyg() {
 			footer = false;
 		}
 
+		var links = jQuery(jQuery(textarea).parent()).find('a.popup');
+		links.each(function(i, link) {
+			jQuery(link).attr('href', jQuery(link).attr('href') + '?tmpl=component');
+		});
+
 		var edtr = new WYKIWYG.editor.edit('editor' + id,{
 			id: id,
 			controls: controls,

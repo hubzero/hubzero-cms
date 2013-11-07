@@ -249,6 +249,11 @@ function initWikitoolbar() {
 			}
 		}
 
+		var links = jQuery(tbar.parent()).find('a.popup');
+		links.each(function(i, link) {
+			jQuery(link).attr('href', jQuery(link).attr('href') + '?tmpl=component');
+		});
+
 		jQuery(tbar).wikitoolbar();
 
 		wyktoolbar.push(id);
