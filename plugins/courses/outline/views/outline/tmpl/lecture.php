@@ -61,6 +61,24 @@ if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
+	<?php if ($this->course->offering()->access('manage')) { ?>
+		<?php if (!$lecture->isPublished()) { ?>
+		<div class="asset-status unpublished">
+			<span><?php echo JText::_('This lecture is <strong>unpublished</strong>.'); ?></span>
+		</div>
+		<?php } ?>
+		<?php if ($lecture->isDraft()) { ?>
+		<div class="asset-status draft">
+			<span><?php echo JText::_('This lecture is in <strong>draft</strong> mode.'); ?></span>
+		</div>
+		<?php } ?>
+		<?php if ($lecture->isPublished() && !$lecture->isAvailable()) { ?>
+		<div class="asset-status pending">
+			<span><?php echo JText::sprintf('This lecture is <strong>scheduled</strong> to be available at %s.', $lecture->get('publish_up')); ?></span>
+		</div>
+		<?php } ?>
+	<?php } ?>
+
 	<div class="video container">
 		<div class="video-wrap">
 			<div class="video-player-wrap">
@@ -71,11 +89,32 @@ if (!$this->course->offering()->access('view')) { ?>
 				// Render video
 				foreach ($lecture->assets() as $a)
 				{
-					if ($a->get('type') == 'video' && $a->isPublished())
+					if ($a->get('type') == 'video' && ($a->isPublished() || (!$a->isPublished() && $this->course->offering()->access('manage'))))
 					{
 						$used = $a->get('id');
 						$used_title = $a->get('title');
 						echo $a->render($this->course);
+
+						if ($this->course->offering()->access('manage')) 
+						{ 
+							?>
+							<?php if (!$a->isPublished()) { ?>
+							<div class="asset-status unpublished">
+								<span><?php echo JText::_('This asset is <strong>unpublished</strong>.'); ?></span>
+							</div>
+							<?php } ?>
+							<?php if ($a->isDraft()) { ?>
+							<div class="asset-status draft">
+								<span><?php echo JText::_('This asset is in <strong>draft</strong> mode.'); ?></span>
+							</div>
+							<?php } ?>
+							<?php if ($a->isPublished() && !$a->isAvailable()) { ?>
+							<div class="asset-status pending">
+								<span><?php echo JText::sprintf('This asset is <strong>scheduled</strong> to be available at %s.', $a->get('publish_up')); ?></span>
+							</div>
+							<?php } ?>
+							<?php 
+						}
 
 						// Break - only 'render' first video available (should we do something about multiple video assets?)
 						break;
@@ -93,48 +132,55 @@ if (!$this->course->offering()->access('view')) { ?>
 					<?php endif; ?>
 				</h3>
 
-			<ul class="lecture-assets">
-				<?php
-				$exams = array();
-				// Are there any assets?
-				if ($lecture->assets()->total())
-				{
-					// Loop through the assets
-					foreach ($lecture->assets() as $a)
+				<ul class="lecture-assets">
+					<?php
+					$exams = array();
+					// Are there any assets?
+					if ($lecture->assets()->total())
 					{
-						// Was this asset already used elsewhere on the page?
-						// This should generally only happen with the video asset
-						if ($a->get('id') == $used || !$a->isPublished())
+						// Loop through the assets
+						foreach ($lecture->assets() as $a)
 						{
-							continue;
-						}
-						$href = JRoute::_($altBase . '&asset=' . $a->get('id'));
-						/*if ($a->get('type') == 'video')
-						{
-							$href = JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
-						}*/
-						$cls = 'download';
-						if ($a->get('type') == 'exam')
-						{
-							$cls = 'edit';
-							$exams[] = '<a class="' . $cls . ' btn" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a>';
-						}
-						else
-						{
-							if ($a->get('type') == 'link')
+							// Was this asset already used elsewhere on the page?
+							// This should generally only happen with the video asset
+							if ($a->get('id') == $used)
 							{
-								$cls = 'link';
+								continue;
 							}
-							echo '<li><a class="' . $cls . '" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+							if (!$this->course->offering()->access('manage'))
+							{
+								if (!$a->isPublished())
+								{
+									continue;
+								}
+							}
+							$href = JRoute::_($altBase . '&asset=' . $a->get('id'));
+							/*if ($a->get('type') == 'video')
+							{
+								$href = JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
+							}*/
+							$cls = 'download';
+							if ($a->get('type') == 'exam')
+							{
+								$cls = 'edit';
+								$exams[] = '<a class="' . $cls . ' btn" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a>';
+							}
+							else
+							{
+								if ($a->get('type') == 'link')
+								{
+									$cls = 'link';
+								}
+								echo '<li><a class="' . $cls . '" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+							}
 						}
 					}
-				}
-				else
-				{
-					echo '<li><small>' . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . '</small></li>';
-				}
-				?>
-			</ul>
+					else
+					{
+						echo '<li><small>' . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . '</small></li>';
+					}
+					?>
+				</ul>
 			</div>
 
 			<p class="lecture-nav">
