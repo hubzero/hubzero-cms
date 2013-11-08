@@ -328,7 +328,8 @@ class plgGroupsBlog extends Hubzero_Plugin
 			'scope'      => 'group',
 			'group_id'   => $this->group->get('gidNumber'),
 			'search'     => JRequest::getVar('search',''),
-			'authorized' => false
+			'authorized' => false,
+			'state'      => 'public'
 		);
 
 		// See what information we can get from the path
