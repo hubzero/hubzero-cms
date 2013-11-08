@@ -50,18 +50,25 @@ class ResourcesElementHidden extends ResourcesElement
 	{
 		$class = (isset($element->class)) ? $element->class : 'text_area';
 
+		$val = '';
 		$k = 0;
-		foreach ($element->options as $option)
+		if (is_array($element->options))
 		{
-			if ($k >= 1)
+			foreach ($element->options as $option)
 			{
-				break;
+				if ($k >= 1)
+				{
+					break;
+				}
+
+				$val  = $option->value;
+
+				$k++;
 			}
-
-			$val  = $option->value;
-			$text = $option->label;
-
-			$k++;
+		}
+		else if (is_object($element->options))
+		{
+			$val  = $element->options->value;
 		}
 
 		return '<input type="hidden" name="'.$control_name.'['.$name.']" id="'.$control_name.'-'.$name.'" value="'.$val.'" class="'.$class.'" />';
@@ -97,19 +104,22 @@ class ResourcesElementHidden extends ResourcesElement
 
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tbody>';
-		foreach ($element->options as $option)
+		if (is_array($element->options))
 		{
-			if ($k >= 1)
+			foreach ($element->options as $option)
 			{
-				break;
-			}
-			
-			$html[] = '<tr>';
-			$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('Value') . '</label></td>';
-			$html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
-			$html[] = '</tr>';
+				if ($k >= 1)
+				{
+					break;
+				}
 
-			$k++;
+				$html[] = '<tr>';
+				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('Value') . '</label></td>';
+				$html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
+				$html[] = '</tr>';
+
+				$k++;
+			}
 		}
 		$html[] = '</tbody>';
 		$html[] = '</table>';
