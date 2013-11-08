@@ -73,7 +73,7 @@ $first = $this->model->entries('first');
 				<?php 
 			if ($first->exists()) {
 				$start = intval(substr($first->get('publish_up'), 0, 4));
-				$now = date("Y");
+				$now = JFactory::getDate()->toFormat("Y");
 				for ($i=$now, $n=$start; $i >= $n; $i--)
 				{
 				?>
@@ -98,7 +98,7 @@ $first = $this->model->entries('first');
 						);
 						//if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) {
 						if ($i == $now) {
-							$months = date("m");
+							$months = JFactory::getDate()->toFormat("m");
 						} else {
 							$months = 12;
 						}
@@ -124,7 +124,7 @@ $first = $this->model->entries('first');
 
 			<div class="container blog-popular-entries">
 				<h4><?php echo JText::_('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
-			<?php if ($popular = $this->model->entries('recent', $this->filters)) { ?>
+			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 				<ol>
 				<?php foreach ($popular as $row) { ?>
 					<li>
@@ -138,7 +138,7 @@ $first = $this->model->entries('first');
 				<p><?php echo JText::_('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
 			<?php } ?>
 			</div><!-- / .blog-popular-entries -->
-
+			<?php /*
 			<div class="container blog-recent-entries">
 				<h4><?php echo JText::_('COM_BLOG_RECENT_ENTRIES'); ?></h4>
 			<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
@@ -155,6 +155,7 @@ $first = $this->model->entries('first');
 				<p><?php echo JText::_('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
 			<?php } ?>
 			</div><!-- / .blog-recent-entries -->
+			*/ ?>
 		</div><!-- / .aside -->
 		<div class="subject">
 		<?php if ($this->getError()) { ?>
