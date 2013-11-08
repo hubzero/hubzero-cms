@@ -316,11 +316,11 @@ class plgWhatsnewResources extends JPlugin
 		}
 
 		$rparams = new $paramClass($row->params);
-		$params = $config;
-		$params->merge($rparams);
+		//$params = $config;
+		//$params->merge($rparams);
 
 		// Set the display date
-		switch ($params->get('show_date'))
+		switch ($rparams->get('show_date', $config->get('show_date')))
 		{
 			case 0: $thedate = ''; break;
 			case 1: $thedate = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));    break;
@@ -333,7 +333,7 @@ class plgWhatsnewResources extends JPlugin
 		// Start building HTML
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		if ($params->get('show_ranking')) 
+		if ($rparams->get('show_ranking', $config->get('show_ranking'))) 
 		{
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
@@ -369,7 +369,7 @@ class plgWhatsnewResources extends JPlugin
 			$html .= "\t\t\t" . '</dl>' . "\n";
 			$html .= "\t\t" . '</div>' . "\n";
 		} 
-		elseif ($params->get('show_rating')) 
+		elseif ($rparams->get('show_rating', $config->get('show_rating'))) 
 		{
 			switch ($row->rating)
 			{
