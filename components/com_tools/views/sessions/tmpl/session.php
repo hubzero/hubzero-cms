@@ -33,35 +33,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
 
-$cls = array();
-if ($this->app->params->get('noResize', 0)) { 
-	$cls[] = 'no-resize';
-}
-if ($this->app->params->get('noPopout', 0)) { 
-	$cls[] = 'no-popout';
-}
-if ($this->app->params->get('noPopoutClose', 0)) { 
-	$cls[] = 'no-popout-close';
-}
-if ($this->app->params->get('noPopoutMaximize', 0)) { 
-	$cls[] = 'no-popout-maximize';
-}
-if ($this->app->params->get('noRefresh', 0)) { 
-	$cls[] = 'no-refresh';
-}
-
 //is this a share session thats read-only
 $readOnly = false;
 foreach($this->shares as $share)
 {
-	if($juser->get('username') == $share->viewuser)
+	if ($juser->get('username') == $share->viewuser)
 	{
-		if($share->readonly == 'Yes')
+		if (strtolower($share->readonly) == 'yes')
 		{
 			$readOnly = true;
 		}
 	}
 }
+
+$venue = false;
 
 JPluginHelper::importPlugin('mw');
 $dispatcher =& JDispatcher::getInstance();
@@ -72,24 +57,17 @@ if (!$this->app->sess) {
 	echo '<p class="error"><strong>'.JText::_('ERROR').'</strong><br /> '.implode('<br />', $this->output).'</p>';
 } else {
 ?>
-	
+
 	<?php if ($readOnly) : ?>
 		<p class="warning readonly-warning">
 			This tool session has been shared with you in 'Read-Only' mode, meaning you don't have control over the session.
 		</p>
 	<?php endif; ?>
-	
+
 	<div id="app-wrap">
 		<div id="app-header">
 			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
-			<!-- <ul class="app-toolbar" id="app-options">
-				<li>
-					<a id="app-btn-about" class="about" href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->toolname); ?>">
-						<span><?php echo JText::_('About'); ?></span>
-					</a>
-				</li>
-			</ul> -->
-<?php if ($this->app->sess) { ?>
+		<?php if ($this->app->sess) { ?>
 			<ul class="app-toolbar" id="session-options">
 				<li>
 					<a id="app-btn-keep" class="keep" href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">
@@ -110,7 +88,7 @@ if (!$this->app->sess) {
 				</li>
 			<?php } ?>
 			</ul>
-<?php } ?>
+		<?php } ?>
 		</div><!-- #app-header -->
 		<noscript>
 			<p class="warning">
@@ -121,120 +99,107 @@ if (!$this->app->sess) {
 		<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a target="_blank" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem.</a></p>
 
 		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>">
-			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->output->width; ?>" />
-			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->output->height; ?>" />
-			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="/components/com_tools/scripts/VncViewer-20110822-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
-				<param name="PORT" value="<?php echo $this->output->port; ?>" />
-				<param name="ENCPASSWORD" value="<?php echo $this->output->password; ?>" />
-				<param name="CONNECT" value="<?php echo $this->output->connect; ?>" />
-				<param name="View Only" value="<?php echo ($readOnly) ? 'Yes' : 'No'; ?>" />
-				<param name="trustAllVncCerts" value="Yes" />
-				<param name="Offer relogin" value="Yes" />
-				<param name="DisableSSL" value="No" />
-				<param name="Show controls" value="No" />
-				<?php if (!empty($this->output->showlocalcursor)) {?>
-				<param name="ShowLocalCursor" value="<?php echo $this->output->showlocalcursor; ?>" />
-				<?php } ?>
-				<param name="ENCODING" value="<?php echo $this->output->encoding; ?>" />
-				<p class="error">
-					In order to view an application, you must have Java installed and enabled. (<a href="/kb/misc/java">How do I do this?</a>)
-				</p>
-			</applet>
-			<script type="text/javascript">
-			function loadUnsignedApplet()
-			{
-				var jar = "/components/com_tools/scripts/VncViewer-20110822-01.jar",
-					w = <?php echo $this->output->width; ?>,
-					h = <?php echo $this->output->height; ?>,
-					port = <?php echo $this->output->port; ?>;
-					pass = "<?php echo $this->output->password; ?>",
-					connect_value = "<?php echo $this->output->connect; ?>",
-					ro = "No",
-					ua = navigator.userAgent;
-				
-				if ((ua.indexOf('MSIE') >= 0) || (ua.indexOf('xxOther') >= 0)) {
-					loadApplet(jar, w, h, port, pass, connect_value, ro, true);
-				} else {
-					loadApplet(jar, w, h, port, pass, connect_value, ro, false);
-				}
-			}
-			function loadSignedApplet()
-			{
-				var jar = "/components/com_tools/scripts/SignedVncViewer-20110822-01.jar",
-					w = <?php echo $this->output->width; ?>,
-					h = <?php echo $this->output->height; ?>,
-					port = <?php echo $this->output->port; ?>,
-					pass = "<?php echo $this->output->password; ?>",
-					connect_value = "<?php echo $this->output->connect; ?>",
-					ro = "No",
-					ua = navigator.userAgent;
-					
-				if ((ua.indexOf('MSIE') >= 0) || (ua.indexOf('xxOther') >= 0)) {
-					loadApplet(jar, w, h, port, pass, connect_value, ro, true);
-				} else {
-					loadApplet(jar, w, h, port, pass, connect_value, ro, false);
-				}
-			}
-			HUB.Mw.startAppletTimeout();
-			HUB.Mw.connectingTool();
-			</script>
+			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
+			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
+			<?php
+			$view = new JView(array(
+				'name'   => 'sessions',
+				'layout' => 'session_' . (JRequest::getInt('novnc', 0) ? 'novnc' : 'java')
+			));
+			$view->option   = $this->option;
+			$view->output   = $this->output;
+			$view->app      = $this->app;
+			$view->readOnly = $readOnly;
+			$view->display();
+			?>
 		</div><!-- / #app-content -->
 		<div id="app-footer">
-<?php 
+			<?php 
 			if ($this->config->get('show_storage')) 
 			{
-				$view = new JView(array('name'=>'storage', 'layout' => 'diskusage'));
-				$view->option = $this->option;
-				$view->amt = $this->app->percent;
-				$view->du = NULL;
-				$view->percent = 0;
-				$view->msgs = 0;
-				$view->ajax = 0;
+				$view = new JView(array(
+					'name'   => 'storage', 
+					'layout' => 'diskusage'
+				));
+				$view->option    = $this->option;
+				$view->amt       = $this->app->percent;
+				$view->du        = NULL;
+				$view->percent   = 0;
+				$view->msgs      = 0;
+				$view->ajax      = 0;
 				$view->writelink = 1;
-				$view->total = $this->total;
+				$view->total     = $this->total;
 				$view->display();
 
 				if ($this->app->percent >= 100 && isset($this->app->remaining)) 
 				{
-					$view = new JView(array('name'=>'storage','layout'=>'warning'));
-					$view->sec = $this->app->remaining;
+					$view = new JView(array(
+						'name'   => 'storage',
+						'layout' => 'warning'
+					));
+					$view->sec      = $this->app->remaining;
 					$view->padHours = false;
-					$view->option = $this->option;
+					$view->option   = $this->option;
 					$view->display();
 				}
 			} 
-?>
+			?>
 		</div><!-- #app-footer -->
+	<?php if ($venue) { ?>
+		<div id="app-venue">
+			<div class="grid">
+				<div class="col span6">
+					<p class="venue-identity"><img src="<?php echo rtrim(JURI::base(true), '/') . '/site/tools/venues/default.png'; ?>" alt="" /></p>
+					<p><?php echo JText::sprintf('This tool session is powered by the mirror site at %s', $venue); ?></p>
+				</div><!-- / .col span6 -->
+				<div class="col span6 omega">
+					<form name="share" id="app-venue" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+						<div class="grid">
+							<div class="col span-half">
+								<label for="field-venue">
+									<?php echo JText::_('Run elsewhere:'); ?><br />
+									<select name="venue" id="field-venue">
+										<option value=""><?php echo JText::_('Select venue ...'); ?></option>
+									</select>
+								</label>
+								<input type="submit" value="Go" />
+							</div><!-- / .col span6 omega -->
+							<div class="col span-half omega">
+								<p><?php echo JText::_('<strong>Warning:</strong> Changing venues will terminate this session.'); ?></p>
+							</div><!-- / .col span6 omega -->
+						</div><!-- / .grid -->
+					</form>
+				</div><!-- / .col span6 omega -->
+			</div><!-- .grid -->
+		</div><!-- #app-venue -->
+	<?php } ?>
 	</div><!-- #app-wrap -->
-	
+
 	<div class="clear share-divider"></div>
 <?php if ($this->config->get('shareable', 0)) { ?>
 	<form name="share" id="app-share" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
 		<div class="grid">
-			<?php if (is_object($this->app->owns)) : ?>
+		<?php if (is_object($this->app->owns)) : ?>
 			<div class="col span8">
-				<p class="share-member-photo">
-					<a class="share-anchor" name="shareform"></a>
+				<p class="share-member-photo" id="shareform">
 					<?php
 					ximport('Hubzero_User_Profile');
-					ximport('Hubzero_User_Profile_Helper');
-					
+
 					$jxuser = new Hubzero_User_Profile();
 					$jxuser->load($juser->get('id'));
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 					?>
-					<img src="<?php echo $thumb; ?>" alt="" />
+					<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 				</p>
 				<fieldset>
 					<legend><?php echo JText::_('Share session'); ?></legend>
-					
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+
+					<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+					<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 					<input type="hidden" name="task" value="share" />
-					<input type="hidden" name="sess" value="<?php echo $this->app->sess; ?>" />
-					<input type="hidden" name="app" value="<?php echo $this->toolname; ?>" />
+					<input type="hidden" name="sess" value="<?php echo $this->escape($this->app->sess); ?>" />
+					<input type="hidden" name="app" value="<?php echo $this->escape($this->toolname); ?>" />
 					<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess)); ?>" />
-					
+
 					<label for="field-username">
 						<?php echo JText::_('Share session with:'); ?>
 						<?php 
@@ -260,22 +225,19 @@ if (!$this->app->sess) {
 						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" /> 
 						<?php echo JText::_('Read-Only? (only you control the session)'); ?>
 					</label>
-					
+
 					<p class="submit">
 						<input type="submit" value="<?php echo JText::_('Share'); ?>" id="share-btn" />
 					</p>
-					
+
 					<div class="sidenote">
 						<p>
 							Anyone added for sharing will see your tool session in the <em>My Sessions</em> area of their dashboard. They will be able to manipulate the session unless you check "read-only".
 						</p>
 					</div>
 				</fieldset>
-				
-				<!-- <p>What does it mean to <a href="/kb/tips/share_a_simulation_session">share a session</a>?</p> -->
-				
 			</div><!-- / .col span8 -->
-			<?php endif; ?>
+		<?php endif; ?>
 			<div class="<?php if (is_object($this->app->owns)) : ?>col span4 omega<?php endif; ?>">
 				<table class="entries" summary="<?php echo Jtext::_('A list of users this session is shared with'); ?>">
 					<thead>
@@ -286,13 +248,13 @@ if (!$this->app->sess) {
 						</tr>
 					</thead>
 					<tbody>
-	<?php if (count($this->shares) <= 1) { ?>
+				<?php if (count($this->shares) <= 1) { ?>
 						<tr>
 							<td>
 								(none)
 							</td>
 						</tr>
-	<?php } else {
+				<?php } else {
 					ximport('Hubzero_View_Helper_Html');
 					
 					$config =& JComponentHelper::getParams('com_members');
@@ -320,7 +282,7 @@ if (!$this->app->sess) {
 							}
 
 							$p = ($uthumb && is_file(JPATH_ROOT . $uthumb)) ? $uthumb : $dfthumb;
-	?>
+						?>
 						<tr>
 							<th class="entry-img">
 								<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo JText::sprintf('Avatar for %s', $this->escape(stripslashes($user->get('name')))); ?>" />
@@ -344,11 +306,11 @@ if (!$this->app->sess) {
 								<?php endif; ?>
 							</td>
 						</tr>
-	<?php
+						<?php
 						}
 					}
-	?>
-	<?php } ?>
+					?>
+				<?php } ?>
 					</tbody>
 				</table>
 			</div><!-- / .col span4 -->
@@ -356,11 +318,12 @@ if (!$this->app->sess) {
 	</form>
 <?php } // shareable ?>
 <?php } ?>
+
 <?php if ($this->config->get('access-manage-session')) { ?>
 	<p id="app-manager"><?php echo JText::sprintf('Administrator viewing <span class="username"><strong>username:</strong> %s</span>, <span class="ip"><strong>IP:</strong> %s</span>, <span class="sess"><strong>session:</strong> %s</span>', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
 <?php } ?>
 
-<?php
+	<?php
 	$output = $dispatcher->trigger(
 		'onSessionView', 
 		array(
@@ -372,19 +335,19 @@ if (!$this->app->sess) {
 
 	if (count($output) > 0) 
 	{
-?>
+		?>
 		<div id="app-info">
 			<h2>App info</h2>
 			<div id="app-info-content">
-<?php 
-		foreach ($output as $out) 
-		{
-			echo $out;
-		} 
-?>
+				<?php 
+				foreach ($output as $out) 
+				{
+					echo $out;
+				} 
+				?>
 			</div>
 		</div><!-- #app-info -->
-<?php
+		<?php
 	}
-?>
+	?>
 </div><!-- / .main section #session-section -->
