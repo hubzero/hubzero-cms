@@ -13,10 +13,10 @@ class Migration20131106154023ComPublications extends Hubzero_Migration
 	 **/
 	protected static function up($db)
 	{
-		$query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT KEY `idx_fulltxt_title_description_abstract` (`title`, `description`, `abstract`);";
-
-		if (!empty($query))
+		if (!$db->tableHasKey('#__publication_versions', 'idx_fulltxt_title_description_abstract'))
 		{
+			$query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT KEY `idx_fulltxt_title_description_abstract` (`title`, `description`, `abstract`);";
+
 			$db->setQuery($query);
 			$db->query();
 		}
@@ -27,10 +27,10 @@ class Migration20131106154023ComPublications extends Hubzero_Migration
 	 **/
 	protected static function down($db)
 	{
-		$query = "ALTER TABLE `#__publication_versions` DROP INDEX `idx_fulltxt_title_description_abstract`;";
-
-		if (!empty($query))
+		if ($db->tableHasKey('#__publication_versions', 'idx_fulltxt_title_description_abstract'))
 		{
+			$query = "ALTER TABLE `#__publication_versions` DROP INDEX `idx_fulltxt_title_description_abstract`;";
+
 			$db->setQuery($query);
 			$db->query();
 		}
