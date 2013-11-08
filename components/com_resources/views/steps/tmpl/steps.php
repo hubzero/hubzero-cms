@@ -64,6 +64,9 @@ if ($this->resource->id)
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col" colspan="3"><?php echo JText::_('Associations'); ?></th>
 				<th scope="col"><?php echo JText::_('Status'); ?></th>
+			<?php if ($this->progress['submitted'] != 1) { ?>
+				<th></th>
+			<?php } ?>
 			</tr>
 		</thead>
 		<tbody>
@@ -86,6 +89,15 @@ if ($this->resource->id)
 				<td>
 					<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>
 				</td>
+			<?php if ($this->progress['submitted'] != 1) { ?>
+				<td>
+				<?php if ($this->step == 'discard') { ?>
+					<strong><?php echo JText::_('COM_CONTRIBUTE_CANCEL'); ?></strong>
+				<?php } else { ?>
+					<a class="icon-delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=discard&id='.$this->id); ?>"><?php echo JText::_('COM_CONTRIBUTE_CANCEL'); ?></a>
+				<?php } ?>
+				</td>
+			<?php } ?>
 			</tr>
 		</tbody>
 	</table>
@@ -128,15 +140,6 @@ for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
 		{
 			$html .= '<span>' . $this->steps[$i] . '</span>';
 		}
-	}
-	$html .= '</li>'."\n";
-}
-if ($this->progress['submitted'] != 1) {
-	$html .= "\t".'<li id="trash"';
-	if ($this->step == 'discard') {
-		$html .= ' class="active"><strong>'.JText::_('COM_CONTRIBUTE_CANCEL') . '</strong>';
-	} else {
-		$html .= '><a href="'.JRoute::_('index.php?option='.$this->option.'&task=discard&id='.$this->id) . '">'.JText::_('COM_CONTRIBUTE_CANCEL').'</a>';
 	}
 	$html .= '</li>'."\n";
 }
