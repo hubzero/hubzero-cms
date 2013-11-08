@@ -37,29 +37,31 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2>Browsing collection</h2>
 </div>
 
-<div class="section">
+<section>
+	<div class="section-inner">
 
-<?php
-
-	if (!empty($this->products))
-	{
-		echo '<ul>';
-		foreach ($this->products as $product)
+	<?php
+	
+		if (!empty($this->products))
 		{
-			echo '<li>';
-				echo '<a href="';
-				echo JRoute::_('index.php?option=' . JRequest::getVar('option') . '/product/' . $product->pId);
-				echo '">';
-				echo $product->pName;
-				echo '</a>';
-			echo '</li>';	
+			echo '<ul>';
+			foreach ($this->products as $product)
+			{
+				echo '<li>';
+					echo '<a href="';
+					echo JRoute::_('index.php?option=' . JRequest::getVar('option') . '/product/' . $product->pId);
+					echo '">';
+					echo $product->pName;
+					echo '</a>';
+				echo '</li>';	
+			}
+			echo '</ul>';
 		}
-		echo '</ul>';
-	}
-	else {
-		echo JText::_('COM_STOREFRONT_NO_PRODUCTS');	
-	}
-
-?>
-
-</div>
+		else {
+			echo JText::_('COM_STOREFRONT_NO_PRODUCTS');	
+		}
+	
+	?>
+	
+	</div>
+</section>

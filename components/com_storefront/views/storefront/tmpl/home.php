@@ -37,21 +37,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2><?php echo  JText::_('COM_STOREFRONT'); ?> homepage</h2>
 </div>
 
-<div class="section">
-
-<h3>Product categories</h3>
-
-<ul>
-<?php
-foreach ($this->categories as $category) 
-{
-	echo '<li>';
-	echo '<a href="';
-	echo JRoute::_('index.php?option=' . $this->option . '/browse/' . $category->cId);
-	echo '">' . $category->cName . '</a>';
-	echo '</li>';
-}
-?>
-</ul>
-
-</div>
+<section>
+	<div class="section-inner">
+		<h3>Product categories</h3>
+		
+		<ul>
+		<?php
+		foreach ($this->categories as $category) 
+		{
+			echo '<li>';
+			echo '<a href="';
+			echo JRoute::_('index.php?option=' . $this->option . '/browse/' . $category->cId);
+			echo '">' . $category->cName . '</a>';
+			echo '</li>';
+		}
+		?>
+		</ul>
+	</div>
+</section>
