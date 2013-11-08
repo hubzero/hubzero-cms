@@ -258,7 +258,7 @@ class ResourcesModelResource extends JObject
 		}
 
 		// Make sure the resource is published and standalone
-		if ($this->resource->published == 0) 
+		if (in_array($this->resource->published, array(0, 2, 4, 5))) 
 		{
 			return false;
 		}
