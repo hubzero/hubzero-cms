@@ -110,7 +110,7 @@ class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 	{
 		// For single product update SKU must save the original SKU ID (since SKU was generated automatically)
 		// Find the SKU ID for this product and save
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 		
 		$sku = $warehouse->getProductSkus($this->data->id);

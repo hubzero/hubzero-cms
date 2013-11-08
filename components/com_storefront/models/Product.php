@@ -331,7 +331,7 @@ class StorefrontModelProduct
 	{
 		$this->verify();
 		
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 		
 		return($warehouse->addProduct($this));
@@ -345,7 +345,7 @@ class StorefrontModelProduct
 	 */
 	public function update()
 	{
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();		
 		
 		return($warehouse->updateProduct($this));
