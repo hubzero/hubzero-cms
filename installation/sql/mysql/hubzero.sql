@@ -155,50 +155,58 @@ CREATE TABLE `#__announcements` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rid` int(11) NOT NULL DEFAULT '0',
-  `ip` varchar(15) DEFAULT NULL,
-  `helpful` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `rid` int(11) unsigned NOT NULL DEFAULT '0',
+  `ip` varchar(15) NOT NULL DEFAULT '',
+  `helpful` varchar(10) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_rid` (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_questions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subject` varchar(250) DEFAULT NULL,
-  `question` text,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `subject` varchar(250) NOT NULL DEFAULT '',
+  `question` text NOT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` varchar(50) DEFAULT NULL,
+  `created_by` varchar(50) NOT NULL DEFAULT '',
   `state` tinyint(3) NOT NULL DEFAULT '0',
-  `anonymous` tinyint(2) NOT NULL DEFAULT '0',
-  `email` tinyint(2) DEFAULT '0',
-  `helpful` int(11) DEFAULT '0',
-  `reward` tinyint(2) DEFAULT '0',
+  `anonymous` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `email` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `helpful` int(11) unsigned NOT NULL DEFAULT '0',
+  `reward` tinyint(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY `idx_state` (`state`),
+  KEY `idx_created_by` (`created_by`),
   FULLTEXT KEY `ftidx_question` (`question`),
   FULLTEXT KEY `ftidx_subject` (`subject`),
   FULLTEXT KEY `ftidx_question_subject` (`question`,`subject`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_questions_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `qid` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `qid` int(11) unsigned NOT NULL DEFAULT '0',
   `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `voter` int(11) DEFAULT NULL,
-  `ip` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `voter` int(11) NOT NULL DEFAULT '0',
+  `ip` varchar(15) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_qid` (`qid`),
+  KEY `idx_voter` (`voter`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_responses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `qid` int(11) NOT NULL DEFAULT '0',
-  `answer` text,
-  `created_by` varchar(50) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `qid` int(11) unsigned NOT NULL DEFAULT '0',
+  `answer` text NOT NULL,
+  `created_by` varchar(50) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `helpful` int(11) NOT NULL DEFAULT '0',
-  `nothelpful` int(11) NOT NULL DEFAULT '0',
+  `helpful` int(11) unsigned NOT NULL DEFAULT '0',
+  `nothelpful` int(11) unsigned NOT NULL DEFAULT '0',
   `state` tinyint(3) NOT NULL DEFAULT '0',
-  `anonymous` tinyint(2) NOT NULL DEFAULT '0',
+  `anonymous` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY `idx_qid` (`qid`),
+  KEY `idx_state` (`state`),
+  KEY `idx_created_by` (`created_by`),
   FULLTEXT KEY `ftidx_answer` (`answer`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -292,33 +300,38 @@ CREATE TABLE `#__billboards` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__blog_comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `entry_id` int(11) DEFAULT '0',
-  `content` text,
-  `created` datetime DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(11) DEFAULT '0',
-  `anonymous` tinyint(2) DEFAULT '0',
-  `parent` int(11) DEFAULT '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `content` text NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `anonymous` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `parent` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idx_entry_id` (`entry_id`)
+  KEY `idx_entry_id` (`entry_id`),
+  KEY `idx_created_by` (`created_by`),
+  KEY `idx_parent` (`parent`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__blog_entries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) DEFAULT NULL,
-  `alias` varchar(255) DEFAULT NULL,
-  `content` text,
-  `created` datetime DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(11) DEFAULT '0',
-  `state` tinyint(2) DEFAULT '0',
-  `publish_up` datetime DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime DEFAULT '0000-00-00 00:00:00',
-  `params` tinytext,
-  `group_id` int(11) DEFAULT '0',
-  `hits` int(11) DEFAULT '0',
-  `allow_comments` tinyint(2) DEFAULT '0',
-  `scope` varchar(100) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  `content` text NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `state` tinyint(2) NOT NULL DEFAULT '0',
+  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `params` tinytext NOT NULL,
+  `group_id` int(11) NOT NULL DEFAULT '0',
+  `hits` int(11) unsigned NOT NULL DEFAULT '0',
+  `allow_comments` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `scope` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
+  KEY `idx_created_by` (`created_by`),
+  KEY `idx_group_id` (`group_id`),
+  KEY `idx_alias` (`alias`),
   FULLTEXT KEY `ftidx_title` (`title`),
   FULLTEXT KEY `ftidx_content` (`content`),
   FULLTEXT KEY `ftidx_title_content` (`title`,`content`)
