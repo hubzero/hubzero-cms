@@ -134,11 +134,6 @@ class plgMembersBlog extends JPlugin
 				break;
 			}
 
-			/*if (is_numeric($this->task)) 
-			{
-				$this->task = 'entry';
-			}*/
-
 			switch ($this->task) 
 			{
 				// Feeds
@@ -218,10 +213,42 @@ class plgMembersBlog extends JPlugin
 			$path = str_replace($juri->base(true), '', $path);
 			$path = str_replace('index.php', '', $path);
 			$path = DS . trim($path, DS);
-			$path = str_replace('/members/' . $this->member->get('uidNumber') . '/' . $this->_name, '', $path);
-			$path = ltrim($path, DS);
 
+			$blog = '/members/' . $this->member->get('uidNumber') . '/' . $this->_name;
+
+			if ($path == $blog)
+			{
+				$path = array();
+				return $path;
+			}
+
+			$path = ltrim($path, DS);
 			$path = explode('/', $path);
+
+			/*while ($path[0] != 'members' && !empty($path));
+			{
+				array_shift($path);
+			}*/
+			$paths = array();
+			$start = false;
+			foreach ($path as $bit)
+			{
+				if ($bit == 'members' && !$start)
+				{
+					$start = true;
+					continue;
+				}
+				if ($start)
+				{
+					$paths[] = $bit;
+				}
+			}
+			if (count($paths) >= 2)
+			{
+				array_shift($paths);  // Remove member ID
+				array_shift($paths);  // Remove 'blog'
+			}
+			$path = $paths;
 		}
 
 		return $path;

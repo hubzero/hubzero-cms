@@ -243,16 +243,55 @@ class plgGroupsBlog extends Hubzero_Plugin
 	 */
 	private function _parseUrl()
 	{
-		$juri =& JURI::getInstance();
-		$path = $juri->getPath();
+		static $path;
 
-		$path = str_replace($juri->base(true), '', $path);
-		$path = str_replace('index.php', '', $path);
-		$path = DS . trim($path, DS);
-		$path = str_replace('/groups/' . $this->group->get('cn') . '/blog', '', $path);
-		$path = ltrim($path, DS);
+		if (!$path)
+		{
+			$juri =& JURI::getInstance();
+			$path = $juri->getPath();
 
-		return explode('/', $path);
+			$path = str_replace($juri->base(true), '', $path);
+			$path = str_replace('index.php', '', $path);
+			$path = DS . trim($path, DS);
+
+			$blog = '/groups/' . $this->group->get('cn') . '/blog';
+
+			if ($path == $blog)
+			{
+				$path = array();
+				return $path;
+			}
+
+			$path = ltrim($path, DS);
+			$path = explode('/', $path);
+
+			/*while ($path[0] != 'members' && !empty($path));
+			{
+				array_shift($path);
+			}*/
+			$paths = array();
+			$start = false;
+			foreach ($path as $bit)
+			{
+				if ($bit == 'groups' && !$start)
+				{
+					$start = true;
+					continue;
+				}
+				if ($start)
+				{
+					$paths[] = $bit;
+				}
+			}
+			if (count($paths) >= 2)
+			{
+				array_shift($paths);  // Remove group cn
+				array_shift($paths);  // Remove 'blog'
+			}
+			$path = $paths;
+		}
+
+		return $path;
 	}
 
 	/**
