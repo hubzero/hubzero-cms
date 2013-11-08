@@ -364,6 +364,7 @@ class plgGroupsBlog extends Hubzero_Plugin
 				 || $this->authorized == 'admin')
 				{
 					$view->filters['authorized'] = true;
+					$view->filters['state'] = 'all';
 				}
 				else
 				{
