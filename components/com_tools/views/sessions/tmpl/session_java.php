@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+ximport('Hubzero_Document');
+Hubzero_Document::addComponentScript('com_tools', 'assets/js/sessions');
+Hubzero_Document::addSystemScript('jquery.editable.min');
+
 $base = rtrim(JURI::base(true), '/');
 
 $cls = array();

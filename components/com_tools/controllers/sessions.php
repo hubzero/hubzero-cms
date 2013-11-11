@@ -624,7 +624,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		if ($appcount > 1) 
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . JFactory::getDate("g:i a") . ')';
+			$app->caption .= ' (' . JFactory::getDate()->format("g:i a") . ')';
 		}
 
 		// Save the changed caption
@@ -638,7 +638,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$rtrn = JRequest::getVar('return', '');
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn, false)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (JRequest::getInt('novnc', 0) ? '&novnc=1' : ''), false)
 		);
 	}
 
@@ -1022,11 +1022,11 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$this->_getStyles($this->_option, 'assets/css/tools.css');
 
 		// Push scripts to the document
-		$this->_getScripts('assets/js/' . $this->_controller);
+		//$this->_getScripts('assets/js/' . $this->_controller);
 		
 		//add editable plugin
-		ximport('Hubzero_Document');
-		Hubzero_Document::addSystemScript('jquery.editable.min');
+		//ximport('Hubzero_Document');
+		//Hubzero_Document::addSystemScript('jquery.editable.min');
 
 		$this->view->app      = $app;
 		$this->view->config   = $this->config;
