@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="fields">
 			<fieldset name="basic">
-				<field name="period" type="text" size="5" default="15" label="Time period" description="Time period to pull data for"/>
+				<field name="period" type="text" size="5" default="14" label="Time period" description="Time period to pull data for"/>
 				<field name="pie_chart_path" type="text" size="25" default="/site/usage/pie_chart_resources/" label="Chart path" description="Path to the directory where charts are stored"/>
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="defaultDataset" type="radio" default="cumulative" label="Default dataset" description="Determines the default dataset to display">
@@ -53,7 +53,7 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="mapZoom" type="text" size="5" default="2" label="Map Zoom" description="Map Zoom level for Google Maps"/>
 				<field name="mapLng" type="text" size="5" default="20" label="Map Longitude" description="Map Longitude for Google Maps"/>
 				<field name="mapLat" type="text" size="5" default="0" label="Map Latitude" description="Map Latitude for Google Maps"/>
-				<field name="map_path" type="text" size="25" default="/site/usage/resource_maps/" label="Map path" description="Path to the directory where map images are stored"/>
+				<field name="map_path" type="text" size="25" default="/site/stats/resource_maps/" label="Map path" description="Path to the directory where map images are stored"/>
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="chart_color_line" type="text" size="15" default="#656565" label="Chart line color" description="Chart line color"/>
 				<field name="chart_color_fill" type="text" size="15" default="rgba(0, 0, 0, 0.15)" label="Chart fill color" description="Chart fill color"/>
