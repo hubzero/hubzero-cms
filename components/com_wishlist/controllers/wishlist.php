@@ -3718,8 +3718,8 @@ class WishlistController extends JObject
 			return;
 		}
 
-		$wa = new WishAttachment($database);
-		$attachment = $wa->loadAttachment($file, $wishid);
+		$attachment = new WishAttachment($database);
+		$attachment->loadAttachment($file, $wishid);
 
 		// Ensure we have a path
 		if (!$attachment->wish || empty($attachment->filename)) 
