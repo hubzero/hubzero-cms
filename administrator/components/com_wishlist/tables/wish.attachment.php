@@ -220,8 +220,15 @@ class WishAttachment extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND wish=" . $this->_db->Quote($wish));
-		return $this->_db->loadObject($this);
+		//$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND wish=" . $this->_db->Quote($wish));
+		//return $this->_db->loadObject($this);
+
+		$fields = array(
+			'filename' => $filename,
+			'wish'     => $wish
+		);
+
+		return parent::load($fields);
 	}
 }
 
