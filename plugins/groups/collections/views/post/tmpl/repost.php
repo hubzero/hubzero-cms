@@ -103,7 +103,7 @@ if ($this->groupboards)
 		<div class="col span-half omega">
 			<label for="field-collection_title">
 				<?php echo JText::_('Create collection'); ?>
-				<input type="text" name="collection_title" id="field-collection_title" />
+				<input type="text" name="collection_title" id="field-collection_title" value="" />
 			</label>
 		</div>
 		</div>
@@ -152,10 +152,11 @@ if ($this->groupboards)
 	<input type="hidden" name="item_id" value="<?php echo $this->item_id; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="task" value="collect" />
+	<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
+	<input type="hidden" name="task" value="view" />
+	<input type="hidden" name="active" value="<?php echo $this->escape($this->name); ?>" />
+	<input type="hidden" name="action" value="collect" />
 
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_POST'); ?>" />

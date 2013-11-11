@@ -1209,7 +1209,7 @@ class plgGroupsCollections extends Hubzero_Plugin
 		// Display updated bulletin stats if called via AJAX
 		if ($no_html)
 		{
-			echo JText::sprintf('%s reposts', $stick->getCount(array('item_id' => $post->item_id, 'original' => 0)));
+			echo JText::sprintf('%s reposts', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
 			exit;
 		}
 
