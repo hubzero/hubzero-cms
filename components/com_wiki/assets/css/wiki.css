@@ -250,9 +250,11 @@
 		width: 220px;
 		padding: 5px 0 0 0;
 		z-index: 666;
+		display: none;
 	}
 	.page-search:hover .page-search-form {
 		right: 0;
+		display: block;
 	}
 	.page-search-form form {
 		border: 1px solid #ccc;
