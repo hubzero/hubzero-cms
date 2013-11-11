@@ -428,7 +428,7 @@ class CoursesControllerSections extends Hubzero_Controller
 		}
 
 		// Process badge info
-		$badge = JRequest::getVar('badge', array(), 'post');
+		$badge = JRequest::getVar('badge', array(), 'post', 'array', JREQUEST_ALLOWHTML);
 		if ($badge['published'])
 		{
 			// Get courses config

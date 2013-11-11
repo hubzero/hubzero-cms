@@ -78,9 +78,9 @@ switch ($this->action)
 
 	case 'criteria':
 		$title = "Badge Criteria";
-		$body = "<p class=\"criteria-text\">\n";
+		$body = "<div class=\"criteria-text\">\n";
 		$body .= $this->badge->get('criteria_text') . "\n";
-		$body .= "</p>\n";
+		$body .= "</div>\n";
 	break;
 
 	case 'validation':
@@ -110,14 +110,14 @@ switch ($this->action)
 
 		$title = "Badge Validation";
 		$body  = "<img src=\"".$this->badge->get('img_url')."\" width=\"125\" />\n";
-		$body .= "<p class=\"validation-text\">\n";
+		$body .= "<div class=\"validation-text\">\n";
 		$body .= "This serves to verify that " . JFactory::getUser($user_id)->get('name') . " \n";
 		$body .= "has completed the requirements of this badge on " . JFactory::getDate($memberBadge->get('earned_on'))->format('M d, Y') . ", \n";
 		$body .= "meeting the requirements of the badge at that time.  The requirements at the time of completion were:\n";
-		$body .= "</p>\n";
-		$body .= "<p>\n";
+		$body .= "</div>\n";
+		$body .= "<div>\n";
 		$body .= $criteria->get('text');
-		$body .= "</p>\n";
+		$body .= "</div>\n";
 	break;
 
 	default:
