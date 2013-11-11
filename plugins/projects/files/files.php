@@ -4491,7 +4491,7 @@ class plgProjectsFiles extends JPlugin
 			$output .= 'Timed remote changes since ' . $from . ' (' . count($timedRemotes) . '):' . "\n";
 			foreach ($timedRemotes as $tr => $trinfo)
 			{
-				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . ' status ' . $trinfo['status'] . ' ' . $remote['fileSize'] . "\n";
+				$output .= $tr . ' changed ' . date("c", $trinfo['time']) . ' status ' . $trinfo['status'] . ' ' . $trinfo['fileSize'] . "\n";
 			}
 			
 			// Pick up missed changes			
