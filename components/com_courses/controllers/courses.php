@@ -260,6 +260,39 @@ class CoursesControllerCourses extends Hubzero_Controller
 	}
 
 	/**
+	 * Public url for badge info
+	 * 
+	 * @return     void
+	 */
+	public function badgeTask()
+	{
+		if ($badge_id = JRequest::getInt('badge_id', false))
+		{
+			$badge = new CoursesModelSectionBadge($badge_id);
+
+			if (!$badge->get('id'))
+			{
+				JError::raiseError(500, 'Badge not found');
+				return;
+			}
+			else
+			{
+				$this->view->badge  = $badge;
+				$this->view->config = $this->config;
+				$this->view->action = JRequest::getWord('action', 'default');
+				$this->view->token  = JRequest::getVar('validation_token', false);
+			}
+		}
+		else
+		{
+			JError::raiseError(500, 'Badge not found');
+			return;
+		}
+
+		$this->view->display();
+	}
+
+	/**
 	 * Set access permissions for a user
 	 * 
 	 * @return     void

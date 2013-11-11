@@ -94,6 +94,20 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	}
 
 	/**
+	 * Store member badge
+	 * 
+	 * @return     bool
+	 */
+	public function store($check=true)
+	{
+		// Generate validation token
+		$token = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(21)), 0, 20));
+		$this->set('validation_token', $token);
+
+		return parent::store();
+	}
+
+	/**
 	 * Check whether or not a student has earned the badge
 	 * 
 	 * @return     bool

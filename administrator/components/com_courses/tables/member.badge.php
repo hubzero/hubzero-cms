@@ -51,6 +51,13 @@ class CoursesTableMemberBadge extends JTable
 	var $member_id = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $section_badge_id = NULL;
+
+	/**
 	 * int(1)
 	 * 
 	 * @var integer
@@ -69,13 +76,6 @@ class CoursesTableMemberBadge extends JTable
 	 * 
 	 * @var string
 	 */
-	var $claim_url = NULL;
-
-	/**
-	 * varchar(255)
-	 * 
-	 * @var string
-	 */
 	var $action = NULL;
 
 	/**
@@ -84,6 +84,13 @@ class CoursesTableMemberBadge extends JTable
 	 * @var string
 	 */
 	var $action_on = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $validation_token = NULL;
 
 	/**
 	 * Constructor

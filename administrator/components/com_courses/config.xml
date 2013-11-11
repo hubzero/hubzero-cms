@@ -109,4 +109,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</field>
 	</fieldset>
+	<fieldset name="badges">
+		<field name="passport_consumer_key" type="text" menu="hide" default="" label="Passport Key" description="API Key for Passport" size="50" />
+		<field name="passport_consumer_secret" type="text" menu="hide" default="" label="Passport Secret" description="API Secret for Passport" size="50" />
+		<field name="passport_issuer_id" type="text" menu="hide" default="" label="Passport Issuer ID" description="Passport ID for your issuer" size="50" />
+		<field name="passport_client_id" type="text" menu="hide" default="" label="Passport Client ID" description="Passport ID for your client" size="50" />
+	</fieldset>
 </config>

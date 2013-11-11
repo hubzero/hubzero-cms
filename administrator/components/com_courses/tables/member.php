@@ -200,6 +200,17 @@ class CoursesTableMember extends JTable
 	}
 
 	/**
+	 * Load a record by member id (i.e. primary key of this table)
+	 * 
+	 * @param      int $member_id
+	 * @return     boolean True on success
+	 */
+	public function loadByMemberId($member_id)
+	{
+		return parent::load($member_id);
+	}
+
+	/**
 	 * Load a record and bind to $this
 	 * 
 	 * @param      string $oid Record alias

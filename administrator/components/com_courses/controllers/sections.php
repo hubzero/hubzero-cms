@@ -36,6 +36,7 @@ ximport('Hubzero_Controller');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'badge.php');
 
 /**
  * Courses controller class for managing membership and course info
@@ -170,6 +171,8 @@ class CoursesControllerSections extends Hubzero_Controller
 		}
 
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
+		$this->view->course   = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->badge    = CoursesModelSectionBadge::loadBySectionId($this->view->row->get('id'));
 
 		// Set any errors
 		if ($this->getError())
@@ -422,6 +425,130 @@ class CoursesControllerSections extends Hubzero_Controller
 					//$agt['asset'][$z] = $a;
 				}
 			}
+		}
+
+		// Process badge info
+		$badge = JRequest::getVar('badge', array(), 'post');
+		if ($badge['published'])
+		{
+			// Get courses config
+			$cconfig =& JComponentHelper::getParams('com_courses');
+
+			// Save the basic badge content
+			$badge['section_id'] = $model->get('id');
+			$badgeObj = new CoursesModelSectionBadge($badge['id']);
+			$badgeObj->bind($badge);
+			$badgeObj->store();
+
+			// See if we have an image coming in as well
+			$badge_image = JRequest::getVar('badge_image', false, 'files', 'array');
+
+			// If so, proceed with saving the image
+			if ($badge_image['name'])
+			{
+				// Get the file extension
+				$pathinfo = pathinfo($badge_image['name']);
+				$filename = $pathinfo['filename'];
+				$ext      = $pathinfo['extension'];
+
+				// Check for square and at least 420 x 420
+				$dimensions = getimagesize($badge_image['tmp_name']);
+
+				if ($dimensions[0] != $dimensions[1])
+				{
+					$this->setError("Image must be square.");
+				}
+				else if ($dimensions[0] < 460)
+				{
+					$this->setError("Image should be at least 460px.");
+				}
+				else
+				{
+					// Build the upload path if it doesn't exist
+					$uploadDirectory  = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS);
+					$uploadDirectory .= DS . 'badges' . DS . $badgeObj->get('id') . DS;
+
+					// Make sure upload directory exists and is writable
+					if (!is_dir($uploadDirectory))
+					{
+						if (!JFolder::create($uploadDirectory))
+						{
+							$this->setError('Unable to create upload directory');
+						}
+					}
+					if (!is_writable($uploadDirectory))
+					{
+						$this->setError("Upload directory isn't writable");
+					}
+
+					// Get the final file path
+					$target_path = $uploadDirectory . 'badge.' . $ext;
+
+					if(!$move = move_uploaded_file($badge_image['tmp_name'], $target_path))
+					{
+						$this->setError('Move file failed');
+					}
+					else
+					{
+						// Move successful, save the image url to the badge entry
+						$img_url = DS . 'courses' . DS . 'badge' . DS . $badgeObj->get('id') . DS . 'image';
+						$badgeObj->bind(array('img_url'=>$img_url));
+						$badgeObj->store();
+					}
+				}
+			}
+
+			// Process criteria text
+			if (strcmp($badgeObj->get('criteria_text'), $badge['criteria']))
+			{
+				$badgeObj->set('criteria_text_new', $badge['criteria']);
+				$badgeObj->store();
+				$badgeObj->set('criteria_text_new', NULL);
+			}
+
+			// If we don't already have a provider badge id set, then we're processing our initial badge creation
+			if ($badgeObj->get('provider_name') && !$badgeObj->get('provider_badge_id') && $badgeObj->get('img_url'))
+			{
+				$badgesHandler  = new Hubzero_Badges(strtoupper($badgeObj->get('provider_name')));
+				$badgesProvider = $badgesHandler->getProvider();
+
+				if (is_object($badgesProvider))
+				{
+					$credentials->consumer_key    = $cconfig->get($badgeObj->get('provider_name').'_consumer_key');
+					$credentials->consumer_secret = $cconfig->get($badgeObj->get('provider_name').'_consumer_secret');;
+					$credentials->issuerId        = $cconfig->get($badgeObj->get('provider_name').'_issuer_id');;
+					$badgesProvider->setCredentials($credentials);
+
+					$offering = CoursesModelOffering::getInstance($model->get('offering_id'));
+					$course   = CoursesModelCourse::getInstance($offering->get('course_id'));
+
+					$data                  = array();
+					$data['Name']          = $course->get('title');
+					$data['Description']   = trim($course->get('title')) . ' Badge';
+					$data['CriteriaUrl']   = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $badgeObj->get('id') . DS . 'criteria';
+					$data['Version']       = '1';
+					$data['BadgeImageUrl'] = rtrim(JURI::root(), DS) . DS . trim($badgeObj->get('img_url'), DS);
+
+					$provider_badge_id = $badgesProvider->createBadge($data);
+
+					if ($provider_badge_id)
+					{
+						// We've successfully created a badge, so save that id to the database
+						$badgeObj->bind(array('provider_badge_id'=>$provider_badge_id));
+						$badgeObj->store();
+					}
+					else
+					{
+						$this->setError('Failed to save badge to provider. Please try saving again or make sure your badge parameters are correct.');
+					}
+				}
+			}
+		}
+		elseif ($badge['id']) // badge exists and is being unpublished
+		{
+			$badgeObj = new CoursesModelSectionBadge($badge['id']);
+			$badgeObj->bind(array('published'=>0));
+			$badgeObj->store();
 		}
 
 		if ($this->getError())

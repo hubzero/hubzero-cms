@@ -33,16 +33,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Passport badges provider
  * 
- * Long description (if any) ...
  */
 class Hubzero_Badges_Passport_BadgesProvider
-{	
+{
 	private $credentials = false;
 	private $oauth;
-	
+
 	const passportApiEndpoint = 'https://api.openpassport.org/1.0.0/';
-	//const passportApiEndpoint = 'https://dev.api.openpassport.org/1.0.0/';
-	
+	const passportClaimUrl    = 'https://www.openpassport.org/MyBadges/Pending';
+
 	/**
 	 * Constructor
 	 * 
@@ -50,77 +49,76 @@ class Hubzero_Badges_Passport_BadgesProvider
 	 * @return  void
 	 */
 	public function __construct()
-	{		
+	{
 	}
-	
+
 	/**
 	 * Set credentials
 	 * 
 	 * @param 	object passportCredentials
 	 * @return  void
 	 */
-	public function setCredentials($passportCredentials) 
+	public function setCredentials($passportCredentials)
 	{
 		$this->credentials = $passportCredentials;
-		
+
 		$this->oauth = new OAuth($this->credentials->consumer_key, $this->credentials->consumer_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
-		
+
 		/*
 		$params['x_auth_username'] = $this->credentials->username;
 		$params['x_auth_password'] = $this->credentials->password;
-		$params['x_auth_mode'] = 'client_auth';
-				
+		$params['x_auth_mode']     = 'client_auth';
+
 		$this->oauth->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "access_token", $params,  OAUTH_HTTP_METHOD_POST);
-		
+
 		// get token and secret and set them for future requests
 		parse_str($oauth->getLastResponse(), $access);
 		$this->oauth->setToken($access['oauth_token'], $access['oauth_token_secret']);
-		
 		*/
 	}
-	
+
 	/**
 	 * Create a new badge
 	 * 
 	 * @param 	object		data: badge info. Must have the following:
-	 						$data['Name'] = 'Badge name';
-							$data['Description'] = 'Badge description';
-							$data['CriteriaUrl'] = 'Badge criteria URL';
-							$data['Version'] = 'Version';
-							$data['BadgeImageUrl'] = 'URL of the bagde image: suare at least 460px x 460px';
+	 *						$data['Name']          = 'Badge name';
+	 *						$data['Description']   = 'Badge description';
+	 *						$data['CriteriaUrl']   = 'Badge criteria URL';
+	 *						$data['Version']       = 'Version';
+	 *						$data['BadgeImageUrl'] = 'URL of the badge image: square at least 460px x 460px';
 	 * @return  int			Freshly created badge ID
 	 */
-	public function createBadge($data) 
-	{		
+	public function createBadge($data)
+	{
 		if (!$this->credentialsSet())
 		{
 			throw new Exception('You need to set the credentials first.');
-		}	
-		
+		}
+
 		$data['IssuerId'] = $this->credentials->issuerId;
-		
+
 		$data = json_encode($data);
-		
-		$this->oauth->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION); 
-		
-		try 
+
+		$this->oauth->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
+
+		try
 		{
 			$this->oauth->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . 'badges/', $data, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
 		}
 		catch (Exception $e) 
 		{
 		}
-						
+
 		$badge = json_decode($this->oauth->getLastResponse());
-						
-		if (empty($badge->Id) || !$badge->Id) 
+
+		if (empty($badge->Id) || !$badge->Id)
 		{
 			throw new Exception($badge->message);
 		}
-		
+
 		return($badge->Id);
 	}
-	
+
 	/**
 	 * Grant badges to users
 	 * 
@@ -128,16 +126,16 @@ class Hubzero_Badges_Passport_BadgesProvider
 	 * @param 	mixed		string (for single user) or array (for multiple users) of user email addresses
 	 * @return  void
 	 */
-	public function grantBadge($badge, $users) 
+	public function grantBadge($badge, $users)
 	{
 		if (!$this->credentialsSet())
 		{
 			throw new Exception('You need to set the credentials first.');
 		}
-		
+
 		if (!is_array($users))
 		{
-			$users = array($users);	
+			$users = array($users);
 		}
 
 		$assertions = array();
@@ -145,51 +143,63 @@ class Hubzero_Badges_Passport_BadgesProvider
 		foreach ($users as $user)
 		{
 			$data = array();
-			
-			$data['BadgeId'] = $badge->id;
-			$data['EvidenceUrl'] = $badge->evidenceUrl;
+
+			$data['BadgeId']      = $badge->id;
+			$data['EvidenceUrl']  = $badge->evidenceUrl;
 			$data['EmailAddress'] = $user;
-			$data['ClientId'] = $this->credentials->clientId;
-			
+			$data['ClientId']     = $this->credentials->clientId;
+
 			$assertions[] = $data;
 			unset($data);
 		}
-		
+
 		$assertionsData = json_encode($assertions);
-		
+
 		$this->oauth->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
-		try 
+		try
 		{
 			$this->oauth->fetch(Hubzero_Badges_Passport_BadgesProvider::passportApiEndpoint . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type'=>'application/json'));
 		}
 		catch (Exception $e)
 		{
+			error_log($e->getCode());
 		}
-		
+
 		$assertion = json_decode($this->oauth->getLastResponse());
-		
+
 		foreach ($assertion as $ass)
-		{	
+		{
 			if (empty($ass->Id) || !$ass->Id)
 			{
 				throw new Exception($ass->message);
 			}
-		}		
+		}
 	}
-			
+
 	/**
 	 * Check if credentials are set
 	 * 
 	 * @param 	void
 	 * @return  bool
 	 */
-	private function credentialsSet() 
+	private function credentialsSet()
 	{
 		if (empty($this->credentials))
 		{
 			return false;
 		}
+
 		return true;
 	}
 
+	/**
+	 * Return the claim URL
+	 * 
+	 * @param 	void
+	 * @return  bool
+	 */
+	public function getClaimUrl()
+	{
+		return Hubzero_Badges_Passport_BadgesProvider::passportClaimUrl;
+	}
 }

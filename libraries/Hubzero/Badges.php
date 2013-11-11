@@ -36,9 +36,9 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Long description (if any) ...
  */
 class Hubzero_Badges
-{	
+{
 	private $badgesHandler;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -46,31 +46,30 @@ class Hubzero_Badges
 	 * @return  void
 	 */
 	public function __construct($badgesProivder)
-	{		
+	{
 		switch ($badgesProivder)
 		{
 			case "PASSPORT":
 				$this->badgesHandler = new Hubzero_Badges_Passport_BadgesProvider();
 			break;
-			
+
 			/*
 			case "MOZILLA":
 				$this->badgesHandler = new Hubzero_Badges_Mozilla_BadgesProvider();
 			break;
 			*/
-			
+
 			default:
 				die('Bad badges provider.');
-		}		
+		}
 	}
-	
+
 	/**
 	 * Get badges provider instance
 	 *
 	 */
-	public function getProvider() 
+	public function getProvider()
 	{
 		return $this->badgesHandler;
 	}
-
 }

@@ -31,42 +31,33 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.badge.php');
-
 /**
- * Courses model class for badges
+ * Courses section badge criteria table
  */
-class CoursesModelOfferingBadge extends CoursesModelAbstract
+class CoursesTableSectionBadgeCriteria extends JTable
 {
 	/**
-	 * JTable class name
+	 * int(11) Primary key
 	 * 
-	 * @var string
+	 * @var integer
 	 */
-	protected $_tbl_name = 'CoursesTableOfferingBadge';
+	var $id = NULL;
 
 	/**
-	 * Object scope
+	 * text
 	 * 
 	 * @var string
 	 */
-	protected $_scope = 'offeringbadge';
+	var $text = NULL;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid=null)
+	public function __construct(&$db)
 	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new $this->_tbl_name($this->_db);
-
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
+		parent::__construct('#__courses_offering_section_badge_criteria', 'id', $db);
 	}
 }

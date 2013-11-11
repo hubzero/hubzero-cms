@@ -34,9 +34,11 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS .'badge.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php');
@@ -592,7 +594,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	{
 		// Check whether or not their eligable for a badge at this point
 		// First, does this course even offers a badge
-		if (!is_null($this->course->offering()->badge()->get('id')))
+		if ($this->course->offering()->section()->badge()->isAvailable())
 		{
 			// Get a grade policy object
 			$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
@@ -644,18 +646,36 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					{
 						// Mark student as having earned badge
 						$badge = CoursesModelMemberBadge::loadByMemberId($m);
+						$sb    = CoursesModelSectionBadge::loadBySectionId($this->course->offering()->section()->get('id'));
 						if (is_object($badge) && !$badge->hasEarned())
 						{
 							$badge->set('member_id', $m);
+							$badge->set('section_badge_id', $sb->get('id'));
 							$badge->set('earned', 1);
 							$badge->set('earned_on', JFactory::getDate()->toSql());
+							$badge->set('criteria_id', $sb->get('criteria_id'));
 							$badge->store();
 
-							// Tell passport
-							/*ximport('Hubzero_Badges_Passport_BadgesProvider');
-							$badgeInfo->id = $this->course->offering()->badge()->get('id');
-							$badgeInfo->evidenceUrl = '';
-							Hubzero_Badges_Passport_BadgesProvider::grantBadge($badgeInfo, JFactory::getUser($m)->get('email'));*/
+							// Tell the badge provider that they've earned the badge
+							$badgesHandler  = new Hubzero_Badges(strtoupper($sb->get('provider_name')));
+							$badgesProvider = $badgesHandler->getProvider();
+
+							$credentials->consumer_key    = $this->config()->get($sb->get('provider_name').'_consumer_key');
+							$credentials->consumer_secret = $this->config()->get($sb->get('provider_name').'_consumer_secret');
+							$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
+							$badgesProvider->setCredentials($credentials);
+
+							$memberTbl = new CoursesTableMember(JFactory::getDBO());
+							$memberTbl->loadByMemberId($m);
+							$user_id = $memberTbl->get('user_id');
+
+							$data->id           = $sb->get('provider_badge_id');
+							$data->evidenceUrl  = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $sb->get('id') . DS . 'validation' . DS . $badge->get('validation_token');;
+							$users              = array();
+							$users[]            = JFactory::getUser($user_id)->get('email');
+
+							// Publish assertion
+							$badgesProvider->grantBadge($data, $users);
 						}
 					}
 				}

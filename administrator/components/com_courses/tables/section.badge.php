@@ -32,9 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Courses offering badges table
+ * Courses section badges table
  */
-class CoursesTableOfferingBadge extends JTable
+class CoursesTableSectionBadge extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -48,14 +48,28 @@ class CoursesTableOfferingBadge extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $offering_id = NULL;
+	var $section_id = NULL;
+
+	/**
+	 * int(1)
+	 * 
+	 * @var integer
+	 */
+	var $published = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $provider_name = NULL;
 
 	/**
 	 * int(11)
 	 * 
 	 * @var integer
 	 */
-	var $badge_id = NULL;
+	var $provider_badge_id = NULL;
 
 	/**
 	 * varchar(255)
@@ -65,6 +79,13 @@ class CoursesTableOfferingBadge extends JTable
 	var $img_url = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $criteria_id = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -72,6 +93,6 @@ class CoursesTableOfferingBadge extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__courses_offering_badges', 'id', $db);
+		parent::__construct('#__courses_offering_section_badges', 'id', $db);
 	}
 }

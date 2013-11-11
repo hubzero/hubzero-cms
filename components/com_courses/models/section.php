@@ -36,6 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'code.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'date.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'badge.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
 
 /**
@@ -112,6 +113,13 @@ class CoursesModelSection extends CoursesModelAbstract
 	 * @var object
 	 */
 	private $_date = NULL;
+
+	/**
+	 * CoursesModelSectionBadge
+	 * 
+	 * @var object
+	 */
+	private $_badge = NULL;
 
 	/**
 	 * Constructor
@@ -705,6 +713,21 @@ class CoursesModelSection extends CoursesModelAbstract
 			$codes[] = $this->generateCode();
 		}
 		return $codes;
+	}
+
+	/**
+	 * Get section badge
+	 * 
+	 * @return     obj
+	 */
+	public function badge()
+	{
+		if (!isset($this->_badge))
+		{
+			$this->_badge = CoursesModelSectionBadge::loadBySectionId($this->get('id'));
+		}
+
+		return $this->_badge; 
 	}
 }
 

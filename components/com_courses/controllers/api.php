@@ -1038,17 +1038,16 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 	 * @return 200 OK on success
 	 */
 	private function passport()
-	{		
-		
+	{
 		if (!$this->authorize_call())
 		{
-			return;	
+			return;
 		}
-		
-		$action   = JRequest::getVar('action', '');
-		$badge_id = JRequest::getVar('badge_id', '');
+
+		$action     = JRequest::getVar('action', '');
+		$badge_id   = JRequest::getVar('badge_id', '');
 		$user_email = JRequest::getVar('user_email', '');
-		
+
 		if (empty($action))
 		{
 			$this->errorMessage(400, 'Please provide action');
@@ -1069,12 +1068,12 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$this->errorMessage(400, 'Please provide user email');
 			return;
 		}
-		
+
 		// Badge logic
-		
+
 		//find user by email		
 		$user_email = Hubzero_User_Profile_Helper::find_by_email($user_email);
-		
+
 		if (empty($user_email[0]))
 		{
 			$this->errorMessage(404, 'User was not found');
@@ -1087,32 +1086,32 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 		$user_id = $user->get('uidNumber');
-		
+
 		//find member ID by user ID and attached badge
-		$sql = 'SELECT m.`id` AS `member_id` FROM `#__courses_members` m LEFT JOIN `#__courses_offering_badges` ob 
-				ON ob.`offering_id` = m.`offering_id` 
-				WHERE m.`user_id` = ' . $this->db->quote($user_id) . ' AND badge_id = ' . $this->db->quote($badge_id);
+		$sql = 'SELECT m.`id` AS `member_id` FROM `#__courses_members` m LEFT JOIN `#__courses_offering_section_badges` ob 
+				ON ob.`section_id` = m.`section_id` 
+				WHERE m.`user_id` = ' . $this->db->quote($user_id) . ' AND provider_badge_id = ' . $this->db->quote($badge_id);
 				
 		$this->db->setQuery($sql);
 		$this->db->query();	
-		
+
 		// Check if there is a match
 		if (!$this->db->getNumRows())
 		{
 			$this->errorMessage(401, 'No badge-user match');
 			return;
 		}
-		
+
 		$member_id = $this->db->loadResult();
-		
+
 		$sql = 'UPDATE `#__courses_member_badges` SET `action` = ' . $this->db->quote($action) . ', `action_on` = UTC_TIMESTAMP() 
 				WHERE member_id = ' . $this->db->quote($member_id);
-				
+
 		$this->db->setQuery($sql);
-		$this->db->query();	
-	
+		$this->db->query();
+
 		// Return message
-		$this->setMessage('Passport data saved.', 200, 'OK');		
+		$this->setMessage('Passport data saved.', 200, 'OK');
 	}
 
 

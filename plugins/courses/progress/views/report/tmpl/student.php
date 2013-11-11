@@ -297,17 +297,17 @@ $progress_timeline .= '</div>';
 
 	<div class="clear"></div>
 
-<? if (!is_null($this->course->offering()->badge()->get('id')) && $student->badge()->hasEarned()) : ?>
+<? if ($this->course->offering()->section()->badge()->isAvailable() && $student->badge()->hasEarned()) : ?>
 	<div class="recognition badge earned">
-		<img src="<?= $this->course->offering()->badge()->get('img_url') ?>" />
+		<img src="<?= $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
 		<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
 		<p>
 			You've completed all of the requirements of <?= $this->course->get('title') ?>, qualifying you to receive
 			a special badge.
 		</p>
-		<? if ($student->badge()->get('claim_url')) : ?>
+		<? if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
 			<p>
-				<a class="claim-item" href="<?= $student->badge()->get('claim_url') ?>">Claim your badge!</a>
+				<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
 			</p>
 		<? else : ?>
 			<p>
@@ -509,9 +509,9 @@ $progress_timeline .= '</div>';
 
 	</div>
 
-<? if (!is_null($this->course->offering()->badge()->get('id')) && !$student->badge()->hasEarned()) : ?>
+<? if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
 	<div class="recognition badge">
-		<img src="<?= $this->course->offering()->badge()->get('img_url') ?>" />
+		<img src="<?= $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
 		<h3>Work hard. Earn a badge.</h3>
 		<p>
 			Upon successful completion of this course, you will be awarded a special <?= $this->course->get('title') ?> badge.
