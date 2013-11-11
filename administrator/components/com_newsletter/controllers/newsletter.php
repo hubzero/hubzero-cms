@@ -236,7 +236,8 @@ class NewsletterControllerNewsletter extends Hubzero_Controller
 		}
 		
 		//get unique newsletter name
-		$newsletter['alias'] = $this->_getUniqueNewsletterAlias($newsletter['alias'], $newsletter['id']);
+		$newsletterId        = (isset($newsletter['id'])) ? $newsletter['id'] : null;
+		$newsletter['alias'] = $this->_getUniqueNewsletterAlias($newsletter['alias'], $newsletterId);
 		
 		//instantiate campaign object
 		$newsletterNewsletter = new NewsletterNewsletter( $this->database );
