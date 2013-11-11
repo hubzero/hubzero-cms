@@ -161,10 +161,10 @@ defined('_JEXEC') or die('Restricted access');
 				if (($edit = JRequest::getInt('editcomment', 0))) 
 				{
 					$comment->load($edit);
-					if ($comment->created_by != $this->juser->get('id'))
-					{
-						$comment = new Hubzero_Item_Comment($this->database);
-					}
+					//if ($comment->created_by != $this->juser->get('id'))
+					//{
+					//	$comment = new Hubzero_Item_Comment($this->database);
+					//}
 				}
 				?>
 					<label for="commentcontent">
