@@ -50,7 +50,7 @@ class Migration20131111200831ComCourses extends Hubzero_Migration
 
 		if (!$db->tableHasField('#__courses_offering_section_badges', 'criteria_id') && $db->tableHasField('#__courses_offering_section_badges', 'img_url'))
 		{
-			$query = "ALTER TABLE `#__courses_offering_section_badges` ADD `criteria_id` TEXT NOT NULL DEFAULT '' AFTER `img_url`";
+			$query = "ALTER TABLE `#__courses_offering_section_badges` ADD `criteria_id` INT(11) NOT NULL AFTER `img_url`";
 			$db->setQuery($query);
 			$db->query();
 		}
