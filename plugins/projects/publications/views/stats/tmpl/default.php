@@ -165,10 +165,10 @@ tooltip: true,
 									safari = true;
 								}
 								var hover  = safari ? false : true;
-
+															
 								function showTooltip(x,y,contents, append)
 								{
-								      $('<div>' +  contents + append + '</div>').css( {
+								      $('<div>' + contents + append +'\ </div>').css({
 								            position: 'absolute',
 								            display: 'none',
 								            top: y,
@@ -194,19 +194,17 @@ tooltip: true,
 										{
 											if (points[k].data[m][0] != null && points[k].data[m][1] != null)
 											{
+												
 										  		if (k == 0)
 												{
 											  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15, 
-														graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10,
-														points[k].data[m][1], append)
+														graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10, points[k].data[m][1], append);
 										  		}
 												else
 												{
 											 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15, 
-														graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45,
-														points[k].data[m][1], append) 
+														graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45, points[k].data[m][1], append);
 										  		}
-
 											}
 										}
 									}
@@ -284,8 +282,7 @@ tooltip: true,
 					<td><span class="stats-num"><?php echo $stat->total_primary; ?></span></td>
 				</tr>
 			</table>
-<?php }
-	
+<?php }	
  } else { ?>
 	<p class="noresults"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_NO_INFO'); ?></p>
 <?php } ?>
