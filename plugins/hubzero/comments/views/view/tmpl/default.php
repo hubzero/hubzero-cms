@@ -211,7 +211,7 @@ defined('_JEXEC') or die('Restricted access');
 					<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->id; ?>" />
 					<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $comment->parent; ?>" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo $this->juser->get('id'); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo ($comment->created_by) ? $comment->created_by  : $this->juser->get('id'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="action" value="save" />
 
