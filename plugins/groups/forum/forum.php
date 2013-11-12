@@ -174,13 +174,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 
 			{
-				$path = str_replace($juri->base(true), '', $path);
-				$path = str_replace('index.php', '', $path);
-				$path = DS . trim($path, DS);
-				$path = str_replace('/groups/' . $this->group->get('cn') . '/forum', '', $path);
-				$path = ltrim($path, DS);
-
-				$bits = explode('/', $path);
+				$bits = $this->_parseUrl();
 				// Section name
 				if (isset($bits[0]) && trim($bits[0])) 
 				{
@@ -301,6 +295,65 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Return the output
 		return $arr;
+	}
+
+	/**
+	 * Parse an SEF URL into its component bits
+	 * stripping out the path leading up to the blog plugin
+	 * 
+	 * @return     string
+	 */
+	private function _parseUrl()
+	{
+		static $path;
+
+		if (!$path)
+		{
+			$juri =& JURI::getInstance();
+			$path = $juri->getPath();
+
+			$path = str_replace($juri->base(true), '', $path);
+			$path = str_replace('index.php', '', $path);
+			$path = DS . trim($path, DS);
+
+			$blog = '/groups/' . $this->group->get('cn') . '/forum';
+
+			if ($path == $blog)
+			{
+				$path = array();
+				return $path;
+			}
+
+			$path = ltrim($path, DS);
+			$path = explode('/', $path);
+
+			/*while ($path[0] != 'members' && !empty($path));
+			{
+				array_shift($path);
+			}*/
+			$paths = array();
+			$start = false;
+			foreach ($path as $bit)
+			{
+				if ($bit == 'groups' && !$start)
+				{
+					$start = true;
+					continue;
+				}
+				if ($start)
+				{
+					$paths[] = $bit;
+				}
+			}
+			if (count($paths) >= 2)
+			{
+				array_shift($paths);  // Remove group cn
+				array_shift($paths);  // Remove 'blog'
+			}
+			$path = $paths;
+		}
+
+		return $path;
 	}
 
 	/**
