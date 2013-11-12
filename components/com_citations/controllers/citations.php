@@ -299,9 +299,13 @@ class CitationsControllerCitations extends Hubzero_Controller
 		);
 
 		//parse the return from resolver lookup
+		$resolver = null;
 		$xml = simplexml_load_string($r);
-		$resolver = $xml->resolverRegistryEntry->resolver;
-
+		if (isset($xml->resolverRegistryEntry))
+		{
+			$resolver = $xml->resolverRegistryEntry->resolver;
+		}
+		
 		//if we have resolver set vars for creating open urls
 		if ($resolver != null) 
 		{
