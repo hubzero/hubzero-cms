@@ -4214,7 +4214,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1420,'Courses - Notes','plugin','notes','courses',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',13,0),
 (1421,'Courses - Outline','plugin','outline','courses',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
 (1422,'Courses - Pages','plugin','pages','courses',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
-(1423,'Courses - Store','plugin','store','courses',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',14,0),
+(1423,'Courses - Store','plugin','store','courses',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',14,0),
 (1425,'Cron - Cache','plugin','cache','cron',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
 (1426,'Cron - Groups','plugin','groups','cron',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
 (1427,'Cron - Members','plugin','members','cron',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
