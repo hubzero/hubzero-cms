@@ -256,7 +256,7 @@ class ResourcesElementLanguages extends ResourcesElement
 
 		array_unshift($languages, JHTML::_('select.option', '', '- '.JText::_('Select Language').' -'));
 
-		return JHTML::_('select.genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name);
+		return '<span class="field-wrap">' . JHTML::_('select.genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**

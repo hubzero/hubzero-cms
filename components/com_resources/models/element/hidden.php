@@ -50,25 +50,28 @@ class ResourcesElementHidden extends ResourcesElement
 	{
 		$class = (isset($element->class)) ? $element->class : 'text_area';
 
-		$val = '';
+		$val = $value;
 		$k = 0;
-		if (is_array($element->options))
+		if (isset($element->options))
 		{
-			foreach ($element->options as $option)
+			if (is_array($element->options))
 			{
-				if ($k >= 1)
+				foreach ($element->options as $option)
 				{
-					break;
+					if ($k >= 1)
+					{
+						break;
+					}
+
+					$val  = $option->value;
+
+					$k++;
 				}
-
-				$val  = $option->value;
-
-				$k++;
 			}
-		}
-		else if (is_object($element->options))
-		{
-			$val  = $element->options->value;
+			else if (is_object($element->options))
+			{
+				$val  = $element->options->value;
+			}
 		}
 
 		return '<input type="hidden" name="'.$control_name.'['.$name.']" id="'.$control_name.'-'.$name.'" value="'.$val.'" class="'.$class.'" />';

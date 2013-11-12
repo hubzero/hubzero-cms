@@ -98,7 +98,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 
 		$html[] = $output;
 		$k = 0;
-		if (is_array($element->options))
+		if (isset($element->options) && is_array($element->options))
 		{
 			foreach ($element->options as $option)
 			{
@@ -152,7 +152,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 		$html[] = '</tr>';
 		$html[] = '</tfoot>';
 		$html[] = '<tbody>';
-		if (is_array($element->options))
+		if (isset($element->options) && is_array($element->options))
 		{
 			foreach ($element->options as $option)
 			{

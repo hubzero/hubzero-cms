@@ -85,29 +85,32 @@ class ResourcesElementRadio extends ResourcesElement
 		$html[] = $output;
 
 		$k = 0;
-		foreach ($element->options as $option)
+		if (isset($element->options) && is_array($element->options))
 		{
-			$sel = '';
-			if (is_array($value))
+			foreach ($element->options as $option)
 			{
-				foreach ($value as $val)
+				$sel = '';
+				if (is_array($value))
 				{
-					$k2 = is_object($val) ? $val->$key : $val;
-					if ($value == $k2)
+					foreach ($value as $val)
 					{
-						$sel .= ' selected="selected"';
-						break;
+						$k2 = is_object($val) ? $val->$key : $val;
+						if ($value == $k2)
+						{
+							$sel .= ' selected="selected"';
+							break;
+						}
 					}
+				} else {
+					$sel .= ($option->value == $value ? ' checked="checked"' : '');
 				}
-			} else {
-				$sel .= ($option->value == $value ? ' checked="checked"' : '');
+
+				$html[] = '<label for="'. $control_name . '-' . $name . $option->value . '">';
+				$html[] = '<input class="option" type="radio" name="' . $control_name . '[' . $name . ']" id="'. $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
+				$html[] = JText::_($option->label) . '</label>';
+
+				$k++;
 			}
-
-			$html[] = '<label for="'. $control_name . '-' . $name . $option->value . '">';
-			$html[] = '<input class="option" type="radio" name="' . $control_name . '[' . $name . ']" id="'. $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
-			$html[] = JText::_($option->label) . '</label>';
-
-			$k++;
 		}
 		$html[] = '</fieldset>';
 
@@ -136,14 +139,17 @@ class ResourcesElementRadio extends ResourcesElement
 		$html[] = '</tr>';
 		$html[] = '</tfoot>';
 		$html[] = '<tbody>';
-		foreach ($element->options as $option)
+		if (isset($element->options) && is_array($element->options))
 		{
-			$html[] = '<tr>';
-			$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('Option') . '</label></td>';
-			$html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
-			$html[] = '</tr>';
+			foreach ($element->options as $option)
+			{
+				$html[] = '<tr>';
+				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('Option') . '</label></td>';
+				$html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
+				$html[] = '</tr>';
 
-			$k++;
+				$k++;
+			}
 		}
 		$html[] = '</tbody>';
 		$html[] = '</table>';
