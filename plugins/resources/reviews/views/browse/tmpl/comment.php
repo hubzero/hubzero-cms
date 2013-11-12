@@ -86,15 +86,6 @@ if ($this->reply->anonymous != 1)
 	<?php } ?>
 	
 	<p class="comment-options">
-<?php if ($this->abuse) { 
-		if ($this->juser->get('guest')) {
-			$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id)));
-		} else {
-			$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id);
-		}
-?>
-		<a class="icon-abuse abuse" href="<?php echo $href; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?></a>
-<?php } ?>
 <?php
 	// Cannot reply at third level
 	if ($this->level < 3) {
@@ -112,6 +103,15 @@ if ($this->reply->anonymous != 1)
 		echo 'class="icon-reply reply" id="rep_'.$this->reply->id.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>';
 	}
 ?>
+<?php if ($this->abuse) { 
+		if ($this->juser->get('guest')) {
+			$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=reviewcomment&id='.$this->reply->id.'&parent='.$this->id)));
+		} else {
+			$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=reviewcomment&id='.$this->reply->id.'&parent='.$this->id);
+		}
+		?>
+		<a class="icon-abuse abuse" href="<?php echo $href; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?></a>
+<?php } ?>
 	</p>
 <?php 
 	// Add the reply form if needed

@@ -412,7 +412,7 @@ class PlgResourcesReviewsHelper extends JObject
 		$id       = JRequest::getInt('referenceid', 0);
 		$rid      = JRequest::getInt('rid', 0);
 		$category = JRequest::getVar('category', '');
-		$when     = JFactory::getDate();
+		$when     = JFactory::getDate()->toSql();
 
 		// Trim and addslashes all posted items
 		$_POST = array_map('trim', $_POST);

@@ -79,7 +79,7 @@ class plgSupportResources extends JPlugin
 		else if ($category == 'reviewcomment') 
 		{
 			$query  = "SELECT rr.id, rr.comment as text, rr.added AS created, rr.added_by as author, 
-						NULL as subject, rr.category as parent_category, rr.anonymous as anon 
+						NULL as subject, 'reviewcomment' as parent_category, rr.anonymous as anon 
 						FROM #__comments AS rr 
 						WHERE rr.id=" . $refid;
 		}
@@ -209,7 +209,12 @@ class plgSupportResources extends JPlugin
 
 				// Delete the review
 				$review = new ResourcesReview($database);
-				$review->delete($referenceid);
+				$review->load($referenceid);
+				//$comment->anonymous = 1;
+				$review->comment = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+				$review->store();
+
+				//$review->delete($referenceid);
 
 				// Recalculate the average rating for the parent resource
 				$resource = new ResourcesResource($database);
@@ -229,7 +234,8 @@ class plgSupportResources extends JPlugin
 
 				$comment = new Hubzero_Comment($database);
 				$comment->load($referenceid);
-				$comment->state = 2;
+				//$comment->state = 2;
+				$comment->comment = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
 				if (!$comment->store()) 
 				{
 					$this->setError($comment->getError());
