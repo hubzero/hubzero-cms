@@ -970,7 +970,7 @@
 		right: 30px;
 		top: 0.5em;
 		text-align: right;
-		width: 300px;
+		min-width: 300px;
 	}
 	#content-header-extra ul,
 	#content-header-extra li,
