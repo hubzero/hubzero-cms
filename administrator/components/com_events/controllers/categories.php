@@ -90,14 +90,7 @@ class EventsControllerCategories extends Hubzero_Controller
 		{
 			$table = substr($this->view->section, 4);
 
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$this->database->setQuery("SELECT name FROM #__components WHERE link='option=" . $this->view->section . "'");
-			}
-			else
-			{
-				$this->database->setQuery("SELECT name FROM #__extensions WHERE type='component' AND element='" . $this->view->section . "'");
-			}
+			$this->database->setQuery("SELECT name FROM #__extensions WHERE type='component' AND element='" . $this->view->section . "'");
 			$this->view->section_name = $this->database->loadResult();
 			if ($this->database->getErrorNum()) 
 			{

@@ -95,7 +95,7 @@ class modDashboard extends Hubzero_Module
 		$wishes = 0;
 
 		// Check if component entry is there
-		$database->setQuery( "SELECT c.id FROM #__components as c WHERE c.option='com_wishlist' AND enabled=1" );
+		$database->setQuery( "SELECT c.extension_id FROM #__extensions as c WHERE c.element='com_wishlist' AND type='component' AND enabled=1" );
 		$found = $database->loadResult();
 
 		if ($found) 

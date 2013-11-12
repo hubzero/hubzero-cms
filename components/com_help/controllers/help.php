@@ -124,8 +124,7 @@ class HelpControllerHelp extends Hubzero_Controller
 		//display
 		$this->view->display();
 	}
-	
-	
+
 	/**
 	 * Get array of help pages for component
 	 * 
@@ -135,14 +134,10 @@ class HelpControllerHelp extends Hubzero_Controller
 	private function helpPagesForComponent( $component )
 	{
 		//get component name from database
-		$sql = "SELECT `name` FROM #__components WHERE `option`=" . $this->database->quote( $component ) . " AND `enabled`=1 AND `parent`=0";
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$sql = "SELECT `name` FROM `#__extensions` WHERE `type`=" . $this->database->quote( 'component' ) . " AND `element`=" . $this->database->quote( $component ) . " AND `enabled`=1";
-		}
+		$sql = "SELECT `name` FROM `#__extensions` WHERE `type`=" . $this->database->quote( 'component' ) . " AND `element`=" . $this->database->quote( $component ) . " AND `enabled`=1";
 		$this->database->setQuery( $sql );
 		$name = $this->database->loadResult();
-	
+
 		//make sure we have a component
 		if ($name == '')
 		{
@@ -159,12 +154,11 @@ class HelpControllerHelp extends Hubzero_Controller
 			//get help pages for this component
 			$pages = JFolder::files( $helpPagesPath , '.phtml' );
 		}
-		
+
 		//return pages
 		return array( 'name' => $name, 'option' => $component, 'pages' => $pages );
 	}
-	
-	
+
 	/**
 	 * Get array of help pages for component
 	 * 

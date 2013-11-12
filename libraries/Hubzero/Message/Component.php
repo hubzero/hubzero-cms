@@ -137,27 +137,14 @@ class Hubzero_Message_Component extends JTable
 		$query  = " FROM $this->_tbl AS x";
 
 		$where = array();
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$query .= ", #__extensions AS c";
 
-			$where[] = "x.component = c.element";
-			$where[] = "c.type = 'component'";
-			if (isset($filters['component']) && $filters['component'])
-			{
-				$where[] = "c.element = '" . $filters['component'] . "'";
-			}
-		}
-		else 
-		{
-			$query .= ", #__components AS c";
+		$query .= ", #__extensions AS c";
 
-			$where[] = "x.component = c.option";
-			$where[] = "c.parent = 0";
-			if (isset($filters['component']) && $filters['component'])
-			{
-				$where[] = "c.option = '" . $filters['component'] . "'";
-			}
+		$where[] = "x.component = c.element";
+		$where[] = "c.type = 'component'";
+		if (isset($filters['component']) && $filters['component'])
+		{
+			$where[] = "c.element = '" . $filters['component'] . "'";
 		}
 
 		$query .= " WHERE " . implode(" AND ", $where);

@@ -43,20 +43,20 @@ function com_install()
 	$database =& JFactory::getDBO();
 
 	// Do the clean up if installed on a previous installation
-	$database->setQuery("SELECT count(id) as count, max(id) as lastInstalled FROM #__components WHERE name='Events'");
+	$database->setQuery("SELECT count(extension_id) as count, max(extension_id) as lastInstalled FROM #__extensions WHERE element='com_events'");
 	$reginfo = $database->loadObjectList();
 	$lastInstalled = $reginfo[0]->lastInstalled;
 
 	// Check if there are more registered instances of the Events component
 	if ($reginfo[0]->count <> "1") {
 		// Get duplicates
-		$sql = "SELECT * FROM #__components WHERE name='Events' AND id!='$lastInstalled' AND admin_menu_link LIKE 'option=com_events'";
+		$sql = "SELECT * FROM #__extensions WHERE element='com_events' AND extension_id!='$lastInstalled'";
 		$database->setQuery($sql);
 		$toberemoved = $database->loadObjectList();
 		foreach ($toberemoved as $remid)
 		{
 			// Delete duplicate entries
-			$database->setQuery("DELETE FROM #__components WHERE id='$remid->id' or parent='$remid->id'");
+			$database->setQuery("DELETE FROM #__extensions WHERE extension_id='$remid->id'");
 			$database->query();
 		}
 	}
@@ -67,5 +67,3 @@ function com_install()
     include ("../components/com_events/index.html");
     echo "</div>";
 }
-
-?>
