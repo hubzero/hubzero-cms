@@ -1,4 +1,4 @@
-;(function( $ ) {
+;(function($, window, document, undefined) {
 	
 	$.fn.HUBfancyselect = function( method ) {
 		if ( methods[method] ) 
@@ -49,10 +49,7 @@
 			dropdown += '<li class="fs-dropdown-selected">';
 			dropdown += '<a class="fs-dropdown-selected-item" href="javascript:void(0);">';
 			dropdown += '<span class="fs-dropdown-selected-image">';
-			if (img != '')
-			{
-				dropdown += '<img src="' + img + '" />';
-			}
+			dropdown += getOptionImg(selected);
 			dropdown += '</span>';
 			dropdown += '<span>' + $(selected).text() + '</span>';
 			dropdown += '</a>';
@@ -61,16 +58,14 @@
 			//add options
 			options.each(function() {
 				var cls = ($(this).val() == $(selected).val()) ? 'fs-dropdown-option-selected' : '',
-					img = ($(this).attr('data-img') != '' && $(this).attr('data-img') != undefined) ? $(this).attr('data-img') : '';
+					img = ($(this).attr('data-img')) ? $(this).attr('data-img') : '',
+					color = ($(this).attr('data-color')) ? $(this).attr('data-color') : '';
 				
 				dropdown += '<li class="fs-dropdown-option ' + cls + '">';
-				dropdown += '<a href="javascript:void(0);" data-value="' + $(this).val() + '" data-text="' + $(this).text() + '" data-img="' + img + '">';
-				if (img != '')
-				{
-					dropdown += '<span class="fs-dropdown-option-image">';
-					dropdown += '<img src="' + img + '" />';
-					dropdown += '</span>'
-				}
+				dropdown += '<a href="javascript:void(0);" data-value="' + $(this).val() + '" data-text="' + $(this).text() + '" data-img="' + img + '"  data-color="' +  color + '">';
+				dropdown += '<span class="fs-dropdown-option-image">';
+				dropdown += getOptionImg(this);
+				dropdown += '</span>'
 				dropdown += '<span>' + $(this).text() + '</span>';
 				dropdown += '</a>';
 				dropdown += '</li>';
@@ -80,7 +75,6 @@
 			dropdown += '</li>';
 			dropdown += '</ul>'
 			dropdown += '</div>'
-			
 			
 			//hide select box
 			if(settings.hideSelect)
@@ -95,6 +89,59 @@
 			addEventHooks( $this );
 		});
 	};
+	
+	methods.selectValue = function( value ) {
+		return this.each(function(){
+			
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				.find('.fs-dropdown-option a[data-value=' + value + ']')
+				.trigger('click');
+			
+		});
+	};
+	
+	methods.selectText = function( value ) {
+		return this.each(function(){
+			
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				.find('.fs-dropdown-option a span:contains(' + value + ')')
+				.parent('a')
+				.trigger('click');
+				
+		});
+	};
+	
+	methods.clear = function() {
+		return this.each(function(){
+			
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				.find('.fs-dropdown-option a')
+				.first()
+				.trigger('click');
+			
+		});
+	};
+	
+	function getOptionImg( object )
+	{
+		var obj = $(object),
+			img = obj.attr('data-img'),
+			color = obj.attr('data-color');
+		
+		// do we have an image
+		if (img != '' && img != undefined)
+		{
+			return '<img src="' + img + '" />'
+		}
+		
+		// do we have an image
+		if (color != '' && color != undefined)
+		{
+			return '<div class="fs-option-color" style="background-color:' + color + '"></div>'
+		}
+		
+		return ''
+	}
 	
 	function addEventHooks( object )
 	{
@@ -130,7 +177,7 @@
 			dropdown.find('.fs-dropdown-selected-item span').text(text);
 			
 			//set the text of selected item
-			dropdown.find('.fs-dropdown-selected-image').html('<img src="'+img+'" />');
+			dropdown.find('.fs-dropdown-selected-image').html(getOptionImg(selected));
 			
 			//find original select and set value
 			dropdown.next('select').val( value );
@@ -196,4 +243,4 @@
 			});
 		});
 	}
-})( jQuery );
+})( jQuery, window, document );
