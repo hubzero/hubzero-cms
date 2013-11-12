@@ -1075,4 +1075,54 @@ class Hubzero_Migration
 			$db->query();
 		}
 	}
+
+	/**
+	 * Enable plugin
+	 *
+	 * @param  $folder  - (string) plugin folder
+	 * @param  $element - (string) plugin element
+	 * @return void
+	 **/
+	public static function enablePlugin($folder, $element)
+	{
+		self::setPluginStatus($folder, $element, 1);
+	}
+
+	/**
+	 * Disable plugin
+	 *
+	 * @param  $folder  - (string) plugin folder
+	 * @param  $element - (string) plugin element
+	 * @return void
+	 **/
+	public static function disablePlugin($folder, $element)
+	{
+		self::setPluginStatus($folder, $element, 0);
+	}
+
+	/**
+	 * Enable/disable plugin
+	 *
+	 * @param  $folder  - (string) plugin folder
+	 * @param  $element - (string) plugin element
+	 * @param  $enabled - (int)    whether or not the plugin should be enabled
+	 * @return void
+	 **/
+	private static function setPluginStatus($folder, $element, $enabled=1)
+	{
+		$db = self::$db;
+
+		if ($db->tableExists('#__plugins'))
+		{
+			$query = "UPDATE `#__plugins` SET `published` = '{$enabled}' WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
+			$db->setQuery($query);
+			$db->query();
+		}
+		else
+		{
+			$query = "UPDATE `#__extensions` SET `enabled` = '{$enabled}' WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
+			$db->setQuery($query);
+			$db->query();
+		}
+	}
 }
