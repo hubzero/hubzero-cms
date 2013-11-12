@@ -427,7 +427,7 @@ class plgResourcesQuestions extends JPlugin
 		{
 			// Send a message about the new question to authorized users (specified admins or related content authors)
 			$jconfig =& JFactory::getConfig();
-			$hub = array(
+			$from = array(
 				'email' => $jconfig->getValue('config.mailfrom'),
 				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
 				'multipart' => md5(date('U'))
@@ -475,7 +475,7 @@ class plgResourcesQuestions extends JPlugin
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher =& JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $hub, $receivers, $this->_option))) 
+			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers'))) 
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
 			}
