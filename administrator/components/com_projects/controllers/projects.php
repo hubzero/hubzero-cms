@@ -121,7 +121,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->filters['activity'] 		= 1;
 		
 		// Get paging variables
-		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', 
+								  $config->getValue('config.list_limit'), 'int');
 		$view->filters['start'] = JRequest::getInt('limitstart', 0);
 
 		$obj = new Project( $this->database );
@@ -257,7 +258,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 
 			'files', 'admin', '', $this->_config, NULL));
 		$view->diskusage = isset($content[0])  ? $content[0]: '';
-				
+						
 		// Set any errors
 		if ($this->getError()) 
 		{
@@ -292,10 +293,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objAA = new ProjectActivity ( $this->database );
 		
 		// Incoming
-		$formdata = $_POST;
-		$id = JRequest::getVar( 'id', 0 );
-		$action = JRequest::getVar( 'admin_action', '' );
-		$message = rtrim(Hubzero_Filter::cleanXss(JRequest::getVar( 'message', '' )));
+		$formdata 	= $_POST;
+		$id 		= JRequest::getVar( 'id', 0 );
+		$action 	= JRequest::getVar( 'admin_action', '' );
+		$message 	= rtrim(Hubzero_Filter::cleanXss(JRequest::getVar( 'message', '' )));
 		
 		// Initiate extended database class
 		$obj = new Project( $this->database );
@@ -305,12 +306,12 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			return false;
 		}
 		
-		$obj->title = $formdata['title'] ? rtrim($formdata['title']) : $obj->title;
-		$obj->about = rtrim(Hubzero_Filter::cleanXss($formdata['about']));
-		$obj->type 	= isset($formdata['type']) ? $formdata['type'] : 1;
-		$obj->modified = JFactory::getDate()->toSql();
-		$obj->modified_by = $this->juser->get('id');
-		$obj->private = JRequest::getVar( 'private', 0 );
+		$obj->title 		= $formdata['title'] ? rtrim($formdata['title']) : $obj->title;
+		$obj->about 		= rtrim(Hubzero_Filter::cleanXss($formdata['about']));
+		$obj->type 			= isset($formdata['type']) ? $formdata['type'] : 1;
+		$obj->modified 		= JFactory::getDate()->toSql();
+		$obj->modified_by 	= $this->juser->get('id');
+		$obj->private 		= JRequest::getVar( 'private', 0 );
 		
 		// Was project suspended?
 		$suspended = false;
@@ -400,6 +401,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			}
 		}
 		
+		// Add members if specified
+		$this->_saveMember();
+		
 		// Send message
 		if ($this->_config->get('messaging', 0) && $sendmail && count($managers) > 0) 
 		{
@@ -430,6 +434,39 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option.'&task=edit&id='.$id;
 		$this->_message = JText::_('Item successfully saved');
+	}
+	
+	/**
+	 * Save member
+	 * 
+	 * @return     void
+	 */
+	protected function _saveMember()
+	{
+		// New member added?
+		$members 	= urldecode(trim(JRequest::getVar( 'newmember', '', 'post'  )));
+		$role 		= JRequest::getInt( 'role', 0 );
+		$id 		= JRequest::getVar( 'id', 0 );
+		
+		// Get owner class		
+		$objO = new ProjectOwner($this->database);
+		
+		$mbrs = explode(',', $members);
+
+		jimport('joomla.user.helper');
+		
+		foreach ($mbrs as $mbr)
+		{
+			// Retrieve user's account info
+			$mbr = trim($mbr);
+			$uid = JUserHelper::getUserId($mbr);
+
+			// Ensure we found an account
+			if ($uid)
+			{
+				$objO->saveOwners ( $id, $this->juser->get('id'), $uid, 0, $role, $status = 1, 0);
+			}
+		}
 	}
 	
 	/**
@@ -628,7 +665,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	{
 		$id = JRequest::getVar( 'id', 0 );
 		$service = 'google';
-		
+				
 		// Initiate extended database class
 		$obj = new Project( $this->database );
 		if (!$id or !$obj->loadProject($id)) 

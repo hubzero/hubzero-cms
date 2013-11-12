@@ -398,12 +398,17 @@ class ProjectOwner extends JTable
 	 * @param      integer $show_uid
 	 * @return     string
 	 */
-	public function getOwnerNames( $projectid = NULL, $limit = 5, $role = 'all', $show_uid = 0 ) 
+	public function getOwnerNames( $projectid = NULL, $limit = 5, $role = 'all', $show_uid = 0, $withUsername = false ) 
 	{
 		$query   =  "SELECT o.invited_email, x.name, o.invited_name ";
 		$query  .=	$show_uid ? ", if (o.userid = 0, 'invited', o.userid) as userid " : '';
+		if ($withUsername)
+		{
+		$query  .=	", x.username, o.userid ";	
+		}
 		$query  .= " FROM $this->_tbl AS o ";
-		$query  .=  " LEFT JOIN #__xprofiles as x ON x.uidNumber=o.userid ";
+		$query  .= $withUsername ? "" : "LEFT ";	
+		$query  .=  "JOIN #__xprofiles as x ON x.uidNumber=o.userid ";
 		$query  .= " JOIN #__projects AS p ON p.id=o.projectid";
 		if (is_numeric($projectid)) 
 		{			
@@ -419,6 +424,10 @@ class ProjectOwner extends JTable
 		{
 			$query .= " AND o.role=".$role;	
 		}
+		if ($withUsername)
+		{
+		$query  .=	" AND o.userid > 0 ";	
+		}
 		$query  .= " ORDER BY o.added ";
 		
 		$this->_db->setQuery( $query );
@@ -433,11 +442,21 @@ class ProjectOwner extends JTable
 				$name = $entry->name ? $entry->name : $entry->invited_email;
 				$name = $name ? $name : $entry->invited_name;
 				$names .= $name;
-				$names .= $show_uid ? ' ('.$entry->userid.')' : '';
+				if ($show_uid)
+				{
+					$names .= ' ('.$entry->userid.')';
+				}
+				elseif ($withUsername)
+				{
+					$names .= ' (<a href="/members/' . $entry->userid . '">'.$entry->username.'</a>)';
+				}
+				
 				if ($limit && $i == $limit && $i != count($result)) 
 				{
-					$names .= ', '.JText::_('COM_PROJECTS_AND').' '.(count($result) - $limit).' '.JText::_('COM_PROJECTS_MORE').' ';
-					$names .= (count($result) - $limit) == 1 ? JText::_('COM_PROJECTS_ACTIVITY_PERSON') : JText::_('COM_PROJECTS_ACTIVITY_PERSONS') ;
+					$names .= ', ' . JText::_('COM_PROJECTS_AND') . ' ' . (count($result) - $limit) . ' '
+						   . JText::_('COM_PROJECTS_MORE') .' ';
+					$names .= (count($result) - $limit) == 1 ? JText::_('COM_PROJECTS_ACTIVITY_PERSON') 
+							: JText::_('COM_PROJECTS_ACTIVITY_PERSONS') ;
 					break;
 				}
 				else 

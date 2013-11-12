@@ -322,6 +322,17 @@ function submitbutton(pressbutton)
 					<td class="key"><?php echo JText::_('COM_PROJECTS_AUTHORS'); ?>:</td>
 					<td><?php echo $this->authors ? $this->authors : JText::_('COM_PROJECTS_NA'); ?></td>
 				</tr>
+				<tr>
+					<td class="key"><?php echo JText::_('COM_PROJECTS_ADD_MEMBER'); ?>:</td>
+					<td>
+						<label><?php echo JText::_('COM_PROJECTS_ADD_MEMBER_USERNAME'); ?> <input type="text" name="newmember" id="newmember" value="" /></label>
+						<label><?php echo JText::_('COM_PROJECTS_ADD_MEMBER_ROLE'); ?> 
+							<select name="role">
+								<option value="1"><?php echo JText::_('COM_PROJECTS_ADD_MEMBER_ROLE_MANAGER'); ?></option>
+								<option value="0"><?php echo JText::_('COM_PROJECTS_ADD_MEMBER_ROLE_COLLABORATOR'); ?></option>
+							</select>
+						</label></td>
+				</tr>
 			</tbody>
 		</table>
 		
