@@ -32,7 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+. DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
 
 /**
  * Publication administrative support
@@ -46,15 +47,17 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		
+		// Redirect to Publication Manager for now
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=items'
+		);
+		return;
+		
 		// Get configuration
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
-		
-		$model = new Publication($this->database);
-
-		// Get workspace publication
-		$this->view->workspace = $model->getPublication(NULL, 'default', NULL, 'workspace');
-		
+				
 		$obj = new Project( $this->database );
 		
 		// Get admin type id
@@ -85,12 +88,18 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 	}
 
 	/**
-	 * Set up workspace
+	 * Transfer svn tool into a project
 	 * 
 	 * @return     void
 	 */
 	public function workspaceTask()
 	{
+		// Redirect to Publication Manager for now
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=items'
+		);
+		return;
+		
 		$toolname = 'workspace';
 		
 		// Check if workspace publication already exists
@@ -109,13 +118,32 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		}
 		
 		// Get necessary classes
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' 
+			. DS . 'helpers' . DS . 'tags.php');
+			
+		// Get tool library
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.instance.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.view.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.status.php');
 		
 		// Get workspace tool info
 		$objT = new Tool($this->database);
@@ -221,7 +249,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		
 		// Get tools category and master type
 		$objMasterType = new PublicationMasterType( $this->database );
-		$appMasterType = $objMasterType->getTypeId('apps');
+		$appMasterType = $objMasterType->getTypeId('tools');
 		
 		$objCat = new PublicationCategory( $this->database );
 		$appCat = $objCat->getCatId('tool');
@@ -234,6 +262,9 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 			);
 			return;
 		}
+		
+		// Create project tool record
+		$
 		
 		// Create publication
 		$model->category    = $appCat;
@@ -397,7 +428,7 @@ class PublicationsControllerAdmin extends Hubzero_Controller
 		$pContent = new PublicationAttachment($this->database);
 		$pContent->publication_id 		  = $pid;
 		$pContent->publication_version_id = $pubVersion->id;
-		$pContent->type					  = 'svntool';
+		$pContent->type					  = 'tool';
 		$pContent->role					  = 1;
 		$pContent->ordering				  = 1;
 		

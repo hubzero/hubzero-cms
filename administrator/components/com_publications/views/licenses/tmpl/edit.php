@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_PUBLICATIONS_LICENSE') . '</a>: <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('COM_PUBLICATIONS_LICENSE') . ': [ ' . $text . ' ]', 'addedit.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -39,22 +39,8 @@ JToolBarHelper::cancel();
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	/*var form = document.getElementById('adminForm');
-	
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	
-	// form field validation
-	var field = document.getElementById('field-title');
-	if (field.value == '') {
-		alert( 'Type must have a title' );
-	} else {
-		alert('vff');*/
-		submitform( pressbutton );
-		return;
-	//}
+	submitform( pressbutton );
+	return;
 }
 </script>
 

@@ -195,7 +195,7 @@ class PublicationAttachment extends JTable
 	}
 	
 	/**
-	 * Get array of attachments
+	 * Get array of file attachments
 	 * 
 	 * @param      integer 	$versionid 	Pub version ID
 	 * @return     object
@@ -308,7 +308,7 @@ class PublicationAttachment extends JTable
 	}
 	
 	/**
-	 * Load entry by version and path
+	 * Load entry by version and path/object
 	 * 
 	 * @param      integer 	$vid		pub version id
 	 * @param      string 	$identifier	Attached object identifier (e.g. content path for files)
@@ -332,15 +332,14 @@ class PublicationAttachment extends JTable
 		
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $vid . " AND type='" . $type . "'";
 		
-		if ($type == 'file')
-		{
-			$query .= " AND path='" . $identifier . "'";
-		}
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'contrib.php' );
 		
-		if ($type == 'data' || $type == 'app')
-		{
-			$query .= is_numeric($identifier) ? " AND object_id='" . $identifier . "'" : " AND object_name='" . $identifier . "'";
-		}		
+		// Get types helper
+		$typeHelper = new PublicationTypesHelper($this->_db);		
+		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
+		$prop = $prop ? $prop : 'path';
+		
+		$query .= " AND " . $prop . "='" . $identifier . "'";	
 		
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc()) 
@@ -375,17 +374,16 @@ class PublicationAttachment extends JTable
 		{
 			return false;
 		}
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'contrib.php' );
 		
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid;
-		if ($type == 'file')
-		{
-			$query .= " AND path='" . $identifier . "'";
-		}
+		// Get types helper
+		$typeHelper = new PublicationTypesHelper($this->_db);		
+		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
+		$prop = $prop ? $prop : 'path';
 		
-		if ($type == 'data' || $type == 'app')
-		{
-			$query .= is_numeric($identifier) ? " AND object_id='" . $identifier . "'" : " AND object_name='" . $identifier . "'";
-		}		
+		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid;
+		$query .= " AND " . $prop . "='" . $identifier . "'";
+						
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) 
 		{
@@ -423,82 +421,16 @@ class PublicationAttachment extends JTable
 	}
 	
 	/**
-	 * Check used
-	 * 
-	 * @param      string 	$base
-	 * @param      array 	$selections
-	 * @param      integer 	$projectid
-	 * @param      integer 	$pid
-	 * @return     object or FALSE
-	 */	
-	public function checkUsed ( $base = 'files', $selections = array(), $projectid = NULL, $pid = NULL ) 
-	{
-		if (!$projectid || empty($selections)) 
-		{
-			return false;
-		}
-		
-		$query = "SELECT DISTINCT P.id, V.title, A.path FROM #__publications AS P ";
-		$query.= " JOIN $this->_tbl AS A ON A.publication_id = P.id ";
-		$query.= " JOIN #__publication_versions AS V ON A.publication_id = V.publication_id AND V.main=1 ";
-		$query.= " WHERE P.id != ".$pid;
-
-		if ($base == 'files' && !empty($selections['files']))
-		{
-			$files = '';
-			foreach ($selections['files'] as $file) 
-			{
-				$files .= '"'.$file.'",';	
-			}
-			$files = substr($files,0,strlen($files) - 1);
-				
-			$query.= " AND A.path IN(" . $files . ")  ";		
-		}
-		
-		elseif ($base == 'databases' && !empty($selections['data']))
-		{
-			$ids = '';
-			foreach ($selections['data'] as $data) 
-			{
-				$ids .= '"'.$data.'",';	
-			}
-			$ids = substr($ids, 0, strlen($ids) - 1);
-
-			$query.= " AND A.object_name IN(" . $ids . ")  ";		
-		}
-		
-		elseif ($base == 'notes' && !empty($selections['notes']))
-		{
-			$ids = '';
-			foreach ($selections['notes'] as $note) 
-			{
-				$ids .= '"'.$note.'",';	
-			}
-			$ids = substr($ids, 0, strlen($ids) - 1);
-
-			$query.= " AND A.object_id IN(" . $ids . ")  ";		
-		}
-		
-		$query.= " AND A.role=1 AND P.project_id=" . $projectid;
-		$query.= " GROUP BY P.id";
-		
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
-	
-	/**
 	 * Check version duplicate
 	 * 
-	 * @param      integer 	$count
-	 * @param      array 	$info
 	 * @param      integer 	$pid
 	 * @param      integer 	$vid
 	 * @param      string 	$base
 	 * @return     mixed
 	 */	
-	public function checkVersionDuplicate ( $count = 0, $info = array(), $pid = NULL, $vid = NULL, $base = 'files' ) 
+	public function getVersionAttachments ( $pid = NULL, $vid = NULL ) 
 	{		
-		if ($count == 0 || empty($info) || !$pid || !$vid) 
+		if (!intval($pid) || !intval($vid)) 
 		{
 			return false;
 		}
@@ -509,43 +441,7 @@ class PublicationAttachment extends JTable
 		$query.= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
 		$query.= " ORDER BY A.ordering";
 		$this->_db->setQuery( $query );
-		$result = $this->_db->loadObjectList();
-			
-		if (!$result) 
-		{
-			return false;
-		}
-		else 
-		{
-			$matched   = 0;
-			foreach ($info as $o)
-			{
-				foreach ($result as $r)
-				{
-					if ($base == 'files' && $o['path'] == $r->path && $o['hash'] == $r->vcs_hash)
-					{
-						$matched++;
-					}
-					elseif ($base == 'databases' && $o['object_name'] == $r->object_name 
-						&& $o['object_revision'] == $r->object_revision && $r->type == 'data')
-					{
-						$matched++;
-					}
-					elseif ($base == 'notes'  && $o['object_id'] == $r->object_id 
-						&& $o['object_revision'] == $r->object_revision && $r->type == 'note')
-					{
-						$matched++;
-					}
-				}
-			}
-			
-			if ($matched == $count)
-			{
-				return $result[0]->version_label;
-			}
-		}
-		
-		return false;
+		return $this->_db->loadObjectList();
 	}
 	
 	/**

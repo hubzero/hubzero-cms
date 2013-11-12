@@ -480,7 +480,7 @@ class PublicationVersion extends JTable
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
 		$query.= " WHERE publication_id = $pid ";
 		$query.= $withdev ? "" : " AND v.state!=3 ";
-		$query.= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access=0 " : "";
+		$query.= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
 		$query.= " ORDER BY ".$sortby;
 		
 		$this->_db->setQuery( $query );

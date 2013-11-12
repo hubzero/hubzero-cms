@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Publications') . '</a>: <small><small>[' . JText::_('Categories') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Publications') . ': [' . JText::_('Categories') . ']', 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::publishList('changestatus', 'Change Status');

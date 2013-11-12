@@ -155,7 +155,7 @@ class PublicationAuthor extends JTable
 	 */	
 	public function __construct( &$db ) 
 	{
-		parent::__construct( '#__publication_authors', 'authorid', $db );
+		parent::__construct( '#__publication_authors', 'id', $db );
 	}
 	
 	/**

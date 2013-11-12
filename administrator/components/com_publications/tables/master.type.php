@@ -192,12 +192,7 @@ class PublicationMasterType extends JTable
 		{
 			$query .= "WHERE supporting=1 ";
 		}
-		
-		if (!JPluginHelper::isEnabled('projects', 'apps')) 
-		{
-			$query .= " AND alias!='apps' ";	
-		}
-	
+			
 		$query .= "ORDER BY ".$orderby;
 		
 		$this->_db->setQuery( $query );

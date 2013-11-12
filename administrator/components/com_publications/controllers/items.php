@@ -335,6 +335,131 @@ class PublicationsControllerItems extends Hubzero_Controller
 		// Output the HTML
 		$this->view->display();
 	}
+	
+	/**
+	 * Edit author name and details
+	 * 
+	 * @return     void
+	 */
+	public function editauthorTask()
+	{
+		// Incoming
+		$author = JRequest::getInt( 'author', 0 );
+		
+		$this->view->author = new PublicationAuthor( $this->database );
+		if (!$this->view->author->load($author))
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD') );
+			return;
+		}
+		
+		$this->view->row = new PublicationVersion( $this->database );
+		$this->view->pub  = new Publication( $this->database );
+		
+		// Load version						
+		$this->view->row->load($this->view->author->publication_version_id);
+		
+		// Load publication
+		$this->view->pub->load($this->view->row->publication_id);
+		
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+		
+		// Push some styles to the template
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+
+		// Output the HTML
+		$this->view->display();		
+	}
+	
+	/**
+	 * Save author name and details
+	 * 
+	 * @return     void
+	 */
+	public function saveauthorTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		
+		// Incoming
+		$author  = JRequest::getInt( 'author', 0 );
+		$id 	 = JRequest::getInt( 'id', 0 );
+		$version = JRequest::getVar( 'version', '' );
+		
+		$firstName 	= JRequest::getVar( 'firstName', '', 'post' );
+		$lastName 	= JRequest::getVar( 'lastName', '', 'post' );
+		$org 		= JRequest::getVar( 'organization', '', 'post' ); 
+		
+		$pAuthor = new PublicationAuthor( $this->database );
+		if (!$author || !$pAuthor->load($author))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Cannot load publication author to save.'),
+				'error'
+			);
+			return;
+		}
+		
+		// Save name before changes
+		$oldName = $pAuthor->name;
+		
+		// Set redirect URL
+		$url = 'index.php?option=' . $this->_option . '&controller=' 
+			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
+		
+		$pAuthor->organization = $org;
+		$pAuthor->firstName    = $firstName ? $firstName : $pAuthor->firstName;
+		$pAuthor->lastName     = $lastName ? $lastName : $pAuthor->lastName;
+		$name 				   = $pAuthor->firstName . ' ' . $pAuthor->lastName;		
+		$pAuthor->name    	   = $name ? $name : $pAuthor->name;
+		if (!$pAuthor->store())
+		{
+			$this->setRedirect(
+				$url,
+				JText::_('Failed to save author information'),
+				'error'
+			);
+			return;
+		}
+		
+		// Instantiate Version
+		$row = new PublicationVersion($this->database);
+		$row->load($pAuthor->publication_version_id);
+		
+		// Instantiate publication object
+		$objP = new Publication( $this->database );
+		$objP->load($row->publication_id);
+				
+		// Update DOI in case of name change
+		if ($row->doi && $oldName != $pAuthor->name)
+		{
+			// Get updated authors
+			$authors = $pAuthor->getAuthors($pAuthor->publication_version_id);
+			
+			// Collect DOI metadata
+			$metadata = $this->_collectMetadata($row, $objP);
+			
+			if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
+			{
+				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+			}
+		}
+		
+		// Redirect back to publication
+		$this->setRedirect(
+			$url,
+			JText::_('Author information updated')
+		);		
+	}
 
 	/**
 	 * Saves a publication
@@ -406,14 +531,15 @@ class PublicationsControllerItems extends Hubzero_Controller
 		$objP->checkin();
 		
 		// Incoming updates
-		$title = trim(JRequest::getVar( 'title', '', 'post' )); 
-		$title = htmlspecialchars($title);
-		$abstract = trim(JRequest::getVar( 'abstract', '', 'post' )); 
-		$abstract = Hubzero_Filter::cleanXss(htmlspecialchars($abstract));
-		$description = trim(JRequest::getVar( 'description', '', 'post' ));	
-		$description = stripslashes($description);
-		$metadata = '';
-				
+		$title 			= trim(JRequest::getVar( 'title', '', 'post' )); 
+		$title 			= htmlspecialchars($title);
+		$abstract 		= trim(JRequest::getVar( 'abstract', '', 'post' )); 
+		$abstract 		= Hubzero_Filter::cleanXss(htmlspecialchars($abstract));
+		$description 	= trim(JRequest::getVar( 'description', '', 'post' ));	
+		$description 	= stripslashes($description);
+		$release_notes 	= stripslashes(trim(JRequest::getVar( 'release_notes', '', 'post' )));
+		$metadata 		= '';
+					
 		// Get metadata
 		if (isset($_POST['nbtag']))
 		{
@@ -421,7 +547,8 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$type->load($pub->category);
 
 			$fields = array();
-			if (trim($type->customFields) != '') {
+			if (trim($type->customFields) != '') 
+			{
 				$fs = explode("\n", trim($type->customFields));
 				foreach ($fs as $f) 
 				{
@@ -433,9 +560,12 @@ class PublicationsControllerItems extends Hubzero_Controller
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
 				$tagcontent = trim(stripslashes($tagcontent));
-				if ($tagcontent != '') {
+				if ($tagcontent != '') 
+				{
 					$metadata .= "\n".'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'."\n";
-				} else {
+				} 
+				else 
+				{
 					foreach ($fields as $f) 
 					{
 						if ($f[0] == $tagname && end($f) == 1) {
@@ -446,21 +576,34 @@ class PublicationsControllerItems extends Hubzero_Controller
 				}
 			}
 		}
-		
+				
 		// Save title, abstract and description
 		$row->title 		= $title ? $title : $row->title;
 		$row->abstract 		= $abstract ? Hubzero_View_Helper_Html::shortenText($abstract, 250, 0) : $row->abstract;
 		$row->description 	= $description ? $description : $row->description;
 		$row->metadata 		= $metadata ? $metadata : $row->metadata;	
-		$row->published_up 	= $published_up ? $published_up : $row->published_up;	
+		$row->published_up 	= $published_up ? $published_up : $row->published_up;
+		$row->release_notes	= $release_notes;
+						
+		// Update DOI with latest information
+		if (($row->doi && ($row != $old )) && !$action)
+		{
+			// Collect DOI metadata
+			$metadata = $this->_collectMetadata($row, $objP);
+			
+			if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
+			{
+				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+			}
+		}
 		
 		// Email config
-		$pubtitle = Hubzero_View_Helper_Html::shortenText($row->title, 100, 0);
-		$subject = JText::_('Version') . ' ' . $row->version_label . ' ' 
-		. JText::_('COM_PUBLICATIONS_OF') . ' ' . JText::_('publication') . ' "' . $pubtitle . '" ';
-		$sendmail = 0;
-		$message = rtrim(Hubzero_Filter::cleanXss(JRequest::getVar( 'message', '' )));
-		$output = JText::_('Item successfully saved.');			
+		$pubtitle 	= Hubzero_View_Helper_Html::shortenText($row->title, 100, 0);
+		$subject 	= JText::_('Version') . ' ' . $row->version_label . ' ' 
+					. JText::_('COM_PUBLICATIONS_OF') . ' ' . JText::_('publication') . ' "' . $pubtitle . '" ';
+		$sendmail 	= 0;
+		$message 	= rtrim(Hubzero_Filter::cleanXss(JRequest::getVar( 'message', '' )));
+		$output 	= JText::_('Item successfully saved.');			
 		
 		// Admin actions
 		if ($action) 
@@ -486,43 +629,10 @@ class PublicationsControllerItems extends Hubzero_Controller
 					{
 						$row->published_up 	 = $published_up ? $published_up : JFactory::getDate()->toSql();
 					}
-						
-					// Get type
-					$objT = new PublicationCategory($this->database);
-					$objT->load($objP->category);
-					$typetitle = ucfirst($objT->alias);
-										
-					// Collect metadata
-					$metadata = array();
-					$metadata['typetitle'] = $typetitle ? $typetitle : 'Dataset';
-					$metadata['resourceType'] = isset($objT->dc_type) && $objT->dc_type ? $objT->dc_type : 'Dataset';
-					$metadata['language'] = 'en';
 					
-					// Get previous version DOI
-					$lastPub = $row->getLastPubRelease($id);
-					if ($lastPub && $lastPub->doi)
-					{
-						$metadata['relatedDoi'] = $row->version_number > 1 ? $lastPub->doi : '';	
-					}
-										
-					// Get license type
-					$objL = new PublicationLicense( $this->database);
-					if ($objL->load($row->license_type))
-					{
-						$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
-						$metadata['license'] = $objL->title;
-					}
-					
-					// Get dc:contibutor
-					$objPr = new Project($this->database);
-					$project = $objPr->getProject($objP->project_id);
-					$profile =& Hubzero_Factory::getProfile();
-					$owner 	 = $project->owned_by_user ? $project->owned_by_user : $project->created_by_user;
-					if ($profile->load( $owner ))
-					{
-						$metadata['contributor'] = $profile->get('name');	
-					}
-					
+					// Collect DOI metadata
+					$metadata = $this->_collectMetadata($row, $objP);
+																								
 					// Issue a DOI
 					if ($this->config->get('doi_service') && $this->config->get('doi_shoulder'))
 					{
@@ -695,6 +805,53 @@ class PublicationsControllerItems extends Hubzero_Controller
 			$url,
 			$output
 		);
+	}
+	
+	/**
+	 * Collect DOI metadata
+	 * 
+	 * @param      object $row      Publication
+	 * @return     void
+	 */
+	private function _collectMetadata($row, $objP)
+	{
+		// Get type
+		$objT = new PublicationCategory($this->database);
+		$objT->load($objP->category);
+		$typetitle = ucfirst($objT->alias);
+		
+		// Collect metadata
+		$metadata = array();
+		$metadata['typetitle'] 		= $typetitle ? $typetitle : 'Dataset';
+		$metadata['resourceType'] 	= isset($objT->dc_type) && $objT->dc_type ? $objT->dc_type : 'Dataset';
+		$metadata['language'] 		= 'en';
+		
+		// Get dc:contibutor
+		$project = new Project($this->database);
+		$project->load($objP->project_id);
+		$profile =& Hubzero_Factory::getProfile();
+		$owner 	 = $project->owned_by_user ? $project->owned_by_user : $project->created_by_user;
+		if ($profile->load( $owner ))
+		{
+			$metadata['contributor'] = $profile->get('name');	
+		}
+		
+		// Get previous version DOI
+		$lastPub = $row->getLastPubRelease($objP->id);
+		if ($lastPub && $lastPub->doi)
+		{
+			$metadata['relatedDoi'] = $row->version_number > 1 ? $lastPub->doi : '';	
+		}
+							
+		// Get license type
+		$objL = new PublicationLicense( $this->database);
+		if ($objL->load($row->license_type))
+		{
+			$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
+			$metadata['license'] = $objL->title;
+		}
+		
+		return $metadata;		
 	}
 
 	/**

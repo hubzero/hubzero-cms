@@ -39,7 +39,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '">' . JText::_('Publication Manager') . '</a>', 'addedit.png');
+JToolBarHelper::title(JText::_('Publication Manager'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
 
@@ -73,7 +73,6 @@ function submitbutton(pressbutton)
 				<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
 				<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
 				<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Ready'); ?></option>
-				<option value="6"<?php echo ($this->filters['status'] == 6) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Dark archive'); ?></option>
 			</select>
 		</label>
 	
@@ -119,7 +118,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$info .= JText::_('Created by') . ': ' . $this->escape($row->created_by) . '<br />';
 
 	// Get the published status
-	$now = date( "Y-m-d H:i:s" );
+	$now = JFactory::getDate()->toSql();
 
 	// See if it's checked out or not
 	$checked = '';

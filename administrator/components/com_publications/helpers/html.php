@@ -420,6 +420,7 @@ class PublicationsHtml
 
 				$html .= "\t".'<li id="author_'.$authname->id.'">'. $i . '. ' . $name .' ('.$userid.')';			
 				$html .= $org ? ' - <span class="org">'.$org.'</span>' : '';
+				$html .= '<a class="editauthor" href="index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id .'" >Edit</a>';
 				if ($credit) 
 				{
 					$html .= '<br />'.JText::_('Credit').': '.$credit;

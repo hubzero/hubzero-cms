@@ -91,7 +91,7 @@ class PublicationUtilities
 			return false;
 		}
 		
-		$metadata['url'] = $livesite . DS . 'publications'. DS . $row->publication_id . DS . '?v=' . $row->version_number;
+		$metadata['url'] = $livesite . DS . 'publications'. DS . $row->publication_id . DS . $row->version_number;
 		
 		// Get first author / creator name
 		if (count($authors) > 0) 
@@ -253,7 +253,7 @@ class PublicationUtilities
 		}
 
 		$metadata['url'] = $livesite . DS . 'publications' . DS 
-			. $row->publication_id . DS . '?v=' . $row->version_number;
+			. $row->publication_id . DS . $row->version_number;
 		$metadata['title'] = stripslashes(htmlspecialchars($row->title));
 		
 		// Get first author / creator name

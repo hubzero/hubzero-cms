@@ -43,7 +43,7 @@ $text = ($this->task == 'edit'
 	? JText::_('Edit') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')' 
 	: JText::_('New'));
 
-JToolBarHelper::title(JText::_('Publication') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Publication') . ': [ ' . $text . ' ]', 'addedit.png');
 JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -55,7 +55,8 @@ $rt = new PublicationCategory( $database );
 $rt->load( $this->pub->category );
 $customFields = $rt->customFields;
 
-$canedit = $this->row->state == 3 ? 1 : 0;
+//$canedit = $this->row->state == 3 ? 1 : 0;
+$canedit = 1;
 $editor =& JFactory::getEditor();
 
 // Get metadata fields
@@ -217,7 +218,7 @@ function popratings()
 					<td><input type="text" name="alias" id="alias" size="80" maxlength="250" value="<?php echo htmlentities(stripslashes($this->pub->alias), ENT_COMPAT, 'UTF-8', ENT_QUOTES); ?>" /></td>
 				</tr>
 				<tr>
-					<td class="paramlist_key"><label>Project:</label></td>
+					<td class="key"><label>Project:</label></td>
 					<td><?php echo $this->pub->project_title; ?></td>
 				</tr>
 			</tbody>
@@ -242,7 +243,7 @@ function popratings()
 					<td>
 						<label>Abstract/Description</label>
 						<?php
-						if($canedit) {
+						if ($canedit) {
 							echo $editor->display('description', htmlentities(stripslashes($this->row->description), ENT_COMPAT, 'UTF-8'), '100%', '200px', '45', '10', false);
 						}
 						else {

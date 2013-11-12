@@ -30,10 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '&amp;controller=' 
-. $this->controller . '">' . JText::_('Publication Manager') . '</a> &raquo; <small><small>' . 	'<a href="index.php?option=' 
-. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id .'">' 
-. JText::_('Publication') . ': #' . $this->pub->id . '</a> - Versions</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Publication Manager') . ' - ' . JText::_('Publication') . ': #' . $this->pub->id . ' - Versions', 'addedit.png');
 JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 
@@ -53,6 +50,10 @@ function submitbutton(pressbutton)
 <?php if($this->config->get('enabled') == 0) { ?>
 <p class="warning">This component is currently disabled and is inaccessible to end users.</p>
 <?php } ?>
+<p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller=' 
+. $this->controller; ?>"><?php echo JText::_('Publication Manager'); ?></a> &raquo; <a href="<?php echo 'index.php?option=' 
+. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('Publication') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('Versions'); ?></p>
+
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
 	
 	<table class="adminlist">
