@@ -19,7 +19,7 @@ $service = 'google';
 $cEnabled = $p_params->get('enable_' . $service, 0);
 $connected = $this->params->get($service . '_token');
 
-JToolBarHelper::title( '<a href="index.php?option=com_projects">'.JText::_( 'Projects' ).'</a>: '.stripslashes($this->obj->title).' <small><small>('.$this->obj->alias.', #'.$this->obj->id.')</small></small>', 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Projects' ) . ': '.stripslashes($this->obj->title).' ('.$this->obj->alias.', #'.$this->obj->id.')', 'addedit.png' );
 JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -100,7 +100,6 @@ function submitbutton(pressbutton)
 	}
 }
 </script>
-
 <form action="index.php" method="post" name="adminForm" id="projectForm" class="editform">
 	<table>
 	 <tr>
