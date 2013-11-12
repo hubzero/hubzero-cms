@@ -217,6 +217,23 @@ class Hubzero_Registration_Helper
 		return($genpass);
 	}
 
+	/**
+	 * Check to see if the email confirmation code is still an active code
+	 * 
+	 * @param      $code - (int) email confirmation code
+	 * @return     bool
+	 */
+	public function isActiveCode($code)
+	{
+		$db = JFactory::getDBO();
+
+		$query = "SELECT `uidNumber` FROM `#__xprofiles` WHERE emailConfirmed = ".$db->quote('-'.$code)." LIMIT 1";
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		return ($result) ? true : false;
+	}
+
 	// display various forms. placeholders until we develop a template override system
 	// for them.
 

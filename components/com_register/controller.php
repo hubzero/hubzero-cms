@@ -1582,7 +1582,17 @@ class RegisterController extends Hubzero_Controller
 
 		if (($email_confirmed == 1) || ($email_confirmed == 3)) 
 		{
-			// All is well
+			// The current user is confirmed - check to see if the incoming code is valid at all
+			if (Hubzero_Registration_Helper::isActiveCode($code))
+			{
+				$this->setError('login mismatch');
+
+				// Build logout/login/confirm redirect flow
+				$login_return  = base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=' . $this->_task . '&confirm=' . $code));
+				$logout_return = base64_encode(JRoute::_('index.php?option=com_login&return=' . $login_return));
+
+				$redirect = JRoute::_('index.php?option=com_logout&return=' . $logout_return);
+			}
 		} 
 		elseif ($email_confirmed < 0 && $email_confirmed == -$code) 
 		{
@@ -1649,6 +1659,7 @@ class RegisterController extends Hubzero_Controller
 		$view->login    = $xprofile->get('username');
 		$view->email    = $xprofile->get('email');
 		$view->code     = $code;
+		$view->redirect = ($redirect) ? $redirect : '';
 		$view->sitename = $this->jconfig->getValue('config.sitename');
 		if ($this->getError()) 
 		{
