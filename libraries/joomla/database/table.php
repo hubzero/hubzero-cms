@@ -592,6 +592,8 @@ abstract class JTable extends JObject
 	 */
 	public function store($updateNulls = false)
 	{
+		$currentAssetId = null;
+
 		// Initialise variables.
 		$k = $this->_tbl_key;
 		if (!empty($this->asset_id))
