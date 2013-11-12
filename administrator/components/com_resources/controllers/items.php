@@ -800,15 +800,19 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$members = null; //$mp->getRecords(array('sortby'=>'surname DESC','limit'=>'all','search'=>'','show'=>''), true);
 
 			// Get all contributors linked to this resource
-			$ma = new MembersAssociation($this->database);
-			$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
-					FROM " . $ma->getTableName() . " AS a  
-					LEFT JOIN " . $mp->getTableName() . " AS n ON n.uidNumber=a.authorid 
-					WHERE a.subtable='resources'
-					AND a.subid=" . $this->view->row->id . " 
-					ORDER BY a.ordering";
-			$this->database->setQuery($sql);
-			$authnames = $this->database->loadObjectList();
+			$authnames = array();
+			if ($this->view->row->id)
+			{
+				$ma = new MembersAssociation($this->database);
+				$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
+						FROM " . $ma->getTableName() . " AS a  
+						LEFT JOIN " . $mp->getTableName() . " AS n ON n.uidNumber=a.authorid 
+						WHERE a.subtable='resources'
+						AND a.subid=" . $this->view->row->id . " 
+						ORDER BY a.ordering";
+				$this->database->setQuery($sql);
+				$authnames = $this->database->loadObjectList();
+			}
 
 			// Build <select> of contributors
 			$authorslist = new JView(array(
