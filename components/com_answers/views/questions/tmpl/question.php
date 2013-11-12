@@ -140,8 +140,7 @@ if (!$this->question->get('anonymous'))
 	<div class="subject">
 		<div class="entry question" id="q<?php echo $this->question->get('id'); ?>">
 			<p class="entry-member-photo">
-				<span class="question-anchor"><!-- <a name="q<?php echo $this->question->get('id'); ?>"></a> --></span>
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->question->creator(), $this->question->get('anonymous')); ?>" alt="" />
+				<img src="<?php echo $this->question->creator()->getPicture($this->question->get('anonymous')); ?>" alt="" />
 			</p><!-- / .question-member-photo -->
 			<div class="entry-content">
 			<?php if (!$this->question->isReported()) { ?>
@@ -247,10 +246,8 @@ if (!$this->question->get('anonymous'))
 
 <?php } else if (!$this->question->isReported()) { ?>
 
-	<?php if ($this->responding == 6 && $this->question->isOpen() && $this->question->config('banking')) { // show how points are awarded   ?>
+	<?php //if ($this->responding == 6 && $this->question->isOpen() && $this->question->config('banking')) { // show how points are awarded   ?>
 	<div class="below section">
-		<h3><?php echo JText::_('COM_ANSWERS_POINTS_BREAKDOWN'); ?></h3>
-
 		<div class="aside">
 			<div class="container">
 				<p class="info"><?php echo JText::_('COM_ANSWERS_POINT_BREAKDOWN_TBL_SUMMARY'); ?></p>
@@ -259,60 +256,61 @@ if (!$this->question->get('anonymous'))
 
 		<div class="subject">
 			<div class="subject-wrap">
-			<table id="pointbreakdown">
-				<thead>
-					<tr>
-						<th> </th>
-						<th scope="col"><?php echo JText::_('COM_ANSWERS_POINTS'); ?></th>
-						<th scope="col"><?php echo JText::_('COM_ANSWERS_DETAILS'); ?></th>
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<td colspan="3">
-							* <?php echo JText::_('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?> <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_READ_FURTHER_DETAILS'); ?></a>.
-						</td>
-					</tr>
-				</tfoot>
-				<tbody>
-					<tr>
-						<th scope="row"><?php echo JText::_('COM_ANSWERS_ACTIVITY'); ?>*</th>
-						<td><?php echo $this->question->reward('marketvalue'); ?></td>
-						<td> </td>
-					</tr>
-					<tr>
-						<th scope="row"><?php echo JText::_('COM_ANSWERS_BONUS'); ?></th>
-						<td><?php echo $this->question->reward(); ?></td>
-						<td> </td>
-					</tr>
-					<tr>
-						<th scope="row"><?php echo JText::_('COM_ANSWERS_TOTAL_MARKET_VALUE'); ?></th>
-						<td><?php echo $this->question->reward('totalmarketvalue') ?></td>
-						<td><?php echo JText::_('COM_ANSWERS_TOTAL'); ?></td>
-					</tr>
-					<tr>
-						<th scope="row"><?php echo JText::_('COM_ANSWERS_ASKER_WILL_EARN'); ?></th>
-						<td><?php echo $this->question->reward('asker_earnings'); ?></td>
-						<td><?php echo JText::_('COM_ANSWERS_ONE_THIRD_OF_ACTIVITY_POINTS'); ?></td>
-					</tr>
-					<tr>
-						<th scope="row"><?php echo JText::_('COM_ANSWERS_ASKER_WILL_PAY'); ?></th>
-						<td><?php echo $this->question->reward(); ?></td>
-						<td><?php echo JText::_('COM_ANSWERS_REWARD_ASSIGNED_BY_ASKER'); ?></td>
-					</tr>
-					<tr>
-						<th scope="row"><?php echo JText::_('COM_ANSWERS_BEST_ANSWER_MAY_EARN'); ?></th>
-						<td><?php echo $this->question->reward('answer_earnings'); ?></td>
-						<td><?php echo JText::_('COM_ANSWERS_UP_TO_TWO_THIRDS_OF_ACTIVITY_POINTS'); ?></td>
-					</tr>
-				</tbody>
-			</table>
+				<table id="pointbreakdown">
+					<caption><?php echo JText::_('COM_ANSWERS_POINTS_BREAKDOWN'); ?></caption>
+					<thead>
+						<tr>
+							<th> </th>
+							<th scope="col"><?php echo JText::_('COM_ANSWERS_POINTS'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_ANSWERS_DETAILS'); ?></th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan="3">
+								* <?php echo JText::_('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?> <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_READ_FURTHER_DETAILS'); ?></a>.
+							</td>
+						</tr>
+					</tfoot>
+					<tbody>
+						<tr>
+							<th scope="row"><?php echo JText::_('COM_ANSWERS_ACTIVITY'); ?>*</th>
+							<td><?php echo $this->question->reward('marketvalue'); ?></td>
+							<td> </td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo JText::_('COM_ANSWERS_BONUS'); ?></th>
+							<td><?php echo $this->question->reward(); ?></td>
+							<td> </td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo JText::_('COM_ANSWERS_TOTAL_MARKET_VALUE'); ?></th>
+							<td><?php echo $this->question->reward('totalmarketvalue') ?></td>
+							<td><?php echo JText::_('COM_ANSWERS_TOTAL'); ?></td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo JText::_('COM_ANSWERS_ASKER_WILL_EARN'); ?></th>
+							<td><?php echo $this->question->reward('asker_earnings'); ?></td>
+							<td><?php echo JText::_('COM_ANSWERS_ONE_THIRD_OF_ACTIVITY_POINTS'); ?></td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo JText::_('COM_ANSWERS_ASKER_WILL_PAY'); ?></th>
+							<td><?php echo $this->question->reward(); ?></td>
+							<td><?php echo JText::_('COM_ANSWERS_REWARD_ASSIGNED_BY_ASKER'); ?></td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo JText::_('COM_ANSWERS_BEST_ANSWER_MAY_EARN'); ?></th>
+							<td><?php echo $this->question->reward('answer_earnings'); ?></td>
+							<td><?php echo JText::_('COM_ANSWERS_UP_TO_TWO_THIRDS_OF_ACTIVITY_POINTS'); ?></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</div><!-- / .below section -->
 	<div class="clear"></div>
-	<?php } ?>
+	<?php //} ?>
 
 	<?php if ($this->responding == 1) { // answer form ?>
 	<div class="below section">

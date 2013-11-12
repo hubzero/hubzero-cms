@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_answers/answers.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_answers/assts/css/answers.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -13,36 +13,15 @@
 
 */
 
-/* Entries (list) */
-	ul.answers,
-	ul.questions {
-		list-style: none;
-		margin: 1em 0;
-	}
-	.answers li,
-	.questions li {
-		background-image: none;
-		padding: 0px 0.4em;
-	}
-	ul.answers li,
-	ul.questions li {
-		padding: 0 0 0 17px;
-		margin: 0.3em 0;
-		background: url("/components/com_answers/assets/img/bullets_medium.gif") no-repeat 0px -133px;
-	}
-	ul.answers li {
-		background: url("/components/com_answers/assets/img/bullets_medium.gif") no-repeat 0px -442px;
-	}
-	.entries .list-footer li {
-		background-image: none;
-	}
 /* Entries */
 	.entry-state {
 		text-transform: uppercase;
 	}
-	.entry-comments {
-		padding-right: 16px;
-		background: url("/components/com_answers/assets/img/bullets_small.png") no-repeat right -428px;
+	.entry-comments a:before {
+		content: "\f0e6";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+		color: #999;
 	}
 	.entries .reward {
 		text-align: right;
@@ -54,32 +33,26 @@
 		display: inline;
 	}
 
-	.entries .entry-id {
-		display: none;
+	.entries .entry-id:before {
+		content: "\f0e5";
+		font-family: "Fontcons";
 	}
-	.questions tbody th {
-		background: url("/components/com_answers/assets/img/question.png") right 15px no-repeat;
+	.entries .answered .entry-id:before {
+		content: "\f086";
+		color: #a284db;
 	}
-	.questions tbody tr.answered th {
-		background: url("/components/com_answers/assets/img/question_answered.png") right 15px no-repeat;
+	.entries .answered {
+		background: #fcf9ff;
 	}
-	.questions tbody tr.flagged th {
-		background: url("/components/com_answers/assets/img/question_answered.png") right 15px no-repeat;
+	.entries .flagged .entry-id:before {
+		content: "\2691";
 	}
-	.questions tbody tr.answered {
-		background: #fcf9ff url("/components/com_answers/assets/img/light-stripes.png");
+	.entries .mine {
+		background: #ffe;
 	}
-	.questions tbody tr.mine {
-		background: #ffe url("/components/com_answers/assets/img/light-stripes.png");
+	.entries .mine .entry-id:before {
+		color: #cea638;
 	}
-	.questions tbody tr.flagged {
-		background: #FFF2EF url("/components/com_answers/assets/img/light-stripes.png");
-	}
-	/*.entries tbody td.voting,
-	.voting {
-		text-align: right;
-		white-space: nowrap;
-	}*/
 	p.voting {
 		float: right;
 		min-width: 10em;
@@ -96,10 +69,8 @@
 	ol.comments .comment-options a.active:before {
 		content: "\2716";
 	}
-/* Submenu styling 
-	.container .filter-options li {
-		float: left;
-	}*/
+
+/* Submenu styling */
 	.filter-options li {
 		float: left;
 		margin: 0;
@@ -139,6 +110,7 @@
 		border-bottom: none;
 		color: #333;
 	}
+
 /* Rewards */
 	.entry-reward {
 		white-space: nowrap;
@@ -157,6 +129,7 @@
 		font-family: "Fontcons";
 		margin-right: 1em;
 	}
+
 /* Answer form */
 	#answerform fieldset {
 		padding: 0 1em 1em 1em;
@@ -190,6 +163,7 @@
 		width: auto;
 		margin: 0;
 	}
+
 /* Introduction columns */
 	.pointvalue a, 
 	.questions .rewardset a {
@@ -209,15 +183,16 @@
 		margin-right: 1em;
 	}
 	.pointvalue a:hover {
-		border: none;	
+		border: none;
 	}
-	.pointvalue  {
+	.pointvalue {
 		color: #000;
 		font-weight:bold;
 		text-transform: lowercase;
 		font-size: inherit;	
 		padding: 0;
 	}
+
 /* Accept the answer */
 	.aside .entry-status {
 		padding: 1em;
@@ -248,28 +223,28 @@
 										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
 										transparent 75%, transparent);
 		-webkit-background-size: 30px 30px;
-		-moz-background-size: 30px 30px;
-		background-size: 30px 30px; /* Controls the size of the stripes */
+		   -moz-background-size: 30px 30px;
+		        background-size: 30px 30px;
 		border: .27em solid #eee;
 		-webkit-border-radius: 0.27em;
-		-moz-border-radius: 0.27em;
-		border-radius: 0.27em;
-		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+		   -moz-border-radius: 0.27em;
+		        border-radius: 0.27em;
 		-webkit-transition: all ease-in-out 0.2s;
-		-moz-transition: all ease-in-out 0.2s;
-		-o-transition: all ease-in-out 0.2s;
-		transition: all ease-in-out 0.2s;
+		   -moz-transition: all ease-in-out 0.2s;
+		     -o-transition: all ease-in-out 0.2s;
+		        transition: all ease-in-out 0.2s;
 		-webkit-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
-		-moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
-		box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
+		   -moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
+		        box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 		text-transform: uppercase;
 		text-align: center;
 		font-weight: bold;
 	}
 	.aside .entry-status:hover {
 		-webkit-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
-		box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
+		   -moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
+		        box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 3.97em rgba(0, 0, 0, 0.3);
 	}
 	.aside .entry-status.closed {
 		background-color: #949494;
@@ -309,6 +284,7 @@
 	.abuseitem p {
 		margin: 0.5em 0 0.5em 0;
 	}
+
 /* Misc. */
 	.supplemental {
 		line-height: 2em;
@@ -323,68 +299,39 @@
 		margin-top: 0.5em;
 	}
 	.questions .tags { 
-		margin-top:-2.5em;
+		margin-top: -2.5em;
 	}
+
 /* Question */
 	.entry .entry-subject {
 		font-weight: bold;
 	}
-	/* Voting */
-	.question .question-voting {
-		float:right; 
-	}
-	.question .question-voting .question_vote {
-		margin: 0 0 0 1em;
-		color: #666;
-	}
-	.question .question-voting .question_vote a,
-	.question .question-voting .question_vote a.voted {
-		border: none;
-		width: 19px;
-		height: 19px;
-		display: inline-block;
-		margin: 0;
-		padding: 0 0 3px 0;
-		color: #bfbfbf;
-		overflow: hidden;
-		text-indent: -55em;
-	}
-	.question .question-voting .question_vote a.voted {
-		background: url("/components/com_answers/assets/img/thumbup_ok.gif") 0 0 no-repeat;
-	}
-	.question .question-voting .question_vote a {
-		background: url("/components/com_answers/assets/img/thumbup.gif") 0 0 no-repeat;
-		height: 15px;	
-	}
-	.question .question-voting .question_vote a:hover {
-		background-position: 0 -32px;
-		color: #000;
-	}
+
 /* Misc. */
 	.youcanearn {
-		display:block;
-		margin-top:1em;
-		margin-right:2em;
-		font-size:x-small;
-		font-style:italic;
-		font-weight:600;
-		line-height:1.2em;
+		display: block;
+		margin-top: 1em;
+		margin-right: 2em;
+		font-size: x-small;
+		font-style: italic;
+		font-weight: 600;
+		line-height: 1.2em;
 	}
 	#useroptions li {
-		white-space:nowrap; 
-		overflow:visible;
+		white-space: nowrap; 
+		overflow: visible;
 	}
 	.subtitle {
 		margin: -1em 1.5em 1.5em 1.3em;
-		font-weight:normal;
+		font-weight: normal;
 	}
 	.spacer {
-		padding:0 1em 0 1em;
+		padding: 0 1em 0 1em;
 	}
 	.myquestions {
-		background: transparent url("/components/com_answers/assets/img/myquestions.png") 0 0 no-repeat; padding-left: 18px;padding-bottom:0.2em; 
-		margin-left:-1.5em;
-		margin-right:-0.5em;
+		padding-bottom: 0.2em; 
+		margin-left: -1.5em;
+		margin-right: -0.5em;
 	}
 	.note_total {
 		font-size: x-small;
@@ -405,13 +352,7 @@
 	}
 	ol.comments .comment-options a.accept {
 		display: inline-block;
-		*display: inline;
-		/*border: 1px solid #ccc;
-		padding: 0.1em 0.5em;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		border-radius: 0.25em;*/
+		*display: inline; /* [!] IE 7 */
 		float: right;
 	}
 	ol.comments .comment-options a.accept:before {
@@ -419,6 +360,7 @@
 		font-family: "Fontcons";
 		margin-right: 0.3em;
 	}
+
 /* Point breakdown */
 	#pointbreakdown {
 		font-size: 85%;
