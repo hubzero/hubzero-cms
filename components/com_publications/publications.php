@@ -70,6 +70,7 @@ require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'helpers'.DS.'helper.php'
 
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_projects'.DS.'tables'.DS.'project.php' );
 require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_projects'.DS.'tables'.DS.'project.owner.php' );
+require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'types.php' );
 
 jimport('joomla.application.component.helper');
 jimport('joomla.application.component.view');

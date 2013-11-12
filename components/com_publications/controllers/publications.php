@@ -150,7 +150,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 			case 'savetags':   
 				$this->_savetags();   
 				break;
-
+						
 			default: 
 				$this->_task = 'intro';
 				$this->_intro(); 
@@ -233,7 +233,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 				case 'intro':
 					// Nothing
 					break;
-				
+							
 				default:
 					$pathway->addItem(
 						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
@@ -652,6 +652,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		
 		// Check for embargo
 		$now = JFactory::getDate()->toSql();
+
 		if (!$authorized && $publication->published_up > $now)
 		{
 			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
@@ -694,6 +695,13 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$publication->_category = new PublicationCategory( $this->database );
 		$publication->_category->load($publication->category);
 		$publication->_category->_params = new JParameter( $publication->_category->params );
+		
+		// Load publication project
+		$publication->project = new Project($this->database);
+		$publication->project->load($publication->project_id);
+		
+		// Get pub type helper
+		$publication->pubTypeHelper = new PublicationTypesHelper($this->database, $publication->project);
 				
 		// Build publication path (to access attachments)
 		$base_path = $this->config->get('webpath');
@@ -1079,7 +1087,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$filters = $aid ? array('id' => $aid) : array('role' => 1);
 		$attachments = $objPA->getAttachments($publication->version_id, $filters);
 		
-		// Save attachments for 'watch' and 'video'
+		// Pass attachments for 'watch' and 'video'
 		$this->attachments = $attachments;
 		
 		// We do need an attachment!

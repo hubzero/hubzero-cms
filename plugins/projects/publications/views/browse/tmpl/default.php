@@ -74,6 +74,7 @@ $showStats = false;
 					<th></th>
 					<th<?php if($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?> colspan="2"><a href="<?php echo $url . '/?t_sortby=status'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></a></th>
 					<th class="condensed centeralign"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASES'); ?></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -97,7 +98,7 @@ $showStats = false;
 			?>
 			<tr class="mline" id="tr_<?php echo $row->id; ?>">
 				<td class="restype"><?php echo $cat_name; ?></td>
-				<td><a href="<?php echo $url . '/?pid='.$row->id; ?>" <?php if($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a></td>
+				<td><a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" <?php if($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a></td>
 				<td class="mini faded"><?php echo $row->id; ?></td>
 				<td class="restype"><?php echo $row->base; ?></td>
 				<td class="version_label">v.<?php echo $row->version_label; ?></td>
@@ -105,12 +106,18 @@ $showStats = false;
 					<span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span>
 					<span class="mini faded block"><?php echo $date; ?></span>
 				</td>
-				<td class="mini faded"><?php if($row->dev_version_label && $row->dev_version_label != $row->version_label) 
-				{ echo '<a href="'. $url . '/?pid='.$row->id.a.'version=dev'
+				<td class="mini faded">
+				<?php if($row->dev_version_label && $row->dev_version_label != $row->version_label) 
+				{ echo '<a href="'. JRoute::_($route . '&pid=' . $row->id) . '/?version=dev'
 				.'">&raquo; '. JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
-				.' <strong>'.$row->dev_version_label.'</strong></a> '
+				.' <strong>'.$row->dev_version_label.'</strong></a>'
 				.JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS'); } ?></td>
+				
 				<td class="centeralign mini faded"><?php if ($row->versions > 0) { ?><a href="<?php echo $url . '/?pid='.$row->id.a.'action=versions'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->versions; ?><?php if ($row->versions > 0) { ?></a><?php } ?></td>
+				<td class="mini faded">
+					<a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" class="manageit"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?></a>
+
+					<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a></td>
 			</tr>
 			<?php 
 		}

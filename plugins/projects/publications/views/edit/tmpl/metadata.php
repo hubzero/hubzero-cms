@@ -101,40 +101,18 @@ $canedit = (
 			<?php } ?>
 		</fieldset>
 <?php
-// Include status bar - publication steps/sections/version navigation
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'=>'projects',
-		'element'=>'publications',
-		'name'=>'edit',
-		'layout'=>'statusbar'
-	)
-);
-$view->row = $this->row;
-$view->version = $this->version;
-$view->panels = $this->panels;
-$view->active = $this->active;
-$view->move = $this->move;
-$view->step = 'metadata';
-$view->lastpane = $this->lastpane;
-$view->option = $this->option;
-$view->project = $this->project;
-$view->current_idx = $this->current_idx;
-$view->last_idx = $this->last_idx;
-$view->checked = $this->checked;
-$view->show_substeps = (count($fields) > 1) ? 1 : 0;
-$view->url = $this->url;
-$view->display();
+	// Draw status bar
+	PublicationContribHelper::drawStatusBar($this, 'metadata', $this->pubconfig->get('show_metadata', 0));
 
-if($this->move) {
-	$panel_number = 1;
-	while ($panel = current($this->panels)) {
-	    if ($panel == $this->active) {
-	        $panel_number = key($this->panels) + 1;
-	    }
-	    next($this->panels);
+	if ($this->move) {
+		$panel_number = 1;
+		while ($panel = current($this->panels)) {
+		    if ($panel == $this->active) {
+		        $panel_number = key($this->panels) + 1;
+		    }
+		    next($this->panels);
+		}
 	}
-}
 // Section body starts:
 ?>
 	<div id="pub-editor" class="pane-desc">

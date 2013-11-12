@@ -99,28 +99,8 @@ $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 	</fieldset>
 
 <?php
-// Include status bar - publication steps/sections/version navigation
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'=>'projects',
-		'element'=>'publications',
-		'name'=>'edit',
-		'layout'=>'statusbar'
-	)
-);
-$view->row = $this->row;
-$view->version = $this->version;
-$view->panels = $this->panels;
-$view->active = $this->active;
-$view->move = $this->move;
-$view->lastpane = $this->lastpane;
-$view->option = $this->option;
-$view->project = $this->project;
-$view->current_idx = $this->current_idx;
-$view->last_idx = $this->last_idx;
-$view->checked = $this->checked;
-$view->url = $this->url;
-$view->display();
+	// Draw status bar
+	PublicationContribHelper::drawStatusBar($this);
 
 // Section body starts:
 ?>
@@ -252,16 +232,18 @@ $view->display();
 			
 			<ul class="next-options">
 			<?php if($this->version == 'dev' || $this->row->state == 4) { // draft (initial or final) ?>	
-				<?php if(!$this->publication_allowed) { ?> 
+				<?php if (!$this->publication_allowed) { ?> 
 				<li id="next-edit"><p><?php 
 					echo '<strong>'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE').'</strong> '.
 					JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_MISSING'); 
 					$missing = '';
 					foreach ($this->checked as $key => $value) { 
-						if($value == 0) { 
+						if ($value != 1) { 
 							$missing .= ' <a href="'
-							. $this->url . '/?section='.
-							$key.a.'version='.$this->version.'">'.strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_'.strtoupper($key))).'</a>,';						
+							. $this->url . '/?section='. $key . a . 'version=' . $this->version . '">' 
+							. strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_'.strtoupper($key)));
+							$missing .= $value == 2 ? ' (' . JText::_('PLG_PROJECTS_PUBLICATIONS_INCOMPLETE') . ')' : '';
+							$missing .= '</a>,';						
 						} 
 					} 
 					$missing = substr($missing,0,strlen($missing) - 1);

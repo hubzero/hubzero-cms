@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 	<?php if(!$this->getError()) { ?>
-		<ul id="c-browser" 	<?php if(count($this->tags) == 0 && count($this->attached_tags) == 0) { echo 'class="hidden"'; } ?>>
+		<ul id="c-browser">
 			<?php 
 			if(count($this->tags) > 0) {		
 				$i = 0; ?>

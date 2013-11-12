@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
+$allowDuplicate  = $this->_pubTypeHelper->_allowDuplicate;
 
 if ($this->duplicateV)
 { ?>
@@ -44,39 +44,23 @@ elseif ($this->used)
 				   . stripslashes($used->title) . ' (' . $used->id . ')' . '</a>,'; 
 		} 
 		$other = substr($other,0,strlen($other) - 1);
-		echo $other;
+		echo $other . '. ';
+		
+		if (!$allowDuplicate) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_USED_DUPLICATE_NOT_ALLOWED'); }
 		?>
 	</p>
-<?php } ?>
-<?php if ($this->selections) { ?>
-
-	<?php if ($this->base == 'notes')
-	/*
+	<?php if (!$allowDuplicate) { ?>
+	<input type="hidden" name="used" id="used" value="1" />
+	<?php } ?>
+<?php } 	
+	elseif ($this->cStatus == 2)
 	{ ?>
-		<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NOTICE_CHILD_NOTES'); ?></p>
-	<?php } */
-
-	?>
+		<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_INCOMPLETE_' . strtoupper($this->base)); ?></p>
+	<?php }
+?>
+<?php if ($this->selections) { ?>
 <div class="serveas_<?php echo $this->serveas; ?>">
-	<p>
-	<?php 
-		switch ($this->serveas) 
-		{
-			case 'download':       
-				echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_DOWNLOAD');      
-				break;
-			case 'tardownload':       
-				echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_TARDOWNLOAD');      
-				break;
-			case 'inlineview':       
-				echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_INLINEVIEW');      
-				break;
-			case 'external':       
-				echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_EXTERNAL');      
-				break;
-		}
-	?>
-	</p>
+	<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_' . strtoupper($this->serveas)); ?></p>
 	<?php if(count($this->choices) > 1) { ?>
 	<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_ALL_OPTIONS'); ?></h5>
 		<?php foreach($this->choices as $choice) { ?>

@@ -30,7 +30,7 @@ $published = $this->pub->versions > 0 ? 1 : 0;
 
 // Determine pane title
 $ptitle = '';
-if($this->version == 'dev') {
+if ($this->version == 'dev') {
 	$ptitle .= (($this->last_idx > $this->current_idx || $this->lastpane == 'review') && count($this->attachments) > 0)
 	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')).' ' 
 	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT')).' ' ;
@@ -42,42 +42,21 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route)
 				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
 <?php
-// Include status bar - publication steps/sections/version navigation
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'=>'projects',
-		'element'=>'publications',
-		'name'=>'edit',
-		'layout'=>'statusbar'
-	)
-);
-$view->row = $this->row;
-$view->version = $this->version;
-$view->panels = $this->panels;
-$view->active = $this->active;
-$view->move = $this->move;
-$view->step = 'supporting';
-$view->lastpane = $this->lastpane;
-$view->option = $this->option;
-$view->project = $this->project;
-$view->current_idx = $this->current_idx;
-$view->last_idx = $this->last_idx;
-$view->checked = $this->checked;
-$view->url = $this->url;
-$view->display();
+	// Draw status bar
+	PublicationContribHelper::drawStatusBar($this, 'supporting');
 
-$canedit = (
-	$this->pub->state == 3 
-	|| $this->pub->state == 4 
-	|| $this->pub->state == 5 
-	|| in_array('supportingdocs', $this->mayupdate)) 
-	? 1 : 0;
+	$canedit = (
+		$this->pub->state == 3 
+		|| $this->pub->state == 4 
+		|| $this->pub->state == 5 
+		|| in_array('supportingdocs', $this->mayupdate)) 
+		? 1 : 0;
 
-// Section body starts:
+	// Section body starts:
 ?>
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
-			<div class="c-inner" id="c-file-picker">
+			<div class="c-inner" id="c-item-picker">
 				<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
 				<?php if ($canedit) { ?>
 				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_SUPPORTING_FILES'); ?></p>				
@@ -127,101 +106,40 @@ $canedit = (
 					// If we have files selected
 					if(count($this->attachments) > 0) {
 						$i = 1;
-						$layout = 'default';
-						foreach ($this->attachments as $att) { 
-						if ($att->type == 'file') 
-						{
-							$file = str_replace($this->fpath . DS, '', $att->path);
-
-							// Check if master file is still there
-							$gone = is_file($this->prefix.$this->fpath.DS.$att->path) ? 0 : 1;
-							?>
-							<li id="clone-file::<?php echo urlencode($file); ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
-						<?php 
-						}
-
-						// If database type
-						if ($att->type == 'data') 
-						{
-							$gone   = ''; // TBD
-							$layout = 'data';
-							$dataid = $att->object_id;
-							$dbName = $att->object_name;
-							
-							$data = new ProjectDatabase($this->database);
-							if (!$data->loadRecord($dbName))
-							{
-								$gone = 1;
-							}
-							
-						 ?>
-							<li id="clone-data::<?php echo $dbName; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
-						<?php 
-						}
 						
-						// If note type
-						if ($att->type == 'note') 
-						{
-							$gone   = ''; // TBD
-							$layout = 'note';
-							$pageid = $att->object_id;
+						foreach ($this->attachments as $att) 
+						{ 
+							// Check if item is missing
+							$gone = $this->_typeHelper->dispatchByType($att->type, 'checkMissing', 
+									$data = array('item' => $att, 'fpath' => $this->prefix . $this->fpath,
+									'config' => $this->config ));
+									
+							$prop = $this->_typeHelper->dispatchByType($att->type, 'getMainProperty', 
+									$data = array('item' => $att));
+
+							$layout = $att->type;
+																
+							?>
+							<li id="clone-<?php echo $att->type ?>::<?php echo urlencode($att->$prop); ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
 							
-							$masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
-							$group_prefix = $this->config->get('group_prefix', 'pr-');
-							$group = $group_prefix . $this->project->alias;
-
-							$note = $this->projectsHelper->getSelectedNote($pageid, $group, $masterscope);
-							
-							if (!$note)
-							{
-								$gone = 1;
-							}
-							
-						 ?>
-							<li id="clone-note::<?php echo $pageid; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
-						<?php 
-						}
-						?>
-
-						<?php								
-							// Content Info HTML
-							ximport('Hubzero_Plugin_View');
-							$view = new Hubzero_Plugin_View(
-								array(
-									'folder'=>'projects',
-									'element'=>'publications',
-									'name'=>'contentitem',
-									'layout' => $layout
-								)
-							);
-							$view->url = $this->url;
-							$view->project = $this->project;
-							$view->option = $this->option;
-							$view->pid = $this->row->publication_id;
-							$view->vid = $this->row->id;
-
-							if ($att->type == 'file') 
-							{
-								$view->path = $this->fpath;
-								$view->item = $att->path;
-								$view->revision = '';
-							}
-							elseif ($att->type == 'data')
-							{
-								$view->data = $data;
-							}
-							elseif ($att->type == 'note')
-							{
-								$view->note = $note;
-							}
-							$view->canedit = $canedit;
-							$view->move = $this->move;
-							$view->att = $att;
-							$view->role = 0;
-							$view->display();
-						?>
-
-					</li>	
+							<?php 
+									// Draw item
+									$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem', 
+									$data = array(
+											'att' 		=> $att, 
+											'item'		=> NULL,
+											'canedit' 	=> $canedit, 
+											'pid' 		=> $this->row->publication_id,
+											'vid'		=> $this->row->id,
+											'url'		=> $this->url,
+											'option'	=> $this->option,
+											'move'		=> $this->move,
+											'role'		=> 0,
+											'path'		=> $this->prefix . $this->fpath
+									));
+									echo $itemHtml;
+							?>								
+						</li>
 				<?php 					
 						$i++;
 					} 

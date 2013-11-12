@@ -26,7 +26,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get publication properties
-if ($this->pub->id) {
+if ($this->pub->id) 
+{
 	// Are we allowed to edit?
 	$canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->state == 6 ) ? 0 : 1;
 }
@@ -36,17 +37,18 @@ else {
 }
 
 // Cannot pick a different database once draft is started
-$selOff = ($this->base == 'databases' && $this->row->id) ? 1 : 0;
+$selOff          = ($this->_pubTypeHelper->_changeAllowed == false && $this->row->id) ? 1 : 0;
+$multi  		 = $this->_pubTypeHelper->_multiSelect;
 
 // Determine pane title
 $ptitle = '';
-if ($this->version == 'dev') {
+if ($this->version == 'dev') 
+{
 	$ptitle .= $this->last_idx > $this->current_idx  
 		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')).' ' 
 		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT')).' ' ;
-		
-	$ptitle .= $this->base == 'files' ? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_PRIMARY').' ' : '';	
-	$ptitle .= $this->base == 'databases' ? ' a ' : '';
+
+	$ptitle .= $multi ? ' ' : ' a ';
 	$ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_'.strtoupper($this->base));	
 }
 else
@@ -69,37 +71,21 @@ else
 <?php } ?>
 
 <?php
-// Include status bar - publication steps/sections/version navigation
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'=>'projects',
-		'element'=>'publications',
-		'name'=>'edit',
-		'layout'=>'statusbar'
-	)
-);
-$view->row = $this->row;
-$view->version = $this->version;
-$view->panels = $this->panels;
-$view->active = $this->active;
-$view->move = $this->move;
-$view->step = 'primary';
-$view->lastpane = $this->lastpane;
-$view->option = $this->option;
-$view->project = $this->project;
-$view->current_idx = $this->current_idx;
-$view->last_idx = $this->last_idx;
-$view->checked = $this->checked;
-$view->url = $this->url;
-$view->display();
+	
+	// Draw status bar
+	PublicationContribHelper::drawStatusBar($this, 'primary');
+	
+	// Information text
+	$infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->base));
 
-$infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->base));
-
-// Section body starts:
+	// Section body starts:
 ?>
+	<?php if (!$this->pub->id && $this->project->provisioned != 1 && count($this->choices) > 1) { ?>
+		<p class="editing mini"><a href="<?php echo $this->url; ?>" >&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION_CHANGE_TYPE'); ?></a></span>
+	<?php } ?>
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
-			<div class="c-inner" id="c-file-picker">
+			<div class="c-inner" id="c-item-picker">
 				<h4><?php echo $ptitle; ?></h4>
 				<?php if ($canedit) { ?>	
 				<p><?php echo $selOff ? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_CHOICE_FROM_'.strtoupper($this->base)) : JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_FROM_'.strtoupper($this->base)); ?></p>	
@@ -115,10 +101,11 @@ $infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'.
 					<?php echo $infotext; ?>
 				</p>
 				<?php } ?>
-				<?php if($this->project->provisioned == 1 && !$this->pub->id && $this->base == 'files') { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_FILES').'</p>'; } ?>
+				<?php if($this->project->provisioned == 1 && !$this->pub->id) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_' . strtoupper($this->base)).'</p>'; } ?>
 				<?php } else { ?>
 					<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 				<?php } ?>
+				
 			</div>
 		</div>
 		<div class="two columns second" id="c-output">
@@ -142,113 +129,49 @@ $infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'.
 				<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 				<input type="hidden" name="vid" id="vid" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="selections" id="selections" value="" />
-				</fieldset>
+			</fieldset>
 			<div class="c-inner">
-			<?php if($canedit) { ?>
+			<?php if ($canedit) { ?>
 				<span class="c-submit"><input type="submit" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->attachments) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
 			<?php } ?>
 				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?>: </h5>
 				<ul id="c-filelist" class="c-list <?php if(!$canedit || !$this->pub->id) { ?>noedit<?php } ?>">
 					<li id="nosel" <?php if($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
 					<?php 
-					// If we have files selected
-					if(count($this->attachments) > 0) {
+					// If we have content items selected
+					if(count($this->attachments) > 0) 
+					{
 						$i = 1;
-						$layout = 'default';
+
 						foreach ($this->attachments as $att) 
 						{ 
-							if ($att->type == 'file') 
-							{
-								$file = str_replace($this->fpath . DS, '', $att->path);
-				
-								// Check if master file is still there
-								$gone = is_file($this->prefix.$this->fpath.DS.$att->path) ? 0 : 1;
-								?>
-								<li id="clone-file::<?php echo urlencode($file); ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
-							<?php 
-							}
-							
-							// If database type
-							if ($att->type == 'data') 
-							{
-								$gone   = ''; // TBD
-								$layout = 'data';
-								$dataid = $att->object_id;
-								$dbName = $att->object_name;
-								
-								$data = new ProjectDatabase($this->database);
-								if (!$data->loadRecord($dbName))
-								{
-									$gone = 1;
-								}
-								
-							 ?>
-								<li id="clone-data::<?php echo $dbName; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
-							<?php 
-							}
-							
-							// If note type
-							if ($att->type == 'note') 
-							{
-								$gone   = ''; // TBD
-								$layout = 'note';
-								$pageid = $att->object_id;
-								
-								$masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
-								$group_prefix = $this->config->get('group_prefix', 'pr-');
-								$group = $group_prefix . $this->project->alias;
-
-								$note = $this->projectsHelper->getSelectedNote($pageid, $group, $masterscope);
-								
-								if (!$note)
-								{
-									$gone = 1;
-								}
-								
-							 ?>
-								<li id="clone-note::<?php echo $pageid; ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
-							<?php 
-							}
+							// Check if item is missing
+							$gone = $this->_typeHelper->dispatchByType($att->type, 'checkMissing', 
+									$data = array('item' => $att, 'fpath' => $this->prefix . $this->fpath,
+									'config' => $this->config ));
+									
+							$prop = $this->_typeHelper->dispatchByType($att->type, 'getMainProperty');
+																							
 							?>
+							<li id="clone-<?php echo $att->type ?>::<?php echo urlencode($att->$prop); ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
 							
-							<?php								
-								// Content Info HTML
-								ximport('Hubzero_Plugin_View');
-								$view = new Hubzero_Plugin_View(
-									array(
-										'folder'=>'projects',
-										'element'=>'publications',
-										'name'=>'contentitem',
-										'layout' => $layout
-									)
-								);
-								$view->url = $this->url;
-								$view->project = $this->project;
-								$view->option = $this->option;
-								$view->pid = $this->row->publication_id;
-								$view->vid = $this->row->id;
-								
-								if ($att->type == 'file') 
-								{
-									$view->path = $this->fpath;
-									$view->item = $att->path;
-									$view->revision = '';
-								}
-								elseif ($att->type == 'data')
-								{
-									$view->data = $data;
-								}
-								elseif ($att->type == 'note')
-								{
-									$view->note = $note;
-								}
-								$view->canedit = $canedit;
-								$view->move = $this->move;
-								$view->att = $att;
-								$view->role = 1;
-								$view->display();
-							?>
-							
+							<?php 
+									// Draw item
+									$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem', 
+									$data = array(
+											'att' 		=> $att, 
+											'item'		=> NULL,
+											'canedit' 	=> $canedit, 
+											'pid' 		=> $this->row->publication_id,
+											'vid'		=> $this->row->id,
+											'url'		=> $this->url,
+											'option'	=> $this->option,
+											'move'		=> $this->move,
+											'role'		=> 1,
+											'path'		=> $this->prefix . $this->fpath
+									));
+									echo $itemHtml;
+							?>								
 						</li>	
 					<?php 					
 							$i++;

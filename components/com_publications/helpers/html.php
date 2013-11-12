@@ -774,7 +774,7 @@ class PublicationsHtml
 		{
 			return false;
 		}
-		
+
 		// Set counts		
 		$docs = 0;
 		
@@ -783,10 +783,9 @@ class PublicationsHtml
 		$supli  = array();
 		
 		// Archival package?
-		//$publication->base == 'databases' && 
 		if (file_exists($archive) && $publication->base == 'databases')
 		{
-			$url = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve').'?v=' . $version . '&amp;render=archive';
+			$url = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve&v=' . $version . '&render=archive');
 			$supli[] = ' <li class="archival-package"><a href="'.$url.'" title="'. JText::_('COM_PUBLICATIONS_DOWNLOAD_ARCHIVE_PACKAGE') .'">' . JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE') . '</a></li>'."\n";
 			$docs++;
 		}
@@ -803,25 +802,21 @@ class PublicationsHtml
 				$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
 
 				$params = new JParameter( $child->params );
-				switch ( $child->type ) 
-				{
-					case 'file': 
-					default:				
-						$default_type = 'download'; 		
-						break;
-					case 'link': 				
-						$default_type = 'external'; 		
-						break;
-				}
-				$serveas = $params->get('serveas', $default_type);
-				$ftype = PublicationsHtml::getFileExtension($child->path);
-				$class = $params->get('class', $ftype);
+				
+				// Get default serving option
+				$defaultServeas = $publication->pubTypeHelper->dispatchByType($child->type, 'getProperty', 
+					$data = array('property' => '_serveas') );
+				
+				$serveas = $params->get('serveas', $defaultServeas);
+				$ftype 	 = PublicationsHtml::getFileExtension($child->path);
+				$class   = $params->get('class', $ftype);
 				$doctitle = $params->get('title', $child->title);
-
+				
 				// Things we want to highlight
 				$toShow = array('iTunes', 'iTunes U', 'Syllabus', 'Audio', 'Video', 'Slides');
 
-				$url   = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve').'?a='.$child->id;
+				$url   = JRoute::_('index.php?option=com_publications&id='.$this->publication->id 
+						. '&task=serve&v=' . $version . '&a=' . $child->id);
 				$extra = '';
 				
 				switch ( $serveas ) 

@@ -200,6 +200,8 @@ class plgProjectsPublications extends JPlugin
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php' );
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'types.php' );
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'publications' . DS . 'helpers' . DS . 'contrib.php' );
 				
 		// Get task									
 		$this->_task = JRequest::getVar('action','');
@@ -220,7 +222,7 @@ class plgProjectsPublications extends JPlugin
 		// Contribute process outside of projects
 		if (!is_object($project) or !$project->id) 
 		{			
-			$ajax_tasks = array('showoptions', 'showinfo', 'save', 'showitem');
+			$ajax_tasks = array('showoptions', 'save', 'showitem');
 			$this->_task = $action == 'start' ? 'start' : 'contribute';
 			if ($action == 'new') 
 			{
@@ -246,6 +248,9 @@ class plgProjectsPublications extends JPlugin
 		{
 			$this->setError( $error );	
 		}
+		
+		// Get types helper
+		$this->_pubTypeHelper = new PublicationTypesHelper($this->_database, $this->_project);
 
 		// In case of read-only access
 		if ($authorized == 3 && $this->_pid)
@@ -304,9 +309,6 @@ class plgProjectsPublications extends JPlugin
 			// Content
 			case 'showoptions': 		
 				$arr['html'] = $this->_showOptions(); 	
-				break;
-			case 'showinfo': 		
-				$arr['html'] = $this->_showContentInfo(); 	
 				break;
 			case 'edititem': 		
 				$arr['html'] = $this->_editContent(); 	
@@ -688,6 +690,9 @@ class plgProjectsPublications extends JPlugin
 		$view->inreview 	= 0;
 		$view->title		= $this->_area['title'];
 		
+		// Get type helper
+		$view->_pubTypeHelper = $this->_pubTypeHelper->dispatch($base, 'getHelper');
+		
 		// Get messages	and errors	
 		$view->msg = $this->_msg;
 		if ($this->getError()) 
@@ -943,13 +948,7 @@ class plgProjectsPublications extends JPlugin
 			stripslashes($row->title),
 			$view->url	
 		);
-		
-		// Get extra tool information
-		if ($view->pub->base == 'tools') 
-		{
-			// TBD
-		}
-		
+				
 		// Autocompleter
 		if ($section == 'authors' || $section == 'access') 
 		{
@@ -989,7 +988,7 @@ class plgProjectsPublications extends JPlugin
 				
 				// Get projects helper
 				$view->projectsHelper = new ProjectsHelper( $this->_database );
-												
+																
 				// Get Files JS
 				Hubzero_Document::addPluginScript('projects', 'files');
 				Hubzero_Document::addPluginStylesheet('projects', 'files');							
@@ -1138,7 +1137,10 @@ class plgProjectsPublications extends JPlugin
 		// Master type params (determines management options)
 		$mType = $mt->getType($this->_base);
 		$view->typeParams = new JParameter( $mType->params );
-						
+		
+		$view->_pubTypeHelper = $this->_pubTypeHelper->dispatch($pub->base, 'getHelper');
+		$view->_typeHelper 	  = $this->_pubTypeHelper;
+								
 		// Output HTML
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
@@ -1409,21 +1411,21 @@ class plgProjectsPublications extends JPlugin
 			else 
 			{
 				// Create new version
-				$new =  new PublicationVersion( $this->_database );	
-				$new = $row; // copy of default version
-				$new->id = 0;
-				$new->created = $now;
-				$new->created_by = $this->_uid;
-				$new->modified = $now;
-				$new->modified_by = $this->_uid;
-				$new->rating = '0.0';
-				$new->state = 3;
+				$new 				=  new PublicationVersion( $this->_database );	
+				$new 				= $row; // copy of default version
+				$new->id 			= 0;
+				$new->created 		= $now;
+				$new->created_by 	= $this->_uid;
+				$new->modified 		= $now;
+				$new->modified_by 	= $this->_uid;
+				$new->rating 		= '0.0';
+				$new->state 		= 3;
 				$new->version_label = $label;
-				$new->doi = '';
-				$new->ark = '';
-				$new->secret = strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
-				$new->version_number = $pub->versions + 1;
-				$new->main = 0;
+				$new->doi 			= '';
+				$new->ark 			= '';
+				$new->secret 		= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+				$new->version_number= $pub->versions + 1;
+				$new->main 			= 0;
 				
 				if ($new->store()) 
 				{
@@ -1828,6 +1830,10 @@ class plgProjectsPublications extends JPlugin
 		$view->title		= $this->_area['title'];
 		$view->pubdate		= $pubdate;
 		
+		// Get type helper
+		$view->_pubTypeHelper = $this->_pubTypeHelper->dispatch($this->_base, 'getHelper');
+		$view->_typeHelper	  = $this->_pubTypeHelper;
+		
 		// Get messages	and errors	
 		$view->msg = $this->_msg;
 		if ($this->getError()) 
@@ -1856,8 +1862,8 @@ class plgProjectsPublications extends JPlugin
 		$inreview 	= JRequest::getInt( 'review', 0 );
 		$step 		= JRequest::getVar( 'step', '' );	
 			
-		$layout = $section;
-		$newpub = 0;
+		$layout 	= $section;
+		$newpub 	= 0;
 		$newversion = 0;
 		$now = JFactory::getDate()->toSql();
 
@@ -1925,7 +1931,8 @@ class plgProjectsPublications extends JPlugin
 					$this->_project->setup_stage 		= 3;
 
 					// Get project type params
-					require_once( JPATH_ROOT. DS .'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
+					require_once( JPATH_ROOT. DS .'administrator' . DS . 'components' . DS 
+						. 'com_projects' . DS . 'tables' . DS . 'project.type.php');
 					$objT = new ProjectType( $this->_database );
 					$this->_project->params = $objT->getParams ($this->_project->type);
 
@@ -1981,16 +1988,24 @@ class plgProjectsPublications extends JPlugin
 					$note = $projectsHelper->getSelectedNote($first_item, $group, $masterscope);
 					$title = $note ? $note->title : '';					
 				}
+				elseif ($base == 'tools')
+				{
+					$tool = new ProjectTool($this->_database);
+					if ($tool->loadTool($first_item))
+					{
+						$title = $tool->title;
+					}
+				}
 				
 				$title = $title == '' ? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE') : $title;
 				
 				// Make a new publication entry
-				$objP->master_type = $mt->getTypeId($mastertype);
-				$objP->category = $cat;				
-				$objP->project_id = $this->_project->id;
-				$objP->created_by = $this->_uid;
-				$objP->created = $now;
-				$objP->access = 0;
+				$objP->master_type 		= $mt->getTypeId($mastertype);
+				$objP->category 		= $cat;				
+				$objP->project_id 		= $this->_project->id;
+				$objP->created_by 		= $this->_uid;
+				$objP->created 			= $now;
+				$objP->access 			= 0;
 				if (!$objP->store()) 
 				{
 					JError::raiseError( $objP->getError() );
@@ -2041,7 +2056,7 @@ class plgProjectsPublications extends JPlugin
 				$row->created 			= $now;
 				$row->version_number 	= 1;
 				$row->license_type 		= 0;
-				$row->access			= 0;
+				$row->access 			= 0;
 				
 				// Get hash code for version (to be used as a dir name to guard against direct file access)
 				$code = strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
@@ -2064,9 +2079,9 @@ class plgProjectsPublications extends JPlugin
 								
 				// Proccess attachments
 				$added = $this->_processContent( $pid, $vid, $selections, $primary, $row->secret, $row->state, $newpub);
-				
+								
 				// Roll back on error
-				if (!$added)
+				if ($added < 1)
 				{
 					$objP->delete();
 					$row->delete();
@@ -2076,7 +2091,6 @@ class plgProjectsPublications extends JPlugin
 					}
 					
 					$this->setError( JText::_('COM_PROJECTS_ERROR_ATTACHING_CONTENT'));
-					//return false;
 				}
 				else
 				{
@@ -2620,6 +2634,7 @@ class plgProjectsPublications extends JPlugin
 		else 
 		{
 			$row->submitted = JFactory::getDate()->toSql();
+
 			if ($this->_pubconfig->get('autoapprove') == 1 )  
 			{
 				$state = 1;
@@ -2686,12 +2701,11 @@ class plgProjectsPublications extends JPlugin
 					} 
 					if (checkdate($month, $day, $year)) 
 					{
-						
 						$pubdate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year))->toSql();
 					}
 				}
 			}
-			
+
 			$tenYearsFromNow = JFactory::getDate(strtotime("+10 years"))->toSql();
 			
 			// Stop if more than 10 years from now
@@ -2807,7 +2821,7 @@ class plgProjectsPublications extends JPlugin
 					$row->removeMainFlag($main_vid);
 				}
 
-				// Copy attachments
+				// Finalize attachments for publication
 				$published = $this->_publishAttachments($row);
 				
 				// Produce archival package
@@ -3013,10 +3027,11 @@ class plgProjectsPublications extends JPlugin
 				if ($pub->state == 1) 
 				{					
 					// Unpublish published version
-					$row->published_down = JFactory::getDate()->toSql();
-					$row->modified = JFactory::getDate()->toSql();
-					$row->modified_by = $this->_uid;
-					$row->state = 0;
+					$row->published_down 	= JFactory::getDate()->toSql();
+					$row->modified 			= JFactory::getDate()->toSql();
+					$row->modified_by 		= $this->_uid;
+					$row->state 			= 0;
+
 					if (!$row->store()) 
 					{
 						JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED') );
@@ -3084,7 +3099,7 @@ class plgProjectsPublications extends JPlugin
 					// Delete audience
 					$pAudience = new PublicationAudience( $this->_database );
 					$pAudience->deleteAudience($vid);
-				
+									
 					// Delete publication existence
 					if ($pub->versions == 0) 
 					{
@@ -3283,16 +3298,16 @@ class plgProjectsPublications extends JPlugin
 		}
 		else 
 		{
-			$objPA = new PublicationAttachment( $this->_database );	
-			$objPA->publication_id = $pid;
-			$objPA->publication_version_id = $vid;
-			$objPA->path = $item;
-			$objPA->type = $type;
-			$objPA->vcs_hash = $vcs_hash;
-			$objPA->created_by = $this->_uid;
-			$objPA->created = JFactory::getDate()->toSql();
-			$objPA->title = $title ? $title : '';
-			$objPA->role = $role;
+			$objPA 							= new PublicationAttachment( $this->_database );	
+			$objPA->publication_id 			= $pid;
+			$objPA->publication_version_id 	= $vid;
+			$objPA->path 					= $item;
+			$objPA->type 					= $type;
+			$objPA->vcs_hash 				= $vcs_hash;
+			$objPA->created_by 				= $this->_uid;
+			$objPA->created 				= JFactory::getDate()->toSql();
+			$objPA->title 					= $title ? $title : '';
+			$objPA->role 					= $role;
 		}
 
 		// Pass success or error message
@@ -3336,7 +3351,6 @@ class plgProjectsPublications extends JPlugin
 		
 		$type = strtolower(array_shift(explode('::', $item)));
 		$item = array_pop(explode('::', $item));
-		$layout = $type == 'file' ? 'default' : $type;
 		$hash = '';
 		
 		if (!$type || !$item)
@@ -3350,150 +3364,42 @@ class plgProjectsPublications extends JPlugin
 			$this->_project = new Project( $this->_database );
 			$this->_project->provisioned = 1;
 		}
-				
-		// Output HTML
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'=>'projects',
-				'element'=>'publications',
-				'name'=>'contentitem',
-				'layout' => $layout
-			)
-		);
-		
-		// Get attachment info
-		$view->att = new PublicationAttachment( $this->_database );
-		$view->att->loadAttachment($vid, $item, $type );
-		
-		// Get helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
-				
-		// File content
-		if ($type == 'file')
-		{
-			// Get projects helper
-			$projectsHelper = new ProjectsHelper( $this->_database );
-			$view->revision = '';
-
-			if ($this->_project->provisioned == 1)
-			{
-				$project_path = '';
-			}
-			else
-			{
-				// Get project file path
-				$project_path = ProjectsHelper::getProjectPath($this->_project->alias, 
-						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
-
-				// Git path	
-				$gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
-
-				// Revision info for files
-				if ($type == 'file' && is_dir($project_path)) 
-				{
-					$view->revision = $projectsHelper->showGitInfo($gitpath, $project_path, $view->att->vcs_hash, $item);
-				}			
-			}
-			$view->path 	= $project_path;
-		}
-		
-		// Database content
-		if ($type == 'data')
-		{
-			$view->data = new ProjectDatabase($this->_database);
-			$view->data->loadRecord($item);
-		}
-		
-		// Tool content
-		if ($type == 'tool')
-		{
-			$view->tool = new ProjectTool($this->_database);
-			$view->tool->loadTool($item);
-		}
-		
-		// Wiki content
-		if ($type == 'note')
-		{			
-			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
-			$group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
-			
-			$view->note = $projectsHelper->getSelectedNote($item, $group, $masterscope);
-		}
-		
+						
 		// Build pub url
-		$view->route = $this->_project->provisioned 
+		$route = $this->_project->provisioned 
 			? 'index.php?option=com_publications' . a . 'task=submit'
 			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
-		
-		$view->project 	= $this->_project;
-		$view->option 	= $this->_option;
-		$view->pid 		= $pid;
-		$view->vid 		= $vid;
-		$view->item 	= $item;
-		$view->canedit 	= (!is_object($this->_project) or !$this->_project->id) ? 0 : 1;
-		$view->move 	= $move;
-		$view->role		= $role;
-		
-		return $view->loadTemplate();
-		
-	}
-	
-	/**
-	 * Show content info (AJAX)
-	 * 
-	 * @return     string
-	 */
-	protected function _showContentInfo() 
-	{
-		// Incoming
-		$pid 	= JRequest::getInt( 'pid', 0 );
-		$vid 	= JRequest::getInt( 'vid', 0 );
-		$role 	= JRequest::getInt('role', 0);
-		$item 	= urldecode(JRequest::getVar( 'item', '' ));
-		$html   = '';
-		
-		$type = strtolower(array_shift(explode('::', $item)));
-		$item = array_pop(explode('::', $item));
-		$hash = '';
-		
-		// Contribute process outside of projects
-		if (!is_object($this->_project) or !$this->_project->id) 
-		{
-			$this->_project = new Project( $this->_database );
-			$this->_project->provisioned = 1;
-		}
+		$url = JRoute::_($route . a . 'pid=' . $pid);
 		
 		// Get attachment info
-		$objPA = new PublicationAttachment( $this->_database );
-		if ($objPA->loadAttachment($vid, $item, $type )) 
-		{
-			$html .= $objPA->title ? '"' . $objPA->title . '"' : JText::_('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
-			$hash  = $objPA->vcs_hash;
-		}
-		else 
-		{
-			$html .= JText::_('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
-		}
-		
-		// Get projects helper
+		$att = new PublicationAttachment( $this->_database );
+		$att->loadAttachment($vid, $item, $type );
+				
+		// Get helper
 		$projectsHelper = new ProjectsHelper( $this->_database );
 		
 		// Get project file path
 		$project_path = ProjectsHelper::getProjectPath($this->_project->alias, 
 				$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 		
-		// Git path	
-		$gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
-
-		// Revision info
-		if ($type == 'file' && is_dir($project_path)) 
-		{
-			$revision = $projectsHelper->showGitInfo($gitpath, $project_path, $hash, $item);
-			$html .= $revision ? ' &middot; '.$revision : '';
-		}
-
-		return $html ? $html : '.';
+		$canedit = (!is_object($this->_project) or !$this->_project->id) ? 0 : 1;
+				
+		// Draw item
+		$itemHtml = $this->_pubTypeHelper->dispatchByType($type, 'drawItem', 
+		$data = array(
+				'att' 		=> $att, 
+				'item'		=> $item,
+				'canedit' 	=> $canedit, 
+				'pid' 		=> $pid,
+				'vid'		=> $vid,
+				'url'		=> $url,
+				'option'	=> $this->_option,
+				'move'		=> $move,
+				'role'		=> $role,
+				'path'		=> $project_path
+		));
+		
+		return $itemHtml;
 	}
 	
 	/**
@@ -3518,166 +3424,13 @@ class plgProjectsPublications extends JPlugin
 		
 		// Instantiate pub attachment
 		$objPA = new PublicationAttachment( $this->_database );	
-		
+						
 		// Get selections
 		$selections = JRequest::getVar( 'selections', '');
 		$selections = $this->_parseSelections($selections);
 		
 		// Allowed choices
 		$options = array('download', 'tardownload', 'inlineview', 'invoke', 'video', 'external');
-		
-		// Check if selections are the same as in another publication
-		$used = $objPA->checkUsed($base, $selections, $this->_project->id, $pid);
-		$duplicateVersion = NULL;	
-		
-		// Get original content
-		$original_serveas = '';
-		if ($vid) 
-		{
-			$original = $objPA->getAttachments($vid, $filters = array('role' => 1));
-			if ($original) 
-			{
-				$params = new JParameter( $original[0]->params );
-				$original_serveas = $params->get('serveas');	
-			}
-		
-			// Check against duplication
-			$info = array();
-			if ($base == 'files' && !empty($selections['files']))
-			{
-				foreach ($selections['files'] as $file) 
-				{
-					if ($objPA->loadAttachment($vid, urldecode($file), 'file' )) 
-					{
-						$finfo = array();
-						$finfo['path'] = $objPA->path;
-						$finfo['hash'] = $objPA->vcs_hash;
-						$info[] = $finfo;
-					}
-				}	
-			}
-			elseif ($base == 'databases' && !empty($selections['data']))
-			{	
-				foreach($selections['data'] as $data) 
-				{
-					if ($objPA->loadAttachment($vid, $data, 'data' )) 
-					{
-						$finfo = array();
-						$finfo['object_name'] = $objPA->object_name;
-						$finfo['object_revision'] = $objPA->object_revision;
-						$info[] = $finfo;
-					}
-				}
-			}			
-			elseif ($base == 'tools' && !empty($selections['tool']))
-			{	
-				foreach($selections['tool'] as $tool) 
-				{
-					if ($objPA->loadAttachment($vid, $tool, 'tool' )) 
-					{
-						$finfo = array();
-						$finfo['object_name'] = $objPA->object_name;
-						$finfo['object_revision'] = $objPA->object_revision;
-						$info[] = $finfo;
-					}
-				}
-			}
-
-			$count = isset($selections['count']) ? $selections['count'] : 0;
-
-			// Look for duplicate version
-			$duplicateVersion = $objPA->checkVersionDuplicate($count, $info, $pid, $vid, $base);		
-		}
-		
-		if ($base == 'files')
-		{			
-			// Formats that can be previewed via Google viewer
-			$docs 	= array('pdf', 'doc', 'docx', 'xls', 'xlsx', 
-				'ppt', 'pptx', 'pages', 'ai', 
-				'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg'
-			);
-			
-			$html5video = array('mp4','m4v','webm','ogv'); // formats for HTML5 video
-
-			// Required
-			ximport('Hubzero_Content_Mimetypes');
-			
-			// Allow viwing files via Google Doc viewer?
-			$googleView	= $this->_params->get('googleview');
-
-			// Determine how to serve content
-			$serveas = 'download';
-			$choices = array();		
-			if (!empty($selections)) 
-			{	
-				// Files
-				if (!empty($selections['files']))
-				{
-					$count = count($selections['files']);
-
-					// Get file mimetype
-					$mt = new Hubzero_Content_Mimetypes();
-					$mimetypes = array();
-
-					foreach($selections['files'] as $file) 
-					{
-						$mtype = $mt->getMimeType(urldecode($file));
-						$mimetypes[] = strtolower(array_shift(explode('/', $mtype)));
-					}
-
-					// If one file, determine how to serve (to be extended)
-					if ($count == 1) 
-					{
-						$ext = strtolower(array_pop(explode('.', basename($selections['files'][0]))));
-						
-						// Some files can be viewed inline
-						if (in_array('video', $mimetypes) 
-							|| in_array('audio', $mimetypes) 
-							|| in_array('image', $mimetypes)) 
-						{
-							$serveas = $original_serveas ? $original_serveas : 'inlineview';
-							
-							// Offer choice
-							$choices[] = 'inlineview';
-							$choices[] = 'download';
-						}
-						elseif ($googleView && in_array(strtolower($ext), $docs))
-						{
-							$serveas = $original_serveas ? $original_serveas : 'download';
-							
-							// Offer choice
-							$choices[] = 'download';
-							$choices[] = 'inlineview';
-						}
-						else 
-						{
-							$serveas = 'download';
-						}
-					}
-					else 
-					{
-						// More than 1 file
-						$serveas = 'tardownload';
-					}				
-				}
-			}
-		}
-		elseif ($base == 'tools')
-		{
-			$serveas = 'invoke';
-			$choices = array();
-		}
-		else
-		{
-			$serveas = 'external';
-			$choices = array();
-		}
-				
-		// Something got picked?
-		if ($picked && in_array($picked, $options)) 
-		{
-			$serveas = $picked;
-		}
 		
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
@@ -3688,6 +3441,46 @@ class plgProjectsPublications extends JPlugin
 			)
 		);
 		
+		// Check if selections are the same as in another publication
+		$view->used = $this->_pubTypeHelper->dispatch($base, 'checkDuplicate', 
+			$data = array('pid' => $pid, 'selections' => $selections));
+			
+		// Check if selections are of the right status to publish
+		$view->cStatus = $this->_pubTypeHelper->dispatch($base, 'checkContentStatus', 
+			$data = array('pid' => $pid, 'selections' => $selections));	
+		
+		$view->duplicateV = NULL;			
+		$view->original_serveas = '';
+				
+		// Get original content
+		if ($vid) 
+		{
+			$original = $objPA->getAttachments($vid, $filters = array('role' => 1));
+			if ($original) 
+			{
+				$params = new JParameter( $original[0]->params );
+				$view->original_serveas = $params->get('serveas');	
+			}
+		
+			// Check against duplication
+			$view->duplicateV = $this->_pubTypeHelper->dispatch($base, 'checkVersionDuplicate', 
+				$data = array('vid' => $vid, 'pid' => $pid, 'selections' => $selections));		
+		}
+		
+		// Get serveas and choices depending on content selection
+		$serve = $this->_pubTypeHelper->dispatch($base, 'getServeAs', 
+			$data = array('vid' => $vid, 'selections' => $selections, 
+				'original_serveas' => $view->original_serveas, 'params' => $this->_params));
+			
+		$serveas = ($serve && isset($serve['serveas'])) ? $serve['serveas'] : 'external';
+		$view->choices = ($serve && isset($serve['choices'])) ? $serve['choices'] : array();
+			
+		// Something got picked?
+		if ($picked && in_array($picked, $options)) 
+		{
+			$serveas = $picked;
+		}
+				
 		// Build pub url
 		$view->route = $this->_project->provisioned 
 					? 'index.php?option=com_publications' . a . 'task=submit'
@@ -3696,14 +3489,15 @@ class plgProjectsPublications extends JPlugin
 		
 		$view->selections 	= $selections;
 		$view->serveas 		= $serveas;
-		$view->choices 		= $choices;
 		$view->pid 			= $pid;
 		$view->picked 		= $picked;
-		$view->duplicateV 	= $duplicateVersion;
-		$view->used 		= $used;
 		$view->base 		= $base;
 		$view->option 		= $this->_option;
-		$view->project 		= $this->_project;	
+		$view->project 		= $this->_project;
+		
+		// Get type helper
+		$view->_pubTypeHelper = $this->_pubTypeHelper->dispatch($base, 'getHelper');
+			
 		if ($this->getError()) 
 		{
 			$view->setError( $this->getError() );
@@ -3725,14 +3519,12 @@ class plgProjectsPublications extends JPlugin
 	 *
 	 * @return     integer
 	 */
-	protected function _processContent( $pid, $vid, $selections, $primary, $secret = '', $state = 0, $newpub = 0, $update_hash = 1 ) 
+	protected function _processContent( $pid, $vid, $selections, $primary, 
+			$secret = '', $state = 0, $newpub = 0, $update_hash = 1 ) 
 	{
 		// Incoming
 		$serveas = JRequest::getVar('serveas', '');
 		
-		// Get project file path
-		$fpath = ProjectsHelper::getProjectPath($this->_project->alias, 
-				$this->_config->get('webpath'), $this->_config->get('offroot'));
 		$added = 0;
 		
 		$objPA = new PublicationAttachment( $this->_database );
@@ -3745,566 +3537,48 @@ class plgProjectsPublications extends JPlugin
 		$filters['select'] = 'a.path, a.type, a.object_name';
 		$filters['role'] = $primary ? 1 : '0';
 		$original = $objPA->getAttachments($vid, $filters);	
-				
-		$i = 1;
-		
-		// Save data attachments
-		if (isset($selections['data']) && count($selections['data']) > 0 ) 
-		{
-			$database_name = $selections['data'][0];
-			$dbVersion = NULL;
-			
-			// Get database object and load record
-			$objData = new ProjectDatabase($this->_database);
-			$objData->loadRecord($database_name);
-			
-			// Get databases plugin
-			JPluginHelper::importPlugin( 'projects', 'databases');
-			$dispatcher =& JDispatcher::getInstance();
-			
-			// Original database not found
-			if (!$objData->id)
-			{
-				if ($newpub == 1)
-				{
-					// Can't proceed
-					return false;
-				}
-				else
-				{
-					// Original got deleted, can't do much
-					return true;
-				}
-			}
 						
-			// Build publication path
-			$base_path = $this->_pubconfig->get('webpath');
-			$publishPath = $helper->buildPath($pid, $vid, $base_path, 'data', 1);
-			$pPath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $pid) 
-				. '/?vid=' . $vid . a . 'task=serve';
-			
-			// Create new version path
-			if (!is_dir( $publishPath )) 
-			{
-				if (!JFolder::create( $publishPath, 0777 )) 
-				{
-					$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
-					return '<p class="error">' . $this->getError() . '</p>';
-				}
-			}
-			
-			// First-time clone
-			if ($newpub)
-			{
-				$result = $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
-				$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
-				
-				// Failed to clone
-				if (!$dbVersion)
-				{
-					$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
-					return false;
-				}
-			}
-						
-			// Save attachment data
-			if ($objPA->loadAttachment($vid, $database_name, 'data')) 
-			{
-				$rtime = $objPA->modified ? strtotime($objPA->modified) : NULL;
-				if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime )
-				{
-					// New database instance - need to clone again and get a new version number
-					$result = $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
-					$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
-					$objPA->modified_by = $this->_uid;
-					$objPA->modified = JFactory::getDate()->toSql();
-				}
-				else
-				{
-					// No changes
-					$dbVersion = $objPA->object_revision;
-				}
-			}
-			else 
-			{
-				$objPA = new PublicationAttachment( $this->_database );
-				$objPA->publication_id = $pid;
-				$objPA->publication_version_id = $vid;
-				$objPA->type = 'data';
-				$objPA->created_by = $this->_uid;
-				$objPA->created = JFactory::getDate()->toSql();
-			}			
-			
-			// We do need a revision number!
-			if (!$dbVersion)
-			{
-				return false;
-			}
-			
-			// NEW determine accompanying files and copy them in the right location				
-			$this->_publishDataFiles($objData, $publishPath);
-			
-			// Save object information
-			$objPA->object_id   = $objData->id;
-			$objPA->object_name = $database_name;
-			$objPA->object_revision = $dbVersion;
-			
-			// Build link path
-			$objPA->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
-					
-			$objPA->ordering = $i;
-			$objPA->role = $primary;
-			$objPA->title = $objPA->title ? $objPA->title : $objData->title;
-			$objPA->params = $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
-			
-			if ($objPA->store()) 
-			{
-				$i++;
-				$added++;
-			}			
-		}
+		// Get attachment types
+		$types = $this->_pubTypeHelper->getTypes();
 		
-		// Save note attachments
-		if (isset($selections['notes']) && count($selections['notes']) > 0) 
+		// Save attachments
+		foreach ($types as $base)
 		{
-			// Get helper
-			$projectsHelper = new ProjectsHelper( $this->_database );
-		
-			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
-			$group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
-			
-			// Attach every selected file
-			foreach ($selections['notes'] as $pageId) 
-			{
-				// get project note						
-				$note = $projectsHelper->getSelectedNote($pageId, $group, $masterscope);
-			
-				if (!$note)
-				{
-					// Can't proceed
-					continue;
-				}
-							
-				if ($objPA->loadAttachment($vid, $pageId, 'note')) 
-				{
-					$objPA->modified_by = $this->_uid;
-					$objPA->modified = JFactory::getDate()->toSql();
-				}
-				else 
-				{
-					$objPA = new PublicationAttachment( $this->_database );
-					$objPA->publication_id 			= $pid;
-					$objPA->publication_version_id 	= $vid;
-					$objPA->path 					= '';
-					$objPA->type 					= 'note';
-					$objPA->created_by 				= $this->_uid;
-					$objPA->created 				= JFactory::getDate()->toSql();
-				}
-				
-				// Save object information
-				$objPA->object_id   	= $pageId;
-				$objPA->object_name 	= $note->pagename;
-				$objPA->object_revision = $note->version;
-				$objPA->object_instance = $note->instance;
-			
-				$objPA->ordering 		= $i;
-				$objPA->role 			= $primary;
-				$objPA->title 			= $note->title;
-				$objPA->params 			= $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
-			
-				if ($objPA->store()) 
-				{
-					$i++;
-					$added++;
-				}				
-			}
-		}
-		
-		// Save tool attachments
-		if (isset($selections['tools']) && count($selections['tools']) > 0) 
-		{
-			// Attach every selected tool
-			foreach ($selections['tools'] as $toolname) 
-			{
-				// Get tool
-				$objTool = new ProjectTool( $this->_database );
-				$tool = $objTool->getFullRecord($toolname);
-				
-				if (!$tool)
-				{
-					// Can't proceed
-					continue;
-				}
-				
-				if ($objPA->loadAttachment($vid, $toolname, 'tool')) 
-				{
-					$objPA->modified_by = $this->_uid;
-					$objPA->modified = JFactory::getDate()->toSql();
-				}
-				else 
-				{
-					$objPA = new PublicationAttachment( $this->_database );
-					$objPA->publication_id 			= $pid;
-					$objPA->publication_version_id 	= $vid;
-					$objPA->path 					= '';
-					$objPA->type 					= 'tool';
-					$objPA->created_by 				= $this->_uid;
-					$objPA->created 				= JFactory::getDate()->toSql();
-				}
-				
-				// Save object information
-				$objPA->object_id   	= $tool->id;
-				$objPA->object_name 	= $tool->name;
-				$objPA->object_revision = $tool->revision;
-				$objPA->object_instance = $tool->instance;
-			
-				$objPA->ordering 		= $i;
-				$objPA->role 			= $primary;
-				$objPA->title 			= $tool->title;
-				$objPA->params 			= $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
-			
-				if ($objPA->store()) 
-				{
-					$i++;
-					$added++;
-				}
-				
-				// Update tool record
-				if ($primary)
-				{
-					$objTool->updatePubAssoc($tool->id, $tool->instance, $pid, $vid );
-				}	
-			}
-		}
-				
-		// Save file attachments
-		if (isset($selections['files']) && count($selections['files']) > 0) 
-		{
-			// Git helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-			$this->_git = new ProjectsGitHelper(
-				$this->_config->get('gitpath', '/opt/local/bin/git'), 
-				$this->_uid
-			);
-			
-			// Attach every selected file
-			foreach ($selections['files'] as $file) 
-			{
-				$path = urldecode($file);
-				
-				// Get Git hash				
-				$vcs_hash = $this->_git->gitLog($fpath, urldecode($file), '', 'hash');
-
-				if ($objPA->loadAttachment($vid, $path, 'file')) 
-				{
-					// Update only if no hash recorded (or update requested)
-					$objPA->vcs_hash = $objPA->vcs_hash && $update_hash == 0 ? $objPA->vcs_hash : $vcs_hash;
-					$objPA->modified_by = $this->_uid;
-					$objPA->modified = JFactory::getDate()->toSql();
-				}
-				else 
-				{
-					$objPA = new PublicationAttachment( $this->_database );
-					$objPA->publication_id = $pid;
-					$objPA->publication_version_id = $vid;
-					$objPA->path = $path;
-					$objPA->type = 'file';
-					$objPA->vcs_hash = $vcs_hash;
-					$objPA->created_by = $this->_uid;
-					$objPA->created = JFactory::getDate()->toSql();
-				}
-						
-				$objPA->ordering = $i;
-				$objPA->role = $primary;
-				$objPA->title = $objPA->title ? $objPA->title : '';
-				$objPA->params = $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;				
-				
-				if ($objPA->store()) 
-				{
-					$i++;
-					$added++;
-					if ($secret && ($state != 1 || ($state == 1 && !$primary))) 
-					{
-						$this->_publishAttachment($pid, $vid, $objPA->path, $objPA->vcs_hash, $secret);							
-					}
-				}
-			}
+			$added = $this->_pubTypeHelper->dispatch($base, 'saveAttachments', 
+					$data = array(
+						'selections'	=> $selections, 
+						'pid' 			=> $pid,
+						'vid'			=> $vid,
+						'uid'			=> $this->_uid,
+						'option'		=> $this->_option,
+						'update_hash'	=> $update_hash,
+						'newpub'		=> $newpub,
+						'state'			=> $state,
+						'secret'		=> $secret,
+						'primary'		=> $primary,
+						'added'			=> $added,
+						'serveas'		=> $serveas
+					));
 		}
 		
 		// Delete attachments if not selected
 		if (count($original) > 0) 
 		{
 			foreach ($original as $old) 
-			{
-				// Go through file attachments
-				if ($old->type == 'file')
-				{
-					if (!in_array(trim($old->path), $selections['files'])) 
-					{
-						$objPA->deleteAttachment($vid, $old->path, $old->type);	
-						if ($secret) 
-						{
-							$this->_unpublishAttachment($pid, $vid, $old->path, $secret);	
-						}
-					}
-				}
-				elseif ($old->type == 'note')
-				{
-					if (!in_array(trim($old->object_id), $selections['notes']))
-					{
-						$objPA->deleteAttachment($vid, $old->object_id, $old->type);	
-					}
-				}
+			{				
+				$this->_pubTypeHelper->dispatchByType($old->type, 'cleanupAttachments', 
+						$data = array(
+							'selections'	=> $selections, 
+							'pid' 			=> $pid,
+							'vid'			=> $vid,
+							'uid'			=> $this->_uid,
+							'secret'		=> $secret,
+							'old'			=> $old
+				));
 			}
 		}
 		
 		return $added;		
-	}
-	
-	/**
-	 * Publish supporting database files
-	 * 
-	 * @param      object  	$objPD
-	 *
-	 * @return     boolean or error
-	 */
-	protected function _publishDataFiles($objPD, $publishPath = '') 
-	{				
-		if (!$objPD->id)
-		{
-			return false;
-		}
-		
-		$repoPath = ProjectsHelper::getProjectPath($this->_project->alias, 
-			$this->_config->get('webpath'), $this->_config->get('offroot')
-		);
-		
-		// Get data definition
-		$dd = json_decode($objPD->data_definition, true);
-
-		$files 	 = array();
-		$columns = array();
-
-		foreach ($dd['cols'] as $colname => $col) 
-		{
-			if (isset($col['linktype']) && $col['linktype'] == "repofiles")
-			{
-				$dir = '';
-				if (isset($col['linkpath']) && $col['linkpath'] != '')
-				{
-					$dir = $col['linkpath'];
-				}
-				$columns[$col['idx']] = $dir;
-			}			
-		}
-		
-		// No files to publish
-		if (empty($columns))
-		{
-			return false;
-		}
-		
-		$repoPath = $objPD->source_dir ? $repoPath . DS . $objPD->source_dir : $repoPath;
-		$csv = $repoPath . DS . $objPD->source_file;
-		
-		$files = array();
-
-		if (file_exists($csv) && ($handle = fopen($csv, "r")) !== FALSE)
-		{
-			// Check if expert mode CSV
-			$expert_mode = false;
-			$col_labels = fgetcsv($handle);
-			$col_prop = fgetcsv($handle);
-			$data_start = fgetcsv($handle);
-			
-			if (isset($data_start[0]) && $data_start[0] == 'DATASTART') 
-			{
-				$expert_mode = true;
-			}
-
-			// Non expert mode
-			if (!$expert_mode) {
-				$handle = fopen($path . '/' . $file, "r");
-				$col_labels = fgetcsv($handle);
-			}
-						
-			while ($r = fgetcsv($handle)) 
-			{
-				for ($i = 0; $i < count($col_labels); $i++) 
-				{
-					if (isset($columns[$i]))
-					{
-						if ((isset($r[$i]) && $r[$i] != ''))
-						{
-							$file = $columns[$i] ? $columns[$i] . DS . trim($r[$i]) : trim($r[$i]);
-							if (file_exists( $repoPath . DS . $file))
-							{
-								$files[] = $file;
-							}
-						}
-					}					
-				}
-			}
-		}
-		
-		// Copy files from repo to published location
-		if (!empty($files))
-		{
-			jimport('joomla.filesystem.file');
-			jimport('joomla.filesystem.folder');
-			
-			foreach ($files as $file)
-			{
-				if (!file_exists( $repoPath . DS . $file))
-				{
-					continue;
-				}
-				
-				// If parent dir does not exist, we must create it
-				if (!file_exists(dirname($publishPath . DS . $file))) 
-				{
-					JFolder::create(dirname($publishPath . DS . $file));
-				}
-				
-				JFile::copy($repoPath . DS . $file, $publishPath . DS . $file);
-				
-				// Get file extention
-				$ext = explode('.', $file);
-				$ext = count($ext) > 1 ? end($ext) : '';
-				
-				// Image formats
-				$image_formats = array('png', 'gif', 'jpg', 'jpeg', 'tiff', 'bmp');
-				
-				// Image file?
-				if (!in_array(strtolower($ext), $image_formats))
-				{
-					continue;
-				}
-				
-				$ih = new ProjectsImgHandler();
-				
-				// Generate thumbnail
-				$thumb 	= PublicationsHtml::createThumbName($file, '_tn', $extension = 'gif');
-				$tpath  = dirname($thumb) == '.' ? $publishPath : $publishPath . DS . dirname($thumb);
-				JFile::copy($repoPath . DS . $file, $publishPath . DS . $thumb);
-				
-				$ih->set('image', basename($thumb));
-				$ih->set('overwrite',true);
-				$ih->set('path', $tpath . DS );
-				$ih->set('maxWidth', 100);
-				$ih->set('maxHeight', 60);
-				$ih->process();
-				
-				// Generate medium image
-				$med 	= PublicationsHtml::createThumbName($file, '_medium', $extension = 'gif');
-				$mpath  = dirname($med) == '.' ? $publishPath : $publishPath . DS . dirname($med);
-				JFile::copy($repoPath . DS . $file, $publishPath . DS . $med);
-				
-				$ih->set('image', basename($med));
-				$ih->set('overwrite',true);
-				$ih->set('path', $mpath . DS );
-				$ih->set('maxWidth', 800);
-				$ih->set('maxHeight', 800);
-				$ih->set('quality', 75);
-				$ih->set('force', false);
-				$ih->process();
-			}
-		}
-	}
-	
-	/**
-	 * Unpublish content attachment
-	 * 
-	 * @param      integer  	$pid
-	 * @param      integer  	$vid
-	 * @param      string  		$fpath
-	 * @param      string  		$secret
-	 *
-	 * @return     boolean or error
-	 */
-	protected function _unpublishAttachment($pid, $vid, $fpath, $secret) 
-	{
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $vid, $pid);
-		
-		// Remove files that got unselected from a finalized draft
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-		
-		// Build publication path
-		$base_path = $this->_pubconfig->get('webpath');
-		$newpath = $helper->buildPath($pid, $vid, $base_path, $secret, 1);
-		
-		if (is_dir( $newpath )) 
-		{
-			$file =  $newpath. DS .$fpath;
-			if (is_file($file)) 
-			{
-				JFile::delete($file);
-			}
-		}
-		
-		return true;		
-	}
-	
-	/**
-	 * Publish content attachment
-	 * 
-	 * @param      integer  	$pid
-	 * @param      integer  	$vid
-	 * @param      string  		$fpath
-	 * @param      string  		$hash
-	 * @param      string  		$secret
-	 *
-	 * @return     boolean or error
-	 */
-	protected function _publishAttachment ($pid, $vid, $fpath, $hash, $secret) 
-	{
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $vid, $pid);
-		
-		// Get projects helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
-		
-		// Remove files that got unselected from a finalized draft
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-		
-		// Build publication path
-		$base_path 	= $this->_pubconfig->get('webpath');
-		$devpath 	= $helper->buildDevPath($this->_project->alias);
-		$newpath 	= $helper->buildPath($pid, $vid, $base_path, $secret, 1);
-		$gitpath 	= $this->_config->get('gitpath', '/opt/local/bin/git');
-		
-		// Create new version path
-		if (!is_dir( $newpath )) 
-		{
-			if (!JFolder::create( $newpath, 0777 )) 
-			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
-				return '<p class="error">' . $this->getError() . '</p>';
-			}
-		}
-					
-		// Get latest commit hash
-		$latest = $projectsHelper->showGitInfo($gitpath, $devpath, $hash, $fpath, 2);
-		
-		// If parent dir does not exist, we must create it
-		if (!file_exists(dirname($newpath. DS .$fpath))) 
-		{
-			JFolder::create(dirname($newpath. DS .$fpath));
-		}
-		
-		// Copy file if there (will be at latest revision)
-		if (is_file($devpath. DS .$fpath)) 
-		{
-			if (!is_file($newpath. DS .$fpath) || $hash != $latest['hash']) 
-			{
-				JFile::copy($devpath. DS .$fpath, $newpath. DS .$fpath);
-			}			
-		}
-		
-		return true;			
 	}
 	
 	/**
@@ -4316,19 +3590,9 @@ class plgProjectsPublications extends JPlugin
 	 * @return     integer
 	 */
 	protected function _publishAttachments($row, $which = 'all') 
-	{
-		// Transfer file attachments from project files Git repo to a webroot directory
-		
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $row->id, $row->publication_id);
-		
+	{				
 		$published = 0;
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-		
-		// Get projects helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
-		
+						
 		// Set filters
 		$filters = array();
 		if ($which != 'all') 
@@ -4339,150 +3603,35 @@ class plgProjectsPublications extends JPlugin
 		// Get attachments
 		$pContent = new PublicationAttachment( $this->_database );
 		$attachments = $pContent->getAttachments( $row->id, $filters);
-
-		// Build publication paths
-		$base_path 	= $this->_pubconfig->get('webpath');
-		$devpath 	= $helper->buildDevPath($this->_project->alias);
-		$newpath 	= $helper->buildPath($row->publication_id, $row->id, $base_path, $row->secret, 1);
-		$gitpath 	= $this->_config->get('gitpath', '/opt/local/bin/git');
-		
-		// Create new version path
-		if (!is_dir( $newpath )) 
+				
+		// Do we have attachments to publish?
+		if (!$attachments || empty($attachments)) 
 		{
-			if (!JFolder::create( $newpath, 0777 )) 
-			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
-				return '<p class="error">' . $this->getError() . '</p>';
-			}
+			return false;
 		}
 		
-		// Check if we need to store file hash
-		$fields = $this->_database->getTableFields('jos_publication_attachments');
-		if (!array_key_exists('content_hash', $fields['jos_publication_attachments'] )) 
+		// Get relevant attachment types
+		$types = array();
+		foreach ($attachments as $att)
 		{
-			$this->_database->setQuery( "ALTER TABLE `jos_publication_attachments` 
-				ADD `content_hash` varchar(255) NOT NULL" );
-			if (!$this->_database->query()) 
+			if (!in_array($att->type, $types))
 			{
-				echo $this->_database->getErrorMsg();
-				return false;
-			}
-		}		
-					
-		// Copy content & attachment info
-		if ($attachments && count($attachments) > 0) 
+				$types[] = $att->type;
+			}			
+		}
+		
+		// Publish attachments
+		foreach ($types as $type)
 		{
-			foreach($attachments as $att) 
-			{
-				if ($att->type == 'data') 
-				{
-					$database_name = $att->object_name;
-					$database_rev  = $att->object_revision;
-					
-					// Build publication path
-					$publishPath = $helper->buildPath($row->publication_id, $row->id, $base_path, 'data', 1);
-					$pPath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $row->publication_id) 
-						. '/?vid=' . $row->id . a . 'task=serve';
-
-					// Get database object and load record
-					$objData = new ProjectDatabase($this->_database);
-					$objData->loadRecord($database_name);
-					
-					if (!$objData->id)
-					{
-						// Can't do much
-						break;
-					}
-					
-					// Get last record update time
-					$rtime = $att->modified ? strtotime($att->modified) : NULL;
-					
-					// Db updated, clone again
-					if (strtotime($objData->updated) > $rtime)
-					{
-						// Get databases plugin
-						JPluginHelper::importPlugin( 'projects', 'databases');
-						$dispatcher =& JDispatcher::getInstance();
-						
-						// New database instance - need to clone again and get a new version number
-						$result = $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
-						$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
-						
-						// Update attatchment record with new revision & path
-						if ($dbVersion)
-						{
-							// Make sure all data files are in the right location
-							$this->_publishDataFiles($objData, $publishPath);
-							
-							$objAtt = new PublicationAttachment( $this->_database );
-							$objAtt->load($att->id);
-							$objAtt->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
-							$objAtt->object_revision = $dbVersion;
-							$objAtt->modified_by = $this->_uid;
-							$objAtt->modified = JFactory::getDate()->toSql();
-							$objAtt->store();
-							$published++;
-						}
-					}
-				}
-				
-				if ($att->type == 'file') 
-				{					
-					// Get latest commit hash
-					$latest = $projectsHelper->showGitInfo($gitpath, $devpath, $att->vcs_hash, $att->path, 2);
-					
-					// If parent dir does not exist, we must create it
-					if (!file_exists(dirname($newpath. DS .$att->path))) 
-					{
-						JFolder::create(dirname($newpath. DS .$att->path));
-					}
-				
-					// Copy file if there (will be at latest revision)
-					if (is_file($devpath. DS .$att->path)) 
-					{
-						JFile::copy($devpath. DS .$att->path, $newpath. DS .$att->path);
-					}
-					else 
-					{
-						// Check out revision when file was added
-						chdir($devpath);
-						exec($gitpath.' checkout '.$att->vcs_hash.' '.escapeshellarg($att->path).' 2>&1', $out);
-						if (file_exists($devpath. DS .$att->path)) 
-						{
-							JFile::copy($devpath. DS .$att->path, $newpath. DS .$att->path);
-						}
-						// Check back latest revision
-						exec($gitpath.' checkout '.$latest['hash'].' '.escapeshellarg($att->path).' 2>&1', $out);
-					}
-												
-					// Copy succeeded?
-					if (is_file($newpath. DS .$att->path)) 
-					{
-						$objAtt = new PublicationAttachment( $this->_database );
-						$objAtt->load($att->id);
-						$objAtt->vcs_hash = $latest['hash'];
-						$objAtt->modified_by = $this->_uid;
-						$objAtt->modified = JFactory::getDate()->toSql();
-						if (array_key_exists('content_hash', $fields['jos_publication_attachments'] ))
-						{
-							$file_hash = hash_file('sha256', $newpath. DS .$att->path);
-							$objAtt->content_hash = $file_hash;
-							
-							// Create hash file
-							$hfile =  $newpath . DS .$att->path . '.hash';
-							if (!is_file($hfile))
-							{
-								$handle = fopen($hfile, 'w');
-								fwrite($handle, $file_hash);
-								fclose($handle);
-								chmod($hfile, 0644);
-							}
-						}
-						$objAtt->store();
-						$published++;
-					}
-				}
-			}
+			$published = $this->_pubTypeHelper->dispatchByType(
+				$type, 
+				'publishAttachments', 
+				$data = array(
+					'attachments'	=> $attachments, 
+					'row' 			=> $row,
+					'uid'			=> $this->_uid
+				)
+			);
 		}
 		
 		return $published;
@@ -4789,7 +3938,7 @@ class plgProjectsPublications extends JPlugin
 		{
 			$this->_processAuthors($vid, $selections);
 		}
-		
+
 		$now = JFactory::getDate()->toSql();
 		if (!$vid) 
 		{
@@ -5266,13 +4415,8 @@ class plgProjectsPublications extends JPlugin
 			{
 				$file = urldecode($file);
 				
-				// Git helper
-				include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-				$this->_git = new ProjectsGitHelper(
-					$this->_config->get('gitpath', '/opt/local/bin/git'), 
-					0,
-					$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
-				);
+				// Include Git Helper
+				$this->getGitHelper();
 
 				// Get Git hash
 				$hash = $this->_git->gitLog($fpath, $file, '' , 'hash');
@@ -5392,15 +4536,13 @@ class plgProjectsPublications extends JPlugin
 					$this->_config->get('webpath'), 1);
 
 			$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-			$from_path = $prefix.$fpath;
-
-			// Get files plugin
-			JPluginHelper::importPlugin( 'projects', 'files' );
-			$dispatcher =& JDispatcher::getInstance();
+			$from_path = $prefix . $fpath;
+			
+			// Include Git Helper
+			$this->getGitHelper();
 
 			// Get Git hash
-			$results = $dispatcher->trigger( 'whatChanged', array($fpath, $ima, 'hash') );
-			$hash = $results ? $results[0] : 0;	
+			$hash = $this->_git->gitLog($fpath, $ima, '' , 'hash');
 
 			// Get full & thumb image names
 			$ih = new ProjectsImgHandler();
@@ -5524,14 +4666,9 @@ class plgProjectsPublications extends JPlugin
 			
 			$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
 			$from_path = $prefix . $fpath;
-
-			// Git helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-			$this->_git = new ProjectsGitHelper(
-				$this->_config->get('gitpath', '/opt/local/bin/git'), 
-				0,
-				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
-			);
+			
+			// Include Git Helper
+			$this->getGitHelper();
 
 			// Get Git hash
 			$hash = $this->_git->gitLog($fpath, $ima, '' , 'hash');
@@ -5705,7 +4842,6 @@ class plgProjectsPublications extends JPlugin
 		$selections = JRequest::getVar( 'selections', '', 'post' );
 		$selections = $this->_parseSelections($selections);
 		$this->_processGallery( $pid, $vid, $selections );
-		
 		$now = JFactory::getDate()->toSql();
 		
 		if (!$vid || !$pid) 
@@ -5727,21 +4863,21 @@ class plgProjectsPublications extends JPlugin
 		{
 			if ($title && $pScreenshot->title != $title) 
 			{
-				$pScreenshot->modified = $now;
-				$pScreenshot->modified_by = $this->_uid;
-				$pScreenshot->title = $title;
+				$pScreenshot->modified 				= $now;
+				$pScreenshot->modified_by 			= $this->_uid;
+				$pScreenshot->title 				= $title;
 			}
 		}
 		else 
 		{
-			$pScreenshot = new PublicationScreenshot( $this->_database );
-			$pScreenshot->filename = $ima;
-			$pScreenshot->srcfile = $srcfile;
-			$pScreenshot->publication_id = $pid;
-			$pScreenshot->publication_version_id = $vid;
-			$pScreenshot->title = $title ? $title : basename($ima);
-			$pScreenshot->created = $now;
-			$pScreenshot->created_by = $this->_uid;
+			$pScreenshot 							= new PublicationScreenshot( $this->_database );
+			$pScreenshot->filename 					= $ima;
+			$pScreenshot->srcfile 					= $srcfile;
+			$pScreenshot->publication_id 			= $pid;
+			$pScreenshot->publication_version_id 	= $vid;
+			$pScreenshot->title 					= $title ? $title : basename($ima);
+			$pScreenshot->created 					= $now;
+			$pScreenshot->created_by 				= $this->_uid;
 		}
 		
 		// Pass success or error message
@@ -5824,12 +4960,14 @@ class plgProjectsPublications extends JPlugin
 		foreach ($newTags as $tag) 
 		{
 			$tag = trim($tag);
-			if ($tag != '') {										
+			if ($tag != '') 
+			{										
 				if ($tagObj->loadTag($tag)) 
 				{
 					$tagarray[] = $tagObj->id;
 				}
-				else {
+				else 
+				{
 					// Create tag
 					$tagObj = new TagsTableTag( $this->_database );
 					if (get_magic_quotes_gpc()) 
@@ -5889,7 +5027,7 @@ class plgProjectsPublications extends JPlugin
 			$attached = array_merge($attached, $new);
 		}
 		array_unique($attached);
-		
+				
 		// Output HTML
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -5924,7 +5062,7 @@ class plgProjectsPublications extends JPlugin
 			// Get suggestions
 			$view->tags = $tagsHelper->getSuggestedTags($pub->title, $pub->cat_alias, $view->attached_tags, $limit, $tcount );
 		}
-		
+				
 		// Build pub url
 		$view->route = $this->_project->provisioned 
 			? 'index.php?option=com_publications' . a . 'task=submit'
@@ -6085,7 +5223,7 @@ class plgProjectsPublications extends JPlugin
 		$publication_allowed = true;
 		foreach($this->_required as $req) 
 		{
-			if (isset($checked[$req]) && $checked[$req] == 0) 
+			if (isset($checked[$req]) && $checked[$req] != 1) 
 			{
 				$publication_allowed = false;
 			}
@@ -6126,25 +5264,14 @@ class plgProjectsPublications extends JPlugin
 				$checked['description'] = $row->description && $row->abstract ? 1 : 0;
 			}
 			elseif ($value == 'content')
-			{
+			{				
+				// Get primary attachments				
+				$pContent = new PublicationAttachment( $this->_database );
+				$attachments = $pContent->getAttachments ( $row->id, $filters = array('role' => 1) );
+				
 				// Check content
-				$checked['content'] = 0;
-				if ($type == 'tools') 
-				{
-					// Check tool
-					// TBD
-				} 
-				else 
-				{
-					$pContent = new PublicationAttachment( $this->_database );
-					$count_attachments = $pContent->getAttachments ( $row->id, $filters = array('count' => 1) );
-					if ($count_attachments > 0) 
-					{
-						// Check that no previous version has the same primary content
-						// TBD
-						$checked['content'] = 1;
-					}
-				}
+				$checked['content'] = $this->_pubTypeHelper->dispatch($type, 'checkContent', 
+					$data = array('pid' => $row->id, 'attachments' => $attachments));					
 			}
 			elseif ($value == 'authors')
 			{
@@ -6249,63 +5376,31 @@ class plgProjectsPublications extends JPlugin
 	 */
 	protected function _parseSelections( $selections = '' ) 
 	{
+		$mt = new PublicationMasterType( $this->_database );
+		
 		if ($selections) 
 		{
 			$sels = explode("##", $selections);
 			
-			$files 		= array();
-			$tools 		= array();
-			$links 		= array();
-			$notes 		= array();
-			$data  		= array();
-			$collection = array();
+			// Get available types
+			$types = $mt->getTypes('alias');
+						
+			// Start selections array
+			$selections = array('first' => $sels[0]);
+			$count 		= 0;
 			
-			$first = '';
-			
-			foreach($sels as $sel) 
+			foreach ($types as $type)
 			{
-				$arr = explode("::", $sel);
-				if ($arr[0] == 'file') 
-				{
-					$files[] = urldecode($arr[1]);
-				}
-				elseif ($arr[0] == 'link') 
-				{
-					$links[] = urldecode($arr[1]);	
-				}
-				elseif ($arr[0] == 'tool') 
-				{
-					$tools[] = urldecode($arr[1]);	
-				}
-				elseif ($arr[0] == 'note') 
-				{
-					$notes[] = urldecode($arr[1]);	
-				}
-				elseif ($arr[0] == 'data') 
-				{
-					$data[] = urldecode($arr[1]);	
-				}
-				elseif ($arr[0] == 'collection') 
-				{
-					$collection[] = urldecode($arr[1]);	
-				}
+				$selections[$type] = $this->_pubTypeHelper->dispatch($type, 'parseSelections', 
+									 $data = array('sels' => $sels));
+				$count 			   = $count + count($selections[$type]);
 			}
 			
-			$count = count($files) + count($links) + count($tools) + count($notes) + count($data) + count($collection);
-						
-			$selections = array(
-				'first' => $sels[0], 
-				'files' => $files, 
-				'links' => $links, 
-				'tools' => $tools, 
-				'notes' => $notes, 
-				'data' => $data, 
-				'collection' => $collection,
-				'count' => $count
-			);
+			$selections['count'] = $count;
+			return $selections;			
 		}
 		
-		return $selections;
+		return false;
 	}
 	
 	/**
@@ -6374,13 +5469,8 @@ class plgProjectsPublications extends JPlugin
 		
 		if (!is_dir( $gitRepoBase )) 
 		{
-			// Git helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-			$this->_git = new ProjectsGitHelper(
-				$this->_config->get('gitpath', '/opt/local/bin/git'), 
-				0,
-				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
-			);
+			// Include Git Helper
+			$this->getGitHelper();
 			
 			// Initialize Git
 			$this->_git->iniGit($path);
@@ -6922,8 +6012,7 @@ class plgProjectsPublications extends JPlugin
 		{
 		    return false;
 		}
-		
-						
+								
 		// Delete temp files
 		if (file_exists($tmpReadme))
 		{
@@ -6935,6 +6024,26 @@ class plgProjectsPublications extends JPlugin
 		}
 				
 		return $tarpath;
+	}
+	
+	/**
+	 * Get Git helper
+	 * 
+	 *
+	 * @return     void
+	 */
+	protected function getGitHelper()
+	{
+		if (!isset($this->_git))
+		{
+			// Git helper
+			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
+			$this->_git = new ProjectsGitHelper(
+				$this->_config->get('gitpath', '/opt/local/bin/git'), 
+				0,
+				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
+			);			
+		}
 	}
 	
 	/**

@@ -186,7 +186,7 @@ $append .= '</span>';
 				 } ?>
 			</li>
 		</ul>
-		<p>
+		<p class="ipadded">
 			<input class="option" name="agree" type="radio" value="1" />
 			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO') . ' <a href="' 
 			. $this->pubconfig->get('deposit_terms', 'https://localhost:5000/legal/termsofdeposit?no_html=1'). '" class="popup">' 
@@ -224,34 +224,15 @@ else if ($this->authorized == 3)
 	<div class="pub-review-content">
 		<?php
 		
-		if ($this->authorized != 3) {
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'=>'projects',
-					'element'=>'publications',
-					'name'=>'edit',
-					'layout'=>'statusbar'
-				)
-			);
-			$view->row = $this->row;
-			$view->version = $this->version;
-			$view->panels = $this->panels;
-			$view->active = '';
-			$view->move = 0;
-			$view->hide_version = 1;
-			$view->lastpane = $this->lastpane;
-			$view->option = $this->option;
-			$view->project = $this->project;
-			$view->current_idx = $this->current_idx;
-			$view->last_idx = $this->last_idx;
-			$view->checked = $this->checked;
-			$view->url = $this->url;
-			$view->review = 1;
-			$view->display();	
+		if ($this->authorized != 3) 
+		{
+			// Draw status bar
+			PublicationContribHelper::drawStatusBar($this, NULL, false, 1);	
 		}
 		
 		$description = '';
-		if($this->pub->description) {
+		if ($this->pub->description) 
+		{
 			$description = $this->parser->parse( stripslashes($this->pub->description), $this->wikiconfig );
 		}
 		
@@ -328,29 +309,26 @@ else if ($this->authorized == 3)
 			?>
 			<div class="three columns first second">
 				<ul class="c-list">
+					<li>
 				<?php	foreach($this->primary as $att) {
-						if ($att->type == 'file') {
-							$fpath = $this->version == 'dev' ? $att->path : $att->path;
-							$file = str_replace($this->fpath.DS, '', $fpath);
-							$ext = explode('.',$file);
-							$ext = end($ext);
-							$ext = strtolower($ext); 
-							$revision = '';
-							$revision = $this->projectsHelper->showGitInfo($gitpath, $this->project_path, $att->vcs_hash, $att->path);	
-						}					
-				?>
-						<?php if ($att->type == 'file') { ?>
-						<li><img src="<?php echo ProjectsHtml::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /><?php echo $file; echo $att->title && $att->title != $fpath ? ' - "<span class="italic">'.$att->title.'</span>"' : ''; ?><?php if($revision) { ?><span class="c-iteminfo"><?php echo $revision; ?></span><?php } ?></li>
-						<?php } elseif ($att->type == 'data') { ?>
-						<li><span class="databases"><?php echo $att->title; ?>
-							[<a href="<?php echo $att->path; ?>" rel="external"><?php echo JText::_('view'); ?></a>]</span>
-						</li>
-						<?php } 
-						elseif ($att->type == 'note') { ?>
-						<li><span class="notes"><?php echo $att->title; ?></span>
-						</li>
-						<?php } ?>
-				<?php } ?>
+					
+						// Draw item
+						$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem', 
+						$data = array(
+								'att' 		=> $att, 
+								'item'		=> NULL,
+								'canedit' 	=> 0, 
+								'pid' 		=> $this->pub->id,
+								'vid'		=> $this->row->id,
+								'url'		=> $this->url,
+								'option'	=> $this->option,
+								'move'		=> 0,
+								'role'		=> 1,
+								'path'		=> $this->prefix . $this->fpath
+						));
+						echo $itemHtml;			
+				 } ?>
+					</li>
 				</ul>	
 			</div>
 			<div class="three columns third summary">
@@ -365,23 +343,26 @@ else if ($this->authorized == 3)
 			<?php } ?>
 			<?php } ?>
 			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS'); ?></p>
-				<?php if(count($this->secondary) > 0) { 
-					$gitpath = $this->config->get('gitpath', '/opt/local/bin/git');
-				?>
+				<?php if(count($this->secondary) > 0) { ?>
 				<ul class="c-list">
+					<li>
 				<?php	foreach($this->secondary as $att) {
-					if ($att->type == 'file') {
-						$fpath = $this->version == 'dev' ? $att->path : $att->path;
-						$file = str_replace($this->fpath.DS, '', $fpath);
-						$ext = explode('.',$file);
-						$ext = end($ext);
-						$ext = strtolower($ext); 
-						$revision = '';
-						$revision = $this->projectsHelper->showGitInfo($gitpath, $this->project_path, $att->vcs_hash, $att->path);	
-					}
-				?>
-						<li><img src="<?php echo ProjectsHtml::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /><?php echo $file; echo $att->title && $att->title != $fpath ? ' - "<span class="italic">'.$att->title.'</span>"' : ''; ?><?php if($revision) { ?><span class="c-iteminfo"><?php echo $revision; ?></span><?php } ?></li>	
-				<?php } ?>
+					// Draw item
+					$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem', 
+					$data = array(
+							'att' 		=> $att, 
+							'item'		=> NULL,
+							'canedit' 	=> 0, 
+							'pid' 		=> $this->pub->id,
+							'vid'		=> $this->row->id,
+							'url'		=> $this->url,
+							'option'	=> $this->option,
+							'move'		=> 0,
+							'role'		=> 0,
+							'path'		=> $this->prefix . $this->fpath
+					));
+					echo $itemHtml;
+				 } ?>
 				</ul>	
 				<?php if($this->version == 'dev') { ?>
 					<p class="footnote">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?></p>

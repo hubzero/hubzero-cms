@@ -492,7 +492,7 @@ HUB.ProjectPublications = {
 		var multi   = $('#base').length && $('#base').val() == 'files' ? 1 : 0;
 		var vid 	= $('#vid') ? $('#vid').val() : 0;
 		var move 	= $('#move') ? $('#move').val() : 0;
-		var selOff  = $('#base').length && $('#base').val() == 'databases' && vid ? 1 : 0; 
+		var selOff  = $('#base').length && ($('#base').val() == 'databases' || $('#base').val() == 'tools') && vid ? 1 : 0; 
 				
 		// Marking as selected
 	//	var idx = cselected.indexOf(it);
@@ -728,6 +728,7 @@ HUB.ProjectPublications = {
 			{
 				pubop.html(data);
 				HUB.ProjectPublications.refreshOptionsContent();
+				HUB.ProjectPublications.checkBtn();
 			}
 		});
 	},
@@ -1107,7 +1108,9 @@ HUB.ProjectPublications = {
 		{
 			selections = HUB.ProjectPublications.gatherSelections('clone-');
 			var primary = $('#primary').length ? $('#primary').val() : 0;
-			if (primary == 1 && !selections)
+			var used 	= $('#used').length ? $('#used').val() : 0;
+						
+			if ((primary == 1 && !selections) || (primary == 1 && used == 1))
 			{
 				enable = 0;
 			}
@@ -1533,7 +1536,7 @@ HUB.ProjectPublications = {
 				text = 'Public';
 			}
 			if(access.val() == 1 && $('#access-registered').length) {
-				$('access-registered').addClass('c-picked');
+				$('#access-registered').addClass('c-picked');
 				text = 'Registered';
 			}
 			if(access.val() > 1 && $('#access-restricted').length) {

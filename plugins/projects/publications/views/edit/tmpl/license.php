@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
-if($this->version == 'dev') {
+if ($this->version == 'dev') {
 	$ptitle = $this->last_idx > $this->current_idx  ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LICENSE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CHOOSE_LICENSE')) ;
 }
 else {
@@ -58,35 +58,15 @@ else {
 	</fieldset>
 
 <?php
-// Include status bar - publication steps/sections/version navigation
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'=>'projects',
-		'element'=>'publications',
-		'name'=>'edit',
-		'layout'=>'statusbar'
-	)
-);
-$view->row = $this->row;
-$view->version = $this->version;
-$view->panels = $this->panels;
-$view->active = $this->active;
-$view->move = $this->move;
-$view->lastpane = $this->lastpane;
-$view->option = $this->option;
-$view->project = $this->project;
-$view->current_idx = $this->current_idx;
-$view->last_idx = $this->last_idx;
-$view->checked = $this->checked;
-$view->url = $this->url;
-$view->display();
+	// Draw status bar
+	PublicationContribHelper::drawStatusBar($this);
 
-$canedit = (
-	$this->pub->state == 3 
-	|| $this->pub->state == 4 
-	|| $this->pub->state == 5 
-	|| in_array($this->active, $this->mayupdate)) 
-	? 1 : 0;
+	$canedit = (
+		$this->pub->state == 3 
+		|| $this->pub->state == 4 
+		|| $this->pub->state == 5 
+		|| in_array($this->active, $this->mayupdate)) 
+		? 1 : 0;
 
 // Section body starts:
 ?>

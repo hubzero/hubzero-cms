@@ -61,11 +61,6 @@ function PublicationsBuildRoute(&$query)
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['file'])) 
-	{
-		$segments[] = $query['file'];
-		unset($query['file']);
-	}
 	if (!empty($query['category'])) 
 	{
 		$segments[] = $query['category'];
@@ -75,6 +70,21 @@ function PublicationsBuildRoute(&$query)
 	{
 		$segments[] = $query['pid'];
 		unset($query['pid']);
+	}
+	if (!empty($query['v'])) 
+	{
+		$segments[] = $query['v'];
+		unset($query['v']);
+	}
+	if (!empty($query['a'])) 
+	{
+		$segments[] = $query['a'];
+		unset($query['a']);
+	}
+	if (!empty($query['file'])) 
+	{
+		$segments[] = $query['file'];
+		unset($query['file']);
 	}
 
     return $segments;
@@ -151,18 +161,31 @@ function PublicationsParseRoute($segments)
 				}	 
 				break;
 				
-			case 'download': $vars['task'] = 'download'; break;
-			case 'wiki': 	 $vars['task'] = 'wiki'; 	 break;
-			case 'play':     $vars['task'] = 'play';     break;
-			case 'watch':    $vars['task'] = 'watch';    break;
-			case 'serve':    $vars['task'] = 'serve';    break;
-			case 'video':	 $vars['task'] = 'video';	 break;
+			case 'download':
+			case 'wiki':
+			case 'play':
+			case 'watch':
+			case 'serve':
+			case 'video':    
+				$vars['task'] = $segments[1];
+				
+				if (!empty($segments[2])) 
+				{
+					$vars['v'] = $segments[2];
+				}  
+				if (!empty($segments[3])) 
+				{
+					$vars['a'] = $segments[3];
+				}  
+			
+				break;
+
 			case 'citation': $vars['task'] = 'citation'; break;
 			case 'feed.rss': $vars['task'] = 'feed';     break;
 			case 'feed':     $vars['task'] = 'feed';     break;
 			case 'license':  $vars['task'] = 'license';  break;
 			
-			default: $vars['active'] = $segments[1]; break;
+			default: $vars['active'] = $segments[1]; 	 break;
 		}
 	}
 

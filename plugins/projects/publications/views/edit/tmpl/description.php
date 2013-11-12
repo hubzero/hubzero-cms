@@ -98,30 +98,9 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 		</fieldset>
 
 <?php
-// Include status bar - publication steps/sections/version navigation
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'=>'projects',
-		'element'=>'publications',
-		'name'=>'edit',
-		'layout'=>'statusbar'
-	)
-);
-$view->row = $this->row;
-$view->version = $this->version;
-$view->panels = $this->panels;
-$view->active = $this->active;
-$view->move = $this->move;
-$view->step = 'abstract';
-$view->lastpane = $this->lastpane;
-$view->option = $this->option;
-$view->project = $this->project;
-$view->current_idx = $this->current_idx;
-$view->last_idx = $this->last_idx;
-$view->checked = $this->checked;
-$view->url = $this->url;
-$view->show_substeps = ($this->pubconfig->get('show_metadata', 0)) ? 1 : 0;
-$view->display();
+
+// Draw status bar
+PublicationContribHelper::drawStatusBar($this, 'abstract', $this->pubconfig->get('show_metadata', 0));
 
 if ($this->move) {
 	$panel_number = 1;

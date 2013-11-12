@@ -39,42 +39,22 @@ else {
 			: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 <?php
-// Include status bar - publication steps/sections/version navigation
-$view = new Hubzero_Plugin_View(
-	array(
-		'folder'=>'projects',
-		'element'=>'publications',
-		'name'=>'edit',
-		'layout'=>'statusbar'
-	)
-);
-$view->row = $this->row;
-$view->version = $this->version;
-$view->panels = $this->panels;
-$view->active = $this->active;
-$view->move = $this->move;
-$view->lastpane = $this->lastpane;
-$view->option = $this->option;
-$view->project = $this->project;
-$view->current_idx = $this->current_idx;
-$view->last_idx = $this->last_idx;
-$view->checked = $this->checked;
-$view->url = $this->url;
-$view->display();
+	// Draw status bar
+	PublicationContribHelper::drawStatusBar($this);
 
-$canedit = (
-	$this->pub->state == 3 
-	|| $this->pub->state == 4 
-	|| $this->pub->state == 5 
-	|| in_array($this->active, $this->mayupdate)) 
-	? 1 : 0;
+	$canedit = (
+		$this->pub->state == 3 
+		|| $this->pub->state == 4 
+		|| $this->pub->state == 5 
+		|| in_array($this->active, $this->mayupdate)) 
+		? 1 : 0;
 
 // Section body starts:
 ?>
 <div id="pub-body">
 	<div id="pub-editor" class="pane-gallery">
 		<div class="two columns first" id="c-selector">
-		 <div class="c-inner" id="c-file-picker">
+		 <div class="c-inner" id="c-item-picker">
 			<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
 			
 			<?php if ($canedit) { ?>

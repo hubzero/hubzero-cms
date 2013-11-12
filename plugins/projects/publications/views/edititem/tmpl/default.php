@@ -58,7 +58,7 @@ if ($this->getError()) {
 				<?php } ?>
 			</fieldset>
 			<div class="content-edit">
-				<p><span class="leftshift faded"><?php echo $this->type == 'file' ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_FILE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM')); ?>:</span>
+				<p><span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM')); ?>:</span>
 					<?php echo '<span class="prominent">' . $name. '</span>' . $inDir;  ?>
 				</p>
 				<label for="title">
