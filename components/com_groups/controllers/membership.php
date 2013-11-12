@@ -385,13 +385,6 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_INVITEE_FAILED'), 'error');
 		}
 
-		// Do we need to redirect?
-		if ($return == 'members') 
-		{
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn') . '&active=members'), '', 'message', true);
-			return;
-		}
-
 		// Push all invitees together
 		$all_invites = array_merge($invitees,$inviteemails);
 
