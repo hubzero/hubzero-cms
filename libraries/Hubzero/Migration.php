@@ -230,14 +230,17 @@ class Hubzero_Migration
 		}
 
 		define('DS', '/');
-		define('JPATH_ROOT', $docroot);
-		define('JPATH_BASE', JPATH_ROOT);
-		define('JPATH_SITE', JPATH_ROOT);
+		define('JPATH_ROOT',          $docroot);
+		define('JPATH_BASE',          JPATH_ROOT);
+		define('JPATH_SITE',          JPATH_ROOT);
 		define('JPATH_CONFIGURATION', JPATH_ROOT);
-		define('JPATH_INSTALLATION', JPATH_ROOT . DS . 'installation');
+		define('JPATH_INSTALLATION',  JPATH_ROOT . DS . 'installation');
 		define('JPATH_ADMINISTRATOR', JPATH_ROOT . DS . 'administrator');
-		define('JPATH_LIBRARIES', JPATH_ROOT . DS . 'libraries');
-		define('JPATH_XMLRPC', JPATH_ROOT . DS . 'xmlrpc');
+		define('JPATH_LIBRARIES',     JPATH_ROOT . DS . 'libraries');
+		define('JPATH_XMLRPC',        JPATH_ROOT . DS . 'xmlrpc');
+		define('JPATH_THEMES',        JPATH_BASE . DS . 'templates');
+		define('JPATH_CACHE',         JPATH_BASE . DS . 'cache');
+		define('JPATH_MANIFESTS',     JPATH_ADMINISTRATOR . DS . 'manifests');
 
 		if (is_file(JPATH_LIBRARIES.DS.'cms.php'))
 		{
