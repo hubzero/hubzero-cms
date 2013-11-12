@@ -287,6 +287,11 @@ class ResourcesElementDate extends ResourcesElement
 	{
 		$html = array();
 
+		if (!isset($element->options))
+		{
+			$element->options = array();
+		}
+
 		if (count($element->options) < 1)
 		{
 			$opt = new stdClass;
@@ -300,7 +305,7 @@ class ResourcesElementDate extends ResourcesElement
 			$opt = new stdClass;
 			$opt->label = '';
 			$opt->value = '';
-			
+
 			$element->options[] = $opt;
 		}
 
@@ -311,12 +316,15 @@ class ResourcesElementDate extends ResourcesElement
 		$html[] = '<tr>';
 		$html[] = '<td><label for="'. $control_name . '-' . $name . '-year">' . JText::_('Year') . '</label></td>';
 		$html[] = '<td><input type="checkbox" name="' . $control_name . '[' . $name . '][year]" id="'. $control_name . '-' . $name . '-year" value="1" ' . (isset($element->year) && $element->year == 1 ? 'checked="checked"' : '') . ' /></td>';
-		foreach ($element->options as $option)
+		if (isset($element->options) && is_array($element->options))
 		{
-			$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . ($k == 0 ? JText::_('Start') : JText::_('End')) . '</label></td>';
-			$html[] = '<td><input type="text" size="4" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . ($k == 0 ? ($option->label ? $option->label : 1950) : $option->label) . '" /></td>';
+			foreach ($element->options as $option)
+			{
+				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . ($k == 0 ? JText::_('Start') : JText::_('End')) . '</label></td>';
+				$html[] = '<td><input type="text" size="4" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . ($k == 0 ? ($option->label ? $option->label : 1950) : $option->label) . '" /></td>';
 
-			$k++;
+				$k++;
+			}
 		}
 		$html[] = '</tr>';
 		$html[] = '<tr>';

@@ -107,7 +107,7 @@ class ResourcesElementHidden extends ResourcesElement
 
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tbody>';
-		if (is_array($element->options))
+		if (isset($element->options) && is_array($element->options))
 		{
 			foreach ($element->options as $option)
 			{
