@@ -289,6 +289,9 @@ class CoursesControllerCourses extends Hubzero_Controller
 			return;
 		}
 
+		// Push some styles to the template
+		$this->_getStyles($this->_option, $this->_task . '.css');
+
 		$this->view->display();
 	}
 

@@ -109,13 +109,13 @@ switch ($this->action)
 		$criteria->load($memberBadge->get('criteria_id'));
 
 		$title = "Badge Validation";
-		$body  = "<img src=\"".$this->badge->get('img_url')."\" width=\"125\" />\n";
-		$body .= "<div class=\"validation-text\">\n";
+		$body  = "<img class=\"badge-img\" src=\"".$this->badge->get('img_url')."\" width=\"125\" />\n";
+		$body .= "<div class=\"badge-validation\">\n";
 		$body .= "This serves to verify that " . JFactory::getUser($user_id)->get('name') . " \n";
 		$body .= "has completed the requirements of this badge on " . JFactory::getDate($memberBadge->get('earned_on'))->format('M d, Y') . ", \n";
 		$body .= "meeting the requirements of the badge at that time.  The requirements at the time of completion were:\n";
 		$body .= "</div>\n";
-		$body .= "<div>\n";
+		$body .= "<div class=\"badge-criteria\">\n";
 		$body .= $criteria->get('text');
 		$body .= "</div>\n";
 	break;
