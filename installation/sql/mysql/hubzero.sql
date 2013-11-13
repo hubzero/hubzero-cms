@@ -2988,37 +2988,41 @@ CREATE TABLE `#__storefront_skus` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_acl_acos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `model` varchar(100) DEFAULT NULL,
-  `foreign_key` int(11) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `model` varchar(100) NOT NULL DEFAULT '',
+  `foreign_key` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_acl_aros` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `model` varchar(100) DEFAULT NULL,
-  `foreign_key` int(11) DEFAULT '0',
-  `alias` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `model` varchar(100) NOT NULL DEFAULT '',
+  `foreign_key` int(11) NOT NULL DEFAULT '0',
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_model_foreign_key` (`model`,`foreign_key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_acl_aros_acos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `aro_id` int(11) DEFAULT '0',
-  `aco_id` int(11) DEFAULT '0',
-  `action_create` int(3) DEFAULT '0',
-  `action_read` int(3) DEFAULT '0',
-  `action_update` int(3) DEFAULT '0',
-  `action_delete` int(3) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `aro_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `aco_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `action_create` tinyint(3) NOT NULL DEFAULT '0',
+  `action_read` tinyint(3) NOT NULL DEFAULT '0',
+  `action_update` tinyint(3) NOT NULL DEFAULT '0',
+  `action_delete` tinyint(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_aco_id` (`aco_id`),
+  KEY `idx_aro_id` (`aro_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_attachments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket` int(11) NOT NULL DEFAULT '0',
-  `filename` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket` int(11) unsigned NOT NULL DEFAULT '0',
+  `filename` varchar(255) DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_ticket` (`ticket`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_categories` (
@@ -3029,40 +3033,44 @@ CREATE TABLE `#__support_categories` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket` int(11) NOT NULL DEFAULT '0',
-  `comment` text,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket` int(11) unsigned NOT NULL DEFAULT '0',
+  `comment` text NOT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` varchar(50) DEFAULT NULL,
-  `changelog` text,
+  `created_by` varchar(50) NOT NULL DEFAULT '',
+  `changelog` text NOT NULL,
   `access` tinyint(3) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_ticket` (`ticket`),
+  KEY `idx_created_by` (`created_by`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_messages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(250) DEFAULT NULL,
-  `message` text,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(250) NOT NULL DEFAULT '',
+  `message` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_queries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(250) DEFAULT NULL,
-  `conditions` text,
-  `query` text,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `sort` varchar(100) DEFAULT NULL,
-  `sort_dir` varchar(100) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(250) NOT NULL DEFAULT '',
+  `conditions` text NOT NULL,
+  `query` text NOT NULL,
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `sort` varchar(100) NOT NULL DEFAULT '',
+  `sort_dir` varchar(100) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `iscore` int(3) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_iscore` (`iscore`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_resolutions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) DEFAULT NULL,
-  `alias` varchar(100) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL DEFAULT '',
+  `alias` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -3073,32 +3081,33 @@ CREATE TABLE `#__support_sections` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_tickets` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` tinyint(3) DEFAULT '0',
-  `created` datetime DEFAULT '0000-00-00 00:00:00',
-  `closed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00',
-  `login` varchar(200) DEFAULT NULL,
-  `severity` varchar(30) DEFAULT NULL,
-  `owner` varchar(50) DEFAULT NULL,
-  `category` varchar(50) DEFAULT NULL,
-  `summary` varchar(250) DEFAULT NULL,
-  `report` text,
-  `resolved` varchar(50) DEFAULT NULL,
-  `email` varchar(200) DEFAULT NULL,
-  `name` varchar(200) DEFAULT NULL,
-  `os` varchar(50) DEFAULT NULL,
-  `browser` varchar(50) DEFAULT NULL,
-  `ip` varchar(200) DEFAULT NULL,
-  `hostname` varchar(200) DEFAULT NULL,
-  `uas` varchar(250) DEFAULT NULL,
-  `referrer` varchar(250) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `status` tinyint(3) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `closed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `login` varchar(200) NOT NULL DEFAULT '',
+  `severity` varchar(30) NOT NULL DEFAULT '',
+  `owner` varchar(50) NOT NULL DEFAULT '',
+  `category` varchar(50) NOT NULL DEFAULT '',
+  `summary` varchar(250) NOT NULL DEFAULT '',
+  `report` text NOT NULL,
+  `resolved` varchar(50) NOT NULL DEFAULT '',
+  `email` varchar(200) NOT NULL DEFAULT '',
+  `name` varchar(200) NOT NULL DEFAULT '',
+  `os` varchar(50) NOT NULL DEFAULT '',
+  `browser` varchar(50) NOT NULL DEFAULT '',
+  `ip` varchar(200) NOT NULL DEFAULT '',
+  `hostname` varchar(200) NOT NULL DEFAULT '',
+  `uas` varchar(250) NOT NULL DEFAULT '',
+  `referrer` varchar(250) NOT NULL DEFAULT '',
   `cookies` tinyint(3) NOT NULL DEFAULT '0',
   `instances` int(11) NOT NULL DEFAULT '1',
   `section` int(11) NOT NULL DEFAULT '1',
   `type` tinyint(3) NOT NULL DEFAULT '0',
-  `group` varchar(250) DEFAULT NULL,
+  `group` varchar(250) NOT NULL DEFAULT '',
   `open` tinyint(3) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_owner` (`owner`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_watching` (
