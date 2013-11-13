@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * @package     hubzero-cms
  * @author      Shawn Rice <zooley@purdue.edu>
@@ -28,6 +28,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$col1 = (isset($this->usermods[0])) ? $this->usermods[0] : '';
+$col2 = (isset($this->usermods[1])) ? $this->usermods[1] : '';
+$col3 = (isset($this->usermods[2])) ? $this->usermods[2] : '';
+$serials = "{$col1};{$col2};{$col3}";
 ?>
 <h3 class="section-header">
 	<?php echo JText::_('PLG_MEMBERS_DASHBOARD'); ?>
@@ -43,7 +48,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<div id="modules-dock">
 				<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&id='.$this->juser->get('id').'&active=dashboard'); ?>" method="post" name="mysettings" id="cpnlc">
 					<input type="hidden" name="uid" id="uid" value="<?php echo $this->juser->get('id'); ?>" />
-					<input type="hidden" name="serials" id="serials" value="<?php echo $this->escape($this->usermods[0] . ';' . $this->usermods[1] . ';' . $this->usermods[2]); ?>" />
+					<input type="hidden" name="serials" id="serials" value="<?php echo $this->escape($serials); ?>" />
 					<fieldset id="available">
 						<?php
 						// Instantiate a view
