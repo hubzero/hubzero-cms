@@ -194,23 +194,9 @@ class ProjectsInstall extends JObject {
 	 */	
 	public function installPlugin( $name = '', $active = 0, $ordering = 8) 
 	{
-		// [!] zooley - Added condition for J1.5 - J1.6 compatibility
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			// The following is for Joomla 1.5-
-			$query = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, 
-				`ordering`, `published`, `iscore`, `client_id`, `checked_out`, 
-				`checked_out_time`, `params`) SELECT 'Projects - " . ucfirst($name) . "', 
-				'" . strtolower($name) . "', 'projects', 0, $ordering, $active, 0, 0, 0, NULL, '' 
-				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Projects - " . ucfirst($name) . "')";
-		}
-		else
-		{
-			// The following is for Joomla 1.6+
-			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
-					SELECT 'Projects - " . ucfirst($name) . "', 'plugin', '" . strtolower($name) . "', 'projects', 0, $active, 1, 0, null, null, null, null, 0, '0000-00-00 00:00:00', $ordering, 0
-					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = 'Projects - " . ucfirst($name) . "');";
-		}
+		$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
+				SELECT 'Projects - " . ucfirst($name) . "', 'plugin', '" . strtolower($name) . "', 'projects', 0, $active, 1, 0, null, null, null, null, 0, '0000-00-00 00:00:00', $ordering, 0
+				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = 'Projects - " . ucfirst($name) . "');";
 
 		$this->runQuery($query);
 	}
@@ -238,50 +224,25 @@ class ProjectsInstall extends JObject {
 	{
 		$queries = array();
 		
-		// [!] zooley - The following tables are Joomla 1.5-
-		// New queries needed for Joomla 1.6+ #__extensions table
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$queries[] = "INSERT INTO `#__components` (`id`,`name`,`link`,`menuid`,`parent`,`admin_menu_link`,`admin_menu_alt`,`option`,`ordering`,`admin_menu_img`,`iscore`,`params`,`enabled`) VALUES ('','Projects','option=com_projects','0','0','option=com_projects','Projects','com_projects','0','../components/com_hub/images/hubzero-component.png','0','component_on=0\ngrantinfo=1\nconfirm_step=1\nedit_settings=1\nrestricted_data=2\napprove_restricted=0\nprivacylink=/legal/privacy\nHIPAAlink=/legal/privacy\nFERPAlink=/legal/privacy\ncreatorgroup=\nadmingroup=projectsadmin\nsdata_group=\nginfo_group=\nmin_name_length=5\nmax_name_length=25\nreserved_names=clone, temp, test, view, edit, setup, start, deleteimg, intro, features, verify, register, autocomplete, showcount, edit, suspend, reinstate, review, analytics, reports, about, feedback, share, authorize\nwebpath=/srv/projects\ngitpath=/usr/bin/git\noffroot=1\nmaxUpload=10000000\ndefaultQuota=.5\npremiumQuota=1\napproachingQuota=90\nimagepath=/site/projects\ndefaultpic=/components/com_projects/assets/img/project.png\nimg_maxAllowed=40000000\nimg_file_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif\nmessaging=1\nprivacy=1\nlimit=25\nsidebox_limit=3\ngroup_prefix=pr-\nuse_alias=1\ndocumentation=/kb/projects\npubQuota=1\npremiumPubQuota=20\n\n','1')";
+		// The following is for Joomla 1.6+
+		$params = '{"component_on":"0","grantinfo":"0","confirm_step":"0","edit_settings":"1","restricted_data":"0","restricted_upfront":"0","approve_restricted":"0","privacylink":"\/legal\/privacy","HIPAAlink":"\/legal\/privacy","FERPAlink":"\/legal\/privacy","creatorgroup":"","admingroup":"projectsadmin","sdata_group":"hipaa_reviewers","ginfo_group":"sps_reviewers","min_name_length":"6","max_name_length":"25","reserved_names":"clone, temp, test","webpath":"\/srv\/projects","offroot":"1","gitpath":"\/usr\/bin\/git","gitclone":"\/site\/projects\/clone\/.git","maxUpload":"104857600","defaultQuota":"1","premiumQuota":"1","approachingQuota":"90","pubQuota":"1","premiumPubQuota":"1","imagepath":"\/site\/projects","defaultpic":"\/components\/com_projects\/assets\/img\/project.png","img_maxAllowed":"5242880","img_file_ext":"jpg,jpeg,jpe,bmp,tif,tiff,png,gif","logging":"0","messaging":"1","privacy":"1","limit":"25","sidebox_limit":"3","group_prefix":"pr-","use_alias":"1","documentation":"\/projects\/features","dbcheck":"1"}';
 		
-			// Make entries for Projects plugins
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Notes','notes','projects','0','8','1','0','0','0','0000-00-00 00:00:00','')";
+		$this->installExtension('com_projects', 'component', 'com_projects', '', 0, $params, 1, 1);
 		
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Todo','todo','projects','0','7','1','0','0','0','0000-00-00 00:00:00','')";
+		$this->installExtension('plg_projects_blog', 'plugin', 'blog', 'projects', 1, '', 1, 0);
+		$this->installExtension('plg_projects_team', 'plugin', 'team', 'projects', 2, '', 1, 0);
 		
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Blog','blog','projects','0','1','1','0','0','0','0000-00-00 00:00:00','')";
+		$params = '{"maxUpload":"104857600","maxDownload":"1048576","reservedNames":"google , dropbox, shared, temp","connectedProjects":"","enable_google":"0","google_clientId":"","google_clientSecret":"","google_appKey":"","google_folder":"Google","sync_lock":"0","auto_sync":"1","latex":"1","texpath":"\/usr\/bin\/","gspath":"\/usr\/bin\/"}';
 		
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Files','files','projects','0','3','1','0','0','0','0000-00-00 00:00:00','maxUpload=104857600\nmaxDownload=1048576\n\n')";
+		$this->installExtension('plg_projects_files','plugin', 'files', 'projects', 3, $params, 1, 0);
 		
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Projects - Team','team','projects','0','2','1','0','0','0','0000-00-00 00:00:00','')";
+		$this->installExtension('plg_projects_todo','plugin', 'todo', 'projects', 7, '', 1, 0);
+		$this->installExtension('plg_projects_notes','plugin', 'notes', 'projects', 8, '', 1, 0);
 		
-			// Make entries for Groups/Members plugins, My Projects module
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Members - Projects','projects','members','0','17','0','0','0','0','0000-00-00 00:00:00','')";
-			$queries[] = "INSERT INTO `#__plugins` (`id`,`name`,`element`,`folder`,`access`,`ordering`,`published`,`iscore`,`client_id`,`checked_out`,`checked_out_time`,`params`) VALUES ('','Groups - Projects','projects','groups','0','9','0','0','0','0','0000-00-00 00:00:00','')";
-			$queries[] = "INSERT INTO `#__modules` (`id`,`title`,`content`,`ordering`,`position`,`checked_out`,`checked_out_time`,`published`,`module`,`numnews`,`access`,`showtitle`,`params`,`iscore`,`client_id`,`control`) VALUES ('','My Projects','','0','myhub','0','0000-00-00 00:00:00','0','mod_myprojects','0','0','0','moduleclass=md-projects\nlimit=5\n\n','0','0','')";
-		}
-		else
-		{
-			// The following is for Joomla 1.6+
-			$params = '{"component_on":"0","grantinfo":"0","confirm_step":"0","edit_settings":"1","restricted_data":"0","restricted_upfront":"0","approve_restricted":"0","privacylink":"\/legal\/privacy","HIPAAlink":"\/legal\/privacy","FERPAlink":"\/legal\/privacy","creatorgroup":"","admingroup":"projectsadmin","sdata_group":"hipaa_reviewers","ginfo_group":"sps_reviewers","min_name_length":"6","max_name_length":"25","reserved_names":"clone, temp, test","webpath":"\/srv\/projects","offroot":"1","gitpath":"\/usr\/bin\/git","gitclone":"\/site\/projects\/clone\/.git","maxUpload":"104857600","defaultQuota":"1","premiumQuota":"1","approachingQuota":"90","pubQuota":"1","premiumPubQuota":"1","imagepath":"\/site\/projects","defaultpic":"\/components\/com_projects\/assets\/img\/project.png","img_maxAllowed":"5242880","img_file_ext":"jpg,jpeg,jpe,bmp,tif,tiff,png,gif","logging":"0","messaging":"1","privacy":"1","limit":"25","sidebox_limit":"3","group_prefix":"pr-","use_alias":"1","documentation":"\/projects\/features","dbcheck":"1"}';
-			
-			$this->installExtension('com_projects', 'component', 'com_projects', '', 0, $params, 1, 1);
-			
-			$this->installExtension('plg_projects_blog', 'plugin', 'blog', 'projects', 1, '', 1, 0);
-			$this->installExtension('plg_projects_team', 'plugin', 'team', 'projects', 2, '', 1, 0);
-			
-			$params = '{"maxUpload":"104857600","maxDownload":"1048576","reservedNames":"google , dropbox, shared, temp","connectedProjects":"","enable_google":"0","google_clientId":"","google_clientSecret":"","google_appKey":"","google_folder":"Google","sync_lock":"0","auto_sync":"1","latex":"1","texpath":"\/usr\/bin\/","gspath":"\/usr\/bin\/"}';
-			
-			$this->installExtension('plg_projects_files','plugin', 'files', 'projects', 3, $params, 1, 0);
-			
-			$this->installExtension('plg_projects_todo','plugin', 'todo', 'projects', 7, '', 1, 0);
-			$this->installExtension('plg_projects_notes','plugin', 'notes', 'projects', 8, '', 1, 0);
-			
-			// Make entries for Groups/Members plugins, My Projects module
-			$this->installExtension('plg_members_projects','plugin', 'projects', 'members', 17, '', 1, 0);
-			$this->installExtension('plg_groups_projects','plugin', 'projects', 'groups', 17, '', 1, 0);
-			$this->installExtension('mod_myprojects','module', 'mod_myprojects', '', 0, '', 1, 0);
-		}
+		// Make entries for Groups/Members plugins, My Projects module
+		$this->installExtension('plg_members_projects','plugin', 'projects', 'members', 17, '', 1, 0);
+		$this->installExtension('plg_groups_projects','plugin', 'projects', 'groups', 17, '', 1, 0);
+		$this->installExtension('mod_myprojects','module', 'mod_myprojects', '', 0, '', 1, 0);
 
 		// Make entries to enable HUB messaging
 		$queries[] = "INSERT INTO `#__xmessage_component` (`id`,`component`,`action`,`title`) VALUES ('','com_projects','projects_member_added','You were added or invited to a project')";
@@ -309,7 +270,6 @@ class ProjectsInstall extends JObject {
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1";
 
 		// Create #__project_comments
-
 		$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_comments` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `itemid` int(11) NOT NULL DEFAULT '0',

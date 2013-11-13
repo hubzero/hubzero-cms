@@ -443,69 +443,32 @@ class PubInstall extends JObject {
 		// Enable component
 		if ($iniSetup == 1)
 		{			
-			// Added condition for J1.5 - J1.6 compatibility
-			if (version_compare(JVERSION, '1.6', 'lt'))
+			// The following is for Joomla 1.6+
+			$params = '{"enabled":"1","autoapprove":"1","autoapproved_users":"","email":"0","default_category":"dataset","defaultpic":"\/components\/com_publications\/assets\/img\/resource_thumb.gif","toolpic":"\/components\/com_publications\/assets\/img\/tool_thumb.gif","video_thumb":"\/components\/com_publications\/images\/video_thumb.gif","gallery_thumb":"\/components\/com_publications\/images\/gallery_thumb.gif","webpath":"\/site\/publications","aboutdoi":"","doi_shoulder":"","doi_prefix":"","doi_service":"","doi_userpw":"","doi_xmlschema":"","doi_publisher":"","doi_resolve":"http:\/\/dx.doi.org\/","doi_verify":"http:\/\/n2t.net\/ezid\/id\/","supportedtag":"","supportedlink":"","google_id":"","show_authors":"1","show_ranking":"1","show_rating":"1","show_date":"3","show_citation":"1","panels":"content, description, authors, audience, gallery, tags, access, license, notes","suggest_licence":"0","show_tags":"1","show_metadata":"1","show_notes":"1","show_license":"1","show_access":"0","show_gallery":"1","show_audience":"0","audiencelink":"","documentation":"\/kb\/publications","deposit_terms":"\/legal\/termsofdeposit","dbcheck":"0","repository":"0","aip_path":"\/srv\/AIP"}';
+			$this->installExtension('com_publications', 'component', 'com_publications', '', 0, $params, 1, 1);
+			$this->installExtension('plg_publications_related', 'plugin', 'related', 'publications', 1, '', 1, 0);
+			$this->installExtension('plg_publications_recommendations', 'plugin', 'recommendations', 'publications', 2, '', 1, 0);
+			$this->installExtension('plg_publications_supportingdocs', 'plugin', 'supportingdocs', 'publications', 3, '', 1, 0);
+			$this->installExtension('plg_publications_versions', 'plugin', 'versions', 'publications', 4, '', 1, 0);
+			$this->installExtension('plg_publications_reviews', 'plugin', 'reviews', 'publications', 5, '', 1, 0);
+			$this->installExtension('plg_publications_questions', 'plugin', 'questions', 'questions', 6, '', 1, 0);
+			$this->installExtension('plg_publications_citations', 'plugin', 'citations', 'publications', 7, '', 1, 0);
+			$this->installExtension('plg_publications_usage', 'plugin', 'usage', 'publications', 8, '', 1, 0);
+			$this->installExtension('plg_publications_share', 'plugin', 'share', 'publications', 9, '', 1, 0);
+			
+			// Get Publication component ID
+			$query = "SELECT extension_id FROM `#__extensions` WHERE name='com_publications' ORDER BY ordering ASC LIMIT 1";
+			$this->_db->setQuery( $query );
+			$cid = $this->_db->loadResult();
+			
+			// Add menu item
+			if ($cid)
 			{
-				$queries[] = "INSERT INTO `#__components` (`name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`)
-				SELECT 'Publications', 'option=com_publications', 0, 0, 'option=com_publications', 'Publications', 'com_publications', 0, 'js/ThemeOffice/component.png', 0, 'enabled=1\nautoapprove=0\nautoapproved_users=\nemail=0\ndefault_category=dataset\ndefaultpic=/components/com_publications/assets/img/resource_thumb.gif\nvideo_thumb=/components/com_publications/assets/img/video_thumb.gif\ngallery_thumb=/components/com_publications/assets/img/gallery_thumb.gif\nwebpath=/site/publications/\naboutdoi=\ndoi_shoulder=\ndoi_prefix=\ndoi_service=\ndoi_publisher=hub\ndoi_resolve=http://dx.doi.org/\ndoi_verify=http://n2t.net/ezid/id/\nissue_arch=0\nark_shoulder=\nark_prefix=\nsupportedtag=\nsupportedlink=\ngoogle_id=\nshow_authors=1\nshow_ranking=0\nshow_rating=0\nshow_date=3\nshow_citation=1\npanels=content, description, authors, audience, gallery, tags, access, license, notes\nsuggest_licence=1\nshow_tags=1\nshow_metadata=0\nshow_notes=1\nshow_license=1\nshow_access=0\nshow_gallery=1\nshow_audience=0\naudiencelink=audiencelevels\ndocumentation=\ndeposit_terms=\n\n', 1
-				FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__components` WHERE name = 'Publications')";
-
-				// Enable plugins					
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Related', 'related', 'publications', 0, 0, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Related')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Recommendations', 'recommendations', 'publications', 0, 1, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Recommendations')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications -Supporting Documents', 'supportingdocs', 'publications', 0, 2, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications -Supporting Documents')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Versions', 'versions', 'publications', 0, 3, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Versions')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Reviews', 'reviews', 'publications', 0, 4, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Reviews')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Questions', 'questions', 'publications', 0, 5, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Questions')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Citations', 'citations', 'publications', 0, 7, 1, 0, 0, 0, NULL, '' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Citations')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Usage', 'usage', 'publications', 0, 8, 1, 0, 0, 0, NULL, 'period=14\n' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Usage')";
-
-				$queries[] = "INSERT INTO `#__plugins`(`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`) SELECT 'Publications - Share', 'share', 'publications', 0, 9, 1, 0, 0, 0, NULL, 'icons_limit=3\nshare_facebook=1\nshare_twitter=1\nshare_google=1\nshare_digg=1\nshare_technorati=1\nshare_delicious=0\nshare_reddit=1\nshare_email=0\nshare_print=0\n\n' FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE name = 'Publications - Share')";
-
-				// Run queries
-				foreach ($queries as $query)
-				{
-					$this->_db->setQuery( $query );
-					$this->_db->query();
-				}
-			}
-			else
-			{
-				// The following is for Joomla 1.6+
-				$params = '{"enabled":"1","autoapprove":"1","autoapproved_users":"","email":"0","default_category":"dataset","defaultpic":"\/components\/com_publications\/assets\/img\/resource_thumb.gif","toolpic":"\/components\/com_publications\/assets\/img\/tool_thumb.gif","video_thumb":"\/components\/com_publications\/images\/video_thumb.gif","gallery_thumb":"\/components\/com_publications\/images\/gallery_thumb.gif","webpath":"\/site\/publications","aboutdoi":"","doi_shoulder":"","doi_prefix":"","doi_service":"","doi_userpw":"","doi_xmlschema":"","doi_publisher":"","doi_resolve":"http:\/\/dx.doi.org\/","doi_verify":"http:\/\/n2t.net\/ezid\/id\/","supportedtag":"","supportedlink":"","google_id":"","show_authors":"1","show_ranking":"1","show_rating":"1","show_date":"3","show_citation":"1","panels":"content, description, authors, audience, gallery, tags, access, license, notes","suggest_licence":"0","show_tags":"1","show_metadata":"1","show_notes":"1","show_license":"1","show_access":"0","show_gallery":"1","show_audience":"0","audiencelink":"","documentation":"\/kb\/publications","deposit_terms":"\/legal\/termsofdeposit","dbcheck":"0","repository":"0","aip_path":"\/srv\/AIP"}';
-				$this->installExtension('com_publications', 'component', 'com_publications', '', 0, $params, 1, 1);
-				$this->installExtension('plg_publications_related', 'plugin', 'related', 'publications', 1, '', 1, 0);
-				$this->installExtension('plg_publications_recommendations', 'plugin', 'recommendations', 'publications', 2, '', 1, 0);
-				$this->installExtension('plg_publications_supportingdocs', 'plugin', 'supportingdocs', 'publications', 3, '', 1, 0);
-				$this->installExtension('plg_publications_versions', 'plugin', 'versions', 'publications', 4, '', 1, 0);
-				$this->installExtension('plg_publications_reviews', 'plugin', 'reviews', 'publications', 5, '', 1, 0);
-				$this->installExtension('plg_publications_questions', 'plugin', 'questions', 'questions', 6, '', 1, 0);
-				$this->installExtension('plg_publications_citations', 'plugin', 'citations', 'publications', 7, '', 1, 0);
-				$this->installExtension('plg_publications_usage', 'plugin', 'usage', 'publications', 8, '', 1, 0);
-				$this->installExtension('plg_publications_share', 'plugin', 'share', 'publications', 9, '', 1, 0);
-				
-				// Get Publication component ID
-				$query = "SELECT extension_id FROM `#__extensions` WHERE name='com_publications' ORDER BY ordering ASC LIMIT 1";
+				$query = "INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)
+				SELECT 0,'main','Publications','publications','','publications','index.php?option=com_publications','component',1,1,1,$cid,0,0,'0000-00-00 00:00:00',0,0,'',0,'',47,48,0,'*',1 FROM DUAL WHERE NOT EXISTS (SELECT `component_id` FROM `#__extensions` WHERE component_id = '$cid')";
+			 
 				$this->_db->setQuery( $query );
-				$cid = $this->_db->loadResult();
-				
-				// Add menu item
-				if ($cid)
-				{
-					$query = "INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)
-					SELECT 0,'main','Publications','publications','','publications','index.php?option=com_publications','component',1,1,1,$cid,0,0,'0000-00-00 00:00:00',0,0,'',0,'',47,48,0,'*',1 FROM DUAL WHERE NOT EXISTS (SELECT `component_id` FROM `#__extensions` WHERE component_id = '$cid')";
-				 
-					$this->_db->setQuery( $query );
-					$this->_db->query();
-				}
-				
+				$this->_db->query();
 			}
 		}		
 	}
