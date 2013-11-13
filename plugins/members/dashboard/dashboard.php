@@ -1101,7 +1101,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 	{
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=com_members&controller=plugins' . $this->_controller . '&task=manage&plugin=dashboard'
+			'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard'
 		);
 		return;
 	}
