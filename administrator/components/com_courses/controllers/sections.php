@@ -429,7 +429,7 @@ class CoursesControllerSections extends Hubzero_Controller
 
 		// Process badge info
 		$badge = JRequest::getVar('badge', array(), 'post', 'array', JREQUEST_ALLOWHTML);
-		if ($badge['published'])
+		if (isset($badge['published']) && $badge['published'])
 		{
 			// Get courses config
 			$cconfig =& JComponentHelper::getParams('com_courses');
@@ -444,7 +444,7 @@ class CoursesControllerSections extends Hubzero_Controller
 			$badge_image = JRequest::getVar('badge_image', false, 'files', 'array');
 
 			// If so, proceed with saving the image
-			if ($badge_image['name'])
+			if (isset($badge_image['name']) && $badge_image['name'])
 			{
 				// Get the file extension
 				$pathinfo = pathinfo($badge_image['name']);
