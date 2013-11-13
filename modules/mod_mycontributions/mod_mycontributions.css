@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        modules/mod_mycontributions/mod_mycontributions.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -13,24 +13,13 @@
 
 */
 
-/* Contribution status */
-
-	div.draggable .compactlist li.draft {
-		background: url("/modules/mod_mycontributions/images/draft.gif") 0.7em 1em  no-repeat;
-	}
-	
-	div.draggable .compactlist li.published {
-		background: url("/modules/mod_mycontributions/images/check.gif") 0.7em 1em  no-repeat;
-	}
-	div.draggable .compactlist li.pending {
-		background: url("/modules/mod_mycontributions/images/pending.gif") 0.7em 1em  no-repeat;
-	}
 	div.draggable .compactlist li span.under {
 		font-size: x-small;
 		display:block;
 		margin:0;
 	}
-	div.draggable .compactlist li span.under span, div.draggable .compactlist li span.extra span {
+	div.draggable .compactlist li span.under span, 
+	div.draggable .compactlist li span.extra span {
 		font-size: x-small;
 		display:block;
 		margin:0;
@@ -39,15 +28,48 @@
 		top: 0;
 		right: 0;
 	}
-	div.draggable .expandedlist li.draft {
-		background: url("/modules/mod_mycontributions/images/draft.gif") 0.7em 1em  no-repeat;
-	}
-	div.draggable .expandedlist li.published {
-		background: url("/modules/mod_mycontributions/images/check.gif") 0.7em 1em  no-repeat;
-	}
+
+	div.draggable .compactlist li.draft,
+	div.draggable .compactlist li.published,
+	div.draggable .compactlist li.pending,
+	div.draggable .expandedlist li.draft,
+	div.draggable .expandedlist li.published,
 	div.draggable .expandedlist li.pending {
-		background: url("/modules/mod_mycontributions/images/pending.gif") 0.7em 1em  no-repeat;
+		position: relative;
+		padding-right: 0.6em;
+		word-wrap: break-word;
 	}
+	div.draggable .compactlist li.draft:before,
+	div.draggable .compactlist li.published:before,
+	div.draggable .compactlist li.pending:before,
+	div.draggable .expandedlist li.draft:before,
+	div.draggable .expandedlist li.published:before,
+	div.draggable .expandedlist li.pending:before {
+		content: "";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.2em;
+		line-height: 1;
+		color: #ccc;
+	}
+	div.draggable .compactlist li.draft:before,
+	div.draggable .expandedlist li.draft:before {
+		content: "\26aa";
+		color: orange;
+	}
+	div.draggable .compactlist li.published:before,
+	div.draggable .expandedlist li.published:before {
+		content: "\f058";
+		color: green;
+	}
+	div.draggable .compactlist li.pending:before,
+	div.draggable .expandedlist li.pending:before {
+		content: "\22ef";
+		color: orange;
+	}
+
 	div.draggable .compactlist li span.extra {
 		float: right;
 		width: 140px;
@@ -60,7 +82,6 @@
 	}
 	div.draggable .compactlist li span.item_new {
 		color: #FF0000;
-		background: url("/modules/mod_mycontributions/images/attention.gif") center right no-repeat;
 		text-transform: uppercase;
 		font-size: 90%;
 		display: block;
@@ -68,16 +89,21 @@
 		position: absolute;
 		padding: 0;
 		margin: 0;
-		padding-right: 8px;
 	}
 	div.draggable .compactlist li span.status_installed a,
 	div.draggable .compactlist li span.status_created a  {
 		color: #FF0000;
-		background: url("/modules/mod_mycontributions/images/attention.gif") right no-repeat;
-		padding-right: 8px;
-		padding-top: 0.1em;
 		font-weight: bold;
 		border: none;
+	}
+	div.draggable .compactlist li span.item_new:after,
+	div.draggable .compactlist li span.status_installed a:after,
+	div.draggable .compactlist li span.status_created a:after {
+		content: "!";
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-family: "Fontcons";
+		font-size: 1.2em;
+		margin-left: 0.2em;
 	}
 	div.draggable .compactlist li span.status_published a {
 		color: #009900;
@@ -87,7 +113,7 @@
 	div.draggable .compactlist li span.status_registered a,
 	div.draggable .compactlist li span.status_approved a, 
 	div.draggable .compactlist li span.status_uploaded a, 
-	div.draggable .compactlist li span.status_updated a, 	
+	div.draggable .compactlist li span.status_updated a, 
 	div.draggable .compactlist li span.status_abandoned a,
 	div.draggable .compactlist li span.status_retired a {
 		color: #666666;
@@ -101,29 +127,33 @@
 		margin: 0 0 0 0;
 		border: none;
 		float: left;
-		width: 30.5%;		
+		width: 30.5%;
 		padding: 0 2% 0 0;
 		text-align: left;
 		display: block;
 	}
-	div.draggable .compactlist li span.item_q a:hover, 
-	div.draggable .compactlist li span.item_w a:hover, 
-	div.draggable .compactlist li span.item_s a:hover {
-		border: none;
-		background-position: 0 -19px;
+
+	div.draggable .compactlist li span.item_q a:before {
+		content: "\f0e5";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
 	}
-	div.draggable .compactlist li span.item_q a {
-		background: url("/modules/mod_mycontributions/images/qanda.gif") 0 0 no-repeat;
-		padding-left: 17px;
-	}
-	div.draggable .compactlist li span.item_w a {
-		background: url("/modules/mod_mycontributions/images/wishlist.gif") 0 0 no-repeat;
-		padding-left: 17px;
+	div.draggable .compactlist li span.item_w a:before {
+		content: "\f078";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
 	}
 	div.draggable .compactlist li span.item_s a {
-		background: url("/modules/mod_mycontributions/images/warning.gif") 0 0 no-repeat;
-		padding-left: 17px;
+		content: "\26a0";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
 	}
+	div.draggable .compactlist li span.item_q a:hover:before, 
+	div.draggable .compactlist li span.item_w a:hover:before, 
+	div.draggable .compactlist li span.item_s a:hover:before {
+		color: orange;
+	}
+
 	div.draggable .compactlist li span.hasitems a {
 	 	background-position: -30px 0;
 		color: #FF0000;

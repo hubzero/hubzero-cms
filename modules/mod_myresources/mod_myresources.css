@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        modules/mod_myresources/mod_myresources.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -13,13 +13,34 @@
 
 */
 
-/* Contribution status */
-	div.draggable .expandedlist li.draft {
-		background: url("/modules/mod_myresources/images/draft.gif") 0.7em 1em  no-repeat;
-	}
-	div.draggable .expandedlist li.published {
-		background: url("/modules/mod_myresources/images/check.gif") 0.7em 1em  no-repeat;
-	}
+	div.draggable .expandedlist li.draft,
+	div.draggable .expandedlist li.published,
 	div.draggable .expandedlist li.pending {
-		background: url("/modules/mod_myresources/images/pending.gif") 0.7em 1em  no-repeat;
+		position: relative;
+		padding-right: 0.6em;
+		word-wrap: break-word;
+	}
+	div.draggable .expandedlist li.draft:before,
+	div.draggable .expandedlist li.published:before,
+	div.draggable .expandedlist li.pending:before {
+		content: "";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.2em;
+		line-height: 1;
+		color: #ccc;
+	}
+	div.draggable .expandedlist li.draft:before {
+		content: "\26aa";
+		color: orange;
+	}
+	div.draggable .expandedlist li.published:before {
+		content: "\f058";
+		color: green;
+	}
+	div.draggable .expandedlist li.pending:before {
+		content: "\22ef";
+		color: orange;
 	}

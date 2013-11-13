@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        modules/mod_mycourses/mod_mycourses.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -12,18 +12,24 @@
 	-- -- -- -- -- -- --
 
 */
+	div.draggable .compactlist li span {
+		margin-left: 0;
+	}
 	div.draggable .compactlist li.course {
-		/*background-position: 0.7em 0.7em;*/
 		position: relative;
-		padding-right: 5em;
+		word-wrap: break-word;
+		padding-right: 0.6em;
 	}
 	div.draggable .compactlist li.course a {
+		margin-right: 0;
 	}
 	div.draggable .compactlist li.course small {
 		display: block;
 		color: #aaa;
 	}
 	div.draggable .compactlist li.course span span.status {
+		top: auto;
+		bottom: 0.6em;
 	}
 	div.draggable .compactlist li.course span span.student {
 		color: #66AA00;
@@ -32,7 +38,7 @@
 		color: #ff1177;
 	}
 	div.draggable .compactlist li.course span span.instructor {
-		color: #AA3300;
+		color: green;
 	}
 	div.draggable .compactlist li.course span span.ta {
 		color: #aaaaaa;
@@ -64,19 +70,19 @@
 	div.draggable .compactlist li.course .actions a.action-cancel:hover {
 		background-color: #c30;
 	}
-	/*div.draggable .compactlist li.course { 
-		background: url("/modules/mod_mycourses/images/course.png") 0.7em 1em no-repeat; 
-	}*/
 	div.draggable .compactlist li.course:after { 
 		content: "\f09c";
-		font-size: 16px;
+		font-size: 1.4em;
 		line-height: 1;
 		display: block;
-		width: 16px;
-		height: 16px;
+		width: 1em;
+		height: 1em;
 		position: absolute;
-		top: 0.7em;
-		left: 0.7em;
+		top: 0.6em;
+		left: 0.6em;
 		font-family: "Fontcons";
+		color: #ccc;
 	}
-	
+	div.draggable .compactlist li.course:hover:after {
+		color: #999;
+	}

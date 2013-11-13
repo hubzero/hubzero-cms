@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        modules/mod_myquestions/mod_myquestions.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -13,17 +13,39 @@
 
 */
 	div.draggable .compactlist li.question {
-		background: url("/modules/mod_myquestions/images/q.gif") 0.7em 0.7em no-repeat;
+		position: relative;
 		padding-right: 3em !important;
 	}
-	.responses_yes {
-		background: url("/modules/mod_myquestions/images/a_letter.gif") 0 right no-repeat;
-		padding-right: 20px;
+	div.draggable .compactlist li.question:before {
+		content: "\f0e5";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.2em;
+		line-height: 1;
+		color: #ccc;
 	}
-	.responses_no {
-		background: url("/modules/mod_myquestions/images/a_letter.gif") 0 right no-repeat;
-		padding-right: 20px;
+	div.draggable .compactlist li.question:hover:before {
+		color: #999;
 	}
+	div.draggable .compactlist li span span {
+		right: 0.6em;
+		padding-right: 0;
+	}
+	div.draggable .compactlist li span.responses_yes:before {
+		content: "\f0e6";
+		font-family: "Fontcons";
+		color: #cea638;
+		margin-right: 0.4em;
+	}
+	div.draggable .compactlist li span.responses_no:before {
+		content: "\f0e6";
+		font-family: "Fontcons";
+		color: #ccc;
+		margin-right: 0.4em;
+	}
+
 	.pts {
 		font-size: xx-small;
 	}
@@ -83,15 +105,4 @@
 		background: none;
 		font-size: xx-small;
 		padding: 0;
-	}
-	
-/* IE 6  hacks */
-	* html .category-header small {
-		float: right;
-		right: 0.5em;
-		margin-right: 1em;
-		font-size: 1em;
-	}
-	* html ul.sortable li .questions li a {
-		margin-top: -1.5em;
 	}

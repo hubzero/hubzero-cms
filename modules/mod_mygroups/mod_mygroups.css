@@ -72,7 +72,20 @@
 		background-color: #c30;
 	}
 	div.draggable .compactlist .group { 
-		background: url("/modules/mod_mygroups/images/group.png") 0.7em 1em no-repeat; 
+		position: relative;
+	}
+	div.draggable .compactlist .group:before {
+		content: "\f042";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.2em;
+		line-height: 1;
+		color: #ccc;
+	}
+	div.draggable .compactlist .group:hover:before {
+		color: #999;
 	}
 	ul.mygroups {
 		max-height:350px;
