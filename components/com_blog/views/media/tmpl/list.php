@@ -106,7 +106,7 @@ jimport('joomla.filesystem.file');
 				<?php foreach ($this->docs as $name => $doc) { ?>
 					<tr>
 						<td width="100%">
-							<span class="icon-file file <?php echo JFile::getExt($ext); ?>">
+							<span class="icon-file file <?php echo JFile::getExt($doc); ?>">
 								<?php echo $this->escape($doc); ?>
 							</span>
 						</td>

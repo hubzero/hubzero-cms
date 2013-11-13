@@ -916,6 +916,11 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			}
 			$total = count($rows);
 
+			if (!isset($children[$post->get('parent')]))
+			{
+				$children[$post->get('parent')] = array();
+			}
+
 			$view->comments = $this->treeRecurse($children[$post->get('parent')], $children);
 		}
 		//print_r($this->database); die();
