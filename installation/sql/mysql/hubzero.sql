@@ -3111,44 +3111,49 @@ CREATE TABLE `#__support_watching` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tag` varchar(100) DEFAULT NULL,
-  `raw_tag` varchar(100) DEFAULT NULL,
-  `description` text,
-  `admin` tinyint(3) NOT NULL DEFAULT '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tag` varchar(100) NOT NULL DEFAULT '',
+  `raw_tag` varchar(100) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `admin` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY `idx_tag` (`tag`),
   FULLTEXT KEY `ftidx_description` (`description`),
   FULLTEXT KEY `ftidx_raw_tag_description` (`raw_tag`,`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_group` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `groupid` int(11) DEFAULT '0',
-  `tagid` int(11) DEFAULT '0',
-  `priority` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `groupid` int(11) unsigned NOT NULL DEFAULT '0',
+  `tagid` int(11) unsigned NOT NULL DEFAULT '0',
+  `priority` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_tagid` (`tagid`),
+  KEY `idx_groupid` (`groupid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tag_id` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
   `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `user_id` int(11) DEFAULT '0',
-  `action` varchar(50) DEFAULT NULL,
-  `comments` text,
-  `actorid` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `action` varchar(50) NOT NULL DEFAULT '',
+  `comments` text NOT NULL,
+  `actorid` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_tag_id` (`tag_id`),
+  KEY `idx_user_id` (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_object` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `objectid` int(11) DEFAULT NULL,
-  `tagid` int(11) DEFAULT NULL,
-  `strength` tinyint(3) DEFAULT '0',
-  `taggerid` int(11) DEFAULT '0',
-  `taggedon` datetime DEFAULT '0000-00-00 00:00:00',
-  `tbl` varchar(255) DEFAULT NULL,
-  `label` varchar(30) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `objectid` int(11) unsigned NOT NULL DEFAULT '0',
+  `tagid` int(11) unsigned NOT NULL DEFAULT '0',
+  `strength` tinyint(3) NOT NULL DEFAULT '0',
+  `taggerid` int(11) unsigned NOT NULL DEFAULT '0',
+  `taggedon` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `tbl` varchar(255) NOT NULL DEFAULT '',
+  `label` varchar(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_objectid_tbl` (`objectid`,`tbl`),
   KEY `idx_label_tagid` (`label`,`tagid`),
@@ -3158,13 +3163,14 @@ CREATE TABLE `#__tags_object` (
 
 CREATE TABLE `#__tags_substitute` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `tag_id` int(11) NOT NULL DEFAULT '0',
-  `tag` varchar(100) DEFAULT NULL,
-  `raw_tag` varchar(100) DEFAULT NULL,
-  `created_by` int(11) NOT NULL DEFAULT '0',
+  `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `tag` varchar(100) NOT NULL DEFAULT '',
+  `raw_tag` varchar(100) NOT NULL DEFAULT '',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  KEY `idx_tag_id` (`tag_id`)
+  KEY `idx_tag_id` (`tag_id`),
+  KEY `idx_tag` (`tag`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool` (
