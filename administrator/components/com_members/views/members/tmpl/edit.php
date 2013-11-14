@@ -75,17 +75,24 @@ function submitbutton(pressbutton)
 	
 	submitform(pressbutton);
 }
+document.switcher = null;
+window.addEvent('domready', function(){
+	toggler = document.id('submenu');
+	element = document.id('member-document');
+	if (element) {
+		document.switcher = new JSwitcher(toggler, element, {cookieName: toggler.getProperty('class')});
+	}
+});
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-	
 
-	<div class="col width-60 fltlft">
-		<nav role="navigation" class="sub-navigation">
+<div class="col width-60 fltlft">
+	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
 				<div class="submenu-pad">
-					<ul id="submenu" class="configuration">
+					<ul id="submenu" class="member">
 						<li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
 						<li><a href="#" onclick="return false;" id="demographics">Demographics</a></li>
 						<li><a href="#" onclick="return false;" id="password">Password</a></li>
@@ -98,7 +105,7 @@ function submitbutton(pressbutton)
 			<div class="clr"></div>
 		</div>
 	</nav><!-- / .sub-navigation -->
-		<div id="config-document">
+	<div id="member-document">
 		<div id="page-profile" class="tab">
 
 		<fieldset class="adminform">

@@ -73,6 +73,14 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	}
 }
+document.switcher = null;
+window.addEvent('domready', function(){
+	toggler = document.id('submenu');
+	element = document.id('section-document');
+	if (element) {
+		document.switcher = new JSwitcher(toggler, element, {cookieName: toggler.getProperty('class')});
+	}
+});
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -82,7 +90,7 @@ function submitbutton(pressbutton)
 		<div id="submenu-box">
 			<div class="submenu-box">
 				<div class="submenu-pad">
-					<ul id="submenu" class="configuration">
+					<ul id="submenu" class="coursesection">
 						<li><a href="#" onclick="return false;" id="details" class="active">Details</a></li>
 						<li><a href="#" onclick="return false;" id="managers">Managers</a></li>
 						<li><a href="#" onclick="return false;" id="datetime">Dates/Times</a></li>
@@ -94,7 +102,7 @@ function submitbutton(pressbutton)
 		</div>
 	</nav><!-- / .sub-navigation -->
 
-	<div id="config-document">
+	<div id="section-document">
 		<div id="page-details" class="tab">
 
 			<div class="col width-50 fltlft">
