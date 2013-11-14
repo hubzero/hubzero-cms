@@ -63,43 +63,45 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<fieldset class="reporter">
 						<label for="trLogin">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
-<?php if (!$this->guestOrTmpAccount) { ?>
-							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo htmlentities($this->juser->get('username'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('username'); ?></span>
-<?php } else { ?>
+						<?php if (!$this->guestOrTmpAccount) { ?>
+							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo $this->escape($this->juser->get('username')); ?>" /><br /><span class="info-block"><?php echo $this->escape($this->juser->get('username')); ?></span>
+						<?php } else { ?>
 							<input type="text" name="reporter[login]" id="trLogin" value="" />
-<?php } ?>
+						<?php } ?>
 						</label>
 
 						<label for="trName">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_NAME'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-<?php if (!$this->guestOrTmpAccount) { ?>
-							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $this->juser->get('name'); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('name'); ?></span>
-<?php } else { ?>
+						<?php if (!$this->guestOrTmpAccount) { ?>
+							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $this->escape($this->juser->get('name')); ?>" /><br /><span class="info-block"><?php echo $this->escape($this->juser->get('name')); ?></span>
+						<?php } else { ?>
 							<input type="text" name="reporter[name]" id="trName" value="" />
-<?php } ?>
+						<?php } ?>
 						</label>
 
 						<label for="trEmail">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_EMAIL'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-<?php if (!$this->guestOrTmpAccount) { ?>
-							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo htmlspecialchars($this->juser->get('email'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('email'); ?></span>
-<?php } else { ?>
+						<?php if (!$this->guestOrTmpAccount) { ?>
+							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo $this->escape($this->juser->get('email')); ?>" /><br /><span class="info-block"><?php echo $this->escape($this->juser->get('email')); ?></span>
+						<?php } else { ?>
 							<input type="text" name="reporter[email]" id="trEmail" value="" />
-<?php } ?>
+						<?php } ?>
 						</label>
-<?php 
-	JPluginHelper::importPlugin('support');
-	$dispatcher =& JDispatcher::getInstance();
-	$captchas = $dispatcher->trigger('onGetModuleCaptcha');
 
-	if (count($captchas) > 0)
-	{
-		foreach ($captchas as $captcha)
-		{
-			echo $captcha;
-		}
-	}
-?>
+						<?php 
+							JPluginHelper::importPlugin('support');
+							$dispatcher =& JDispatcher::getInstance();
+							$captchas = $dispatcher->trigger('onGetModuleCaptcha');
+
+							if (count($captchas) > 0)
+							{
+								foreach ($captchas as $captcha)
+								{
+									echo $captcha;
+								}
+							}
+						?>
+
 						<label id="trBotcheck-label" for="trBotcheck">
 							<?php echo JText::_('Please leave this field blank.'); ?> <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
 							<input type="text" name="botcheck" id="trBotcheck" value="" />
@@ -122,14 +124,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 						
 						<input type="hidden" name="problem[topic]" value="???" />
 						<input type="hidden" name="problem[short]" value="" />
-						<input type="hidden" name="problem[referer]" value="<?php echo htmlspecialchars($this->referrer); ?>" />
+						<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->referrer); ?>" />
 						<input type="hidden" name="problem[tool]" value="" />
-						<input type="hidden" name="problem[os]" value="<?php echo $this->os; ?>" />
-						<input type="hidden" name="problem[osver]" value="<?php echo $this->os_version; ?>" />
-						<input type="hidden" name="problem[browser]" value="<?php echo $this->browser; ?>" />
-						<input type="hidden" name="problem[browserver]" value="<?php echo $this->browser_ver; ?>" />
+						<input type="hidden" name="problem[os]" value="<?php echo $this->escape($this->os); ?>" />
+						<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->os_version); ?>" />
+						<input type="hidden" name="problem[browser]" value="<?php echo $this->escape($this->browser); ?>" />
+						<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->browser_ver); ?>" />
 						<input type="hidden" name="verified" value="<?php echo $this->verified; ?>" />
-						<input type="hidden" name="reporter[org]" value="<?php echo (!$this->juser->get('guest')) ? htmlentities($this->juser->get('org'),ENT_QUOTES) : ''; ?>" />
+						<input type="hidden" name="reporter[org]" value="<?php echo (!$this->juser->get('guest')) ? $this->escape($this->juser->get('org')) : ''; ?>" />
 						<input type="hidden" name="option" value="com_support" />
 						<input type="hidden" name="controller" value="tickets" />
 						<input type="hidden" name="task" value="save" />
@@ -138,6 +140,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<div class="submit"><input type="submit" id="send-form" value="<?php echo JText::_('MOD_REPORTPROBLEMS_SUBMIT'); ?>" /></div>
 				</form>
 				<div id="trSending">
+					<!-- Loading animation container -->
+					<div class="rp-loading">
+						<!-- We make this div spin -->
+						<div class="rp-spinner">
+							<!-- Mask of the quarter of circle -->
+							<div class="rp-mask">
+								<!-- Inner masked circle -->
+								<div class="rp-masked-circle"></div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div id="trSuccess">
 				</div>
