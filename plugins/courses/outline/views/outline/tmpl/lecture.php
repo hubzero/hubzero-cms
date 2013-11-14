@@ -185,9 +185,70 @@ if (!$this->course->offering()->access('view')) { ?>
 
 			<p class="lecture-nav">
 			<?php 
-			$lecture->key($current);
+				$lecture->key($current);
 
-			if ($unit->isFirst() && $lecture->isFirst()) { ?>
+				$found = false;
+
+				if (!$lecture->isFirst()) 
+				{
+					$found = false;
+					// Find the previous lecture
+					$ky = $lecture->key();
+					for ($ky; $ky >= 0; $ky--)
+					{
+						$lecture->key($ky);
+						$prev = $lecture->sibling('prev');
+						if ($prev && $prev->isPublished() && $prev->assets()->total() > 0) 
+						{
+							$found = true;
+							?>
+							<a class="icon-prev prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
+								<?php echo JText::_('Prev'); ?>
+							</a>
+							<?php
+							break;
+						}
+					}
+				}
+
+				if (!$found) { ?>
+				<span class="icon-prev disabled prev btn">
+					<?php echo JText::_('Prev'); ?>
+				</span>
+				<?php }
+
+				$gAlias = '';
+				$key = $aggroups->key();
+				// If NOT the last assetgroup
+				if (!$unit->assetgroups()->isLast())
+				{
+					foreach ($unit->assetgroups() as $k => $assetgroup)
+					{
+						if ($k <= $current)
+						{
+							continue;
+						}
+
+						if ($assetgroup->isPublished()) 
+						{
+							$gAlias = $assetgroup->get('alias');
+							break;
+						}
+					}
+				}
+
+				if (!$gAlias) { ?>
+				<span class="icon-next next opposite btn">
+					<?php echo JText::_('Next'); ?>
+				</span>
+				<?php } else { ?>
+				<a class="icon-next next opposite btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $gAlias); ?>">
+					<?php echo JText::_('Next'); ?>
+				</a>
+				<?php }
+
+
+			/*if ($unit->isFirst() && $lecture->isFirst()) { ?>
 				<span class="icon-prev prev btn">
 					<?php echo JText::_('Prev'); ?>
 				</span>
@@ -330,7 +391,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					}
 				}
 			}
-
+			
 			if (!$uAlias || !$gAlias) { ?>
 				<span class="icon-next next opposite btn">
 					<?php echo JText::_('Next'); ?>
@@ -340,7 +401,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					<?php echo JText::_('Next'); ?>
 				</a>
 			<?php } ?>
-			<?php 
+			<?php */
 			if (count($exams) > 0) {
 				echo implode("\n", $exams);
 			}

@@ -302,7 +302,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			$this->_section = null;
 			$this->_link = null; // Clear any potential existing data that may have another (prevous) section's info
 
-			if (isset($this->_section))
+			if (isset($this->_sections))
 			{
 				foreach ($this->sections() as $section)
 				{
@@ -313,7 +313,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 					}
 				}
 			}
-			else
+
+			if (!$this->_section)
 			{
 				$this->_section = CoursesModelSection::getInstance($id, $this->get('id'));
 			}
@@ -409,7 +410,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function units($filters=array())
+	public function units($filters=array(), $clear=false)
 	{
 		if (!isset($filters['offering_id']))
 		{
@@ -427,7 +428,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!isset($this->_units) || !is_a($this->_units, 'CoursesModelIterator'))
+		if (!($this->_units instanceof CoursesModelIterator) || $clear)
 		{
 			$tbl = new CoursesTableUnit($this->_db);
 

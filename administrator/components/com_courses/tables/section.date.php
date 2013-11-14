@@ -200,14 +200,14 @@ class CoursesTableSectionDate extends JTable
 
 		$where = array();
 
-		if (isset($filters['section_id']) && $filters['section_id']) 
+		if (isset($filters['section_id']) && $filters['section_id'] >= 0) 
 		{
 			$where[] = "sd.section_id=" . $this->_db->Quote(intval($filters['section_id']));
 		}
 
 		if (isset($filters['scope']) && $filters['scope']) 
 		{
-			$where[] = "sd.scope=" . $this->_db->Quote(intval($filters['scope']));
+			$where[] = "sd.scope=" . $this->_db->Quote($filters['scope']);
 		}
 
 		if (isset($filters['scope_id']) && $filters['scope_id'] > 0) 
