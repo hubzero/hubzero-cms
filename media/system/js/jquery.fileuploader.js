@@ -416,8 +416,8 @@ qq.FileUploaderBasic.prototype = {
             return false;
             
         } else if (size === 0){            
-            this._error('emptyError', name);
-            return false;
+            //this._error('emptyError', name);
+            //return false;
                                                      
         } else if (size && this._options.sizeLimit && size > this._options.sizeLimit){            
             this._error('sizeError', name);
@@ -465,6 +465,11 @@ qq.FileUploaderBasic.prototype = {
             bytes = bytes / 1024;
             i++;  
         } while (bytes > 99);
+
+		if (bytes == 0)
+		{
+			return '0b';
+		}
         
         return Math.max(bytes, 0.1).toFixed(1) + ['kB', 'MB', 'GB', 'TB', 'PB', 'EB'][i];          
     }
@@ -609,9 +614,9 @@ qq.extend(qq.FileUploader.prototype, {
         var size = this._find(item, 'size');
         size.style.display = 'inline';
         
-        var text; 
-        if (loaded != total){
-            text = Math.round(loaded / total * 100) + '% from ' + this._formatSize(total);
+        var text;		
+		if (loaded != total) {
+            text = Math.round(loaded / total * 100)  + '% from ' + this._formatSize(total);
         } else {                                   
             text = this._formatSize(total);
         }          
@@ -1138,7 +1143,7 @@ qq.UploadHandlerXhr = function(o){
 // static method
 qq.UploadHandlerXhr.isSupported = function(){
     var input = document.createElement('input');
-    input.type = 'file';        
+    input.type = 'file';
     
     return (
         'multiple' in input &&
@@ -1189,8 +1194,14 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
                                 
         var xhr = this._xhrs[id] = new XMLHttpRequest();
         var self = this;
-                                        
-        xhr.upload.onprogress = function(e){
+                                       
+         // build query string
+        params = params || {};
+     	params['qqfile'] = name;
+        var queryString = qq.obj2url(params, this._options.action);
+    	xhr.open("put", queryString, true);
+
+		xhr.upload.onprogress = function(e){
             if (e.lengthComputable){
                 self._loaded[id] = e.loaded;
                 self._options.onProgress(id, name, e.loaded, e.total);
@@ -1202,17 +1213,11 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
                 self._onComplete(id, xhr);                    
             }
         };
+		
+		xhr.setRequestHeader("X-File-Name", encodeURIComponent(name));
+		xhr.setRequestHeader("X-File-Size", encodeURIComponent(size));
 
-        // build query string
-        params = params || {};
-        params['qqfile'] = name;
-        var queryString = qq.obj2url(params, this._options.action);
-
-        xhr.open("POST", queryString, true);
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xhr.setRequestHeader("X-File-Name", encodeURIComponent(name));
-        xhr.setRequestHeader("Content-Type", "application/octet-stream");
-        xhr.send(file);
+      	xhr.send(file);
     },
     _onComplete: function(id, xhr){
         // the request was aborted/cancelled
