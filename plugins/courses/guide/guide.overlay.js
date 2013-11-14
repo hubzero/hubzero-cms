@@ -22,7 +22,7 @@ jQuery(document).ready(function(jq){
 		pc = $('#page_container');
 
 	if (pc.length) {
-		var top = $('#page_container').offset().top;
+		//var top = $('#page_container').offset().top;
 		
 		$('#page_menu a.guide').fancybox({
 			type: 'ajax',
@@ -41,7 +41,8 @@ jQuery(document).ready(function(jq){
 				this.href = this.element.attr('href').nohtml();
 			},
 			beforeShow: function() {
-				var guide = $('div.guide-content');
+				var guide = $('div.guide-content'),
+					top = $('#page_container').offset().top;
 				if (guide.length > 0) {
 					guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
 				}
@@ -78,7 +79,8 @@ jQuery(document).ready(function(jq){
 						wrap:'<div class="fancybox-wrap" id="guide-content"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>'
 					},
 					beforeShow: function() {
-						var guide = $('div.guide-content');
+						var guide = $('div.guide-content'),
+							top = $('#page_container').offset().top;
 						if (guide.length > 0) {
 							guide.css('margin-top', (top - 86) + 'px'); /* 15 20 50 */
 						}
