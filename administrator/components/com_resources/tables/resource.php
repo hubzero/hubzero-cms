@@ -773,11 +773,11 @@ class ResourcesResource extends JTable
 			$query .= ", #__tags_object AS t ";
 		}
 		$query .= "WHERE r.standalone=1 ";
-		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized'])) 
+		if ($juser->get('guest') || !isset($filters['authorized']) || (isset($filters['authorized']) && !$filters['authorized'])) 
 		{
 			$query .= "AND r.published=1 ";
 		}
-		else
+		else if (isset($filters['authorized']) && $filters['authorized'])
 		{
 			$query .= "AND r.published!=4 ";
 		}
