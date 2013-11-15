@@ -583,10 +583,12 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$new_hztv->released      = JFactory::getDate()->toSql();
 			$new_hztv->released_by   = $this->juser->get('username');
 			$new_hztv->license       = $status['license'];
-			$new_hztv->fulltxt      = $status['fulltxt'];
+			$new_hztv->fulltxt       = $status['fulltxt'];
 			$new_hztv->exportControl = $exportmap[strtoupper($status['exec'])];
 			$new_hztv->owner         = $hztv_dev->owner;
 			$new_hztv->member        = $hztv_dev->member;
+			$new_hztv->vnc_timeout   = $hztv_dev->vnc_timeout;
+			$new_hztv->hostreq       = $hztv_dev->hostreq;
 
 			if (!$new_hztv->update())
 			{
