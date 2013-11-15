@@ -44,3 +44,22 @@
 		content: "\22ef";
 		color: orange;
 	}
+
+	#myresources-form fieldset {
+		margin: 0;
+		padding: 0.5em;
+		background-color: #efefef;
+		border: none;
+		border-bottom: 1px solid #ddd;
+	}
+	#myresources-form label,
+	#myresources-form input,
+	#myresources-form select {
+		display: inline;
+		width: auto;
+	}
+	#myresources-form label {
+		font-size: 0.85em;
+		margin: 0 0.4em 0 0;
+		padding: 0;
+	}

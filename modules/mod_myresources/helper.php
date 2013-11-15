@@ -48,9 +48,8 @@ class modMyResources extends Hubzero_Module
 		if (!$this->no_html) 
 		{
 			// Push the module CSS to the template
-			ximport('Hubzero_Document');
-			Hubzero_Document::addModuleStyleSheet($this->module->module);
-			Hubzero_Document::addModuleScript($this->module->module);
+			$this->addStyleSheet();
+			$this->addScript();
 		}
 
 		$database =& JFactory::getDBO();
