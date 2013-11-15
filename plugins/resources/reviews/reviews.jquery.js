@@ -1,87 +1,63 @@
 /**
  * @package     hubzero-cms
  * @file        plugins/resources/reviews/reviews.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
-}
-
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Plugins.ResourcesReviews = {
-	jQuery: jq,
-	
-	initialize: function() {
-		var $ = this.jQuery;
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+};
+
+jQuery(document).ready(function(jq){
+	var $ = jq;
 		
-		// Reply to review or comment
-		$('.reply').each(function(i, item) {
-			$(item).on('click', function(e) {
-				if ($(this).attr('href').indexOf('login') == -1) {
-					e.preventDefault();
+	// Reply to review or comment
+	$('a.reply').on('click', function (e) {
+		e.preventDefault();
 
-					var f = $(this).parent().parent().find('.addcomment');
-					if (f.hasClass('hide')) {
-						f.removeClass('hide');
-					} else {
-						f.addClass('hide');
-					}
-				}
-			});
-		});
-		$('.commentarea').each(function(i, item) {
-			// Clear the default text
-			$(item).on('focus', function() {
-				if ($(this).val() == 'Enter your comments...') {
-					$(this).val('');
-				}
-			});
-		});
-		$('.cancelreply').each(function(i, item) {
-			$(item).on('click', function(e) {
-				e.preventDefault();
-				$($(this).parent().parent().parent().parent()).addClass('hide');
-			});
-		});
-		
-		// review ratings
-		$('.vote-button').each(function(i, item) {
-			if ($(item).attr('href')) {
-				$(item).on('click', function (e) {
-					e.preventDefault();
+		var frm = $('#' + $(this).attr('data-rel'));
 
-					href = $(this).attr('href');
-					if (href.indexOf('?') == -1) {
-						href += '?no_html=1';
-					} else {
-						href += '&no_html=1';
-					}
-					$(this).attr('href', href);
-console.log($(this).attr('href'));
-					$.get($(this).attr('href'), {}, function(data) {
-						$(item).closest('.voting').html(data);
-						$('.tooltip').hide();
-					});
-				});
-			}
-		});
-	} // end initialize
-}
+		if (frm.hasClass('hide')) {
+			frm.removeClass('hide');
+			$(this)
+				.addClass('active')
+				.text($(this).attr('data-txt-active'));
+		} else {
+			frm.addClass('hide');
+			$(this)
+				.removeClass('active')
+				.text($(this).attr('data-txt-inactive'));
+		}
+	});
 
-jQuery(document).ready(function($){
-	HUB.Plugins.ResourcesReviews.initialize();
+	$('.commentarea').on('focus', function(e) {
+		if ($(this).val() == 'Enter your comments...') {
+			$(this).val('');
+		}
+	});
+
+	// review ratings
+	$('.vote-button').on('click', function (e) {
+		e.preventDefault();
+
+		var item = $(this);
+
+		if (!item.attr('href')) {
+			return;
+		}
+
+		$.get(item.attr('href').nohtml(), {}, function(data) {
+			item.closest('.voting').html(data);
+			$('.tooltip').hide();
+		});
+	});
 });

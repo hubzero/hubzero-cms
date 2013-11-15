@@ -43,11 +43,11 @@ $html = '';
 </h3>
 <p class="section-options">
 	<?php if ($juser->get('guest')) { ?>
-			<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="add btn">
+			<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
 				<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
 			</a>
 	<?php } else { ?>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>" class="add btn">
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>" class="icon-add add btn">
 				<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
 			</a>
 	<?php } ?>
@@ -148,7 +148,7 @@ if ($this->reviews) {
 		// Build the list item
 		$html .= "\t".'<li class="comment '.$o.'" id="c'.$review->id.'">';
 		$html .= "\t\t".'<p class="comment-member-photo">'."\n";
-		$html .= "\t\t".'	<span class="comment-anchor"><a name="c'.$review->id.'"></a></span>'."\n";
+		$html .= "\t\t".'	<span class="comment-anchor"></span>'."\n";
 		$html .= "\t\t".'	<img src="'.Hubzero_User_Profile_Helper::getMemberPhoto($ruser, $review->anonymous).'" alt="" />'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
 		$html .= "\t\t".'<div class="comment-content">'."\n";
@@ -221,7 +221,7 @@ if ($this->reviews) {
 					} else {
 						$href = JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review');
 					}
-					$html .= '" href="'.$href.'" id="rep_'.$review->id.'" title="'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'"">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>'."\n";
+					$html .= '" href="'.$href.'" id="rep_'.$review->id.'" data-rel="commentform_' . $review->id . '" data-txt-inactive="' . JText::_('PLG_RESOURCES_REVIEWS_REPLY') . '" data-txt-active="' . JText::_('PLG_RESOURCES_REVIEWS_CANCEL') . '" title="'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'"">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>'."\n";
 				}
 				//if ($abuse && $review->comment) {
 				if ($abuse) {
@@ -244,10 +244,10 @@ if ($this->reviews) {
 				//$html .= $this->addcomment($review->id, 0, $juser, $this->option, $addcomment, $this->resource->id);
 				$view = new Hubzero_Plugin_View(
 					array(
-						'folder'=>'resources',
-						'element'=>'reviews',
-						'name'=>'browse',
-						'layout'=>'addcomment'
+						'folder'  => 'resources',
+						'element' => 'reviews',
+						'name'    => 'browse',
+						'layout'  => 'addcomment'
 					)
 				);
 				$view->option = $this->option;

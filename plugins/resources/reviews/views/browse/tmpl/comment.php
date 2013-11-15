@@ -86,24 +86,17 @@ if ($this->reply->anonymous != 1)
 	<?php } ?>
 	
 	<p class="comment-options">
-<?php
+	<?php
 	// Cannot reply at third level
 	if ($this->level < 3) {
 		if ($this->juser->get('guest')) {
 			$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews&action=reply&category=reviewcomment&refid='.$this->reply->id)));
 		} else {
 			$href = JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews&action=reply&category=reviewcomment&refid='.$this->reply->id);
-		}
-		echo '<a ';
-		//if (!$this->juser->get('guest')) {
-		//	echo 'class="showreplyform" href="javascript:void(0);"';
-		//} else {
-			echo 'href="'.$href.'" ';
-		//}
-		echo 'class="icon-reply reply" id="rep_'.$this->reply->id.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>';
-	}
-?>
-<?php if ($this->abuse) { 
+		} ?>
+		<a href="<?php echo $href; ?>" class="icon-reply reply" data-rel="commentform_<?php echo $this->reply->id; ?>" data-txt-inactive="<?php echo JText::_('PLG_RESOURCES_REVIEWS_REPLY'); ?>" data-txt-active="<?php echo JText::_('PLG_RESOURCES_REVIEWS_CANCEL'); ?>" id="rep_<?php echo $this->reply->id; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPLY'); ?></a>
+	<?php } ?>
+	<?php if ($this->abuse) { 
 		if ($this->juser->get('guest')) {
 			$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=reviewcomment&id='.$this->reply->id.'&parent='.$this->id)));
 		} else {
@@ -111,17 +104,18 @@ if ($this->reply->anonymous != 1)
 		}
 		?>
 		<a class="icon-abuse abuse" href="<?php echo $href; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?></a>
-<?php } ?>
+	<?php } ?>
 	</p>
-<?php 
+	<?php 
 	// Add the reply form if needed
-	if ($this->level < 3 && !$this->juser->get('guest')) {
+	if ($this->level < 3 && !$this->juser->get('guest')) 
+	{
 		$view = new Hubzero_Plugin_View(
 			array(
-				'folder'=>'resources',
-				'element'=>'reviews',
-				'name'=>'browse',
-				'layout'=>'addcomment'
+				'folder'  => 'resources',
+				'element' => 'reviews',
+				'name'    => 'browse',
+				'layout'  => 'addcomment'
 			)
 		);
 		$view->option = $this->option;

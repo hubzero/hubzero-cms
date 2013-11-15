@@ -39,29 +39,31 @@ if (!$this->juser->get('guest')) {
 		$class = ($this->addcomment->referenceid == $this->row->id && $this->addcomment->category==$category) ? '' : ' hide';
 	}
 ?>
-					<div class="addcomment<?php echo $class; ?>">
-						<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$this->row->id); ?>" method="post" id="commentform_<?php echo $this->row->id; ?>">
-							<fieldset>
-								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-								<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
-								<input type="hidden" name="active" value="reviews" />
-								<input type="hidden" name="action" value="savereply" />
-								<input type="hidden" name="referenceid" value="<?php echo $this->row->id; ?>" />
-								<input type="hidden" name="category" value="<?php echo $category; ?>" />
-								<label>
-									<textarea name="comment" rows="4" cols="50" class="commentarea"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></textarea>
-								</label>
-								<label class="reply-anonymous-label">
-									<input class="option" type="checkbox" name="anonymous" value="1" /> 
-									<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
-								</label>
-								<p class="submit">
-									<input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT'); ?>" /> 
-									<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$this->row->id); ?>" class="closeform cancelreply"><?php echo JText::_('PLG_RESOURCES_REVIEWS_CANCEL'); ?></a>
-								</p>
-							</fieldset>
-						</form>
-					</div>
+	<div class="addcomment comment-add<?php echo $class; ?>" id="commentform_<?php echo $this->row->id; ?>">
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$this->row->id); ?>" method="post" id="cform<?php echo $this->row->id; ?>">
+			<fieldset>
+				<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+				<input type="hidden" name="rid" value="<?php echo $this->escape($this->resource->id); ?>" />
+				<input type="hidden" name="active" value="reviews" />
+				<input type="hidden" name="action" value="savereply" />
+				<input type="hidden" name="referenceid" value="<?php echo $this->escape($this->row->id); ?>" />
+				<input type="hidden" name="category" value="<?php echo $this->escape($category); ?>" />
+
+				<label for="field-comment-<?php echo $this->row->id; ?>">
+					<textarea name="comment" id="field-comment-<?php echo $this->row->id; ?>" rows="4" cols="50" class="commentarea"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></textarea>
+				</label>
+
+				<label class="reply-anonymous-label" for="field-anonymous-<?php echo $this->row->id; ?>">
+					<input class="option" type="checkbox" name="anonymous" id="field-anonymous-<?php echo $this->row->id; ?>" value="1" /> 
+					<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
+				</label>
+
+				<p class="submit">
+					<input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_POST_COMMENT'); ?>" /> 
+				</p>
+			</fieldset>
+		</form>
+	</div>
 <?php
 }
 ?>

@@ -16,3 +16,6 @@
 	ol.comments .comment-none {
 		color: #ccc;
 	}
+	ol.comments .comment-options a.active:before {
+		content: "\2716";
+	}
