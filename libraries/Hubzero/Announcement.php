@@ -154,6 +154,12 @@ class Hubzero_Announcement extends JTable
 			$this->setError(JText::_('Announcement must contain some content.'));
 			return false;
 		}
+
+		if (!$this->created)
+		{
+			$this->created = JFactory::getDate()->toSql();
+		}
+
 		return true;
 	}
 
@@ -266,8 +272,8 @@ class Hubzero_Announcement extends JTable
 		if (isset($filters['published']))
 		{
 			$now = JFactory::getDate();
-			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now) . ")";
-			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now) . ")";
+			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now->toSql()) . ")";
+			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now->toSql()) . ")";
 		}
 
 		//search

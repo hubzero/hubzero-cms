@@ -135,12 +135,12 @@ class ResourcesSponsor extends JTable
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
 		{
-			$this->created = JFactory::getDate();
+			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		} 
 		else 
 		{
-			$this->modified = JFactory::getDate();
+			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 		

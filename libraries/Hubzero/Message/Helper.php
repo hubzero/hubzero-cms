@@ -126,7 +126,7 @@ class Hubzero_Message_Helper extends JObject
 		$xmessage = new Hubzero_Message_Message($database);
 		$xmessage->subject    = $subject;
 		$xmessage->message    = $message;
-		$xmessage->created    = JFactory::getDate();
+		$xmessage->created    = JFactory::getDate()->toSql();
 		$xmessage->created_by = $juser->get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
@@ -160,8 +160,8 @@ class Hubzero_Message_Helper extends JObject
 				$recipient = new Hubzero_Message_Recipient($database);
 				$recipient->uid      = $uid;
 				$recipient->mid      = $xmessage->id;
-				$recipient->created  = JFactory::getDate();
-				$recipient->expires  = JFactory::getDate(time() + (168 * 24 * 60 * 60));
+				$recipient->created  = JFactory::getDate()->toSql();
+				$recipient->expires  = JFactory::getDate(time() + (168 * 24 * 60 * 60))->toSql();
 				$recipient->actionid = $action->id;
 				if (!$recipient->store()) 
 				{

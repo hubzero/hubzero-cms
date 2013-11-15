@@ -249,7 +249,7 @@ class plgHubzeroComments extends JPlugin
 			}
 
 			$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
-			$today = JFactory::getDate();
+			$today = JFactory::getDate()->toSql();
 
 			// Can users create comments?
 			if ($this->params->get('comments_close', 'never') == 'never' 

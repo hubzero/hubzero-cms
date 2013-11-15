@@ -95,7 +95,7 @@ class plgXMessageHandler extends JPlugin
 						 || $xseen->whenseen == $database->getNullDate() 
 						 || $xseen->whenseen == NULL) 
 						{
-							$xseen->whenseen = JFactory::getDate();
+							$xseen->whenseen = JFactory::getDate()->toSql();
 							$xseen->store(true);
 						}
 					}
@@ -188,7 +188,7 @@ class plgXMessageHandler extends JPlugin
 		// Store the message in the database
 		$xmessage->subject    = $subject;
 		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
-		$xmessage->created    = JFactory::getDate();
+		$xmessage->created    = JFactory::getDate()->toSql();
 		$xmessage->created_by = $juser->get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
@@ -252,8 +252,8 @@ class plgXMessageHandler extends JPlugin
 				$recipient = new Hubzero_Message_Recipient($database);
 				$recipient->uid      = $uid;
 				$recipient->mid      = $xmessage->id;
-				$recipient->created  = JFactory::getDate();
-				$recipient->expires  = JFactory::getDate(time() + (168 * 24 * 60 * 60));
+				$recipient->created  = JFactory::getDate()->toSql();
+				$recipient->expires  = JFactory::getDate(time() + (168 * 24 * 60 * 60))->toSql();
 				$recipient->actionid = 0; //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
 				// Get the user's methods for being notified

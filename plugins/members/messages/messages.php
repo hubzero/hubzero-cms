@@ -685,7 +685,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		{
 			if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL) 
 			{
-				$xseen->whenseen = JFactory::getDate();
+				$xseen->whenseen = JFactory::getDate()->toSql();
 				$xseen->store(true);
 			}
 		}
@@ -758,7 +758,7 @@ class plgMembersMessages extends Hubzero_Plugin
 				$xseen->loadRecord();
 				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL) 
 				{
-					$xseen->whenseen = JFactory::getDate();
+					$xseen->whenseen = JFactory::getDate()->toSql();
 					$xseen->store(true);
 				}
 			}
@@ -830,12 +830,12 @@ class plgMembersMessages extends Hubzero_Plugin
 				$xseen->loadRecord();
 				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL) 
 				{
-					$xseen->whenseen = JFactory::getDate();
+					$xseen->whenseen = JFactory::getDate()->toSql();
 					$xseen->store(true);
 				}
 
 				$recipient->state = 2;
-				$recipient->expires = JFactory::getDate(time()+(10*60*60*60));
+				$recipient->expires = JFactory::getDate(time()+(10*60*60*60))->toSql();
 				if (!$recipient->store()) 
 				{
 					$this->setError($recipient->getError());
@@ -924,7 +924,7 @@ class plgMembersMessages extends Hubzero_Plugin
 				$xseen->loadRecord();
 				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL) 
 				{
-					$xseen->whenseen = JFactory::getDate();
+					$xseen->whenseen = JFactory::getDate()->toSql();
 					$xseen->store(true);
 				}
 			}

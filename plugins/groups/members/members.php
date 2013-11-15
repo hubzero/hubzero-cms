@@ -443,7 +443,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'membership_approved';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -530,7 +530,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'membership_promoted';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -633,7 +633,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'membership_demoted';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -801,7 +801,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user_mem;
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'membership_removed';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -953,7 +953,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'membership_denied';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -1097,7 +1097,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'membership_invite_cancelled';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 
@@ -1114,7 +1114,7 @@ class plgGroupsMembers extends Hubzero_Plugin
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
 			$log->uid = $user;
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = 'membership_invite_cancelled';
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 

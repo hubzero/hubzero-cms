@@ -302,7 +302,7 @@ class plgMembersResume extends JPlugin
 			}
 
 			$js->active = $active;
-			$js->updated = JFactory::getDate();
+			$js->updated = JFactory::getDate()->toSql();
 
 			if (!$js->store()) 
 			{
@@ -351,7 +351,7 @@ class plgMembersResume extends JPlugin
 		else if (!$active) 
 		{
 			$js->active = $active;
-			$js->updated = JFactory::getDate();
+			$js->updated = JFactory::getDate()->toSql();
 
 			// store new content
 			if (!$js->store()) 
@@ -701,7 +701,7 @@ class plgMembersResume extends JPlugin
 
 			// File was uploaded, create database entry
 			$title = htmlspecialchars($title);
-			$row->created = JFactory::getDate();
+			$row->created = JFactory::getDate()->toSql();
 			$row->filename = $file['name'];
 			$row->title = $title ? $title : $default_title;
 
@@ -811,7 +811,7 @@ class plgMembersResume extends JPlugin
 			{
 				$shortlist->emp      = $juser->get('id');
 				$shortlist->seeker   = $oid;
-				$shortlist->added    = JFactory::getDate();
+				$shortlist->added    = JFactory::getDate()->toSql();
 				$shortlist->category = 'resume';
 				$shortlist->check();
 				$shortlist->store();

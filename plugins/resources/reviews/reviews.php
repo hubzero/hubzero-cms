@@ -549,7 +549,7 @@ class PlgResourcesReviewsHelper extends JObject
 			$v->category    = $cat;
 			$v->voter       = $juser->get('id');
 			$v->ip          = $ip;
-			$v->voted       = JFactory::getDate();
+			$v->voted       = JFactory::getDate()->toSql();
 			$v->helpful     = $vote;
 			if (!$v->check()) 
 			{
@@ -676,7 +676,7 @@ class PlgResourcesReviewsHelper extends JObject
 		$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
 		$row->comment   = nl2br($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created   = ($row->created) ? $row->created : JFactory::getDate();
+		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
 
 		// Check for missing (required) fields
 		if (!$row->check()) 

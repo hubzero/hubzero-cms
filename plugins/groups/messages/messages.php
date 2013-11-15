@@ -472,7 +472,7 @@ class plgGroupsMessages extends Hubzero_Plugin
 			$database =& JFactory::getDBO();
 			$log = new XGroupLog($database);
 			$log->gid = $this->group->get('gidNumber');
-			$log->timestamp = JFactory::getDate();
+			$log->timestamp = JFactory::getDate()->toSql();
 			$log->action = $action;
 			$log->actorid = $juser->get('id');
 			if (!$log->store()) 

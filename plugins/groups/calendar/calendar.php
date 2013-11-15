@@ -566,7 +566,7 @@ class plgGroupsCalendar extends Hubzero_Plugin
 		//if we are updating set modified time and actor
 		if (!isset($event['id']) || $event['id'] == 0) 
 		{
-			$event['created']    = JFactory::getDate();
+			$event['created']    = JFactory::getDate()->toSql();
 			$event['created_by'] = $this->juser->get('id');
 		}
 		

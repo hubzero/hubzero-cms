@@ -141,7 +141,7 @@ class Hubzero_Item_Vote extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate();
+			$this->created = JFactory::getDate()->toSql();
 		}
 
 		return true;

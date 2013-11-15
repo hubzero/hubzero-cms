@@ -413,7 +413,7 @@ class plgProjectsNotes extends JPlugin
 			if (!$revision->loadByVersion($page->id))
 			{
 				$revision->pageid     	= $page->id;
-				$revision->created    	= JFactory::getDate();
+				$revision->created    	= JFactory::getDate()->toSql();
 				$revision->created_by 	= $this->_uid;
 				$revision->version 		= 1;
 				$revision->approved 	= 1;
@@ -735,7 +735,7 @@ class plgProjectsNotes extends JPlugin
 		// Create revision
 		$revision 				= new WikiPageRevision($this->_database);
 		$revision->pageid     	= $page->id;
-		$revision->created    	= JFactory::getDate();
+		$revision->created    	= JFactory::getDate()->toSql();
 		$revision->created_by 	= $juser->get('id');
 		$revision->version    	= 1;
 		$revision->pagetext   	= $body;
