@@ -114,6 +114,13 @@ class CoursesModelSection extends CoursesModelAbstract
 	private $_date = NULL;
 
 	/**
+	 * CoursesModelSectionBadge
+	 * 
+	 * @var object
+	 */
+	private $_badge = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course offering ID or alias
@@ -712,5 +719,19 @@ class CoursesModelSection extends CoursesModelAbstract
 		}
 		return $codes;
 	}
-}
 
+	/**
+	 * Get section badge
+	 *
+	 * @return     obj
+	*/
+	public function badge()
+	{
+		if (!isset($this->_badge))
+		{
+			$this->_badge = CoursesModelSectionBadge::loadBySectionId($this->get('id'));
+		}
+
+		return $this->_badge; 
+	}
+}

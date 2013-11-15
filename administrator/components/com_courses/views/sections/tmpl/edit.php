@@ -85,7 +85,7 @@ window.addEvent('domready', function(){
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
@@ -94,6 +94,7 @@ window.addEvent('domready', function(){
 						<li><a href="#" onclick="return false;" id="details" class="active">Details</a></li>
 						<li><a href="#" onclick="return false;" id="managers">Managers</a></li>
 						<li><a href="#" onclick="return false;" id="datetime">Dates/Times</a></li>
+						<li><a href="#" onclick="return false;" id="badge">Badge</a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -585,6 +586,84 @@ window.addEvent('domready', function(){
 		<?php } else { ?>
 			<p class="warning">There is currently no data associated with the offering.</p>
 		<?php } ?>
+		</div>
+		<div id="page-badge" class="tab">
+			<script type="text/javascript">
+				jQuery(document).ready(function(jq){
+					var $ = jq;
+					if (!$('#badge-published').is(':checked')) {
+						$('.badge-field-toggle').hide();
+					}
+
+					$('#badge-published').click(function(){
+						$('.badge-field-toggle').toggle();
+					});
+				});
+			</script>
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('Badge'); ?></span></legend>
+				<?php if (!$this->badge->get('id') || !$this->badge->get('provider_badge_id')) : ?>
+					<input type="hidden" name="badge[id]" value="<?php echo $this->badge->get('id'); ?>" />
+					<table class="admintable">
+						<tbody>
+							<tr>
+								<th class="key" width="250"><label for="badge-published"><?php echo JText::_('Offer a badge for this section?'); ?>:</label></th>
+								<td><input type="checkbox" name="badge[published]" id="badge-published" value="1" <?php echo ($this->badge->get('published')) ? 'checked="checked"' : '' ?> /></td>
+							</tr>
+							<tr class="badge-field-toggle">
+								<th class="key"><label for="badge-image"><?php echo JText::_('Badge Image'); ?>:</label></th>
+								<td>
+									<?php if ($this->badge->get('img_url')) : ?>
+										<?php echo $this->escape(stripslashes($this->badge->get('img_url'))); ?>
+									<?php else : ?>
+										<input type="file" name="badge_image" id="badge-image" />
+									<?php endif; ?>
+								</td>
+							</tr>
+							<tr class="badge-field-toggle">
+								<th class="key"><label for="badge-provider"><?php echo JText::_('Badge Provider'); ?>:</label></th>
+								<td>
+									<select name="badge[provider_name]" id="badge-provider">
+										<option value="passport"<?php if ($this->badge->get('provider_name', 'passport') == 'passport') { echo ' selected="selected"'; } ?>><?php echo JText::_('Passport'); ?></option>
+									</select>
+								</td>
+							<tr class="badge-field-toggle">
+								<th class="key"><label for="badge-criteria"><?php echo JText::_('Badge Criteria'); ?>:</label></th>
+								<td>
+									<textarea name="badge[criteria]" id="badge-criteria" rows="6" cols="50"><?php echo $this->escape(stripslashes($this->badge->get('criteria_text'))); ?></textarea>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				<?php else : ?>
+					<input type="hidden" name="badge[id]" value="<?php echo $this->badge->get('id'); ?>" />
+					<table class="admintable">
+						<tbody>
+							<tr>
+								<th class="key" width="250"><label for="badge-published"><?php echo JText::_('Offer a badge for this section?'); ?>:</label></th>
+								<td><input type="checkbox" name="badge[published]" id="badge-published" value="1" <?php echo ($this->badge->get('published')) ? 'checked="checked"' : '' ?> /></td>
+							</tr>
+							<tr class="badge-field-toggle">
+								<th class="key"><label for="badge-image"><?php echo JText::_('Badge Image'); ?>:</label></th>
+								<td>
+									<img src="<?php echo $this->badge->get('img_url'); ?>" width="125" />
+								</td>
+							</tr>
+							<tr class="badge-field-toggle">
+								<th class="key"><label for="badge-provider"><?php echo JText::_('Badge Provider'); ?>:</label></th>
+								<td>
+									<?php echo $this->escape(stripslashes($this->badge->get('provider_name'))); ?>
+								</td>
+							<tr class="badge-field-toggle">
+								<th class="key"><label for="badge-criteria"><?php echo JText::_('Badge Criteria'); ?>:</label></th>
+								<td>
+									<textarea name="badge[criteria]" id="badge-criteria" rows="6" cols="50"><?php echo $this->escape(stripslashes($this->badge->get('criteria_text'))); ?></textarea>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				<?php endif; ?>
+			</fieldset>
 		</div>
 	</div>
 
