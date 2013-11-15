@@ -33,63 +33,42 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Base class for a plugin View
  */
-class Hubzero_Plugin_View extends JObject
+class Hubzero_Plugin_View extends \Hubzero\Object
 {
 	/**
 	 * The name of the view
 	 *
 	 * @var		array
-	 * @access protected
 	 */
-	var $_name = null;
-
-	/**
-	 * Registered models
-	 *
-	 * @var		array
-	 * @access protected
-	 */
-	var $_models = array();
+	protected $_name = null;
 
 	/**
 	 * The base path of the view
 	 *
 	 * @var		string
-	 * @access 	protected
 	 */
-	var $_basePath = null;
-
-	/**
-	 * The default model
-	 *
-	 * @var	string
-	 * @access protected
-	 */
-	var $_defaultModel = null;
+	protected $_basePath = null;
 
 	/**
 	 * Layout name
 	 *
 	 * @var		string
-	 * @access 	protected
 	 */
-	var $_layout = 'default';
+	protected $_layout = 'default';
 
 	/**
 	 * Layout extension
 	 *
 	 * @var		string
-	 * @access 	protected
 	 */
-	var $_layoutExt = 'php';
+	protected $_layoutExt = 'php';
 
 	/**
 	* The set of search directories for resources (templates)
 	*
 	* @var array
-	* @access protected
 	*/
-	var $_path = array(
+	protected $_path = array(
 		'template' => array(),
 		'helper'   => array()
 	);
@@ -98,33 +77,29 @@ class Hubzero_Plugin_View extends JObject
 	* The name of the default template source file.
 	*
 	* @var string
-	* @access private
 	*/
-	var $_template = null;
+	protected $_template = null;
 
 	/**
 	* The output of the template script.
 	*
 	* @var string
-	* @access private
 	*/
-	var $_output = null;
+	protected $_output = null;
 
 	/**
 	 * Callback for escaping.
 	 *
 	 * @var	string 
-	 * @access private
 	 */
-	var $_escape = 'htmlspecialchars';
+	protected $_escape = 'htmlspecialchars';
 
 	 /**
 	 * Charset to use in escaping mechanisms; defaults to urf8 (UTF-8)
 	 *
 	 * @var	string 
-	 * @access private
 	 */
-	var $_charset = 'UTF-8';
+	protected $_charset = 'UTF-8';
 
 	/**
 	 * Constructor
@@ -378,12 +353,11 @@ class Hubzero_Plugin_View extends JObject
 	 * @param	string	The name of the model to reference, or the default value [optional]
 	 * @return mixed	The return value of the method
 	 */
-	public function &get($property, $default = null)
+	/*public function &get($property, $default = null)
 	{
 		// degrade to JObject::get
-		$result = parent::get($property, $default);
-		return $result;
-	}
+		return parent::get($property, $default);
+	}*/
 
 	/**
 	* Get the layout.
@@ -410,8 +384,9 @@ class Hubzero_Plugin_View extends JObject
 		if (empty($name))
 		{
 			$r = null;
-			if (!preg_match('/View((view)*(.*(view)?.*))$/i', get_class($this), $r)) {
-				JError::raiseError (500, "Hubzero_Plugin_View::getName() : Cannot get or parse class name.");
+			if (!preg_match('/View((view)*(.*(view)?.*))$/i', get_class($this), $r)) 
+			{
+				JError::raiseError(500, "Hubzero_Plugin_View::getName() : Cannot get or parse class name.");
 			}
 			if (strpos($r[3], "view"))
 			{
@@ -433,9 +408,8 @@ class Hubzero_Plugin_View extends JObject
 	*/
 	public function setLayout($layout)
 	{
-		$previous = $this->_layout;
 		$this->_layout = $layout;
-		return $previous;
+		return $this;
 	}
 
 	/**
@@ -446,12 +420,11 @@ class Hubzero_Plugin_View extends JObject
 	 */
 	public function setLayoutExt($value)
 	{
-		$previous = $this->_layoutExt;
-		if ($value = preg_replace('#[^A-Za-z0-9]#', '', trim($value))) 
+		if ($value = preg_replace('/[^A-Za-z0-9]/', '', trim($value))) 
 		{
 			$this->_layoutExt = $value;
 		}
-		return $previous;
+		return $this;
 	}
 
 	 /**
@@ -463,6 +436,7 @@ class Hubzero_Plugin_View extends JObject
 	public function setEscape($spec)
 	{
 		$this->_escape = $spec;
+		return $this;
 	}
 
 	/**
@@ -474,6 +448,7 @@ class Hubzero_Plugin_View extends JObject
 	public function addTemplatePath($path)
 	{
 		$this->_addPath('template', $path);
+		return $this;
 	}
 
 	/**
@@ -484,21 +459,26 @@ class Hubzero_Plugin_View extends JObject
 	 */
 	public function loadTemplate($tpl = null)
 	{
-		global $mainframe, $option;
+		//global $mainframe, $option;
+		$mainframe = JFactory::getApplication();
 
 		// clear prior output
 		$this->_output = null;
 
-		//create the template file name based on the layout
+		// create the template file name based on the layout
 		$file = isset($tpl) ? $this->_layout . '_' . $tpl : $this->_layout;
+
 		// clean the file name
 		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $file);
 		$tpl  = preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl);
 
 		// load the template script
 		jimport('joomla.filesystem.path');
-		$filetofind = $this->_createFileName('template', array('name' => $file));
-		$this->_template = JPath::find($this->_path['template'], $filetofind);
+
+		$this->_template = JPath::find(
+			$this->_path['template'], 
+			$this->_createFileName('template', array('name' => $file))
+		);
 
 		if ($this->_template != false)
 		{
@@ -525,10 +505,8 @@ class Hubzero_Plugin_View extends JObject
 
 			return $this->_output;
 		}
-		else 
-		{
-			return JError::raiseError(500, 'Layout "' . $file . '" not found');
-		}
+
+		return JError::raiseError(500, 'Layout "' . $file . '" not found');
 	}
 
 	/**
@@ -603,7 +581,7 @@ class Hubzero_Plugin_View extends JObject
 	{
 		$filename = '';
 
-		switch($type)
+		switch ($type)
 		{
 			case 'template':
 				$filename = strtolower($parts['name']) . '.' . $this->_layoutExt;
