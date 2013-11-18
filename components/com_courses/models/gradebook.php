@@ -585,6 +585,71 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
+	 * Check whether or not the student is passing the course and has completed all items
+	 *
+	 * @param      int $member_id
+	 * @return     bool
+	 **/
+	public function isEligibleForRecognition($member_id=null)
+	{
+		// Get a grade policy object
+		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+
+		// Get count of forms take
+		$results = $this->_tbl->getFormCompletionCount($this->course->get('id'), $member_id);
+
+		// Restructure data
+		foreach ($results as $r)
+		{
+			$counts[$r->member_id][$r->subtype] = $r->count;
+		}
+
+		// Get weights to determine what counts toward the final grade
+		$exam_weight     = $gradePolicy->get('exam_weight');
+		$quiz_weight     = $gradePolicy->get('quiz_weight');
+		$homework_weight = $gradePolicy->get('homework_weight');
+
+		// Get count of total forms
+		$totals = $this->_tbl->getFormCount();
+		$return = false;
+
+		if (isset($counts))
+		{
+			if (!is_null($member_id) && !is_array($member_id))
+			{
+				$member_id = (array)$member_id;
+			}
+			else
+			{
+				$member_id = array();
+				foreach ($this->course->offering()->section()->members() as $m)
+				{
+					$member_id[] = $m->get('id');
+				}
+			}
+
+			// Loop though the users
+			foreach ($member_id as $m)
+			{
+				$passing = $this->passing(true, $m);
+
+				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
+				if (
+					($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']->count     == $counts[$m]['exam']))     &&
+					($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']->count     == $counts[$m]['quiz']))     &&
+					($homework_weight == 0 || ($homework_weight > 0 && $totals['homework']->count == $counts[$m]['homework'])) &&
+					$passing[$m]
+					)
+				{
+					$return[] = $m;
+				}
+			}
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Check whether or not the student(s) have earned a badge
 	 *
 	 * @param      int $member_id
@@ -592,91 +657,48 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 **/
 	public function hasEarnedBadge($member_id=null)
 	{
-		// Check whether or not their eligable for a badge at this point
+		// Check whether or not they're eligable for a badge at this point
 		// First, does this course even offers a badge
 		if ($this->course->offering()->section()->badge()->isAvailable())
 		{
-			// Get a grade policy object
-			$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+			$members = $this->isEligibleForRecognition($member_id);
 
-			// Get count of forms take
-			$results = $this->_tbl->getFormCompletionCount($this->course->get('id'), $member_id);
-
-			// Restructure data
-			foreach ($results as $r)
+			if ($members && count($members) > 0)
 			{
-				$counts[$r->member_id][$r->subtype] = $r->count;
-			}
-
-			// Get weights to determine what counts toward the final grade
-			$exam_weight     = $gradePolicy->get('exam_weight');
-			$quiz_weight     = $gradePolicy->get('quiz_weight');
-			$homework_weight = $gradePolicy->get('homework_weight');
-
-			// Get count of total forms
-			$totals = $this->_tbl->getFormCount();
-
-			if (isset($counts))
-			{
-				if (!is_null($member_id) && !is_array($member_id))
+				foreach ($members as $m)
 				{
-					$member_id = (array)$member_id;
-				}
-				else
-				{
-					$member_id = array();
-					foreach ($this->course->offering()->section()->members() as $m)
+					// Mark student as having earned badge
+					$badge = CoursesModelMemberBadge::loadByMemberId($m);
+					$sb    = CoursesModelSectionBadge::loadBySectionId($this->course->offering()->section()->get('id'));
+					if (is_object($badge) && !$badge->hasEarned())
 					{
-						$member_id[] = $m->get('id');
-					}
-				}
+						$badge->set('member_id', $m);
+						$badge->set('section_badge_id', $sb->get('id'));
+						$badge->set('earned', 1);
+						$badge->set('earned_on', JFactory::getDate()->toSql());
+						$badge->set('criteria_id', $sb->get('criteria_id'));
+						$badge->store();
 
-				// Loop though the users
-				foreach ($member_id as $m)
-				{
-					$passing = $this->passing(true, $m);
+						// Tell the badge provider that they've earned the badge
+						$badgesHandler  = new Hubzero_Badges(strtoupper($sb->get('provider_name')));
+						$badgesProvider = $badgesHandler->getProvider();
 
-					// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
-					if (
-						($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']->count     == $counts[$m]['exam']))     &&
-						($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']->count     == $counts[$m]['quiz']))     &&
-						($homework_weight == 0 || ($homework_weight > 0 && $totals['homework']->count == $counts[$m]['homework'])) &&
-						$passing[$m]
-						)
-					{
-						// Mark student as having earned badge
-						$badge = CoursesModelMemberBadge::loadByMemberId($m);
-						$sb    = CoursesModelSectionBadge::loadBySectionId($this->course->offering()->section()->get('id'));
-						if (is_object($badge) && !$badge->hasEarned())
-						{
-							$badge->set('member_id', $m);
-							$badge->set('section_badge_id', $sb->get('id'));
-							$badge->set('earned', 1);
-							$badge->set('earned_on', JFactory::getDate()->toSql());
-							$badge->set('criteria_id', $sb->get('criteria_id'));
-							$badge->store();
+						$credentials->consumer_key    = $this->config()->get($sb->get('provider_name').'_consumer_key');
+						$credentials->consumer_secret = $this->config()->get($sb->get('provider_name').'_consumer_secret');
+						$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
+						$badgesProvider->setCredentials($credentials);
 
-							// Tell the badge provider that they've earned the badge
-							$badgesHandler  = new Hubzero_Badges(strtoupper($sb->get('provider_name')));
-							$badgesProvider = $badgesHandler->getProvider();
+						$memberTbl = new CoursesTableMember(JFactory::getDBO());
+						$memberTbl->loadByMemberId($m);
+						$user_id = $memberTbl->get('user_id');
 
-							$credentials->consumer_key    = $this->config()->get($sb->get('provider_name').'_consumer_key');
-							$credentials->consumer_secret = $this->config()->get($sb->get('provider_name').'_consumer_secret');
-							$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
-							$badgesProvider->setCredentials($credentials);
+						$data->id           = $sb->get('provider_badge_id');
+						$data->evidenceUrl  = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $sb->get('id') . DS . 'validation' . DS . $badge->get('validation_token');;
+						$users              = array();
+						$users[]            = JFactory::getUser($user_id)->get('email');
 
-							$memberTbl = new CoursesTableMember(JFactory::getDBO());
-							$memberTbl->loadByMemberId($m);
-							$user_id = $memberTbl->get('user_id');
-
-							$data->id           = $sb->get('provider_badge_id');
-							$data->evidenceUrl  = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $sb->get('id') . DS . 'validation' . DS . $badge->get('validation_token');;
-							$users              = array();
-							$users[]            = JFactory::getUser($user_id)->get('email');
-
-							// Publish assertion
-							$badgesProvider->grantBadge($data, $users);
-						}
+						// Publish assertion
+						$badgesProvider->grantBadge($data, $users);
 					}
 				}
 			}

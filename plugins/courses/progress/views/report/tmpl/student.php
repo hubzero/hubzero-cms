@@ -233,7 +233,7 @@ $units     = $this->course->offering()->units();
 $num_units = $units->total();
 $index     = 1;
 $current_i = 0;
-$finished  = $student->badge()->hasEarned() ? ' finished' : '';
+$finished  = $this->course->offering()->gradebook()->isEligibleForRecognition($this->member->get('id')) ? ' finished' : '';
 
 // Build the progress timeline bar
 $progress_timeline  = "<div class=\"progress-timeline length_{$num_units}\">";
@@ -317,7 +317,7 @@ $progress_timeline .= '</div>';
 	</div>
 <? endif; ?>
 
-<?php if ($this->course->config()->get('certificate', '') && $student->badge()->hasEarned()) : ?>
+<?php if ($this->course->config()->get('certificate', '') && $this->course->offering()->gradebook()->isEligibleForRecognition($this->member->get('id'))) : ?>
 	<div class="recognition certificate earned">
 		<h3>Congratulations!</h3>
 		<p>
