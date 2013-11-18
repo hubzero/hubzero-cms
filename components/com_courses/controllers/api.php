@@ -682,6 +682,62 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			}
 		}
 
+		// Check to see if the asset should be a link to a tool
+		if($tool_param = JRequest::getInt('tool_param', false))
+		{
+			$config = JComponentHelper::getParams('com_courses');
+
+			// Make sure the tool path parameter is set
+			if ($config->get('tool_path'))
+			{
+				$tool_alias = JRequest::getWord('tool_alias');
+				$tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
+				$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
+				$file       = JFolder::files(JPATH_ROOT . $asset_path);
+
+				// We're assuming there's only one file there...
+				if (isset($file[0]) && !empty($file[0]))
+				{
+					$param_path = $tool_path . $asset->get('id') . DS . $file[0];
+
+					// See if the file exists, and if not, copy the file there
+					if (!is_dir(dirname($param_path)))
+					{
+						mkdir(dirname($param_path));
+					}
+					else
+					{
+						if (!is_file(JPATH_ROOT . $asset_path . DS . $file[0], $param_path))
+						{
+							copy(JPATH_ROOT . $asset_path . DS . $file[0], $param_path);
+						}
+					}
+
+					// Set the type and build the invoke url with file param
+					$asset->set('type',    'url');
+					$asset->set('subtype', 'tool');
+					$asset->set('url',     '/tools/'.$tool_alias.'/invoke/current?params=file:'.$param_path);
+				}
+			}
+		}
+		else if ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool')
+		{
+			// This is the scenario where it was a tool launch link, but the box was unchecked
+			$config     = JComponentHelper::getParams('com_courses');
+			$tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
+			$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
+			$file       = JFolder::files(JPATH_ROOT . $asset_path);
+			$param_path = $tool_path . $asset->get('id') . DS . $file[0];
+
+			// Delete the file (it still exists in the site directory)
+			unlink($param_path);
+
+			// Reset type and subtype to file
+			$asset->set('type',    'file');
+			$asset->set('subtype', 'file');
+			$asset->set('url',     $file[0]);
+		}
+
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
 		if(!$id)
 		{
@@ -1180,14 +1236,14 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		$this->_response->setErrorMessage(404, 'Not found');
 		return;
 	}
-	
+
 	/**
 	 * Helper function to check whether or not someone is using oauth and authorized to use this call
 	 * 
 	 * @return bool - true if in group, false otherwise
 	 */
 	private function authorize_call()
-	{		
+	{
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$user = Hubzero_User_Profile::getInstance($userid);
@@ -1197,60 +1253,56 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$this->errorMessage(401, 'You don\'t have permission to do this');
 			return;
 		}
-		
+
 		// Get the requested path
-		$path = ($this->getRequest()->get('path'));		
-		
+		$path = ($this->getRequest()->get('path'));
+
 		// Do access check
-		/* 
-			The following assumption is made: the code check only permissions for the closest parent. Parent's parent permissions are not inherited.
-		*/
-		
+		// @NOTE: The following assumption is made: the code check only permissions for the closest parent. Parent's parent permissions are not inherited.
+
 		// First find the closest matching permission (closest parent, longest path).
-		
 		$sql = 'SELECT `path` FROM `#__api_permissions`
 				WHERE INSTR(' . $this->db->quote($path) . ', `path`) = 1
 				GROUP BY LENGTH(`path`)
 				ORDER BY LENGTH(`path`) DESC
 				LIMIT 1';
-				
+
 		$this->db->setQuery($sql);
-		$this->db->query();	
-		
+		$this->db->query();
+
 		// Check if there is a match, if no match, no permissions set, good to go
 		if (!$this->db->getNumRows())
 		{
 			return true;
 		}
-		
-		$permissions_path = $this->db->loadResult();			
+
+		$permissions_path = $this->db->loadResult();
 
 		// Get all groups the current user is a member of
 		$user_groups = $user->getGroups('members');
-		
+
 		// Next see if the user is allowed to make this call
 		$sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = ' . $this->db->quote($permissions_path) . ' AND 
 				(`user_id` = ' . $this->db->quote($userid) . ' OR 0';
-		
+
 		foreach ($user_groups as $group)
 		{
 			$sql .= ' OR `group_id` = ' . $this->db->quote($group->gidNumber);
 		}
-		
+
 		$sql .= ')';
 		$this->db->setQuery($sql);
 		$this->db->query();
-		
+
 		// There is a match, permission granted
 		if ($this->db->getNumRows())
 		{
-			return true;	
+			return true;
 		}
-				
+
 		// No match, too bad. Unauthorized
 		$this->errorMessage(401, 'You don\'t have permission to make this call');
 		return;
-		
 	}
 
 	/**

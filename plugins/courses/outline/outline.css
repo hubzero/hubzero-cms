@@ -260,10 +260,13 @@
 		content: "\26D3";
 	}
 	.object:after {
-		content: "\f0c3";
+		content: "\f0c2";
 	}
 	.swf:after {
 		content: "\f03d";
+	}
+	.tool:after {
+		content: "\f0c3";
 	}
 
 /* lecture */

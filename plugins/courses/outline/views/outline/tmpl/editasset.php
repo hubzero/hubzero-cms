@@ -43,6 +43,10 @@ foreach ($this->course->offering()->units() as $unit) :
 		endforeach;
 	endforeach;
 endforeach;
+
+$tools     = Hubzero_Tool::getMyTools();
+$config    = JComponentHelper::getParams('com_courses');
+$tool_path = $config->get('tool_path');
 ?>
 
 <div class="edit-asset">
@@ -80,6 +84,7 @@ endforeach;
 				<option value="note"<?php if ($asset->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
 				<option value="wiki"<?php if ($asset->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('Wiki'); ?></option>
 				<option value="link"<?php if ($asset->get('subtype') == 'link') { echo ' selected="selected"'; } ?>><?php echo JText::_('Link'); ?></option>
+				<option value="tool"<?php if ($asset->get('subtype') == 'tool') { echo ' selected="selected"'; } ?>><?php echo JText::_('Tool'); ?></option>
 			</select>
 		</p>
 		<p>
@@ -91,6 +96,25 @@ endforeach;
 				<? endforeach; ?>
 			</select>
 		</p>
+
+		<?php if ($tool_path
+				&& $tools
+				&& count($tools) > 0
+				&& (($asset->get('type') == 'file' && $asset->get('subtype') == 'file')
+					|| ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool'))) : ?>
+			<p>
+				<label for="tool_param">Launch a tool with this file?</label>
+				<input name="tool_param" class="tool-param" type="checkbox" value="1" <?php echo ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool') ? 'checked="checked"' : ''; ?>/>
+
+				<select class="tool-list" name="tool_alias">
+					<? foreach ($tools as $tool) : ?>
+						<? preg_match('/\/tools\/([0-9a-z]+)\//', $asset->get('url'), $substr); ?>
+						<? $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias) ? 'selected="selected"' : ''; ?>
+						<option value="<?= $tool->alias ?>" <?= $selected ?>><?= $tool->title ?></option>
+					<? endforeach; ?>
+				</select>
+			</p>
+		<?php endif; ?>
 
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
