@@ -162,10 +162,10 @@ class Hubzero_Migration
 		// Try to figure out the date of the last file run
 		try
 		{
-			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `date` DESC LIMIT 1');
+			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `file` DESC LIMIT 1');
 			$rowup = self::$db->loadAssoc();
 
-			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\' ORDER BY `date` DESC LIMIT 1');
+			self::$db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\' ORDER BY `file` DESC LIMIT 1');
 			$rowdown = self::$db->loadAssoc();
 
 			if (count($rowup) > 0)
