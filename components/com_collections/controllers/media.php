@@ -55,16 +55,23 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		$asset = CollectionsModelAsset::getInstance($file, $post->get('item_id'));
 
 		// Ensure record exist
-		if (!$asset->get('id')) 
+		if (!$asset->get('id') || $post->item()->get('state') == 2) 
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND') . ' (no ID found)');
+			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
+			return;
+		}
+
+		// Check authorization
+		if ($post->item()->get('access') == 4 && $this->juser->get('guest'))
+		{
+			JError::raiseError(403, JText::_('You do not have access to this file.'));
 			return;
 		}
 
 		// Ensure we have a path
 		if (!$asset->get('filename')) 
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND') . ' (no filename found)');
+			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
 			return;
 		}
 
