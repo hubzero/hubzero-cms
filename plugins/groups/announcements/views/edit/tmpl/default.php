@@ -141,6 +141,15 @@ Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 					</div>
 				</div>
 			</fieldset>
+			
+			<label for="field-email" id="email-label">
+				<input class="option" type="checkbox" name="fields[email]" id="field-email" value="1" checked="checked" /> 
+				<?php if ($this->announcement->sent == 1) : ?>
+					<span class="important"><?php echo JText::_('Announcement already emailed, send again?'); ?></span>
+				<?php else : ?>
+					<?php echo JText::_('Email announcement to group members?'); ?>
+				<?php endif; ?>
+			</label>
 
 			<label for="field-priority" id="priority-label">
 				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->announcement->get('priority')) { echo ' checked="checked"'; } ?> /> 
