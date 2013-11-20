@@ -156,24 +156,24 @@ class Migration20130924000011ComModules extends Hubzero_Migration
 						$ar2 = explode("=", $a, 2);
 
 						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
+					}
 
-						if ($r->module == 'mod_breadcrumbs')
-						{
-							$array['showHere'] = 0;
-						}
-						else if ($r->module == 'mod_newsflash')
-						{
-							$query = "UPDATE `#__modules` SET `module` = 'mod_articles_news' WHERE `id` = {$r->id};";
-							$db->setQuery($query);
-							$db->query();
+					if ($r->module == 'mod_breadcrumbs')
+					{
+						$array['showHere'] = 0;
+					}
+					else if ($r->module == 'mod_newsflash')
+					{
+						$query = "UPDATE `#__modules` SET `module` = 'mod_articles_news' WHERE `id` = {$r->id};";
+						$db->setQuery($query);
+						$db->query();
 
-							// Update a few param names
-							$array['item_heading'] = 'h4';
-							$array['count']        = $array['items'];
-							$array['ordering']     = "a.publish_up";
-							$array['layout']       = "_:vertical";
-							$array['cachemode']    = "itemid";
-						}
+						// Update a few param names
+						$array['item_heading'] = 'h4';
+						$array['count']        = $array['items'];
+						$array['ordering']     = "a.publish_up";
+						$array['layout']       = "_:vertical";
+						$array['cachemode']    = "itemid";
 					}
 
 					$query = "UPDATE `#__modules` SET `params` = " . $db->Quote(json_encode($array)) . " WHERE `id` = {$r->id};";
