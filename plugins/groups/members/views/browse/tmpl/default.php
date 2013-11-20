@@ -60,6 +60,7 @@ if ($this->role_filter)
 		}
 	}
 }
+$option = 'com_groups';
 ?>
 <?php if ($this->membership_control == 1) { ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
