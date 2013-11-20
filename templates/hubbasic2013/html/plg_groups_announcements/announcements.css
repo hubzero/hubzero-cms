@@ -1,5 +1,5 @@
 @import url('/plugins/groups/announcements/announcements.css');
 
-.scontainer .announcement-container {
+.scontainer .announcement-container:last-child {
 	margin: 0 0 20px 0;
 }
