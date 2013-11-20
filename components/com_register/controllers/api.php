@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 JLoader::import('Hubzero.Api.Controller');
 
 /**
- * API controller for the time component
+ * API controller
  */
 class RegisterControllerApi extends Hubzero_Api_Controller
 {

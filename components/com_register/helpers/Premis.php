@@ -38,7 +38,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class Hubzero_Register_Premis
 {
-	
 	/**
 	 * Check if hub member is linked to a PREMIS id
 	 * 
@@ -199,7 +198,7 @@ class Hubzero_Register_Premis
 		foreach ($add as $val)
 		{
 			$tmp = explode('section', $val);
-			$addValues[] = $tmp[1];
+			$addValues[] = (int) $tmp[1];
 		}
 		
 		$add = $addValues;		
@@ -209,7 +208,7 @@ class Hubzero_Register_Premis
 		foreach ($drop as $val)
 		{
 			$tmp = explode('section', $val);
-			$dropValues[] = $tmp[1];
+			$dropValues[] = (int) $tmp[1];
 		}
 		
 		$drop = $dropValues;		
@@ -372,6 +371,8 @@ class Hubzero_Register_Premis
 				{
 					//$result = Hubzero_User_Password::changePassword($target_xprofile->get('username'), $xregistration->get('password'), true);
 					Hubzero_User_Password::changePasshash($target_xprofile->get('username'), $xregistration->get('password'));
+					// Make the password expired
+					//Hubzero_User_Password::expirePassword($target_xprofile->get('username')); 
 				}
 				$userId = $target_juser->get('id');
 				

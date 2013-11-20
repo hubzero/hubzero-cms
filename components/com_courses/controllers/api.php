@@ -1244,14 +1244,19 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 	 */
 	private function authorize_call()
 	{
+		$postdata    = ($this->getRequest()->get('postdata'));
+		$consumerKey = $postdata['oauth_consumer_key'];
+
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$user = Hubzero_User_Profile::getInstance($userid);
 		//make sure we have a user
 		if ($user === false)
 		{
+			/*
 			$this->errorMessage(401, 'You don\'t have permission to do this');
 			return;
+			*/
 		}
 
 		// Get the requested path
@@ -1279,11 +1284,15 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		$permissions_path = $this->db->loadResult();
 
 		// Get all groups the current user is a member of
-		$user_groups = $user->getGroups('members');
+		$user_groups = array();
+		if (!empty($user))
+		{
+			$user_groups = $user->getGroups('members');
+		}
 
 		// Next see if the user is allowed to make this call
 		$sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = ' . $this->db->quote($permissions_path) . ' AND 
-				(`user_id` = ' . $this->db->quote($userid) . ' OR 0';
+				(`user_id` = ' . $this->db->quote($userid) . ' OR `consumer_key` = ' . $this->db->quote($consumerKey) . ' OR 0';
 
 		foreach ($user_groups as $group)
 		{

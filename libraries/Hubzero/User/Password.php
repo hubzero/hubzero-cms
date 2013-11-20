@@ -726,21 +726,21 @@ class Hubzero_User_Password
 	public function invalidatePassword($user = null)
 	{
 		$hzup = self::getInstance($user);
-		
+
 		$hzup->__set('shadowFlag', '-1');
 		$hzup->update();
-		
+
 		return true;
 	}
-	
+
 	public function expirePassword($user = null)
 	{
 		$hzup = self::getInstance($user);
-		
+
 		$hzup->__set('shadowLastChange', '1');
 		$hzup->__set('shadowMax', '0');
 		$hzup->update();
-		
+
 		return true;
 	}
 }
