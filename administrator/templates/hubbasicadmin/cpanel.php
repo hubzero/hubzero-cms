@@ -182,7 +182,7 @@ $juser =& JFactory::getUser();
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<?php echo $app->getCfg('sitename'); ?></a> &copy; <?php echo date("Y"); ?>. All Rights Reserved.
+					<a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a> &copy; <?php echo date("Y"); ?>. All Rights Reserved.
 				</p>
 				<p class="promotion">
 					<a rel="external" href="http://hubzero.org">Powered by <a href="http://hubzero.org">HUBzero&reg; CMS</a>.</a>
