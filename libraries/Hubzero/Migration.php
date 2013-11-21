@@ -474,6 +474,17 @@ class Hubzero_Migration
 				{
 					if (is_numeric($this->last_run[$direction]) && $date <= $this->last_run[$direction] && !$force)
 					{
+						// This migration is older than the current, but let's see if we should inform that it should still be run
+						self::$db->setQuery("SELECT `direction` FROM migrations WHERE `file` = " . self::$db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
+						$row = self::$db->loadResult();
+
+						// Check if last run was either not in the current direction we're going,
+						// or if it hasn't been run at all and we're not going down
+						if ($row != $direction || (!$row && $direction != 'down'))
+						{
+							$this->log("Migration {$direction}() in {$file} has not been run and should be (by using the -i option)");
+						}
+
 						continue;
 					}
 				}
