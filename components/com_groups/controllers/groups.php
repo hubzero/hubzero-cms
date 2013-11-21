@@ -720,7 +720,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$log = new XGroupLog($this->database);
 		$log->gid = $group->get('gidNumber');
 		$log->uid = $this->juser->get('id');
-		$log->timestamp = JFactory::getDate();
+		$log->timestamp = JFactory::getDate()->toSql();
 		$log->actorid = $this->juser->get('id');
 
 		// Rename the temporary upload directory if it exist
