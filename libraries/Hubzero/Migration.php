@@ -609,7 +609,26 @@ class Hubzero_Migration
 				{
 					try
 					{
-						$class::$direction(self::$db);
+						$result = $class::$direction(self::$db);
+
+						if (is_object($result) && isset($result->error))
+						{
+							if (isset($result->error->type) && $result->error->type == 'fatal')
+							{
+								// Completely failed...stop immediately
+								$message = (isset($result->error->message) && !empty($result->error->message)) ? $result->error->message : '[no message provided]';
+								$this->log("Error: running {$direction}() resulted in a fatal error in {$file}: {$message}");
+								return false;
+							}
+							else if (isset($result->error->type) && $result->error->type == 'warning')
+							{
+								// Just a warning...display message and carry on (my wayward son)
+								$message = (isset($result->error->message) && !empty($result->error->message)) ? $result->error->message : '[no message provided]';
+								$this->log("Warning: running {$direction}() resulted in a non-fatal error in {$file}: {$message}");
+								// Continue...i.e. don't log that this migration was run, so it shows up again on the next run
+								continue;
+							}
+						}
 
 						$this->recordMigration($file, $hash, $direction);
 						$this->log("Running {$direction}() in {$file}");
