@@ -18,68 +18,51 @@
 	var methods = {},
 		defaults = {
 			hideSelect: true,
+			showSearch: false,
+			searchPlaceholder: 'Search...',
+			maxHeightWithSearch: 500,
+			onSearch: function() {},
 			onSelected: function() {}
 		};
-		
+	
 	methods.init = function( options ) {
 		var settings = $.extend({}, defaults, options);
 		return this.each(function(){
 			var $this = $(this),
 				dropdown = '',
-				options = $("option", $this),
-				selected = $this.find('option[selected="selected"]');
+				children = $this.children();
 			
-			//make sure we have a selected index
-			if ($(selected).text() == undefined || $(selected).text() == '')
+			// must be a select element
+			if (!$this.is('select'))
 			{
-				selected = options.first();
+				return 'Must be <select> element';
 			}
 			
-			//set random #
+			//set random #id
 			$this.data('fancyselect', {
 				id: Math.floor((Math.random()*1000)+1),
 				settings: settings
 			});
 			
-			var img = ($(selected).attr('data-img') != undefined && $(selected).attr('data-img') != '') ? $(selected).attr('data-img') : '';
+			// create dropdown
+			dropdown = $('<div class="fs-dropdown" id="fs-dropdown-' + $this.data('fancyselect').id + '"></div>')
+				.append($('<ul></ul>')
+					.append($('<li class="fs-dropdown-selected"></li>')
+						.append($('<a href="" class="fs-dropdown-selected-item"><span>&nbsp;</span></a>'))
+						.append($('<div class="fs-dropdown-options-container"></div>')
+							.append(processChildren(children, 'fs-dropdown-options'))
+						)
+					)
+				);
 			
-			//create dropdown
-			dropdown = '<div class="fs-dropdown" id="fs-dropdown-' + $this.data('fancyselect').id + '">';
-			dropdown += '<ul>'
-			dropdown += '<li class="fs-dropdown-selected">';
-			dropdown += '<a class="fs-dropdown-selected-item" href="javascript:void(0);">';
-			dropdown += '<span class="fs-dropdown-selected-image">';
-			dropdown += getOptionImg(selected);
-			dropdown += '</span>';
-			dropdown += '<span>' + $(selected).text() + '</span>';
-			dropdown += '</a>';
-			dropdown += '<ul class="fs-dropdown-options">';
-			
-			//add options
-			options.each(function() {
-				var cls = ($(this).val() == $(selected).val()) ? 'fs-dropdown-option-selected' : '',
-					img = ($(this).attr('data-img')) ? $(this).attr('data-img') : '',
-					color = ($(this).attr('data-color')) ? $(this).attr('data-color') : '';
-				
-				dropdown += '<li class="fs-dropdown-option ' + cls + '">';
-				dropdown += '<a href="javascript:void(0);" data-value="' + $(this).val() + '" data-text="' + $(this).text() + '" data-img="' + img + '"  data-color="' +  color + '">';
-				dropdown += '<span class="fs-dropdown-option-image">';
-				dropdown += getOptionImg(this);
-				dropdown += '</span>'
-				dropdown += '<span>' + $(this).text() + '</span>';
-				dropdown += '</a>';
-				dropdown += '</li>';
-			});
-			
-			dropdown += '</ul>';
-			dropdown += '</li>';
-			dropdown += '</ul>'
-			dropdown += '</div>'
-			
-			//hide select box
-			if(settings.hideSelect)
+				//show search
+			if (settings.showSearch) 
 			{
-				$this.hide();
+				dropdown.find('.fs-dropdown-options-container')
+					.prepend($('<div class="fs-dropdown-options-search"></div>')
+						.append($('<input type="text" placeholder="' + settings.searchPlaceholder + '" />'))
+					)
+					.find('.fs-dropdown-options').css('max-height', settings.maxHeightWithSearch)
 			}
 			
 			//append drop down
@@ -87,51 +70,131 @@
 			
 			//add event triggers
 			addEventHooks( $this );
+			
+			//hide select box
+			if(settings.hideSelect)
+			{
+				$this.hide();
+			}
+			
+			// select selected option
+			methods.selectValue.call($this, $this.find('option:selected').val(), false);
 		});
 	};
-	
-	methods.selectValue = function( value ) {
+		
+	methods.selectValue = function( value, callSelected ) {
 		return this.each(function(){
-			
 			$('#fs-dropdown-' + $(this).data('fancyselect').id)
 				.find('.fs-dropdown-option a[data-value=' + value + ']')
-				.trigger('click');
-			
+				.trigger('click', callSelected);
 		});
 	};
 	
-	methods.selectText = function( value ) {
+	methods.selectText = function( value, callSelected ) {
 		return this.each(function(){
-			
 			$('#fs-dropdown-' + $(this).data('fancyselect').id)
 				.find('.fs-dropdown-option a span:contains(' + value + ')')
 				.parent('a')
-				.trigger('click');
-				
+				.trigger('click', callSelected);
 		});
 	};
 	
 	methods.clear = function() {
 		return this.each(function(){
-			
 			$('#fs-dropdown-' + $(this).data('fancyselect').id)
 				.find('.fs-dropdown-option a')
 				.first()
 				.trigger('click');
-			
 		});
 	};
 	
-	function getOptionImg( object )
+	methods.filterOptions = function( term ) {
+		return this.each(function(){
+			
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				.find('li.fs-dropdown-option').hide();
+				
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				.find('li.fs-dropdown-option a[data-value!=\'\']:caseInsensitiveContains("'+term+'")').parents('li').show();
+				
+			if (term == '')
+			{
+				methods.filterReset.call($(this));
+			}
+			// highlight terms
+			$('#fs-dropdown-' + $(this).data('fancyselect').id + ' .fs-dropdown-option:visible a span').unhighlight();
+			$('#fs-dropdown-' + $(this).data('fancyselect').id + ' .fs-dropdown-option:visible a span').highlight(term);
+		});
+	};
+	
+	methods.filterReset = function() {
+		return this.each(function(){
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				 .find('.fs-dropdown-option a span').unhighlight();
+			
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				.find('li.fs-dropdown-option').show();
+				
+			$('#fs-dropdown-' + $(this).data('fancyselect').id)
+				.find('.fs-dropdown-options-search input').val('');
+		});
+	};
+	
+	// jquery case insensitve search
+	jQuery.expr[':'].caseInsensitiveContains = function(a,i,m) {
+		return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0; 
+	};
+	
+	function processChildren( children, className )
 	{
-		var obj = $(object),
-			img = obj.attr('data-img'),
-			color = obj.attr('data-color');
+		var options = $('<ul class="'+className+'"></ul>');
+		children.each(function(i, element){
+			var $element = $(element);
+			
+			if ($element.is('option'))
+			{
+				 options.append(option($element));
+			}
+			else if($element.is('optgroup'))
+			{
+				options.append(optgroup($element));
+			}
+		});
+		
+		return options;
+	}
+	
+	function option( option )
+	{
+		return $('<li class="fs-dropdown-option"></li>')
+					.append($('<a href="javascript:void(0);"></a>')
+						.attr('data-value', option.val())
+						.attr('data-text', option.text())
+						.attr('data-img', option.attr('data-img'))
+						.attr('data-color', option.attr('data-color'))
+							.append(optionImgOrColor(option))
+							.append($('<span>' + option.text() + '</span>'))
+					);
+		
+	}
+	
+	function optgroup( optgroup )
+	{
+		var options = processChildren(optgroup.children('option'),'fs-dropdown-options-group');
+		options.prepend('<li class="fs-dropdown-label">' + optgroup.attr('label') + '</li>');
+		return options;
+	}
+	
+	function optionImgOrColor( option )
+	{
+		var $opt  = $(option),
+			img   = $opt.attr('data-img'),
+			color = $opt.attr('data-color');
 		
 		// do we have an image
 		if (img != '' && img != undefined)
 		{
-			return '<img src="' + img + '" />'
+			return '<img class="fs-option-image" src="' + img + '" />'
 		}
 		
 		// do we have an image
@@ -140,7 +203,7 @@
 			return '<div class="fs-option-color" style="background-color:' + color + '"></div>'
 		}
 		
-		return ''
+		return '';
 	}
 	
 	function addEventHooks( object )
@@ -162,41 +225,84 @@
 		});
 		
 		//selected elements
-		dropdown.on('click', '.fs-dropdown-option a', function(event){
-			event.preventDefault();
+		dropdown
+			.on('click', '.fs-dropdown-option a', function(event, runOnSelected){
+				event.preventDefault();
+				runOnSelected = (runOnSelected != null) ? runOnSelected : true;
+				
+				var selected = $(this),
+					value = selected.attr('data-value'),
+					text = selected.attr('data-text'),
+					img = selected.attr('data-img');
 			
-			var selected = $(this),
-				value = selected.attr('data-value'),
-				text = selected.attr('data-text'),
-				img = selected.attr('data-img');
+				$(this).parents('.fs-dropdown-options').find('li').removeClass('fs-dropdown-option-selected');
+				$(this).parent('li').addClass('fs-dropdown-option-selected');
 			
-			$(this).parents('.fs-dropdown-options').find('li').removeClass('fs-dropdown-option-selected');
-			$(this).parent('li').addClass('fs-dropdown-option-selected');
+				//set the text of selected item
+				dropdown.find('.fs-dropdown-selected-item span').text(text);
 			
-			//set the text of selected item
-			dropdown.find('.fs-dropdown-selected-item span').text(text);
+				// remove any selected item colors or images
+				dropdown.find('.fs-dropdown-selected-item .fs-option-image').remove();
+				dropdown.find('.fs-dropdown-selected-item .fs-option-color').remove();
+				
+				// add new color or image
+				dropdown.find('.fs-dropdown-selected-item').prepend(optionImgOrColor(selected));
 			
-			//set the text of selected item
-			dropdown.find('.fs-dropdown-selected-image').html(getOptionImg(selected));
+				//find original select and set value
+				dropdown.next('select').val( value );
 			
-			//find original select and set value
-			dropdown.next('select').val( value );
+				//run on open function
+				if (typeof data.settings.onSelected == 'function' && runOnSelected)
+				{
+					data.settings.onSelected.call(this, data, {'value':value,'text':text,'image':img});
+				}
 			
-			//run on open function
-			if (typeof data.settings.onSelected == 'function')
-			{
-				data.settings.onSelected.call(this, data, {'value':value,'text':text,'image':img});
-			}
-			
-			//close dropdown
-			closeDropdown( object );
-		})
+				//close dropdown
+				closeDropdown( object );
+			})
+			.on('keyup', '.fs-dropdown-options-search input', function(event) {
+				// get search term
+				var searchTerm = $(this).val();
+				
+				//  filter options based on search terms
+				methods.filterOptions.call(object, searchTerm);
+			})
+			.on('keydown', function(event) {
+				
+				// only do the following if we have an open fancy select
+				if ($('.fs-dropdown-open').length)
+				{
+					var key     = event.keyCode,
+						focused = $('.fs-dropdown-open').find('a:focus').parent('li.fs-dropdown-option');
+					
+					// stop browser default for up & down
+					if (key == 38 || key == 40)
+					{
+						event.preventDefault();
+					}
+					
+					// focus the next or prev entry
+					if (key == 38)
+					{
+						focused.prev('li').find('a').focus();
+					}
+					else if (key == 40)
+					{
+						focused.next('li').find('a').focus();
+					}
+				}
+			});
 		
-		//click to close
-		$('body').on('click', function(event) {
-			closeAllOpenDropdowns();
-		});
+		//click to close but make sure were not searching
+		$('body')
+			.on('click', function(event) {
+				if (event.target.nodeName.toLowerCase() != 'input')
+				{
+					closeAllOpenDropdowns();
+				}
+			});
 	}
+	
 	
 	function openDowndown( object )
 	{
@@ -208,13 +314,16 @@
 		
 		//get needed objects
 		var dropdown = $('#fs-dropdown-' + data.id),
-			dropdownOptions = dropdown.find('.fs-dropdown-options');
+			dropdownOptions = dropdown.find('.fs-dropdown-options-container');
 		
 		//show options
-		dropdownOptions.hide().css('left','0').slideDown(200, function(){
+		dropdownOptions.hide().css('left','0').slideDown(100, function(){
 			//add open class
 			dropdown.addClass('fs-dropdown-open');
 		});
+		
+		//focus on selected option
+		dropdown.find('.fs-dropdown-options li.fs-dropdown-option-selected a').focus();
 	}
 	
 	function closeDropdown( object )
@@ -222,25 +331,88 @@
 		//get data
 		var data = object.data('fancyselect'),
 			dropdown = $('#fs-dropdown-' + data.id),
-			dropdownOptions = dropdown.find('.fs-dropdown-options');
+			dropdownOptions = dropdown.find('.fs-dropdown-options-container');
 		
 		//hide options
-		dropdownOptions.slideUp(350, function(){
+		dropdownOptions.slideUp(50, function(){
 			//add open class
 			dropdown.removeClass('fs-dropdown-open');
 			
 			//css position
 			$(this).css('left', '-9999px');
+		
+			// reset search
+			methods.filterReset.call( object );
 		});
 	}
 	
 	function closeAllOpenDropdowns()
 	{
 		$('.fs-dropdown-open').each(function() {
-			$(this).removeClass('fs-dropdown-open');
-			$(this).find('.fs-dropdown-options').slideUp(100, function(){
-				$(this).css('left', '-9999px');
-			});
+			closeDropdown($(this).next('select'));
 		});
 	}
 })( jQuery, window, document );
+
+jQuery.extend({
+    highlight: function (node, re, nodeName, className) {
+        if (node.nodeType === 3) {
+            var match = node.data.match(re);
+            if (match) {
+                var highlight = document.createElement(nodeName || 'span');
+                highlight.className = className || 'highlight';
+                var wordNode = node.splitText(match.index);
+                wordNode.splitText(match[0].length);
+                var wordClone = wordNode.cloneNode(true);
+                highlight.appendChild(wordClone);
+                wordNode.parentNode.replaceChild(highlight, wordNode);
+                return 1; //skip added node in parent
+            }
+        } else if ((node.nodeType === 1 && node.childNodes) && // only element nodes that have children
+                !/(script|style)/i.test(node.tagName) && // ignore script and style nodes
+                !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
+            for (var i = 0; i < node.childNodes.length; i++) {
+                i += jQuery.highlight(node.childNodes[i], re, nodeName, className);
+            }
+        }
+        return 0;
+    }
+});
+
+jQuery.fn.unhighlight = function (options) {
+    var settings = { className: 'highlight', element: 'span' };
+    jQuery.extend(settings, options);
+
+    return this.find(settings.element + "." + settings.className).each(function () {
+        var parent = this.parentNode;
+        parent.replaceChild(this.firstChild, this);
+        parent.normalize();
+    }).end();
+};
+
+jQuery.fn.highlight = function (words, options) {
+    var settings = { className: 'highlight', element: 'span', caseSensitive: false, wordsOnly: false };
+    jQuery.extend(settings, options);
+    
+    if (words.constructor === String) {
+        words = [words];
+    }
+    words = jQuery.grep(words, function(word, i){
+      return word != '';
+    });
+    words = jQuery.map(words, function(word, i) {
+      return word.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    });
+    if (words.length == 0) { return this; };
+
+    var flag = settings.caseSensitive ? "" : "i";
+    var pattern = "(" + words.join("|") + ")";
+    if (settings.wordsOnly) {
+        pattern = "\\b" + pattern + "\\b";
+    }
+    var re = new RegExp(pattern, flag);
+    
+    return this.each(function () {
+        jQuery.highlight(this, re, settings.element, settings.className);
+    });
+};
