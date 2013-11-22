@@ -238,7 +238,7 @@ if (!$this->course->offering()->access('view')) { ?>
 				}
 
 				if (!$gAlias) { ?>
-				<span class="icon-next next opposite btn">
+				<span class="icon-next disabled next opposite btn">
 					<?php echo JText::_('Next'); ?>
 				</span>
 				<?php } else { ?>
@@ -247,164 +247,10 @@ if (!$this->course->offering()->access('view')) { ?>
 				</a>
 				<?php }
 
-
-			/*if ($unit->isFirst() && $lecture->isFirst()) { ?>
-				<span class="icon-prev prev btn">
-					<?php echo JText::_('Prev'); ?>
-				</span>
-			<?php } else {
-				$found = false;
-				// Find the previous lecture
-				$ky = $lecture->key();
-				for ($ky; $ky >= 0; $ky--)
+				if (count($exams) > 0) 
 				{
-					$lecture->key($ky);
-					$prev = $lecture->sibling('prev');
-					if ($prev && $prev->isPublished() && $prev->assets()->total() > 0) 
-					{
-						$found = true;
-						?>
-						<a class="icon-prev prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
-							<?php echo JText::_('Prev'); ?>
-						</a>
-						<?php
-						break;
-					}
+					echo implode("\n", $exams);
 				}
-				if (!$found)
-				{
-					$punit = $this->course->offering()->units()->fetch('prev');
-					// Make sure it's published
-					if ($punit->isAvailable())
-					{
-						$puAlias = $punit->get('alias');
-						// Does the next unit have any assetgroups?
-						if ($punit->assetgroups()->total())
-						{
-							foreach ($punit->assetgroups() as $pag)
-							{
-								if ($pag->isPublished() && $pag->get('alias') == 'lectures')
-								{
-									// Get the alias of the next assetgroup
-									if (!$pag->children()->total())
-									{
-										// No sub-asset groups = empty grouping
-										continue;
-									}
-									$item = $pag->children()->fetch('last');
-									//foreach ($pag->children() as $item)
-									//{
-										if ($item->isPublished() && $item->assets()->total() > 0)
-										{
-											$pgAlias = $item->get('alias'); //$next->assetgroups(0)->get('alias');
-											?>
-						<a class="icon-prev prev btn" href="<?php echo JRoute::_($base . '&unit=' . $puAlias . '&b=' . $pgAlias); ?>">
-							<?php echo JText::_('Prev'); ?>
-						</a>
-						<?php
-											break;
-										}
-									//}
-									//$gAlias = $nag->get('alias'); //$next->assetgroups(0)->get('alias');
-									//break;
-								}
-							}
-						}
-					}
-				}
-			} ?>
-			<?php 
-
-			$uAlias = $unit->get('alias');
-			$gAlias = '';
-
-			// If the last unit AND last asstegroup in the unit
-			if ($this->course->offering()->units()->isLast() && $unit->assetgroups()->isLast()) //
-			{
-				$gAlias = '';
-			}
-			else
-			{
-				$key = $aggroups->key();//$unit->assetgroups()->key();
-				// If NOT the last assetgroup
-				if (!$unit->assetgroups()->isLast()) //$unit->assetgroups()->isLast())
-				{
-					//$key = $unit->assetgroups()->key();
-					//echo $current;
-					foreach ($unit->assetgroups() as $k => $assetgroup)
-					//foreach ($aggroups as $k => $assetgroup)
-					{
-						//echo $k .' '. $assetgroup->get('alias').'<br />';
-						if ($k <= $current)
-						{
-							continue;
-						}
-						//echo $k . ' ' . $key.'<br />';
-						if ($assetgroup->isPublished()) // && $assetgroup->get('alias') == 'lectures')
-						{
-							$gAlias = $assetgroup->get('alias');
-							break;
-						}
-					}
-					//$gAlias = $unit->assetgroups()->fetch('next')->get('alias');
-				}
-
-				// If the last assetgroup AND NOT the last unit
-				//$unit->assetgroups()->key($key);
-				$aggroups->key($key);
-				//if (!$gAlias && $unit->assetgroups()->isLast() && !$this->course->offering()->units()->isLast())
-				if (!$gAlias && $aggroups->isLast() && !$this->course->offering()->units()->isLast())
-				{
-					// Get the alias of the next unit
-					$next = $this->course->offering()->units()->fetch('next');
-					// Make sure it's published
-					if ($next->isAvailable())
-					{
-						$uAlias = $next->get('alias');
-						// Does the next unit have any assetgroups?
-						if ($next->assetgroups()->total())
-						{
-							foreach ($next->assetgroups() as $nag)
-							{
-								if ($nag->isPublished() && $nag->get('alias') == 'lectures')
-								{
-
-									// Get the alias of the next assetgroup
-									if (!$nag->children()->total())
-									{
-										// No sub-asset groups = empty grouping
-										continue;
-									}
-									foreach ($nag->children() as $item)
-									{
-										if ($item->isPublished() && $item->assets()->total() > 0)
-										{
-											$gAlias = $item->get('alias'); //$next->assetgroups(0)->get('alias');
-											break;
-										}
-									}
-									//$gAlias = $nag->get('alias'); //$next->assetgroups(0)->get('alias');
-									//break;
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			if (!$uAlias || !$gAlias) { ?>
-				<span class="icon-next next opposite btn">
-					<?php echo JText::_('Next'); ?>
-				</span>
-			<?php } else { ?>
-				<a class="icon-next next opposite btn" href="<?php echo JRoute::_($base . '&unit=' . $uAlias . '&b=' . $gAlias); ?>">
-					<?php echo JText::_('Next'); ?>
-				</a>
-			<?php } ?>
-			<?php */
-			if (count($exams) > 0) {
-				echo implode("\n", $exams);
-			}
 			?>
 			</p>
 
