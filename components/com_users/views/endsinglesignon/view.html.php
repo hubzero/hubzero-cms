@@ -36,7 +36,7 @@ jimport('joomla.application.component.view');
 /**
  * End single sign on view class
  */
-class UserViewEndSingleSignOn extends JView
+class UsersViewEndsinglesignon extends JViewLegacy
 {
 	function display($tpl = null)
 	{

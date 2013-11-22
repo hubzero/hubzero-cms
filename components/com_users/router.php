@@ -106,6 +106,9 @@ function UsersBuildRoute(&$query)
 				}
 				break;
 
+			case 'endsinglesignon':
+				break;
+
 			default:
 			case 'login':
 				if ($query['Itemid'] = $login) {
