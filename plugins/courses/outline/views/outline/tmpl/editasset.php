@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+Hubzero_Document::addSystemScript('jquery.fancyselect.min');
+Hubzero_Document::addSystemStylesheet('jquery.fancyselect.css');
+
 // Get our asset model
 $asset = new CoursesModelAsset(JRequest::getInt('asset_id', null));
 

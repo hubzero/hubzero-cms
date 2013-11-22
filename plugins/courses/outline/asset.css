@@ -6,6 +6,7 @@
  */
 
 .edit-asset .tool-list,
-.edit-asset .chosen-container {
+.edit-asset .fs-dropdown {
+	width: auto;
 	display: none;
 }

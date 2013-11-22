@@ -21,11 +21,17 @@ if (!jq) {
 }
 
 jQuery(document).ready(function($) {
+	$('.tool-list').HUBfancyselect({
+		'showSearch'         : true,
+		'searchPlaceholder'  : 'Seach for a tool...',
+		'maxHeightWithSearch': 300
+	});
+
 	$('.tool-param').click(function() {
-		$('.tool-list').toggle();
+		$('.fs-dropdown').toggle();
 	});
 
 	if ($('.tool-param').is(':checked')) {
-		$('.tool-list').show();
+		$('.fs-dropdown').show();
 	}
 });
