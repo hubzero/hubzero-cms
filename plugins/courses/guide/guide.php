@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -103,9 +103,9 @@ class plgCoursesGuide extends Hubzero_Plugin
 		}
 
 		$area = array(
-			'name' => $this->_name,
+			'name'  => $this->_name,
 			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
+			'default_access'  => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => true
 		);
 		return $area;
@@ -152,32 +152,12 @@ class plgCoursesGuide extends Hubzero_Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-			Hubzero_Document::addPluginScript('courses', $this->_name);
-
-			/*$action = strtolower(JRequest::getWord('unit', ''));
-			if ($action && $action != 'edit' && $action != 'save' && $action != 'mark')
-			{
-				$action = 'download';
-			}
-
-			if ($act = strtolower(JRequest::getWord('action', '')))
-			{
-				$action = $act;
-			}*/
-			$action = strtolower(JRequest::getWord('group', ''));
-			if ($action && $action != 'edit' && $action != 'delete')
-			{
-				$action = 'download';
-			}//JRequest::getWord('group', '')
+			//ximport('Hubzero_Document');
+			//Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+			//Hubzero_Document::addPluginScript('courses', $this->_name, 'guide.overlay');
 
 			$active = strtolower(JRequest::getWord('unit', ''));
 
-			if ($active == 'add')
-			{
-				$action = 'add';
-			}
 			if ($active == 'mark')
 			{
 				$action = 'mark';
@@ -205,11 +185,7 @@ class plgCoursesGuide extends Hubzero_Plugin
 
 			switch ($action)
 			{
-				//case 'edit':   $this->_edit();   break;
-				//case 'save':   $this->_save();   break;
 				case 'mark':   $this->_mark();   break;
-
-				//case 'download': $this->_fileDownload(); break;
 
 				default: $this->_default(); break;
 			}
@@ -237,20 +213,6 @@ class plgCoursesGuide extends Hubzero_Plugin
 	public function _default()
 	{
 		$this->view->setLayout('overlay');
-
-		/*$active = JRequest::getVar('unit', '');
-
-		$pages = $this->view->offering->pages(array(
-			'course_id'   => 0,
-			'offering_id' => 0
-		));
-		$page = $this->view->offering->page($active);
-		if (!$active || !$page->exists())
-		{
-			$page = (is_array($pages) && isset($pages[0])) ? $pages[0] : null;
-		}
-		//$this->view->pages = $pages;
-		$this->view->page  = $page;*/
 	}
 
 	/**
@@ -268,126 +230,7 @@ class plgCoursesGuide extends Hubzero_Plugin
 		{
 			return;
 		}
-		$member->set('first_visit', JFactory::getDate());
+		$member->set('first_visit', JFactory::getDate()->toSql());
 		$member->store();
-	}
-
-	/**
-	 * Set redirect and message
-	 * 
-	 * @param      string $url  URL to redirect to
-	 * @param      string $msg  Message to send
-	 * @param      string $type Message type (message, error, warning, info)
-	 * @return     void
-	 */
-	public function setRedirect($url, $msg=null, $type='message')
-	{
-		if ($msg !== null)
-		{
-			$this->addPluginMessage($msg, $type);
-		}
-		$this->redirect($url);
-	}
-
-	/**
-	 * Build and return the file path
-	 * 
-	 * @return     string
-	 */
-	private function _path()
-	{
-		return JPATH_ROOT . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS . 'pagefiles';
-	}
-
-	/**
-	 * Download a wiki file
-	 * 
-	 * @return     void
-	 */
-	public function _fileDownload()
-	{
-		// Get some needed libraries
-		ximport('Hubzero_Content_Server');
-
-		if (!$this->view->course->access('view'))
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
-			return;
-		}
-
-		// Get the scope of the parent page the file is attached to
-		$filename = JRequest::getVar('group', '');
-
-		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') 
-		{
-			$filename = substr($filename, strlen('image:'));
-		} 
-		else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:') 
-		{
-			$filename = substr($filename, strlen('file:'));
-		}
-		$filename = urldecode($filename);
-
-		// Ensure we have a path
-		if (empty($filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').'[r]'.$filename);
-			return;
-		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[f]'.$filename);
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[e]'.$filename);
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[s]'.$filename);
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[g]'.$filename);
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_BAD_FILE_PATH').'[h]'.$filename);
-			return;
-		}
-
-		// Add JPATH_ROOT
-		$filename = $this->_path() . DS . ltrim($filename, DS);
-
-		// Ensure the file exist
-		if (!file_exists($filename)) 
-		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').'[j]'.$filename);
-			return;
-		}
-
-		// Initiate a new content server and serve up the file
-		$xserver = new Hubzero_Content_Server();
-		$xserver->filename($filename);
-		$xserver->disposition('inline');
-		$xserver->acceptranges(false); // @TODO fix byte range support
-
-		if (!$xserver->serve()) 
-		{
-			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR').'[x]'.$filename);
-		} 
-		else 
-		{
-			exit;
-		}
-		return;
 	}
 }

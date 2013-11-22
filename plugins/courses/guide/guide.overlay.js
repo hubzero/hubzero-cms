@@ -96,6 +96,11 @@ jQuery(document).ready(function(jq){
 					},
 					onUpdate: function() {
 						$('#guide-content').css('position', 'absolute');
+					},
+					helpers: {
+						overlay: {
+							css: {position: 'absolute' }
+						}
 					}
 				}
 			);
