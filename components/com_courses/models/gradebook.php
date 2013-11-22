@@ -610,7 +610,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$homework_weight = $gradePolicy->get('homework_weight');
 
 		// Get count of total forms
-		$totals = $this->_tbl->getFormCount();
+		$totals = $this->_tbl->getFormCount($this->course->get('id'));
 		$return = false;
 
 		if (isset($counts))

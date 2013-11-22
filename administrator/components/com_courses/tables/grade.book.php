@@ -517,14 +517,16 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Get asset count
 	 * 
+	 * @param      int $course_id
 	 * @return     void
 	 */
-	public function getFormCount()
+	public function getFormCount($course_id)
 	{
 		$query   = "SELECT subtype, count(*) as count
 					FROM `#__courses_assets`
 					WHERE type = 'form'
 					AND state = 1
+					AND course_id = '{$course_id}'
 					GROUP BY subtype;";
 
 		$this->_db->setQuery($query);
