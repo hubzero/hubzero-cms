@@ -1,4 +1,4 @@
-## The HUBzero® Platform for Scientific Collaboration
+### The HUBzero® Platform for Scientific Collaboration
 
 HUBzero is a powerful, open source software platform for creating dynamic web sites that support scientific research and educational activities.
 
