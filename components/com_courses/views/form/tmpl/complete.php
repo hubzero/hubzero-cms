@@ -17,7 +17,7 @@ $incomplete = $this->incomplete;
 		if ($this->dep->getTimeLimit()):
 	?>
 	<script type="text/javascript">
-		window.timeLeft = <? echo  max(($this->dep->getTimeLimit() * 60) - (time() - strtotime($this->resp->getStartTime())), 0); ?>;
+		window.timeLeft = <? echo  max(($this->dep->getTimeLimit() * 60) - (strtotime(JFactory::getDate()) - strtotime($this->resp->getStartTime())), 0); ?>;
 	</script>
 	<?php
 		endif;

@@ -617,8 +617,8 @@ class PdfFormDeployment
 			$dbh->setQuery(
 				'INSERT INTO `#__courses_form_deployments`(form_id, start_time, end_time, results_open, results_closed, time_limit, crumb, user_id, allowed_attempts) VALUES ('.
 					(int)$this->formId.', '.
-					($this->startTime ? date('\'Y-m-d H:i:s\'', strtotime($this->startTime)) : 'NULL').', '.
-					($this->endTime   ? date('\'Y-m-d H:i:s\'', strtotime($this->endTime)) : 'NULL').', '.
+					($this->startTime ? $dbh->quote(JFactory::getDate(strtotime($this->startTime))->toSql()) : 'NULL').', '.
+					($this->endTime   ? $dbh->quote(JFactory::getDate(strtotime($this->endTime))->toSql()) : 'NULL').', '.
 					$dbh->quote($this->resultsOpen).', '.
 					$dbh->quote($this->resultsClosed).', '.
 					(int)$this->timeLimit.', '.
@@ -639,8 +639,8 @@ class PdfFormDeployment
 
 		$dbh->setQuery(
 			'UPDATE #__courses_form_deployments SET '.
-				'start_time = '.($this->startTime ? date('\'Y-m-d H:i:s\'', strtotime($this->startTime)) : 'NULL').', '.
-				'end_time = '.($this->endTime   ? date('\'Y-m-d H:i:s\'', strtotime($this->endTime)) : 'NULL').', '.
+				'start_time = '.($this->startTime ? $dbh->quote(JFactory::getDate(strtotime($this->startTime))->toSql()) : 'NULL').', '.
+				'end_time = '.($this->endTime     ? $dbh->quote(JFactory::getDate(strtotime($this->endTime))->toSql()) : 'NULL').', '.
 				'results_open = '.$dbh->quote($this->resultsOpen).', '.
 				'results_closed = '.$dbh->quote($this->resultsClosed).', '.
 				'time_limit = '.(int)$this->timeLimit.', '.
