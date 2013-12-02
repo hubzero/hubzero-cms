@@ -221,6 +221,8 @@
 .progress-container .length_8 .unit { width: 12.5%; }
 .progress-container .length_9 .unit { width: 11.1%; }
 .progress-container .length_10 .unit { width: 10%; }
+.progress-container .length_11 .unit { width: 9.09%; }
+.progress-container .length_12 .unit { width: 8.33%; }
 .progress-container .unit-inner {
 	background: #AAA;
 	margin: 6px auto;
