@@ -228,6 +228,7 @@
 	.com_resources .read-more span {
 		display: none;
 	}
+	.aside #recommendations li,
 
 /* Tabbed view specifics */
 	.sep {
