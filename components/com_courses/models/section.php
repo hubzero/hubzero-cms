@@ -513,11 +513,22 @@ class CoursesModelSection extends CoursesModelAbstract
 		{
 			$data = array($data);
 		}
+		if (!$this->get('course_id'))
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+			$this->set('course_id', $offering->get('course_id'));
+		}
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
 
-			$model = CoursesModelMember::getInstance($user_id, $this->get('id'));
+			$model = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
+			if (!$model->exists())
+			{
+				$this->setError(JText::sprintf('Entry for user #%s, course #%s, offering #%s, section #%s not found.', $user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id')));
+				continue;
+			}
 			if (!$model->delete())
 			{
 				$this->setError($model->getError());
