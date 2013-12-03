@@ -214,4 +214,5 @@ $cls = 'even';
 ?>
 		</tbody>
 	</table>
+	<?php echo '* Total only includes versions of the tools this author contributed to.'; ?>
 </div><!-- / .subject -->
