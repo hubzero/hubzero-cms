@@ -46,6 +46,13 @@ if ($mode != 'preview')
 	}
 }
 
+    	$thumb = "/site/stats/resource_impact/resource_impact_".$resource->id."_th.gif";
+    	$full = "/site/stats/resource_impact/resource_impact_".$resource->id.".gif";
+	if (file_exists(JPATH_ROOT . $thumb)) {
+		$html .= '</br>';
+		$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';
+        	$html .= '<img src="'.$thumb.'" alt="'.$resource->id.' Impact Graph"/></a>';
+	}
 	$juser =& JFactory::getUser();
 ?>
 		<div class="main section upperpane">
