@@ -31,12 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -68,7 +62,7 @@ include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'autocomplete.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
 
-$controllerName = JRequest::getCmd('controller', 'projects');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'projects'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'projects';
