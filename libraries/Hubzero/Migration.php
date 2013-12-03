@@ -262,6 +262,8 @@ class Hubzero_Migration
 			$version = new JVersion();
 			define('JVERSION', $version->getShortVersion());
 		}
+
+		JFactory::getApplication('site');
 	}
 
 	/**
