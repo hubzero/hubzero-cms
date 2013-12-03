@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Employer Type') : JText::_('New Employer Type'));
 
-JToolBarHelper::title(JText::_('Registration') . ': <small><small>[ ' . $text . ' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('Registration') . ': ' . $text, 'user.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -51,23 +51,23 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
 		<input type="hidden" name="task" value="save" />
-			
+
 		<table class="admintable">
 			<tbody>
 				<tr>
 					<td class="key"><label for="type"><?php echo JText::_('Type'); ?>:</label></td>
-		 			<td><input type="text" name="type" id="type" value="<?php echo $this->escape($this->model->type); ?>" size="50" /> <span style="color: #aaa">Created from Title if left blank</span></td>
-		 		</tr>
+					<td><input type="text" name="type" id="type" value="<?php echo $this->escape($this->model->type); ?>" size="50" /> <span style="color: #aaa">Created from Title if left blank</span></td>
+				</tr>
 				<tr>
 					<td class="key"><label for="title"><?php echo JText::_('Title'); ?>:</label></td>
-		 			<td><input type="text" name="title" id="title" value="<?php echo $this->escape($this->model->title); ?>" size="50" /> <span style="color: #c00">required</span></td>
-		 		</tr>
+					<td><input type="text" name="title" id="title" value="<?php echo $this->escape($this->model->title); ?>" size="50" /> <span style="color: #c00">required</span></td>
+				</tr>
 			</tbody>
 		</table>
 	</fieldset>

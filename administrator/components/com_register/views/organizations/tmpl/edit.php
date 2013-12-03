@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('Edit Organization') : JText::_('New Organization'));
 
-JToolBarHelper::title(JText::_('Registration') . ': <small><small>[ ' . $text . ' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('Registration') . ': ' . $text, 'user.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -51,19 +51,19 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />
 		<input type="hidden" name="task" value="save" />
-			
+
 		<table class="admintable">
 			<tbody>
 				<tr>
 					<td class="key"><label for="organization"><?php echo JText::_('Organization'); ?>:</label></td>
-		 			<td><input type="text" name="organization" id="organization" value="<?php echo $this->escape($this->model->organization); ?>" size="50" /></td>
-		 		</tr>
+					<td><input type="text" name="organization" id="organization" value="<?php echo $this->escape($this->model->organization); ?>" size="50" /></td>
+				</tr>
 			</tbody>
 		</table>
 	</fieldset>

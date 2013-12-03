@@ -34,7 +34,7 @@ $canDo = WikiHelper::getActions('page');
 
 $text = ($this->task == 'editrevision' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page Revision') . ': <small><small>[ ' . $text . ' ]</small></small>', 'wiki.png');
+JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page Revision') . ': ' . $text, 'wiki.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();

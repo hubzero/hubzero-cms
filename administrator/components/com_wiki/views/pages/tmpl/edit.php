@@ -57,19 +57,19 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Title'); ?>:</label></td>
-						<td><input type="text" name="page[title]" id="pagetitle" size="30" maxlength="255" value="<?php echo htmlentities(stripslashes($this->row->title)); ?>" /></td>
+						<td><input type="text" name="page[title]" id="pagetitle" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Pagename'); ?>:</label></td>
-						<td><input type="text" name="page[pagename]" id="pagename" size="30" maxlength="255" value="<?php echo stripslashes($this->row->pagename); ?>" /></td>
+						<td><input type="text" name="page[pagename]" id="pagename" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->pagename)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Scope'); ?>:</label></td>
-						<td><input type="text" name="page[scope]" id="pagescope" size="30" maxlength="255" value="<?php echo stripslashes($this->row->scope); ?>" /></td>
+						<td><input type="text" name="page[scope]" id="pagescope" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->scope)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Group'); ?>:</label></td>
-						<td><input type="text" name="page[group_cn]" id="pagegroup" size="30" maxlength="255" value="<?php echo stripslashes($this->row->group_cn); ?>" /></td>
+						<td><input type="text" name="page[group_cn]" id="pagegroup" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->group_cn)); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -114,7 +114,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="authors"><?php echo JText::_('Authors'); ?>:</label></td>
-						<td><input type="text" name="page[authors]" id="pageauthors" value="<?php echo htmlentities($this->row->authors); ?>" /></td>
+						<td><input type="text" name="page[authors]" id="pageauthors" value="<?php echo $this->escape($this->row->authors); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="state"><?php echo JText::_('State'); ?>:</label></td>
@@ -136,8 +136,8 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 	
-	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-	<input type="hidden" name="page[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->escape($this->row->id); ?>" />
+	<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->row->id); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
