@@ -48,7 +48,7 @@ class CoursesHelper
 	 * @return	JObject
 	 * @since	1.6
 	 */
-	public static function getActions($assetType='component', $assetId = 0)
+	public static function getActions($assetType=NULL, $assetId = 0)
 	{
 		$assetName = 'com_courses';
 		$user	= JFactory::getUser();
@@ -67,7 +67,11 @@ class CoursesHelper
 		}
 		else 
 		{
-			$assetName .= '.' . $assetType;
+			if ($assetType)
+			{
+				$assetName .= '.' . $assetType;
+			}
+
 			if ($assetId) 
 			{
 				$assetName .= '.' . (int) $assetId;
@@ -86,4 +90,3 @@ class CoursesHelper
 		return $result;
 	}
 }
-
