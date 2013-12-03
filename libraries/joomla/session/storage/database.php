@@ -67,9 +67,9 @@ class JSessionStorageDatabase extends JSessionStorage
 	 */
 	public function write($id, $data)
 	{
-		if (JFactory::getApplication()->getClientId() == 4)
+		if (JFactory::getApplication()->getClientId() == 4 || php_sapi_name() == 'cli')
 		{
-			return true; // skip session write on api calls
+			return true; // skip session write on api and command line calls
 		}
 		
 		// Get the database connection object and verify its connected.
