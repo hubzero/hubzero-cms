@@ -665,6 +665,27 @@ $area = JRequest::getVar('area', 'about');
 						</td>
 					</tr>
 				<?php endif; ?>
+				
+				<tr>
+					<th>Google Scholar</th>
+					<td>
+						<?php
+						$query = '';
+						if ($citation->doi)
+						{
+							$query .= $citation->doi;
+						}
+						elseif ($citation->title)
+						{
+							$query .= $citation->title;
+						}
+						?>
+						<a target="_blank" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
+							<img src="http://scholar.google.com/intl/en/scholar/images/scholar_logo_lg_2011.gif" alt="Google Scholar Search Results" width="100" />
+						</a>
+					</td>
+				</tr>
+				
 				<tr>
 					<th>Other Sources</th>
 					<td>
