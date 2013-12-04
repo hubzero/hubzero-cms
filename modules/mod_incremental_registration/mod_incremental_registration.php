@@ -105,7 +105,7 @@ class ModIncrementalRegistrationController
 		}
 
 		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER['REDIRECT_REQUEST_URI'];
-		if (preg_match('%^/(?:session|legal/privacy)%', $uri)) 
+		if (preg_match('%^/(?:members|session|legal/privacy)%', $uri)) 
 		{
 			return;
 		}
@@ -323,11 +323,13 @@ class ModIncrementalRegistrationController
 									$dbh->execute('DELETE FROM #__xprofiles_race WHERE uidNumber = '.$uid);
 									foreach ($race as $r) 
 									{
-										$dbh->execute('INSERT INTO #__xprofiles_race(uidNumber, race) VALUES ('.$uid.', '.$dbh->quote($r).')');
+										$dbh->setQuery('INSERT INTO #__xprofiles_race(uidNumber, race) VALUES ('.$uid.', '.$dbh->quote($r).')');
+										$dbh->execute();
 									}
 									if (isset($_POST['racenativetribe'])) 
 									{
-										$dbh->execute('UPDATE #__xprofiles SET nativeTribe = '.$dbh->quote($_POST['racenativetribe']).' WHERE uidNumber = '.$uid);
+										$dbh->setQuery('UPDATE #__xprofiles SET nativeTribe = '.$dbh->quote($_POST['racenativetribe']).' WHERE uidNumber = '.$uid);
+										$dbh->execute();
 									}
 								}
 								continue;
@@ -353,13 +355,15 @@ class ModIncrementalRegistrationController
 								}
 								foreach ($disabilities as $disability) 
 								{
-									$dbh->execute('INSERT INTO #__xprofiles_disability(uidNumber, disability) VALUES ('.$uid.', '.$dbh->quote($disability).')');
+									$dbh->setQuery('INSERT INTO #__xprofiles_disability(uidNumber, disability) VALUES ('.$uid.', '.$dbh->quote($disability).')');
+									$dbh->execute();
 								}
 								continue;
 							}
 							if ($k == 'name') 
 							{
-								$dbh->execute('UPDATE #__xprofiles SET givenName = '.$dbh->quote($_POST['name']['first']).', middleName = '.$dbh->quote($_POST['name']['middle']).', surname = '.$dbh->quote($_POST['name']['last']).' WHERE uidNumber = '.$uid);
+								$dbh->setQuery('UPDATE #__xprofiles SET givenName = '.$dbh->quote($_POST['name']['first']).', middleName = '.$dbh->quote($_POST['name']['middle']).', surname = '.$dbh->quote($_POST['name']['last']).' WHERE uidNumber = '.$uid);
+								$dbh->execute();
 							}
 							if ($k == 'countryorigin' || $k == 'countryresident') 
 							{
@@ -374,8 +378,10 @@ class ModIncrementalRegistrationController
 						}
 						if (!$first) 
 						{
-							$dbh->execute($xp_update . ' WHERE uidNumber = ' . $uid);
-							$dbh->execute($aw_update . ' WHERE user_id = ' . $uid);
+							$dbh->setQuery($xp_update . ' WHERE uidNumber = ' . $uid);
+							$dbh->execute();
+							$dbh->setQuery($aw_update . ' WHERE user_id = ' . $uid);
+							$dbh->execute();
 						}
 
 						require JPATH_BASE . $media->get('/views/thanks.php');

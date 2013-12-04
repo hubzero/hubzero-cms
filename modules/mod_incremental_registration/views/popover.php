@@ -355,17 +355,15 @@ $defaultCountries = array(
 				<?php endif; ?>
 				<?php if (isset($row['gender'])): ?>
 					<li>
-						<fieldset>			
-							<legend>What is your gender?</legend>
-							<div class="indented">
-								<?php if (isset($errors['gender'])): ?>
-									<p class="warning">Please select your gender, or choose not to reveal it</p>
-								<?php endif; ?>
-								<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'male') echo 'checked="checked" '; ?>type="radio" class="option" value="male" name="gender"> Male</label>
-								<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'female') echo 'checked="checked" '; ?>type="radio" class="option" value="female" name="gender"> Female</label>
-								<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'refused') echo 'checked="checked" '; ?>type="radio" class="option" value="refused" name="gender"> Do not wish to reveal</label>
-							</div>
-						</fieldset>
+						<label for="gender">What is your gender?</label>
+						<div class="indented">
+							<?php if (isset($errors['gender'])): ?>
+								<p class="warning">Please select your gender, or choose not to reveal it</p>
+							<?php endif; ?>
+							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'male') echo 'checked="checked" '; ?>type="radio" class="option" value="male" name="gender"> Male</label>
+							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'female') echo 'checked="checked" '; ?>type="radio" class="option" value="female" name="gender"> Female</label>
+							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'refused') echo 'checked="checked" '; ?>type="radio" class="option" value="refused" name="gender"> Do not wish to reveal</label>
+						</div>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($row['url'])): ?>
@@ -393,8 +391,7 @@ $defaultCountries = array(
 				<?php if (isset($row['countryorigin'])): ?> 
 					<li>
 						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress()); ?>
-						<fieldset>
-							<legend>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?</legend>
+							<label>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryorigin'])): ?>
 									<p class="warning">Please select your country of origin</p>
@@ -422,14 +419,12 @@ $defaultCountries = array(
 								?>
 								</select>
 							</div>
-						</fieldset>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($row['countryresident'])): ?> 
 					<li>
 						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress()); ?>
-						<fieldset>
-							<legend>Do you currently live in the <abbr title="United States">US</abbr>?</legend>
+							<label>Do you currently live in the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryresident'])): ?>
 									<p class="warning">Please select your country of residency</p>
@@ -457,14 +452,12 @@ $defaultCountries = array(
 								?>
 								</select>
 							</div>
-						</fieldset>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($row['race'])): ?>
 					<?php $race = isset($_POST['race']) ? $_POST['race'] : array(); ?>
 					<li>
-						<fieldset>
-							<legend>If you are a U.S. Citizens or Permanent Residents (<a class="popup 675x678" href="/register/raceethnic">more information</a>), select your race(s) below</legend>
+							<label>If you are a U.S. Citizens or Permanent Residents (<a class="popup 675x678" href="/register/raceethnic">more information</a>), select your race(s) below</label>
 							<?php if (isset($errors['race'])): ?>
 								<p class="warning">Please select your race(s)</p>
 							<?php endif; ?>
@@ -483,13 +476,11 @@ $defaultCountries = array(
 								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racehawaiian" value="hawaiian" <?php if (in_array('hawaiian', $race)) echo 'checked="checked" '; ?> />Native Hawaiian or Other Pacific Islander</label>
 								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racewhite" value="white" <?php if (in_array('white', $race)) echo 'checked="checked" '; ?> />White</label>
 								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racerefused" value="refused" <?php if (in_array('refused', $race)) echo 'checked="checked" '; ?> />Do not wish to reveal</label>
-						</fieldset>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($row['disability'])): ?>
 					<li>
-						<fieldset>
-							<legend>Do you have any disabilities or impairments?</legend>
+							<label>Do you have any disabilities or impairments?</label>
 							<?php if (isset($errors['disability'])): ?>
 								<p class="warning">Please make a selection, or choose to refuse to answer</p>
 							<?php endif; ?>
@@ -506,7 +497,6 @@ $defaultCountries = array(
 								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'no') echo 'checked="checked" '; ?>type="radio" value="no" id="disabilityno" name="disability" class="option"> No (none)</label><br />
 								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'refused') echo 'checked="checked" '; ?>type="radio" value="refused" id="disabilityrefused" name="disability" class="option"> Do not wish to reveal</label>
 							</div>
-						</fieldset>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($row['mailPreferenceOption'])): ?>

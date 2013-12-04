@@ -178,13 +178,15 @@ class ModIncrementalRegistrationAwards
 		do {
 			self::$dbh->setQuery('SELECT opted_out, name, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture, disability FROM #__profile_completion_awards WHERE user_id = '.$this->uid);
 			if (!($this->awards = self::$dbh->loadAssoc())) {
-				self::$dbh->execute('INSERT INTO #__profile_completion_awards(user_id) VALUES ('.$this->uid.')');
+				self::$dbh->setQuery('INSERT INTO #__profile_completion_awards(user_id) VALUES ('.$this->uid.')');
+				self::$dbh->execute();
 			}
 		} while (!$this->awards);
 	}
 
 	public function optOut() {
-		self::$dbh->execute('UPDATE #__profile_completion_awards SET opted_out = opted_out + 1, last_bothered = CURRENT_TIMESTAMP WHERE user_id = '.$this->uid);
+		self::$dbh->setQuery('UPDATE #__profile_completion_awards SET opted_out = opted_out + 1, last_bothered = CURRENT_TIMESTAMP WHERE user_id = '.$this->uid);
+		self::$dbh->execute();
 	}
 	
 	public function award() {
@@ -242,7 +244,8 @@ class ModIncrementalRegistrationAwards
 		}
 	        self::$dbh->setQuery('SELECT SUM(amount) AS amount FROM #__users_transactions WHERE type = \'deposit\' AND category = \'registration\' AND uid = '.$this->uid);		
 		$prior = self::$dbh->loadResult();
-		self::$dbh->execute($completeSql.' WHERE user_id = '.$this->uid);
+		self::$dbh->setQuery($completeSql.' WHERE user_id = '.$this->uid);
+		self::$dbh->execute();
 
 		if ($alreadyComplete) {
 			self::$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$this->uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$this->uid.')), 0)');
