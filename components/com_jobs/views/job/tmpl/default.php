@@ -36,6 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	$juser =& JFactory::getUser();
+	
+	$jobsHtml = new JobsHtml();
 
 	$job = $this->job;
 
@@ -91,7 +93,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$job->title = trim(stripslashes($job->title));
 		$job->description = trim(stripslashes($job->description));
 		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
-		$job->description = JobsHtml::txt_unpee($job->description);
+		$job->description = $jobsHtml->txt_unpee($job->description);
 
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '<div class="main section">'."\n";
@@ -156,7 +158,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		}
 		$html .= t.t.'</p>';
-		$html .= ($job->applied) ? JobsHtml::confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=job&code='.$job->code), JRoute::_('index.php?option='.$this->option.'&task=withdraw&code='.$job->code), $action = "withdrawapp")."\n" : '';
+		$html .= ($job->applied) ? $jobsHtml->confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=job&code='.$job->code), JRoute::_('index.php?option='.$this->option.'&task=withdraw&code='.$job->code), $action = "withdrawapp")."\n" : '';
 		$html .='</div>'."\n";
 		$html .= '<div>'."\n";
 		$html .= t.t.'<span class="sub-heading">'.JText::_('COM_JOBS_TABLE_CATEGORY').'</span>'."\n";

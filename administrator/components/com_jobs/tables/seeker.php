@@ -139,7 +139,7 @@ class JobSeeker extends JTable
 	 * @param      integer $name User id
 	 * @return     boolean True upon success
 	 */
-	public function load($name=NULL)
+	public function loadSeeker($name=NULL)
 	{
 		if ($name !== NULL) 
 		{

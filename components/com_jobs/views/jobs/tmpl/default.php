@@ -36,6 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jobs = $this->jobs;
 	$filters = $this->filters;
 	$allowsubscriptions = $this->allowsubscriptions;
+	
+	$jobsHtml = new JobsHtml();
 
 	if ($this->subscriptioncode && $this->thisemployer) 
 	{

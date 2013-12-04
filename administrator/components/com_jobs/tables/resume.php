@@ -117,7 +117,7 @@ class Resume extends JTable
 	 * @param      integer $name Parameter description (if any) ...
 	 * @return     boolean True upon success
 	 */
-	public function load($name=NULL)
+	public function loadResume($name=NULL)
 	{
 		if ($name !== NULL) 
 		{

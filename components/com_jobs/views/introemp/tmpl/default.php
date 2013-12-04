@@ -89,8 +89,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			? JText::_('COM_JOBS_INTRO_POST_UP_TO').' '.$maxads.' '.JText::_('COM_JOBS_INTRO_POST_DETAILS')
 			: JText::_('COM_JOBS_INTRO_BROWSE_INFO').' '.JText::_('COM_JOBS_INTRO_BROWSE_DETAILS');
 	$html .= ($this->task=='addjob')
-			? '<img src="'.DS.'components'.DS.$this->option.DS.'images'.DS.'helper_job_search.gif" alt="'.JText::_('COM_JOBS_ACTION_POST_JOB').'" />'
-			: '<img src="'.DS.'components'.DS.$this->option.DS.'images'.DS.'helper_browse_resumes.gif" alt="'.JText::_('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';
+			? '<img src="'.DS.'components'.DS.$this->option.DS.'assets/img'.DS.'helper_job_search.gif" alt="'.JText::_('COM_JOBS_ACTION_POST_JOB').'" />'
+			: '<img src="'.DS.'components'.DS.$this->option.DS.'assets/img'.DS.'helper_browse_resumes.gif" alt="'.JText::_('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';
 	$html .= '</p>';
 	$html .= t.t.'</div>'.n;
 	$html .= '</div>'.n;

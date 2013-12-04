@@ -256,8 +256,8 @@ class Job extends JTable
 	{
 		if ($uid === NULL) 
 		{
-			$juser =& JFactory::getUser();
-			$uid = $juser->get('id');
+			$juser 	= JFactory::getUser();
+			$uid 	= $juser->get('id');
 		}
 
 		$sql  = "SELECT j.id, j.title, j.status, j.added, j.code, ";
@@ -287,8 +287,8 @@ class Job extends JTable
 	{
 		if ($uid === NULL) 
 		{
-			$juser =& JFactory::getUser();
-			$uid = $juser->get('id');
+			$juser 	= JFactory::getUser();
+			$uid 	= $juser->get('id');
 		}
 
 		$sql  = "SELECT count(*) FROM $this->_tbl AS j ";
@@ -319,8 +319,8 @@ class Job extends JTable
 	{
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
 		$category    = isset($filters['category']) ? $filters['category'] : 'all';
-		$now = JFactory::getDate()->toSql();
-		$juser =& JFactory::getUser();
+		$now 		 = JFactory::getDate()->toSql();
+		$juser 		 = JFactory::getUser();
 		$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
 		$active = isset($filters['active']) && $filters['active'] == 1 ? 1 : 0;
 
@@ -522,9 +522,9 @@ class Job extends JTable
 			return false;
 		}
 
-		$now = JFactory::getDate()->toSql();
-		$juser =& JFactory::getUser();
-		$myid = $juser->get('id');
+		$now 	= JFactory::getDate()->toSql();
+		$juser 	= JFactory::getUser();
+		$myid 	= $juser->get('id');
 
 		$sql  = "SELECT j.*, ";
 		$sql .= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';

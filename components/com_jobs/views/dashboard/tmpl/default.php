@@ -35,7 +35,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	// load some classes
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
-
+	
+	$jobsHtml = new JobsHtml();
+	
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
 	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
@@ -88,7 +90,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  <?php if($this->emp && !$this->masteradmin) {  ?>
 <div id="content-header-extra">
     <ul id="useroptions">
-        <li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_JOBS_SHORTLIST'); ?></a></li>
+        <li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
    </ul>
 </div><!-- / #content-header-extra -->
  <?php } ?>  
@@ -175,7 +177,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         <p>
 			<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=subscribe').'" class="cancelit">[ '.JText::_( 'COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL' ).' ]</a>'; ?>
         </p>
-       <?php echo JobsHtml::confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid)); ?>    	
+       <?php echo $jobsHtml->confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid)); ?>    	
         <div class="spacer"></div>
         <h3><?php echo JText::_('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION'); ?><span><?php echo JText::_('COM_JOBS_EMPLOYER_USERNAME').': '.$this->login; ?></span></h3>
         <span class="sub-heading"><?php echo JText::_('COM_JOBS_EMPLOYER_COMPANY'); ?></span>

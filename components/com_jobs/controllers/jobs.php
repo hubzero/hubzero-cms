@@ -152,7 +152,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -163,8 +163,8 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$app = JFactory::getApplication();
+		$pathway = $app->getPathway();
 
 		$comtitle  = JText::_(strtoupper($this->_option));
 		$comtitle .= $this->_industry ? ' ' . JText::_('COM_JOBS_IN') . ' ' . $this->_industry : '';
@@ -285,7 +285,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		// Get Members plugins
 		JPluginHelper::importPlugin('members', 'resume');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Call the trigger
 		$results = $dispatcher->trigger($trigger, array());
@@ -310,7 +310,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		// Get Members plugins
 		JPluginHelper::importPlugin('members', 'resume');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Call the trigger
 		$results = $dispatcher->trigger('shortlist', array($oid, $ajax=0));
@@ -541,8 +541,8 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	protected function subscribe()
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Login required
 		if ($this->juser->get('guest')) 
@@ -677,7 +677,7 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		// are we renewing?
 		$subid = JRequest::getInt('subid', 0);
-		$sconfig =& JComponentHelper::getParams('com_services');
+		$sconfig = JComponentHelper::getParams('com_services');
 		$autoapprove = $sconfig->get('autoapprove');
 
 		// load Employer
@@ -727,13 +727,12 @@ class JobsControllerJobs extends Hubzero_Controller
 		$now 		= JFactory::getDate()->toSql();
 		$new 		= 0;
 		$credit 	= 0;
-
+		$months 	= $units * $service->unitsize;
+		$newexprire = JFactory::getDate(strtotime('+' . $months . ' month'))->toSql();
+		
 		// we got an order
 		if ($units) 
 		{
-			$months = $units * $service->unitsize;
-			$newexprire = JFactory::getDate(strtotime('+' . $months . 'months'));
-
 			if ($total && !$contact) 
 			{
 				// need contact info with payment
@@ -756,7 +755,8 @@ class JobsControllerJobs extends Hubzero_Controller
 					if ($prevunitcost > 0 && $subscription->status != 2) 
 					{
 						$unitsleft = $subscription->getRemaining('unit', $subscription, $service->maxunits, $service->unitsize);
-						$refund = ($subscription->totalpaid > 0 && ($subscription->totalpaid - $unitsleft * $prevunitcost) < 0) ? $unitsleft * $prevunitcost : 0;
+						$refund = ($subscription->totalpaid > 0 && ($subscription->totalpaid - $unitsleft * $prevunitcost) < 0) 
+								? $unitsleft * $prevunitcost : 0;
 
 						// calculate available credit - if upgrading
 						if ($newunitcost > $prevunitcost) 
@@ -776,14 +776,15 @@ class JobsControllerJobs extends Hubzero_Controller
 					$new = 1;
 				} 
 				else if ($subscription->expires > $now) 
-				{ // extending?
+				{ 
+					// extending?
 					$subscription->status = $autoapprove && !$total ? 1 : $subscription->status;
 					$subscription->status = $subscription->status == 2 ? 1 : $subscription->status;
 					$subscription->units = $autoapprove && !$total ? $subscription->units + $units : $subscription->units;
 					$subscription->pendingunits = $autoapprove && !$total ? 0 : $units;
 					$subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
-					$newexprire = JFactory::getDate(strtotime('+' . $subscription->units * $service->unitsize . 'months'));
-					$subscription->expires = $autoapprove && !$total ? $newexprire : $subscription->expires;
+					$newexprire = JFactory::getDate(strtotime('+' . $subscription->units * $service->unitsize . ' month'))->toSql();
+					$subscription->expires = $newexprire;
 					$subscription->updated = $now;
 				} 
 				else 
@@ -810,7 +811,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			$subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
 			$subscription->pendingpayment = $credit ? $subscription->pendingpayment < $credit : $subscription->pendingpayment;
 			$subscription->pendingpayment = $subscription->pendingpayment < 0 ? 0 : $subscription->pendingpayment;
-			$subscription->expires = $autoapprove && !$total ? $newexprire : NULL;
+			$subscription->expires = $newexprire;
 		}
 
 		// save subscription information
@@ -1093,7 +1094,7 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	public function addresume()
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Login required
 		if ($juser->get('guest')) 
@@ -1116,8 +1117,8 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	public function apply()
 	{
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser    = JFactory::getUser();
 
 		// Incoming
 		$code = JRequest::getVar('code', '');
@@ -1129,7 +1130,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		if (!$job->loadJob($code)) 
 		{
 			// Set the pathway
-			$pathway =& JFactory::getApplication()->getPathway();
+			$pathway = JFactory::getApplication()->getPathway();
 			if (count($pathway->getPathWay()) <= 0) 
 			{
 				$pathway->addItem(
@@ -1291,8 +1292,8 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	public function job()
 	{
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser    = JFactory::getUser();
 
 		// Incoming
 		$code = JRequest::getVar('code', '');
@@ -1312,8 +1313,8 @@ class JobsControllerJobs extends Hubzero_Controller
 			$this->setError(JText::_('COM_JOBS_ERROR_JOB_INACTIVE'));
 
 			// Set the pathway
-			$app =& JFactory::getApplication();
-			$pathway =& $app->getPathway();
+			$app = JFactory::getApplication();
+			$pathway = $app->getPathway();
 			if (count($pathway->getPathWay()) <= 0) 
 			{
 				$pathway->addItem(
@@ -1615,7 +1616,7 @@ class JobsControllerJobs extends Hubzero_Controller
 	 */
 	public function editjob()
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(), '/');
 
 		// Incoming
@@ -1721,7 +1722,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Push some styles to the tmeplate
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 		
 		if (!JPluginHelper::isEnabled('system', 'jquery'))
@@ -1809,7 +1810,7 @@ class JobsControllerJobs extends Hubzero_Controller
 				}
 
 				// make sure we have dummy admin employer account
-				$jconfig =& JFactory::getConfig();
+				$jconfig = JFactory::getConfig();
 				$live_site = rtrim(JURI::base(), '/');
 
 				$employer->uid = 1;
@@ -1845,20 +1846,22 @@ class JobsControllerJobs extends Hubzero_Controller
 		if (!$this->juser->get('guest')) 
 		{
 			// Check if they're a site admin (from Joomla)
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				if ($this->juser->authorise('core.admin', $this->_option . '.component'))
-				{
-					$admin = 1;
-				}
-			}
-			else 
+			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
 				if ($this->juser->authorize($this->_option, 'manage')) 
 				{
 					$admin = 1;
 				}
 			}
+			else 
+			{
+				$this->config->set('access-admin-component', $this->juser->authorise('core.admin', null));
+				$this->config->set('access-manage-component', $this->juser->authorise('core.manage', null));
+				if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
+				{
+					$admin = 1;
+				}
+			}			
 
 			// check if they belong to a dedicated admin group
 			$admingroup = $this->config->get('admingroup', '');
@@ -2031,10 +2034,6 @@ class JobsControllerJobs extends Hubzero_Controller
 		$filters['limit']    = JRequest::getInt('limit', $this->config->get('jobslimit'));
 		$filters['start']    = JRequest::getInt('limitstart', 0, 'get');
 
-		// Task-specific
-		//$filters['sortby'] = $this->_task != 'browse' ? 'opendate' : $filters['sortby'] ;
-		//$filters['limit']  = $this->_task != 'browse' ? 10 : $filters['limit'] ;
-
 		// admins and employers
 		$filters['admin']   = $admin;
 		$filters['emp']     = $emp;
@@ -2145,12 +2144,12 @@ class JobsControllerJobs extends Hubzero_Controller
 			
 			// Get Members plugins
 			JPluginHelper::importPlugin('members', 'resume');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			$pile .= $pile != 'all' ? '_' . $this->juser->get('id') : '';
 			$zipname = JText::_('Resumes') . '_' . $pile . '.zip';
 
-			$mconfig =& JComponentHelper::getParams('com_members');
+			$mconfig = JComponentHelper::getParams('com_members');
 			$base_path = $mconfig->get('webpath', '/site/members');
 
 			if ($base_path) 

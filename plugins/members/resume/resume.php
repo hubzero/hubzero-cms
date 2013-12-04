@@ -66,7 +66,7 @@ class plgMembersResume extends JPlugin
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'stats.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'type.php');
 
-		$config =& JComponentHelper::getParams('com_jobs');
+		$config = JComponentHelper::getParams('com_jobs');
 		$this->config = $config;
 	}
 
@@ -85,7 +85,7 @@ class plgMembersResume extends JPlugin
 		// if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber') || $this->isEmployer($user, $member))
 		{
-			$areas['resume'] = JText::_('PLG_RESUME');
+			$areas['resume'] = JText::_('PLG_MEMBERS_RESUME');
 		}
 
 		return $areas;
@@ -100,9 +100,9 @@ class plgMembersResume extends JPlugin
 	 */
 	public function isEmployer($user=null, $member=null)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$employer = new Employer($database);
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Check if they're a site admin (from Joomla)
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -160,7 +160,7 @@ class plgMembersResume extends JPlugin
 	 */
 	public function isAdmin($admin = 0)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup')) 
@@ -198,8 +198,8 @@ class plgMembersResume extends JPlugin
 		$return = 'html';
 		$active = 'resume';
 
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
@@ -211,7 +211,7 @@ class plgMembersResume extends JPlugin
 			}
 		}
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		/*ximport('Hubzero_Document');
 		Hubzero_Document::addComponentScript('com_jobs');
 		*/
@@ -232,7 +232,7 @@ class plgMembersResume extends JPlugin
 		// Jobs component needs to be enabled
 		if (!$this->config->get('component_enabled')) 
 		{
-			$arr['html'] = '<p class="warning">' . JText::_('PLG_RESUME_WARNING_DISABLED') . '</p>';
+			$arr['html'] = '<p class="warning">' . JText::_('PLG_MEMBERS_RESUME_WARNING_DISABLED') . '</p>';
 			return $arr;
 		}
 
@@ -289,9 +289,9 @@ class plgMembersResume extends JPlugin
 		{
 			$js = new JobSeeker ($database);
 
-			if (!$js->load($member->get('uidNumber'))) 
+			if (!$js->loadSeeker($member->get('uidNumber'))) 
 			{
-				$this->setError(JText::_('PLG_RESUME_ERROR_PROFILE_NOT_FOUND'));
+				$this->setError(JText::_('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 				return '';
 			}
 
@@ -313,7 +313,7 @@ class plgMembersResume extends JPlugin
 		else if ($task == 'savetitle' && $author && $title) 
 		{
 			$resume = new Resume ($database);
-			if ($resume->load($author)) 
+			if ($resume->loadResume($author)) 
 			{
 				$resume->title = $title;
 				if (!$resume->store()) 
@@ -343,9 +343,9 @@ class plgMembersResume extends JPlugin
 
 		$js = new JobSeeker($database);
 
-		if (!$js->load($member->get('uidNumber'))) 
+		if (!$js->loadSeeker($member->get('uidNumber'))) 
 		{
-			$this->setError(JText::_('PLG_RESUME_ERROR_PROFILE_NOT_FOUND'));
+			$this->setError(JText::_('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 			return '';
 		} 
 		else if (!$active) 
@@ -398,12 +398,12 @@ class plgMembersResume extends JPlugin
 	public function view($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
 	{
 		$out = '';
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$self = $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
 
 		// get job seeker info on the user
 		$js = new JobSeeker ($database);
-		if (!$js->load($member->get('uidNumber'))) 
+		if (!$js->loadSeeker($member->get('uidNumber'))) 
 		{
 			// make a new entry
 			$js = new JobSeeker ($database);
@@ -437,7 +437,7 @@ class plgMembersResume extends JPlugin
 		$file = '';
 		$path = $this->build_path($member->get('uidNumber'));
 
-		if ($resume->load($member->get('uidNumber'))) 
+		if ($resume->loadResume($member->get('uidNumber'))) 
 		{
 			$file = JPATH_ROOT . $path . DS . $resume->filename;
 			if (!is_file($file)) 
@@ -497,18 +497,18 @@ class plgMembersResume extends JPlugin
 	 */
 	public function showSeeker($seeker, $emp, $admin, $option, $list=0)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$jt = new JobType($database);
 		$jc = new JobCategory($database);
 
 		$out = '';
 
 		$thumb = $this->getThumb($seeker->uid);
-		$jobtype = $jt->getType($seeker->sought_type, strtolower(JText::_('PLG_RESUME_TYPE_ANY')));
-		$jobcat = $jc->getCat($seeker->sought_cid, strtolower(JText::_('PLG_RESUME_CATEGORY_ANY')));
+		$jobtype = $jt->getType($seeker->sought_type, strtolower(JText::_('PLG_MEMBERS_RESUME_TYPE_ANY')));
+		$jobcat = $jc->getCat($seeker->sought_cid, strtolower(JText::_('PLG_MEMBERS_RESUME_CATEGORY_ANY')));
 
 		//$title = $seeker->title ?  $seeker->title : $seeker->filename;
-		$title = JText::_('ACTION_DOWNLOAD') . ' ' . $seeker->name . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
+		$title = JText::_('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD') . ' ' . $seeker->name . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME'));
 
 		$path = $this->build_path($seeker->uid);
 
@@ -536,7 +536,7 @@ class plgMembersResume extends JPlugin
 			*/
 		//}
 		$out .= '</div>' . "\n";
-		$out .= '<div class="lookingforlb">' . JText::_('PLG_RESUME_LOOKING_FOR') . "\n";
+		$out .= '<div class="lookingforlb">' . JText::_('PLG_MEMBERS_RESUME_LOOKING_FOR') . "\n";
 		$out .= '<span class="jobprefs">';
 		$out .= $jobtype ? $jobtype : ' ';
 		$out .= $jobcat ? ' &bull; ' . $jobcat : '';
@@ -545,15 +545,15 @@ class plgMembersResume extends JPlugin
 
 		if ($seeker->mine) 
 		{
-			$out .= '<span class="editbt"><a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=editprefs') . '" title="'.JText::_('PLG_RESUME_ACTION_EDIT_MY_PROFILE') . '">&nbsp;</a></span>' . "\n";
+			$out .= '<span class="editbt"><a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=editprefs') . '" title="'.JText::_('PLG_MEMBERS_RESUME_ACTION_EDIT_MY_PROFILE') . '">&nbsp;</a></span>' . "\n";
 		}
 		else if ($emp or $admin) 
 		{
 			$out .= '<span id ="o' . $seeker->uid . '"><a href="';
 			$out .= JRoute::_('index.php?option=com_jobs&oid=' . $seeker->uid . '&task=shortlist') . '" class="favvit" title="';
-			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('PLG_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_RESUME_ACTION_ADD_TO_SHORTLIST');
+			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST');
 			$out .= '" >';
-			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('PLG_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_RESUME_ACTION_ADD_TO_SHORTLIST');
+			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : JText::_('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST');
 			$out .= '</a></span>' . "\n";
 		}
 			/*
@@ -565,14 +565,14 @@ class plgMembersResume extends JPlugin
 		$out .= '<span class="indented">';
 		if ($resume) 
 		{
-			$out .= '<a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=download') . '" class="resume getit" title="' . $title . '">' . ucfirst(JText::_('PLG_RESUME_RESUME')) . '</a> <span class="mini">' . JText::_('PLG_RESUME_LAST_UPDATE') . ': ' . $this->nicetime($seeker->created) . '</span>  ' . "\n";
+			$out .= '<a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=download') . '" class="resume getit" title="' . $title . '">' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')) . '</a> <span class="mini">' . JText::_('PLG_MEMBERS_RESUME_LAST_UPDATE') . ': ' . $this->nicetime($seeker->created) . '</span>  ' . "\n";
 			//$out .= $seeker->url ? '<a href="'.$seeker->url.'" class="web" title="'.JText::_('Member website').'">'.$seeker->url.'</a>' : '';
-			$out .= $seeker->url ? '<span class="mini"> | </span> <span class="mini"><a href="' . $seeker->url . '" class="web" rel="external" title="' . JText::_('PLG_RESUME_MEMBER_WEBSITE') . ': ' . $seeker->url . '">' . JText::_('PLG_RESUME_WEBSITE') . '</a></span>' : '';
-			$out .= $seeker->linkedin ? '<span class="mini"> | </span> <span class="mini"><a href="' . $seeker->linkedin . '" class="linkedin" rel="external" title="' . JText::_('PLG_RESUME_MEMBER_LINKEDIN') . '">' . JText::_('PLG_RESUME_LINKEDIN') . '</a></span>' : '';
+			$out .= $seeker->url ? '<span class="mini"> | </span> <span class="mini"><a href="' . $seeker->url . '" class="web" rel="external" title="' . JText::_('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $seeker->url . '">' . JText::_('PLG_MEMBERS_RESUME_WEBSITE') . '</a></span>' : '';
+			$out .= $seeker->linkedin ? '<span class="mini"> | </span> <span class="mini"><a href="' . $seeker->linkedin . '" class="linkedin" rel="external" title="' . JText::_('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN') . '">' . JText::_('PLG_MEMBERS_RESUME_LINKEDIN') . '</a></span>' : '';
 		}
 		else 
 		{
-			$out .- '<span class="unavail">'.JText::_('PLG_RESUME_ACTION_DOWNLOAD').'</span>' . "\n";
+			$out .- '<span class="unavail">'.JText::_('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD').'</span>' . "\n";
 		}
 
 		$out .= '</span>' . "\n";
@@ -626,7 +626,7 @@ class plgMembersResume extends JPlugin
 
 		if (!$path) 
 		{
-			$this->setError(JText::_('PLG_RESUME_SUPPORT_NO_UPLOAD_DIRECTORY'));
+			$this->setError(JText::_('PLG_MEMBERS_RESUME_SUPPORT_NO_UPLOAD_DIRECTORY'));
 			return $this->view($database, $option, $member, $emp);
 		}
 
@@ -638,18 +638,18 @@ class plgMembersResume extends JPlugin
 
 		if (!$file['name']) 
 		{
-			$this->setError(JText::_('PLG_RESUME_SUPPORT_NO_FILE'));
+			$this->setError(JText::_('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
 			return $this->view($database, $option, $member, $emp);
 		}
 
 		// Incoming
 		$title = JRequest::getVar('title', '');
-		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
+		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME'));
 		$path = JPATH_ROOT.$path;
 
 		// Replace file title with user name
 		$file_ext = substr($file['name'], strripos($file['name'], '.'));
-		$file['name']  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
+		$file['name']  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME'));
 		$file['name'] .= $file_ext;
 
 		// Make the filename safe
@@ -666,7 +666,7 @@ class plgMembersResume extends JPlugin
 
 		$row = new Resume($database);
 
-		if (!$row->load($member->get('uidNumber'))) 
+		if (!$row->loadResume($member->get('uidNumber'))) 
 		{
 			$row = new Resume($database);
 			$row->id   = 0;
@@ -729,7 +729,7 @@ class plgMembersResume extends JPlugin
 	protected function deleteresume($database, $option, $member, $emp)
 	{
 		$row = new Resume($database);
-		if (!$row->load($member->get('uidNumber'))) 
+		if (!$row->loadResume($member->get('uidNumber'))) 
 		{
 			$this->setError(JText::_('Resume ID not found.'));
 			return '';
@@ -762,7 +762,7 @@ class plgMembersResume extends JPlugin
 
 				// Do not include profile in search without a resume
 				$js = new JobSeeker ($database);
-				$js->load($member->get('uidNumber'));
+				$js->loadSeeker($member->get('uidNumber'));
 				$js->bind(array('active' => 0));
 				if (!$js->store()) 
 				{
@@ -799,10 +799,10 @@ class plgMembersResume extends JPlugin
 	 */
 	protected function shortlist($oid, $ajax=0)
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 
 			$shortlist = new Shortlist($database);
 			$shortlist->loadEntry($juser->get('id'), $oid, 'resume');
@@ -932,8 +932,8 @@ class plgMembersResume extends JPlugin
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
 
-		$database =& JFactory::getDBO();
-		$juser    =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser    = JFactory::getUser();
 
 		// Ensure we have a database object
 		if (!$database) 
@@ -950,7 +950,7 @@ class plgMembersResume extends JPlugin
 		$file = '';
 		$path = $this->build_path($uid);
 
-		if ($resume->load($uid)) 
+		if ($resume->loadResume($uid)) 
 		{
 			$file = JPATH_ROOT . $path . DS . $resume->filename;
 		}

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title(JText::_( 'Services &amp; Subscriptions Manager' ).': Services', 'addedit.png');
-//JToolBarHelper::addNew('newservice','New Service');
+//JToolBarHelper::editList();
 
 ?>
 <script type="text/javascript">

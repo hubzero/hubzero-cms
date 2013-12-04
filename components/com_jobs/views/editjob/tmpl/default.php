@@ -36,6 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	$juser 	  =& JFactory::getUser();
+	
+	$jobsHtml = new JobsHtml();
 
 	$job = $this->job;
 	$employer = $this->employer;
@@ -47,7 +49,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode	
 	
-	$countries = Hubzero_Geo::getcountries();
+	$hubzero_Geo = new Hubzero_Geo();
+	$countries = $hubzero_Geo->getcountries();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -76,9 +79,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$job->title = trim(stripslashes($job->title));
 		$job->description = trim(stripslashes($job->description));
 		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
-		$job->description = JobsHtml::txt_unpee($job->description);
+		$job->description = $jobsHtml->txt_unpee($job->description);
 		$job->companyLocation = $id ? $job->companyLocation : $employer->companyLocation;
-		$job->companyLocationCountry = $id ? $job->companyLocationCountry : $this->escape(Hubzero_Geo::getcountry($profile->get('countryresident')));
+		$job->companyLocationCountry = $id ? $job->companyLocationCountry : $this->escape($hubzero_Geo->getcountry($profile->get('countryresident')));
 		$job->companyName = $id ? $job->companyName : $employer->companyName;
 		$job->companyWebsite = $id ? $job->companyWebsite : $employer->companyWebsite;
 		$usonly = (isset($this->config->parameters['usonly'])) ? $this->config->parameters['usonly'] : 0;
@@ -160,11 +163,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			
 			<label>
 				<?php echo JText::_('COM_JOBS_EDITJOB_CATEGORY'); ?>: 
-				<?php echo JobsHtml::formSelect('cid', $this->cats, $job->cid, '', ''); ?>
+				<?php echo $jobsHtml->formSelect('cid', $this->cats, $job->cid, '', ''); ?>
 			</label>
 			<label>
 				<?php echo JText::_('COM_JOBS_EDITJOB_TYPE'); ?>: 
-				<?php echo JobsHtml::formSelect('type', $this->types, $job->type, '', ''); ?>
+				<?php echo $jobsHtml->formSelect('type', $this->types, $job->type, '', ''); ?>
 			</label>
 			<label for="startdate">
 				<?php echo JText::_('COM_JOBS_EDITJOB_START_DATE'); ?>:

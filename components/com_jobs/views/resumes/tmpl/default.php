@@ -32,6 +32,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$pageNav 	= $this->pageNav;
 	$cats 		= $this->cats;
 	$types 		= $this->types;
+	
+	$jobsHtml = new JobsHtml();
 
 ?>
 <div id="content-header">
@@ -76,11 +78,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</label>
 				<label>
 					<?php echo JText::_('Category sought'); ?>:
-					<?php echo JobsHtml::formSelect('category', $cats, $filters['category'], '', ''); ?>
+					<?php echo $jobsHtml->formSelect('category', $cats, $filters['category'], '', ''); ?>
 				</label>
 				<label>
 					<?php echo JText::_('Type sought'); ?>:
-					<?php echo JobsHtml::formSelect('type', $types, $filters['type'], '', ''); ?>
+					<?php echo $jobsHtml->formSelect('type', $types, $filters['type'], '', ''); ?>
 				</label>
 				<label>
 					<input class="option" type="checkbox" name="saveprefs" value="1" checked="checked" /> 
@@ -122,7 +124,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<ul id="candidates">
 			<?php 
 			JPluginHelper::importPlugin( 'members','resume' );
-			$dispatcher =& JDispatcher::getInstance();	
+			$dispatcher = JDispatcher::getInstance();	
 			foreach ($seekers as $seeker) 
 			{
 				?>

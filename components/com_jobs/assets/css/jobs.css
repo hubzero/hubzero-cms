@@ -15,6 +15,12 @@
 	.main {
 		border: none;
 	}
+	.com_jobs .withleft .aside li:before,
+	.com_jobs .aside li:before,
+	.com_jobs .withleft .aside li:after,
+	.com_jobs .aside li:after {
+		display: none;
+	}
 	table.wiki-reference h2 {
 		margin: 0 !important;
 		padding: 0 !important;

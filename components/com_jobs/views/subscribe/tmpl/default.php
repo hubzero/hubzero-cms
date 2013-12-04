@@ -35,6 +35,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	$juser 	  =& JFactory::getUser();
+	
+	$jobsHtml = new JobsHtml();
 
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
@@ -141,7 +143,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$unitsize = $unitsize + $this->services[$i]->unitsize;
 					}
 
-					$unitsChoice = JobsHtml::formSelect('units_'.$this->services[$i]->id, $units_select, '', "option units");
+					$unitsChoice = $jobsHtml->formSelect('units_'.$this->services[$i]->id, $units_select, '', "option units");
 					$iniprice = $thissub ? 0 : $this->services[$i]->unitprice;
 
 					$html .= '<div class="bindtogether product">'."\n";
@@ -157,7 +159,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$html .= $thissub ? $expires : '';
 					if($thissub or ($this->subscription->serviceid==0 && $i==0))
 					{
-						$html .= JobsHtml::confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid));
+						$html .= $jobsHtml->confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid));
 					}
 				
 					$html .= '<label> ';
