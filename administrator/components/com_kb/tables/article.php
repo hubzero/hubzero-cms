@@ -380,7 +380,7 @@ class KbTableArticle extends JTable
 			switch ($filters['sort'])
 			{
 				case 'recent':     $filters['sort'] = 'a.modified DESC, a.created'; break;
-				case 'popularity': $filters['sort'] = '(a.helpful - a.nothelpful)'; break;
+				case 'popularity': $filters['sort'] = '(a.helpful - a.nothelpful)'; $filters['sort_Dir'] = 'DESC'; break;
 				default:
 					if (substr($filters['sort'], 0, 2) != 'a.' && array_key_exists($filters['sort'], $this->getFields()))
 					{

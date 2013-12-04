@@ -125,7 +125,7 @@ class KbModelCategory extends \Hubzero\Model
 	public function articles($rtrn='list', $filters=array(), $clear=false)
 	{
 		$tbl = new KbTableArticle($this->_db);
-
+		
 		if ($this->get('section'))
 		{
 			if (!isset($filters['section']))
@@ -148,10 +148,16 @@ class KbModelCategory extends \Hubzero\Model
 		{
 			$filters['state']    = self::APP_STATE_PUBLISHED;
 		}
-
-		$filters['sort']     = 'title';
-		$filters['sort_Dir'] = 'ASC';
-
+		
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		
 		switch (strtolower($rtrn))
 		{
 			case 'count':
@@ -212,8 +218,14 @@ class KbModelCategory extends \Hubzero\Model
 			$filters['empty']   = false;
 		}
 
-		$filters['sort']     = 'title';
-		$filters['sort_Dir'] = 'ASC';
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
 
 		switch (strtolower($rtrn))
 		{

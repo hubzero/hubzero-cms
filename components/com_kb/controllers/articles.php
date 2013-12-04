@@ -58,7 +58,7 @@ class KbControllerArticles extends Hubzero_Controller
 	public function displayTask()
 	{
 		$this->view->setLayout('display');
-
+		
 		// Add the CSS to the template
 		$this->_getStyles();
 
@@ -145,10 +145,10 @@ class KbControllerArticles extends Hubzero_Controller
 		$this->view->filters = array();
 		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->view->filters['order']    = JRequest::getWord('order', 'recent');
-		if (!in_array($this->view->filters['order'], array('recent', 'popularity')))
+		$this->view->filters['sort']    = JRequest::getWord('sort', 'recent');
+		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
 		{
-			$this->view->filters['order'] = 'recent';
+			$this->view->filters['sort'] = 'recent';
 		}
 		$this->view->filters['section']  = $sect;
 		$this->view->filters['category'] = $cat;
@@ -158,7 +158,7 @@ class KbControllerArticles extends Hubzero_Controller
 		{
 			$this->view->filters['user_id'] = $this->juser->get('id');
 		}
-
+		
 		// Get a record count
 		$this->view->total = $this->view->category->articles('count', $this->view->filters);
 

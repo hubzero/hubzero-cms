@@ -352,7 +352,15 @@ class KbTableCategory extends JTable
 
 		$query .= $this->_buildQuery($filters);
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
-
+		
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= ' ORDER by `name`';
+		}
+		else {
+			$query .= ' ORDER by `title`';
+		}
+		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}

@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 					<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
 					<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
-					<input type="hidden" name="order" value="<?php echo $this->escape($this->filters['order']); ?>" />
+					<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
 					<input type="hidden" name="section" value="<?php echo $this->escape($this->category->get('alias')); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
@@ -91,12 +91,12 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="container">
 				<ul class="entries-menu">
 					<li>
-						<a<?php echo ($this->filters['order'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&order=popularity'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_POPULAR'); ?>">
+						<a<?php echo ($this->filters['sort'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&sort=popularity'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_POPULAR'); ?>">
 							<?php echo JText::_('COM_KB_SORT_POPULAR'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['order'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&order=recent'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_RECENT'); ?>">
+						<a<?php echo ($this->filters['sort'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&sort=recent'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_RECENT'); ?>">
 							<?php echo JText::_('COM_KB_SORT_RECENT'); ?>
 						</a>
 					</li>
@@ -160,7 +160,7 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 				<?php 
 				$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-				$this->pageNav->setAdditionalUrlParam('order', $this->filters['order']);
+				$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
 
 				echo $this->pageNav->getListFooter();
 				?>
