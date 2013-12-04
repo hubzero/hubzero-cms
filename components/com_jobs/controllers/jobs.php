@@ -289,13 +289,13 @@ class JobsControllerJobs extends Hubzero_Controller
 
 		// Call the trigger
 		$results = $dispatcher->trigger($trigger, array());
-		if (is_array($results)) 
+		if (is_array($results) && isset($results[0]) && isset($results[0]['html'])) 
 		{
 			$html = $results[0]['html'];
 		}
 
 		// Output HTML
-		echo $html;
+		echo isset($html) ? $html : NULL;
 	}
 
 	/**
