@@ -72,7 +72,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_longname = JText::_('COMPONENT_LONG_NAME');
 
 		// Load the component config
-		$config 		=& JComponentHelper::getParams( $this->_option );
+		$config 		= JComponentHelper::getParams( $this->_option );
 		$this->_config 	= $config;
 				
 		// Publishing enabled?
@@ -96,6 +96,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$this->_redirect = '/';
 			return;
+		}
+		$dateFormat = '%b %d, %Y';
+		$tz = null;
+
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$dateFormat = 'M d, Y';
+			$tz = false;
 		}
 												
 		// Incoming
@@ -216,14 +224,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			case 'get':		
 				$this->_pubView(); 	
 				break;
-												
+																	
 			default: 
 				$this->_task = 'intro';
 				$this->_intro(); 									
 				break;
 		}
 	}
-	
+		
 	/**
 	 * Pub view for project files, notes etc.
 	 * 
@@ -270,7 +278,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				
 		// Get plugin
 		JPluginHelper::importPlugin( 'projects', $objSt->type );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Serve requested item
 	 	$content = $dispatcher->trigger( 'serve', array($objSt->projectid, $objSt->reference));
@@ -518,7 +526,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->_login();
 			return;
 		}
-												
+											
 		// Instantiate a new view
 		$view = new JView( array('name'=>'intro') );
 		$view->filters = array();
@@ -867,13 +875,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$groups = urldecode(trim(JRequest::getVar( 'newgroup', '' )));
 		
 		// Get user session
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 				
 		if ($members or $groups) 
 		{
 			// Get plugin
 			JPluginHelper::importPlugin( 'projects', 'team' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$content = $dispatcher->trigger( 'onProject', array(
 				$project, $this->_option, $authorized, 
 				$this->juser->get('id'), '', '', 'save' 
@@ -1013,7 +1021,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{			
 			// Get plugin
 			JPluginHelper::importPlugin( 'projects', 'team' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			
 			// Get project
 			$project = $obj->getProject($this->_identifier, $this->juser->get('id'));
@@ -1096,7 +1104,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$ajax 			=  JRequest::getInt( 'ajax', 0 );
 		$action  		=  JRequest::getVar( 'action', '' );
 		$sync 			=  0;
-				
+		
 		// Stop ajax action if user got logged put
 		if ($ajax && $this->juser->get('guest'))
 		{
@@ -1192,7 +1200,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				$sync = 1;
 			}
 		}
-		
+				
 		// Is project deleted?
 		if ($project->state == 2) 
 		{
@@ -1249,7 +1257,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->_login();
 			return;
 		}
-		
+				
 		// Check if they're a member of reviewer group
 		$reviewer = false;
 		if (!$this->juser->get('guest') && $authorized != 1) 
@@ -1415,7 +1423,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			{
 				$layout = 'pending';	
 			}
-		}
+		}		
 											
 		// Instantiate a new view
 		$view 				= new JView( array('name'=>'view', 'layout' => $layout) );		
@@ -1427,7 +1435,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if ($project->provisioned == 1) 
 		{
 			// Get JS & CSS
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'publications.css');
 			
 			$view->pub 		 = isset($pub) ? $pub : '';
@@ -1460,13 +1468,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Get latest log from user session
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 		
 		// Log activity
 		if (!$jsession->get('projects-nolog'))
 		{
 			$this->_logActivity($pid, 'project', $this->active, $action, $authorized);		
-		}
+		}		
 		
 		// Allow future logging
 		if ($this->_config->get('logging', 0))
@@ -1483,31 +1491,23 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					
 			// Get plugin
 			JPluginHelper::importPlugin( 'projects');
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
+						
+			// Get plugins with side tabs
+			$view->tabs 	= $dispatcher->trigger( 'onProjectAreas', array( ) );
+			$availPlugins 	= $dispatcher->trigger( 'onProjectAreas', array('all' => true) );
 			
-			// Get available plugins
-			$hub_project_plugins = $dispatcher->trigger( 'onProjectAreas', array( ) );
-			$view->tabs = $hub_project_plugins;
+			// Get tabs
+			$tabs = $this->_getTabs($view->tabs);
 			
-			// Make sure we have name and title
-			$tabs = array();
-			for ($i = 0, $n = count($view->tabs); $i <= $n; $i++) 
-			{
-				if (empty($view->tabs[$i]) || !isset($view->tabs[$i]['name']))
-				{
-					unset($view->tabs[$i]);
-				}
-				else
-				{
-					$tabs[] = $view->tabs[$i]['name'];
-				}
-			}
+			// Get active plugins (some may not be in tabs)
+			$activePlugins = $this->_getTabs($availPlugins);
 			
 			// Get plugin content
 			if ($this->active != 'info')
 			{	
 				// Do not go further if plugin is inactive or does not exist
-				if (!in_array($plugin, $tabs))
+				if (!in_array($plugin, $activePlugins))
 				{
 					if ($ajax)
 					{
@@ -1562,8 +1562,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						$extraParam = $tool->name;
 						$this->active = 'tools';
 					}
-				}				
-				
+				}					
+
 				// Plugin params
 				$plugin_params = array(
 					$project, 
@@ -1576,9 +1576,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					array($plugin),
 					$extraParam
 				);
-								
+							
 				// Get plugin content
 				$sections = $dispatcher->trigger( 'onProject', $plugin_params);
+								
 				if (!empty($sections))
 				{
 					foreach ($sections as $section)
@@ -1722,6 +1723,30 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	}
 	
 	/**
+	 * Get tabs
+	 * 
+	 * @return    array
+	 */
+	protected function _getTabs( &$plugins )
+	{
+		// Make sure we have name and title
+		$tabs = array();
+		for ($i = 0, $n = count($plugins); $i <= $n; $i++) 
+		{
+			if (empty($plugins[$i]) || !isset($plugins[$i]['name']))
+			{
+				unset($plugins[$i]);
+			}
+			else
+			{
+				$tabs[] = $plugins[$i]['name'];
+			}
+		}
+		
+		return $tabs;
+	}
+	
+	/**
 	 * Edit project view
 	 * 
 	 * @return     void
@@ -1809,7 +1834,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 			
 		// Get user session
-		$jsession =& JFactory::getSession();
+		$jsession = JFactory::getSession();
 		
 		// Log activity
 		if (!$jsession->get('projects-nolog'))
@@ -1856,7 +1881,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			case 'team':			
 				// Get team plugin
 				JPluginHelper::importPlugin( 'projects', 'team' );
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$auth = $project->role == 1 ? 1 : 0;
 				$tAction = $save ? 'save' : JRequest::getVar( 'action', 'edit');
 				$content = $dispatcher->trigger( 'onProject', array(
@@ -2122,7 +2147,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						if ($key == 'grant_status' && $old_params != $project->params)
 						{
 							// Meta data for comment
-							$meta = '<meta>' . JHTML::_('date', JFactory::getDate()->toSql(), $dateFormat, $tz)
+							$meta = '<meta>' . JHTML::_('date', JFactory::getDate(), $dateFormat, $tz)
 							. ' - ' . $this->juser->get('name') . '</meta>';
 							
 							$cbase   = $obj->admin_notes;
@@ -2725,7 +2750,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
 			// Add stylesheet
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
 			
 			$objStats = new ProjectStats($this->database);
@@ -2894,21 +2919,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		if ($action == 'save' && !$this->getError() && $obj->id)
 		{
-			// Make sure admin_notes column is there
-			if (!isset($obj->admin_notes))
-			{
-				$fields = $this->database->getTableFields('jos_projects');
-				if (!array_key_exists('admin_notes', $fields['jos_projects'] )) 
-				{
-					$this->database->setQuery( "ALTER TABLE `jos_projects` ADD `admin_notes` text" );
-					if (!$this->database->query()) 
-					{
-						echo $this->database->getErrorMsg();
-						return false;
-					}
-				}
-			}
-			
 			$cbase = $obj->admin_notes;
 			
 			// Meta data for comment
@@ -3474,7 +3484,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$ih->set('maxWidth', 50);
 			$ih->set('maxHeight', 50);
 			$ih->set('cropratio', '1:1');
-			$ih->set('outputName', $ih->createThumbName());
+			$ih->set('outputName', 'thumb.png');
 			if (!$ih->process()) 
 			{
 				JFile::delete($path . DS . $file['name']);
@@ -3824,7 +3834,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->file 			= $file;
 		
 		$ih = new ProjectsImgHandler();
-		$view->thumb 		= file_exists($prefix . $path . DS . $file) ? $ih->createThumbName($file) : '';
+		$view->thumb 		= !file_exists($prefix . $path . DS . 'thumb.png') 
+								&& file_exists($prefix . $path . DS . $file) 
+								? $ih->createThumbName($file) : 'thumb.png';
 		$view->file_path 	= $prefix . $path;
 		$view->id 			= $id;
 		$view->tempid 		= $tempid;
@@ -4012,7 +4024,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				? ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)) : '';
 		}
 	
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle( $this->title );
 	}
 	
@@ -4146,7 +4158,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if ($raw) 
 		{
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 			
 			//import the wiki parser
 			$wikiconfig = array(
@@ -4195,7 +4207,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$project 	= $obj->getProject($pid, $this->juser->get('id'));
 			
 		// Set up email config
-		$jconfig 		=& JFactory::getConfig();
+		$jconfig 		= JFactory::getConfig();
 		$from 			= array();
 		$from['name']  	= $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_PROJECTS');
 		$from['email'] 	= $jconfig->getValue('config.mailfrom');
@@ -4257,7 +4269,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 
 				// Send HUB message
 				JPluginHelper::importPlugin( 'xmessage' );
-				$dispatcher =& JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$dispatcher->trigger( 'onSendMessage', 
 					array( 
 						'projects_member_added', 
@@ -4315,15 +4327,15 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			return false;
 		}
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$project = new Project( $db );
-		if (!$project->load( $pid ))
+		if (!$project->loadProject( $pid ))
 		{
 			return false;
 		}
 		// Get plugin
 		JPluginHelper::importPlugin( 'projects', $what);
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger( 'onProjectCount', array( $project, &$counts) );
 		
 		if (isset($counts[$what]))
@@ -4368,7 +4380,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			return false;
 		}
 		
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		
 		// Log activity
 		$objLog  				= new ProjectLog( $this->database );
@@ -4379,7 +4391,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objLog->section 		= $section;
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
-		$objLog->time 			= JFactory::getDate()->toSql();
+		$objLog->time 			= date('Y-m-d H:i:s');
 		$objLog->request_uri 	= JRequest::getVar('REQUEST_URI', $juri->base(), 'server');
 		$objLog->ajax 			= $ajax;
 		$objLog->store();

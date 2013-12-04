@@ -956,8 +956,7 @@ class Project extends JTable
 		$query .= " LIMIT 1 ";
 	
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
-		
+		return $this->_db->loadResult();		
 	}
 	
 	/**

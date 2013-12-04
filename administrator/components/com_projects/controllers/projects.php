@@ -46,7 +46,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	public function execute()
 	{
 		// Load the component config
-		$config =& JComponentHelper::getParams( $this->_option );
+		$config = JComponentHelper::getParams( $this->_option );
 		$this->_config = $config;
 				
 		// Publishing enabled?
@@ -104,10 +104,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Get configuration
 		$config = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet(DS .'components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'projects.css');
 			
 		// Get filters
@@ -168,7 +168,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet(DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'projects.css');
 		$document->addStyleSheet(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
 		$document->addScript(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');		
@@ -217,7 +217,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				
 		// Get plugin
 		JPluginHelper::importPlugin( 'projects');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		
 		// Get activity counts
 		$dispatcher->trigger( 'onProjectCount', array( $obj, &$counts, 1) );
@@ -253,7 +253,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Get Disk Usage
 		JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$project = $obj->getProject($id, $this->juser->get('id'));	
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 
 			'files', 'admin', '', $this->_config, NULL));
@@ -321,7 +321,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Email config
-		$jconfig 		=& JFactory::getConfig();
+		$jconfig 		= JFactory::getConfig();
 		$from 			= array();
 		$from['name']  	= $jconfig->getValue('config.sitename').' '.JText::_('COM_PROJECTS');
 		$from['email'] 	= $jconfig->getValue('config.mailfrom');
@@ -427,7 +427,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 			// Send HUB message
 			JPluginHelper::importPlugin( 'xmessage' );
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger( 'onSendMessage', array( 'projects_admin_message', $subject, $body, $from, $managers, $this->_option ));
 		}
 		
@@ -498,9 +498,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->setError( JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND') );
 			return false;
 		}
-		
-		// Load project
-		$obj->load($id);
 		
 		// Get project group
 		$group_prefix = $this->_config->get('group_prefix', 'pr-');
@@ -577,7 +574,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					
 		// Erase all files, remove files repository
 		JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger( 'eraseRepo', array($identifier) );
 		
 		// Delete base dir for .git repos
@@ -645,7 +642,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Get Disk Usage
 		JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$project = $obj->getProject($id, $this->juser->get('id'));	
 		
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 
