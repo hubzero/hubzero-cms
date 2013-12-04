@@ -253,6 +253,7 @@ if ($this->comments) {
 				<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
 				
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="comments" />
 
 <?php if ($this->sub) { ?>
 				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
@@ -261,7 +262,7 @@ if ($this->comments) {
 				<input type="hidden" name="task" value="savecomment" />
 <?php } ?>
 				<label id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"<?php if ($this->mycomment->anonymous != 0) { echo ' checked="checked"'; } ?> />
+					<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->anonymous != 0) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('COM_WIKI_FIELD_ANONYMOUS'); ?>
 				</label>
 

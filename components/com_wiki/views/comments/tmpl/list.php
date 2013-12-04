@@ -85,7 +85,7 @@ if (count($this->comments) > 0) {
 				case 5:   $cls = ' five-stars';      break;
 				default:  $cls = ' no-stars';        break;
 			}
-			$html .= "\t\t\t".'<p><span class="avgrating'.$cls.'"><span>'.JText::sprintf('WIKI_COMMENT_RATING',$comment->rating).'</span></span></p>'."\n";
+			$html .= "\t\t\t".'<p><span class="avgrating'.$cls.'"><span>'.JText::sprintf('COM_WIKI_COMMENT_RATING',$comment->rating).'</span></span></p>'."\n";
 		}
 		$html .= "\t\t".'	<p class="comment-title">'."\n";
 		$html .= "\t\t".'		<strong>'. $author.'</strong> '."\n";
