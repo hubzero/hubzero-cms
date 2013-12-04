@@ -28,9 +28,15 @@ HUBzero is a registered trademark of Purdue University.
 -->
 <config>
 	<params>
-		<param name="autoapprove" type="radio" default="1" label="Auto-approve employer subscriptions" description="Auto approve employer subscriptions, when no payment is expected.">
+		<param name="autoapprove" type="list" default="1" label="Auto-approve employer subscriptions" description="Auto approve employer subscriptions, when no payment is expected.">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
 	</params>
+	<fieldset name="basic">
+		<field name="autoapprove" type="list" default="1" label="Auto-approve employer subscriptions" description="Auto approve employer subscriptions, when no payment is expected.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
 </config>
