@@ -37,7 +37,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	<div class="container">
 		<h3><?php echo JText::_('PLG_MEMBERS_PROJECTS_CREATE'); ?></h3>
 		<p><?php echo JText::_('PLG_MEMBERS_PROJECTS_CREATE_EXPLANATION'); ?></p>
-		<p><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>"><?php echo JText::_('PLG_MEMBERS_PROJECTS_ADD'); ?></a></p>
+		<p><a class="icon-add" href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>"><?php echo JText::_('PLG_MEMBERS_PROJECTS_ADD'); ?></a></p>
 	</div>
 	<div class="container">
 		<h3><?php echo JText::_('PLG_MEMBERS_PROJECTS_EXPLORE'); ?></h3>
