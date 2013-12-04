@@ -10,20 +10,6 @@
 
 defined('_JEXEC') or die;
 
-
-if (JFactory::getConfig()->getValue('config.debug')) {
-	error_reporting(E_ALL);
-	@ini_set('display_errors', '1');
-}
-
-
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
-
-
-
-
 mb_internal_encoding('UTF-8');
 
 jimport('joomla.application.component.helper');
@@ -44,7 +30,6 @@ $html_path = str_replace(JPATH_BASE, '', JPATH_COMPONENT) . '/html';
 $com_name = str_replace(JPATH_BASE.'/components/', '', JPATH_COMPONENT);
 $com_name = str_replace('com_', '' , $com_name);
 $dv_conf['settings']['com_name'] = $com_name;
-
 
 controller();
 return;
