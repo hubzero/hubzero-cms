@@ -43,7 +43,7 @@ $juser = JFactory::getUser();
 		<?php } ?>
 
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option=com_jobs'); ?>" class="icon-next btn">
+				<a href="<?php echo JRoute::_('index.php?option=com_jobs'); ?>" class="icon-next">
 					<?php echo ($this->config->get('industry') ? JText::sprintf('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry')) : JText::_('PLG_MEMBERS_RESUME_VIEW_JOBS')); ?>
 				</a>
 			</p>
@@ -267,7 +267,7 @@ $juser = JFactory::getUser();
 							<time datetime="<?php echo $this->resume->created; ?>"><?php echo JHTML::_('date', $this->resume->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('PLG_MEMBERS_RESUME_CTION_DELETE_THIS_RESUME'); ?>">
+							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>">
 								<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DELETE'); ?>
 							</a>
 						</td>

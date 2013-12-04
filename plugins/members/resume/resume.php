@@ -621,7 +621,7 @@ class plgMembersResume extends JPlugin
 	 */
 	public function upload($database, $option, $member)
 	{
-		$path = JRequest::getVar('path', '');
+		$path = $this->build_path($member->get('uidNumber'));
 		$emp = JRequest::getInt('emp', 0);
 
 		if (!$path) 
