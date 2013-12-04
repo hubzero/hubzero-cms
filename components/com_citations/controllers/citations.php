@@ -163,7 +163,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'aff'    => JText::_('AFFILIATE'),
 			'nonaff' => JText::_('NONAFFILIATE')
 		);
-		if (!in_array($this->view->filters['filter'], $this->view->filter))
+		if (!in_array($this->view->filters['filter'], array_keys($this->view->filter)))
 		{
 			$this->view->filters['filter'] = '';
 		}
