@@ -55,9 +55,9 @@ class Hubzero_Document
 	 */
 	public static function addComponentStylesheet($component, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$jdocument = &JFactory::getDocument();
+		$jdocument = JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
 
@@ -150,9 +150,9 @@ class Hubzero_Document
 			return;
 		}
 
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$jdocument = &JFactory::getDocument();
+		$jdocument = JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
 
@@ -224,7 +224,7 @@ class Hubzero_Document
 	 */
 	public static function getComponentImage($component, $image)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$template  = $mainframe->getTemplate();
 
@@ -258,7 +258,7 @@ class Hubzero_Document
 	 */
 	public static function getComponentStylesheet($component, $stylesheet)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$template  = $mainframe->getTemplate();
 
@@ -292,7 +292,7 @@ class Hubzero_Document
 	 */
 	public static function getModuleImage($module, $image)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$template  = $mainframe->getTemplate();
 
@@ -322,9 +322,9 @@ class Hubzero_Document
 	 */
 	public static function addModuleStyleSheet($module, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$jdocument = &JFactory::getDocument();
+		$jdocument = JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
 
@@ -400,9 +400,9 @@ class Hubzero_Document
 	 */
 	public static function addPluginStyleSheet($folder, $plugin, $stylesheet = '', $type = 'text/css', $media = null, $attribs = array())
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
-		$jdocument =& JFactory::getDocument();
+		$jdocument = JFactory::getDocument();
 
 		$template  = $mainframe->getTemplate();
 
