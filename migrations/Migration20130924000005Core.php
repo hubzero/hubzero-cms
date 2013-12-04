@@ -208,8 +208,17 @@ class Migration20130924000005Core extends Hubzero_Migration
 			$db->setQuery($query);
 			$results = $db->loadObjectList();
 
+			// Build list of extensions to exclude (i.e. they're no longer in the core)
+			$excludes = array('com_sef', 'com_userpoints', 'com_hub', 'com_storefront', 'com_contribute', 'com_contribtool');
+
 			foreach ($results as $r)
 			{
+				// See if we want to ignore the entry
+				if (in_array($r->option, $excludes))
+				{
+					continue;
+				}
+
 				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$r->option}';";
 				$db->setQuery($query);
 				if ($id = $db->loadResult())
