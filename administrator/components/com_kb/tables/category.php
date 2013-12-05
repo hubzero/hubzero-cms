@@ -255,7 +255,7 @@ class KbTableCategory extends JTable
 		}
 
 		$where = array();
-
+		
 		if (isset($filters['section']) && $filters['section'] >= 0) 
 		{
 			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
@@ -353,6 +353,7 @@ class KbTableCategory extends JTable
 		$query .= $this->_buildQuery($filters);
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 		
+		/*
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= ' ORDER by `name`';
@@ -360,6 +361,7 @@ class KbTableCategory extends JTable
 		else {
 			$query .= ' ORDER by `title`';
 		}
+		*/
 		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

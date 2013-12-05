@@ -52,17 +52,18 @@ class KbControllerCategories extends Hubzero_Controller
 		// Get filters
 		$this->view->filters = array(
 			'state'  => -1,
-			'access' => -1
+			'access' => -1,
+			'empty'	 => 1
 		);
-		$this->view->filters['id']        = $app->getUserStateFromRequest(
+		$this->view->filters['section']        = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.id', 
 			'id', 
 			0, 
 			'int'
 		);
-		if (!$this->view->filters['id']) 
+		if (!$this->view->filters['section']) 
 		{
-			$this->view->filters['id']        = $app->getUserStateFromRequest(
+			$this->view->filters['section']        = $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.cid', 
 				'cid', 
 				0, 
