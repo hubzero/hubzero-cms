@@ -116,8 +116,9 @@ if ($results)
 	$min = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $results[0]->datetime));
 
 	$current = end($results);
+	$current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 }
-$current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
+
 ?>
 	<h3 id="plg-usage-header">
 		<a name="usage"></a>
@@ -1090,7 +1091,7 @@ $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 		</script>
 	<?php } else { ?>
 		<div id="no-usage">
-			<p><?php echo JText::_('No usage data was found.'); ?></p>
+			<p class="warning"><?php echo JText::_('No usage data was found.'); ?></p>
 		</div>
 	<?php } ?>
 	</form>

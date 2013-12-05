@@ -197,16 +197,16 @@ class plgResourcesUsage extends JPlugin
 
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
+			if (!$stats->users)
+			{
+				$stats->users = 0;
+			}
 			if ($model->isTool()) 
 			{
 				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</a></p>';
 			} 
 			else 
 			{
-				if (!$stats->users)
-				{
-					$stats->users = 0;
-				}
 				$arr['metadata'] = '<p class="usage">' . JText::sprintf('%s users', $stats->users) . '</p>';
 			}
 			if ($clusters->users && $clusters->classes) 
