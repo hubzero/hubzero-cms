@@ -183,8 +183,22 @@ class KbModelArchive extends JObject
 		if (!isset($filters['empty']))
 		{
 			$filters['empty']   = false;
+		}		
+		if (!isset($filters['sort']))
+		{
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$filters['sort'] = 'name';
+			}
+			else {
+				$filters['sort'] = 'title';
+			}
 		}
-
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir']  = 'ASC';
+		}	
+				
 		switch (strtolower($rtrn))
 		{
 			case 'count':
