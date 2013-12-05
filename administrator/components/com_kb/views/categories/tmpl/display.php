@@ -181,7 +181,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($row->get('articles', 0) > 0) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=articles&amp;<?php echo ($this->filters['id'] ? 'category=' . $row->get('id') . '&amp;section=' . $this->filters['id'] : 'section=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=articles&amp;<?php echo (isset($this->filters['section']) && $this->filters['section']) ? 'category=' . $row->get('id') . '&amp;section=' . $this->filters['section'] : 'section=' . $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
 						<span><?php echo $row->get('articles', 0) . ' ' . JText::_('COM_KB_ARTICLES'); ?></span>
 					</a>
 				<?php } else { ?>
