@@ -167,23 +167,16 @@ class StoreControllerMedia extends Hubzero_Controller
 
 		// Build the file path
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
-
-		if (!file_exists($path . DS . $picture) or !$picture)
+		
+		// Attempt to delete the file
+		jimport('joomla.filesystem.folder');
+		if (!JFolder::delete($path))
 		{
-			$this->setError(JText::_('COM_STORE_FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
+			$this->displayTask($id);
+			return;
 		}
-		else
-		{
-			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $picture))
-			{
-				$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
-				$this->displayTask($id);
-				return;
-			}
-		}
-
+		
 		// Push through to the image view
 		$this->displayTask($id);
 	}
