@@ -61,7 +61,7 @@ else
 $user = & JFactory::getUser();
 if (!$user->authorize($option, 'manage')) 
 {
-	$mainframe->redirect('index.php', JText::_('ALERTNOTAUTH'));
+	JFactory::getApplication()->redirect('index.php', JText::_('ALERTNOTAUTH'));
 }
 
 // Include needed tables and controller
