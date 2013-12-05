@@ -172,6 +172,13 @@ function UsersParseRoute($segments)
 	// Get the package from the route segments.
 	$userId = array_pop($segments);
 
+	// Make routes such as "/users/remind" and "/users/reset" work
+	if ($userId == 'remind' || $userId == "reset")
+	{
+		$vars['view'] = $userId;
+		return $vars;
+	}
+
 	if (!is_numeric($userId)) {
 		$vars['view'] = 'login';
 		return $vars;
