@@ -357,12 +357,11 @@
 		font-size: inherit;
 		margin: 0;
 		line-height: inherit;
-	}
-	
+	}	
 	.bar-wrap {
 		display: block;
 		position: relative;
-		width: 7em; 
+		width: 10em; 
 		height: 1.4em; 
 		border: 1px solid #e1e1e1; 
 		padding: 0.1em;
