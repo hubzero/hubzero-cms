@@ -161,6 +161,9 @@ class StoreControllerMedia extends Hubzero_Controller
 			$this->displayTask($id);
 			return;
 		}
+		
+		// Incoming picture
+		$picture = JRequest::getVar('current', '');
 
 		// Build the file path
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
@@ -213,6 +216,10 @@ class StoreControllerMedia extends Hubzero_Controller
 		$imgs    = array();
 
 		$path = JPATH_ROOT . $this->view->path;
+		
+		// Push some styles to the template
+		$document =& JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'store.css');
 
 		if (is_dir($path))
 		{

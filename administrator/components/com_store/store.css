@@ -32,3 +32,6 @@
 	.no { 
 		color: #999;
 	}
+	.formed img {
+		width: 150px;
+	}
