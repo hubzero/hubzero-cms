@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
 				HUB.CoursesOutline.message.show(data.responseText);
 			},
 			404: function ( data, textStatus, jqXHR ) {
-				HUB.CoursesOutline.message.show('Method not found. Ensure the the hub API has been configured');
+				HUB.CoursesOutline.message.show('Method not found. Ensure the hub API has been configured');
 			},
 			500: function ( data, textStatus, jqXHR ) {
 				// Display the error message
