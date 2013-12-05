@@ -361,7 +361,7 @@
 	.bar-wrap {
 		display: block;
 		position: relative;
-		width: 10em; 
+		width: 10em;
 		height: 1.4em; 
 		border: 1px solid #e1e1e1; 
 		padding: 0.1em;
@@ -376,8 +376,7 @@
 		position: absolute;
 		top: 0;
 		right: 0.2em;
-	}
-	
+	}	
 	.usage-wrap {
 		position: relative;
 	}
