@@ -34,7 +34,7 @@ $canDo = StoreHelper::getActions('component');
 
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title(JText::_('Store Manager') . $text, 'store.png');
+JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -44,7 +44,7 @@ JToolBarHelper::cancel();
 $created = NULL;
 if (intval($this->row->created) <> 0)
 {
-	$created = JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_HZ1'));
+	$created = JHTML::_('date', $this->row->created, JText::_('COM_STORE_DATE_FORMAT_HZ1'));
 }
 
 ?>
@@ -66,12 +66,12 @@ public function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-<?php if (isset($this->row->id)) { ?>
-			<legend><span><?php echo JText::_('STORE') . ' ' . JText::_('ITEM') . ' #' . $this->row->id . ' ' . JText::_('DETAILS'); ?></span></legend>
+<?php //if (isset($this->row->id)) { ?>
+			<legend><span><?php echo isset($this->row->id) ? JText::_('COM_STORE_STORE') . ' ' . JText::_('COM_STORE_ITEM') . ' #' . $this->row->id . ' ' . JText::_('COM_STORE_DETAILS') : JText::_('COM_STORE_NEW_ITEM'); ?></span></legend>
 			<table class="admintable">
 			 <tbody>
 	         <tr>
-			  <td class="key"><label><?php echo JText::_('CATEGORY'); ?>:</label></td>
+			  <td class="key"><label><?php echo JText::_('COM_STORE_CATEGORY'); ?>:</label></td>
 			   <td><select name="category">
 	           		<option value="service"<?php if ($this->row->category == 'service') { echo ' selected="selected"'; } ?>>Service</option>
 		 			<option value="wear"<?php if ($this->row->category == 'wear') { echo ' selected="selected"'; } ?>>Wear</option>
@@ -81,17 +81,17 @@ public function submitbutton(pressbutton)
 	    		</td>
 			  </tr>
 	          <tr>
-			   <td class="key"><label><?php echo JText::_('PRICE'); ?>:</label></td>
+			   <td class="key"><label><?php echo JText::_('COM_STORE_PRICE'); ?>:</label></td>
 			   <td><input type="text" name="price" id="price"  size="5" value="<?php echo $this->escape(stripslashes($this->row->price)); ?>" /></td>
 			  </tr>
 			  <tr>
-			   <td class="key"><label><?php echo JText::_('TITLE'); ?>:</label></td>
+			   <td class="key"><label><?php echo JText::_('COM_STORE_TITLE'); ?>:</label></td>
 			   <td><input type="text" name="title" id="title"  maxlength="100" style="width:100%" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 			  </tr>
 	          <tr>
-			  <td class="key"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></td>
+			  <td class="key"><label><?php echo JText::_('COM_STORE_DESCRIPTION'); ?>:</label></td>
 			   <td><textarea name="description" id="description"  cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
-	        <br /><?php echo JText::_('WARNING_DESCR'); ?></td>
+	        <br /><?php echo JText::_('COM_STORE_WARNING_DESCR'); ?></td>
 			  </tr>
 			 </tbody>
 			</table>
@@ -99,37 +99,37 @@ public function submitbutton(pressbutton)
 	</div>
 	<div class="col width-40 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('OPTIONS'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_STORE_OPTIONS'); ?></span></legend>
 			<table class="admintable">
 			 <tbody>
 			 <tr>
-			  <td class="key"><label><?php echo JText::_('PUBLISHED'); ?>:</label></td>
+			  <td class="key"><label><?php echo JText::_('COM_STORE_PUBLISHED'); ?>:</label></td>
 			   <td><input type="checkbox" name="published" value="1" <?php echo ($this->row->published) ? 'checked="checked"' : ''; ?> /></td>
 			  </tr>
 	          <tr>
-			   <td class="key"><label><?php echo ucfirst(JText::_('INSTOCK')); ?>:</label></td>
+			   <td class="key"><label><?php echo ucfirst(JText::_('COM_STORE_INSTOCK')); ?>:</label></td>
 			   <td><input type="checkbox" name="available" value="1" <?php echo ($this->row->available) ? 'checked="checked"' : ''; ?> /></td>
 			  </tr> 
 	          <tr>
-			   <td class="key"><label><?php echo JText::_('FEATURED'); ?>:</label></td>
+			   <td class="key"><label><?php echo JText::_('COM_STORE_FEATURED'); ?>:</label></td>
 			   <td><input type="checkbox" name="featured" id="featured" value="1" <?php echo ($this->row->featured) ? 'checked="checked"' : ''; ?> /></td>
 			  </tr> 
 	          <tr>
-			   <td class="key"><label><?php echo JText::_('AV_SIZES'); ?>:</label></td>
-			   <td><input type="text" name="sizes" size="15" value="<?php echo (isset($this->row->size)) ? $this->escape(stripslashes($this->row->size)) : '' ; ?>" /><br /><?php echo JText::_('SAMPLE_SIZES'); ?>:</td>
+			   <td class="key"><label><?php echo JText::_('COM_STORE_AV_SIZES'); ?>:</label></td>
+			   <td><input type="text" name="sizes" size="15" value="<?php echo (isset($this->row->size)) ? $this->escape(stripslashes($this->row->size)) : '' ; ?>" /><br /><?php echo JText::_('COM_STORE_SAMPLE_SIZES'); ?>:</td>
 			  </tr>
 			 </tbody>
 			</table>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('PICTURE'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_STORE_PICTURE'); ?></span></legend>
 <?php
 	if ($this->row->id != 0) {
 ?>
 			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->row->id; ?>"></iframe>
 <?php
 	} else {
-		echo '<p class="alert">' . JText::_('MUST_BE_SAVED_BEFORE_PICTURE') . '</p>';
+		echo '<p class="alert">' . JText::_('COM_STORE_MUST_BE_SAVED_BEFORE_PICTURE') . '</p>';
 	}
 ?>
 		</fieldset>
@@ -140,7 +140,7 @@ public function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-<?php  } // end if id exists ?>
+<?php // } // end if id exists ?>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

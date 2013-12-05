@@ -466,13 +466,13 @@ class StoreControllerOrders extends Hubzero_Controller
 			$BTL_Q = new Hubzero_Bank_Teller($this->database, $xprofile->get('id'));
 
 			// start email message
-			$emailbody .= JText::_('THANKYOU').' '.JText::_('IN_THE').' '.$jconfig->getValue('config.sitename').' '.JText::_('STORE').'!'."\r\n\r\n";
-			$emailbody .= JText::_('EMAIL_UPDATE').':'."\r\n";
+			$emailbody .= JText::_('COM_STORE_THANKYOU').' '.JText::_('COM_STORE_IN_THE').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_STORE_STORE').'!'."\r\n\r\n";
+			$emailbody .= JText::_('COM_STORE_EMAIL_UPDATE').':'."\r\n";
 			$emailbody .= '----------------------------------------------------------'."\r\n";
-			$emailbody .= JText::_('ORDER').' '.JText::_('NUM').': '. $id ."\r\n";
-			$emailbody .= "\t".JText::_('ORDER').' '.JText::_('TOTAL').': '. $cost ."\r\n";
-			$emailbody .= "\t\t".JText::_('PLACED').': '. JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1'))."\r\n";
-			$emailbody .= "\t\t".JText::_('STATUS').': ';
+			$emailbody .= JText::_('COM_STORE_ORDER').' '.JText::_('COM_STORE_NUM').': '. $id ."\r\n";
+			$emailbody .= "\t".JText::_('COM_STORE_ORDER').' '.JText::_('COM_STORE_TOTAL').': '. $cost ."\r\n";
+			$emailbody .= "\t\t".JText::_('COM_STORE_PLACED').': '. JHTML::_('date', $row->ordered, JText::_('COM_STORE_DATE_FORMAT_HZ1'))."\r\n";
+			$emailbody .= "\t\t".JText::_('COM_STORE_STATUS').': ';
 
 			switch ($action)
 			{
@@ -493,13 +493,13 @@ class StoreControllerOrders extends Hubzero_Controller
 					// debit account
 					if ($cost > 0)
 					{
-						$BTL_Q->withdraw($cost, JText::_('BANKING_PURCHASE').' #'.$id, 'store', $id);
+						$BTL_Q->withdraw($cost, JText::_('COM_STORE_BANKING_PURCHASE').' #'.$id, 'store', $id);
 					}
 
 					// update order information
 					$row->status_changed = JFactory::getDate()->toSql();
 					$row->status = 1;
-					$statusmsg = JText::_('ORDER') . ' #' . $id . ' ' . JText::_('HAS_BEEN') . ' ' . strtolower(JText::_('COMPLETED')) . '.';
+					$statusmsg = JText::_('COM_STORE_ORDER') . ' #' . $id . ' ' . JText::_('COM_STORE_HAS_BEEN') . ' ' . strtolower(JText::_('COM_STORE_COMPLETED')) . '.';
 				break;
 
 				case 'cancel_order':
@@ -520,15 +520,15 @@ class StoreControllerOrders extends Hubzero_Controller
 					$row->status_changed = JFactory::getDate()->toSql();
 					$row->status = 2;
 
-					$statusmsg = JText::_('ORDER') . ' #' . $id . ' ' . JText::_('HAS_BEEN') . ' ' . strtolower(JText::_('CANCELLED')) . '.';
+					$statusmsg = JText::_('COM_STORE_ORDER') . ' #' . $id . ' ' . JText::_('COM_STORE_HAS_BEEN') . ' ' . strtolower(JText::_('COM_STORE_CANCELLED')) . '.';
 				break;
 
 				case 'message':
-					$statusmsg = JText::_('MSG_SENT') . '.';
+					$statusmsg = JText::_('COM_STORE_MSG_SENT') . '.';
 				break;
 
 				default:
-					$statusmsg = JText::_('ORDER_DETAILS_UPDATED') . '.';
+					$statusmsg = JText::_('COM_STORE_ORDER_DETAILS_UPDATED') . '.';
 				break;
 			}
 
@@ -549,16 +549,16 @@ class StoreControllerOrders extends Hubzero_Controller
 			switch ($row->status)
 			{
 				case 0: ;
-					$emailbody .= ' ' . JText::_('IN_PROCESS') . "\r\n";
+					$emailbody .= ' ' . JText::_('COM_STORE_IN_PROCESS') . "\r\n";
 					break;
 				case 1:
-					$emailbody .= ' '.strtolower(JText::_('COMPLETED')).' '.JText::_('ON').' '.JHTML::_('date', $row->status_changed, JText::_('DATE_FORMAT_HZ1'))."\r\n\r\n";
-					$emailbody .= JText::_('EMAIL_PROCESSED').'.'."\r\n";
+					$emailbody .= ' '.strtolower(JText::_('COM_STORE_COMPLETED')).' '.JText::_('COM_STORE_ON').' '.JHTML::_('date', $row->status_changed, JText::_('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
+					$emailbody .= JText::_('COM_STORE_EMAIL_PROCESSED').'.'."\r\n";
 					break;
 				case 2:
 				default:
-					$emailbody .= ' '.strtolower(JText::_('CANCELLED')).' '.JText::_('ON').' '.JHTML::_('date', $row->status_changed, JText::_('DATE_FORMAT_HZ1'))."\r\n\r\n";
-					$emailbody .= JText::_('EMAIL_CANCELLED').'.'."\r\n";
+					$emailbody .= ' '.strtolower(JText::_('COM_STORE_CANCELLED')).' '.JText::_('COM_STORE_ON').' '.JHTML::_('date', $row->status_changed, JText::_('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
+					$emailbody .= JText::_('COM_STORE_EMAIL_CANCELLED').'.'."\r\n";
 					break;
 			}
 
@@ -574,8 +574,8 @@ class StoreControllerOrders extends Hubzero_Controller
 				{
 					ximport('Hubzero_Toolbox');
 					$admin_email = $jconfig->getValue('config.mailfrom');
-					$subject     = $jconfig->getValue('config.sitename') . ' ' . JText::_('STORE') . ': ' . JText::_('EMAIL_UPDATE_SHORT') . ' #' . $id;
-					$from        = $jconfig->getValue('config.sitename') . ' ' . JText::_('STORE');
+					$subject     = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE') . ': ' . JText::_('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
+					$from        = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_STORE_STORE');
 					$hub         = array('email' => $admin_email, 'name' => $from);
 
 					Hubzero_Toolbox::send_email($hub, $row->email, $subject, $emailbody);

@@ -33,20 +33,20 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = StoreHelper::getActions('component');
 
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
-JToolBarHelper::title(JText::_('Store Manager') . $text, 'addedit.png');
+JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'addedit.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
 
-$order_date = (intval($this->row->ordered) <> 0) ? JHTML::_('date', $this->row->ordered, JText::_('DATE_FORMAT_HZ1')) : NULL ;
-$status_changed = (intval($this->row->status_changed) <> 0) ? JHTML::_('date', $this->row->status_changed, JText::_('DATE_FORMAT_HZ1')) : NULL;
+$order_date = (intval($this->row->ordered) <> 0) ? JHTML::_('date', $this->row->ordered, JText::_('COM_STORE_DATE_FORMAT_HZ1')) : NULL ;
+$status_changed = (intval($this->row->status_changed) <> 0) ? JHTML::_('date', $this->row->status_changed, JText::_('COM_STORE_DATE_FORMAT_HZ1')) : NULL;
 
 switch ($this->row->status)
 {
 	case 0:
-		$status = '<span class="yes">' . strtolower(JText::_('NEW')) . '</span>';
+		$status = '<span class="yes">' . strtolower(JText::_('COM_STORE_NEW')) . '</span>';
 		break;
 	case 1:
 		$status = 'completed';
@@ -77,11 +77,11 @@ public function submitbutton(pressbutton)
 		<fieldset class="adminform">
 
 <?php if (isset($this->row->id)) { ?>
-			<legend><span><?php echo JText::_('ORDER') . ' #' . $this->row->id . ' ' . JText::_('DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_STORE_ORDER') . ' #' . $this->row->id . ' ' . JText::_('COM_STORE_DETAILS'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ITEMS'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_ITEMS'); ?>:</label></td>
 						<td><p><?php 
 		    $k=1;
 			foreach ($this->orderitems as $o)
@@ -90,11 +90,11 @@ public function submitbutton(pressbutton)
 				$html  = $k . ') ';
 		   		$html .= $o->title . ' (x' . $o->quantity . ')';
 				$html .= ($o->selectedsize) ? '- size ' . $o->selectedsize : '';
-				$html .= '<br /><span style="color:#999;">' . JText::_('ITEM') . ' ' . JText::_('STORE') . ' ' . JText::_('ID') . ' #' . $o->itemid . '. ' . JText::_('STATUS') . ': ' . $avail;
+				$html .= '<br /><span style="color:#999;">' . JText::_('COM_STORE_ITEM') . ' ' . JText::_('COM_STORE_STORE') . ' ' . JText::_('COM_STORE_ID') . ' #' . $o->itemid . '. ' . JText::_('COM_STORE_STATUS') . ': ' . $avail;
 				if (!$o->sizeavail) {
-					$html .= JText::_('WARNING_NOT_IN_STOCK');
+					$html .= JText::_('COM_STORE_WARNING_NOT_IN_STOCK');
 				}
-				$html .= '. ' . JText::_('CURRENT_PRICE') . ': ' . $o->price . '</span><br />';
+				$html .= '. ' . JText::_('COM_STORE_CURRENT_PRICE') . ': ' . $o->price . '</span><br />';
 				$k++;
 				echo $html;
 			}
@@ -102,19 +102,19 @@ public function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('SHIPPING'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_SHIPPING'); ?>:</label></td>
 						<td><pre><?php echo $this->escape(stripslashes($this->row->details)); ?></pre></td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('PROFILE_INFO'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_PROFILE_INFO'); ?>:</label></td>
 						<td>
-							<?php echo JText::_('LOGIN'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('username'))); ?> <br />
-							<?php echo JText::_('NAME'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('name'))); ?> <br />
-							<?php echo JText::_('EMAIL'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('email'))); ?>
+							<?php echo JText::_('COM_STORE_LOGIN'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('username'))); ?> <br />
+							<?php echo JText::_('COM_STORE_NAME'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('name'))); ?> <br />
+							<?php echo JText::_('COM_STORE_EMAIL'); ?>: <?php echo $this->escape(stripslashes($this->customer->get('email'))); ?>
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ADMIN_NOTES'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_ADMIN_NOTES'); ?>:</label></td>
 						<td><textarea name="notes" id="notes"  cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->notes)); ?></textarea></td>
 					</tr>
 				</tbody>
@@ -123,54 +123,54 @@ public function submitbutton(pressbutton)
 	</div>
 	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('PROCESS_ORDER'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_STORE_PROCESS_ORDER'); ?></span></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label><?php echo JText::_('STATUS'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_STATUS'); ?>:</label></td>
 						<td><?php echo $status ?></td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ORDER_PLACED'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_ORDER_PLACED'); ?>:</label></td>
 						<td><?php echo $order_date ?></td>
 					</tr>
 <?php if ($this->row->status != 0) { ?>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ORDER') . ' ' . $status; ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_ORDER') . ' ' . $status; ?>:</label></td>
 						<td><?php echo $status_changed ?></td>
 					</tr>
 <?php } ?>
 					<tr>
-						<td class="key"><label><?php echo JText::_('ORDER') . ' ' . JText::_('TOTAL'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_ORDER') . ' ' . JText::_('COM_STORE_TOTAL'); ?>:</label></td>
 						<td>
 <?php if ($this->row->status == 0) { ?>
-							<input type="text" name="total" value="<?php echo $this->row->total ?>"  /> <?php echo JText::_('POINTS'); ?>
+							<input type="text" name="total" value="<?php echo $this->row->total ?>"  /> <?php echo JText::_('COM_STORE_POINTS'); ?>
 <?php } else { ?>
-							<?php echo $this->row->total ?> <?php echo JText::_('POINTS'); ?>
+							<?php echo $this->row->total ?> <?php echo JText::_('COM_STORE_POINTS'); ?>
 							<input type="hidden" name="total" value="<?php echo $this->row->total ?>"  />
 <?php } ?>
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('CURRENT_BALANCE'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_CURRENT_BALANCE'); ?>:</label></td>
 						<td><strong><?php echo $this->funds ?></strong> points</td>
 					</tr> 
 <?php if ($this->row->status == 0) { ?>
 					<tr>
-						<td class="key"><label><?php echo JText::_('MANAGE_ORDER'); ?>:</label></td>
-						<td><input type="radio" name="action" value="message" /><?php echo JText::_('ORDER_ON_HOLD'); ?></td>
+						<td class="key"><label><?php echo JText::_('COM_STORE_MANAGE_ORDER'); ?>:</label></td>
+						<td><input type="radio" name="action" value="message" /><?php echo JText::_('COM_STORE_ORDER_ON_HOLD'); ?></td>
 					</tr>
 					<tr>
 						<th></th>
-						<td><input type="radio" name="action" value="complete_order" /> <?php echo JText::_('PROCESS_TRANSACTION'); ?></td>
+						<td><input type="radio" name="action" value="complete_order" /> <?php echo JText::_('COM_STORE_PROCESS_TRANSACTION'); ?></td>
 					</tr>
 					<tr>
 						<th></th>
-						<td><input type="radio" name="action" value="cancel_order" /> <?php echo JText::_('RELEASE_FUNDS'); ?></td>
+						<td><input type="radio" name="action" value="cancel_order" /> <?php echo JText::_('COM_STORE_RELEASE_FUNDS'); ?></td>
 					</tr>
 					<tr>
 						<th></th>
-						<td><?php echo JText::_('SEND_A_MSG'); ?>: <br /><textarea name="message" id="message"  cols="30" rows="5"></textarea></td>
+						<td><?php echo JText::_('COM_STORE_SEND_A_MSG'); ?>: <br /><textarea name="message" id="message"  cols="30" rows="5"></textarea></td>
 					</tr>
 <?php } ?>                
 				</tbody>

@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<params>
-		 <param name="store_enabled" type="radio" default="0" label="Store" description="TIPSHOWFEEDITEM">
+		 <param name="store_enabled" type="list" default="0" label="Store" description="TIPSHOWFEEDITEM">
 			<option value="1">enabled</option>
 			<option value="0">disabled</option>
 		</param>
@@ -49,7 +49,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="receipt_note" type="text" menu="hide" default="Thank You for contributing to our HUB!" label="Receipt thank-you note" description="Receipt thank-you note" />
 	</params>
 	<fieldset name="basic">
-		 <field name="store_enabled" type="radio" default="0" label="Store" description="TIPSHOWFEEDITEM">
+		 <field name="store_enabled" type="list" default="0" label="Store" description="TIPSHOWFEEDITEM">
 			<option value="1">enabled</option>
 			<option value="0">disabled</option>
 		</field>

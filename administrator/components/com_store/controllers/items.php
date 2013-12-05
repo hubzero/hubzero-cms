@@ -149,13 +149,13 @@ class StoreControllerItems extends Hubzero_Controller
 	}
 
 	/**
-	 * Edit a sore item
+	 * Edit a store item
 	 *
 	 * @return void
 	 */
 	public function editTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		//JRequest::setVar('hidemainmenu', 1);
 
 		$this->view->setLayout('edit');
 
@@ -269,7 +269,7 @@ class StoreControllerItems extends Hubzero_Controller
 		}
 
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('MSG_SAVED');
+		$this->_message = JText::_('COM_STORE_MSG_SAVED');
 	}
 
 	/**
@@ -334,7 +334,7 @@ class StoreControllerItems extends Hubzero_Controller
 				if (!$id)
 				{
 					$action = ($publish == 1) ? 'published' : 'unpublished';
-					echo StoreHtml::alert(JText::_('ALERT_SELECT_ITEM') . ' ' . $action);
+					echo StoreHtml::alert(JText::_('COM_STORE_ALERT_SELECT_ITEM') . ' ' . $action);
 					exit;
 				}
 
@@ -352,11 +352,11 @@ class StoreControllerItems extends Hubzero_Controller
 				// Set message
 				if ($publish == '1')
 				{
-					$this->_message = JText::_('MSG_ITEM_ADDED');
+					$this->_message = JText::_('COM_STORE_MSG_ITEM_ADDED');
 				}
 				else if ($publish == '0')
 				{
-					$this->_message = JText::_('MSG_ITEM_DELETED');
+					$this->_message = JText::_('COM_STORE_MSG_ITEM_DELETED');
 				}
 			break;
 
@@ -368,7 +368,7 @@ class StoreControllerItems extends Hubzero_Controller
 				if (!$id)
 				{
 					$action = ($avail == 1) ? 'available' : 'unavailable';
-					echo StoreHtml::alert(JText::_('ALERT_SELECT_ITEM') . ' ' . $action);
+					echo StoreHtml::alert(JText::_('COM_STORE_ALERT_SELECT_ITEM') . ' ' . $action);
 					exit;
 				}
 
@@ -386,11 +386,11 @@ class StoreControllerItems extends Hubzero_Controller
 				// Set message
 				if ($avail == '1')
 				{
-					$this->_message = JText::_('MSG_ITEM_AVAIL');
+					$this->_message = JText::_('COM_STORE_MSG_ITEM_AVAIL');
 				}
 				else if ($avail == '0')
 				{
-					$this->_message = JText::_('MSG_ITEM_UNAVAIL');
+					$this->_message = JText::_('COM_STORE_MSG_ITEM_UNAVAIL');
 				}
 			break;
 		}

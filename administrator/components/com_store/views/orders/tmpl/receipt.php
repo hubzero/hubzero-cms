@@ -63,28 +63,28 @@ $row = $this->row;
  </tbody>
 </table>
 <div style="height: 50px;"></div>
-<h4><?php echo JText::_('Order Details'); ?></h4>
+<h4><?php echo JText::_('COM_STORE_Order Details'); ?></h4>
 <table>
 	<tbody>
 		<tr>
-			<td style="color: #525f6b;"><?php echo JText::_('Customer') . ': '; ?></td>
+			<td style="color: #525f6b;"><?php echo JText::_('COM_STORE_Customer') . ': '; ?></td>
 			<td><?php echo $customer->get('name').' ('.$customer->get('username').') '; ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo JText::_('Email') . ': '; ?></td>
+			<td style="color: #525f6b;"><?php echo JText::_('COM_STORE_Email') . ': '; ?></td>
 			<td><?php echo $customer->get('email'); ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo JText::_('Order ID') . ': '; ?></td>
+			<td style="color: #525f6b;"><?php echo JText::_('COM_STORE_Order ID') . ': '; ?></td>
 			<td><?php echo $row->id; ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo JText::_('Order placed') . ': '; ?></td>
-			<td><?php echo JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1')); ?></td>
+			<td style="color: #525f6b;"><?php echo JText::_('COM_STORE_Order placed') . ': '; ?></td>
+			<td><?php echo JHTML::_('date', $row->ordered, JText::_('COM_STORE_DATE_FORMAT_HZ1')); ?></td>
 		</tr>
 		<tr>
-			<td style="color: #525f6b;"><?php echo JText::_('Order completed') . ': '; ?></td>
-			<td><?php echo JHTML::_('date', JFactory::getDate()->toSql(), JText::_('DATE_FORMAT_HZ1')); ?></td>
+			<td style="color: #525f6b;"><?php echo JText::_('COM_STORE_Order completed') . ': '; ?></td>
+			<td><?php echo JHTML::_('date', JFactory::getDate()->toSql(), JText::_('COM_STORE_DATE_FORMAT_HZ1')); ?></td>
 		</tr>
  </tbody>
 </table>
@@ -92,21 +92,21 @@ $row = $this->row;
 <table>
 	<thead>
 		<tr style="background-color: #e7eaec;">
-			<th><?php echo JText::_('Ordered Item(s)'); ?></th>
-			<th><?php echo JText::_('Price'); ?></th>
+			<th><?php echo JText::_('COM_STORE_Ordered Item(s)'); ?></th>
+			<th><?php echo JText::_('COM_STORE_Price'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
 <?php foreach ($this->orderitems as $o) { ?>
 	<tr>
 		<td><?php echo $k.'. ['.$o->category.$o->itemid.'] ' . $o->title. ' (x'.$o->quantity.')'; echo ($o->selectedsize) ? ' - size '.$o->selectedsize : ''; ?></td>
-		<td><?php echo $o->price*$o->quantity.' '.JText::_('points'); ?></td>
+		<td><?php echo $o->price*$o->quantity.' '.JText::_('COM_STORE_points'); ?></td>
 	</tr>
 	
 <?php } ?>
 	<tr>
-		<td style="font-weight: bold; text-align: right;"><?php echo JText::_('Total: ') . '&nbsp;'; ?></td>
-		<td style="font-weight: bold;"><?php echo $row->total.' '.JText::_('points'); ?></td>
+		<td style="font-weight: bold; text-align: right;"><?php echo JText::_('COM_STORE_Total: ') . '&nbsp;'; ?></td>
+		<td style="font-weight: bold;"><?php echo $row->total.' '.JText::_('COM_STORE_points'); ?></td>
 	</tr>
 	</tbody>
 </table>

@@ -34,7 +34,7 @@ $canDo = StoreHelper::getActions('item');
 
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title(JText::_('Store Manager') . $text, 'store.png');
+JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -43,14 +43,7 @@ if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
-{
-	JToolBarHelper::editList();
-}
-if ($canDo->get('core.delete')) 
-{
-	JToolBarHelper::deleteList();
-}
+
 ?>
 <script type="text/javascript">
 public function submitbutton(pressbutton) 
@@ -66,21 +59,21 @@ public function submitbutton(pressbutton)
 </script>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<?php echo count($this->rows); ?> <?php echo JText::_('ITEMS_DISPLAYED'); ?>.
+		<?php echo count($this->rows); ?> <?php echo JText::_('COM_STORE_ITEMS_DISPLAYED'); ?>.
 
-		<label><?php echo JText::_('FILTERBY'); ?>:</label> 
+		<label><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
 		<select name="filterby" onchange="document.adminForm.submit();">
-			<option value="available"<?php if ($this->filters['filterby'] == 'available') { echo ' selected="selected"'; } ?>><?php echo JText::_('INSTORE_ITEMS'); ?></option>
-	    	<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('PUBLISHED'); ?></option>
-			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL_ITEMS'); ?></option>
+			<option value="available"<?php if ($this->filters['filterby'] == 'available') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_INSTORE_ITEMS'); ?></option>
+	    	<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_PUBLISHED'); ?></option>
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ALL_ITEMS'); ?></option>
 		</select>
 
-		<label><?php echo JText::_('SORTBY'); ?>:</label> 
+		<label><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
 		<select name="sortby" onchange="document.adminForm.submit();">
-	    	<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('Lowest price'); ?></option>
-	    	<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('Highlest price'); ?></option>
-			<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Date added')); ?></option>
-	    	<option value="category"<?php if ($this->filters['sortby'] == 'category') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('Category')); ?></option>			
+	    	<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_LOWEST_PRICE'); ?></option>
+	    	<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_HIGHEST_PRICE'); ?></option>
+			<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_DATE_ADDED')); ?></option>
+	    	<option value="category"<?php if ($this->filters['sortby'] == 'category') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_CATEGORY')); ?></option>			
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -88,14 +81,14 @@ public function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo strtoupper(JText::_('ID')); ?></th>
-				<th scope="col"><?php echo JText::_('CATEGORY'); ?></th>
-				<th scope="col"><?php echo JText::_('TITLE'); ?></th>
-				<th scope="col"><?php echo JText::_('DESCRIPTION'); ?></th>
-				<th scope="col"><?php echo JText::_('PRICE'); ?></th>
-				<th scope="col"><?php echo JText::_('TIMES_ORDERED'); ?></th>
-				<th scope="col"><?php echo JText::_('INSTOCK'); ?></th>
-				<th scope="col"><?php echo JText::_('PUBLISHED'); ?></th>
+				<th scope="col"><?php echo strtoupper(JText::_('COM_STORE_ID')); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_CATEGORY'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_DESCRIPTION'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_PRICE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_TIMES_ORDERED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_INSTOCK'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_STORE_PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -117,13 +110,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '1':
 			$a_class = 'publish';
 			$a_task = 'unavailable';
-			$a_alt = JText::_('TIP_MARK_UNAVAIL');
+			$a_alt = JText::_('COM_STORE_TIP_MARK_UNAVAIL');
 			$a_img = 'publish_g.png';
 			break;
 		case '0':
 			$a_class = 'unpublish';
 			$a_task = 'available';
-			$a_alt = JText::_('TIP_MARK_AVAIL');
+			$a_alt = JText::_('COM_STORE_TIP_MARK_AVAIL');
 			$a_img = 'publish_x.png';
 			break;
 	}
@@ -132,20 +125,20 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '1':
 			$p_class = 'publish';
 			$p_task = 'unpublish';
-			$p_alt = JText::_('TIP_REMOVE_ITEM');
+			$p_alt = JText::_('COM_STORE_TIP_REMOVE_ITEM');
 			$p_img = 'publish_g.png';
 			break;
 		case '0':
 			$p_class = 'unpublish';
 			$p_task = 'publish';
-			$p_alt = JText::_('TIP_ADD_ITEM');
+			$p_alt = JText::_('COM_STORE_TIP_ADD_ITEM');
 			$p_img = 'publish_x.png';
 			break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ITEM_DETAILS'); ?>">
 						<?php echo $row->id; ?>
 					</a>
 				</td>
@@ -154,7 +147,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ITEM_DETAILS'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ITEM_DETAILS'); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 <?php } else { ?>

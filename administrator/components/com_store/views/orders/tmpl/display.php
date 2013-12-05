@@ -34,7 +34,7 @@ $canDo = StoreHelper::getActions('component');
 
 $text = (!$this->store_enabled) ? ' <small><small style="color:red;">(store is disabled)</small></small>' : '';
 
-JToolBarHelper::title(JText::_('Store Manager') . $text, 'store.png');
+JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences('com_store', '550');
@@ -55,21 +55,21 @@ public function submitbutton(pressbutton)
 </script>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-	    <?php echo count($this->rows); ?> <?php echo JText::_('ORDERS_DISPLAYED'); ?>.
+	    <?php echo count($this->rows); ?> <?php echo JText::_('COM_STORE_ORDERS_DISPLAYED'); ?>.
 	
-		<label><?php echo JText::_('FILTERBY'); ?>:</label> 
+		<label><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
 		<select name="filterby" onchange="document.adminForm.submit();">
-			<option value="new"<?php if ($this->filters['filterby'] == 'new') { echo ' selected="selected"'; } ?>><?php echo JText::_('NEW'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
-			<option value="processed"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMPLETED'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
-	    	<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('CANCELLED'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
-			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL'); ?> <?php echo ucfirst(JText::_('ORDERS')); ?></option>
+			<option value="new"<?php if ($this->filters['filterby'] == 'new') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_NEW'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
+			<option value="processed"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_COMPLETED'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
+	    	<option value="cancelled"<?php if ($this->filters['filterby'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_CANCELLED'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ALL'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
 		</select>
 
-		<label><?php echo JText::_('SORTBY'); ?>:</label> 
+		<label><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
 		<select name="sortby" onchange="document.adminForm.submit();">
-	    	<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo JText::_('ORDER_DATE'); ?></option>
-			<option value="m.status_changed"<?php if ($this->filters['sortby'] == 'm.status_changed') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_STATUS_CHANGE'); ?></option>
-			<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('ORDER')).' '.strtoupper(JText::_('ID')); ?></option>			
+	    	<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ORDER_DATE'); ?></option>
+			<option value="m.status_changed"<?php if ($this->filters['sortby'] == 'm.status_changed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_LAST_STATUS_CHANGE'); ?></option>
+			<option value="m.id DESC"<?php if ($this->filters['sortby'] == 'm.id DESC') { echo ' selected="selected"'; } ?>><?php echo ucfirst(JText::_('COM_STORE_ORDER')).' '.strtoupper(JText::_('COM_STORE_ID')); ?></option>			
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -77,12 +77,12 @@ public function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo strtoupper(JText::_('ID')); ?></th>
-				<th><?php echo JText::_('STATUS'); ?></th>
-				<th><?php echo JText::_('ORDERED_ITEMS'); ?></th>
-				<th><?php echo JText::_('TOTAL'); ?> (<?php echo JText::_('POINTS'); ?>)</th>
-				<th><?php echo JText::_('BY'); ?></th>
-				<th><?php echo JText::_('DATE'); ?></th>
+				<th><?php echo strtoupper(JText::_('COM_STORE_ID')); ?></th>
+				<th><?php echo JText::_('COM_STORE_STATUS'); ?></th>
+				<th><?php echo JText::_('COM_STORE_ORDERED_ITEMS'); ?></th>
+				<th><?php echo JText::_('COM_STORE_TOTAL'); ?> (<?php echo JText::_('COM_STORE_POINTS'); ?>)</th>
+				<th><?php echo JText::_('COM_STORE_BY'); ?></th>
+				<th><?php echo JText::_('COM_STORE_DATE'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -104,19 +104,19 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	switch ($row->status)
 	{
 		case '1':
-			$status = strtolower(JText::_('COMPLETED'));
+			$status = strtolower(JText::_('COM_STORE_COMPLETED'));
 		break;
 		case '0':
-			$status = '<span class="yes">' . strtolower(JText::_('NEW')) . '</span>';
+			$status = '<span class="yes">' . strtolower(JText::_('COM_STORE_NEW')) . '</span>';
 		break;
 		case '2':
-			$status = '<span style="color:#999;">' . strtolower(JText::_('CANCELLED')) . '</span>';
+			$status = '<span style="color:#999;">' . strtolower(JText::_('COM_STORE_CANCELLED')) . '</span>';
 		break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ORDER'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
 						<?php echo $row->id; ?>
 					</a>
 				</td>
@@ -133,13 +133,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->author)); ?>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1')); ?></time>
+					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, JText::_('COM_STORE_DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('VIEW_ORDER'); ?>">
-						<?php echo JText::_('DETAILS'); ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
+						<?php echo JText::_('COM_STORE_DETAILS'); ?>
 					</a>
-					<?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=receipt&amp;id=' . $row->id . '">' . JText::_('Receipt') . '</a>'; } ?>
+					<?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=receipt&amp;id=' . $row->id . '">' . JText::_('COM_STORE_Receipt') . '</a>'; } ?>
 				</td>
 			</tr>
 <?php

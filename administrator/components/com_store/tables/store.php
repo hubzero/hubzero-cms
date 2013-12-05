@@ -199,7 +199,8 @@ class Store extends  JTable
 		$query_count  = "SELECT count(*) ";
 
 		// build fetch query
-		$query_fetch  = "SELECT C.id, C.title, C.description, C.price, C.created, C.available, C.params, C.special, C.featured, C.category, C.type, C.published ";
+		$query_fetch  = "SELECT C.id, C.title, C.description, C.price, C.created, C.available, 
+						C.params, C.special, C.featured, C.category, C.type, C.published ";
 		$query_fetch .= $query;
 		if ($filters['limit'] && $filters['start']) 
 		{

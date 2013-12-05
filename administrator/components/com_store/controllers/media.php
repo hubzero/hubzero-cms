@@ -52,7 +52,7 @@ class StoreControllerMedia extends Hubzero_Controller
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('FEEDBACK_NO_ID'));
+			$this->setError(JText::_('COM_STORE_FEEDBACK_NO_ID'));
 			$this->displayTask($id);
 			return;
 		}
@@ -61,7 +61,7 @@ class StoreControllerMedia extends Hubzero_Controller
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('FEEDBACK_NO_FILE'));
+			$this->setError(JText::_('COM_STORE_FEEDBACK_NO_FILE'));
 			$this->displayTask($id);
 			return;
 		}
@@ -75,7 +75,7 @@ class StoreControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777))
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_STORE_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($id);
 				return;
 			}
@@ -91,7 +91,7 @@ class StoreControllerMedia extends Hubzero_Controller
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_STORE_ERROR_UPLOADING'));
 		}
 		else
 		{
@@ -105,7 +105,7 @@ class StoreControllerMedia extends Hubzero_Controller
 				{
 					if (!JFile::delete($path . DS . $curfile)) 
 					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+						$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
 						return;
 					}
@@ -119,7 +119,7 @@ class StoreControllerMedia extends Hubzero_Controller
 				{
 					if (!JFile::delete($path . DS . $curthumb)) 
 					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+						$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
 						return;
 					}
@@ -157,7 +157,7 @@ class StoreControllerMedia extends Hubzero_Controller
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('FEEDBACK_NO_ID'));
+			$this->setError(JText::_('COM_STORE_FEEDBACK_NO_ID'));
 			$this->displayTask($id);
 			return;
 		}
@@ -167,7 +167,7 @@ class StoreControllerMedia extends Hubzero_Controller
 
 		if (!file_exists($path . DS . $picture) or !$picture)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_STORE_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -175,7 +175,7 @@ class StoreControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $picture))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($id);
 				return;
 			}
