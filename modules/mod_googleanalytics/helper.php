@@ -44,7 +44,7 @@ class modGoogleAnalytics extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 		$this->environment = $config->getValue('config.application_env', 'production');
 
 		if (strtolower($this->environment) != 'production')

@@ -133,7 +133,7 @@ class modNotices extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Set today's time and date
 		$now = JFactory::getDate();

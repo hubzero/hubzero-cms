@@ -226,7 +226,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 						{
 							$this->_assetgroups = $this->assetgroups; // back up the data
 							$this->group = $child;
-							$this->group->siblings($group->children());
+							$children = $group->children();
+							$this->group->siblings($children);
 							$this->assetgroups = $group->children(); // set the current asset groups
 							break;
 						}

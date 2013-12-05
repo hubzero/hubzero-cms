@@ -88,7 +88,7 @@ if (!$no_html && $tmpl != 'component') : ?>
 				<ul id="page_menu">
 					<?php
 						//instantiate objects
-						$juser =& JFactory::getUser();
+						$juser = JFactory::getUser();
 
 						//variable to hold course menu html
 						$course_menu = '';

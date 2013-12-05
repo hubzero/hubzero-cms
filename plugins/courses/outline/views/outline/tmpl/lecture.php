@@ -264,7 +264,7 @@ if (!$this->course->offering()->access('view')) { ?>
 
 	<?php
 		// Trigger event
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$results = $dispatcher->trigger('onCourseAfterLecture', array(
 			$this->course,
 			$unit,

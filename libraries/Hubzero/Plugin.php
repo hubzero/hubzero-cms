@@ -154,7 +154,7 @@ class Hubzero_Plugin extends JPlugin
 	{
 		if (!count($this->pluginMessageQueue)) 
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$pluginMessage = $session->get('plugin.message.queue');
 			if (count($pluginMessage)) 
 			{

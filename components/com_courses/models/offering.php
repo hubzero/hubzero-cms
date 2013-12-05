@@ -387,7 +387,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 					if ((int) $unit->get('id') == $id || (string) $unit->get('alias') == $id)
 					{
 						$this->_unit = $unit;
-						$this->_unit->siblings($this->units());
+						$units = $this->units();
+						$this->_unit->siblings($units);
 						break;
 					}
 				}

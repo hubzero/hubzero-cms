@@ -63,7 +63,7 @@ class Hubzero_Wiki_Editor extends JObservable
 	{
 		if (!$editor) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
 				$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikieditor%' ORDER BY published DESC LIMIT 1");
@@ -310,7 +310,7 @@ class Hubzero_Wiki_Editor extends JObservable
 		}
 
 		// Get the plugin
-		$plugin =& JPluginHelper::getPlugin('hubzero', $this->_name);
+		$plugin = JPluginHelper::getPlugin('hubzero', $this->_name);
 		$params = new $paramsClass($plugin->params);
 		$params->loadArray($config);
 		$plugin->params = $params;
