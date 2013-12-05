@@ -106,7 +106,7 @@ class modLoginHelper
 		Hubzero_Document::addSystemScript('jquery.hoverIntent');
 
 		$type 	 = self::getType();
-		$return	 = self::getReturnURL($params, $type);
+		$return	 = JRequest::getVar('return', null);
 		$freturn = base64_encode($_SERVER['REQUEST_URI']);
 
 		// If we have a return set with an authenticator in it, we're linking an existing account
@@ -149,6 +149,17 @@ class modLoginHelper
 				$display = $pparams->get('display_name', ucfirst($p->name));
 				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
+			}
+			else if ($p->name == 'hubzero')
+			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
+				$pparams = new $paramsClass($p->params);
+				$remember_me_default = $pparams->get('remember_me_default', 0);
 			}
 		}
 
