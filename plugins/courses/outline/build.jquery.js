@@ -574,7 +574,7 @@ HUB.CoursesOutline = {
 													msg += 'or that trying again will solve the problem.';
 												HUB.CoursesOutline.message.show(msg, 7500);
 											}
-										},5000);
+										},10000);
 									},
 									afterLoad: function() {
 										loaded = true;
