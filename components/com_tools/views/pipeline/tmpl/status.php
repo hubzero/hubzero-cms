@@ -335,7 +335,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			?>
 				<p>
 					<?php echo JText::_('COM_TOOLS_TEAM_WILL_CREATE'); ?> <a class="developer-site" href="<?php echo $developer_url; ?>/tools"><?php echo $developer_site; ?></a>, <?php echo JText::_('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS');?>. 
-					<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo Hubzero_View_Helper_Html::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST'); ?>. 
+					<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST'); ?>. 
 					<?php echo JText::_('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 24 <?php echo JText::_('COM_TOOLS_HOURS'); ?>
 				</p>
 				<h4><?php echo JText::_('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -439,7 +439,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			?>
 				<p>
 					<?php echo ucfirst(JText::_('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
-					<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo Hubzero_View_Helper_Html::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
+					<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
 					<?php echo JText::_('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo JText::_('COM_TOOLS_DAYS'); ?>.
 				</p>
 				<h4><?php echo JText::_('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -554,7 +554,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			?>
 				<p>
 					<?php echo ucfirst(JText::_('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
-					<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo Hubzero_View_Helper_Html::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
+					<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
 					<?php echo JText::_('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo JText::_('COM_TOOLS_DAYS'); ?>.
 				</p>
 				<h4><?php echo JText::_('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -591,7 +591,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 6:
 			?>
 				<p>
-					<?php echo ucfirst(JText::_('COM_TOOLS_THE')).' '.$sitename.' '.JText::_('COM_TOOLS_WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN').' '.Hubzero_View_Helper_Html::timeAgo($this->status['changed']).' '.JText::_('COM_TOOLS_WHATSNEXT_APPROVED_SINCE').'  '.JText::_('COM_TOOLS_WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess; ?>.
+					<?php echo ucfirst(JText::_('COM_TOOLS_THE')).' '.$sitename.' '.JText::_('COM_TOOLS_WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN').' '.ToolsHelperHtml::timeAgo($this->status['changed']).' '.JText::_('COM_TOOLS_WHATSNEXT_APPROVED_SINCE').'  '.JText::_('COM_TOOLS_WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess; ?>.
 				</p>
 				<p>
 					<?php echo JText::_('COM_TOOLS_WHATSNEXT_APPROVED_PLS_CLICK'); ?> <?php echo $sitename; ?>: <br />

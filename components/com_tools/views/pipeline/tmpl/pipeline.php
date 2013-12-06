@@ -180,7 +180,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 								<?php echo JText::_('COM_TOOLS_' . $status); ?>
 							</a><br />
 							<span class="entry-details">
-								<span class="entry-time"><?php echo Hubzero_View_Helper_Html::timeAgo($row->state_changed) . ' ' . JText::_('COM_TOOLS_AGO'); ?></span>
+								<span class="entry-time"><?php echo ToolsHelperHtml::timeAgo($row->state_changed) . ' ' . JText::_('COM_TOOLS_AGO'); ?></span>
 							</span>
 						</td>
 						<td style="white-space: nowrap;" <?php if (!ToolsHelperHtml::toolEstablished($row->state)) { echo ' class="disabled_links" ';} ?>>
