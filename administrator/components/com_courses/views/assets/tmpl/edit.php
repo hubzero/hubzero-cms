@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //
 
-$canDo = CoursesHelper::getActions('asset');
+$canDo = CoursesHelper::getActions();
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 if (!$this->tmpl) 

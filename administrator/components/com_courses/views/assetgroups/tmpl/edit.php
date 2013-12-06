@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-$canDo = CoursesHelper::getActions('unit');
+$canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Asset group'), 'courses.png');
 if ($canDo->get('core.edit')) 

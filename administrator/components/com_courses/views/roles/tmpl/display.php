@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CoursesHelper::getActions('role');
+$canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Roles'), 'courses.png');
 if ($canDo->get('core.create')) 

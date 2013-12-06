@@ -36,7 +36,7 @@ foreach ($this->rows as $row)
 	$ids[] = $row->id;
 }
 
-$canDo = CoursesHelper::getActions('asset');
+$canDo = CoursesHelper::getActions();
 
 JHTML::_('behavior.modal');
 ?>

@@ -37,7 +37,7 @@ foreach ($this->rows as $row)
 	$this->ordering[$row->get('parent')][] = $row->get('id');
 }
 
-$canDo = CoursesHelper::getActions('unit');
+$canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Asset groups'), 'courses.png');
 if ($canDo->get('core.create')) 

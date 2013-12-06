@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CoursesHelper::getActions('course');
+$canDo = CoursesHelper::getActions();
 
 $text = ($this->task == 'edit' ? JText::_('Edit Page') : JText::_('New Page'));
 
