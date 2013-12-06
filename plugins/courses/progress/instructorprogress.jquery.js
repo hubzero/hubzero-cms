@@ -28,13 +28,14 @@ jQuery(document).ready(function($){
 });
 
 HUB.Plugins.CoursesProgress = {
-	jQuery   : jq,
-	colWidth : 0,
-	offset   : 0,
-	cnt      : 0,
-	rowCnt   : 0,
-	members  : {},
-	assets   : {},
+	jQuery    : jq,
+	colWidth  : 0,
+	offset    : 0,
+	cnt       : 0,
+	rowCnt    : 0,
+	members   : {},
+	assets    : {},
+	canManage : false,
 
 	loadProgressData: function ( )
 	{
@@ -103,6 +104,7 @@ HUB.Plugins.CoursesProgress = {
 									HUB.Plugins.CoursesProgress.afterProgressDataLoaded();
 								}
 							} else {
+								$('.fetching-rows-inner').hide();
 								$('.students').html('<p class="info">The section does not currently have anyone enrolled</p>');
 							}
 						}
@@ -158,9 +160,10 @@ HUB.Plugins.CoursesProgress = {
 				source   = $('#gradebook-template-asset').html();
 				template = Handlebars.compile(source);
 				context  = {
-					assets  : data.assets,
-					members : data.members,
-					grades  : data.grades
+					assets    : data.assets,
+					members   : data.members,
+					grades    : data.grades,
+					canManage : data.canManage
 				};
 				html     = template(context);
 
@@ -176,8 +179,9 @@ HUB.Plugins.CoursesProgress = {
 				HUB.Plugins.CoursesProgress.resizeTable();
 				HUB.Plugins.CoursesProgress.initializeGradebook();
 
-				HUB.Plugins.CoursesProgress.members = data.members;
-				HUB.Plugins.CoursesProgress.assets  = data.assets;
+				HUB.Plugins.CoursesProgress.members   = data.members;
+				HUB.Plugins.CoursesProgress.assets    = data.assets;
+				HUB.Plugins.CoursesProgress.canManage = data.canManage;
 			}
 		});
 	},
@@ -736,6 +740,10 @@ HUB.Plugins.CoursesProgress = {
 		g.off('click', '.form-title').on('click', '.form-title', function ( e ) {
 			var t = $(this);
 
+			if (!HUB.Plugins.CoursesProgress.canManage) {
+				return;
+			}
+
 			if (!t.find('input').length) {
 				var val = $.trim(t.parents('.form-name').attr('title'));
 
@@ -941,7 +949,11 @@ HUB.Plugins.CoursesProgress = {
 							// Render template
 							var source    = $('#gradebook-template-asset').html(),
 								template  = Handlebars.compile(source),
-								context   = {members: HUB.Plugins.CoursesProgress.members, assets: assets},
+								context   = {
+									members   : HUB.Plugins.CoursesProgress.members,
+									assets    : assets,
+									canManage : HUB.Plugins.CoursesProgress.canManage
+								},
 								html      = template(context),
 								cnt       = HUB.Plugins.CoursesProgress.cnt;
 

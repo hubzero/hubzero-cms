@@ -304,13 +304,6 @@ class plgCoursesProgress extends JPlugin
 			exit();
 		}
 
-		// Now, also make sure either section managers can edit, or user is a course manager
-		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
-		{
-			echo json_encode(array('success'=>false));
-			exit();
-		}
-
 		// Get all section members
 		$members = $this->course->offering()->section()->members(array('student'=>1));
 		$mems    = array();
@@ -341,7 +334,14 @@ class plgCoursesProgress extends JPlugin
 			)
 		);
 
-		echo json_encode(array('assets'=>$assets, 'members'=>$mems, 'grades'=>$grades));
+		echo json_encode(
+			array(
+				'assets'    => $assets,
+				'members'   => $mems,
+				'grades'    => $grades,
+				'canManage' => (($this->course->access('manage')) ? true : false)
+			)
+		);
 		exit();
 	}
 
@@ -354,13 +354,6 @@ class plgCoursesProgress extends JPlugin
 	{
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
-		{
-			echo json_encode(array('success'=>false));
-			exit();
-		}
-
-		// Now, also make sure either section managers can edit, or user is a course manager
-		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
 		{
 			echo json_encode(array('success'=>false));
 			exit();
@@ -527,13 +520,6 @@ class plgCoursesProgress extends JPlugin
 	{
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
-		{
-			echo json_encode(array('success'=>false));
-			exit();
-		}
-
-		// Now, also make sure either section managers can edit, or user is a course manager
-		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
 		{
 			echo json_encode(array('success'=>false));
 			exit();

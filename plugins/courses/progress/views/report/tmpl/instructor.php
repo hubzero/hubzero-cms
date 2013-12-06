@@ -192,13 +192,19 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 						{{shorten title 10}}
 					</div>
 					<div class="form-type">
-						<select name="type">
-							<option value="exam"{{ifAreEqual subtype "exam"}}>Exam</option>
-							<option value="quiz"{{ifAreEqual subtype "quiz"}}>Quiz</option>
-							<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>
-						</select>
+						{{#if ../canManage}}
+							<select name="type">
+								<option value="exam"{{ifAreEqual subtype "exam"}}>Exam</option>
+								<option value="quiz"{{ifAreEqual subtype "quiz"}}>Quiz</option>
+								<option value="homework"{{ifAreEqual subtype "homework"}}>Homework</option>
+							</select>
+						{{else}}
+							<small>*{{subtype}}</small>
+						{{/if}}
 					</div>
-					<div class="form-delete"></div>
+					{{#if ../canManage}}
+						<div class="form-delete"></div>
+					{{/if}}
 				</div>
 			</div>
 			{{#each ../members}}
@@ -221,8 +227,12 @@ $base .= ($this->course->offering()->section()->get('alias') != '__default') ? '
 		<div class="controls clear">
 			<div title="progress view" class="progress-button button active"></div>
 			<div title="gradebook view" class="gradebook-button button"></div>
-			<div title="edit grade policy" class="progress_button policy button"></div>
-			<div title="add a new entry" class="gradebook_button addrow button"></div>
+			<?php echo (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+				? ''
+				: '<div title="edit grade policy" class="progress_button policy button"></div>'; ?>
+			<?php echo (!$this->course->access('manage'))
+				? ''
+				: '<div title="add a new entry" class="gradebook_button addrow button"></div>'; ?>
 			<div title="export to csv" class="gradebook_button export button"></div>
 			<div title="refresh gradebook view" class="gradebook_button refresh button"></div>
 		</div>
