@@ -9,6 +9,10 @@
 	/* Status */
 	.tools tbody tr th .entry-id:before {
 		content: "";
+		display: none;
+	}
+	.tools tbody tr th .entry-id {
+		display: none;
 	}
 	.tools tbody tr.uploaded,
 	.tools tbody tr.updated,
