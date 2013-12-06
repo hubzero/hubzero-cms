@@ -180,9 +180,57 @@
 	.adminactions li a, 
 	.adminactions li a:hover, 
 	.adminactions li span {
-		padding: 0.2em 0 0.2em 1.7em;
+		padding: 0.2em 0;
 		border: none;
 		font-size: x-small;
+		background: none;
+	}
+	.adminactions li a:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #CCC; 
+		margin-right: 0.2em;
+		font-weight: normal;
+	}
+	.history {
+		padding: 0 !important;
+		background: none !important;
+	}
+	.history:before {
+		display: none;
+	}
+	.adminactions li.history a:before {
+		content: "\f017";	
+	}
+	.adminactions li.wiki a:before {
+		content: "\f059";	
+	}
+	.adminactions li.sourcecode a:before {
+		content: "\f121";	
+	}
+	.adminactions li.timeline a:before {
+		content: "\f056";	
+	}
+	.adminactions li.message a:before {
+		content: "\f075";	
+	}
+	.adminactions li.canceltool a:before {
+		content: "\2716";	
+	}
+	.adminactions li#createtool a:before {
+		content: "\f0c2";	
+	}
+	.adminactions li#installtool a:before {
+		content: "\f0c3";	
+	}
+	.adminactions li#publishtool a:before {
+		content: "\2714";	
+	}
+	.adminactions li#retiretool a:before {
+		content: "\f0ab";	
 	}
 	span.showcontrols {
 		padding: 0.2em 0 0.2em 0.2em;
@@ -218,77 +266,9 @@
 		padding: 0.2em 0.2em 0.2em 0.5em;
 		border: 0;
 	}
-	
-	.history a, 
-	.history span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/history.gif") 0 0 no-repeat;
-	}
-	.timeline a, 
-	.timeline span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/timeline.gif") 0 0 no-repeat;
-	}
-	.wiki a, 
-	.wiki span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/wiki.gif") 0 0 no-repeat;
-	}
-	.agenda a { 
-		background: transparent url("/components/com_tools/assets/img/contribute/agenda.gif") 0 0 no-repeat;
-	}
-	.agenda_new a { 
-		background: transparent url("/components/com_tools/assets/img/contribute/agenda_new.gif") 0 0 no-repeat;
-	}
 	.disabled { 
 		color: #999;
 	}
-	.sourcecode a, 
-	.sourcecode span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/sourcecode.gif") 0 0 no-repeat;
-	}
-	.canceltool a { 
-		background: transparent url("/components/com_tools/assets/img/contribute/delete.gif") 2px 2px no-repeat;
-	}
-	.message a { 
-		background: transparent url("/components/com_tools/assets/img/contribute/message.gif") 0 0 no-repeat;
-		border: none;
-	}
-	.newmessage a { 
-		background: transparent url("/components/com_tools/assets/img/contribute/newmessage.gif") 0 0 no-repeat;
-		padding: 0.2em 0.5em 0.2em 0.5em;
-		margin: 0;
-		border: none;
-	}
-	#createtool a, 
-	#createtool span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/create_project.gif") 0 0 no-repeat;
-	}
-	#installtool a, 
-	#installtool span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/install_tool.gif") 0 0 no-repeat;
-	}
-	#publishtool a, 
-	#publishtool span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/publish_tool.gif") 0 0 no-repeat;
-	}
-	#retiretool a, 
-	#retiretool span { 
-		background: transparent url("/components/com_tools/assets/img/contribute/retire.gif") 0 0 no-repeat;
-	}
-	.canceltool a:hover { 
-		background-position: 2px -18px;
-	}
-	#installtool a:hover { 
-		background-position: 0 -18px;
-	}
-	#createtool a:hover { 
-		background-position: 0 -16px;
-	}
-	#publishtool a:hover { 
-		background-position: 0 -20px;
-	}
-	#retiretool a:hover { 
-		background-position: 0 -17px;
-	}
-	
 	.conf { 
 		background: transparent url("/components/com_tools/assets/img/contribute/configure.gif") 0 0 no-repeat;
 		padding: 0.2em 0.6em 0.2em 0.6em;
