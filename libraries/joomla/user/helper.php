@@ -22,6 +22,36 @@ defined('JPATH_PLATFORM') or die;
 abstract class JUserHelper
 {
 	/**
+	 * hex2bin is requred by the hash function to remain compatible with our previous use of the mhash function.
+	 * When we transferred over to php 5.3 on RHEL 6, the mhash function was no longer part of php. 
+	 * Third party libraries (php-mhash) weren't available on RHEL 6 so we had to transfer from using
+	 * mhash to hash
+	 *
+	 * Note: hex2bin is part of php5.4, if we ever require 5.4+ for the hub, we can remove this function.
+	 * 12/6/2013 - DRB
+	 */
+	public static function hex2bin($hex_string) 
+	{
+		$pos = 0;
+		$result = '';
+		while ($pos < strlen($hex_string)) 
+		{
+			if (strpos(" \t\n\r", $hex_string{$pos}) !== FALSE) 
+			{
+				$pos++;
+			} 
+			else 
+			{
+				$code = hexdec(substr($hex_string, $pos, 2));
+				$pos = $pos + 2;
+				$result .= chr($code); 
+			}
+		}
+		return $result;
+	}
+
+
+	/**
 	 * Method to add a user to a group.
 	 *
 	 * @param   integer  $userId   The id of the user.
@@ -332,7 +362,8 @@ abstract class JUserHelper
 				return $plaintext;
 
 			case 'sha':
-				$encrypted = base64_encode(mhash(MHASH_SHA1, $plaintext));
+				//$encrypted = base64_encode(mhash(MHASH_SHA1, $plaintext));
+				$encrypted = base64_encode(JUserHelper::hex2bin(hash('SHA1', $plaintext)));
 				return ($show_encrypt) ? '{SHA}' . $encrypted : $encrypted;
 
 			case 'crypt':
@@ -342,15 +373,18 @@ abstract class JUserHelper
 				return ($show_encrypt ? '{crypt}' : '') . crypt($plaintext, $salt);
 
 			case 'md5-base64':
-				$encrypted = base64_encode(mhash(MHASH_MD5, $plaintext));
+				//$encrypted = base64_encode(mhash(MHASH_MD5, $plaintext));
+				$encrypted = base64_encode(JUserHelper::hex2bin(hash('MD5', $plaintext)));
 				return ($show_encrypt) ? '{MD5}' . $encrypted : $encrypted;
 
 			case 'ssha':
-				$encrypted = base64_encode(mhash(MHASH_SHA1, $plaintext . $salt) . $salt);
+				//$encrypted = base64_encode(mhash(MHASH_SHA1, $plaintext . $salt) . $salt);
+				$encrypted = base64_encode(JUserHelper::hex2bin(hash('SHA1', $plaintext . $salt)) . $salt);
 				return ($show_encrypt) ? '{SSHA}' . $encrypted : $encrypted;
 
 			case 'smd5':
-				$encrypted = base64_encode(mhash(MHASH_MD5, $plaintext . $salt) . $salt);
+				//$encrypted = base64_encode(mhash(MHASH_MD5, $plaintext . $salt) . $salt);
+				$encrypted = base64_encode(JUserHelper::hex2bin(hash('MD5', $plaintext . $salt)) . $salt);
 				return ($show_encrypt) ? '{SMD5}' . $encrypted : $encrypted;
 
 			case 'aprmd5':
