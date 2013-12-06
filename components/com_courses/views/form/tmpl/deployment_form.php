@@ -3,7 +3,7 @@
 		<h3>Times</h3>
 		<p>
 			<label>
-				<span>Start time:</span><input type="datetime" name="deployment[startTime]" value="<?= htmlentities(($val = $this->dep->getStartTime()) ? $val : date('Y-m-d H:i')) ?>" />
+				<span>Start time:</span><input type="datetime" name="deployment[startTime]" value="<?= htmlentities(($val = $this->dep->getStartTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : JHTML::_('date', 'now', 'Y-m-d H:i:s')) ?>" />
 			</label>
 			<? if ($showErrors && $this->dep->hasErrors('startTime')): ?>
 			<ul class="errors">
@@ -15,7 +15,7 @@
 		</p>
 		<p>
 			<label>
-				<span>End time:</span><input type="datetime" name="deployment[endTime]" value="<?= htmlentities(($val = $this->dep->getEndTime()) ? $val : '') ?>" />
+				<span>End time:</span><input type="datetime" name="deployment[endTime]" value="<?= htmlentities(($val = $this->dep->getEndTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : '') ?>" />
 			</label>
 			<? if ($showErrors && $this->dep->hasErrors('endTime')): ?>
 			<ul class="error">
