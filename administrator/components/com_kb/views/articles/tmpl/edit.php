@@ -93,7 +93,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="field-section"><?php echo JText::_('COM_KB_CATEGORY'); ?>: <span class="required">*</span></label><br />
-							<select name="field[]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
+							<select name="fields[section]" id="field-section" onchange="changeDynaList('fieldcategory', categories, document.getElementById('field-section').options[document.getElementById('field-section').selectedIndex].value, 0, 0);">
 							<?php foreach ($this->sections as $section) { ?>
 								<option value="<?php echo $section->get('id'); ?>"<?php echo ($this->row->get('section') == $section->get('id')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
 							<?php } ?>

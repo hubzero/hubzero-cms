@@ -47,7 +47,7 @@ class KbHelperHtml
 	public function sectionSelect($categories, $val, $name)
 	{
 		$out  = '<select name="' . $name . '">';
-		$out .= '<option value="-1">' . JText::_('COM_KB_SELECT_CATEGORY') . '</option>';
+		$out .= '<option value="">' . JText::_('COM_KB_SELECT_CATEGORY') . '</option>';
 		foreach ($categories as $category)
 		{
 			$selected = ($category->get('id') == $val)

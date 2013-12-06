@@ -168,7 +168,7 @@ class KbControllerCategories extends Hubzero_Controller
 		$archive = new KbModelArchive();
 
 		// Get the sections
-		$this->view->sections = $archive->categories('list', array('parent' => 0));
+		$this->view->sections = $archive->categories('list', array('parent' => 0, 'empty' => 1));
 
 		/*if (version_compare(JVERSION, '1.6', 'ge'))
 		{

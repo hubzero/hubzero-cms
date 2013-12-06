@@ -352,7 +352,6 @@ class KbTableCategory extends JTable
 
 		$query .= $this->_buildQuery($filters);
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
-		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}

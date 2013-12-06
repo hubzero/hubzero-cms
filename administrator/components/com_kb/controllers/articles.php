@@ -95,7 +95,7 @@ class KbControllerArticles extends Hubzero_Controller
 		);
 		$this->view->filters['state'] = -1;
 		$this->view->filters['access'] = -1;
-
+		
 		$a = new KbModelArchive();
 
 		// Get record count
@@ -197,7 +197,7 @@ class KbControllerArticles extends Hubzero_Controller
 		$c = new KbModelArchive($this->database);
 
 		// Get the sections
-		$this->view->sections   = $c->categories('list', array('section' => 0));
+		$this->view->sections   = $c->categories('list', array('section' => 0, 'empty' => 1));
 
 		/*if (version_compare(JVERSION, '1.6', 'ge'))
 		{

@@ -348,7 +348,7 @@ class KbTableArticle extends JTable
 
 		$where = array();
 
-		if (isset($filters['section']) && $filters['section'] >= 0) 
+		if (isset($filters['section']) && $filters['section'] > 0) 
 		{
 			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
 		}

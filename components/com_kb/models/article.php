@@ -384,7 +384,7 @@ class KbModelArticle extends \Hubzero\Model
 	{
 		if (!$this->exists())
 		{
-			switch (strtolower($rtrn))
+			switch (strtolower($as))
 			{
 				case 'array':
 					return array();
