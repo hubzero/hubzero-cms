@@ -42,6 +42,10 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="domain" type="text" size="20" default="Purdue Career Account (CAS)" label="Domain" description="Domain name" />
 				<field name="display_name" type="text" size="32" label="Display name" description="Text to display on the site when referencing this plugin" default="Purdue Career" />
+				<field name="auto_logoff" type="radio" default="0" label="End CAS Session Automatically?" description="Prompt user with choice to end Purdue CAS session, or perform this action automatically">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

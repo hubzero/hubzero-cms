@@ -211,8 +211,27 @@ class UsersControllerUser extends UsersController
 				// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
 				if($auth_domain_name == 'pucas')
 				{
-					$app->redirect(JRoute::_('index.php?option=com_users&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
-					return;
+					// Get plugin params
+					$plugin      = JPluginHelper::getPlugin('authentication', $auth_domain_name);
+					$paramsClass = 'JParameter';
+					if (version_compare(JVERSION, '1.6', 'ge'))
+					{
+						$paramsClass = 'JRegistry';
+					}
+
+					$pparams = new $paramsClass($plugin->params);
+					$auto_logoff = $pparams->get('auto_logoff', false);
+
+					if ($auto_logoff)
+					{
+						$app->redirect(JRoute::_('index.php?option=com_users&task=user.logout&authenticator=' . $auth_domain_name, false));
+						return;
+					}
+					else
+					{
+						$app->redirect(JRoute::_('index.php?option=com_users&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
+						return;
+					}
 				}
 			}
 
