@@ -260,6 +260,7 @@ class plgCoursesProgress extends JPlugin
 
 		// Get the grading policy
 		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+		$policy = new stdClass();
 		$policy->description     = $gradePolicy->get('description');
 		$policy->exam_weight     = $gradePolicy->get('exam_weight') * 100;
 		$policy->quiz_weight     = $gradePolicy->get('quiz_weight') * 100;

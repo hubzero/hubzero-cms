@@ -518,6 +518,9 @@
 }
 
 /* Overall styles */
+.gradebook-container {
+	padding-bottom: 30px;
+}
 .gradebook-container,
 .gradebook-container-inner {
 	position: relative;

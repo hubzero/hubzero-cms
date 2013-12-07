@@ -88,6 +88,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 	 */
 	public function loadBySectionId($id)
 	{
+		$model = new stdClass();
 		$model->_db = JFactory::getDBO();
 
 		$model = new self();
