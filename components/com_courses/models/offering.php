@@ -1322,13 +1322,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$course = CoursesModelCourse::getInstance($this->get('course_id'));
 				$this->set('course_alias', $course->get('alias'));
 			}
-			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('course_alias');
-			
-			if (strtolower($type) != 'overview')
-			{
-				$this->_link .= '&offering=' . $this->get('alias');
-				$this->_link .= ($this->section()->get('alias') != '__default') ? ':' . $this->section()->get('alias') : '';
-			}
+			$this->_link  = 'index.php?option=com_courses&gid=' . $this->get('course_alias') . '&offering=' . $this->get('alias');
+			$this->_link .= ($this->section()->get('alias') != '__default') ? ':' . $this->section()->get('alias') : '';
 		}
 
 		// If it doesn't exist or isn't published
@@ -1358,6 +1353,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 				{
 					$link = $this->_link . '&task=enroll';
 				}
+			break;
+			
+			case 'overview':
+				$link = 'index.php?option=com_courses&gid=' . $this->get('course_alias');
 			break;
 
 			case 'permalink':
