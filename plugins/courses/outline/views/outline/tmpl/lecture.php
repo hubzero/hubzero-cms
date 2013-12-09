@@ -91,33 +91,48 @@ if (!$this->course->offering()->access('view')) { ?>
 				{
 					if ($a->get('type') == 'video' && ($a->isPublished() || (!$a->isPublished() && $this->course->offering()->access('manage'))))
 					{
-						$used = $a->get('id');
-						$used_title = $a->get('title');
-						echo $a->render($this->course);
-
-						if ($this->course->offering()->access('manage')) 
-						{ 
-							?>
-							<?php if (!$a->isPublished()) { ?>
-							<div class="asset-status unpublished">
-								<span><?php echo JText::_('This asset is <strong>unpublished</strong>.'); ?></span>
-							</div>
-							<?php } ?>
-							<?php if ($a->isDraft()) { ?>
-							<div class="asset-status draft">
-								<span><?php echo JText::_('This asset is in <strong>draft</strong> mode.'); ?></span>
-							</div>
-							<?php } ?>
-							<?php if ($a->isPublished() && !$a->isAvailable()) { ?>
-							<div class="asset-status pending">
-								<span><?php echo JText::sprintf('This asset is <strong>scheduled</strong> to be available at %s.', $a->get('publish_up')); ?></span>
-							</div>
-							<?php } ?>
-							<?php 
+						// Prefer published assets
+						if ($used)
+						{
+							if (!$used_asset->isPublished() && $a->isPublished())
+							{
+								$used       = $a->get('id');
+								$used_title = $a->get('title');
+								$used_asset = $a;
+							}
 						}
+						else
+						{
+							$used       = $a->get('id');
+							$used_title = $a->get('title');
+							$used_asset = $a;
+						}
+					}
+				}
 
-						// Break - only 'render' first video available (should we do something about multiple video assets?)
-						break;
+				if ($used)
+				{
+					echo $used_asset->render($this->course);
+
+					if ($this->course->offering()->access('manage')) 
+					{ 
+						?>
+						<?php if (!$used_asset->isPublished()) { ?>
+						<div class="asset-status unpublished">
+							<span><?php echo JText::_('This asset is <strong>unpublished</strong>.'); ?></span>
+						</div>
+						<?php } ?>
+						<?php if ($used_asset->isDraft()) { ?>
+						<div class="asset-status draft">
+							<span><?php echo JText::_('This asset is in <strong>draft</strong> mode.'); ?></span>
+						</div>
+						<?php } ?>
+						<?php if ($used_asset->isPublished() && !$used_asset->isAvailable()) { ?>
+						<div class="asset-status pending">
+							<span><?php echo JText::sprintf('This asset is <strong>scheduled</strong> to be available at %s.', $used_asset->get('publish_up')); ?></span>
+						</div>
+						<?php } ?>
+						<?php 
 					}
 				}
 			}
