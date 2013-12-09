@@ -56,7 +56,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 				$offering->section($section->get('alias'));
 
 				$this->setRedirect(
-					JRoute::_($offering->link())
+					JRoute::_($offering->link('overview'))
 				);
 			}
 		}
