@@ -3345,9 +3345,9 @@ class SupportControllerTickets extends Hubzero_Controller
 				}
 				$groups[$result->alias][] = $result;
 			}
-			foreach ($groups as $name => $gusers)
+			foreach ($groups as $gname => $gusers)
 			{
-				$users[] = JHTML::_('select.optgroup', JText::_('group:') . ' ' . $name);
+				$users[] = JHTML::_('select.optgroup', JText::_('group:') . ' ' . $gname);
 				$users = array_merge($users, $gusers);
 			}
 		}
