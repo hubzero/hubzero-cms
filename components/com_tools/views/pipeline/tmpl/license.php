@@ -93,7 +93,7 @@ if ($this->licenses)
 							<?php echo ToolsHelperHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 						</div>
 						<div class="licinput" >
-							<label><span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
+							<label><?php echo JText::_('COM_TOOLS_LICENSE_TEXT'); ?><span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 							<textarea name="license" cols="50" rows="15" id="license" placeholder="<?php echo JText::_('COM_TOOLS_ENTER_LICENSE_TEXT'); ?>"> <?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
 							</label>
 							<?php 
