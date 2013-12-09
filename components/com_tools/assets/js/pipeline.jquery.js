@@ -132,28 +132,8 @@ HUB.ToolsPipeline = {
 			});
 		});
 		
-		// flip license code
-		if ($('#curcode').length > 0) {
-			if (document.getElementById('versionForm')) {
-				var sel = getSelectedOption('versionForm', 't_code');
-				if (sel.value == "@OPEN") {
-					HUB.ToolsPipeline.show($('#lic'));
-					HUB.ToolsPipeline.show($('#legendnotes'));
-					HUB.ToolsPipeline.hide($('#lic_cl'));
-				} else {
-					HUB.ToolsPipeline.hide($('#lic'));
-					HUB.ToolsPipeline.hide($('#legendnotes'));
-					HUB.ToolsPipeline.show($('#lic_cl'));
-				}
-			}
-			
-			$('#t_code').on('change', function(){
-				HUB.ToolsPipeline.licOptions();
-			});
-			$('#templates').on('change', function(){
-				HUB.ToolsPipeline.getTemplate();
-			});
-		}
+		// Manage license screen
+		HUB.ToolsPipeline.manageLicense();
 		
 		$('.showcancel').on('click', function(){
 			HUB.ToolsPipeline.show(HUB.ToolsPipeline.canceltool);
@@ -188,6 +168,60 @@ HUB.ToolsPipeline = {
 			}
 		});
 		
+		if ($('#cancel-action').length > 0) {
+			$('#cancel-action').unbind();
+			$('#cancel-action').on('click', function(e) {
+				$($(this).parent()).animate({opacity:0.0}, 500, function() {
+				    $($(this).parent()).html('');
+				});
+			});
+		}
+		
+		// NEW
+		var adminactions = $('.adminaction');
+		if (adminactions.length > 0)
+		{						
+			adminactions.each(function(i, item) {
+				$(item).on('click', function() {
+					
+					href = $(this).attr('href');
+					if (href.indexOf('no_html=1') == -1) {
+						if (href.indexOf('?') == -1) {
+							href += '?no_html=1';
+						} else {
+							href += '&no_html=1';
+						}
+						$(this).attr('href', href);
+					}
+					
+					var outcome = $('#ctOutcome');
+					
+					var loading = HUB.ToolsPipeline.loadingIma('Performing your request');
+				
+					$(outcome).html(loading);
+					
+					$.get($(this).attr('href'), {}, function(data){
+						$(outcome).html(data);
+						
+						$(outcome).prepend($('<span id="cancel-action">&nbsp;</span>'));
+						
+						if ($('#cancel-action').length > 0) {
+							$('#cancel-action').unbind();
+							$('#cancel-action').on('click', function(e) {
+								$(outcome).animate({opacity:0.0}, 500, function() {
+								    $(outcome).html('');
+								});
+							});
+						}
+						
+					});
+
+					return false;
+					
+				});
+			});
+		}
+		
 		// admin actions
 		var admincalls = $('.admincall');
 		if (admincalls) {
@@ -220,12 +254,8 @@ HUB.ToolsPipeline = {
 					}
 				
 					$(HUB.ToolsPipeline.loader).html('');
-					//$('<p><img src="' + HUB.ToolsPipeline.templatepath + 'html/com_tools/assets/img/ajax-loader.gif" />' + actiontxt + '</p>').appendTo($(HUB.ToolsPipeline.loader));
 					$('<p><img src="/components/com_tools/assets/img/ajax-loader.gif" />' + actiontxt + '</p>').appendTo($(HUB.ToolsPipeline.loader));
 
-					//frm.elements['task'].value = actionlabel;
-					//frm.elements['no_html'].value = 1;
-					//HUB.ToolsPipeline.sendForm();
 					HUB.ToolsPipeline.show(HUB.ToolsPipeline.loader);
 					HUB.ToolsPipeline.hide(HUB.ToolsPipeline.success);
 
@@ -239,34 +269,79 @@ HUB.ToolsPipeline = {
 			});
 		}
 	},
-
-	licOptions: function() {
-		var $ = this.jQuery;
-			
-		if (document.getElementById('versionForm')) {
-			var sel = getSelectedOption( 'versionForm', 't_code' );
-			if (sel.value == "@OPEN") {
-				HUB.ToolsPipeline.show($('#lic'));
-				HUB.ToolsPipeline.show($('#legendnotes'));
-				HUB.ToolsPipeline.hide($('#lic_cl'));
-			} else {
-				HUB.ToolsPipeline.hide($('#lic'));
-				HUB.ToolsPipeline.hide($('#legendnotes'));
-				HUB.ToolsPipeline.show($('#lic_cl'));
-			}
+	
+	loadingIma: function(txt)
+	{
+		var html = '<p id="fbwrap">' + 
+			'<span id="facebookG">' +
+			' <span id="blockG_1" class="facebook_blockG"></span>' +
+			' <span id="blockG_2" class="facebook_blockG"></span>' +
+			' <span id="blockG_3" class="facebook_blockG"></span> ';
+		
+		if (txt)
+		{
+			html = html + txt;
 		}
+		
+		html = html + 
+			'</span>' +
+		'</p>';
+		
+		return html;
+	},
+	
+	manageLicense: function() 
+	{
+		var $ = this.jQuery;
+		
+		if (!$('#licenseForm').length) 
+		{
+			return false;
+		}
+		
+		HUB.ToolsPipeline.licOptions();
+		
+		// Show options depending on open/closed source selection
+		$('#t_code').on('change', function()
+		{
+			HUB.ToolsPipeline.licOptions();
+		});
+
+		$('#templates').on('change', function()
+		{
+			HUB.ToolsPipeline.getTemplate();
+		});
+		
+	},
+
+	licOptions: function() 
+	{
+		var $ = this.jQuery;
+		var sel = $('#t_code').find(":selected").attr('value');
+			
+		if (sel == "@OPEN") {
+			$("#open-source").show();
+			$("#closed-source").hide();
+			$('#choice-icon').addClass('opensource');
+			$('#choice-icon').removeClass('closedsource');
+		} 
+		else {
+			$("#open-source").hide();
+			$("#closed-source").show();
+			$('#choice-icon').removeClass('opensource');
+			$('#choice-icon').addClass('closedsource');
+		}
+		
 	},
 	
 	getTemplate: function() {
-		var id = getSelectedOption( 'versionForm', 'templates' );
-		if (id.value != 'c1') {
-			var hi = document.getElementById(id.value).value;
-			var co = document.getElementById('license');
-			co.value = hi;
-		} else {
-			var co = document.getElementById('license');
-			co.value = '';
-		}
+		var $ = this.jQuery;
+		var tmpl = $('#templates').find(":selected").attr('value');
+		if (tmpl != 'c1') 
+		{
+			var t = $('#' + tmpl).text();
+			var co = $('#license').val(t);
+		} 
 	},
 	
 	hideTimer: function() {

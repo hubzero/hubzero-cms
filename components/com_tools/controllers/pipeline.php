@@ -71,19 +71,12 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		// The following seems redundant and effectively eliminates non-admins from creating a tool
-		/*if (!$this->juser->authorize($this->_option, 'manage')) 
-		{
-			// Redirect to home page
-			$this->setRedirect(
-				$this->config->get('contribtool_redirect', '/home')
-			);
-			return;
-		}*/
 		// Check logged in status
 		if (JFactory::getUser()->get('guest')) 
 		{
-			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . JRequest::getWord('task', ''), false, true), 'server'));
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' 
+				. $this->_option . '&controller=' . $this->_controller . '&task=' 
+				. JRequest::getWord('task', ''), false, true), 'server'));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
@@ -600,7 +593,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// get default license text
 		$toolhelper = new ContribtoolHelper();
 		$this->view->licenses = $toolhelper->getLicenses($this->database);
-
+		
 		/// add the CSS to the template and set the page title
 		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
 		$this->_getScripts('assets/js/' . $this->_controller);
@@ -657,7 +650,9 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	public function savelicenseTask()
 	{
-		$id = JRequest::getInt('toolid', 0, 'post');
+		$id 	= JRequest::getInt('toolid', 0, 'post');
+		$error 	= '';
+		
 		if (!$id)
 		{
 			$this->setRedirect(
@@ -674,10 +669,67 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		);
 
 		$hztv->codeaccess = JRequest::getVar('t_code', '@OPEN');
-		$action = JRequest::getWord('action', 'dev');
+		$action 		  = JRequest::getWord('action', 'dev');
+		
+		// Closed source
+		if ($hztv->codeaccess == '@DEV')
+		{
+			$reason = JRequest::getVar('reason', '');
+			
+			if (!$reason)
+			{
+				$this->view->license_choice = $this->license_choice;
+				$this->view->code			= $hztv->codeaccess;
+				
+				// display license page with error
+				$this->setError(JText::_('COM_TOOLS_LICENSE_CLOSED_SOURCE_NEED_REASON'));
+				$this->licenseTask();
+				return;
+			}
+			else
+			{
+				jimport('joomla.filesystem.folder');
+				$path = DS . 'site/logs';
+				if (!is_dir( JPATH_ROOT . $path )) 
+				{
+					if (!JFolder::create( JPATH_ROOT . $path, 0777 )) 
+					{
+						$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
+						return;
+					}
+				}
+				
+				$log  = 'By: ' . $this->juser->get('name') . ' (' . $this->juser->get('username') . ') ' . "\n";
+				$log .= 'Tool: ' . $hztv->toolname . ' (id #' . $id . ')' . ' - ' . $hztv->instance . "\n";
+				$log .= 'Time : ' . date('c') . "\n";
+				$log .= 'Reason for closed source: ' . "\n";
+				$log .= $reason;
+				
+				// Log reason for closed source
+				$this->_writeToFile($log, JPATH_ROOT . $path . DS . 'closed_source_reasons.txt', true);
+				
+				// code for saving license
+				$hztv->license = NULL;
 
-		$error = '';
+				// save version info
+				$hztv->update(); //@FIXME: look
 
+				$this->_setTracAccess($hztv->toolname, $hztv->codeaccess, null);
+				
+				if ($action != 'confirm') 
+				{
+					$this->_msg = JText::_('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED');
+					$this->statusTask();
+				}
+				else 
+				{
+					$this->finalizeTask();
+				}
+				return;				
+			}
+		}
+		
+		// Open source
 		if (Hubzero_Tool::validateLicense($this->license_choice, $hztv->codeaccess, $error))
 		{
 			// code for saving license
@@ -703,11 +755,28 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		}
 		else 
 		{
+			$this->view->code			= $hztv->codeaccess;
 			$this->view->license_choice = $this->license_choice;
+			
 			// display license page with error
 			$this->setError($error);
 			$this->licenseTask();
 		}
+	}
+	
+	/**
+	 * Write sync status to file
+	 * 
+	 * @return   void
+	 */
+	protected function _writeToFile($content = '', $file = '', $append = false ) 
+	{		
+		$place   = $append == true ? 'a' : 'w';
+		$content = $append ? $content . "\n" : $content; 
+		
+		$handle  = fopen($file, $place);
+		fwrite($handle, $content);
+		fclose($handle);
 	}
 
 	/**
@@ -1348,8 +1417,11 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 			if ($this->_action == 'confirm')
 			{
-				$this->licenseTask();
-				return; // display license page
+				// Go to license page
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&controller=pipeline&task=license&app=' . $this->_toolid)
+				);
+				return;
 			}
 			else
 			{

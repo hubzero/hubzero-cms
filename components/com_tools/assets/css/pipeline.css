@@ -515,9 +515,59 @@
 		width:100%;
 	}
 	#legendnotes p {
-		padding-bottom: 2em;
-		border-bottom: 1px solid #ccc;
-		margin-bottom: 0.5em;
+		font-size: 85%;
+		padding: 1em;
+		border: 1px solid #CCC;
+		background: #f6f6f6;
+	}
+	.hidden {
+		display: none;
+	}
+	
+/* License screen: Open/closed source */
+	#closed-source {
+		padding: 1em 0;
+	}
+	#closed-source h4 {
+		margin-top: 1.5em;
+		font-size: 1.1em;
+	}
+	#closed-source label {
+		padding: 0;
+		margin: 2em 0 0 0;
+	}
+	#closed-source textarea {
+		width: 100%;
+	}
+	.opensource {
+		background: url("/components/com_tools/assets/img/happyface.png") 0 0 no-repeat;	
+	}
+	.closedsource { 
+		background: url("/components/com_tools/assets/img/sadface.png") 0 0 no-repeat;
+	}
+	.opensource, 
+	.closedsource { 
+		text-align: left;
+		padding: 0 0 1em 5.5em;
+	}
+	.required {
+		float: right;
+		color: red;
+		font-size: 85%;
+		text-transform: uppercase;
+	}
+	#choice-icon {
+		width: 24px;
+		height: 24px;
+		display: inline-block;
+		margin-left: 180px;
+		position: absolute;
+	}
+	#choice-icon.opensource {
+		background: url("/components/com_tools/assets/img/happyface_sm.png") 0 0 no-repeat;	
+	}
+	#choice-icon.closedsource {
+		background: url("/components/com_tools/assets/img/sadface_sm.png") 0 0 no-repeat;	
 	}
 
 /* Tool edit form */
@@ -621,13 +671,13 @@
 		font-size: 1em;
 	}
 	#lic { 
-		display: none;
 		padding: 1.5em 0 0.5em 0;
 		margin: 0 0 2em 0;
 	}
 	#lic_cl { 
 		margin: 2em 0 1em 0;
 	}
+	
 	span.actionlink {
 		color: #999;
 		text-transform: uppercase;
@@ -661,18 +711,6 @@
 		margin: 0;
 		padding: 0;
 	}
-	.opensource {
-		background: url("/components/com_resources/assets/img/opensource.gif") 0 0 no-repeat;	
-	}
-	.closedsource { 
-		background: url("/components/com_resources/assets/img/closedsource.gif") 0 0 no-repeat;
-	}
-	.opensource, 
-	.closedsource { 
-		text-align: left;
-		padding: 0 0 1em 5.5em;
-	}
-
 	#primary-document a {
 		display: block;
 		*display: inline;
@@ -747,4 +785,3 @@
 	span.ttitle { 
 		float: left;
 	}
-
