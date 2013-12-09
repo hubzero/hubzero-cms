@@ -291,7 +291,7 @@ class Hubzero_Wiki_Editor extends JObservable
 		jimport('joomla.filesystem.file');
 
 		// Build the path to the needed editor plugin
-		$name = JFilterInput::clean($this->_name, 'cmd');
+		$name = JFilterInput::getInstance()->clean($this->_name, 'cmd');
 		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . '.php';
 
 		if (!JFile::exists($path)) 
