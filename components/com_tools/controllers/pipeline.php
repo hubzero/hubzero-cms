@@ -1419,7 +1419,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			{
 				// Go to license page
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=pipeline&task=license&app=' . $this->_toolid)
+					JRoute::_('index.php?option=' . $this->_option . '&controller=pipeline&task=license&app=' . $hztv->toolname)
 				);
 				return;
 			}
