@@ -79,7 +79,8 @@ if ($type == 'hubpresenter')
 		$media = JFolder::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
 		foreach ($media as $m) 
 		{
-			$ext[] = array_pop(explode('.', $m));
+			$pieces = explode('.', $m);
+			$ext[]  = array_pop($pieces);
 		}
 
 		// If we dont have all the necessary media formats
@@ -164,7 +165,8 @@ if ($type == 'hubpresenter' || $type == 'html5')
 {
 	// Include media tracking for html5 and hubpresenter videos
 	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
-	$mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
+	$dbo = JFactory::getDBO();
+	$mediaTracking = new ResourceMediaTracking($dbo);
 
 	// Get tracking for this user for this resource
 	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(JFactory::getUser()->get('id'), $this->asset->id, 'course');
