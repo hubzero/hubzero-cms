@@ -2990,7 +2990,7 @@ CREATE TABLE `#__storefront_skus` (
 CREATE TABLE `#__support_acl_acos` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `model` varchar(100) NOT NULL DEFAULT '',
-  `foreign_key` int(11) NOT NULL DEFAULT '0',
+  `foreign_key` int(11) NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
