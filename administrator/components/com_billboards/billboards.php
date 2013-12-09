@@ -57,13 +57,6 @@ else
 	}
 }
 
-// Authorization check
-$user = & JFactory::getUser();
-if (!$user->authorize($option, 'manage')) 
-{
-	JFactory::getApplication()->redirect('index.php', JText::_('ALERTNOTAUTH'));
-}
-
 // Include needed tables and controller
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'billboard.php');
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$option.DS.'tables'.DS.'collection.php');
