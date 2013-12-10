@@ -109,6 +109,11 @@ class ModIncrementalRegistrationController
 		{
 			return;
 		}
+		foreach (debug_backtrace() as $parent) {
+			if (isset($parent['file']) && preg_match('/error[.]php$/', $parent['file'])) {
+				return;
+			}
+		}
 
 		if (isset($_POST['incremental-registration']) && isset($_POST['submit']) && $_POST['submit'] === 'opt-out') 
 		{
