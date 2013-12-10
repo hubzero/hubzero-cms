@@ -132,6 +132,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		'public' => 1,
 		'authorized' => false
 	);
+
+	if ($this->contribution_counting == false)
+	{
+		unset($filters['sortby']);
+	}
 	
 	if ($rows = $c->getRecords($filters, false))
 	{

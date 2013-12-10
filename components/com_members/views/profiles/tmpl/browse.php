@@ -152,11 +152,13 @@ $juser =& JFactory::getUser();
 							<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_ALL'); ?>
 						</a>
 					</li>
+					<?php if ($this->contribution_counting) { ?>
 					<li>
 						<a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show=contributors&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_BY_CONTRIBUTORS'); ?>">
 							<?php echo JText::_('COM_MEMBERS_BROWSE_FILTER_CONTRIBUTORS'); ?>
 						</a>
 					</li>
+					<?php } ?>
 				</ul>
 
 				<table class="members entries">
@@ -389,8 +391,10 @@ if (count($this->rows) > 0)
 								</span>
 							</td>
 							<td>
+								<?php if ($this->contribution_counting) { ?>
 								<!-- rcount: <?php echo $row->rcount; ?> --> 
 								<span class="activity"><?php echo $row->resource_count . ' Resources, ' . $row->wiki_count . ' Topics'; ?></span>
+								<?php } ?>
 							</td>
 							<td class="message-member">
 							<?php if ($messageuser) { ?>

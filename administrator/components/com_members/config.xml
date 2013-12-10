@@ -60,6 +60,10 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="shadowWarning" type="text" default="7" label="Shadow Warning" />
 	</params>
 	<fieldset name="basic">
+		<field name="contribution_counting" type="list" default="1" label="Contribution Counting" description="Enable (potentially slow) contribution counting in browse view">
+			<option value="0">Disable</option>
+			<option value="1">Enable</option>
+		</field>
 		<field name="privacy" type="list" default="0" label="Default Privacy" description="Set the default privacy for new profiles">
 			<option value="0">Private</option>
 			<option value="1">Public</option>
