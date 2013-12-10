@@ -76,6 +76,7 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 						<p><a href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->status['toolname'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW_RES_PAGE'); ?></a></p>
 					</div>
 				</div>
+				<?php if ($this->status['license']) { ?>
 				<div class="col span-half omega">
 					<h4>
 						<?php echo JText::_('COM_TOOLS_TOOL_LICENSE'); ?> 
@@ -85,6 +86,7 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 					</h4>
 					<pre class="licensetxt"><?php echo $this->escape(stripslashes($this->status['license'])); ?></pre>
 				</div>
+				<?php } ?>
 			</div><!-- / .grid -->
 			<div class="moveon">
 				<input type="submit" value="<?php echo JText::_('COM_TOOLS_APPROVE_THIS_TOOL'); ?>" />

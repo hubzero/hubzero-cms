@@ -703,7 +703,8 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				$log .= 'Tool: ' . $hztv->toolname . ' (id #' . $id . ')' . ' - ' . $hztv->instance . "\n";
 				$log .= 'Time : ' . date('c') . "\n";
 				$log .= 'Reason for closed source: ' . "\n";
-				$log .= $reason;
+				$log .= $reason . "\n";
+				$log .= '-----------------------------------------' . "\n";
 				
 				// Log reason for closed source
 				$this->_writeToFile($log, JPATH_ROOT . $path . DS . 'closed_source_reasons.txt', true);
@@ -743,13 +744,10 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if ($action != 'confirm') 
 			{
 				$this->_msg = JText::_('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED');
-				//$this->_task = 'status';
-				//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED'));
 				$this->statusTask();
 			}
 			else 
 			{
-				//$this->releasenotes();
 				$this->finalizeTask();
 			}
 		}
@@ -1419,7 +1417,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			{
 				// Go to license page
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=pipeline&task=license&app=' . $hztv->toolname)
+					JRoute::_('index.php?option=' . $this->_option . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname)
 				);
 				return;
 			}
@@ -1432,9 +1430,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 				{
 					$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, '');
 				}
-				//$this->addComponentMessage(JText::_('COM_TOOLS_NOTICE_CHANGE_VERSION_SAVED'));
 				$this->_msg = JText::_('COM_TOOLS_NOTICE_CHANGE_VERSION_SAVED');
-				//$this->_task = 'status';
 				$this->statusTask();
 				return;
 			}
