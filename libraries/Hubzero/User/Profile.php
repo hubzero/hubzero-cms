@@ -440,7 +440,7 @@ class Hubzero_User_Profile extends JObject
 	 */
 	private function _mysql_load($user)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		
 		if (empty($user))
 		{

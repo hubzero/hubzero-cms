@@ -110,7 +110,7 @@ class Hubzero_User_Profile_Helper
 	{
 		static $dfthumb;
 
-		$config =& JComponentHelper::getParams('com_members');
+		$config = JComponentHelper::getParams('com_members');
 
 		if (is_a($member, 'JUser'))
 		{
