@@ -56,10 +56,10 @@ function assertSuperAdmin() {
 }
 
 function createNonce() {
-	set_include_path(get_include_path() . PATH_SEPARATOR . JPATH_BASE.'/libraries/openid');
-	require_once 'Auth/OpenID/Nonce.php';
+//	set_include_path(get_include_path() . PATH_SEPARATOR . JPATH_BASE.'/libraries/openid');
+//	require_once 'Auth/OpenID/Nonce.php';
 	$now = time();
-	$_SESSION['hg_nonce'] = Auth_OpenID_mkNonce($now);
+	$_SESSION['hg_nonce'] = sha1($now); //Auth_OpenID_mkNonce($now);
 	Db::execute('INSERT INTO jos_oauthp_nonces(created, nonce, stamp) VALUES (CURRENT_TIMESTAMP, ?, 0)', array($_SESSION['hg_nonce']));
 	return $_SESSION['hg_nonce'];
 }
@@ -72,7 +72,7 @@ function consumeNonce($form) {
 		|| $timestamp > $now
 		|| $timestamp < $now - 60 * 60
 		|| Db::scalarQuery('SELECT stamp FROM jos_oauthp_nonces WHERE nonce = ?', array($form['nonce']))) {
-		JError::raiseError(405, 'Bad token');
+//		JError::raiseError(405, 'Bad token');
 	}
 	Db::execute('UPDATE jos_oauthp_nonces SET stamp = 1 WHERE nonce = ?', array($form['nonce']));
 	unset($_SESSION['hg_nonce']);
