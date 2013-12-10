@@ -569,6 +569,12 @@
 	#choice-icon.closedsource {
 		background: url("/components/com_tools/assets/img/sadface_sm.png") 0 0 no-repeat;	
 	}
+	.why-open {
+		padding: 0.5em 1em 1em 1em;
+		border: 1px solid #d6ebd9;
+		background: #f5fff6;
+		margin: 0 0 2em 0;
+	}
 
 /* Tool edit form */
 	form#toolForm tr { 

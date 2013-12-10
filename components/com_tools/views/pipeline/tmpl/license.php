@@ -82,7 +82,7 @@ if ($this->licenses)
 					<span id="choice-icon">&nbsp;</span>
 					<div id="closed-source">
 						<h4><?php echo JText::_('COM_TOOLS_LICENSE_ARE_YOU_SURE'); ?></h4>
-						<?php echo JText::_('COM_TOOLS_LICENSE_WHY_OPEN_SOURCE'); ?>
+						<div class="why-open"><?php echo JText::_('COM_TOOLS_LICENSE_WHY_OPEN_SOURCE'); ?></div>
 						<label><?php echo JText::_('COM_TOOLS_LICENSE_CLOSED_REASON'); ?> <span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 							<textarea name="reason" cols="30" rows="5" id="reason"></textarea>
 						</label>
