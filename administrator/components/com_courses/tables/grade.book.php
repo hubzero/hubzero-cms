@@ -281,7 +281,19 @@ class CoursesTableGradeBook extends JTable
 			)
 		);
 
-		$values  = array();
+		// Query for existing data
+		$query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN (".implode(',', $member_id).") AND `scope` IN ('asset')";
+		$this->_db->setQuery($query);
+		$results = $this->_db->loadObjectList();
+
+		$existing_grades = array();
+		foreach ($results as $r)
+		{
+			$existing_grades[$r->member_id.'.'.$r->scope_id] = array('id'=>$r->id, 'score'=>$r->score);
+		}
+
+		$inserts = array();
+		$updates = array();
 		$deletes = array();
 
 		if (count($assets) > 0)
@@ -318,7 +330,15 @@ class CoursesTableGradeBook extends JTable
 						// Null value
 						foreach ($member_id as $u)
 						{
-							$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
+							$key = $u.'.'.$asset->id;
+							if (!array_key_exists($key, $existing_grades))
+							{
+								$inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}')";
+							}
+							else if (!is_null($existing_grades[$key]['score']))
+							{
+								$updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '".$existing_grades[$key]['id']."'";
+							}
 						}
 					break;
 
@@ -327,7 +347,16 @@ class CoursesTableGradeBook extends JTable
 						foreach ($member_id as $u)
 						{
 							$score = (isset($results[$u]['score'])) ? $results[$u]['score'] : '0.00';
-							$values[] = "('{$u}', '{$score}', 'asset', '{$asset->id}')";
+
+							$key = $u.'.'.$asset->id;
+							if (!array_key_exists($key, $existing_grades))
+							{
+								$inserts[] = "('{$u}', '{$score}', 'asset', '{$asset->id}')";
+							}
+							else if ($existing_grades[$key]['score'] != $score)
+							{
+								$updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$score}' WHERE `id` = '".$existing_grades[$key]['id']."'";
+							}
 						}
 					break;
 
@@ -341,12 +370,29 @@ class CoursesTableGradeBook extends JTable
 							if($resp->getEndTime() && $resp->getEndTime() != '')
 							{
 								$score = (isset($results[$u]['score'])) ? '\''.$results[$u]['score'].'\'' : 'NULL';
-								$values[] = "('{$u}', {$score}, 'asset', '{$asset->id}')";
+
+								$key = $u.'.'.$asset->id;
+								if (!array_key_exists($key, $existing_grades))
+								{
+									$inserts[] = "('{$u}', {$score}, 'asset', '{$asset->id}')";
+								}
+								else if ($existing_grades[$key]['score'] != $score)
+								{
+									$updates[] = "UPDATE `#__courses_grade_book` SET `score` = {$score} WHERE `id` = '".$existing_grades[$key]['id']."'";
+								}
 							}
 							// Form is active and they haven't finished it yet!
 							else
 							{
-								$values[] = "('$u', NULL, 'asset', '{$asset->id}')";
+								$key = $u.'.'.$asset->id;
+								if (!array_key_exists($key, $existing_grades))
+								{
+									$inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}')";
+								}
+								else if (!is_null($existing_grades[$key]['score']))
+								{
+									$updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '".$existing_grades[$key]['id']."'";
+								}
 							}
 						}
 					break;
@@ -354,14 +400,23 @@ class CoursesTableGradeBook extends JTable
 			}
 
 			// Build query and run
-			if (count($values) > 0)
+			if (count($inserts) > 0)
 			{
 				$query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`) VALUES\n";
-				$query .= implode(",\n", $values);
-				$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
+				$query .= implode(",\n", $inserts);
 
 				$this->_db->setQuery($query);
 				$this->_db->query();
+			}
+
+			if (count($updates) > 0)
+			{
+				foreach ($updates as $update)
+				{
+					$query = $update;
+					$this->_db->setQuery($query);
+					$this->_db->query();
+				}
 			}
 
 			if (count($deletes) > 0)
@@ -383,37 +438,118 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function saveGrades($data, $course_id)
 	{
-		$values = array();
+		$values          = array();
+		$member_ids      = array();
+		$existing_grades = array();
+
+		if (!empty($data))
+		{
+			// Get member id's
+			foreach ($data as $member_id=>$member)
+			{
+				$member_ids[] = $member_id;
+			}
+
+			// Query for existing data
+			$query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN (".implode(',', $member_ids).") AND `scope` IN ('course', 'unit')";
+			$this->_db->setQuery($query);
+			$results = $this->_db->loadObjectList();
+
+			foreach ($results as $r)
+			{
+				$existing_grades[$r->member_id.'.'.$r->scope.'.'.$r->scope_id] = array('id'=>$r->id, 'score'=>$r->score);
+			}
+		}
+
+		$inserts = array();
+		$updates = array();
 
 		foreach ($data as $member_id=>$member)
 		{
 			foreach ($member['units'] as $unit_id=>$unit)
 			{
-				if (is_null($unit['unit_weighted']))
+				if (is_numeric($unit['unit_weighted']))
 				{
-					$values[] = "('$member_id', NULL, 'unit', '$unit_id')";
+					if (array_key_exists($member_id.'.unit.'.$unit_id, $existing_grades))
+					{
+						$key = $member_id.'.unit.'.$unit_id;
+
+						if ((is_null($existing_grades[$key]['score']) && !is_null($unit['unit_weighted'])) || $existing_grades[$key]['score'] != $unit['unit_weighted'])
+						{
+							$updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$unit['unit_weighted']}' WHERE `id` = '".$existing_grades[$key]['id']."'";
+						}
+					}
+					else
+					{
+						$inserts[] = "('{$member_id}', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '{$unit_id}')";
+					}
+				}
+				else if (is_null($unit['unit_weighted']))
+				{
+					if (array_key_exists($member_id.'.unit.'.$unit_id, $existing_grades))
+					{
+						$key = $member_id.'.unit.'.$unit_id;
+
+						if (!is_null($existing_grades[$key]['score']))
+						{
+							$updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '".$existing_grades[$key]['id']."'";
+						}
+					}
+					else
+					{
+						$inserts[] = "('{$member_id}', NULL, 'unit', '{$unit_id}')";
+					}
+				}
+			}
+
+			if (is_numeric($member['course_weighted']))
+			{
+				if (array_key_exists($member_id.'.course.'.$course_id, $existing_grades))
+				{
+					$key = $member_id.'.course.'.$course_id;
+
+					if ((is_null($existing_grades[$key]['score']) && !is_null($member['course_weighted'])) || $existing_grades[$key]['score'] != $member['course_weighted'])
+					{
+						$updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$member['course_weighted']}' WHERE `id` = '".$existing_grades[$key]['id']."'";
+					}
 				}
 				else
 				{
-					$values[] = "('$member_id', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '$unit_id')";
+					$inserts[] = "('{$member_id}', " . $this->_db->quote($member['course_weighted']) . ", 'course', '{$course_id}')";
 				}
 			}
+			else if (is_null($member['course_weighted']))
+			{
+				if (array_key_exists($member_id.'.course.'.$course_id, $existing_grades))
+				{
+					$key = $member_id.'.course.'.$course_id;
 
-			if (is_null($member['course_weighted']))
-			{
-				$values[] = "('$member_id', NULL, 'course', '$course_id')";
-			}
-			else
-			{
-				$values[] = "('$member_id', " . $this->_db->quote($member['course_weighted']) . ", 'course', '$course_id')";
+					if (!is_null($existing_grades[$key]['score']))
+					{
+						$updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '".$existing_grades[$key]['id']."'";
+					}
+				}
+				else
+				{
+					$inserts[] = "('{$member_id}', NULL, 'course', '{$course_id}')";
+				}
 			}
 		}
 
-		if (count($values) > 0)
+		if (count($updates) > 0)
+		{
+			foreach ($updates as $update)
+			{
+				$query = $update;
+				$this->_db->setQuery($query);
+				$this->_db->query();
+			}
+		}
+
+		if (count($inserts) > 0)
 		{
 			$query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`) VALUES\n";
-			$query .= implode(",\n", $values);
-			$query .= "\nON DUPLICATE KEY UPDATE score = VALUES(score);";
+			$query .= implode(",\n", $inserts);
 
 			$this->_db->setQuery($query);
 			$this->_db->query();
