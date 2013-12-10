@@ -109,10 +109,10 @@ class ModIncrementalRegistrationController
 		{
 			return;
 		}
-		foreach (debug_backtrace() as $parent) {
-			if (isset($parent['file']) && preg_match('/error[.]php$/', $parent['file'])) {
-				return;
-			}
+		
+		// looks like an error page, don't show
+		if (JDocument::getInstance('error')->getTitle()) {
+			return;
 		}
 
 		if (isset($_POST['incremental-registration']) && isset($_POST['submit']) && $_POST['submit'] === 'opt-out') 
