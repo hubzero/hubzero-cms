@@ -282,13 +282,25 @@ class CoursesModelUnit extends CoursesModelAbstract
 					if ($v->parent == 0)
 					{
 						$list[$v->id] = new CoursesModelAssetgroup($v);
+
+						if ($this->get('section_id'))
+						{
+							$list[$v->id]->set('section_id', $this->get('section_id'));
+						}
 					}
 				}
 				foreach ($results as $c)
 				{
 					if (isset($list[$c->parent]))
 					{
-						$list[$c->parent]->children->add(new CoursesModelAssetgroup($c));
+						$ag = new CoursesModelAssetgroup($c);
+
+						if ($this->get('section_id'))
+						{
+							$ag->set('section_id', $this->get('section_id'));
+						}
+
+						$list[$c->parent]->children->add($ag);
 					}
 				}
 

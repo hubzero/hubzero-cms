@@ -293,6 +293,11 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelAsset($result);
+
+					if ($this->get('section_id'))
+					{
+						$results[$key]->set('section_id', $this->get('section_id'));
+					}
 				}
 			}
 			else
