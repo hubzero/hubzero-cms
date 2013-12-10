@@ -209,14 +209,14 @@ class plgSystemJquery extends JPlugin
 			{
 				foreach ($data['script'] as $key => $script)
 				{
-					$data['script'][$key] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*)\}\)\;/is', '', $script);
-					$data['script'][$key] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*)\}\)\;/is', '', $data['script'][$key]);
+					$data['script'][$key] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*)\}\)\;/uis', '', $script);
+					$data['script'][$key] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*)\}\)\;/uis', '', $data['script'][$key]);
 				}
 			}
 			else
 			{
-				$data['script'] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*)\}\)\;/is', '', $data['script']);
-				$data['script'] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*)\}\)\;/is', '', $data['script']);
+				$data['script'] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\s*\{(.*)\}\)\;/uis', '', $data['script']);
+				$data['script'] = preg_replace('/window\.addEvent\(\'load\', function\(\)\s*\{(.*)\}\)\;/uis', '', $data['script']);
 			}
 
 			$document->setHeadData($data);
