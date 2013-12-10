@@ -448,8 +448,8 @@ class MathRenderer
 		if ($wm->id) 
 		{
 			// Tailing 0x20s can get dropped by the database, add it back on if necessary:
-			$xhash = $wm->outputhash; //$this->_decodeBlob($wm->outputhash); //unpack('H32md5', $this->_decodeBlob($wm->outputhash) . "                ");
-			$this->hash = $xhash['md5'];
+			//$xhash = $wm->outputhash; //$this->_decodeBlob($wm->outputhash); //unpack('H32md5', $this->_decodeBlob($wm->outputhash) . "                ");
+			$this->hash = $wm->outputhash;
 
 			$this->conservativeness = $wm->conservativeness;
 			$this->html = $wm->html;
