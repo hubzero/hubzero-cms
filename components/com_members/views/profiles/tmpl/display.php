@@ -115,6 +115,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 
+	<?php if ($this->contribution_counting) 
+	{
+	?>
 	<div class="grid">
 		<div class="col span3">
 			<h2>Top contributors</h2>
@@ -133,11 +136,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		'authorized' => false
 	);
 
-	if ($this->contribution_counting == false)
-	{
-		unset($filters['sortby']);
-	}
-	
 	if ($rows = $c->getRecords($filters, false))
 	{
 		ximport('Hubzero_User_Profile_Helper');
@@ -210,5 +208,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
-
+<?php } // div class grid ?>
 </div><!-- / .section -->

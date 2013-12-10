@@ -139,11 +139,13 @@ $juser =& JFactory::getUser();
 							<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_ORG'); ?>
 						</a>
 					</li>
+					<?php if ($this->contribution_counting) { ?>
 					<li>
 						<a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=contributions'); ?>" title="<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_BY_CONTRIBUTIONS'); ?>">
 							<?php echo JText::_('COM_MEMBERS_BROWSE_SORT_CONTRIBUTIONS'); ?>
 						</a>
 					</li>
+					<?php } ?>
 				</ul>
 				
 				<ul class="entries-menu filter-options">

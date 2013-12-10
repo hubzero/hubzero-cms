@@ -276,14 +276,24 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['index']  = JRequest::getWord('index', '');
 
+		if ($this->view->contribution_counting == false)
+		{
+			if ($this->view->filters['show'] = 'contributors')
+			{
+				$this->view->filters['show'] = 'members';
+			}
+
+			if ($this->view->filters['sortby'] == 'contributions')
+			{
+				$this->view->filters['sortby'] = 'name';
+			}
+		}
+
 		// Build the page title
 		if ($this->view->filters['show'] == 'contributors') 
 		{
 			$this->view->title = JText::_('CONTRIBUTORS');
-			if ($this->view->contribution_counting)
-			{
-				$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'contributions'));
-			}
+			$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'contributions'));
 		} 
 		else 
 		{
@@ -294,14 +304,6 @@ class MembersControllerProfiles extends Hubzero_Controller
 		if (!in_array($this->view->filters['sortby'], array('name', 'organization', 'contributions')))
 		{
 			$this->view->filters['sortby'] = ($this->view->filters['show'] == 'contributors') ? 'contributions' : 'name';
-		}
-
-		if ($contribution_count == false)
-		{
-			if ($this->view->filters['sortby'] == 'contributors')
-			{
-				$this->view->filters['sortby'] = 'name';
-			}
 		}
 
 		// Set the page title

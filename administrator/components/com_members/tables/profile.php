@@ -336,7 +336,7 @@ class MembersProfile extends JTable
 
 		// Trigger the functions that return the areas we'll be using
 		$select = "";
-		if (!isset($filters['count'])) 
+		if (!isset($filters['count']) && isset($filters['contributions'])) 
 		{
 			$bits = $dispatcher->trigger('onMembersContributionsCount', array($filters['authorized']));
 			$select .= ', COALESCE(cv.total_count, 0) AS rcount, COALESCE(cv.resource_count, 0) AS resource_count, COALESCE(cv.wiki_count, 0) AS wiki_count ';
@@ -418,7 +418,7 @@ class MembersProfile extends JTable
 		}
 
 		$query  = $select."FROM $this->_tbl AS m ";
-		if (!isset($filters['count']) || !$filters['count'] || isset($filters['contributions']))
+		if ((!isset($filters['count']) || !$filters['count']) && isset($filters['contributions']))
 		{
 			$query .= ($filters['show'] == 'contributors' ? 'INNER' : 'LEFT') . ' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
 		}
