@@ -47,7 +47,7 @@ HUB.Plugins.CoursesProgress = {
 			average_time      = 0,
 			course_id         = 0,
 			members_cnt       = false,
-			limit             = 10,
+			limit             = 50,
 			start             = 0,
 			fetchProgressData = function ( ) {
 				if (members_cnt !== false) {
@@ -92,14 +92,14 @@ HUB.Plugins.CoursesProgress = {
 								$('.fetching-rows-bar').stop(false, false).animate({'width':(((start+data.members.length)/members_cnt)*100)+'%'}, end_time);
 								start += limit;
 
-								if (start <= members_cnt) {
+								if (start < members_cnt) {
 									fetchProgressData();
 								} else {
 									setTimeout(function() {
 										$('.fetching-rows-inner').fadeOut(function ( ) {
 											$(this).hide();
 										});
-									}, 1000);
+									}, end_time + 1000);
 
 									HUB.Plugins.CoursesProgress.afterProgressDataLoaded();
 								}

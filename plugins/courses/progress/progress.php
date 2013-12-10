@@ -315,7 +315,8 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		// Refresh the grades
-		$this->course->offering()->gradebook()->refresh();
+		// @FIXME: commenting this out for the time being...no need to refresh grades on both the progress and gradebook views
+		//$this->course->offering()->gradebook()->refresh();
 
 		// Get the grades
 		$grades = $this->course->offering()->gradebook()->grades();
