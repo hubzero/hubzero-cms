@@ -689,25 +689,19 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			else
 			{
 				jimport('joomla.filesystem.folder');
-				$path = DS . 'site/logs';
-				if (!is_dir( JPATH_ROOT . $path )) 
+				$path = DS . 'site/protected';
+				if (is_dir( JPATH_ROOT . $path )) 
 				{
-					if (!JFolder::create( JPATH_ROOT . $path, 0777 )) 
-					{
-						$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-						return;
-					}
+					$log  = 'By: ' . $this->juser->get('name') . ' (' . $this->juser->get('username') . ') ' . "\n";
+					$log .= 'Tool: ' . $hztv->toolname . ' (id #' . $id . ')' . ' - ' . $hztv->instance . "\n";
+					$log .= 'Time : ' . date('c') . "\n";
+					$log .= 'Reason for closed source: ' . "\n";
+					$log .= $reason . "\n";
+					$log .= '-----------------------------------------' . "\n";
+
+					// Log reason for closed source
+					$this->_writeToFile($log, JPATH_ROOT . $path . DS . 'closed_source_reasons.txt', true);	
 				}
-				
-				$log  = 'By: ' . $this->juser->get('name') . ' (' . $this->juser->get('username') . ') ' . "\n";
-				$log .= 'Tool: ' . $hztv->toolname . ' (id #' . $id . ')' . ' - ' . $hztv->instance . "\n";
-				$log .= 'Time : ' . date('c') . "\n";
-				$log .= 'Reason for closed source: ' . "\n";
-				$log .= $reason . "\n";
-				$log .= '-----------------------------------------' . "\n";
-				
-				// Log reason for closed source
-				$this->_writeToFile($log, JPATH_ROOT . $path . DS . 'closed_source_reasons.txt', true);
 				
 				// code for saving license
 				$hztv->license = NULL;
