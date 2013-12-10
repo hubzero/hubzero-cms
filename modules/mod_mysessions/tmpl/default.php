@@ -164,6 +164,7 @@ defined('_JEXEC') or die('Restricted access');
 				$total 		= $diskUsage['softspace'] / 1024000000;
 				$val 		= ($diskUsage['softspace'] > 0) ? bcdiv($diskUsage['space'], $diskUsage['softspace']) : 0;
 				$percent 	= round( $val * 100 );
+				$percent 	= ($percent > 100) ? 100: $percent;
 				
 				// Amount can only have a max of 100 due to some display restrictions
 				$amount  	= ($percent > 100) ? 100 : $percent;
