@@ -88,7 +88,7 @@ class JRouterSite extends JRouter
 		}
 
 		/* START: HUBzero Extensions Follow to force registration and email confirmation */
-		$juser = &JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (!$juser->get('guest'))
 		{
