@@ -470,6 +470,13 @@ class CoursesTableGradeBook extends JTable
 			{
 				if (is_numeric($unit['unit_weighted']))
 				{
+					// Check for empty unit_id
+					// This is a hack for storing "extra" grades added via the gradebook - they come in with unit_id of NULL
+					if (empty($unit_id))
+					{
+						$unit_id = 0;
+					}
+
 					if (array_key_exists($member_id.'.unit.'.$unit_id, $existing_grades))
 					{
 						$key = $member_id.'.unit.'.$unit_id;
