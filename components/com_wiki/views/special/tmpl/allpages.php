@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('All Pages'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:NewPages'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 $dir = strtoupper(JRequest::getVar('dir', 'ASC'));
 if (!in_array($dir, array('ASC', 'DESC')))
@@ -46,7 +46,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 	$dir = 'ASC';
 }
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $where = '';
 $namespace = urldecode(JRequest::getVar('namespace', ''));

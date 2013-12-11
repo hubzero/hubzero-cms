@@ -47,7 +47,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	{
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->view->filters = array();
 		$this->view->filters['scope']     = trim($app->getUserStateFromRequest(

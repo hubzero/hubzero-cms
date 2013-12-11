@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 }*/
 
 JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 $tf = $dispatcher->trigger(
 	'onGetMultiEntry', 
 	array(
@@ -123,7 +123,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 				<?php
 				ximport('Hubzero_Wiki_Editor');
-				$editor =& Hubzero_Wiki_Editor::getInstance();
+				$editor = Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('entry[content]', 'entrycontent', $this->escape(stripslashes($this->entry->get('content'))), '', '50', '40');
 				?>
 			</label>

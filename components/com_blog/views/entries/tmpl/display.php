@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $first = $this->model->entries('first');
 ?>
@@ -46,7 +46,7 @@ $first = $this->model->entries('first');
 	$feed = JRoute::_($path);
 	if (substr($feed, 0, 4) != 'http') 
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		
 		$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);

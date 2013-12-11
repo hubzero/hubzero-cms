@@ -91,9 +91,11 @@ if (!$mode || ($mode && $mode != 'static')) {
 	$view->sub    = $this->sub;
 	$view->display();
 
+	$db = JFactory::getDBO();
+
 	$first = $this->page; //->getRevision(1);
 
-	$rev = new WikiPageRevision(JFactory::getDBO());
+	$rev = new WikiPageRevision($db);
 	$revisions = $rev->getRecords(
 		array(
 			'pageid'   => $this->page->id, 
@@ -108,7 +110,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 		$first = $revisions[0];
 	}
 
-	$obj = new WikiTags(JFactory::getDBO());
+	$obj = new WikiTags($db);
 	$tags = $obj->get_tag_cloud(0, $this->config->get('admin', 0), $this->page->id);
 ?>
 <div class="main section">

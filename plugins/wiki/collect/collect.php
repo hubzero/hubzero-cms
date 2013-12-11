@@ -81,7 +81,7 @@ class plgWikiCollect extends JPlugin
 		);
 
 		// Build the HTML meant for the "about" tab's metadata overview
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
 			// Push some scripts to the template

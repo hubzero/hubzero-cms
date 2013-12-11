@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile');
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $first = $this->model->entries('first');
 

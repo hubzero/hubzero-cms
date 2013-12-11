@@ -92,7 +92,7 @@ class JRouterSite extends JRouter
 
 		if (!$juser->get('guest'))
 		{
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$registration_incomplete = $session->get('registration.incomplete');
 
 			if ($registration_incomplete)
@@ -165,7 +165,7 @@ class JRouterSite extends JRouter
 				}
 			}
 
-			$xprofile = &Hubzero_Factory::getProfile();
+			$xprofile = Hubzero_Factory::getProfile();
 
 			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{
@@ -509,7 +509,8 @@ class JRouterSite extends JRouter
 
 		/* START: HUBzero Extension to parse com_content component specially */
 		if (empty($vars['option'])) {
-			$vars = $this->_parseContentRoute(explode('/',ltrim($route,"/")));
+			$vits = explode('/',ltrim($route,"/"));
+			$vars = $this->_parseContentRoute($bits);
 			if (!empty($vars['option'])) {
 				$route = false;
 			}
@@ -935,9 +936,9 @@ class JRouterSite extends JRouter
 	{
 		$vars  = array();
 		$view  = 'article';
-		$menu  =& JFactory::getApplication()->getMenu(true);
-		$item  =& $menu->getActive();
-		$db    =& JFactory::getDBO();
+		$menu  = JFactory::getApplication()->getMenu(true);
+		$item  = $menu->getActive();
+		$db    = JFactory::getDBO();
 		$count = count($segments);
 
 		// Item is numeric, assume user knows the article ID, and is trying to access directly

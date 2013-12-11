@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Search'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:Search'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 /*
 $sort = strtolower(JRequest::getVar('sort', 'created'));
@@ -56,7 +56,7 @@ $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 $term  = JRequest::getVar('q', '');
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $weight = '(match(wp.title) against (' . $database->Quote($term) . ') + match(wv.pagetext) against (' . $database->Quote($term) . '))';
 

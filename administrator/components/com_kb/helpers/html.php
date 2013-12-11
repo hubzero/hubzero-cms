@@ -44,7 +44,7 @@ class KbHelperHtml
 	 * @param      string $name       Field name
 	 * @return     string HTML <select>
 	 */
-	public function sectionSelect($categories, $val, $name)
+	public static function sectionSelect($categories, $val, $name)
 	{
 		$out  = '<select name="' . $name . '">';
 		$out .= '<option value="">' . JText::_('COM_KB_SELECT_CATEGORY') . '</option>';

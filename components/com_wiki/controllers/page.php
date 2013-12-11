@@ -166,7 +166,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->view->title = $this->page->getTitle();
 
 		// Set the page's <title> tag
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		if ($this->_sub)
 		{
 			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
@@ -177,7 +177,7 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -325,14 +325,14 @@ class WikiControllerPage extends Hubzero_Controller
 		);
 
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 
 		// Parse the text
 		if (intval($this->config->get('cache', 1)))
 		{
 			// Caching
 			// Default time is 15 minutes
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->config->get('cache_time', 15)));
 
@@ -360,7 +360,7 @@ class WikiControllerPage extends Hubzero_Controller
 
 		// Handle display events
 		JPluginHelper::importPlugin('wiki');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		$this->page->event = new stdClass();
 
@@ -560,7 +560,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->_getScripts('assets/js/wiki', 'com_wiki');
 		if (JPluginHelper::isEnabled('system', 'jquery')) 
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript(rtrim(JURI::getInstance()->base(true), '/') . "/media/system/js/jquery.fileuploader.js");
 		}
 
@@ -570,7 +570,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->view->title = ($this->view->title) ? $this->view->title : JText::_('New Page');
 
 		// Set the page's <title> tag
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		if ($this->_sub)
 		{
 			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
@@ -581,7 +581,7 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
@@ -619,7 +619,7 @@ class WikiControllerPage extends Hubzero_Controller
 				'domain'   => $this->_group
 			);
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 
 			$this->revision->pagehtml = $p->parse($this->revision->pagetext, $wikiconfig, true, true);
 		}
@@ -904,7 +904,7 @@ class WikiControllerPage extends Hubzero_Controller
 				'loglinks' => true
 			);
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 			$this->revision->pagehtml = $p->parse($this->revision->pagetext, $wikiconfig);
 
 			// Parse attachments
@@ -1080,11 +1080,11 @@ class WikiControllerPage extends Hubzero_Controller
 				$this->view->title = ($this->page->title) ? $this->page->title : $this->splitPagename($this->page->pagename);
 
 				// Set the page's <title> tag
-				$document =& JFactory::getDocument();
+				$document = JFactory::getDocument();
 				$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
 
 				// Set the pathway
-				$pathway =& JFactory::getApplication()->getPathway();
+				$pathway = JFactory::getApplication()->getPathway();
 				if (count($pathway->getPathWay()) <= 0) 
 				{
 					$pathway->addItem(
@@ -1167,11 +1167,11 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->view->title = $this->page->getTitle();
 
 		// Set the page's <title> tag
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->page->title . ': ' . JText::_('RENAME'));
 
 		// Set the pathway
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(

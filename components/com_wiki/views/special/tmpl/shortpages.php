@@ -31,16 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Short Pages'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:ShortPages'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);

@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 $page = WikiPage::getInstance(JRequest::getVar('page'));
 $revision = $page->getRevision(JRequest::getInt('version', 0));
@@ -67,7 +67,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $now = JFactory::getDate();
 
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 $permalink = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option='.$this->option.'&scope='.$page->scope.'&pagename=' . $page->pagename . '&version=' . $revision->version), DS);
 ?>
 <div class="admon-note">

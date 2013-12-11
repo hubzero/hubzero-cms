@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('File List'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FileList'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 $sort = strtolower(JRequest::getVar('sort', 'created'));
 if (!in_array($sort, array('created', 'filename', 'description', 'created_by')))
@@ -54,7 +54,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $where = " AND (wp.group_cn='' OR wp.group_cn IS NULL) ";
 if ($this->sub)

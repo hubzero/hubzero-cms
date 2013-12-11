@@ -291,7 +291,7 @@ class KbTableArticle extends JTable
 	 * 
 	 * @return     boolean
 	 */
-	public function store()
+	public function store($updateNulls = false)
 	{
 		if (empty($this->modified)) 
 		{
@@ -299,7 +299,7 @@ class KbTableArticle extends JTable
 		}
 		$row->version++;
 
-		return parent::store();
+		return parent::store($updateNulls);
 	}
 
 	/**

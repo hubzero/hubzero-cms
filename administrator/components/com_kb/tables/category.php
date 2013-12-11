@@ -201,7 +201,7 @@ class KbTableCategory extends JTable
 	 * @param      string $oid Alias
 	 * @return     boolean True upon success, False if errors
 	 */
-	public function load($oid=NULL)
+	public function load($oid=NULL, $reset = true)
 	{
 		if (empty($oid)) 
 		{

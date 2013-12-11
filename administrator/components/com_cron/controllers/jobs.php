@@ -173,7 +173,7 @@ class CronControllerJobs extends Hubzero_Controller
 
 		$e = array();
 		JPluginHelper::importPlugin('cron');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$events = $dispatcher->trigger('onCronEvents');
 		if ($events)
 		{

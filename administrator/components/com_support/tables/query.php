@@ -294,7 +294,7 @@ class SupportQuery extends JTable
 		}
 		if (!$user_id)
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			$user_id = $juser->get('id');
 		}
 		$filters = array(
@@ -332,7 +332,7 @@ class SupportQuery extends JTable
 		{
 			$condition = json_decode($condition);
 		}
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		$op = ' ' . strtoupper($condition->operator) . ' ';
 

@@ -58,7 +58,7 @@ $browser = new Hubzero_Browser();
 $b = $browser->getBrowser();
 $v = $browser->getBrowserMajorVersion();
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->

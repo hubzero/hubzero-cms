@@ -31,16 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Fix Version'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixVersion'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $query = "SELECT wv.pageid, wv.id AS versionid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.version, wv.created_by, wv.created  
 			FROM #__wiki_version AS wv 

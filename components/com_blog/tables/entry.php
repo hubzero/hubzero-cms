@@ -395,7 +395,7 @@ class BlogTableEntry extends JTable
 	private function _buildQuery($filters)
 	{
 		$nullDate = $this->_db->getNullDate();
-		$date =& JFactory::getDate();
+		$date = JFactory::getDate();
 		$now = $date->toSql();
 
 		$query  = "FROM $this->_tbl AS m,

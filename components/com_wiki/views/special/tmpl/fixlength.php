@@ -31,16 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Fix Length'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixLength'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $query = "SELECT wv.id, wv.pageid, wv.pagetext FROM #__wiki_version AS wv WHERE wv.length = '0'";
 

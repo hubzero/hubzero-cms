@@ -1,12 +1,12 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-$config =& JFactory::getConfig();
-$juser  =& JFactory::getUser();
+$config = JFactory::getConfig();
+$juser  = JFactory::getUser();
 
 $this->template = 'hubbasic2013';
 
-$lang =& JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load('tpl_' . $this->template);
 
 $browser = new Hubzero_Browser();

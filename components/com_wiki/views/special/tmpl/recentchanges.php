@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('New Pages'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:RecentChanges'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 $dir = strtoupper(JRequest::getVar('dir', 'DESC'));
 if (!in_array($dir, array('ASC', 'DESC')))
@@ -49,7 +49,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $query = "SELECT COUNT(*) 
 			FROM #__wiki_version AS wv 

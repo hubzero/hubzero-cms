@@ -41,7 +41,9 @@ class WikiHelperPage
 	 */
 	public static function getPage($config)
 	{
-		$tbl = new WikiPage(JFactory::getDBO());
+		$db = JFactory::getDBO();
+
+		$tbl = new WikiPage($db);
 		$pagename = trim(JRequest::getVar('pagename', '', 'default', 'none', 2));
 		if (substr(strtolower($pagename), 0, strlen('image:')) != 'image:' 
 		 && substr(strtolower($pagename), 0, strlen('file:')) != 'file:')
@@ -74,7 +76,7 @@ class WikiHelperPage
 
 		// Load the page
 		//$page = WikiPage::getInstance($pagename, $scope);
-		$page = new WikiPage(JFactory::getDBO());
+		$page = new WikiPage($db);
 		$page->load($pagename, $scope);
 
 		/*if (in_array(strtolower($page->getNamespace()), array('special'))) 
@@ -119,7 +121,7 @@ class WikiHelperPage
 		$config->set('access-comment-delete', false);
 		$config->set('access-comment-edit', false);
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// Check if they are logged in
 		if ($juser->get('guest')) 

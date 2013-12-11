@@ -140,16 +140,16 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 $i = 0;
-$config	=& JFactory::getConfig();
-$now	=& JFactory::getDate();
-$db		=& JFactory::getDBO();
+$config	= JFactory::getConfig();
+$now	= JFactory::getDate();
+$db		= JFactory::getDBO();
 
 $nullDate = $db->getNullDate();
 
 foreach ($this->rows as $row)
 {
-	$publish_up =& JFactory::getDate($row->get('publish_up'));
-	$publish_down =& JFactory::getDate($row->get('publish_down'));
+	$publish_up = JFactory::getDate($row->get('publish_up'));
+	$publish_down = JFactory::getDate($row->get('publish_down'));
 	$publish_up->setOffset($config->getValue('config.offset'));
 	$publish_down->setOffset($config->getValue('config.offset'));
 

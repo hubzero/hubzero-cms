@@ -39,7 +39,7 @@ $browser = new Hubzero_Browser();
 $b = $browser->getBrowser();
 $v = $browser->getBrowserMajorVersion();
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
 $jv = 'j15';
 if (version_compare(JVERSION, '1.6', 'ge'))

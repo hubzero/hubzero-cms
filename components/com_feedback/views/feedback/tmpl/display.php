@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>

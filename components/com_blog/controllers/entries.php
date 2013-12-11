@@ -68,7 +68,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		$title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 
@@ -143,7 +143,7 @@ class BlogControllerEntries extends Hubzero_Controller
 				$this->_title .= ': ' . stripslashes($this->view->row->get('title'));
 			}
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -569,7 +569,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
@@ -791,7 +791,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
@@ -818,7 +818,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		$month = JRequest::getInt('month', 0);
 
 		// Build some basic RSS document information
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
 		$doc->title .= ($year) ? ': ' . $year : '';
 		$doc->title .= ($month) ? ': ' . sprintf("%02d", $month) : '';

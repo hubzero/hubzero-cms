@@ -31,19 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway =& JFactory::getApplication()->getPathway();
+$pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
 	JText::_('Fix Links'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixLinks'
 );
 
-$jconfig =& JFactory::getConfig();
-$juser =& JFactory::getUser();
+$jconfig = JFactory::getConfig();
+$juser = JFactory::getUser();
 
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 
-$database =& JFactory::getDBO();
+$database = JFactory::getDBO();
 
 $query = "SELECT COUNT(*)
 			FROM #__wiki_page AS wp 
@@ -98,7 +98,7 @@ $pageNav = new JPagination(
 if ($rows) 
 {
 	ximport('Hubzero_Wiki_Parser');
-	$p =& Hubzero_Wiki_Parser::getInstance();
+	$p = Hubzero_Wiki_Parser::getInstance();
 
 	foreach ($rows as $row)
 	{

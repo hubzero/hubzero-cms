@@ -94,7 +94,7 @@ class WikiMacro
 	 */
 	public function __construct($config=array())
 	{
-		$this->_db =& JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 
 		$this->args = '';
 

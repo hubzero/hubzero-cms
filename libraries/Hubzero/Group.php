@@ -1095,7 +1095,7 @@ class Hubzero_Group
 	 */
 	static public function exists($group, $check_system = false)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		if (empty($group))
 		{
@@ -1154,7 +1154,7 @@ class Hubzero_Group
 	 */
 	static function find($filters = array())
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// Type 0 - System Group
 		// Type 1 - HUB Group

@@ -631,7 +631,7 @@ class JRegistry
 	 * @note    Load no longer supported.
 	 * @since   11.1
 	 */
-	public function loadSetupFile()
+	public function loadSetupFile($path)
 	{
 		// @codeCoverageIgnoreStart
 		// Deprecation warning.
