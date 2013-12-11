@@ -137,7 +137,7 @@ class plgHubzeroAutocompleter extends JPlugin
 			$scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
 			//$scripts .= '<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="';
 
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$templatecss = DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
 			$plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css';
 			if (file_exists(JPATH_SITE . $templatecss)) 
