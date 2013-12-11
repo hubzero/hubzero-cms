@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 					<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($row->link()); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
 					</a>
-				<?php if ($row->children('count') > 0 && $this->get('catid') == $row->get('id')) { ?>
+				<?php if ($row->children('count') > 0 && $this->catid == $row->get('id')) { ?>
 					<ul class="categories">
 					<?php foreach ($row->children() as $cat) { ?>
 						<li>

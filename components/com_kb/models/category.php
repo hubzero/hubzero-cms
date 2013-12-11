@@ -267,11 +267,11 @@ class KbModelCategory extends \Hubzero\Model
 	 */
 	public function parent()
 	{
-		if (!$this->_section instanceof KbModelCategory)
+		if (!$this->_parent instanceof KbModelCategory)
 		{
-			$this->_section = KbModelCategory::getInstance($this->get('section', 0));
+			$this->_parent = KbModelCategory::getInstance($this->get('section', 0));
 		}
-		return $this->_section;
+		return $this->_parent;
 	}
 
 	/**
@@ -284,7 +284,15 @@ class KbModelCategory extends \Hubzero\Model
 	public function link($type='')
 	{
 		$link  = $this->_base;
-		$link .= '&section=' . $this->get('alias');
+		if ($this->get('section'))
+		{
+			$link .= '&section=' . $this->parent()->get('alias');
+			$link .= '&category=' . $this->get('alias');
+		}
+		else
+		{
+			$link .= '&section=' . $this->get('alias');
+		}
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))

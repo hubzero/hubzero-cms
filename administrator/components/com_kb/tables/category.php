@@ -110,6 +110,8 @@ class KbTableCategory extends JTable
 			return false;
 		}
 
+		$this->access = 0;
+
 		if (!$this->alias)
 		{
 			$this->alias = str_replace(' ', '-', strtolower($this->title));
@@ -274,7 +276,14 @@ class KbTableCategory extends JTable
 		}
 		if (isset($filters['empty']) && !$filters['empty'])
 		{
-			$where[] = "(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id) > 0";
+			if (isset($filters['section']) && $filters['section'] > 0) 
+			{
+				$where[] = "(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id) > 0";
+			}
+			else
+			{
+				$where[] = "(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id) > 0";
+			}
 		}
 
 		if (count($where) > 0)
@@ -345,7 +354,7 @@ class KbTableCategory extends JTable
 		}
 		else
 		{
-			if (isset($filters['section']) && $filters['section'] >= 0) 
+			if (isset($filters['section']) && $filters['section'] > 0) 
 			{
 				$query  = "SELECT a.*, g.`title` AS groupname, 
 					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id $access) AS articles, 
