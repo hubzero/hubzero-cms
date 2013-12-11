@@ -28,7 +28,7 @@ class modPoll extends Hubzero_Module
 	 */
 	public function getPoll($id)
 	{
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$result	= null;
 
 		if ($id)
@@ -65,7 +65,7 @@ class modPoll extends Hubzero_Module
 	 */
 	public function getPollOptions($id)
 	{
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		$query = 'SELECT id, text' .
 			' FROM #__poll_data' .
@@ -94,7 +94,7 @@ class modPoll extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
@@ -114,7 +114,7 @@ class modPoll extends Hubzero_Module
 	{
 		$tabclass_arr = array('sectiontableentry2', 'sectiontableentry1');
 
-		$menu 	= &JSite::getMenu();
+		$menu 	= JFactory::getApplication()->getMenu();
 		$items	= $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 

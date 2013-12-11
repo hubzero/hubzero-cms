@@ -48,7 +48,7 @@ class modTopTags extends Hubzero_Module
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Get some initial parameters
 		$numtags = $this->params->get('numtags', 25);
@@ -75,7 +75,7 @@ class modTopTags extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));

@@ -80,7 +80,7 @@ class modEventsLatest extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
@@ -186,14 +186,14 @@ class modEventsLatest extends Hubzero_Module
 	 */
 	private function _displayLatestEvents()
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Get the user GID (used in some queries)
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		//$gid = $juser->get('gid');
 
 		// Get the site language setting
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 
 		// Get module parameters
 		$mode              = $this->params->get('mode')                ? abs(intval($this->params->get('mode'))) : 4;

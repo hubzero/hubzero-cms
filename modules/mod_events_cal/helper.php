@@ -53,7 +53,7 @@ class modEventsCalendar extends Hubzero_Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache =& JFactory::getCache('callback');
+			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
@@ -71,7 +71,7 @@ class modEventsCalendar extends Hubzero_Module
 	 */
 	public function run()
 	{
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 
 		// Check the events component
 		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php'))
@@ -208,9 +208,9 @@ class modEventsCalendar extends Hubzero_Module
 	 */
 	private function _calendar($timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent=false)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		//$gid = $juser->get('gid');
 
 		$cal_year  = date("Y", $time);
