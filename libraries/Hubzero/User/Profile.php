@@ -388,11 +388,11 @@ class Hubzero_User_Profile extends JObject
 	 * @param string $msg Parameter description (if any) ...
 	 * @return void
 	 */
-	public function setError($msg)
+	public function setError($error, $key = null)
 	{
 		$bt = debug_backtrace();
 		
-		$error = "Hubzero_User_Profile::" . $bt[1]['function'] . "():" . $msg;
+		$error = "Hubzero_User_Profile::" . $bt[1]['function'] . "():" . $error;
 		
 		array_push($this->_errors, $error);
 	}
@@ -1080,25 +1080,25 @@ class Hubzero_User_Profile extends JObject
 	}
 
 	/**
-	 * Short description for 'get'
-	 * Long description (if any) ...
+	 * Get a property's value
 	 *
-	 * @param mixed $property Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param  string $property Name of the property to retrieve
+	 * @param  mixed  $value    Default value
+	 * @return mixed
 	 */
-	public function get($property)
+	public function get($property, $default = null)
 	{
 		if ($property == 'password')
 		{
 			return $this->_password;
 		}
-		
+
 		if ('_' == substr($property, 0, 1))
 		{
 			$this->setError("Can't access private properties");
 			return false;
 		}
-		
+
 		if (!property_exists('Hubzero_User_Profile', $property))
 		{
 			if (property_exists('Hubzero_User_Profile', '_auxs_' . $property))
@@ -1115,19 +1115,19 @@ class Hubzero_User_Profile extends JObject
 				return false;
 			}
 		}
-		
+
 		if ($this->$property === false)
 		{
 			$db = JFactory::getDBO();
-			
+
 			$property_name = substr($property, 6);
-			
+
 			$query = "SELECT $property_name FROM #__xprofiles AS x,#__xprofiles_$property_name AS xp WHERE " . "x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->Quote($this->get('uidNumber')) . " ORDER BY $property_name ASC;";
-			
+
 			$db->setQuery($query);
-			
+
 			$result = $db->loadResultArray();
-			
+
 			if ($result === false)
 			{
 				$this->setError("Error retrieving data from xprofiles $property table: " . $db->getErrorMsg());
@@ -1155,7 +1155,7 @@ class Hubzero_User_Profile extends JObject
 				}
 			}
 		}
-		
+
 		return $this->$property;
 	}
 
@@ -1167,7 +1167,7 @@ class Hubzero_User_Profile extends JObject
 	 * @param mixed $value Parameter description (if any) ...
 	 * @return boolean Return description (if any) ...
 	 */
-	public function set($property, $value)
+	public function set($property, $value = null)
 	{
 		if ($property == 'password')
 		{

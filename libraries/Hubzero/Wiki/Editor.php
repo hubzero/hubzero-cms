@@ -134,7 +134,7 @@ class Hubzero_Wiki_Editor extends JObservable
 
 		if ($return) 
 		{
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addCustomTag($return);
 		}
 	}

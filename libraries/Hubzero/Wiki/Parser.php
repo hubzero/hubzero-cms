@@ -63,7 +63,7 @@ class Hubzero_Wiki_Parser extends JObservable
 	{
 		if (!$parser) 
 		{
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
 				$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikiparser%' ORDER BY published DESC LIMIT 1");
@@ -200,9 +200,10 @@ class Hubzero_Wiki_Parser extends JObservable
 		}
 
 		jimport('joomla.filesystem.file');
+		$input = new JFilterInput();
 
 		// Build the path to the needed parser plugin
-		$name = JFilterInput::clean($this->_name, 'cmd');
+		$name = $input->clean($this->_name, 'cmd');
 		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . '.php';
 
 		if (!JFile::exists($path)) 
@@ -215,7 +216,7 @@ class Hubzero_Wiki_Parser extends JObservable
 		require_once $path;
 
 		// Get the plugin
-		$plugin =& JPluginHelper::getPlugin('hubzero', $this->_name);
+		$plugin = JPluginHelper::getPlugin('hubzero', $this->_name);
 		if (is_string($plugin->params))
 		{
 			$paramsClass = 'JParameter';

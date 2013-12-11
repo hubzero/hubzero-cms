@@ -78,7 +78,7 @@ class Hubzero_View_Helper_Html
 	 * @param      string &$text Text to clean
 	 * @return     string
 	 */
-	public static function purifyText(&$text)
+	public static function purifyText($text)
 	{
 		$text = stripslashes($text);
 		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);

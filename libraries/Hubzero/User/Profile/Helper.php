@@ -48,9 +48,9 @@ class Hubzero_User_Profile_Helper
 	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function iterate_profiles($func)
+	public static function iterate_profiles($func)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = "SELECT uidNumber FROM #__xprofiles;";
 
@@ -78,12 +78,12 @@ class Hubzero_User_Profile_Helper
 	 * @param      unknown $email Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function find_by_email($email)
+	public static function find_by_email($email)
 	{
 		if (empty($email))
 			return false;
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = "SELECT username FROM #__xprofiles WHERE email=" . $db->Quote($email);
 
@@ -188,7 +188,7 @@ class Hubzero_User_Profile_Helper
 	 * @param      integer $someid Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function niceidformat($someid)
+	public static function niceidformat($someid)
 	{
 		$prfx = '';
 		if (substr($someid, 0, 1) == '-')
