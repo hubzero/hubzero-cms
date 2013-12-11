@@ -132,7 +132,7 @@ class AnswersTableQuestion extends JTable
 		}
 
 		// Updating entry
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$this->created    = $this->created    ? $this->created    : JFactory::getDate()->toSql();
 		$this->created_by = $this->created_by ? $this->created_by : $juser->get('username');
 
@@ -150,7 +150,7 @@ class AnswersTableQuestion extends JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		// build body of query
 		$query  = "";

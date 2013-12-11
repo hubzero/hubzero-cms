@@ -156,7 +156,7 @@ class AnswersTableResponse extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 		$ab = new ReportAbuse($this->_db);

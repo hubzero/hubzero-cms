@@ -148,7 +148,7 @@ class AnswersModelAbstract extends \Hubzero\Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config =& JComponentHelper::getParams('com_answers');
+			$this->_config = JComponentHelper::getParams('com_answers');
 		}
 		if ($key)
 		{
