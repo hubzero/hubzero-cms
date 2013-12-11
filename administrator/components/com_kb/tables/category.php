@@ -345,9 +345,18 @@ class KbTableCategory extends JTable
 		}
 		else
 		{
-			$query  = "SELECT a.*, g.`title` AS groupname, 
+			if (isset($filters['section']) && $filters['section'] >= 0) 
+			{
+				$query  = "SELECT a.*, g.`title` AS groupname, 
+					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id $access) AS articles, 
+					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
+			}
+			else
+			{
+				$query  = "SELECT a.*, g.`title` AS groupname, 
 					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles, 
 					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
+			}
 		}
 
 		$query .= $this->_buildQuery($filters);
