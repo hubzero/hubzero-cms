@@ -133,7 +133,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->author)); ?>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, JText::_('COM_STORE_DATE_FORMAT_HZ1')); ?></time>
+					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
