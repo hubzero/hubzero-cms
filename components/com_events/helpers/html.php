@@ -42,7 +42,7 @@ class EventsHtml
 	 * @param      array $matches Strings matching URL pattern
 	 * @return     string
 	 */
-	public function autolink($matches)
+	public static function autolink($matches)
 	{
 		$href = $matches[0];
 
@@ -82,7 +82,7 @@ class EventsHtml
 	 * @param      string $email Email address
 	 * @return     string 
 	 */
-	public function obfuscate($email)
+	public static function obfuscate($email)
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
@@ -107,7 +107,7 @@ class EventsHtml
 	 * @param      array $selected Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function buildRadioOption($arr, $tag_name, $tag_attribs, $key, $text, $selected)
+	public static function buildRadioOption($arr, $tag_name, $tag_attribs, $key, $text, $selected)
 	{
 		$html = '';
 		for ($i=0, $n=count($arr); $i < $n; $i++)
@@ -147,7 +147,7 @@ class EventsHtml
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function buildReccurDaySelect($reccurday, $tag_name, $args)
+	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array(
 			'<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
@@ -175,7 +175,7 @@ class EventsHtml
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function buildMonthSelect($month, $args)
+	public static function buildMonthSelect($month, $args)
 	{
 		for ($a=1; $a<13; $a++)
 		{
@@ -200,7 +200,7 @@ class EventsHtml
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     string
 	 */
-	public function buildDaySelect($year, $month, $day, $args)
+	public static function buildDaySelect($year, $month, $day, $args)
 	{
 		$nbdays = date("d", mktime(0, 0, 0, ($month + 1), 0, $year));
 		for ($a=1; $a<=$nbdays; $a++)
@@ -223,7 +223,7 @@ class EventsHtml
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     string
 	 */
-	public function buildYearSelect($year, $args)
+	public static function buildYearSelect($year, $args)
 	{
 		$y = date("Y");
 		if ($year<$y-2) 
@@ -249,7 +249,7 @@ class EventsHtml
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     string
 	 */
-	public function buildViewSelect($viewtype, $args)
+	public static function buildViewSelect($viewtype, $args)
 	{
 		$viewlist[] = JHTML::_('select.option', 'view_week', JText::_('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
 		$viewlist[] = JHTML::_('select.option', 'view_month', JText::_('EVENTS_CAL_LANG_VIEWBYMONTH'), 'value', 'text');
@@ -273,7 +273,7 @@ class EventsHtml
 	 * @param      string  $format      Parameter description (if any) ...
 	 * @return     string
 	 */
-	public function buildHourSelect($start, $end, $inc, $tag_name, $tag_attribs, $selected, $format='')
+	public static function buildHourSelect($start, $end, $inc, $tag_name, $tag_attribs, $selected, $format='')
 	{
 		$start = intval($start);
 		$end   = intval($end);
@@ -312,7 +312,7 @@ class EventsHtml
 	 * @param      string  $option Component name
 	 * @return     string
 	 */
-	public function buildCategorySelect($catid, $args, $gid, $option)
+	public static function buildCategorySelect($catid, $args, $gid, $option)
 	{
 		$database =& JFactory::getDBO();
 
@@ -343,7 +343,7 @@ class EventsHtml
 	 * @param      $args - styles for field
 	 * @return     Return - select list of time zones, with current time zone selected (if applicable)
 	 */
-	public function buildTimeZoneSelect($tzselected, $args)
+	public static function buildTimeZoneSelect($tzselected, $args)
 	{
 		$timezones = array(
 			JHTML::_('select.option', -12,   JText::_('(UTC -12:00) International Date Line West')),
@@ -397,7 +397,7 @@ class EventsHtml
 	 * @param      string $tz Time zone of which to retrieve name
 	 * @return     string Time zone name for offset given
 	 */
-	public function getTimeZoneName($tz)
+	public static function getTimeZoneName($tz)
 	{
 		$timezones = array(
 			"-12"   => "(UTC -12:00) International Date Line West",
@@ -456,7 +456,7 @@ class EventsHtml
 	 * @param      string $args           Arguments to add to element
 	 * @return     string
 	 */
-	public function buildWeekDaysCheck($reccurweekdays, $args)
+	public static function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array(
 			'<span style="color:red;">' . JText::_('EVENTS_CAL_LANG_SUNDAYSHORT') . '</span>',
@@ -501,7 +501,7 @@ class EventsHtml
 	 * @param      string $args        Arguments to add to element
 	 * @return     string 
 	 */
-	public function buildWeeksCheck($reccurweeks, $args)
+	public static function buildWeeksCheck($reccurweeks, $args)
 	{
 		$week_name = array(
 			'',
@@ -551,7 +551,7 @@ class EventsHtml
 	 * @param      integer $userid User ID
 	 * @return     string
 	 */
-    public function getUserMailtoLink($agid, $userid)
+    public static function getUserMailtoLink($agid, $userid)
 	{
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
 		if ($userid) 
@@ -594,7 +594,7 @@ class EventsHtml
 	 * @param      string $month Numerical month value (01-12)
 	 * @return     string 
 	 */
-	public function getMonthName($month)
+	public static function getMonthName($month)
 	{
 		$monthname = '';
 		switch ($month)
@@ -621,7 +621,7 @@ class EventsHtml
 	 * @param      string $daynb Numerical day value (0-6)
 	 * @return     string
 	 */
-	public function getLongDayName($daynb)
+	public static function getLongDayName($daynb)
 	{
 		$dayname = '';
 		switch ($daynb)
@@ -646,7 +646,7 @@ class EventsHtml
 	 * @param      string  $type  Format type
 	 * @return     string 
 	 */
-	public function getDateFormat($year, $month, $day, $type)
+	public static function getDateFormat($year, $month, $day, $type)
 	{
 		if (empty($year)) 
 		{
