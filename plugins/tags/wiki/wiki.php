@@ -87,8 +87,7 @@ class plgTagsWiki extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['wiki'])) 
 			{
 				return array();
 			}
@@ -100,7 +99,7 @@ class plgTagsWiki extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -182,7 +181,7 @@ class plgTagsWiki extends JPlugin
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
@@ -266,7 +265,7 @@ class plgTagsWiki extends JPlugin
 	private function _authorize()
 	{
 		// Check if they are logged in
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			return false;

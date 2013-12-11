@@ -86,8 +86,7 @@ class plgTagsBlogs extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['blogs'])) 
 			{
 				return array();
 			}
@@ -99,7 +98,7 @@ class plgTagsBlogs extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -118,7 +117,7 @@ class plgTagsBlogs extends JPlugin
 					NULL AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
 		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if ($juser->get('guest')) 
 		{
 			$e_where .= " AND e.state=1";
@@ -197,7 +196,7 @@ class plgTagsBlogs extends JPlugin
 	 */
 	public function out($row)
 	{
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		switch ($row->rcount)
 		{

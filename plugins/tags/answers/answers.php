@@ -87,8 +87,7 @@ class plgTagsAnswers extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['answers'])) 
 			{
 				return array();
 			}
@@ -100,7 +99,7 @@ class plgTagsAnswers extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -182,7 +181,7 @@ class plgTagsAnswers extends JPlugin
 		{
 			$row->href = JRoute::_($row->href);
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";

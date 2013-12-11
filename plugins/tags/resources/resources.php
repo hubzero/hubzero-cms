@@ -93,7 +93,7 @@ class plgTagsResources extends JPlugin
 		if (!is_array($categories)) 
 		{
 			// Get categories
-			$database =& JFactory::getDBO();
+			$database = JFactory::getDBO();
 			$rt = new ResourcesType($database);
 			$categories = $rt->getMajorTypes();
 			$this->_cats = $categories;
@@ -133,9 +133,8 @@ class plgTagsResources extends JPlugin
 		if (is_array($areas) && $limit) 
 		{
 			$ars = $this->onTagAreas();
-			if (!array_intersect($areas, $ars)
-			 && !array_intersect($areas, array_keys($ars))
-			 && !array_intersect($areas, array_keys($ars['resources']))) 
+			if (!isset($areas['resources']) && $areas[0] != 'resources' && (count($areas) == 1
+			 && !array_intersect($areas, array_keys($ars['resources'])))) 
 			{
 				return array();
 			}
@@ -147,7 +146,7 @@ class plgTagsResources extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -161,12 +160,12 @@ class plgTagsResources extends JPlugin
 		// Build query
 		$filters = array();
 		$filters['tags'] = $ids;
-		$filters['now'] = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+		$filters['now'] = JFactory::getDate()->toSql();
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
 
 		ximport('Hubzero_User_Helper');
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		$filters['usergroups'] = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 
 		// Get categories
@@ -285,8 +284,8 @@ class plgTagsResources extends JPlugin
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
+		$database = JFactory::getDBO();
+		$juser = JFactory::getUser();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 		$rt = new ResourcesType($database);
@@ -386,7 +385,7 @@ class plgTagsResources extends JPlugin
 	 * 
 	 * @return     void
 	 */
-	public function documents()
+	public static function documents()
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 		ximport('Hubzero_Document');
@@ -402,16 +401,16 @@ class plgTagsResources extends JPlugin
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
-	public function out($row)
+	public static function out($row)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		// Instantiate a helper object
 		$helper = new ResourcesHelper($row->id, $database);
 		$helper->getContributors();
 
 		// Get the component params and merge with resource params
-		$config =& JComponentHelper::getParams('com_resources');
+		$config = JComponentHelper::getParams('com_resources');
 
 		$rparams = new JRegistry($row->params);
 		$params = $config;
@@ -435,7 +434,7 @@ class plgTagsResources extends JPlugin
 		{
 			$row->href = JRoute::_($row->href);
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		// Start building the HTML
 		$html  = "\t".'<li class="';

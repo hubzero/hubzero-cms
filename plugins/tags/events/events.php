@@ -86,8 +86,7 @@ class plgTagsEvents extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['events'])) 
 			{
 				return array();
 			}
@@ -99,7 +98,7 @@ class plgTagsEvents extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -108,7 +107,7 @@ class plgTagsEvents extends JPlugin
 		}
 		$ids = implode(',', $ids);
 
-		$now = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+		$now = JFactory::getDate()->toSql();
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
@@ -190,7 +189,7 @@ class plgTagsEvents extends JPlugin
 	 */
 	public function out($row)
 	{
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$month = JHTML::_('date', $row->publish_up, 'M');
 		$day   = JHTML::_('date', $row->publish_up, 'd');

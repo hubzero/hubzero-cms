@@ -86,8 +86,7 @@ class plgTagsKb extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['kb'])) 
 			{
 				return array();
 			}
@@ -99,7 +98,7 @@ class plgTagsKb extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -108,7 +107,7 @@ class plgTagsKb extends JPlugin
 		}
 		$ids = implode(',', $ids);
 
-		$now = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+		$now = JFactory::getDate()->toSql();
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
@@ -181,7 +180,7 @@ class plgTagsKb extends JPlugin
 		{
 			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 		//$row->href = ltrim($row->href, DS);
 
 		// Start building the HTML

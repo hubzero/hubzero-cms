@@ -78,7 +78,7 @@ class plgTagsForum extends JPlugin
 	 */
 	private function _getGroupIds($uid=0)
 	{
-		$dbh =& JFactory::getDBO();
+		$dbh = JFactory::getDBO();
 		$dbh->setQuery(
 			'select distinct gidNumber from #__xgroups_members where uidNumber = ' . $uid . ' union select distinct gidNumber from #__xgroups_managers where uidNumber = ' . $uid
 		);
@@ -99,8 +99,7 @@ class plgTagsForum extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['forum'])) 
 			{
 				return array();
 			}
@@ -112,7 +111,7 @@ class plgTagsForum extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -122,7 +121,7 @@ class plgTagsForum extends JPlugin
 		$ids = implode(',', $ids);
 
 		$addtl_where = array();
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$gids = $this->_getGroupIds($juser->get('id'));
@@ -232,7 +231,7 @@ class plgTagsForum extends JPlugin
 		{
 			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&thread=' . $row->alias);
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="kb-entry">' . "\n";

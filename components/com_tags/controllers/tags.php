@@ -171,7 +171,7 @@ class TagsControllerTags extends Hubzero_Controller
 
 		// Load plugins
 		JPluginHelper::importPlugin('tags');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Get configuration
 		$config = JFactory::getConfig();
@@ -232,6 +232,10 @@ class TagsControllerTags extends Hubzero_Controller
 				$s = array();
 				foreach ($this->view->results as $sql)
 				{
+					if (is_array($sql))
+					{
+						continue;
+					}
 					if (trim($sql) != '') 
 					{
 						$s[] = $sql;
@@ -411,12 +415,12 @@ class TagsControllerTags extends Hubzero_Controller
 		$app = JFactory::getApplication();
 
 		// Set the mime encoding for the document
-		$jdoc =& JFactory::getDocument();
+		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-		$params =& $app->getParams();
+		$params = $app->getParams();
 		$doc->link = JRoute::_('index.php?option=' . $this->_option);
 
 		// Incoming
@@ -460,7 +464,7 @@ class TagsControllerTags extends Hubzero_Controller
 
 		// Load plugins
 		JPluginHelper::importPlugin('tags');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		$areas = array();
 		$searchareas = $dispatcher->trigger('onTagAreas');
@@ -532,7 +536,7 @@ class TagsControllerTags extends Hubzero_Controller
 			);
 		}
 
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();
@@ -628,7 +632,7 @@ class TagsControllerTags extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Incoming
 		$this->view->filters = array();
@@ -887,7 +891,7 @@ class TagsControllerTags extends Hubzero_Controller
 
 		// Get Tags plugins
 		JPluginHelper::importPlugin('tags');
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		foreach ($ids as $id)
 		{
@@ -920,7 +924,7 @@ class TagsControllerTags extends Hubzero_Controller
 	 */
 	protected function _buildPathway($tags=null)
 	{
-		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -975,7 +979,7 @@ class TagsControllerTags extends Hubzero_Controller
 			}
 			$this->view->title .= ': ' . implode(' + ', $t);
 		}
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 	}
 

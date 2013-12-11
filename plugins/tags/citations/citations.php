@@ -86,8 +86,7 @@ class plgTagsCitations extends JPlugin
 	{
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['citations'])) 
 			{
 				return array();
 			}
@@ -99,7 +98,7 @@ class plgTagsCitations extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -108,7 +107,7 @@ class plgTagsCitations extends JPlugin
 		}
 		$ids = implode(',', $ids);
 
-		$now = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+		$now = JFactory::getDate()->toSql();
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
@@ -181,7 +180,7 @@ class plgTagsCitations extends JPlugin
 		
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 		
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		
 		$ct = new CitationsType($database);
 		$types = $ct->getType();

@@ -87,8 +87,7 @@ class plgTagsMembers extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['members'])) 
 			{
 				return array();
 			}
@@ -100,7 +99,7 @@ class plgTagsMembers extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -203,7 +202,7 @@ class plgTagsMembers extends JPlugin
 		{
 			$row->href = JRoute::_($row->href);
 		}
-		$juri =& JURI::getInstance();
+		$juri = JURI::getInstance();
 
 		$html  = "\t" . '<li class="member">' . "\n";
 		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . Hubzero_User_Profile_Helper::getMemberPhoto($member, 0) . '" alt="" /></p>' . "\n";

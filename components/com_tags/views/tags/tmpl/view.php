@@ -91,8 +91,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					$a = ' class="active"';
 
-					$app =& JFactory::getApplication();
-					$pathway =& $app->getPathway();
+					$app = JFactory::getApplication();
+					$pathway = $app->getPathway();
 					$pathway->addItem($cat['title'],'index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . stripslashes($blob) . '&sort=' . $this->filters['sort']);
 				}
 
@@ -122,8 +122,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 							{
 								$a = ' class="active"';
 
-								$app =& JFactory::getApplication();
-								$pathway =& $app->getPathway();
+								$app = JFactory::getApplication();
+								$pathway = $app->getPathway();
 								$pathway->addItem($subcat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
 							}
 
@@ -233,11 +233,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<div class="container-block">
 <?php
-$juri =& JURI::getInstance();
+$juri = JURI::getInstance();
 $foundresults = false;
 $dopaging = true;
 //$cats = $this->cats;
-$jconfig =& JFactory::getConfig();
+$jconfig = JFactory::getConfig();
 $html = '';
 $k = 0;
 if ($this->active) {
@@ -308,7 +308,7 @@ foreach ($this->results as $category)
 			if (substr($feed, 0, 1) != DS) {
 				$feed = DS.$feed;
 			}
-			$jconfig =& JFactory::getConfig();
+			$jconfig = JFactory::getConfig();
 			$live_site = rtrim(JURI::base(),'/');
 			$feed = $live_site.$feed;
 		}

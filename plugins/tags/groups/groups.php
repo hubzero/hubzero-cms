@@ -87,8 +87,7 @@ class plgTagsGroups extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas) && $limit) 
 		{
-			if (!array_intersect($areas, $this->onTagAreas()) 
-			 && !array_intersect($areas, array_keys($this->onTagAreas()))) 
+			if (!isset($areas['groups'])) 
 			{
 				return array();
 			}
@@ -100,7 +99,7 @@ class plgTagsGroups extends JPlugin
 			return array();
 		}
 
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -112,7 +111,7 @@ class plgTagsGroups extends JPlugin
 		$from = '';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			$juser =& JFactory::getUser();
+			$juser = JFactory::getUser();
 			if (!$juser->authorise('core.view', 'com_groups'))
 			{
 				$from = " JOIN jos_xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . $juser->get('id');
