@@ -113,7 +113,7 @@ class Hubzero_Module_Helper
 	 */
 	public static function renderModules($position, $style=-2)
 	{
-		$document = &JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$renderer = $document->loadRenderer('module');
 		$params   = array('style' => $style);
 
