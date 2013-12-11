@@ -163,13 +163,9 @@ class Migration20130924000007Core extends Hubzero_Migration
 						}
 
 						$ar2     = explode("=", $a, 2);
-						if ($ar2[0] == 'timezone' && $ar2[1] == 0)
+						if ($ar2[0] == 'timezone' && is_numeric($ar2[1]))
 						{
-							continue;
-						}
-						elseif ($ar2[0] == 'timezone' && is_numeric($ar2[1] && $ar2[1] > 0))
-						{
-							// @FIXME: convert to timezone abbreviation
+							$ar2[1] = "";
 						}
 						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
 					}
