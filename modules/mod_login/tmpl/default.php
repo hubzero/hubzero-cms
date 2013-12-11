@@ -89,11 +89,11 @@ if (!empty($error_message))
 				</div>
 			</div>
 			<?php if(!$multiAuth) { ?>
-				<p class="callToAction">Don't have an account? <a href="/register">Create one.</a></p>
+				<p class="callToAction">Don't have an account? <a href="/register?return=<?php echo $return; ?>">Create one.</a></p>
 			<?php } ?>
 		</div>
 	</div>
 	<?php if($multiAuth) { ?>
-		<p class="callToAction">Or, you can <a href="/register">create a local account.</a></p>
+		<p class="callToAction">Or, you can <a href="/register?return=<?php echo $return; ?>">create a local account.</a></p>
 	<?php } ?>
 </div>
