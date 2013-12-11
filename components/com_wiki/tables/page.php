@@ -169,9 +169,16 @@ class WikiPage extends JTable
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($pagename=NULL, $scope='')
+	static function &getInstance($type, $prefix = 'JTable', $config = array()) //($pagename=NULL, $scope='')
 	{
-		static $instances, $test;
+		static $instances;
+
+		$pagename = $type;
+		$scope = $prefix;
+		if ($scope == 'JTable')
+		{
+			$scope = '';
+		}
 
 		if (!isset($instances)) 
 		{
@@ -180,7 +187,8 @@ class WikiPage extends JTable
 
 		if (!isset($instances[$scope . '/' . $pagename])) 
 		{
-			$page = new WikiPage(JFactory::getDBO());
+			$db = JFactory::getDBO();
+			$page = new WikiPage($db);
 			// Find the page id
 			if (strstr($pagename, ' '))
 			{
