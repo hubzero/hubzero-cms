@@ -90,7 +90,7 @@ $editor =& JEditor::getInstance();
 					<td>
 						<?php
 							$params = array("full_paths"=>true);
-							echo $editor->display("story[story]", stripslashes($this->story->story), '100%', '300px', '50', '12310', true, $params);
+							echo $editor->display("story[story]", stripslashes($this->story->story), '100%', '300px', '50', '10', true, '', '', '', $params);
 						?>
 					</td>
 				</tr>
