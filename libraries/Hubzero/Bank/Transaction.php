@@ -204,7 +204,7 @@ class Hubzero_Bank_Transaction extends JTable
 			$category = $this->category;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . "' AND referenceid=" . $this->_db->Quote($referenceid);
+		$query = "DELETE FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
