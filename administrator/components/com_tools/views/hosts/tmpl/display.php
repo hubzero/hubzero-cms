@@ -96,7 +96,7 @@ if ($this->rows)
 				</td>
 				<td>
 					<?php
-						$db = JFactory::getDBO();
+						$db = MwUtils::getMWDBO();
 						$sql = "select count(*) from display where status='broken' and hostname='{$row->hostname}'";
 						$db->setQuery($sql);
 						$bc = $db->loadResult();
