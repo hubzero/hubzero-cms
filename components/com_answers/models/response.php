@@ -86,7 +86,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
-		if (!isset($filters['referenceid']))
+		if (!isset($filters['id']))
 		{
 			$filters['id'] = $this->get('id');
 		}
