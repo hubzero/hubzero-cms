@@ -200,7 +200,7 @@ class plgSupportCaptcha extends JPlugin
 
 		$this->loadLanguage();
 
-		$juser =& JFactory::getUser();
+		$juser = JFactory::getUser();
 
 		if (!$juser->get('guest')) 
 		{
@@ -359,7 +359,7 @@ class plgSupportCaptcha extends JPlugin
 		$html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
 		//$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 
-		$currentSession =& JFactory::getSession();
+		$currentSession = JFactory::getSession();
 		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
 
 		if ($this->_verified) {
@@ -380,7 +380,7 @@ class plgSupportCaptcha extends JPlugin
 	 */
 	private function _generateHash($input, $day)
 	{
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		
 		// Add date:
 		$input .= $jconfig->getValue('config.secret') . $day . date('ny');
@@ -436,7 +436,7 @@ class plgSupportCaptcha extends JPlugin
 	{
 		$word = $this->_generateHash(strtolower($word), date('j'));
 
-		$currentSession =& JFactory::getSession();
+		$currentSession = JFactory::getSession();
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
 		if ($hash && $word == $hash) 
@@ -741,7 +741,7 @@ class plgSupportCaptcha extends JPlugin
 		$security_code = $this->_generateHash($this->keystring, date('j'));
 
 		//Set the session to store the security code
-		$currentSession =& JFactory::getSession();
+		$currentSession = JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']) + 0), $security_code);
 		$width = 120;
 		$height = 40;
@@ -762,7 +762,7 @@ class plgSupportCaptcha extends JPlugin
 		$security_code = $this->_generateHash($security_code, date('j'));
 
 		// Set the session to store the security code
-		$currentSession =& JFactory::getSession();
+		$currentSession = JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
 
 		$width = 120;

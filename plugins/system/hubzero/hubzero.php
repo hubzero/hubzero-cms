@@ -61,7 +61,7 @@ class plgSystemHubzero extends JPlugin
 	 */
 	public function onAfterRoute()
 	{
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if (!JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			JHTML::_('behavior.mootools');
@@ -76,13 +76,13 @@ class plgSystemHubzero extends JPlugin
 	public function onAfterInitialise()
 	{
 		// Get the application object
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		
 		// Get the user object
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		// Get the session object
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 
 		if ($session->isNew())
 		{

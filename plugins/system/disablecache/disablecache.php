@@ -104,7 +104,7 @@ class plgSystemDisablecache extends JPlugin
 	{
 		if (!$this->_path) 
 		{
-			$juri =& JURI::getInstance();
+			$juri = JURI::getInstance();
 			$this->_path = $this->_parseQueryString(str_replace($juri->base(), '', $juri->current()));
 		}
 

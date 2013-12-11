@@ -51,7 +51,7 @@ class plgSupportTransfer extends JPlugin
 
 		$this->loadLanguage();
 
-		$upconfig =& JComponentHelper::getParams('com_members');
+		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 		if ($this->banking) 
 		{
