@@ -130,7 +130,7 @@ if (!$this->question->get('anonymous'))
 
 			<?php if ($this->question->get('maxaward') && $this->question->isOpen() && $this->question->config('banking')) { ?>
 				<p class="youcanearn">
-					<?php echo JText::sprintf('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->get('maxaward')); ?> <a href="<?php echo JRoute::_($this->question->link('math')); ?>"><?php echo JText::_('COM_ANSWERS_DETAILS'); ?></a>
+					<?php echo JText::sprintf('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->get('maxaward')); ?>
 				</p>
 			<?php } ?>
 			</div><!-- / .status_display -->
@@ -246,7 +246,7 @@ if (!$this->question->get('anonymous'))
 
 <?php } else if (!$this->question->isReported()) { ?>
 
-	<?php //if ($this->responding == 6 && $this->question->isOpen() && $this->question->config('banking')) { // show how points are awarded   ?>
+	<?php if ($this->responding == 6 && $this->question->isOpen() && $this->question->config('banking')) { // show how points are awarded   ?>
 	<div class="below section">
 		<div class="aside">
 			<div class="container">
@@ -310,7 +310,7 @@ if (!$this->question->get('anonymous'))
 		<div class="clear"></div>
 	</div><!-- / .below section -->
 	<div class="clear"></div>
-	<?php //} ?>
+	<?php } ?>
 
 	<?php if ($this->responding == 1) { // answer form ?>
 	<div class="below section">

@@ -115,7 +115,6 @@
 	.entry-reward {
 		white-space: nowrap;
 		color: #999;
-		font-size: 85%;
 	}
 	.entry-reward a {
 		width: 1em;
@@ -128,6 +127,7 @@
 		content: "\f006";
 		font-family: "Fontcons";
 		margin-right: 1em;
+		font-size: 16px;
 	}
 
 /* Answer form */

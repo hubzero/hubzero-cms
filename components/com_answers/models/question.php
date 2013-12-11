@@ -181,7 +181,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			return 0;
 		}
 
-		if ($this->get('reward', -1) == -1)
+		if ($this->get('reward', -1) == 1)
 		{
 			$BT = new Hubzero_Bank_Transaction($this->_db);
 			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
@@ -490,7 +490,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			break;
 
 			case 'math':
-				$link .= '&task=math&id=' . $this->get('id');
+				$link .= '&task=question&id=' . $this->get('id') . '#math';
 			break;
 
 			case 'report':

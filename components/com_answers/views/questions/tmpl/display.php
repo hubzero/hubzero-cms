@@ -242,7 +242,7 @@ if (!$this->filters['filterby'] == 'none')
 							</td>
 						<?php if ($this->banking) { ?>
 							<td class="reward">
-							<?php if (isset($row->reward) && $row->reward == 1 && $this->banking) { ?>
+							<?php if (isset($row->reward) && $row->reward == 1 && $this->banking && $row->points) { ?>
 								<span class="entry-reward">
 									<?php echo $row->points; ?> 
 									<a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->points); ?>">
