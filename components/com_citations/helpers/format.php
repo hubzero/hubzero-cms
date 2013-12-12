@@ -236,7 +236,7 @@ class CitationFormat
 		
 		foreach ($template_keys as $k => $v) 
 		{
-			if (!$this->keyExistsOrIsNotEmpty($k, $citation)) 
+			if (!CitationFormat::keyExistsOrIsNotEmpty($k, $citation)) 
 			{
 				$replace_values[$v] = '';
 			} 
@@ -823,7 +823,7 @@ class CitationFormat
 	 * @param      object $row Object to look in
 	 * @return     boolean True if exists, false if not
 	 */
-	public function keyExistsOrIsNotEmpty($key, $row)
+	public static function keyExistsOrIsNotEmpty($key, $row)
 	{
 		if (isset($row->$key)) 
 		{
@@ -849,7 +849,7 @@ class CitationFormat
 	 * @param      string $punct Punctuation to insert
 	 * @return     string 
 	 */
-	public function grammarCheck($html, $punct=',')
+	public static function grammarCheck($html, $punct=',')
 	{
 		if (substr($html, -1) == '"') 
 		{
@@ -870,7 +870,7 @@ class CitationFormat
 	 * @param      string $highlight String to highlight
 	 * @return     string
 	 */
-	public function formatReference(&$row, $link='none', $highlight='')
+	public static function formatReference(&$row, $link='none', $highlight='')
 	{
 		ximport('Hubzero_View_Helper_Html');
 

@@ -50,7 +50,7 @@ if ($this->citations) {
 	foreach ($this->citations as $cite)
 	{
 		$item  = "\t".'<li>'."\n";
-		$item .= $formatter->formatReference($cite, '');
+		$item .= CitationFormat::formatReference($cite, '');
 		$item .= "\t\t".'<p class="details">'."\n";
 		$item .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_citations&task=download&id='.$cite->id.'&format=bibtex&no_html=1').'" title="'.JText::_('PLG_RESOURCES_CITATIONS_DOWNLOAD_BIBTEX').'">BibTex</a> <span>|</span> '."\n";
 		$item .= "\t\t\t".'<a href="'.JRoute::_('index.php?option=com_citations&task=download&id='.$cite->id.'&format=endnote&no_html=1').'" title="'.JText::_('PLG_RESOURCES_CITATIONS_DOWNLOAD_ENDNOTE').'">EndNote</a>'."\n";
