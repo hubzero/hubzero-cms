@@ -1095,8 +1095,12 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 	 */
 	private function passport()
 	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
 		if (!$this->authorize_call())
 		{
+			$this->setMessage('You don\'t have permission to do this', 403, 'Unauthorized');
 			return;
 		}
 
@@ -1125,9 +1129,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 
-		// Badge logic
-
-		//find user by email		
+		// Find user by email
 		$user_email = Hubzero_User_Profile_Helper::find_by_email($user_email);
 
 		if (empty($user_email[0]))
@@ -1141,30 +1143,49 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$this->errorMessage(404, 'User was not found');
 			return;
 		}
+
 		$user_id = $user->get('uidNumber');
 
-		//find member ID by user ID and attached badge
-		$sql = 'SELECT m.`id` AS `member_id` FROM `#__courses_members` m LEFT JOIN `#__courses_offering_section_badges` ob 
-				ON ob.`section_id` = m.`section_id` 
-				WHERE m.`user_id` = ' . $this->db->quote($user_id) . ' AND provider_badge_id = ' . $this->db->quote($badge_id);
-				
-		$this->db->setQuery($sql);
-		$this->db->query();	
+		// Make sure a few things are included
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'badge.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php';
+
+		// Get section from provider badge id
+		$section_badge = CoursesModelSectionBadge::loadByProviderBadgeId($badge_id);
 
 		// Check if there is a match
-		if (!$this->db->getNumRows())
+		if (!$section_id = $section_badge->get('section_id'))
 		{
-			$this->errorMessage(401, 'No badge-user match');
+			$this->errorMessage(400, 'No matching badge found');
 			return;
 		}
 
-		$member_id = $this->db->loadResult();
+		// Get member id via user id and section id
+		$member = CoursesModelMember::getInstance($user_id, 0, 0, $section_id);
 
-		$sql = 'UPDATE `#__courses_member_badges` SET `action` = ' . $this->db->quote($action) . ', `action_on` = UTC_TIMESTAMP() 
-				WHERE member_id = ' . $this->db->quote($member_id);
+		// Check if there is a match
+		if (!$member->get('id'))
+		{
+			$this->errorMessage(400, 'Matching course member not found');
+			return;
+		}
 
-		$this->db->setQuery($sql);
-		$this->db->query();
+		// Now actually load the badge
+		$member_badge = CoursesModelMemberBadge::loadByMemberId($member->get('id'));
+
+		// Check if there is a match
+		if (!$member_badge->get('id'))
+		{
+			$this->errorMessage(400, 'This member does not have a matching badge entry');
+			return;
+		}
+
+		$now = JFactory::getDate()->toSql();
+
+		$member_badge->set('action', $action);
+		$member_badge->set('action_on', $now);
+		$member_badge->store();
 
 		// Return message
 		$this->setMessage('Passport data saved.', 200, 'OK');

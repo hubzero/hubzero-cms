@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php');
 
@@ -105,6 +106,26 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 		{
 			$model->set('criteria_text', $criteria->get('text'));
 		}
+
+		return $model;
+	}
+
+	/**
+	 * Load by provider badge id
+	 * 
+	 * @param      integer $id  Provider badge id
+	 * @return     void
+	 */
+	public function loadByProviderBadgeId($id)
+	{
+		$model = new stdClass();
+		$model->_db = JFactory::getDBO();
+
+		$model = new self();
+
+		$model->_tbl = new $model->_tbl_name($model->_db);
+
+		$model->_tbl->load(array('provider_badge_id'=>$id));
 
 		return $model;
 	}
