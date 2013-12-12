@@ -37,7 +37,7 @@ $dispatcher =& JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 
 //are we using the email gateway for group forum
-$params = &JComponentHelper::getParams('com_groups');
+$params =  JComponentHelper::getParams('com_groups');
 $allowEmailResponses = $params->get('email_comment_processing');
 $autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup');
 

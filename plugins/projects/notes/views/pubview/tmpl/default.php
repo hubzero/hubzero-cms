@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Load wiki configs
-$wiki_config =& JComponentHelper::getParams( 'com_wiki' ); 
+$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 
 			
 // Transform the wikitext to HTML
 ximport('Hubzero_Wiki_Parser');

@@ -213,7 +213,7 @@ class modMyQuestions extends Hubzero_Module
 	 */
 	public function display()
 	{
-		$upconfig =& JComponentHelper::getParams('com_members');
+		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 		if ($this->banking) 
 		{

@@ -127,7 +127,7 @@ class plgResourcesVersions extends JPlugin
 			);
 
 			// Get contribtool params
-			$tconfig =& JComponentHelper::getParams('com_tools');
+			$tconfig = JComponentHelper::getParams('com_tools');
 			$view->tconfig = $tconfig;
 
 			// Pass the view some info

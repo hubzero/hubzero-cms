@@ -58,7 +58,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		$this->_authorize();
 
 		// Load the com_resources component config
-		$rconfig =& JComponentHelper::getParams('com_resources');
+		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->rconfig = $rconfig;
 
 		parent::execute();
@@ -831,7 +831,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		}
 
 		// get config
-		$this->view->cparams =& JComponentHelper::getParams('com_resources');
+		$this->view->cparams = JComponentHelper::getParams('com_resources');
 		$this->view->version = $version;
 		$this->view->rid = $rid;
 
@@ -864,7 +864,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		}
 
 		// Get the configured upload path
-		$rconfig =& JComponentHelper::getParams('com_resources');
+		$rconfig = JComponentHelper::getParams('com_resources');
 
 		$base_path = $rconfig->get('uploadpath');
 		if ($base_path) 

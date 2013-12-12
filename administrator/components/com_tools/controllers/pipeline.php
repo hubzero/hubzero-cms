@@ -287,7 +287,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$sitename 	= $jconfig->getValue('config.sitename');
 		
 		// Get config
-		$config =& JComponentHelper::getParams($this->_option);
+		$config = JComponentHelper::getParams($this->_option);
 
 		// Get all tool publications without new DOI
 		$this->database->setQuery("SELECT * FROM #__doi_mapping WHERE doi='' OR doi IS NULL ");

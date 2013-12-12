@@ -308,7 +308,7 @@ class plgWhatsnewResources extends JPlugin
 		$helper->getContributors();
 
 		// Get the component params and merge with resource params
-		$config =& JComponentHelper::getParams('com_resources');
+		$config = JComponentHelper::getParams('com_resources');
 		$paramClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{

@@ -139,7 +139,7 @@ class CoursesModelPermissions extends JObject
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config =& JComponentHelper::getParams('com_courses');
+			$this->_config = JComponentHelper::getParams('com_courses');
 		}
 		return $this->_config;
 	}

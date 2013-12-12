@@ -111,7 +111,7 @@ class plgSupportTransfer extends JPlugin
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
 
-		$wconfig =& JComponentHelper::getParams('com_wishlist');
+		$wconfig = JComponentHelper::getParams('com_wishlist');
 		$admingroup = $wconfig->get('group') ? $wconfig->get('group') : 'hubadmin';
 
 		// Get needed scripts & initial data

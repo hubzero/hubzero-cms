@@ -853,7 +853,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		{
 			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
 			{
-				$hconfig = &JComponentHelper::getParams('com_hub');
+				$hconfig =  JComponentHelper::getParams('com_hub');
 				$r = $hconfig->get('LoginReturn');
 				$this->_redirect = ($r) ? $r : '/members/myaccount';
 				$session->set('badpassword','0');
@@ -1289,7 +1289,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 			default:       $index = 0; break;
 		}
 
-		$hconfig =& JComponentHelper::getParams('com_register');
+		$hconfig = JComponentHelper::getParams('com_register');
 
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);

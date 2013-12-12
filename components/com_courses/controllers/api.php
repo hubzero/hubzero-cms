@@ -914,7 +914,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		jimport('joomla.filesystem.file');
 
 		$deleted = array();
-		$params  =& JComponentHelper::getParams('com_courses');
+		$params  = JComponentHelper::getParams('com_courses');
 		$path    = DS . trim($params->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $assetObj->id;
 
 		// If the path exists, delete it!

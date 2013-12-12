@@ -322,11 +322,11 @@ class Hubzero_Register_Premis
 
 			// Get some settings
 			$jconfig = JFactory::getConfig();
-			$params =& JComponentHelper::getParams('com_members');
+			$params = JComponentHelper::getParams('com_members');
 			$hubHomeDir = rtrim($params->get('homedir'), '/');
 			
 			jimport('joomla.application.component.helper');
-			$config   =& JComponentHelper::getParams('com_users');
+			$config   = JComponentHelper::getParams('com_users');
 			$usertype = $config->get('new_usertype', 'Registered');
 	
 			$acl = JFactory::getACL();

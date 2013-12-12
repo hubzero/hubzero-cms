@@ -47,7 +47,7 @@ class modDashboard extends Hubzero_Module
 		$database = JFactory::getDBO();
 
 		$jconfig = JFactory::getConfig();
-		$upconfig =& JComponentHelper::getParams('com_members');
+		$upconfig = JComponentHelper::getParams('com_members');
 		$banking =  $upconfig->get('bankAccounts');
 		$sitename = $jconfig->getValue('config.sitename');
 

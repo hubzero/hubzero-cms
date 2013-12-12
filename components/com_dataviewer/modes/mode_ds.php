@@ -15,7 +15,7 @@ function get_conf($db_id)
 {
 	global $dv_conf, $com_name;
 
-	$params = &JComponentHelper::getParams('com_datastores');
+	$params =  JComponentHelper::getParams('com_datastores');
 	$dv_conf['db']['host'] = $params->get('db_host');
 	$dv_conf['db']['user'] = $params->get('db_ro_user');
 	$dv_conf['db']['password'] = $params->get('db_ro_pass');

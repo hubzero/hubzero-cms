@@ -47,7 +47,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 	public function execute()
 	{
 		// Load the component config
-		$config =& JComponentHelper::getParams( $this->_option );
+		$config = JComponentHelper::getParams( $this->_option );
 		$this->_config = $config;
 		
 		// Is component enabled?
@@ -2453,7 +2453,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		$ajax 	 = JRequest::getInt( 'ajax', 0 );
 		
 		// Load projects config
-		$pconfig =& JComponentHelper::getParams( 'com_projects' );
+		$pconfig = JComponentHelper::getParams( 'com_projects' );
 		
 		// Redirect if publishing is turned off
 		if (!$this->_contributable)
@@ -2551,7 +2551,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		// Is project registration restricted to a group?
 		if ($action == 'start')
 		{
-			$pconfig =& JComponentHelper::getParams( 'com_projects' );
+			$pconfig = JComponentHelper::getParams( 'com_projects' );
 			$creatorgroup = $pconfig->get('creatorgroup', '');
 			
 			if ($creatorgroup) 

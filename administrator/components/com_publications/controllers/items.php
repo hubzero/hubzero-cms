@@ -121,7 +121,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		);
 		
 		// Get component config
-		$pconfig =& JComponentHelper::getParams( $this->_option );
+		$pconfig = JComponentHelper::getParams( $this->_option );
 		$this->view->config = $pconfig;
 
 		// Get <select> of types

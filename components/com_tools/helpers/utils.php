@@ -47,7 +47,7 @@ class ToolsHelperUtils
 
 		if (!is_object($instance)) 
 		{
-			$config =& JComponentHelper::getParams('com_tools');
+			$config = JComponentHelper::getParams('com_tools');
 			$enabled = $config->get('mw_on');
 
 			if (!$enabled) 
@@ -97,7 +97,7 @@ class ToolsHelperUtils
 	{
 		$info = array();
 
-		$config =& JComponentHelper::getParams('com_tools');
+		$config = JComponentHelper::getParams('com_tools');
 		$host = $config->get('storagehost');
 
 		if ($username && $host) 
@@ -384,7 +384,7 @@ class ToolsHelperUtils
 		
 		//check to see if we are an admin
 		$admin = false;
-		$ctconfig =& JComponentHelper::getParams('com_tools');
+		$ctconfig = JComponentHelper::getParams('com_tools');
 		if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups)) 
 		{
 			$admin = true;

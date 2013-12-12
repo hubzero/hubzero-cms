@@ -168,7 +168,7 @@ class RegisterController extends Hubzero_Controller
 
 		$target_xprofile->loadRegistration($xregistration);
 		
-		$params =& JComponentHelper::getParams('com_members');
+		$params = JComponentHelper::getParams('com_members');
 		
 		$hubHomeDir = rtrim($params->get('homedir'),'/');
 		
@@ -386,11 +386,11 @@ class RegisterController extends Hubzero_Controller
 		// Get some settings
 		$jconfig = JFactory::getConfig();
 		$this->jconfig = $jconfig;
-		$params =& JComponentHelper::getParams('com_members');
+		$params = JComponentHelper::getParams('com_members');
 		$hubHomeDir = rtrim($params->get('homedir'),'/');
 		
 		jimport('joomla.application.component.helper');
-		$config   =& JComponentHelper::getParams('com_users');
+		$config   = JComponentHelper::getParams('com_users');
 		$usertype = $config->get('new_usertype', 'Registered');
 
 		$acl = JFactory::getACL();
@@ -578,7 +578,7 @@ class RegisterController extends Hubzero_Controller
 
 		if (!$force && $check && JRequest::getMethod() == 'POST') 
 		{
-			$params =& JComponentHelper::getParams('com_members');
+			$params = JComponentHelper::getParams('com_members');
 			$hubHomeDir = rtrim($params->get('homedir'),'/');
 
 			$updateEmail     = false;
@@ -794,7 +794,7 @@ class RegisterController extends Hubzero_Controller
 				$document   = JFactory::getDocument();
 
 				// If user registration is not allowed, show 403 not authorized.
-				$usersConfig = &JComponentHelper::getParams('com_users');
+				$usersConfig =  JComponentHelper::getParams('com_users');
 				if ($usersConfig->get('allowUserRegistration') == '0') 
 				{
 					JError::raiseError(403, JText::_('Access Forbidden'));
@@ -873,7 +873,7 @@ class RegisterController extends Hubzero_Controller
 					*/
 
 					// Get some settings
-					$params =& JComponentHelper::getParams('com_members');
+					$params = JComponentHelper::getParams('com_members');
 					$hubHomeDir = rtrim($params->get('homedir'), '/');
 					
 					// Attempt to get the new user
@@ -1079,7 +1079,7 @@ class RegisterController extends Hubzero_Controller
 			default:       $index = 0; break;
 		}
 
-		$hconfig =& JComponentHelper::getParams('com_register');
+		$hconfig = JComponentHelper::getParams('com_register');
 
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
@@ -1600,7 +1600,7 @@ class RegisterController extends Hubzero_Controller
 			$return = '';
 			
 			// get com_register return path
-			$hconfig = &JComponentHelper::getParams('com_register');
+			$hconfig =  JComponentHelper::getParams('com_register');
 			$cReturn = $hconfig->get('ConfirmationReturn');
 			if ($cReturn) 
 			{
@@ -1624,7 +1624,7 @@ class RegisterController extends Hubzero_Controller
 			$profile->set('emailConfirmed', 1);
 			
 			// set public setting
-			$mconfig =& JComponentHelper::getParams('com_members');
+			$mconfig = JComponentHelper::getParams('com_members');
 			$profile->set('public', $mconfig->get('privacy', '0'));
 			
 			// upload profile

@@ -163,7 +163,7 @@ class ResourceMacro extends WikiMacro
 	 */
 	public function screenshots($alias, $num=1)
 	{
-		$config =& JComponentHelper::getParams('com_resources');
+		$config = JComponentHelper::getParams('com_resources');
 		$path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
 		$alias = strtolower($alias);

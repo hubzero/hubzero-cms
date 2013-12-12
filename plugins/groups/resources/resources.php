@@ -199,7 +199,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		$sort = JRequest::getVar('sort', 'date');
 		$access = JRequest::getVar('access', 'all');
 
-		$config =& JComponentHelper::getParams('com_resources');
+		$config = JComponentHelper::getParams('com_resources');
 		if ($return == 'metadata') 
 		{
 			if ($config->get('show_ranking')) 
@@ -674,7 +674,7 @@ class plgGroupsResources extends Hubzero_Plugin
 		$RE->getContributors();
 
 		// Get the component params and merge with resource params
-		$config =& JComponentHelper::getParams('com_resources');
+		$config = JComponentHelper::getParams('com_resources');
 		$paramClass = 'JParameter';
 		$dformat = '%d %b %Y';
 		$tz = 0;

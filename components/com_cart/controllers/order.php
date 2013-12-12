@@ -77,7 +77,7 @@ class CartControllerOrder extends ComponentController
 	public function completeTask() 
 	{		
 		// Get payment provider
-		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 		
 		// Get the transaction ID variable name to pull from URL
@@ -176,7 +176,7 @@ class CartControllerOrder extends ComponentController
 		if ($this->completeOrder($transaction))
 		{
 			// Get the transaction ID variable name to pull from URL
-			$params = &JComponentHelper::getParams(JRequest::getVar('option'));
+			$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 			// Get payment provider
 			$paymentGatewayProivder = $params->get('paymentProvider');
 			
@@ -199,7 +199,7 @@ class CartControllerOrder extends ComponentController
 	 */
 	public function postbackTask() 
 	{		
-		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 		
 		if (empty($_POST))
 		{

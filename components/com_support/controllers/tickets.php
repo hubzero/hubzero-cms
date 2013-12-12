@@ -2079,7 +2079,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			return;
 		}
 
-		//$params = &JComponentHelper::getParams($this->_option);
+		//$params =  JComponentHelper::getParams($this->_option);
 		$allowEmailResponses = $this->config->get('email_processing');
 
 		if ($allowEmailResponses and file_exists("/etc/hubmail_gw.conf"))

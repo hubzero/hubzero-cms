@@ -432,7 +432,7 @@ class CoursesControllerSections extends Hubzero_Controller
 		if (isset($badge['published']) && $badge['published'])
 		{
 			// Get courses config
-			$cconfig =& JComponentHelper::getParams('com_courses');
+			$cconfig = JComponentHelper::getParams('com_courses');
 
 			// Save the basic badge content
 			$badge['section_id'] = $model->get('id');

@@ -40,7 +40,7 @@ $baseView = 'publications';
 
 $base = trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
-$mconfig =& JComponentHelper::getParams( 'com_members' );
+$mconfig = JComponentHelper::getParams( 'com_members' );
 $pPath   = trim($mconfig->get('webpath'), DS);
 $profileThumb = NULL;
 

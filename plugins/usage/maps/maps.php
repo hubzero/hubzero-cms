@@ -316,7 +316,7 @@ class plgUsageMaps extends JPlugin
 			} 
 			else 
 			{
-				$config =& JComponentHelper::getParams($option);
+				$config = JComponentHelper::getParams($option);
 
 				$key = $config->get('mapsApiKey');
 				$mappath = $config->get('maps_path');

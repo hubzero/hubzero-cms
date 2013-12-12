@@ -257,7 +257,7 @@ if (!$this->app->sess) {
 				<?php } else {
 					ximport('Hubzero_View_Helper_Html');
 					
-					$config =& JComponentHelper::getParams('com_members');
+					$config = JComponentHelper::getParams('com_members');
 					$thumb = $config->get('webpath');
 					$thumb = DS . trim($thumb, DS);
 

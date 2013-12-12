@@ -183,14 +183,14 @@ class WishlistController extends JObject
 	public function execute()
 	{
 		// Load the component config
-		$component =& JComponentHelper::getComponent($this->_option);
+		$component = JComponentHelper::getComponent($this->_option);
 		if (!trim($component->params)) 
 		{
 			return $this->abort();
 		} 
 		else 
 		{
-			$config =& JComponentHelper::getParams($this->_option);
+			$config = JComponentHelper::getParams($this->_option);
 		}
 		$this->config = $config;
 
@@ -207,7 +207,7 @@ class WishlistController extends JObject
 		$this->admingroup = $this->config->get('group') ? $this->config->get('group') : 'hubadmin';
 
 		// are we using banking functions?
-		$upconfig =& JComponentHelper::getParams('com_members');
+		$upconfig = JComponentHelper::getParams('com_members');
 		$banking = $upconfig->get('bankAccounts');
 		$this->banking = $this->config->get('banking') && $banking ? $this->config->get('banking') : 0;
 
@@ -1517,7 +1517,7 @@ class WishlistController extends JObject
 		}
 
 		// Get URL to page explaining virtual economy
-		$aconfig =& JComponentHelper::getParams('com_answers');
+		$aconfig = JComponentHelper::getParams('com_answers');
 		$infolink = $aconfig->get('infolink', '/kb/points/');
 
 		// Get tags on this wish
@@ -1632,7 +1632,7 @@ class WishlistController extends JObject
 			$this->_buildPathway($wishlist);
 
 			// Get URL to page explaining virtual economy
-			$aconfig =& JComponentHelper::getParams('com_answers');
+			$aconfig = JComponentHelper::getParams('com_answers');
 			$infolink = $aconfig->get('infolink', '/kb/points/');
 
 			$view = new JView(array('name'=>'editwish'));

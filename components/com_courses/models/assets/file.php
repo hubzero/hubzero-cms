@@ -85,7 +85,7 @@ class FileAssetHandler extends AssetHandler
 
 		// @FIXME: should these come from the global settings, or should they be courses specific
 		// Get config
-		$config =& JComponentHelper::getParams('com_media');
+		$config = JComponentHelper::getParams('com_media');
 
 		// Max upload size
 		$sizeLimit = (int) $config->get('upload_maxsize');
@@ -137,7 +137,7 @@ class FileAssetHandler extends AssetHandler
 		}
 
 		// Get courses config
-		$cconfig =& JComponentHelper::getParams('com_courses');
+		$cconfig = JComponentHelper::getParams('com_courses');
 
 		// Build the upload path if it doesn't exist
 		$uploadDirectory = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;

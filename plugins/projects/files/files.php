@@ -54,7 +54,7 @@ class plgProjectsFiles extends JPlugin
 		$this->_params 		= new JParameter($this->_plugin->params);
 		
 		// Load component configs
-		$this->_config 		=& JComponentHelper::getParams('com_projects');
+		$this->_config 		= JComponentHelper::getParams('com_projects');
 		$this->_valid_cases = array('files');
 
 		$this->gitpath 	  	= $this->_config->get('gitpath', '/opt/local/bin/git');	
@@ -527,7 +527,7 @@ class plgProjectsFiles extends JPlugin
 	public function getMembersPath() 
 	{
 		// Get members config
-		$mconfig =& JComponentHelper::getParams( 'com_members' );
+		$mconfig = JComponentHelper::getParams( 'com_members' );
 			
 		// Build upload path
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
@@ -3204,7 +3204,7 @@ class plgProjectsFiles extends JPlugin
 		$project = $obj->getProject($projectid);
 		
 		// Load component configs
-		$config =& JComponentHelper::getParams('com_projects');
+		$config = JComponentHelper::getParams('com_projects');
 		
 		// Get project path
 		$path  = ProjectsHelper::getProjectPath($project->alias, 
@@ -6159,7 +6159,7 @@ class plgProjectsFiles extends JPlugin
 		if ($get == 'pubspace')
 		{
 			// Load publications component configs
-			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
 
 			chdir(JPATH_ROOT . $base_path);
@@ -6337,7 +6337,7 @@ class plgProjectsFiles extends JPlugin
 		$configFile 	= $gitConfigPath . DS . 'projects.conf';
 
 		// Load psystem configs
-		$sysconfig =& JComponentHelper::getParams( 'com_system' );
+		$sysconfig = JComponentHelper::getParams( 'com_system' );
 		
 		// We need the config path set up by admin beforehand
 		if ( !is_dir($gitConfigPath) )

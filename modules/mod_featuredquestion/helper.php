@@ -112,7 +112,7 @@ class modFeaturedquestion extends Hubzero_Module
 		{
 			$this->row = $row;
 
-			$config =& JComponentHelper::getParams('com_answers');
+			$config = JComponentHelper::getParams('com_answers');
 
 			// Check if this has been saved in the feature history
 			if (!$fh->id) 

@@ -57,7 +57,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 		$this->loadLanguage();
 		
 		$this->infolink = '/kb/points/';
-		$upconfig =& JComponentHelper::getParams( 'com_members' );
+		$upconfig = JComponentHelper::getParams( 'com_members' );
 		$this->banking = $upconfig->get('bankAccounts');
 	}
 	
@@ -305,7 +305,7 @@ class plgPublicationsReviews extends Hubzero_Plugin
 	 */	
 	public function getMemberPhoto( $member, $anonymous = 0 )
 	{
-		$config =& JComponentHelper::getParams( 'com_members' );
+		$config = JComponentHelper::getParams( 'com_members' );
 		
 		if (!$anonymous && $member->get('picture')) 
 		{

@@ -177,7 +177,7 @@ class BillboardsController extends Hubzero_Controller
 		}
 
 		// Grab the file location for the background images
-		$params =& JComponentHelper::getParams('com_billboards');
+		$params = JComponentHelper::getParams('com_billboards');
 		$view->image_location = $params->get('image_location', '/site/media/images/billboards/');
 
 		if (!is_dir(JPATH_ROOT . DS . ltrim($view->image_location, DS)))
@@ -187,7 +187,7 @@ class BillboardsController extends Hubzero_Controller
 		}
 
 		// Get the relative image location for building the links to the media manager
-		$mparams =& JComponentHelper::getParams('com_media');
+		$mparams = JComponentHelper::getParams('com_media');
 		$view->media_path = $mparams->get('image_path', 'site/media/images');
 
 		// Make sure the image path is in the format that we need (i.e. remove any leading or trailing "/")

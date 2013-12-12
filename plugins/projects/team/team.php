@@ -138,7 +138,7 @@ class plgProjectsTeam extends JPlugin
 			$this->loadLanguage();
 
 			// Load component configs
-			$this->_config =& JComponentHelper::getParams( 'com_projects' );
+			$this->_config = JComponentHelper::getParams( 'com_projects' );
 			
 			$database = JFactory::getDBO();
 			

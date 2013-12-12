@@ -253,7 +253,7 @@ class plgMembersProfile extends Hubzero_Plugin
 			default:       $index = 0; break;
 		}
 
-		$hconfig =& JComponentHelper::getParams('com_register');
+		$hconfig = JComponentHelper::getParams('com_register');
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
 		

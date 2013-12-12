@@ -314,8 +314,8 @@ class typeDatabases extends JObject
 			$objData->loadRecord($database_name);
 			
 			// Load component configs
-			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
-			$config =& JComponentHelper::getParams( 'com_projects' );
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
+			$config = JComponentHelper::getParams( 'com_projects' );
 			
 			// Get databases plugin
 			JPluginHelper::importPlugin( 'projects', 'databases');
@@ -446,8 +446,8 @@ class typeDatabases extends JObject
 		}
 		
 		// Load component configs
-		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
-		$config =& JComponentHelper::getParams( 'com_projects' );
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$config = JComponentHelper::getParams( 'com_projects' );
 				
 		$repoPath = ProjectsHelper::getProjectPath($this->_project->alias, 
 			$config->get('webpath'), $config->get('offroot')

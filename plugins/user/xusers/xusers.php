@@ -238,7 +238,7 @@ class plgUserXusers extends JPlugin
 
 		if (!is_object($xprofile)) {
 						
-			$params =& JComponentHelper::getParams('com_members');
+			$params = JComponentHelper::getParams('com_members');
 		
 			$hubHomeDir = rtrim($params->get('homedir'),'/');
 		
@@ -335,7 +335,7 @@ class plgUserXusers extends JPlugin
 		else {
 			$update = false;
 
-			$params =& JComponentHelper::getParams('com_members');
+			$params = JComponentHelper::getParams('com_members');
 
 			if ($xprofile->get('username') != $user['username']) {
 				$xprofile->set('username', $user['username']);

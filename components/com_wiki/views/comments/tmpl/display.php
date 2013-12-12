@@ -211,7 +211,7 @@ if ($this->comments) {
 			$jxuser->load( $juser->get('id') );
 			$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 		} else {
-			$config =& JComponentHelper::getParams( 'com_members' );
+			$config = JComponentHelper::getParams( 'com_members' );
 			$thumb = $config->get('defaultpic');
 			if (substr($thumb, 0, 1) != DS) {
 				$thumb = DS.$dfthumb;

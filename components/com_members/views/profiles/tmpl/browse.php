@@ -220,7 +220,7 @@ if (count($this->rows) > 0)
 	$cls = ''; //'even';
 
 	// Default thumbnail
-	$config =& JComponentHelper::getParams('com_members');
+	$config = JComponentHelper::getParams('com_members');
 	$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
 
 	$dfthumb = DS . ltrim($config->get('defaultpic'), DS);

@@ -323,7 +323,7 @@ class NewsletterControllerMailinglist extends Hubzero_Controller
 		$application = JFactory::getApplication();
 		
 		//get com_media params
-		$config =& JComponentHelper::getParams('com_media');
+		$config = JComponentHelper::getParams('com_media');
 		
 		//array of allowed extensions
 		$allowedExtensions = array('txt','csv','xls','xlsx');

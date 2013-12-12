@@ -217,7 +217,7 @@ class FeedbackQuotes extends JTable
 		// Load the component config
 		if (!$config) 
 		{
-			$config =& JComponentHelper::getParams('com_feedback');
+			$config = JComponentHelper::getParams('com_feedback');
 		}
 
 		// Incoming member ID

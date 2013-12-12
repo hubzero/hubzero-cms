@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$config =& JComponentHelper::getParams( 'com_resources' );
+$config = JComponentHelper::getParams( 'com_resources' );
 
 // An array for storing all the links we make
 $links = array();

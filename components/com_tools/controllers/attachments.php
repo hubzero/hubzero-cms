@@ -55,7 +55,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$this->_authorize();
 
 		// Load the com_resources component config
-		$rconfig =& JComponentHelper::getParams('com_resources');
+		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->rconfig = $rconfig;
 
 		parent::execute();
@@ -426,7 +426,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$helper->getChildren();
 
 		// get config
-		$this->view->cparams =& JComponentHelper::getParams('com_resources');
+		$this->view->cparams = JComponentHelper::getParams('com_resources');
 		$this->view->path = '';
 		$this->view->children = $helper->children;
 

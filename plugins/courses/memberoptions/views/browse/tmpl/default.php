@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 $juser = JFactory::getUser();
-$params = $params = &JComponentHelper::getParams('com_courses');
+$params = $params =  JComponentHelper::getParams('com_courses');
 
 $allowEmailResponses = $params->get('email_comment_processing');
 

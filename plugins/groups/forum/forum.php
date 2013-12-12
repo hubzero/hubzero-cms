@@ -1332,7 +1332,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$forum_message = $p->parse("\n".stripslashes($forum_message), $wikiconfig);		
 		*/
 
-		$params =& JComponentHelper::getParams('com_groups');
+		$params = JComponentHelper::getParams('com_groups');
 
 		// Email the group and insert email tokens to allow them to respond to group posts via email
 		if ($params->get('email_comment_processing'))

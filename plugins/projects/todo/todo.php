@@ -158,7 +158,7 @@ class plgProjectsTodo extends JPlugin
 			$database = JFactory::getDBO();
 			
 			// Load component configs
-			$this->_config =& JComponentHelper::getParams( 'com_projects' );
+			$this->_config = JComponentHelper::getParams( 'com_projects' );
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');

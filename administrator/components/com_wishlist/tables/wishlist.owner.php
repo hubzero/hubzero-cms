@@ -254,7 +254,7 @@ class WishlistOwner extends JTable
 		sort($owners);
 
 		// are we also including advisory committee?
-		$wconfig =& JComponentHelper::getParams('com_wishlist');
+		$wconfig = JComponentHelper::getParams('com_wishlist');
 		$allow_advisory = $wconfig->get('allow_advisory');
 		$advisory = array();
 

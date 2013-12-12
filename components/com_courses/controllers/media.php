@@ -270,7 +270,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 	private function ajaxuploadTask()
 	{
 		//get config
-		$config =& JComponentHelper::getParams('com_media');
+		$config = JComponentHelper::getParams('com_media');
 
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0);

@@ -55,7 +55,7 @@ class plgPublicationsWishlist extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 		
 		// Get the component parameters
-		$wconfig = & JComponentHelper::getParams( 'com_wishlist' );
+		$wconfig =  JComponentHelper::getParams( 'com_wishlist' );
 		$this->config = $wconfig;
 
 		$this->loadLanguage();

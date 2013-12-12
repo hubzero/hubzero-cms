@@ -265,7 +265,7 @@ defined('_JEXEC') or die('Restricted access');
 				$html .= "\t\t"."</ul>"."\n";
 			}
 		}
-		$hconfig =& JComponentHelper::getParams('com_register');
+		$hconfig = JComponentHelper::getParams('com_register');
 		if ($hconfig->get('passwordMeter')) {
 			$html .= "\t".'<input type="hidden" id="passmeter" value="on" />'."\n";
 		}

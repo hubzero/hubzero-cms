@@ -57,7 +57,7 @@ if(preg_match($regex, $firstname))
 
 // Get image handler
 $ih = new ProjectsImgHandler();
-$mconfig =& JComponentHelper::getParams( 'com_members' );
+$mconfig = JComponentHelper::getParams( 'com_members' );
 
 $path  = $mconfig->get('webpath');
 if (substr($path, 0, 1) != DS) {

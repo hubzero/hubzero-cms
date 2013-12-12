@@ -136,7 +136,7 @@ class ResourcesModelResource extends JObject
 					}
 				}
 
-				$tconfig =& JComponentHelper::getParams('com_tools');
+				$tconfig = JComponentHelper::getParams('com_tools');
 				// Replace resource info with requested version
 				$tv->compileResource($this->thistool, $this->curtool, $this->resource, $revision, $tconfig);
 			}

@@ -382,7 +382,7 @@ class plgUsageOverview extends JPlugin
 			}
 		}
 
-		$config =& JComponentHelper::getParams($option);
+		$config = JComponentHelper::getParams($option);
 
 		// Incoming
 		$period = JRequest::getVar('period', 'prior12');

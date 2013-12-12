@@ -578,7 +578,7 @@ class Hubzero_Registration
 		else
 			$index = 0;
 
-          $hconfig =& JComponentHelper::getParams('com_register');
+          $hconfig = JComponentHelper::getParams('com_register');
 
           $default    = str_pad($default, 4, '-');
           $configured  = $hconfig->get($name);
@@ -854,7 +854,7 @@ class Hubzero_Registration
 			{
 				$eid = $this->getEmailId($email);
 				
-				$usersConfig = &JComponentHelper::getParams( 'com_users' );
+				$usersConfig =  JComponentHelper::getParams( 'com_users' );
 				
 				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
 				

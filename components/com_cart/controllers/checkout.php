@@ -298,7 +298,7 @@ class CartControllerCheckout extends ComponentController
 		$cart->updateTransactionStatus('awaiting payment');
 		
 		// Generate payment code
-		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 		
 		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');

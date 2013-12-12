@@ -63,7 +63,7 @@ class ToolsControllerAuthors extends Hubzero_Controller
 		}
 
 		// Load the com_resources component config
-		$rconfig =& JComponentHelper::getParams('com_resources');
+		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->rconfig = $rconfig;
 
 		parent::execute();

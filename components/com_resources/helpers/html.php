@@ -325,7 +325,7 @@ class ResourcesHtml
 		$path = self::build_path($created, $id, '');
 
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams('com_tools');
+		$tconfig = JComponentHelper::getParams('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions) 
@@ -887,7 +887,7 @@ class ResourcesHtml
 		$html  = '<span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
 
 		// Get contribtool params
-		$tconfig =& JComponentHelper::getParams('com_tools');
+		$tconfig = JComponentHelper::getParams('com_tools');
 		$doi = '';
 
 		/*
@@ -1429,7 +1429,7 @@ class ResourcesHtml
 					if ($alltools && ($resource->doi || $resource->doi_label)) 
 					{
 						// Get contribtool params
-						$tconfig =& JComponentHelper::getParams('com_tools');
+						$tconfig = JComponentHelper::getParams('com_tools');
 						$doi = '';
 
 						if ($resource->doi && $tconfig->get('doi_shoulder'))
@@ -2404,7 +2404,7 @@ class ResourcesHtml
 
 		$juser = JFactory::getUser();
 
-		$config =& JComponentHelper::getParams('com_resources');
+		$config = JComponentHelper::getParams('com_resources');
 
 		$html  = '<ol class="resources results">' . "\n";
 		foreach ($lines as $line)

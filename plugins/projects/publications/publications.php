@@ -54,10 +54,10 @@ class plgProjectsPublications extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 		
 		// Load component configs
-		$this->_config =& JComponentHelper::getParams( 'com_projects' );	
+		$this->_config = JComponentHelper::getParams( 'com_projects' );	
 		
 		// Load publications component configs
-		$this->_pubconfig =& JComponentHelper::getParams( 'com_publications' );					
+		$this->_pubconfig = JComponentHelper::getParams( 'com_publications' );					
 			
 		// Areas required for publication
 		$this->_required = ProjectsHelper::getParamArray(
@@ -5411,7 +5411,7 @@ class plgProjectsPublications extends JPlugin
 	protected function _getMemberPath() 
 	{		
 		// Get members config
-		$mconfig =& JComponentHelper::getParams( 'com_members' );
+		$mconfig = JComponentHelper::getParams( 'com_members' );
 			
 		// Build upload path
 		$dir  = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
@@ -6077,7 +6077,7 @@ class plgProjectsPublications extends JPlugin
 		$obj = new Project( $database );
 				
 		// Get referenced path
-		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base_path = $pubconfig->get('webpath');
 		$pubPath = PublicationHelper::buildPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
 		

@@ -82,22 +82,22 @@ if (count($this->rows) > 0)
 				ximport('Hubzero_User_Profile');
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
-				$mconfig =& JComponentHelper::getParams('com_members');
+				$mconfig = JComponentHelper::getParams('com_members');
 			break;
 			case 'questions':
-				$aconfig =& JComponentHelper::getParams('com_answers');
+				$aconfig = JComponentHelper::getParams('com_answers');
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 			break;
 			case 'tools':
-				$rconfig =& JComponentHelper::getParams('com_resources');
+				$rconfig = JComponentHelper::getParams('com_resources');
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 			break;
 			case 'resources':
-				$rconfig =& JComponentHelper::getParams('com_resources');
+				$rconfig = JComponentHelper::getParams('com_resources');
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 			break;
 			case 'all':
@@ -111,9 +111,9 @@ if (count($this->rows) > 0)
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-				$mconfig =& JComponentHelper::getParams('com_members');
-				$aconfig =& JComponentHelper::getParams('com_answers');
-				$rconfig =& JComponentHelper::getParams('com_resources');
+				$mconfig = JComponentHelper::getParams('com_members');
+				$aconfig = JComponentHelper::getParams('com_answers');
+				$rconfig = JComponentHelper::getParams('com_resources');
 			break;
 		}
 

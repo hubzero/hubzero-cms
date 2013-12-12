@@ -53,7 +53,7 @@ class modMyProjects extends Hubzero_Module
 		$limit = intval($params->get('limit'));
 
 		// Load component configs
-		$config =& JComponentHelper::getParams('com_projects');
+		$config = JComponentHelper::getParams('com_projects');
 
 		// Load classes
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');

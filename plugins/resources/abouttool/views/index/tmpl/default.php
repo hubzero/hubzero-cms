@@ -236,7 +236,7 @@ if ($shots) {
 			$cite->author = implode(';', $authors);
 			
 			// Get contribtool params
-			$tconfig =& JComponentHelper::getParams( 'com_tools' );
+			$tconfig = JComponentHelper::getParams( 'com_tools' );
 			$doi = '';
 
 			if (isset($this->model->resource->doi) && $this->model->resource->doi && $tconfig->get('doi_shoulder'))

@@ -123,7 +123,7 @@ class plgPublicationsSupportingDocs extends JPlugin
 		// Initiate a publication helper class
 		$helper = new PublicationHelper($database, $publication->id, $publication->version_id);
 			
-		$config =& JComponentHelper::getParams( $option );
+		$config = JComponentHelper::getParams( $option );
 		$jconfig = JFactory::getConfig();
 				
 		// Instantiate a view

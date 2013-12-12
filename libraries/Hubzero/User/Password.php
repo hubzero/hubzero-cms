@@ -603,7 +603,7 @@ class Hubzero_User_Password
 		ximport('Hubzero_User_Password_History');
 		
 		// Get config values for min, max, and warning
-		$config = & JComponentHelper::getParams('com_members');
+		$config =  JComponentHelper::getParams('com_members');
 		$shadowMin = $config->get('shadowMin', '0');
 		$shadowMax = $config->get('shadowMax', null);
 		$shadowWarning = $config->get('shadowWarning', '7');

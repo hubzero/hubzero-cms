@@ -603,7 +603,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 							$tool = $tool[0];
 						}
 						// get contribtool params
-						$tparams =& JComponentHelper::getParams('com_tools');
+						$tparams = JComponentHelper::getParams('com_tools');
 						$tv->compileResource($tool, '', &$resource, '', $tparams);
 					}
 				}*/
@@ -1357,7 +1357,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Get contribtool params
-		$tconfig =& JComponentHelper::getParams('com_tools');
+		$tconfig = JComponentHelper::getParams('com_tools');
 
 		// Record the hit
 		$this->model->resource->hit();
@@ -2291,7 +2291,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$tarname = $tv->toolname . '-r' . $tv->revision . '.tar.gz';
 
 		// Get contribtool params
-		$tparams =& JComponentHelper::getParams('com_tools');
+		$tparams = JComponentHelper::getParams('com_tools');
 		$tarball_path = $tparams->get('sourcecodePath');
 		if (empty($tarball_path))
 		{
@@ -2429,7 +2429,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Get contribtool params
-		$tconfig =& JComponentHelper::getParams('com_tools');
+		$tconfig = JComponentHelper::getParams('com_tools');
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);

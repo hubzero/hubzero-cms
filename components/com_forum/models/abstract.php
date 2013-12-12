@@ -108,7 +108,7 @@ class ForumModelAbstract extends \Hubzero\Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config =& JComponentHelper::getParams('com_forum');
+			$this->_config = JComponentHelper::getParams('com_forum');
 		}
 		if ($key)
 		{

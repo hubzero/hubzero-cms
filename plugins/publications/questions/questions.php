@@ -139,11 +139,11 @@ class plgPublicationsQuestions extends JPlugin
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 			
 			// Are we banking?
-			$upconfig =& JComponentHelper::getParams( 'com_members' );
+			$upconfig = JComponentHelper::getParams( 'com_members' );
 			$banking = $upconfig->get('bankAccounts');		
 
 			// Info aboit points link
-			$aconfig =& JComponentHelper::getParams( 'com_answers' );
+			$aconfig = JComponentHelper::getParams( 'com_answers' );
 			$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
 			
 			$limit = $this->_params->get('display_limit');

@@ -93,7 +93,7 @@ class PdfForm
 		$this->id = (int)$id;
 
 		// Get courses config
-		$config =& JComponentHelper::getParams('com_courses');
+		$config = JComponentHelper::getParams('com_courses');
 
 		// Build the upload path if it doesn't exist
 		$this->base = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/courses'), DS) . DS . 'forms' . DS;

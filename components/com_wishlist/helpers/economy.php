@@ -157,7 +157,7 @@ class WishlistEconomy extends JObject
 		if ($points > 0 && $type!='royalty') 
 		{
 			// Get the component parameters
-			$wconfig =& JComponentHelper::getParams('com_wishlist');
+			$wconfig = JComponentHelper::getParams('com_wishlist');
 			$admingroup = $wconfig->get('group', 'hubadmin');
 
 			// get list owners

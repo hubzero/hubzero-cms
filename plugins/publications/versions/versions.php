@@ -109,7 +109,7 @@ class plgPublicationsVersions extends JPlugin
 		$database = JFactory::getDBO();
 		
 		// Get pub configs
-		$config =& JComponentHelper::getParams( $option );
+		$config = JComponentHelper::getParams( $option );
 
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{

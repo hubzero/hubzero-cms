@@ -98,7 +98,7 @@ class modBillboards extends Hubzero_Module
 		$this->pager      = $this->params->get('pager', 'pager');
 
 		// Get the billboard background location from the billboards parameters
-		$params =& JComponentHelper::getParams('com_billboards');
+		$params = JComponentHelper::getParams('com_billboards');
 		$image_location = $params->get('image_location', '/site/media/images/billboards/');
 
 		// Add the CSS to the template for each billboard

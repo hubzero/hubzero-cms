@@ -222,7 +222,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 		
 		//get config
-		$config =& JComponentHelper::getParams('com_media');
+		$config = JComponentHelper::getParams('com_media');
 
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0);

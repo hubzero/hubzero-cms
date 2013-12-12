@@ -142,7 +142,7 @@ class FeaturesHtml
 	public function getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams('com_tools');
+		$tconfig = JComponentHelper::getParams('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions) 
@@ -373,7 +373,7 @@ class FeaturesHtml
 		// Do they have a picture?
 		if (isset($row->picture) && $row->picture != '') 
 		{
-			$config =& JComponentHelper::getParams('com_members');
+			$config = JComponentHelper::getParams('com_members');
 
 			// Yes - so build the path to it
 			$thumb  = DS . trim($config->get('webpath'), DS) . DS . FeaturesHtml::niceidformat($row->uidNumber) . DS . $row->picture;

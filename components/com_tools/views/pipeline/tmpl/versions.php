@@ -49,7 +49,7 @@ if ($this->action == 'confirm') {
 	ToolsHelperHtml::writeApproval(JText::_('COM_TOOLS_CONFIRM_VERSION'));
 }
 
-$rconfig =& JComponentHelper::getParams( 'com_resources' );
+$rconfig = JComponentHelper::getParams( 'com_resources' );
 $hubDOIpath = $rconfig->get('doi');
 ?> 
 	<div class="grid">

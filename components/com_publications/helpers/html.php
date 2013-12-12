@@ -89,7 +89,7 @@ class PublicationsHtml
 		$g = 0;
 		
 		// Get default thumbnail
-		$config =& JComponentHelper::getParams( 'com_publications' );
+		$config = JComponentHelper::getParams( 'com_publications' );
 		$defaultThumb = $config->get('gallery_thumb', '/components/com_publications/assets/img/gallery_thumb.gif');
 		
 		// Go through schreenshots
@@ -633,7 +633,7 @@ class PublicationsHtml
 		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
 		
-		$cconfig  =& JComponentHelper::getParams( 'com_citations' );
+		$cconfig  = JComponentHelper::getParams( 'com_citations' );
 		
 		$formatter = new CitationFormat();
 		$formatter->setTemplate('ieee');
@@ -1276,7 +1276,7 @@ class PublicationsHtml
 		
 		$juser = JFactory::getUser();
 
-		$config =& JComponentHelper::getParams( 'com_publications' );
+		$config = JComponentHelper::getParams( 'com_publications' );
 		
 		$html  = '<ol class="resources results">'."\n";
 		foreach ($lines as $line)

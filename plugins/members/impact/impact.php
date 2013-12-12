@@ -60,7 +60,7 @@ class plgMembersImpact extends JPlugin
 		$this->_params = new $paramsClass($this->_plugin->params);
 		$this->_database = JFactory::getDBO();
 		$this->_juser = JFactory::getUser();
-		$this->_pubconfig =& JComponentHelper::getParams( 'com_publications' );
+		$this->_pubconfig = JComponentHelper::getParams( 'com_publications' );
 		
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
 			.'com_publications' . DS . 'tables' . DS . 'logs.php');

@@ -133,7 +133,7 @@ class plgProjectsBlog extends JPlugin
 			$this->loadLanguage();
 			
 			// Load component configs
-			$this->_config =& JComponentHelper::getParams( 'com_projects' );
+			$this->_config = JComponentHelper::getParams( 'com_projects' );
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');

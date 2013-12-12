@@ -417,7 +417,7 @@ ximport('Hubzero_User_Profile_Helper');
 					$jxuser->load($juser->get('id'));
 					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 				} else {
-					$config =& JComponentHelper::getParams('com_members');
+					$config = JComponentHelper::getParams('com_members');
 					$thumb = DS . ltrim($config->get('defaultpic'), DS);
 					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
 				}

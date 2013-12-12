@@ -45,7 +45,7 @@ $items = $objSt->getPubList($this->project->id, 'files');
 $link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=';
 
 // Load component configs
-$config =& JComponentHelper::getParams('com_projects');
+$config = JComponentHelper::getParams('com_projects');
 
 // Get project path
 $path  = ProjectsHelper::getProjectPath($this->project->alias, 

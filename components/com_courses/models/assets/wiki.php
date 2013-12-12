@@ -89,7 +89,7 @@ class WikiAssetHandler extends ContentAssetHandler
 
 			// @FIXME: should these come from the global settings, or should they be courses specific
 			// Get config
-			$config =& JComponentHelper::getParams('com_media');
+			$config = JComponentHelper::getParams('com_media');
 
 			// Max upload size
 			$sizeLimit = $config->get('upload_maxsize');
@@ -100,7 +100,7 @@ class WikiAssetHandler extends ContentAssetHandler
 			}
 
 			// Get courses config
-			$cconfig =& JComponentHelper::getParams('com_courses');
+			$cconfig = JComponentHelper::getParams('com_courses');
 
 			// Loop through files and save them (they will potentially be coming in together, in a single request)
 			for ($i=0; $i < count($_FILES['files']['name']); $i++)

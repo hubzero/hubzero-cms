@@ -582,7 +582,7 @@ class MembersControllerQuotas extends Hubzero_Controller
 		$info = array();
 		$success = false;
 
-		$config =& JComponentHelper::getParams('com_tools');
+		$config = JComponentHelper::getParams('com_tools');
 		$host = $config->get('storagehost');
 
 		if ($username && $host) 

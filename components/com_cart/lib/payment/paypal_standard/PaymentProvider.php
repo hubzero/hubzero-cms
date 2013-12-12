@@ -53,7 +53,7 @@ class PaymentProvider
 		$jconfig = JFactory::getConfig();
 		$hubName  = $jconfig->getValue('config.sitename');
 		
-		$params = &JComponentHelper::getParams(JRequest::getVar('option'));
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 		
 		$paymentOptions->transactionName = "$hubName online purchase";
 		$paymentOptions->businessName = $params->get('PPS_businessName');

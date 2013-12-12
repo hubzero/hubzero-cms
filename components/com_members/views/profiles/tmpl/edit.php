@@ -85,7 +85,7 @@ if ($this->authorized === 'admin') {
 //$html .= "\t\t".'<p class="help">'.JText::_('E-mail may be changed with <a href="/hub/registration/edit">this form</a>.')."\n";
 //$html .= "\t\t".'<p class="help">'.JText::_('Passwords can be changed with <a href="'.JRoute::_('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=changepassword').'">this form</a>.').'</p>'."\n";
 
-//$mwconfig =& JComponentHelper::getParams( 'com_mw' );
+//$mwconfig = JComponentHelper::getParams( 'com_mw' );
 //$enabled = $mwconfig->get('mw_on');
 //if ($enabled) {
 //	$html .= "\t\t".'<p class="help">'.JText::_('Request for more storage or sessions may be made with <a href="'.JRoute::_('index.php?option='.$this->option.a.'id='.$this->profile->get('uidNumber').a.'task=raiselimit').'">this form</a>.').'</p>'."\n";

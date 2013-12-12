@@ -202,7 +202,7 @@ class PublicationsHtml
 		}
 		if (!$base) 
 		{
-			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base = $pubconfig->get('webpath');					
 		}
 		

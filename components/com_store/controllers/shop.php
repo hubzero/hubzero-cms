@@ -46,7 +46,7 @@ class StoreControllerShop extends Hubzero_Controller
 	public function execute()
 	{
 		// Get the component parameters
-		$aconfig =& JComponentHelper::getParams('com_answers');
+		$aconfig = JComponentHelper::getParams('com_answers');
 		$this->infolink = $aconfig->get('infolink', '/kb/points/');
 
 		parent::execute();
@@ -243,7 +243,7 @@ class StoreControllerShop extends Hubzero_Controller
 		$this->view->msg = '';
 
 		// Check if economy functions are unavailable
-		$upconfig =& JComponentHelper::getParams('com_members');
+		$upconfig = JComponentHelper::getParams('com_members');
 		if (!$upconfig->get('bankAccounts')) 
 		{
 			$this->view->juser = $this->juser;

@@ -381,7 +381,7 @@ class typeFiles extends JObject
 		if (isset($selections['files']) && count($selections['files']) > 0) 
 		{			
 			// Load component configs
-			$config =& JComponentHelper::getParams( 'com_projects' );	
+			$config = JComponentHelper::getParams( 'com_projects' );	
 			
 			// Git helper
 			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
@@ -462,8 +462,8 @@ class typeFiles extends JObject
 		$projectsHelper = new ProjectsHelper( $this->_database );
 		
 		// Load component configs
-		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
-		$config =& JComponentHelper::getParams( 'com_projects' );	
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$config = JComponentHelper::getParams( 'com_projects' );	
 				
 		// Remove files that got unselected from a finalized draft
 		jimport('joomla.filesystem.file');
@@ -526,8 +526,8 @@ class typeFiles extends JObject
 		jimport('joomla.filesystem.folder');
 		
 		// Load component configs
-		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
-		$config =& JComponentHelper::getParams( 'com_projects' );			
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$config = JComponentHelper::getParams( 'com_projects' );			
 		
 		// Build publication path
 		$base_path  = $pubconfig->get('webpath');
@@ -578,7 +578,7 @@ class typeFiles extends JObject
 			$projectsHelper = new ProjectsHelper( $this->_database );
 
 			// Load component configs
-			$config =& JComponentHelper::getParams( 'com_projects' );	
+			$config = JComponentHelper::getParams( 'com_projects' );	
 
 			// Git path	
 			$gitpath  = $config->get('gitpath', '/opt/local/bin/git');
@@ -626,8 +626,8 @@ class typeFiles extends JObject
 		jimport('joomla.filesystem.folder');
 		
 		// Load component configs
-		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
-		$config =& JComponentHelper::getParams( 'com_projects' );
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$config = JComponentHelper::getParams( 'com_projects' );
 		
 		// Build publication paths
 		$base_path 	= $pubconfig->get('webpath');

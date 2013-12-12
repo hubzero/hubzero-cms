@@ -40,7 +40,7 @@ $instruct = $this->project->provisioned == 1
 			: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SELECT_AUTHORS');
 
 // Get image path
-$mconfig =& JComponentHelper::getParams( 'com_members' );
+$mconfig = JComponentHelper::getParams( 'com_members' );
 $path  = $mconfig->get('webpath');
 if (substr($path, 0, 1) != DS) {
 	$path = DS.$path;

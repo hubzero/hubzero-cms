@@ -81,7 +81,7 @@ class modFeaturedblog extends Hubzero_Module
 			$juser = JFactory::getUser();
 			$aid = $juser->get('aid', 0);
 
-			$contentConfig =& JComponentHelper::getParams('com_content');
+			$contentConfig = JComponentHelper::getParams('com_content');
 			$noauth = !$contentConfig->get('shownoauth');
 
 			$date = JFactory::getDate();
@@ -184,7 +184,7 @@ class modFeaturedblog extends Hubzero_Module
 		{
 			ximport('Hubzero_View_Helper_Html');
 
-			$config =& JComponentHelper::getParams('com_members');
+			$config = JComponentHelper::getParams('com_members');
 
 			// Is this a content article or a member profile?
 			if (isset($this->row->catid)) 

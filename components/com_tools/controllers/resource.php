@@ -66,7 +66,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$this->_authorize();
 
 		// Load the com_resources component config
-		$rconfig =& JComponentHelper::getParams('com_resources');
+		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->rconfig = $rconfig;
 
 		parent::execute();
@@ -248,7 +248,7 @@ class ToolsControllerResource extends Hubzero_Controller
 
 		// Get any HUB focus areas
 		// These are used where any resource is required to have one of these tags
-		$tconfig =& JComponentHelper::getParams('com_tags');
+		$tconfig = JComponentHelper::getParams('com_tags');
 		$fa1  = $tconfig->get('focus_area_01');
 		$fa2  = $tconfig->get('focus_area_02');
 		$fa3  = $tconfig->get('focus_area_03');

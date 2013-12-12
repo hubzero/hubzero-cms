@@ -54,10 +54,10 @@ class plgProjectsNotes extends JPlugin
 		$this->_params = new JParameter( $this->_plugin->params );
 		
 		// Load component configs
-		$this->_config =& JComponentHelper::getParams( 'com_projects' );
+		$this->_config = JComponentHelper::getParams( 'com_projects' );
 		
 		// Load wiki configs
-		$this->_wiki_config =& JComponentHelper::getParams( 'com_wiki' ); 			
+		$this->_wiki_config = JComponentHelper::getParams( 'com_wiki' ); 			
 				
 		$this->_task 	= '';
 		$this->_msg 	= '';
@@ -653,7 +653,7 @@ class plgProjectsNotes extends JPlugin
 			$view->option 			= $this->_option;
 			$view->project			= $this->_project;
 			$view->url				= $url;
-			$view->config 			=& JComponentHelper::getParams( 'com_projects' );	
+			$view->config 			= JComponentHelper::getParams( 'com_projects' );	
 			$view->page				= $page;
 			$view->revision 		= $page->getCurrentRevision();
 			$view->masterscope 		= 'projects' . DS . $this->_project->alias . DS . 'notes';
@@ -976,7 +976,7 @@ class plgProjectsNotes extends JPlugin
 		$view->option 			= $this->_option;
 		$view->project			= $this->_project;
 		$view->url				= $url;
-		$view->config 			=& JComponentHelper::getParams( 'com_projects' );
+		$view->config 			= JComponentHelper::getParams( 'com_projects' );
 		$view->database 		= $database;	
 		$view->page				= $page;
 		$view->revision 		= $page->getCurrentRevision();

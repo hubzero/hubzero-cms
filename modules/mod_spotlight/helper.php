@@ -381,7 +381,7 @@ class modSpotlight extends Hubzero_Module
 				// Load their bio
 				$profile = Hubzero_User_Profile::getInstance($row->uidNumber);
 
-				$mconfig =& JComponentHelper::getParams('com_members');
+				$mconfig = JComponentHelper::getParams('com_members');
 
 				if (isset($row->picture) && $row->picture != '')
 				{
@@ -496,7 +496,7 @@ class modSpotlight extends Hubzero_Module
 				}
 				else
 				{
-					$rconfig =& JComponentHelper::getParams('com_resources');
+					$rconfig = JComponentHelper::getParams('com_resources');
 					$path = $rconfig->get('uploadpath');
 					if (substr($path, 0, 1) != DS)
 					{
@@ -682,7 +682,7 @@ class modSpotlight extends Hubzero_Module
 	private function _getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams('com_tools');
+		$tconfig = JComponentHelper::getParams('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions)

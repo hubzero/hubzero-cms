@@ -94,7 +94,7 @@ class modFeaturedresource extends Hubzero_Module
 			$juser = JFactory::getUser();
 			$aid = $juser->get('aid', 0);
 
-			$contentConfig =& JComponentHelper::getParams('com_content');
+			$contentConfig = JComponentHelper::getParams('com_content');
 			$noauth = !$contentConfig->get('shownoauth');
 
 			$date = JFactory::getDate();
@@ -162,7 +162,7 @@ class modFeaturedresource extends Hubzero_Module
 		// Did we get any results?
 		if ($row) 
 		{
-			$config =& JComponentHelper::getParams('com_resources');
+			$config = JComponentHelper::getParams('com_resources');
 
 			// Is this a content article or a member profile?
 			if (isset($row->catid)) 
@@ -324,7 +324,7 @@ class modFeaturedresource extends Hubzero_Module
 	private function getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams('com_tools');
+		$tconfig = JComponentHelper::getParams('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions) 

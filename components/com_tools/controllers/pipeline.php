@@ -86,7 +86,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->_authorize();
 
 		// Load the com_resources component config
-		$rconfig =& JComponentHelper::getParams('com_resources');
+		$rconfig = JComponentHelper::getParams('com_resources');
 		$this->rconfig = $rconfig;
 
 		// Set the default task
@@ -2056,7 +2056,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$row = new SupportTicket($this->database);
 		if ($row->load($ticketid) && isset($newstuff['toolname']))
 		{
-			//$config =& JComponentHelper::getParams($this->_option);
+			//$config = JComponentHelper::getParams($this->_option);
 			$row->group = $this->config->get('group_prefix', 'app-') . $newstuff['toolname'];
 			$row->store();	
 		}

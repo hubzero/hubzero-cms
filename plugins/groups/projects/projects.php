@@ -58,7 +58,7 @@ class plgGroupsProjects extends Hubzero_Plugin
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin('groups', 'projects');
 		$this->_params = new $paramsClass($this->_plugin->params);
-		$this->_config =& JComponentHelper::getParams('com_projects');
+		$this->_config = JComponentHelper::getParams('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
 		$this->_juser = JFactory::getUser();
@@ -502,7 +502,7 @@ class plgGroupsProjects extends Hubzero_Plugin
 		$projects = $db->loadAssocList();
 
 		// Get the component parameters
-		$view->project_params =& JComponentHelper::getParams('com_projects');
+		$view->project_params = JComponentHelper::getParams('com_projects');
 
 		//push vars to the view
 		$view->projects = $projects;

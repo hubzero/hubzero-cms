@@ -57,7 +57,7 @@ class plgProjectsDatabases extends JPlugin
 		$this->dataviewer = 'dataviewer';
 
 		// Load component configs
-		$this->_config 		=& JComponentHelper::getParams('com_projects');
+		$this->_config 		= JComponentHelper::getParams('com_projects');
 		$this->gitpath 		= $this->_config->get('gitpath', '/opt/local/bin/git');
 		$this->prefix 		= $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
 

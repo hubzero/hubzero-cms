@@ -196,11 +196,11 @@ class plgResourcesQuestions extends JPlugin
 		);
 
 		// Are we banking?
-		$upconfig =& JComponentHelper::getParams('com_members');
+		$upconfig = JComponentHelper::getParams('com_members');
 		$view->banking = $upconfig->get('bankAccounts');
 
 		// Info aboit points link
-		$aconfig =& JComponentHelper::getParams('com_answers');
+		$aconfig = JComponentHelper::getParams('com_answers');
 		$view->infolink = $aconfig->get('infolink', '/kb/points/');
 
 		// Pass the view some info
@@ -265,7 +265,7 @@ class plgResourcesQuestions extends JPlugin
 		$view->tag      = $this->filters['tag'];
 
 		// Are we banking?
-		$upconfig =& JComponentHelper::getParams('com_members');
+		$upconfig = JComponentHelper::getParams('com_members');
 		$view->banking = $upconfig->get('bankAccounts');
 
 		$view->funds = 0;

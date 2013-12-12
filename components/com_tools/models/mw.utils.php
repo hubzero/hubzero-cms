@@ -47,7 +47,7 @@ class MwUtils
 
 		if (!is_object($instance)) 
 		{
-			$config =& JComponentHelper::getParams('com_tools');
+			$config = JComponentHelper::getParams('com_tools');
 			$enabled = $config->get('mw_on');
 
 			if (!$enabled) 
@@ -97,7 +97,7 @@ class MwUtils
 	{
 		$info = array();
 
-		$config =& JComponentHelper::getParams('com_tools');
+		$config = JComponentHelper::getParams('com_tools');
 		$host = $config->get('storagehost');
 
 		if ($username && $host) 

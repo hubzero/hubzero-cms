@@ -127,7 +127,7 @@ class PublicationHelper extends JObject
 		}
 		if (!$base) 
 		{
-			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base = $pubconfig->get('webpath');					
 		}
 		
@@ -199,7 +199,7 @@ class PublicationHelper extends JObject
 			return false;
 		}
 		
-		$pconfig =& JComponentHelper::getParams( 'com_projects' );
+		$pconfig = JComponentHelper::getParams( 'com_projects' );
 		if (!$base) 
 		{
 			$base = $pconfig->get('webpath');					
@@ -240,7 +240,7 @@ class PublicationHelper extends JObject
 		
 		$used = 0;
 		
-		$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base = trim($pubconfig->get('webpath'), DS);
 		
 		if (!empty($rows))

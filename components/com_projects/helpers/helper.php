@@ -865,7 +865,7 @@ class ProjectsHelper extends JObject {
 		}
 		
 		// Load wiki configs
-		$wiki_config =& JComponentHelper::getParams( 'com_wiki' ); 			
+		$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 			
 		
 		$path =  DS . trim($wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
 
@@ -895,7 +895,7 @@ class ProjectsHelper extends JObject {
 		}
 		
 		// Load component configs
-		$config =& JComponentHelper::getParams( 'com_projects' );
+		$config = JComponentHelper::getParams( 'com_projects' );
 		$option = 'com_projects';
 		
 		// Get project path
@@ -906,7 +906,7 @@ class ProjectsHelper extends JObject {
 		);
 		
 		// Load wiki configs
-		$wiki_config =& JComponentHelper::getParams( 'com_wiki' ); 	
+		$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 	
 		
 		// Get wiki upload path
 		$previewPath = ProjectsHelper::getWikiPath($page->id);		
@@ -934,7 +934,7 @@ class ProjectsHelper extends JObject {
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 			
-			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
 			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, $base_path, 'wikicontent', $root = 0);
 			
@@ -1136,7 +1136,7 @@ class ProjectsHelper extends JObject {
 		}
 		
 		// Load component configs
-		$config =& JComponentHelper::getParams( 'com_projects' );
+		$config = JComponentHelper::getParams( 'com_projects' );
 		
 		// Get project path
 		$projectPath = ProjectsHelper::getProjectPath(
@@ -1174,7 +1174,7 @@ class ProjectsHelper extends JObject {
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 			
-			$pubconfig =& JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
 			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, $base_path, 'wikicontent', $root = 0);
 			

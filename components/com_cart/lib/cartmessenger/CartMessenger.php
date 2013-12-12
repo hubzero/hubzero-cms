@@ -110,7 +110,7 @@ class CartMessenger
 	
 	public function emailOrderComplete($transactionInfo)
 	{
-		$params = &JComponentHelper::getParams(JRequest::getVar('option'));	
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));	
 		
 		$items = unserialize($transactionInfo->tiItems);
 		$meta = unserialize($transactionInfo->tiMeta);
@@ -235,7 +235,7 @@ class CartMessenger
 	
 	private function emailError($error, $errorType = NULL)
 	{
-		$params = &JComponentHelper::getParams(JRequest::getVar('option'));	
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));	
 
 		// Get message plugin
 		JPluginHelper::importPlugin('xmessage');
