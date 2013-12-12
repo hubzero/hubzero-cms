@@ -456,7 +456,7 @@ class PdfFormDeployment
 			return $this->timeLimit;
 		}
 
-		return min($this->timeLimit, (strtotime($this->endTime) - time())/60);
+		return min($this->timeLimit, (strtotime($this->endTime) - strtotime(JFactory::getDate()))/60);
 	}
 
 	/**
@@ -486,12 +486,12 @@ class PdfFormDeployment
 	 **/
 	public function getState()
 	{
-		if ($this->endTime && strtotime($this->endTime) <= time())
+		if ($this->endTime && strtotime($this->endTime) <= strtotime(JFactory::getDate()))
 		{
 			return 'expired';
 		}
 
-		return (!$this->startTime || strtotime($this->startTime) <= time()) ? 'active' : 'pending';
+		return (!$this->startTime || strtotime($this->startTime) <= strtotime(JFactory::getDate())) ? 'active' : 'pending';
 	}
 
 	/**
@@ -518,7 +518,7 @@ class PdfFormDeployment
 			{
 				$this->errors['timeLimit'] = array('Expected a positive, nonzero, integer number of minutes');
 			}
-			if (!$update && $this->endTime && strtotime($this->endTime) <= time())
+			if (!$update && $this->endTime && strtotime($this->endTime) <= strtotime(JFactory::getDate()))
 			{
 				if (!isset($this->errors['endTime']))
 				{

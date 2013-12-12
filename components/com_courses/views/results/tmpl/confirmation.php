@@ -17,11 +17,11 @@ $resp = $this->resp;
 </div>
 
 <div class="main section">
-	<p>Completed <?= date('r', strtotime($resp->getEndTime())); ?></p>
+	<p>Completed <?= JHTML::_('date', $resp->getEndTime(), 'r'); ?></p>
 	<? if ($this->dep->getResultsClosed() == 'details'): ?>
-		<p>Detailed results will be available <?= date('r', strtotime($this->dep->getEndTime())) ?> (about <?= FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - time()) ?> from now). Save this link and come back then.</p>
+		<p>Detailed results will be available <?= JHTML::_('date', $resp->getEndTime(), 'r'); ?> (about <?= FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(JFactory::getDate())) ?> from now). Save this link and come back then.</p>
 	<? elseif ($this->dep->getResultsClosed() == 'score'): ?>
-		<p>Your score will be available <?= date('r', strtotime($this->dep->getEndTime())) ?> (about <?= FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - time()) ?> from now). Save this link and come back then.</p>
+		<p>Your score will be available <?= JHTML::_('date', $resp->getEndTime(), 'r'); ?> (about <?= FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(JFactory::getDate())) ?> from now). Save this link and come back then.</p>
 	<? endif; ?>
 	<? if ($this->dep->getAllowedAttempts() > 1) : ?>
 		<? $attempt = $resp->getAttemptNumber(); ?>

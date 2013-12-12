@@ -21,7 +21,7 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 </div>
 
 <div class="main section">
-	<p>Completed <?= date('r', strtotime($resp->getEndTime())); ?></p>
+	<p>Completed <?= JHTML::_('date', $resp->getEndTime(), 'r'); ?></p>
 	<p>Score <strong><?= $record['summary']['score'] ?>%</strong></p>
 
 	<? if ($this->dep->getAllowedAttempts() > 1) : ?>
