@@ -213,7 +213,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			$this->_comment = null;
 
 			// See if we already have a list of comments that we can look through
-			if (isset($this->_comments) && is_a($this->_comments, 'AnswersModelIterator'))
+			if ($this->_comments instanceof \Hubzero\ItemList)
 			{
 				foreach ($this->_comments as $key => $comment)
 				{
