@@ -261,7 +261,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 			'domain'   => $this->_group
 		);
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 		$row->pagehtml = $p->parse($row->pagetext, $wikiconfig);
 
 		// Check content

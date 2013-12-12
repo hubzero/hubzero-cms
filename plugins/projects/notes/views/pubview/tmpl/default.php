@@ -30,7 +30,7 @@ $wiki_config = JComponentHelper::getParams( 'com_wiki' );
 			
 // Transform the wikitext to HTML
 ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 
 $wikiconfig = array(
 	'option'   => 'com_projects',

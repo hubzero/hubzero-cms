@@ -325,7 +325,7 @@ class plgTimeHubs extends Hubzero_Plugin
 			'domain'   => $view->row->id
 		);
 
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 
 		// Parse the notes for the view
 		$view->row->notes = $p->parse("\n" . stripslashes($view->row->notes), $wikiconfig);

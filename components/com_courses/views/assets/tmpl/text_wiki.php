@@ -43,7 +43,7 @@ $wikiconfig = array(
 );
 
 ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 ?>
 
 <div id="content-header">

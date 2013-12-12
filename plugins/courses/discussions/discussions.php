@@ -882,7 +882,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 			'filepath' => '',
 			'domain'   => $post->id
 		);
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -1121,7 +1121,7 @@ class plgCoursesDiscussions extends Hubzero_Plugin
 				'filepath' => '',
 				'domain'   => $post->id
 			);
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 
 			foreach ($results as $key => $row)
 			{

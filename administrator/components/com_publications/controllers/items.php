@@ -311,7 +311,7 @@ class PublicationsControllerItems extends Hubzero_Controller
 		
 		//Import the wiki parser
 		ximport('Hubzero_Wiki_Parser');
-		$this->view->parser =& Hubzero_Wiki_Parser::getInstance();
+		$this->view->parser = Hubzero_Wiki_Parser::getInstance();
 
 		$this->view->wikiconfig = array(
 			'option'   => $this->_option,

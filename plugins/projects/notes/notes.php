@@ -751,7 +751,7 @@ class plgProjectsNotes extends JPlugin
 			'domain'   => $this->_group
 		);
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 		$revision->pagehtml = $p->parse($revision->pagetext, $wikiconfig);
 		$revision->store();
 		

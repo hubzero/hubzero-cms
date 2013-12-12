@@ -163,7 +163,7 @@ class Hubzero_Course_Helper
 		
 		//import wiki parser
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 		
 		//loop through each course
 		foreach($courses as $course)

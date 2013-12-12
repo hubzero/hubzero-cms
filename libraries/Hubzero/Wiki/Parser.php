@@ -82,7 +82,7 @@ class Hubzero_Wiki_Parser extends JObservable
 	 * if it doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 * 		<pre>  $parser =& Hubzero_Wiki_Parser::getInstance($parser_name);</pre>
+	 * 		<pre>  $parser = Hubzero_Wiki_Parser::getInstance($parser_name);</pre>
 	 *
 	 * @access	public
 	 * @param	string	$parser  The name of the parser to use.

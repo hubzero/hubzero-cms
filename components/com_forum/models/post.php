@@ -299,7 +299,7 @@ class ForumModelPost extends ForumModelAbstract
 					return $this->get('content_parsed');
 				}
 
-				$p =& Hubzero_Wiki_Parser::getInstance();
+				$p = Hubzero_Wiki_Parser::getInstance();
 
 				$wikiconfig = array(
 					'option'   => 'com_forum',

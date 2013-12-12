@@ -317,7 +317,7 @@ class WikiControllerComments extends Hubzero_Controller
 			'domain'   => $this->_group
 		);
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 		$this->comment->chtml = $p->parse($this->comment->ctext, $wikiconfig);
 
 		$this->comment->anonymous = ($this->comment->anonymous == 1 || $this->comment->anonymous == '1') ? $this->comment->anonymous : 0;

@@ -50,7 +50,7 @@ $wikiconfig = array(
 	'domain'   => 'collection'
 );
 
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 

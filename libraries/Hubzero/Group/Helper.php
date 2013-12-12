@@ -196,7 +196,7 @@ class Hubzero_Group_Helper
 		
 		//import wiki parser
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 		
 		//loop through each group
 		foreach($groups as $group)

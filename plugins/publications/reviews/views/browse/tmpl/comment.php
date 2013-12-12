@@ -47,7 +47,7 @@ $wikiconfig = array(
 );
 if (!$this->parser) {
 	ximport('Hubzero_Wiki_Parser');
-	$parser =& Hubzero_Wiki_Parser::getInstance();
+	$parser = Hubzero_Wiki_Parser::getInstance();
 	$this->parser = $parser;
 }
 

@@ -50,7 +50,7 @@ $wikiconfig = array(
 	'domain'   => $this->reply->id
 );
 
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 
 if ($this->reply->comment)
 {

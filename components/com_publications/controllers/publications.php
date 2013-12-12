@@ -761,7 +761,7 @@ class PublicationsControllerPublications extends Hubzero_Controller
 		{
 			//Import the wiki parser
 			ximport('Hubzero_Wiki_Parser');
-			$parser =& Hubzero_Wiki_Parser::getInstance();
+			$parser = Hubzero_Wiki_Parser::getInstance();
 
 			$wikiconfig = array(
 				'option'   => $this->_option,

@@ -43,7 +43,7 @@ $wikiconfig = array(
 	'domain'   => 0
 );
 ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 

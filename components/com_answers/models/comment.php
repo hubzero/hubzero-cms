@@ -187,7 +187,7 @@ class AnswersModelComment extends AnswersModelAbstract
 					return $this->get('comment_parsed');
 				}
 
-				$p =& Hubzero_Wiki_Parser::getInstance();
+				$p = Hubzero_Wiki_Parser::getInstance();
 
 				$wikiconfig = array(
 					'option'   => 'com_answers',

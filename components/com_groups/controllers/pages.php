@@ -104,7 +104,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		);
 
 		ximport('Hubzero_Wiki_Parser');
-		$this->view->parser =& Hubzero_Wiki_Parser::getInstance();
+		$this->view->parser = Hubzero_Wiki_Parser::getInstance();
 		
 		// Instantiate group page and module object
 		$GPage = new GroupPages($this->database);

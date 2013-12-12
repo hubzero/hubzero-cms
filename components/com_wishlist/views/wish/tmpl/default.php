@@ -239,7 +239,7 @@ if ($this->wishlist && $this->wish) {
 							'domain'   => $this->wish->id
 						);
 
-						$p =& Hubzero_Wiki_Parser::getInstance();
+						$p = Hubzero_Wiki_Parser::getInstance();
 
 						echo $p->parse($this->wish->about, $wikiconfig);
 						?>
@@ -1022,7 +1022,7 @@ if ($this->wishlist && $this->wish) {
 								'domain'   => '' 
 							);
 							ximport('Hubzero_Wiki_Parser');
-							$p =& Hubzero_Wiki_Parser::getInstance();
+							$p = Hubzero_Wiki_Parser::getInstance();
 
 							echo $p->parse($this->wish->plan->pagetext, $wikiconfig);
 						?>

@@ -108,7 +108,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		'domain'   => 'collection'
 	);
 
-	$p =& Hubzero_Wiki_Parser::getInstance();
+	$p = Hubzero_Wiki_Parser::getInstance();
 
 	foreach ($this->rows as $row) { ?>
 		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">

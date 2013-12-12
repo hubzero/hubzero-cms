@@ -64,7 +64,7 @@ if ($this->reviews) {
 		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
-	$parser =& Hubzero_Wiki_Parser::getInstance();
+	$parser = Hubzero_Wiki_Parser::getInstance();
 
 	$admin = false;
 	// Check if they're a site admin (from Joomla)

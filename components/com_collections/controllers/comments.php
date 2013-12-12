@@ -453,7 +453,7 @@ class plgGroupsBulletinboard extends JPlugin
 		if ($view->row->content) 
 		{
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 
 			if ($view->row->scope == 'member') 
 			{

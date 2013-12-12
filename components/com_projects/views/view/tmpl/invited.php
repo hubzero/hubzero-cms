@@ -32,7 +32,7 @@ $this->project->about = rtrim(stripslashes(ProjectsHtml::cleanText($this->projec
 
 // Transform the wikitext to HTML
 ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 
 //import the wiki parser
 $wikiconfig = array(

@@ -72,7 +72,7 @@ class CoursesModelPage extends CoursesModelAbstract
 					return $this->get('content_parsed');
 				}
 
-				$p =& Hubzero_Wiki_Parser::getInstance();
+				$p = Hubzero_Wiki_Parser::getInstance();
 
 				$wikiconfig = array(
 					'option'   => JRequest::getCmd('option', 'com_courses'),

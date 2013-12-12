@@ -1099,7 +1099,7 @@ class plgProjectsPublications extends JPlugin
 		
 		//Import the wiki parser
 		ximport('Hubzero_Wiki_Parser');
-		$view->parser =& Hubzero_Wiki_Parser::getInstance();
+		$view->parser = Hubzero_Wiki_Parser::getInstance();
 
 		$view->wikiconfig = array(
 			'option'   => $this->_option,
@@ -1801,7 +1801,7 @@ class plgProjectsPublications extends JPlugin
 		
 		//Import the wiki parser
 		ximport('Hubzero_Wiki_Parser');
-		$view->parser =& Hubzero_Wiki_Parser::getInstance();
+		$view->parser = Hubzero_Wiki_Parser::getInstance();
 
 		$view->wikiconfig = array(
 			'option'   => $this->_option,
@@ -4248,7 +4248,7 @@ class plgProjectsPublications extends JPlugin
 		if ($raw) 
 		{
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 			
 			// import the wiki parser
 			$wikiconfig = array(

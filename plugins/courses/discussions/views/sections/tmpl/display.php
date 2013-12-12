@@ -12,7 +12,7 @@ $wikiconfig = array(
 	'domain'   => 0
 );
 ximport('Hubzero_Wiki_Parser');
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 
 $ct = count($this->sections);
 

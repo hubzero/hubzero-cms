@@ -57,7 +57,7 @@ if (count($this->comments) > 0) {
 		'domain'   => $this->page->group_cn
 	);
 	ximport('Hubzero_Wiki_Parser');
-	$parser =& Hubzero_Wiki_Parser::getInstance();
+	$parser = Hubzero_Wiki_Parser::getInstance();
 
 	$html .= '<ol class="comments">'."\n";
 	foreach ($this->comments as $comment)

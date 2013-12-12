@@ -1301,7 +1301,7 @@ class WishlistController extends JObject
 				'domain'   => ''
 			);
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 			$page->pagehtml = $p->parse($page->pagetext, $wikiconfig);
 
 			// Store content

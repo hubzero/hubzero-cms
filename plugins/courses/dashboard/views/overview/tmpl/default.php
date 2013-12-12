@@ -184,7 +184,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				'filepath' => '',
 				'domain'   => $this->post->id
 			);
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 
 			$view = new Hubzero_Plugin_View(
 				array(

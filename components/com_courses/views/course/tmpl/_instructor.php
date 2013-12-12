@@ -43,7 +43,7 @@ if ($b = $this->instructor->get('bio'))
 		'domain'   => '' 
 	);
 	ximport('Hubzero_Wiki_Parser');
-	$p =& Hubzero_Wiki_Parser::getInstance();
+	$p = Hubzero_Wiki_Parser::getInstance();
 
 	/*$appendmore = false;
 	if (strlen($b) > 200) 

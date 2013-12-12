@@ -194,7 +194,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				'domain'   => ''
 			);
 			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
+			$p = Hubzero_Wiki_Parser::getInstance();
 
 			$maxscore = $filters['search'] && $jobs[0]->keywords > 0 ? $jobs[0]->keywords : 1;
 

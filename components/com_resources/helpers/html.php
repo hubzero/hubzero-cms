@@ -1091,7 +1091,7 @@ class ResourcesHtml
 					'domain'   => ''
 				);
 				ximport('Hubzero_Wiki_Parser');
-				$p =& Hubzero_Wiki_Parser::getInstance();
+				$p = Hubzero_Wiki_Parser::getInstance();
 				$maintext = $p->parse($maintext, $wikiconfig);
 			}
 		}

@@ -16,7 +16,7 @@ $wikiconfig = array(
 	'domain'   => $this->post->id
 );
 
-$p =& Hubzero_Wiki_Parser::getInstance();
+$p = Hubzero_Wiki_Parser::getInstance();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>

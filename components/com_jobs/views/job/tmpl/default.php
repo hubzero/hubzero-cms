@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		'domain'   => ''
 	);
 	ximport('Hubzero_Wiki_Parser');
-	$p =& Hubzero_Wiki_Parser::getInstance();
+	$p = Hubzero_Wiki_Parser::getInstance();
 	$maintext = $p->parse(stripslashes($job->description), $wikiconfig);
 
 	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;

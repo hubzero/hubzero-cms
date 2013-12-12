@@ -111,7 +111,7 @@ if ($this->rows->total() > 0)
 		'domain'   => 'collection'
 	);
 
-	$p =& Hubzero_Wiki_Parser::getInstance();
+	$p = Hubzero_Wiki_Parser::getInstance();
 
 	foreach ($this->rows as $row)
 	{

@@ -326,7 +326,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		//create wiki parse
 		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
+		$p = Hubzero_Wiki_Parser::getInstance();
 
 		// Get the group pages if any
 		$GPages = new GroupPages( $this->database );
