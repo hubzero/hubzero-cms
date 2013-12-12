@@ -340,7 +340,7 @@ if (!$this->course->offering()->access('view')) { ?>
 		<?php } ?>
 	<?php } // close foreach ?>
 <?php elseif($this->course->offering()->access('manage')) : ?>
-		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Outline Builder</a> to being creating your course outline</p>
+		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Outline Builder</a> to begin creating your course outline.</p>
 <?php else : ?>
 		<p class="info">There is currently no outline available for this course</p>
 <?php endif; ?>
