@@ -249,7 +249,7 @@ class ResourcesResource extends JTable
 	 * @param      string $oid Resource alias
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL)
+	public function load($oid=NULL, $reset = true)
 	{
 		if ($oid === NULL) 
 		{
@@ -257,7 +257,7 @@ class ResourcesResource extends JTable
 		}
 		if (is_numeric($oid))
 		{
-			return parent::load($oid);
+			return parent::load($oid, $reset);
 		}
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
