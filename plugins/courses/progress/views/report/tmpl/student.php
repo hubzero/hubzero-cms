@@ -300,19 +300,37 @@ $progress_timeline .= '</div>';
 <? if ($this->course->offering()->section()->badge()->isAvailable() && $student->badge()->hasEarned()) : ?>
 	<div class="recognition badge earned">
 		<img src="<?= $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
-		<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
-		<p>
-			You've completed all of the requirements of <?= $this->course->get('title') ?>, qualifying you to receive
-			a special badge.
-		</p>
-		<? if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
+		<? if ($student->badge()->get('action') == 'accept') : ?>
+			<h3>Congratulations! You've got the badge!</h3>
 			<p>
-				<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
+				Thanks for working hard and claiming your badge. We hope you have the chance to earn another one soon!
+			</p>
+			<p>
+				<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
+			</p>
+		<? elseif ($student->badge()->get('action') == 'deny') : ?>
+			<h3>Congratulations! You earned the badge!</h3>
+			<p>
+				You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and claim it!
+			</p>
+			<p>
+				<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
 			</p>
 		<? else : ?>
+			<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
 			<p>
-				Watch your email in the next few days for details on how to claim your badge.
+				You've completed all of the requirements of <?= $this->course->get('title') ?>, qualifying you to receive
+				a special badge.
 			</p>
+			<? if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
+				<p>
+					<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
+				</p>
+			<? else : ?>
+				<p>
+					Watch your email in the next few days for details on how to claim your badge.
+				</p>
+			<? endif; ?>
 		<? endif; ?>
 	</div>
 <? endif; ?>

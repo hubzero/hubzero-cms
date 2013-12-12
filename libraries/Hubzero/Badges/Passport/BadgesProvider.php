@@ -40,7 +40,9 @@ class Hubzero_Badges_Passport_BadgesProvider
 	private $oauth;
 
 	const passportApiEndpoint = 'https://api.openpassport.org/1.0.0/';
+	const passportBadgesUrl   = 'https://www.openpassport.org/MyBadges';
 	const passportClaimUrl    = 'https://www.openpassport.org/MyBadges/Pending';
+	const passportDeniedUrl   = 'https://www.openpassport.org/MyBadges/Denied';
 
 	/**
 	 * Constructor
@@ -193,13 +195,25 @@ class Hubzero_Badges_Passport_BadgesProvider
 	}
 
 	/**
-	 * Return the claim URL
+	 * Return a URL
 	 * 
 	 * @param 	void
 	 * @return  bool
 	 */
-	public function getClaimUrl()
+	public function getUrl($type='Claim')
 	{
-		return Hubzero_Badges_Passport_BadgesProvider::passportClaimUrl;
+		switch ($type) {
+			case 'Denied':
+				return Hubzero_Badges_Passport_BadgesProvider::passportDeniedUrl;
+			break;
+
+			case 'Badges':
+				return Hubzero_Badges_Passport_BadgesProvider::passportBadgesUrl;
+			break;
+
+			default:
+				return Hubzero_Badges_Passport_BadgesProvider::passportClaimUrl;
+			break;
+		}
 	}
 }

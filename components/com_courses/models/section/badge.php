@@ -160,10 +160,40 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 	 */
 	public function getClaimUrl()
 	{
+		return $this->getUrl('Claim');
+	}
+
+	/**
+	 * Get badge denied url
+	 * 
+	 * @return     void
+	 */
+	public function getDeniedUrl()
+	{
+		return $this->getUrl('Denied');
+	}
+
+	/**
+	 * Get badges url
+	 * 
+	 * @return     void
+	 */
+	public function getBadgesUrl()
+	{
+		return $this->getUrl('Badges');
+	}
+
+	/**
+	 * Get url
+	 * 
+	 * @return     void
+	 */
+	private function getUrl($type='Claim')
+	{
 		$badgesHandler = new Hubzero_Badges(strtoupper($this->get('provider_name')));
 		$badgesProvider = $badgesHandler->getProvider();
 
-		return $badgesProvider->getClaimUrl();
+		return $badgesProvider->getUrl($type);
 	}
 
 	/**
