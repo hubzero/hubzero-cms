@@ -204,7 +204,7 @@ class Hubzero_Wiki_Parser extends JObservable
 
 		// Build the path to the needed parser plugin
 		$name = $input->clean($this->_name, 'cmd');
-		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . '.php';
+		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . DS . $name . '.php';
 
 		if (!JFile::exists($path)) 
 		{
