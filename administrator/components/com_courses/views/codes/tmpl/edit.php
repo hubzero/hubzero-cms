@@ -43,7 +43,7 @@ JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
 
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 
 $document = JFactory::getDocument();
 $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'classic.css');

@@ -44,7 +44,7 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 
 JHTML::_('behavior.tooltip');
 ?>

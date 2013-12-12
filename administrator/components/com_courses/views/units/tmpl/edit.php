@@ -46,7 +46,7 @@ JToolBarHelper::cancel();
 JHTML::_('behavior.modal');
 
 //jimport('joomla.html.editor');
-//$editor =& JEditor::getInstance();
+//$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

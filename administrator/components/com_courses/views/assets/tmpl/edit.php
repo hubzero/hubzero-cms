@@ -54,7 +54,7 @@ else
 	$id = 'tmp' . time() . rand(0, 10000);
 }
 //jimport('joomla.html.editor');
-//$editor =& JEditor::getInstance();
+//$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

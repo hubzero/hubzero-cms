@@ -200,7 +200,7 @@ window.addEvent('domready', function(){
 			   <td>
 			        <?php
 					jimport('joomla.html.editor');
-					$editor = &JEditor::getInstance();
+					$editor =  JEditor::getInstance();
 					echo $editor->display('profile[bio]', stripslashes($this->profile->get('bio')), '360px', '200px', '40', '10');
 			        ?>
 			  </td>

@@ -45,7 +45,7 @@ jimport('joomla.html.editor');
 
 JHtml::_('behavior.switcher');
 
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 
 $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 

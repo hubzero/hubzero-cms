@@ -45,7 +45,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('edit.html', true);
 
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 
 ?>
 <script type="text/javascript">

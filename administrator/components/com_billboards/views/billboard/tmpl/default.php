@@ -124,7 +124,7 @@ window.addEvent('domready', function() {
 						<td class="key" valign="top"><label for="billboard[text]"><?php echo JText::_('BILLBOARD_TEXT'); ?>:</label></td>
 						<td>
 							<?php
-								$editorText = &JEditor::getInstance();
+								$editorText =  JEditor::getInstance();
 								echo $editorText->display('billboard[text]', htmlentities(stripslashes($this->row->text), ENT_QUOTES), '95%', '100px', '45', '13', false);
 							?>
 						</td>
@@ -176,7 +176,7 @@ window.addEvent('domready', function() {
 							<td class="key" valign="top"><label for="billboard[css]"><?php echo JText::_('BILLBOARD_CSS'); ?>:</label></td>
 							<td>
 								<?php
-									$editorCSS = &JEditor::getInstance();
+									$editorCSS =  JEditor::getInstance();
 									echo $editorCSS->display('billboard[css]', htmlentities(stripslashes($this->row->css), ENT_QUOTES), '95%', '100px', '45', '13', false);
 								?>
 							</td>

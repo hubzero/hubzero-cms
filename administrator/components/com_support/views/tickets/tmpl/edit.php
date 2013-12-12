@@ -99,7 +99,7 @@ if ($this->row->owner)
 }
 
 //jimport('joomla.html.editor');
-//$editor =& JEditor::getInstance();
+//$editor = JEditor::getInstance();
 
 ximport('Hubzero_User_Profile');
 

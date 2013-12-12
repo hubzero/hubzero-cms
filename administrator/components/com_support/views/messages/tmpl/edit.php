@@ -40,7 +40,7 @@ JToolBarHelper::help('messages.html', true);
 $jconfig = JFactory::getConfig();
 
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

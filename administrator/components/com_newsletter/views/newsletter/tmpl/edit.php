@@ -52,7 +52,7 @@ jimport('joomla.html.pane');
 $tabs =& JPane::getInstance('sliders');
 
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 ?>
 
 <script type="text/javascript">

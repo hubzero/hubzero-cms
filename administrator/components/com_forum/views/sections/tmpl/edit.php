@@ -45,7 +45,7 @@ if (intval($this->row->created) <> 0)
 }
 
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

@@ -41,7 +41,7 @@ JToolBarHelper::cancel();
 
 //instantiate joomla editor
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 ?>
 
 <form action="index.php" method="post" name="adminForm">

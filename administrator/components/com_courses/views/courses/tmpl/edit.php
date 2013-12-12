@@ -45,7 +45,7 @@ JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
 
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 
 /*$paramsClass = 'JParameter';
 if (version_compare(JVERSION, '1.6', 'ge'))

@@ -16,7 +16,7 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
-$editor =& JEditor::getInstance();
+$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
