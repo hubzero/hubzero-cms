@@ -60,7 +60,7 @@ class WikiHelperPage
 			$bits = explode('/', $scope);
 			foreach ($bits as $i => $bit)
 			{
-				$bits[$i] = $tbl->normalize($bit);
+				$bits[$i] = preg_replace("/[^\:a-zA-Z0-9_\-]/", '', $bit);
 			}
 			$scope = implode('/', $bits);
 			JRequest::setVar('scope', $scope);
