@@ -119,7 +119,7 @@ class Hubzero_Trac_Project
 	 */
 	private function logDebug($msg)
 	{
-		$xlog = &Hubzero_Factory::getLogger();
+		$xlog =  Hubzero_Factory::getLogger();
 		$xlog->logDebug($msg);
 	}
 
@@ -434,7 +434,7 @@ class Hubzero_Trac_Project
 	 */
 	public function __get($property = null)
 	{
-		$xlog = &Hubzero_Factory::getLogger();
+		$xlog =  Hubzero_Factory::getLogger();
 
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_') {
 			if (empty($property)) {

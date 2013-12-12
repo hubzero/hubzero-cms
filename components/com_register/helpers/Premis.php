@@ -318,7 +318,7 @@ class Hubzero_Register_Premis
 			//ximport('Hubzero_Factory');
 			jimport('joomla.plugin.helper');
 			
-			//$xprofile =& Hubzero_Factory::getProfile();
+			//$xprofile = Hubzero_Factory::getProfile();
 
 			// Get some settings
 			$jconfig = JFactory::getConfig();

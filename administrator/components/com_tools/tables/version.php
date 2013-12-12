@@ -469,7 +469,7 @@ class ToolVersion extends  JTable
 	 */
 	public function unpublish($toolid=NULL, $vid=0)
 	{
-		$xlog = &Hubzero_Factory::getLogger();
+		$xlog =  Hubzero_Factory::getLogger();
 
 		if (!$toolid) 
 		{
@@ -510,7 +510,7 @@ class ToolVersion extends  JTable
 	public function save($toolid=NULL, $version='dev', $create_new = 0)
 	{
 		die('1');
-		$xlog = &Hubzero_Factory::getLogger();
+		$xlog =  Hubzero_Factory::getLogger();
 
 		if (!$this->toolid) 
 		{
@@ -566,7 +566,7 @@ class ToolVersion extends  JTable
 	{
 		if (empty($this->id))
 		{
-			$xlog = &Hubzero_Factory::getLogger();
+			$xlog =  Hubzero_Factory::getLogger();
 			$query = "SELECT id FROM #__tool_version WHERE toolname=" . $this->_db->Quote($this->toolname) .
 					" AND instance=" . $this->_db->Quote($this->instance) . ";";
 			$this->_db->setQuery($query);
@@ -597,7 +597,7 @@ class ToolVersion extends  JTable
 	public function getToolVersions($toolid, &$versions, $toolname='', $exclude_dev = 0)
 	{
 		ximport('Hubzero_Tool');
-		$xlog =& Hubzero_Factory::getLogger();
+		$xlog = Hubzero_Factory::getLogger();
 
 		$objA = new ToolAuthor($this->_db);
 
@@ -653,7 +653,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getVersionInfo($id, $version='', $toolname='', $instance='')
 	{
-		$xlog =& Hubzero_Factory::getLogger();
+		$xlog = Hubzero_Factory::getLogger();
 
 		// data comes from mysql
 		$juser  = JFactory::getUser();
@@ -826,7 +826,7 @@ class ToolVersion extends  JTable
 	 */
 	public function validToolReg(&$tool, &$err, $id, $config, $checker=0, $result=1)
 	{
-	    $xlog =& Hubzero_Factory::getLogger();
+	    $xlog = Hubzero_Factory::getLogger();
 
 		$tgObj = new ToolGroup($this->_db);
 

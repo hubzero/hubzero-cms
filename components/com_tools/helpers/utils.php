@@ -312,7 +312,7 @@ class ToolsHelperUtils
 		$access 	= new stdClass();
 		$juser		= JFactory::getUser();
 		$database 	= JFactory::getDBO();
-		$xlog 		=& Hubzero_Factory::getLogger();
+		$xlog 		= Hubzero_Factory::getLogger();
 		
 		// Ensure we have a tool
 		if (!$tool) 
@@ -471,7 +471,7 @@ class ToolsHelperUtils
 		
 		//instaniate objects
 		$export_access = new stdClass;
-		$xlog =& Hubzero_Factory::getLogger();
+		$xlog = Hubzero_Factory::getLogger();
 		$ip = Hubzero_Environment::ipAddress();
 		
 		//get the export control level

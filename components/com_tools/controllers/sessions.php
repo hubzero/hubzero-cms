@@ -537,7 +537,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$jobs = $ms->getCount($this->juser->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		$xprofile =& Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_Factory::getProfile();
 		$remain = $xprofile->get('jobsAllowed') - $jobs;
 
 		// Have they reached their session quota?
@@ -1446,7 +1446,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 	 */
 	private function _getToolExportControl($exportcontrol)
 	{
-		$xlog =& Hubzero_Factory::getLogger();
+		$xlog = Hubzero_Factory::getLogger();
 		$exportcontrol = strtolower($exportcontrol);
 
 		ximport('Hubzero_Environment');
@@ -1516,7 +1516,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
-		$xlog =& Hubzero_Factory::getLogger();
+		$xlog = Hubzero_Factory::getLogger();
 
 		// Ensure we have a tool
 		if (!$tool) 

@@ -2439,7 +2439,7 @@ class plgProjectsPublications extends JPlugin
 			$managers = $objO->getIds($this->_project->id, 1, 1);
 			if (!empty($managers))
 			{
-				$profile =& Hubzero_Factory::getProfile();
+				$profile = Hubzero_Factory::getProfile();
 				$profile->load( $this->_uid );
 				$juri = JURI::getInstance();
 				
@@ -2774,7 +2774,7 @@ class plgProjectsPublications extends JPlugin
 			}
 			
 			// Get dc:contibutor
-			$profile =& Hubzero_Factory::getProfile();
+			$profile = Hubzero_Factory::getProfile();
 			$owner 	 = $this->_project->owned_by_user ? $this->_project->owned_by_user : $this->_project->created_by_user;
 			if($profile->load( $owner ))
 			{
@@ -2873,7 +2873,7 @@ class plgProjectsPublications extends JPlugin
 				}
 				
 				// Notify administrator of a new publication
-				$profile =& Hubzero_Factory::getProfile();
+				$profile = Hubzero_Factory::getProfile();
 				$profile->load( $this->_uid );
 				$juri = JURI::getInstance();
 				
@@ -5500,7 +5500,7 @@ class plgProjectsPublications extends JPlugin
 			$gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
 			
 			// Get author profile (for Git comments)
-			$profile =& Hubzero_Factory::getProfile();
+			$profile = Hubzero_Factory::getProfile();
 			$profile->load( $this->_uid );
 			$name = $profile->get('name');
 			$email = $profile->get('email');

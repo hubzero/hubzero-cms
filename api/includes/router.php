@@ -128,7 +128,7 @@ class JRouterApi extends JRouter
 				}
 			}
 
-			$xprofile = &Hubzero_Factory::getProfile();
+			$xprofile =  Hubzero_Factory::getProfile();
 
 			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
 			{

@@ -54,7 +54,7 @@ class plgCoursesUserEnrollment extends Hubzero_Plugin
                     
 	public function onCourseUserEnrollment($gidNumber, $userid)
 	{
-		$xlog = &Hubzero_Factory::getLogger();
+		$xlog =  Hubzero_Factory::getLogger();
 		$db = JFactory::getDBO();
 
 		

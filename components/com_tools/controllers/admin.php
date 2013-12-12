@@ -400,7 +400,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 
 		$result = true;
 
-		$xlog =& Hubzero_Factory::getLogger();
+		$xlog = Hubzero_Factory::getLogger();
 		$xlog->logDebug("publish(): checkpoint 1:$result");
 
 		// get config
@@ -702,7 +702,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 	 */
 	protected function _finalizeTool(&$out = '')
 	{
-		$xlog =& Hubzero_Factory::getLogger();
+		$xlog = Hubzero_Factory::getLogger();
 
 		$xlog->logDebug("finalizeTool(): checkpoint 1");
 

@@ -291,7 +291,7 @@ class modMyContributions extends Hubzero_Module
 	public function display()
 	{
 		// Get the user's profile 
-		$xprofile =& Hubzero_Factory::getProfile();
+		$xprofile = Hubzero_Factory::getProfile();
 		$juser = JFactory::getUser();
 		$session_quota = $xprofile->get('jobsAllowed');
 		$administrator = in_array('middleware', $xprofile->get('admin'));

@@ -193,7 +193,7 @@ class plgMembersProfile extends Hubzero_Plugin
 		{
 			$xreg = new Hubzero_Registration();
 			$juser =  JFactory::getUser(); 
-			$xprofile =& Hubzero_Factory::getProfile();
+			$xprofile = Hubzero_Factory::getProfile();
 
 			if (is_object($xprofile)) 
 			{

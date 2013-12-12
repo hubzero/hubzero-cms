@@ -2762,7 +2762,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 */
 	private function checkGroupAccess($resource, $juser=null)
 	{
-		//$juser =& Hubzero_Factory::getUser();
+		//$juser = Hubzero_Factory::getUser();
 		if (!$juser) 
 		{
 			$juser = JFactory::getUser();

@@ -96,7 +96,7 @@ class ProjectsGitHelper extends JObject {
 			}
 
 			// Get author profile
-			$profile =& Hubzero_Factory::getProfile();
+			$profile = Hubzero_Factory::getProfile();
 			$profile->load( $this->_uid );
 
 			$name    = $profile->get('name');
