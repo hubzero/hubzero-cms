@@ -288,6 +288,10 @@ class MembersControllerProfiles extends Hubzero_Controller
 				$this->view->filters['sortby'] = 'name';
 			}
 		}
+		else
+		{
+			$this->view->filters['contributions'] = 0;
+		}
 
 		// Build the page title
 		if ($this->view->filters['show'] == 'contributors') 
