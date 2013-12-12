@@ -269,6 +269,11 @@ class CoursesTableGradeBook extends JTable
 			}
 		}
 
+		if (count($members) == 0)
+		{
+			return;
+		}
+
 		// Get the assets
 		$asset  = new CoursesTableAsset($this->_db);
 		$assets = $asset->find(
