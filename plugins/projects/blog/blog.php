@@ -100,7 +100,7 @@ class plgProjectsBlog extends JPlugin
 		
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
-
+		
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) 
 		{
@@ -125,7 +125,7 @@ class plgProjectsBlog extends JPlugin
 		{
 			$this->_project = $project;
 		}	
-
+	
 		// Are we returning HTML?
 		if ($returnhtml) 
 		{	
@@ -133,20 +133,20 @@ class plgProjectsBlog extends JPlugin
 			$this->loadLanguage();
 			
 			// Load component configs
-			$this->_config = JComponentHelper::getParams( 'com_projects' );
+			$this->_config =& JComponentHelper::getParams( 'com_projects' );
 			
 			// Enable views
 			ximport('Hubzero_View_Helper_Html');
 			ximport('Hubzero_Plugin_View');
-			
-			$database = JFactory::getDBO();
+						
+			$database =& JFactory::getDBO();
 			
 			// Add CSS and JS
-			$document = JFactory::getDocument();
+			$document =& JFactory::getDocument();
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginScript('projects', 'blog');
 			Hubzero_Document::addPluginStylesheet('projects', 'blog');
-															
+																	
 			// Set vars									
 			$this->_task = JRequest::getVar( 'action', '' );
 			$this->_database = $database;
@@ -160,10 +160,10 @@ class plgProjectsBlog extends JPlugin
 			$this->_uid = $uid;
 			if (!$this->_uid) 
 			{
-				$juser = JFactory::getUser();
+				$juser =& JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
-
+							
 			switch ($this->_task)
 			{
 				case 'page': 
@@ -555,10 +555,10 @@ class plgProjectsBlog extends JPlugin
 					
 					// Get app log
 					if ($class == 'tools' && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-						. DS . 'com_tools' . DS . 'tables' . DS . 'project.log.php'))
+						. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php'))
 					{
 						require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-							. DS . 'com_tools' . DS . 'tables' . DS . 'project.log.php');
+							. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php');
 							
 						$objLog = new ProjectToolLog( $this->_database );
 						$aLog = $objLog->getLog($a->referenceid, $a->id);
