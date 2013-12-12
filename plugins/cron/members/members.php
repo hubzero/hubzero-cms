@@ -69,7 +69,7 @@ class plgCronMembers extends JPlugin
 	{
 		/*
 		jimport('joomla.error.profiler');
-		$_profiler =& JProfiler::getInstance('Cron');
+		$_profiler = JProfiler::getInstance('Cron');
 		$_profiler->mark(__CLASS__ . '::' . __METHOD__ . '() -- Start');
 		*/
 
