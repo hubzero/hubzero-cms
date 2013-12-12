@@ -72,7 +72,7 @@
 		border-bottom: 1px solid #dde6f2;
 	}
 	.content-notes #hubForm fieldset,
-	.content-apps #hubForm fieldset {
+	.content-tools #hubForm fieldset {
 		width: 98% !important;
 	}
 	.content-notes .reorder {
@@ -173,9 +173,7 @@
 		padding-left: 20px;
 	}
 	#notes-wrap .sidebox .note:before,
-	#notes-wrap .sidebox .wikitemplate:before,
-	#notes-wrap .sidebox .appindex .note:before,
-	#notes-wrap .sidebox .appindex .wikitemplate:before {
+	#notes-wrap .sidebox .wikitemplate:before{
 		width: 16px;
 		height: 16px;
 		font-size: 16px;
@@ -198,12 +196,13 @@
 	#notes-wrap .sidebox .appindex .note:before,
 	#notes-wrap .sidebox .appindex .wikitemplate:before {
 		content: "\f06f";
+		margin-right: 0.2em;
 	}
 	
 	#notes-wrap .sidebox .wikilevel_2:before,
 	#notes-wrap .sidebox .wikilevel_3:before,
 	#notes-wrap .sidebox .wikilevel_4:before {
-		content: "\203A";
+		content: "\203A" !important;
 		color: #CCC;
 		font-weight: normal;
 		width: 10px;

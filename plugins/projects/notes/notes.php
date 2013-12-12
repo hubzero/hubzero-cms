@@ -896,7 +896,7 @@ class plgProjectsNotes extends JPlugin
 			$view->setError( $this->getError() );
 		}
 		$html =  $view->loadTemplate();
-		
+				
 		$arr = array(
 			'html' => $html,
 			'metadata' => '',
