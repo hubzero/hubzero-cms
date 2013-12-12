@@ -32,7 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Support').': <small><small>[ '.JText::_('Ticket Queries').' ]</small></small>', 'support.png');
+JToolBarHelper::title(JText::_('Support').': '.JText::_('Ticket Queries'), 'support.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();

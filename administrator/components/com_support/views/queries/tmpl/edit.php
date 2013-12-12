@@ -45,7 +45,7 @@ $tmpl = JRequest::getVar('tmpl', '');
 if (!$tmpl) 
 {
 	$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-	JToolBarHelper::title(JText::_('Ticket Query').': <small><small>[ '. $text.' ]</small></small>', 'support.png');
+	JToolBarHelper::title(JText::_('Ticket Query').': '. $text, 'support.png');
 	JToolBarHelper::save();
 	JToolBarHelper::cancel();
 }
