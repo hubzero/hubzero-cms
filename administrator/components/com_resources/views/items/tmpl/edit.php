@@ -74,7 +74,7 @@ if ($this->row->id) {
 
 // Instantiate the sliders object
 jimport('joomla.html.pane');
-$tabs =& JPane::getInstance('sliders');
+$tabs = JPane::getInstance('sliders');
 ?>
 
 <script type="text/javascript">

@@ -59,7 +59,7 @@ if (!$surname) {
 }
 
 //jimport('joomla.html.pane');
-//$tabs =& JPane::getInstance('sliders');
+//$tabs = JPane::getInstance('sliders');
 
 JHtml::_('behavior.switcher');
 ?>

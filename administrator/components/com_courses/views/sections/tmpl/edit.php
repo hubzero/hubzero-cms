@@ -313,7 +313,7 @@ window.addEvent('domready', function(){
 				<script src="components/com_courses/assets/js/jquery-ui-timepicker-addon.js"></script>
 				<?php 
 				jimport('joomla.html.pane');
-				$tabs =& JPane::getInstance('sliders');
+				$tabs = JPane::getInstance('sliders');
 
 				echo $tabs->startPane("content-pane"); 
 				$this->offering->section($this->row->get('alias', '__default'));

@@ -114,7 +114,7 @@
 			<legend><span><?php echo JText::_( 'Parameters' ); ?></span></legend>
 <?php
 		jimport('joomla.html.pane');
-		$pane =& JPane::getInstance('sliders');
+		$pane = JPane::getInstance('sliders');
 		echo $pane->startPane("plugin-pane");
 		echo $pane->startPanel(JText::_('Plugin Parameters'), "param-page");
 		if($output = $this->params->render('params')) :

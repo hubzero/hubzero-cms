@@ -49,7 +49,7 @@ $secondary = $this->newsletter_secondary;
 
 // Instantiate the sliders object
 jimport('joomla.html.pane');
-$tabs =& JPane::getInstance('sliders');
+$tabs = JPane::getInstance('sliders');
 
 jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
